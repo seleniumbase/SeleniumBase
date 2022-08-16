@@ -1,11 +1,25 @@
+""" Image-saving with "save_element_as_image_file()".
+
+    Also shown are ways of ordering tests. (Currently commented out)
+    For ordering tests, add the marker "@pytest.mark.run(order=NUM)"
+        before a test definition or class definition.
+    This changes the global test order when running "pytest".
+    Eg: If you want a test to always run first before any test
+        from all discovered files, add "@pytest.mark.run(order=0)".
+    For local class/module test-ordering, name your tests
+        using alphabetical order to set the order desired.
+    Eg: "def test_AAAAA" will run before "def test_ZZZZZ".
+    You can also add in numbers to force a specific order.
+    Eg: "def test_1_ZZZ" will run before "def test_2_AAA".
+"""
 import os
-import pytest
+# import pytest  # For ordering tests globally with @pytest.mark.run()
 from seleniumbase import BaseCase
 
 
 class ImageTests(BaseCase):
-    @pytest.mark.run(order=1)
-    def test_pull_image_from_website(self):
+    # @pytest.mark.run(order=1)
+    def test_1_save_element_as_image_file(self):
         """Pull an image from a website and save it as a PNG file."""
         self.open("https://xkcd.com/1117/")
         selector = "#comic"
@@ -15,8 +29,8 @@ class ImageTests(BaseCase):
         self.assert_true(os.path.exists("%s/%s" % (folder, file_name)))
         print('\n"%s/%s" was saved!' % (folder, file_name))
 
-    @pytest.mark.run(order=2)
-    def test_add_text_overlay_to_image(self):
+    # @pytest.mark.run(order=2)
+    def test_2_add_text_overlay_to_image(self):
         """Add a text overlay to an image."""
         self.open("https://xkcd.com/1117/")
         selector = "#comic"
@@ -29,8 +43,8 @@ class ImageTests(BaseCase):
         self.assert_true(os.path.exists("%s/%s" % (folder, file_name)))
         print('\n"%s/%s" was saved!' % (folder, file_name))
 
-    @pytest.mark.run(order=3)
-    def test_add_text_overlay_to_page_section(self):
+    # @pytest.mark.run(order=3)
+    def test_3_add_text_overlay_to_page_section(self):
         """Add a text overlay to a section of a page."""
         self.open("https://xkcd.com/2200/")
         selector = "#middleContainer"
@@ -48,8 +62,8 @@ class ImageTests(BaseCase):
         self.assert_true(os.path.exists("%s/%s" % (folder, file_name)))
         print('\n"%s/%s" was saved!' % (folder, file_name))
 
-    @pytest.mark.run(order=4)
-    def test_add_text_overlay_to_full_page(self):
+    # @pytest.mark.run(order=4)
+    def test_4_add_text_overlay_to_full_page(self):
         """Add a text overlay to a full page."""
         self.open("https://xkcd.com/1922/")
         self.remove_element("#bottom")
