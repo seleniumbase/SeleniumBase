@@ -320,7 +320,8 @@ def _set_chrome_options(
     if external_pdf:
         prefs["plugins.always_open_pdf_externally"] = True
     chrome_options.add_experimental_option("prefs", prefs)
-    chrome_options.add_experimental_option("w3c", True)
+    if not selenium4_or_newer:
+        chrome_options.add_experimental_option("w3c", True)
     if enable_sync:
         chrome_options.add_experimental_option(
             "excludeSwitches",
@@ -1740,7 +1741,8 @@ def get_local_driver(
         if external_pdf:
             prefs["plugins.always_open_pdf_externally"] = True
         edge_options.add_experimental_option("prefs", prefs)
-        edge_options.add_experimental_option("w3c", True)
+        if not selenium4_or_newer:
+            edge_options.add_experimental_option("w3c", True)
         edge_options.add_argument(
             "--disable-blink-features=AutomationControlled"
         )
