@@ -6320,7 +6320,7 @@ class BaseCase(unittest.TestCase):
             message = message.replace("\\u003C", "<")
             if message.startswith(' "') and message.count('"') == 2:
                 message = message.split('"')[1]
-            message = "X - " + message
+            message = "⚠️  " + message
             if messenger_library not in message:
                 if message not in results:
                     results.append(message)
