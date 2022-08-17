@@ -2370,7 +2370,7 @@ class BaseCase(unittest.TestCase):
             drop_selector, by=drop_by, timeout=timeout
         )
         self.__demo_mode_highlight_if_active(drop_selector, drop_by)
-        self.scroll_to(drag_selector, by=drag_by)
+        self.scroll_to(drop_selector, by=drop_by)
         drag_selector = self.convert_to_css_selector(drag_selector, drag_by)
         drop_selector = self.convert_to_css_selector(drop_selector, drop_by)
         if not jquery:
