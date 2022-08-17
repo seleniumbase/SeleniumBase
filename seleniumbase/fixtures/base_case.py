@@ -57,6 +57,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.remote_connection import LOGGER
 from seleniumbase import config as sb_config
+from seleniumbase.__version__ import __version__
 from seleniumbase.config import settings
 from seleniumbase.core import download_helper
 from seleniumbase.core import log_helper
@@ -96,6 +97,9 @@ class BaseCase(unittest.TestCase):
         self.driver = None
         self.environment = None
         self.env = None  # Add a shortened version of self.environment
+        self.version_tuple = (
+            tuple([int(i) for i in __version__.split(".") if i.isdigit()])
+        )
         self.__page_sources = []
         self.__extra_actions = []
         self.__js_start_time = 0
@@ -7668,7 +7672,7 @@ class BaseCase(unittest.TestCase):
         if not sb_config._multithreaded:
             print(msg)
         else:
-            sys.stderr.write(msg)
+            sys.stderr.write(msg + "\n")
 
     def start_tour(self, name=None, interval=0):
         self.play_tour(name=name, interval=interval)
@@ -10695,7 +10699,7 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
         return page_actions.wait_for_text_not_visible(
-            self.driver, text, selector, by, timeout
+            self.driver, text, selector, by, timeout, self.browser
         )
 
     def assert_text_not_visible(
@@ -12963,6 +12967,7 @@ class BaseCase(unittest.TestCase):
         if self._sb_test_identifier and len(str(self._sb_test_identifier)) > 6:
             test_id = self._sb_test_identifier
             test_id = test_id.replace(".py::", ".").replace("::", ".")
+            test_id = test_id.replace("/", ".")
         return test_id
 
     def __get_test_id_2(self):
