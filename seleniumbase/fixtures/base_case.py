@@ -919,6 +919,11 @@ class BaseCase(unittest.TestCase):
         self.__check_scope()
         self.__last_page_load_url = None
         self.driver.back()
+        if self.recorder_mode:
+            time_stamp = self.execute_script("return Date.now();")
+            origin = self.get_origin()
+            action = ["go_bk", "", origin, time_stamp]
+            self.__extra_actions.append(action)
         if self.browser == "safari":
             self.wait_for_ready_state_complete()
             self.driver.refresh()
@@ -929,6 +934,11 @@ class BaseCase(unittest.TestCase):
         self.__check_scope()
         self.__last_page_load_url = None
         self.driver.forward()
+        if self.recorder_mode:
+            time_stamp = self.execute_script("return Date.now();")
+            origin = self.get_origin()
+            action = ["go_fw", "", origin, time_stamp]
+            self.__extra_actions.append(action)
         self.wait_for_ready_state_complete()
         self.__demo_mode_pause_if_active()
 
@@ -3985,6 +3995,8 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("c_s_s")
         ext_actions.append("d_a_c")
         ext_actions.append("e_mfa")
+        ext_actions.append("go_bk")
+        ext_actions.append("go_fw")
         ext_actions.append("ss_tl")
         ext_actions.append("da_el")
         ext_actions.append("da_ep")
@@ -4409,6 +4421,10 @@ class BaseCase(unittest.TestCase):
                 sb_actions.append("self.clear_session_storage()")
             elif action[0] == "d_a_c":
                 sb_actions.append("self.delete_all_cookies()")
+            elif action[0] == "go_bk":
+                sb_actions.append("self.go_back()")
+            elif action[0] == "go_fw":
+                sb_actions.append("self.go_forward()")
             elif action[0] == "c_box":
                 method = "check_if_unchecked"
                 if action[2] == "no":
