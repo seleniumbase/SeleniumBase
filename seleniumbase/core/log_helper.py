@@ -11,7 +11,7 @@ from seleniumbase.fixtures import constants
 
 def log_screenshot(test_logpath, driver, screenshot=None, get=False):
     screenshot_name = settings.SCREENSHOT_NAME
-    screenshot_path = "%s/%s" % (test_logpath, screenshot_name)
+    screenshot_path = os.path.join(test_logpath, screenshot_name)
     screenshot_warning = constants.Warnings.SCREENSHOT_UNDEFINED
     try:
         if not screenshot:
@@ -126,7 +126,7 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
     if not driver_displayed:
         driver_displayed = "(Unknown Driver)"
     basic_info_name = settings.BASIC_INFO_NAME
-    basic_file_path = "%s/%s" % (test_logpath, basic_info_name)
+    basic_file_path = os.path.join(test_logpath, basic_info_name)
     if url:
         last_page = url
     else:
@@ -286,7 +286,7 @@ def log_page_source(test_logpath, driver, source=None):
                 "unresponsive, or closed prematurely!</h4>"
             )
         )
-    html_file_path = "%s/%s" % (test_logpath, html_file_name)
+    html_file_path = os.path.join(test_logpath, html_file_name)
     html_file = codecs.open(html_file_path, "w+", "utf-8")
     html_file.write(page_source)
     html_file.close()

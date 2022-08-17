@@ -1058,10 +1058,10 @@ def save_screenshot(
         name = name + ".png"
     if folder:
         abs_path = os.path.abspath(".")
-        file_path = abs_path + "/%s" % folder
+        file_path = os.path.join(abs_path, folder)
         if not os.path.exists(file_path):
             os.makedirs(file_path)
-        screenshot_path = "%s/%s" % (file_path, name)
+        screenshot_path = os.path.join(file_path, name)
     else:
         screenshot_path = name
     if selector:
@@ -1096,10 +1096,10 @@ def save_page_source(driver, name, folder=None):
         name = name + ".html"
     if folder:
         abs_path = os.path.abspath(".")
-        file_path = abs_path + "/%s" % folder
+        file_path = os.path.join(abs_path, folder)
         if not os.path.exists(file_path):
             os.makedirs(file_path)
-        html_file_path = "%s/%s" % (file_path, name)
+        html_file_path = os.path.join(file_path, name)
     else:
         html_file_path = name
     page_source = driver.page_source
@@ -1134,10 +1134,10 @@ def save_test_failure_data(driver, name, browser_type=None, folder=None):
         name = name + ".txt"
     if folder:
         abs_path = os.path.abspath(".")
-        file_path = abs_path + "/%s" % folder
+        file_path = os.path.join(abs_path, folder)
         if not os.path.exists(file_path):
             os.makedirs(file_path)
-        failure_data_file_path = "%s/%s" % (file_path, name)
+        failure_data_file_path = os.path.join(file_path, name)
     else:
         failure_data_file_path = name
     failure_data_file = codecs.open(failure_data_file_path, "w+", "utf-8")

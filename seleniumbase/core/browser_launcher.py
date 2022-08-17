@@ -35,9 +35,9 @@ if not os.environ["PATH"].startswith(DRIVER_DIR):
     # Put the SeleniumBase DRIVER_DIR at the beginning of the System PATH
     os.environ["PATH"] = DRIVER_DIR + os.pathsep + os.environ["PATH"]
 EXTENSIONS_DIR = os.path.dirname(os.path.realpath(extensions.__file__))
-DISABLE_CSP_ZIP_PATH = "%s/%s" % (EXTENSIONS_DIR, "disable_csp.zip")
-AD_BLOCK_ZIP_PATH = "%s/%s" % (EXTENSIONS_DIR, "ad_block.zip")
-RECORDER_ZIP_PATH = "%s/%s" % (EXTENSIONS_DIR, "recorder.zip")
+DISABLE_CSP_ZIP_PATH = os.path.join(EXTENSIONS_DIR, "disable_csp.zip")
+AD_BLOCK_ZIP_PATH = os.path.join(EXTENSIONS_DIR, "ad_block.zip")
+RECORDER_ZIP_PATH = os.path.join(EXTENSIONS_DIR, "recorder.zip")
 PROXY_ZIP_PATH = proxy_helper.PROXY_ZIP_PATH
 PROXY_ZIP_LOCK = proxy_helper.PROXY_ZIP_LOCK
 PLATFORM = sys.platform

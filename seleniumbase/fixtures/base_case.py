@@ -2682,7 +2682,7 @@ class BaseCase(unittest.TestCase):
         if abs_path in html_file:
             file_path = html_file
         else:
-            file_path = abs_path + "/%s" % html_file
+            file_path = os.path.join(abs_path, html_file)
         html_string = None
         with open(file_path, "r") as f:
             html_string = f.read().strip()
@@ -2703,7 +2703,7 @@ class BaseCase(unittest.TestCase):
         if abs_path in html_file:
             file_path = html_file
         else:
-            file_path = abs_path + "/%s" % html_file
+            file_path = os.path.join(abs_path, html_file)
         self.open("file://" + file_path)
 
     def execute_script(self, script, *args, **kwargs):
@@ -3476,13 +3476,15 @@ class BaseCase(unittest.TestCase):
             raise Exception("Invalid filename for Cookies!")
         if "/" in name:
             name = name.split("/")[-1]
+        if "\\" in name:
+            name = name.split("\\")[-1]
         if len(name) < 1:
             raise Exception("Filename for Cookies is too short!")
         if not name.endswith(".txt"):
             name = name + ".txt"
         folder = constants.SavedCookies.STORAGE_FOLDER
         abs_path = os.path.abspath(".")
-        file_path = abs_path + "/%s" % folder
+        file_path = os.path.join(abs_path, folder)
         if not os.path.exists(file_path):
             os.makedirs(file_path)
         cookies_file_path = os.path.join(file_path, name)
@@ -3497,13 +3499,15 @@ class BaseCase(unittest.TestCase):
             raise Exception("Invalid filename for Cookies!")
         if "/" in name:
             name = name.split("/")[-1]
+        if "\\" in name:
+            name = name.split("\\")[-1]
         if len(name) < 1:
             raise Exception("Filename for Cookies is too short!")
         if not name.endswith(".txt"):
             name = name + ".txt"
         folder = constants.SavedCookies.STORAGE_FOLDER
         abs_path = os.path.abspath(".")
-        file_path = abs_path + "/%s" % folder
+        file_path = os.path.join(abs_path, folder)
         cookies_file_path = os.path.join(file_path, name)
         json_cookies = None
         with open(cookies_file_path, "r") as f:
@@ -3539,7 +3543,7 @@ class BaseCase(unittest.TestCase):
             name = name + ".txt"
         folder = constants.SavedCookies.STORAGE_FOLDER
         abs_path = os.path.abspath(".")
-        file_path = abs_path + "/%s" % folder
+        file_path = os.path.join(abs_path, folder)
         cookies_file_path = os.path.join(file_path, name)
         if os.path.exists(cookies_file_path):
             if cookies_file_path.endswith(".txt"):
@@ -5589,7 +5593,7 @@ class BaseCase(unittest.TestCase):
                 if self.get_current_url() != pdf:
                     self.open(pdf)
             file_name = pdf.split("/")[-1]
-            file_path = downloads_folder + "/" + file_name
+            file_path = os.path.join(downloads_folder, file_name)
             if not os.path.exists(file_path):
                 self.download_file(pdf)
             elif override:
@@ -7964,7 +7968,7 @@ class BaseCase(unittest.TestCase):
                 os.makedirs(saved_presentations_folder)
             except Exception:
                 pass
-        file_path = saved_presentations_folder + "/" + filename
+        file_path = os.path.join(saved_presentations_folder, filename)
         out_file = codecs.open(file_path, "w+", encoding="utf-8")
         out_file.writelines(the_html)
         out_file.close()
@@ -8661,7 +8665,7 @@ class BaseCase(unittest.TestCase):
                 os.makedirs(saved_charts_folder)
             except Exception:
                 pass
-        file_path = saved_charts_folder + "/" + filename
+        file_path = os.path.join(saved_charts_folder, filename)
         out_file = codecs.open(file_path, "w+", encoding="utf-8")
         out_file.writelines(the_html)
         out_file.close()
