@@ -1008,7 +1008,9 @@ class BaseCase(unittest.TestCase):
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_shadow_selector(selector):
             return self.__is_shadow_text_visible(text, selector)
-        return page_actions.is_text_visible(self.driver, text, selector, by)
+        return page_actions.is_text_visible(
+            self.driver, text, selector, by, self.browser
+        )
 
     def is_attribute_present(
         self, selector, attribute, value=None, by="css selector"
@@ -1428,6 +1430,8 @@ class BaseCase(unittest.TestCase):
             if self.browser == "safari":
                 element_text = element.get_attribute("innerText")
             if element.tag_name == "input":
+                element_text = element.get_property("value")
+            if element.tag_name == "textarea":
                 element_text = element.get_property("value")
         except (StaleElementReferenceException, ENI_Exception):
             self.wait_for_ready_state_complete()

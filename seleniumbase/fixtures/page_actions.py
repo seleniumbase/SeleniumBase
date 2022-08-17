@@ -112,12 +112,12 @@ def is_element_enabled(driver, selector, by="css selector"):
         return False
 
 
-def is_text_visible(driver, text, selector, by="css selector"):
+def is_text_visible(driver, text, selector, by="css selector", browser=None):
     """
-    Returns whether the specified text is visible in the specified selector.
+    Returns whether the text substring is visible in the given selector.
     @Params
     driver - the webdriver object (required)
-    text - the text string to search for
+    text - the text string to search for (required)
     selector - the locator for identifying the page element (required)
     by - the type of selector being used (Default: By.CSS_SELECTOR)
     @Returns
@@ -125,7 +125,12 @@ def is_text_visible(driver, text, selector, by="css selector"):
     """
     try:
         element = driver.find_element(by=by, value=selector)
-        return element.is_displayed() and text in element.text
+        element_text = element.text
+        if element.tag_name == "input" or element.tag_name == "textarea":
+            element_text = element.get_property("value")
+        elif browser == "safari":
+            element_text = element.get_attribute("innerText")
+        return element.is_displayed() and text in element_text
     except Exception:
         return False
 
@@ -470,7 +475,7 @@ def wait_for_text_visible(
         try:
             element = driver.find_element(by=by, value=selector)
             is_present = True
-            if element.tag_name == "input":
+            if element.tag_name == "input" or element.tag_name == "textarea":
                 if (
                     element.is_displayed()
                     and text in element.get_property("value")
@@ -574,7 +579,7 @@ def wait_for_exact_text_visible(
         try:
             element = driver.find_element(by=by, value=selector)
             is_present = True
-            if element.tag_name == "input":
+            if element.tag_name == "input" or element.tag_name == "textarea":
                 if (
                     element.is_displayed()
                     and text.strip() == element.get_property("value").strip()
@@ -934,7 +939,12 @@ def wait_for_element_not_visible(
 
 
 def wait_for_text_not_visible(
-    driver, text, selector, by="css selector", timeout=settings.LARGE_TIMEOUT
+    driver,
+    text,
+    selector,
+    by="css selector",
+    timeout=settings.LARGE_TIMEOUT,
+    browser=None,
 ):
     """
     Searches for the text in the element of the given selector on the page.
@@ -953,7 +963,7 @@ def wait_for_text_not_visible(
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
         shared_utils.check_if_time_limit_exceeded()
-        if not is_text_visible(driver, text, selector, by=by):
+        if not is_text_visible(driver, text, selector, by=by, browser=browser):
             return True
         now_ms = time.time() * 1000.0
         if now_ms >= stop_ms:
