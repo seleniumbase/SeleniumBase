@@ -2590,6 +2590,12 @@ class BaseCase(unittest.TestCase):
         If new_page==True, the page will switch to: "data:text/html,"
         If new_page==False, will load HTML into the current page."""
         self.__check_scope()
+        new_lines = []
+        lines = html_string.split("\n")
+        for line in lines:
+            if not line.strip().startswith("//"):
+                new_lines.append(line)
+        html_string = "\n".join(new_lines)
         soup = self.get_beautiful_soup(html_string)
         found_base = False
         links = soup.findAll("link")
