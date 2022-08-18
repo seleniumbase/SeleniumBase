@@ -175,10 +175,8 @@ def view_summary_of_existing_case_plans(root, tests):
     case_data_storage = []
     case_to_test_hash = {}
     full_t = []
-    test_index = -1
-    for test in tests:
+    for test_index, test in enumerate(tests):
         full_t.append(test)
-        test_index += 1
         parts = test.strip().split("/")
         test_address = None
         folder_path = None
