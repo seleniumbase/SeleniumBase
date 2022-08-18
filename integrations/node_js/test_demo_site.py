@@ -1,23 +1,31 @@
 from seleniumbase import BaseCase
+from seleniumbase import version_tuple
 
 
 class DemoSiteTests(BaseCase):
     def test_demo_site(self):
         self.open("https://seleniumbase.io/demo_page")
 
+        # Fail if the seleniumbase version is less than 4.0.0
+        if version_tuple < (4, 0, 0):
+            self.fail("This test requires seleniumbase>=4.0.0")
+
         # Assert the title of the current web page
         self.assert_title("Web Testing Page")
 
-        # Assert that the element is visible on the page
+        # Assert that an element is visible on the page
         self.assert_element("tbody#tbodyId")
 
-        # Assert that the text appears within a given element
+        # Assert that a text substring appears in an element
         self.assert_text("Demo Page", "h1")
 
-        # Type/update text in text fields on the page
+        # Type text into various text fields and then verify
         self.type("#myTextInput", "This is Automated")
         self.type("textarea.area1", "Testing Time!\n")
         self.type('[name="preText2"]', "Typing Text!")
+        self.assert_text("This is Automated", "#myTextInput")
+        self.assert_text("Testing Time!\n", "textarea.area1")
+        self.assert_text("Typing Text!", '[name="preText2"]')
 
         # Verify that a hover dropdown link changes page text
         self.assert_text("Automation Practice", "h3")
