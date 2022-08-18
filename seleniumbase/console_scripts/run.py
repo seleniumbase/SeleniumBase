@@ -956,7 +956,11 @@ def main():
         from seleniumbase.console_scripts import sb_behave_gui
 
         sb_behave_gui.main()
-    elif command == "caseplans" or command == "case-plans":
+    elif (
+        command == "caseplans"
+        or command == "case-plans"
+        or command == "case_plans"
+    ):
         from seleniumbase.console_scripts import sb_caseplans
 
         sb_caseplans.main()
@@ -1168,6 +1172,10 @@ def main():
                 show_caseplans_usage()
                 return
             elif command_args[0] == "case-plans":
+                print("")
+                show_caseplans_usage()
+                return
+            elif command_args[0] == "case_plans":
                 print("")
                 show_caseplans_usage()
                 return
