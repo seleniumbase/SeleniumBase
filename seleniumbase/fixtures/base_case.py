@@ -2585,6 +2585,47 @@ class BaseCase(unittest.TestCase):
             timeout=timeout,
         )
 
+    def get_select_options(
+        self,
+        dropdown_selector,
+        attribute="text",
+        by="css selector",
+        timeout=None,
+    ):
+        """Returns a list of select options as attribute text (configurable).
+        @Params
+        dropdown_selector - The selector of the "select" element.
+        attribute - Choose from "text", "index", "value", or None (elements).
+        by - The "by" of the "select" selector to use. Default: "css selector".
+        timeout - Time to wait for "select". If None: settings.SMALL_TIMEOUT.
+        """
+        self.wait_for_ready_state_complete()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector = dropdown_selector
+        allowed_attributes = ["text", "index", "value", None]
+        if attribute not in allowed_attributes:
+            raise Exception("The attribute must be in %s" % allowed_attributes)
+        selector, by = self.__recalculate_selector(selector, by)
+        element = self.wait_for_element(selector, by=by, timeout=timeout)
+        if element.tag_name != "select":
+            raise Exception(
+                'Element tag_name for get_select_options(selector) must be a '
+                '"select"! Actual tag_name found was: "%s"' % element.tag_name
+            )
+        if by != "css selector":
+            selector = self.convert_to_css_selector(selector, by=by)
+        option_selector = selector + " option"
+        option_elements = self.find_elements(option_selector)
+        if not attribute:
+            return option_elements
+        elif attribute == "text":
+            return [e.text for e in option_elements]
+        else:
+            return [e.get_attribute(attribute) for e in option_elements]
+
     def load_html_string(self, html_string, new_page=True):
         """Loads an HTML string into the web browser.
         If new_page==True, the page will switch to: "data:text/html,"
