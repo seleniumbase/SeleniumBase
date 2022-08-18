@@ -13,6 +13,7 @@ from seleniumbase.fixtures import constants
 is_windows = False
 if sys.platform in ["win32", "win64", "x64"]:
     is_windows = True
+sys_argv = sys.argv
 pytest_plugins = ["pytester"]  # Adds the "testdir" fixture
 
 
@@ -1028,8 +1029,7 @@ def pytest_addoption(parser):
                 folder, such as when running tests in GitHub Actions.""",
     )
 
-    sys_argv = sys.argv
-    arg_join = " ".join(sys.argv)
+    arg_join = " ".join(sys_argv)
     sb_config._browser_shortcut = None
 
     # SeleniumBase does not support pytest-timeout due to hanging browsers.
@@ -1314,11 +1314,11 @@ def pytest_configure(config):
     sb_config._dash_final_summary = None  # Dash status to add to html report
     sb_config._html_report_name = None  # The name of the pytest html report
 
-    arg_join = " ".join(sys.argv)
+    arg_join = " ".join(sys_argv)
     if (
-        "-n" in sys.argv
+        "-n" in sys_argv
         or " -n=" in arg_join
-        or "-c" in sys.argv
+        or "-c" in sys_argv
         or (
             sys.version_info[0] >= 3
             and "addopts" in config.inicfg.keys()
@@ -1330,7 +1330,7 @@ def pytest_configure(config):
     ):
         sb_config._multithreaded = True
     if (
-        "--html" in sys.argv
+        "--html" in sys_argv
         or " --html=" in arg_join
         or (
             sys.version_info[0] >= 3
@@ -1398,13 +1398,14 @@ def pytest_configure(config):
     if sb_config.dash_title:
         constants.Dashboard.TITLE = sb_config.dash_title.replace("_", " ")
 
-    from seleniumbase.core import log_helper
-    from seleniumbase.core import download_helper
-    from seleniumbase.core import proxy_helper
+    if "--co" not in sys_argv and "--collect-only" not in sys_argv:
+        from seleniumbase.core import log_helper
+        from seleniumbase.core import download_helper
+        from seleniumbase.core import proxy_helper
 
-    log_helper.log_folder_setup(sb_config.log_path, sb_config.archive_logs)
-    download_helper.reset_downloads_folder()
-    proxy_helper.remove_proxy_zip_if_present()
+        log_helper.log_folder_setup(sb_config.log_path, sb_config.archive_logs)
+        download_helper.reset_downloads_folder()
+        proxy_helper.remove_proxy_zip_if_present()
 
 
 def pytest_sessionstart(session):
@@ -1470,6 +1471,8 @@ def _create_dashboard_assets_():
 
 
 def pytest_itemcollected(item):
+    if "--co" in sys_argv or "--collect-only" in sys_argv:
+        return
     if sb_config.dashboard:
         sb_config.item_count += 1
         test_id, display_id = _get_test_ids_(item)
@@ -1480,6 +1483,8 @@ def pytest_itemcollected(item):
 
 
 def pytest_deselected(items):
+    if "--co" in sys_argv or "--collect-only" in sys_argv:
+        return
     if sb_config.dashboard:
         sb_config.item_count -= len(items)
         for item in items:
@@ -1493,6 +1498,8 @@ def pytest_collection_finish(session):
     Print the dashboard path if at least one test runs.
     https://docs.pytest.org/en/stable/reference.html
     """
+    if "--co" in sys_argv or "--collect-only" in sys_argv:
+        return
     if sb_config.dashboard and len(session.items) > 0:
         _create_dashboard_assets_()
         # Output Dashboard info to the console
@@ -1517,6 +1524,8 @@ def pytest_collection_finish(session):
 
 def pytest_runtest_setup(item):
     """This runs before every test with pytest."""
+    if "--co" in sys_argv or "--collect-only" in sys_argv:
+        return
     if sb_config.dashboard:
         sb_config._sbase_detected = False
     test_id, display_id = _get_test_ids_(item)
@@ -1528,6 +1537,8 @@ def pytest_runtest_teardown(item):
     """This runs after every test with pytest.
     Make sure that webdriver and headless displays have exited.
     (Has zero effect on tests using --reuse-session / --rs)"""
+    if "--co" in sys_argv or "--collect-only" in sys_argv:
+        return
     try:
         if hasattr(item, "_testcase") or hasattr(sb_config, "_sb_pdb_driver"):
             if hasattr(item, "_testcase"):
@@ -1536,7 +1547,7 @@ def pytest_runtest_teardown(item):
                     if (
                         hasattr(self, "driver")
                         and self.driver
-                        and "--pdb" not in sys.argv
+                        and "--pdb" not in sys_argv
                     ):
                         if not is_windows or self.driver.service.process:
                             self.driver.quit()
@@ -1557,11 +1568,11 @@ def pytest_runtest_teardown(item):
                     pass
         try:
             if hasattr(self, "xvfb") and self.xvfb:
-                if self.headless_active and "--pdb" not in sys.argv:
+                if self.headless_active and "--pdb" not in sys_argv:
                     if hasattr(self, "display") and self.display:
                         self.display.stop()
             elif hasattr(self, "headless") and self.headless:
-                if self.headless_active and "--pdb" not in sys.argv:
+                if self.headless_active and "--pdb" not in sys_argv:
                     if hasattr(self, "display") and self.display:
                         self.display.stop()
         except Exception:
@@ -1577,6 +1588,8 @@ def pytest_sessionfinish(session):
 
 
 def pytest_terminal_summary(terminalreporter):
+    if "--co" in sys_argv or "--collect-only" in sys_argv:
+        return
     latest_logs_dir = os.getcwd() + "/latest_logs/"
     if sb_config._multithreaded:
         if os.path.exists(latest_logs_dir) and os.listdir(latest_logs_dir):
@@ -1657,7 +1670,7 @@ def _perform_pytest_unconfigure_():
             the_html_d = None
             with open(dashboard_path, "r", encoding="utf-8") as f:
                 the_html_d = f.read()
-            if sb_config._multithreaded and "-c" in sys.argv:
+            if sb_config._multithreaded and "-c" in sys_argv:
                 # Threads have "-c" in sys.argv, except for the last
                 raise Exception('Break out of "try" block.')
             if sb_config._multithreaded:
@@ -1748,6 +1761,8 @@ def _perform_pytest_unconfigure_():
 
 def pytest_unconfigure(config):
     """This runs after all tests have completed with pytest."""
+    if "--co" in sys_argv or "--collect-only" in sys_argv:
+        return
     if hasattr(sb_config, "_multithreaded") and sb_config._multithreaded:
         import fasteners
 
@@ -1830,6 +1845,8 @@ def sb(request):
 
 @pytest.mark.hookwrapper
 def pytest_runtest_makereport(item, call):
+    if "--co" in sys_argv or "--collect-only" in sys_argv:
+        return
     pytest_html = item.config.pluginmanager.getplugin("html")
     outcome = yield
     report = outcome.get_result()
