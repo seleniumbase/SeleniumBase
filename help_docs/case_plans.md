@@ -1,10 +1,14 @@
 ## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) SeleniumBase Case Plans 📒🗂️
 
-📒 <b>SeleniumBase Case Plans</b> is Test Case Management Software that utilizes Markdown Table Technology for hosting test plans directly in GitHub (or any source code management system that supports Markdown format).
+<img src="https://seleniumbase.io/cdn/img/cp/sb_case_plans.png" title="SeleniumBase Case Plans Summary" width="625">
 
-📒 The ``case_summary.md`` file is generated from individual Case Plans that exist in the ``case_plans/`` folders of your repository. Here's how the Case Summary file may look after you've created some initial Case Plans:
+📒 <b>SeleniumBase Case Plans</b> is Test Case Management Software that uses Markdown tables for displaying test plans directly in GitHub (and other source code management systems that support Markdown format).
+
+📒 The ``case_summary.md`` file is generated from individual Case Plans that exist in the ``case_plans/`` folders of your repository. (See the example below to learn how the Case Summary file may look.)
 
 --------
+
+> **Example of a ``case_summary.md`` file:**
 
 <h2>Summary of existing Case Plans</h2>
 
@@ -154,7 +158,7 @@
 sbase caseplans
 ```
 
-<img src="https://seleniumbase.io/cdn/img/cp/case_plan_boilerplate_gen.png" title="SeleniumBase Case Plans GUI" width="550">
+<img src="https://seleniumbase.io/cdn/img/cp/case_plan_boilerplate_gen.png" title="SeleniumBase Case Plans GUI" width="525">
 
 📒 Once you are running the Case Plans GUI, select the existing tests that need Case Plans, and then click: ``Generate boilerplate Case Plans for selected tests missing them``. For each selected test that didn't already have a Case Plan file, one will be generated. Each new Case Plan file starts with default boilerplate code with a Markdown table. Eg:
 
