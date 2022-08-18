@@ -6156,7 +6156,7 @@ class BaseCase(unittest.TestCase):
                 a_a = SD.translate_assert_attribute(self._language)
                 i_n = SD.translate_in(self._language)
             if not value:
-                messenger_post = "%s: {%s} %s %s: %s" % (
+                messenger_post = "%s: [%s] %s %s: %s" % (
                     a_a,
                     attribute,
                     i_n,
@@ -6164,7 +6164,7 @@ class BaseCase(unittest.TestCase):
                     selector,
                 )
             else:
-                messenger_post = '%s: {%s == "%s"} %s %s: %s' % (
+                messenger_post = '%s: [%s="%s"] %s %s: %s' % (
                     a_a,
                     attribute,
                     value,
