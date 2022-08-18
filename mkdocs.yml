@@ -70,6 +70,7 @@ plugins:
         - help_docs/chinese.md
         - integrations/katalon/ReadMe.md
         - seleniumbase/utilities/selenium_ide/ReadMe.md
+        - seleniumbase/examples/chart_maker/ReadMe.md
   - minify:
       minify_html: true
   - mkdocs-simple-hooks:
@@ -87,6 +88,7 @@ nav:
   - Syntax Formats: help_docs/syntax_formats.md
   - Recorder Mode: help_docs/recorder_mode.md
   - API Reference: help_docs/method_summary.md
+  - Case Plans: help_docs/case_plans.md
   - Setup / Install:
     - Install Python, pip, git: help_docs/install_python_pip_git.md
     - Virtualenv Instructions: help_docs/virtualenv_instructions.md
