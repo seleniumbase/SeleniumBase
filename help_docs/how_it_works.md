@@ -38,7 +38,17 @@ class TestMFALogin(BaseCase):
         self.assert_exact_text("You have been signed out!", "#top_message")
 ```
 
-(See the example test, [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py), for reference.)
+(See the example, [test_mfa_login.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_mfa_login.py), for reference.)
+
+The most common way of running SeleniumBase tests is with ``pytest``:
+
+```bash
+pytest --headless --rs --dashboard --html=report.html -v -n=4
+pytest test_mfa_login.py
+pytest -m marker2
+pytest offline_examples/
+pytest -k agent
+```
 
 --------
 

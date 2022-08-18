@@ -8,6 +8,7 @@
 * A powerful Python framework for browser automation and E2E UI testing.
 * Includes [Recorder Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md) for instantly generating browser tests in Python.
 * Supports multiple browsers, tabs, iframes, and proxies in the same test.
+* Includes [Test Case Management Software](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/case_plans.md) with Markdown technology.
 * Automatic smart-waiting improves reliability and prevents flaky tests.
 * Supports [pytest](https://docs.pytest.org/en/latest/), [unittest](https://docs.python.org/3/library/unittest.html), [nose](http://nose.readthedocs.io/en/latest/), and [behave](https://behave.readthedocs.io/en/stable/index.html) for finding/running tests.
 * All the code is open source. Look inside to learn about any feature.
