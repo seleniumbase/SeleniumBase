@@ -225,9 +225,7 @@ def view_summary_of_existing_case_plans(root, tests):
     num_ready_cases = 0
     num_boilerplate = 0
     num_in_progress = 0
-    case_index = -1
-    for case_data in case_data_storage:
-        case_index += 1
+    for case_index, case_data in enumerate(case_data_storage):
         icon = "🔵"
         table_missing = False
         if "| 1 | Perform Action 1 | Verify Action 1 |" in case_data:
