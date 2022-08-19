@@ -34,7 +34,7 @@ def process_successes(test, test_count, duration):
 def process_failures(test, test_count, browser_type, duration):
     bad_page_image = "failure_%s.png" % test_count
     bad_page_data = "failure_%s.txt" % test_count
-    screenshot_path = "%s/%s" % (LATEST_REPORT_DIR, bad_page_image)
+    screenshot_path = os.path.join(LATEST_REPORT_DIR, bad_page_image)
     if hasattr(test, "_last_page_screenshot"):
         with open(screenshot_path, "wb") as file:
             file.write(test._last_page_screenshot)
@@ -74,7 +74,7 @@ def process_failures(test, test_count, browser_type, duration):
 
 def clear_out_old_report_logs(archive_past_runs=True, get_log_folder=False):
     abs_path = os.path.abspath(".")
-    file_path = abs_path + "/%s" % LATEST_REPORT_DIR
+    file_path = os.path.join(abs_path, LATEST_REPORT_DIR)
     if not os.path.exists(file_path):
         try:
             os.makedirs(file_path)
@@ -83,12 +83,11 @@ def clear_out_old_report_logs(archive_past_runs=True, get_log_folder=False):
 
     if archive_past_runs:
         archive_timestamp = int(time.time())
-        if not os.path.exists("%s/../%s/" % (file_path, ARCHIVE_DIR)):
-            os.makedirs("%s/../%s/" % (file_path, ARCHIVE_DIR))
-        archive_dir = "%s/../%s/report_%s" % (
-            file_path,
-            ARCHIVE_DIR,
-            archive_timestamp,
+        archive_dir_root = os.path.join(file_path, "..", ARCHIVE_DIR)
+        if not os.path.exists(archive_dir_root):
+            os.makedirs(archive_dir_root)
+        archive_dir = os.path.join(
+            archive_dir_root, "report_%s" % archive_timestamp
         )
         shutil.move(file_path, archive_dir)
         os.makedirs(file_path)
@@ -98,20 +97,20 @@ def clear_out_old_report_logs(archive_past_runs=True, get_log_folder=False):
         # Just delete bad pages to make room for the latest run.
         filelist = [
             f
-            for f in os.listdir("./%s" % LATEST_REPORT_DIR)
+            for f in os.listdir(os.path.join(".", LATEST_REPORT_DIR))
             if f.startswith("failure_")
             or (f == HTML_REPORT)
             or (f.startswith("automation_failure"))
             or (f == RESULTS_TABLE)
         ]
         for f in filelist:
-            os.remove("%s/%s" % (file_path, f))
+            os.remove(os.path.join(file_path, f))
 
 
 def add_bad_page_log_file(page_results_list):
     abs_path = os.path.abspath(".")
-    file_path = abs_path + "/%s" % LATEST_REPORT_DIR
-    log_file = "%s/%s" % (file_path, RESULTS_TABLE)
+    file_path = os.path.join(abs_path, LATEST_REPORT_DIR)
+    log_file = os.path.join(file_path, RESULTS_TABLE)
     f = open(log_file, "w")
     h_p1 = """"Num","Result","Stacktrace","Screenshot","""
     h_p2 = """"URL","Browser","Epoch Time","Duration","""
@@ -127,16 +126,16 @@ def archive_new_report_logs():
     log_string = clear_out_old_report_logs(get_log_folder=True)
     log_folder = log_string.split("/")[-1]
     abs_path = os.path.abspath(".")
-    file_path = abs_path + "/%s" % ARCHIVE_DIR
-    report_log_path = "%s/%s" % (file_path, log_folder)
+    file_path = os.path.join(abs_path, ARCHIVE_DIR)
+    report_log_path = os.path.join(file_path, log_folder)
     return report_log_path
 
 
 def add_results_page(html):
     abs_path = os.path.abspath(".")
-    file_path = abs_path + "/%s" % LATEST_REPORT_DIR
+    file_path = os.path.join(abs_path, LATEST_REPORT_DIR)
     results_file_name = HTML_REPORT
-    results_file = "%s/%s" % (file_path, results_file_name)
+    results_file = os.path.join(file_path, results_file_name)
     f = open(results_file, "w")
     f.write(html)
     f.close()
@@ -181,11 +180,10 @@ def build_report(
         % summary_table
     )
 
-    log_link_shown = "../%s%s/" % (
-        ARCHIVE_DIR,
-        web_log_path.split(ARCHIVE_DIR)[1],
+    log_link_shown = os.path.join(
+        "..", "%s%s" % (ARCHIVE_DIR, web_log_path.split(ARCHIVE_DIR)[1])
     )
-    csv_link = "%s/%s" % (web_log_path, RESULTS_TABLE)
+    csv_link = os.path.join(web_log_path, RESULTS_TABLE)
     csv_link_shown = "%s" % RESULTS_TABLE
     log_table = """<p><p><p><p><h2><table><tbody>
         <tr><td>LOG FILES LINK:&nbsp;&nbsp;<td><a href="%s">%s</a></tr>

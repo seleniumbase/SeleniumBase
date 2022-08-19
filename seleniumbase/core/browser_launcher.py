@@ -35,9 +35,9 @@ if not os.environ["PATH"].startswith(DRIVER_DIR):
     # Put the SeleniumBase DRIVER_DIR at the beginning of the System PATH
     os.environ["PATH"] = DRIVER_DIR + os.pathsep + os.environ["PATH"]
 EXTENSIONS_DIR = os.path.dirname(os.path.realpath(extensions.__file__))
-DISABLE_CSP_ZIP_PATH = "%s/%s" % (EXTENSIONS_DIR, "disable_csp.zip")
-AD_BLOCK_ZIP_PATH = "%s/%s" % (EXTENSIONS_DIR, "ad_block.zip")
-RECORDER_ZIP_PATH = "%s/%s" % (EXTENSIONS_DIR, "recorder.zip")
+DISABLE_CSP_ZIP_PATH = os.path.join(EXTENSIONS_DIR, "disable_csp.zip")
+AD_BLOCK_ZIP_PATH = os.path.join(EXTENSIONS_DIR, "ad_block.zip")
+RECORDER_ZIP_PATH = os.path.join(EXTENSIONS_DIR, "recorder.zip")
 PROXY_ZIP_PATH = proxy_helper.PROXY_ZIP_PATH
 PROXY_ZIP_LOCK = proxy_helper.PROXY_ZIP_LOCK
 PLATFORM = sys.platform
@@ -320,7 +320,8 @@ def _set_chrome_options(
     if external_pdf:
         prefs["plugins.always_open_pdf_externally"] = True
     chrome_options.add_experimental_option("prefs", prefs)
-    chrome_options.add_experimental_option("w3c", True)
+    if not selenium4_or_newer:
+        chrome_options.add_experimental_option("w3c", True)
     if enable_sync:
         chrome_options.add_experimental_option(
             "excludeSwitches",
@@ -1740,7 +1741,8 @@ def get_local_driver(
         if external_pdf:
             prefs["plugins.always_open_pdf_externally"] = True
         edge_options.add_experimental_option("prefs", prefs)
-        edge_options.add_experimental_option("w3c", True)
+        if not selenium4_or_newer:
+            edge_options.add_experimental_option("w3c", True)
         edge_options.add_argument(
             "--disable-blink-features=AutomationControlled"
         )
@@ -2157,6 +2159,19 @@ def get_local_driver(
                         auto_upgrade_chromedriver = True
                     elif "Chrome version must be between" in e.msg:
                         auto_upgrade_chromedriver = True
+                    elif "Missing or invalid capabilities" in e.msg:
+                        if selenium4_or_newer:
+                            chrome_options.add_experimental_option("w3c", True)
+                            service = ChromeService(log_path=os.devnull)
+                            with warnings.catch_warnings():
+                                warnings.simplefilter(
+                                    "ignore", category=DeprecationWarning
+                                )
+                                return webdriver.Chrome(
+                                    service=service, options=chrome_options
+                                )
+                        else:
+                            raise
                     if not auto_upgrade_chromedriver:
                         raise  # Not an obvious fix.
                     else:
@@ -2255,6 +2270,19 @@ def get_local_driver(
                         auto_upgrade_chromedriver = True
                     elif "Chrome version must be between" in e.msg:
                         auto_upgrade_chromedriver = True
+                    elif "Missing or invalid capabilities" in e.msg:
+                        if selenium4_or_newer:
+                            chrome_options.add_experimental_option("w3c", True)
+                            service = ChromeService(log_path=os.devnull)
+                            with warnings.catch_warnings():
+                                warnings.simplefilter(
+                                    "ignore", category=DeprecationWarning
+                                )
+                                return webdriver.Chrome(
+                                    service=service, options=chrome_options
+                                )
+                        else:
+                            raise
                     mcv = None  # Major Chrome Version
                     if "Current browser version is " in e.msg:
                         line = e.msg.split("Current browser version is ")[1]

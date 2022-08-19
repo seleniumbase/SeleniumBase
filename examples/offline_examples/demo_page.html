@@ -247,6 +247,17 @@
                 background: #4CAF50;
                 cursor: pointer;
             }
+            #drop1,#drop2 {
+                width: 131px;
+                height: 21px;
+                padding: 1px;
+                border: 1.5px solid #aaaaaa;
+                background-color: #d6e6f0;
+            }
+            img:active {
+                box-shadow: 0px 2px 5px 1px rgba(105, 165, 155, 0.3),
+                1px 2px 12px 0px rgba(105, 165, 155, 0.2) !important;
+            }
         </style>
     </head>
     <body>
@@ -380,7 +391,8 @@
                         <td style="width: 150px;">
                             CheckBox:
                             <input type="checkbox" id="checkBox1"
-                                   name="checkBoxName1" class="checkBoxClassA"/>
+                                   name="checkBoxName1" class="checkBoxClassA"
+                                   onchange="revealRow(event)"/>
                         </td>
                         <td style="width: 180px;">
                             CheckBoxes:
@@ -407,6 +419,20 @@
                                 %20name=%22checkBoxName6%22
                                 %20class=%22checkBoxClassD%20fBox%22%20/>
                                 </body>"></iframe>
+                        </td>
+                    </tr>
+                    <tr style="display: none" class="hidden_row">
+                        <td>
+                            Drag and Drop A:
+                        </td>
+                        <td>
+                            <div id="drop1" class="dropzone" ondrop="drop(event)" ondragover="dragOver(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)"><img id="logo" src="data:image/gif;base64,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" draggable="true" ondragstart="dragStart(event)" width="130" height="20"></div>
+                        </td>
+                        <td>
+                            Drag and Drop B:
+                        </td>
+                        <td>
+                            <div id="drop2" class="dropzone" ondrop="drop(event)" ondragover="dragOver(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)"></div>
                         </td>
                     </tr>
                     <tr>
@@ -549,6 +575,51 @@
                     element.beginElement();
                 });
             });
+        </script>
+        <script>
+            function revealRow(event) {
+                // Show the Drag & Drop row if the first checkbox is checked.
+                if (event.target.checked)
+                {
+                    document.querySelector('tr.hidden_row').style.display='';
+                }
+                else
+                {
+                    document.querySelector('tr.hidden_row').style.display='none';
+                }
+            }
+        </script>
+        <script>
+            function dragOver(event) {
+                // Allow dropping.
+                event.preventDefault();
+            }
+            function dragEnter(event) {
+                event.preventDefault();
+                if ( event.target.className === "dropzone" ) {
+                    event.target.style.background = "#c6b6d6";
+                }
+            }
+            function dragLeave(event) {
+                event.preventDefault();
+                if ( event.target.className === "dropzone" ) {
+                    event.target.style.background = "#d6e6f0";
+                }
+            }
+            function dragStart(event) {
+                event.dataTransfer.setData("id_of_dragged_element", event.target.id);
+            }
+            function drop(event) {
+                event.preventDefault();
+                var data = event.dataTransfer.getData("id_of_dragged_element");
+                try {
+                    event.target.appendChild(document.getElementById(data));
+                    event.target.style.background = "#d6e6f0";
+                }
+                catch (HierarchyRequestError) {
+                    // Drap & Drop to same location. Do nothing.
+                }
+            }
         </script>
     </body>
 </html>

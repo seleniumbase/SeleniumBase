@@ -14,7 +14,7 @@ class AppleTests(BaseCase):
             self.get_new_driver(
                 agent="""Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) """
                 """AppleWebKit/537.36 (KHTML, like Gecko) """
-                """Chrome/90.0.4430.85 Safari/537.36"""
+                """Chrome/102.0.5005.61 Safari/537.36"""
             )
         self.open("https://developer.apple.com/search/")
         title = "Testing with WebDriver in Safari"

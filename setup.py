@@ -131,7 +131,7 @@ setup(
         'packaging>=21.3;python_version>="3.6"',
         'setuptools>=44.1.1;python_version<"3.6"',
         'setuptools>=59.6.0;python_version>="3.6" and python_version<"3.7"',
-        'setuptools>=63.4.1;python_version>="3.7"',
+        'setuptools>=65.1.0;python_version>="3.7"',
         'tomli>=1.2.3;python_version>="3.6" and python_version<"3.7"',
         'tomli>=2.0.1;python_version>="3.7"',
         "wheel>=0.37.1",
@@ -144,7 +144,7 @@ setup(
         'certifi>=2022.6.15;python_version>="3.6"',
         'filelock>=3.2.1;python_version<"3.6"',
         'filelock>=3.4.1;python_version>="3.6" and python_version<"3.7"',
-        'filelock>=3.7.1;python_version>="3.7"',
+        'filelock>=3.8.0;python_version>="3.7"',
         'platformdirs>=2.0.2;python_version<"3.6"',
         'platformdirs>=2.4.0;python_version>="3.6" and python_version<"3.7"',
         'platformdirs>=2.5.2;python_version>="3.7"',
@@ -177,10 +177,10 @@ setup(
         'pyopenssl==22.0.0;python_version>="3.7"',
         'wsproto==1.1.0;python_version>="3.7"',
         'selenium==3.141.0;python_version<"3.7"',
-        'selenium==4.3.0;python_version>="3.7"',
+        'selenium==4.4.3;python_version>="3.7"',
         'msedge-selenium-tools==3.141.3;python_version<"3.7"',
         'more-itertools==5.0.0;python_version<"3.6"',
-        'more-itertools==8.13.0;python_version>="3.6"',
+        'more-itertools==8.14.0;python_version>="3.6"',
         "cssselect==1.1.0",
         "sortedcontainers==2.4.0",
         'fasteners==0.16;python_version<"3.6"',
@@ -218,7 +218,7 @@ setup(
         'cryptography==36.0.2;python_version>="3.6" and python_version<"3.7"',
         'cryptography==37.0.4;python_version>="3.7"',
         'pygments==2.5.2;python_version<"3.6"',
-        'pygments==2.12.0;python_version>="3.6"',
+        'pygments==2.13.0;python_version>="3.6"',
         'prompt-toolkit==1.0.18;python_version<"3.6"',
         'prompt-toolkit==3.0.30;python_version>="3.6"',
         'decorator==4.4.2;python_version<"3.6"',
@@ -226,7 +226,7 @@ setup(
         'ipython==5.10.0;python_version<"3.6"',
         'ipython==7.16.1;python_version>="3.6" and python_version<"3.7"',
         'ipython==7.34.0;python_version>="3.7"',  # Requires matplotlib-inline
-        'matplotlib-inline==0.1.3;python_version>="3.7"',  # ipython needs this
+        'matplotlib-inline==0.1.6;python_version>="3.7"',  # ipython needs this
         "colorama==0.4.5",
         'importlib-metadata==2.1.3;python_version<"3.6"',
         'importlib-metadata==4.2.0;python_version>="3.6" and python_version<"3.8"',  # noqa: E501
@@ -248,7 +248,7 @@ setup(
         "coverage": [
             'coverage==5.5;python_version<"3.6"',
             'coverage==6.2;python_version>="3.6" and python_version<"3.7"',
-            'coverage==6.4.2;python_version>="3.7"',
+            'coverage==6.4.4;python_version>="3.7"',
             'pytest-cov==2.12.1;python_version<"3.6"',
             'pytest-cov==3.0.0;python_version>="3.6"',
         ],

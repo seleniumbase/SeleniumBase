@@ -348,6 +348,10 @@ def generate_gherkin(srt_actions):
             sb_actions.append("Clear Session Storage")
         elif action[0] == "d_a_c":
             sb_actions.append("Delete all cookies")
+        elif action[0] == "go_bk":
+            sb_actions.append("Go back")
+        elif action[0] == "go_fw":
+            sb_actions.append("Go forward")
         elif action[0] == "c_box":
             method = "Check if unchecked"
             if action[2] == "no":

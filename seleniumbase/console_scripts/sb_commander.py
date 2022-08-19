@@ -32,6 +32,10 @@ if sys.version_info <= (3, 7):
 import tkinter as tk  # noqa: E402
 from tkinter.scrolledtext import ScrolledText  # noqa: E402
 
+is_windows = False
+if sys.platform in ["win32", "win64", "x64"]:
+    is_windows = True
+
 
 def set_colors(use_colors):
     c0 = ""
@@ -155,7 +159,7 @@ def do_pytest_run(
 def create_tkinter_gui(tests, command_string):
     root = tk.Tk()
     root.title("SeleniumBase Commander | GUI for pytest")
-    root.minsize(820, 645)
+    root.minsize(820, 658)
     tk.Label(root, text="").pack()
 
     options_list = [
@@ -192,39 +196,47 @@ def create_tkinter_gui(tests, command_string):
     question_menu.pack()
 
     vox = tk.IntVar()
-    chk = tk.Checkbutton(root, text="Verbose Output  (-v)", variable=vox)
+    chk = tk.Checkbutton(
+        root, text="Verbose Output  (-v)", variable=vox, pady=0
+    )
     chk.pack()
     chk.select()
 
     dmx = tk.IntVar()
-    chk = tk.Checkbutton(root, text="Demo Mode  (--demo)", variable=dmx)
+    chk = tk.Checkbutton(
+        root, text="Demo Mode  (--demo)", variable=dmx, pady=0
+    )
     chk.pack()
 
     mmx = tk.IntVar()
-    chk = tk.Checkbutton(root, text="Mobile Mode  (--mobile)", variable=mmx)
+    chk = tk.Checkbutton(
+        root, text="Mobile Mode  (--mobile)", variable=mmx, pady=0
+    )
     chk.pack()
 
     dbx = tk.IntVar()
-    chk = tk.Checkbutton(root, text="Dashboard  (--dashboard)", variable=dbx)
+    chk = tk.Checkbutton(
+        root, text="Dashboard  (--dashboard)", variable=dbx, pady=0
+    )
     chk.pack()
     chk.select()
 
     hrx = tk.IntVar()
     chk = tk.Checkbutton(
-        root, text="Report  (--html=report.html)", variable=hrx
+        root, text="Report  (--html=report.html)", variable=hrx, pady=0
     )
     chk.pack()
     chk.select()
 
     hbx = tk.IntVar()
     chk = tk.Checkbutton(
-        root, text="Headless Browser  (--headless)", variable=hbx
+        root, text="Headless Browser  (--headless)", variable=hbx, pady=0
     )
     chk.pack()
 
     ssx = tk.IntVar()
     chk = tk.Checkbutton(
-        root, text="Save Screenshots  (--screenshot)", variable=ssx
+        root, text="Save Screenshots  (--screenshot)", variable=ssx, pady=0
     )
     chk.pack()
 
@@ -246,13 +258,27 @@ def create_tkinter_gui(tests, command_string):
     for row in tests:
         row += " " * 200
         ara[count] = tk.IntVar()
-        cb = tk.Checkbutton(
-            text_area,
-            text=(row),
-            bg="white",
-            anchor="w",
-            variable=ara[count],
-        )
+        cb = None
+        if not is_windows:
+            cb = tk.Checkbutton(
+                text_area,
+                text=(row),
+                bg="white",
+                anchor="w",
+                pady=0,
+                variable=ara[count],
+            )
+        else:
+            cb = tk.Checkbutton(
+                text_area,
+                text=(row),
+                bg="white",
+                anchor="w",
+                pady=0,
+                borderwidth=0,
+                highlightthickness=0,
+                variable=ara[count],
+            )
         text_area.window_create("end", window=cb)
         text_area.insert("end", "\n")
         count += 1
@@ -262,7 +288,7 @@ def create_tkinter_gui(tests, command_string):
     aopts = tk.StringVar(value=additional_options)
     tk.Label(
         root,
-        text="Additional pytest Options:  (space-separated)",
+        text='Additional "pytest" Options:  (Eg. "--incognito --slow")',
         fg="blue",
     ).pack()
     entry = tk.Entry(root, textvariable=aopts)

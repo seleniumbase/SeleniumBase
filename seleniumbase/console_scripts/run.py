@@ -11,6 +11,7 @@ sbase methods
 sbase options
 sbase commander
 sbase behave-gui
+sbase caseplans
 sbase mkdir ui_tests
 sbase mkfile new_test.py
 sbase mkrec new_test.py
@@ -83,6 +84,7 @@ def show_basic_usage():
     sc += "      behave-options   (List common behave options)\n"
     sc += "      gui / commander  [OPTIONAL PATH or TEST FILE]\n"
     sc += "      behave-gui       (SBase Commander for Behave)\n"
+    sc += "      caseplans        [OPTIONAL PATH or TEST FILE]\n"
     sc += "      mkdir            [DIRECTORY] [OPTIONS]\n"
     sc += "      mkfile           [FILE.py] [OPTIONS]\n"
     sc += "      mkrec / codegen  [FILE.py] [OPTIONS]\n"
@@ -197,6 +199,27 @@ def show_behave_gui_usage():
     print("           sbase behave-gui features/calculator.feature")
     print("  Output:")
     print("           Launches SeleniumBase Commander | GUI for Behave.")
+    print("")
+
+
+def show_caseplans_usage():
+    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+    cr = colorama.Style.RESET_ALL
+    sc = "  " + c2 + "** " + c3 + "caseplans" + c2 + " **" + cr
+    print(sc)
+    print("")
+    print("  Usage:")
+    print("           seleniumbase caseplans [OPTIONAL PATH or TEST FILE]")
+    print("           OR:    sbase caseplans [OPTIONAL PATH or TEST FILE]")
+    print("  Examples:")
+    print("           sbase caseplans")
+    print("           sbase caseplans -k agent")
+    print("           sbase caseplans -m marker2")
+    print("           sbase caseplans test_suite.py")
+    print("           sbase caseplans offline_examples/")
+    print("  Output:")
+    print("           Launches the SeleniumBase Case Plans Generator.")
     print("")
 
 
@@ -879,6 +902,7 @@ def show_detailed_help():
     show_install_usage()
     show_commander_usage()
     show_behave_gui_usage()
+    show_caseplans_usage()
     show_mkdir_usage()
     show_mkfile_usage()
     show_mkrec_usage()
@@ -932,6 +956,14 @@ def main():
         from seleniumbase.console_scripts import sb_behave_gui
 
         sb_behave_gui.main()
+    elif (
+        command == "caseplans"
+        or command == "case-plans"
+        or command == "case_plans"
+    ):
+        from seleniumbase.console_scripts import sb_caseplans
+
+        sb_caseplans.main()
     elif (
         command == "recorder"
         or (command == "record" and len(command_args) == 0)
@@ -1134,6 +1166,18 @@ def main():
             elif command_args[0] == "gui-behave":
                 print("")
                 show_behave_gui_usage()
+                return
+            elif command_args[0] == "caseplans":
+                print("")
+                show_caseplans_usage()
+                return
+            elif command_args[0] == "case-plans":
+                print("")
+                show_caseplans_usage()
+                return
+            elif command_args[0] == "case_plans":
+                print("")
+                show_caseplans_usage()
                 return
             elif command_args[0] == "mkdir":
                 print("")

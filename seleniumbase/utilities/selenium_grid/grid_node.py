@@ -86,14 +86,14 @@ def main():
 
     data = []
     data.append(server_ip)
-    file_path = "%s/%s" % (dir_path, "ip_of_grid_hub.dat")
+    file_path = os.path.join(dir_path, "ip_of_grid_hub.dat")
     file = codecs.open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()
 
     data = []
     data.append(verbose)
-    file_path = "%s/%s" % (dir_path, "verbose_node_server.dat")
+    file_path = os.path.join(dir_path, "verbose_node_server.dat")
     file = codecs.open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()

@@ -17,3 +17,4 @@ class MyTests(BaseCase):
         self.assert_element("div.inventory_list")
         self.assert_element('div:contains("Sauce Labs Backpack")')
         self.js_click("a#logout_sidebar_link")
+        self.assert_element("div#login_button_container")

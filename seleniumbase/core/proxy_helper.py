@@ -3,8 +3,8 @@ import zipfile
 from seleniumbase.fixtures import constants
 
 DOWNLOADS_DIR = constants.Files.DOWNLOADS_FOLDER
-PROXY_ZIP_PATH = "%s/%s" % (DOWNLOADS_DIR, "proxy.zip")
-PROXY_ZIP_LOCK = "%s/%s" % (DOWNLOADS_DIR, "proxy.lock")
+PROXY_ZIP_PATH = os.path.join(DOWNLOADS_DIR, "proxy.zip")
+PROXY_ZIP_LOCK = os.path.join(DOWNLOADS_DIR, "proxy.lock")
 
 
 def create_proxy_zip(proxy_string, proxy_user, proxy_pass):

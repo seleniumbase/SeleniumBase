@@ -962,16 +962,31 @@ def get_scroll_distance_to_element(driver, element):
 
 
 def scroll_to_element(driver, element):
-    element_location = None
+    element_location_y = None
+    element_location_x = None
+    element_width = 0
+    screen_width = 0
     try:
-        element_location = element.location["y"]
+        element_location_y = element.location["y"]
     except Exception:
-        # element.location_once_scrolled_into_view  # Old hack
         return False
-    element_location = element_location - 130
-    if element_location < 0:
-        element_location = 0
-    scroll_script = "window.scrollTo(0, %s);" % element_location
+    try:
+        element_location_x = element.location["x"]
+        element_width = element.size["width"]
+        screen_width = driver.get_window_size()["width"]
+    except Exception:
+        element_location_x = 0
+    element_location_y = element_location_y - 130
+    if element_location_y < 0:
+        element_location_y = 0
+    element_location_x_fix = element_location_x - 400
+    if element_location_x_fix < 0:
+        element_location_x_fix = 0
+    if element_location_x + element_width <= screen_width:
+        element_location_x_fix = 0
+    scroll_script = "window.scrollTo(%s, %s);" % (
+        element_location_x_fix, element_location_y
+    )
     # The old jQuery scroll_script required by=By.CSS_SELECTOR
     # scroll_script = "jQuery('%s')[0].scrollIntoView()" % selector
     try:

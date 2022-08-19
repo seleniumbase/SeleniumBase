@@ -10,15 +10,7 @@ class GooglePage:
         sb.type('input[title="Search"]', search_term + "\n")
 
     def click_search_result(self, sb, content):
-        sb.click('a[href*="%s"]' % content)
-
-
-class SeleniumBaseGitHubPage:
-    def click_seleniumbase_io_link(self, sb):
-        link = '#readme article a[href*="seleniumbase.io"]'
-        sb.wait_for_element_visible(link)
-        sb.js_click(link)
-        sb.switch_to_newest_window()
+        sb.click('a:contains("%s")' % content)
 
 
 class SeleniumBaseIOPage:
@@ -29,12 +21,11 @@ class SeleniumBaseIOPage:
 
 class MyTests(BaseCase):
     def test_page_objects(self):
-        search_term = "SeleniumBase GitHub"
-        expected_text = "seleniumbase/SeleniumBase"
+        search_term = "SeleniumBase.io Docs"
+        expected_text = "SeleniumBase"
         GooglePage().go_to_google(self)
         GooglePage().do_search(self, search_term)
         self.assert_text(expected_text, "#search")
         GooglePage().click_search_result(self, expected_text)
-        SeleniumBaseGitHubPage().click_seleniumbase_io_link(self)
         SeleniumBaseIOPage().do_search_and_click(self, "Dashboard")
         self.assert_text("Dashboard", "main h1")

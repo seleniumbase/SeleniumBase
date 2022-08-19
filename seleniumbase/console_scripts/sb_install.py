@@ -555,7 +555,7 @@ def main(override=None):
         zip_ref.extractall(downloads_folder)
         zip_ref.close()
         os.remove(zip_file_path)
-        shutil.copyfile(driver_path, "%s/%s" % (downloads_folder, filename))
+        shutil.copyfile(driver_path, os.path.join(downloads_folder, filename))
         print("Unzip Complete!\n")
         to_remove = [
             "%s/%s/ruby_example/Gemfile" % (downloads_folder, h_ie_fn),
@@ -571,10 +571,10 @@ def main(override=None):
         if os.path.exists("%s/%s/ruby_example/" % (downloads_folder, h_ie_fn)):
             # Only works if the directory is empty
             os.rmdir("%s/%s/ruby_example/" % (downloads_folder, h_ie_fn))
-        if os.path.exists("%s/%s/" % (downloads_folder, h_ie_fn)):
+        if os.path.exists(os.path.join(downloads_folder, h_ie_fn)):
             # Only works if the directory is empty
-            os.rmdir("%s/%s/" % (downloads_folder, h_ie_fn))
-        driver_path = "%s/%s" % (downloads_folder, filename)
+            os.rmdir(os.path.join(downloads_folder, h_ie_fn))
+        driver_path = os.path.join(downloads_folder, filename)
         print(
             "The file [%s] was saved to:\n%s%s%s\n"
             % (filename, c3, driver_path, cr)

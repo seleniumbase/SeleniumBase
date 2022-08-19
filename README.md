@@ -18,9 +18,9 @@
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/console_scripts/ReadMe.md">🔮 Scripts</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mobile_testing.md">📱 Phone</a>
 <br />
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">📙 APIs</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md">📝 Formats</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">🔵 Dashboard</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">📚 APIs</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md">🔠 Formats</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">⚪ Dashboard</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md">🔴 Recorder</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/locale_codes.md">🗾 Locales</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md">🌐 Grid</a>
@@ -32,11 +32,18 @@
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/ReadMe.md">📊 Charts</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">🚎 Tours</a>
 <br />
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/github/workflows/ReadMe.md">🤖 CI</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/boilerplates">♻️ Boilerplates</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/how_it_works.md">👁️ How</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/migration/raw_selenium">🚝 Migrate</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/case_plans.md">📒 CasePlans</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js">🚉 NodeGUI</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">🧬 Hybrid</a> |
+<a href="https://seleniumbase.io/devices/?url=seleniumbase.com">💻 Farm</a>
+<br />
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/github/workflows/ReadMe.md">🤖 CI/CD</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/js_package_manager.md">🕹️ JSMgr</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/boilerplates">♻️ Templates</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/html_inspector.md">🔎 Inspector</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/js_package_manager.md">🕹️ JSCode</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/dialog_boxes/ReadMe.md">🛂 Dialogs</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/dialog_boxes/ReadMe.md">🛂 Boxes</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md">🖼️ Visual</a>
 <br />
 </p>
@@ -54,7 +61,7 @@ pytest test_demo_site.py --chrome
 
 <div></div>
 <details>
-<summary> ▶️ How is SeleniumBase different from raw Selenium? (<b><u>click to expand</u></b>)</summary>
+<summary> ▶️ How is SeleniumBase different from raw Selenium? (<b>click to expand</b>)</summary>
 <div>
 
 <p>💡 SeleniumBase is a Python test framework for the <a href="https://www.w3.org/TR/webdriver2/#endpoints" target="_blank">Selenium/WebDriver</a> browser automation library. This framework incorporates test-runners such as <code>pytest</code>, <code>nosetests</code>, and <code>behave</code> to provide organized structure, test discovery, test execution, test state (<i>eg. passed, failed, or skipped</i>), and command-line options for changing default settings (<i>such as choosing the browser to use</i>). With raw Selenium, you would need to set up your own options-parser for configuring tests from the command-line.</p>
@@ -200,6 +207,7 @@ COMMANDS:
       behave-options   (List common behave options)
       gui / commander  [OPTIONAL PATH or TEST FILE]
       behave-gui       (SBase Commander for Behave)
+      caseplans        [OPTIONAL PATH or TEST FILE]
       mkdir            [DIRECTORY] [OPTIONS]
       mkfile           [FILE.py] [OPTIONS]
       mkrec / codegen  [FILE.py] [OPTIONS]
@@ -768,7 +776,7 @@ pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1
 
 <div></div>
 <details>
-<summary> ▶️ Here are some things you can do to set up a production environment for your testing. (<b><u>click to expand</u></b>)</summary>
+<summary> ▶️ Here are some things you can do to set up a production environment for your testing. (<b>click to expand</b>)</summary>
 
 <ul>
 <li>You can set up a <a href="https://jenkins.io/" target="_blank">Jenkins</a> build server for running tests at regular intervals. For a real-world Jenkins example of headless browser automation in action, check out the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/jenkins/ReadMe.md">SeleniumBase Jenkins example on Azure</a> or the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/google_cloud/ReadMe.md">SeleniumBase Jenkins example on Google Cloud</a>.</li>
@@ -936,7 +944,7 @@ def is_there_a_cloaked_klingon_ship_on_this_page():
 
 <div></div>
 <details>
-<summary> ▶️ is_text_visible(text, selector)  # is text visible on a page (<b><u>click to expand</u></b>)</summary>
+<summary> ▶️ is_text_visible(text, selector)  # is text visible on a page (<b>click to expand</b>)</summary>
 
 ```python
 def get_mirror_universe_captain_picard_superbowl_ad(superbowl_year):
@@ -1002,7 +1010,7 @@ self.activate_jquery()
 
 <div></div>
 <details>
-<summary> ▶️ Here are some examples of using jQuery in your scripts. (<b><u>click to expand</u></b>)</summary>
+<summary> ▶️ Here are some examples of using jQuery in your scripts. (<b>click to expand</b>)</summary>
 
 ```python
 self.execute_script("jQuery, window.scrollTo(0, 600)")  # Scrolling the page
@@ -1032,7 +1040,7 @@ self.execute_script("return jQuery('textarea')[2].value")  # Returns the css "va
 
 <div></div>
 <details>
-<summary> ▶️ In this example, JavaScript creates a referral button on a page, which is then clicked. (<b><u>click to expand</u></b>)</summary>
+<summary> ▶️ In this example, JavaScript creates a referral button on a page, which is then clicked. (<b>click to expand</b>)</summary>
 
 ```python
 start_page = "https://xkcd.com/465/"

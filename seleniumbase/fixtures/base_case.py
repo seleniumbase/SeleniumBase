@@ -57,6 +57,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.remote_connection import LOGGER
 from seleniumbase import config as sb_config
+from seleniumbase.__version__ import __version__
 from seleniumbase.config import settings
 from seleniumbase.core import download_helper
 from seleniumbase.core import log_helper
@@ -96,6 +97,9 @@ class BaseCase(unittest.TestCase):
         self.driver = None
         self.environment = None
         self.env = None  # Add a shortened version of self.environment
+        self.version_tuple = (
+            tuple([int(i) for i in __version__.split(".") if i.isdigit()])
+        )
         self.__page_sources = []
         self.__extra_actions = []
         self.__js_start_time = 0
@@ -105,6 +109,7 @@ class BaseCase(unittest.TestCase):
         self.__start_time_ms = None
         self.__requests_timeout = None
         self.__screenshot_count = 0
+        self.__level_0_visual_f = False
         self.__will_be_skipped = False
         self.__passed_then_skipped = False
         self.__visual_baseline_copies = []
@@ -919,6 +924,11 @@ class BaseCase(unittest.TestCase):
         self.__check_scope()
         self.__last_page_load_url = None
         self.driver.back()
+        if self.recorder_mode:
+            time_stamp = self.execute_script("return Date.now();")
+            origin = self.get_origin()
+            action = ["go_bk", "", origin, time_stamp]
+            self.__extra_actions.append(action)
         if self.browser == "safari":
             self.wait_for_ready_state_complete()
             self.driver.refresh()
@@ -929,6 +939,11 @@ class BaseCase(unittest.TestCase):
         self.__check_scope()
         self.__last_page_load_url = None
         self.driver.forward()
+        if self.recorder_mode:
+            time_stamp = self.execute_script("return Date.now();")
+            origin = self.get_origin()
+            action = ["go_fw", "", origin, time_stamp]
+            self.__extra_actions.append(action)
         self.wait_for_ready_state_complete()
         self.__demo_mode_pause_if_active()
 
@@ -998,7 +1013,9 @@ class BaseCase(unittest.TestCase):
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_shadow_selector(selector):
             return self.__is_shadow_text_visible(text, selector)
-        return page_actions.is_text_visible(self.driver, text, selector, by)
+        return page_actions.is_text_visible(
+            self.driver, text, selector, by, self.browser
+        )
 
     def is_attribute_present(
         self, selector, attribute, value=None, by="css selector"
@@ -1418,6 +1435,8 @@ class BaseCase(unittest.TestCase):
             if self.browser == "safari":
                 element_text = element.get_attribute("innerText")
             if element.tag_name == "input":
+                element_text = element.get_property("value")
+            if element.tag_name == "textarea":
                 element_text = element.get_property("value")
         except (StaleElementReferenceException, ENI_Exception):
             self.wait_for_ready_state_complete()
@@ -2351,7 +2370,7 @@ class BaseCase(unittest.TestCase):
             drop_selector, by=drop_by, timeout=timeout
         )
         self.__demo_mode_highlight_if_active(drop_selector, drop_by)
-        self.scroll_to(drag_selector, by=drag_by)
+        self.scroll_to(drop_selector, by=drop_by)
         drag_selector = self.convert_to_css_selector(drag_selector, drag_by)
         drop_selector = self.convert_to_css_selector(drop_selector, drop_by)
         if not jquery:
@@ -2566,11 +2585,58 @@ class BaseCase(unittest.TestCase):
             timeout=timeout,
         )
 
+    def get_select_options(
+        self,
+        dropdown_selector,
+        attribute="text",
+        by="css selector",
+        timeout=None,
+    ):
+        """Returns a list of select options as attribute text (configurable).
+        @Params
+        dropdown_selector - The selector of the "select" element.
+        attribute - Choose from "text", "index", "value", or None (elements).
+        by - The "by" of the "select" selector to use. Default: "css selector".
+        timeout - Time to wait for "select". If None: settings.SMALL_TIMEOUT.
+        """
+        self.wait_for_ready_state_complete()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector = dropdown_selector
+        allowed_attributes = ["text", "index", "value", None]
+        if attribute not in allowed_attributes:
+            raise Exception("The attribute must be in %s" % allowed_attributes)
+        selector, by = self.__recalculate_selector(selector, by)
+        element = self.wait_for_element(selector, by=by, timeout=timeout)
+        if element.tag_name != "select":
+            raise Exception(
+                'Element tag_name for get_select_options(selector) must be a '
+                '"select"! Actual tag_name found was: "%s"' % element.tag_name
+            )
+        if by != "css selector":
+            selector = self.convert_to_css_selector(selector, by=by)
+        option_selector = selector + " option"
+        option_elements = self.find_elements(option_selector)
+        if not attribute:
+            return option_elements
+        elif attribute == "text":
+            return [e.text for e in option_elements]
+        else:
+            return [e.get_attribute(attribute) for e in option_elements]
+
     def load_html_string(self, html_string, new_page=True):
         """Loads an HTML string into the web browser.
         If new_page==True, the page will switch to: "data:text/html,"
         If new_page==False, will load HTML into the current page."""
         self.__check_scope()
+        new_lines = []
+        lines = html_string.split("\n")
+        for line in lines:
+            if not line.strip().startswith("//"):
+                new_lines.append(line)
+        html_string = "\n".join(new_lines)
         soup = self.get_beautiful_soup(html_string)
         found_base = False
         links = soup.findAll("link")
@@ -2682,7 +2748,7 @@ class BaseCase(unittest.TestCase):
         if abs_path in html_file:
             file_path = html_file
         else:
-            file_path = abs_path + "/%s" % html_file
+            file_path = os.path.join(abs_path, html_file)
         html_string = None
         with open(file_path, "r") as f:
             html_string = f.read().strip()
@@ -2703,7 +2769,7 @@ class BaseCase(unittest.TestCase):
         if abs_path in html_file:
             file_path = html_file
         else:
-            file_path = abs_path + "/%s" % html_file
+            file_path = os.path.join(abs_path, html_file)
         self.open("file://" + file_path)
 
     def execute_script(self, script, *args, **kwargs):
@@ -3476,13 +3542,15 @@ class BaseCase(unittest.TestCase):
             raise Exception("Invalid filename for Cookies!")
         if "/" in name:
             name = name.split("/")[-1]
+        if "\\" in name:
+            name = name.split("\\")[-1]
         if len(name) < 1:
             raise Exception("Filename for Cookies is too short!")
         if not name.endswith(".txt"):
             name = name + ".txt"
         folder = constants.SavedCookies.STORAGE_FOLDER
         abs_path = os.path.abspath(".")
-        file_path = abs_path + "/%s" % folder
+        file_path = os.path.join(abs_path, folder)
         if not os.path.exists(file_path):
             os.makedirs(file_path)
         cookies_file_path = os.path.join(file_path, name)
@@ -3497,13 +3565,15 @@ class BaseCase(unittest.TestCase):
             raise Exception("Invalid filename for Cookies!")
         if "/" in name:
             name = name.split("/")[-1]
+        if "\\" in name:
+            name = name.split("\\")[-1]
         if len(name) < 1:
             raise Exception("Filename for Cookies is too short!")
         if not name.endswith(".txt"):
             name = name + ".txt"
         folder = constants.SavedCookies.STORAGE_FOLDER
         abs_path = os.path.abspath(".")
-        file_path = abs_path + "/%s" % folder
+        file_path = os.path.join(abs_path, folder)
         cookies_file_path = os.path.join(file_path, name)
         json_cookies = None
         with open(cookies_file_path, "r") as f:
@@ -3539,7 +3609,7 @@ class BaseCase(unittest.TestCase):
             name = name + ".txt"
         folder = constants.SavedCookies.STORAGE_FOLDER
         abs_path = os.path.abspath(".")
-        file_path = abs_path + "/%s" % folder
+        file_path = os.path.join(abs_path, folder)
         cookies_file_path = os.path.join(file_path, name)
         if os.path.exists(cookies_file_path):
             if cookies_file_path.endswith(".txt"):
@@ -3981,6 +4051,8 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("c_s_s")
         ext_actions.append("d_a_c")
         ext_actions.append("e_mfa")
+        ext_actions.append("go_bk")
+        ext_actions.append("go_fw")
         ext_actions.append("ss_tl")
         ext_actions.append("da_el")
         ext_actions.append("da_ep")
@@ -4405,6 +4477,10 @@ class BaseCase(unittest.TestCase):
                 sb_actions.append("self.clear_session_storage()")
             elif action[0] == "d_a_c":
                 sb_actions.append("self.delete_all_cookies()")
+            elif action[0] == "go_bk":
+                sb_actions.append("self.go_back()")
+            elif action[0] == "go_fw":
+                sb_actions.append("self.go_forward()")
             elif action[0] == "c_box":
                 method = "check_if_unchecked"
                 if action[2] == "no":
@@ -5589,7 +5665,7 @@ class BaseCase(unittest.TestCase):
                 if self.get_current_url() != pdf:
                     self.open(pdf)
             file_name = pdf.split("/")[-1]
-            file_path = downloads_folder + "/" + file_name
+            file_path = os.path.join(downloads_folder, file_name)
             if not os.path.exists(file_path):
                 self.download_file(pdf)
             elif override:
@@ -6121,7 +6197,7 @@ class BaseCase(unittest.TestCase):
                 a_a = SD.translate_assert_attribute(self._language)
                 i_n = SD.translate_in(self._language)
             if not value:
-                messenger_post = "%s: {%s} %s %s: %s" % (
+                messenger_post = "%s: [%s] %s %s: %s" % (
                     a_a,
                     attribute,
                     i_n,
@@ -6129,7 +6205,7 @@ class BaseCase(unittest.TestCase):
                     selector,
                 )
             else:
-                messenger_post = '%s: {%s == "%s"} %s %s: %s' % (
+                messenger_post = '%s: [%s="%s"] %s %s: %s' % (
                     a_a,
                     attribute,
                     value,
@@ -6291,7 +6367,7 @@ class BaseCase(unittest.TestCase):
             message = message.replace("\\u003C", "<")
             if message.startswith(' "') and message.count('"') == 2:
                 message = message.split('"')[1]
-            message = "X - " + message
+            message = "⚠️  " + message
             if messenger_library not in message:
                 if message not in results:
                     results.append(message)
@@ -7643,7 +7719,7 @@ class BaseCase(unittest.TestCase):
         if not sb_config._multithreaded:
             print(msg)
         else:
-            sys.stderr.write(msg)
+            sys.stderr.write(msg + "\n")
 
     def start_tour(self, name=None, interval=0):
         self.play_tour(name=name, interval=interval)
@@ -7964,7 +8040,7 @@ class BaseCase(unittest.TestCase):
                 os.makedirs(saved_presentations_folder)
             except Exception:
                 pass
-        file_path = saved_presentations_folder + "/" + filename
+        file_path = os.path.join(saved_presentations_folder, filename)
         out_file = codecs.open(file_path, "w+", encoding="utf-8")
         out_file.writelines(the_html)
         out_file.close()
@@ -8661,7 +8737,7 @@ class BaseCase(unittest.TestCase):
                 os.makedirs(saved_charts_folder)
             except Exception:
                 pass
-        file_path = saved_charts_folder + "/" + filename
+        file_path = os.path.join(saved_charts_folder, filename)
         out_file = codecs.open(file_path, "w+", encoding="utf-8")
         out_file.writelines(the_html)
         out_file.close()
@@ -10670,7 +10746,7 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
         return page_actions.wait_for_text_not_visible(
-            self.driver, text, selector, by, timeout
+            self.driver, text, selector, by, timeout, self.browser
         )
 
     def assert_text_not_visible(
@@ -10933,56 +11009,10 @@ class BaseCase(unittest.TestCase):
                 self.__create_log_path_as_needed(test_logpath)
                 shutil.copy(latest_png_path, latest_copy_path)
         if len(self.__visual_baseline_copies) != 1:
-            return  # Only possible when deferred visual asserts are used
-        head = (
-            '<head><meta charset="utf-8">'
-            '<meta name="viewport" content="shrink-to-fit=no">'
-            '<link rel="shortcut icon" href="%s">'
-            "<title>Visual Comparison</title>"
-            "</head>" % (constants.SideBySide.SIDE_BY_SIDE_PNG)
-        )
-        table_html = (
-            '<table border="3px solid #E6E6E6;" width="100%;" padding: 12px;'
-            ' font-size="16px;" text-align="left;" id="results-table"'
-            ' style="background-color: #FAFAFA;">'
-            '<thead id="results-table-head">'
-            "<tr>"
-            '<th style="background-color: rgba(0, 128, 0, 0.25);"'
-            ' col="baseline">Baseline Screenshot</th>'
-            '<th style="background-color: rgba(128, 0, 0, 0.25);"'
-            ' col="failure">Visual Diff Failure Screenshot</th>'
-            "</tr></thead>"
-        )
-        row = (
-            '<tbody class="compare results-table-row">'
-            '<tr style="background-color: #F4F4FE;">'
-            '<td><img src="%s" width="100%%" /></td>'
-            '<td><img src="%s" width="100%%" /></td>'
-            "</tr></tbody>"
-            "" % ("baseline.png", "baseline_diff.png")
-        )
-        header_text = "SeleniumBase Visual Comparison"
-        header = '<h3 align="center">%s</h3>' % header_text
-        table_html += row
-        table_html += "</table>"
-        footer = "<br /><b>Last updated:</b> "
-        timestamp, the_date, the_time = log_helper.get_master_time()
-        last_updated = "%s at %s" % (the_date, the_time)
-        footer = footer + "%s" % last_updated
-        gen_by = (
-            '<p><div>Generated by: <b><a href="https://seleniumbase.io/">'
-            "SeleniumBase</a></b></div></p><p></p>"
-        )
-        footer = footer + gen_by
-        the_html = (
-            '<html lang="en">'
-            + head
-            + '<body style="background-color: #FCFCF4;">'
-            + header
-            + table_html
-            + footer
-            + "</body>"
-        )
+            return  # Skip the rest when deferred visual asserts are used
+        from seleniumbase.core import visual_helper
+
+        the_html = visual_helper.get_sbs_html()
         file_path = os.path.join(test_logpath, constants.SideBySide.HTML_FILE)
         out_file = codecs.open(file_path, "w+", encoding="utf-8")
         out_file.writelines(the_html)
@@ -11096,15 +11126,15 @@ class BaseCase(unittest.TestCase):
 
         visual_helper.visual_baseline_folder_setup()
         baseline_dir = constants.VisualBaseline.STORAGE_FOLDER
-        visual_baseline_path = baseline_dir + "/" + test_id + "/" + name
-        page_url_file = visual_baseline_path + "/page_url.txt"
+        visual_baseline_path = os.path.join(baseline_dir, test_id, name)
+        page_url_file = os.path.join(visual_baseline_path, "page_url.txt")
         baseline_png = "baseline.png"
-        baseline_png_path = visual_baseline_path + "/%s" % baseline_png
+        baseline_png_path = os.path.join(visual_baseline_path, baseline_png)
         latest_png = "latest.png"
-        latest_png_path = visual_baseline_path + "/%s" % latest_png
-        level_1_file = visual_baseline_path + "/tags_level_1.txt"
-        level_2_file = visual_baseline_path + "/tags_level_2.txt"
-        level_3_file = visual_baseline_path + "/tags_level_3.txt"
+        latest_png_path = os.path.join(visual_baseline_path, latest_png)
+        level_1_file = os.path.join(visual_baseline_path, "tags_level_1.txt")
+        level_2_file = os.path.join(visual_baseline_path, "tags_level_2.txt")
+        level_3_file = os.path.join(visual_baseline_path, "tags_level_3.txt")
 
         set_baseline = False
         if baseline or self.visual_baseline:
@@ -11164,6 +11194,7 @@ class BaseCase(unittest.TestCase):
         )
         self.__visual_baseline_copies.append(baseline_copy_tuple)
 
+        is_level_0_failure = False
         if not set_baseline:
             self.save_screenshot(
                 latest_png, visual_baseline_path, selector="body"
@@ -11263,9 +11294,38 @@ class BaseCase(unittest.TestCase):
                         )
                 except Exception as e:
                     print(e)  # Level-0 Dry Run (Only print the differences)
+                    is_level_0_failure = True
             unittest.TestCase.maxDiff = None  # Reset unittest.TestCase.maxDiff
         # Since the check passed, do not save an extra copy of the baseline
         del self.__visual_baseline_copies[-1]  # .pop() returns the element
+        if is_level_0_failure:
+            # Generating the side_by_side.html file for Level-0 failures
+            test_logpath = os.path.join(self.log_path, self.__get_test_id())
+            if (
+                not os.path.exists(baseline_path)
+                or not os.path.exists(latest_png_path)
+            ):
+                return
+            self.__level_0_visual_f = True
+            if not os.path.exists(test_logpath):
+                self.__create_log_path_as_needed(test_logpath)
+            baseline_copy_path = os.path.join(test_logpath, baseline_copy_name)
+            latest_copy_path = os.path.join(test_logpath, latest_copy_name)
+            if (
+                not os.path.exists(baseline_copy_path)
+                and not os.path.exists(latest_copy_path)
+            ):
+                shutil.copy(baseline_path, baseline_copy_path)
+                shutil.copy(latest_png_path, latest_copy_path)
+            the_html = visual_helper.get_sbs_html(
+                baseline_copy_name, latest_copy_name
+            )
+            alpha_n_d_name = "".join([x if x.isalnum() else "_" for x in name])
+            side_by_side_name = "side_by_side_%s.html" % alpha_n_d_name
+            file_path = os.path.join(test_logpath, side_by_side_name)
+            out_file = codecs.open(file_path, "w+", encoding="utf-8")
+            out_file.writelines(the_html)
+            out_file.close()
 
     ############
 
@@ -12954,6 +13014,7 @@ class BaseCase(unittest.TestCase):
         if self._sb_test_identifier and len(str(self._sb_test_identifier)) > 6:
             test_id = self._sb_test_identifier
             test_id = test_id.replace(".py::", ".").replace("::", ".")
+            test_id = test_id.replace("/", ".")
         return test_id
 
     def __get_test_id_2(self):
@@ -13078,6 +13139,7 @@ class BaseCase(unittest.TestCase):
                 has_exception
                 or self.save_screenshot_after_test
                 or self.__screenshot_count > 0
+                or self.__level_0_visual_f
                 or self.__will_be_skipped
             ):
                 sb_config._d_t_log_path[test_id] = os.path.join(log_dir, ft_id)

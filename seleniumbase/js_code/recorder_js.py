@@ -154,6 +154,7 @@ var getBestSelector = function(el) {
     non_id_attributes.push('heading');
     non_id_attributes.push('translate');
     non_id_attributes.push('aria-label');
+    non_id_attributes.push('rel');
     non_id_attributes.push('ng-model');
     non_id_attributes.push('ng-href');
     non_id_attributes.push('href');

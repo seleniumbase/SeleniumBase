@@ -95,29 +95,29 @@ class MasterQA(BaseCase):
 
         if archive_past_runs:
             archive_timestamp = int(time.time())
-            if not os.path.exists("%s/../%s/" % (file_path, self.ARCHIVE_DIR)):
-                os.makedirs("%s/../%s/" % (file_path, self.ARCHIVE_DIR))
-            archive_dir = "%s/../%s/log_%s" % (
-                file_path,
-                self.ARCHIVE_DIR,
-                archive_timestamp,
+            archive_dir_root = os.path.join(file_path, "..", self.ARCHIVE_DIR)
+            if not os.path.exists(archive_dir_root):
+                os.makedirs(archive_dir_root)
+            archive_dir = os.path.join(
+                archive_dir_root, "log_%s" % archive_timestamp
             )
             shutil.move(file_path, archive_dir)
             os.makedirs(file_path)
             if get_log_folder:
                 return archive_dir
         else:
+            latest_report_local = os.path.join(".", self.LATEST_REPORT_DIR)
             # Just delete bad pages to make room for the latest run.
             filelist = [
                 f
-                for f in os.listdir("./%s" % self.LATEST_REPORT_DIR)
+                for f in os.listdir(latest_report_local)
                 if (f.startswith("failed_"))
                 or (f == self.RESULTS_PAGE)
                 or (f.startswith("automation_failure"))
                 or (f == self.BAD_PAGE_LOG)
             ]
             for f in filelist:
-                os.remove("%s/%s" % (file_path, f))
+                os.remove(os.path.join(file_path, f))
 
     def __jq_confirm_dialog(self, question):
         count = self.manual_check_count + 1
@@ -364,8 +364,8 @@ class MasterQA(BaseCase):
 
     def __add_bad_page_log_file(self):
         abs_path = os.path.abspath(".")
-        file_path = abs_path + "/%s" % self.LATEST_REPORT_DIR
-        log_file = "%s/%s" % (file_path, self.BAD_PAGE_LOG)
+        file_path = os.path.join(abs_path, self.LATEST_REPORT_DIR)
+        log_file = os.path.join(file_path, self.BAD_PAGE_LOG)
         f = open(log_file, "w")
         h_p1 = """"Num","Result","Screenshot","URL","Browser","Epoch Time","""
         h_p2 = """"Verification Instructions","Additional Info"\n"""
@@ -377,9 +377,9 @@ class MasterQA(BaseCase):
 
     def __add_results_page(self, html):
         abs_path = os.path.abspath(".")
-        file_path = abs_path + "/%s" % self.LATEST_REPORT_DIR
+        file_path = os.path.join(abs_path, self.LATEST_REPORT_DIR)
         results_file_name = self.RESULTS_PAGE
-        results_file = "%s/%s" % (file_path, results_file_name)
+        results_file = os.path.join(file_path, results_file_name)
         f = open(results_file, "w")
         f.write(html)
         f.close()
@@ -394,7 +394,7 @@ class MasterQA(BaseCase):
         if self.manual_check_successes == self.manual_check_count:
             pass
         else:
-            print("WARNING: There were page issues detected!")
+            print("WARNING: Not all tests passed manual inspection!")
             perfection = False
 
         if self.incomplete_runs > 0:
@@ -414,7 +414,7 @@ class MasterQA(BaseCase):
         log_folder = log_string.split("/")[-1]
         abs_path = os.path.abspath(".")
         file_path = abs_path + "/%s" % self.ARCHIVE_DIR
-        log_path = "%s/%s" % (file_path, log_folder)
+        log_path = os.path.join(file_path, log_folder)
         web_log_path = "file://%s" % log_path
 
         tf_color = "#11BB11"
@@ -448,11 +448,12 @@ class MasterQA(BaseCase):
             % summary_table
         )
 
-        log_link_shown = "../%s%s/" % (
-            self.ARCHIVE_DIR,
-            web_log_path.split(self.ARCHIVE_DIR)[1],
+        log_link_shown = os.path.join(
+            "..", "%s%s" % (
+                self.ARCHIVE_DIR, web_log_path.split(self.ARCHIVE_DIR)[1]
+            )
         )
-        csv_link = "%s/%s" % (web_log_path, self.BAD_PAGE_LOG)
+        csv_link = os.path.join(web_log_path, self.BAD_PAGE_LOG)
         csv_link_shown = "%s" % self.BAD_PAGE_LOG
         log_table = """<p><p><p><p><h2><table><tbody>
             <tr><td>LOG FILES LINK:&nbsp;&nbsp;<td><a href="%s">%s</a></tr>

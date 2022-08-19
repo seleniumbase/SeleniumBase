@@ -37,7 +37,7 @@ class PageSource(Plugin):
         test_logpath = self.options.log_path + "/" + test.id()
         if not os.path.exists(test_logpath):
             os.makedirs(test_logpath)
-        html_file_name = "%s/%s" % (test_logpath, self.logfile_name)
+        html_file_name = os.path.join(test_logpath, self.logfile_name)
         html_file = codecs.open(html_file_name, "w+", "utf-8")
         rendered_source = log_helper.get_html_source_with_base_href(
             test.driver, page_source
@@ -54,7 +54,7 @@ class PageSource(Plugin):
         test_logpath = self.options.log_path + "/" + test.id()
         if not os.path.exists(test_logpath):
             os.makedirs(test_logpath)
-        html_file_name = "%s/%s" % (test_logpath, self.logfile_name)
+        html_file_name = os.path.join(test_logpath, self.logfile_name)
         html_file = codecs.open(html_file_name, "w+", "utf-8")
         rendered_source = log_helper.get_html_source_with_base_href(
             test.driver, page_source

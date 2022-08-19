@@ -163,7 +163,7 @@ def do_behave_run(
 def create_tkinter_gui(tests, command_string):
     root = tk.Tk()
     root.title("SeleniumBase Behave Commander | GUI for Behave")
-    root.minsize(820, 645)
+    root.minsize(820, 656)
     tk.Label(root, text="").pack()
 
     options_list = [
@@ -189,31 +189,39 @@ def create_tkinter_gui(tests, command_string):
     question_menu.pack()
 
     qmx = tk.IntVar()
-    chk = tk.Checkbutton(root, text="Quiet Mode  (--quiet)", variable=qmx)
+    chk = tk.Checkbutton(
+        root, text="Quiet Mode  (--quiet)", variable=qmx, pady=0
+    )
     chk.pack()
 
     dmx = tk.IntVar()
-    chk = tk.Checkbutton(root, text="Demo Mode  (-D demo)", variable=dmx)
+    chk = tk.Checkbutton(
+        root, text="Demo Mode  (-D demo)", variable=dmx, pady=0
+    )
     chk.pack()
 
     mmx = tk.IntVar()
-    chk = tk.Checkbutton(root, text="Mobile Mode  (-D mobile)", variable=mmx)
+    chk = tk.Checkbutton(
+        root, text="Mobile Mode  (-D mobile)", variable=mmx, pady=0
+    )
     chk.pack()
 
     dbx = tk.IntVar()
-    chk = tk.Checkbutton(root, text="Dashboard  (-D dashboard)", variable=dbx)
+    chk = tk.Checkbutton(
+        root, text="Dashboard  (-D dashboard)", variable=dbx, pady=0
+    )
     chk.pack()
     chk.select()
 
     hbx = tk.IntVar()
     chk = tk.Checkbutton(
-        root, text="Headless Browser  (-D headless)", variable=hbx
+        root, text="Headless Browser  (-D headless)", variable=hbx, pady=0
     )
     chk.pack()
 
     ssx = tk.IntVar()
     chk = tk.Checkbutton(
-        root, text="Save Screenshots  (-D screenshot)", variable=ssx
+        root, text="Save Screenshots  (-D screenshot)", variable=ssx, pady=0
     )
     chk.pack()
 
@@ -235,13 +243,27 @@ def create_tkinter_gui(tests, command_string):
     for row in tests:
         row += " " * 200
         ara[count] = tk.IntVar()
-        cb = tk.Checkbutton(
-            text_area,
-            text=(row),
-            bg="white",
-            anchor="w",
-            variable=ara[count],
-        )
+        cb = None
+        if not is_windows:
+            cb = tk.Checkbutton(
+                text_area,
+                text=(row),
+                bg="white",
+                anchor="w",
+                pady=0,
+                variable=ara[count],
+            )
+        else:
+            cb = tk.Checkbutton(
+                text_area,
+                text=(row),
+                bg="white",
+                anchor="w",
+                pady=0,
+                borderwidth=0,
+                highlightthickness=0,
+                variable=ara[count],
+            )
         text_area.window_create("end", window=cb)
         text_area.insert("end", "\n")
         count += 1

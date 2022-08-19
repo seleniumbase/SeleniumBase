@@ -345,6 +345,7 @@ def main():
     )
     data.append("        self.assert_element('img[alt=\"Pony Express\"]')")
     data.append('        self.js_click("a#logout_sidebar_link")')
+    data.append('        self.assert_element("div#login_button_container")')
     data.append("")
     file_path = "%s/%s" % (dir_name, "my_first_test.py")
     file = codecs.open(file_path, "w+", "utf-8")
@@ -364,12 +365,21 @@ def main():
     data.append('        self.type("#myTextInput", "This is Automated")')
     data.append('        self.type("textarea.area1", "Testing Time!\\n")')
     data.append('        self.type(\'[name="preText2"]\', "Typing Text!")')
+    data.append(
+        '        self.assert_text("This is Automated", "#myTextInput")'
+    )
+    data.append(
+        '        self.assert_text("Testing Time!\\n", "textarea.area1")'
+    )
+    data.append(
+        '        self.assert_text("Typing Text!", \'[name="preText2"]\')'
+    )
     data.append('        self.assert_text("Automation Practice", "h3")')
     data.append("        try:")
     data.append("            self.hover_and_click(")
     data.append('                "#myDropdown", "#dropOption2", timeout=1)')
     data.append("        except Exception:")
-    data.append("            # If someone moves the mouse while the test runs")
+    data.append("            # Someone moved the mouse while the test ran")
     data.append('            self.js_click("#dropOption2")')
     data.append('        self.assert_text("Link Two Selected", "h3")')
     data.append('        self.assert_text("This Text is Green", "#pText")')
@@ -445,8 +455,8 @@ def main():
     data.append("    @parameterized.expand(")
     data.append("        [")
     data.append('            ["Download Python", "Download Python"],')
-    data.append('            ["wikipedia", "wikipedia.org"],')
-    data.append('            ["seleniumbase", "SeleniumBase"],')
+    data.append('            ["wikipedia", "www.wikipedia.org"],')
+    data.append('            ["SeleniumBase.io Docs", "SeleniumBase"],')
     data.append("        ]")
     data.append("    )")
     data.append(
@@ -659,6 +669,8 @@ def main():
     data.append(
         "        self.assert_element('div:contains(\"Sauce Labs Backpack\")')"
     )
+    data.append('        self.js_click("a#logout_sidebar_link")')
+    data.append('        self.assert_element("div#login_button_container")')
     data.append("")
     file_path = "%s/%s" % (dir_name_3, "swag_labs_test.py")
     file = codecs.open(file_path, "w+", "utf-8")
@@ -684,6 +696,8 @@ def main():
     data.append(
         "        sb.assert_element('div:contains(\"Sauce Labs Backpack\")')"
     )
+    data.append('        sb.js_click("a#logout_sidebar_link")')
+    data.append('        sb.assert_element("div#login_button_container")')
     data.append("")
     file_path = "%s/%s" % (dir_name_3, "sb_swag_test.py")
     file = codecs.open(file_path, "w+", "utf-8")

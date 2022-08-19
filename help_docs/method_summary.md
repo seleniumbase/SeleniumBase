@@ -183,6 +183,10 @@ self.select_option_by_value(
     dropdown_by="css selector",
     timeout=None)
 
+self.get_select_options(
+    dropdown_selector, attribute="text",
+    by="css selector", timeout=None)
+
 self.load_html_string(html_string, new_page=True)
 
 self.set_content(html_string, new_page=False)

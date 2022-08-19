@@ -15,3 +15,4 @@ class MyTests:
         sb.assert_element("div.inventory_list")
         sb.assert_element('div:contains("Sauce Labs Backpack")')
         sb.js_click("a#logout_sidebar_link")
+        sb.assert_element("div#login_button_container")
