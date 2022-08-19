@@ -2159,6 +2159,19 @@ def get_local_driver(
                         auto_upgrade_chromedriver = True
                     elif "Chrome version must be between" in e.msg:
                         auto_upgrade_chromedriver = True
+                    elif "Missing or invalid capabilities" in e.msg:
+                        if selenium4_or_newer:
+                            chrome_options.add_experimental_option("w3c", True)
+                            service = ChromeService(log_path=os.devnull)
+                            with warnings.catch_warnings():
+                                warnings.simplefilter(
+                                    "ignore", category=DeprecationWarning
+                                )
+                                return webdriver.Chrome(
+                                    service=service, options=chrome_options
+                                )
+                        else:
+                            raise
                     if not auto_upgrade_chromedriver:
                         raise  # Not an obvious fix.
                     else:
@@ -2257,6 +2270,19 @@ def get_local_driver(
                         auto_upgrade_chromedriver = True
                     elif "Chrome version must be between" in e.msg:
                         auto_upgrade_chromedriver = True
+                    elif "Missing or invalid capabilities" in e.msg:
+                        if selenium4_or_newer:
+                            chrome_options.add_experimental_option("w3c", True)
+                            service = ChromeService(log_path=os.devnull)
+                            with warnings.catch_warnings():
+                                warnings.simplefilter(
+                                    "ignore", category=DeprecationWarning
+                                )
+                                return webdriver.Chrome(
+                                    service=service, options=chrome_options
+                                )
+                        else:
+                            raise
                     mcv = None  # Major Chrome Version
                     if "Current browser version is " in e.msg:
                         line = e.msg.split("Current browser version is ")[1]
