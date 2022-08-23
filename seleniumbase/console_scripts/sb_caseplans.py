@@ -332,17 +332,37 @@ def view_summary_of_existing_case_plans(root, tests):
     file.close()
 
     if num_ready_cases < 10:
-        msg_ready_cases = "  %s" % msg_ready_cases
+        msg_ready_cases = " %s" % msg_ready_cases
     if num_ready_cases < 100:
-        msg_ready_cases = "  %s" % msg_ready_cases
+        msg_ready_cases = " %s" % msg_ready_cases
     if num_boilerplate < 10:
-        msg_boilerplate = "  %s" % msg_boilerplate
+        msg_boilerplate = " %s" % msg_boilerplate
     if num_boilerplate < 100:
-        msg_boilerplate = "  %s" % msg_boilerplate
+        msg_boilerplate = " %s" % msg_boilerplate
     if num_in_progress < 10:
-        msg_in_progress = "  %s" % msg_in_progress
+        msg_in_progress = " %s" % msg_in_progress
     if num_in_progress < 100:
-        msg_in_progress = "  %s" % msg_in_progress
+        msg_in_progress = " %s" % msg_in_progress
+    gen_message = (
+        '🗂️  Summary generated at "case_summary.md":'
+        '\n🔵 %s'
+        '\n⭕ %s'
+        '\n🚧 %s'
+        % (msg_ready_cases, msg_boilerplate, msg_in_progress)
+    )
+    print(gen_message)
+    if num_ready_cases < 10:
+        msg_ready_cases = " %s" % msg_ready_cases
+    if num_ready_cases < 100:
+        msg_ready_cases = " %s" % msg_ready_cases
+    if num_boilerplate < 10:
+        msg_boilerplate = " %s" % msg_boilerplate
+    if num_boilerplate < 100:
+        msg_boilerplate = " %s" % msg_boilerplate
+    if num_in_progress < 10:
+        msg_in_progress = " %s" % msg_in_progress
+    if num_in_progress < 100:
+        msg_in_progress = " %s" % msg_in_progress
     messagebox.showinfo(
         "Case Plans Summary generated!",
         '\nSummary generated at "case_summary.md"'

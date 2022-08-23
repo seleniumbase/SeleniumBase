@@ -274,7 +274,7 @@ def wait_for_css_query_selector(
     )
 
 
-def highlight_with_js(driver, selector, loops, o_bs):
+def highlight_with_js(driver, selector, loops=4, o_bs=""):
     try:
         # This closes any pop-up alerts
         driver.execute_script("")
@@ -374,7 +374,7 @@ def highlight_with_js(driver, selector, loops, o_bs):
         return
 
 
-def highlight_with_jquery(driver, selector, loops, o_bs):
+def highlight_with_jquery(driver, selector, loops=4, o_bs=""):
     try:
         # This closes any pop-up alerts
         driver.execute_script("")

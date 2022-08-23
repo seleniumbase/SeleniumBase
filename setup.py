@@ -131,7 +131,7 @@ setup(
         'packaging>=21.3;python_version>="3.6"',
         'setuptools>=44.1.1;python_version<"3.6"',
         'setuptools>=59.6.0;python_version>="3.6" and python_version<"3.7"',
-        'setuptools>=65.1.0;python_version>="3.7"',
+        'setuptools>=65.2.0;python_version>="3.7"',
         'tomli>=1.2.3;python_version>="3.6" and python_version<"3.7"',
         'tomli>=2.0.1;python_version>="3.7"',
         "wheel>=0.37.1",
@@ -164,8 +164,8 @@ setup(
         'chardet==4.0.0;python_version>="3.6" and python_version<"3.7"',
         'chardet==5.0.0;python_version>="3.7"',  # Stay in sync with "requests"
         'charset-normalizer==2.0.12;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
-        'charset-normalizer==2.1.0;python_version>="3.7"',  # Sync "requests"
-        'urllib3==1.26.11',  # Stay in sync with "requests"
+        'charset-normalizer==2.1.1;python_version>="3.7"',  # Sync "requests"
+        'urllib3==1.26.12',  # Stay in sync with "requests"
         'requests==2.27.1;python_version<"3.7"',
         'requests==2.28.1;python_version>="3.7"',
         "nose==1.3.7",

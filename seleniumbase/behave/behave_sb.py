@@ -128,6 +128,7 @@ def get_configured_sb(context):
     sb.browser = "chrome"
     sb.is_behave = True
     sb.headless = False
+    sb.headless_active = False
     sb.headed = False
     sb.xvfb = False
     sb.start_page = None
@@ -758,6 +759,7 @@ def get_configured_sb(context):
     # Set sb_config
     sb_config.browser = sb.browser
     sb_config.headless = sb.headless
+    sb_config.headless_active = False
     sb_config.headed = sb.headed
     sb_config.window_size = sb.window_size
     sb_config.maximize_option = sb.maximize_option
