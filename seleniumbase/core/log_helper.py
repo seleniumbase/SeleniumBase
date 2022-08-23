@@ -316,7 +316,9 @@ def get_test_id(test):
 
 
 def get_test_name(test):
-    if test.is_pytest:
+    if "PYTEST_CURRENT_TEST" in os.environ:
+        test_name = os.environ["PYTEST_CURRENT_TEST"].split(" ")[0]
+    elif test.is_pytest:
         test_name = "%s.py::%s::%s" % (
             test.__class__.__module__.split(".")[-1],
             test.__class__.__name__,
