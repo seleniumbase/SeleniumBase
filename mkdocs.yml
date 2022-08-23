@@ -15,10 +15,13 @@ copyright: Copyright &copy; 2014 - 2022 Michael Mintz
 markdown_extensions:
   - admonition
   - md_in_html
+  - tables
   - toc:
       permalink: true
   - pymdownx.highlight:
       linenums: false
+  - pymdownx.tabbed:
+      alternate_style: true
   - pymdownx.highlight
   - pymdownx.superfences
   - pymdownx.inlinehilite

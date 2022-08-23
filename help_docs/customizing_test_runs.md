@@ -267,7 +267,7 @@ Here's more info on that, as taken from [pytest-xdist](https://pypi.org/project/
 🎛️ You might also want to combine multiple options at once. For example:
 
 ```bash
-pytest -n=4 --reuse-session --headless -v --dashboard --html=report.html
+pytest --headless --rs -n=4 -v --dashboard --html=report.html
 ```
 
 The above not only runs tests in parallel processes, but it also tells tests in the same process to share the same browser session, runs the tests in headless mode, displays the full name of each test on a separate line, creates a realtime dashboard of the test results, and creates a full report after all tests complete.
