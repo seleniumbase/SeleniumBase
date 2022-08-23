@@ -194,7 +194,10 @@ class BaseCase(unittest.TestCase):
         try:
             self.driver.get(url)
         except Exception as e:
-            if "ERR_CONNECTION_TIMED_OUT" in e.msg:
+            if (
+                "ERR_CONNECTION_TIMED_OUT" in e.msg
+                or "ERR_CONNECTION_CLOSED" in e.msg
+            ):
                 time.sleep(0.5)
                 self.driver.get(url)
             elif (
