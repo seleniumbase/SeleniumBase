@@ -72,6 +72,7 @@ if pure_python:
     sb.visual_baseline = False
     sb.window_size = None
     sb.maximize_option = False
+    sb._disable_beforeunload = False
     sb.save_screenshot_after_test = False
     sb.timeout_multiplier = None
     sb.pytest_html_report = None

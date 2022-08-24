@@ -375,6 +375,8 @@ self.ad_block()
 
 self.show_file_choosers()
 
+self.disable_beforeunload()
+
 self.get_domain_url(url)
 
 self.get_beautiful_soup(source=None)

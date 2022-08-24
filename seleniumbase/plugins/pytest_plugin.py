@@ -92,6 +92,7 @@ def pytest_addoption(parser):
     --devtools  (Open Chrome's DevTools when the browser opens.)
     --reuse-session | --rs  (Reuse browser session between tests.)
     --crumbs  (Delete all cookies between tests reusing a session.)
+    --disable-beforeunload  (Disable the "beforeunload" event on Chrome.)
     --window-size=WIDTH,HEIGHT  (Set the browser's starting window size.)
     --maximize  (Start tests with the browser window maximized.)
     --screenshot  (Save a screenshot at the end of each test.)
@@ -953,6 +954,16 @@ def pytest_addoption(parser):
                 is only needed when using "--reuse-session".""",
     )
     parser.addoption(
+        "--disable-beforeunload",
+        "--disable_beforeunload",
+        action="store_true",
+        dest="_disable_beforeunload",
+        default=False,
+        help="""The option to disable the "beforeunload" event
+                on Chromium browsers (Chrome or Edge).
+                This is already the default Firefox option.""",
+    )
+    parser.addoption(
         "--window-size",
         "--window_size",
         action="store",
@@ -1279,6 +1290,7 @@ def pytest_configure(config):
     sb_config.devtools = config.getoption("devtools")
     sb_config.reuse_session = config.getoption("reuse_session")
     sb_config.crumbs = config.getoption("crumbs")
+    sb_config._disable_beforeunload = config.getoption("_disable_beforeunload")
     sb_config.shared_driver = None  # The default driver for session reuse
     sb_config.window_size = config.getoption("window_size")
     sb_config.maximize_option = config.getoption("maximize_option")

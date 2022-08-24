@@ -445,6 +445,7 @@ class BaseCase(unittest.TestCase):
             try:
                 if self.driver.current_url != pre_action_url:
                     self.__ad_block_as_needed()
+                    self.__disable_beforeunload_as_needed()
             except Exception:
                 try:
                     self.wait_for_ready_state_complete()
@@ -544,6 +545,7 @@ class BaseCase(unittest.TestCase):
             self.wait_for_angularjs(timeout=settings.MINI_TIMEOUT)
             if self.driver.current_url != pre_action_url:
                 self.__ad_block_as_needed()
+                self.__disable_beforeunload_as_needed()
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self.__demo_mode_pause_if_active()
@@ -1915,6 +1917,7 @@ class BaseCase(unittest.TestCase):
             self.wait_for_angularjs(timeout=settings.MINI_TIMEOUT)
             if self.driver.current_url != pre_action_url:
                 self.__ad_block_as_needed()
+                self.__disable_beforeunload_as_needed()
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self.__demo_mode_pause_if_active()
@@ -2505,6 +2508,9 @@ class BaseCase(unittest.TestCase):
         else:
             # A smaller subset of self.wait_for_ready_state_complete()
             self.wait_for_angularjs(timeout=settings.MINI_TIMEOUT)
+            if self.driver.current_url != pre_action_url:
+                self.__ad_block_as_needed()
+                self.__disable_beforeunload_as_needed()
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self.__demo_mode_pause_if_active()
@@ -3646,6 +3652,7 @@ class BaseCase(unittest.TestCase):
         if self.js_checking_on:
             self.assert_no_js_errors()
         self.__ad_block_as_needed()
+        self.__disable_beforeunload_as_needed()
         return True
 
     def wait_for_angularjs(self, timeout=None, **kwargs):
@@ -5433,6 +5440,28 @@ class BaseCase(unittest.TestCase):
                         origin = self.get_origin()
                         action = ["sh_fc", "", origin, time_stamp]
                         self.__extra_actions.append(action)
+
+    def disable_beforeunload(self):
+        """This prevents: "Leave Site? Changes you made may not be saved."
+                          on Chromium browsers (Chrome or Edge).
+        SB already sets "dom.disable_beforeunload" for Firefox options."""
+        self.__check_scope()
+        self.__check_browser()
+        if (
+            self.is_chromium()
+            and self.driver.current_url.startswith("http")
+        ):
+            try:
+                self.driver.execute_script("window.onbeforeunload=null;")
+            except Exception:
+                pass
+
+    def __disable_beforeunload_as_needed(self):
+        if (
+            hasattr(self, "_disable_beforeunload")
+            and self._disable_beforeunload
+        ):
+            self.disable_beforeunload()
 
     def get_domain_url(self, url):
         self.__check_scope()
@@ -12454,6 +12483,7 @@ class BaseCase(unittest.TestCase):
             self._multithreaded = sb_config._multithreaded
             self._reuse_session = sb_config.reuse_session
             self._crumbs = sb_config.crumbs
+            self._disable_beforeunload = sb_config._disable_beforeunload
             self.dashboard = sb_config.dashboard
             self._dash_initialized = sb_config._dashboard_initialized
             if self.dashboard and self._multithreaded:
