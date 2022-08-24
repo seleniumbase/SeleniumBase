@@ -7103,6 +7103,7 @@ class BaseCase(unittest.TestCase):
         return element.get_attribute(attribute)
 
     def __wait_for_shadow_text_visible(self, text, selector, timeout):
+        text = str(text)
         start_ms = time.time() * 1000.0
         stop_ms = start_ms + (settings.SMALL_TIMEOUT * 1000.0)
         for x in range(int(settings.SMALL_TIMEOUT * 10)):
@@ -7136,6 +7137,7 @@ class BaseCase(unittest.TestCase):
         return True
 
     def __wait_for_exact_shadow_text_visible(self, text, selector, timeout):
+        text = str(text)
         start_ms = time.time() * 1000.0
         stop_ms = start_ms + (settings.SMALL_TIMEOUT * 1000.0)
         for x in range(int(settings.SMALL_TIMEOUT * 10)):
@@ -7256,6 +7258,7 @@ class BaseCase(unittest.TestCase):
             return False
 
     def __is_shadow_text_visible(self, text, selector):
+        text = str(text)
         try:
             element = self.__get_shadow_element(selector, timeout=0.1)
             if self.browser == "safari":
