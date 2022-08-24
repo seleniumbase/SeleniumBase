@@ -123,6 +123,7 @@ def is_text_visible(driver, text, selector, by="css selector", browser=None):
     @Returns
     Boolean (is text visible)
     """
+    text = str(text)
     try:
         element = driver.find_element(by=by, value=selector)
         element_text = element.text
@@ -467,6 +468,7 @@ def wait_for_text_visible(
     element = None
     is_present = False
     full_text = None
+    text = str(text)
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
@@ -571,6 +573,7 @@ def wait_for_exact_text_visible(
     element = None
     is_present = False
     actual_text = None
+    text = str(text)
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
@@ -959,6 +962,7 @@ def wait_for_text_not_visible(
     @Returns
     A web element object that contains the text searched for
     """
+    text = str(text)
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
