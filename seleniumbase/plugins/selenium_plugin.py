@@ -68,6 +68,7 @@ class SeleniumBrowser(Plugin):
     --incognito  (Enable Chrome's Incognito mode.)
     --guest  (Enable Chrome's Guest mode.)
     --devtools  (Open Chrome's DevTools when the browser opens.)
+    --disable-beforeunload  (Disable the "beforeunload" event on Chrome.)
     --window-size=WIDTH,HEIGHT  (Set the browser's starting window size.)
     --maximize  (Start tests with the browser window maximized.)
     --screenshot  (Save a screenshot at the end of each test.)
@@ -645,6 +646,16 @@ class SeleniumBrowser(Plugin):
             help="""Using this opens Chrome's DevTools.""",
         )
         parser.add_option(
+            "--disable-beforeunload",
+            "--disable_beforeunload",
+            action="store_true",
+            dest="_disable_beforeunload",
+            default=False,
+            help="""The option to disable the "beforeunload" event
+                    on Chromium browsers (Chrome or Edge).
+                    This is already the default Firefox option.""",
+        )
+        parser.add_option(
             "--window-size",
             "--window_size",
             action="store",
@@ -814,6 +825,7 @@ class SeleniumBrowser(Plugin):
         test.test.incognito = self.options.incognito
         test.test.guest_mode = self.options.guest_mode
         test.test.devtools = self.options.devtools
+        test.test._disable_beforeunload = self.options._disable_beforeunload
         test.test.window_size = self.options.window_size
         test.test.maximize_option = self.options.maximize_option
         test.test.save_screenshot_after_test = self.options.save_screenshot

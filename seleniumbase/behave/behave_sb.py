@@ -79,7 +79,8 @@ behave -D agent="User Agent String" -D demo
 -D devtools  (Open Chrome's DevTools when the browser opens.)
 -D reuse-session | -D rs  (Reuse browser session between tests.)
 -D crumbs  (Delete all cookies between tests reusing a session.)
--D window-size  (Set the browser window size: "Width,Height".)
+-D disable-beforeunload  (Disable the "beforeunload" event on Chrome.)
+-D window-size=WIDTH,HEIGHT  (Set the browser's starting window size.)
 -D maximize  (Start tests with the browser window maximized.)
 -D screenshot  (Save a screenshot at the end of each test.)
 -D visual-baseline  (Set the visual baseline for Visual/Layout tests.)
@@ -165,6 +166,7 @@ def get_configured_sb(context):
     sb._multithreaded = False
     sb._reuse_session = False
     sb._crumbs = False
+    sb._disable_beforeunload = False
     sb.visual_baseline = False
     sb.window_size = None
     sb.maximize_option = False
@@ -474,6 +476,10 @@ def get_configured_sb(context):
         # Handle: -D crumbs
         if low_key == "crumbs":
             sb._crumbs = True
+            continue
+        # Handle: -D disable-beforeunload / disable_beforeunload
+        if low_key in ["disable-beforeunload", "disable_beforeunload"]:
+            sb._disable_beforeunload = True
             continue
         # Handle: -D visual-baseline / visual_baseline
         if low_key in ["visual-baseline", "visual_baseline"]:
