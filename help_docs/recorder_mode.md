@@ -1,7 +1,7 @@
+## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Recorder Mode 🔴
+
 <!-- YouTube View --><a href="https://www.youtube.com/watch?v=eKN5nq7YbdM"><img src="http://img.youtube.com/vi/eKN5nq7YbdM/0.jpg" title="SeleniumBase on YouTube" width="285" /></a>
 <!-- GitHub Only --><p>(<b><a href="https://www.youtube.com/watch?v=eKN5nq7YbdM">Watch the tutorial on YouTube</a></b>)</p>
-
-## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Recorder Mode
 
 🔴 <b>SeleniumBase Recorder Mode</b> lets you record & export browser actions into test automation scripts.<br>
 
