@@ -56,6 +56,7 @@ def pytest_addoption(parser):
     --firefox-pref=SET  (Set a Firefox preference:value set, comma-separated.)
     --extension-zip=ZIP  (Load a Chrome Extension .zip|.crx, comma-separated.)
     --extension-dir=DIR  (Load a Chrome Extension directory, comma-separated.)
+    --pls=PLS  (Set pageLoadStrategy on Chrome: "normal", "eager", or "none".)
     --headless  (Run tests in headless mode. The default arg on Linux OS.)
     --headed  (Run tests in headed/GUI mode on Linux OS.)
     --xvfb  (Run tests using the Xvfb virtual display server on Linux OS.)
@@ -564,6 +565,22 @@ def pytest_addoption(parser):
                 Format: A directory containing the Chrome extension.
                 (Can also be a comma-separated list of directories.)
                 Default: None.""",
+    )
+    parser.addoption(
+        "--pls",
+        "--page_load_strategy",
+        "--page-load-strategy",
+        action="store",
+        dest="page_load_strategy",
+        type=str.lower,
+        choices=(
+            constants.PageLoadStrategy.NORMAL,
+            constants.PageLoadStrategy.EAGER,
+            constants.PageLoadStrategy.NONE,
+        ),
+        default=None,
+        help="""This option sets Chrome's pageLoadStrategy.
+                List of choices: "normal", "eager", "none".""",
     )
     parser.addoption(
         "--headless",
@@ -1221,6 +1238,7 @@ def pytest_configure(config):
     sb_config.firefox_pref = config.getoption("firefox_pref")
     sb_config.extension_zip = config.getoption("extension_zip")
     sb_config.extension_dir = config.getoption("extension_dir")
+    sb_config.page_load_strategy = config.getoption("page_load_strategy")
     sb_config.with_testing_base = config.getoption("with_testing_base")
     sb_config.with_db_reporting = config.getoption("with_db_reporting")
     sb_config.with_s3_logging = config.getoption("with_s3_logging")

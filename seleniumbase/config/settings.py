@@ -16,6 +16,18 @@ SMALL_TIMEOUT = 7
 LARGE_TIMEOUT = 10
 EXTREME_TIMEOUT = 30
 
+# Default page load timeout.
+# If a page takes longer than this to load, you'll get the following error:
+#     selenium.common.exceptions.TimeoutException:
+#     Message: timeout: Timed out receiving message from renderer: PLT
+# In global Selenium settings, this value is set to 300 seconds by default.
+PAGE_LOAD_TIMEOUT = 120
+
+# Default page load strategy.
+# ["normal", "eager", "none"]
+# Selenium default = "normal"
+PAGE_LOAD_STRATEGY = "normal"
+
 # If True, existing logs from past test runs will be saved and take up space.
 # If False, only the logs from the most recent test run will be saved locally.
 # You can also archive existing logs on the command line with: "--archive_logs"

@@ -283,6 +283,7 @@ def _set_chrome_options(
     user_data_dir,
     extension_zip,
     extension_dir,
+    page_load_strategy,
     external_pdf,
     servername,
     mobile_emulator,
@@ -439,6 +440,22 @@ def _set_chrome_options(
     chrome_options.add_argument("--disable-hang-monitor")
     chrome_options.add_argument("--disable-prompt-on-repost")
     chrome_options.add_argument("--disable-3d-apis")
+    if (
+        selenium4_or_newer
+        and page_load_strategy
+        and page_load_strategy.lower() in ["eager", "none"]
+    ):
+        # Only change it if not "normal", which is the default.
+        chrome_options.page_load_strategy = page_load_strategy.lower()
+    elif (
+        selenium4_or_newer
+        and not page_load_strategy
+        and hasattr(settings, "PAGE_LOAD_STRATEGY")
+        and settings.PAGE_LOAD_STRATEGY
+        and settings.PAGE_LOAD_STRATEGY.lower() in ["eager", "none"]
+    ):
+        # Only change it if not "normal", which is the default.
+        chrome_options.page_load_strategy = settings.PAGE_LOAD_STRATEGY.lower()
     if servername != "localhost":
         use_auto_ext = True  # Use Automation Extension with the Selenium Grid
     if not use_auto_ext:  # Disable Automation Extension / detection. (Default)
@@ -768,6 +785,7 @@ def get_driver(
     user_data_dir=None,
     extension_zip=None,
     extension_dir=None,
+    page_load_strategy=None,
     external_pdf=None,
     test_id=None,
     mobile_emulator=False,
@@ -873,6 +891,7 @@ def get_driver(
             user_data_dir,
             extension_zip,
             extension_dir,
+            page_load_strategy,
             external_pdf,
             test_id,
             mobile_emulator,
@@ -914,6 +933,7 @@ def get_driver(
             user_data_dir,
             extension_zip,
             extension_dir,
+            page_load_strategy,
             external_pdf,
             mobile_emulator,
             device_width,
@@ -959,6 +979,7 @@ def get_remote_driver(
     user_data_dir,
     extension_zip,
     extension_dir,
+    page_load_strategy,
     external_pdf,
     test_id,
     mobile_emulator,
@@ -1052,6 +1073,7 @@ def get_remote_driver(
             user_data_dir,
             extension_zip,
             extension_dir,
+            page_load_strategy,
             external_pdf,
             servername,
             mobile_emulator,
@@ -1275,6 +1297,7 @@ def get_remote_driver(
             user_data_dir,
             extension_zip,
             extension_dir,
+            page_load_strategy,
             external_pdf,
             servername,
             mobile_emulator,
@@ -1467,6 +1490,7 @@ def get_local_driver(
     user_data_dir,
     extension_zip,
     extension_dir,
+    page_load_strategy,
     external_pdf,
     mobile_emulator,
     device_width,
@@ -1808,6 +1832,24 @@ def get_local_driver(
         edge_options.add_argument("--disable-hang-monitor")
         edge_options.add_argument("--disable-prompt-on-repost")
         edge_options.add_argument("--disable-3d-apis")
+        if (
+            selenium4_or_newer
+            and page_load_strategy
+            and page_load_strategy.lower() in ["eager", "none"]
+        ):
+            # Only change it if not "normal", which is the default.
+            edge_options.page_load_strategy = page_load_strategy.lower()
+        elif (
+            selenium4_or_newer
+            and not page_load_strategy
+            and hasattr(settings, "PAGE_LOAD_STRATEGY")
+            and settings.PAGE_LOAD_STRATEGY
+            and settings.PAGE_LOAD_STRATEGY.lower() in ["eager", "none"]
+        ):
+            # Only change it if not "normal", which is the default.
+            edge_options.page_load_strategy = (
+                settings.PAGE_LOAD_STRATEGY.lower()
+            )
         if (settings.DISABLE_CSP_ON_CHROME or disable_csp) and not headless:
             # Headless Edge doesn't support extensions, which are required
             # for disabling the Content Security Policy on Edge
@@ -2029,6 +2071,7 @@ def get_local_driver(
                 user_data_dir,
                 extension_zip,
                 extension_dir,
+                page_load_strategy,
                 external_pdf,
                 servername,
                 mobile_emulator,
@@ -2086,6 +2129,7 @@ def get_local_driver(
                 user_data_dir,
                 extension_zip,
                 extension_dir,
+                page_load_strategy,
                 external_pdf,
                 servername,
                 mobile_emulator,
@@ -2220,6 +2264,7 @@ def get_local_driver(
                         user_data_dir,
                         extension_zip,
                         extension_dir,
+                        page_load_strategy,
                         external_pdf,
                         servername,
                         mobile_emulator,

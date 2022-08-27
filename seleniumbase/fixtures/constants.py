@@ -37,6 +37,13 @@ class ValidEnvs:
     ]
 
 
+class PageLoadStrategy:
+    # Usage Example => "--pls=none"
+    NORMAL = "normal"
+    EAGER = "eager"
+    NONE = "none"
+
+
 class Files:
     DOWNLOADS_FOLDER = "downloaded_files"
     ARCHIVED_DOWNLOADS_FOLDER = "archived_files"

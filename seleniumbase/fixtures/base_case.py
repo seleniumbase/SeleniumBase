@@ -3171,6 +3171,7 @@ class BaseCase(unittest.TestCase):
         user_data_dir=None,
         extension_zip=None,
         extension_dir=None,
+        page_load_strategy=None,
         external_pdf=None,
         is_mobile=None,
         d_width=None,
@@ -3215,6 +3216,7 @@ class BaseCase(unittest.TestCase):
         user_data_dir - Chrome's User Data Directory to use (Chrome-only)
         extension_zip - A Chrome Extension ZIP file to use (Chrome-only)
         extension_dir - A Chrome Extension folder to use (Chrome-only)
+        page_load_strategy - the option to change pageLoadStrategy (Chrome)
         external_pdf - "plugins.always_open_pdf_externally": True. (Chrome)
         is_mobile - the option to use the mobile emulator (Chrome-only)
         d_width - the device width of the mobile emulator (Chrome-only)
@@ -3319,6 +3321,8 @@ class BaseCase(unittest.TestCase):
             extension_zip = self.extension_zip
         if extension_dir is None:
             extension_dir = self.extension_dir
+        if page_load_strategy is None:
+            page_load_strategy = self.page_load_strategy
         if external_pdf is None:
             external_pdf = self.external_pdf
         test_id = self.__get_test_id()
@@ -3378,6 +3382,7 @@ class BaseCase(unittest.TestCase):
             user_data_dir=user_data_dir,
             extension_zip=extension_zip,
             extension_dir=extension_dir,
+            page_load_strategy=page_load_strategy,
             external_pdf=external_pdf,
             test_id=test_id,
             mobile_emulator=is_mobile,
@@ -12528,6 +12533,7 @@ class BaseCase(unittest.TestCase):
             self.user_data_dir = sb_config.user_data_dir
             self.extension_zip = sb_config.extension_zip
             self.extension_dir = sb_config.extension_dir
+            self.page_load_strategy = sb_config.page_load_strategy
             self.external_pdf = sb_config.external_pdf
             self._final_debug = sb_config.final_debug
             self.window_size = sb_config.window_size
@@ -12809,6 +12815,7 @@ class BaseCase(unittest.TestCase):
                 user_data_dir=self.user_data_dir,
                 extension_zip=self.extension_zip,
                 extension_dir=self.extension_dir,
+                page_load_strategy=self.page_load_strategy,
                 external_pdf=self.external_pdf,
                 is_mobile=self.mobile_emulator,
                 d_width=self.__device_width,
