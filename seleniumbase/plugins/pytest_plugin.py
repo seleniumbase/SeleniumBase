@@ -188,9 +188,12 @@ def pytest_addoption(parser):
         type=str.lower,
         choices=(
             constants.Environment.QA,
+            constants.Environment.RC,
             constants.Environment.STAGING,
             constants.Environment.DEVELOP,
             constants.Environment.PRODUCTION,
+            constants.Environment.OFFLINE,
+            constants.Environment.ONLINE,
             constants.Environment.MASTER,
             constants.Environment.REMOTE,
             constants.Environment.LOCAL,
