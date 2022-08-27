@@ -200,6 +200,29 @@ class BaseCase(unittest.TestCase):
             ):
                 time.sleep(0.5)
                 self.driver.get(url)
+            elif "Timed out receiving message from renderer" in e.msg:
+                page_load_timeout = None
+                if selenium4_or_newer:
+                    page_load_timeout = self.driver.timeouts.page_load
+                else:
+                    if hasattr(settings, "PAGE_LOAD_TIMEOUT"):
+                        page_load_timeout = settings.PAGE_LOAD_TIMEOUT
+                    else:
+                        page_load_timeout = 120
+                logging.info(
+                    "The page load timed out after %s seconds! Will retry..."
+                    % page_load_timeout
+                )
+                try:
+                    self.driver.get(url)
+                except Exception as e:
+                    if "Timed out receiving message from renderer" in e.msg:
+                        raise Exception(
+                            "Retry of page load timed out after %s seconds!"
+                            % page_load_timeout
+                        )
+                    else:
+                        raise
             elif (
                 "cannot determine loading status" in e.msg
                 or "unexpected command response" in e.msg
@@ -5475,6 +5498,12 @@ class BaseCase(unittest.TestCase):
         from bs4 import BeautifulSoup
 
         if not source:
+            try:
+                self.wait_for_element_visible(
+                    "body", timeout=settings.MINI_TIMEOUT
+                )
+            except Exception:
+                pass
             source = self.get_page_source()
         soup = BeautifulSoup(source, "html.parser")
         return soup
@@ -6277,13 +6306,13 @@ class BaseCase(unittest.TestCase):
                 self.assertEqual(expected, actual, error % (expected, actual))
         except Exception:
             self.wait_for_ready_state_complete()
-            time.sleep(settings.MINI_TIMEOUT)
+            time.sleep(2)
             actual = self.get_page_title().strip()
             try:
                 self.assertEqual(expected, actual, error % (expected, actual))
             except Exception:
                 self.wait_for_ready_state_complete()
-                time.sleep(settings.MINI_TIMEOUT)
+                time.sleep(2)
                 actual = self.get_page_title().strip()
                 self.assertEqual(expected, actual, error % (expected, actual))
         if self.demo_mode and not self.recorder_mode:
@@ -11134,6 +11163,12 @@ class BaseCase(unittest.TestCase):
             self.check_window(name="wikipedia_page", level=3)
         """
         self.wait_for_ready_state_complete()
+        try:
+            self.wait_for_element_visible(
+                "body", timeout=settings.MINI_TIMEOUT
+            )
+        except Exception:
+            pass
         if level == "0":
             level = 0
         if level == "1":
@@ -12806,6 +12841,12 @@ class BaseCase(unittest.TestCase):
 
         # Configure the test time limit (if used).
         self.set_time_limit(self.time_limit)
+
+        # Configure the page load timeout
+        if hasattr(settings, "PAGE_LOAD_TIMEOUT"):
+            self.driver.set_page_load_timeout(settings.PAGE_LOAD_TIMEOUT)
+        else:
+            self.driver.set_page_load_timeout(120)  # Selenium uses 300
 
         # Set the start time for the test (in ms).
         # Although the pytest clock starts before setUp() begins,

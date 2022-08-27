@@ -431,6 +431,7 @@ def _set_chrome_options(
     chrome_options.add_argument(
         "--disable-autofill-keyboard-accessory-view[8]"
     )
+    chrome_options.add_argument("--disable-browser-side-navigation")
     chrome_options.add_argument("--disable-translate")
     chrome_options.add_argument("--homepage=about:blank")
     chrome_options.add_argument("--dns-prefetch-disable")
@@ -1797,6 +1798,7 @@ def get_local_driver(
         edge_options.add_argument(
             "--disable-autofill-keyboard-accessory-view[8]"
         )
+        edge_options.add_argument("--disable-browser-side-navigation")
         edge_options.add_argument("--disable-translate")
         if not enable_ws:
             edge_options.add_argument("--disable-web-security")
