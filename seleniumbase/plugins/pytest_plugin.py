@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-""" This is the pytest configuration file for setting test options. """
+"""
+This is the pytest configuration file for setting test options.
+"""
 
 import colorama
 import os

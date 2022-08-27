@@ -1228,26 +1228,22 @@ class BaseCase(unittest.TestCase):
             if text_id:
                 link_css = '[id="%s"]' % link_text
                 found_css = True
-
             if not found_css:
                 href = self.__get_href_from_link_text(link_text, False)
                 if href:
                     if href.startswith("/") or page_utils.is_valid_url(href):
                         link_css = '[href="%s"]' % href
                         found_css = True
-
             if not found_css:
                 ngclick = self.get_link_attribute(link_text, "ng-click", False)
                 if ngclick:
                     link_css = '[ng-click="%s"]' % ngclick
                     found_css = True
-
             if not found_css:
                 onclick = self.get_link_attribute(link_text, "onclick", False)
                 if onclick:
                     link_css = '[onclick="%s"]' % onclick
                     found_css = True
-
             success = False
             if found_css:
                 if self.is_element_visible(link_css):
@@ -1258,13 +1254,11 @@ class BaseCase(unittest.TestCase):
                     success = self.__click_dropdown_link_text(
                         link_text, link_css
                     )
-
             if not success:
                 element = self.wait_for_link_text_visible(
                     link_text, timeout=settings.MINI_TIMEOUT
                 )
                 element.click()
-
         latest_window_count = len(self.driver.window_handles)
         if (
             latest_window_count > pre_window_count
@@ -1369,7 +1363,6 @@ class BaseCase(unittest.TestCase):
             if text_id:
                 link_css = '[id="%s"]' % partial_link_text
                 found_css = True
-
             if not found_css:
                 href = self.__get_href_from_partial_link_text(
                     partial_link_text, False
@@ -1378,7 +1371,6 @@ class BaseCase(unittest.TestCase):
                     if href.startswith("/") or page_utils.is_valid_url(href):
                         link_css = '[href="%s"]' % href
                         found_css = True
-
             if not found_css:
                 ngclick = self.get_partial_link_text_attribute(
                     partial_link_text, "ng-click", False
@@ -1386,7 +1378,6 @@ class BaseCase(unittest.TestCase):
                 if ngclick:
                     link_css = '[ng-click="%s"]' % ngclick
                     found_css = True
-
             if not found_css:
                 onclick = self.get_partial_link_text_attribute(
                     partial_link_text, "onclick", False
@@ -1394,7 +1385,6 @@ class BaseCase(unittest.TestCase):
                 if onclick:
                     link_css = '[onclick="%s"]' % onclick
                     found_css = True
-
             success = False
             if found_css:
                 if self.is_element_visible(link_css):
@@ -1405,13 +1395,11 @@ class BaseCase(unittest.TestCase):
                     success = self.__click_dropdown_partial_link_text(
                         partial_link_text, link_css
                     )
-
             if not success:
                 element = self.wait_for_partial_link_text(
                     partial_link_text, timeout=settings.MINI_TIMEOUT
                 )
                 element.click()
-
         latest_window_count = len(self.driver.window_handles)
         if (
             latest_window_count > pre_window_count

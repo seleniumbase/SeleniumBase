@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-""" This is the Nosetest plugin for setting base configuration and logging. """
+"""
+This is the Nosetest plugin for setting base configuration and logging.
+"""
 
 import ast
 import sys

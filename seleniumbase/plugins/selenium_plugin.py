@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-""" This is the Nosetest plugin for setting Selenium test configuration. """
+"""
+This is the Nosetest plugin for setting Selenium test configuration.
+"""
 
 import sys
 from nose.plugins import Plugin
