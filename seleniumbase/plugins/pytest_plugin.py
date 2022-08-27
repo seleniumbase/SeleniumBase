@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-""" This is the pytest configuration file for setting test options. """
+"""
+This is the pytest configuration file for setting test options.
+"""
 
 import colorama
 import os
@@ -54,6 +56,7 @@ def pytest_addoption(parser):
     --firefox-pref=SET  (Set a Firefox preference:value set, comma-separated.)
     --extension-zip=ZIP  (Load a Chrome Extension .zip|.crx, comma-separated.)
     --extension-dir=DIR  (Load a Chrome Extension directory, comma-separated.)
+    --pls=PLS  (Set pageLoadStrategy on Chrome: "normal", "eager", or "none".)
     --headless  (Run tests in headless mode. The default arg on Linux OS.)
     --headed  (Run tests in headed/GUI mode on Linux OS.)
     --xvfb  (Run tests using the Xvfb virtual display server on Linux OS.)
@@ -62,6 +65,7 @@ def pytest_addoption(parser):
     --start-page=URL  (The starting URL for the web browser when tests begin.)
     --archive-logs  (Archive existing log files instead of deleting them.)
     --archive-downloads  (Archive old downloads instead of deleting them.)
+    --skip-js-waits  (Skip waiting for readyState to be complete or Angular.)
     --time-limit=SECONDS  (Safely fail any test that exceeds the time limit.)
     --slow  (Slow down the automation. Faster than using Demo Mode.)
     --demo  (Slow down and visually see test actions as they occur.)
@@ -184,9 +188,12 @@ def pytest_addoption(parser):
         type=str.lower,
         choices=(
             constants.Environment.QA,
+            constants.Environment.RC,
             constants.Environment.STAGING,
             constants.Environment.DEVELOP,
             constants.Environment.PRODUCTION,
+            constants.Environment.OFFLINE,
+            constants.Environment.ONLINE,
             constants.Environment.MASTER,
             constants.Environment.REMOTE,
             constants.Environment.LOCAL,
@@ -323,6 +330,17 @@ def pytest_addoption(parser):
         dest="archive_downloads",
         default=False,
         help="Archive old downloads instead of deleting them.",
+    )
+    parser.addoption(
+        "--sjw",
+        "--skip_js_waits",
+        "--skip-js-waits",
+        action="store_true",
+        dest="skip_js_waits",
+        default=False,
+        help="""Skip all calls to wait_for_ready_state_complete()
+                and wait_for_angularjs(), which are part of many
+                SeleniumBase methods for improving reliability.""",
     )
     parser.addoption(
         "--with-db_reporting",
@@ -562,6 +580,22 @@ def pytest_addoption(parser):
                 Format: A directory containing the Chrome extension.
                 (Can also be a comma-separated list of directories.)
                 Default: None.""",
+    )
+    parser.addoption(
+        "--pls",
+        "--page_load_strategy",
+        "--page-load-strategy",
+        action="store",
+        dest="page_load_strategy",
+        type=str.lower,
+        choices=(
+            constants.PageLoadStrategy.NORMAL,
+            constants.PageLoadStrategy.EAGER,
+            constants.PageLoadStrategy.NONE,
+        ),
+        default=None,
+        help="""This option sets Chrome's pageLoadStrategy.
+                List of choices: "normal", "eager", "none".""",
     )
     parser.addoption(
         "--headless",
@@ -1219,6 +1253,7 @@ def pytest_configure(config):
     sb_config.firefox_pref = config.getoption("firefox_pref")
     sb_config.extension_zip = config.getoption("extension_zip")
     sb_config.extension_dir = config.getoption("extension_dir")
+    sb_config.page_load_strategy = config.getoption("page_load_strategy")
     sb_config.with_testing_base = config.getoption("with_testing_base")
     sb_config.with_db_reporting = config.getoption("with_db_reporting")
     sb_config.with_s3_logging = config.getoption("with_s3_logging")
@@ -1245,6 +1280,8 @@ def pytest_configure(config):
     sb_config.archive_logs = config.getoption("archive_logs")
     if config.getoption("archive_downloads"):
         settings.ARCHIVE_EXISTING_DOWNLOADS = True
+    if config.getoption("skip_js_waits"):
+        settings.SKIP_JS_WAITS = True
     sb_config._time_limit = config.getoption("time_limit")
     sb_config.time_limit = config.getoption("time_limit")
     sb_config.slow_mode = config.getoption("slow_mode")

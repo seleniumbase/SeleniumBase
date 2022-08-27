@@ -200,6 +200,29 @@ class BaseCase(unittest.TestCase):
             ):
                 time.sleep(0.5)
                 self.driver.get(url)
+            elif "Timed out receiving message from renderer" in e.msg:
+                page_load_timeout = None
+                if selenium4_or_newer:
+                    page_load_timeout = self.driver.timeouts.page_load
+                else:
+                    if hasattr(settings, "PAGE_LOAD_TIMEOUT"):
+                        page_load_timeout = settings.PAGE_LOAD_TIMEOUT
+                    else:
+                        page_load_timeout = 120
+                logging.info(
+                    "The page load timed out after %s seconds! Will retry..."
+                    % page_load_timeout
+                )
+                try:
+                    self.driver.get(url)
+                except Exception as e:
+                    if "Timed out receiving message from renderer" in e.msg:
+                        raise Exception(
+                            "Retry of page load timed out after %s seconds!"
+                            % page_load_timeout
+                        )
+                    else:
+                        raise
             elif (
                 "cannot determine loading status" in e.msg
                 or "unexpected command response" in e.msg
@@ -1205,26 +1228,22 @@ class BaseCase(unittest.TestCase):
             if text_id:
                 link_css = '[id="%s"]' % link_text
                 found_css = True
-
             if not found_css:
                 href = self.__get_href_from_link_text(link_text, False)
                 if href:
                     if href.startswith("/") or page_utils.is_valid_url(href):
                         link_css = '[href="%s"]' % href
                         found_css = True
-
             if not found_css:
                 ngclick = self.get_link_attribute(link_text, "ng-click", False)
                 if ngclick:
                     link_css = '[ng-click="%s"]' % ngclick
                     found_css = True
-
             if not found_css:
                 onclick = self.get_link_attribute(link_text, "onclick", False)
                 if onclick:
                     link_css = '[onclick="%s"]' % onclick
                     found_css = True
-
             success = False
             if found_css:
                 if self.is_element_visible(link_css):
@@ -1235,13 +1254,11 @@ class BaseCase(unittest.TestCase):
                     success = self.__click_dropdown_link_text(
                         link_text, link_css
                     )
-
             if not success:
                 element = self.wait_for_link_text_visible(
                     link_text, timeout=settings.MINI_TIMEOUT
                 )
                 element.click()
-
         latest_window_count = len(self.driver.window_handles)
         if (
             latest_window_count > pre_window_count
@@ -1346,7 +1363,6 @@ class BaseCase(unittest.TestCase):
             if text_id:
                 link_css = '[id="%s"]' % partial_link_text
                 found_css = True
-
             if not found_css:
                 href = self.__get_href_from_partial_link_text(
                     partial_link_text, False
@@ -1355,7 +1371,6 @@ class BaseCase(unittest.TestCase):
                     if href.startswith("/") or page_utils.is_valid_url(href):
                         link_css = '[href="%s"]' % href
                         found_css = True
-
             if not found_css:
                 ngclick = self.get_partial_link_text_attribute(
                     partial_link_text, "ng-click", False
@@ -1363,7 +1378,6 @@ class BaseCase(unittest.TestCase):
                 if ngclick:
                     link_css = '[ng-click="%s"]' % ngclick
                     found_css = True
-
             if not found_css:
                 onclick = self.get_partial_link_text_attribute(
                     partial_link_text, "onclick", False
@@ -1371,7 +1385,6 @@ class BaseCase(unittest.TestCase):
                 if onclick:
                     link_css = '[onclick="%s"]' % onclick
                     found_css = True
-
             success = False
             if found_css:
                 if self.is_element_visible(link_css):
@@ -1382,13 +1395,11 @@ class BaseCase(unittest.TestCase):
                     success = self.__click_dropdown_partial_link_text(
                         partial_link_text, link_css
                     )
-
             if not success:
                 element = self.wait_for_partial_link_text(
                     partial_link_text, timeout=settings.MINI_TIMEOUT
                 )
                 element.click()
-
         latest_window_count = len(self.driver.window_handles)
         if (
             latest_window_count > pre_window_count
@@ -3160,6 +3171,7 @@ class BaseCase(unittest.TestCase):
         user_data_dir=None,
         extension_zip=None,
         extension_dir=None,
+        page_load_strategy=None,
         external_pdf=None,
         is_mobile=None,
         d_width=None,
@@ -3204,6 +3216,7 @@ class BaseCase(unittest.TestCase):
         user_data_dir - Chrome's User Data Directory to use (Chrome-only)
         extension_zip - A Chrome Extension ZIP file to use (Chrome-only)
         extension_dir - A Chrome Extension folder to use (Chrome-only)
+        page_load_strategy - the option to change pageLoadStrategy (Chrome)
         external_pdf - "plugins.always_open_pdf_externally": True. (Chrome)
         is_mobile - the option to use the mobile emulator (Chrome-only)
         d_width - the device width of the mobile emulator (Chrome-only)
@@ -3308,6 +3321,8 @@ class BaseCase(unittest.TestCase):
             extension_zip = self.extension_zip
         if extension_dir is None:
             extension_dir = self.extension_dir
+        if page_load_strategy is None:
+            page_load_strategy = self.page_load_strategy
         if external_pdf is None:
             external_pdf = self.external_pdf
         test_id = self.__get_test_id()
@@ -3367,6 +3382,7 @@ class BaseCase(unittest.TestCase):
             user_data_dir=user_data_dir,
             extension_zip=extension_zip,
             extension_dir=extension_dir,
+            page_load_strategy=page_load_strategy,
             external_pdf=external_pdf,
             test_id=test_id,
             mobile_emulator=is_mobile,
@@ -5413,6 +5429,12 @@ class BaseCase(unittest.TestCase):
         """Display hidden file-chooser input fields on sites if present."""
         css_selector = 'input[type="file"]'
         try:
+            self.wait_for_element_present(
+                css_selector, timeout=settings.MINI_TIMEOUT
+            )
+        except Exception:
+            pass
+        try:
             self.show_elements(css_selector)
         except Exception:
             pass
@@ -5475,6 +5497,12 @@ class BaseCase(unittest.TestCase):
         from bs4 import BeautifulSoup
 
         if not source:
+            try:
+                self.wait_for_element_visible(
+                    "body", timeout=settings.MINI_TIMEOUT
+                )
+            except Exception:
+                pass
             source = self.get_page_source()
         soup = BeautifulSoup(source, "html.parser")
         return soup
@@ -6277,13 +6305,13 @@ class BaseCase(unittest.TestCase):
                 self.assertEqual(expected, actual, error % (expected, actual))
         except Exception:
             self.wait_for_ready_state_complete()
-            time.sleep(settings.MINI_TIMEOUT)
+            time.sleep(2)
             actual = self.get_page_title().strip()
             try:
                 self.assertEqual(expected, actual, error % (expected, actual))
             except Exception:
                 self.wait_for_ready_state_complete()
-                time.sleep(settings.MINI_TIMEOUT)
+                time.sleep(2)
                 actual = self.get_page_title().strip()
                 self.assertEqual(expected, actual, error % (expected, actual))
         if self.demo_mode and not self.recorder_mode:
@@ -11134,6 +11162,12 @@ class BaseCase(unittest.TestCase):
             self.check_window(name="wikipedia_page", level=3)
         """
         self.wait_for_ready_state_complete()
+        try:
+            self.wait_for_element_visible(
+                "body", timeout=settings.MINI_TIMEOUT
+            )
+        except Exception:
+            pass
         if level == "0":
             level = 0
         if level == "1":
@@ -12499,6 +12533,7 @@ class BaseCase(unittest.TestCase):
             self.user_data_dir = sb_config.user_data_dir
             self.extension_zip = sb_config.extension_zip
             self.extension_dir = sb_config.extension_dir
+            self.page_load_strategy = sb_config.page_load_strategy
             self.external_pdf = sb_config.external_pdf
             self._final_debug = sb_config.final_debug
             self.window_size = sb_config.window_size
@@ -12780,6 +12815,7 @@ class BaseCase(unittest.TestCase):
                 user_data_dir=self.user_data_dir,
                 extension_zip=self.extension_zip,
                 extension_dir=self.extension_dir,
+                page_load_strategy=self.page_load_strategy,
                 external_pdf=self.external_pdf,
                 is_mobile=self.mobile_emulator,
                 d_width=self.__device_width,
@@ -12806,6 +12842,12 @@ class BaseCase(unittest.TestCase):
 
         # Configure the test time limit (if used).
         self.set_time_limit(self.time_limit)
+
+        # Configure the page load timeout
+        if hasattr(settings, "PAGE_LOAD_TIMEOUT"):
+            self.driver.set_page_load_timeout(settings.PAGE_LOAD_TIMEOUT)
+        else:
+            self.driver.set_page_load_timeout(120)  # Selenium uses 300
 
         # Set the start time for the test (in ms).
         # Although the pytest clock starts before setUp() begins,

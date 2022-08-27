@@ -16,6 +16,18 @@ SMALL_TIMEOUT = 7
 LARGE_TIMEOUT = 10
 EXTREME_TIMEOUT = 30
 
+# Default page load timeout.
+# If a page takes longer than this to load, you'll get the following error:
+#     selenium.common.exceptions.TimeoutException:
+#     Message: timeout: Timed out receiving message from renderer: PLT
+# In global Selenium settings, this value is set to 300 seconds by default.
+PAGE_LOAD_TIMEOUT = 120
+
+# Default page load strategy.
+# ["normal", "eager", "none"]
+# Selenium default = "normal"
+PAGE_LOAD_STRATEGY = "normal"
+
 # If True, existing logs from past test runs will be saved and take up space.
 # If False, only the logs from the most recent test run will be saved locally.
 # You can also archive existing logs on the command line with: "--archive_logs"
@@ -48,19 +60,17 @@ If False, the browser will stay on the current tab where the click happened.
 SWITCH_TO_NEW_TABS_ON_CLICK = True
 
 """
-This adds wait_for_ready_state_complete() after various browser actions.
-Setting this to True may improve reliability at the cost of speed.
+These methods add global waits, such as self.wait_for_ready_state_complete(),
+which waits for document.readyState to be "complete" after browser actions.
 """
-# Called after self.open(url) or self.open_url(url), NOT self.driver.open(url)
+# Called after self.open(URL), NOT driver.get(URL)
 WAIT_FOR_RSC_ON_PAGE_LOADS = True
 # Called after self.click(selector), NOT element.click()
 WAIT_FOR_RSC_ON_CLICKS = False
-
-"""
-This adds wait_for_angularjs() after various browser actions.
-(Requires WAIT_FOR_RSC_ON_PAGE_LOADS and WAIT_FOR_RSC_ON_CLICKS to also be on.)
-"""
+# Wait for AngularJS calls to complete after various browser actions.
 WAIT_FOR_ANGULARJS = True
+# Skip all calls to wait_for_ready_state_complete() and wait_for_angularjs().
+SKIP_JS_WAITS = False
 
 # Default time to wait after each browser action performed during Demo Mode.
 # Use Demo Mode when you want others to see what your automation is doing.

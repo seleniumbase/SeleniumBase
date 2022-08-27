@@ -4,6 +4,7 @@ from seleniumbase import BaseCase
 class FrameTests(BaseCase):
     def test_iframe_basics(self):
         self.open("https://seleniumbase.io/w3schools/iframes.html")
+        self.click("button#runbtn")
         self.switch_to_frame("iframeResult")  # Enter the iframe
         self.assert_text("HTML Iframes", "h2")
         self.switch_to_frame('[title*="Iframe"]')  # Enter iframe inside iframe
@@ -19,6 +20,7 @@ class FrameTests(BaseCase):
 
     def test_iframes_with_context_manager(self):
         self.open("https://seleniumbase.io/w3schools/iframes.html")
+        self.click("button#runbtn")
         with self.frame_switch("iframeResult"):
             self.assert_text("HTML Iframes", "h2")
             with self.frame_switch('[title*="Iframe"]'):
@@ -32,6 +34,7 @@ class FrameTests(BaseCase):
 
     def test_set_content_to_frame(self):
         self.open("https://seleniumbase.io/w3schools/iframes.html")
+        self.click("button#runbtn")
         self.set_content_to_frame("iframeResult")
         self.highlight('iframe[title="Iframe Example"]')
         self.set_content_to_frame("iframe")

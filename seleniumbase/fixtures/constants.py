@@ -9,9 +9,12 @@ from seleniumbase.core import encoded_images
 class Environment:
     # Usage Example => "--env=qa" => Then access value in tests with "self.env"
     QA = "qa"
+    RC = "rc"
     STAGING = "staging"
     DEVELOP = "develop"
     PRODUCTION = "production"
+    OFFLINE = "offline"
+    ONLINE = "online"
     MASTER = "master"
     REMOTE = "remote"
     LOCAL = "local"
@@ -24,9 +27,12 @@ class Environment:
 class ValidEnvs:
     valid_envs = [
         "qa",
+        "rc",
         "staging",
         "develop",
         "production",
+        "offline",
+        "online",
         "master",
         "remote",
         "local",
@@ -35,6 +41,13 @@ class ValidEnvs:
         "main",
         "test",
     ]
+
+
+class PageLoadStrategy:
+    # Usage Example => "--pls=none"
+    NORMAL = "normal"
+    EAGER = "eager"
+    NONE = "none"
 
 
 class Files:

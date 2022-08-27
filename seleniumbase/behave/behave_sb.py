@@ -41,6 +41,7 @@ behave -D agent="User Agent String" -D demo
 -D firefox-pref=SET  (Set a Firefox preference:value set, comma-separated.)
 -D extension-zip=ZIP  (Load a Chrome Extension .zip|.crx, comma-separated.)
 -D extension-dir=DIR  (Load a Chrome Extension directory, comma-separated.)
+-D pls=PLS  (Set pageLoadStrategy on Chrome: "normal", "eager", or "none".)
 -D headless  (Run tests in headless mode. The default arg on Linux OS.)
 -D headed  (Run tests in headed/GUI mode on Linux OS.)
 -D xvfb  (Run tests using the Xvfb virtual display server on Linux OS.)
@@ -153,6 +154,7 @@ def get_configured_sb(context):
     sb.device_metrics = None
     sb.extension_zip = None
     sb.extension_dir = None
+    sb.page_load_strategy = None
     sb.database_env = "test"
     sb.log_path = "latest_logs/"
     sb.archive_logs = False
@@ -212,6 +214,7 @@ def get_configured_sb(context):
 
     # Set a few sb_config vars early in case parsing args fails
     sb_config.dashboard = None
+    sb_config._has_logs = None
     sb_config._has_exception = None
     sb_config.save_screenshot = None
 
@@ -418,6 +421,24 @@ def get_configured_sb(context):
                 extension_dir = sb.extension_dir  # revert to default
             sb.extension_dir = extension_dir
             continue
+        # Handle: -D pls=PLS / page-load-strategy=PLS / page_load_strategy=PLS
+        if low_key in ["pls", "page-load-strategy", "page_load_strategy"]:
+            page_load_strategy = userdata[key].lower()
+            if page_load_strategy in ["normal", "eager", "none"]:
+                sb.page_load_strategy = page_load_strategy
+            elif page_load_strategy == "true":
+                raise Exception(
+                    '\nThe "pls" / "page-load-strategy" arg requires a value!'
+                    '\nChoose from ["normal", "eager", "none"]'
+                    '\nEg. -D pls="none"'
+                )
+            else:
+                raise Exception(
+                    '\n"%s" is not a valid "pls" / "page-load-strategy" value!'
+                    '\nChoose from ["normal", "eager", "none"]'
+                    '\nEg. -D pls="none"' % page_load_strategy
+                )
+            continue
         # Handle: -D database-env=ENVIRONMENT / database_env=ENVIRONMENT
         if low_key in ["database-env", "database_env"]:
             database_env = userdata[key].lower()
@@ -480,6 +501,10 @@ def get_configured_sb(context):
         # Handle: -D disable-beforeunload / disable_beforeunload
         if low_key in ["disable-beforeunload", "disable_beforeunload"]:
             sb._disable_beforeunload = True
+            continue
+        # Handle: -D sjw / skip-js-waits / skip_js_waits
+        if low_key in ["sjw", "skip-js-waits", "skip_js_waits"]:
+            settings.SKIP_JS_WAITS = True
             continue
         # Handle: -D visual-baseline / visual_baseline
         if low_key in ["visual-baseline", "visual_baseline"]:

@@ -77,6 +77,7 @@ class HackTests(BaseCase):
         self.set_text_content('a[href*="google.com/img"]', abtu)
         self.set_attributes('[value="Google Search"]', "value", ayb)
         self.set_attributes('[value="I\'m Feeling Lucky"]', "value", abtu)
+        self.hide_elements("iframe")
         zoom_in = "a{zoom: 1.2;-moz-transform: scale(1.2);}"
         self.add_css_style(zoom_in)
         zoom_in = (
@@ -84,6 +85,7 @@ class HackTests(BaseCase):
             '[value="ARE BELONG TO US"]{zoom: 1.3;-moz-transform: scale(1.3);}'
         )
         self.add_css_style(zoom_in)
+        self.hide_elements("iframe")
         self.highlight('a[href*="about.google"]', loops=3)
         self.highlight('a[href*="store.google"]', loops=3)
         self.highlight('a[href*="mail.google.com"]', loops=3)
@@ -136,6 +138,8 @@ class HackTests(BaseCase):
         self.highlight("h1", loops=8, scroll=False)
 
         self.open("https://dev.to/top/infinity")
+        self.hide_elements("#js-hero-banner")
+        self.hide_elements('main > div:contains("Pinned")')
         self.click_if_visible('button[aria-label="Close campaign banner"]')
         self.set_text_content('nav a[data-text="Relevant"]', "ALL")
         self.set_text_content('nav a[data-text="Latest"]', "YOUR")
@@ -153,7 +157,8 @@ class HackTests(BaseCase):
         self.set_text_content('aside a[class*="tful"]:nth-child(5)', aybabtu)
         self.set_attribute("a.crayons-avatar img", "src", sb_dashboard_logo)
         self.set_text_content(".profile-preview-card button", "SeleniumBase")
-        self.set_text_content("h2.crayons-story__title a", aybabtu)
+        if self.is_element_visible('h2 a[href*="simonh"]'):
+            self.set_text_content('h2 a[href*="simonh"]', aybabtu)
         self.type('input[name="q"]', aybabtu)
         self.highlight('input[name="q"]', loops=4, scroll=False)
         self.highlight('[aria-label="Primary sidebar"] div div', scroll=False)
@@ -163,9 +168,9 @@ class HackTests(BaseCase):
         self.highlight('nav a[data-text="Week"]', loops=1, scroll=False)
         self.highlight('nav a[data-text="Month"]', loops=1, scroll=False)
         self.highlight('nav a[data-text="Year"]', loops=1, scroll=False)
-        self.highlight('nav a[data-text="Infinity"]', loops=2, scroll=False)
-        self.highlight('aside[id*="sidebar"] section', loops=5, scroll=False)
-        self.highlight("div.crayons-story__body", loops=7, scroll=False)
+        self.highlight('nav a[data-text="Infinity"]', loops=3, scroll=False)
+        if self.is_element_visible('h2 a[href*="simonh"]'):
+            self.highlight('h2 a[href*="simonh"]', loops=7, scroll=False)
 
         self.open("https://azure.microsoft.com/en-us/services/playfab/")
         self.set_text_content("h1", aybabtu)
@@ -206,7 +211,7 @@ class HackTests(BaseCase):
         self.remove_element('li:contains("Books")')
         self.remove_element('li:contains("What")')
         self.remove_element('li:contains("WI")')
-        self.set_attributes("#news img", "src", sb_banner_logo)
+        self.set_attributes("#countdown img", "src", sb_banner_logo)
         self.set_text_content("#ctitle", aybabtu)
         self.set_text_content('a[rel="prev"]', "All")
         self.set_text_content('a[href*="random"]', "Your")
@@ -240,6 +245,7 @@ class HackTests(BaseCase):
         self.set_text_content('a[prettyslug="connect-tools"]', "ARE")
         self.set_text_content('a[prettyslug="administration"]', "BELONG")
         self.set_text_content('a[prettyslug="tutorials"]', "TO US")
+        self.set_text_content("h1.article_title", aybabtu)
         self.highlight("h1", loops=4, scroll=False)
         self.highlight("div#global_menu", loops=2, scroll=False)
         self.highlight('a[prettyslug*="g-started"]', loops=1, scroll=False)
@@ -248,6 +254,7 @@ class HackTests(BaseCase):
         self.highlight('a[prettyslug="connect-tools"]', loops=1, scroll=False)
         self.highlight('a[prettyslug="administration"]', loops=1, scroll=False)
         self.highlight('a[prettyslug="tutorials"]', loops=2, scroll=False)
+        self.highlight("h1.article_title", loops=5, scroll=False)
 
         self.open("https://kubernetes.io/")
         self.set_text_content('nav a[href="/docs/"]', "ALL")
@@ -284,6 +291,8 @@ class HackTests(BaseCase):
         self.set_text_content('li a:contains("English")', "US")
         self.set_text_content("div.lead", aybabtu)
         self.set_text_content("h2", aybabtu)
+        if self.is_element_visible('button[data-dismiss="alert"] span'):
+            self.js_click('button[data-dismiss="alert"] span', scroll=False)
         zoom_in = "div.lead{zoom: 1.25;-moz-transform: scale(1.25);}"
         self.add_css_style(zoom_in)
         self.highlight("div#main_navbar", loops=1, scroll=False)
@@ -324,10 +333,12 @@ class HackTests(BaseCase):
         self.set_text_content('a[title="Plans & Pricing"]', aybabtu)
         self.set_text_content('a[title="Get Started"]', ayb)
         self.set_text_content("p.no-widows", aybabtu)
+        self.set_text_content("h1.no-widows", aybabtu)
         self.set_text_content("a#lpc-button", "Automate with SeleniumBase")
         self.highlight('a[title="Plans & Pricing"]', loops=6, scroll=False)
         self.highlight('a[title="Get Started"]', loops=4, scroll=False)
-        self.highlight("p.no-widows", loops=8, scroll=False)
+        self.highlight("h1.no-widows", loops=6, scroll=False)
+        self.highlight("p.no-widows", loops=4, scroll=False)
         self.highlight("a#lpc-button", loops=4, scroll=False)
 
         self.open("https://seleniumbase.com/")
@@ -373,15 +384,6 @@ class HackTests(BaseCase):
         self.highlight("span#tagline", loops=8, scroll=False)
         self.highlight("#nav-about h3", loops=5, scroll=False)
         self.highlight("#nav-documentation h3", loops=6, scroll=False)
-
-        self.open("https://teamtreehouse.com/teams")
-        self.set_text_content("li.nav-item-free-trial", aybabtu)
-        self.set_text_content("h1", aybabtu)
-        self.set_text_content("h2", aybabtu)
-        self.set_text_content("p.homepage-signup-form-banner", aybabtu)
-        self.highlight("li.nav-item-free-trial", loops=6, scroll=False)
-        self.highlight("h1", loops=6, scroll=False)
-        self.highlight('p[class*="signup-form"]', loops=6, scroll=False)
 
         self.open("https://pragprog.com/")
         self.set_text_content("header p", aybabtu)

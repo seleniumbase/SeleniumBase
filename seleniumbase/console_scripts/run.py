@@ -942,9 +942,15 @@ def main():
 
     if command == "get" or command == "install":
         if len(command_args) >= 1:
+            import time
             from seleniumbase.console_scripts import sb_install
 
-            sb_install.main()
+            try:
+                sb_install.main()
+            except Exception:
+                print("\nDriver download failed! Retrying in two seconds...")
+                time.sleep(2)
+                sb_install.main()
         else:
             show_basic_usage()
             show_install_usage()

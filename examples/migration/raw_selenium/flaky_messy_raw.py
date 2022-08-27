@@ -20,7 +20,6 @@ class FlakyMessyRawSelenium(TestCase):
             "profile.password_manager_enabled": False,
         }
         options.add_experimental_option("prefs", prefs)
-        options.add_experimental_option("w3c", True)
         self.driver = webdriver.Chrome(options=options)
 
     def tearDown(self):

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-""" This is the Nosetest plugin for setting Selenium test configuration. """
+"""
+This is the Nosetest plugin for setting Selenium test configuration.
+"""
 
 import sys
 from nose.plugins import Plugin
@@ -36,12 +38,14 @@ class SeleniumBrowser(Plugin):
     --firefox-pref=SET  (Set a Firefox preference:value set, comma-separated.)
     --extension-zip=ZIP  (Load a Chrome Extension .zip|.crx, comma-separated.)
     --extension-dir=DIR  (Load a Chrome Extension directory, comma-separated.)
+    --pls=PLS  (Set pageLoadStrategy on Chrome: "normal", "eager", or "none".)
     --headless  (Run tests in headless mode. The default arg on Linux OS.)
     --headed  (Run tests in headed/GUI mode on Linux OS.)
     --xvfb  (Run tests using the Xvfb virtual display server on Linux OS.)
     --locale=LOCALE_CODE  (Set the Language Locale Code for the web browser.)
     --interval=SECONDS  (The autoplay interval for presentations & tour steps)
     --start-page=URL  (The starting URL for the web browser when tests begin.)
+    --skip-js-waits  (Skip waiting for readyState to be complete or Angular.)
     --time-limit=SECONDS  (Safely fail any test that exceeds the time limit.)
     --slow  (Slow down the automation. Faster than using Demo Mode.)
     --demo  (Slow down and visually see test actions as they occur.)
@@ -131,6 +135,17 @@ class SeleniumBrowser(Plugin):
             default=None,
             help="""The Chrome User Data Directory to use. (Chrome Profile)
                     If the directory doesn't exist, it'll be created.""",
+        )
+        parser.add_option(
+            "--sjw",
+            "--skip_js_waits",
+            "--skip-js-waits",
+            action="store_true",
+            dest="skip_js_waits",
+            default=False,
+            help="""Skip all calls to wait_for_ready_state_complete()
+                    and wait_for_angularjs(), which are part of many
+                    SeleniumBase methods for improving reliability.""",
         )
         parser.add_option(
             "--protocol",
@@ -301,6 +316,21 @@ class SeleniumBrowser(Plugin):
                     Format: A directory containing the Chrome extension.
                     (Can also be a comma-separated list of directories.)
                     Default: None.""",
+        )
+        parser.add_option(
+            "--pls",
+            "--page_load_strategy",
+            "--page-load-strategy",
+            action="store",
+            dest="page_load_strategy",
+            choices=(
+                constants.PageLoadStrategy.NORMAL,
+                constants.PageLoadStrategy.EAGER,
+                constants.PageLoadStrategy.NONE,
+            ),
+            default=None,
+            help="""This option sets Chrome's pageLoadStrategy.
+                    List of choices: "normal", "eager", "none".""",
         )
         parser.add_option(
             "--headless",
@@ -770,12 +800,15 @@ class SeleniumBrowser(Plugin):
         test.test.locale_code = self.options.locale_code
         test.test.interval = self.options.interval
         test.test.start_page = self.options.start_page
+        if self.options.skip_js_waits:
+            settings.SKIP_JS_WAITS = True
         test.test.protocol = self.options.protocol
         test.test.servername = self.options.servername
         test.test.port = self.options.port
         test.test.user_data_dir = self.options.user_data_dir
         test.test.extension_zip = self.options.extension_zip
         test.test.extension_dir = self.options.extension_dir
+        test.test.page_load_strategy = self.options.page_load_strategy
         test.test.chromium_arg = self.options.chromium_arg
         test.test.firefox_arg = self.options.firefox_arg
         test.test.firefox_pref = self.options.firefox_pref

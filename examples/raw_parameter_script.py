@@ -74,6 +74,7 @@ if pure_python:
     sb.maximize_option = False
     sb._disable_beforeunload = False
     sb.save_screenshot_after_test = False
+    sb.page_load_strategy = None
     sb.timeout_multiplier = None
     sb.pytest_html_report = None
     sb.with_db_reporting = False

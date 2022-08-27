@@ -367,8 +367,8 @@ nosetests [FILE_NAME.py]:[CLASS_NAME].[METHOD_NAME]
 ```
 
 ✅ No More Flaky Tests:
-<p>SeleniumBase methods automatically wait for page elements to finish loading before interacting with them (<i>up to a timeout limit</i>). This means you <b>no longer need</b> random <span><b>time.sleep()</b></span> statements in your scripts.</p>
-<img src="https://img.shields.io/badge/Flaky Tests%3F-%20NO%21-11BBDD.svg" alt="NO MORE FLAKY TESTS!" />
+<p>SeleniumBase methods automatically wait for page elements to finish loading before interacting with them (<i>up to a timeout limit</i>). This means <b>you no longer need random <span><code>time.sleep()</code></span> statements</b> in your scripts.</p>
+<img src="https://img.shields.io/badge/Flaky%20Tests%3F-%20NO%21-11BBDD.svg" alt="NO MORE FLAKY TESTS!" />
 
 ✅ Automated/Manual Hybrid Mode:
 <p>SeleniumBase includes a solution called <b><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">MasterQA</a></b>, which speeds up manual testing by having automation perform all the browser actions while the manual tester handles validation.</p>
@@ -466,14 +466,16 @@ The code above will leave your browser window open in case there's a failure. (i
 --firefox-pref=SET  # (Set a Firefox preference:value set, comma-separated.)
 --extension-zip=ZIP  # (Load a Chrome Extension .zip|.crx, comma-separated.)
 --extension-dir=DIR  # (Load a Chrome Extension directory, comma-separated.)
+--pls=PLS  # (Set pageLoadStrategy on Chrome: "normal", "eager", or "none".)
 --headless  # (Run tests in headless mode. The default arg on Linux OS.)
 --headed  # (Run tests in headed/GUI mode on Linux OS.)
 --xvfb  # (Run tests using the Xvfb virtual display server on Linux OS.)
 --locale=LOCALE_CODE  # (Set the Language Locale Code for the web browser.)
 --interval=SECONDS  # (The autoplay interval for presentations & tour steps)
 --start-page=URL  # (The starting URL for the web browser when tests begin.)
---archive-logs  #  (Archive existing log files instead of deleting them.)
---archive-downloads  #  (Archive old downloads instead of deleting them.)
+--archive-logs  # (Archive existing log files instead of deleting them.)
+--archive-downloads  # (Archive old downloads instead of deleting them.)
+--skip-js-waits  # (Skip waiting for readyState to be complete or Angular.)
 --time-limit=SECONDS  # (Safely fail any test that exceeds the time limit.)
 --slow  # (Slow down the automation. Faster than using Demo Mode.)
 --demo  # (Slow down and visually see test actions as they occur.)
@@ -499,7 +501,7 @@ The code above will leave your browser window open in case there's a failure. (i
 --dashboard  # (Enable the SeleniumBase Dashboard. Saved at: dashboard.html)
 --dash-title=STRING  # (Set the title shown for the generated dashboard.)
 --swiftshader  # (Use Chrome's "--use-gl=swiftshader" feature.)
---incognito  #  (Enable Chrome's Incognito mode.)
+--incognito  # (Enable Chrome's Incognito mode.)
 --guest  # (Enable Chrome's Guest mode.)
 --devtools  # (Open Chrome's DevTools when the browser opens.)
 --reuse-session | --rs  # (Reuse the browser session between tests.)

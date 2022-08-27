@@ -12,4 +12,4 @@ class Test_SB_Fixture:
         sb.open("https://google.com/ncr")
         sb.type('input[title="Search"]', "SeleniumBase GitHub\n")
         sb.click('a[href*="github.com/seleniumbase/SeleniumBase"]')
-        sb.click('a[title="examples"]')
+        sb.click('a[title="seleniumbase"]')
