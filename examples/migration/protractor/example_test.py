@@ -11,6 +11,7 @@ class AngularJSHomePageTests(BaseCase):
         self.open("http://www.angularjs.org")
         todo_selector = '[ng-repeat="todo in todoList.todos"]'
         # Verify that the todos are listed
+        self.wait_for_element(todo_selector)
         todos = self.find_visible_elements(todo_selector)
         self.assert_equal(len(todos), 2)
         self.assert_equal(todos[1].text.strip(), "build an AngularJS app")

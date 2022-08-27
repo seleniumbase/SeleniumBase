@@ -14,7 +14,7 @@ class DragAndDropTests(BaseCase):
 
     def test_w3schools_drag_and_drop(self):
         self.open("https://seleniumbase.io/w3schools/drag_drop")
-        self.remove_elements("#tryitLeaderboard")
+        self.click("button#runbtn")
         self.switch_to_frame("iframeResult")
         self.assert_element_not_visible("#div1 img#drag1")
         self.drag_and_drop("#drag1", "#div1")

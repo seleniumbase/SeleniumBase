@@ -9,6 +9,16 @@ SMALL_TIMEOUT = 7
 LARGE_TIMEOUT = 10
 EXTREME_TIMEOUT = 30
 
+# Default page load timeout.
+# In global Selenium settings, this value is set to 300 seconds by default.
+# When the timeout is exceeded: "Timed out receiving message from renderer"
+PAGE_LOAD_TIMEOUT = 120
+
+# Default page load strategy.
+# ["normal", "eager", "none"]
+# Selenium default = "normal"
+PAGE_LOAD_STRATEGY = "normal"
+
 # If False, only logs from the most recent test run will be saved.
 ARCHIVE_EXISTING_LOGS = False
 ARCHIVE_EXISTING_DOWNLOADS = False
@@ -17,10 +27,18 @@ ARCHIVE_EXISTING_DOWNLOADS = False
 # (Only happens if the initial tab is still on same URL as before.)
 SWITCH_TO_NEW_TABS_ON_CLICK = True
 
-# Waiting for Document.readyState to be "Complete" after browser actions.
+"""
+These methods add JS waits, such as self.wait_for_ready_state_complete(),
+which waits for document.readyState to be "complete" after Selenium actions.
+"""
+# Called after self.open(URL), NOT driver.get(URL)
 WAIT_FOR_RSC_ON_PAGE_LOADS = True
+# Called after self.click(selector), NOT element.click()
 WAIT_FOR_RSC_ON_CLICKS = False
+# Wait for AngularJS calls to complete after various browser actions.
 WAIT_FOR_ANGULARJS = True
+# Skip ALL calls to wait_for_ready_state_complete() and wait_for_angularjs().
+SKIP_JS_WAITS = False
 
 # Changing the default behavior of Demo Mode. Activate with: --demo_mode
 DEFAULT_DEMO_MODE_TIMEOUT = 0.5

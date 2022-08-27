@@ -71,6 +71,8 @@ class WordleTests(BaseCase):
         past_wordle = archive + date + "/" + url
         print("\n" + past_wordle)
         self.open(past_wordle)
+        self.wait_for_element("#wm-ipp-base")
+        self.remove_elements("#wm-ipp-base")
         self.click("game-app::shadow game-modal::shadow game-icon")
         self.initialize_word_list()
         keyboard_base = "game-app::shadow game-keyboard::shadow "

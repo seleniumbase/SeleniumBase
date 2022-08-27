@@ -9,6 +9,8 @@ class NthChildSelectorTests(BaseCase):
             self.demo_mode = True
             self.demo_sleep = 0.5
             self.message_duration = 2.0
+        else:
+            self.message_duration = 0.2
         self.highlight(tbody)
         self.post_message("Part 1: Assert text in given row.")
         self.assert_text("teal", tbody + " tr:nth-child(2)")
