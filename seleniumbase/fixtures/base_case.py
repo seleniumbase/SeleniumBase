@@ -5424,6 +5424,12 @@ class BaseCase(unittest.TestCase):
         """Display hidden file-chooser input fields on sites if present."""
         css_selector = 'input[type="file"]'
         try:
+            self.wait_for_element_present(
+                css_selector, timeout=settings.MINI_TIMEOUT
+            )
+        except Exception:
+            pass
+        try:
             self.show_elements(css_selector)
         except Exception:
             pass
