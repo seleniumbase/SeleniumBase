@@ -65,6 +65,7 @@ def pytest_addoption(parser):
     --start-page=URL  (The starting URL for the web browser when tests begin.)
     --archive-logs  (Archive existing log files instead of deleting them.)
     --archive-downloads  (Archive old downloads instead of deleting them.)
+    --skip-js-waits  (Skip waiting for readyState to be complete or Angular.)
     --time-limit=SECONDS  (Safely fail any test that exceeds the time limit.)
     --slow  (Slow down the automation. Faster than using Demo Mode.)
     --demo  (Slow down and visually see test actions as they occur.)
@@ -326,6 +327,17 @@ def pytest_addoption(parser):
         dest="archive_downloads",
         default=False,
         help="Archive old downloads instead of deleting them.",
+    )
+    parser.addoption(
+        "--sjw",
+        "--skip_js_waits",
+        "--skip-js-waits",
+        action="store_true",
+        dest="skip_js_waits",
+        default=False,
+        help="""Skip all calls to wait_for_ready_state_complete()
+                and wait_for_angularjs(), which are part of many
+                SeleniumBase methods for improving reliability.""",
     )
     parser.addoption(
         "--with-db_reporting",
@@ -1265,6 +1277,8 @@ def pytest_configure(config):
     sb_config.archive_logs = config.getoption("archive_logs")
     if config.getoption("archive_downloads"):
         settings.ARCHIVE_EXISTING_DOWNLOADS = True
+    if config.getoption("skip_js_waits"):
+        settings.SKIP_JS_WAITS = True
     sb_config._time_limit = config.getoption("time_limit")
     sb_config.time_limit = config.getoption("time_limit")
     sb_config.slow_mode = config.getoption("slow_mode")

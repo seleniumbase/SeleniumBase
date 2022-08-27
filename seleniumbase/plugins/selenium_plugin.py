@@ -137,6 +137,17 @@ class SeleniumBrowser(Plugin):
                     If the directory doesn't exist, it'll be created.""",
         )
         parser.add_option(
+            "--sjw",
+            "--skip_js_waits",
+            "--skip-js-waits",
+            action="store_true",
+            dest="skip_js_waits",
+            default=False,
+            help="""Skip all calls to wait_for_ready_state_complete()
+                    and wait_for_angularjs(), which are part of many
+                    SeleniumBase methods for improving reliability.""",
+        )
+        parser.add_option(
             "--protocol",
             action="store",
             dest="protocol",

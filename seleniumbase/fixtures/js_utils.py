@@ -23,6 +23,8 @@ def wait_for_ready_state_complete(driver, timeout=settings.LARGE_TIMEOUT):
       because readyState == "interactive" may be good enough.
     (Previously, tests would fail immediately if exceeding the timeout.)
     """
+    if hasattr(settings, "SKIP_JS_WAITS") and settings.SKIP_JS_WAITS:
+        return
     if sb_config.time_limit and not sb_config.recorder_mode:
         from seleniumbase.fixtures import shared_utils
 
@@ -54,6 +56,8 @@ def execute_async_script(driver, script, timeout=settings.EXTREME_TIMEOUT):
 
 
 def wait_for_angularjs(driver, timeout=settings.LARGE_TIMEOUT, **kwargs):
+    if hasattr(settings, "SKIP_JS_WAITS") and settings.SKIP_JS_WAITS:
+        return
     if not settings.WAIT_FOR_ANGULARJS:
         return
 

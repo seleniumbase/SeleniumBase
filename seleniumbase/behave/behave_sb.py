@@ -502,6 +502,10 @@ def get_configured_sb(context):
         if low_key in ["disable-beforeunload", "disable_beforeunload"]:
             sb._disable_beforeunload = True
             continue
+        # Handle: -D sjw / skip-js-waits / skip_js_waits
+        if low_key in ["sjw", "skip-js-waits", "skip_js_waits"]:
+            settings.SKIP_JS_WAITS = True
+            continue
         # Handle: -D visual-baseline / visual_baseline
         if low_key in ["visual-baseline", "visual_baseline"]:
             sb.visual_baseline = True
