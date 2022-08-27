@@ -107,14 +107,14 @@ class SD:
         words = {}
         words["English"] = "ASSERT NO 404 ERRORS"
         words["Chinese"] = "检查断开的链接"
-        words["Dutch"] = "CONTROLEREN OP GEBROKEN LINKS"
-        words["French"] = "VÉRIFIER LES LIENS ROMPUS"
-        words["Italian"] = "VERIFICARE I COLLEGAMENTI"
+        words["Dutch"] = "CONTROLEREN OP 404 FOUTEN"
+        words["French"] = "AFFIRMEZ PAS D'ERREURS 404"
+        words["Italian"] = "CONTROLLA ERRORI 404"
         words["Japanese"] = "リンク切れを確認する"
         words["Korean"] = "끊어진 링크 확인"
-        words["Portuguese"] = "VERIFICAR SE HÁ LINKS QUEBRADOS"
+        words["Portuguese"] = "VERIFICAR SE HÁ ERROS 404"
         words["Russian"] = "ПРОВЕРИТЬ ОШИБКИ 404"
-        words["Spanish"] = "VERIFICAR SI HAY ENLACES ROTOS"
+        words["Spanish"] = "VERIFICAR SI HAY ERRORES 404"
         return words[language]
 
     def translate_assert_no_js_errors(language):
@@ -122,7 +122,7 @@ class SD:
         words["English"] = "ASSERT NO JS ERRORS"
         words["Chinese"] = "检查JS错误"
         words["Dutch"] = "CONTROLEREN OP JS FOUTEN"
-        words["French"] = "VÉRIFIER LES ERREURS JS"
+        words["French"] = "AFFIRMEZ PAS D'ERREURS JS"
         words["Italian"] = "CONTROLLA ERRORI JS"
         words["Japanese"] = "JSエラーを確認する"
         words["Korean"] = "JS 오류 확인"
