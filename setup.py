@@ -292,6 +292,7 @@ setup(
         "seleniumbase.masterqa",
         "seleniumbase.plugins",
         "seleniumbase.translate",
+        "seleniumbase.undetected",
         "seleniumbase.utilities",
         "seleniumbase.utilities.selenium_grid",
         "seleniumbase.utilities.selenium_ide",
