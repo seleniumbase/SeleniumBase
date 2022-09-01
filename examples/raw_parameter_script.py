@@ -63,6 +63,7 @@ if pure_python:
     sb.enable_ws = False
     sb.enable_sync = False
     sb.use_auto_ext = False
+    sb.undetectable = False
     sb.no_sandbox = False
     sb.disable_gpu = False
     sb._multithreaded = False
