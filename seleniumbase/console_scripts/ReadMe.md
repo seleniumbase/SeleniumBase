@@ -57,7 +57,7 @@ sbase install [DRIVER] [OPTIONS]
 * Examples:
 
 ```bash
-sbase get chromedriver  # (Default version = 72.0.3626.69)
+sbase get chromedriver  # (Default: 72.0.3626.69 - Tries to detect first.)
 sbase get geckodriver
 sbase get edgedriver
 sbase get chromedriver 102

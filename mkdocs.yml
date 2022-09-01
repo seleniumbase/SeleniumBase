@@ -71,6 +71,7 @@ plugins:
         - CONTRIBUTING.md
         - SECURITY.md
         - help_docs/chinese.md
+        - help_docs/mysql_installation.md
         - integrations/katalon/ReadMe.md
         - seleniumbase/utilities/selenium_ide/ReadMe.md
         - seleniumbase/examples/chart_maker/ReadMe.md
@@ -82,7 +83,7 @@ plugins:
 # Page tree
 nav:
   - SeleniumBase ReadMe: README.md
-  - Features List: help_docs/features_list.md
+  - List of Features: help_docs/features_list.md
   - Running Example Tests: examples/ReadMe.md
   - Command Line Options: help_docs/customizing_test_runs.md
   - Dashboard / Reports: examples/example_logs/ReadMe.md
