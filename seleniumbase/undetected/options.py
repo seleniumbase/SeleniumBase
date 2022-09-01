@@ -1,0 +1,57 @@
+#!/usr/bin/env python3
+import json
+import os
+from selenium.webdriver.chromium.options import ChromiumOptions
+
+
+class ChromeOptions(ChromiumOptions):
+    _session = None
+    _user_data_dir = None
+
+    @property
+    def user_data_dir(self):
+        return self._user_data_dir
+
+    @user_data_dir.setter
+    def user_data_dir(self, path):
+        """Sets the browser profile folder to use. Creates one if missing."""
+        abs_path = os.path.abspath(path)
+        self._user_data_dir = os.path.normpath(abs_path)
+
+    @staticmethod
+    def _undot_key(key, value):
+        """Turn a (dotted key, value) into a proper nested dict."""
+        if "." in key:
+            key, rest = key.split(".", 1)
+            value = ChromeOptions._undot_key(rest, value)
+        return {key: value}
+
+    def handle_prefs(self, user_data_dir):
+        prefs = self.experimental_options.get("prefs")
+        if prefs:
+            user_data_dir = user_data_dir or self._user_data_dir
+            default_path = os.path.join(user_data_dir, "Default")
+            os.makedirs(default_path, exist_ok=True)
+            undot_prefs = {}
+            for key, value in prefs.items():
+                undot_prefs.update(self._undot_key(key, value))
+            prefs_file = os.path.join(default_path, "Preferences")
+            if os.path.exists(prefs_file):
+                with open(prefs_file, encoding="latin1", mode="r") as f:
+                    undot_prefs.update(json.load(f))
+            with open(prefs_file, encoding="latin1", mode="w") as f:
+                json.dump(undot_prefs, f)
+            # Remove experimental_options to avoid errors
+            del self._experimental_options["prefs"]
+        exclude_switches = self.experimental_options.get("excludeSwitches")
+        if exclude_switches is not None:
+            del self._experimental_options["excludeSwitches"]
+        use_auto_ext = self.experimental_options.get("useAutomationExtension")
+        if use_auto_ext is not None:
+            del self._experimental_options["useAutomationExtension"]
+
+    @classmethod
+    def from_options(cls, options):
+        o = cls()
+        o.__dict__.update(options.__dict__)
+        return o

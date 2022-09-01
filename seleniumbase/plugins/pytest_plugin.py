@@ -86,6 +86,7 @@ def pytest_addoption(parser):
     --enable-ws  (Enable Web Security on Chromium-based browsers.)
     --enable-sync  (Enable "Chrome Sync".)
     --use-auto-ext  (Use Chrome's automation extension.)
+    --undetected  (Use an undetectable chromedriver to evade bot-detection.)
     --remote-debug  (Enable Chrome's Remote Debugger on http://localhost:9222)
     --final-debug  (Enter Debug Mode after each test ends. Don't use with CI!)
     --dashboard  (Enable the SeleniumBase Dashboard. Saved at: dashboard.html)
@@ -876,6 +877,17 @@ def pytest_addoption(parser):
                 features may need it.""",
     )
     parser.addoption(
+        "--undetected",
+        "--undetectable",
+        "--uc",  # undetected-chromedriver
+        action="store_true",
+        dest="undetectable",
+        default=False,
+        help="""Using this option makes chromedriver undetectable
+                to websites that use anti-bot services to block
+                automation tools from navigating them freely.""",
+    )
+    parser.addoption(
         "--no_sandbox",
         "--no-sandbox",
         action="store_true",
@@ -1217,6 +1229,21 @@ def pytest_addoption(parser):
             '\n  (Your browser choice was: "%s")\n' % browser_list[0]
         )
         raise Exception(message)
+    if (
+        browser_changes == 1
+        and browser_text not in ["chrome"]
+        and (
+            "--undetected" in sys_argv
+            or "--undetectable" in sys_argv
+            or "--uc" in sys_argv
+        )
+    ):
+        message = (
+            '\n\n  Undetected-Chromedriver Mode ONLY supports Chrome!'
+            '\n  ("--uc" / "--undetected" / "--undetectable")'
+            '\n  (Your browser choice was: "%s")\n' % browser_list[0]
+        )
+        raise Exception(message)
 
 
 def pytest_configure(config):
@@ -1315,6 +1342,7 @@ def pytest_configure(config):
         sb_config.enable_ws = True
     sb_config.enable_sync = config.getoption("enable_sync")
     sb_config.use_auto_ext = config.getoption("use_auto_ext")
+    sb_config.undetectable = config.getoption("undetectable")
     sb_config.no_sandbox = config.getoption("no_sandbox")
     sb_config.disable_gpu = config.getoption("disable_gpu")
     sb_config.remote_debug = config.getoption("remote_debug")

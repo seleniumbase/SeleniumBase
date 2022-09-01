@@ -776,6 +776,7 @@ def show_options():
     op += "--crumbs  (Clear all cookies between tests reusing a session.)\n"
     op += "--maximize  (Start tests with the web browser window maximized.)\n"
     op += "--dashboard  (Enable SeleniumBase's Dashboard at dashboard.html)\n"
+    op += "--uc  (Enable undetected-chromedriver to evade bot-detection.)\n"
     op += "--incognito  (Enable Chromium's Incognito mode.)\n"
     op += "--guest  (Enable Chromium's Guest mode.)\n"
     op += "-m=MARKER  (Run tests with the specified pytest marker.)\n"

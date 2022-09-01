@@ -163,6 +163,7 @@ def get_configured_sb(context):
     sb.enable_ws = False
     sb.enable_sync = False
     sb.use_auto_ext = False
+    sb.undetectable = False
     sb.no_sandbox = False
     sb.disable_gpu = False
     sb._multithreaded = False
@@ -481,6 +482,10 @@ def get_configured_sb(context):
         # Handle: -D use-auto-ext / use_auto_ext / auto-ext
         if low_key in ["use-auto-ext", "use_auto_ext", "auto-ext"]:
             sb.use_auto_ext = True
+            continue
+        # Handle: -D use-auto-ext / use_auto_ext / auto-ext
+        if low_key in ["undetected", "undetectable", "uc"]:
+            sb.undetectable = True
             continue
         # Handle: -D no-sandbox / no_sandbox
         if low_key in ["no-sandbox", "no_sandbox"]:
