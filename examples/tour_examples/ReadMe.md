@@ -8,7 +8,7 @@
 
 > **[IntroJS](https://introjs.com/)**, **[Bootstrap Tour](http://bootstraptour.com/)**, **[DriverJS](https://kamranahmed.info/driver.js/)**, **[Shepherd](https://shepherdjs.dev/)**, and **[Hopscotch](https://linkedinattic.github.io/hopscotch/)**.
 
-<b>Example tour: (with autoplay)</b>
+<b>A tour demo: (with autoplay)</b>
 
 <img src="https://seleniumbase.io/cdn/gif/introjs_tour.gif" title="SeleniumBase Tour of Google"><br>
 
@@ -19,7 +19,7 @@ cd examples/tour_examples
 pytest maps_introjs_tour.py --interval=1
 ```
 
-<b>Here's a longer example:</b>
+<b>Here's a longer version:</b>
 
 <img src="https://seleniumbase.io/cdn/gif/google_tour_4.gif" title="SeleniumBase Tour of Google"><br>
 
@@ -97,7 +97,7 @@ You can play a tour by calling:
 
 All methods have the optional ``name`` argument, which is only needed if you're creating multiple tours at once. Then, when you're adding a step or playing a tour, SeleniumBase knows which tour you're referring too. You can avoid using the ``name`` arg for multiple tours if you play a tour before creating a new one.
 
-### Here's an example of using SeleniumBase Tours:
+### Here's how the code looks:
 
 ```python
 from seleniumbase import BaseCase
@@ -122,7 +122,7 @@ class MyTourClass(BaseCase):
         self.play_tour()
 ```
 
-#### This example is from [google_tour.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/google_tour.py), which you can run from the ``examples/tour_examples`` folder with the following command:
+#### That code is from [google_tour.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/google_tour.py), which you can run from the ``tour_examples/`` folder with the following command:
 
 ```bash
 pytest google_tour.py

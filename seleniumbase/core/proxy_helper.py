@@ -5,9 +5,11 @@ from seleniumbase.fixtures import constants
 DOWNLOADS_DIR = constants.Files.DOWNLOADS_FOLDER
 PROXY_ZIP_PATH = os.path.join(DOWNLOADS_DIR, "proxy.zip")
 PROXY_ZIP_LOCK = os.path.join(DOWNLOADS_DIR, "proxy.lock")
+PROXY_DIR_PATH = os.path.join(DOWNLOADS_DIR, "proxy_ext_dir")
+PROXY_DIR_LOCK = os.path.join(DOWNLOADS_DIR, "proxy_dir.lock")
 
 
-def create_proxy_zip(proxy_string, proxy_user, proxy_pass):
+def create_proxy_ext(proxy_string, proxy_user, proxy_pass, zip_it=True):
     """Implementation of https://stackoverflow.com/a/35293284 for
     https://stackoverflow.com/questions/12848327/
     (Run Selenium on a proxy server that requires authentication.)
@@ -98,10 +100,23 @@ def create_proxy_zip(proxy_string, proxy_user, proxy_pass):
         downloads_path = os.path.join(abs_path, DOWNLOADS_DIR)
         if not os.path.exists(downloads_path):
             os.mkdir(downloads_path)
-        zf = zipfile.ZipFile(PROXY_ZIP_PATH, mode="w")
-        zf.writestr("background.js", background_js)
-        zf.writestr("manifest.json", manifest_json)
-        zf.close()
+        if zip_it:
+            zf = zipfile.ZipFile(PROXY_ZIP_PATH, mode="w")
+            zf.writestr("background.js", background_js)
+            zf.writestr("manifest.json", manifest_json)
+            zf.close()
+        else:
+            proxy_ext_dir = os.path.join(downloads_path, "proxy_ext_dir")
+            if not os.path.exists(proxy_ext_dir):
+                os.mkdir(proxy_ext_dir)
+            manifest_file = os.path.join(proxy_ext_dir, "manifest.json")
+            with open(manifest_file, mode="w") as f:
+                f.write(manifest_json)
+            proxy_host = proxy_string.split(":")[0]
+            proxy_port = proxy_string.split(":")[1]
+            background_file = os.path.join(proxy_ext_dir, "background.js")
+            with open(background_file, mode="w") as f:
+                f.write(background_js)
 
 
 def remove_proxy_zip_if_present():

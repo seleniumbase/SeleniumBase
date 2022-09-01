@@ -3155,6 +3155,7 @@ class BaseCase(unittest.TestCase):
         enable_ws=None,
         enable_sync=None,
         use_auto_ext=None,
+        undetectable=None,
         no_sandbox=None,
         disable_gpu=None,
         incognito=None,
@@ -3200,6 +3201,7 @@ class BaseCase(unittest.TestCase):
         enable_ws - the option to enable the Web Security feature (Chrome)
         enable_sync - the option to enable the Chrome Sync feature (Chrome)
         use_auto_ext - the option to enable Chrome's Automation Extension
+        undetectable - the option to use an undetectable chromedriver
         no_sandbox - the option to enable the "No-Sandbox" feature (Chrome)
         disable_gpu - the option to enable Chrome's "Disable GPU" feature
         incognito - the option to enable Chrome's Incognito mode (Chrome)
@@ -3289,6 +3291,8 @@ class BaseCase(unittest.TestCase):
             enable_sync = self.enable_sync
         if use_auto_ext is None:
             use_auto_ext = self.use_auto_ext
+        if undetectable is None:
+            undetectable = self.undetectable
         if no_sandbox is None:
             no_sandbox = self.no_sandbox
         if disable_gpu is None:
@@ -3366,6 +3370,7 @@ class BaseCase(unittest.TestCase):
             enable_ws=enable_ws,
             enable_sync=enable_sync,
             use_auto_ext=use_auto_ext,
+            undetectable=undetectable,
             no_sandbox=no_sandbox,
             disable_gpu=disable_gpu,
             incognito=incognito,
@@ -12511,6 +12516,7 @@ class BaseCase(unittest.TestCase):
                 self.enable_ws = True
             self.enable_sync = sb_config.enable_sync
             self.use_auto_ext = sb_config.use_auto_ext
+            self.undetectable = sb_config.undetectable
             self.no_sandbox = sb_config.no_sandbox
             self.disable_gpu = sb_config.disable_gpu
             self.incognito = sb_config.incognito
@@ -12799,6 +12805,7 @@ class BaseCase(unittest.TestCase):
                 enable_ws=self.enable_ws,
                 enable_sync=self.enable_sync,
                 use_auto_ext=self.use_auto_ext,
+                undetectable=self.undetectable,
                 no_sandbox=self.no_sandbox,
                 disable_gpu=self.disable_gpu,
                 incognito=self.incognito,

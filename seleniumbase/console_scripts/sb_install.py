@@ -6,7 +6,8 @@ Usage:
                     iedriver|operadriver} [OPTIONS]
 Options:
          VERSION         Specify the version.
-                         (Default chromedriver = 72.0.3626.69)
+                         Default chromedriver = 72.0.3626.69.
+                         Tries to detect the needed version.
                          Use "latest" for the latest version.
                          Use "latest-1" for one less than that.
          -p OR --path    Also copy the driver to /usr/local/bin
@@ -42,6 +43,9 @@ import zipfile
 from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
 
 urllib3.disable_warnings()
+selenium4_or_newer = False
+if sys.version_info[0] == 3 and sys.version_info[1] >= 7:
+    selenium4_or_newer = True
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 LOCAL_PATH = "/usr/local/bin/"  # On Mac and Linux systems
 DEFAULT_CHROMEDRIVER_VERSION = "72.0.3626.69"  # (Specify "latest" for latest)
@@ -62,6 +66,7 @@ def invalid_run_command():
     exp += "  Options:\n"
     exp += "           VERSION        Specify the version.\n"
     exp += "                           (Default chromedriver = 72.0.3626.69.\n"
+    exp += "                            Tries to detect the needed version.\n"
     exp += '                            Use "latest" for the latest version.\n'
     exp += "                            For chromedriver, you can also use\n"
     exp += "                            the major version integer\n"
@@ -185,6 +190,31 @@ def main(override=None):
     if name == "chromedriver":
         last = "https://chromedriver.storage.googleapis.com/LATEST_RELEASE"
         use_version = DEFAULT_CHROMEDRIVER_VERSION
+
+        if (
+            selenium4_or_newer
+            and not override
+            and (
+                num_args == 3
+                or (num_args == 4 and "-p" in sys.argv[3].lower())
+            )
+        ):
+            major_chrome_version = None
+            try:
+                from seleniumbase.core import detect_b_ver
+
+                br_app = "google-chrome"
+                major_chrome_version = (
+                    detect_b_ver.get_browser_version_from_os(br_app)
+                ).split(".")[0]
+                if int(major_chrome_version) < 72:
+                    major_chrome_version = None
+            except Exception:
+                major_chrome_version = None
+            if major_chrome_version and major_chrome_version.isnumeric():
+                num_args += 1
+                sys.argv.insert(3, major_chrome_version)
+
         get_latest = False
         get_v_latest = False
         get_latest_minus_one = False

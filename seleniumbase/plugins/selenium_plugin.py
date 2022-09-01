@@ -66,6 +66,7 @@ class SeleniumBrowser(Plugin):
     --enable-ws  (Enable Web Security on Chromium-based browsers.)
     --enable-sync  (Enable "Chrome Sync".)
     --use-auto-ext  (Use Chrome's automation extension.)
+    --undetected  (Use an undetectable chromedriver to evade bot-detection.)
     --remote-debug  (Enable Chrome's Remote Debugger on http://localhost:9222)
     --final-debug  (Enter Debug Mode after each test ends. Don't use with CI!)
     --swiftshader  (Use Chrome's "--use-gl=swiftshader" feature.)
@@ -602,6 +603,17 @@ class SeleniumBrowser(Plugin):
                     features may need it.""",
         )
         parser.add_option(
+            "--undetected",
+            "--undetectable",
+            "--uc",  # undetected-chromedriver
+            action="store_true",
+            dest="undetectable",
+            default=False,
+            help="""Using this option makes chromedriver undetectable
+                    to websites that use anti-bot services to block
+                    automation tools from navigating them freely.""",
+        )
+        parser.add_option(
             "--no_sandbox",
             "--no-sandbox",
             action="store_true",
@@ -850,6 +862,7 @@ class SeleniumBrowser(Plugin):
             test.test.enable_ws = True
         test.test.enable_sync = self.options.enable_sync
         test.test.use_auto_ext = self.options.use_auto_ext
+        test.test.undetectable = self.options.undetectable
         test.test.no_sandbox = self.options.no_sandbox
         test.test.disable_gpu = self.options.disable_gpu
         test.test.remote_debug = self.options.remote_debug

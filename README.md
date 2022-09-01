@@ -496,6 +496,7 @@ The code above will leave your browser window open in case there's a failure. (i
 --enable-ws  # (Enable Web Security on Chromium-based browsers.)
 --enable-sync  # (Enable "Chrome Sync".)
 --use-auto-ext  # (Use Chrome's automation extension.)
+--undetected  # (Use an undetectable chromedriver to evade bot-detection.)
 --remote-debug  # (Enable Chrome's Remote Debugger on http://localhost:9222)
 --final-debug  # (Enter Debug Mode after each test ends. Don't use with CI!)
 --dashboard  # (Enable the SeleniumBase Dashboard. Saved at: dashboard.html)

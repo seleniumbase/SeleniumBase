@@ -10,13 +10,13 @@ sbase get geckodriver
 sbase get edgedriver
 ```
 
-* If you have the latest version of Chrome installed, get the latest chromedriver (<i>otherwise it defaults to chromedriver 72.0.3626.69 for compatibility reasons</i>):
+* ``sbase get chromedriver`` automatically tries to detect the version you need. If it can't, it defaults to ``chromedriver 72.0.3626.69`` for compatibility reasons. To force getting the latest version, use:
 
 ```bash
 sbase get chromedriver latest
 ```
 
-* You can also install a specific version of chromedriver for a specific version of Chrome:
+* You can also get a specific version of chromedriver for a specific version of Chrome:
 
 ```bash
 sbase get chromedriver 102.0.5005.61
@@ -31,11 +31,11 @@ wget https://raw.githubusercontent.com/seleniumbase/SeleniumBase/master/examples
 pytest upgrade_chromedriver.py -s
 ```
 
-* If you run a test without the correct webdriver installed, the driver will be downloaded automatically.
+* If you run a test without the correct webdriver available, the driver will be downloaded automatically.
 
 If you plan on using the [Selenium Grid integration](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md) (which allows for remote webdriver), you'll need to put the drivers on your System PATH. On macOS and Linux, ``/usr/local/bin`` is a good PATH spot. On Windows, you may need to set the System PATH under Environment Variables to include the location where you placed the driver files. As a shortcut, you could place the driver files into your Python ``Scripts/`` folder in the location where you have Python installed, which should already be on your System PATH.
 
-Here's where you can go to manually install web drivers from the source:
+Here's where you can go to manually get web drivers from the source:
 
 * For Chrome, get [Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) on your System PATH.
 
@@ -69,7 +69,7 @@ brew upgrade geckodriver
 
 **Linux shortcuts**:
 
-If you still need the web drivers, here are some scripts to help you install chromedriver and geckodriver on a Linux machine:
+If you still need the web drivers, here are some scripts to help you get chromedriver and geckodriver on a Linux machine:
 
 ```bash
 wget https://chromedriver.storage.googleapis.com/72.0.3626.69/chromedriver_linux64.zip
