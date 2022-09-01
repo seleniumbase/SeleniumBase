@@ -132,6 +132,7 @@ def show_install_usage():
     print("  Options:")
     print("           VERSION         Specify the version to download.")
     print("                            (Default chromedriver = 72.0.3626.69.")
+    print("                             Tries to detect the needed version.")
     print('                             Use "latest" for the latest version.')
     print("                             For chromedriver, you can also use")
     print("                             the major version integer")
