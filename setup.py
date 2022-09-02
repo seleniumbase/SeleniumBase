@@ -292,6 +292,7 @@ setup(
         "seleniumbase.js_code",
         "seleniumbase.masterqa",
         "seleniumbase.plugins",
+        "seleniumbase.resources",
         "seleniumbase.translate",
         "seleniumbase.undetected",
         "seleniumbase.utilities",
