@@ -2,20 +2,19 @@
 # Minimum Python version: 3.7
 
 regex>=2022.8.17
-tqdm>=4.64.0
 docutils==0.19
 python-dateutil==2.8.2
 livereload==2.6.3
 joblib==1.1.0
 Markdown==3.3.7
 MarkupSafe==2.1.1
-keyring==23.9.0
+keyring==23.9.1
 pkginfo==1.8.3
 Jinja2==3.1.2
 click==8.1.3
 zipp==3.8.1
 ghp-import==2.1.0
-readme-renderer==37.0
+readme-renderer==37.1
 pymdown-extensions==9.5
 importlib-metadata==4.12.0
 bleach==5.0.1

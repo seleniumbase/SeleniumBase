@@ -10,8 +10,8 @@ class UndetectedTest(BaseCase):
     def test_browser_is_undetected(self):
         self.open("https://nowsecure.nl")
         try:
-            self.assert_text("OH YEAH, you passed!", "h1", timeout=6.6)
-            self.post_message("Browser wasn't detected!", duration=1.6)
-            self._print("\n Success! Website did not detect Selenium!")
+            self.assert_text("OH YEAH, you passed!", "h1", timeout=6.75)
+            self.post_message("Selenium wasn't detected!", duration=1.6)
+            self._print("\n Success! Website did not detect Selenium! ")
         except Exception:
-            self.fail('Browser was detected! Try using: "pytest --uc"')
+            self.fail('Selenium was detected! Try using: "pytest --uc"')

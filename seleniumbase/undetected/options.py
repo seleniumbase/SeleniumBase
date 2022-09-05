@@ -26,6 +26,17 @@ class ChromeOptions(ChromiumOptions):
             value = ChromeOptions._undot_key(rest, value)
         return {key: value}
 
+    @staticmethod
+    def _merge_nested(a, b):
+        """Merges b into a, overwriting duplicate leaf values using b."""
+        for key in b:
+            if key in a:
+                if isinstance(a[key], dict) and isinstance(b[key], dict):
+                    ChromeOptions._merge_nested(a[key], b[key])
+                    continue
+            a[key] = b[key]
+        return a
+
     def handle_prefs(self, user_data_dir):
         prefs = self.experimental_options.get("prefs")
         if prefs:
@@ -34,11 +45,13 @@ class ChromeOptions(ChromiumOptions):
             os.makedirs(default_path, exist_ok=True)
             undot_prefs = {}
             for key, value in prefs.items():
-                undot_prefs.update(self._undot_key(key, value))
+                undot_prefs = self._merge_nested(
+                    undot_prefs, self._undot_key(key, value)
+                )
             prefs_file = os.path.join(default_path, "Preferences")
             if os.path.exists(prefs_file):
                 with open(prefs_file, encoding="latin1", mode="r") as f:
-                    undot_prefs.update(json.load(f))
+                    undot_prefs = self._merge_nested(json.load(f), undot_prefs)
             with open(prefs_file, encoding="latin1", mode="w") as f:
                 json.dump(undot_prefs, f)
             # Remove experimental_options to avoid errors

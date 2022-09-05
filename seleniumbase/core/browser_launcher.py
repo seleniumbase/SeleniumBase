@@ -227,7 +227,7 @@ def _add_chrome_proxy_extension(
             chrome_options = add_chrome_ext_dir(chrome_options, PROXY_DIR_PATH)
 
     else:
-        # Pytest multi-threaded test
+        # Pytest multithreaded test
         if zip_it:
             proxy_zip_lock = fasteners.InterProcessLock(PROXY_ZIP_LOCK)
             with proxy_zip_lock:
@@ -2007,6 +2007,8 @@ def get_local_driver(
                 )
                 driver = Edge(service=service, options=edge_options)
             except Exception as e:
+                if not hasattr(e, "msg"):
+                    raise
                 auto_upgrade_edgedriver = False
                 edge_version = None
                 if (
@@ -2063,6 +2065,8 @@ def get_local_driver(
                     capabilities=capabilities,
                 )
             except Exception as e:
+                if not hasattr(e, "msg"):
+                    raise
                 auto_upgrade_edgedriver = False
                 edge_version = None
                 if (
@@ -2114,7 +2118,7 @@ def get_local_driver(
         arg_join = " ".join(sys.argv)
         if ("-n" in sys.argv) or (" -n=" in arg_join) or (arg_join == "-c"):
             # Skip if multithreaded
-            raise Exception("Can't run Safari tests in multi-threaded mode!")
+            raise Exception("Can't run Safari tests in multithreaded mode!")
         warnings.simplefilter("ignore", category=DeprecationWarning)
         return webdriver.safari.webdriver.WebDriver(quiet=False)
     elif browser_name == constants.Browser.OPERA:
@@ -2343,21 +2347,36 @@ def get_local_driver(
                         or is_using_uc(undetectable, browser_name)
                     ):
                         if selenium4_or_newer:
+                            if headless and "linux" not in PLATFORM:
+                                undetectable = False  # No support for headless
                             if undetectable:
                                 from seleniumbase import undetected
                                 from urllib.error import URLError
 
                                 if "linux" in PLATFORM:
-                                    chrome_options.headless = False  # Use xvfb
+                                    chrome_options.headless = False  # Use Xvfb
+                                    if "--headless" in (
+                                        chrome_options.arguments
+                                    ):
+                                        chrome_options.arguments.remove(
+                                            "--headless"
+                                        )
                                 cert = "unable to get local issuer certificate"
+                                uc_chrome_version = None
+                                if (
+                                    use_version.isnumeric
+                                    and int(use_version) >= 72
+                                ):
+                                    uc_chrome_version = int(use_version)
                                 uc_lock = fasteners.InterProcessLock(
                                     constants.MultiBrowser.DRIVER_FIXING_LOCK
                                 )
-                                with uc_lock:
+                                with uc_lock:  # No UC multithreaded tests
                                     try:
                                         driver = undetected.Chrome(
                                             options=chrome_options,
-                                            headless=headless,
+                                            headless=False,  # Xvfb needed
+                                            version_main=uc_chrome_version,
                                         )
                                     except URLError as e:
                                         if (
@@ -2371,7 +2390,8 @@ def get_local_driver(
                                             )
                                             driver = undetected.Chrome(
                                                 options=chrome_options,
-                                                headless=headless,
+                                                headless=False,  # Xvfb needed
+                                                version_main=uc_chrome_version,
                                             )
                                         else:
                                             raise
@@ -2402,6 +2422,8 @@ def get_local_driver(
                                 service_log_path=os.devnull,
                             )
                 except Exception as e:
+                    if not hasattr(e, "msg"):
+                        raise
                     auto_upgrade_chromedriver = False
                     if "This version of ChromeDriver only supports" in e.msg:
                         auto_upgrade_chromedriver = True
@@ -2513,6 +2535,8 @@ def get_local_driver(
                 try:
                     return webdriver.Chrome(options=chrome_options)
                 except Exception as e:
+                    if not hasattr(e, "msg"):
+                        raise
                     auto_upgrade_chromedriver = False
                     if "This version of ChromeDriver only supports" in e.msg:
                         auto_upgrade_chromedriver = True
