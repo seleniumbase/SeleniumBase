@@ -227,7 +227,7 @@ def _add_chrome_proxy_extension(
             chrome_options = add_chrome_ext_dir(chrome_options, PROXY_DIR_PATH)
 
     else:
-        # Pytest multi-threaded test
+        # Pytest multithreaded test
         if zip_it:
             proxy_zip_lock = fasteners.InterProcessLock(PROXY_ZIP_LOCK)
             with proxy_zip_lock:
@@ -2118,7 +2118,7 @@ def get_local_driver(
         arg_join = " ".join(sys.argv)
         if ("-n" in sys.argv) or (" -n=" in arg_join) or (arg_join == "-c"):
             # Skip if multithreaded
-            raise Exception("Can't run Safari tests in multi-threaded mode!")
+            raise Exception("Can't run Safari tests in multithreaded mode!")
         warnings.simplefilter("ignore", category=DeprecationWarning)
         return webdriver.safari.webdriver.WebDriver(quiet=False)
     elif browser_name == constants.Browser.OPERA:

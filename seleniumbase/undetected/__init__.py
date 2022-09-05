@@ -117,9 +117,8 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         suppress_welcome: (default: True)
             Suppress the Chrome welcome screen that appears on first-time runs.
 
-        use_subprocess:
-            False (default) Give Chrome its own process,
-                            rather than subprocessing chromedriver or python.
+        use_subprocess: (default: False)
+            Subprocess chromedriver/python: Don't make Chrome a parent process.
         """
         self.debug = debug
         patcher = Patcher(
