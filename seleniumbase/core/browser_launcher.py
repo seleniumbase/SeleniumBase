@@ -2007,6 +2007,8 @@ def get_local_driver(
                 )
                 driver = Edge(service=service, options=edge_options)
             except Exception as e:
+                if not hasattr(e, "msg"):
+                    raise
                 auto_upgrade_edgedriver = False
                 edge_version = None
                 if (
@@ -2063,6 +2065,8 @@ def get_local_driver(
                     capabilities=capabilities,
                 )
             except Exception as e:
+                if not hasattr(e, "msg"):
+                    raise
                 auto_upgrade_edgedriver = False
                 edge_version = None
                 if (
@@ -2402,6 +2406,8 @@ def get_local_driver(
                                 service_log_path=os.devnull,
                             )
                 except Exception as e:
+                    if not hasattr(e, "msg"):
+                        raise
                     auto_upgrade_chromedriver = False
                     if "This version of ChromeDriver only supports" in e.msg:
                         auto_upgrade_chromedriver = True
@@ -2513,6 +2519,8 @@ def get_local_driver(
                 try:
                     return webdriver.Chrome(options=chrome_options)
                 except Exception as e:
+                    if not hasattr(e, "msg"):
+                        raise
                     auto_upgrade_chromedriver = False
                     if "This version of ChromeDriver only supports" in e.msg:
                         auto_upgrade_chromedriver = True
