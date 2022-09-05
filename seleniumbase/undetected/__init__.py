@@ -237,7 +237,10 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                 mode="r+",
             ) as fs:
                 config = json.load(fs)
-                if config["profile"]["exit_type"] is not None:
+                if (
+                    "exit_type" not in config["profile"].keys()
+                    or config["profile"]["exit_type"] is not None
+                ):
                     config["profile"]["exit_type"] = None
                 fs.seek(0, 0)
                 json.dump(config, fs)
