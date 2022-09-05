@@ -2347,21 +2347,36 @@ def get_local_driver(
                         or is_using_uc(undetectable, browser_name)
                     ):
                         if selenium4_or_newer:
+                            if headless and "linux" not in PLATFORM:
+                                undetectable = False  # No support for headless
                             if undetectable:
                                 from seleniumbase import undetected
                                 from urllib.error import URLError
 
                                 if "linux" in PLATFORM:
-                                    chrome_options.headless = False  # Use xvfb
+                                    chrome_options.headless = False  # Use Xvfb
+                                    if "--headless" in (
+                                        chrome_options.arguments
+                                    ):
+                                        chrome_options.arguments.remove(
+                                            "--headless"
+                                        )
                                 cert = "unable to get local issuer certificate"
+                                uc_chrome_version = None
+                                if (
+                                    use_version.isnumeric
+                                    and int(use_version) >= 72
+                                ):
+                                    uc_chrome_version = int(use_version)
                                 uc_lock = fasteners.InterProcessLock(
                                     constants.MultiBrowser.DRIVER_FIXING_LOCK
                                 )
-                                with uc_lock:
+                                with uc_lock:  # No UC multithreaded tests
                                     try:
                                         driver = undetected.Chrome(
                                             options=chrome_options,
-                                            headless=headless,
+                                            headless=False,  # Xvfb needed
+                                            version_main=uc_chrome_version,
                                         )
                                     except URLError as e:
                                         if (
@@ -2375,7 +2390,8 @@ def get_local_driver(
                                             )
                                             driver = undetected.Chrome(
                                                 options=chrome_options,
-                                                headless=headless,
+                                                headless=False,  # Xvfb needed
+                                                version_main=uc_chrome_version,
                                             )
                                         else:
                                             raise
