@@ -51,7 +51,7 @@ if sys.argv[-1] == "publish":
         print("\n*** Installing twine: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'twine>=4.0.1'")
         print("\n*** Installing tqdm: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'tqdm>=4.64.0'")
+        os.system("python -m pip install --upgrade tqdm")
         print("\n*** Rebuilding distribution packages: ***\n")
         os.system("python -m build")  # Create new tar/wheel
         print("\n*** Publishing The Release to PyPI: ***\n")
@@ -134,6 +134,7 @@ setup(
         'setuptools>=65.3.0;python_version>="3.7"',
         'tomli>=1.2.3;python_version>="3.6" and python_version<"3.7"',
         'tomli>=2.0.1;python_version>="3.7"',
+        "tqdm>=4.64.1",
         "wheel>=0.37.1",
         'attrs>=21.4.0;python_version<"3.6"',
         'attrs>=22.1.0;python_version>="3.6"',
@@ -193,7 +194,7 @@ setup(
         'py==1.11.0;python_version>="3.6"',
         'pytest==4.6.11;python_version<"3.6"',
         'pytest==7.0.1;python_version>="3.6" and python_version<"3.7"',
-        'pytest==7.1.2;python_version>="3.7"',
+        'pytest==7.1.3;python_version>="3.7"',
         'pytest-forked==1.3.0;python_version<"3.6"',
         'pytest-forked==1.4.0;python_version>="3.6"',
         'pytest-html==1.22.1;python_version<"3.6"',
@@ -221,7 +222,7 @@ setup(
         'pygments==2.5.2;python_version<"3.6"',
         'pygments==2.13.0;python_version>="3.6"',
         'prompt-toolkit==1.0.18;python_version<"3.6"',
-        'prompt-toolkit==3.0.30;python_version>="3.6"',
+        'prompt-toolkit==3.0.31;python_version>="3.6"',
         'decorator==4.4.2;python_version<"3.6"',
         'decorator==5.1.1;python_version>="3.6"',
         'ipython==5.10.0;python_version<"3.6"',
