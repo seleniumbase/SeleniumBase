@@ -440,20 +440,20 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         )
 
     def quit(self):
-        logger.debug("Closing webdriver")
-        if hasattr(self, "service") and getattr(self.service, "process", None):
-            self.service.process.kill()
         try:
-            if self.reactor and isinstance(self.reactor, Reactor):
-                logger.debug("shutting down reactor")
-                self.reactor.event.set()
-        except Exception:
-            pass
-        try:
-            logger.debug("Killing browser")
+            logger.debug("Terminating the browser")
             os.kill(self.browser_pid, 15)
         except TimeoutError as e:
             logger.debug(e, exc_info=True)
+        except Exception:
+            pass
+        if hasattr(self, "service") and getattr(self.service, "process", None):
+            logger.debug("Stopping webdriver service")
+            self.service.stop()
+        try:
+            if self.reactor and isinstance(self.reactor, Reactor):
+                logger.debug("Shutting down reactor")
+                self.reactor.event.set()
         except Exception:
             pass
         if (
@@ -486,10 +486,17 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
 
     def __del__(self):
         try:
-            super().quit()
+            if "win32" in PLATFORM:
+                self.stop_client()
+                self.command_executor.close()
+            else:
+                super().quit()
         except Exception:
             pass
-        self.quit()
+        try:
+            self.quit()
+        except Exception:
+            pass
 
     def __enter__(self):
         return self
