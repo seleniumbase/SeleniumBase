@@ -38,6 +38,7 @@ sbase grid-node start --hub=127.0.0.1
 
 import colorama
 import sys
+from seleniumbase.fixtures import constants
 
 colorama.init(autoreset=True)
 
@@ -947,11 +948,18 @@ def main():
             import time
             from seleniumbase.console_scripts import sb_install
 
+            need_retry = False
             try:
                 sb_install.main()
-            except Exception:
-                print("\nDriver download failed! Retrying in two seconds...")
-                time.sleep(2)
+            except Exception as e:
+                invalid_run_cmd = constants.Warnings.INVALID_RUN_COMMAND
+                if invalid_run_cmd in e.args[0].split("\n")[0]:
+                    raise
+                print("\nDriver download failed! Retrying in 3 seconds...")
+                time.sleep(3)
+                print()
+                need_retry = True
+            if need_retry:
                 sb_install.main()
         else:
             show_basic_usage()
