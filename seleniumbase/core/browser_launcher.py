@@ -278,9 +278,13 @@ def add_chrome_ext_dir(chrome_options, dir_path):
         if arg.startswith("--load-extension="):
             option_exists = True
             chrome_options.arguments.remove(arg)
-            chrome_options.add_argument("%s,%s" % (arg, dir_path))
+            chrome_options.add_argument(
+                "%s,%s" % (arg, os.path.realpath(dir_path))
+            )
     if not option_exists:
-        chrome_options.add_argument("--load-extension=%s" % dir_path)
+        chrome_options.add_argument(
+            "--load-extension=%s" % os.path.realpath(dir_path)
+        )
     return chrome_options
 
 
