@@ -40,6 +40,7 @@ import sys
 import tarfile
 import urllib3
 import zipfile
+from seleniumbase.fixtures import constants
 from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
 
 urllib3.disable_warnings()
@@ -91,7 +92,7 @@ def invalid_run_command():
     exp += "          (iedriver is required for InternetExplorer automation)\n"
     exp += "          (operadriver is required for Opera Browser automation)\n"
     print("")
-    raise Exception("INVALID RUN COMMAND!\n\n%s" % exp)
+    raise Exception("%s\n\n%s" % (constants.Warnings.INVALID_RUN_COMMAND, exp))
 
 
 def make_executable(file_path):
@@ -529,12 +530,14 @@ def main(override=None):
     if file_name is None or download_url is None:
         invalid_run_command()
 
-    file_path = downloads_folder + "/" + file_name
+    file_path = os.path.join(downloads_folder, file_name)
     if not os.path.exists(downloads_folder):
         os.makedirs(downloads_folder)
 
     if headless_ie_exists:
-        headless_ie_file_path = downloads_folder + "/" + headless_ie_file_name
+        headless_ie_file_path = os.path.join(
+            downloads_folder, headless_ie_file_name
+        )
         print(
             "\nDownloading %s from:\n%s ..."
             % (headless_ie_file_name, headless_ie_url)
@@ -572,7 +575,7 @@ def main(override=None):
         for f_name in contents:
             # Remove existing version if exists
             str_name = str(f_name)
-            new_file = downloads_folder + "/" + str_name
+            new_file = os.path.join(downloads_folder, str_name)
             if str_name == "%s/headless_ie_selenium.exe" % h_ie_fn:
                 driver_file = str_name
                 driver_path = new_file
@@ -628,7 +631,7 @@ def main(override=None):
                 raise Exception("Zip file for OperaDriver is missing content!")
             for f_name in contents:
                 # Remove existing version if exists
-                new_file = downloads_folder + "/" + str(f_name)
+                new_file = os.path.join(downloads_folder, str(f_name))
                 if "Driver" in new_file or "driver" in new_file:
                     if os.path.exists(new_file):
                         os.remove(new_file)  # Technically the old file now
@@ -638,7 +641,7 @@ def main(override=None):
             os.remove(zip_file_path)
             print("Unzip Complete!\n")
             for f_name in contents:
-                new_file = downloads_folder + "/" + str(f_name)
+                new_file = os.path.join(downloads_folder, str(f_name))
                 pr_file = c3 + new_file + cr
                 print("The file [%s] was saved to:\n%s\n" % (f_name, pr_file))
                 print("Making [%s %s] executable ..." % (f_name, use_version))
@@ -685,7 +688,7 @@ def main(override=None):
                 print(f_name)
                 # Remove existing version if exists
                 str_name = str(f_name)
-                new_file = downloads_folder + "/" + str_name
+                new_file = os.path.join(downloads_folder, str_name)
                 if "darwin" in sys_plat or "linux" in sys_plat:
                     # Mac / Linux
                     if str_name == "msedgedriver":
@@ -715,9 +718,9 @@ def main(override=None):
             for file_to_remove in to_remove:
                 if os.path.exists(file_to_remove):
                     os.remove(file_to_remove)
-            if os.path.exists(downloads_folder + "/" + "Driver_Notes/"):
+            if os.path.exists(os.path.join(downloads_folder, "Driver_Notes/")):
                 # Only works if the directory is empty
-                os.rmdir(downloads_folder + "/" + "Driver_Notes/")
+                os.rmdir(os.path.join(downloads_folder, "Driver_Notes/"))
             print(
                 "The file [%s] was saved to:\n%s\n"
                 % (driver_file, driver_path)
@@ -740,7 +743,7 @@ def main(override=None):
             for f_name in contents:
                 # Remove existing version if exists
                 str_name = str(f_name).split(inner_folder)[1]
-                new_file = downloads_folder + "/" + str_name
+                new_file = os.path.join(downloads_folder, str_name)
                 if str_name == "operadriver" or str_name == "operadriver.exe":
                     driver_file = str_name
                     driver_path = new_file
@@ -753,8 +756,12 @@ def main(override=None):
             zip_ref.close()
             os.remove(zip_file_path)
             print("Unzip Complete!\n")
-            inner_driver = downloads_folder + "/" + inner_folder + driver_file
-            inner_sha = downloads_folder + "/" + inner_folder + "sha512_sum"
+            inner_driver = os.path.join(
+                downloads_folder, inner_folder, driver_file
+            )
+            inner_sha = os.path.join(
+                downloads_folder, inner_folder, "sha512_sum"
+            )
             shutil.copyfile(inner_driver, driver_path)
             pr_driver_path = c3 + driver_path + cr
             print(
@@ -774,9 +781,9 @@ def main(override=None):
                 os.remove(inner_driver)
             if os.path.exists(inner_sha):
                 os.remove(inner_sha)
-            if os.path.exists(downloads_folder + "/" + inner_folder):
+            if os.path.exists(os.path.join(downloads_folder, inner_folder)):
                 # Only works if the directory is empty
-                os.rmdir(downloads_folder + "/" + inner_folder)
+                os.rmdir(os.path.join(downloads_folder, inner_folder))
             print("")
         elif len(contents) == 0:
             raise Exception("Zip file %s is empty!" % zip_file_path)
@@ -789,7 +796,7 @@ def main(override=None):
         if len(contents) == 1:
             for f_name in contents:
                 # Remove existing version if exists
-                new_file = downloads_folder + "/" + str(f_name)
+                new_file = os.path.join(downloads_folder, str(f_name))
                 if "Driver" in new_file or "driver" in new_file:
                     if os.path.exists(new_file):
                         os.remove(new_file)  # Technically the old file now
@@ -799,7 +806,7 @@ def main(override=None):
             os.remove(tar_file_path)
             print("Unzip Complete!\n")
             for f_name in contents:
-                new_file = downloads_folder + "/" + str(f_name)
+                new_file = os.path.join(downloads_folder, str(f_name))
                 pr_file = c3 + new_file + cr
                 print("The file [%s] was saved to:\n%s\n" % (f_name, pr_file))
                 print("Making [%s %s] executable ..." % (f_name, use_version))
