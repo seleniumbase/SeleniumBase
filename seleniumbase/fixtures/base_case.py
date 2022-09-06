@@ -13039,7 +13039,11 @@ class BaseCase(unittest.TestCase):
                 if (
                     not is_windows
                     or self.browser == "ie"
-                    or driver.service.process
+                    or self.servername != "localhost"
+                    or (
+                        hasattr(driver, "service")
+                        and driver.service.process
+                    )
                 ):
                     if not delay_driver_quit:
                         driver.quit()
