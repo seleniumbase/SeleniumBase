@@ -2155,7 +2155,7 @@ class BaseCase(unittest.TestCase):
             chromedriver_version = chromedriver_version.split(" ")[0]
             major_chromedriver_version = chromedriver_version.split(".")[0]
             install_sb = (
-                "seleniumbase install chromedriver %s" % major_chrome_version
+                "seleniumbase get chromedriver %s" % major_chrome_version
             )
             if int(major_chromedriver_version) < int(major_chrome_version):
                 # Upgrading the driver is required for performing hover actions
@@ -6970,7 +6970,7 @@ class BaseCase(unittest.TestCase):
                                 "(Current driver version is: %s)"
                                 "\n(Minimum driver version is: 96.*)"
                                 "\nTo upgrade, run this:"
-                                '\n"seleniumbase install chromedriver %s"'
+                                '\n"seleniumbase get chromedriver %s"'
                                 % (chromedriver_version, upgrade_to)
                             )
                             raise Exception(message)
@@ -11960,7 +11960,7 @@ class BaseCase(unittest.TestCase):
             ):
                 raise Exception(e)
             install_sb = (
-                "seleniumbase install chromedriver %s" % major_chrome_version
+                "seleniumbase get chromedriver %s" % major_chrome_version
             )
             if int(major_chromedriver_version) < int(major_chrome_version):
                 # Upgrading the driver is needed for performing canvas actions
