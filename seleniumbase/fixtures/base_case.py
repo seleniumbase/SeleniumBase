@@ -291,20 +291,19 @@ class BaseCase(unittest.TestCase):
         pre_action_url = self.driver.current_url
         pre_window_count = len(self.driver.window_handles)
         try:
-            if self.browser == "ie" and by == By.LINK_TEXT:
-                # An issue with clicking Link Text on IE means using jquery
+            if (
+                by == By.LINK_TEXT
+                and (
+                    self.browser == "ie" or self.browser == "safari"
+                )
+            ):
                 self.__jquery_click(selector, by=by)
-            elif self.browser == "safari":
-                if by == By.LINK_TEXT:
-                    self.__jquery_click(selector, by=by)
-                else:
-                    self.__js_click(selector, by=by)
             else:
                 href = None
                 new_tab = False
                 onclick = None
                 try:
-                    if self.headless and element.tag_name == "a":
+                    if self.headless and element.tag_name.lower() == "a":
                         # Handle a special case of opening a new tab (headless)
                         href = element.get_attribute("href").strip()
                         onclick = element.get_attribute("onclick")
@@ -343,11 +342,8 @@ class BaseCase(unittest.TestCase):
                 self.__scroll_to_element(element, selector, by)
             except Exception:
                 pass
-            if self.browser == "safari":
-                if by == By.LINK_TEXT:
-                    self.__jquery_click(selector, by=by)
-                else:
-                    self.__js_click(selector, by=by)
+            if self.browser == "safari" and by == By.LINK_TEXT:
+                self.__jquery_click(selector, by=by)
             else:
                 element.click()
         except ENI_Exception:
@@ -364,7 +360,7 @@ class BaseCase(unittest.TestCase):
             new_tab = False
             onclick = None
             try:
-                if element.tag_name == "a":
+                if element.tag_name.lower() == "a":
                     # Handle a special case of opening a new tab (non-headless)
                     href = element.get_attribute("href").strip()
                     onclick = element.get_attribute("onclick")
@@ -1449,10 +1445,11 @@ class BaseCase(unittest.TestCase):
         try:
             element_text = element.text
             if self.browser == "safari":
-                element_text = element.get_attribute("innerText")
-            if element.tag_name == "input":
-                element_text = element.get_property("value")
-            if element.tag_name == "textarea":
+                if element.tag_name.lower() in ["input", "textarea"]:
+                    element_text = element.get_attribute("value")
+                else:
+                    element_text = element.get_attribute("innerText")
+            elif element.tag_name.lower() in ["input", "textarea"]:
                 element_text = element.get_property("value")
         except (StaleElementReferenceException, ENI_Exception):
             self.wait_for_ready_state_complete()
@@ -1462,8 +1459,11 @@ class BaseCase(unittest.TestCase):
             )
             element_text = element.text
             if self.browser == "safari":
-                element_text = element.get_attribute("innerText")
-            if element.tag_name == "input":
+                if element.tag_name.lower() in ["input", "textarea"]:
+                    element_text = element.get_attribute("value")
+                else:
+                    element_text = element.get_attribute("innerText")
+            elif element.tag_name.lower() in ["input", "textarea"]:
                 element_text = element.get_property("value")
         return element_text
 
@@ -2128,9 +2128,6 @@ class BaseCase(unittest.TestCase):
         original_selector = selector
         original_by = by
         selector, by = self.__recalculate_selector(selector, by)
-        if page_utils.is_xpath_selector(selector):
-            selector = self.convert_to_css_selector(selector, By.XPATH)
-            by = By.CSS_SELECTOR
         self.wait_for_element_visible(
             original_selector, by=original_by, timeout=settings.SMALL_TIMEOUT
         )
@@ -2138,11 +2135,11 @@ class BaseCase(unittest.TestCase):
         self.scroll_to(selector, by=by)
         time.sleep(0.05)  # Settle down from scrolling before hovering
         if self.browser != "chrome":
-            return page_actions.hover_on_element(self.driver, selector)
+            return page_actions.hover_on_element(self.driver, selector, by)
         # Using Chrome
         # (Pure hover actions won't work on early chromedriver versions)
         try:
-            return page_actions.hover_on_element(self.driver, selector)
+            return page_actions.hover_on_element(self.driver, selector, by)
         except WebDriverException as e:
             driver_capabilities = self.driver.capabilities
             if "version" in driver_capabilities:
@@ -2191,8 +2188,6 @@ class BaseCase(unittest.TestCase):
         hover_selector, hover_by = self.__recalculate_selector(
             hover_selector, hover_by
         )
-        hover_selector = self.convert_to_css_selector(hover_selector, hover_by)
-        hover_by = By.CSS_SELECTOR
         original_click_selector = click_selector
         click_selector, click_by = self.__recalculate_selector(
             click_selector, click_by
@@ -2224,9 +2219,6 @@ class BaseCase(unittest.TestCase):
             if self.mobile_emulator:
                 # On mobile, click to hover the element
                 dropdown_element.click()
-            elif self.browser == "safari":
-                # Use the workaround for hover-clicking on Safari
-                raise Exception("This Exception will be caught.")
             else:
                 page_actions.hover_element(self.driver, dropdown_element)
         except Exception:
@@ -2269,6 +2261,12 @@ class BaseCase(unittest.TestCase):
             )
         ):
             self.__switch_to_newest_window_if_not_blank()
+        elif self.browser == "safari":
+            # Release the hover by hovering elsewhere
+            try:
+                page_actions.hover_on_element(self.driver, "body")
+            except Exception:
+                pass
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self.__demo_mode_pause_if_active()
@@ -2630,10 +2628,11 @@ class BaseCase(unittest.TestCase):
             raise Exception("The attribute must be in %s" % allowed_attributes)
         selector, by = self.__recalculate_selector(selector, by)
         element = self.wait_for_element(selector, by=by, timeout=timeout)
-        if element.tag_name != "select":
+        if element.tag_name.lower() != "select":
             raise Exception(
                 'Element tag_name for get_select_options(selector) must be a '
-                '"select"! Actual tag_name found was: "%s"' % element.tag_name
+                '"select"! Actual tag_name found was: "%s"'
+                % element.tag_name.lower()
             )
         if by != "css selector":
             selector = self.convert_to_css_selector(selector, by=by)
@@ -2717,9 +2716,13 @@ class BaseCase(unittest.TestCase):
         html_string = html_string.replace("\\ ", " ")
 
         if new_page:
-            self.open("data:text/html,")
+            self.open("data:text/html,<head></head><body></body>")
         inner_head = """document.getElementsByTagName("head")[0].innerHTML"""
         inner_body = """document.getElementsByTagName("body")[0].innerHTML"""
+        try:
+            self.wait_for_element_present("body", timeout=1)
+        except Exception:
+            pass
         if not found_body:
             self.execute_script('''%s = \"%s\"''' % (inner_body, html_string))
         elif found_body and not found_head:
@@ -5102,13 +5105,16 @@ class BaseCase(unittest.TestCase):
             original_selector, by=original_by, timeout=timeout
         )
         try:
-            scroll_distance = js_utils.get_scroll_distance_to_element(
-                self.driver, element
-            )
-            if abs(scroll_distance) > constants.Values.SSMD:
-                self.__jquery_slow_scroll_to(selector, by)
+            if self.browser != "safari":
+                scroll_distance = js_utils.get_scroll_distance_to_element(
+                    self.driver, element
+                )
+                if abs(scroll_distance) > constants.Values.SSMD:
+                    self.__jquery_slow_scroll_to(selector, by)
+                else:
+                    self.__slow_scroll_to_element(element)
             else:
-                self.__slow_scroll_to_element(element)
+                self.__jquery_slow_scroll_to(selector, by)
         except Exception:
             self.wait_for_ready_state_complete()
             time.sleep(0.12)
@@ -6721,7 +6727,7 @@ class BaseCase(unittest.TestCase):
         element = page_actions.wait_for_element_present(
             self.driver, selector, by, timeout
         )
-        if element.tag_name == "input" or element.tag_name == "textarea":
+        if element.tag_name.lower() in ["input", "textarea"]:
             self.js_update_text(selector, text, by=by, timeout=timeout)
         else:
             self.set_text_content(selector, text, by=by, timeout=timeout)
@@ -6741,7 +6747,7 @@ class BaseCase(unittest.TestCase):
         element = page_actions.wait_for_element_present(
             self.driver, selector, by, timeout
         )
-        if element.tag_name == "input" or element.tag_name == "textarea":
+        if element.tag_name.lower() in ["input", "textarea"]:
             self.js_update_text(selector, text, by=by, timeout=timeout)
             return
         orginal_selector = selector
@@ -12255,13 +12261,16 @@ class BaseCase(unittest.TestCase):
                 selector, by=by, timeout=settings.SMALL_TIMEOUT
             )
             try:
-                scroll_distance = js_utils.get_scroll_distance_to_element(
-                    self.driver, element
-                )
-                if abs(scroll_distance) > constants.Values.SSMD:
-                    self.__jquery_slow_scroll_to(selector, by)
+                if self.browser != "safari":
+                    scroll_distance = js_utils.get_scroll_distance_to_element(
+                        self.driver, element
+                    )
+                    if abs(scroll_distance) > constants.Values.SSMD:
+                        self.__jquery_slow_scroll_to(selector, by)
+                    else:
+                        self.__slow_scroll_to_element(element)
                 else:
-                    self.__slow_scroll_to_element(element)
+                    self.__jquery_slow_scroll_to(selector, by)
             except (StaleElementReferenceException, ENI_Exception):
                 self.wait_for_ready_state_complete()
                 time.sleep(0.12)
@@ -12295,13 +12304,16 @@ class BaseCase(unittest.TestCase):
             selector, by=by, timeout=settings.SMALL_TIMEOUT
         )
         try:
-            scroll_distance = js_utils.get_scroll_distance_to_element(
-                self.driver, element
-            )
-            if abs(scroll_distance) > constants.Values.SSMD:
-                self.__jquery_slow_scroll_to(selector, by)
+            if self.browser != "safari":
+                scroll_distance = js_utils.get_scroll_distance_to_element(
+                    self.driver, element
+                )
+                if abs(scroll_distance) > constants.Values.SSMD:
+                    self.__jquery_slow_scroll_to(selector, by)
+                else:
+                    self.__slow_scroll_to_element(element)
             else:
-                self.__slow_scroll_to_element(element)
+                self.__jquery_slow_scroll_to(selector, by)
         except Exception:
             self.wait_for_ready_state_complete()
             time.sleep(0.12)
