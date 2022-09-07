@@ -2128,9 +2128,6 @@ class BaseCase(unittest.TestCase):
         original_selector = selector
         original_by = by
         selector, by = self.__recalculate_selector(selector, by)
-        if page_utils.is_xpath_selector(selector):
-            selector = self.convert_to_css_selector(selector, By.XPATH)
-            by = By.CSS_SELECTOR
         self.wait_for_element_visible(
             original_selector, by=original_by, timeout=settings.SMALL_TIMEOUT
         )
@@ -2138,11 +2135,11 @@ class BaseCase(unittest.TestCase):
         self.scroll_to(selector, by=by)
         time.sleep(0.05)  # Settle down from scrolling before hovering
         if self.browser != "chrome":
-            return page_actions.hover_on_element(self.driver, selector)
+            return page_actions.hover_on_element(self.driver, selector, by)
         # Using Chrome
         # (Pure hover actions won't work on early chromedriver versions)
         try:
-            return page_actions.hover_on_element(self.driver, selector)
+            return page_actions.hover_on_element(self.driver, selector, by)
         except WebDriverException as e:
             driver_capabilities = self.driver.capabilities
             if "version" in driver_capabilities:
@@ -2191,8 +2188,6 @@ class BaseCase(unittest.TestCase):
         hover_selector, hover_by = self.__recalculate_selector(
             hover_selector, hover_by
         )
-        hover_selector = self.convert_to_css_selector(hover_selector, hover_by)
-        hover_by = By.CSS_SELECTOR
         original_click_selector = click_selector
         click_selector, click_by = self.__recalculate_selector(
             click_selector, click_by
