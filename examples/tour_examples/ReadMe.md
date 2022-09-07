@@ -95,7 +95,7 @@ You can play a tour by calling:
 > If you specify an ``interval`` (optional), the tour will automatically walk through each step after that many seconds have passed.
 
 
-All methods have the optional ``name`` argument, which is only needed if you're creating multiple tours at once. Then, when you're adding a step or playing a tour, SeleniumBase knows which tour you're referring too. You can avoid using the ``name`` arg for multiple tours if you play a tour before creating a new one.
+All methods have the optional ``name`` argument, which is only needed if you're creating multiple tours at once. Then, when you're adding a step or playing a tour, [SeleniumBase](https://www.interviewbit.com/blog/selenium-frameworks) knows which tour you're referring too. You can avoid using the ``name`` arg for multiple tours if you play a tour before creating a new one.
 
 ### Here's how the code looks:
 
