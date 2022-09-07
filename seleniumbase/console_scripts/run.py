@@ -953,7 +953,7 @@ def main():
                 sb_install.main()
             except Exception as e:
                 invalid_run_cmd = constants.Warnings.INVALID_RUN_COMMAND
-                if invalid_run_cmd in e.args[0].split("\n")[0]:
+                if invalid_run_cmd in str(e):
                     raise
                 print("\nDriver download failed! Retrying in 3 seconds...")
                 time.sleep(3)
