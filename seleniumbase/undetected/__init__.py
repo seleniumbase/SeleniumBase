@@ -6,6 +6,7 @@ import sys
 import time
 import selenium.webdriver.chrome.webdriver
 import selenium.webdriver.common.service
+from selenium.webdriver.chrome.service import Service as ChromeService
 from .dprocess import start_detached
 from .options import ChromeOptions
 from .patcher import IS_POSIX
@@ -50,7 +51,6 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
     def __init__(
         self,
         options=None,
-        service_=None,
         user_data_dir=None,
         driver_executable_path=None,
         browser_executable_path=None,
@@ -263,6 +263,10 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                 close_fds=IS_POSIX,
             )
             self.browser_pid = browser.pid
+        service_ = ChromeService(
+            executable_path=patcher.executable_path,
+            log_path=os.devnull,
+        )
         super(Chrome, self).__init__(
             port=port,
             options=options,

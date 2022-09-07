@@ -71,6 +71,7 @@ chromedriver
 geckodriver
 msedgedriver
 operadriver
+uc_driver
 MicrosoftWebDriver.exe
 headless_ie_selenium.exe
 IEDriverServer.exe
@@ -78,6 +79,7 @@ chromedriver.exe
 geckodriver.exe
 msedgedriver.exe
 operadriver.exe
+uc_driver.exe
 
 # msedgedriver requirements
 libc++.dylib
