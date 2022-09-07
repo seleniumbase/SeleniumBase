@@ -3102,8 +3102,7 @@ class BaseCase(unittest.TestCase):
 
     def open_new_window(self, switch_to=True):
         """Opens a new browser tab/window and switches to it by default."""
-        self.__check_scope()
-        self.__check_browser()  # Current window must exist to open a new one
+        self.wait_for_ready_state_complete()
         self.driver.execute_script("window.open('');")
         time.sleep(0.01)
         if switch_to:
