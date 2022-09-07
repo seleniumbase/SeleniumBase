@@ -24,7 +24,7 @@ nltk==3.7
 tornado==6.2
 watchdog==2.1.9
 mkdocs==1.3.1
-mkdocs-material==8.4.2
+mkdocs-material==8.4.3
 mkdocs-exclude-search==0.6.4
 mkdocs-simple-hooks==0.1.5
 mkdocs-material-extensions==1.0.3
