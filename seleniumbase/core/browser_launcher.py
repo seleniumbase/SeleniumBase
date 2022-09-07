@@ -2,8 +2,9 @@ import fasteners
 import logging
 import os
 import re
-import sys
+import shutil
 import subprocess
+import sys
 import time
 import urllib3
 import warnings
@@ -53,11 +54,13 @@ LOCAL_EDGEDRIVER = None
 LOCAL_IEDRIVER = None
 LOCAL_HEADLESS_IEDRIVER = None
 LOCAL_OPERADRIVER = None
+LOCAL_UC_DRIVER = None
 if "darwin" in PLATFORM or "linux" in PLATFORM:
     LOCAL_CHROMEDRIVER = DRIVER_DIR + "/chromedriver"
     LOCAL_GECKODRIVER = DRIVER_DIR + "/geckodriver"
     LOCAL_EDGEDRIVER = DRIVER_DIR + "/msedgedriver"
     LOCAL_OPERADRIVER = DRIVER_DIR + "/operadriver"
+    LOCAL_UC_DRIVER = DRIVER_DIR + "/uc_driver"
 elif "win32" in PLATFORM or "win64" in PLATFORM or "x64" in PLATFORM:
     IS_WINDOWS = True
     LOCAL_EDGEDRIVER = DRIVER_DIR + "/msedgedriver.exe"
@@ -66,6 +69,7 @@ elif "win32" in PLATFORM or "win64" in PLATFORM or "x64" in PLATFORM:
     LOCAL_CHROMEDRIVER = DRIVER_DIR + "/chromedriver.exe"
     LOCAL_GECKODRIVER = DRIVER_DIR + "/geckodriver.exe"
     LOCAL_OPERADRIVER = DRIVER_DIR + "/operadriver.exe"
+    LOCAL_UC_DRIVER = DRIVER_DIR + "/uc_driver.exe"
 else:
     # Cannot determine system
     pass  # SeleniumBase will use web drivers from the System PATH by default
@@ -356,24 +360,24 @@ def _set_chrome_options(
         chrome_options = undetected.ChromeOptions()
     elif browser_name == constants.Browser.OPERA:
         chrome_options = webdriver.opera.options.Options()
-    prefs = {
-        "download.default_directory": downloads_path,
-        "local_discovery.notifications_enabled": False,
-        "credentials_enable_service": False,
-        "download.prompt_for_download": False,
-        "download.directory_upgrade": True,
-        "safebrowsing.enabled": False,
-        "safebrowsing.disable_download_protection": True,
-        "default_content_setting_values.notifications": 0,
-        "default_content_settings.popups": 0,
-        "managed_default_content_settings.popups": 0,
-        "content_settings.exceptions.automatic_downloads.*.setting": 1,
-        "profile.password_manager_enabled": False,
-        "profile.default_content_setting_values.notifications": 2,
-        "profile.default_content_settings.popups": 0,
-        "profile.managed_default_content_settings.popups": 0,
-        "profile.default_content_setting_values.automatic_downloads": 1,
-    }
+
+    prefs = {}
+    prefs["download.default_directory"] = downloads_path
+    prefs["local_discovery.notifications_enabled"] = False
+    prefs["credentials_enable_service"] = False
+    prefs["download.prompt_for_download"] = False
+    prefs["download.directory_upgrade"] = True
+    prefs["safebrowsing.enabled"] = False
+    prefs["default_content_setting_values.notifications"] = 0
+    prefs["content_settings.exceptions.automatic_downloads.*.setting"] = 1
+    prefs["safebrowsing.disable_download_protection"] = True
+    prefs["default_content_settings.popups"] = 0
+    prefs["managed_default_content_settings.popups"] = 0
+    prefs["profile.password_manager_enabled"] = False
+    prefs["profile.default_content_setting_values.notifications"] = 2
+    prefs["profile.default_content_settings.popups"] = 0
+    prefs["profile.managed_default_content_settings.popups"] = 0
+    prefs["profile.default_content_setting_values.automatic_downloads"] = 1
     if locale_code:
         prefs["intl.accept_languages"] = locale_code
     if block_images:
@@ -477,31 +481,6 @@ def _set_chrome_options(
         # load-extension input can be a comma-separated list
         abs_path = os.path.abspath(extension_dir)
         chrome_options = add_chrome_ext_dir(chrome_options, abs_path)
-    chrome_options.add_argument("--test-type")
-    chrome_options.add_argument("--log-level=3")
-    chrome_options.add_argument("--no-first-run")
-    if devtools and not headless:
-        chrome_options.add_argument("--auto-open-devtools-for-tabs")
-    chrome_options.add_argument("--allow-file-access-from-files")
-    chrome_options.add_argument("--allow-insecure-localhost")
-    chrome_options.add_argument("--allow-running-insecure-content")
-    if user_agent:
-        chrome_options.add_argument("--user-agent=%s" % user_agent)
-    chrome_options.add_argument("--disable-infobars")
-    chrome_options.add_argument("--disable-notifications")
-    chrome_options.add_argument("--disable-save-password-bubble")
-    chrome_options.add_argument("--disable-single-click-autofill")
-    chrome_options.add_argument(
-        "--disable-autofill-keyboard-accessory-view[8]"
-    )
-    chrome_options.add_argument("--disable-browser-side-navigation")
-    chrome_options.add_argument("--disable-translate")
-    chrome_options.add_argument("--homepage=about:blank")
-    chrome_options.add_argument("--dns-prefetch-disable")
-    chrome_options.add_argument("--dom-automation")
-    chrome_options.add_argument("--disable-hang-monitor")
-    chrome_options.add_argument("--disable-prompt-on-repost")
-    chrome_options.add_argument("--disable-3d-apis")
     if (
         selenium4_or_newer
         and page_load_strategy
@@ -619,6 +598,33 @@ def _set_chrome_options(
                     chromium_arg_item = "--" + chromium_arg_item
             if len(chromium_arg_item) >= 3:
                 chrome_options.add_argument(chromium_arg_item)
+    if devtools and not headless:
+        chrome_options.add_argument("--auto-open-devtools-for-tabs")
+    if user_agent:
+        chrome_options.add_argument("--user-agent=%s" % user_agent)
+    chrome_options.add_argument("--disable-browser-side-navigation")
+    chrome_options.add_argument("--disable-save-password-bubble")
+    chrome_options.add_argument("--disable-single-click-autofill")
+    chrome_options.add_argument("--allow-file-access-from-files")
+    chrome_options.add_argument("--disable-prompt-on-repost")
+    chrome_options.add_argument("--dns-prefetch-disable")
+    chrome_options.add_argument("--disable-translate")
+    chrome_options.add_argument("--disable-3d-apis")
+    if is_using_uc(undetectable, browser_name):
+        return chrome_options
+    chrome_options.add_argument("--test-type")
+    chrome_options.add_argument("--log-level=3")
+    chrome_options.add_argument("--no-first-run")
+    chrome_options.add_argument("--allow-insecure-localhost")
+    chrome_options.add_argument("--allow-running-insecure-content")
+    chrome_options.add_argument("--disable-infobars")
+    chrome_options.add_argument("--disable-notifications")
+    chrome_options.add_argument(
+        "--disable-autofill-keyboard-accessory-view[8]"
+    )
+    chrome_options.add_argument("--homepage=about:blank")
+    chrome_options.add_argument("--dom-automation")
+    chrome_options.add_argument("--disable-hang-monitor")
     return chrome_options
 
 
@@ -2340,6 +2346,45 @@ def get_local_driver(
                                 override="chromedriver %s" % use_version
                             )
                             sys.argv = sys_args  # Put back original sys args
+            if is_using_uc(undetectable, browser_name):
+                uc_lock = fasteners.InterProcessLock(
+                    constants.MultiBrowser.DRIVER_FIXING_LOCK
+                )
+                with uc_lock:  # No UC multithreaded tests
+                    uc_driver_version = None
+                    if os.path.exists(LOCAL_UC_DRIVER):
+                        try:
+                            output = subprocess.check_output(
+                                "%s --version" % LOCAL_UC_DRIVER, shell=True
+                            )
+                            if IS_WINDOWS:
+                                output = output.decode("latin1")
+                            else:
+                                output = output.decode("utf-8")
+                            output = output.split(" ")[1].split(".")[0]
+                            if int(output) >= 72:
+                                uc_driver_version = output
+                        except Exception:
+                            pass
+                    if (
+                        uc_driver_version != use_version
+                        and use_version != "latest"
+                    ):
+                        if os.path.exists(LOCAL_CHROMEDRIVER):
+                            shutil.copyfile(
+                                LOCAL_CHROMEDRIVER, LOCAL_UC_DRIVER
+                            )
+                        elif os.path.exists(path_chromedriver):
+                            shutil.copyfile(
+                                path_chromedriver, LOCAL_UC_DRIVER
+                            )
+                        try:
+                            make_driver_executable_if_not(LOCAL_UC_DRIVER)
+                        except Exception as e:
+                            logging.debug(
+                                "\nWarning: Could not make uc_driver"
+                                " executable: %s" % e
+                            )
             if (
                 not headless
                 or "linux" not in PLATFORM
@@ -2377,9 +2422,14 @@ def get_local_driver(
                                 )
                                 with uc_lock:  # No UC multithreaded tests
                                     try:
+                                        uc_path = None
+                                        if os.path.exists(LOCAL_UC_DRIVER):
+                                            uc_path = LOCAL_UC_DRIVER
+                                            uc_path = os.path.realpath(uc_path)
                                         driver = undetected.Chrome(
                                             options=chrome_options,
-                                            headless=False,  # Xvfb needed
+                                            driver_executable_path=uc_path,
+                                            headless=False,  # Xvfb needed!
                                             version_main=uc_chrome_version,
                                         )
                                     except URLError as e:
@@ -2394,7 +2444,8 @@ def get_local_driver(
                                             )
                                             driver = undetected.Chrome(
                                                 options=chrome_options,
-                                                headless=False,  # Xvfb needed
+                                                driver_executable_path=uc_path,
+                                                headless=False,  # Xvfb needed!
                                                 version_main=uc_chrome_version,
                                             )
                                         else:
