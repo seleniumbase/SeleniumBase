@@ -127,10 +127,13 @@ def is_text_visible(driver, text, selector, by="css selector", browser=None):
     try:
         element = driver.find_element(by=by, value=selector)
         element_text = element.text
-        if element.tag_name == "input" or element.tag_name == "textarea":
+        if browser == "safari":
+            if element.tag_name.lower() in ["input", "textarea"]:
+                element_text = element.get_attribute("value")
+            else:
+                element_text = element.get_attribute("innerText")
+        elif element.tag_name.lower() in ["input", "textarea"]:
             element_text = element.get_property("value")
-        elif browser == "safari":
-            element_text = element.get_attribute("innerText")
         return element.is_displayed() and text in element_text
     except Exception:
         return False
@@ -477,7 +480,10 @@ def wait_for_text_visible(
         try:
             element = driver.find_element(by=by, value=selector)
             is_present = True
-            if element.tag_name == "input" or element.tag_name == "textarea":
+            if (
+                element.tag_name.lower() in ["input", "textarea"]
+                and browser != "safari"
+            ):
                 if (
                     element.is_displayed()
                     and text in element.get_property("value")
@@ -489,14 +495,17 @@ def wait_for_text_visible(
                     element = None
                     raise Exception()
             elif browser == "safari":
+                text_attr = "innerText"
+                if element.tag_name.lower() in ["input", "textarea"]:
+                    text_attr = "value"
                 if (
                     element.is_displayed()
-                    and text in element.get_attribute("innerText")
+                    and text in element.get_attribute(text_attr)
                 ):
                     return element
                 else:
                     if element.is_displayed():
-                        full_text = element.get_attribute("innerText")
+                        full_text = element.get_attribute(text_attr)
                         full_text = full_text.strip()
                     element = None
                     raise Exception()
@@ -582,7 +591,7 @@ def wait_for_exact_text_visible(
         try:
             element = driver.find_element(by=by, value=selector)
             is_present = True
-            if element.tag_name == "input" or element.tag_name == "textarea":
+            if element.tag_name.lower() in ["input", "textarea"]:
                 if (
                     element.is_displayed()
                     and text.strip() == element.get_property("value").strip()
@@ -594,13 +603,16 @@ def wait_for_exact_text_visible(
                     element = None
                     raise Exception()
             elif browser == "safari":
+                text_attr = "innerText"
+                if element.tag_name.lower() in ["input", "textarea"]:
+                    text_attr = "value"
                 if element.is_displayed() and (
-                    text.strip() == element.get_attribute("innerText").strip()
+                    text.strip() == element.get_attribute(text_attr).strip()
                 ):
                     return element
                 else:
                     if element.is_displayed():
-                        actual_text = element.get_attribute("innerText")
+                        actual_text = element.get_attribute(text_attr)
                         actual_text = actual_text.strip()
                     element = None
                     raise Exception()
