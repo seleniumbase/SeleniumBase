@@ -610,7 +610,14 @@ def _set_chrome_options(
     chrome_options.add_argument("--dns-prefetch-disable")
     chrome_options.add_argument("--disable-translate")
     chrome_options.add_argument("--disable-3d-apis")
-    if is_using_uc(undetectable, browser_name):
+    if (
+        is_using_uc(undetectable, browser_name)
+        and (
+            not headless
+            or "linux" in PLATFORM  # switches to Xvfb (non-headless)
+        )
+    ):
+        # Skip remaining options that trigger anti-bot services
         return chrome_options
     chrome_options.add_argument("--test-type")
     chrome_options.add_argument("--log-level=3")
@@ -2428,6 +2435,7 @@ def get_local_driver(
                                             uc_path = os.path.realpath(uc_path)
                                         driver = undetected.Chrome(
                                             options=chrome_options,
+                                            user_data_dir=user_data_dir,
                                             driver_executable_path=uc_path,
                                             headless=False,  # Xvfb needed!
                                             version_main=uc_chrome_version,
@@ -2444,6 +2452,7 @@ def get_local_driver(
                                             )
                                             driver = undetected.Chrome(
                                                 options=chrome_options,
+                                                user_data_dir=user_data_dir,
                                                 driver_executable_path=uc_path,
                                                 headless=False,  # Xvfb needed!
                                                 version_main=uc_chrome_version,

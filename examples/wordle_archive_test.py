@@ -54,6 +54,10 @@ class WordleTests(BaseCase):
             message = "This test doesn't run in headless mode!"
             print(message)
             self.skip(message)
+        if not self.is_chromium():
+            message = "This test requires a Chromium-based browser!"
+            print(message)
+            self.skip(message)
         if version_info < [2, 4, 4]:
             message = "This test requires SeleniumBase 2.4.4 or newer!"
             print(message)

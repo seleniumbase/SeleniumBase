@@ -3103,9 +3103,14 @@ class BaseCase(unittest.TestCase):
     def open_new_window(self, switch_to=True):
         """Opens a new browser tab/window and switches to it by default."""
         self.wait_for_ready_state_complete()
-        self.driver.execute_script("window.open('');")
+        if selenium4_or_newer and switch_to:
+            self.driver.switch_to.new_window("tab")
+        else:
+            self.driver.execute_script("window.open('');")
         time.sleep(0.01)
-        if switch_to:
+        if self.browser == "safari":
+            self.wait_for_ready_state_complete()
+        if switch_to and not selenium4_or_newer:
             self.switch_to_newest_window()
             time.sleep(0.01)
             if self.browser == "safari":
