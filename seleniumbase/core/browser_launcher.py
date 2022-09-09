@@ -2435,6 +2435,7 @@ def get_local_driver(
                                             uc_path = os.path.realpath(uc_path)
                                         driver = undetected.Chrome(
                                             options=chrome_options,
+                                            user_data_dir=user_data_dir,
                                             driver_executable_path=uc_path,
                                             headless=False,  # Xvfb needed!
                                             version_main=uc_chrome_version,
@@ -2451,6 +2452,7 @@ def get_local_driver(
                                             )
                                             driver = undetected.Chrome(
                                                 options=chrome_options,
+                                                user_data_dir=user_data_dir,
                                                 driver_executable_path=uc_path,
                                                 headless=False,  # Xvfb needed!
                                                 version_main=uc_chrome_version,
