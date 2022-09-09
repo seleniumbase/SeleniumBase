@@ -505,6 +505,8 @@ def _set_chrome_options(
                 "--disable-blink-features=AutomationControlled"
             )
         chrome_options.add_experimental_option("useAutomationExtension", False)
+    if headless:
+        chrome_options.add_argument("--headless")
     if (settings.DISABLE_CSP_ON_CHROME or disable_csp) and not headless:
         # Headless Chrome does not support extensions, which are required
         # for disabling the Content Security Policy on Chrome.
@@ -556,16 +558,6 @@ def _set_chrome_options(
                 chrome_options, None, proxy_user, proxy_pass, zip_it
             )
         chrome_options.add_argument("--proxy-pac-url=%s" % proxy_pac_url)
-    if headless:
-        if not proxy_auth and not browser_name == constants.Browser.OPERA:
-            # Headless Chrome doesn't support extensions, which are
-            # required when using a proxy server that has authentication.
-            # Instead, base_case.py will use PyVirtualDisplay when not
-            # using Chrome's built-in headless mode. See link for details:
-            # https://bugs.chromium.org/p/chromium/issues/detail?id=706008
-            # Also, Opera Chromium doesn't support headless mode:
-            # https://github.com/operasoftware/operachromiumdriver/issues/62
-            chrome_options.add_argument("--headless")
     if browser_name != constants.Browser.OPERA:
         # Opera Chromium doesn't support these switches
         chrome_options.add_argument("--ignore-certificate-errors")
@@ -951,6 +943,20 @@ def get_driver(
             raise Exception('The proxy PAC URL must end with ".pac"!')
         if proxy_pac_url and proxy_user and proxy_pass:
             proxy_auth = True
+    if (
+        headless
+        and proxy_auth
+        and (
+            browser_name == constants.Browser.GOOGLE_CHROME
+            or browser_name == constants.Browser.EDGE
+        )
+    ):
+        # Headless Chrome/Edge doesn't support extensions, which are
+        # required when using a proxy server that has authentication.
+        # Instead, base_case.py will use the SBVirtualDisplay when not
+        # using Chrome's built-in headless mode. See link for details:
+        # https://bugs.chromium.org/p/chromium/issues/detail?id=706008
+        headless = False
     if (
         browser_name == constants.Browser.GOOGLE_CHROME
         and user_data_dir
@@ -2148,6 +2154,9 @@ def get_local_driver(
                         "\nWarning: Could not make operadriver"
                         " executable: %s" % e
                     )
+            # Opera Chromium doesn't support headless mode.
+            # https://github.com/operasoftware/operachromiumdriver/issues/62
+            headless = False
             opera_options = _set_chrome_options(
                 browser_name,
                 downloads_path,
@@ -2192,6 +2201,7 @@ def get_local_driver(
             warnings.simplefilter("ignore", category=DeprecationWarning)
             return webdriver.Opera(options=opera_options)
         except Exception:
+            # Opera support was dropped! Downgrade to Python 3.6 to use it!
             return webdriver.Opera()
     elif browser_name == constants.Browser.PHANTOM_JS:
         if selenium4_or_newer:
