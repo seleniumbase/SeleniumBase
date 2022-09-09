@@ -148,7 +148,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         options.add_argument("--remote-debugging-host=%s" % debug_host)
         options.add_argument("--remote-debugging-port=%s" % debug_port)
         if user_data_dir:
-            options.add_argument('--user-data-dir=%s' % user_data_dir)
+            options.add_argument("--user-data-dir=%s" % user_data_dir)
         language, keep_user_data_dir = None, bool(user_data_dir)
         # See if a custom user profile is specified in options
         for arg in options.arguments:
