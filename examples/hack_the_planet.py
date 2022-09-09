@@ -365,6 +365,7 @@ class HackTests(BaseCase):
         self.highlight("h1", loops=6, scroll=False)
 
         self.open("https://status.iboss.com/ibcloud/app/cloudStatus.html")
+        self.wait_for_element_clickable('div[translate*="cloudStatus"]')
         self.set_text_content('div[translate*="cloudStatus"]', ayb)
         self.set_text_content('div[translate*="maintenance"]', "ARE")
         self.set_text_content('div[translate*="advisory"]', "BELONG")
