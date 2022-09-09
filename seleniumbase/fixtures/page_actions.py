@@ -1296,6 +1296,16 @@ def switch_to_window(driver, window, timeout=settings.SMALL_TIMEOUT):
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     if isinstance(window, int):
+        caps = driver.capabilities
+        if (
+            caps["browserName"].lower() == "safari"
+            and "safari:platformVersion" in caps
+            and caps["safari:platformVersion"].split(".") < ["10", "15"]
+        ):
+            # Fix reversed window_handles on Safari 10.14 or lower
+            window = len(driver.window_handles) - 1 - window
+            if window < 0:
+                window = 0
         for x in range(int(timeout * 10)):
             shared_utils.check_if_time_limit_exceeded()
             try:
