@@ -7283,14 +7283,9 @@ class BaseCase(unittest.TestCase):
             return False
 
     def __is_shadow_element_clickable(self, selector):
-        from selenium.webdriver.support import expected_conditions as EC
-        from selenium.webdriver.support.ui import WebDriverWait
-
         try:
             element = self.__get_shadow_element(selector, timeout=0.1)
-            if element.is_displayed() and WebDriverWait(self.driver, 0).until(
-                EC.element_to_be_clickable(element)
-            ):
+            if element.is_displayed() and element.is_enabled():
                 return True
             return False
         except Exception:

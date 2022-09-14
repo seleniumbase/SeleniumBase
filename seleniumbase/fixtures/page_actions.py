@@ -81,14 +81,9 @@ def is_element_clickable(driver, selector, by="css selector"):
     @Returns
     Boolean (is element clickable)
     """
-    from selenium.webdriver.support import expected_conditions as EC
-    from selenium.webdriver.support.ui import WebDriverWait
-
     try:
         element = driver.find_element(by=by, value=selector)
-        if element.is_displayed() and WebDriverWait(driver, 0).until(
-            EC.element_to_be_clickable(element)
-        ):
+        if element.is_displayed() and element.is_enabled():
             return True
         return False
     except Exception:
@@ -775,9 +770,6 @@ def wait_for_element_clickable(
     @Returns
     A web element object
     """
-    from selenium.webdriver.support import expected_conditions as EC
-    from selenium.webdriver.support.ui import WebDriverWait
-
     element = None
     is_present = False
     is_visible = False
@@ -790,9 +782,7 @@ def wait_for_element_clickable(
             is_present = True
             if element.is_displayed():
                 is_visible = True
-                if WebDriverWait(driver, 0.001).until(
-                    EC.element_to_be_clickable((by, selector))
-                ):
+                if element.is_enabled():
                     return element
                 else:
                     element = None
