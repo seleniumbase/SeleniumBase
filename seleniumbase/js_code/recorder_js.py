@@ -526,6 +526,7 @@ document.body.addEventListener('change', function (event) {
 });
 document.body.addEventListener('mousedown', function (event) {
     reset_if_recorder_undefined();
+    new_tab_on_new_origin();
     if (sessionStorage.getItem('pause_recorder') === 'yes') return;
     const d_now = Date.now();
     el = event.target;

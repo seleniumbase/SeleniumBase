@@ -4450,6 +4450,7 @@ class BaseCase(unittest.TestCase):
                 import unicodedata
 
                 action[1][0] = unicodedata.normalize("NFKC", action[1][0])
+                action[1][0] = action[1][0].replace("\n", "\\n")
                 method = "assert_text"
                 if action[0] == "as_et":
                     method = "assert_exact_text"
