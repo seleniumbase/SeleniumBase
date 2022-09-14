@@ -289,6 +289,7 @@ def generate_gherkin(srt_actions):
             import unicodedata
 
             action[1][0] = unicodedata.normalize("NFKC", action[1][0])
+            action[1][0] = action[1][0].replace("\n", "\\n")
             method = "Assert text"
             if action[0] == "as_et":
                 method = "Assert exact text"
