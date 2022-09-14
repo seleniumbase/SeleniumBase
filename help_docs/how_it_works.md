@@ -78,5 +78,4 @@ pytest -k agent
 --------
 
 <p><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" alt="SeleniumBase" title="SeleniumBase" width="200" /></a></p>
-<p><a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://badge.fury.io/py/seleniumbase.svg" alt="PyPI version" /></a></p>
 <p><a href="https://www.python.org/downloads/" target="_blank"><img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=22AAEE&logo=python" title="Supported Python Versions" /></a></p>
