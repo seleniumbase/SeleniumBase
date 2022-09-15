@@ -59,7 +59,8 @@ pytest test_demo_site.py --chrome
 
 <p align="left"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py" target="_blank"><img src="https://seleniumbase.io/cdn/gif/demo_page_4.gif" width="420" alt="SeleniumBase Example" title="SeleniumBase Example" /></a></p>
 
-<div></div>
+--------
+
 <details>
 <summary> ▶️ How is SeleniumBase different from raw Selenium? (<b>click to expand</b>)</summary>
 <div>
