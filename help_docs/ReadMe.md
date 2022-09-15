@@ -2,12 +2,12 @@
 
 <p align="left">
 <a href="https://seleniumbase.io/#python_installation">🚁 Start</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">🔵 Dashboard</a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">📊 Dashboard</a>
 <br />
 <a href="https://seleniumbase.io/help_docs/features_list/">🏰 Features</a> |
 <a href="https://seleniumbase.io/help_docs/customizing_test_runs/">🎛️ Options</a>
 <br />
-<a href="https://seleniumbase.io/examples/ReadMe/">✅ Examples</a> |
+<a href="https://seleniumbase.io/examples/ReadMe/">📖 Examples</a> |
 <a href="https://seleniumbase.io/help_docs/mobile_testing/">📱 Mobile</a>
 <br />
 <a href="https://seleniumbase.io/help_docs/syntax_formats/">📝 Syntax Formats</a> |
