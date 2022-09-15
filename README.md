@@ -90,7 +90,7 @@ pytest test_demo_site.py --chrome
 
 <h4>Here's a 2FA/MFA app that can be tested with SeleniumBase:</h4>
 
-<p align="left"><a href="https://seleniumbase.io/realworld/login" target="_blank"><img src="https://seleniumbase.io/cdn/img/mfa_login_s.png" width="290" alt="SeleniumBase MFA Demo App" title="SeleniumBase MFA Demo App" /></a></p>
+<p align="left"><a href="https://seleniumbase.io/realworld/login" target="_blank"><img src="https://seleniumbase.io/cdn/img/mfa_login_s.png" width="320" alt="SeleniumBase MFA Demo App" title="SeleniumBase MFA Demo App" /></a></p>
 
 <h4>Here are a few scripts to test that app with SeleniumBase:</h4>
 
