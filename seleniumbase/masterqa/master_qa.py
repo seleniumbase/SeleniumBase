@@ -89,7 +89,7 @@ class MasterQA(BaseCase):
         self, archive_past_runs=True, get_log_folder=False
     ):
         abs_path = os.path.abspath(".")
-        file_path = abs_path + "/%s" % self.LATEST_REPORT_DIR
+        file_path = os.path.join(abs_path, self.LATEST_REPORT_DIR)
         if not os.path.exists(file_path):
             os.makedirs(file_path)
 
@@ -411,9 +411,9 @@ class MasterQA(BaseCase):
         self.__add_bad_page_log_file()  # Includes successful results
 
         log_string = self.__clear_out_old_logs(get_log_folder=True)
-        log_folder = log_string.split("/")[-1]
+        log_folder = log_string.split(os.sep)[-1]
         abs_path = os.path.abspath(".")
-        file_path = abs_path + "/%s" % self.ARCHIVE_DIR
+        file_path = os.path.join(abs_path, self.ARCHIVE_DIR)
         log_path = os.path.join(file_path, log_folder)
         web_log_path = "file://%s" % log_path
 
@@ -496,8 +496,8 @@ class MasterQA(BaseCase):
             table_view,
         )
         results_file = self.__add_results_page(report_html)
-        archived_results_file = log_path + "/" + self.RESULTS_PAGE
-        shutil.copyfile(results_file, archived_results_file)
+        archived_results_file = os.path.join(log_path, self.RESULTS_PAGE)
+        shutil.copyfile(results_file, os.path.realpath(archived_results_file))
         if self.manual_check_count > 0:
             print(
                 "\n*** The manual test report is located at:\n" + results_file
@@ -509,5 +509,8 @@ class MasterQA(BaseCase):
         else:
             # The user can decide when to close the results page
             print("\n*** Close the html report window to continue ***")
-            while len(self.driver.window_handles):
-                time.sleep(0.1)
+            try:
+                while len(self.driver.window_handles):
+                    time.sleep(0.1)
+            except Exception:
+                pass
