@@ -1,11 +1,11 @@
-## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Recorder Mode 🔴
+## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Recorder Mode 🔴
 
 <!-- YouTube View --><a href="https://www.youtube.com/watch?v=eKN5nq7YbdM"><img src="http://img.youtube.com/vi/eKN5nq7YbdM/0.jpg" title="SeleniumBase on YouTube" width="285" /></a>
 <!-- GitHub Only --><p>(<b><a href="https://www.youtube.com/watch?v=eKN5nq7YbdM">Watch the tutorial on YouTube</a></b>)</p>
 
 🔴 <b>SeleniumBase Recorder Mode</b> lets you record & export browser actions into test automation scripts.<br>
 
-<img src="https://seleniumbase.io/cdn/img/sb_recorder_notification.png" title="SeleniumBase" width="380">
+<img src="https://seleniumbase.github.io/cdn/img/sb_recorder_notification.png" title="SeleniumBase" width="380">
 
 🔴 To make a new recording with Recorder Mode, use ``sbase mkrec``, ``sbase codegen``, or ``sbase record``):
 
@@ -44,7 +44,7 @@ sbase recorder
 * Starting the SeleniumBase Recorder Desktop App...
 ```
 
-<img src="https://seleniumbase.io/cdn/img/recorder_desktop.png" title="SeleniumBase" width="340">
+<img src="https://seleniumbase.github.io/cdn/img/recorder_desktop.png" title="SeleniumBase" width="340">
 
 🔴 While a recording is in progress, you can press the ``[ESC]`` key to pause the Recorder. To resume the recording, you can hit the ``[~`]`` key, which is located directly below the ``[ESC]`` key on most keyboards.
 

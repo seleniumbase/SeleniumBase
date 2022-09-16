@@ -1,6 +1,6 @@
-## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Example Tests:
+## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Example Tests:
 
-<p align="left"><a align="center" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py"><img align="center" src="https://seleniumbase.io/cdn/img/sb_demo_page.png" alt="SeleniumBase Demo Page" width="420" /></a></p>
+<p align="left"><a align="center" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py"><img align="center" src="https://seleniumbase.github.io/cdn/img/sb_demo_page.png" alt="SeleniumBase Demo Page" width="420" /></a></p>
 
 * <b>SeleniumBase</b> tests are run with <b>pytest</b>.
 * Chrome is the default browser if not specified.
@@ -11,7 +11,7 @@
 
 (NOTE: Some example tests fail on purpose to demonstrate [logging features](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).)
 
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Example tests with run commands to help you get started:</h3>
+<h3><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32" /> Example tests with run commands to help you get started:</h3>
 
 Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) in Chrome: (Default: ``--browser=chrome``)
 
@@ -19,7 +19,7 @@ Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/e
 pytest my_first_test.py
 ```
 
-<img src="https://seleniumbase.io/cdn/gif/swag_labs_4.gif" title="Testing Swag Labs with SeleniumBase" /><br />
+<img src="https://seleniumbase.github.io/cdn/gif/swag_labs_4.gif" title="Testing Swag Labs with SeleniumBase" /><br />
 
 Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py) on the SeleniumBase Demo Site:
 
@@ -27,7 +27,7 @@ Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/e
 pytest test_demo_site.py
 ```
 
-<img src="https://seleniumbase.io/cdn/gif/demo_page_4.gif" title="SeleniumBase Demo Page" /><br />
+<img src="https://seleniumbase.github.io/cdn/gif/demo_page_4.gif" title="SeleniumBase Demo Page" /><br />
 
 Run an example test in Firefox:
 
@@ -41,7 +41,7 @@ Run an example test in Demo Mode: (highlight assertions)
 pytest test_swag_labs.py --demo
 ```
 
-<img src="https://seleniumbase.io/cdn/gif/swag_demo_3.gif" /><br />
+<img src="https://seleniumbase.github.io/cdn/gif/swag_demo_3.gif" /><br />
 
 Run a [Wordle-solver example](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/wordle_test.py):
 
@@ -49,7 +49,7 @@ Run a [Wordle-solver example](https://github.com/seleniumbase/SeleniumBase/blob/
 pytest wordle_test.py
 ```
 
-<img src="https://seleniumbase.io/cdn/gif/wordle.gif" title="Solving Wordle with SeleniumBase" /><br />
+<img src="https://seleniumbase.github.io/cdn/gif/wordle.gif" title="Solving Wordle with SeleniumBase" /><br />
 
 Run an example test in Headless Mode: (invisible browser)
 
@@ -63,7 +63,7 @@ Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/e
 pytest test_swag_labs.py --mobile
 ```
 
-<img src="https://seleniumbase.io/cdn/gif/swag_mobile_2.gif" title="SeleniumBase Mobile Mode" /><br />
+<img src="https://seleniumbase.github.io/cdn/gif/swag_mobile_2.gif" title="SeleniumBase Mobile Mode" /><br />
 
 Run another [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_xkcd.py) in Demo Mode: (highlight assertions)
 
@@ -71,7 +71,7 @@ Run another [example test](https://github.com/seleniumbase/SeleniumBase/blob/mas
 pytest test_xkcd.py --demo
 ```
 
-<img src="https://seleniumbase.io/cdn/gif/xkcd_vid.gif" title="SeleniumBase Demo Mode" /><br />
+<img src="https://seleniumbase.github.io/cdn/gif/xkcd_vid.gif" title="SeleniumBase Demo Mode" /><br />
 
 Run a [test suite](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_suite.py) with verbose output: (see more details)
 
@@ -147,7 +147,7 @@ Try the new SeleniumBase Commander! A GUI for pytest:
 sbase gui
 ```
 
-<img src="https://seleniumbase.io/cdn/img/sbase_commander.png" title="SeleniumBase Commander / GUI for pytest" width="520" /><br />
+<img src="https://seleniumbase.github.io/cdn/img/sbase_commander.png" title="SeleniumBase Commander / GUI for pytest" width="520" /><br />
 
 --------
 
@@ -179,7 +179,7 @@ For more advanced run commands, such as using a proxy server, see [../help_docs/
 
 If you just need to perform some quick website verification on various devices, you can use the <a href="https://seleniumbase.io/devices/">SeleniumBase Device Farm</a>. Just plug in a website URL, and it will display how the website looks on four different devices:
 
-<a href="https://seleniumbase.io/devices/"><img src="https://seleniumbase.io/cdn/img/github_demo2.png" width="540" title="SeleniumBase Mobile Mode" /></a><br />
+<a href="https://seleniumbase.io/devices/"><img src="https://seleniumbase.github.io/cdn/img/github_demo2.png" width="540" title="SeleniumBase Mobile Mode" /></a><br />
 
 --------
 
@@ -189,11 +189,11 @@ To make things easier, here's a simple GUI program that allows you to run a few 
 python gui_test_runner.py
 ```
 
-<img src="https://seleniumbase.io/cdn/img/gui_test_runner.png" title="GUI Test Runner" width="320" />
+<img src="https://seleniumbase.github.io/cdn/img/gui_test_runner.png" title="GUI Test Runner" width="320" />
 
 --------
 
-<img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="320" />
+<img src="https://seleniumbase.github.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="320" />
 
 <a href="https://github.com/seleniumbase/SeleniumBase">
 <img src="https://img.shields.io/badge/tested%20with-SeleniumBase-04C38E.svg" alt="Tested with SeleniumBase" /></a>

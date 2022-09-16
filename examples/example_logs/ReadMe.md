@@ -1,4 +1,4 @@
-## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Logs, The Dashboard, and Reports:
+## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Logs, The Dashboard, and Reports:
 
 <!-- YouTube View --><a href="https://www.youtube.com/watch?v=XpuJCjJhJwQ"><img src="http://img.youtube.com/vi/XpuJCjJhJwQ/0.jpg" title="SeleniumBase on YouTube" width="285" /></a>
 <!-- GitHub Only --><p>(<b><a href="https://www.youtube.com/watch?v=XpuJCjJhJwQ">The Dashboard Tutorial on YouTube</a></b>)</p>
@@ -22,7 +22,7 @@ pytest test_fail.py
 
 --------
 
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> The SeleniumBase Dashboard:</h3>
+<h3><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32" /> The SeleniumBase Dashboard:</h3>
 
 🔵 The ``--dashboard`` option for pytest generates a SeleniumBase Dashboard located at ``dashboard.html``, which updates automatically as tests run and produce results. Example:
 
@@ -30,7 +30,7 @@ pytest test_fail.py
 pytest --dashboard --rs --headless
 ```
 
-<img src="https://seleniumbase.io/cdn/img/dashboard_1.png" alt="The SeleniumBase Dashboard" title="The SeleniumBase Dashboard" width="360" />
+<img src="https://seleniumbase.github.io/cdn/img/dashboard_1.png" alt="The SeleniumBase Dashboard" title="The SeleniumBase Dashboard" width="360" />
 
 🔵 Additionally, you can host your own SeleniumBase Dashboard Server on a port of your choice. Here's an example of that using Python 3's ``http.server``:
 
@@ -46,11 +46,11 @@ python -m http.server 1948
 pytest test_suite.py --dashboard --rs --headless
 ```
 
-<img src="https://seleniumbase.io/cdn/img/dashboard_2.png" alt="The SeleniumBase Dashboard" title="The SeleniumBase Dashboard" width="480" />
+<img src="https://seleniumbase.github.io/cdn/img/dashboard_2.png" alt="The SeleniumBase Dashboard" title="The SeleniumBase Dashboard" width="480" />
 
 --------
 
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Pytest Reports:</h3>
+<h3><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32" /> Pytest Reports:</h3>
 
 🔵 Using ``--html=report.html`` gives you a fancy report of the name specified after your test suite completes.
 
@@ -58,7 +58,7 @@ pytest test_suite.py --dashboard --rs --headless
 pytest test_suite.py --html=report.html
 ```
 
-<img src="https://seleniumbase.io/cdn/img/html_report.png" alt="Example Pytest Report" title="Example Pytest Report" width="520" />
+<img src="https://seleniumbase.github.io/cdn/img/html_report.png" alt="Example Pytest Report" title="Example Pytest Report" width="520" />
 
 🔵 When combining pytest html reports with SeleniumBase Dashboard usage, the pie chart from the Dashboard will get added to the html report. Additionally, if you set the html report URL to be the same as the Dashboard URL when also using the dashboard, (example: ``--dashboard --html=dashboard.html``), then the Dashboard will become an advanced html report when all the tests complete.
 
@@ -68,7 +68,7 @@ pytest test_suite.py --html=report.html
 pytest test_suite.py --dashboard --html=report.html
 ```
 
-<img src="https://seleniumbase.io/cdn/img/dash_report.png" alt="Dashboard Pytest HTML Report" title="Dashboard Pytest HTML Report" width="520" />
+<img src="https://seleniumbase.github.io/cdn/img/dash_report.png" alt="Dashboard Pytest HTML Report" title="Dashboard Pytest HTML Report" width="520" />
 
 --------
 
@@ -88,7 +88,7 @@ pytest test_suite.py --junit-xml=report.xml
 
 --------
 
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Nosetest Reports:</h3>
+<h3><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32" /> Nosetest Reports:</h3>
 
 The ``nosetests`` ``--report`` option gives you a fancy report after your tests complete.
 
@@ -96,13 +96,13 @@ The ``nosetests`` ``--report`` option gives you a fancy report after your tests 
 nosetests test_suite.py --report
 ```
 
-<img src="https://seleniumbase.io/cdn/img/nose_report.png" alt="Example Nosetest Report" title="Example Nosetest Report" width="320" />
+<img src="https://seleniumbase.github.io/cdn/img/nose_report.png" alt="Example Nosetest Report" title="Example Nosetest Report" width="320" />
 
 (NOTE: You can add ``--show-report`` to immediately display Nosetest reports after the test suite completes. Only use ``--show-report`` when running tests locally because it pauses the test run.)
 
 --------
 
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> 🐝⚪ Behave Dashboard & Reports:</h3>
+<h3><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32" /> 🐝⚪ Behave Dashboard & Reports:</h3>
 
 (The [behave_bdd/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/behave_bdd) folder can be found in the [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder.)
 
@@ -110,7 +110,7 @@ nosetests test_suite.py --report
 behave behave_bdd/features/ -D dashboard -D headless
 ```
 
-<img src="https://seleniumbase.io/cdn/img/sb_behave_dashboard.png" title="SeleniumBase" width="600">
+<img src="https://seleniumbase.github.io/cdn/img/sb_behave_dashboard.png" title="SeleniumBase" width="600">
 
 You can also use ``--junit`` to get ``.xml`` reports for each Behave feature. Jenkins can use these files to display better reporting for your tests.
 
@@ -120,4 +120,4 @@ behave behave_bdd/features/ --junit -D rs -D headless
 
 --------
 
-<div><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.io/img/sb_logo_10.png" alt="SeleniumBase" width="240" /></a></div>
+<div><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.github.io/img/sb_logo_10.png" alt="SeleniumBase" width="240" /></a></div>
