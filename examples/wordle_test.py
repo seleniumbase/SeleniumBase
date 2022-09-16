@@ -12,7 +12,7 @@ class WordleTests(BaseCase):
     word_list = []
 
     def initialize_word_list(self):
-        txt_file = "https://seleniumbase.io/cdn/txt/wordle_words.txt"
+        txt_file = "https://seleniumbase.github.io/cdn/txt/wordle_words.txt"
         word_string = requests.get(txt_file).text
         self.word_list = ast.literal_eval(word_string)
 
