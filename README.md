@@ -62,7 +62,7 @@ pytest test_demo_site.py --chrome
 
 --------
 
-<p align="left">Run <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py" target="_blank">test_swag_labs.py</a> from <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples" target="_blank">examples/</a> in Demo Mode:</p>
+<p align="left">Run <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py" target="_blank">test_swag_labs.py</a> from <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples" target="_blank">examples/</a> in Demo Mode (highlights browser actions):</p>
 
 
 ```bash
