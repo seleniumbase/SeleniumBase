@@ -116,8 +116,8 @@ class TestMFALogin(BaseCase):
         self.type("#username", "demo_user")
         self.type("#password", "secret_pass")
         self.enter_mfa_code("#totpcode", "GAXG2MTEOR3DMMDG")  # 6-digit
-        self.assert_element("img#image1")
         self.assert_exact_text("Welcome!", "h1")
+        self.assert_element("img#image1")
         self.click('a:contains("This Page")')
         self.save_screenshot_to_logs()
 ```
@@ -130,8 +130,8 @@ def test_mfa_login(sb):
     sb.type("#username", "demo_user")
     sb.type("#password", "secret_pass")
     sb.enter_mfa_code("#totpcode", "GAXG2MTEOR3DMMDG")  # 6-digit
-    sb.assert_element("img#image1")
     sb.assert_exact_text("Welcome!", "h1")
+    sb.assert_element("img#image1")
     sb.click('a:contains("This Page")')
     sb.save_screenshot_to_logs()
 ```
@@ -146,8 +146,8 @@ Feature: SeleniumBase scenarios for the RealWorld App
     When Type "demo_user" into "#username"
     And Type "secret_pass" into "#password"
     And Do MFA "GAXG2MTEOR3DMMDG" into "#totpcode"
-    Then Assert element "img#image1"
-    And Assert exact text "Welcome!" in "h1"
+    Then Assert exact text "Welcome!" in "h1"
+    And Assert element "img#image1"
     And Click 'a:contains("This Page")'
     And Save screenshot to logs
 ```
