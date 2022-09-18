@@ -50,7 +50,7 @@
 
 --------
 
-<p align="left">Run <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py" target="_blank">test_demo_site.py</a> from <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples" target="_blank">examples/</a>: (<code>--chrome</code> is the default browser)</p>
+<p align="left">Run <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py" target="_blank">test_demo_site.py</a> from <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples" target="_blank">examples/</a> (<code>--chrome</code> is the default browser):</p>
 
 ```bash
 cd examples/
