@@ -6,7 +6,7 @@
 <link rel="icon" href="https://seleniumbase.github.io/img/green_logo2.png" />
 
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/mac_sb_logo_3f.png" alt="SeleniumBase" title="SeleniumBase" width="408" /></a></p>
-<p align="center"><b>Framework for modern web testing with <a href="https://www.selenium.dev/documentation/">Selenium</a>, <a href="https://www.python.org/about/">Python</a>, and <a href="https://docs.pytest.org/en/latest/how-to/usage.html">pytest</a>.</b></p>
+<p align="center"><b>A framework for modern web testing with <a href="https://www.selenium.dev/documentation/">Selenium</a>, <a href="https://www.python.org/about/">Python</a>, and <a href="https://docs.pytest.org/en/latest/how-to/usage.html">pytest</a>.</b></p>
 
 <p align="center"><a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=3399EE" alt="PyPI version" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/releases" target="_blank"><img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=22AAEE" alt="GitHub version" /></a> <a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"><img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a></p>
 
@@ -50,11 +50,11 @@
 
 --------
 
-<p align="left">Run <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py" target="_blank">test_demo_site.py</a> from <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples" target="_blank">examples/</a> with Chrome:</p>
+<p align="left">Run <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py" target="_blank">test_demo_site.py</a> from <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples" target="_blank">examples/</a>: (<code>--chrome</code> is the default browser)</p>
 
 ```bash
 cd examples/
-pytest test_demo_site.py --chrome
+pytest test_demo_site.py
 ```
 
 <p align="left"><a href="https://seleniumbase.io/demo_page" target="_blank"><img src="https://seleniumbase.github.io/cdn/gif/demo_page_4.gif" width="450" alt="SeleniumBase Example" title="SeleniumBase Example" /></a></p>
