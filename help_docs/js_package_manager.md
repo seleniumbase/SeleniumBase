@@ -4,7 +4,7 @@
 
 <b>🎨 The following SeleniumBase solutions utilize this feature:</b>
 
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">🗺️ Website Tours</a> - <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/presenter/ReadMe.md">🎞️ Presenter</a> - <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/ReadMe.md">📊 Chart Maker</a> - <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/dialog_boxes/ReadMe.md">🛂 Dialog Boxes</a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/demo_mode.md">🎦 Demo Mode</a> - <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">🚎 Website Tours</a> - <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/presenter/ReadMe.md">🎞️ Presenter</a> - <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/ReadMe.md">📶 Chart Maker</a> - <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/dialog_boxes/ReadMe.md">🛂 Dialog Boxes</a>
 
 <p><div>🕹️ In addition to loading JS packages, SeleniumBase also lets you generate JS code from Python so that you can use these packages more easily.</div></p>
 
@@ -102,11 +102,11 @@ def add_css_link(driver, css_link):
 <div>🕹️ Website tours are just one of the many uses of the JS Package Manager.</div>
 <p><div>🛂 The following example shows the <a href="https://github.com/craftpip/jquery-confirm">JqueryConfirm</a> package loaded into a website for creating fancy dialog boxes:</div></p>
 
-<img src="https://seleniumbase.io/cdn/img/emoji_sports_dialog.png" alt="SeleniumBase" width="400" />
+<img src="https://seleniumbase.io/cdn/img/emoji_sports_dialog.png" alt="SeleniumBase" width="480" />
 
 <h4>↕️ (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/dialog_boxes/dialog_box_tour.py">Example: dialog_box_tour.py</a>) ↕️</h4>
 
-<img src="https://seleniumbase.io/cdn/gif/sports_dialog.gif" alt="SeleniumBase" width="400" />
+<img src="https://seleniumbase.io/cdn/gif/sports_dialog.gif" alt="SeleniumBase" width="480" />
 
 <h4>Here's how to run that example:</h4>
 
@@ -131,4 +131,4 @@ pytest test_dialog_boxes.py
 <a href="https://github.com/seleniumbase/SeleniumBase">
 <img src="https://img.shields.io/badge/✅%20💛%20View%20Code-on%20GitHub%20🌎%20🚀-02A79E.svg" alt="SeleniumBase on GitHub" /></a>
 
-🗺️ If you're only interested in creating website tours with SeleniumBase, here's the link to the <a href="https://seleniumbase.io/examples/tour_examples/ReadMe/">Website Tours ReadMe</a>.
+🚎 If you're only interested in creating website tours with SeleniumBase, here's the link to the <a href="https://seleniumbase.io/examples/tour_examples/ReadMe/">Website Tours ReadMe</a>.

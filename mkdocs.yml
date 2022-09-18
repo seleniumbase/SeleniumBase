@@ -108,6 +108,7 @@ nav:
     - Chinese Docs: help_docs/chinese.md
     - Locale Codes: help_docs/locale_codes.md
   - JS Generators:
+    - Demo Mode: help_docs/demo_mode.md
     - Tour Maker: examples/tour_examples/ReadMe.md
     - Dialog Boxes: examples/dialog_boxes/ReadMe.md
     - Chart Maker: help_docs/chart_maker.md

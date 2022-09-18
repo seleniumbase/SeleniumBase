@@ -1,6 +1,6 @@
 <h3 align="left"><img src="https://seleniumbase.io/cdn/img/g_maps_tour.png" alt="SeleniumBase Tour" width="340" /></h3>
 
-## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Interactive Product Tours
+## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Interactive Product Tours 🚎
 
 <p><b>Increase SaaS Product Adoption by 10x or more.</b></p>
 
