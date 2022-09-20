@@ -7,7 +7,7 @@
 
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/mac_sb_logo_3fnw.png" alt="SeleniumBase" title="SeleniumBase" width="408" /></a></p>
 
-<p align="center"><b>A framework for browser automation and testing  with <a href="https://www.python.org/about/" target="_blank">Python</a>.<br />SeleniumBase extends <a href="https://www.selenium.dev/documentation/webdriver/" target="_blank">Selenium WebDriver</a> as a <a href="https://docs.pytest.org/en/latest/how-to/usage.html" target="_blank">pytest</a> plugin.</b></p>
+<p align="center"><b>A framework for browser automation and testing with <a href="https://www.python.org/about/" target="_blank">Python</a>.</b><br />SeleniumBase extends <a href="https://www.selenium.dev/documentation/webdriver/" target="_blank">Selenium WebDriver</a> as a <a href="https://docs.pytest.org/en/latest/how-to/usage.html" target="_blank">pytest</a> plugin.</p>
 
 <p align="center"><a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=3399EE" alt="PyPI version" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/releases" target="_blank"><img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=22AAEE" alt="GitHub version" /></a> <a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"><img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a></p>
 
@@ -508,7 +508,7 @@ The code above will leave your browser window open in case there's a failure. (i
 --enable-ws  # (Enable Web Security on Chromium-based browsers.)
 --enable-sync  # (Enable "Chrome Sync".)
 --use-auto-ext  # (Use Chrome's automation extension.)
---undetected  # (Use an undetectable chromedriver to evade bot-detection.)
+--undetected | --uc  # (Use undetected-chromedriver to evade bot-detection.)
 --remote-debug  # (Enable Chrome's Remote Debugger on http://localhost:9222)
 --final-debug  # (Enter Debug Mode after each test ends. Don't use with CI!)
 --dashboard  # (Enable the SeleniumBase Dashboard. Saved at: dashboard.html)
