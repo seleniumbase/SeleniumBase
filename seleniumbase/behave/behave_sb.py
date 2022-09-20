@@ -71,6 +71,7 @@ behave -D agent="User Agent String" -D demo
 -D enable-ws  (Enable Web Security on Chromium-based browsers.)
 -D enable-sync  (Enable "Chrome Sync".)
 -D use-auto-ext  (Use Chrome's automation extension.)
+-D undetected | -D uc  (Use undetected-chromedriver to evade bot-detection)
 -D remote-debug  (Enable Chrome's Remote Debugger on http://localhost:9222)
 -D dashboard  (Enable the SeleniumBase Dashboard. Saved at: dashboard.html)
 -D dash-title=STRING  (Set the title shown for the generated dashboard.)

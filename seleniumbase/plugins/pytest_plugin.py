@@ -86,7 +86,7 @@ def pytest_addoption(parser):
     --enable-ws  (Enable Web Security on Chromium-based browsers.)
     --enable-sync  (Enable "Chrome Sync".)
     --use-auto-ext  (Use Chrome's automation extension.)
-    --undetected  (Use an undetectable chromedriver to evade bot-detection.)
+    --undetected | --uc  (Use undetected-chromedriver to evade bot-detection.)
     --remote-debug  (Enable Chrome's Remote Debugger on http://localhost:9222)
     --final-debug  (Enter Debug Mode after each test ends. Don't use with CI!)
     --dashboard  (Enable the SeleniumBase Dashboard. Saved at: dashboard.html)
