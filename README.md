@@ -62,7 +62,7 @@ pytest test_demo_site.py
 
 --------
 
-<p align="left">Run <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py" target="_blank">test_swag_labs.py</a> from <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples" target="_blank">examples/</a> using <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/demo_mode.md">Demo Mode</a> (highlights browser actions):</p>
+<p align="left">Run <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py" target="_blank">test_swag_labs.py</a> from <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples" target="_blank">examples/</a> using <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/demo_mode.md">Demo Mode</a>:</p>
 
 ```bash
 pytest test_swag_labs.py --demo
