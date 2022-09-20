@@ -37,14 +37,18 @@ class WordleTests(BaseCase):
                 self.word_list = new_word_list
                 new_word_list = []
         for i in range(len(word)):
-            if (
-                letter_status[i] == "absent"
-                and word[i] not in correct_letters
-                and word[i] not in present_letters
-            ):
-                for w in self.word_list:
-                    if word[i] not in w:
-                        new_word_list.append(w)
+            if letter_status[i] == "absent":
+                if (
+                    word[i] not in correct_letters
+                    and word[i] not in present_letters
+                ):
+                    for w in self.word_list:
+                        if word[i] not in w:
+                            new_word_list.append(w)
+                else:
+                    for w in self.word_list:
+                        if word[i] != w[i]:
+                            new_word_list.append(w)
                 self.word_list = new_word_list
                 new_word_list = []
 

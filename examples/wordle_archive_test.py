@@ -4,7 +4,7 @@
 import ast
 import random
 import requests
-from seleniumbase import version_info
+from seleniumbase import version_tuple
 from seleniumbase import BaseCase
 
 
@@ -38,14 +38,18 @@ class WordleTests(BaseCase):
                 self.word_list = new_word_list
                 new_word_list = []
         for i in range(len(word)):
-            if (
-                letter_status[i] == "absent"
-                and word[i] not in correct_letters
-                and word[i] not in present_letters
-            ):
-                for w in self.word_list:
-                    if word[i] not in w:
-                        new_word_list.append(w)
+            if letter_status[i] == "absent":
+                if (
+                    word[i] not in correct_letters
+                    and word[i] not in present_letters
+                ):
+                    for w in self.word_list:
+                        if word[i] not in w:
+                            new_word_list.append(w)
+                else:
+                    for w in self.word_list:
+                        if word[i] != w[i]:
+                            new_word_list.append(w)
                 self.word_list = new_word_list
                 new_word_list = []
 
@@ -58,8 +62,8 @@ class WordleTests(BaseCase):
             message = "This test requires a Chromium-based browser!"
             print(message)
             self.skip(message)
-        if version_info < [2, 4, 4]:
-            message = "This test requires SeleniumBase 2.4.4 or newer!"
+        if version_tuple < (4, 0, 0):
+            message = "This test requires SeleniumBase 4.0.0 or newer!"
             print(message)
             self.skip(message)
 
