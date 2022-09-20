@@ -1477,7 +1477,9 @@ class BaseCase(unittest.TestCase):
         timeout=None,
         hard_fail=True,
     ):
-        """This method uses JavaScript to get the value of an attribute."""
+        """This method uses JavaScript to get the value of an attribute.
+        If the attribute doesn't exist or isn't found, an exception will
+        get raised if hard_fail is True (otherwise None is returned)."""
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
