@@ -1,14 +1,10 @@
 from seleniumbase import BaseCase
-from seleniumbase import version_tuple
 
 
 class DemoSiteTests(BaseCase):
     def test_demo_site(self):
+        # Open a web page in the active browser window
         self.open("https://seleniumbase.io/demo_page")
-
-        # Fail if the seleniumbase version is less than 4.0.0
-        if version_tuple < (4, 0, 0):
-            self.fail("This test requires seleniumbase>=4.0.0")
 
         # Assert the title of the current web page
         self.assert_title("Web Testing Page")
@@ -19,7 +15,7 @@ class DemoSiteTests(BaseCase):
         # Assert that a text substring appears in an element
         self.assert_text("Demo Page", "h1")
 
-        # Type text into various text fields and then verify
+        # Type text into various text fields and then assert
         self.type("#myTextInput", "This is Automated")
         self.type("textarea.area1", "Testing Time!\n")
         self.type('[name="preText2"]', "Typing Text!")
@@ -27,7 +23,7 @@ class DemoSiteTests(BaseCase):
         self.assert_text("Testing Time!\n", "textarea.area1")
         self.assert_text("Typing Text!", '[name="preText2"]')
 
-        # Verify that a hover dropdown link changes page text
+        # Hover & click a dropdown element and assert results
         self.assert_text("Automation Practice", "h3")
         try:
             self.hover_and_click("#myDropdown", "#dropOption2", timeout=1)
@@ -36,7 +32,7 @@ class DemoSiteTests(BaseCase):
             self.js_click("#dropOption2")
         self.assert_text("Link Two Selected", "h3")
 
-        # Verify that a button click changes text on the page
+        # Click a button and then verify the expected results
         self.assert_text("This Text is Green", "#pText")
         self.click('button:contains("Click Me")')
         self.assert_text("This Text is Purple", "#pText")
@@ -119,9 +115,3 @@ class DemoSiteTests(BaseCase):
         self.demo_mode = True
         self.type("input", "Have a Nice Day!")
         self.assert_text("SeleniumBase", "h2")
-
-        # Assert no broken links (Can be slow if many links)
-        # self.assert_no_404_errors()
-
-        # Assert no JavaScript errors (Can also detect 404s)
-        # self.assert_no_js_errors()
