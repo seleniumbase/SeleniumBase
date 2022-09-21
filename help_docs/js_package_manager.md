@@ -1,12 +1,10 @@
 ## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) JS Package Manager and Code Generators
 
-<h3>🕹️ SeleniumBase lets you load JavaScript packages from any CDN link into any website.</h3>
+<h3>🕹️ SeleniumBase lets you load JavaScript packages from any CDN link into any website via Python.</h3>
 
 <b>🎨 The following SeleniumBase solutions utilize this feature:</b>
 
 🎦 (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/demo_mode.md">Demo Mode</a>) - 🚎 (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">Website Tours</a>) - 🎞️ (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/presenter/ReadMe.md">Presenter</a>) - 📊 (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/ReadMe.md">Chart Maker</a> / <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">Dashboard</a>) - 🛂 (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/dialog_boxes/ReadMe.md">Dialog Boxes</a> / <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">MasterQA</a>)
-
-<p><div>🕹️ In addition to loading JS packages, SeleniumBase also lets you generate JS code from Python so that you can use these packages more easily.</div></p>
 
 <p><div>🗺️ Here's an example of loading a website-tour library into the browser for a Google Maps tour:</div></p>
 
@@ -64,7 +62,7 @@ def add_js_link(driver, js_link):
               body.appendChild(script);
            }
            injectJS("%s");""")
-    js_link = escape_quotes_if_needed(js_link)  # From js_utils.py
+    js_link = escape_quotes_if_needed(js_link)
     driver.execute_script(script_to_add_js % js_link)
 ```
 
@@ -95,7 +93,7 @@ def add_css_link(driver, css_link):
               head.appendChild(link);
            }
            injectCSS("%s");""")
-    css_link = escape_quotes_if_needed(css_link)  # From js_utils.py
+    css_link = escape_quotes_if_needed(css_link)
     driver.execute_script(script_to_add_css % css_link)
 ```
 
