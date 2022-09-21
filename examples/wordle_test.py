@@ -61,7 +61,9 @@ class WordleTests(BaseCase):
     def test_wordle(self):
         self.skip_if_incorrect_env()
         self.open("https://www.nytimes.com/games/wordle/index.html")
+        self.remove_elements("div.ad")
         self.click('svg[data-testid="icon-close"]')
+        self.remove_elements("div.ad")
         self.initialize_word_list()
         word = random.choice(self.word_list)
         num_attempts = 0
