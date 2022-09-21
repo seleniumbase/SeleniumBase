@@ -13,7 +13,7 @@ class FlakyMessyRawSelenium(TestCase):
         if "linux" in sys.platform:
             options.add_argument("--headless")
         options.add_experimental_option(
-            "excludeSwitches", ["enable-automation"],
+            "excludeSwitches", ["enable-automation", "enable-logging"],
         )
         prefs = {
             "credentials_enable_service": False,
