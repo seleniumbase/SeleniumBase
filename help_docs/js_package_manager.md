@@ -6,6 +6,8 @@
 
 🎦 (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/demo_mode.md">Demo Mode</a>) - 🚎 (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">Website Tours</a>) - 🎞️ (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/presenter/ReadMe.md">Presenter</a>) - 📊 (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/ReadMe.md">Chart Maker</a> / <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">Dashboard</a>) - 🛂 (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/dialog_boxes/ReadMe.md">Dialog Boxes</a> / <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">MasterQA</a>)
 
+--------
+
 <p><div>🗺️ Here's an example of loading a website-tour library into the browser for a Google Maps tour:</div></p>
 
 <img src="https://seleniumbase.io/cdn/gif/introjs_tour.gif" title="SeleniumBase Tour of Google" /><br />
