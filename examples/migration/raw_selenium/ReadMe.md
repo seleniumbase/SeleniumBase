@@ -29,7 +29,7 @@ By this stage, newcomers to Selenium have evolved into legitimate test automatio
 
 * [refined_raw.py](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/migration/raw_selenium/refined_raw.py)
 
-By now, the test automation engineer has become an expert in breaking out code into reusable methods, and the test itself has been simplified down to a single page action per line. The code is easy to read and easy to maintain. The journey of writing a complete test automation framework for Selenium has begun.
+By now, the test automation engineer has become an expert in breaking out code into reusable methods, and the test itself has been simplified down to a single page action per line. The code is easy to read and easy to maintain. The error output is also simplified. The journey of writing a complete test automation framework for Selenium has begun.
 
 * [simple_sbase.py](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/migration/raw_selenium/simple_sbase.py)
 

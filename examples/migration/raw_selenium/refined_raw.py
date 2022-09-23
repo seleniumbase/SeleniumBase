@@ -34,23 +34,41 @@ class RefinedRawSelenium(TestCase):
     def wait_for_element_visible(
         self, selector, by="css selector", timeout=10
     ):
-        return WebDriverWait(self.driver, timeout).until(
-            EC.visibility_of_element_located((by, selector))
-        )
+        try:
+            return WebDriverWait(self.driver, timeout).until(
+                EC.visibility_of_element_located((by, selector))
+            )
+        except Exception:
+            raise Exception(
+                "Element {%s} was not visible after %s seconds!"
+                % (selector, timeout)
+            )
 
     def wait_for_element_clickable(
         self, selector, by="css selector", timeout=10
     ):
-        return WebDriverWait(self.driver, timeout).until(
-            EC.element_to_be_clickable((by, selector))
-        )
+        try:
+            return WebDriverWait(self.driver, timeout).until(
+                EC.element_to_be_clickable((by, selector))
+            )
+        except Exception:
+            raise Exception(
+                "Element {%s} was not visible/clickable after %s seconds!"
+                % (selector, timeout)
+            )
 
     def wait_for_element_not_visible(
         self, selector, by="css selector", timeout=10
     ):
-        return WebDriverWait(self.driver, timeout).until(
-            EC.invisibility_of_element((by, selector))
-        )
+        try:
+            return WebDriverWait(self.driver, timeout).until(
+                EC.invisibility_of_element((by, selector))
+            )
+        except Exception:
+            raise Exception(
+                "Element {%s} was still visible after %s seconds!"
+                % (selector, timeout)
+            )
 
     def open(self, url):
         self.driver.get(url)
