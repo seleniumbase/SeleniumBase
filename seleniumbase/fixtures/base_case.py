@@ -5273,6 +5273,20 @@ class BaseCase(unittest.TestCase):
             pass
         self.__demo_mode_pause_if_active()
 
+    def js_click_if_present(self, selector, by="css selector"):
+        """If the page selector exists, js_click() the element.
+        This method only clicks on the first matching element found."""
+        self.wait_for_ready_state_complete()
+        if self.is_element_present(selector, by=by):
+            self.js_click(selector, by=by)
+
+    def js_click_if_visible(self, selector, by="css selector"):
+        """If the page selector exists and is visible, js_click() the element.
+        This method only clicks on the first matching element found."""
+        self.wait_for_ready_state_complete()
+        if self.is_element_visible(selector, by=by):
+            self.js_click(selector, by=by)
+
     def js_click_all(self, selector, by="css selector"):
         """Clicks all matching elements using pure JS. (No jQuery)"""
         self.js_click(selector, by="css selector", all_matches=True)
