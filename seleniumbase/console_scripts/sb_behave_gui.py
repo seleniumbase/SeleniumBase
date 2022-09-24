@@ -156,7 +156,22 @@ def do_behave_run(
         full_run_command += " -k"
 
     print(full_run_command)
-    subprocess.Popen(full_run_command, shell=True)
+    if not additional_options or " " not in additional_options:
+        subprocess.Popen(full_run_command, shell=True)
+    else:
+        proc = subprocess.Popen(
+            full_run_command, stderr=subprocess.PIPE, shell=True
+        )
+        (output, error) = proc.communicate()
+        if error and proc.returncode == 2:
+            if str(error).startswith("b'") and str(error).endswith("\\n'"):
+                error = str(error)[2:-3]
+            elif str(error).startswith("b'") and str(error).endswith("'"):
+                error = str(error)[2:-1]
+            else:
+                error = str(error)
+            error = error.replace("\\n", "\n")
+            print(error)
     send_window_to_front(root)
 
 
