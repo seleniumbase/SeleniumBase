@@ -7,7 +7,8 @@ Improvements include making WebDriver commands more robust and more reliable
 by giving page elements enough time to load before taking action on them.
 
 The default option for searching for elements is by CSS Selector.
-This can be changed by overriding the "By" parameter.
+This can be changed by overriding the "By" parameter from this import:
+> from selenium.webdriver.common.by import By
 Options are:
 By.CSS_SELECTOR        # "css selector"
 By.CLASS_NAME          # "class name"
@@ -30,7 +31,6 @@ from selenium.common.exceptions import NoSuchAttributeException
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoSuchWindowException
 from selenium.common.exceptions import StaleElementReferenceException
-from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from seleniumbase.common.exceptions import TextNotVisibleException
 from seleniumbase.config import settings
@@ -43,7 +43,7 @@ def is_element_present(driver, selector, by="css selector"):
     @Params
     driver - the webdriver object (required)
     selector - the locator for identifying the page element (required)
-    by - the type of selector being used (Default: By.CSS_SELECTOR)
+    by - the type of selector being used (Default: "css selector")
     @Returns
     Boolean (is element present)
     """
@@ -60,7 +60,7 @@ def is_element_visible(driver, selector, by="css selector"):
     @Params
     driver - the webdriver object (required)
     selector - the locator for identifying the page element (required)
-    by - the type of selector being used (Default: By.CSS_SELECTOR)
+    by - the type of selector being used (Default: "css selector")
     @Returns
     Boolean (is element visible)
     """
@@ -77,7 +77,7 @@ def is_element_clickable(driver, selector, by="css selector"):
     @Params
     driver - the webdriver object (required)
     selector - the locator for identifying the page element (required)
-    by - the type of selector being used (Default: By.CSS_SELECTOR)
+    by - the type of selector being used (Default: "css selector")
     @Returns
     Boolean (is element clickable)
     """
@@ -96,7 +96,7 @@ def is_element_enabled(driver, selector, by="css selector"):
     @Params
     driver - the webdriver object (required)
     selector - the locator for identifying the page element (required)
-    by - the type of selector being used (Default: By.CSS_SELECTOR)
+    by - the type of selector being used (Default: "css selector")
     @Returns
     Boolean (is element enabled)
     """
@@ -114,7 +114,7 @@ def is_text_visible(driver, text, selector, by="css selector", browser=None):
     driver - the webdriver object (required)
     text - the text string to search for (required)
     selector - the locator for identifying the page element (required)
-    by - the type of selector being used (Default: By.CSS_SELECTOR)
+    by - the type of selector being used (Default: "css selector")
     @Returns
     Boolean (is text visible)
     """
@@ -144,7 +144,7 @@ def is_attribute_present(
     selector - the locator for identifying the page element (required)
     attribute - the attribute that is expected for the element (required)
     value - the attribute value that is expected (Default: None)
-    by - the type of selector being used (Default: By.CSS_SELECTOR)
+    by - the type of selector being used (Default: "css selector")
     @Returns
     Boolean (is attribute present)
     """
@@ -170,7 +170,7 @@ def hover_on_element(driver, selector, by="css selector"):
     @Params
     driver - the webdriver object (required)
     selector - the locator for identifying the page element (required)
-    by - the type of selector being used (Default: By.CSS_SELECTOR)
+    by - the type of selector being used (Default: "css selector")
     """
     element = driver.find_element(by=by, value=selector)
     hover = ActionChains(driver).move_to_element(element)
@@ -205,8 +205,8 @@ def hover_and_click(
     driver - the webdriver object (required)
     hover_selector - the css selector to hover over (required)
     click_selector - the css selector to click on (required)
-    hover_by - the hover selector type to search by (Default: By.CSS_SELECTOR)
-    click_by - the click selector type to search by (Default: By.CSS_SELECTOR)
+    hover_by - the hover selector type to search by (Default: "css selector")
+    click_by - the click selector type to search by (Default: "css selector")
     timeout - number of seconds to wait for click element to appear after hover
     """
     start_ms = time.time() * 1000.0
@@ -320,7 +320,7 @@ def wait_for_element_present(
     @Params
     driver - the webdriver object
     selector - the locator for identifying the page element (required)
-    by - the type of selector being used (Default: By.CSS_SELECTOR)
+    by - the type of selector being used (Default: "css selector")
     timeout - the time to wait for elements in seconds
     original_selector - handle pre-converted ":contains(TEXT)" selector
     @Returns
@@ -376,7 +376,7 @@ def wait_for_element_visible(
     @Params
     driver - the webdriver object (required)
     selector - the locator for identifying the page element (required)
-    by - the type of selector being used (Default: By.CSS_SELECTOR)
+    by - the type of selector being used (Default: "css selector")
     timeout - the time to wait for elements in seconds
     original_selector - handle pre-converted ":contains(TEXT)" selector
     @Returns
@@ -404,7 +404,7 @@ def wait_for_element_visible(
     plural = "s"
     if timeout == 1:
         plural = ""
-    if not element and by != By.LINK_TEXT:
+    if not element and by != "link text":
         if (
             original_selector
             and ":contains(" in original_selector
@@ -426,7 +426,7 @@ def wait_for_element_visible(
             plural,
         )
         timeout_exception(ElementNotVisibleException, message)
-    elif not element and by == By.LINK_TEXT:
+    elif not element and by == "link text":
         message = "Link text {%s} was not visible after %s second%s!" % (
             selector,
             timeout,
@@ -457,7 +457,7 @@ def wait_for_text_visible(
     driver - the webdriver object (required)
     text - the text that is being searched for in the element (required)
     selector - the locator for identifying the page element (required)
-    by - the type of selector being used (Default: By.CSS_SELECTOR)
+    by - the type of selector being used (Default: "css selector")
     timeout - the time to wait for elements in seconds
     browser - used to handle a special edge case when using Safari
     @Returns
@@ -568,7 +568,7 @@ def wait_for_exact_text_visible(
     driver - the webdriver object (required)
     text - the exact text that is expected for the element (required)
     selector - the locator for identifying the page element (required)
-    by - the type of selector being used (Default: By.CSS_SELECTOR)
+    by - the type of selector being used (Default: "css selector")
     timeout - the time to wait for elements in seconds
     browser - used to handle a special edge case when using Safari
     @Returns
@@ -679,7 +679,7 @@ def wait_for_attribute(
     selector - the locator for identifying the page element (required)
     attribute - the attribute that is expected for the element (required)
     value - the attribute value that is expected (Default: None)
-    by - the type of selector being used (Default: By.CSS_SELECTOR)
+    by - the type of selector being used (Default: "css selector")
     timeout - the time to wait for the element attribute in seconds
     @Returns
     A web element object that contains the expected attribute/value
@@ -764,7 +764,7 @@ def wait_for_element_clickable(
     @Params
     driver - the webdriver object (required)
     selector - the locator for identifying the page element (required)
-    by - the type of selector being used (Default: By.CSS_SELECTOR)
+    by - the type of selector being used (Default: "css selector")
     timeout - the time to wait for elements in seconds
     original_selector - handle pre-converted ":contains(TEXT)" selector
     @Returns
@@ -798,7 +798,7 @@ def wait_for_element_clickable(
     plural = "s"
     if timeout == 1:
         plural = ""
-    if not element and by != By.LINK_TEXT:
+    if not element and by != "link text":
         if (
             original_selector
             and ":contains(" in original_selector
@@ -828,14 +828,14 @@ def wait_for_element_clickable(
             plural,
         )
         timeout_exception(ElementNotInteractableException, message)
-    elif not element and by == By.LINK_TEXT and not is_visible:
+    elif not element and by == "link text" and not is_visible:
         message = "Link text {%s} was not visible after %s second%s!" % (
             selector,
             timeout,
             plural,
         )
         timeout_exception(ElementNotVisibleException, message)
-    elif not element and by == By.LINK_TEXT and is_visible:
+    elif not element and by == "link text" and is_visible:
         message = "Link text {%s} was not clickable after %s second%s!" % (
             selector,
             timeout,
@@ -860,7 +860,7 @@ def wait_for_element_absent(
     @Params
     driver - the webdriver object
     selector - the locator for identifying the page element (required)
-    by - the type of selector being used (Default: By.CSS_SELECTOR)
+    by - the type of selector being used (Default: "css selector")
     timeout - the time to wait for elements in seconds
     original_selector - handle pre-converted ":contains(TEXT)" selector
     """
@@ -907,7 +907,7 @@ def wait_for_element_not_visible(
     @Params
     driver - the webdriver object (required)
     selector - the locator for identifying the page element (required)
-    by - the type of selector being used (Default: By.CSS_SELECTOR)
+    by - the type of selector being used (Default: "css selector")
     timeout - the time to wait for the element in seconds
     original_selector - handle pre-converted ":contains(TEXT)" selector
     """
@@ -959,7 +959,7 @@ def wait_for_text_not_visible(
     driver - the webdriver object (required)
     text - the text that is being searched for in the element (required)
     selector - the locator for identifying the page element (required)
-    by - the type of selector being used (Default: By.CSS_SELECTOR)
+    by - the type of selector being used (Default: "css selector")
     timeout - the time to wait for elements in seconds
     @Returns
     A web element object that contains the text searched for
@@ -1005,7 +1005,7 @@ def wait_for_attribute_not_present(
     selector - the locator for identifying the page element (required)
     attribute - the element attribute (required)
     value - the attribute value (Default: None)
-    by - the type of selector being used (Default: By.CSS_SELECTOR)
+    by - the type of selector being used (Default: "css selector")
     timeout - the time to wait for the element attribute in seconds
     """
     start_ms = time.time() * 1000.0
@@ -1043,7 +1043,7 @@ def find_visible_elements(driver, selector, by="css selector"):
     @Params
     driver - the webdriver object (required)
     selector - the locator for identifying the page element (required)
-    by - the type of selector being used (Default: By.CSS_SELECTOR)
+    by - the type of selector being used (Default: "css selector")
     """
     elements = driver.find_elements(by=by, value=selector)
     try:
@@ -1249,9 +1249,9 @@ def switch_to_frame(driver, frame, timeout=settings.SMALL_TIMEOUT):
             if type(frame) is str:
                 by = None
                 if page_utils.is_xpath_selector(frame):
-                    by = By.XPATH
+                    by = "xpath"
                 else:
-                    by = By.CSS_SELECTOR
+                    by = "css selector"
                 if is_element_visible(driver, frame, by=by):
                     try:
                         element = driver.find_element(by=by, value=frame)

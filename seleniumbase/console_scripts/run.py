@@ -1067,33 +1067,33 @@ def main():
             show_translate_usage()
     elif command == "extract-objects" or command == "extract_objects":
         if len(command_args) >= 1:
-            from seleniumbase.console_scripts import objectify
+            from seleniumbase.console_scripts import sb_objectify
 
-            objectify.extract_objects()
+            sb_objectify.extract_objects()
         else:
             show_basic_usage()
             show_extract_objects_usage()
     elif command == "inject-objects" or command == "inject_objects":
         if len(command_args) >= 1:
-            from seleniumbase.console_scripts import objectify
+            from seleniumbase.console_scripts import sb_objectify
 
-            objectify.inject_objects()
+            sb_objectify.inject_objects()
         else:
             show_basic_usage()
             show_inject_objects_usage()
     elif command == "objectify":
         if len(command_args) >= 1:
-            from seleniumbase.console_scripts import objectify
+            from seleniumbase.console_scripts import sb_objectify
 
-            objectify.objectify()
+            sb_objectify.objectify()
         else:
             show_basic_usage()
             show_objectify_usage()
     elif command == "revert-objects" or command == "revert_objects":
         if len(command_args) >= 1:
-            from seleniumbase.console_scripts import objectify
+            from seleniumbase.console_scripts import sb_objectify
 
-            objectify.revert_objects()
+            sb_objectify.revert_objects()
         else:
             show_basic_usage()
             show_revert_objects_usage()

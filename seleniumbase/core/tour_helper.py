@@ -6,7 +6,6 @@ import os
 import re
 import textwrap
 import time
-from selenium.webdriver.common.by import By
 from seleniumbase import config as sb_config
 from seleniumbase.config import settings
 from seleniumbase.core import style_sheet
@@ -290,7 +289,7 @@ def play_shepherd_tour(driver, tour_steps, msg_dur, name=None, interval=0):
             page_actions.wait_for_element_present(
                 driver,
                 selector,
-                by=By.CSS_SELECTOR,
+                by="css selector",
                 timeout=settings.SMALL_TIMEOUT,
             )
         except Exception:
@@ -428,7 +427,7 @@ def play_bootstrap_tour(
                 page_actions.wait_for_element_present(
                     driver,
                     selector,
-                    by=By.CSS_SELECTOR,
+                    by="css selector",
                     timeout=settings.SMALL_TIMEOUT,
                 )
             else:
@@ -452,7 +451,7 @@ def play_bootstrap_tour(
                 result = driver.execute_script("return $tour.ended()")
             else:
                 page_actions.wait_for_element_present(
-                    driver, ".tour-tour", by=By.CSS_SELECTOR, timeout=0.65
+                    driver, ".tour-tour", by="css selector", timeout=0.65
                 )
                 result = False
         except Exception:
@@ -468,7 +467,7 @@ def play_bootstrap_tour(
                     result = driver.execute_script("return $tour.ended()")
                 else:
                     page_actions.wait_for_element_present(
-                        driver, ".tour-tour", by=By.CSS_SELECTOR, timeout=0.65
+                        driver, ".tour-tour", by="css selector", timeout=0.65
                     )
                     result = False
                 if result is False:
@@ -514,7 +513,7 @@ def play_driverjs_tour(
                 page_actions.wait_for_element_present(
                     driver,
                     selector,
-                    by=By.CSS_SELECTOR,
+                    by="css selector",
                     timeout=settings.SMALL_TIMEOUT,
                 )
             else:
@@ -547,7 +546,7 @@ def play_driverjs_tour(
                 page_actions.wait_for_element_visible(
                     driver,
                     "#driver-popover-item",
-                    by=By.CSS_SELECTOR,
+                    by="css selector",
                     timeout=1.1,
                 )
                 result = False
@@ -594,7 +593,7 @@ def play_driverjs_tour(
                     page_actions.wait_for_element_visible(
                         driver,
                         "#driver-popover-item",
-                        by=By.CSS_SELECTOR,
+                        by="css selector",
                         timeout=1.1,
                     )
                     result = False
@@ -641,7 +640,7 @@ def play_hopscotch_tour(
                 page_actions.wait_for_element_present(
                     driver,
                     selector,
-                    by=By.CSS_SELECTOR,
+                    by="css selector",
                     timeout=settings.SMALL_TIMEOUT,
                 )
             else:
@@ -671,7 +670,7 @@ def play_hopscotch_tour(
                 page_actions.wait_for_element_present(
                     driver,
                     ".hopscotch-bubble",
-                    by=By.CSS_SELECTOR,
+                    by="css selector",
                     timeout=0.4,
                 )
                 result = False
@@ -713,7 +712,7 @@ def play_hopscotch_tour(
                     page_actions.wait_for_element_present(
                         driver,
                         ".hopscotch-bubble",
-                        by=By.CSS_SELECTOR,
+                        by="css selector",
                         timeout=0.4,
                     )
                     result = False
@@ -773,7 +772,7 @@ def play_introjs_tour(
                 page_actions.wait_for_element_present(
                     driver,
                     selector,
-                    by=By.CSS_SELECTOR,
+                    by="css selector",
                     timeout=settings.SMALL_TIMEOUT,
                 )
             else:
@@ -800,7 +799,7 @@ def play_introjs_tour(
                 result = driver.execute_script("return $tour._currentStep")
             else:
                 page_actions.wait_for_element_present(
-                    driver, ".introjs-tooltip", by=By.CSS_SELECTOR, timeout=0.4
+                    driver, ".introjs-tooltip", by="css selector", timeout=0.4
                 )
                 result = True
         except Exception:
@@ -844,7 +843,7 @@ def play_introjs_tour(
                     page_actions.wait_for_element_present(
                         driver,
                         ".introjs-tooltip",
-                        by=By.CSS_SELECTOR,
+                        by="css selector",
                         timeout=0.4,
                     )
                     result = True
