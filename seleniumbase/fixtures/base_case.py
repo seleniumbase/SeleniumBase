@@ -4075,6 +4075,7 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("hi_li")
         ext_actions.append("as_lt")
         ext_actions.append("as_ti")
+        ext_actions.append("as_tc")
         ext_actions.append("as_df")
         ext_actions.append("do_fi")
         ext_actions.append("as_at")
@@ -4402,6 +4403,12 @@ class BaseCase(unittest.TestCase):
                     sb_actions.append("self.%s('%s')" % (method, action[1]))
             elif action[0] == "as_ti":
                 method = "assert_title"
+                if '"' not in action[1]:
+                    sb_actions.append('self.%s("%s")' % (method, action[1]))
+                else:
+                    sb_actions.append("self.%s('%s')" % (method, action[1]))
+            elif action[0] == "as_tc":
+                method = "assert_title_contains"
                 if '"' not in action[1]:
                     sb_actions.append('self.%s("%s")' % (method, action[1]))
                 else:
@@ -6354,7 +6361,7 @@ class BaseCase(unittest.TestCase):
                 from seleniumbase.fixtures.words import SD
 
                 a_t = SD.translate_assert_title(self._language)
-            messenger_post = "%s: {%s}" % (a_t, title)
+            messenger_post = "%s: {%s}" % (a_t, expected)
             self.__highlight_with_assert_success(messenger_post, "html")
         if self.recorder_mode:
             url = self.get_current_url()
@@ -6363,7 +6370,50 @@ class BaseCase(unittest.TestCase):
                     if self.get_session_storage_item("pause_recorder") == "no":
                         time_stamp = self.execute_script("return Date.now();")
                         origin = self.get_origin()
-                        action = ["as_ti", title, origin, time_stamp]
+                        action = ["as_ti", expected, origin, time_stamp]
+                        self.__extra_actions.append(action)
+        return True
+
+    def assert_title_contains(self, substring):
+        """Asserts that the title substring appears in the web page title.
+        When a web page initially loads, the title starts as the URL,
+            but then the title switches over to the actual page title.
+        In Recorder Mode, this assertion is skipped because the Recorder
+            changes the page title to the selector of the hovered element.
+        """
+        self.wait_for_ready_state_complete()
+        expected = substring.strip()
+        actual = self.get_page_title().strip()
+        error = (
+            "Expected title substring [%s] does not appear "
+            "in the actual page title [%s]!"
+        )
+        try:
+            if not self.recorder_mode:
+                self.assertIn(expected, actual, error % (expected, actual))
+        except Exception:
+            self.wait_for_ready_state_complete()
+            time.sleep(2)
+            actual = self.get_page_title().strip()
+            try:
+                self.assertIn(expected, actual, error % (expected, actual))
+            except Exception:
+                self.wait_for_ready_state_complete()
+                time.sleep(2)
+                actual = self.get_page_title().strip()
+                self.assertIn(expected, actual, error % (expected, actual))
+        if self.demo_mode and not self.recorder_mode:
+            a_t = "ASSERT TITLE CONTAINS"
+            messenger_post = "%s: {%s}" % (a_t, expected)
+            self.__highlight_with_assert_success(messenger_post, "html")
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        action = ["as_tc", expected, origin, time_stamp]
                         self.__extra_actions.append(action)
         return True
 

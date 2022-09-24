@@ -458,6 +458,8 @@ self.assert_attribute(
 
 self.assert_title(title)
 
+self.assert_title_contains(substring)
+
 self.assert_no_js_errors()
 
 self.inspect_html()

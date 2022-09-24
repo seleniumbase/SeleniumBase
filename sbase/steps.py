@@ -604,3 +604,11 @@ def assert_text_not_visible(context, text):
     sb = context.sb
     text = normalize_text(text)
     sb.assert_text_not_visible(text)
+
+
+@step("Assert title contains '{substring}'")
+@step('Assert title contains "{substring}"')
+def assert_title_contains(context, substring):
+    sb = context.sb
+    substring = normalize_text(substring)
+    sb.assert_title_contains(substring)
