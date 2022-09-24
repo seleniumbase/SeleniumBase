@@ -356,6 +356,10 @@ self.click_xpath(xpath)
 
 self.js_click(selector, by="css selector", all_matches=False, scroll=True)
 
+self.js_click_if_present(selector, by="css selector")
+
+self.js_click_if_visible(selector, by="css selector")
+
 self.js_click_all(selector, by="css selector")
 
 self.jquery_click(selector, by="css selector")
@@ -453,6 +457,8 @@ self.assert_attribute(
     by="css selector", timeout=None)
 
 self.assert_title(title)
+
+self.assert_title_contains(substring)
 
 self.assert_no_js_errors()
 

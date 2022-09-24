@@ -69,10 +69,8 @@ class SwagLabsTests(BaseCase):
         self.save_teardown_screenshot()
         # Reset App State and Logout if the controls are present
         try:
-            if self.is_element_present("a#reset_sidebar_link"):
-                self.js_click("a#reset_sidebar_link")
-            if self.is_element_present("a#logout_sidebar_link"):
-                self.js_click("a#logout_sidebar_link")
+            self.js_click_if_present("a#reset_sidebar_link")
+            self.js_click_if_present("a#logout_sidebar_link")
         except Exception:
             pass
         super(SwagLabsTests, self).tearDown()

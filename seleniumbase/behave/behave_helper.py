@@ -244,6 +244,12 @@ def generate_gherkin(srt_actions):
                 sb_actions.append('%s "%s"' % (method, action[1]))
             else:
                 sb_actions.append("%s '%s'" % (method, action[1]))
+        elif action[0] == "as_tc":
+            method = "Assert title contains"
+            if '"' not in action[1]:
+                sb_actions.append('%s "%s"' % (method, action[1]))
+            else:
+                sb_actions.append("%s '%s'" % (method, action[1]))
         elif action[0] == "as_df":
             method = "Assert downloaded file"
             if '"' not in action[1]:

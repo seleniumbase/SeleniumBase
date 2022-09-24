@@ -5,7 +5,7 @@
 <meta property="og:image" content="https://seleniumbase.github.io/cdn/img/mac_sb_logo_5b.png" />
 <link rel="icon" href="https://seleniumbase.github.io/img/green_logo2.png" />
 
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/mac_sb_logo_bg2.png" alt="SeleniumBase" title="SeleniumBase" width="408" /></a></p>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/mac_sb_logo_bw.png" alt="SeleniumBase" title="SeleniumBase" width="408" /></a></p>
 
 <p align="center"><b>A framework for web automation and testing with <a href="https://www.python.org/about/" target="_blank">Python</a>.</b><br />SeleniumBase extends <a href="https://www.selenium.dev/documentation/webdriver/" target="_blank">Selenium WebDriver</a> as a <a href="https://docs.pytest.org/en/latest/how-to/usage.html" target="_blank">pytest</a> plugin.</p>
 

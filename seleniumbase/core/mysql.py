@@ -42,11 +42,7 @@ class DatabaseManager:
         count = 0
         while count < retry_count:
             try:
-                if (
-                    sys.version_info[0] == 3
-                    and sys.version_info[1] >= 6
-                    or (sys.version_info[0] > 3)
-                ):
+                if sys.version_info >= (3, 6):
                     # PyMySQL 1.0.0 or above renamed the variables.
                     self.conn = pymysql.connect(
                         host=db_server,

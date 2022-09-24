@@ -47,6 +47,7 @@ if pure_python:
     sb.variables = {}
     sb.account = None
     sb.environment = "test"
+    sb.env = "test"  # should match sb.environment
     sb.user_agent = None
     sb.incognito = False
     sb.guest_mode = False
@@ -56,7 +57,7 @@ if pure_python:
     sb.extension_zip = None
     sb.extension_dir = None
     sb.database_env = "test"
-    sb.log_path = "latest_logs/"
+    sb.log_path = "latest_logs"
     sb.archive_logs = False
     sb.disable_csp = False
     sb.disable_ws = False

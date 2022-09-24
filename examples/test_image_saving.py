@@ -26,8 +26,9 @@ class ImageTests(BaseCase):
         file_name = "comic.png"
         folder = "images_exported"
         self.save_element_as_image_file(selector, file_name, folder)
-        self.assert_true(os.path.exists("%s/%s" % (folder, file_name)))
-        print('\n"%s/%s" was saved!' % (folder, file_name))
+        file_path = os.path.join(folder, file_name)
+        self.assert_true(os.path.exists(file_path))
+        print('\n"%s" was saved!' % file_path)
 
     # @pytest.mark.run(order=2)
     def test_2_add_text_overlay_to_image(self):
@@ -40,8 +41,9 @@ class ImageTests(BaseCase):
         self.save_element_as_image_file(
             selector, file_name, folder, overlay_text
         )
-        self.assert_true(os.path.exists("%s/%s" % (folder, file_name)))
-        print('\n"%s/%s" was saved!' % (folder, file_name))
+        file_path = os.path.join(folder, file_name)
+        self.assert_true(os.path.exists(file_path))
+        print('\n"%s" was saved!' % file_path)
 
     # @pytest.mark.run(order=3)
     def test_3_add_text_overlay_to_page_section(self):
@@ -59,8 +61,9 @@ class ImageTests(BaseCase):
         self.save_element_as_image_file(
             selector, file_name, folder, overlay_text
         )
-        self.assert_true(os.path.exists("%s/%s" % (folder, file_name)))
-        print('\n"%s/%s" was saved!' % (folder, file_name))
+        file_path = os.path.join(folder, file_name)
+        self.assert_true(os.path.exists(file_path))
+        print('\n"%s" was saved!' % file_path)
 
     # @pytest.mark.run(order=4)
     def test_4_add_text_overlay_to_full_page(self):
@@ -74,5 +77,6 @@ class ImageTests(BaseCase):
         self.save_element_as_image_file(
             selector, file_name, folder, overlay_text
         )
-        self.assert_true(os.path.exists("%s/%s" % (folder, file_name)))
-        print('\n"%s/%s" was saved!' % (folder, file_name))
+        file_path = os.path.join(folder, file_name)
+        self.assert_true(os.path.exists(file_path))
+        print('\n"%s" was saved!' % file_path)
