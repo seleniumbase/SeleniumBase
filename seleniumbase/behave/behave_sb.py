@@ -158,7 +158,7 @@ def get_configured_sb(context):
     sb.extension_dir = None
     sb.page_load_strategy = None
     sb.database_env = "test"
-    sb.log_path = "latest_logs/"
+    sb.log_path = "latest_logs" + os.sep
     sb.archive_logs = False
     sb.disable_csp = False
     sb.disable_ws = False
@@ -1122,8 +1122,8 @@ def do_final_driver_cleanup_as_needed():
 
 
 def _perform_behave_terminal_summary_():
-    latest_logs_dir = os.getcwd() + "/latest_logs/"
-    dash_path = os.getcwd() + "/dashboard.html"
+    latest_logs_dir = os.path.join(os.getcwd(), "latest_logs" + os.sep)
+    dash_path = os.path.join(os.getcwd(), "dashboard.html")
     equals_len = len("Dashboard: ") + len(dash_path)
     try:
         terminal_size = os.get_terminal_size().columns

@@ -5945,7 +5945,7 @@ class BaseCase(unittest.TestCase):
             file_name = file_name + ".png"
         image_file_path = None
         if folder:
-            if folder.endswith("/"):
+            if folder.endswith(os.sep):
                 folder = folder[:-1]
             if len(folder) > 0:
                 self.create_folder(folder)
