@@ -147,6 +147,7 @@ def get_configured_sb(context):
     sb.variables = {}
     sb.account = None
     sb.environment = "test"
+    sb.env = "test"
     sb.user_agent = None
     sb.incognito = False
     sb.guest_mode = False
@@ -366,6 +367,7 @@ def get_configured_sb(context):
             environment = userdata[key].lower()
             if environment in valid_envs:
                 sb.environment = environment
+                sb.env = environment
             elif environment == "true":
                 raise Exception(
                     '\nThe "env" argument requires a value!'

@@ -47,6 +47,7 @@ if pure_python:
     sb.variables = {}
     sb.account = None
     sb.environment = "test"
+    sb.env = "test"  # should match sb.environment
     sb.user_agent = None
     sb.incognito = False
     sb.guest_mode = False
