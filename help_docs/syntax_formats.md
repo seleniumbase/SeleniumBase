@@ -448,6 +448,7 @@ class MinhaClasseDeTeste(CasoDeTeste):
         self.verificar_elemento('td:contains("Avenida Beira-Mar")')
         self.voltar()
         self.verificar_verdade("João" in self.obter_url_atual())
+        self.atualizar_a_página()
         self.digitar("#searchform input", "Teatro Amazonas")
         self.clique("#searchform button")
         self.verificar_texto("Teatro Amazonas", "#firstHeading")
