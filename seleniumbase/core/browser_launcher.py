@@ -333,6 +333,7 @@ def _set_chrome_options(
     undetectable,
     no_sandbox,
     disable_gpu,
+    headless2,
     incognito,
     guest_mode,
     devtools,
@@ -505,7 +506,9 @@ def _set_chrome_options(
                 "--disable-blink-features=AutomationControlled"
             )
         chrome_options.add_experimental_option("useAutomationExtension", False)
-    if headless:
+    if headless2:
+        chrome_options.add_argument("--headless=chrome")
+    elif headless:
         chrome_options.add_argument("--headless")
     if (settings.DISABLE_CSP_ON_CHROME or disable_csp) and not headless:
         # Headless Chrome does not support extensions, which are required
@@ -865,6 +868,7 @@ def get_driver(
     undetectable=False,
     no_sandbox=False,
     disable_gpu=False,
+    headless2=False,
     incognito=False,
     guest_mode=False,
     devtools=False,
@@ -944,19 +948,42 @@ def get_driver(
         if proxy_pac_url and proxy_user and proxy_pass:
             proxy_auth = True
     if (
+        is_using_uc(undetectable, browser_name)
+        and "linux" not in PLATFORM
+        and headless
+    ):
+        headless = False
+        headless2 = True
+    if (
         headless
-        and proxy_auth
+        and (
+            proxy_auth
+            or ad_block_on
+            or disable_csp
+            or recorder_ext
+            or extension_zip
+            or extension_dir
+        )
         and (
             browser_name == constants.Browser.GOOGLE_CHROME
             or browser_name == constants.Browser.EDGE
         )
     ):
         # Headless Chrome/Edge doesn't support extensions, which are
-        # required when using a proxy server that has authentication.
+        # required when using a proxy server that has authentication,
+        # or when using other SeleniumBase extensions (eg: Recorder).
         # Instead, base_case.py will use the SBVirtualDisplay when not
         # using Chrome's built-in headless mode. See link for details:
         # https://bugs.chromium.org/p/chromium/issues/detail?id=706008
         headless = False
+        if "linux" not in PLATFORM:
+            # Use the new headless mode on Chrome if not using Linux:
+            # bugs.chromium.org/p/chromium/issues/detail?id=706008#c36
+            # Although Linux is technically supported, there are a lot
+            # of old versions of Chrome on Linux server machines, and
+            # this mode requires a recent version of Chrome to work.
+            # Specify "--headless2" as a pytest arg to use on Linux.
+            headless2 = True
     if (
         browser_name == constants.Browser.GOOGLE_CHROME
         and user_data_dir
@@ -990,6 +1017,7 @@ def get_driver(
             undetectable,
             no_sandbox,
             disable_gpu,
+            headless2,
             incognito,
             guest_mode,
             devtools,
@@ -1033,6 +1061,7 @@ def get_driver(
             undetectable,
             no_sandbox,
             disable_gpu,
+            headless2,
             incognito,
             guest_mode,
             devtools,
@@ -1080,6 +1109,7 @@ def get_remote_driver(
     undetectable,
     no_sandbox,
     disable_gpu,
+    headless2,
     incognito,
     guest_mode,
     devtools,
@@ -1177,6 +1207,7 @@ def get_remote_driver(
             undetectable,
             no_sandbox,
             disable_gpu,
+            headless2,
             incognito,
             guest_mode,
             devtools,
@@ -1402,6 +1433,7 @@ def get_remote_driver(
             undetectable,
             no_sandbox,
             disable_gpu,
+            headless2,
             incognito,
             guest_mode,
             devtools,
@@ -1594,6 +1626,7 @@ def get_local_driver(
     undetectable,
     no_sandbox,
     disable_gpu,
+    headless2,
     incognito,
     guest_mode,
     devtools,
@@ -1893,7 +1926,9 @@ def get_local_driver(
             edge_options.add_argument("--disable-sync")
         if guest_mode:
             edge_options.add_argument("--guest")
-        if headless:
+        if headless2:
+            edge_options.add_argument("--headless=chrome")
+        elif headless:
             edge_options.add_argument("--headless")
         if mobile_emulator:
             emulator_settings = {}
@@ -2177,6 +2212,7 @@ def get_local_driver(
                 undetectable,
                 no_sandbox,
                 disable_gpu,
+                headless2,
                 incognito,
                 guest_mode,
                 devtools,
@@ -2237,6 +2273,7 @@ def get_local_driver(
                 undetectable,
                 no_sandbox,
                 disable_gpu,
+                headless2,
                 incognito,
                 guest_mode,
                 devtools,
@@ -2551,6 +2588,7 @@ def get_local_driver(
                         undetectable,
                         no_sandbox,
                         disable_gpu,
+                        headless2,
                         incognito,
                         guest_mode,
                         devtools,

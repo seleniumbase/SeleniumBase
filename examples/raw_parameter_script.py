@@ -33,6 +33,7 @@ if pure_python:
     sb.browser = "chrome"
     sb.is_behave = False
     sb.headless = False
+    sb.headless2 = False
     sb.headed = False
     sb.xvfb = False
     sb.start_page = None
