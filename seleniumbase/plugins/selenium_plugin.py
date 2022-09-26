@@ -40,7 +40,8 @@ class SeleniumBrowser(Plugin):
     --extension-dir=DIR  (Load a Chrome Extension directory, comma-separated.)
     --pls=PLS  (Set pageLoadStrategy on Chrome: "normal", "eager", or "none".)
     --headless  (Run tests in headless mode. The default arg on Linux OS.)
-    --headed  (Run tests in headed/GUI mode on Linux OS.)
+    --headless2  (Use the new headless mode, which supports extensions.)
+    --headed  (Run tests in headed/GUI mode on Linux OS, where not default.)
     --xvfb  (Run tests using the Xvfb virtual display server on Linux OS.)
     --locale=LOCALE_CODE  (Set the Language Locale Code for the web browser.)
     --interval=SECONDS  (The autoplay interval for presentations & tour steps)
@@ -338,9 +339,19 @@ class SeleniumBrowser(Plugin):
             action="store_true",
             dest="headless",
             default=False,
-            help="""Using this makes Webdriver run web browsers headlessly,
-                    which is required on headless machines.
-                    Default: False on Mac/Windows. True on Linux.""",
+            help="""Using this option activates headless mode,
+                which is required on headless machines
+                UNLESS using a virtual display with Xvfb.
+                Default: False on Mac/Windows. True on Linux.""",
+        )
+        parser.add_option(
+            "--headless2",
+            action="store_true",
+            dest="headless2",
+            default=False,
+            help="""This option activates the new headless mode,
+                    which supports Chromium extensions, and more,
+                    but is slower than the standard headless mode.""",
         )
         parser.add_option(
             "--headed",
@@ -807,6 +818,10 @@ class SeleniumBrowser(Plugin):
         test.test.cap_file = self.options.cap_file
         test.test.cap_string = self.options.cap_string
         test.test.headless = self.options.headless
+        test.test.headless2 = self.options.headless2
+        if test.test.browser not in ["chrome", "edge"]:
+            test.test.headless2 = False  # Only for Chromium browsers
+            self.options.headless2 = False
         test.test.headed = self.options.headed
         test.test.xvfb = self.options.xvfb
         test.test.locale_code = self.options.locale_code
@@ -886,6 +901,12 @@ class SeleniumBrowser(Plugin):
             # (Set --server="127.0.0.1" for localhost Grid)
             if str(self.options.port) == "443":
                 test.test.protocol = "https"
+        # Recorder Mode can still optimize scripts in --headless2 mode.
+        if self.options.recorder_mode and self.options.headless:
+            self.options.headless = False
+            self.options.headless2 = True
+            test.test.headless = False
+            test.test.headless2 = True
         if self.options.xvfb and "linux" not in sys.platform:
             # The Xvfb virtual display server is for Linux OS Only!
             self.options.xvfb = False
@@ -893,20 +914,26 @@ class SeleniumBrowser(Plugin):
             "linux" in sys.platform
             and not self.options.headed
             and not self.options.headless
+            and not self.options.headless2
             and not self.options.xvfb
         ):
             print(
                 "(Linux uses --headless by default. "
                 "To override, use --headed / --gui. "
                 "For Xvfb mode instead, use --xvfb. "
-                "Or hide this info with --headless.)"
+                "Or hide this info with --headless, "
+                "or by calling the new --headless2.)"
             )
             self.options.headless = True
             test.test.headless = True
-        if not self.options.headless:
+        if not self.options.headless and not self.options.headless2:
             self.options.headed = True
             test.test.headed = True
-        if self.options.headless:
+        if (
+            self.options.headless
+            or self.options.headless2
+            or self.options.xvfb
+        ):
             try:
                 # from pyvirtualdisplay import Display  # Skip for own lib
                 from sbvirtualdisplay import Display

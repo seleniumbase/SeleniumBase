@@ -43,7 +43,8 @@ behave -D agent="User Agent String" -D demo
 -D extension-dir=DIR  (Load a Chrome Extension directory, comma-separated.)
 -D pls=PLS  (Set pageLoadStrategy on Chrome: "normal", "eager", or "none".)
 -D headless  (Run tests in headless mode. The default arg on Linux OS.)
--D headed  (Run tests in headed/GUI mode on Linux OS.)
+-D headless2  (Use the new headless mode, which supports extensions.)
+-D headed  (Run tests in headed/GUI mode on Linux OS, where not default.)
 -D xvfb  (Run tests using the Xvfb virtual display server on Linux OS.)
 -D locale=LOCALE_CODE  (Set the Language Locale Code for the web browser.)
 -D pdb  (Activate Post Mortem Debug Mode if a test fails.)
@@ -131,6 +132,7 @@ def get_configured_sb(context):
     sb.browser = "chrome"
     sb.is_behave = True
     sb.headless = False
+    sb.headless2 = False
     sb.headless_active = False
     sb.headed = False
     sb.xvfb = False
@@ -261,6 +263,10 @@ def get_configured_sb(context):
         # Handle: -D headless
         if low_key == "headless":
             sb.headless = True
+            continue
+        # Handle: -D headless2
+        if low_key == "headless2":
+            sb.headless2 = True
             continue
         # Handle: -D headed / gui
         if low_key in ["headed", "gui"]:
@@ -733,19 +739,22 @@ def get_configured_sb(context):
             "\nOnly ONE default browser is allowed!\n"
             "%s browsers were selected: %s" % (len(browsers), browsers)
         )
-    # Recorder Mode does not support headless browser runs.
-    # Chromium does not allow extensions in Headless Mode.
+    # Recorder Mode can still optimize scripts in "-D headless2" mode.
     if sb.recorder_ext and sb.headless:
-        raise Exception(
-            "\n\n  Recorder Mode does NOT support Headless Mode!"
-            '\n  (DO NOT combine "-D rec" with "-D headless"!)\n'
-        )
+        sb.headless = False
+        sb.headless2 = True
+    if sb.browser not in ["chrome", "edge"]:
+        sb.headless2 = False  # Only for Chromium browsers
     # Recorder Mode only supports Chromium browsers.
     if sb.recorder_ext and (sb.browser not in ["chrome", "edge"]):
         raise Exception(
             "\n\n  Recorder Mode ONLY supports Chrome and Edge!"
             '\n  (Your browser choice was: "%s")\n' % sb.browser
         )
+    # Recorder Mode can still optimize scripts in --headless2 mode.
+    if sb.recorder_mode and sb.headless:
+        sb.headless = False
+        sb.headless2 = True
     # The Xvfb virtual display server is for Linux OS Only.
     if sb.xvfb and "linux" not in sys.platform:
         sb.xvfb = False
@@ -753,16 +762,18 @@ def get_configured_sb(context):
         "linux" in sys.platform
         and not sb.headed
         and not sb.headless
+        and not sb.headless2
         and not sb.xvfb
     ):
         print(
             '(Linux uses "-D headless" by default. '
             'To override, use "-D headed" / "-D gui". '
             'For Xvfb mode instead, use "-D xvfb". '
-            'Or hide this info with "-D headless".)'
+            'Or hide this info with "-D headless",'
+            'or by calling the new "-D headless2".)'
         )
         sb.headless = True
-    if not sb.headless:
+    if not sb.headless and not sb.headless2:
         sb.headed = True
     if sb.servername != "localhost":
         # Using Selenium Grid

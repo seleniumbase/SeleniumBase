@@ -99,6 +99,8 @@ class BaseCase(unittest.TestCase):
         self.driver = None
         self.environment = None
         self.env = None  # Add a shortened version of self.environment
+        self.headless = None
+        self.headless2 = None  # The new headless mode for Chromium
         self.version_tuple = (
             tuple([int(i) for i in __version__.split(".") if i.isdigit()])
         )
@@ -3169,6 +3171,7 @@ class BaseCase(unittest.TestCase):
         undetectable=None,
         no_sandbox=None,
         disable_gpu=None,
+        headless2=None,
         incognito=None,
         guest_mode=None,
         devtools=None,
@@ -3215,6 +3218,7 @@ class BaseCase(unittest.TestCase):
         undetectable - the option to use an undetectable chromedriver
         no_sandbox - the option to enable the "No-Sandbox" feature (Chrome)
         disable_gpu - the option to enable Chrome's "Disable GPU" feature
+        headless2 - the option to use the newer headless mode (Chromium)
         incognito - the option to enable Chrome's Incognito mode (Chrome)
         guest - the option to enable Chrome's Guest mode (Chrome)
         devtools - the option to open Chrome's DevTools on start (Chrome)
@@ -3308,6 +3312,8 @@ class BaseCase(unittest.TestCase):
             no_sandbox = self.no_sandbox
         if disable_gpu is None:
             disable_gpu = self.disable_gpu
+        if headless2 is None:
+            headless2 = self.headless2
         if incognito is None:
             incognito = self.incognito
         if guest_mode is None:
@@ -3384,6 +3390,7 @@ class BaseCase(unittest.TestCase):
             undetectable=undetectable,
             no_sandbox=no_sandbox,
             disable_gpu=disable_gpu,
+            headless2=headless2,
             incognito=incognito,
             guest_mode=guest_mode,
             devtools=devtools,
@@ -3411,7 +3418,7 @@ class BaseCase(unittest.TestCase):
         if switch_to:
             self.driver = new_driver
             self.browser = browser_name
-            if self.headless or self.xvfb:
+            if self.headless or self.headless2 or self.xvfb:
                 # Make sure the invisible browser window is big enough
                 width = settings.HEADLESS_START_WIDTH
                 height = settings.HEADLESS_START_HEIGHT
@@ -5553,6 +5560,11 @@ class BaseCase(unittest.TestCase):
         Page links include those obtained from:
         "a"->"href", "img"->"src", "link"->"href", and "script"->"src".
         """
+        self.__check_scope()
+        try:
+            self.wait_for_element_visible("body", timeout=1.5)
+        except Exception:
+            pass
         page_url = self.get_current_url()
         soup = self.get_beautiful_soup(self.get_page_source())
         links = page_utils._get_unique_links(page_url, soup)
@@ -8203,7 +8215,7 @@ class BaseCase(unittest.TestCase):
         interval - The delay time between autoplaying slides. (in seconds)
                    If set to 0 (default), autoplay is disabled.
         """
-        if self.headless or self.xvfb:
+        if self.headless or self.headless2 or self.xvfb:
             return  # Presentations should not run in headless mode.
         if not name:
             name = "default"
@@ -8896,7 +8908,7 @@ class BaseCase(unittest.TestCase):
         interval - The delay time for auto-advancing charts. (in seconds)
                    If set to 0 (default), auto-advancing is disabled.
         """
-        if self.headless or self.xvfb:
+        if self.headless or self.headless2 or self.xvfb:
             interval = 1  # Race through chart if running in headless mode
         if not chart_name:
             chart_name = "default"
@@ -9582,7 +9594,7 @@ class BaseCase(unittest.TestCase):
         """
         from seleniumbase.core import tour_helper
 
-        if self.headless or self.xvfb:
+        if self.headless or self.headless2 or self.xvfb:
             return  # Tours should not run in headless mode.
 
         self.wait_for_ready_state_complete()
@@ -9800,7 +9812,7 @@ class BaseCase(unittest.TestCase):
             for option in options:
                 if not type(option) is list and not type(option) is tuple:
                     raise Exception('"options" should be a list of tuples!')
-        if self.headless or self.xvfb:
+        if self.headless or self.headless2 or self.xvfb:
             return buttons[-1][0]
         jqc_helper.jquery_confirm_button_dialog(
             self.driver, message, buttons, options
@@ -9883,7 +9895,7 @@ class BaseCase(unittest.TestCase):
             for option in options:
                 if not type(option) is list and not type(option) is tuple:
                     raise Exception('"options" should be a list of tuples!')
-        if self.headless or self.xvfb:
+        if self.headless or self.headless2 or self.xvfb:
             return ""
         jqc_helper.jquery_confirm_text_dialog(
             self.driver, message, button, options
@@ -9954,7 +9966,7 @@ class BaseCase(unittest.TestCase):
             for option in options:
                 if not type(option) is list and not type(option) is tuple:
                     raise Exception('"options" should be a list of tuples!')
-        if self.headless or self.xvfb:
+        if self.headless or self.headless2 or self.xvfb:
             return ("", buttons[-1][0])
         jqc_helper.jquery_confirm_full_dialog(
             self.driver, message, buttons, options
@@ -10038,7 +10050,10 @@ class BaseCase(unittest.TestCase):
                 duration = settings.DEFAULT_MESSAGE_DURATION
             else:
                 duration = self.message_duration
-        if (self.headless or self.xvfb) and float(duration) > 0.75:
+        if (
+            (self.headless or self.headless2 or self.xvfb)
+            and float(duration) > 0.75
+        ):
             duration = 0.75
         try:
             js_utils.post_message(self.driver, message, duration, style=style)
@@ -10072,7 +10087,10 @@ class BaseCase(unittest.TestCase):
                 duration = settings.DEFAULT_MESSAGE_DURATION
             else:
                 duration = self.message_duration
-        if (self.headless or self.xvfb) and float(duration) > 0.75:
+        if (
+            (self.headless or self.headless2 or self.xvfb)
+            and float(duration) > 0.75
+        ):
             duration = 0.75
         try:
             js_utils.post_message(
@@ -10098,7 +10116,10 @@ class BaseCase(unittest.TestCase):
                 duration = settings.DEFAULT_MESSAGE_DURATION
             else:
                 duration = self.message_duration
-        if (self.headless or self.xvfb) and float(duration) > 0.75:
+        if (
+            (self.headless or self.headless2 or self.xvfb)
+            and float(duration) > 0.75
+        ):
             duration = 0.75
         try:
             js_utils.post_message(
@@ -12430,7 +12451,10 @@ class BaseCase(unittest.TestCase):
         duration = self.message_duration
         if not duration:
             duration = settings.DEFAULT_MESSAGE_DURATION
-        if (self.headless or self.xvfb) and float(duration) > 0.75:
+        if (
+            (self.headless or self.headless2 or self.xvfb)
+            and float(duration) > 0.75
+        ):
             duration = 0.75
         js_utils.highlight_with_js_2(
             self.driver, message, selector, o_bs, duration
@@ -12440,14 +12464,17 @@ class BaseCase(unittest.TestCase):
         duration = self.message_duration
         if not duration:
             duration = settings.DEFAULT_MESSAGE_DURATION
-        if (self.headless or self.xvfb) and float(duration) > 0.75:
+        if (
+            (self.headless or self.headless2 or self.xvfb)
+            and float(duration) > 0.75
+        ):
             duration = 0.75
         js_utils.highlight_with_jquery_2(
             self.driver, message, selector, o_bs, duration
         )
 
     def __activate_virtual_display_as_needed(self):
-        if self.headless or self.xvfb:
+        if self.headless or self.headless2 or self.xvfb:
             width = settings.HEADLESS_START_WIDTH
             height = settings.HEADLESS_START_HEIGHT
             try:
@@ -12599,6 +12626,7 @@ class BaseCase(unittest.TestCase):
             self.undetectable = sb_config.undetectable
             self.no_sandbox = sb_config.no_sandbox
             self.disable_gpu = sb_config.disable_gpu
+            self.headless2 = sb_config.headless2
             self.incognito = sb_config.incognito
             self.guest_mode = sb_config.guest_mode
             self.devtools = sb_config.devtools
@@ -12888,6 +12916,7 @@ class BaseCase(unittest.TestCase):
                 undetectable=self.undetectable,
                 no_sandbox=self.no_sandbox,
                 disable_gpu=self.disable_gpu,
+                headless2=self.headless2,
                 incognito=self.incognito,
                 guest_mode=self.guest_mode,
                 devtools=self.devtools,
@@ -13810,7 +13839,7 @@ class BaseCase(unittest.TestCase):
                     self.__activate_debug_mode_in_teardown()
                 # (Pytest) Finally close all open browser windows
                 self.__quit_all_drivers()
-            if self.headless or self.xvfb:
+            if self.headless or self.headless2 or self.xvfb:
                 if self.headless_active:
                     try:
                         self.display.stop()
@@ -13901,7 +13930,7 @@ class BaseCase(unittest.TestCase):
                     print(msg)
                 if self.dashboard:
                     self.__process_dashboard(has_exception)
-                if self.headless or self.xvfb:
+                if self.headless or self.headless2 or self.xvfb:
                     if self.headless_active:
                         try:
                             self.display.stop()

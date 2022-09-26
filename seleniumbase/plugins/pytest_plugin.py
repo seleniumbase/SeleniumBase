@@ -58,7 +58,8 @@ def pytest_addoption(parser):
     --extension-dir=DIR  (Load a Chrome Extension directory, comma-separated.)
     --pls=PLS  (Set pageLoadStrategy on Chrome: "normal", "eager", or "none".)
     --headless  (Run tests in headless mode. The default arg on Linux OS.)
-    --headed  (Run tests in headed/GUI mode on Linux OS.)
+    --headless2  (Use the new headless mode, which supports extensions.)
+    --headed  (Run tests in headed/GUI mode on Linux OS, where not default.)
     --xvfb  (Run tests using the Xvfb virtual display server on Linux OS.)
     --locale=LOCALE_CODE  (Set the Language Locale Code for the web browser.)
     --interval=SECONDS  (The autoplay interval for presentations & tour steps)
@@ -603,9 +604,19 @@ def pytest_addoption(parser):
         action="store_true",
         dest="headless",
         default=False,
-        help="""Using this makes Webdriver run web browsers
-                headlessly, which is required on headless machines.
+        help="""Using this option activates headless mode,
+                which is required on headless machines
+                UNLESS using a virtual display with Xvfb.
                 Default: False on Mac/Windows. True on Linux.""",
+    )
+    parser.addoption(
+        "--headless2",
+        action="store_true",
+        dest="headless2",
+        default=False,
+        help="""This option activates the new headless mode,
+                which supports Chromium extensions, and more,
+                but is slower than the standard headless mode.""",
     )
     parser.addoption(
         "--headed",
@@ -1126,19 +1137,12 @@ def pytest_addoption(parser):
                 '\n  (DO NOT combine "--recorder" with "-n NUM_PROCESSES"!)\n'
             )
 
-    # Recorder Mode does not support headless browser runs.
-    # (Chromium does not allow extensions in Headless Mode)
     using_recorder = False
     if (
         "--recorder" in sys_argv
         or "--record" in sys_argv
         or "--rec" in sys_argv
     ):
-        if "--headless" in sys_argv:
-            raise Exception(
-                "\n\n  Recorder Mode does NOT support Headless Mode!"
-                '\n  (DO NOT combine "--recorder" with "--headless"!)\n'
-            )
         using_recorder = True
 
     # As a shortcut, you can use "--edge" instead of "--browser=edge", etc,
@@ -1270,6 +1274,9 @@ def pytest_configure(config):
     sb_config.mobile_emulator = config.getoption("mobile_emulator")
     sb_config.device_metrics = config.getoption("device_metrics")
     sb_config.headless = config.getoption("headless")
+    sb_config.headless2 = config.getoption("headless2")
+    if sb_config.browser not in ["chrome", "edge"]:
+        sb_config.headless2 = False  # Only for Chromium browsers
     sb_config.headed = config.getoption("headed")
     sb_config.xvfb = config.getoption("xvfb")
     sb_config.locale_code = config.getoption("locale_code")
@@ -1437,6 +1444,11 @@ def pytest_configure(config):
         sb_config.recorder_mode = False
         sb_config.recorder_ext = False
 
+    # Recorder Mode can still optimize scripts in --headless2 mode.
+    if sb_config.recorder_mode and sb_config.headless:
+        sb_config.headless = False
+        sb_config.headless2 = True
+
     if sb_config.xvfb and "linux" not in sys.platform:
         # The Xvfb virtual display server is for Linux OS Only!
         sb_config.xvfb = False
@@ -1444,16 +1456,18 @@ def pytest_configure(config):
         "linux" in sys.platform
         and not sb_config.headed
         and not sb_config.headless
+        and not sb_config.headless2
         and not sb_config.xvfb
     ):
         print(
             "(Linux uses --headless by default. "
             "To override, use --headed / --gui. "
             "For Xvfb mode instead, use --xvfb. "
-            "Or hide this info with --headless.)"
+            "Or hide this info with --headless, "
+            "or by calling the new --headless2.)"
         )
         sb_config.headless = True
-    if not sb_config.headless:
+    if not sb_config.headless and not sb_config.headless2:
         sb_config.headed = True
 
     if sb_config._multithreaded:
@@ -1649,6 +1663,10 @@ def pytest_runtest_teardown(item):
                     if hasattr(self, "display") and self.display:
                         self.display.stop()
             elif hasattr(self, "headless") and self.headless:
+                if self.headless_active and "--pdb" not in sys_argv:
+                    if hasattr(self, "display") and self.display:
+                        self.display.stop()
+            elif hasattr(self, "headless2") and self.headless2:
                 if self.headless_active and "--pdb" not in sys_argv:
                     if hasattr(self, "display") and self.display:
                         self.display.stop()
