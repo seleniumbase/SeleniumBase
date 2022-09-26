@@ -5560,6 +5560,11 @@ class BaseCase(unittest.TestCase):
         Page links include those obtained from:
         "a"->"href", "img"->"src", "link"->"href", and "script"->"src".
         """
+        self.__check_scope()
+        try:
+            self.wait_for_element_visible("body", timeout=1.5)
+        except Exception:
+            pass
         page_url = self.get_current_url()
         soup = self.get_beautiful_soup(self.get_page_source())
         links = page_utils._get_unique_links(page_url, soup)
