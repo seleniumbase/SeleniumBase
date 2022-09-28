@@ -5338,6 +5338,11 @@ class BaseCase(unittest.TestCase):
     def hide_element(self, selector, by="css selector"):
         """Hide the first element on the page that matches the selector."""
         self.__check_scope()
+        try:
+            self.wait_for_element_visible("body", timeout=1.5)
+            self.wait_for_element_present(selector, by=by, timeout=0.5)
+        except Exception:
+            pass
         selector, by = self.__recalculate_selector(selector, by)
         css_selector = self.convert_to_css_selector(selector, by=by)
         if ":contains(" in css_selector:
@@ -5356,6 +5361,10 @@ class BaseCase(unittest.TestCase):
     def hide_elements(self, selector, by="css selector"):
         """Hide all elements on the page that match the selector."""
         self.__check_scope()
+        try:
+            self.wait_for_element_visible("body", timeout=1.5)
+        except Exception:
+            pass
         selector, by = self.__recalculate_selector(selector, by)
         css_selector = self.convert_to_css_selector(selector, by=by)
         if ":contains(" in css_selector:
@@ -5377,6 +5386,11 @@ class BaseCase(unittest.TestCase):
     def show_element(self, selector, by="css selector"):
         """Show the first element on the page that matches the selector."""
         self.__check_scope()
+        try:
+            self.wait_for_element_visible("body", timeout=1.5)
+            self.wait_for_element_present(selector, by=by, timeout=1)
+        except Exception:
+            pass
         selector, by = self.__recalculate_selector(selector, by)
         css_selector = self.convert_to_css_selector(selector, by=by)
         if ":contains(" in css_selector:
@@ -5396,6 +5410,10 @@ class BaseCase(unittest.TestCase):
     def show_elements(self, selector, by="css selector"):
         """Show all elements on the page that match the selector."""
         self.__check_scope()
+        try:
+            self.wait_for_element_visible("body", timeout=1.5)
+        except Exception:
+            pass
         selector, by = self.__recalculate_selector(selector, by)
         css_selector = self.convert_to_css_selector(selector, by=by)
         if ":contains(" in css_selector:
@@ -5417,6 +5435,11 @@ class BaseCase(unittest.TestCase):
     def remove_element(self, selector, by="css selector"):
         """Remove the first element on the page that matches the selector."""
         self.__check_scope()
+        try:
+            self.wait_for_element_visible("body", timeout=1.5)
+            self.wait_for_element_present(selector, by=by, timeout=0.5)
+        except Exception:
+            pass
         selector, by = self.__recalculate_selector(selector, by)
         css_selector = self.convert_to_css_selector(selector, by=by)
         if ":contains(" in css_selector:
@@ -5436,6 +5459,10 @@ class BaseCase(unittest.TestCase):
     def remove_elements(self, selector, by="css selector"):
         """Remove all elements on the page that match the selector."""
         self.__check_scope()
+        try:
+            self.wait_for_element_visible("body", timeout=1.5)
+        except Exception:
+            pass
         selector, by = self.__recalculate_selector(selector, by)
         css_selector = self.convert_to_css_selector(selector, by=by)
         if ":contains(" in css_selector:
