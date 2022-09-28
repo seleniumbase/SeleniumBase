@@ -1721,7 +1721,7 @@ def pytest_terminal_summary(terminalreporter):
         sb_config.dashboard and not sb_config._only_unittest
     ):
         # Print link a second time because the first one may be off-screen
-        dashboard_file = os.getcwd() + "/dashboard.html"
+        dashboard_file = os.path.join(os.getcwd(), "dashboard.html")
         terminalreporter.write_sep("-", "Dashboard: %s" % dashboard_file)
     if (
         sb_config._has_exception
