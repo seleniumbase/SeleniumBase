@@ -90,6 +90,28 @@ def make_driver_executable_if_not(driver_path):
         make_executable(driver_path)
 
 
+def requests_get(url):
+    import requests
+
+    response = None
+    try:
+        response = requests.get(url)
+    except Exception:
+        # Prevent SSLCertVerificationError / CERTIFICATE_VERIFY_FAILED
+        url = url.replace("https://", "http://")
+        response = requests.get(url)
+    return response
+
+
+def get_latest_chromedriver_version():
+    last = "https://chromedriver.storage.googleapis.com/LATEST_RELEASE"
+    url_request = requests_get(last)
+    if url_request.ok:
+        return url_request.text
+    else:
+        return None
+
+
 def chromedriver_on_path():
     paths = os.environ["PATH"].split(os.pathsep)
     for path in paths:
@@ -2101,15 +2123,23 @@ def get_local_driver(
                         constants.MultiBrowser.DRIVER_FIXING_LOCK
                     )
                     with edgedriver_fixing_lock:
+                        try:
+                            if not _was_driver_repaired():
+                                _repair_edgedriver(edge_version)
+                                _mark_driver_repaired()
+                        except Exception:
+                            pass
+                else:
+                    try:
                         if not _was_driver_repaired():
                             _repair_edgedriver(edge_version)
-                            _mark_driver_repaired()
-                else:
-                    if not _was_driver_repaired():
-                        _repair_edgedriver(edge_version)
-                    _mark_driver_repaired()
+                        _mark_driver_repaired()
+                    except Exception:
+                        pass
                 service = EdgeService(
-                    executable_path=LOCAL_EDGEDRIVER, log_path=os.devnull
+                    executable_path=LOCAL_EDGEDRIVER,
+                    log_path=os.devnull,
+                    service_args=["--disable-build-check"],
                 )
                 driver = Edge(service=service, options=edge_options)
             return driver
@@ -2169,6 +2199,7 @@ def get_local_driver(
                 driver = Edge(
                     executable_path=LOCAL_EDGEDRIVER,
                     service_log_path=os.devnull,
+                    service_args=["--disable-build-check"],
                     capabilities=capabilities,
                 )
             return driver
@@ -2346,6 +2377,7 @@ def get_local_driver(
                         driver_version = output
                 except Exception:
                     pass
+            disable_build_check = False
             if (
                 LOCAL_CHROMEDRIVER
                 and os.path.exists(LOCAL_CHROMEDRIVER)
@@ -2385,7 +2417,32 @@ def get_local_driver(
                         msg = "chromedriver not found. Getting it now:"
 
                     print("\nWarning: %s" % msg)
-                    sb_install.main(override="chromedriver %s" % use_version)
+                    try:
+                        sb_install.main(
+                            override="chromedriver %s" % use_version
+                        )
+                    except Exception:
+                        d_latest = get_latest_chromedriver_version()
+                        if (
+                            d_latest
+                            and use_version != "latest"
+                            and int(use_version) > int(d_latest.split(".")[0])
+                        ):
+                            disable_build_check = True
+                            d_latest_major = d_latest.split(".")[0]
+                            if (
+                                not path_chromedriver
+                                or (
+                                    driver_version
+                                    and (
+                                        int(driver_version)
+                                        < int(d_latest_major)
+                                    )
+                                )
+                            ):
+                                sb_install.main(
+                                    override="chromedriver latest"
+                                )
                     sys.argv = sys_args  # Put back the original sys args
                 else:
                     chromedriver_fixing_lock = fasteners.InterProcessLock(
@@ -2396,10 +2453,39 @@ def get_local_driver(
                             sys_args = sys.argv  # Save a copy of sys args
                             msg = "chromedriver not found. Getting it now:"
                             print("\nWarning: %s" % msg)
-                            sb_install.main(
-                                override="chromedriver %s" % use_version
-                            )
+                            try:
+                                sb_install.main(
+                                    override="chromedriver %s" % use_version
+                                )
+                            except Exception:
+                                d_latest = get_latest_chromedriver_version()
+                                if (
+                                    d_latest
+                                    and use_version != "latest"
+                                    and (
+                                        int(use_version)
+                                        > int(d_latest.split(".")[0])
+                                    )
+                                ):
+                                    disable_build_check = True
+                                    d_latest_major = d_latest.split(".")[0]
+                                    if (
+                                        not path_chromedriver
+                                        or (
+                                            driver_version
+                                            and (
+                                                int(driver_version)
+                                                < int(d_latest_major)
+                                            )
+                                        )
+                                    ):
+                                        sb_install.main(
+                                            override="chromedriver latest"
+                                        )
                             sys.argv = sys_args  # Put back original sys args
+            service_args = []
+            if disable_build_check:
+                service_args = ["--disable-build-check"]
             if is_using_uc(undetectable, browser_name):
                 uc_lock = fasteners.InterProcessLock(
                     constants.MultiBrowser.DRIVER_FIXING_LOCK
@@ -2474,7 +2560,7 @@ def get_local_driver(
                                 uc_lock = fasteners.InterProcessLock(
                                     constants.MultiBrowser.DRIVER_FIXING_LOCK
                                 )
-                                with uc_lock:  # No UC multithreaded tests
+                                with uc_lock:
                                     try:
                                         uc_path = None
                                         if os.path.exists(LOCAL_UC_DRIVER):
@@ -2510,6 +2596,7 @@ def get_local_driver(
                                 service = ChromeService(
                                     executable_path=LOCAL_CHROMEDRIVER,
                                     log_path=os.devnull,
+                                    service_args=service_args,
                                 )
                                 driver = webdriver.Chrome(
                                     service=service,
@@ -2519,18 +2606,24 @@ def get_local_driver(
                             driver = webdriver.Chrome(
                                 executable_path=LOCAL_CHROMEDRIVER,
                                 service_log_path=os.devnull,
+                                service_args=service_args,
                                 options=chrome_options,
                             )
                     else:
                         if selenium4_or_newer:
-                            service = ChromeService(log_path=os.devnull)
+                            service = ChromeService(
+                                log_path=os.devnull,
+                                service_args=service_args,
+                            )
                             driver = webdriver.Chrome(
-                                service=service, options=chrome_options
+                                service=service,
+                                options=chrome_options,
                             )
                         else:
                             driver = webdriver.Chrome(
-                                options=chrome_options,
                                 service_log_path=os.devnull,
+                                service_args=service_args,
+                                options=chrome_options,
                             )
                 except Exception as e:
                     if not hasattr(e, "msg"):
@@ -2629,7 +2722,8 @@ def get_local_driver(
                     if os.path.exists(LOCAL_CHROMEDRIVER):
                         if selenium4_or_newer:
                             service = ChromeService(
-                                executable_path=LOCAL_CHROMEDRIVER
+                                executable_path=LOCAL_CHROMEDRIVER,
+                                service_args=["--disable-build-check"],
                             )
                             driver = webdriver.Chrome(
                                 service=service,
@@ -2638,10 +2732,23 @@ def get_local_driver(
                         else:
                             driver = webdriver.Chrome(
                                 executable_path=LOCAL_CHROMEDRIVER,
+                                service_args=["--disable-build-check"],
                                 options=chrome_options,
                             )
                     else:
-                        driver = webdriver.Chrome(options=chrome_options)
+                        if selenium4_or_newer:
+                            service = ChromeService(
+                                service_args=["--disable-build-check"],
+                            )
+                            driver = webdriver.Chrome(
+                                service=service,
+                                options=chrome_options,
+                            )
+                        else:
+                            driver = webdriver.Chrome(
+                                service_args=["--disable-build-check"],
+                                options=chrome_options,
+                            )
                 return driver
             else:  # Running headless on Linux (and not using --uc)
                 try:
@@ -2702,7 +2809,19 @@ def get_local_driver(
                                     pass
                             _mark_driver_repaired()
                         try:
-                            return webdriver.Chrome(options=chrome_options)
+                            if selenium4_or_newer:
+                                service = ChromeService(
+                                    service_args=["--disable-build-check"],
+                                )
+                                return webdriver.Chrome(
+                                    service=service,
+                                    options=chrome_options,
+                                )
+                            else:
+                                return webdriver.Chrome(
+                                    service_args=["--disable-build-check"],
+                                    options=chrome_options,
+                                )
                         except Exception:
                             pass
                     # Use the virtual display on Linux during headless errors
