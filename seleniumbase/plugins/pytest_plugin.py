@@ -1610,7 +1610,16 @@ def pytest_collection_finish(session):
             colorama.init(autoreset=True)
             c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
             cr = colorama.Style.RESET_ALL
-        print("Dashboard: %s%s%s\n%s" % (c1, dash_path, cr, stars))
+        if sb_config._multithreaded:
+            if (
+                hasattr(session.config, "workerinput")
+                and session.config.workerinput["workerid"] == "gw0"
+            ):
+                sys.stderr.write(
+                    "\nDashboard: %s%s%s\n%s\n" % (c1, dash_path, cr, stars)
+                )
+        else:
+            print("Dashboard: %s%s%s\n%s" % (c1, dash_path, cr, stars))
 
 
 def pytest_runtest_setup(item):
