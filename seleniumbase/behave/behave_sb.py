@@ -1028,7 +1028,7 @@ def behave_dashboard_prepare():
         _create_dashboard_assets_()
         # Output Dashboard info to the console
         sb_config.item_count_untested = sb_config.item_count
-        dash_path = os.getcwd() + "/dashboard.html"
+        dash_path = os.path.join(os.getcwd(), "dashboard.html")
         star_len = len("Dashboard: ") + len(dash_path)
         try:
             terminal_size = os.get_terminal_size().columns

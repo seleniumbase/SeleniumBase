@@ -1489,7 +1489,11 @@ def pytest_configure(config):
     if sb_config.dash_title:
         constants.Dashboard.TITLE = sb_config.dash_title.replace("_", " ")
 
-    if "--co" not in sys_argv and "--collect-only" not in sys_argv:
+    if (
+        sb_config._multithreaded
+        and "--co" not in sys_argv
+        and "--collect-only" not in sys_argv
+    ):
         from seleniumbase.core import log_helper
         from seleniumbase.core import download_helper
         from seleniumbase.core import proxy_helper
@@ -1586,16 +1590,23 @@ def pytest_deselected(items):
 
 def pytest_collection_finish(session):
     """This runs after item collection is finalized.
-    Print the dashboard path if at least one test runs.
     https://docs.pytest.org/en/stable/reference.html
     """
     if "--co" in sys_argv or "--collect-only" in sys_argv:
         return
+    if len(session.items) > 0 and not sb_config._multithreaded:
+        from seleniumbase.core import log_helper
+        from seleniumbase.core import download_helper
+        from seleniumbase.core import proxy_helper
+
+        log_helper.log_folder_setup(sb_config.log_path, sb_config.archive_logs)
+        download_helper.reset_downloads_folder()
+        proxy_helper.remove_proxy_zip_if_present()
     if sb_config.dashboard and len(session.items) > 0:
         _create_dashboard_assets_()
-        # Output Dashboard info to the console
+        # Print the Dashboard path if at least one test runs.
         sb_config.item_count_untested = sb_config.item_count
-        dash_path = os.getcwd() + "/dashboard.html"
+        dash_path = os.path.join(os.getcwd(), "dashboard.html")
         star_len = len("Dashboard: ") + len(dash_path)
         try:
             terminal_size = os.get_terminal_size().columns
@@ -1610,7 +1621,16 @@ def pytest_collection_finish(session):
             colorama.init(autoreset=True)
             c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
             cr = colorama.Style.RESET_ALL
-        print("Dashboard: %s%s%s\n%s" % (c1, dash_path, cr, stars))
+        if sb_config._multithreaded:
+            if (
+                hasattr(session.config, "workerinput")
+                and session.config.workerinput["workerid"] == "gw0"
+            ):
+                sys.stderr.write(
+                    "\nDashboard: %s%s%s\n%s\n" % (c1, dash_path, cr, stars)
+                )
+        else:
+            print("Dashboard: %s%s%s\n%s" % (c1, dash_path, cr, stars))
 
 
 def pytest_runtest_setup(item):
@@ -1685,7 +1705,9 @@ def pytest_sessionfinish(session):
 def pytest_terminal_summary(terminalreporter):
     if "--co" in sys_argv or "--collect-only" in sys_argv:
         return
-    latest_logs_dir = os.getcwd() + "/latest_logs/"
+    if not sb_config.item_count > 0:
+        return
+    latest_logs_dir = os.path.join(os.getcwd(), "latest_logs") + os.sep
     if sb_config._multithreaded:
         if os.path.exists(latest_logs_dir) and os.listdir(latest_logs_dir):
             sb_config._has_exception = True
@@ -1699,7 +1721,7 @@ def pytest_terminal_summary(terminalreporter):
         sb_config.dashboard and not sb_config._only_unittest
     ):
         # Print link a second time because the first one may be off-screen
-        dashboard_file = os.getcwd() + "/dashboard.html"
+        dashboard_file = os.path.join(os.getcwd(), "dashboard.html")
         terminalreporter.write_sep("-", "Dashboard: %s" % dashboard_file)
     if (
         sb_config._has_exception
@@ -1730,7 +1752,7 @@ def _perform_pytest_unconfigure_():
             except Exception:
                 pass
         sb_config.shared_driver = None
-    if hasattr(sb_config, "log_path"):
+    if hasattr(sb_config, "log_path") and sb_config.item_count > 0:
         log_helper.archive_logs_if_set(
             sb_config.log_path, sb_config.archive_logs
         )
