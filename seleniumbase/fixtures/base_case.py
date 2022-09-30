@@ -99,11 +99,11 @@ class BaseCase(unittest.TestCase):
         self.driver = None
         self.environment = None
         self.env = None  # Add a shortened version of self.environment
-        self.headless = None
-        self.headless2 = None  # The new headless mode for Chromium
-        self.version_tuple = (
-            tuple([int(i) for i in __version__.split(".") if i.isdigit()])
-        )
+        self.version_list = [
+            int(i) for i in __version__.split(".") if i.isdigit()
+        ]
+        self.version_tuple = tuple(self.version_list)
+        self.version_info = self.version_tuple
         self.__page_sources = []
         self.__extra_actions = []
         self.__js_start_time = 0
