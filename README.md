@@ -5,9 +5,9 @@
 <meta property="og:image" content="https://seleniumbase.github.io/cdn/img/mac_sb_logo_5b.png" />
 <link rel="icon" href="https://seleniumbase.github.io/img/green_logo2.png" />
 
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/mac_sb_logo_bw.png" alt="SeleniumBase" title="SeleniumBase" width="408" /></a></p>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/mac_sb_logo_bg6.png" alt="SeleniumBase" title="SeleniumBase" width="408" /></a></p>
 
-<p align="center"><b>A framework for browser automation & testing with <a href="https://www.python.org/about/" target="_blank">Python</a>.</b><br />SeleniumBase extends <a href="https://www.selenium.dev/documentation/webdriver/" target="_blank">Selenium WebDriver</a> as a <a href="https://docs.pytest.org/en/latest/how-to/usage.html" target="_blank">pytest</a> plugin.</p>
+<p align="center"><b>A web automation framework for E2E testing with <a href="https://www.python.org/about/" target="_blank">Python</a>.</b><br />SeleniumBase extends <a href="https://www.selenium.dev/documentation/webdriver/" target="_blank">Selenium WebDriver</a> as a <a href="https://docs.pytest.org/en/latest/how-to/usage.html" target="_blank">pytest</a> plugin.</p>
 
 <p align="center"><a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=3399EE" alt="PyPI version" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/releases" target="_blank"><img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=22AAEE" alt="GitHub version" /></a> <a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"><img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a></p>
 
