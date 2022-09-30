@@ -5588,12 +5588,14 @@ class BaseCase(unittest.TestCase):
         "a"->"href", "img"->"src", "link"->"href", and "script"->"src".
         """
         self.__check_scope()
+        if settings.SKIP_JS_WAITS and self.page_load_strategy == "none":
+            time.sleep(0.16)
         try:
             self.wait_for_element_visible("body", timeout=1.5)
         except Exception:
             pass
-        page_url = self.get_current_url()
         soup = self.get_beautiful_soup(self.get_page_source())
+        page_url = self.get_current_url()
         links = page_utils._get_unique_links(page_url, soup)
         return links
 
