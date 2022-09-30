@@ -131,7 +131,7 @@ setup(
         'packaging>=21.3;python_version>="3.6"',
         'setuptools>=44.1.1;python_version<"3.6"',
         'setuptools>=59.6.0;python_version>="3.6" and python_version<"3.7"',
-        'setuptools>=65.4.0;python_version>="3.7"',
+        'setuptools>=65.4.1;python_version>="3.7"',
         'tomli>=1.2.3;python_version>="3.6" and python_version<"3.7"',
         'tomli>=2.0.1;python_version>="3.7"',
         "tqdm>=4.64.1",
@@ -251,7 +251,7 @@ setup(
         "coverage": [
             'coverage==5.5;python_version<"3.6"',
             'coverage==6.2;python_version>="3.6" and python_version<"3.7"',
-            'coverage==6.4.4;python_version>="3.7"',
+            'coverage==6.5.0;python_version>="3.7"',
             'pytest-cov==2.12.1;python_version<"3.6"',
             'pytest-cov==4.0.0;python_version>="3.6"',
         ],
