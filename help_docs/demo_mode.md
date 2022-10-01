@@ -2,7 +2,11 @@
 
 <p align="left"><img src="https://seleniumbase.github.io/cdn/gif/xkcd_vid.gif" width="400" alt="SeleniumBase Example" title="SeleniumBase Example" /></p>
 
-Use ``--demo`` to run SeleniumBase tests with Demo Mode enabled, which highlights browser actions and shows visual assertions.
+🔵 <b>Demo Mode</b> helps you see what a test is doing. If a test is moving too fast for your eyes, run it in <b>Demo Mode</b>, which pauses the browser briefly between actions, highlights page elements being acted on, and displays assertions:
+
+```bash
+pytest my_first_test.py --demo
+```
 
 --------
 

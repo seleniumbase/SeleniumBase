@@ -23,6 +23,7 @@
 * Can run tests with proxy+auth via PAC URL. (``--proxy-pac-url=USER:PASS@URL.pac``)
 * Can run tests with a customized browser user agent. (``--agent=USER_AGENT_STRING``)
 * Can set a Chromium User Data Directory/Profile to load. (``--user-data-dir=DIR``)
+* Can avoid detection by sites that try to block Selenium. (``--undetected``/``--uc``)
 * Can load Chrome Extension ZIP files. (``--extension-zip=ZIP``)
 * Can load Chrome Extension folders. (``--extension-dir=DIR``)
 * Powerful [console scripts](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/console_scripts/ReadMe.md). (Type **``seleniumbase``** or **``sbase``** to use.)
