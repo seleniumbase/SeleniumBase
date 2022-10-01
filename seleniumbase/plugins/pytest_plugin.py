@@ -26,8 +26,6 @@ def pytest_addoption(parser):
     --chrome  (Shortcut for "--browser=chrome". On by default.)
     --edge  (Shortcut for "--browser=edge".)
     --firefox  (Shortcut for "--browser=firefox".)
-    --ie  (Shortcut for "--browser=ie".)
-    --opera  (Shortcut for "--browser=opera".)
     --safari  (Shortcut for "--browser=safari".)
     --settings-file=FILE  (Override default SeleniumBase settings.)
     --env=ENV  (Set the test env. Access with "self.env" in tests.)
