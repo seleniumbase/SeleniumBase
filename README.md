@@ -278,7 +278,7 @@ cd examples/
 pytest my_first_test.py
 ```
 
-> (Default browser: ``chrome``, unless specified with ``--browser=BROWSER`` or ``--BROWSER``.)
+> (Uses ``--chrome`` by default.)
 
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py"><img src="https://seleniumbase.github.io/cdn/gif/swag_labs_4.gif" alt="SeleniumBase Test" title="SeleniumBase Test" width="400" /></a>
 
