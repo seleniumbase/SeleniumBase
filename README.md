@@ -54,15 +54,14 @@
 <blockquote>
 <p dir="auto"><strong>Table of Contents / Navigation:</strong></p>
 <ul dir="auto">
-<li><a href="#multiple_examples"><strong>Multiple Examples</strong></a></li>
-<li><a href="#python_installation"><strong>Set up Python & Git</strong></a></li>
-<li><a href="#install_seleniumbase"><strong>Install SeleniumBase</strong></a></li>
+<li><a href="#python_installation"    ><strong>Set up Python & Git</strong></a></li>
+<li><a href="#install_seleniumbase"   ><strong>Install SeleniumBase</strong></a></li>
 <li><a href="#basic_example_and_usage"><strong>Basic Example & Usage</strong></a></li>
 <li><a href="#creating_visual_reports"><strong>Generating Test Reports</strong></a></li>
-<li><a href="#common_methods"><strong>Common Test Methods</strong></a></li>
-<li><a href="#fun_facts"><strong>Fun Facts / Learn More</strong></a></li>
-<li><a href="#pytest_options"><strong>Useful pytest Options</strong></a></li>
-<li><a href="#new_pytest_options"><strong>SeleniumBase Options</strong></a></li>
+<li><a href="#common_methods"         ><strong>Common Test Methods</strong></a></li>
+<li><a href="#fun_facts"              ><strong>Fun Facts / Learn More</strong></a></li>
+<li><a href="#pytest_options"         ><strong>Useful pytest Options</strong></a></li>
+<li><a href="#new_pytest_options"     ><strong>SeleniumBase Options</strong></a></li>
 </ul>
 </blockquote>
 
