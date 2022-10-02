@@ -21,9 +21,9 @@ class SwagLabsTests(BaseCase):
             ["problem_user"],
         ]
     )
-    def test_swag_labs_basic_flow(self, username):
-        """This test checks functional flow of the Swag Labs store.
-        This test is parameterized on the login user."""
+    def test_swag_labs_user_flows(self, username):
+        """This parameterized test checks basic user actions on the website.
+        It also shows you how SeleniumBase can help you catch bugs."""
         self.login_to_swag_labs(username=username)
         if username == "problem_user":
             print("\n(This test should fail)")
