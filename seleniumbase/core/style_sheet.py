@@ -1,7 +1,9 @@
+from seleniumbase.fixtures import constants
+
 title = """<meta id="OGTitle" property="og:title" content="SeleniumBase">
     <title>Test Report</title>
     <link rel="SHORTCUT ICON"
-    href="https://seleniumbase.io/img/favicon.ico" /> """
+    href="%s" /> """ % constants.Report.FAVICON
 
 style = (
     title

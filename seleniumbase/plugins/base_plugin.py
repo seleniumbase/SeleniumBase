@@ -299,10 +299,9 @@ class Base(Plugin):
                 self.import_error = True
                 return
             self.failures.append(test.id())
-            br = self.options.browser
             self.page_results_list.append(
                 report_helper.process_failures(
-                    test, self.test_count, br, self.duration
+                    test, self.test_count, self.duration
                 )
             )
 

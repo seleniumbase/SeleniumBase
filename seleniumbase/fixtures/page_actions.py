@@ -22,7 +22,6 @@ By.PARTIAL_LINK_TEXT   # "partial link text"
 
 import codecs
 import os
-import sys
 import time
 from selenium.common.exceptions import ElementNotInteractableException
 from selenium.common.exceptions import ElementNotVisibleException
@@ -1125,53 +1124,6 @@ def save_page_source(driver, name, folder=None):
     )
     html_file.write(rendered_source)
     html_file.close()
-
-
-def _get_last_page(driver):
-    try:
-        last_page = driver.current_url
-    except Exception:
-        last_page = "[WARNING! Browser Not Open!]"
-    if len(last_page) < 5:
-        last_page = "[WARNING! Browser Not Open!]"
-    return last_page
-
-
-def save_test_failure_data(driver, name, browser_type=None, folder=None):
-    """
-    Saves failure data to the current directory, or to a subfolder if provided.
-    If {name} does not end in ".txt", it will get added to it.
-    If {browser_type} is provided, the logs will include that.
-    If the folder provided doesn't exist, it will get created.
-    """
-    import traceback
-
-    if not name.endswith(".txt"):
-        name = name + ".txt"
-    if folder:
-        abs_path = os.path.abspath(".")
-        file_path = os.path.join(abs_path, folder)
-        if not os.path.exists(file_path):
-            os.makedirs(file_path)
-        failure_data_file_path = os.path.join(file_path, name)
-    else:
-        failure_data_file_path = name
-    failure_data_file = codecs.open(failure_data_file_path, "w+", "utf-8")
-    last_page = _get_last_page(driver)
-    data_to_save = []
-    data_to_save.append("Last_Page: %s" % last_page)
-    if browser_type:
-        data_to_save.append("Browser: %s " % browser_type)
-    data_to_save.append(
-        "Traceback: "
-        + "".join(
-            traceback.format_exception(
-                sys.exc_info()[0], sys.exc_info()[1], sys.exc_info()[2]
-            )
-        )
-    )
-    failure_data_file.writelines("\r\n".join(data_to_save))
-    failure_data_file.close()
 
 
 def wait_for_and_accept_alert(driver, timeout=settings.LARGE_TIMEOUT):
