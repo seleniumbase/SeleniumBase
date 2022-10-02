@@ -54,6 +54,7 @@
 <blockquote>
 <p dir="auto"><strong>Table of Contents / Navigation:</strong></p>
 <ul dir="auto">
+<li><a href="#multiple_demos"><strong>Multiple Demos</strong></a></li>
 <li><a href="#python_installation"><strong>Set up Python & Git</strong></a></li>
 <li><a href="#install_seleniumbase"><strong>Install SeleniumBase</strong></a></li>
 <li><a href="#basic_example_and_usage"><strong>Basic Example & Usage</strong></a></li>
@@ -67,6 +68,7 @@
 
 --------
 
+<a id="multiple_demos"></a>
 <p align="left">Run <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py" target="_blank">test_demo_site.py</a> from <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples" target="_blank">examples/</a> (<code>--chrome</code> is the default browser):</p>
 
 ```bash
