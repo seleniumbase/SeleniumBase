@@ -3,7 +3,7 @@
 
 <a id="feature_list"></a>
 
-## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) SeleniumBase Features: 🎯
+## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) SeleniumBase Features: 🥂
 
 * A powerful Python framework for browser automation and E2E UI testing.
 * Includes [Recorder Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md) for instantly generating browser tests in Python.

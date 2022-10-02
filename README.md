@@ -1125,7 +1125,7 @@ self.driver.find_elements("partial link text", "GitHub")
 pytest --reruns=1 --reruns-delay=1
 ```
 
-<p>Additionally, you can use the <code>@retry_on_exception()</code> decorator to specifically retry failing methods. (First import: <code>from seleniumbase import decorators</code>) To learn more about SeleniumBase decorators, [click here](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/common).</p>
+<p>You can use the <code>@retry_on_exception()</code> decorator to retry failing methods. (First import: <code>from seleniumbase import decorators</code>). To learn more about SeleniumBase decorators, <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/common">click here</a>.</p>
 
 
 <h3><img src="https://seleniumbase.github.io/img/green_logo2.png" title="SeleniumBase" width="32" /> Wrap-Up</h3>
@@ -1138,7 +1138,7 @@ pytest --reruns=1 --reruns-delay=1
 </p>
 
 <p>
-<div><b>If you like us, give us a star!</b></div>
+<div><b>If you like SeleniumBase, star us! ⭐</b></div>
 <div><a href="https://github.com/seleniumbase/SeleniumBase/stargazers"><img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=19A57B" title="Stargazers" /></a></div>
 </p>
 <p><div><a href="https://github.com/mdmintz">https://github.com/mdmintz</a></div></p>
