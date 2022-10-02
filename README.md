@@ -384,10 +384,10 @@ nosetests test_suite.py --firefox
 
 <p>✅ <code>pytest</code> includes automatic test discovery. If you don't specify a specific file or folder to run, <code>pytest</code> will automatically search through all subdirectories for tests to run based on the following criteria:</p>
 
-* Python files that start with ``test_``.
+* Python files that start with ``test_`` or end with ``_test.py``.
 * Python methods that start with ``test_``.
 
-With a SeleniumBase [pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/pytest.ini) file present, (which modifies default discovery settings), files that end with ``_test.py`` will also be discovered automatically. The Python class name can be anything because SeleniumBase's ``BaseCase`` class inherits from the ``unittest.TestCase`` class.
+With a SeleniumBase [pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/pytest.ini) file present, you can modify default discovery settings. The Python class name can be anything because ``seleniumbase.BaseCase`` inherits ``unittest.TestCase``, which triggers autodiscovery.
 
 <p>✅ You can do a pre-flight check to see which tests would get discovered by <code>pytest</code> before the real flight:</p>
 
