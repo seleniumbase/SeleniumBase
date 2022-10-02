@@ -39,6 +39,7 @@ behave -D agent="User Agent String" -D demo
 -D firefox-pref=SET  (Set a Firefox preference:value set, comma-separated.)
 -D extension-zip=ZIP  (Load a Chrome Extension .zip|.crx, comma-separated.)
 -D extension-dir=DIR  (Load a Chrome Extension directory, comma-separated.)
+-D sjw  (Skip JS Waits for readyState to be "complete" or Angular to load.)
 -D pls=PLS  (Set pageLoadStrategy on Chrome: "normal", "eager", or "none".)
 -D headless  (Run tests in headless mode. The default arg on Linux OS.)
 -D headless2  (Use the new headless mode, which supports extensions.)
