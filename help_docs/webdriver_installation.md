@@ -10,7 +10,7 @@ sbase get geckodriver
 sbase get edgedriver
 ```
 
-* ``sbase get chromedriver`` automatically tries to detect the version you need. If it can't, it defaults to ``chromedriver 72.0.3626.69`` for compatibility reasons. To force getting the latest version, use:
+* To get the latest ``chromedriver`` when you don't have the latest Chrome, use:
 
 ```bash
 sbase get chromedriver latest
@@ -19,9 +19,9 @@ sbase get chromedriver latest
 * You can also get a specific version of chromedriver for a specific version of Chrome:
 
 ```bash
-sbase get chromedriver 102.0.5005.61
+sbase get chromedriver 105.0.5195.52
 
-sbase get chromedriver 102
+sbase get chromedriver 105
 ```
 
 * On Linux, you can run the following two commands (once you've installed SeleniumBase) to automatically upgrade your Chromedriver to match your version of Chrome: (``wget`` downloads the file, and ``pytest`` runs it.)

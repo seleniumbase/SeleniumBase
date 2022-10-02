@@ -15,13 +15,13 @@ Examples:
          sbase get chromedriver
          sbase get geckodriver
          sbase get edgedriver
-         sbase get chromedriver 102.0.5005.61
-         sbase get chromedriver 102
+         sbase get chromedriver 105.0.5195.52
+         sbase get chromedriver 105
          sbase get chromedriver latest
          sbase get chromedriver latest-1  # (Latest minus one)
          sbase get chromedriver -p
          sbase get chromedriver latest -p
-         sbase get edgedriver 102.0.1245.44
+         sbase get edgedriver 105.0.1343.53
 Output:
          Downloads the chosen webdriver to seleniumbase/drivers
          (chromedriver is required for Chrome automation)
@@ -66,24 +66,24 @@ def invalid_run_command():
     exp += "                          iedriver, operadriver)\n"
     exp += "  Options:\n"
     exp += "           VERSION        Specify the version.\n"
-    exp += "                           (Default chromedriver = 72.0.3626.69.\n"
-    exp += "                            Tries to detect the needed version.\n"
-    exp += '                            Use "latest" for the latest version.\n'
-    exp += "                            For chromedriver, you can also use\n"
-    exp += "                            the major version integer\n"
-    exp += '                            or "latest-1" for 1 less than that.)\n'
+    exp += "                          Default chromedriver = 72.0.3626.69.\n"
+    exp += "                          Tries to detect the needed version.\n"
+    exp += '                          Use "latest" for the latest version.\n'
+    exp += '                          Use "latest-1" for one less than that.\n'
+    exp += "                          For chromedriver or edgedriver,\n"
+    exp += "                          you can use the major version integer.\n"
     exp += "           -p OR --path   Also copy the driver to /usr/local/bin\n"
     exp += "  Examples:\n"
     exp += "           sbase get chromedriver\n"
     exp += "           sbase get geckodriver\n"
     exp += "           sbase get edgedriver\n"
-    exp += "           sbase get chromedriver 102\n"
-    exp += "           sbase get chromedriver 102.0.5005.61\n"
+    exp += "           sbase get chromedriver 105\n"
+    exp += "           sbase get chromedriver 105.0.5195.52\n"
     exp += "           sbase get chromedriver latest\n"
     exp += "           sbase get chromedriver latest-1\n"
     exp += "           sbase get chromedriver -p\n"
     exp += "           sbase get chromedriver latest -p\n"
-    exp += "           sbase get edgedriver 102.0.1245.44\n"
+    exp += "           sbase get edgedriver 105.0.1343.53\n"
     exp += "  Output:\n"
     exp += "          Downloads the chosen webdriver to seleniumbase/drivers\n"
     exp += "          (chromedriver is required for Chrome automation)\n"

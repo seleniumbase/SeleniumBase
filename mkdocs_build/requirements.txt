@@ -16,7 +16,7 @@ zipp==3.8.1
 ghp-import==2.1.0
 readme-renderer==37.2
 pymdown-extensions==9.6
-importlib-metadata==4.12.0
+importlib-metadata==4.13.0
 bleach==5.0.1
 jsmin==3.0.1
 lunr==0.6.2
@@ -29,7 +29,7 @@ cssselect2==0.7.0
 tinycss2==1.1.1
 defusedxml==0.7.1
 mkdocs==1.4.0
-mkdocs-material==8.5.4
+mkdocs-material==8.5.5
 mkdocs-exclude-search==0.6.4
 mkdocs-simple-hooks==0.1.5
 mkdocs-material-extensions==1.0.3

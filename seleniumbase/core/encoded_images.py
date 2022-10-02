@@ -1,3 +1,8 @@
+""" Instructions for generating encoded images:
+    > import base64
+    > with open("YOUR_FILE.png", "rb") as image_file:
+    >     encoded_string = base64.b64encode(image_file.read())
+"""
 DASH_PIE_PNG_1 = (
     "data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAEcAAABHCAYAAABVsFofAAAAAXN"
     "SR0IArs4c6QAABqxJREFUeAHtnOtPFFcUwO/sLo9GUKIkUtNWDK+a2qZGm2LShDFSoeWhqUat"
@@ -125,6 +130,14 @@ DASH_PIE_PNG_3 = (
     "tyQ815tqUNxKsOYLKLAULNRhPQo+MVUhJZYTKYzakvAAOAeFdNhfgIBHWo00P9YVL791iS+jc"
     "CtZrdwUAJRk/AoTJspXWuCo61KDQjw2oCBgOwE+egH3kfj7umAhCOmwEi050g4nslK+I4W/5C"
     "zyeuQ5f3kZ4tNlIZF18vP/AXYR+dvV3FCCAAAAAElFTkSuQmCC"
+)
+REPORT_FAVICON = (
+    "data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAAXN"
+    "SR0IArs4c6QAAAM9JREFUKBVjnNS8goEUwESKYpBaFiD+z/hTJz2EoM4rM9cw/mcHaYCA2Nl3"
+    "YUwEvTBFkZGREchnBEIwAGv4z/6f4T8DWAIk+P8/RA6ZBCkAA4QNi1IUkVVgYf9nBwpCNTiLc"
+    "GNRgSp0FcxF2CC3RhVVAcOjkNtAEYg4hA3kIjRAPYWmCeRdFIDQ8BBsHookmIMmDtXw5s0bTK"
+    "VoIhCrQBogLHaPUGQVP7avgnA5PMOAjJ87VkO4ZCUNiFa4GRAu3K9o4lA/LJ+xF6KOIEmykwB"
+    "QHy74EMZM3QAAAABJRU5ErkJggg=="
 )
 SIDE_BY_SIDE_PNG = (
     "data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAAXN"

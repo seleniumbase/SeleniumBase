@@ -80,9 +80,7 @@ class TestUpgradeChromedriver:
 
     def test_upgrade_chromedriver(self, testdir):
         # Find out if the installed chromedriver version works with Chrome
-        subprocess.check_call(
-            "seleniumbase get chromedriver latest", shell=True
-        )
+        subprocess.check_call("seleniumbase get chromedriver", shell=True)
         testdir = self.basic_run(testdir)
         result = testdir.inline_run("--headless", "-s")  # Upgrades as needed
         try:

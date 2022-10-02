@@ -1,10 +1,11 @@
+import codecs
 import os
 import shutil
 import sys
 import time
+from seleniumbase import config as sb_config
 from seleniumbase.config import settings
 from seleniumbase.core.style_sheet import style
-from seleniumbase.fixtures import page_actions
 
 LATEST_REPORT_DIR = settings.LATEST_REPORT_DIR
 ARCHIVE_DIR = settings.REPORT_ARCHIVE_DIR
@@ -31,16 +32,52 @@ def process_successes(test, test_count, duration):
     )
 
 
-def process_failures(test, test_count, browser_type, duration):
+def save_test_failure_data(name, folder=None):
+    """
+    Saves failure data to the current directory, or to a subfolder if provided.
+    If {name} does not end in ".txt", it will get added to it.
+    If the folder provided doesn't exist, it will get created.
+    """
+    if not name.endswith(".txt"):
+        name = name + ".txt"
+    if folder:
+        abs_path = os.path.abspath(".")
+        file_path = os.path.join(abs_path, folder)
+        if not os.path.exists(file_path):
+            os.makedirs(file_path)
+        failure_data_file_path = os.path.join(file_path, name)
+    else:
+        failure_data_file_path = name
+    failure_data_file = codecs.open(failure_data_file_path, "w+", "utf-8")
+    data_to_save = []
+    data_to_save.append(sb_config._report_test_id)
+    data_to_save.append(
+        "--------------------------------------------------------------------"
+    )
+    data_to_save.append("Last Page: %s" % sb_config._fail_page)
+    data_to_save.append("  Browser: %s" % sb_config._report_browser)
+    data_to_save.append("   Driver: %s" % sb_config._report_driver)
+    data_to_save.append("Timestamp: %s" % sb_config._report_timestamp)
+    data_to_save.append(" Duration: %s" % sb_config._report_duration)
+    data_to_save.append("     Date: %s" % sb_config._report_date)
+    data_to_save.append("     Time: %s" % sb_config._report_time)
+    data_to_save.append(
+        "--------------------------------------------------------------------"
+    )
+    data_to_save.append("Traceback: %s" % sb_config._report_traceback)
+    data_to_save.append("Exception: %s" % sb_config._report_exception)
+    failure_data_file.writelines("\r\n".join(data_to_save))
+    failure_data_file.close()
+
+
+def process_failures(test, test_count, duration):
     bad_page_image = "failure_%s.png" % test_count
     bad_page_data = "failure_%s.txt" % test_count
     screenshot_path = os.path.join(LATEST_REPORT_DIR, bad_page_image)
     if hasattr(test, "_last_page_screenshot"):
         with open(screenshot_path, "wb") as file:
             file.write(test._last_page_screenshot)
-    page_actions.save_test_failure_data(
-        test.driver, bad_page_data, browser_type, folder=LATEST_REPORT_DIR
-    )
+    save_test_failure_data(bad_page_data, folder=LATEST_REPORT_DIR)
     exc_message = None
     if (
         sys.version_info[0] >= 3
