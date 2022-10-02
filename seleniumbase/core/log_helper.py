@@ -116,11 +116,7 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
         pass
     try:
         duration = "%.2f" % (time.time() - (sb_config.start_time_ms / 1000.0))
-        d_len = len(str(duration))
-        s_len = 12 - d_len
-        if s_len < 2:
-            s_len = 2
-        duration = "%s%s(seconds)" % (duration, s_len * " ")
+        duration = "%ss" % duration
     except Exception:
         duration = "(Unknown Duration)"
     if browser_version:
@@ -129,10 +125,13 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
             headless = " / headless"
         if test.headless2 and browser in ["chrome", "edge"]:
             headless = " / headless2"
-        browser_displayed = "%s (%s%s)" % (browser, browser_version, headless)
+        if browser and len(browser) > 1:
+            # Capitalize the first letter
+            browser = "%s%s" % (browser[0].upper(), browser[1:])
+        browser_displayed = "%s %s%s" % (browser, browser_version, headless)
         if driver_name and driver_version:
-            driver_displayed = "%s (%s)" % (driver_name, driver_version)
-    if not browser_version:
+            driver_displayed = "%s %s" % (driver_name, driver_version)
+    else:
         browser_displayed = browser
         driver_displayed = "(Unknown Driver)"
     if not driver_displayed:
@@ -152,10 +151,10 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
         "--------------------------------------------------------------------"
     )
     data_to_save.append("Last Page: %s" % last_page)
+    data_to_save.append(" Duration: %s" % duration)
     data_to_save.append("  Browser: %s" % browser_displayed)
     data_to_save.append("   Driver: %s" % driver_displayed)
     data_to_save.append("Timestamp: %s" % timestamp)
-    data_to_save.append(" Duration: %s" % duration)
     data_to_save.append("     Date: %s" % the_date)
     data_to_save.append("     Time: %s" % the_time)
     data_to_save.append(
@@ -181,10 +180,11 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
         if hasattr(test, "is_nosetest") and test.is_nosetest:
             # Also save the data for the report
             sb_config._report_test_id = test_id
+            sb_config._report_fail_page = last_page
+            sb_config._report_duration = duration
             sb_config._report_browser = browser_displayed
             sb_config._report_driver = driver_displayed
             sb_config._report_timestamp = timestamp
-            sb_config._report_duration = duration
             sb_config._report_date = the_date
             sb_config._report_time = the_time
             sb_config._report_traceback = traceback_message
@@ -258,10 +258,15 @@ def log_skipped_test_data(test, test_logpath, driver, browser, reason):
         headless = ""
         if test.headless and browser in ["chrome", "edge", "firefox"]:
             headless = " / headless"
-        browser_displayed = "%s (%s%s)" % (browser, browser_version, headless)
+        if test.headless2 and browser in ["chrome", "edge"]:
+            headless = " / headless2"
+        if browser and len(browser) > 1:
+            # Capitalize the first letter
+            browser = "%s%s" % (browser[0].upper(), browser[1:])
+        browser_displayed = "%s %s%s" % (browser, browser_version, headless)
         if driver_name and driver_version:
-            driver_displayed = "%s (%s)" % (driver_name, driver_version)
-    if not browser_version:
+            driver_displayed = "%s %s" % (driver_name, driver_version)
+    else:
         browser_displayed = browser
         driver_displayed = "(Unknown Driver)"
     if not driver_displayed:

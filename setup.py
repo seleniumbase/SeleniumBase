@@ -243,7 +243,7 @@ setup(
         'typing-extensions==3.10.0.2;python_version<"3.6"',  # <3.9 for "rich"
         'typing-extensions==4.1.1;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
         'typing-extensions==4.2.0;python_version>="3.7" and python_version<"3.9"',  # noqa: E501
-        'rich==12.5.1;python_version>="3.6" and python_version<"4.0"',
+        'rich==12.6.0;python_version>="3.6" and python_version<"4.0"',
     ],
     extras_require={
         # pip install -e .[coverage]
