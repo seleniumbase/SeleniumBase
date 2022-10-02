@@ -51,15 +51,19 @@
 
 --------
 
-> **Table of Contents / Navigation:**
-> - [**Set up Python & Git**](#python_installation)
-> - [**Install SeleniumBase**](#install_seleniumbase)
-> - [**Basic Example & Usage**](#basic_example_and_usage)
-> - [**Generating Test Reports**](#creating_visual_reports)
-> - [**Common Test Methods**](#common_methods)
-> - [**Fun Facts / Learn More**](#fun_facts)
-> - [**Useful pytest Options**](#pytest_options)
-> - [**SeleniumBase Options**](#new_pytest_options)
+<blockquote>
+<p dir="auto"><strong>Table of Contents / Navigation:</strong></p>
+<ul dir="auto">
+<li><a href="#python_installation"><strong>Set up Python & Git</strong></a></li>
+<li><a href="#install_seleniumbase"><strong>Install SeleniumBase</strong></a></li>
+<li><a href="#basic_example_and_usage"><strong>Basic Example & Usage</strong></a></li>
+<li><a href="#creating_visual_reports"><strong>Generating Test Reports</strong></a></li>
+<li><a href="#common_methods"><strong>Common Test Methods</strong></a></li>
+<li><a href="#fun_facts"><strong>Fun Facts / Learn More</strong></a></li>
+<li><a href="#pytest_options"><strong>Useful pytest Options</strong></a></li>
+<li><a href="#new_pytest_options"><strong>SeleniumBase Options</strong></a></li>
+</ul>
+</blockquote>
 
 --------
 
@@ -182,17 +186,14 @@ Feature: SeleniumBase scenarios for the RealWorld App
 ```bash
 git clone https://github.com/seleniumbase/SeleniumBase.git
 cd SeleniumBase/
-pip install .  # Normal installation
-pip install -e .  # Editable install
+pip install -e .
 ```
-
-> (When using a virtual env, the Editable install is faster.)
 
 To upgrade an existing install from a GitHub clone:
 
 ```bash
-git pull  # To pull the latest version
-pip install -e .  # Or "pip install ."
+git pull
+pip install -e .
 ```
 
 🔵 Installing ``seleniumbase`` from PyPI:
@@ -677,7 +678,7 @@ pytest test_suite.py --dashboard --rs --headless
 --------
 
 <a id="creating_visual_reports"></a>
-<h3><img src="https://seleniumbase.github.io/img/green_logo2.png" title="SeleniumBase" width="32" /> Creating Visual Test Reports:</h3>
+<h3><img src="https://seleniumbase.github.io/img/green_logo2.png" title="SeleniumBase" width="32" /> Generating Test Reports:</h3>
 
 <h4><b>Pytest Reports:</b></h4>
 
