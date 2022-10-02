@@ -54,11 +54,11 @@ def save_test_failure_data(name, folder=None):
     data_to_save.append(
         "--------------------------------------------------------------------"
     )
-    data_to_save.append("Last Page: %s" % sb_config._fail_page)
+    data_to_save.append("Last Page: %s" % sb_config._report_fail_page)
+    data_to_save.append(" Duration: %s" % sb_config._report_duration)
     data_to_save.append("  Browser: %s" % sb_config._report_browser)
     data_to_save.append("   Driver: %s" % sb_config._report_driver)
     data_to_save.append("Timestamp: %s" % sb_config._report_timestamp)
-    data_to_save.append(" Duration: %s" % sb_config._report_duration)
     data_to_save.append("     Date: %s" % sb_config._report_date)
     data_to_save.append("     Time: %s" % sb_config._report_time)
     data_to_save.append(
