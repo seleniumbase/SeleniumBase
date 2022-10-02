@@ -78,7 +78,7 @@ class SwagLabsTests(BaseCase):
         self.assert_element_absent("span.shopping_cart_badge")
 
     def tearDown(self):
-        self.save_teardown_screenshot()
+        self.save_teardown_screenshot()  # Only if a test fails
         # Reset App State and Logout if the controls are present
         try:
             self.js_click_if_present("a#reset_sidebar_link")
