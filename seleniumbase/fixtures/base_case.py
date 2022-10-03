@@ -13488,7 +13488,7 @@ class BaseCase(unittest.TestCase):
             "%s"
             "<title>Dashboard</title>"
             "%s</head>"
-            % (constants.Dashboard.DASH_PIE_PNG_1, auto_refresh_html, style)
+            % (constants.Dashboard.get_dash_pie_1(), auto_refresh_html, style)
         )
         table_html = (
             "<div></div>"

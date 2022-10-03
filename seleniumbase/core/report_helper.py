@@ -5,7 +5,7 @@ import sys
 import time
 from seleniumbase import config as sb_config
 from seleniumbase.config import settings
-from seleniumbase.core.style_sheet import style
+from seleniumbase.core.style_sheet import get_report_style
 
 LATEST_REPORT_DIR = settings.LATEST_REPORT_DIR
 ARCHIVE_DIR = settings.REPORT_ARCHIVE_DIR
@@ -292,7 +292,7 @@ def build_report(
         passing_list,
     )
     report_html = "<html><head>%s</head><body>%s</body></html>" % (
-        style,
+        get_report_style(),
         table_view,
     )
     results_file = add_results_page(report_html)

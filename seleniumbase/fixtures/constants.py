@@ -78,12 +78,21 @@ class Dashboard:
     LOCKFILE = Files.DOWNLOADS_FOLDER + "/dashboard.lock"
     DASH_JSON = Files.DOWNLOADS_FOLDER + "/dashboard.json"
     DASH_PIE = Files.DOWNLOADS_FOLDER + "/dash_pie.json"
-    # DASH_PIE_PNG_1 = "https://seleniumbase.io/img/dash_pie.png"
-    # DASH_PIE_PNG_2 = "https://seleniumbase.io/img/dash_pie_2.png"
-    # DASH_PIE_PNG_3 = "https://seleniumbase.io/img/dash_pie_3.png"
-    DASH_PIE_PNG_1 = encoded_images.DASH_PIE_PNG_1  # Faster than CDN
-    DASH_PIE_PNG_2 = encoded_images.DASH_PIE_PNG_2  # Faster than CDN
-    DASH_PIE_PNG_3 = encoded_images.DASH_PIE_PNG_3  # Faster than CDN
+
+    def get_dash_pie_1():
+        if not hasattr(encoded_images, "DASH_PIE_PNG_1"):
+            encoded_images.DASH_PIE_PNG_1 = encoded_images.get_dash_pie_png1()
+        return encoded_images.DASH_PIE_PNG_1
+
+    def get_dash_pie_2():
+        if not hasattr(encoded_images, "DASH_PIE_PNG_2"):
+            encoded_images.DASH_PIE_PNG_2 = encoded_images.get_dash_pie_png2()
+        return encoded_images.DASH_PIE_PNG_2
+
+    def get_dash_pie_3():
+        if not hasattr(encoded_images, "DASH_PIE_PNG_3"):
+            encoded_images.DASH_PIE_PNG_3 = encoded_images.get_dash_pie_png3()
+        return encoded_images.DASH_PIE_PNG_3
 
 
 class PipInstall:
@@ -91,12 +100,21 @@ class PipInstall:
 
 
 class Report:
-    FAVICON = encoded_images.REPORT_FAVICON
+    def get_favicon():
+        if not hasattr(encoded_images, "REPORT_FAVICON"):
+            encoded_images.REPORT_FAVICON = encoded_images.get_report_favicon()
+        return encoded_images.REPORT_FAVICON
 
 
 class SideBySide:
     HTML_FILE = "side_by_side.html"
-    SIDE_BY_SIDE_PNG = encoded_images.SIDE_BY_SIDE_PNG
+
+    def get_favicon():
+        if not hasattr(encoded_images, "SIDE_BY_SIDE_PNG"):
+            encoded_images.SIDE_BY_SIDE_PNG = (
+                encoded_images.get_side_by_side_png()
+            )
+        return encoded_images.SIDE_BY_SIDE_PNG
 
 
 class MultiBrowser:

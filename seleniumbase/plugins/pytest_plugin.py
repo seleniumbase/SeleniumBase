@@ -1532,7 +1532,7 @@ def _get_test_ids_(the_item):
 def _create_dashboard_assets_():
     import codecs
     from seleniumbase.js_code.live_js import live_js
-    from seleniumbase.core.style_sheet import pytest_style
+    from seleniumbase.core.style_sheet import get_pytest_style
 
     abs_path = os.path.abspath(".")
     assets_folder = os.path.join(abs_path, "assets")
@@ -1544,11 +1544,11 @@ def _create_dashboard_assets_():
         existing_pytest_style = None
         with open(pytest_style_css, "r") as f:
             existing_pytest_style = f.read()
-        if existing_pytest_style == pytest_style:
+        if existing_pytest_style == get_pytest_style():
             add_pytest_style_css = False
     if add_pytest_style_css:
         out_file = codecs.open(pytest_style_css, "w+", encoding="utf-8")
-        out_file.writelines(pytest_style)
+        out_file.writelines(get_pytest_style())
         out_file.close()
     live_js_file = os.path.join(assets_folder, "live.js")
     add_live_js_file = True
@@ -1776,8 +1776,8 @@ def _perform_pytest_unconfigure_():
     )
     find_it_3 = '<td class="col-result">Untested</td>'
     swap_with_3 = '<td class="col-result">Unreported</td>'
-    find_it_4 = 'href="%s"' % constants.Dashboard.DASH_PIE_PNG_1
-    swap_with_4 = 'href="%s"' % constants.Dashboard.DASH_PIE_PNG_2
+    find_it_4 = 'href="%s"' % constants.Dashboard.get_dash_pie_1()
+    swap_with_4 = 'href="%s"' % constants.Dashboard.get_dash_pie_2()
     try:
         abs_path = os.path.abspath(".")
         dashboard_path = os.path.join(abs_path, "dashboard.html")
@@ -1814,7 +1814,7 @@ def _perform_pytest_unconfigure_():
                 the_html_d = the_html_d.replace(
                     "</head>",
                     '</head><link rel="shortcut icon" '
-                    'href="%s">' % constants.Dashboard.DASH_PIE_PNG_3,
+                    'href="%s">' % constants.Dashboard.get_dash_pie_3(),
                 )
                 the_html_d = the_html_d.replace("<html>", '<html lang="en">')
                 the_html_d = the_html_d.replace(
@@ -1863,7 +1863,7 @@ def _perform_pytest_unconfigure_():
                     the_html_r = the_html_r.replace(
                         "</head>",
                         '</head><link rel="shortcut icon" href='
-                        '"%s">' % constants.Dashboard.DASH_PIE_PNG_3,
+                        '"%s">' % constants.Dashboard.get_dash_pie_3(),
                     )
                     if sb_config._dash_final_summary:
                         the_html_r += sb_config._dash_final_summary

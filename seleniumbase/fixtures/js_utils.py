@@ -606,7 +606,7 @@ def activate_html_inspector(driver):
 
 
 def activate_messenger(driver):
-    from seleniumbase.core import style_sheet
+    from seleniumbase.core.style_sheet import get_messenger_style
 
     jquery_js = constants.JQuery.MIN_JS
     messenger_css = constants.Messenger.MIN_CSS
@@ -640,7 +640,7 @@ def activate_messenger(driver):
     add_js_link(driver, underscore_js)
     add_css_link(driver, spinner_css)
     add_js_link(driver, messenger_js)
-    add_css_style(driver, style_sheet.messenger_style)
+    add_css_style(driver, get_messenger_style())
 
     for x in range(10):
         # Messenger needs a small amount of time to load & activate.

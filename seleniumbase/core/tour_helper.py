@@ -27,7 +27,7 @@ def activate_bootstrap(driver):
                      var tour2 = new Tour({
                      });"""
 
-    backdrop_style = style_sheet.bt_backdrop_style
+    backdrop_style = style_sheet.get_bt_backdrop_style()
     js_utils.add_css_style(driver, backdrop_style)
     js_utils.wait_for_ready_state_complete(driver)
     js_utils.wait_for_angularjs(driver)
@@ -62,7 +62,7 @@ def activate_driverjs(driver):
     """Allows you to use DriverJS Tours with SeleniumBase
     https://kamranahmed.info/driver.js/
     """
-    backdrop_style = style_sheet.dt_backdrop_style
+    backdrop_style = style_sheet.get_dt_backdrop_style()
     driverjs_css = constants.DriverJS.MIN_CSS
     driverjs_js = constants.DriverJS.MIN_JS
 
@@ -109,7 +109,7 @@ def activate_hopscotch(driver):
     """
     hopscotch_css = constants.Hopscotch.MIN_CSS
     hopscotch_js = constants.Hopscotch.MIN_JS
-    backdrop_style = style_sheet.hops_backdrop_style
+    backdrop_style = style_sheet.get_hops_backdrop_style()
 
     verify_script = """// Verify Hopscotch activated
                      var hops = hopscotch.isActive;
@@ -157,7 +157,7 @@ def activate_introjs(driver):
 
     theme_color = sb_config.introjs_theme_color
     hover_color = sb_config.introjs_hover_color
-    backdrop_style = style_sheet.introjs_style % (
+    backdrop_style = style_sheet.get_introjs_style() % (
         theme_color,
         hover_color,
         hover_color,
@@ -215,8 +215,8 @@ def activate_shepherd(driver):
     sh_theme_sq_dark_css = constants.Shepherd.THEME_SQ_DK_CSS
     tether_js = constants.Tether.MIN_JS
     spinner_css = constants.Messenger.SPINNER_CSS
-    sh_style = style_sheet.sh_style_test
-    backdrop_style = style_sheet.sh_backdrop_style
+    sh_style = style_sheet.get_sh_style_test()
+    backdrop_style = style_sheet.get_sh_backdrop_style()
 
     activate_bootstrap(driver)
     js_utils.wait_for_ready_state_complete(driver)
@@ -252,7 +252,7 @@ def activate_shepherd(driver):
 
 
 def is_shepherd_activated(driver):
-    sh_style = style_sheet.sh_style_test
+    sh_style = style_sheet.get_sh_style_test()
     try:
         driver.execute_script(sh_style)  # Verify Shepherd has loaded
         return True
@@ -923,7 +923,7 @@ def export_tour(tour_steps, name=None, filename="my_tour.js", url=None):
         jquery_js = constants.JQuery.MIN_JS
         bootstrap_tour_css = constants.BootstrapTour.MIN_CSS
         bootstrap_tour_js = constants.BootstrapTour.MIN_JS
-        backdrop_style = style_sheet.bt_backdrop_style
+        backdrop_style = style_sheet.get_bt_backdrop_style()
         backdrop_style = backdrop_style.replace("\n", "")
         backdrop_style = js_utils.escape_quotes_if_needed(backdrop_style)
         instructions += 'injectJS("%s");\n' % jquery_js
@@ -940,7 +940,7 @@ def export_tour(tour_steps, name=None, filename="my_tour.js", url=None):
     elif tour_type == "driverjs":
         driverjs_css = constants.DriverJS.MIN_CSS
         driverjs_js = constants.DriverJS.MIN_JS
-        backdrop_style = style_sheet.dt_backdrop_style
+        backdrop_style = style_sheet.get_dt_backdrop_style()
         backdrop_style = backdrop_style.replace("\n", "")
         backdrop_style = js_utils.escape_quotes_if_needed(backdrop_style)
         instructions += 'injectCSS("%s");\n' % driverjs_css
@@ -950,7 +950,7 @@ def export_tour(tour_steps, name=None, filename="my_tour.js", url=None):
     elif tour_type == "hopscotch":
         hopscotch_css = constants.Hopscotch.MIN_CSS
         hopscotch_js = constants.Hopscotch.MIN_JS
-        backdrop_style = style_sheet.hops_backdrop_style
+        backdrop_style = style_sheet.get_hops_backdrop_style()
         backdrop_style = backdrop_style.replace("\n", "")
         backdrop_style = js_utils.escape_quotes_if_needed(backdrop_style)
         instructions += 'injectCSS("%s");\n' % hopscotch_css
@@ -962,7 +962,7 @@ def export_tour(tour_steps, name=None, filename="my_tour.js", url=None):
         intro_js = constants.IntroJS.MIN_JS
         theme_color = sb_config.introjs_theme_color
         hover_color = sb_config.introjs_hover_color
-        backdrop_style = style_sheet.introjs_style % (
+        backdrop_style = style_sheet.get_introjs_style() % (
             theme_color,
             hover_color,
             hover_color,
@@ -986,7 +986,7 @@ def export_tour(tour_steps, name=None, filename="my_tour.js", url=None):
         sh_theme_sq_dark_css = constants.Shepherd.THEME_SQ_DK_CSS
         tether_js = constants.Tether.MIN_JS
         spinner_css = constants.Messenger.SPINNER_CSS
-        backdrop_style = style_sheet.sh_backdrop_style
+        backdrop_style = style_sheet.get_sh_backdrop_style()
         backdrop_style = backdrop_style.replace("\n", "")
         backdrop_style = js_utils.escape_quotes_if_needed(backdrop_style)
         instructions += 'injectCSS("%s");\n' % spinner_css

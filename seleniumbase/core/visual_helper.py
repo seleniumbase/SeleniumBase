@@ -26,7 +26,7 @@ def get_sbs_head():
         '<meta name="viewport" content="shrink-to-fit=no">'
         '<link rel="shortcut icon" href="%s">'
         "<title>Visual Comparison</title>"
-        "</head>" % (constants.SideBySide.SIDE_BY_SIDE_PNG)
+        "</head>" % (constants.SideBySide.get_favicon())
     )
     return head
 
