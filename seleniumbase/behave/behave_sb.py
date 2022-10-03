@@ -862,14 +862,14 @@ def calculate_test_id(file_name, scenario_name):
     scenario_name = re.sub(r"[^\w" + r"_ " + r"]", "", scenario_name)
     scenario_name = scenario_name.replace(" ", "_")
     if " -- @" in scenario_name:
-        scenario_name = scenario_name.split(" -- @")[0]
+        scenario_name = scenario_name.split(" # ")[0].rstrip()
     test_id = "%s.%s" % (file_name, scenario_name)
     return test_id
 
 
 def calculate_display_id(file_name, line_num, scenario_name):
     if " -- @" in scenario_name:
-        scenario_name = scenario_name.split(" -- @")[0]
+        scenario_name = scenario_name.split(" # ")[0].rstrip()
     display_id = "%s:%s => %s" % (file_name, line_num, scenario_name)
     return display_id
 
@@ -879,7 +879,7 @@ def get_test_id():
     file_name = file_name.replace("/", ".").replace("\\", ".")
     scenario_name = sb_config.behave_scenario.name
     if " -- @" in scenario_name:
-        scenario_name = scenario_name.split(" -- @")[0]
+        scenario_name = scenario_name.split(" # ")[0].rstrip()
     scenario_name = re.sub(r"[^\w" + r"_ " + r"]", "", scenario_name)
     scenario_name = scenario_name.replace(" ", "_")
     test_id = "%s.%s" % (file_name, scenario_name)
@@ -891,7 +891,7 @@ def get_display_id():
     line_num = str(sb_config.behave_scenario.line)
     scenario_name = sb_config.behave_scenario.name
     if " -- @" in scenario_name:
-        scenario_name = scenario_name.split(" -- @")[0]
+        scenario_name = scenario_name.split(" # ")[0].rstrip()
     display_id = "%s:%s => %s" % (file_name, line_num, scenario_name)
     return display_id
 
@@ -966,7 +966,7 @@ def dashboard_pre_processing():
             else:
                 scenario_name = row.split("  Scenario Outline: ")[-1]
             if " -- @" in scenario_name:
-                scenario_name = scenario_name.split(" -- @")[0]
+                scenario_name = scenario_name.split(" # ")[0].rstrip()
             elif " # features/" in scenario_name:
                 scenario_name = scenario_name.split(" # features/")[0]
             else:

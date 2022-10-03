@@ -13228,7 +13228,7 @@ class BaseCase(unittest.TestCase):
             file_name = file_name.replace("/", ".").replace("\\", ".")
             scenario_name = sb_config.behave_scenario.name
             if " -- @" in scenario_name:
-                scenario_name = scenario_name.split(" -- @")[0]
+                scenario_name = scenario_name.split(" # ")[0].rstrip()
             scenario_name = re.sub(r"[^\w" + r"_ " + r"]", "", scenario_name)
             scenario_name = scenario_name.replace(" ", "_")
             test_id = "%s.%s" % (file_name, scenario_name)
@@ -13270,7 +13270,7 @@ class BaseCase(unittest.TestCase):
             line_num = sb_config.behave_line_num
             scenario_name = sb_config.behave_scenario.name
             if " -- @" in scenario_name:
-                scenario_name = scenario_name.split(" -- @")[0]
+                scenario_name = scenario_name.split(" # ")[0].rstrip()
             test_id = "%s:%s => %s" % (file_name, line_num, scenario_name)
             return test_id
         test_id = "%s.py::%s::%s" % (
