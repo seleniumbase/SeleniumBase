@@ -279,7 +279,7 @@ class Base(Plugin):
     def addSuccess(self, test, capt):
         if self.report_on:
             self.duration = str(
-                "%0.3fs" % (float(time.time()) - float(self.start_time))
+                "%.2fs" % (float(time.time()) - float(self.start_time))
             )
             self.successes.append(test.id())
             self.page_results_list.append(
@@ -291,7 +291,7 @@ class Base(Plugin):
     def add_fails_or_errors(self, test):
         if self.report_on:
             self.duration = str(
-                "%0.3fs" % (float(time.time()) - float(self.start_time))
+                "%.2fs" % (float(time.time()) - float(self.start_time))
             )
             if test.id() == "nose.failure.Failure.runTest":
                 print(">>> ERROR: Could not locate tests to run!")

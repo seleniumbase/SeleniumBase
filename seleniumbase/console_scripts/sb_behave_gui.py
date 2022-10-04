@@ -452,7 +452,7 @@ def main():
             else:
                 scenario_name = row.split("  Scenario Outline: ")[-1]
             if " -- @" in scenario_name:
-                scenario_name = scenario_name.split(" -- @")[0]
+                scenario_name = scenario_name.split(" # ")[0].rstrip()
             elif " # features/" in scenario_name:
                 scenario_name = scenario_name.split(" # features/")[0]
             else:

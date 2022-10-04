@@ -862,14 +862,14 @@ def calculate_test_id(file_name, scenario_name):
     scenario_name = re.sub(r"[^\w" + r"_ " + r"]", "", scenario_name)
     scenario_name = scenario_name.replace(" ", "_")
     if " -- @" in scenario_name:
-        scenario_name = scenario_name.split(" -- @")[0]
+        scenario_name = scenario_name.split(" # ")[0].rstrip()
     test_id = "%s.%s" % (file_name, scenario_name)
     return test_id
 
 
 def calculate_display_id(file_name, line_num, scenario_name):
     if " -- @" in scenario_name:
-        scenario_name = scenario_name.split(" -- @")[0]
+        scenario_name = scenario_name.split(" # ")[0].rstrip()
     display_id = "%s:%s => %s" % (file_name, line_num, scenario_name)
     return display_id
 
@@ -879,7 +879,7 @@ def get_test_id():
     file_name = file_name.replace("/", ".").replace("\\", ".")
     scenario_name = sb_config.behave_scenario.name
     if " -- @" in scenario_name:
-        scenario_name = scenario_name.split(" -- @")[0]
+        scenario_name = scenario_name.split(" # ")[0].rstrip()
     scenario_name = re.sub(r"[^\w" + r"_ " + r"]", "", scenario_name)
     scenario_name = scenario_name.replace(" ", "_")
     test_id = "%s.%s" % (file_name, scenario_name)
@@ -891,7 +891,7 @@ def get_display_id():
     line_num = str(sb_config.behave_scenario.line)
     scenario_name = sb_config.behave_scenario.name
     if " -- @" in scenario_name:
-        scenario_name = scenario_name.split(" -- @")[0]
+        scenario_name = scenario_name.split(" # ")[0].rstrip()
     display_id = "%s:%s => %s" % (file_name, line_num, scenario_name)
     return display_id
 
@@ -966,7 +966,7 @@ def dashboard_pre_processing():
             else:
                 scenario_name = row.split("  Scenario Outline: ")[-1]
             if " -- @" in scenario_name:
-                scenario_name = scenario_name.split(" -- @")[0]
+                scenario_name = scenario_name.split(" # ")[0].rstrip()
             elif " # features/" in scenario_name:
                 scenario_name = scenario_name.split(" # features/")[0]
             else:
@@ -989,7 +989,7 @@ def dashboard_pre_processing():
 def _create_dashboard_assets_():
     import codecs
     from seleniumbase.js_code.live_js import live_js
-    from seleniumbase.core.style_sheet import pytest_style
+    from seleniumbase.core.style_sheet import get_pytest_style
 
     abs_path = os.path.abspath(".")
     assets_folder = os.path.join(abs_path, "assets")
@@ -1001,11 +1001,11 @@ def _create_dashboard_assets_():
         existing_pytest_style = None
         with open(pytest_style_css, "r") as f:
             existing_pytest_style = f.read()
-        if existing_pytest_style == pytest_style:
+        if existing_pytest_style == get_pytest_style():
             add_pytest_style_css = False
     if add_pytest_style_css:
         out_file = codecs.open(pytest_style_css, "w+", encoding="utf-8")
-        out_file.writelines(pytest_style)
+        out_file.writelines(get_pytest_style())
         out_file.close()
     live_js_file = os.path.join(assets_folder, "live.js")
     add_live_js_file = True
@@ -1082,8 +1082,17 @@ def _perform_behave_unconfigure_():
     )
     find_it_3 = '<td class="col-result">Untested</td>'
     swap_with_3 = '<td class="col-result">Unreported</td>'
-    find_it_4 = 'href="%s"' % constants.Dashboard.DASH_PIE_PNG_1
-    swap_with_4 = 'href="%s"' % constants.Dashboard.DASH_PIE_PNG_2
+    if sys.version_info[0] >= 3:
+        # These use caching to prevent extra method calls
+        DASH_PIE_PNG_1 = constants.Dashboard.get_dash_pie_1()
+        DASH_PIE_PNG_2 = constants.Dashboard.get_dash_pie_2()
+    else:
+        from seleniumbase.core import encoded_images
+
+        DASH_PIE_PNG_1 = encoded_images.get_dash_pie_png1()
+        DASH_PIE_PNG_2 = encoded_images.get_dash_pie_png2()
+    find_it_4 = 'href="%s"' % DASH_PIE_PNG_1
+    swap_with_4 = 'href="%s"' % DASH_PIE_PNG_2
     try:
         abs_path = os.path.abspath(".")
         dashboard_path = os.path.join(abs_path, "dashboard.html")

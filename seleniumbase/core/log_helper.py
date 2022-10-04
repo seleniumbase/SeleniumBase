@@ -104,6 +104,7 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
     driver_version = None
     driver_name = None
     duration = None
+    exc_message = None
     try:
         browser_version = get_browser_version(driver)
     except Exception:
@@ -115,8 +116,7 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
     except Exception:
         pass
     try:
-        duration = "%.2f" % (time.time() - (sb_config.start_time_ms / 1000.0))
-        duration = "%ss" % duration
+        duration = "%.2fs" % (time.time() - (sb_config.start_time_ms / 1000.0))
     except Exception:
         duration = "(Unknown Duration)"
     if browser_version:
@@ -177,26 +177,14 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
             traceback_message = "(Unknown Traceback)"
         data_to_save.append("Traceback: " + traceback_message)
         data_to_save.append("Exception: " + str(exc_message))
-        if hasattr(test, "is_nosetest") and test.is_nosetest:
-            # Also save the data for the report
-            sb_config._report_test_id = test_id
-            sb_config._report_fail_page = last_page
-            sb_config._report_duration = duration
-            sb_config._report_browser = browser_displayed
-            sb_config._report_driver = driver_displayed
-            sb_config._report_timestamp = timestamp
-            sb_config._report_date = the_date
-            sb_config._report_time = the_time
-            sb_config._report_traceback = traceback_message
-            sb_config._report_exception = str(exc_message)
     else:
-        the_traceback = None
+        traceback_message = None
         if hasattr(test, "is_behave") and test.is_behave:
             if sb_config.behave_scenario.status.name == "failed":
                 if sb_config.behave_step.error_message:
-                    the_traceback = sb_config.behave_step.error_message
+                    traceback_message = sb_config.behave_step.error_message
         else:
-            the_traceback = "".join(
+            traceback_message = "".join(
                 traceback.format_exception(
                     sys.exc_info()[0],
                     sys.exc_info()[1],
@@ -204,9 +192,9 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
                 )
             )
         if (
-            not the_traceback
-            or len(str(the_traceback)) < 30
-            or the_traceback.endswith("StopIteration\n")
+            not traceback_message
+            or len(str(traceback_message)) < 30
+            or traceback_message.endswith("StopIteration\n")
         ):
             good_stack = []
             the_stacks = []
@@ -225,14 +213,26 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
                 if "/site-packages/pluggy/" not in stack:
                     if "/site-packages/_pytest/" not in stack:
                         good_stack.append(stack)
-            the_traceback = "".join(good_stack)
-            data_to_save.append("Traceback: " + the_traceback)
+            traceback_message = "".join(good_stack)
+            data_to_save.append("Traceback: " + traceback_message)
             if hasattr(sys, "last_value"):
                 last_value = sys.last_value
                 if last_value:
                     data_to_save.append("Exception: " + str(last_value))
         else:
-            data_to_save.append("Traceback: " + the_traceback)
+            data_to_save.append("Traceback: " + traceback_message)
+    if hasattr(test, "is_nosetest") and test.is_nosetest:
+        # Also save the data for the report
+        sb_config._report_test_id = test_id
+        sb_config._report_fail_page = last_page
+        sb_config._report_duration = duration
+        sb_config._report_browser = browser_displayed
+        sb_config._report_driver = driver_displayed
+        sb_config._report_timestamp = timestamp
+        sb_config._report_date = the_date
+        sb_config._report_time = the_time
+        sb_config._report_traceback = traceback_message
+        sb_config._report_exception = exc_message
     log_file = codecs.open(basic_file_path, "w+", "utf-8")
     log_file.writelines("\r\n".join(data_to_save))
     log_file.close()

@@ -8,7 +8,7 @@ import time
 from selenium.common.exceptions import NoAlertPresentException
 from selenium.common.exceptions import WebDriverException
 from seleniumbase import BaseCase
-from seleniumbase.core.style_sheet import style
+from seleniumbase.core.style_sheet import get_report_style
 from seleniumbase.config import settings
 from seleniumbase.fixtures import js_utils
 
@@ -492,7 +492,7 @@ class MasterQA(BaseCase):
         failure_table += "</tbody></table>"
         table_view = "%s%s%s" % (summary_table, log_table, failure_table)
         report_html = "<html><head>%s</head><body>%s</body></html>" % (
-            style,
+            get_report_style(),
             table_view,
         )
         results_file = self.__add_results_page(report_html)

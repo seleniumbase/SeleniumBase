@@ -15,6 +15,9 @@ from seleniumbase.fixtures import constants
 is_windows = False
 if sys.platform in ["win32", "win64", "x64"]:
     is_windows = True
+python3 = True
+if sys.version_info[0] < 3:
+    python3 = False
 sys_argv = sys.argv
 pytest_plugins = ["pytester"]  # Adds the "testdir" fixture
 
@@ -1403,7 +1406,7 @@ def pytest_configure(config):
         or " -n=" in arg_join
         or "-c" in sys_argv
         or (
-            sys.version_info[0] >= 3
+            python3
             and "addopts" in config.inicfg.keys()
             and (
                 "-n=" in config.inicfg["addopts"]
@@ -1416,7 +1419,7 @@ def pytest_configure(config):
         "--html" in sys_argv
         or " --html=" in arg_join
         or (
-            sys.version_info[0] >= 3
+            python3
             and "addopts" in config.inicfg.keys()
             and (
                 "--html=" in config.inicfg["addopts"]
@@ -1532,7 +1535,7 @@ def _get_test_ids_(the_item):
 def _create_dashboard_assets_():
     import codecs
     from seleniumbase.js_code.live_js import live_js
-    from seleniumbase.core.style_sheet import pytest_style
+    from seleniumbase.core.style_sheet import get_pytest_style
 
     abs_path = os.path.abspath(".")
     assets_folder = os.path.join(abs_path, "assets")
@@ -1544,11 +1547,11 @@ def _create_dashboard_assets_():
         existing_pytest_style = None
         with open(pytest_style_css, "r") as f:
             existing_pytest_style = f.read()
-        if existing_pytest_style == pytest_style:
+        if existing_pytest_style == get_pytest_style():
             add_pytest_style_css = False
     if add_pytest_style_css:
         out_file = codecs.open(pytest_style_css, "w+", encoding="utf-8")
-        out_file.writelines(pytest_style)
+        out_file.writelines(get_pytest_style())
         out_file.close()
     live_js_file = os.path.join(assets_folder, "live.js")
     add_live_js_file = True
@@ -1776,16 +1779,33 @@ def _perform_pytest_unconfigure_():
     )
     find_it_3 = '<td class="col-result">Untested</td>'
     swap_with_3 = '<td class="col-result">Unreported</td>'
-    find_it_4 = 'href="%s"' % constants.Dashboard.DASH_PIE_PNG_1
-    swap_with_4 = 'href="%s"' % constants.Dashboard.DASH_PIE_PNG_2
+    if python3:
+        # These use caching to prevent extra method calls
+        DASH_PIE_PNG_1 = constants.Dashboard.get_dash_pie_1()
+        DASH_PIE_PNG_2 = constants.Dashboard.get_dash_pie_2()
+        DASH_PIE_PNG_3 = constants.Dashboard.get_dash_pie_3()
+    else:
+        from seleniumbase.core import encoded_images
+
+        DASH_PIE_PNG_1 = encoded_images.get_dash_pie_png1()
+        DASH_PIE_PNG_2 = encoded_images.get_dash_pie_png2()
+        DASH_PIE_PNG_3 = encoded_images.get_dash_pie_png3()
+    find_it_4 = 'href="%s"' % DASH_PIE_PNG_1
+    swap_with_4 = 'href="%s"' % DASH_PIE_PNG_2
     try:
         abs_path = os.path.abspath(".")
         dashboard_path = os.path.join(abs_path, "dashboard.html")
         # Part 1: Finalizing the dashboard / integrating html report
         if os.path.exists(dashboard_path):
             the_html_d = None
-            with open(dashboard_path, "r", encoding="utf-8") as f:
-                the_html_d = f.read()
+            if python3:
+                with open(dashboard_path, "r", encoding="utf-8") as f:
+                    the_html_d = f.read()
+            else:
+                import io
+
+                with io.open(dashboard_path, "r", encoding="utf-8") as f:
+                    the_html_d = f.read()
             if sb_config._multithreaded and "-c" in sys_argv:
                 # Threads have "-c" in sys.argv, except for the last
                 raise Exception('Break out of "try" block.')
@@ -1814,7 +1834,7 @@ def _perform_pytest_unconfigure_():
                 the_html_d = the_html_d.replace(
                     "</head>",
                     '</head><link rel="shortcut icon" '
-                    'href="%s">' % constants.Dashboard.DASH_PIE_PNG_3,
+                    'href="%s">' % DASH_PIE_PNG_3,
                 )
                 the_html_d = the_html_d.replace("<html>", '<html lang="en">')
                 the_html_d = the_html_d.replace(
@@ -1826,14 +1846,22 @@ def _perform_pytest_unconfigure_():
                 if sb_config._dash_final_summary:
                     the_html_d += sb_config._dash_final_summary
                 time.sleep(0.1)  # Add time for "livejs" to detect changes
-                with open(dashboard_path, "w", encoding="utf-8") as f:
-                    f.write(the_html_d)  # Finalize the dashboard
+                if python3:
+                    with open(dashboard_path, "w", encoding="utf-8") as f:
+                        f.write(the_html_d)  # Finalize the dashboard
+                else:
+                    with io.open(dashboard_path, "w", encoding="utf-8") as f:
+                        f.write(the_html_d)  # Finalize the dashboard
                 time.sleep(0.1)  # Add time for "livejs" to detect changes
                 the_html_d = the_html_d.replace(
                     "</head>", "</head><!-- Dashboard Report Done -->"
                 )
-            with open(dashboard_path, "w", encoding="utf-8") as f:
-                f.write(the_html_d)  # Finalize the dashboard
+            if python3:
+                with open(dashboard_path, "w", encoding="utf-8") as f:
+                    f.write(the_html_d)  # Finalize the dashboard
+            else:
+                with io.open(dashboard_path, "w", encoding="utf-8") as f:
+                    f.write(the_html_d)  # Finalize the dashboard
             # Part 2: Appending a pytest html report with dashboard data
             html_report_path = None
             if sb_config._html_report_name:
@@ -1863,7 +1891,7 @@ def _perform_pytest_unconfigure_():
                     the_html_r = the_html_r.replace(
                         "</head>",
                         '</head><link rel="shortcut icon" href='
-                        '"%s">' % constants.Dashboard.DASH_PIE_PNG_3,
+                        '"%s">' % DASH_PIE_PNG_3,
                     )
                     if sb_config._dash_final_summary:
                         the_html_r += sb_config._dash_final_summary
