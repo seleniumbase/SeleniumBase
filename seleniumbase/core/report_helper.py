@@ -3,6 +3,7 @@ import os
 import shutil
 import sys
 import time
+import traceback
 from seleniumbase import config as sb_config
 from seleniumbase.config import settings
 from seleniumbase.core.style_sheet import get_report_style
@@ -32,7 +33,7 @@ def process_successes(test, test_count, duration):
     )
 
 
-def save_test_failure_data(name, folder=None):
+def save_test_failure_data(test, name, folder=None):
     """
     Saves failure data to the current directory, or to a subfolder if provided.
     If {name} does not end in ".txt", it will get added to it.
@@ -50,6 +51,32 @@ def save_test_failure_data(name, folder=None):
         failure_data_file_path = name
     failure_data_file = codecs.open(failure_data_file_path, "w+", "utf-8")
     data_to_save = []
+    if not hasattr(sb_config, "_report_test_id"):
+        exc_message = "(Unknown Exception)"
+        traceback_message = ""
+        if hasattr(sb_config, "_report_traceback"):
+            traceback_message = str(sb_config._report_traceback)
+        if hasattr(sb_config, "_report_exception"):
+            if type(sb_config._report_exception) is tuple:
+                exc_message = str(sb_config._report_exception[1].message)
+            else:
+                exc_message = str(sb_config._report_exception)
+        data_to_save.append(test.id())
+        data_to_save.append(
+            "----------------------------------------------------------------"
+        )
+        data_to_save.append("Last Page: %s" % test._last_page_url)
+        data_to_save.append("  Browser: %s" % test.browser)
+        data_to_save.append("Timestamp: %s" % get_timestamp()[:-3])
+        data_to_save.append(
+            "----------------------------------------------------------------"
+        )
+        data_to_save.append("Traceback: %s" % traceback_message)
+        if sys.version_info[0] >= 3:
+            data_to_save.append("Exception: %s" % exc_message)
+        failure_data_file.writelines("\r\n".join(data_to_save))
+        failure_data_file.close()
+        return
     data_to_save.append(sb_config._report_test_id)
     data_to_save.append(
         "--------------------------------------------------------------------"
@@ -65,7 +92,8 @@ def save_test_failure_data(name, folder=None):
         "--------------------------------------------------------------------"
     )
     data_to_save.append("Traceback: %s" % sb_config._report_traceback)
-    data_to_save.append("Exception: %s" % sb_config._report_exception)
+    if sys.version_info[0] >= 3:
+        data_to_save.append("Exception: %s" % sb_config._report_exception)
     failure_data_file.writelines("\r\n".join(data_to_save))
     failure_data_file.close()
 
@@ -74,10 +102,26 @@ def process_failures(test, test_count, duration):
     bad_page_image = "failure_%s.png" % test_count
     bad_page_data = "failure_%s.txt" % test_count
     screenshot_path = os.path.join(LATEST_REPORT_DIR, bad_page_image)
-    if hasattr(test, "_last_page_screenshot"):
+    if hasattr(test, "_last_page_screenshot") and test._last_page_screenshot:
         with open(screenshot_path, "wb") as file:
             file.write(test._last_page_screenshot)
-    save_test_failure_data(bad_page_data, folder=LATEST_REPORT_DIR)
+    elif sys.version_info[0] < 3:
+        try:
+            sb_config._report_exception = sys.exc_info()
+            sb_config._report_traceback = "".join(
+                traceback.format_exception(
+                    sb_config._report_exception[0],
+                    sb_config._report_exception[1],
+                    sb_config._report_exception[2],
+                )
+            )
+            test._last_page_url = test.driver.current_url
+            test._last_page_screenshot = test.driver.get_screenshot_as_png()
+            with open(screenshot_path, "wb") as file:
+                file.write(test._last_page_screenshot)
+        except Exception:
+            pass
+    save_test_failure_data(test, bad_page_data, folder=LATEST_REPORT_DIR)
     exc_message = None
     if (
         sys.version_info[0] >= 3
@@ -245,6 +289,10 @@ def build_report(
                     <th>LOCATION OF FAILURE</th>
                     </tr></thead>"""
             display_url = line[4]
+            actual_url = line[4]
+            if len(display_url) < 7:
+                display_url = sb_config._report_fail_page
+                actual_url = sb_config._report_fail_page
             if len(display_url) > 60:
                 display_url = display_url[0:58] + "..."
             line = (
@@ -258,7 +306,7 @@ def build_report(
                 + """
                 &nbsp;&nbsp;
                 """
-                + '<td><a href="%s">%s</a>' % (line[4], display_url)
+                + '<td><a href="%s">%s</a>' % (actual_url, display_url)
             )
             line = line.replace('"', "")
             failure_table += "<tr><td>%s</tr>\n" % line

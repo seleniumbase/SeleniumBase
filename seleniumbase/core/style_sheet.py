@@ -1,3 +1,4 @@
+import sys
 from seleniumbase.fixtures import constants
 
 
@@ -9,10 +10,17 @@ class Saved:
 def get_report_style():
     if hasattr(Saved, "report_style"):
         return Saved.report_style
+    if sys.version_info[0] >= 3:
+        # Uses caching to prevent extra method calls
+        REPORT_FAVICON = constants.Report.get_favicon()
+    else:
+        from seleniumbase.core import encoded_images
+
+        REPORT_FAVICON = encoded_images.get_report_favicon()
     title = """<meta id="OGTitle" property="og:title" content="SeleniumBase">
         <title>Test Report</title>
         <link rel="SHORTCUT ICON"
-        href="%s" /> """ % constants.Report.get_favicon()
+        href="%s" /> """ % REPORT_FAVICON
 
     style = (
         title

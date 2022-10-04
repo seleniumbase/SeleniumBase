@@ -13481,6 +13481,12 @@ class BaseCase(unittest.TestCase):
                     pie_file = codecs.open(pie_path, "w+", encoding="utf-8")
                     pie_file.writelines(dash_pie)
                     pie_file.close()
+        if python3:
+            DASH_PIE_PNG_1 = constants.Dashboard.get_dash_pie_1()
+        else:
+            from seleniumbase.core import encoded_images
+
+            DASH_PIE_PNG_1 = encoded_images.get_dash_pie_png1()
         head = (
             '<head><meta charset="utf-8">'
             '<meta name="viewport" content="shrink-to-fit=no">'
@@ -13488,7 +13494,7 @@ class BaseCase(unittest.TestCase):
             "%s"
             "<title>Dashboard</title>"
             "%s</head>"
-            % (constants.Dashboard.get_dash_pie_1(), auto_refresh_html, style)
+            % (DASH_PIE_PNG_1, auto_refresh_html, style)
         )
         table_html = (
             "<div></div>"

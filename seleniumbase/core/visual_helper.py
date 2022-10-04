@@ -1,4 +1,5 @@
 import os
+import sys
 from seleniumbase.core import log_helper
 from seleniumbase.fixtures import constants
 
@@ -21,12 +22,19 @@ def visual_baseline_folder_setup():
 
 
 def get_sbs_head():
+    if sys.version_info[0] >= 3:
+        # Uses caching to prevent extra method calls
+        SIDE_BY_SIDE_PNG = constants.SideBySide.get_favicon()
+    else:
+        from seleniumbase.core import encoded_images
+
+        SIDE_BY_SIDE_PNG = encoded_images.get_side_by_side_png()
     head = (
         '<head><meta charset="utf-8">'
         '<meta name="viewport" content="shrink-to-fit=no">'
         '<link rel="shortcut icon" href="%s">'
         "<title>Visual Comparison</title>"
-        "</head>" % (constants.SideBySide.get_favicon())
+        "</head>" % (SIDE_BY_SIDE_PNG)
     )
     return head
 
