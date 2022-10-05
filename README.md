@@ -435,13 +435,13 @@ import ipdb; ipdb.set_trace()  # Enter debugging mode. n = next, c = continue, s
 import pytest; pytest.set_trace()  # Enter debugging mode. n = next, c = continue, s = step.
 ```
 
-🔵 To pause an active test that throws an exception or error, add ``--pdb``:
+🔵 To pause an active test that throws an exception or error, (*and keep the browser window open while **Debug Mode** begins in the console*), add **``--pdb``** as a ``pytest`` option:
 
 ```bash
 pytest my_first_test.py --pdb
 ```
 
-The code above will leave your browser window open in case there's a failure. (ipdb commands: 'n', 'c', 's' => next, continue, step).
+(**``ipdb``** console commands: ``n``, ``c``, ``s`` => ``next``, ``continue``, ``step``).
 
 <a id="pytest_options"></a>
 🔵 Here are some useful command-line options that come with <code>pytest</code>:
