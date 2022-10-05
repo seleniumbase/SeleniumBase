@@ -9,10 +9,11 @@
 * <b>[drivers](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/drivers):</b> This is the folder where web drivers get downloaded when installing them.
 * <b>[config](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/config):</b> Includes [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), which provides default configuration options for tests.
 * <b>[js_code](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/js_code):</b> This folder contains JavaScript code for various SeleniumBase components.
-* <b>[extensions](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/extensions):</b> This folder contains Chrome extensions that can be used during test runs.
-* <b>[common](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/common):</b> This folder contains useful Python decorators that can be used in tests.
-* <b>[utilities](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/utilities):</b> This folder contains code for spinning up your own Selenium Grid, and more.
-* <b>[resources](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/resources):</b> This folder contains copies of JavaScript resources that are used by tests.
+* <b>[undetected](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/undetected):</b> This folder contains code for preventing sites from detecting Selenium.
+* <b>[extensions](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/extensions):</b> This folder contains Chromium extensions that can be used by tests.
+* <b>[common](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/common):</b> This folder contains Python decorators that can be used by tests.
+* <b>[utilities](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/utilities):</b> This folder contains code for spinning up your own Selenium Grid.
+* <b>[resources](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/resources):</b> This folder contains copies of JavaScript resources used by tests.
 * <b>[translate](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/translate):</b> This folder contains code for translating tests into different languages.
 * <b>[behave](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/behave):</b> This folder contains code for integrating with the Behave BDD test runner.
 * <b>[masterqa](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/masterqa):</b> MasterQA is a tool for combining automation with manual verification.
