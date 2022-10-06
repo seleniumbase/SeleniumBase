@@ -84,10 +84,11 @@ def pytest_addoption(parser):
     --rec-behave  (Same as Recorder Mode, but also generates behave-gherkin.)
     --rec-sleep  (If the Recorder is enabled, also records self.sleep calls.)
     --rec-print  (If the Recorder is enabled, prints output after tests end.)
+    --disable-js  (Disable JavaScript on websites. Pages might break!)
     --disable-csp  (Disable the Content Security Policy of websites.)
     --disable-ws  (Disable Web Security on Chromium-based browsers.)
     --enable-ws  (Enable Web Security on Chromium-based browsers.)
-    --enable-sync  (Enable "Chrome Sync".)
+    --enable-sync  (Enable "Chrome Sync" on websites.)
     --use-auto-ext  (Use Chrome's automation extension.)
     --undetected | --uc  (Use undetected-chromedriver to evade bot-detection.)
     --remote-debug  (Enable Chrome's Remote Debugger on http://localhost:9222)
@@ -835,6 +836,15 @@ def pytest_addoption(parser):
                 prints output after tests end.""",
     )
     parser.addoption(
+        "--disable_js",
+        "--disable-js",
+        action="store_true",
+        dest="disable_js",
+        default=False,
+        help="""The option to disable JavaScript on web pages.
+                Warning: Most web pages will stop working!""",
+    )
+    parser.addoption(
         "--disable_csp",
         "--disable-csp",
         "--no_csp",
@@ -1344,6 +1354,7 @@ def pytest_configure(config):
     elif sb_config.record_sleep and not sb_config.recorder_mode:
         sb_config.recorder_mode = True
         sb_config.recorder_ext = True
+    sb_config.disable_js = config.getoption("disable_js")
     sb_config.disable_csp = config.getoption("disable_csp")
     sb_config.disable_ws = config.getoption("disable_ws")
     sb_config.enable_ws = config.getoption("enable_ws")
@@ -1363,9 +1374,9 @@ def pytest_configure(config):
     sb_config.guest_mode = config.getoption("guest_mode")
     sb_config.devtools = config.getoption("devtools")
     sb_config.reuse_session = config.getoption("reuse_session")
+    sb_config.shared_driver = None  # The default driver for session reuse
     sb_config.crumbs = config.getoption("crumbs")
     sb_config._disable_beforeunload = config.getoption("_disable_beforeunload")
-    sb_config.shared_driver = None  # The default driver for session reuse
     sb_config.window_size = config.getoption("window_size")
     sb_config.maximize_option = config.getoption("maximize_option")
     sb_config.save_screenshot = config.getoption("save_screenshot")

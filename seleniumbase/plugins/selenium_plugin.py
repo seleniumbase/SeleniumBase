@@ -62,10 +62,11 @@ class SeleniumBrowser(Plugin):
     --rec-behave  (Same as Recorder Mode, but also generates behave-gherkin.)
     --rec-sleep  (If the Recorder is enabled, also records self.sleep calls.)
     --rec-print  (If the Recorder is enabled, prints output after tests end.)
+    --disable-js  (Disable JavaScript on websites. Pages might break!)
     --disable-csp  (Disable the Content Security Policy of websites.)
     --disable-ws  (Disable Web Security on Chromium-based browsers.)
     --enable-ws  (Enable Web Security on Chromium-based browsers.)
-    --enable-sync  (Enable "Chrome Sync".)
+    --enable-sync  (Enable "Chrome Sync" on websites.)
     --use-auto-ext  (Use Chrome's automation extension.)
     --undetected | --uc  (Use undetected-chromedriver to evade bot-detection.)
     --remote-debug  (Enable Chrome's Remote Debugger on http://localhost:9222)
@@ -559,6 +560,15 @@ class SeleniumBrowser(Plugin):
                     prints output after tests end.""",
         )
         parser.add_option(
+            "--disable_js",
+            "--disable-js",
+            action="store_true",
+            dest="disable_js",
+            default=False,
+            help="""The option to disable JavaScript on web pages.
+                    Warning: Most web pages will stop working!""",
+        )
+        parser.add_option(
             "--disable_csp",
             "--disable-csp",
             "--no_csp",
@@ -870,6 +880,7 @@ class SeleniumBrowser(Plugin):
         elif self.options.record_sleep:
             test.test.recorder_mode = True
             test.test.recorder_ext = True
+        test.test.disable_js = self.options.disable_js
         test.test.disable_csp = self.options.disable_csp
         test.test.disable_ws = self.options.disable_ws
         test.test.enable_ws = self.options.enable_ws
