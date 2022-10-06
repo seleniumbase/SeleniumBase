@@ -3164,6 +3164,7 @@ class BaseCase(unittest.TestCase):
         cap_file=None,
         cap_string=None,
         recorder_ext=None,
+        disable_js=None,
         disable_csp=None,
         enable_ws=None,
         enable_sync=None,
@@ -3211,6 +3212,7 @@ class BaseCase(unittest.TestCase):
         cap_file - the file containing desired capabilities for the browser
         cap_string - the string with desired capabilities for the browser
         recorder_ext - the option to enable the SBase Recorder extension
+        disable_js - the option to disable JavaScript (May break websites!)
         disable_csp - an option to disable Chrome's Content Security Policy
         enable_ws - the option to enable the Web Security feature (Chrome)
         enable_sync - the option to enable the Chrome Sync feature (Chrome)
@@ -3298,6 +3300,8 @@ class BaseCase(unittest.TestCase):
             user_agent = self.user_agent
         if recorder_ext is None:
             recorder_ext = self.recorder_ext
+        if disable_js is None:
+            disable_js = self.disable_js
         if disable_csp is None:
             disable_csp = self.disable_csp
         if enable_ws is None:
@@ -3383,6 +3387,7 @@ class BaseCase(unittest.TestCase):
             cap_file=cap_file,
             cap_string=cap_string,
             recorder_ext=recorder_ext,
+            disable_js=disable_js,
             disable_csp=disable_csp,
             enable_ws=enable_ws,
             enable_sync=enable_sync,
@@ -12645,6 +12650,7 @@ class BaseCase(unittest.TestCase):
             elif self.record_sleep and not self.recorder_mode:
                 self.recorder_mode = True
                 self.recorder_ext = True
+            self.disable_js = sb_config.disable_js
             self.disable_csp = sb_config.disable_csp
             self.disable_ws = sb_config.disable_ws
             self.enable_ws = sb_config.enable_ws
@@ -12938,6 +12944,7 @@ class BaseCase(unittest.TestCase):
                 cap_file=self.cap_file,
                 cap_string=self.cap_string,
                 recorder_ext=self.recorder_ext,
+                disable_js=self.disable_js,
                 disable_csp=self.disable_csp,
                 enable_ws=self.enable_ws,
                 enable_sync=self.enable_sync,

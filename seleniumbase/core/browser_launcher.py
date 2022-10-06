@@ -348,6 +348,7 @@ def _set_chrome_options(
     proxy_pac_url,
     user_agent,
     recorder_ext,
+    disable_js,
     disable_csp,
     enable_ws,
     enable_sync,
@@ -405,6 +406,8 @@ def _set_chrome_options(
         prefs["intl.accept_languages"] = locale_code
     if block_images:
         prefs["profile.managed_default_content_settings.images"] = 2
+    if disable_js:
+        prefs["profile.managed_default_content_settings.javascript"] = 2
     if do_not_track:
         prefs["enable_do_not_track"] = True
     if external_pdf:
@@ -660,6 +663,7 @@ def _set_firefox_options(
     proxy_bypass_list,
     proxy_pac_url,
     user_agent,
+    disable_js,
     disable_csp,
     firefox_arg,
     firefox_pref,
@@ -732,6 +736,8 @@ def _set_firefox_options(
         "security.mixed_content.block_active_content", False
     )
     options.set_preference("security.warn_submit_insecure", False)
+    if disable_js:
+        options.set_preference("javascript.enabled", False)
     if settings.DISABLE_CSP_ON_FIREFOX or disable_csp:
         options.set_preference("security.csp.enable", False)
     options.set_preference(
@@ -883,6 +889,7 @@ def get_driver(
     cap_file=None,
     cap_string=None,
     recorder_ext=False,
+    disable_js=False,
     disable_csp=False,
     enable_ws=False,
     enable_sync=False,
@@ -980,6 +987,7 @@ def get_driver(
         headless
         and (
             proxy_auth
+            or disable_js
             or ad_block_on
             or disable_csp
             or recorder_ext
@@ -1032,6 +1040,7 @@ def get_driver(
             cap_file,
             cap_string,
             recorder_ext,
+            disable_js,
             disable_csp,
             enable_ws,
             enable_sync,
@@ -1076,6 +1085,7 @@ def get_driver(
             proxy_pac_url,
             user_agent,
             recorder_ext,
+            disable_js,
             disable_csp,
             enable_ws,
             enable_sync,
@@ -1124,6 +1134,7 @@ def get_remote_driver(
     cap_file,
     cap_string,
     recorder_ext,
+    disable_js,
     disable_csp,
     enable_ws,
     enable_sync,
@@ -1222,6 +1233,7 @@ def get_remote_driver(
             proxy_pac_url,
             user_agent,
             recorder_ext,
+            disable_js,
             disable_csp,
             enable_ws,
             enable_sync,
@@ -1314,6 +1326,7 @@ def get_remote_driver(
             proxy_bypass_list,
             proxy_pac_url,
             user_agent,
+            disable_js,
             disable_csp,
             firefox_arg,
             firefox_pref,
@@ -1448,6 +1461,7 @@ def get_remote_driver(
             proxy_pac_url,
             user_agent,
             recorder_ext,
+            disable_js,
             disable_csp,
             enable_ws,
             enable_sync,
@@ -1641,6 +1655,7 @@ def get_local_driver(
     proxy_pac_url,
     user_agent,
     recorder_ext,
+    disable_js,
     disable_csp,
     enable_ws,
     enable_sync,
@@ -1685,6 +1700,7 @@ def get_local_driver(
             proxy_bypass_list,
             proxy_pac_url,
             user_agent,
+            disable_js,
             disable_csp,
             firefox_arg,
             firefox_pref,
@@ -1930,6 +1946,8 @@ def get_local_driver(
             prefs["intl.accept_languages"] = locale_code
         if block_images:
             prefs["profile.managed_default_content_settings.images"] = 2
+        if disable_js:
+            prefs["profile.managed_default_content_settings.javascript"] = 2
         if do_not_track:
             prefs["enable_do_not_track"] = True
         if external_pdf:
@@ -2236,6 +2254,7 @@ def get_local_driver(
                 proxy_pac_url,
                 user_agent,
                 recorder_ext,
+                disable_js,
                 disable_csp,
                 enable_ws,
                 enable_sync,
@@ -2297,6 +2316,7 @@ def get_local_driver(
                 proxy_pac_url,
                 user_agent,
                 recorder_ext,
+                disable_js,
                 disable_csp,
                 enable_ws,
                 enable_sync,
@@ -2674,6 +2694,7 @@ def get_local_driver(
                         proxy_pac_url,
                         user_agent,
                         recorder_ext,
+                        disable_js,
                         disable_csp,
                         enable_ws,
                         enable_sync,
