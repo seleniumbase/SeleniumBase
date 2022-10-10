@@ -3,7 +3,116 @@ import math
 import sys
 import time
 import warnings
+from contextlib import contextmanager
 from functools import wraps
+
+
+@contextmanager
+def print_runtime(description=None, limit=None):
+    """Print the runtime duration of a method or "with"-block after completion.
+    If limit, fail if the runtime duration exceeds the limit after completion.
+
+    Method / Function example usage ->
+        from seleniumbase import decorators
+
+        @decorators.print_runtime("My Method")
+        def my_method():
+            # code ...
+            # code ...
+
+    "with"-block example usage ->
+        from seleniumbase import decorators
+
+        with decorators.print_runtime("My Code Block"):
+            # code ...
+            # code ...
+    """
+    if not description:
+        description = "Code Block"
+    description = str(description)
+    if limit:
+        limit = float("%.2f" % limit)
+        if limit < 0.01:
+            limit = 0.01  # Minimum runtime limit
+    exception = None
+    start_time = time.time()
+    try:
+        yield
+    except Exception as e:
+        exception = e
+        raise
+    finally:
+        end_time = time.time()
+        run_time = end_time - start_time
+        # Print times with a statistically significant number of decimal places
+        if run_time < 0.0001:
+            print("  {%s} ran for %.7f seconds." % (description, run_time))
+        elif run_time < 0.001:
+            print("  {%s} ran for %.6f seconds." % (description, run_time))
+        elif run_time < 0.01:
+            print("  {%s} ran for %.5f seconds." % (description, run_time))
+        elif run_time < 0.1:
+            print("  {%s} ran for %.4f seconds." % (description, run_time))
+        elif run_time < 1:
+            print("  {%s} ran for %.3f seconds." % (description, run_time))
+        else:
+            print("  {%s} ran for %.2f seconds." % (description, run_time))
+        if limit and limit > 0 and run_time > limit:
+            message = (
+                "\n {%s} duration of %.2fs exceeded the time limit of %.2fs!"
+                % (description, run_time, limit)
+            )
+            if exception:
+                message = exception.msg + "\nAND " + message
+            raise Exception(message)
+
+
+@contextmanager
+def runtime_limit(limit, description=None):
+    """
+    Fail if the runtime duration of a method or "with"-block exceeds the limit.
+    (The failure won't occur until after the method or "with"-block completes.)
+
+    Method / Function example usage ->
+        from seleniumbase import decorators
+
+        @decorators.runtime_limit(4.5)
+        def my_method():
+            # code ...
+            # code ...
+
+    "with"-block example usage ->
+        from seleniumbase import decorators
+
+        with decorators.runtime_limit(32):
+            # code ...
+            # code ...
+    """
+    limit = float("%.2f" % limit)
+    if limit < 0.01:
+        limit = 0.01  # Minimum runtime limit
+    if not description:
+        description = "Code Block"
+    description = str(description)
+    exception = None
+    start_time = time.time()
+    try:
+        yield
+    except Exception as e:
+        exception = e
+        raise
+    finally:
+        end_time = time.time()
+        run_time = end_time - start_time
+        # Fail if the runtime of the code block exceeds the limit
+        if limit and limit > 0 and run_time > limit:
+            message = (
+                "\n {%s} duration of %.2fs exceeded the time limit of %.2fs!"
+                % (description, run_time, limit)
+            )
+            if exception:
+                message = exception.msg + "\nAND " + message
+            raise Exception(message)
 
 
 def retry_on_exception(tries=6, delay=1, backoff=2, max_delay=32):
