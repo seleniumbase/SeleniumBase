@@ -72,7 +72,7 @@ pytest test_suite.py --dashboard --html=report.html
 
 --------
 
-If viewing ``pytest-html`` reports in [Jenkins](https://www.jenkins.io/), you may need to [configure Jenkins settings](https://stackoverflow.com/a/46197356) for the HTML to render correctly. This is due to [Jenkins CSP changes](https://www.jenkins.io/doc/book/system-administration/security/configuring-content-security-policy/). That setting can be changed from ``Manage Jenkins`` > ``Script Console`` by running:
+If viewing ``pytest-html`` reports in [Jenkins](https://www.jenkins.io/), you may need to [configure Jenkins settings](https://stackoverflow.com/a/46197356) for the HTML to render correctly. This is due to [Jenkins CSP changes](https://www.jenkins.io/doc/book/security/configuring-content-security-policy/). That setting can be changed from ``Manage Jenkins`` > ``Script Console`` by running:
 
 ```
 System.setProperty("hudson.model.DirectoryBrowserSupport.CSP", "")

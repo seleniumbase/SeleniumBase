@@ -4,6 +4,10 @@
 
 #### Use these Python decorators with your test methods as needed:
 
+* @print_runtime(description=None, limit=None)
+
+* @runtime_limit(limit, description=None)
+
 * @retry_on_exception(tries=6, delay=1, backoff=2, max_delay=32)
 
 * @rate_limited(max_per_second)
