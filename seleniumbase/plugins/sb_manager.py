@@ -95,6 +95,7 @@ def SB(
     from seleniumbase import config as sb_config
     from seleniumbase.config import settings
     from seleniumbase.fixtures import constants
+    from seleniumbase.fixtures import shared_utils
 
     sb_config_backup = sb_config
     sys_argv = sys.argv
@@ -692,6 +693,7 @@ def SB(
     else:
         sb.headless_active = False
     test_name = None
+    terminal_width = shared_utils.get_terminal_width()
     if test:
         import colorama
         import os
@@ -703,7 +705,6 @@ def SB(
         stack_base = traceback.format_stack()[0].split(os.sep)[-1]
         test_name = stack_base.split(", in ")[0].replace('", line ', ":")
         test_name += ":SB"
-        terminal_width = os.get_terminal_size()[0]
         start_text = "=== {%s} starts ===" % test_name
         remaining_spaces = terminal_width - len(start_text)
         left_space = ""
@@ -764,7 +765,6 @@ def SB(
             if not test_passed:
                 result = "failed"
                 c1 = colorama.Fore.RED
-            terminal_width = os.get_terminal_size()[0]
             end_text = (
                 "=== {%s} %s in %.2fs ==="
                 % (test_name, result, run_time)
