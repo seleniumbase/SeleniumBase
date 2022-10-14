@@ -1902,13 +1902,24 @@ class BaseCase(unittest.TestCase):
         ):
             self.__switch_to_newest_window_if_not_blank()
 
-    def click_if_visible(self, selector, by="css selector"):
+    def click_if_visible(self, selector, by="css selector", timeout=0):
         """If the page selector exists and is visible, clicks on the element.
         This method only clicks on the first matching element found.
-        (Use click_visible_elements() to click all matching elements.)"""
+        Use click_visible_elements() to click all matching elements.
+        If a "timeout" is provided, waits that long for the element
+        to appear before giving up and returning without a click()."""
         self.wait_for_ready_state_complete()
         if self.is_element_visible(selector, by=by):
             self.click(selector, by=by)
+        elif timeout > 0:
+            try:
+                self.wait_for_element_visible(
+                    selector, by=by, timeout=timeout
+                )
+            except Exception:
+                pass
+            if self.is_element_visible(selector, by=by):
+                self.click(selector, by=by)
 
     def click_active_element(self):
         self.wait_for_ready_state_complete()
@@ -5292,19 +5303,41 @@ class BaseCase(unittest.TestCase):
             pass
         self.__demo_mode_pause_if_active()
 
-    def js_click_if_present(self, selector, by="css selector"):
+    def js_click_if_present(self, selector, by="css selector", timeout=0):
         """If the page selector exists, js_click() the element.
-        This method only clicks on the first matching element found."""
+        This method only clicks on the first matching element found.
+        If a "timeout" is provided, waits that long for the element to
+        be present before giving up and returning without a js_click()."""
         self.wait_for_ready_state_complete()
         if self.is_element_present(selector, by=by):
             self.js_click(selector, by=by)
+        elif timeout > 0:
+            try:
+                self.wait_for_element_present(
+                    selector, by=by, timeout=timeout
+                )
+            except Exception:
+                pass
+            if self.is_element_present(selector, by=by):
+                self.js_click(selector, by=by)
 
-    def js_click_if_visible(self, selector, by="css selector"):
+    def js_click_if_visible(self, selector, by="css selector", timeout=0):
         """If the page selector exists and is visible, js_click() the element.
-        This method only clicks on the first matching element found."""
+        This method only clicks on the first matching element found.
+        If a "timeout" is provided, waits that long for the element
+        to appear before giving up and returning without a js_click()."""
         self.wait_for_ready_state_complete()
         if self.is_element_visible(selector, by=by):
             self.js_click(selector, by=by)
+        elif timeout > 0:
+            try:
+                self.wait_for_element_visible(
+                    selector, by=by, timeout=timeout
+                )
+            except Exception:
+                pass
+            if self.is_element_visible(selector, by=by):
+                self.js_click(selector, by=by)
 
     def js_click_all(self, selector, by="css selector"):
         """Clicks all matching elements using pure JS. (No jQuery)"""
