@@ -876,7 +876,7 @@ def validate_proxy_string(proxy_string):
 
 
 def get_driver(
-    browser_name,
+    browser_name=None,
     headless=False,
     locale_code=None,
     use_grid=False,
@@ -921,7 +921,19 @@ def get_driver(
     device_width=None,
     device_height=None,
     device_pixel_ratio=None,
+    browser=None,  # A duplicate of browser_name to avoid confusion
 ):
+    if not browser_name:
+        if browser:
+            browser_name = browser
+        else:
+            browser_name = "chrome"  # The default if not specified
+    browser_name = browser_name.lower()
+    if headless2 and browser_name == constants.Browser.FIREFOX:
+        headless2 = False  # Only for Chromium
+        headless = True
+    if uc_subprocess and not undetectable:
+        undetectable = True
     proxy_auth = False
     proxy_user = None
     proxy_pass = None

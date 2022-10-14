@@ -7,8 +7,11 @@ from seleniumbase.common import encryption  # noqa
 from seleniumbase.core.browser_launcher import get_driver  # noqa
 from seleniumbase.fixtures import js_utils  # noqa
 from seleniumbase.fixtures import page_actions  # noqa
+from seleniumbase.fixtures import page_utils  # noqa
 from seleniumbase.fixtures.base_case import BaseCase  # noqa
 from seleniumbase.masterqa.master_qa import MasterQA  # noqa
+from seleniumbase.plugins.sb_manager import SB  # noqa
+from seleniumbase.plugins.driver_manager import Driver  # noqa
 
 if sys.version_info[0] >= 3:
     from seleniumbase import translate  # noqa

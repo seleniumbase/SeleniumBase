@@ -1285,6 +1285,9 @@ def pytest_configure(config):
     sb_config.item_count_skipped = 0
     sb_config.item_count_untested = 0
     sb_config.is_pytest = True
+    sb_config.is_behave = False
+    sb_config.is_nosetest = False
+    sb_config.is_context_manager = False
     sb_config.pytest_config = config
     sb_config.browser = config.getoption("browser")
     if sb_config._browser_shortcut:
@@ -1302,7 +1305,10 @@ def pytest_configure(config):
     sb_config.device_metrics = config.getoption("device_metrics")
     sb_config.headless = config.getoption("headless")
     sb_config.headless2 = config.getoption("headless2")
-    if sb_config.browser not in ["chrome", "edge"]:
+    if sb_config.headless2 and sb_config.browser == "firefox":
+        sb_config.headless2 = False  # Only for Chromium browsers
+        sb_config.headless = True  # Firefox has regular headless
+    elif sb_config.browser not in ["chrome", "edge"]:
         sb_config.headless2 = False  # Only for Chromium browsers
     sb_config.headed = config.getoption("headed")
     sb_config.xvfb = config.getoption("xvfb")
@@ -1624,6 +1630,7 @@ def pytest_collection_finish(session):
     """This runs after item collection is finalized.
     https://docs.pytest.org/en/stable/reference.html
     """
+    sb_config._context_of_runner = False  # Context Manager Compatibility
     if "--co" in sys_argv or "--collect-only" in sys_argv:
         return
     if len(session.items) > 0 and not sb_config._multithreaded:
@@ -1713,14 +1720,20 @@ def pytest_runtest_teardown(item):
             if hasattr(self, "xvfb") and self.xvfb:
                 if self.headless_active and "--pdb" not in sys_argv:
                     if hasattr(self, "display") and self.display:
+                        self.headless_active = False
+                        sb_config.headless_active = False
                         self.display.stop()
             elif hasattr(self, "headless") and self.headless:
                 if self.headless_active and "--pdb" not in sys_argv:
                     if hasattr(self, "display") and self.display:
+                        self.headless_active = False
+                        sb_config.headless_active = False
                         self.display.stop()
             elif hasattr(self, "headless2") and self.headless2:
                 if self.headless_active and "--pdb" not in sys_argv:
                     if hasattr(self, "display") and self.display:
+                        self.headless_active = False
+                        sb_config.headless_active = False
                         self.display.stop()
         except Exception:
             pass

@@ -3433,6 +3433,7 @@ class BaseCase(unittest.TestCase):
             device_width=d_width,
             device_height=d_height,
             device_pixel_ratio=d_p_r,
+            browser=browser_name,
         )
         self._drivers_list.append(new_driver)
         self._drivers_browser_map[new_driver] = browser_name
@@ -4571,6 +4572,23 @@ class BaseCase(unittest.TestCase):
         filename = self.__get_filename()
         classname = self.__class__.__name__
         methodname = self._testMethodName
+        context_filename = None
+        if (
+            hasattr(sb_config, "is_context_manager")
+            and sb_config.is_context_manager
+            and (filename == "base_case.py" or methodname == "runTest")
+        ):
+            import traceback
+
+            stack_base = traceback.format_stack()[0].split(os.sep)[-1]
+            test_base = stack_base.split(", in ")[0]
+            if hasattr(self, "cm_filename") and self.cm_filename:
+                filename = self.cm_filename
+            else:
+                filename = test_base.split('"')[0]
+            classname = "SB"
+            methodname = "test_line_" + test_base.split(", line ")[-1]
+            context_filename = filename.split(".")[0] + "_rec.py"
         if hasattr(self, "is_behave") and self.is_behave:
             classname = sb_config.behave_feature.name
             classname = classname.replace("/", " ").replace(" & ", " ")
@@ -4627,6 +4645,8 @@ class BaseCase(unittest.TestCase):
             file_name = sb_config.behave_scenario.filename.replace(".", "_")
             file_name = file_name.split("/")[-1].split("\\")[-1]
             file_name = file_name + "_rec.py"
+        elif context_filename:
+            file_name = context_filename
         file_path = os.path.join(recordings_folder, file_name)
         out_file = codecs.open(file_path, "w+", "utf-8")
         out_file.writelines("\r\n".join(data))
@@ -13245,6 +13265,11 @@ class BaseCase(unittest.TestCase):
         has_exception = False
         if hasattr(sys, "last_traceback") and sys.last_traceback is not None:
             has_exception = True
+        elif hasattr(self, "is_context_manager") and self.is_context_manager:
+            if self.with_testing_base and self._has_failure:
+                return True
+            else:
+                return False
         elif python3 and hasattr(self, "_outcome"):
             if hasattr(self._outcome, "errors") and self._outcome.errors:
                 has_exception = True
@@ -13277,6 +13302,22 @@ class BaseCase(unittest.TestCase):
             scenario_name = scenario_name.replace(" ", "_")
             test_id = "%s.%s" % (file_name, scenario_name)
             return test_id
+        elif hasattr(self, "is_context_manager") and self.is_context_manager:
+            filename = self.__class__.__module__.split(".")[-1] + ".py"
+            methodname = self._testMethodName
+            context_id = None
+            if filename == "base_case.py" or methodname == "runTest":
+                import traceback
+
+                stack_base = traceback.format_stack()[0].split(", in ")[0]
+                test_base = stack_base.split(", in ")[0].split(os.sep)[-1]
+                if hasattr(self, "cm_filename") and self.cm_filename:
+                    filename = self.cm_filename
+                else:
+                    filename = test_base.split('"')[0]
+                methodname = ".line_" + test_base.split(", line ")[-1]
+                context_id = filename.split(".")[0] + methodname
+                return context_id
         test_id = "%s.%s.%s" % (
             self.__class__.__module__,
             self.__class__.__name__,

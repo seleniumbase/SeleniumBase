@@ -180,6 +180,7 @@ def get_configured_sb(context):
     sb.visual_baseline = False
     sb.window_size = None
     sb.maximize_option = False
+    sb.is_context_manager = False
     sb.save_screenshot_after_test = False
     sb.timeout_multiplier = None
     sb.pytest_html_report = None
@@ -215,6 +216,7 @@ def get_configured_sb(context):
     sb.proxy_pac_url = None
     sb.swiftshader = False
     sb.ad_block_on = False
+    sb.is_nosetest = False
     sb.highlights = None
     sb.interval = None
     sb.cap_file = None
@@ -826,6 +828,10 @@ def get_configured_sb(context):
     sb_config.headless = sb.headless
     sb_config.headless_active = False
     sb_config.headed = sb.headed
+    sb_config.is_behave = True
+    sb_config.is_pytest = False
+    sb_config.is_nosetest = False
+    sb_config.is_context_manager = False
     sb_config.window_size = sb.window_size
     sb_config.maximize_option = sb.maximize_option
     sb_config.xvfb = sb.xvfb

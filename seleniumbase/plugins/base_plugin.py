@@ -7,6 +7,7 @@ import ast
 import sys
 import time
 from nose.plugins import Plugin
+from seleniumbase import config as sb_config
 from seleniumbase.config import settings
 from seleniumbase.core import download_helper
 from seleniumbase.core import log_helper
@@ -200,10 +201,12 @@ class Base(Plugin):
         archive_logs = options.archive_logs
         log_helper.log_folder_setup(log_path, archive_logs)
         download_helper.reset_downloads_folder()
+        sb_config.is_nosetest = True
         if self.report_on:
             report_helper.clear_out_old_report_logs(archive_past_runs=False)
 
     def beforeTest(self, test):
+        sb_config._context_of_runner = False  # Context Manager Compatibility
         variables = self.options.variables
         if variables and type(variables) is str and len(variables) > 0:
             bad_input = False
