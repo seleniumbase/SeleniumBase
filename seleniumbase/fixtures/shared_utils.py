@@ -41,16 +41,11 @@ def get_terminal_width():
         width = os.get_terminal_size().columns
     except Exception:
         try:
-            if is_windows():
-                raise Exception("Don't even try 'tput cols' on Windows!")
-            width = int(subprocess.check_output(["tput", "cols"]))
-        except Exception:
-            try:
-                import shutil
+            import shutil
 
-                width = shutil.get_terminal_size((80, 20)).columns
-            except Exception:
-                pass
+            width = shutil.get_terminal_size((80, 20)).columns
+        except Exception:
+            pass
     return width
 
 
