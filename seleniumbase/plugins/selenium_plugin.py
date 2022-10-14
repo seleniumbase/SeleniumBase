@@ -68,7 +68,8 @@ class SeleniumBrowser(Plugin):
     --enable-ws  (Enable Web Security on Chromium-based browsers.)
     --enable-sync  (Enable "Chrome Sync" on websites.)
     --use-auto-ext  (Use Chrome's automation extension.)
-    --undetected | --uc  (Use undetected-chromedriver to evade bot-detection.)
+    --uc | --undetected  (Use undetected-chromedriver to evade bot-detection.)
+    --uc-sub | --uc-subprocess  (Use undetected-chromedriver as a subprocess.)
     --remote-debug  (Enable Chrome's Remote Debugger on http://localhost:9222)
     --final-debug  (Enter Debug Mode after each test ends. Don't use with CI!)
     --swiftshader  (Use Chrome's "--use-gl=swiftshader" feature.)
@@ -633,6 +634,17 @@ class SeleniumBrowser(Plugin):
             help="""Using this option makes chromedriver undetectable
                     to websites that use anti-bot services to block
                     automation tools from navigating them freely.""",
+        )
+        parser.add_option(
+            "--uc_subprocess",
+            "--uc-subprocess",
+            "--uc-sub",  # undetected-chromedriver subprocess mode
+            action="store_true",
+            dest="uc_subprocess",
+            default=False,
+            help="""Use undetectable-chromedriver as a subprocess,
+                    which can help avoid issues that might result.
+                    It may reduce UC's ability to avoid detection.""",
         )
         parser.add_option(
             "--no_sandbox",

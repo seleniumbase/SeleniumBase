@@ -3181,6 +3181,7 @@ class BaseCase(unittest.TestCase):
         enable_sync=None,
         use_auto_ext=None,
         undetectable=None,
+        uc_subprocess=None,
         no_sandbox=None,
         disable_gpu=None,
         headless2=None,
@@ -3229,6 +3230,7 @@ class BaseCase(unittest.TestCase):
         enable_sync - the option to enable the Chrome Sync feature (Chrome)
         use_auto_ext - the option to enable Chrome's Automation Extension
         undetectable - the option to use an undetectable chromedriver
+        uc_subprocess - use the undetectable chromedriver as a subprocess
         no_sandbox - the option to enable the "No-Sandbox" feature (Chrome)
         disable_gpu - the option to enable Chrome's "Disable GPU" feature
         headless2 - the option to use the newer headless mode (Chromium)
@@ -3323,6 +3325,8 @@ class BaseCase(unittest.TestCase):
             use_auto_ext = self.use_auto_ext
         if undetectable is None:
             undetectable = self.undetectable
+        if uc_subprocess is None:
+            uc_subprocess = self.uc_subprocess
         if no_sandbox is None:
             no_sandbox = self.no_sandbox
         if disable_gpu is None:
@@ -3404,6 +3408,7 @@ class BaseCase(unittest.TestCase):
             enable_sync=enable_sync,
             use_auto_ext=use_auto_ext,
             undetectable=undetectable,
+            uc_subprocess=uc_subprocess,
             no_sandbox=no_sandbox,
             disable_gpu=disable_gpu,
             headless2=headless2,
@@ -12545,6 +12550,7 @@ class BaseCase(unittest.TestCase):
                 self.display = Display(visible=0, size=(width, height))
                 self.display.start()
                 self.headless_active = True
+                sb_config.headless_active = True
             except Exception:
                 pass
 
@@ -12630,6 +12636,7 @@ class BaseCase(unittest.TestCase):
             self.with_selenium = sb_config.with_selenium  # Should be True
             self.headless = sb_config.headless
             self.headless_active = False
+            sb_config.headless_active = False
             self.headed = sb_config.headed
             self.xvfb = sb_config.xvfb
             self.locale_code = sb_config.locale_code
@@ -12687,6 +12694,7 @@ class BaseCase(unittest.TestCase):
             self.enable_sync = sb_config.enable_sync
             self.use_auto_ext = sb_config.use_auto_ext
             self.undetectable = sb_config.undetectable
+            self.uc_subprocess = sb_config.uc_subprocess
             self.no_sandbox = sb_config.no_sandbox
             self.disable_gpu = sb_config.disable_gpu
             self.headless2 = sb_config.headless2
@@ -12978,6 +12986,7 @@ class BaseCase(unittest.TestCase):
                 enable_sync=self.enable_sync,
                 use_auto_ext=self.use_auto_ext,
                 undetectable=self.undetectable,
+                uc_subprocess=self.uc_subprocess,
                 no_sandbox=self.no_sandbox,
                 disable_gpu=self.disable_gpu,
                 headless2=self.headless2,
