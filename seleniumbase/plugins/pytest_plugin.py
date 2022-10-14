@@ -1223,7 +1223,7 @@ def pytest_addoption(parser):
         browser_list.append("--opera")
     if "--safari" in sys_argv and not browser_set == "safari":
         browser_changes += 1
-        browser_text = "opera"
+        browser_text = "safari"
         sb_config._browser_shortcut = "safari"
         browser_list.append("--safari")
     if browser_changes > 1:
