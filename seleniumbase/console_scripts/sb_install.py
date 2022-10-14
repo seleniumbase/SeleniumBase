@@ -545,7 +545,7 @@ def main(override=None):
         remote_file = requests_get_with_retry(headless_ie_url)
         with open(headless_ie_file_path, "wb") as file:
             file.write(remote_file.content)
-        print("Download Complete!\n")
+        print("%sDownload Complete!%s\n" % (c1, cr))
         zip_file_path = headless_ie_file_path
         zip_ref = zipfile.ZipFile(zip_file_path, "r")
         contents = zip_ref.namelist()
@@ -589,7 +589,7 @@ def main(override=None):
         zip_ref.close()
         os.remove(zip_file_path)
         shutil.copyfile(driver_path, os.path.join(downloads_folder, filename))
-        print("Unzip Complete!\n")
+        print("%sUnzip Complete!%s\n" % (c2, cr))
         to_remove = [
             "%s/%s/ruby_example/Gemfile" % (downloads_folder, h_ie_fn),
             "%s/%s/ruby_example/Gemfile.lock" % (downloads_folder, h_ie_fn),
@@ -614,13 +614,16 @@ def main(override=None):
         )
         print("Making [%s %s] executable ..." % (driver_file, use_version))
         make_executable(driver_path)
-        print("%s[%s] is now ready for use!%s" % (c1, driver_file, cr))
+        print(
+            "%s[%s %s] is now ready for use!%s"
+            % (c1, driver_file, use_version, cr)
+        )
 
     print("\nDownloading %s from:\n%s ..." % (file_name, download_url))
     remote_file = requests_get_with_retry(download_url)
     with open(file_path, "wb") as file:
         file.write(remote_file.content)
-    print("Download Complete!\n")
+    print("%sDownload Complete!%s\n" % (c1, cr))
 
     if file_name.endswith(".zip"):
         zip_file_path = file_path
@@ -639,14 +642,17 @@ def main(override=None):
             zip_ref.extractall(downloads_folder)
             zip_ref.close()
             os.remove(zip_file_path)
-            print("Unzip Complete!\n")
+            print("%sUnzip Complete!%s\n" % (c2, cr))
             for f_name in contents:
                 new_file = os.path.join(downloads_folder, str(f_name))
                 pr_file = c3 + new_file + cr
                 print("The file [%s] was saved to:\n%s\n" % (f_name, pr_file))
                 print("Making [%s %s] executable ..." % (f_name, use_version))
                 make_executable(new_file)
-                print("%s[%s] is now ready for use!%s" % (c1, f_name, cr))
+                print(
+                    "%s[%s %s] is now ready for use!%s" %
+                    (c1, f_name, use_version, cr)
+                )
                 if copy_to_path and os.path.exists(LOCAL_PATH):
                     path_file = LOCAL_PATH + f_name
                     shutil.copyfile(new_file, path_file)
@@ -709,7 +715,7 @@ def main(override=None):
             zip_ref.extractall(downloads_folder)
             zip_ref.close()
             os.remove(zip_file_path)
-            print("Unzip Complete!\n")
+            print("%sUnzip Complete!%s\n" % (c2, cr))
             to_remove = [
                 "%s/Driver_Notes/credits.html" % downloads_folder,
                 "%s/Driver_Notes/EULA" % downloads_folder,
@@ -721,13 +727,17 @@ def main(override=None):
             if os.path.exists(os.path.join(downloads_folder, "Driver_Notes/")):
                 # Only works if the directory is empty
                 os.rmdir(os.path.join(downloads_folder, "Driver_Notes/"))
+            pr_driver_path = c3 + driver_path + cr
             print(
                 "The file [%s] was saved to:\n%s\n"
-                % (driver_file, driver_path)
+                % (driver_file, pr_driver_path)
             )
             print("Making [%s %s] executable ..." % (driver_file, use_version))
             make_executable(driver_path)
-            print("%s[%s] is now ready for use!%s" % (c1, driver_file, cr))
+            print(
+                "%s[%s %s] is now ready for use!%s"
+                % (c1, driver_file, use_version, cr)
+            )
             if copy_to_path and os.path.exists(LOCAL_PATH):
                 path_file = LOCAL_PATH + f_name
                 shutil.copyfile(new_file, path_file)
@@ -755,7 +765,7 @@ def main(override=None):
             zip_ref.extractall(downloads_folder)
             zip_ref.close()
             os.remove(zip_file_path)
-            print("Unzip Complete!\n")
+            print("%sUnzip Complete!%s\n" % (c2, cr))
             inner_driver = os.path.join(
                 downloads_folder, inner_folder, driver_file
             )
@@ -770,7 +780,10 @@ def main(override=None):
             )
             print("Making [%s %s] executable ..." % (driver_file, use_version))
             make_executable(driver_path)
-            print("%s[%s] is now ready for use!%s" % (c1, driver_file, cr))
+            print(
+                "%s[%s %s] is now ready for use!%s"
+                % (c1, driver_file, use_version, cr)
+            )
             if copy_to_path and os.path.exists(LOCAL_PATH):
                 path_file = LOCAL_PATH + driver_file
                 shutil.copyfile(driver_path, path_file)
@@ -804,14 +817,17 @@ def main(override=None):
             tar.extractall(downloads_folder)
             tar.close()
             os.remove(tar_file_path)
-            print("Unzip Complete!\n")
+            print("%sUnzip Complete!%s\n" % (c2, cr))
             for f_name in contents:
                 new_file = os.path.join(downloads_folder, str(f_name))
                 pr_file = c3 + new_file + cr
                 print("The file [%s] was saved to:\n%s\n" % (f_name, pr_file))
                 print("Making [%s %s] executable ..." % (f_name, use_version))
                 make_executable(new_file)
-                print("%s[%s] is now ready for use!%s" % (c1, f_name, cr))
+                print(
+                    "%s[%s %s] is now ready for use!%s"
+                    % (c1, f_name, use_version, cr)
+                )
                 if copy_to_path and os.path.exists(LOCAL_PATH):
                     path_file = LOCAL_PATH + f_name
                     shutil.copyfile(new_file, path_file)
