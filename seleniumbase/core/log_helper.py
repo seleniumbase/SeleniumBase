@@ -330,6 +330,24 @@ def get_test_id(test):
             scenario_name = scenario_name.split(" -- @")[0]
         test_id = "%s:%s => %s" % (file_name, line_num, scenario_name)
         return test_id
+    elif hasattr(test, "is_context_manager") and test.is_context_manager:
+        filename = test.__class__.__module__.split(".")[-1] + ".py"
+        classname = test.__class__.__name__
+        methodname = test._testMethodName
+        context_id = None
+        if filename == "base_case.py" or methodname == "runTest":
+            import traceback
+
+            stack_base = traceback.format_stack()[0].split(", in ")[0]
+            test_base = stack_base.split(", in ")[0].split(os.sep)[-1]
+            if hasattr(test, "cm_filename") and test.cm_filename:
+                filename = test.cm_filename
+            else:
+                filename = test_base.split('"')[0]
+            classname = "SB"
+            methodname = ".py:" + test_base.split(", line ")[-1]
+            context_id = filename.split(".")[0] + methodname + ":" + classname
+            return context_id
     test_id = None
     try:
         test_id = get_test_name(test)

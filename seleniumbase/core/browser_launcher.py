@@ -354,6 +354,7 @@ def _set_chrome_options(
     enable_sync,
     use_auto_ext,
     undetectable,
+    uc_subprocess,
     no_sandbox,
     disable_gpu,
     headless2,
@@ -875,7 +876,7 @@ def validate_proxy_string(proxy_string):
 
 
 def get_driver(
-    browser_name,
+    browser_name=None,
     headless=False,
     locale_code=None,
     use_grid=False,
@@ -895,6 +896,7 @@ def get_driver(
     enable_sync=False,
     use_auto_ext=False,
     undetectable=False,
+    uc_subprocess=False,
     no_sandbox=False,
     disable_gpu=False,
     headless2=False,
@@ -919,7 +921,19 @@ def get_driver(
     device_width=None,
     device_height=None,
     device_pixel_ratio=None,
+    browser=None,  # A duplicate of browser_name to avoid confusion
 ):
+    if not browser_name:
+        if browser:
+            browser_name = browser
+        else:
+            browser_name = "chrome"  # The default if not specified
+    browser_name = browser_name.lower()
+    if headless2 and browser_name == constants.Browser.FIREFOX:
+        headless2 = False  # Only for Chromium
+        headless = True
+    if uc_subprocess and not undetectable:
+        undetectable = True
     proxy_auth = False
     proxy_user = None
     proxy_pass = None
@@ -1046,6 +1060,7 @@ def get_driver(
             enable_sync,
             use_auto_ext,
             undetectable,
+            uc_subprocess,
             no_sandbox,
             disable_gpu,
             headless2,
@@ -1091,6 +1106,7 @@ def get_driver(
             enable_sync,
             use_auto_ext,
             undetectable,
+            uc_subprocess,
             no_sandbox,
             disable_gpu,
             headless2,
@@ -1140,6 +1156,7 @@ def get_remote_driver(
     enable_sync,
     use_auto_ext,
     undetectable,
+    uc_subprocess,
     no_sandbox,
     disable_gpu,
     headless2,
@@ -1239,6 +1256,7 @@ def get_remote_driver(
             enable_sync,
             use_auto_ext,
             undetectable,
+            uc_subprocess,
             no_sandbox,
             disable_gpu,
             headless2,
@@ -1467,6 +1485,7 @@ def get_remote_driver(
             enable_sync,
             use_auto_ext,
             undetectable,
+            uc_subprocess,
             no_sandbox,
             disable_gpu,
             headless2,
@@ -1661,6 +1680,7 @@ def get_local_driver(
     enable_sync,
     use_auto_ext,
     undetectable,
+    uc_subprocess,
     no_sandbox,
     disable_gpu,
     headless2,
@@ -2260,6 +2280,7 @@ def get_local_driver(
                 enable_sync,
                 use_auto_ext,
                 undetectable,
+                uc_subprocess,
                 no_sandbox,
                 disable_gpu,
                 headless2,
@@ -2322,6 +2343,7 @@ def get_local_driver(
                 enable_sync,
                 use_auto_ext,
                 undetectable,
+                uc_subprocess,
                 no_sandbox,
                 disable_gpu,
                 headless2,
@@ -2592,6 +2614,7 @@ def get_local_driver(
                                             driver_executable_path=uc_path,
                                             headless=False,  # Xvfb needed!
                                             version_main=uc_chrome_version,
+                                            use_subprocess=uc_subprocess,
                                         )
                                     except URLError as e:
                                         if (
@@ -2609,6 +2632,7 @@ def get_local_driver(
                                                 driver_executable_path=uc_path,
                                                 headless=False,  # Xvfb needed!
                                                 version_main=uc_chrome_version,
+                                                use_subprocess=uc_subprocess,
                                             )
                                         else:
                                             raise
@@ -2700,6 +2724,7 @@ def get_local_driver(
                         enable_sync,
                         use_auto_ext,
                         undetectable,
+                        uc_subprocess,
                         no_sandbox,
                         disable_gpu,
                         headless2,

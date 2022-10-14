@@ -66,6 +66,7 @@ if pure_python:
     sb.enable_sync = False
     sb.use_auto_ext = False
     sb.undetectable = False
+    sb.uc_subprocess = False
     sb.no_sandbox = False
     sb.disable_js = False
     sb.disable_gpu = False

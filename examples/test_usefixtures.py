@@ -11,8 +11,8 @@ class Test_UseFixtures:
         sb.enter_mfa_code("#totpcode", "GAXG2MTEOR3DMMDG")  # 6-digit
         sb.assert_text("Welcome!", "h1")
         sb.highlight("img#image1")  # A fancier assert_element() call
-        sb.click('a:contains("This Page")')
+        sb.click('a:contains("This Page")')  # Use :contains() on any tag
         sb.save_screenshot_to_logs()  # In "./latest_logs/" folder.
-        sb.click_link("Sign out")  # Must be "a" tag. Not "button".
+        sb.click_link("Sign out")  # Link must be "a" tag. Not "button".
         sb.assert_element('a:contains("Sign in")')
         sb.assert_exact_text("You have been signed out!", "#top_message")

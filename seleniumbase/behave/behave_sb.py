@@ -72,7 +72,8 @@ behave -D agent="User Agent String" -D demo
 -D enable-ws  (Enable Web Security on Chromium-based browsers.)
 -D enable-sync  (Enable "Chrome Sync".)
 -D use-auto-ext  (Use Chrome's automation extension.)
--D undetected | -D uc  (Use undetected-chromedriver to evade bot-detection)
+-D uc | -D undetected  (Use undetected-chromedriver to evade bot-detection)
+-D uc-sub | -D uc-subprocess  (Use undetected-chromedriver as a subprocess)
 -D remote-debug  (Enable Chrome's Remote Debugger on http://localhost:9222)
 -D dashboard  (Enable the SeleniumBase Dashboard. Saved at: dashboard.html)
 -D dash-title=STRING  (Set the title shown for the generated dashboard.)
@@ -169,6 +170,7 @@ def get_configured_sb(context):
     sb.enable_sync = False
     sb.use_auto_ext = False
     sb.undetectable = False
+    sb.uc_subprocess = False
     sb.no_sandbox = False
     sb.disable_gpu = False
     sb._multithreaded = False
@@ -178,6 +180,7 @@ def get_configured_sb(context):
     sb.visual_baseline = False
     sb.window_size = None
     sb.maximize_option = False
+    sb.is_context_manager = False
     sb.save_screenshot_after_test = False
     sb.timeout_multiplier = None
     sb.pytest_html_report = None
@@ -213,6 +216,7 @@ def get_configured_sb(context):
     sb.proxy_pac_url = None
     sb.swiftshader = False
     sb.ad_block_on = False
+    sb.is_nosetest = False
     sb.highlights = None
     sb.interval = None
     sb.cap_file = None
@@ -497,8 +501,13 @@ def get_configured_sb(context):
         if low_key in ["use-auto-ext", "use_auto_ext", "auto-ext"]:
             sb.use_auto_ext = True
             continue
-        # Handle: -D use-auto-ext / use_auto_ext / auto-ext
+        # Handle: -D undetected / undetectable / uc
         if low_key in ["undetected", "undetectable", "uc"]:
+            sb.undetectable = True
+            continue
+        # Handle: -D uc-subprocess / uc_subprocess / uc-sub
+        if low_key in ["uc-subprocess", "uc_subprocess", "uc-sub"]:
+            sb.uc_subprocess = True
             sb.undetectable = True
             continue
         # Handle: -D no-sandbox / no_sandbox
@@ -748,7 +757,10 @@ def get_configured_sb(context):
     if sb.recorder_ext and sb.headless:
         sb.headless = False
         sb.headless2 = True
-    if sb.browser not in ["chrome", "edge"]:
+    if sb.headless2 and sb.browser == "firefox":
+        sb.headless2 = False  # Only for Chromium browsers
+        sb.headless = True  # Firefox has regular headless
+    elif sb.browser not in ["chrome", "edge"]:
         sb.headless2 = False  # Only for Chromium browsers
     # Recorder Mode only supports Chromium browsers.
     if sb.recorder_ext and (sb.browser not in ["chrome", "edge"]):
@@ -756,10 +768,6 @@ def get_configured_sb(context):
             "\n\n  Recorder Mode ONLY supports Chrome and Edge!"
             '\n  (Your browser choice was: "%s")\n' % sb.browser
         )
-    # Recorder Mode can still optimize scripts in --headless2 mode.
-    if sb.recorder_mode and sb.headless:
-        sb.headless = False
-        sb.headless2 = True
     # The Xvfb virtual display server is for Linux OS Only.
     if sb.xvfb and "linux" not in sys.platform:
         sb.xvfb = False
@@ -778,6 +786,10 @@ def get_configured_sb(context):
             'or by calling the new "-D headless2".)'
         )
         sb.headless = True
+    # Recorder Mode can still optimize scripts in --headless2 mode.
+    if sb.recorder_mode and sb.headless:
+        sb.headless = False
+        sb.headless2 = True
     if not sb.headless and not sb.headless2:
         sb.headed = True
     if sb.servername != "localhost":
@@ -816,6 +828,10 @@ def get_configured_sb(context):
     sb_config.headless = sb.headless
     sb_config.headless_active = False
     sb_config.headed = sb.headed
+    sb_config.is_behave = True
+    sb_config.is_pytest = False
+    sb_config.is_nosetest = False
+    sb_config.is_context_manager = False
     sb_config.window_size = sb.window_size
     sb_config.maximize_option = sb.maximize_option
     sb_config.xvfb = sb.xvfb

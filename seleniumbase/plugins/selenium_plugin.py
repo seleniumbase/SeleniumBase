@@ -68,7 +68,8 @@ class SeleniumBrowser(Plugin):
     --enable-ws  (Enable Web Security on Chromium-based browsers.)
     --enable-sync  (Enable "Chrome Sync" on websites.)
     --use-auto-ext  (Use Chrome's automation extension.)
-    --undetected | --uc  (Use undetected-chromedriver to evade bot-detection.)
+    --uc | --undetected  (Use undetected-chromedriver to evade bot-detection.)
+    --uc-sub | --uc-subprocess  (Use undetected-chromedriver as a subprocess.)
     --remote-debug  (Enable Chrome's Remote Debugger on http://localhost:9222)
     --final-debug  (Enter Debug Mode after each test ends. Don't use with CI!)
     --swiftshader  (Use Chrome's "--use-gl=swiftshader" feature.)
@@ -635,6 +636,17 @@ class SeleniumBrowser(Plugin):
                     automation tools from navigating them freely.""",
         )
         parser.add_option(
+            "--uc_subprocess",
+            "--uc-subprocess",
+            "--uc-sub",  # undetected-chromedriver subprocess mode
+            action="store_true",
+            dest="uc_subprocess",
+            default=False,
+            help="""Use undetectable-chromedriver as a subprocess,
+                    which can help avoid issues that might result.
+                    It may reduce UC's ability to avoid detection.""",
+        )
+        parser.add_option(
             "--no_sandbox",
             "--no-sandbox",
             action="store_true",
@@ -789,9 +801,12 @@ class SeleniumBrowser(Plugin):
         self.enabled = True  # Used if test class inherits BaseCase
         self.options = options
         self.headless_active = False  # Default setting
+        sb_config.headless_active = False
+        sb_config.is_nosetest = True
         proxy_helper.remove_proxy_zip_if_present()
 
     def beforeTest(self, test):
+        sb_config._context_of_runner = False  # Context Manager Compatibility
         browser = self.options.browser
         if self.options.recorder_mode and browser not in ["chrome", "edge"]:
             message = (
@@ -824,12 +839,24 @@ class SeleniumBrowser(Plugin):
             settings.HEADLESS_START_WIDTH = width
             settings.HEADLESS_START_HEIGHT = height
         test.test.is_nosetest = True
+        test.test.is_behave = False
+        test.test.is_pytest = False
+        test.test.is_context_manager = False
+        sb_config.is_nosetest = True
+        sb_config.is_behave = False
+        sb_config.is_pytest = False
+        sb_config.is_context_manager = False
         test.test.browser = self.options.browser
         test.test.cap_file = self.options.cap_file
         test.test.cap_string = self.options.cap_string
         test.test.headless = self.options.headless
         test.test.headless2 = self.options.headless2
-        if test.test.browser not in ["chrome", "edge"]:
+        if test.test.headless2 and test.test.browser == "firefox":
+            test.test.headless2 = False  # Only for Chromium browsers
+            test.test.headless = True  # Firefox has regular headless
+            self.options.headless2 = False
+            self.options.headless = True
+        elif test.test.browser not in ["chrome", "edge"]:
             test.test.headless2 = False  # Only for Chromium browsers
             self.options.headless2 = False
         test.test.headed = self.options.headed
@@ -889,6 +916,9 @@ class SeleniumBrowser(Plugin):
         test.test.enable_sync = self.options.enable_sync
         test.test.use_auto_ext = self.options.use_auto_ext
         test.test.undetectable = self.options.undetectable
+        test.test.uc_subprocess = self.options.uc_subprocess
+        if test.test.uc_subprocess and not test.test.undetectable:
+            test.test.undetectable = True
         test.test.no_sandbox = self.options.no_sandbox
         test.test.disable_gpu = self.options.disable_gpu
         test.test.remote_debug = self.options.remote_debug
@@ -912,12 +942,6 @@ class SeleniumBrowser(Plugin):
             # (Set --server="127.0.0.1" for localhost Grid)
             if str(self.options.port) == "443":
                 test.test.protocol = "https"
-        # Recorder Mode can still optimize scripts in --headless2 mode.
-        if self.options.recorder_mode and self.options.headless:
-            self.options.headless = False
-            self.options.headless2 = True
-            test.test.headless = False
-            test.test.headless2 = True
         if self.options.xvfb and "linux" not in sys.platform:
             # The Xvfb virtual display server is for Linux OS Only!
             self.options.xvfb = False
@@ -937,6 +961,12 @@ class SeleniumBrowser(Plugin):
             )
             self.options.headless = True
             test.test.headless = True
+        # Recorder Mode can still optimize scripts in --headless2 mode.
+        if self.options.recorder_mode and self.options.headless:
+            self.options.headless = False
+            self.options.headless2 = True
+            test.test.headless = False
+            test.test.headless2 = True
         if not self.options.headless and not self.options.headless2:
             self.options.headed = True
             test.test.headed = True
@@ -952,6 +982,7 @@ class SeleniumBrowser(Plugin):
                 self.display = Display(visible=0, size=(1440, 1880))
                 self.display.start()
                 self.headless_active = True
+                sb_config.headless_active = True
             except Exception:
                 # pyvirtualdisplay might not be necessary anymore because
                 # Chrome and Firefox now have built-in headless displays
@@ -983,6 +1014,8 @@ class SeleniumBrowser(Plugin):
         if self.options.headless or self.options.xvfb:
             if self.headless_active:
                 try:
+                    self.headless_active = False
+                    sb_config.headless_active = False
                     self.display.stop()
                 except AttributeError:
                     pass

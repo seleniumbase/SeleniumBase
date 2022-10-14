@@ -90,7 +90,8 @@ def pytest_addoption(parser):
     --enable-ws  (Enable Web Security on Chromium-based browsers.)
     --enable-sync  (Enable "Chrome Sync" on websites.)
     --use-auto-ext  (Use Chrome's automation extension.)
-    --undetected | --uc  (Use undetected-chromedriver to evade bot-detection.)
+    --uc | --undetected  (Use undetected-chromedriver to evade bot-detection.)
+    --uc-sub | --uc-subprocess  (Use undetected-chromedriver as a subprocess.)
     --remote-debug  (Enable Chrome's Remote Debugger on http://localhost:9222)
     --final-debug  (Enter Debug Mode after each test ends. Don't use with CI!)
     --dashboard  (Enable the SeleniumBase Dashboard. Saved at: dashboard.html)
@@ -911,6 +912,17 @@ def pytest_addoption(parser):
                 automation tools from navigating them freely.""",
     )
     parser.addoption(
+        "--uc_subprocess",
+        "--uc-subprocess",
+        "--uc-sub",  # undetected-chromedriver subprocess mode
+        action="store_true",
+        dest="uc_subprocess",
+        default=False,
+        help="""Use undetectable-chromedriver as a subprocess,
+                which can help avoid issues that might result.
+                It may reduce UC's ability to avoid detection.""",
+    )
+    parser.addoption(
         "--no_sandbox",
         "--no-sandbox",
         action="store_true",
@@ -1223,7 +1235,7 @@ def pytest_addoption(parser):
         browser_list.append("--opera")
     if "--safari" in sys_argv and not browser_set == "safari":
         browser_changes += 1
-        browser_text = "opera"
+        browser_text = "safari"
         sb_config._browser_shortcut = "safari"
         browser_list.append("--safari")
     if browser_changes > 1:
@@ -1252,6 +1264,9 @@ def pytest_addoption(parser):
             "--undetected" in sys_argv
             or "--undetectable" in sys_argv
             or "--uc" in sys_argv
+            or "--uc-subprocess" in sys_argv
+            or "--uc_subprocess" in sys_argv
+            or "--uc-sub" in sys_argv
         )
     ):
         message = (
@@ -1270,6 +1285,9 @@ def pytest_configure(config):
     sb_config.item_count_skipped = 0
     sb_config.item_count_untested = 0
     sb_config.is_pytest = True
+    sb_config.is_behave = False
+    sb_config.is_nosetest = False
+    sb_config.is_context_manager = False
     sb_config.pytest_config = config
     sb_config.browser = config.getoption("browser")
     if sb_config._browser_shortcut:
@@ -1287,7 +1305,10 @@ def pytest_configure(config):
     sb_config.device_metrics = config.getoption("device_metrics")
     sb_config.headless = config.getoption("headless")
     sb_config.headless2 = config.getoption("headless2")
-    if sb_config.browser not in ["chrome", "edge"]:
+    if sb_config.headless2 and sb_config.browser == "firefox":
+        sb_config.headless2 = False  # Only for Chromium browsers
+        sb_config.headless = True  # Firefox has regular headless
+    elif sb_config.browser not in ["chrome", "edge"]:
         sb_config.headless2 = False  # Only for Chromium browsers
     sb_config.headed = config.getoption("headed")
     sb_config.xvfb = config.getoption("xvfb")
@@ -1363,6 +1384,9 @@ def pytest_configure(config):
     sb_config.enable_sync = config.getoption("enable_sync")
     sb_config.use_auto_ext = config.getoption("use_auto_ext")
     sb_config.undetectable = config.getoption("undetectable")
+    sb_config.uc_subprocess = config.getoption("uc_subprocess")
+    if sb_config.uc_subprocess and not sb_config.undetectable:
+        sb_config.undetectable = True
     sb_config.no_sandbox = config.getoption("no_sandbox")
     sb_config.disable_gpu = config.getoption("disable_gpu")
     sb_config.remote_debug = config.getoption("remote_debug")
@@ -1457,11 +1481,6 @@ def pytest_configure(config):
         sb_config.recorder_mode = False
         sb_config.recorder_ext = False
 
-    # Recorder Mode can still optimize scripts in --headless2 mode.
-    if sb_config.recorder_mode and sb_config.headless:
-        sb_config.headless = False
-        sb_config.headless2 = True
-
     if sb_config.xvfb and "linux" not in sys.platform:
         # The Xvfb virtual display server is for Linux OS Only!
         sb_config.xvfb = False
@@ -1480,6 +1499,12 @@ def pytest_configure(config):
             "or by calling the new --headless2.)"
         )
         sb_config.headless = True
+
+    # Recorder Mode can still optimize scripts in --headless2 mode.
+    if sb_config.recorder_mode and sb_config.headless:
+        sb_config.headless = False
+        sb_config.headless2 = True
+
     if not sb_config.headless and not sb_config.headless2:
         sb_config.headed = True
 
@@ -1605,6 +1630,7 @@ def pytest_collection_finish(session):
     """This runs after item collection is finalized.
     https://docs.pytest.org/en/stable/reference.html
     """
+    sb_config._context_of_runner = False  # Context Manager Compatibility
     if "--co" in sys_argv or "--collect-only" in sys_argv:
         return
     if len(session.items) > 0 and not sb_config._multithreaded:
@@ -1694,14 +1720,20 @@ def pytest_runtest_teardown(item):
             if hasattr(self, "xvfb") and self.xvfb:
                 if self.headless_active and "--pdb" not in sys_argv:
                     if hasattr(self, "display") and self.display:
+                        self.headless_active = False
+                        sb_config.headless_active = False
                         self.display.stop()
             elif hasattr(self, "headless") and self.headless:
                 if self.headless_active and "--pdb" not in sys_argv:
                     if hasattr(self, "display") and self.display:
+                        self.headless_active = False
+                        sb_config.headless_active = False
                         self.display.stop()
             elif hasattr(self, "headless2") and self.headless2:
                 if self.headless_active and "--pdb" not in sys_argv:
                     if hasattr(self, "display") and self.display:
+                        self.headless_active = False
+                        sb_config.headless_active = False
                         self.display.stop()
         except Exception:
             pass

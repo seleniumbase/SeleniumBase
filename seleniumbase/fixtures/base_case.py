@@ -1902,13 +1902,24 @@ class BaseCase(unittest.TestCase):
         ):
             self.__switch_to_newest_window_if_not_blank()
 
-    def click_if_visible(self, selector, by="css selector"):
+    def click_if_visible(self, selector, by="css selector", timeout=0):
         """If the page selector exists and is visible, clicks on the element.
         This method only clicks on the first matching element found.
-        (Use click_visible_elements() to click all matching elements.)"""
+        Use click_visible_elements() to click all matching elements.
+        If a "timeout" is provided, waits that long for the element
+        to appear before giving up and returning without a click()."""
         self.wait_for_ready_state_complete()
         if self.is_element_visible(selector, by=by):
             self.click(selector, by=by)
+        elif timeout > 0:
+            try:
+                self.wait_for_element_visible(
+                    selector, by=by, timeout=timeout
+                )
+            except Exception:
+                pass
+            if self.is_element_visible(selector, by=by):
+                self.click(selector, by=by)
 
     def click_active_element(self):
         self.wait_for_ready_state_complete()
@@ -3170,6 +3181,7 @@ class BaseCase(unittest.TestCase):
         enable_sync=None,
         use_auto_ext=None,
         undetectable=None,
+        uc_subprocess=None,
         no_sandbox=None,
         disable_gpu=None,
         headless2=None,
@@ -3218,6 +3230,7 @@ class BaseCase(unittest.TestCase):
         enable_sync - the option to enable the Chrome Sync feature (Chrome)
         use_auto_ext - the option to enable Chrome's Automation Extension
         undetectable - the option to use an undetectable chromedriver
+        uc_subprocess - use the undetectable chromedriver as a subprocess
         no_sandbox - the option to enable the "No-Sandbox" feature (Chrome)
         disable_gpu - the option to enable Chrome's "Disable GPU" feature
         headless2 - the option to use the newer headless mode (Chromium)
@@ -3312,6 +3325,8 @@ class BaseCase(unittest.TestCase):
             use_auto_ext = self.use_auto_ext
         if undetectable is None:
             undetectable = self.undetectable
+        if uc_subprocess is None:
+            uc_subprocess = self.uc_subprocess
         if no_sandbox is None:
             no_sandbox = self.no_sandbox
         if disable_gpu is None:
@@ -3393,6 +3408,7 @@ class BaseCase(unittest.TestCase):
             enable_sync=enable_sync,
             use_auto_ext=use_auto_ext,
             undetectable=undetectable,
+            uc_subprocess=uc_subprocess,
             no_sandbox=no_sandbox,
             disable_gpu=disable_gpu,
             headless2=headless2,
@@ -3417,6 +3433,7 @@ class BaseCase(unittest.TestCase):
             device_width=d_width,
             device_height=d_height,
             device_pixel_ratio=d_p_r,
+            browser=browser_name,
         )
         self._drivers_list.append(new_driver)
         self._drivers_browser_map[new_driver] = browser_name
@@ -4555,6 +4572,23 @@ class BaseCase(unittest.TestCase):
         filename = self.__get_filename()
         classname = self.__class__.__name__
         methodname = self._testMethodName
+        context_filename = None
+        if (
+            hasattr(sb_config, "is_context_manager")
+            and sb_config.is_context_manager
+            and (filename == "base_case.py" or methodname == "runTest")
+        ):
+            import traceback
+
+            stack_base = traceback.format_stack()[0].split(os.sep)[-1]
+            test_base = stack_base.split(", in ")[0]
+            if hasattr(self, "cm_filename") and self.cm_filename:
+                filename = self.cm_filename
+            else:
+                filename = test_base.split('"')[0]
+            classname = "SB"
+            methodname = "test_line_" + test_base.split(", line ")[-1]
+            context_filename = filename.split(".")[0] + "_rec.py"
         if hasattr(self, "is_behave") and self.is_behave:
             classname = sb_config.behave_feature.name
             classname = classname.replace("/", " ").replace(" & ", " ")
@@ -4611,6 +4645,8 @@ class BaseCase(unittest.TestCase):
             file_name = sb_config.behave_scenario.filename.replace(".", "_")
             file_name = file_name.split("/")[-1].split("\\")[-1]
             file_name = file_name + "_rec.py"
+        elif context_filename:
+            file_name = context_filename
         file_path = os.path.join(recordings_folder, file_name)
         out_file = codecs.open(file_path, "w+", "utf-8")
         out_file.writelines("\r\n".join(data))
@@ -5292,19 +5328,41 @@ class BaseCase(unittest.TestCase):
             pass
         self.__demo_mode_pause_if_active()
 
-    def js_click_if_present(self, selector, by="css selector"):
+    def js_click_if_present(self, selector, by="css selector", timeout=0):
         """If the page selector exists, js_click() the element.
-        This method only clicks on the first matching element found."""
+        This method only clicks on the first matching element found.
+        If a "timeout" is provided, waits that long for the element to
+        be present before giving up and returning without a js_click()."""
         self.wait_for_ready_state_complete()
         if self.is_element_present(selector, by=by):
             self.js_click(selector, by=by)
+        elif timeout > 0:
+            try:
+                self.wait_for_element_present(
+                    selector, by=by, timeout=timeout
+                )
+            except Exception:
+                pass
+            if self.is_element_present(selector, by=by):
+                self.js_click(selector, by=by)
 
-    def js_click_if_visible(self, selector, by="css selector"):
+    def js_click_if_visible(self, selector, by="css selector", timeout=0):
         """If the page selector exists and is visible, js_click() the element.
-        This method only clicks on the first matching element found."""
+        This method only clicks on the first matching element found.
+        If a "timeout" is provided, waits that long for the element
+        to appear before giving up and returning without a js_click()."""
         self.wait_for_ready_state_complete()
         if self.is_element_visible(selector, by=by):
             self.js_click(selector, by=by)
+        elif timeout > 0:
+            try:
+                self.wait_for_element_visible(
+                    selector, by=by, timeout=timeout
+                )
+            except Exception:
+                pass
+            if self.is_element_visible(selector, by=by):
+                self.js_click(selector, by=by)
 
     def js_click_all(self, selector, by="css selector"):
         """Clicks all matching elements using pure JS. (No jQuery)"""
@@ -11436,16 +11494,14 @@ class BaseCase(unittest.TestCase):
 
             page_domain = self.get_domain_url(page_url)
             page_data_domain = self.get_domain_url(page_url_data)
-            unittest.TestCase.maxDiff = 3200
+            unittest.TestCase.maxDiff = 65536  # 2^16
             if level != 0 and check_domain:
                 self.assertEqual(page_data_domain, page_domain, domain_fail)
-            unittest.TestCase.maxDiff = 6400  # Use `None` for no limit
             if level == 3:
                 if not full_diff:
                     self.__assert_eq(level_3_data, level_3, level_3_failure)
                 else:
                     self.assertEqual(level_3_data, level_3, level_3_failure)
-            unittest.TestCase.maxDiff = 3200
             if level == 2:
                 if not full_diff:
                     self.__assert_eq(level_2_data, level_2, level_2_failure)
@@ -11456,10 +11512,8 @@ class BaseCase(unittest.TestCase):
                     self.__assert_eq(level_1_data, level_1, level_1_failure)
                 else:
                     self.assertEqual(level_1_data, level_1, level_1_failure)
-            unittest.TestCase.maxDiff = 6400  # Use `None` for no limit
             if level == 0:
                 try:
-                    unittest.TestCase.maxDiff = 3200
                     if check_domain:
                         self.assertEqual(
                             page_domain, page_data_domain, domain_fail
@@ -11486,7 +11540,6 @@ class BaseCase(unittest.TestCase):
                             )
                     except Exception as e:
                         print(e)
-                    unittest.TestCase.maxDiff = 6400  # Use `None` for no limit
                     if not full_diff:
                         self.__assert_eq(
                             level_3_data, level_3, level_3_failure
@@ -12517,6 +12570,7 @@ class BaseCase(unittest.TestCase):
                 self.display = Display(visible=0, size=(width, height))
                 self.display.start()
                 self.headless_active = True
+                sb_config.headless_active = True
             except Exception:
                 pass
 
@@ -12602,6 +12656,7 @@ class BaseCase(unittest.TestCase):
             self.with_selenium = sb_config.with_selenium  # Should be True
             self.headless = sb_config.headless
             self.headless_active = False
+            sb_config.headless_active = False
             self.headed = sb_config.headed
             self.xvfb = sb_config.xvfb
             self.locale_code = sb_config.locale_code
@@ -12659,6 +12714,7 @@ class BaseCase(unittest.TestCase):
             self.enable_sync = sb_config.enable_sync
             self.use_auto_ext = sb_config.use_auto_ext
             self.undetectable = sb_config.undetectable
+            self.uc_subprocess = sb_config.uc_subprocess
             self.no_sandbox = sb_config.no_sandbox
             self.disable_gpu = sb_config.disable_gpu
             self.headless2 = sb_config.headless2
@@ -12950,6 +13006,7 @@ class BaseCase(unittest.TestCase):
                 enable_sync=self.enable_sync,
                 use_auto_ext=self.use_auto_ext,
                 undetectable=self.undetectable,
+                uc_subprocess=self.uc_subprocess,
                 no_sandbox=self.no_sandbox,
                 disable_gpu=self.disable_gpu,
                 headless2=self.headless2,
@@ -13208,6 +13265,11 @@ class BaseCase(unittest.TestCase):
         has_exception = False
         if hasattr(sys, "last_traceback") and sys.last_traceback is not None:
             has_exception = True
+        elif hasattr(self, "is_context_manager") and self.is_context_manager:
+            if self.with_testing_base and self._has_failure:
+                return True
+            else:
+                return False
         elif python3 and hasattr(self, "_outcome"):
             if hasattr(self._outcome, "errors") and self._outcome.errors:
                 has_exception = True
@@ -13240,6 +13302,22 @@ class BaseCase(unittest.TestCase):
             scenario_name = scenario_name.replace(" ", "_")
             test_id = "%s.%s" % (file_name, scenario_name)
             return test_id
+        elif hasattr(self, "is_context_manager") and self.is_context_manager:
+            filename = self.__class__.__module__.split(".")[-1] + ".py"
+            methodname = self._testMethodName
+            context_id = None
+            if filename == "base_case.py" or methodname == "runTest":
+                import traceback
+
+                stack_base = traceback.format_stack()[0].split(", in ")[0]
+                test_base = stack_base.split(", in ")[0].split(os.sep)[-1]
+                if hasattr(self, "cm_filename") and self.cm_filename:
+                    filename = self.cm_filename
+                else:
+                    filename = test_base.split('"')[0]
+                methodname = ".line_" + test_base.split(", line ")[-1]
+                context_id = filename.split(".")[0] + methodname
+                return context_id
         test_id = "%s.%s.%s" % (
             self.__class__.__module__,
             self.__class__.__name__,

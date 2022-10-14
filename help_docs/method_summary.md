@@ -126,7 +126,7 @@ self.click_visible_elements(selector, by="css selector", limit=0, timeout=None)
 
 self.click_nth_visible_element(selector, number, by="css selector", timeout=None)
 
-self.click_if_visible(selector, by="css selector")
+self.click_if_visible(selector, by="css selector", timeout=0)
 
 self.click_active_element()
 
@@ -356,9 +356,9 @@ self.click_xpath(xpath)
 
 self.js_click(selector, by="css selector", all_matches=False, scroll=True)
 
-self.js_click_if_present(selector, by="css selector")
+self.js_click_if_present(selector, by="css selector", timeout=0)
 
-self.js_click_if_visible(selector, by="css selector")
+self.js_click_if_visible(selector, by="css selector", timeout=0)
 
 self.js_click_all(selector, by="css selector")
 

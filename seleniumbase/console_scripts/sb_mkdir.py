@@ -613,7 +613,6 @@ def main():
     data.append("    def test_google_dot_com(self):")
     data.append('        self.open("https://google.com/ncr")')
     data.append('        self.type(HomePage.search_box, "github")')
-    data.append("        self.assert_element(HomePage.list_box)")
     data.append("        self.assert_element(HomePage.search_button)")
     data.append("        self.assert_element(HomePage.feeling_lucky_button)")
     data.append("        self.click(HomePage.search_button)")
@@ -631,7 +630,6 @@ def main():
     data.append("class HomePage(object):")
     data.append("    dialog_box = '[role=\"dialog\"] div'")
     data.append("    search_box = 'input[title=\"Search\"]'")
-    data.append("    list_box = '[role=\"listbox\"]'")
     data.append("    search_button = 'input[value=\"Google Search\"]'")
     data.append(
         '    feeling_lucky_button = """input[value="I\'m Feeling Lucky"]"""'
