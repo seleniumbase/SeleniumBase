@@ -15,13 +15,13 @@ Examples:
          sbase get chromedriver
          sbase get geckodriver
          sbase get edgedriver
-         sbase get chromedriver 105.0.5195.52
-         sbase get chromedriver 105
+         sbase get chromedriver 106.0.5249.61
+         sbase get chromedriver 106
          sbase get chromedriver latest
          sbase get chromedriver latest-1  # (Latest minus one)
          sbase get chromedriver -p
          sbase get chromedriver latest -p
-         sbase get edgedriver 105.0.1343.53
+         sbase get edgedriver 106.0.1370.42
 Output:
          Downloads the chosen webdriver to seleniumbase/drivers
          (chromedriver is required for Chrome automation)
@@ -49,9 +49,9 @@ if sys.version_info[0] == 3 and sys.version_info[1] >= 7:
     selenium4_or_newer = True
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 LOCAL_PATH = "/usr/local/bin/"  # On Mac and Linux systems
-DEFAULT_CHROMEDRIVER_VERSION = "72.0.3626.69"  # (Specify "latest" for latest)
-DEFAULT_GECKODRIVER_VERSION = "v0.31.0"
-DEFAULT_EDGEDRIVER_VERSION = "102.0.1245.44"  # (Looks for LATEST_STABLE first)
+DEFAULT_CHROMEDRIVER_VERSION = "72.0.3626.69"  # (If can't find LATEST_STABLE)
+DEFAULT_GECKODRIVER_VERSION = "v0.32.0"
+DEFAULT_EDGEDRIVER_VERSION = "106.0.1370.42"  # (If can't find LATEST_STABLE)
 DEFAULT_OPERADRIVER_VERSION = "v.96.0.4664.45"
 
 
