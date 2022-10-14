@@ -1,22 +1,15 @@
 """
 This module contains shared utility methods.
 """
-import fasteners
 import subprocess
 import sys
-import time
-from selenium.common.exceptions import ElementNotVisibleException
-from selenium.common.exceptions import NoAlertPresentException
-from selenium.common.exceptions import NoSuchAttributeException
-from selenium.common.exceptions import NoSuchElementException
-from selenium.common.exceptions import NoSuchFrameException
-from selenium.common.exceptions import NoSuchWindowException
-from seleniumbase.common.exceptions import TextNotVisibleException
 from seleniumbase.fixtures import constants
 from seleniumbase import config as sb_config
 
 
 def pip_install(package, version=None):
+    import fasteners
+
     pip_install_lock = fasteners.InterProcessLock(
         constants.PipInstall.LOCKFILE
     )
@@ -32,11 +25,47 @@ def pip_install(package, version=None):
             )
 
 
+def is_windows():
+    platform = sys.platform
+    if "win32" in platform or "win64" in platform or "x64" in platform:
+        return True
+    else:
+        return False
+
+
+def get_terminal_width():
+    import os
+
+    width = 80  # default
+    try:
+        width = os.get_terminal_size().columns
+    except Exception:
+        try:
+            if is_windows():
+                raise Exception("Don't even try 'tput cols' on Windows!")
+            width = int(subprocess.check_output(["tput", "cols"]))
+        except Exception:
+            try:
+                import shutil
+
+                width = shutil.get_terminal_size((80, 20)).columns
+            except Exception:
+                pass
+    return width
+
+
 def format_exc(exception, message):
     """
     Formats an exception message to make the output cleaner.
     """
+    from selenium.common.exceptions import ElementNotVisibleException
+    from selenium.common.exceptions import NoAlertPresentException
+    from selenium.common.exceptions import NoSuchAttributeException
+    from selenium.common.exceptions import NoSuchElementException
+    from selenium.common.exceptions import NoSuchFrameException
+    from selenium.common.exceptions import NoSuchWindowException
     from seleniumbase.common.exceptions import NoSuchFileException
+    from seleniumbase.common.exceptions import TextNotVisibleException
 
     if exception == Exception:
         exc = Exception
@@ -101,6 +130,8 @@ def check_if_time_limit_exceeded():
         and sb_config.time_limit
         and not sb_config.recorder_mode
     ):
+        import time
+
         time_limit = sb_config.time_limit
         now_ms = int(time.time() * 1000)
         if now_ms > sb_config.start_time_ms + sb_config.time_limit_ms:
