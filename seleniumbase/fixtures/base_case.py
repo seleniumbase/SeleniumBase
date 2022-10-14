@@ -7965,6 +7965,11 @@ class BaseCase(unittest.TestCase):
         if not sb_config._multithreaded:
             print(msg)
         else:
+            if type(msg) is not str:
+                try:
+                    msg = str(msg)
+                except Exception:
+                    pass
             sys.stderr.write(msg + "\n")
 
     def start_tour(self, name=None, interval=0):
