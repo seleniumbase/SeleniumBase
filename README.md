@@ -3,11 +3,11 @@
 <meta property="og:description" content="Fast, easy, and reliable Web/UI testing with Python." />
 <meta property="og:keywords" content="Python, pytest, selenium, webdriver, testing, automation, seleniumbase, framework, RPA, behave, BDD, nosetests, dashboard, recorder, reports, gui, screenshots">
 <meta property="og:image" content="https://seleniumbase.github.io/cdn/img/mac_sb_logo_5b.png" />
-<link rel="icon" href="https://seleniumbase.github.io/img/green_logo2.png" />
+<link rel="icon" href="https://seleniumbase.github.io/img/logo3b.png" />
 
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/sb_logo_gs.png" alt="SeleniumBase" title="SeleniumBase" width="450" /></a></p>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/sb_media_logo_t4.png" alt="SeleniumBase" title="SeleniumBase" width="408" /></a></p>
 
-<p align="center"><b>SeleniumBase</b> simplifies <a href="https://www.selenium.dev/documentation/webdriver/" target="_blank">WebDriver</a> automation with <a href="https://docs.pytest.org/en/latest/how-to/usage.html" target="_blank">pytest</a>.</p>
+<p align="center"><b>SeleniumBase</b> simplifies <a href="https://www.selenium.dev/documentation/webdriver/" target="_blank">WebDriver</a> automation with <b>Python</b>.</p>
 
 <p align="center"><a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=3399EE" alt="PyPI version" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/releases" target="_blank"><img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=22AAEE" alt="GitHub version" /></a> <a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"><img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a></p>
 
@@ -123,7 +123,7 @@ pytest test_swag_labs.py --demo
 
 <h4>Here are a few scripts to test that app with SeleniumBase:</h4>
 
-<p align="left">📘📝 An example test with the <b>BaseCase</b> class. Runs with <code>pytest</code> or <code>nosetests</code>. (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">Learn more</a>)</p>
+<p align="left">📘📝 An example test with the <b>BaseCase</b> class. Runs with <b><a href="https://docs.pytest.org/en/latest/how-to/usage.html">pytest</a></b> or <b>nosetests</b>. (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">Learn more</a>)</p>
 
 ```python
 from seleniumbase import BaseCase
@@ -140,7 +140,7 @@ class TestMFALogin(BaseCase):
         self.save_screenshot_to_logs()
 ```
 
-<p align="left">📗📝 An example test with the <b>sb</b> <code>pytest</code> fixture. Runs with <code>pytest</code>.</p>
+<p align="left">📗📝 An example test with the <b><code>sb</code></b> <code>pytest</code> fixture. Runs with <b><a href="https://docs.pytest.org/en/latest/how-to/usage.html">pytest</a></b>.</p>
 
 ```python
 def test_mfa_login(sb):
@@ -154,7 +154,25 @@ def test_mfa_login(sb):
     sb.save_screenshot_to_logs()
 ```
 
-<p align="left">📕📝 An example test with <b>behave-BDD</b> <a href="https://behave.readthedocs.io/en/stable/gherkin.html" target="_blank">Gherkin</a> structure. Runs with <code>behave</code>. (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md">Learn more</a>)</p>
+<p align="left">📙📝 An example test with the <b><code>SB</code></b> Context Manager. Runs with pure <b><code>python</code></b>.</p>
+
+```python
+from seleniumbase import SB
+
+with SB() as sb:  # By default, browser="chrome" if not set.
+    sb.open("https://seleniumbase.github.io/realworld/login")
+    sb.type("#username", "demo_user")
+    sb.type("#password", "secret_pass")
+    sb.enter_mfa_code("#totpcode", "GAXG2MTEOR3DMMDG")  # 6-digit
+    sb.assert_text("Welcome!", "h1")
+    sb.highlight("img#image1")  # A fancier assert_element() call
+    sb.click('a:contains("This Page")')  # Use :contains() on any tag
+    sb.click_link("Sign out")  # Link must be "a" tag. Not "button".
+    sb.assert_element('a:contains("Sign in")')
+    sb.assert_exact_text("You have been signed out!", "#top_message")
+```
+
+<p align="left">📕📝 An example test with <b>behave-BDD</b> <a href="https://behave.readthedocs.io/en/stable/gherkin.html" target="_blank">Gherkin</a> structure. Runs with <b><code>behave</code></b>. (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md">Learn more</a>)</p>
 
 ```gherkin
 Feature: SeleniumBase scenarios for the RealWorld App
@@ -178,7 +196,7 @@ Feature: SeleniumBase scenarios for the RealWorld App
 🔵 Using a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md">Python virtual env</a> is recommended.
 
 <a id="install_seleniumbase"></a>
-<h2><img src="https://seleniumbase.github.io/img/green_logo2.png" title="SeleniumBase" width="32" /> Install SeleniumBase:</h2>
+<h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> Install SeleniumBase:</h2>
 
 **You can install ``seleniumbase`` from [GitHub](https://github.com/seleniumbase/SeleniumBase) or [PyPI](https://pypi.org/project/seleniumbase/):**
 
@@ -261,7 +279,7 @@ COMMANDS:
 ```
 
 
-<h3><img src="https://seleniumbase.github.io/img/green_logo2.png" title="SeleniumBase" width="32" /> Downloading web drivers:</h3>
+<h3><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> Downloading web drivers:</h3>
 
 ✅ SeleniumBase automatically downloads web drivers as needed, such as ``chromedriver`` and ``geckodriver`` (Firefox).
 
@@ -269,7 +287,7 @@ COMMANDS:
 
 
 <a id="basic_example_and_usage"></a>
-<h3><img src="https://seleniumbase.github.io/img/green_logo2.png" title="SeleniumBase" width="32" /> Basic Example & Usage:</h3>
+<h3><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> Basic Example & Usage:</h3>
 
 🔵 If you've cloned SeleniumBase, you can run tests from the [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder.
 
@@ -320,7 +338,7 @@ class MyTestClass(BaseCase):
 
 
 <a id="common_methods"></a>
-<h3><img src="https://seleniumbase.github.io/img/green_logo2.png" title="SeleniumBase" width="32" /> Here are some common SeleniumBase methods that you might find in tests:</h3>
+<h3><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> Here are some common SeleniumBase methods that you might find in tests:</h3>
 
 ```python
 self.open(url)  # Navigate the browser window to the URL.
@@ -361,7 +379,7 @@ self.assert_no_js_errors()  # Verify there are no JS errors.
 
 
 <a id="fun_facts"></a>
-<h2><img src="https://seleniumbase.github.io/img/green_logo2.png" title="SeleniumBase" width="32" /> Fun Facts / Learn More:</h2>
+<h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> Fun Facts / Learn More:</h2>
 
 <p>✅ SeleniumBase automatically handles common WebDriver actions such as launching web browsers before tests, saving screenshots during failures, and closing web browsers after tests.</p>
 
@@ -418,7 +436,7 @@ nosetests [FILE_NAME.py]:[CLASS_NAME].[METHOD_NAME]
 
 
 <a id="detailed_instructions"></a>
-<h2><img src="https://seleniumbase.github.io/img/green_logo2.png" title="SeleniumBase" width="32" /> Detailed Instructions:</h2>
+<h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> Detailed Instructions:</h2>
 
 <a id="seleniumbase_demo_mode"></a>
 🔵 <b>Demo Mode</b> helps you see what a test is doing. If a test is moving too fast for your eyes, run it in <b>Demo Mode</b>, which pauses the browser briefly between actions, highlights page elements being acted on, and displays assertions:
@@ -528,7 +546,8 @@ pytest my_first_test.py --pdb
 --enable-ws  # (Enable Web Security on Chromium-based browsers.)
 --enable-sync  # (Enable "Chrome Sync" on websites.)
 --use-auto-ext  # (Use Chrome's automation extension.)
---undetected | --uc  # (Use undetected-chromedriver to evade bot-detection.)
+--uc | --undetected  # (Use undetected-chromedriver to evade bot-detection.)
+--uc-sub | --uc-subprocess  # (Use undetected-chromedriver as a subprocess.)
 --remote-debug  # (Enable Chrome's Remote Debugger on http://localhost:9222)
 --final-debug  # (Enter Debug Mode after each test ends. Don't use with CI!)
 --dashboard  # (Enable the SeleniumBase Dashboard. Saved at: dashboard.html)
@@ -570,7 +589,7 @@ Here's the command-line option to add to tests: (See [examples/custom_settings.p
 Inside your tests, you can use ``self.data`` to access that.
 
 
-<h3><img src="https://seleniumbase.github.io/img/green_logo2.png" title="SeleniumBase" width="32" /> Test Directory Configuration:</h3>
+<h3><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> Test Directory Configuration:</h3>
 
 🔵 When running tests with **pytest**, you'll want a copy of **[pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini)** in your root folders. When running tests with **nosetests**, you'll want a copy of **[setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/setup.cfg)** in your root folders. These files specify default configuration details for tests. Folders should also include a blank ``__init__.py`` file, which allows your tests to import files from that folder.
 
@@ -626,7 +645,7 @@ Of those files, the ``pytest.ini`` config file is the most important, followed b
 
 --------
 
-<h3><img src="https://seleniumbase.github.io/img/green_logo2.png" title="SeleniumBase" width="32" /> Log files from failed tests:</h3>
+<h3><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> Log files from failed tests:</h3>
 
 Let's try an example of a test that fails:
 
@@ -651,7 +670,7 @@ pytest test_fail.py
 
 --------
 
-<h3><img src="https://seleniumbase.github.io/img/green_logo2.png" title="SeleniumBase" width="32" /> The SeleniumBase Dashboard:</h3>
+<h3><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> The SeleniumBase Dashboard:</h3>
 
 🔵 The ``--dashboard`` option for pytest generates a SeleniumBase Dashboard located at ``dashboard.html``, which updates automatically as tests run and produce results. Example:
 
@@ -680,7 +699,7 @@ pytest test_suite.py --dashboard --rs --headless
 --------
 
 <a id="creating_visual_reports"></a>
-<h3><img src="https://seleniumbase.github.io/img/green_logo2.png" title="SeleniumBase" width="32" /> Generating Test Reports:</h3>
+<h3><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> Generating Test Reports:</h3>
 
 <h4><b>Pytest Reports:</b></h4>
 
@@ -755,7 +774,7 @@ pytest test_suite.py --alluredir=allure_results
 ```
 
 
-<h3><img src="https://seleniumbase.github.io/img/green_logo2.png" title="SeleniumBase" width="32" /> Using a Proxy Server:</h3>
+<h3><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> Using a Proxy Server:</h3>
 
 If you wish to use a proxy server for your browser tests (Chromium or Firefox), you can add ``--proxy=IP_ADDRESS:PORT`` as an argument on the command line.
 
@@ -784,7 +803,7 @@ pytest proxy_test.py --proxy=proxy1
 ```
 
 
-<h3><img src="https://seleniumbase.github.io/img/green_logo2.png" title="SeleniumBase" width="32" /> Changing the User-Agent:</h3>
+<h3><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> Changing the User-Agent:</h3>
 
 🔵 If you wish to change the User-Agent for your browser tests (Chromium and Firefox only), you can add ``--agent="USER AGENT STRING"`` as an argument on the command-line.
 
@@ -793,12 +812,12 @@ pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1
 ```
 
 
-<h3><img src="https://seleniumbase.github.io/img/green_logo2.png" title="SeleniumBase" width="32" /> Handling Pop-Up / Pop Up Alerts:</h3>
+<h3><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> Handling Pop-Up / Pop Up Alerts:</h3>
 
 🔵 <code>self.accept_alert()</code> automatically waits for and accepts alert pop-ups. <code>self.dismiss_alert()</code> automatically waits for and dismisses alert pop-ups. On occasion, some methods like <code>self.click(SELECTOR)</code> might dismiss a pop-up on its own because they call JavaScript to make sure that the <code>readyState</code> of the page is <code>complete</code> before advancing. If you're trying to accept a pop-up that got dismissed this way, use this workaround: Call <code>self.find_element(SELECTOR).click()</code> instead, (which will let the pop-up remain on the screen), and then use <code>self.accept_alert()</code> to accept the pop-up (<a href="https://github.com/seleniumbase/SeleniumBase/issues/600#issuecomment-647270426">more on that here</a>). If pop-ups are intermittent, wrap code in a try/except block.
 
 
-<h3><img src="https://seleniumbase.github.io/img/green_logo2.png" title="SeleniumBase" width="32" /> Building Guided Tours for Websites:</h3>
+<h3><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> Building Guided Tours for Websites:</h3>
 
 🔵 Learn about <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">SeleniumBase Interactive Walkthroughs</a> (in the ``examples/tour_examples/`` folder). It's great for prototyping a website onboarding experience.
 
@@ -808,7 +827,7 @@ pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1
 --------
 
 <div></div>
-<h3><img src="https://seleniumbase.github.io/img/green_logo2.png" title="SeleniumBase" width="32" /> Production Environments & Integrations:</h3>
+<h3><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> Production Environments & Integrations:</h3>
 
 <div></div>
 <details>
@@ -834,7 +853,7 @@ pytest [YOUR_TEST_FILE.py] --with-db-reporting --with-s3-logging
 
 
 <a id="detailed_method_specifications"></a>
-<h3><img src="https://seleniumbase.github.io/img/green_logo2.png" title="SeleniumBase" width="32" /> Detailed Method Specifications and Examples:</h3>
+<h3><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> Detailed Method Specifications and Examples:</h3>
 
 🔵 Navigating to a web page: (and related commands)
 
@@ -1128,7 +1147,7 @@ pytest --reruns=1 --reruns-delay=1
 <p>You can use the <code>@retry_on_exception()</code> decorator to retry failing methods. (First import: <code>from seleniumbase import decorators</code>). To learn more about SeleniumBase decorators, <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/common">click here</a>.</p>
 
 
-<h3><img src="https://seleniumbase.github.io/img/green_logo2.png" title="SeleniumBase" width="32" /> Wrap-Up</h3>
+<h3><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> Wrap-Up</h3>
 
 <b>Congratulations on getting started with SeleniumBase!</b>
 
