@@ -11469,16 +11469,14 @@ class BaseCase(unittest.TestCase):
 
             page_domain = self.get_domain_url(page_url)
             page_data_domain = self.get_domain_url(page_url_data)
-            unittest.TestCase.maxDiff = 3200
+            unittest.TestCase.maxDiff = 65536  # 2^16
             if level != 0 and check_domain:
                 self.assertEqual(page_data_domain, page_domain, domain_fail)
-            unittest.TestCase.maxDiff = 6400  # Use `None` for no limit
             if level == 3:
                 if not full_diff:
                     self.__assert_eq(level_3_data, level_3, level_3_failure)
                 else:
                     self.assertEqual(level_3_data, level_3, level_3_failure)
-            unittest.TestCase.maxDiff = 3200
             if level == 2:
                 if not full_diff:
                     self.__assert_eq(level_2_data, level_2, level_2_failure)
@@ -11489,10 +11487,8 @@ class BaseCase(unittest.TestCase):
                     self.__assert_eq(level_1_data, level_1, level_1_failure)
                 else:
                     self.assertEqual(level_1_data, level_1, level_1_failure)
-            unittest.TestCase.maxDiff = 6400  # Use `None` for no limit
             if level == 0:
                 try:
-                    unittest.TestCase.maxDiff = 3200
                     if check_domain:
                         self.assertEqual(
                             page_domain, page_data_domain, domain_fail
@@ -11519,7 +11515,6 @@ class BaseCase(unittest.TestCase):
                             )
                     except Exception as e:
                         print(e)
-                    unittest.TestCase.maxDiff = 6400  # Use `None` for no limit
                     if not full_diff:
                         self.__assert_eq(
                             level_3_data, level_3, level_3_failure
