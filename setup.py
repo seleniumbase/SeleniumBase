@@ -126,7 +126,7 @@ setup(
     install_requires=[
         'pip>=20.3.4;python_version<"3.6"',
         'pip>=21.3.1;python_version>="3.6" and python_version<"3.7"',
-        'pip>=22.2.2;python_version>="3.7"',
+        'pip>=22.3;python_version>="3.7"',
         'packaging>=20.9;python_version<"3.6"',
         'packaging>=21.3;python_version>="3.6"',
         'setuptools>=44.1.1;python_version<"3.6"',
@@ -140,7 +140,7 @@ setup(
         'attrs>=22.1.0;python_version>="3.6"',
         'PyYAML>=6.0;python_version>="3.6"',
         'traitlets>=4.3.3;python_version<"3.7"',
-        'traitlets>=5.4.0;python_version>="3.7"',
+        'traitlets>=5.5.0;python_version>="3.7"',
         'certifi>=2021.10.8;python_version<"3.6"',
         'certifi>=2022.9.24;python_version>="3.6"',
         'filelock>=3.2.1;python_version<"3.6"',
@@ -183,7 +183,8 @@ setup(
         'selenium==4.5.0;python_version>="3.7"',
         'msedge-selenium-tools==3.141.3;python_version<"3.7"',
         'more-itertools==5.0.0;python_version<"3.6"',
-        'more-itertools==8.14.0;python_version>="3.6"',
+        'more-itertools==8.14.0;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
+        'more-itertools==9.0.0;python_version>="3.7"',
         "cssselect==1.1.0",
         "sortedcontainers==2.4.0",
         'fasteners==0.16;python_version<"3.6"',
