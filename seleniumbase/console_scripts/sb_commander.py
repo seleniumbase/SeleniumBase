@@ -243,11 +243,11 @@ def create_tkinter_gui(tests, command_string):
     tk.Label(root, text="").pack()
     run_display = (
         "Select from %s tests:  "
-        "(If NO TESTS are selected, then ALL TESTS will be run)"
+        "(If NO TESTS are selected, then ALL TESTS will run)"
         % len(tests)
     )
     if len(tests) == 1:
-        run_display = "Only ONE TEST was found:  (Will be run automatically)"
+        run_display = "Only ONE TEST was found:  (Will run automatically)"
     tk.Label(root, text=run_display, fg="blue").pack()
     text_area = ScrolledText(
         root, width=100, height=12, wrap="word", state=tk.DISABLED
