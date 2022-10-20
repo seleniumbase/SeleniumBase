@@ -1,43 +1,44 @@
 <a id="syntax_formats"></a>
 
-## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) The 22 Syntax Formats
+## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) The 23 Syntax Formats
 
-<b>SeleniumBase</b> supports 22 different syntax formats (<i>design patterns</i>) for structuring tests.
+<b>SeleniumBase</b> currently supports 23 different syntax formats (AKA "design patterns") for structuring tests.
 
 --------
 
 <blockquote>
 <p dir="auto"><strong>Table of Contents / Navigation:</strong></p>
 <ul dir="auto">
-<li><a href="#sb_sf_01"><strong>01. BaseCase direct inheritance</strong></a></li>
+<li><a href="#sb_sf_01"><strong>01. BaseCase direct class inheritance</strong></a></li>
 <li><a href="#sb_sf_02"><strong>02. BaseCase subclass inheritance</strong></a></li>
 <li><a href="#sb_sf_03"><strong>03. The "sb" pytest fixture (no class)</strong></a></li>
 <li><a href="#sb_sf_04"><strong>04. The "sb" pytest fixture (in class)</strong></a></li>
 <li><a href="#sb_sf_05"><strong>05. Page Object Model with BaseCase</strong></a></li>
-<li><a href="#sb_sf_06"><strong>06. Page Object Model with "sb" fixture</strong></a></li>
+<li><a href="#sb_sf_06"><strong>06. Page Object Model with the "sb" fixture</strong></a></li>
 <li><a href="#sb_sf_07"><strong>07. Using "request" to get "sb" (no class)</strong></a></li>
 <li><a href="#sb_sf_08"><strong>08. Using "request" to get "sb" (in class)</strong></a></li>
-<li><a href="#sb_sf_09"><strong>09. BaseCase while overriding driver setup</strong></a></li>
-<li><a href="#sb_sf_10"><strong>10. The driver manager without BaseCase</strong></a></li>
-<li><a href="#sb_sf_11"><strong>11. SeleniumBase translated into Chinese</strong></a></li>
-<li><a href="#sb_sf_12"><strong>12. SeleniumBase translated into Dutch</strong></a></li>
-<li><a href="#sb_sf_13"><strong>13. SeleniumBase translated into French</strong></a></li>
-<li><a href="#sb_sf_14"><strong>14. SeleniumBase translated into Italian</strong></a></li>
-<li><a href="#sb_sf_15"><strong>15. SeleniumBase translated into Japanese</strong></a></li>
-<li><a href="#sb_sf_16"><strong>16. SeleniumBase translated into Korean</strong></a></li>
-<li><a href="#sb_sf_17"><strong>17. SeleniumBase translated into Portuguese</strong></a></li>
-<li><a href="#sb_sf_18"><strong>18. SeleniumBase translated into Russian</strong></a></li>
-<li><a href="#sb_sf_19"><strong>19. SeleniumBase translated into Spanish</strong></a></li>
-<li><a href="#sb_sf_20"><strong>20. SeleniumBase "behave" Gherkin format</strong></a></li>
-<li><a href="#sb_sf_21"><strong>21. SeleniumBase as a Python context manager</strong></a></li>
-<li><a href="#sb_sf_22"><strong>22. The driver manager as a context manager</strong></a></li>
+<li><a href="#sb_sf_09"><strong>09. Overriding the driver via BaseCase</strong></a></li>
+<li><a href="#sb_sf_10"><strong>10. Overriding the driver via "sb" fixture</strong></a></li>
+<li><a href="#sb_sf_11"><strong>11. BaseCase with Chinese translations</strong></a></li>
+<li><a href="#sb_sf_12"><strong>12. BaseCase with Dutch translations</strong></a></li>
+<li><a href="#sb_sf_13"><strong>13. BaseCase with French translations</strong></a></li>
+<li><a href="#sb_sf_14"><strong>14. BaseCase with Italian translations</strong></a></li>
+<li><a href="#sb_sf_15"><strong>15. BaseCase with Japanese translations</strong></a></li>
+<li><a href="#sb_sf_16"><strong>16. BaseCase with Korean translations</strong></a></li>
+<li><a href="#sb_sf_17"><strong>17. BaseCase with Portuguese translations</strong></a></li>
+<li><a href="#sb_sf_18"><strong>18. BaseCase with Russian translations</strong></a></li>
+<li><a href="#sb_sf_19"><strong>19. BaseCase with Spanish translations</strong></a></li>
+<li><a href="#sb_sf_20"><strong>20. Gherkin syntax with "behave" BDD runner</strong></a></li>
+<li><a href="#sb_sf_21"><strong>21. SeleniumBase SB (Python context manager)</strong></a></li>
+<li><a href="#sb_sf_22"><strong>22. The driver manager (via context manager)</strong></a></li>
+<li><a href="#sb_sf_23"><strong>23. The driver manager (via direct import)</strong></a></li>
 </ul>
 </blockquote>
 
 --------
 
 <a id="sb_sf_01"></a>
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 1. <code>BaseCase</code> direct inheritance</h3>
+<h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> 1. BaseCase direct class inheritance</h3>
 
 This format is used by most of the examples in the <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples">SeleniumBase examples folder</a>. It's a great starting point for anyone learning SeleniumBase, and it follows good object-oriented programming principles. In this format, <code>BaseCase</code> is imported at the top of a Python file, followed by a Python class inheriting <code>BaseCase</code>. Then, any test method defined in that class automatically gains access to SeleniumBase methods, including the <code>setUp()</code> and <code>tearDown()</code> methods that are automatically called to spin up and spin down web browsers at the beginning and end of test methods. Here's an example of that:
 
@@ -59,7 +60,7 @@ class MyTestClass(BaseCase):
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py">examples/test_demo_site.py</a> for the full test.)
 
 <a id="sb_sf_02"></a>
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 2. <code>BaseCase</code> subclass inheritance</h3>
+<h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> 2. BaseCase subclass inheritance</h3>
 
 There are situations where you may want to customize the <code>setUp</code> and <code>tearDown</code> of your tests. Maybe you want to have all your tests login to a specific web site first, or maybe you want to have your tests report results through an API call depending on whether a test passed or failed. <b>This can be done by creating a subclass of <code>BaseCase</code> and then carefully creating custom <code>setUp()</code> and <code>tearDown()</code> methods that don't overwrite the critical functionality of the default SeleniumBase <code>setUp()</code> and <code>tearDown()</code> methods.</b> Afterwards, your test classes will inherit the subclass of <code>BaseCase</code> with the added functionality, rather than directly inheriting <code>BaseCase</code> itself. Here's an example of that:
 
@@ -105,7 +106,7 @@ class MyTests(BaseTestCase):
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/boilerplates/base_test_case.py">examples/boilerplates/base_test_case.py</a> for more info.)
 
 <a id="sb_sf_03"></a>
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 3. The <code>sb</code> pytest fixture (no class)</h3>
+<h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> 3. The "sb" pytest fixture (no class)</h3>
 
 The pytest framework comes with a unique system called fixtures, which replaces import statements at the top of Python files by importing libraries directly into test definitions. More than just being an import, a pytest fixture can also automatically call predefined <code>setUp()</code> and <code>tearDown()</code> methods at the beginning and end of test methods. To work, <code>sb</code> is added as an argument to each test method definition that needs SeleniumBase functionality. This means you no longer need import statements in your Python files to use SeleniumBase. <b>If using other pytest fixtures in your tests, you may need to use the SeleniumBase fixture (instead of <code>BaseCase</code> class inheritance) for compatibility reasons.</b> Here's an example of the <code>sb</code> fixture in a test that does not use Python classes:
 
@@ -120,7 +121,7 @@ def test_sb_fixture_with_no_class(sb):
 (See the top of <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_sb_fixture.py">examples/test_sb_fixture.py</a> for the test.)
 
 <a id="sb_sf_04"></a>
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 4. The <code>sb</code> pytest fixture (in class)</h3>
+<h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> 4. The "sb" pytest fixture (in class)</h3>
 
 The <code>sb</code> pytest fixture can also be used inside of a class. There is a slight change to the syntax because that means test methods must also include <code>self</code> in their argument definitions when test methods are defined. (The <code>self</code> argument represents the class object, and is used in every test method that lives inside of a class.) Once again, no import statements are needed in your Python files for this to work. Here's an example of using the <code>sb</code> fixture in a test method that lives inside of a Python class:
 
@@ -136,7 +137,7 @@ class Test_SB_Fixture:
 (See the bottom of <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_sb_fixture.py">examples/test_sb_fixture.py</a> for the test.)
 
 <a id="sb_sf_05"></a>
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 5. The classic Page Object Model with <code>BaseCase</code> inheritance</h3>
+<h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> 5. Page Object Model with BaseCase</h3>
 
 With SeleniumBase, you can use Page Objects to break out code from tests, but remember, the <code>self</code> variable (from test methods that inherit <code>BaseCase</code>) contains the driver and all other framework-specific variable definitions. Therefore, that <code>self</code> must be passed as an arg into any outside class method in order to call SeleniumBase methods from there. In the example below, the <code>self</code> variable from the test method is passed into the <code>sb</code> arg of the Page Object class method because the <code>self</code> arg of the Page Object class method is already being used for its own class. Every Python class method definition must include the <code>self</code> as the first arg.
 
@@ -160,7 +161,7 @@ class MyTests(BaseCase):
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/boilerplates/samples/swag_labs_test.py">examples/boilerplates/samples/swag_labs_test.py</a> for the full test.)
 
 <a id="sb_sf_06"></a>
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 6. The classic Page Object Model with the <code>sb</code> pytest fixture</h3>
+<h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> 6. Page Object Model with the "sb" fixture</h3>
 
 This is similar to the classic Page Object Model with <code>BaseCase</code> inheritance, except that this time we pass the <code>sb</code> pytest fixture from the test into the <code>sb</code> arg of the page object class method, (instead of passing <code>self</code>). Now that you're using <code>sb</code> as a pytest fixture, you no longer need to import <code>BaseCase</code> anywhere in your code. See the example below:
 
@@ -182,7 +183,7 @@ class MyTests:
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/boilerplates/samples/sb_swag_test.py">examples/boilerplates/samples/sb_swag_test.py</a> for the full test.)
 
 <a id="sb_sf_07"></a>
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 7. Using the <code>request</code> fixture to get the <code>sb</code> fixture (no class)</h3>
+<h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> 7. Using "request" to get "sb" (no class)</h3>
 
 The pytest <code>request</code> fixture can be used to retrieve other pytest fixtures from within tests, such as the <code>sb</code> fixture. This allows you to have more control over when fixtures get initialized because the fixture no longer needs to be loaded at the very beginning of test methods. This is done by calling <code>request.getfixturevalue('sb')</code> from the test. Here's an example of using the pytest <code>request</code> fixture to load the <code>sb</code> fixture in a test method that does not use Python classes:
 
@@ -200,7 +201,7 @@ def test_request_sb_fixture(request):
 (See the top of <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_request_sb_fixture.py">examples/test_request_sb_fixture.py</a> for the test.)
 
 <a id="sb_sf_08"></a>
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 8. Using the <code>request</code> fixture to get the <code>sb</code> fixture (in class)</h3>
+<h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> 8. Using "request" to get "sb" (in class)</h3>
 
 The pytest <code>request</code> fixture can also be used to get the <code>sb</code> fixture from inside a Python class. Here's an example of that:
 
@@ -220,9 +221,9 @@ class Test_Request_Fixture:
 (See the bottom of <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_request_sb_fixture.py">examples/test_request_sb_fixture.py</a> for the test.)
 
 <a id="sb_sf_09"></a>
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 9. Overriding the SeleniumBase browser launcher </h3>
+<h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> 9. Overriding the driver via BaseCase</h3>
 
-When you want to use SeleniumBase methods, but you want total freedom to control how you spin up your web browsers, this is the format you want. Although SeleniumBase gives you plenty of command-line options to change how your browsers are launched, this format gives you even more control. Here's an example of that:
+When you want to use SeleniumBase methods via <code>BaseCase</code>, but you want total freedom to control how you spin up your web browsers, this is the format you want. Although SeleniumBase gives you plenty of command-line options to change how your browsers are launched, this format gives you more control when the existing options aren't enough. Here's an example of that:
 
 ```python
 from selenium import webdriver
@@ -254,17 +255,19 @@ class OverrideDriverTest(BaseCase):
 
 (From <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_override_driver.py">examples/test_override_driver.py</a>)
 
-The above format lets you use [selenium-wire](https://github.com/wkeeling/selenium-wire) to intercept & inspect requests and responses during SeleniumBase tests. Here's how the ``selenium-wire`` integration may look:
+The above format can let you use [selenium-wire](https://github.com/wkeeling/selenium-wire) to intercept & inspect requests and responses during SeleniumBase tests. Here's how the ``selenium-wire`` integration may look:
 
 ```python
 from seleniumbase import BaseCase
-from seleniumwire import webdriver  # the selenium-wire webdriver
+from seleniumwire import webdriver  # Requires "pip install selenium-wire"
 
 
 class WireTestCase(BaseCase):
     def get_new_driver(self, *args, **kwargs):
         options = webdriver.ChromeOptions()
-        options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        options.add_experimental_option(
+            "excludeSwitches", ["enable-automation"]
+        )
         options.add_experimental_option("useAutomationExtension", False)
         return webdriver.Chrome(options=options)
 
@@ -275,32 +278,120 @@ class WireTestCase(BaseCase):
 ```
 
 <a id="sb_sf_10"></a>
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 10. Using the SeleniumBase browser launcher without BaseCase </h3>
+<h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> 10. Overriding the driver via "sb" fixture</h3>
 
-One way of running Selenium tests with pure ``python`` (as opposed to using ``pytest`` or ``nosetests``) is by using this format, which bypasses [BaseCase](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py) methods while still giving you ``browser_launcher`` with its powerful webdriver management software. SeleniumBase includes helper files such as [page_actions.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/page_actions.py), which may help you get around some of the limitations of bypassing ``BaseCase``. Here's an example:
+When you want to use SeleniumBase methods via the ``sb`` pytest fixture, but you want total freedom to control how you spin up your web browsers, this is the format you want. Although SeleniumBase gives you plenty of command-line options to change how your browsers are launched, this format gives you more control when the existing options aren't enough.
 
 ```python
-from seleniumbase import get_driver
-from seleniumbase import js_utils
-from seleniumbase import page_actions
+"""Overriding the "sb" fixture to override the driver."""
+import pytest
 
-driver = get_driver("chrome", headless=False)
-try:
-    driver.get("https://seleniumbase.io/apps/calculator")
-    page_actions.wait_for_element_visible(driver, "4", "id").click()
-    page_actions.wait_for_element_visible(driver, "2", "id").click()
-    page_actions.wait_for_text_visible(driver, "42", "output", "id")
-    js_utils.highlight_with_js(driver, "#output", 6, "")
-finally:
-    driver.quit()
+@pytest.fixture()
+def sb(request):
+    import sys
+    from selenium import webdriver
+    from seleniumbase import BaseCase
+
+    class BaseClass(BaseCase):
+        def setUp(self):
+            super(BaseClass, self).setUp()
+
+        def tearDown(self):
+            self.save_teardown_screenshot()
+            super(BaseClass, self).tearDown()
+
+        def base_method(self):
+            pass
+
+        def get_new_driver(self, *args, **kwargs):
+            """This method overrides get_new_driver() from BaseCase."""
+            options = webdriver.ChromeOptions()
+            if "linux" in sys.platform:
+                options.add_argument("--headless=chrome")
+            options.add_experimental_option(
+                "excludeSwitches", ["enable-automation"],
+            )
+            return webdriver.Chrome(options=options)
+
+    if request.cls:
+        request.cls.sb = BaseClass("base_method")
+        request.cls.sb.setUp()
+        yield request.cls.sb
+        request.cls.sb.tearDown()
+    else:
+        sb = BaseClass("base_method")
+        sb.setUp()
+        yield sb
+        sb.tearDown()
+
+def test_override_fixture_no_class(sb):
+    sb.open("https://seleniumbase.io/demo_page")
+    sb.type("#myTextInput", "This is Automated")
+
+class TestOverride:
+    def test_override_fixture_inside_class(self, sb):
+        sb.open("https://seleniumbase.io/demo_page")
+        sb.type("#myTextInput", "This is Automated")
 ```
 
-(From <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_browser_launcher.py">examples/raw_browser_launcher.py</a>)
+(From <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_override_sb_fixture.py">examples/test_override_sb_fixture.py</a>)
 
-The above format can be used as a drop-in replacement for virtually every Python/selenium framework, as it uses the raw ``driver`` for handling commands. The ``get_driver()`` method simplifies the work of managing drivers and spinning them up with optimal settings. Note that now you'll need to manage the spin-up and spin-down of browsers in tests, which was done automatically in tests that inherit ``BaseCase`` (or ones that use the ``sb`` pytest fixture). You'll also need to use extra code (as shown above) to make sure you don't leave any browsers hanging after your tests complete.
+Here's how the [selenium-wire](https://github.com/wkeeling/selenium-wire) integration may look when overriding the ``sb`` pytest fixture to override the driver:
+
+```python
+import pytest
+
+@pytest.fixture()
+def sb(request):
+    import sys
+    from seleniumbase import BaseCase
+    from seleniumwire import webdriver  # Requires "pip install selenium-wire"
+
+    class BaseClass(BaseCase):
+        def setUp(self):
+            super(BaseClass, self).setUp()
+
+        def tearDown(self):
+            self.save_teardown_screenshot()
+            super(BaseClass, self).tearDown()
+
+        def base_method(self):
+            pass
+
+        def get_new_driver(self, *args, **kwargs):
+            options = webdriver.ChromeOptions()
+            if "linux" in sys.platform:
+                options.add_argument("--headless=chrome")
+            options.add_experimental_option(
+                "excludeSwitches", ["enable-automation"],
+            )
+            return webdriver.Chrome(options=options)
+
+    if request.cls:
+        request.cls.sb = BaseClass("base_method")
+        request.cls.sb.setUp()
+        yield request.cls.sb
+        request.cls.sb.tearDown()
+    else:
+        sb = BaseClass("base_method")
+        sb.setUp()
+        yield sb
+        sb.tearDown()
+
+def test_wire_with_no_class(sb):
+    sb.open("https://seleniumbase.io/demo_page")
+    for request in sb.driver.requests:
+        print(request.url)
+
+class TestWire:
+    def test_wire_inside_class(self, sb):
+        sb.open("https://seleniumbase.io/demo_page")
+        for request in sb.driver.requests:
+            print(request.url)
+```
 
 <a id="sb_sf_11"></a>
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 11. SeleniumBase in Chinese</h3>
+<h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> 11. BaseCase with Chinese translations</h3>
 
 This format is similar to the English version with <code>BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Chinese. Here's an example of that:
 
@@ -330,7 +421,7 @@ class 我的测试类(硒测试用例):
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/translations/chinese_test_1.py">examples/translations/chinese_test_1.py</a> for the Chinese test.)
 
 <a id="sb_sf_12"></a>
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 12. SeleniumBase in Dutch</h3>
+<h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> 12. BaseCase with Dutch translations</h3>
 
 This format is similar to the English version with <code>BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Dutch. Here's an example of that:
 
@@ -359,7 +450,7 @@ class MijnTestklasse(Testgeval):
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/translations/dutch_test_1.py">examples/translations/dutch_test_1.py</a> for the Dutch test.)
 
 <a id="sb_sf_13"></a>
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 13. SeleniumBase in French</h3>
+<h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> 13. BaseCase with French translations</h3>
 
 This format is similar to the English version with <code>BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into French. Here's an example of that:
 
@@ -388,7 +479,7 @@ class MaClasseDeTest(CasDeBase):
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/translations/french_test_1.py">examples/translations/french_test_1.py</a> for the French test.)
 
 <a id="sb_sf_14"></a>
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 14. SeleniumBase in Italian</h3>
+<h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> 14. BaseCase with Italian translations</h3>
 
 This format is similar to the English version with <code>BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Italian. Here's an example of that:
 
@@ -417,7 +508,7 @@ class MiaClasseDiTest(CasoDiProva):
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/translations/italian_test_1.py">examples/translations/italian_test_1.py</a> for the Italian test.)
 
 <a id="sb_sf_15"></a>
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 15. SeleniumBase in Japanese</h3>
+<h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> 15. BaseCase with Japanese translations</h3>
 
 This format is similar to the English version with <code>BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Japanese. Here's an example of that:
 
@@ -447,7 +538,7 @@ class 私のテストクラス(セレニウムテストケース):
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/translations/japanese_test_1.py">examples/translations/japanese_test_1.py</a> for the Japanese test.)
 
 <a id="sb_sf_16"></a>
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 16. SeleniumBase in Korean</h3>
+<h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> 16. BaseCase with Korean translations</h3>
 
 This format is similar to the English version with <code>BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Korean. Here's an example of that:
 
@@ -475,7 +566,7 @@ class 테스트_클래스(셀레늄_테스트_케이스):
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/translations/korean_test_1.py">examples/translations/korean_test_1.py</a> for the Korean test.)
 
 <a id="sb_sf_17"></a>
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 17. SeleniumBase in Portuguese</h3>
+<h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> 17. BaseCase with Portuguese translations</h3>
 
 This format is similar to the English version with <code>BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Portuguese. Here's an example of that:
 
@@ -507,7 +598,7 @@ class MinhaClasseDeTeste(CasoDeTeste):
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/translations/portuguese_test_1.py">examples/translations/portuguese_test_1.py</a> for the Portuguese test.)
 
 <a id="sb_sf_18"></a>
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 18. SeleniumBase in Russian</h3>
+<h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> 18. BaseCase with Russian translations</h3>
 
 This format is similar to the English version with <code>BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Russian. Here's an example of that:
 
@@ -536,7 +627,7 @@ class МойТестовыйКласс(ТестНаСелен):
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/translations/russian_test_1.py">examples/translations/russian_test_1.py</a> for the Russian test.)
 
 <a id="sb_sf_19"></a>
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 19. SeleniumBase in Spanish</h3>
+<h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> 19. BaseCase with Spanish translations</h3>
 
 This format is similar to the English version with <code>BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Spanish. Here's an example of that:
 
@@ -565,7 +656,7 @@ class MiClaseDePrueba(CasoDePrueba):
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/translations/spanish_test_1.py">examples/translations/spanish_test_1.py</a> for the Spanish test.)
 
 <a id="sb_sf_20"></a>
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 20. Behave-BDD Gherkin tests that use SeleniumBase </h3>
+<h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> 20. Gherkin syntax with "behave" BDD runner </h3>
 
 With [Behave's BDD Gherkin format](https://behave.readthedocs.io/en/stable/gherkin.html), you can use natural language to write tests that work with SeleniumBase methods. Behave tests are run by calling ``behave`` on the command-line. This requires some special files in a specific directory structure. Here's an example of that structure:
 
@@ -646,7 +737,7 @@ Feature: SeleniumBase scenarios for the RealWorld App
     And Save screenshot to logs
 ```
 
-You can also create your own step files (eg. ``step_file.py``):
+You can also create your own step files (Eg. ``step_file.py``):
 
 ```python
 from behave import step
@@ -667,7 +758,7 @@ def login_to_swag_labs(context, user):
 (For more information, see the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md">SeleniumBase Behave BDD ReadMe</a>.)
 
 <a id="sb_sf_21"></a>
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 21. Using the <code>SB</code> context manager to get an instance of <code>sb</code> in a <code>with</code> block.</h3>
+<h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> 21. SeleniumBase SB (Python context manager)
 
 This format provides a pure Python way of using SeleniumBase without a test runner. Options can be passed via method instantiation or from the command-line. When setting the <code>test</code> option to <code>True</code> (or calling <code>python --test</code>), then standard test logging will occur, such as screenshots and reports for failing tests. All the usual SeleniumBase options are available, such as customizing the browser settings, etc. Here are some examples:
 
@@ -715,40 +806,80 @@ with SB(test=True, rtf=True, demo=True) as sb:
     sb.assert_element("div#drop2 img#logo")
 ```
 
-(See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/context_scripts.py">examples/context_scripts.py</a> for the test.)
+(See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_test_scripts.py">examples/raw_test_scripts.py</a> for the test.)
 
 <a id="sb_sf_22"></a>
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 22. Using the <code>GetDriver</code> context manager to get an instance of <code>driver</code> in a <code>with</code> block.</h3>
+<h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> 22. The driver manager (via context manager)
 
 This pure Python format gives you a raw <code>webdriver</code> instance in a <code>with</code> block. The SeleniumBase Driver Manager will automatically make sure that your driver is compatible with your browser version. It gives you full access to customize driver options via method args or via the command-line. The driver will automatically call <code>quit()</code> after the code leaves the <code>with</code> block. Here are some examples:
 
 ```python
+"""This script can be run with pure "python". (pytest not needed)."""
 from seleniumbase import js_utils
 from seleniumbase import page_actions
 from seleniumbase import Driver
 
-with Driver() as driver:
+# Python Context Manager
+with Driver() as driver:  # By default, browser="chrome"
     driver.get("https://google.com/ncr")
     js_utils.highlight_with_js(driver, 'img[alt="Google"]', 6, "")
 
-with Driver() as driver:  # By default, browser="chrome"
+with Driver() as driver:  # Also accepts command-line options
     driver.get("https://seleniumbase.github.io/demo_page")
     js_utils.highlight_with_js(driver, "h2", 5, "")
-    CSS = "css selector"
-    driver.find_element(CSS, "#myTextInput").send_keys("Automation")
-    driver.find_element(CSS, "#checkBox1").click()
+    by_css = "css selector"
+    driver.find_element(by_css, "#myTextInput").send_keys("Automation")
+    driver.find_element(by_css, "#checkBox1").click()
     js_utils.highlight_with_js(driver, "img", 5, "")
 
+# Python Context Manager (with options given)
 with Driver(browser="chrome", incognito=True) as driver:
     driver.get("https://seleniumbase.io/apps/calculator")
-    page_actions.wait_for_element_visible(driver, "4", "id").click()
-    page_actions.wait_for_element_visible(driver, "2", "id").click()
-    page_actions.wait_for_text_visible(driver, "42", "output", "id")
+    page_actions.wait_for_element(driver, "4", "id").click()
+    page_actions.wait_for_element(driver, "2", "id").click()
+    page_actions.wait_for_text(driver, "42", "output", "id")
     js_utils.highlight_with_js(driver, "#output", 6, "")
 ```
 
-(See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_driver.py">examples/raw_driver.py</a> for the test.)
+(See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_driver.py">examples/raw_driver.py</a> for an example.)
+
+<a id="sb_sf_23"></a>
+<h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> 23. The driver manager (via direct import) </h3>
+
+Another way of running Selenium tests with pure ``python`` (as opposed to using ``pytest`` or ``nosetests``) is by using this format, which bypasses [BaseCase](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py) methods while still giving you a flexible driver with a manager. SeleniumBase includes helper files such as [page_actions.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/page_actions.py), which may help you get around some of the limitations of bypassing ``BaseCase``. Here's an example:
+
+```python
+"""This script can be run with pure "python". (pytest not needed)."""
+from seleniumbase import Driver
+from seleniumbase import js_utils
+from seleniumbase import page_actions
+
+# Example with options. (Also accepts command-line options.)
+driver = Driver(browser="chrome", headless=False)
+try:
+    driver.get("https://seleniumbase.io/apps/calculator")
+    page_actions.wait_for_element(driver, "4", "id").click()
+    page_actions.wait_for_element(driver, "2", "id").click()
+    page_actions.wait_for_text(driver, "42", "output", "id")
+    js_utils.highlight_with_js(driver, "#output", 6, "")
+finally:
+    driver.quit()
+
+# Example 2 using default args or command-line options
+driver = Driver()
+driver.get("https://seleniumbase.github.io/demo_page")
+js_utils.highlight_with_js(driver, "h2", 5, "")
+by_css = "css selector"
+driver.find_element(by_css, "#myTextInput").send_keys("Automation")
+driver.find_element(by_css, "#checkBox1").click()
+js_utils.highlight_with_js(driver, "img", 5, "")
+driver.quit()  # If the script fails early, the driver still quits
+```
+
+(From <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_browser_launcher.py">examples/raw_browser_launcher.py</a>)
+
+The above format can be used as a drop-in replacement for virtually every Python/selenium framework, as it uses the raw ``driver`` instance for handling commands. The ``Driver()`` method simplifies the work of managing drivers with optimal settings, and it can be configured via multiple method args. The Driver also accepts command-line options (such as ``python --headless``) so that you don't need to modify your tests directly to use different settings. These command-line options only take effect if the associated method args remain unset (or set to ``None``) for the specified options.
 
 --------
 
-<h3 align="left"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/img/sb_logo_10.png" title="SeleniumBase" width="280" /></a></h3>
+<h3 align="left"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/img/sb_logo_10.png" title="SeleniumBase" width="280" /></a></h3>

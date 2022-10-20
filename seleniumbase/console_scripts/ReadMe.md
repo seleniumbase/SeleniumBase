@@ -1,4 +1,4 @@
-## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) 🔮 Console Scripts 🔮
+## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) 🔮 Console Scripts 🔮
 
 ⭐ SeleniumBase console scripts help you get things done, such as getting web drivers, creating a test directory with useful files, activating the SeleniumBase Recorder, launching the SeleniumBase Commander, translating tests into other languages, running a Selenium Grid, and more.
 
@@ -689,4 +689,4 @@ You can start, restart, or stop the Grid node.
 
 --------
 
-[<img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="290">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://seleniumbase.github.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="290">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
