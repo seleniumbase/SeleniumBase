@@ -656,7 +656,7 @@ class MiClaseDePrueba(CasoDePrueba):
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/translations/spanish_test_1.py">examples/translations/spanish_test_1.py</a> for the Spanish test.)
 
 <a id="sb_sf_20"></a>
-<h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> 20. Gherkin syntax with "behave" BDD runner </h3>
+<h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> 20. Gherkin syntax with "behave" BDD runner</h3>
 
 With [Behave's BDD Gherkin format](https://behave.readthedocs.io/en/stable/gherkin.html), you can use natural language to write tests that work with SeleniumBase methods. Behave tests are run by calling ``behave`` on the command-line. This requires some special files in a specific directory structure. Here's an example of that structure:
 
@@ -758,7 +758,7 @@ def login_to_swag_labs(context, user):
 (For more information, see the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md">SeleniumBase Behave BDD ReadMe</a>.)
 
 <a id="sb_sf_21"></a>
-<h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> 21. SeleniumBase SB (Python context manager)
+<h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> 21. SeleniumBase SB (Python context manager)</h3>
 
 This format provides a pure Python way of using SeleniumBase without a test runner. Options can be passed via method instantiation or from the command-line. When setting the <code>test</code> option to <code>True</code> (or calling <code>python --test</code>), then standard test logging will occur, such as screenshots and reports for failing tests. All the usual SeleniumBase options are available, such as customizing the browser settings, etc. Here are some examples:
 
@@ -809,7 +809,7 @@ with SB(test=True, rtf=True, demo=True) as sb:
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_test_scripts.py">examples/raw_test_scripts.py</a> for the test.)
 
 <a id="sb_sf_22"></a>
-<h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> 22. The driver manager (via context manager)
+<h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> 22. The driver manager (via context manager)</h3>
 
 This pure Python format gives you a raw <code>webdriver</code> instance in a <code>with</code> block. The SeleniumBase Driver Manager will automatically make sure that your driver is compatible with your browser version. It gives you full access to customize driver options via method args or via the command-line. The driver will automatically call <code>quit()</code> after the code leaves the <code>with</code> block. Here are some examples:
 
@@ -844,7 +844,7 @@ with Driver(browser="chrome", incognito=True) as driver:
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_driver.py">examples/raw_driver.py</a> for an example.)
 
 <a id="sb_sf_23"></a>
-<h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> 23. The driver manager (via direct import) </h3>
+<h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> 23. The driver manager (via direct import)</h3>
 
 Another way of running Selenium tests with pure ``python`` (as opposed to using ``pytest`` or ``nosetests``) is by using this format, which bypasses [BaseCase](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py) methods while still giving you a flexible driver with a manager. SeleniumBase includes helper files such as [page_actions.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/page_actions.py), which may help you get around some of the limitations of bypassing ``BaseCase``. Here's an example:
 
