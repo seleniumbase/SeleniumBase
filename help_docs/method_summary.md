@@ -1,6 +1,6 @@
-## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) SeleniumBase Methods (API Reference)
+## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) SeleniumBase Methods (API Reference)
 
-<!-- YouTube View --><a href="https://www.youtube.com/watch?v=_yNJlHnp2JA"><img src="https://seleniumbase.io/cdn/img/sb_api_youtube.png" title="SeleniumBase on YouTube" width="285" /></a>
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=_yNJlHnp2JA"><img src="https://seleniumbase.github.io/cdn/img/sb_api_youtube.png" title="SeleniumBase on YouTube" width="285" /></a>
 <!-- GitHub Only --><p>(<b><a href="https://www.youtube.com/watch?v=_yNJlHnp2JA">Common API Methods on YouTube</a></b>)</p>
 
 Here's a list of SeleniumBase method definitions, which are defined in **[base_case.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py)**
@@ -823,4 +823,4 @@ self._print(TEXT)  # Calls Python's print() / Allows for translations
 * [test_tinymce.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_tinymce.py)
 * And many more...
 
-[<img src="https://seleniumbase.io/cdn/img/sb_text_f.png" title="SeleniumBase" align="center" width="280">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://seleniumbase.github.io/cdn/img/sb_text_f.png" title="SeleniumBase" align="center" width="280">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)

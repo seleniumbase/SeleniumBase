@@ -1289,3 +1289,44 @@ def switch_to_window(driver, window, timeout=settings.SMALL_TIMEOUT):
             plural,
         )
         timeout_exception(Exception, message)
+
+
+############
+
+# Duplicates for easier use without BaseCase
+
+def wait_for_element(
+    driver,
+    selector,
+    by="css selector",
+    timeout=settings.LARGE_TIMEOUT,
+):
+    return wait_for_element_visible(
+        driver=driver,
+        selector=selector,
+        by=by,
+        timeout=timeout,
+    )
+
+
+def wait_for_text(
+    driver,
+    text,
+    selector,
+    by="css selector",
+    timeout=settings.LARGE_TIMEOUT,
+):
+    browser = None  # Only used for covering a Safari edge case
+    try:
+        if "safari:platformVersion" in driver.capabilities:
+            browser = "safari"
+    except Exception:
+        pass
+    return wait_for_text_visible(
+        driver=driver,
+        text=text,
+        selector=selector,
+        by=by,
+        timeout=timeout,
+        browser=browser,
+    )

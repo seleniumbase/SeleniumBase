@@ -1,3 +1,22 @@
+"""
+SeleniumBase as a Python Context Manager.
+#########################################
+
+The SeleniumBase SB Context Manager:
+Usage --> ``with SB() as sb:``
+Usage example -->
+    from seleniumbase import SB
+    with SB() as sb:  # Lots of args! (Eg. headless=True)
+        sb.open("https://google.com/ncr")
+        sb.type('[name="q"]', "SeleniumBase on GitHub\n")
+        sb.click('a[href*="github.com/seleniumbase"]')
+        sb.highlight("div.Layout-main")
+        sb.highlight("div.Layout-sidebar")
+        sb.sleep(0.5)
+    # The browser exits automatically after the "with" block ends.
+
+#########################################
+"""
 from contextlib import contextmanager
 
 
@@ -76,18 +95,6 @@ def SB(
     interval=None,  # SECONDS (Autoplay interval for SB Slides & Tour steps.)
     time_limit=None,  # SECONDS (Safely fail tests that exceed the time limit.)
 ):
-    """Context Manager for SeleniumBase.
-    Usage example ->
-        from seleniumbase import SB
-        with SB() as sb:
-            sb.open("https://google.com/ncr")
-            sb.type('[name="q"]', "SeleniumBase on GitHub\n")
-            sb.click('a[href*="github.com/seleniumbase"]')
-            sb.highlight("div.Layout-main")
-            sb.highlight("div.Layout-sidebar")
-            sb.sleep(0.5)
-        # The browser exits automatically after the "with" block ends.
-    """
     import sys
     import time
     import traceback

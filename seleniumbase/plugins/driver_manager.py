@@ -1,7 +1,32 @@
-from contextlib import contextmanager
+"""
+The SeleniumBase Driver as a Python Context Manager or a returnable object.
+###########################################################################
+
+The SeleniumBase Driver as a context manager:
+Usage --> ``with Driver() as driver:``
+Usage example -->
+    from seleniumbase import Driver
+    with Driver() as driver:
+        driver.get("https://google.com/ncr")
+    # The browser exits automatically after the "with" block ends.
+
+###########################################################################
+# Above: The driver as a context manager. (Used with a "with" statement.) #
+# ----------------------------------------------------------------------- #
+# Below: The driver as a returnable object. (Used with "return" command.) #
+###########################################################################
+
+The SeleniumBase Driver as a returnable object:
+Usage --> ``driver = Driver()``
+Usage example -->
+    from seleniumbase import Driver
+    driver = Driver()
+    driver.get("https://google.com/ncr")
+
+###########################################################################
+"""
 
 
-@contextmanager  # Usage: -> ``with Driver() as driver:``
 def Driver(
     browser=None,  # Choose from "chrome", "edge", "firefox", or "safari".
     headless=None,  # The original headless mode for Chromium and Firefox.
@@ -51,13 +76,6 @@ def Driver(
     undetected=None,  # Duplicate of "undetectable" to avoid confusion.
     uc_sub=None,  # Duplicate of "uc_subprocess" to avoid confusion.
 ):
-    """ Context Manager for the SeleniumBase Driver Manager.
-    Usage example:
-        from seleniumbase import Driver
-        with Driver() as driver:
-            driver.get("https://google.com/ncr")
-        # The browser exits automatically after the "with" block ends.
-    """
     import sys
     from seleniumbase.fixtures import constants
 
@@ -357,10 +375,4 @@ def Driver(
         device_pixel_ratio=d_p_r,
         browser=browser_name,
     )
-    try:
-        yield driver
-    finally:
-        try:
-            driver.quit()
-        except Exception:
-            pass
+    return driver

@@ -1,4 +1,4 @@
-## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) SeleniumBase Commander 🎖️
+## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) SeleniumBase Commander 🎖️
 
 🎖️ <b>SeleniumBase Commander</b> lets you run <code>pytest</code> scripts from a Desktop GUI.<br>
 
@@ -9,7 +9,7 @@ sbase gui
 * Starting the SeleniumBase Commander Desktop App...
 ```
 
-<img src="https://seleniumbase.io/cdn/img/sbase_commander_wide.png" title="SeleniumBase Commander" width="600">
+<img src="https://seleniumbase.github.io/cdn/img/sbase_commander_wide.png" title="SeleniumBase Commander" width="600">
 
 🎖️ <b>SeleniumBase Commander</b> loads the same tests that are found by:
 
@@ -38,11 +38,11 @@ sbase gui offline_examples/
 
 --------
 
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Other SeleniumBase Commanders:</h3>
+<h3><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32" /> Other SeleniumBase Commanders:</h3>
 
 * 🐝🎖️ [SeleniumBase Behave GUI / Commander](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/behave_gui.md)
 
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/behave_gui.md"><img src="https://seleniumbase.io/cdn/img/sbase_behave_gui_wide_5.png" title="SeleniumBase Behave GUI" width="400"></a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/behave_gui.md"><img src="https://seleniumbase.github.io/cdn/img/sbase_behave_gui_wide_5.png" title="SeleniumBase Behave GUI" width="400"></a>
 
 --------
 

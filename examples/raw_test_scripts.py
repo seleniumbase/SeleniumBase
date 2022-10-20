@@ -1,4 +1,4 @@
-"""Context Manager Tests"""
+"""Context Manager Tests. Can be run with pure "python". (pytest not needed)"""
 from seleniumbase import SB
 
 with SB(test=True) as sb:
