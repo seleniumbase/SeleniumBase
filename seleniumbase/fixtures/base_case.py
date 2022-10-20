@@ -6521,15 +6521,31 @@ class BaseCase(unittest.TestCase):
                         self.__extra_actions.append(action)
         return True
 
-    def assert_no_js_errors(self):
-        """Asserts that there are no JavaScript "SEVERE"-level page errors.
+    def assert_no_js_errors(self, exclude=[]):
+        """Asserts current URL has no "SEVERE"-level JavaScript errors.
         Works ONLY on Chromium browsers (Chrome or Edge).
         Does NOT work on Firefox, IE, Safari, or some other browsers:
             * See https://github.com/SeleniumHQ/selenium/issues/1161
         Based on the following Stack Overflow solution:
             * https://stackoverflow.com/a/41150512/7058266
+        @Params
+        exclude -->
+            A list of substrings or a single comma-separated string of
+            substrings for filtering out error URLs that contain them.
+            URLs that contain any excluded substring will get excluded
+            from the final errors list that's used with the assertion.
+        Examples:
+            self.assert_no_js_errors()
+            self.assert_no_js_errors(exclude=["/api.", "/analytics."])
+            self.assert_no_js_errors(exclude="//api.go,/analytics.go")
         """
         self.__check_scope()
+        if (
+            exclude
+            and not type(exclude) is list
+            and not type(exclude) is tuple
+        ):
+            exclude = str(exclude).replace(" ", "").split(",")
         time.sleep(0.1)  # May take a moment for errors to appear after loads.
         try:
             browser_logs = self.driver.get_log("browser")
@@ -6546,7 +6562,29 @@ class BaseCase(unittest.TestCase):
                     and underscore_library not in entry["message"]
                 ):
                     # Add errors if not caused by SeleniumBase dependencies
-                    errors.append(entry)
+                    if not exclude:
+                        errors.append(entry)
+                    else:
+                        found = False
+                        message = entry["message"]
+                        if message.count(" - Failed to load resource") == 1:
+                            message = message.split(
+                                " - Failed to load resource"
+                            )[0]
+                        elif message.count(" Uncaught TypeError: ") == 1:
+                            message = message.split(
+                                " Uncaught TypeError: "
+                            )[0]
+                        for substring in exclude:
+                            substring = str(substring)
+                            if (
+                                len(substring) > 0
+                                and substring in message
+                            ):
+                                found = True
+                                break
+                        if not found:
+                            errors.append(entry)
         if len(errors) > 0:
             for n in range(len(errors)):
                 f_t_l_r = " - Failed to load resource"
