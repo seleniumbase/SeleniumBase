@@ -5,9 +5,11 @@
 <meta property="og:image" content="https://seleniumbase.github.io/cdn/img/mac_sb_logo_5b.png" />
 <link rel="icon" href="https://seleniumbase.github.io/img/logo3b.png" />
 
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/sb_media_logo_t3.png" alt="SeleniumBase" title="SeleniumBase" width="442" /></a></p>
+<h1>SeleniumBase</h1>
 
-<p align="center"><b>SeleniumBase</b> is a <a href="https://www.selenium.dev/documentation/webdriver/" target="_blank">WebDriver</a> framework for <b>Python</b> and <b><a href="https://docs.pytest.org/en/latest/how-to/usage.html">pytest</a></b>.</p>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/logo_base_3.png" alt="SeleniumBase" title="SeleniumBase" width="234" /></a></p>
+
+<h3 align="center"><b>All-in-one test automation framework</b></h3>
 
 <p align="center"><a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=3399EE" alt="PyPI version" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/releases" target="_blank"><img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=22AAEE" alt="GitHub version" /></a> <a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"><img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a></p>
 
@@ -107,7 +109,7 @@ pytest test_swag_labs.py --demo
 
 <p>💡 SeleniumBase gives you clean error output when a test fails. With raw Selenium, error messages can get very messy.</p>
 
-<p>💡 SeleniumBase gives you the option to generate a dashboard and reports for tests. It also saves screenshots from failing tests to the <code>./latest_logs/</code> folder. Raw Selenium does not have these options out-of-the-box.</p>
+<p>💡 SeleniumBase gives you the option to generate a dashboard and reports for tests. It also saves screenshots from failing tests to the <code>./latest_logs/</code> folder. Raw <a href="https://www.selenium.dev/documentation/webdriver/" target="_blank">Selenium</a> does not have these options out-of-the-box.</p>
 
 <p>💡 SeleniumBase includes desktop GUI apps for running tests, such as <b>SeleniumBase Commander</b> for <code>pytest</code>, and <b>SeleniumBase Behave GUI.</b></p>
 
@@ -381,7 +383,7 @@ self.assert_no_js_errors()  # Verify there are no JS errors.
 <a id="fun_facts"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> Fun Facts / Learn More:</h2>
 
-<p>✅ SeleniumBase automatically handles common WebDriver actions such as launching web browsers before tests, saving screenshots during failures, and closing web browsers after tests.</p>
+<p>✅ SeleniumBase automatically handles common <a href="https://www.selenium.dev/documentation/webdriver/" target="_blank">WebDriver</a> actions such as launching web browsers before tests, saving screenshots during failures, and closing web browsers after tests.</p>
 
 <p>✅ SeleniumBase lets you <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md">customize test runs from the command-line</a>.</p>
 
@@ -898,7 +900,7 @@ self.click("div#my_id")
 self.type("input#id_value", "2012")
 ```
 
-You can also use <code>self.add_text()</code> or the WebDriver <code>.send_keys()</code> command, but those won't clear the text box first if there's already text inside.
+You can also use <code>self.add_text()</code> or the <a href="https://www.selenium.dev/documentation/webdriver/" target="_blank">WebDriver</a> <code>.send_keys()</code> command, but those won't clear the text box first if there's already text inside.
 
 🔵 Getting the text from an element on a page:
 
@@ -1124,9 +1126,9 @@ class MyTestClass(BaseCase):
 <code>deferred_assert_element()</code> and <code>deferred_assert_text()</code> will save any exceptions that would be raised.
 To flush out all the failed deferred asserts into a single exception, make sure to call <code>self.process_deferred_asserts()</code> at the end of your test method. If your test hits multiple pages, you can call <code>self.process_deferred_asserts()</code> before navigating to a new page so that the screenshot from your log files matches the URL where the deferred asserts were made.
 
-🔵 Accessing Raw WebDriver:
+🔵 Accessing Raw <a href="https://www.selenium.dev/documentation/webdriver/" target="_blank">WebDriver</a>:
 
-<p>If you need access to any commands that come with standard WebDriver, you can call them directly like this:</p>
+<p>If you need access to any commands that come with standard <a href="https://www.selenium.dev/documentation/webdriver/" target="_blank">WebDriver</a>, you can call them directly like this:</p>
 
 ```python
 self.driver.delete_all_cookies()
