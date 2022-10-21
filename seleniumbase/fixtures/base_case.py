@@ -8000,15 +8000,15 @@ class BaseCase(unittest.TestCase):
         To force a print during multithreaded tests, use: "sys.stderr.write()".
         To print without the new-line character end, use: "sys.stdout.write()".
         """
-        if not sb_config._multithreaded:
-            print(msg)
-        else:
+        if hasattr(sb_config, "_multithreaded") and sb_config._multithreaded:
             if type(msg) is not str:
                 try:
                     msg = str(msg)
                 except Exception:
                     pass
             sys.stderr.write(msg + "\n")
+        else:
+            print(msg)
 
     def start_tour(self, name=None, interval=0):
         self.play_tour(name=name, interval=interval)
