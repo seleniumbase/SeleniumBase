@@ -388,6 +388,12 @@ def SB(
         disable_ws = True
     if undetectable or undetected or uc or uc_subprocess or uc_sub:
         undetectable = True
+    if (
+        (undetectable or undetected or uc)
+        and uc_subprocess is None
+        and uc_sub is None
+    ):
+        uc_subprocess = True  # Use UC as a subprocess by default.
     elif (
         "--undetectable" in sys_argv
         or "--undetected" in sys_argv
