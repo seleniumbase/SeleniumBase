@@ -1,4 +1,5 @@
 """Clean SeleniumBase Example - (Uses simple, reliable methods)"""
+import pytest
 from seleniumbase import BaseCase
 
 
@@ -18,3 +19,8 @@ class CleanSeleniumBase(BaseCase):
         self.click("#react-burger-menu-btn")
         self.click("a#logout_sidebar_link")
         self.assert_element("input#login-button")
+
+
+# When run with "python" instead of "pytest"
+if __name__ == "__main__":
+    pytest.main([__file__])

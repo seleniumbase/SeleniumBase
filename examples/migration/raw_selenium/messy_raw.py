@@ -1,4 +1,5 @@
 """Messy Raw Selenium Example - (This test does NOT use SeleniumBase)"""
+import pytest
 import sys
 from selenium import webdriver
 from selenium.webdriver.support import expected_conditions as EC
@@ -75,3 +76,8 @@ class MessyRawSelenium(TestCase):
         self.wait_for_element_clickable("#react-burger-menu-btn").click()
         self.wait_for_element_clickable("a#logout_sidebar_link").click()
         self.wait_for_element_visible("input#login-button")
+
+
+# When run with "python" instead of "pytest"
+if __name__ == "__main__":
+    pytest.main([__file__])

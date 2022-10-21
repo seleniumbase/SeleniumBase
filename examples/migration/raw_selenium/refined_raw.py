@@ -1,4 +1,5 @@
 """Refined Raw Selenium Example - (This test does NOT use SeleniumBase)"""
+import pytest
 import sys
 from selenium import webdriver
 from selenium.webdriver.support import expected_conditions as EC
@@ -117,3 +118,8 @@ class RefinedRawSelenium(TestCase):
         self.click("#react-burger-menu-btn")
         self.click("a#logout_sidebar_link")
         self.assert_element("input#login-button")
+
+
+# When run with "python" instead of "pytest"
+if __name__ == "__main__":
+    pytest.main([__file__])

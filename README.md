@@ -1,15 +1,15 @@
 <meta property="og:site_name" content="SeleniumBase">
 <meta property="og:title" content="SeleniumBase: Python Web Automation and E2E Testing" />
 <meta property="og:description" content="Fast, easy, and reliable Web/UI testing with Python." />
-<meta property="og:keywords" content="Python, pytest, selenium, webdriver, testing, automation, seleniumbase, framework, RPA, behave, BDD, nosetests, dashboard, recorder, reports, gui, screenshots">
+<meta property="og:keywords" content="Python, pytest, selenium, webdriver, testing, automation, seleniumbase, framework, dashboard, recorder, reports, screenshots">
 <meta property="og:image" content="https://seleniumbase.github.io/cdn/img/mac_sb_logo_5b.png" />
 <link rel="icon" href="https://seleniumbase.github.io/img/logo3b.png" />
 
-<h1>SeleniumBase</h1>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/sb_logo_p3.png" alt="SeleniumBase" title="SeleniumBase" width="406" /></a></p>
 
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/logo_base_3.png" alt="SeleniumBase" title="SeleniumBase" width="234" /></a></p>
+<h3 align="center"><b>All-in-one Test Automation Framework</b></h3>
 
-<h3 align="center"><b>All-in-one test automation framework</b></h3>
+<h4 align="center"><img src="https://seleniumbase.github.io/cdn/img/python_logo.png" title="SeleniumBase" width="29" /> <b>For Python enthusiasts and enterprise developers</b> <img src="https://seleniumbase.github.io/cdn/img/python_logo.png" title="SeleniumBase" width="29" /></h4>
 
 <p align="center"><a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=3399EE" alt="PyPI version" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/releases" target="_blank"><img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=22AAEE" alt="GitHub version" /></a> <a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"><img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a></p>
 
@@ -960,21 +960,23 @@ self.assert_text("Tea. Earl Grey. Hot.", "div#trek div.picard div.quotes", timeo
 🔵 Asserting Anything:
 
 ```python
-self.assert_true(myvar1 == something)
+self.assert_true(var1 == var2)
+
+self.assert_false(var1 == var2)
 
 self.assert_equal(var1, var2)
 ```
 
 🔵 Useful Conditional Statements: (with creative examples)
 
-* ``is_element_visible(selector)``  (visible on the page)
+❓ ``is_element_visible(selector):``  (visible on the page)
 
 ```python
 if self.is_element_visible('div#warning'):
     print("Red Alert: Something bad might be happening!")
 ```
 
-* ``is_element_present(selector)``  (present in the HTML)
+❓ ``is_element_present(selector):``  (present in the HTML)
 
 ```python
 if self.is_element_present('div#top_secret img.tracking_cookie'):
@@ -984,8 +986,6 @@ else:
     self.contact_the_nsa(url=current_url, message="Dark Zone Found")  # Not a real SeleniumBase method
 ```
 
-Another example:
-
 ```python
 def is_there_a_cloaked_klingon_ship_on_this_page():
     if self.is_element_present("div.ships div.klingon"):
@@ -993,7 +993,16 @@ def is_there_a_cloaked_klingon_ship_on_this_page():
     return False
 ```
 
-* ``is_text_visible(text, selector)``  (text visible on element)
+❓ ``is_text_visible(text, selector):``  (text visible on element)
+
+```python
+if self.is_text_visible("You Shall Not Pass!", "h1"):
+    self.open("https://www.youtube.com/watch?v=3xYXUeSmb-Y")
+```
+
+<div></div>
+<details>
+<summary> ▶️ Click for a longer example of <code>is_text_visible():</code></summary>
 
 ```python
 def get_mirror_universe_captain_picard_superbowl_ad(superbowl_year):
@@ -1020,6 +1029,15 @@ def get_mirror_universe_captain_picard_superbowl_ad(superbowl_year):
         return "Picard Mirror Universe Wikimedia Superbowl Ad 2015"
     else:
         raise Exception("Reports of my assimilation are greatly exaggerated.")
+```
+
+</details>
+
+❓ ``is_link_text_visible(link_text):``
+
+```python
+if self.is_link_text_visible("Stop! Hammer time!"):
+    self.click_link("Stop! Hammer time!")
 ```
 
 🔵 Switching Tabs:
@@ -1164,15 +1182,15 @@ pytest --reruns=1 --reruns-delay=1
 </p>
 <p><div><a href="https://github.com/mdmintz">https://github.com/mdmintz</a></div></p>
 
-<div><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/fancy_logo_14.png" title="SeleniumBase" width="200" /></a></div> <div><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" title="SeleniumBase" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" title="SeleniumBase" alt="Join the chat!" /></a></div> <div><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://img.shields.io/badge/tested%20with-SeleniumBase-04C38E.svg" alt="Tested with SeleniumBase" /></a></div> <div><a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a></div> <div><a href="https://pepy.tech/project/seleniumbase" target="_blank"><img src="https://pepy.tech/badge/seleniumbase" alt="SeleniumBase PyPI downloads" /></a></div>
+<div><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/fancy_logo_14.png" title="SeleniumBase" width="220" /></a></div> <div><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" title="SeleniumBase" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" title="SeleniumBase" alt="Join the chat!" /></a></div> <div><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://img.shields.io/badge/tested%20with-SeleniumBase-04C38E.svg" alt="Tested with SeleniumBase" /></a></div> <div><a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a></div> <div><a href="https://pepy.tech/project/seleniumbase" target="_blank"><img src="https://pepy.tech/badge/seleniumbase" alt="SeleniumBase PyPI downloads" /></a></div>
 
 <p><div>
-<span><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.github.io/img/social/share_github.svg" title="SeleniumBase on GitHub" alt="SeleniumBase on GitHub" width="40" /></a></span>
+<span><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.github.io/img/social/share_github.svg" title="SeleniumBase on GitHub" alt="SeleniumBase on GitHub" width="43" /></a></span>
 <span><a href="https://www.facebook.com/SeleniumBase" target="_blank"><img src="https://seleniumbase.github.io/img/social/share_facebook.svg" title="SeleniumBase on Facebook" alt="SeleniumBase on Facebook" width="37" /></a></span>
-<span><a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://seleniumbase.github.io/img/social/share_gitter.svg" title="SeleniumBase on Gitter" alt="SeleniumBase on Gitter" width="32" /></a></span>
+<span><a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://seleniumbase.github.io/img/social/share_gitter.svg" title="SeleniumBase on Gitter" alt="SeleniumBase on Gitter" width="35" /></a></span>
 <span><a href="https://instagram.com/seleniumbase" target="_blank"><img src="https://seleniumbase.github.io/img/social/share_instagram.svg" title="SeleniumBase on Instagram" alt="SeleniumBase on Instagram" width="33" /></a></span>
-<span><a href="https://twitter.com/seleniumbase" target="_blank"><img src="https://seleniumbase.github.io/img/social/share_twitter.svg" title="SeleniumBase on Twitter" alt="SeleniumBase on Twitter" width="40" /></a></span>
+<span><a href="https://twitter.com/seleniumbase" target="_blank"><img src="https://seleniumbase.github.io/img/social/share_twitter.svg" title="SeleniumBase on Twitter" alt="SeleniumBase on Twitter" width="39" /></a></span>
 </div></p>
 
-<p><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/super_logo_sb.png" alt="SeleniumBase" title="SeleniumBase" width="200" /></a></p>
+<p><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/sb_logo_i2.png" alt="SeleniumBase" title="SeleniumBase" width="240" /></a></p>
 <p><a href="https://www.python.org/downloads/" target="_blank"><img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=22AAEE&logo=python" title="Supported Python Versions" /></a></p>
