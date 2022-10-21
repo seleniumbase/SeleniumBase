@@ -1,4 +1,5 @@
 """Flaky Raw Selenium Example - (This test does NOT use SeleniumBase)"""
+import pytest
 import sys
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -63,3 +64,8 @@ class FlakyMessyRawSelenium(TestCase):
         self.driver.find_element(by_css, "#react-burger-menu-btn").click()
         self.driver.find_element(by_css, "a#logout_sidebar_link").click()
         self.driver.find_element(by_css, "input#login-button")
+
+
+# When run with "python" instead of "pytest"
+if __name__ == "__main__":
+    pytest.main([__file__])

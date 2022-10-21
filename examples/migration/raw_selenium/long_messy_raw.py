@@ -1,4 +1,5 @@
 """Long & Messy Raw Selenium Example - (This test does NOT use SeleniumBase)"""
+import pytest
 import sys
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -87,3 +88,8 @@ class LongMessyRawSelenium(TestCase):
         WebDriverWait(self.driver, 10).until(
             EC.visibility_of_element_located((by_css, "input#login-button"))
         )
+
+
+# When run with "python" instead of "pytest"
+if __name__ == "__main__":
+    pytest.main([__file__])
