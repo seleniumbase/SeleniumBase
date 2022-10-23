@@ -30,7 +30,7 @@ markdown_extensions:
 # Configuration
 theme:
   name: material
-  logo: img/green_logo.png
+  logo: img/logo3c.png
   favicon: img/green_logo3.png
   language: en
   include_homepage_in_sidebar: true
