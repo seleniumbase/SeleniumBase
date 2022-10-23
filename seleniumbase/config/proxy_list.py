@@ -19,10 +19,11 @@ you can try finding one from one of following sites:
 * https://www.us-proxy.org/
 * https://hidemy.name/en/proxy-list/
 * http://free-proxy.cz/en/proxylist/country/all/https/ping/all
+* https://github.com/mertguvencli/http-proxy-list
 """
 
 PROXY_LIST = {
-    "example1": "152.179.12.86:3128",  # (Example) - set your own proxy here
+    "example1": "170.39.193.236:3128",  # (Example) - set your own proxy here
     "example2": "socks4://50.197.210.138:32100",  # (Example)
     "proxy1": None,
     "proxy2": None,
