@@ -1,5 +1,4 @@
 """Clean SeleniumBase Example - (Uses simple, reliable methods)"""
-import pytest
 from seleniumbase import BaseCase
 
 
@@ -23,4 +22,6 @@ class CleanSeleniumBase(BaseCase):
 
 # When run with "python" instead of "pytest"
 if __name__ == "__main__":
-    pytest.main([__file__])
+    from pytest import main
+
+    main([__file__])

@@ -1,5 +1,4 @@
-"""Refined Raw Selenium Example - (This test does NOT use SeleniumBase)"""
-import pytest
+"""Refined Raw Selenium Example - (ONLY Selenium / NO SeleniumBase)"""
 import sys
 from selenium import webdriver
 from selenium.webdriver.support import expected_conditions as EC
@@ -120,6 +119,8 @@ class RefinedRawSelenium(TestCase):
         self.assert_element("input#login-button")
 
 
-# When run with "python" instead of "pytest"
+# When run with "python" instead of "pytest" or "python -m unittest"
 if __name__ == "__main__":
-    pytest.main([__file__])
+    from unittest import main
+
+    main()

@@ -1,5 +1,4 @@
-"""Flaky Raw Selenium Example - (This test does NOT use SeleniumBase)"""
-import pytest
+"""Flaky Raw Selenium Example - (ONLY Selenium / NO SeleniumBase)"""
 import sys
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -66,6 +65,8 @@ class FlakyMessyRawSelenium(TestCase):
         self.driver.find_element(by_css, "input#login-button")
 
 
-# When run with "python" instead of "pytest"
+# When run with "python" instead of "pytest" or "python -m unittest"
 if __name__ == "__main__":
-    pytest.main([__file__])
+    from unittest import main
+
+    main()

@@ -1,5 +1,4 @@
-"""Long & Messy Raw Selenium Example - (This test does NOT use SeleniumBase)"""
-import pytest
+"""Long & Messy Raw Selenium Example - (ONLY Selenium / NO SeleniumBase)"""
 import sys
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -90,6 +89,8 @@ class LongMessyRawSelenium(TestCase):
         )
 
 
-# When run with "python" instead of "pytest"
+# When run with "python" instead of "pytest" or "python -m unittest"
 if __name__ == "__main__":
-    pytest.main([__file__])
+    from unittest import main
+
+    main()
