@@ -386,6 +386,7 @@ sbase codegen new_test.py --url=wikipedia.org
 ``--url=URL``  (Sets the initial start page URL.)
 ``--edge``  (Use Edge browser instead of Chrome.)
 ``--gui`` / ``--headed``  (Use headed mode on Linux.)
+``--uc`` / ``--undetected``  (Use undetectable mode.)
 ``--overwrite``  (Overwrite file when it exists.)
 ``--behave``  (Also output Behave/Gherkin files.)
 
@@ -404,6 +405,7 @@ sbase recorder [OPTIONS]
 
 * Options:
 
+``--uc`` / ``--undetected``  (Use undetectable mode.)
 ``--behave``  (Also output Behave/Gherkin files.)
 
 * Output:

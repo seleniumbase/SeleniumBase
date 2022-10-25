@@ -7,6 +7,7 @@ Usage:
            sbase recorder [OPTIONS]
 
 Options:
+    --uc / --undetected  (Use undetectable mode.)
     --behave  (Also output Behave/Gherkin files.)
 
 Output:
@@ -132,6 +133,12 @@ def do_recording(file_name, url, overwrite_enabled, use_chrome, window):
         command = "sbase mkrec %s --url=%s --gui" % (file_name, url)
         if not use_chrome:
             command += " --edge"
+        if (
+            "--uc" in command_args
+            or "--undetected" in command_args
+            or "--undetectable" in command_args
+        ):
+            command += " --uc"
         command += add_on
         poll = None
         if sb_config.rec_subprocess_used:
