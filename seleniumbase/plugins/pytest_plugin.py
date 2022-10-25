@@ -96,6 +96,7 @@ def pytest_addoption(parser):
     --final-debug  (Enter Debug Mode after each test ends. Don't use with CI!)
     --dashboard  (Enable the SeleniumBase Dashboard. Saved at: dashboard.html)
     --dash-title=STRING  (Set the title shown for the generated dashboard.)
+    --enable-3d-apis  (Enables WebGL and 3D APIs.)
     --swiftshader  (Use Chrome's "--use-gl=swiftshader" feature.)
     --incognito  (Enable Chrome's Incognito mode.)
     --guest  (Enable Chrome's Guest mode.)
@@ -981,6 +982,14 @@ def pytest_addoption(parser):
         help="Set the title shown for the generated dashboard.",
     )
     parser.addoption(
+        "--enable_3d_apis",
+        "--enable-3d-apis",
+        action="store_true",
+        dest="enable_3d_apis",
+        default=False,
+        help="""Using this enables WebGL and 3D APIs.""",
+    )
+    parser.addoption(
         "--swiftshader",
         action="store_true",
         dest="swiftshader",
@@ -1393,6 +1402,7 @@ def pytest_configure(config):
     sb_config.final_debug = config.getoption("final_debug")
     sb_config.dashboard = config.getoption("dashboard")
     sb_config.dash_title = config.getoption("dash_title")
+    sb_config.enable_3d_apis = config.getoption("enable_3d_apis")
     sb_config.swiftshader = config.getoption("swiftshader")
     sb_config.incognito = config.getoption("incognito")
     sb_config.guest_mode = config.getoption("guest_mode")

@@ -3189,6 +3189,7 @@ class BaseCase(unittest.TestCase):
         guest_mode=None,
         devtools=None,
         remote_debug=None,
+        enable_3d_apis=None,
         swiftshader=None,
         ad_block_on=None,
         block_images=None,
@@ -3238,6 +3239,7 @@ class BaseCase(unittest.TestCase):
         guest - the option to enable Chrome's Guest mode (Chrome)
         devtools - the option to open Chrome's DevTools on start (Chrome)
         remote_debug - the option to enable Chrome's Remote Debugger
+        enable_3d_apis - the option to enable WebGL and 3D APIs (Chrome)
         swiftshader - the option to use Chrome's swiftshader (Chrome-only)
         ad_block_on - the option to block ads from loading (Chromium-only)
         block_images - the option to block images from loading (Chrome)
@@ -3341,6 +3343,8 @@ class BaseCase(unittest.TestCase):
             devtools = self.devtools
         if remote_debug is None:
             remote_debug = self.remote_debug
+        if enable_3d_apis is None:
+            enable_3d_apis = self.enable_3d_apis
         if swiftshader is None:
             swiftshader = self.swiftshader
         if ad_block_on is None:
@@ -3416,6 +3420,7 @@ class BaseCase(unittest.TestCase):
             guest_mode=guest_mode,
             devtools=devtools,
             remote_debug=remote_debug,
+            enable_3d_apis=enable_3d_apis,
             swiftshader=swiftshader,
             ad_block_on=ad_block_on,
             block_images=block_images,
@@ -12777,6 +12782,7 @@ class BaseCase(unittest.TestCase):
                 self.dash_lock = fasteners.InterProcessLock(
                     constants.Dashboard.LOCKFILE
                 )
+            self.enable_3d_apis = sb_config.enable_3d_apis
             self.swiftshader = sb_config.swiftshader
             self.user_data_dir = sb_config.user_data_dir
             self.extension_zip = sb_config.extension_zip
@@ -13057,6 +13063,7 @@ class BaseCase(unittest.TestCase):
                 guest_mode=self.guest_mode,
                 devtools=self.devtools,
                 remote_debug=self.remote_debug,
+                enable_3d_apis=self.enable_3d_apis,
                 swiftshader=self.swiftshader,
                 ad_block_on=self.ad_block_on,
                 block_images=self.block_images,
