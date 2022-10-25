@@ -56,6 +56,7 @@ def Driver(
     guest_mode=None,  # Enable Chromium's Guest mode.
     devtools=None,  # Open Chromium's DevTools when the browser opens.
     remote_debug=None,  # Enable Chrome's Debugger on "http://localhost:9222".
+    enable_3d_apis=None,  # Enable WebGL and 3D APIs.
     swiftshader=None,  # Use Chrome's "--use-gl=swiftshader" feature.
     ad_block_on=None,  # Block some types of display ads from loading.
     block_images=None,  # Block images from loading during tests.
@@ -299,32 +300,37 @@ def Driver(
     elif "--pls=none" in sys_argv or '--pls="none"' in sys_argv:
         page_load_strategy = "none"
     if block_images is None:
-        if "--block-images" in sys_argv:
+        if "--block-images" in sys_argv or "--block_images" in sys_argv:
             block_images = True
         else:
             block_images = False
     if do_not_track is None:
-        if "--do-not-track" in sys_argv:
+        if "--do-not-track" in sys_argv or "--do_not_track" in sys_argv:
             do_not_track = True
         else:
             do_not_track = False
     if external_pdf is None:
-        if "--external-pdf" in sys_argv:
+        if "--external-pdf" in sys_argv or "--external_pdf" in sys_argv:
             external_pdf = True
         else:
             external_pdf = False
     if remote_debug is None:
-        if "--remote-debug" in sys_argv:
+        if "--remote-debug" in sys_argv or "--remote_debug" in sys_argv:
             remote_debug = True
         else:
             remote_debug = False
+    if enable_3d_apis is None:
+        if "--enable-3d-apis" in sys_argv or "--enable_3d_apis" in sys_argv:
+            enable_3d_apis = True
+        else:
+            enable_3d_apis = False
     if swiftshader is None:
         if "--swiftshader" in sys_argv:
             swiftshader = True
         else:
             swiftshader = False
     if ad_block_on is None:
-        if "--ad-block" in sys_argv:
+        if "--ad-block" in sys_argv or "--ad_block" in sys_argv:
             ad_block_on = True
         else:
             ad_block_on = False
@@ -362,6 +368,7 @@ def Driver(
         guest_mode=guest_mode,
         devtools=devtools,
         remote_debug=remote_debug,
+        enable_3d_apis=enable_3d_apis,
         swiftshader=swiftshader,
         ad_block_on=ad_block_on,
         block_images=block_images,

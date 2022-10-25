@@ -251,19 +251,60 @@ def safe_execute_script(driver, script):
         driver.execute_script(script)
 
 
+def remove_extra_slashes(selector):
+    if selector.count('\\"') > 0:
+        if selector.count('\\"') == selector.count('"'):
+            selector = selector.replace('\\"', '"')
+        elif selector.count('\\"') == selector[1:-1].count('"') and (
+            "'" not in selector[1:-1]
+        ):
+            selector = "'" + selector[1:-1].replace('\\"', '"') + "'"
+        else:
+            pass
+    if selector.count("\\'") > 0:
+        if selector.count("\\'") == selector.count("'"):
+            selector = selector.replace("\\'", "'")
+        elif selector.count("\\'") == selector[1:-1].count("'") and (
+            '"' not in selector[1:-1]
+        ):
+            selector = '"' + selector[1:-1].replace("\\'", "'") + '"'
+        else:
+            pass
+    return selector
+
+
+def optimize_selector(selector):
+    if (len(selector) > 2 and selector[0] == "'") and (
+        selector[-1] == "'" and '"' not in selector[1:-1]
+    ):
+        selector = '"' + selector[1:-1] + '"'
+    if (
+        selector.count('"') == 0
+        and selector.count("'") >= 2
+        and selector.count("'") % 2 == 0
+        and "='" in selector
+        and "']" in selector
+    ):
+        swap_char = "*_SWAP_CHAR_*"
+        selector = selector.replace("'", swap_char)
+        selector = selector.replace('"', "'")
+        selector = selector.replace(swap_char, '"')
+    return selector
+
+
 def wait_for_css_query_selector(
-    driver, selector, timeout=settings.SMALL_TIMEOUT
+    driver, selector, timeout=settings.LARGE_TIMEOUT
 ):
     element = None
+    selector = escape_quotes_if_needed(selector)
+    selector = remove_extra_slashes(selector)
+    selector = optimize_selector(selector)
+    script = """return document.querySelector('%s');""" % selector
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
         try:
-            selector = re.escape(selector)
-            selector = escape_quotes_if_needed(selector)
-            element = driver.execute_script(
-                """return document.querySelector('%s');""" % selector
-            )
+            element = driver.execute_script(script)
             if element:
                 return element
         except Exception:

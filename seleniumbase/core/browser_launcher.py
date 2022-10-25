@@ -362,6 +362,7 @@ def _set_chrome_options(
     guest_mode,
     devtools,
     remote_debug,
+    enable_3d_apis,
     swiftshader,
     ad_block_on,
     block_images,
@@ -630,7 +631,8 @@ def _set_chrome_options(
     chrome_options.add_argument("--disable-prompt-on-repost")
     chrome_options.add_argument("--dns-prefetch-disable")
     chrome_options.add_argument("--disable-translate")
-    chrome_options.add_argument("--disable-3d-apis")
+    if not enable_3d_apis:
+        chrome_options.add_argument("--disable-3d-apis")
     if (
         is_using_uc(undetectable, browser_name)
         and (
@@ -904,6 +906,7 @@ def get_driver(
     guest_mode=False,
     devtools=False,
     remote_debug=False,
+    enable_3d_apis=False,
     swiftshader=False,
     ad_block_on=False,
     block_images=False,
@@ -1068,6 +1071,7 @@ def get_driver(
             guest_mode,
             devtools,
             remote_debug,
+            enable_3d_apis,
             swiftshader,
             ad_block_on,
             block_images,
@@ -1114,6 +1118,7 @@ def get_driver(
             guest_mode,
             devtools,
             remote_debug,
+            enable_3d_apis,
             swiftshader,
             ad_block_on,
             block_images,
@@ -1164,6 +1169,7 @@ def get_remote_driver(
     guest_mode,
     devtools,
     remote_debug,
+    enable_3d_apis,
     swiftshader,
     ad_block_on,
     block_images,
@@ -1264,6 +1270,7 @@ def get_remote_driver(
             guest_mode,
             devtools,
             remote_debug,
+            enable_3d_apis,
             swiftshader,
             ad_block_on,
             block_images,
@@ -1493,6 +1500,7 @@ def get_remote_driver(
             guest_mode,
             devtools,
             remote_debug,
+            enable_3d_apis,
             swiftshader,
             ad_block_on,
             block_images,
@@ -1688,6 +1696,7 @@ def get_local_driver(
     guest_mode,
     devtools,
     remote_debug,
+    enable_3d_apis,
     swiftshader,
     ad_block_on,
     block_images,
@@ -2040,7 +2049,8 @@ def get_local_driver(
         edge_options.add_argument("--dom-automation")
         edge_options.add_argument("--disable-hang-monitor")
         edge_options.add_argument("--disable-prompt-on-repost")
-        edge_options.add_argument("--disable-3d-apis")
+        if not enable_3d_apis:
+            edge_options.add_argument("--disable-3d-apis")
         if (
             selenium4_or_newer
             and page_load_strategy
@@ -2288,6 +2298,7 @@ def get_local_driver(
                 guest_mode,
                 devtools,
                 remote_debug,
+                enable_3d_apis,
                 swiftshader,
                 ad_block_on,
                 block_images,
@@ -2351,6 +2362,7 @@ def get_local_driver(
                 guest_mode,
                 devtools,
                 remote_debug,
+                enable_3d_apis,
                 swiftshader,
                 ad_block_on,
                 block_images,
@@ -2732,6 +2744,7 @@ def get_local_driver(
                         guest_mode,
                         devtools,
                         remote_debug,
+                        enable_3d_apis,
                         swiftshader,
                         ad_block_on,
                         block_images,

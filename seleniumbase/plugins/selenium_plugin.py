@@ -72,6 +72,7 @@ class SeleniumBrowser(Plugin):
     --uc-sub | --uc-subprocess  (Use undetected-chromedriver as a subprocess.)
     --remote-debug  (Enable Chrome's Remote Debugger on http://localhost:9222)
     --final-debug  (Enter Debug Mode after each test ends. Don't use with CI!)
+    --enable-3d-apis  (Enables WebGL and 3D APIs.)
     --swiftshader  (Use Chrome's "--use-gl=swiftshader" feature.)
     --incognito  (Enable Chrome's Incognito mode.)
     --guest  (Enable Chrome's Guest mode.)
@@ -686,6 +687,14 @@ class SeleniumBrowser(Plugin):
                     then Debug Mode will activate twice on failures.""",
         )
         parser.add_option(
+            "--enable_3d_apis",
+            "--enable-3d-apis",
+            action="store_true",
+            dest="enable_3d_apis",
+            default=False,
+            help="""Using this enables WebGL and 3D APIs.""",
+        )
+        parser.add_option(
             "--swiftshader",
             action="store_true",
             dest="swiftshader",
@@ -923,6 +932,7 @@ class SeleniumBrowser(Plugin):
         test.test.disable_gpu = self.options.disable_gpu
         test.test.remote_debug = self.options.remote_debug
         test.test._final_debug = self.options.final_debug
+        test.test.enable_3d_apis = self.options.enable_3d_apis
         test.test.swiftshader = self.options.swiftshader
         test.test.incognito = self.options.incognito
         test.test.guest_mode = self.options.guest_mode

@@ -22,6 +22,7 @@ Options:
     --url=URL  (Sets the initial start page URL.)
     --edge  (Use Edge browser instead of Chrome.)
     --gui / --headed  (Use headed mode on Linux.)
+    --uc / --undetected  (Use undetectable mode.)
     --overwrite  (Overwrite file when it exists.)
     --behave  (Also output Behave/Gherkin files.)
 
@@ -49,6 +50,7 @@ def invalid_run_command(msg=None):
     exp += "           --url=URL  (Sets the initial start page URL.)\n"
     exp += "           --edge  (Use Edge browser instead of Chrome.)\n"
     exp += "           --gui / --headed  (Use headed mode on Linux.)\n"
+    exp += "           --uc / --undetected  (Use undetectable mode.)\n"
     exp += "           --overwrite  (Overwrite file when it exists.)\n"
     exp += "           --behave  (Also output Behave/Gherkin files.)\n"
     exp += "  Output:\n"
@@ -87,6 +89,7 @@ def main():
     error_msg = None
     invalid_cmd = None
     use_edge = False
+    use_uc = False
     start_page = None
     next_is_url = False
     use_colors = True
@@ -138,6 +141,8 @@ def main():
             elif option.lower() in ("--gui", "--headed"):
                 if "linux" in platform:
                     force_gui = True
+            elif option.lower() in ("--uc", "--undetected", "--undetectable"):
+                use_uc = True
             elif option.lower() in ("--rec-behave", "--behave", "--gherkin"):
                 rec_behave = True
             elif option.lower().startswith("--url="):
@@ -186,6 +191,8 @@ def main():
         run_cmd += " --edge"
     if force_gui:
         run_cmd += " --gui"
+    if use_uc:
+        run_cmd += " --uc"
     if rec_behave:
         run_cmd += " --rec-behave"
     print(run_cmd)
