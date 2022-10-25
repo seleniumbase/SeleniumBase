@@ -4,9 +4,10 @@ import os
 import re
 import sys
 import time
+import selenium.webdriver.chrome.service
 import selenium.webdriver.chrome.webdriver
 import selenium.webdriver.common.service
-from selenium.webdriver.chrome.service import Service as ChromeService
+import selenium.webdriver.remote.command
 from .dprocess import start_detached
 from .options import ChromeOptions
 from .patcher import IS_POSIX
@@ -29,20 +30,17 @@ PLATFORM = sys.platform
 
 class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
     """
-    Controls the ChromeDriver and allows you to drive the browser.
-    The webdriver file will be downloaded by this module automatically.
+    Controls chromedriver to drive a browser.
+    The driver gets downloaded automatically.
 
-    Methods
-    -------
+    *** Methods ***
+    ---------------
 
-    reconnect()
-
+    * reconnect()
         This can be useful when sites use heavy detection methods:
         - Stops the chromedriver service that runs in the background.
         - Starts the chromedriver service that runs in the background.
         - Recreates the session.
-
-    start_session(capabilities=None, browser_profile=None)
     """
     _instances = set()
     session_id = None
@@ -263,7 +261,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                 close_fds=IS_POSIX,
             )
             self.browser_pid = browser.pid
-        service_ = ChromeService(
+        service_ = selenium.webdriver.chrome.service.Service(
             executable_path=patcher.executable_path,
             log_path=os.devnull,
         )
@@ -409,6 +407,12 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
     def clear_cdp_listeners(self):
         if self.reactor and isinstance(self.reactor, Reactor):
             self.reactor.handlers.clear()
+
+    def window_new(self):
+        self.execute(
+            selenium.webdriver.remote.command.Command.NEW_WINDOW,
+            {"type": "window"},
+        )
 
     def tab_new(self, url):
         """This opens a url in a new tab."""
