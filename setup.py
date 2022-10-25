@@ -169,7 +169,7 @@ setup(
         'urllib3==1.26.12',  # Stay in sync with "requests"
         'requests==2.27.1;python_version<"3.7"',
         'requests==2.28.1;python_version>="3.7"',
-        'requests-toolbelt==0.10.0',
+        'requests-toolbelt==0.10.1',
         "nose==1.3.7",
         'sniffio==1.3.0;python_version>="3.7"',
         'h11==0.14.0;python_version>="3.7"',
@@ -232,7 +232,7 @@ setup(
         'ipython==7.16.1;python_version>="3.6" and python_version<"3.7"',
         'ipython==7.34.0;python_version>="3.7"',  # Requires matplotlib-inline
         'matplotlib-inline==0.1.6;python_version>="3.7"',  # ipython needs this
-        "colorama==0.4.5",
+        "colorama==0.4.6",
         'importlib-metadata==2.1.3;python_version<"3.6"',
         'importlib-metadata==4.2.0;python_version>="3.6" and python_version<"3.8"',  # noqa: E501
         "pycparser==2.21",
