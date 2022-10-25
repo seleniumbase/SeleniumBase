@@ -10412,11 +10412,27 @@ class BaseCase(unittest.TestCase):
         The element does not need be visible (it may be hidden)."""
         self.__check_scope()
         if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
         return self.wait_for_element_present(selector, by=by, timeout=timeout)
+
+    def wait_for_query_selector(
+        self, selector, by="css selector", timeout=None
+    ):
+        """Waits for an element to appear in the HTML of a page.
+        The element does not need be visible (it may be hidden).
+        This method uses document.querySelector() over Selenium."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        css_selector = self.convert_to_css_selector(selector, by=by)
+        return js_utils.wait_for_css_query_selector(
+            self.driver, css_selector, timeout
+        )
 
     def assert_element_present(
         self, selector, by="css selector", timeout=None

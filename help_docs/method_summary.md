@@ -663,6 +663,8 @@ self.generate_traffic_chain(pages, loops=1)
 self.get_element(selector, by="css selector", timeout=None)
 # Duplicates: self.wait_for_element_present(selector, by="css selector", timeout=None)
 
+self.wait_for_query_selector(selector, by="css selector", timeout=None)
+
 self.assert_element_present(selector, by="css selector", timeout=None)
 
 self.assert_elements_present(*args, **kwargs)
