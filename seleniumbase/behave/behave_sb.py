@@ -77,6 +77,7 @@ behave -D agent="User Agent String" -D demo
 -D remote-debug  (Enable Chrome's Remote Debugger on http://localhost:9222)
 -D dashboard  (Enable the SeleniumBase Dashboard. Saved at: dashboard.html)
 -D dash-title=STRING  (Set the title shown for the generated dashboard.)
+-D enable-3d-apis  (Enables WebGL and 3D APIs.)
 -D swiftshader  (Use Chrome's "--use-gl=swiftshader" feature.)
 -D incognito  (Enable Chrome's Incognito mode.)
 -D guest  (Enable Chrome's Guest mode.)
@@ -214,6 +215,7 @@ def get_configured_sb(context):
     sb.proxy_string = None
     sb.proxy_bypass_list = None
     sb.proxy_pac_url = None
+    sb.enable_3d_apis = False
     sb.swiftshader = False
     sb.ad_block_on = False
     sb.is_nosetest = False
@@ -707,6 +709,10 @@ def get_configured_sb(context):
             if proxy_pac_url == "true":
                 proxy_pac_url = sb.proxy_pac_url  # revert to default
             sb.proxy_pac_url = proxy_pac_url
+            continue
+        # Handle: -D enable-3d-apis / enable_3d_apis
+        if low_key in ["enable-3d-apis", "enable_3d_apis"]:
+            sb.enable_3d_apis = True
             continue
         # Handle: -D swiftshader
         if low_key == "swiftshader":
