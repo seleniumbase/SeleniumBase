@@ -11330,7 +11330,9 @@ class BaseCase(unittest.TestCase):
                 elif line.strip().startswith("*"):
                     minified_exception += line + "\n"
         if minified_exception:
-            raise Exception(minified_exception)
+            from seleniumbase.common.exceptions import VisualException
+
+            raise VisualException(minified_exception)
 
     def __process_visual_baseline_logs(self):
         """Save copies of baseline PNGs in "./latest_logs" during failures.

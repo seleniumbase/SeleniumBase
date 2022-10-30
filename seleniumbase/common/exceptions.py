@@ -4,15 +4,15 @@
     OutOfScopeException => Used by BaseCase methods when setUp() is skipped.
     TextNotVisibleException => Called when expected text fails to appear.
     TimeLimitExceededException => Called when exceeding "--time-limit=SECONDS".
+    VisualException => Called when there's a Visual Diff Assertion Failure.
 """
-from selenium.common.exceptions import WebDriverException
 
 
 class NoSuchFileException(Exception):
     pass
 
 
-class NotUsingChromeException(WebDriverException):
+class NotUsingChromeException(Exception):
     pass
 
 
@@ -20,9 +20,13 @@ class OutOfScopeException(Exception):
     pass
 
 
-class TextNotVisibleException(WebDriverException):
+class TextNotVisibleException(Exception):
     pass
 
 
 class TimeLimitExceededException(Exception):
+    pass
+
+
+class VisualException(Exception):
     pass
