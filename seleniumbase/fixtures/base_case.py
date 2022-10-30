@@ -6548,6 +6548,8 @@ class BaseCase(unittest.TestCase):
             self.assert_no_js_errors()
             self.assert_no_js_errors(exclude=["/api.", "/analytics."])
             self.assert_no_js_errors(exclude="//api.go,/analytics.go")
+            self.assert_no_js_errors(exclude=["Uncaught SyntaxError"])
+            self.assert_no_js_errors(exclude=["TypeError", "SyntaxE"])
         """
         self.__check_scope()
         if (
@@ -6581,10 +6583,6 @@ class BaseCase(unittest.TestCase):
                             message = message.split(
                                 " - Failed to load resource"
                             )[0]
-                        elif message.count(" Uncaught TypeError: ") == 1:
-                            message = message.split(
-                                " Uncaught TypeError: "
-                            )[0]
                         for substring in exclude:
                             substring = str(substring)
                             if (
@@ -6598,10 +6596,15 @@ class BaseCase(unittest.TestCase):
         if len(errors) > 0:
             for n in range(len(errors)):
                 f_t_l_r = " - Failed to load resource"
+                u_c_s_e = " Uncaught SyntaxError: "
                 u_c_t_e = " Uncaught TypeError: "
                 if f_t_l_r in errors[n]["message"]:
                     url = errors[n]["message"].split(f_t_l_r)[0]
                     errors[n] = {"Error 404 (broken link)": url}
+                elif u_c_s_e in errors[n]["message"]:
+                    url = errors[n]["message"].split(u_c_s_e)[0]
+                    error = errors[n]["message"].split(u_c_s_e)[1]
+                    errors[n] = {"Uncaught SyntaxError (%s)" % error: url}
                 elif u_c_t_e in errors[n]["message"]:
                     url = errors[n]["message"].split(u_c_t_e)[0]
                     error = errors[n]["message"].split(u_c_t_e)[1]
