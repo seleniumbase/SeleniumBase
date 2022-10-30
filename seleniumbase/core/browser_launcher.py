@@ -498,7 +498,7 @@ def _set_chrome_options(
             chrome_options.add_argument("--guest")
         else:
             pass
-    if user_data_dir:
+    if user_data_dir and not undetectable:
         abs_path = os.path.abspath(user_data_dir)
         chrome_options.add_argument("user-data-dir=%s" % abs_path)
     if extension_zip:
@@ -2058,7 +2058,7 @@ def get_local_driver(
             edge_options.add_experimental_option(
                 "mobileEmulation", emulator_settings
             )
-        if user_data_dir:
+        if user_data_dir and not undetectable:
             abs_path = os.path.abspath(user_data_dir)
             edge_options.add_argument("user-data-dir=%s" % abs_path)
         if extension_zip:
