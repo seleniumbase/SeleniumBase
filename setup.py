@@ -176,7 +176,7 @@ setup(
         'outcome==1.2.0;python_version>="3.7"',
         'trio==0.22.0;python_version>="3.7"',
         'trio-websocket==0.9.2;python_version>="3.7"',
-        'websockets==10.3;python_version>="3.7"',
+        'websockets==10.4;python_version>="3.7"',
         'pyopenssl==22.1.0;python_version>="3.7"',
         'wsproto==1.2.0;python_version>="3.7"',
         'selenium==3.141.0;python_version<"3.7"',
@@ -185,7 +185,8 @@ setup(
         'more-itertools==5.0.0;python_version<"3.6"',
         'more-itertools==8.14.0;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
         'more-itertools==9.0.0;python_version>="3.7"',
-        "cssselect==1.1.0",
+        'cssselect==1.1.0;python_version<"3.7"',
+        'cssselect==1.2.0;python_version>="3.7"',
         "sortedcontainers==2.4.0",
         'fasteners==0.16;python_version<"3.6"',
         'fasteners==0.17.3;python_version>="3.6" and python_version<"3.7"',
