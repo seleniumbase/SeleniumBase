@@ -940,6 +940,9 @@ def get_driver(
         headless = True
     if uc_subprocess and not undetectable:
         undetectable = True
+    if undetectable and mobile_emulator:
+        mobile_emulator = False
+        user_agent = None
     proxy_auth = False
     proxy_user = None
     proxy_pass = None

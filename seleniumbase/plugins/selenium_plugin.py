@@ -980,6 +980,26 @@ class SeleniumBrowser(Plugin):
             )
             self.options.headless = True
             test.test.headless = True
+        if self.options.use_wire and self.options.undetectable:
+            print(
+                "\n"
+                "SeleniumBase doesn't support mixing --uc with --wire mode.\n"
+                "If you need both, override get_new_driver() from BaseCase:\n"
+                "https://seleniumbase.io/help_docs/syntax_formats/#sb_sf_09\n"
+                "(Only UC Mode without Wire Mode will be used for this run)\n"
+            )
+            self.options.use_wire = False
+            test.test.use_wire = False
+        if self.options.mobile_emulator and self.options.undetectable:
+            print(
+                "\n"
+                "SeleniumBase doesn't support mixing --uc with --mobile.\n"
+                "(Only UC Mode without Mobile will be used for this run)\n"
+            )
+            self.options.mobile_emulator = False
+            test.test.mobile_emulator = False
+            self.options.user_agent = None
+            test.test.user_agent = None
         # Recorder Mode can still optimize scripts in --headless2 mode.
         if self.options.recorder_mode and self.options.headless:
             self.options.headless = False

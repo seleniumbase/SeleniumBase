@@ -1294,6 +1294,17 @@ def pytest_addoption(parser):
             '\n  (Your browser choice was: "%s")\n' % browser_list[0]
         )
         raise Exception(message)
+    if undetectable and "--wire" in sys_argv:
+        raise Exception(
+            "\n\n  SeleniumBase doesn't support mixing --uc with --wire mode!"
+            "\n  If you need both, override get_new_driver() from BaseCase:"
+            "\n  https://seleniumbase.io/help_docs/syntax_formats/#sb_sf_09\n"
+        )
+    if undetectable and "--mobile" in sys_argv:
+        raise Exception(
+            "\n\n  SeleniumBase doesn't support mixing --uc with --mobile"
+            '\n  UC has: "unrecognized chrome option: mobileEmulation"!\n'
+        )
 
 
 def pytest_configure(config):
