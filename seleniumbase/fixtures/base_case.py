@@ -3201,6 +3201,7 @@ class BaseCase(unittest.TestCase):
         extension_zip=None,
         extension_dir=None,
         page_load_strategy=None,
+        use_wire=None,
         external_pdf=None,
         is_mobile=None,
         d_width=None,
@@ -3251,6 +3252,7 @@ class BaseCase(unittest.TestCase):
         extension_zip - A Chrome Extension ZIP file to use (Chrome-only)
         extension_dir - A Chrome Extension folder to use (Chrome-only)
         page_load_strategy - the option to change pageLoadStrategy (Chrome)
+        use_wire - Use selenium-wire webdriver instead of the selenium one
         external_pdf - "plugins.always_open_pdf_externally": True. (Chrome)
         is_mobile - the option to use the mobile emulator (Chrome-only)
         d_width - the device width of the mobile emulator (Chrome-only)
@@ -3367,6 +3369,8 @@ class BaseCase(unittest.TestCase):
             extension_dir = self.extension_dir
         if page_load_strategy is None:
             page_load_strategy = self.page_load_strategy
+        if use_wire is None:
+            use_wire = self.use_wire
         if external_pdf is None:
             external_pdf = self.external_pdf
         test_id = self.__get_test_id()
@@ -3432,6 +3436,7 @@ class BaseCase(unittest.TestCase):
             extension_zip=extension_zip,
             extension_dir=extension_dir,
             page_load_strategy=page_load_strategy,
+            use_wire=use_wire,
             external_pdf=external_pdf,
             test_id=test_id,
             mobile_emulator=is_mobile,
@@ -6543,6 +6548,8 @@ class BaseCase(unittest.TestCase):
             self.assert_no_js_errors()
             self.assert_no_js_errors(exclude=["/api.", "/analytics."])
             self.assert_no_js_errors(exclude="//api.go,/analytics.go")
+            self.assert_no_js_errors(exclude=["Uncaught SyntaxError"])
+            self.assert_no_js_errors(exclude=["TypeError", "SyntaxE"])
         """
         self.__check_scope()
         if (
@@ -6576,10 +6583,6 @@ class BaseCase(unittest.TestCase):
                             message = message.split(
                                 " - Failed to load resource"
                             )[0]
-                        elif message.count(" Uncaught TypeError: ") == 1:
-                            message = message.split(
-                                " Uncaught TypeError: "
-                            )[0]
                         for substring in exclude:
                             substring = str(substring)
                             if (
@@ -6593,10 +6596,15 @@ class BaseCase(unittest.TestCase):
         if len(errors) > 0:
             for n in range(len(errors)):
                 f_t_l_r = " - Failed to load resource"
+                u_c_s_e = " Uncaught SyntaxError: "
                 u_c_t_e = " Uncaught TypeError: "
                 if f_t_l_r in errors[n]["message"]:
                     url = errors[n]["message"].split(f_t_l_r)[0]
                     errors[n] = {"Error 404 (broken link)": url}
+                elif u_c_s_e in errors[n]["message"]:
+                    url = errors[n]["message"].split(u_c_s_e)[0]
+                    error = errors[n]["message"].split(u_c_s_e)[1]
+                    errors[n] = {"Uncaught SyntaxError (%s)" % error: url}
                 elif u_c_t_e in errors[n]["message"]:
                     url = errors[n]["message"].split(u_c_t_e)[0]
                     error = errors[n]["message"].split(u_c_t_e)[1]
@@ -7634,6 +7642,57 @@ class BaseCase(unittest.TestCase):
 
     ############
 
+    # Console Log controls
+
+    def start_recording_console_logs(self):
+        """
+        Starts recording console logs. Logs are saved to: "console.logs".
+        To get those logs later, call "self.get_recorded_console_logs()".
+        If navigating to a new page, then the current recorded logs will be
+        lost, and you'll have to call start_recording_console_logs() again.
+        # Link1: https://stackoverflow.com/a/19846113/7058266
+        # Link2: https://stackoverflow.com/a/74196986/7058266
+        """
+        self.driver.execute_script(
+            """
+            console.stdlog = console.log.bind(console);
+            console.logs = [];
+            console.log = function(){
+                console.logs.push(Array.from(arguments));
+                console.stdlog.apply(console, arguments);
+            }
+            """
+        )
+
+    def console_log_string(self, string):
+        """
+        Log a string to the Web Browser's Console.
+        Example:
+        self.console_log_string("Hello World!")
+        """
+        self.driver.execute_script("""console.log(`%s`);""" % string)
+
+    def console_log_script(self, script):
+        """
+        Log output of JavaScript to the Web Browser's Console.
+        Example:
+        self.console_log_script('document.querySelector("h2").textContent')
+        """
+        self.driver.execute_script("""console.log(%s);""" % script)
+
+    def get_recorded_console_logs(self):
+        """
+        Returns console logs recorded after "start_recording_console_logs()".
+        """
+        logs = []
+        try:
+            logs = self.driver.execute_script("return console.logs;")
+        except Exception:
+            pass
+        return logs
+
+    ############
+
     # Application "Local Storage" controls
 
     def __is_valid_storage_url(self):
@@ -7770,6 +7829,36 @@ class BaseCase(unittest.TestCase):
             "  items[k = ls.key(i)] = ls.getItem(k); "
             "return items;"
         )
+
+    ############
+
+    # Methods ONLY for the selenium-wire integration ("--wire")
+
+    def set_wire_proxy(self, string):
+        """Set a proxy server for selenium-wire mode ("--wire")
+        NOTE: This method ONLY works while using "--wire" mode!
+        Examples:
+            self.set_wire_proxy("SERVER:PORT")
+            self.set_wire_proxy("socks5://SERVER:PORT")
+            self.set_wire_proxy("USERNAME:PASSWORD@SERVER:PORT")
+        """
+        if not string:
+            self.driver.proxy = {}
+            return
+        the_http = "http"
+        the_https = "https"
+        if string.startswith("socks4://"):
+            the_http = "socks4"
+            the_https = "socks4"
+        elif string.startswith("socks5://"):
+            the_http = "socks5"
+            the_https = "socks5"
+        string = string.split("//")[-1]
+        self.driver.proxy = {
+            "http": "%s://%s" % (the_http, string),
+            "https": "%s://%s" % (the_https, string),
+            "no_proxy": "localhost,127.0.0.1",
+        }
 
     ############
 
@@ -11295,7 +11384,9 @@ class BaseCase(unittest.TestCase):
                 elif line.strip().startswith("*"):
                     minified_exception += line + "\n"
         if minified_exception:
-            raise Exception(minified_exception)
+            from seleniumbase.common.exceptions import VisualException
+
+            raise VisualException(minified_exception)
 
     def __process_visual_baseline_logs(self):
         """Save copies of baseline PNGs in "./latest_logs" during failures.
@@ -12804,6 +12895,7 @@ class BaseCase(unittest.TestCase):
             self.extension_zip = sb_config.extension_zip
             self.extension_dir = sb_config.extension_dir
             self.page_load_strategy = sb_config.page_load_strategy
+            self.use_wire = sb_config.use_wire
             self.external_pdf = sb_config.external_pdf
             self._final_debug = sb_config.final_debug
             self.window_size = sb_config.window_size
@@ -13091,6 +13183,7 @@ class BaseCase(unittest.TestCase):
                 extension_zip=self.extension_zip,
                 extension_dir=self.extension_dir,
                 page_load_strategy=self.page_load_strategy,
+                use_wire=self.use_wire,
                 external_pdf=self.external_pdf,
                 is_mobile=self.mobile_emulator,
                 d_width=self.__device_width,

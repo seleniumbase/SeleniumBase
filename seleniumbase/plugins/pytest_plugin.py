@@ -68,7 +68,6 @@ def pytest_addoption(parser):
     --start-page=URL  (The starting URL for the web browser when tests begin.)
     --archive-logs  (Archive existing log files instead of deleting them.)
     --archive-downloads  (Archive old downloads instead of deleting them.)
-    --sjw  (Skip JavaScript Waits such as readyState=="complete" or Angular.)
     --time-limit=SECONDS  (Safely fail any test that exceeds the time limit.)
     --slow  (Slow down the automation. Faster than using Demo Mode.)
     --demo  (Slow down and visually see test actions as they occur.)
@@ -108,7 +107,8 @@ def pytest_addoption(parser):
     --maximize  (Start tests with the browser window maximized.)
     --screenshot  (Save a screenshot at the end of each test.)
     --visual-baseline  (Set the visual baseline for Visual/Layout tests.)
-    --external-pdf (Set Chromium "plugins.always_open_pdf_externally": True.)
+    --wire  (Use selenium-wire's webdriver for replacing selenium webdriver.)
+    --external-pdf  (Set Chromium "plugins.always_open_pdf_externally":True.)
     --timeout-multiplier=MULTIPLIER  (Multiplies the default timeout values.)
     --list-fail-page  (After each failing test, list the URL of the failure.)
     """
@@ -1098,6 +1098,13 @@ def pytest_addoption(parser):
                 rebuild its files in the visual_baseline folder.""",
     )
     parser.addoption(
+        "--wire",
+        action="store_true",
+        dest="use_wire",
+        default=False,
+        help="""Use selenium-wire's webdriver for selenium webdriver.""",
+    )
+    parser.addoption(
         "--external_pdf",
         "--external-pdf",
         action="store_true",
@@ -1266,17 +1273,20 @@ def pytest_addoption(parser):
             '\n  (Your browser choice was: "%s")\n' % browser_list[0]
         )
         raise Exception(message)
+    undetectable = False
+    if (
+        "--undetected" in sys_argv
+        or "--undetectable" in sys_argv
+        or "--uc" in sys_argv
+        or "--uc-subprocess" in sys_argv
+        or "--uc_subprocess" in sys_argv
+        or "--uc-sub" in sys_argv
+    ):
+        undetectable = True
     if (
         browser_changes == 1
         and browser_text not in ["chrome"]
-        and (
-            "--undetected" in sys_argv
-            or "--undetectable" in sys_argv
-            or "--uc" in sys_argv
-            or "--uc-subprocess" in sys_argv
-            or "--uc_subprocess" in sys_argv
-            or "--uc-sub" in sys_argv
-        )
+        and undetectable
     ):
         message = (
             '\n\n  Undetected-Chromedriver Mode ONLY supports Chrome!'
@@ -1284,6 +1294,17 @@ def pytest_addoption(parser):
             '\n  (Your browser choice was: "%s")\n' % browser_list[0]
         )
         raise Exception(message)
+    if undetectable and "--wire" in sys_argv:
+        raise Exception(
+            "\n\n  SeleniumBase doesn't support mixing --uc with --wire mode!"
+            "\n  If you need both, override get_new_driver() from BaseCase:"
+            "\n  https://seleniumbase.io/help_docs/syntax_formats/#sb_sf_09\n"
+        )
+    if undetectable and "--mobile" in sys_argv:
+        raise Exception(
+            "\n\n  SeleniumBase doesn't support mixing --uc with --mobile"
+            '\n  UC has: "unrecognized chrome option: mobileEmulation"!\n'
+        )
 
 
 def pytest_configure(config):
@@ -1415,6 +1436,7 @@ def pytest_configure(config):
     sb_config.maximize_option = config.getoption("maximize_option")
     sb_config.save_screenshot = config.getoption("save_screenshot")
     sb_config.visual_baseline = config.getoption("visual_baseline")
+    sb_config.use_wire = config.getoption("use_wire")
     sb_config.external_pdf = config.getoption("external_pdf")
     sb_config.timeout_multiplier = config.getoption("timeout_multiplier")
     sb_config.list_fp = config.getoption("fail_page")
@@ -1707,7 +1729,10 @@ def pytest_runtest_teardown(item):
                     if (
                         hasattr(self, "driver")
                         and self.driver
-                        and "--pdb" not in sys_argv
+                        and (
+                            "--pdb" not in sys_argv
+                            or not python3
+                        )
                     ):
                         if not is_windows or self.driver.service.process:
                             self.driver.quit()

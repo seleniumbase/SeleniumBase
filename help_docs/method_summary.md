@@ -510,6 +510,16 @@ self.skip(reason="")
 
 ############
 
+self.start_recording_console_logs()
+
+self.console_log_string(string)
+
+self.console_log_script(script)
+
+self.get_recorded_console_logs()
+
+############
+
 self.set_local_storage_item(key, value)
 
 self.get_local_storage_item(key)
@@ -533,6 +543,10 @@ self.clear_session_storage()
 self.get_session_storage_keys()
 
 self.get_session_storage_items()
+
+############
+
+self.set_wire_proxy(string)  # Requires "--wire"!
 
 ############
 

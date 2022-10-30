@@ -293,6 +293,11 @@ class Tether:
     )
 
 
+class SeleniumWire:
+    # The version installed if selenium-wire is not installed
+    VER = "5.1.0"
+
+
 class ValidBrowsers:
     valid_browsers = [
         "chrome",

@@ -16,6 +16,7 @@ from seleniumbase.config import settings
 from seleniumbase.core import download_helper
 from seleniumbase.core import proxy_helper
 from seleniumbase.fixtures import constants
+from seleniumbase.fixtures import shared_utils
 from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
 from seleniumbase import extensions  # browser extensions storage folder
 
@@ -372,6 +373,7 @@ def _set_chrome_options(
     extension_zip,
     extension_dir,
     page_load_strategy,
+    use_wire,
     external_pdf,
     servername,
     mobile_emulator,
@@ -496,7 +498,7 @@ def _set_chrome_options(
             chrome_options.add_argument("--guest")
         else:
             pass
-    if user_data_dir:
+    if user_data_dir and not undetectable:
         abs_path = os.path.abspath(user_data_dir)
         chrome_options.add_argument("user-data-dir=%s" % abs_path)
     if extension_zip:
@@ -532,7 +534,6 @@ def _set_chrome_options(
             chrome_options.add_argument(
                 "--disable-blink-features=AutomationControlled"
             )
-        chrome_options.add_experimental_option("useAutomationExtension", False)
     if headless2:
         chrome_options.add_argument("--headless=chrome")
     elif headless:
@@ -593,7 +594,8 @@ def _set_chrome_options(
         chrome_options.add_argument("--ignore-certificate-errors")
         if not enable_ws:
             chrome_options.add_argument("--disable-web-security")
-        chrome_options.add_argument("--no-sandbox")
+        if "linux" in PLATFORM or not undetectable:
+            chrome_options.add_argument("--no-sandbox")
     else:
         # Opera Chromium only!
         chrome_options.add_argument("--allow-elevated-browser")
@@ -918,6 +920,7 @@ def get_driver(
     extension_zip=None,
     extension_dir=None,
     page_load_strategy=None,
+    use_wire=False,
     external_pdf=False,
     test_id=None,
     mobile_emulator=False,
@@ -937,6 +940,9 @@ def get_driver(
         headless = True
     if uc_subprocess and not undetectable:
         undetectable = True
+    if undetectable and mobile_emulator:
+        mobile_emulator = False
+        user_agent = None
     proxy_auth = False
     proxy_user = None
     proxy_pass = None
@@ -1083,6 +1089,7 @@ def get_driver(
             extension_zip,
             extension_dir,
             page_load_strategy,
+            use_wire,
             external_pdf,
             test_id,
             mobile_emulator,
@@ -1130,6 +1137,7 @@ def get_driver(
             extension_zip,
             extension_dir,
             page_load_strategy,
+            use_wire,
             external_pdf,
             mobile_emulator,
             device_width,
@@ -1181,6 +1189,7 @@ def get_remote_driver(
     extension_zip,
     extension_dir,
     page_load_strategy,
+    use_wire,
     external_pdf,
     test_id,
     mobile_emulator,
@@ -1188,6 +1197,21 @@ def get_remote_driver(
     device_height,
     device_pixel_ratio,
 ):
+    if use_wire and selenium4_or_newer:
+        driver_fixing_lock = fasteners.InterProcessLock(
+            constants.MultiBrowser.DRIVER_FIXING_LOCK
+        )
+        with driver_fixing_lock:  # Prevent multi-processes mode issues
+            try:
+                from seleniumwire import webdriver
+            except Exception:
+                shared_utils.pip_install(
+                    "selenium-wire", version=constants.SeleniumWire.VER
+                )
+                from seleniumwire import webdriver
+    else:
+        from selenium import webdriver
+
     # Construct the address for connecting to a Selenium Grid
     if servername.startswith("https://"):
         protocol = "https"
@@ -1280,6 +1304,7 @@ def get_remote_driver(
             extension_zip,
             extension_dir,
             page_load_strategy,
+            use_wire,
             external_pdf,
             servername,
             mobile_emulator,
@@ -1510,6 +1535,7 @@ def get_remote_driver(
             extension_zip,
             extension_dir,
             page_load_strategy,
+            use_wire,
             external_pdf,
             servername,
             mobile_emulator,
@@ -1708,6 +1734,7 @@ def get_local_driver(
     extension_zip,
     extension_dir,
     page_load_strategy,
+    use_wire,
     external_pdf,
     mobile_emulator,
     device_width,
@@ -1719,6 +1746,20 @@ def get_local_driver(
     Can also be used to spin up additional browsers for the same test.
     """
     downloads_path = DOWNLOADS_FOLDER
+    if use_wire and selenium4_or_newer:
+        driver_fixing_lock = fasteners.InterProcessLock(
+            constants.MultiBrowser.DRIVER_FIXING_LOCK
+        )
+        with driver_fixing_lock:  # Prevent multi-processes mode issues
+            try:
+                from seleniumwire import webdriver
+            except Exception:
+                shared_utils.pip_install(
+                    "selenium-wire", version=constants.SeleniumWire.VER
+                )
+                from seleniumwire import webdriver
+    else:
+        from selenium import webdriver
 
     if browser_name == constants.Browser.FIREFOX:
         firefox_options = _set_firefox_options(
@@ -1987,7 +2028,6 @@ def get_local_driver(
         edge_options.add_argument(
             "--disable-blink-features=AutomationControlled"
         )
-        edge_options.add_experimental_option("useAutomationExtension", False)
         edge_options.add_experimental_option(
             "excludeSwitches", ["enable-automation", "enable-logging"]
         )
@@ -2020,7 +2060,7 @@ def get_local_driver(
             edge_options.add_experimental_option(
                 "mobileEmulation", emulator_settings
             )
-        if user_data_dir:
+        if user_data_dir and not undetectable:
             abs_path = os.path.abspath(user_data_dir)
             edge_options.add_argument("user-data-dir=%s" % abs_path)
         if extension_zip:
@@ -2104,7 +2144,8 @@ def get_local_driver(
         edge_options.add_argument("--allow-running-insecure-content")
         if user_agent:
             edge_options.add_argument("--user-agent=%s" % user_agent)
-        edge_options.add_argument("--no-sandbox")
+        if "linux" in PLATFORM or not undetectable:
+            edge_options.add_argument("--no-sandbox")
         if remote_debug:
             # To access the Remote Debugger, go to: http://localhost:9222
             # while a Chromium driver is running.
@@ -2308,6 +2349,7 @@ def get_local_driver(
                 extension_zip,
                 extension_dir,
                 page_load_strategy,
+                use_wire,
                 external_pdf,
                 servername,
                 mobile_emulator,
@@ -2372,6 +2414,7 @@ def get_local_driver(
                 extension_zip,
                 extension_dir,
                 page_load_strategy,
+                use_wire,
                 external_pdf,
                 servername,
                 mobile_emulator,
@@ -2754,6 +2797,7 @@ def get_local_driver(
                         extension_zip,
                         extension_dir,
                         page_load_strategy,
+                        use_wire,
                         external_pdf,
                         servername,
                         mobile_emulator,

@@ -73,7 +73,7 @@ class BaseTestCase(BaseCase):
         # <<< Run custom setUp() code for tests AFTER the super().setUp() >>>
 
     def tearDown(self):
-        self.save_teardown_screenshot()  # If test fails, or if "--screenshot"
+        self.save_teardown_screenshot()  # On failure or "--screenshot"
         if self.has_exception():
             # <<< Run custom code if the test failed. >>>
             pass
@@ -255,7 +255,7 @@ class OverrideDriverTest(BaseCase):
 
 (From <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_override_driver.py">examples/test_override_driver.py</a>)
 
-The above format can let you use [selenium-wire](https://github.com/wkeeling/selenium-wire) to intercept & inspect requests and responses during SeleniumBase tests. Here's how the ``selenium-wire`` integration may look:
+The above format lets you customize [selenium-wire](https://github.com/wkeeling/selenium-wire) for intercepting and inspecting requests and responses during SeleniumBase tests. Here's how a ``selenium-wire`` integration may look:
 
 ```python
 from seleniumbase import BaseCase
@@ -277,6 +277,8 @@ class WireTestCase(BaseCase):
             print(request.url)
 ```
 
+(NOTE: The ``selenium-wire`` integration is now included with ``seleniumbase``: Add ``--wire`` as a ``pytest`` command-line option to activate. If you need both ``--wire`` with ``--undetected`` together, you'll still need to override ``get_new_driver()``.)
+
 <a id="sb_sf_10"></a>
 <h3><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 10. Overriding the driver via "sb" fixture</h3>
 
@@ -297,7 +299,7 @@ def sb(request):
             super(BaseClass, self).setUp()
 
         def tearDown(self):
-            self.save_teardown_screenshot()
+            self.save_teardown_screenshot()  # On failure or "--screenshot"
             super(BaseClass, self).tearDown()
 
         def base_method(self):
@@ -352,7 +354,7 @@ def sb(request):
             super(BaseClass, self).setUp()
 
         def tearDown(self):
-            self.save_teardown_screenshot()
+            self.save_teardown_screenshot()  # On failure or "--screenshot"
             super(BaseClass, self).tearDown()
 
         def base_method(self):
@@ -389,6 +391,8 @@ class TestWire:
         for request in sb.driver.requests:
             print(request.url)
 ```
+
+(NOTE: The ``selenium-wire`` integration is now included with ``seleniumbase``: Add ``--wire`` as a ``pytest`` command-line option to activate. If you need both ``--wire`` with ``--undetected`` together, you'll still need to override ``get_new_driver()``.)
 
 <a id="sb_sf_11"></a>
 <h3><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 11. BaseCase with Chinese translations</h3>

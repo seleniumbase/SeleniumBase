@@ -47,7 +47,7 @@ if sys.argv[-1] == "publish":
         os.system("rm -f dist/*.egg; rm -f dist/*.tar.gz; rm -f dist/*.whl")
         os.system("rm -rf build/bdist.*; rm -rf build/lib")
         print("\n*** Installing build: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'build>=0.8.0'")
+        os.system("python -m pip install --upgrade 'build>=0.9.0'")
         print("\n*** Installing twine: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'twine>=4.0.1'")
         print("\n*** Installing tqdm: *** (Required for PyPI uploads)\n")
@@ -176,7 +176,7 @@ setup(
         'outcome==1.2.0;python_version>="3.7"',
         'trio==0.22.0;python_version>="3.7"',
         'trio-websocket==0.9.2;python_version>="3.7"',
-        'websockets==10.3;python_version>="3.7"',
+        'websockets==10.4;python_version>="3.7"',
         'pyopenssl==22.1.0;python_version>="3.7"',
         'wsproto==1.2.0;python_version>="3.7"',
         'selenium==3.141.0;python_version<"3.7"',
@@ -185,7 +185,8 @@ setup(
         'more-itertools==5.0.0;python_version<"3.6"',
         'more-itertools==8.14.0;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
         'more-itertools==9.0.0;python_version>="3.7"',
-        "cssselect==1.1.0",
+        'cssselect==1.1.0;python_version<"3.7"',
+        'cssselect==1.2.0;python_version>="3.7"',
         "sortedcontainers==2.4.0",
         'fasteners==0.16;python_version<"3.6"',
         'fasteners==0.17.3;python_version>="3.6" and python_version<"3.7"',
@@ -197,19 +198,20 @@ setup(
         'py==1.11.0;python_version>="3.6"',
         'pytest==4.6.11;python_version<"3.6"',
         'pytest==7.0.1;python_version>="3.6" and python_version<"3.7"',
-        'pytest==7.1.3;python_version>="3.7"',
+        'pytest==7.2.0;python_version>="3.7"',
         'pytest-forked==1.3.0;python_version<"3.6"',
         'pytest-forked==1.4.0;python_version>="3.6"',
         'pytest-html==1.22.1;python_version<"3.6"',
         'pytest-html==2.0.1;python_version>="3.6"',  # Newer ones had issues
         'pytest-metadata==1.8.0;python_version<"3.6"',
         'pytest-metadata==1.11.0;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
-        'pytest-metadata==2.0.2;python_version>="3.7"',
+        'pytest-metadata==2.0.3;python_version>="3.7"',
         "pytest-ordering==0.6",
         'pytest-rerunfailures==8.0;python_version<"3.6"',
         'pytest-rerunfailures==10.2;python_version>="3.6"',
         'pytest-xdist==1.34.0;python_version<"3.6"',
-        'pytest-xdist==2.5.0;python_version>="3.6"',
+        'pytest-xdist==2.5.0;python_version>="3.6" and python_version<"3.7"',
+        'pytest-xdist==3.0.2;python_version>="3.7"',
         "parameterized==0.8.1",
         "sbvirtualdisplay==1.1.0",
         "behave==1.2.6",
@@ -235,6 +237,7 @@ setup(
         'colorama==0.4.6;python_version<"3.6"',
         'colorama==0.4.5;python_version>="3.6" and python_version<"3.7"',
         'colorama==0.4.6;python_version>="3.7"',
+        'exceptiongroup==1.0.0;python_version>="3.7" and python_version<"3.11"',  # noqa: E501
         'importlib-metadata==2.1.3;python_version<"3.6"',
         'importlib-metadata==4.2.0;python_version>="3.6" and python_version<"3.8"',  # noqa: E501
         "pycparser==2.21",
@@ -259,9 +262,9 @@ setup(
             'pytest-cov==2.12.1;python_version<"3.6"',
             'pytest-cov==4.0.0;python_version>="3.6"',
         ],
-        # pip install -e .[flake]
+        # pip install -e .[flake8]
         # Usage: flake8
-        "flake": [
+        "flake8": [
             'flake8==3.7.9;python_version<"3.6"',
             'flake8==5.0.4;python_version>="3.6"',
             'mccabe==0.6.1;python_version<"3.6"',
@@ -281,7 +284,23 @@ setup(
         "pillow": [
             'Pillow==6.2.2;python_version<"3.6"',
             'Pillow==8.4.0;python_version>="3.6" and python_version<"3.7"',
-            'Pillow==9.2.0;python_version>="3.7"',
+            'Pillow==9.3.0;python_version>="3.7"',
+        ],
+        # pip install -e .[psutil]
+        "psutil": [
+            "psutil==5.9.3",
+        ],
+        # pip install -e .[selenium-wire]
+        "selenium-wire": [
+            'selenium-wire==5.1.0;python_version>="3.7"',
+            'Brotli==1.0.9;python_version>="3.7"',
+            'blinker==1.5;python_version>="3.7"',
+            'h2==4.1.0;python_version>="3.7"',
+            'hpack==4.0.0;python_version>="3.7"',
+            'hyperframe==6.0.1;python_version>="3.7"',
+            'kaitaistruct==0.10;python_version>="3.7"',
+            'pyasn1==0.4.8;python_version>="3.7"',
+            'zstandard==0.18.0;python_version>="3.7"',
         ],
     },
     packages=[

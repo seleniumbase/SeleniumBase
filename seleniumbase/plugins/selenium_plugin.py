@@ -82,6 +82,7 @@ class SeleniumBrowser(Plugin):
     --maximize  (Start tests with the browser window maximized.)
     --screenshot  (Save a screenshot at the end of each test.)
     --visual-baseline  (Set the visual baseline for Visual/Layout tests.)
+    --wire  (Use selenium-wire's webdriver for replacing selenium webdriver.)
     --external-pdf (Set Chromium "plugins.always_open_pdf_externally": True.)
     --timeout-multiplier=MULTIPLIER  (Multiplies the default timeout values.)
     """
@@ -784,6 +785,13 @@ class SeleniumBrowser(Plugin):
                     rebuild its files in the visual_baseline folder.""",
         )
         parser.add_option(
+            "--wire",
+            action="store_true",
+            dest="use_wire",
+            default=False,
+            help="""Use selenium-wire's webdriver for selenium webdriver.""",
+        )
+        parser.add_option(
             "--external_pdf",
             "--external-pdf",
             action="store_true",
@@ -942,6 +950,7 @@ class SeleniumBrowser(Plugin):
         test.test.maximize_option = self.options.maximize_option
         test.test.save_screenshot_after_test = self.options.save_screenshot
         test.test.visual_baseline = self.options.visual_baseline
+        test.test.use_wire = self.options.use_wire
         test.test.external_pdf = self.options.external_pdf
         test.test.timeout_multiplier = self.options.timeout_multiplier
         test.test.dashboard = False
@@ -971,6 +980,26 @@ class SeleniumBrowser(Plugin):
             )
             self.options.headless = True
             test.test.headless = True
+        if self.options.use_wire and self.options.undetectable:
+            print(
+                "\n"
+                "SeleniumBase doesn't support mixing --uc with --wire mode.\n"
+                "If you need both, override get_new_driver() from BaseCase:\n"
+                "https://seleniumbase.io/help_docs/syntax_formats/#sb_sf_09\n"
+                "(Only UC Mode without Wire Mode will be used for this run)\n"
+            )
+            self.options.use_wire = False
+            test.test.use_wire = False
+        if self.options.mobile_emulator and self.options.undetectable:
+            print(
+                "\n"
+                "SeleniumBase doesn't support mixing --uc with --mobile.\n"
+                "(Only UC Mode without Mobile will be used for this run)\n"
+            )
+            self.options.mobile_emulator = False
+            test.test.mobile_emulator = False
+            self.options.user_agent = None
+            test.test.user_agent = None
         # Recorder Mode can still optimize scripts in --headless2 mode.
         if self.options.recorder_mode and self.options.headless:
             self.options.headless = False

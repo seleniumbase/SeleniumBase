@@ -68,14 +68,18 @@ def Driver(
     extension_zip=None,  # Load a Chrome Extension .zip|.crx, comma-separated.)
     extension_dir=None,  # Load a Chrome Extension directory, comma-separated.)
     page_load_strategy=None,  # Set Chrome PLS to "normal", "eager", or "none".
+    use_wire=None,  # Use selenium-wire's webdriver over selenium webdriver.
     external_pdf=None,  # Set Chrome "plugins.always_open_pdf_externally":True.
     is_mobile=None,  # Use the mobile device emulator while running tests.
+    mobile=None,  # Shortcut / Duplicate of "is_mobile".
     d_width=None,  # Set device width
     d_height=None,  # Set device height
     d_p_r=None,  # Set device pixel ratio
-    uc=None,  # Shortcut / Duplicate of "undetectable" to avoid confusion.
-    undetected=None,  # Duplicate of "undetectable" to avoid confusion.
-    uc_sub=None,  # Duplicate of "uc_subprocess" to avoid confusion.
+    uc=None,  # Shortcut / Duplicate of "undetectable".
+    undetected=None,  # Shortcut / Duplicate of "undetectable".
+    uc_sub=None,  # Shortcut / Duplicate of "uc_subprocess".
+    wire=None,  # Shortcut / Duplicate of "use_wire".
+    pls=None,  # Shortcut / Duplicate of "page_load_strategy".
 ):
     import sys
     from seleniumbase.fixtures import constants
@@ -202,6 +206,8 @@ def Driver(
             devtools = True
         else:
             devtools = False
+    if mobile is not None and is_mobile is None:
+        is_mobile = mobile
     if is_mobile is None:
         if "--mobile" in sys_argv:
             is_mobile = True
@@ -277,6 +283,9 @@ def Driver(
         uc_subprocess = True
     else:
         uc_subprocess = False
+    if undetectable and is_mobile:
+        is_mobile = False
+        user_agent = None
     if use_auto_ext is None:
         if "--use-auto-ext" in sys_argv:
             use_auto_ext = True
@@ -287,6 +296,8 @@ def Driver(
             disable_js = True
         else:
             disable_js = False
+    if pls is not None and page_load_strategy is None:
+        page_load_strategy = pls
     if page_load_strategy is not None:
         if page_load_strategy.lower() not in ["normal", "eager", "none"]:
             raise Exception(
@@ -309,6 +320,15 @@ def Driver(
             do_not_track = True
         else:
             do_not_track = False
+    if use_wire is None and wire is None:
+        if "--wire" in sys_argv:
+            use_wire = True
+        else:
+            use_wire = False
+    elif use_wire or wire:
+        use_wire = True
+    else:
+        use_wire = False
     if external_pdf is None:
         if "--external-pdf" in sys_argv or "--external_pdf" in sys_argv:
             external_pdf = True
@@ -380,6 +400,7 @@ def Driver(
         extension_zip=extension_zip,
         extension_dir=extension_dir,
         page_load_strategy=page_load_strategy,
+        use_wire=use_wire,
         external_pdf=external_pdf,
         test_id=test_id,
         mobile_emulator=is_mobile,

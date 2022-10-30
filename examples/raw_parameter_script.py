@@ -74,6 +74,7 @@ if pure_python:
     sb._reuse_session = False
     sb._crumbs = False
     sb._final_debug = False
+    sb.use_wire = False
     sb.visual_baseline = False
     sb.window_size = None
     sb.maximize_option = False
