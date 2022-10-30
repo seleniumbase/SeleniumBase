@@ -7642,6 +7642,57 @@ class BaseCase(unittest.TestCase):
 
     ############
 
+    # Console Log controls
+
+    def start_recording_console_logs(self):
+        """
+        Starts recording console logs. Logs are saved to: "console.logs".
+        To get those logs later, call "self.get_recorded_console_logs()".
+        If navigating to a new page, then the current recorded logs will be
+        lost, and you'll have to call start_recording_console_logs() again.
+        # Link1: https://stackoverflow.com/a/19846113/7058266
+        # Link2: https://stackoverflow.com/a/74196986/7058266
+        """
+        self.driver.execute_script(
+            """
+            console.stdlog = console.log.bind(console);
+            console.logs = [];
+            console.log = function(){
+                console.logs.push(Array.from(arguments));
+                console.stdlog.apply(console, arguments);
+            }
+            """
+        )
+
+    def console_log_string(self, string):
+        """
+        Log a string to the Web Browser's Console.
+        Example:
+        self.console_log_string("Hello World!")
+        """
+        self.driver.execute_script("""console.log(`%s`);""" % string)
+
+    def console_log_script(self, script):
+        """
+        Log output of JavaScript to the Web Browser's Console.
+        Example:
+        self.console_log_script('document.querySelector("h2").textContent')
+        """
+        self.driver.execute_script("""console.log(%s);""" % script)
+
+    def get_recorded_console_logs(self):
+        """
+        Returns console logs recorded after "start_recording_console_logs()".
+        """
+        logs = []
+        try:
+            logs = self.driver.execute_script("return console.logs;")
+        except Exception:
+            pass
+        return logs
+
+    ############
+
     # Application "Local Storage" controls
 
     def __is_valid_storage_url(self):
