@@ -23,8 +23,8 @@ from contextlib import contextmanager
 @contextmanager  # Usage: -> ``with SB() as sb:``
 def SB(
     test=None,  # Test Mode: Output, Logging, Continue on failure unless "rtf".
-    raise_test_failure=None,  # In "test" mode, raise Exception at 1st failure.
-    rtf=None,  # Short form of "raise_test_failure". (Less typing, same thing!)
+    rtf=None,  # Shortcut / Duplicate of "raise_test_failure".
+    raise_test_failure=None,  # If "test" mode, raise Exception on 1st failure.
     browser=None,  # Choose from "chrome", "edge", "firefox", or "safari".
     headless=None,  # The original headless mode for Chromium and Firefox.
     headless2=None,  # Chromium's new headless mode. (Has more features)
@@ -59,11 +59,14 @@ def SB(
     firefox_arg=None,  # "ARG=N,ARG2" (Set Firefox args, comma-separated.)
     firefox_pref=None,  # SET (Set Firefox PREFERENCE:VALUE set, ","-separated)
     user_data_dir=None,  # Set the Chrome user data directory to use.
-    extension_zip=None,  # Load a Chrome Extension .zip|.crx, comma-separated.)
-    extension_dir=None,  # Load a Chrome Extension directory, comma-separated.)
+    extension_zip=None,  # Load a Chrome Extension .zip|.crx, comma-separated.
+    extension_dir=None,  # Load a Chrome Extension directory, comma-separated.
     page_load_strategy=None,  # Set Chrome PLS to "normal", "eager", or "none".
+    skip_js_waits=None,  # Skip JS Waits (readyState=="complete" and Angular).
+    use_wire=None,  # Use selenium-wire's webdriver over selenium webdriver.
     external_pdf=None,  # Set Chrome "plugins.always_open_pdf_externally":True.
     is_mobile=None,  # Use the mobile device emulator while running tests.
+    mobile=None,  # Shortcut / Duplicate of "is_mobile".
     device_metrics=None,  # Set mobile metrics: "CSSWidth,CSSHeight,PixelRatio"
     xvfb=None,  # Run tests using the Xvfb virtual display server on Linux OS.
     start_page=None,  # The starting URL for the web browser when tests begin.
@@ -82,9 +85,12 @@ def SB(
     disable_ws=None,  # Reverse of "enable_ws". (None and False are different)
     disable_beforeunload=None,  # Disable the "beforeunload" event on Chromium.
     settings_file=None,  # A file for overriding default SeleniumBase settings.
-    uc=None,  # Shortcut / Duplicate of "undetectable" to avoid confusion.
-    undetected=None,  # Duplicate of "undetectable" to avoid confusion.
-    uc_sub=None,  # Duplicate of "uc_subprocess" to avoid confusion.
+    uc=None,  # Shortcut / Duplicate of "undetectable".
+    undetected=None,  # Shortcut / Duplicate of "undetectable".
+    uc_sub=None,  # Shortcut / Duplicate of "uc_subprocess".
+    wire=None,  # Shortcut / Duplicate of "use_wire".
+    pls=None,  # Shortcut / Duplicate of "page_load_strategy".
+    sjw=None,  # Shortcut / Duplicate of "skip_js_waits".
     save_screenshot=None,  # Save a screenshot at the end of each test.
     timeout_multiplier=None,  # Multiplies the default timeout values.
     js_checking_on=None,  # Check for JavaScript errors after page loads.
@@ -154,6 +160,7 @@ def SB(
         raise_test_failure
         or rtf
         or "--raise-test-failure" in sys_argv
+        or "--raise_test_failure" in sys_argv
         or "--rtf" in sys_argv
         or "-x" in sys_argv  # Carry-over from "pytest"
         or "--exitfirst" in sys_argv  # Carry-over from "pytest"
@@ -286,6 +293,8 @@ def SB(
             devtools = True
         else:
             devtools = False
+    if mobile is not None and is_mobile is None:
+        is_mobile = mobile
     if is_mobile is None:
         if "--mobile" in sys_argv:
             is_mobile = True
@@ -416,6 +425,9 @@ def SB(
         uc_subprocess = True
     else:
         uc_subprocess = False
+    if undetectable and is_mobile:
+        is_mobile = False
+        user_agent = None
     if use_auto_ext is None:
         if "--use-auto-ext" in sys_argv:
             use_auto_ext = True
@@ -432,6 +444,8 @@ def SB(
     _disable_beforeunload = False
     if disable_beforeunload:
         _disable_beforeunload = True
+    if pls is not None and page_load_strategy is None:
+        page_load_strategy = pls
     if page_load_strategy is not None:
         if page_load_strategy.lower() not in ["normal", "eager", "none"]:
             raise Exception(
@@ -444,12 +458,17 @@ def SB(
         page_load_strategy = "eager"
     elif "--pls=none" in sys_argv or '--pls="none"' in sys_argv:
         page_load_strategy = "none"
-    if (
-        "--sjw" in sys_argv
-        or "--skip_js_waits" in sys_argv
-        or "--skip-js-waits" in sys_argv
-    ):
-        settings.SKIP_JS_WAITS = True
+    if sjw is not None and skip_js_waits is None:
+        skip_js_waits = sjw
+    if skip_js_waits is None:
+        if (
+            "--sjw" in sys_argv
+            or "--skip_js_waits" in sys_argv
+            or "--skip-js-waits" in sys_argv
+        ):
+            settings.SKIP_JS_WAITS = True
+    elif skip_js_waits:
+        settings.SKIP_JS_WAITS = skip_js_waits
     if save_screenshot is None:
         if "--screenshot" in sys_argv or "--save-screenshot" in sys_argv:
             save_screenshot = True
@@ -480,6 +499,15 @@ def SB(
             do_not_track = True
         else:
             do_not_track = False
+    if use_wire is None and wire is None:
+        if "--wire" in sys_argv:
+            use_wire = True
+        else:
+            use_wire = False
+    elif use_wire or wire:
+        use_wire = True
+    else:
+        use_wire = False
     if external_pdf is None:
         if "--external-pdf" in sys_argv or "--external_pdf" in sys_argv:
             external_pdf = True
@@ -598,6 +626,7 @@ def SB(
     sb_config.message_duration = message_duration
     sb_config.block_images = block_images
     sb_config.do_not_track = do_not_track
+    sb_config.use_wire = use_wire
     sb_config.external_pdf = external_pdf
     sb_config.remote_debug = remote_debug
     sb_config.settings_file = settings_file
@@ -691,6 +720,7 @@ def SB(
     sb.message_duration = sb_config.message_duration
     sb.block_images = sb_config.block_images
     sb.do_not_track = sb_config.do_not_track
+    sb.use_wire = sb_config.use_wire
     sb.external_pdf = sb_config.external_pdf
     sb.remote_debug = sb_config.remote_debug
     sb.settings_file = sb_config.settings_file
