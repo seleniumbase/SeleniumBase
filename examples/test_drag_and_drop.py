@@ -1,6 +1,4 @@
-"""
-Testing Drag & Drop on different pages.
-"""
+"""Test drag_and_drop() on different pages."""
 from seleniumbase import BaseCase
 
 

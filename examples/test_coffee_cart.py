@@ -1,3 +1,4 @@
+"""Use SeleniumBase to test a Coffee Cart App."""
 from seleniumbase import BaseCase
 
 

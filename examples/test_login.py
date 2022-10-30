@@ -1,3 +1,4 @@
+"""A SeleniumBase test for verifying Login functionality on Swag Labs."""
 from seleniumbase import BaseCase
 
 

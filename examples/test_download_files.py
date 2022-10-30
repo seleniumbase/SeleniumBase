@@ -1,3 +1,4 @@
+"""Use SeleniumBase to download files and verify."""
 import math
 from seleniumbase import BaseCase
 

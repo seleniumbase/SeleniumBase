@@ -1,6 +1,8 @@
-""" TAG:contains("TEXT") is a special, non-standard CSS Selector
-    that gets converted to XPath: '//TAG[contains(., "TEXT")]'
-    before it's used by Selenium calls. Also part of jQuery. """
+"""
+TAG:contains("TEXT") is a special, non-standard CSS Selector
+that gets converted to XPath: '//TAG[contains(., "TEXT")]'
+before it's used by Selenium calls. Also part of jQuery.
+"""
 from seleniumbase import BaseCase
 
 

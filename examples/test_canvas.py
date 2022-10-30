@@ -1,3 +1,4 @@
+"""Use SeleniumBase methods to interact with "canvas" elements."""
 from seleniumbase import BaseCase
 
 

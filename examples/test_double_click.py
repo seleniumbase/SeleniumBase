@@ -1,3 +1,4 @@
+"""Test double_click() after switching into iframes."""
 from seleniumbase import BaseCase
 
 

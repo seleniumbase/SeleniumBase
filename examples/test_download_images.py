@@ -1,3 +1,4 @@
+"""Use SeleniumBase to download images and verify."""
 import os
 from seleniumbase import BaseCase
 

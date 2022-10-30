@@ -1,3 +1,4 @@
+"""Test that SeleniumBase can autodetect and use xpath selectors."""
 from seleniumbase import BaseCase
 
 

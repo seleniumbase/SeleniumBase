@@ -1,6 +1,4 @@
-""" Solve the Wordle game using SeleniumBase.
-    The latest version of Wordle no longer uses Shadow-DOM. """
-
+"""Solve Wordle with SeleniumBase. (No longer uses Shadow-DOM)"""
 import ast
 import random
 import requests

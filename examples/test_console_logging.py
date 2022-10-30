@@ -1,3 +1,4 @@
+"""Use SeleniumBase methods to interact with console logs."""
 from seleniumbase import BaseCase
 
 
