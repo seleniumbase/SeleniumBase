@@ -300,7 +300,7 @@ setup(
             'hyperframe==6.0.1;python_version>="3.7"',
             'kaitaistruct==0.10;python_version>="3.7"',
             'pyasn1==0.4.8;python_version>="3.7"',
-            'zstandard==0.18.0;python_version>="3.7"',
+            'zstandard==0.19.0;python_version>="3.7"',
         ],
     },
     packages=[
