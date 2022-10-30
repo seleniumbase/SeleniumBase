@@ -24,6 +24,7 @@
 * Can run tests with a customized browser user agent. (``--agent=USER_AGENT_STRING``)
 * Can set a Chromium User Data Directory/Profile to load. (``--user-data-dir=DIR``)
 * Can avoid detection by sites that try to block Selenium. (``--undetected``/``--uc``)
+* Can integrate with [selenium-wire](https://github.com/wkeeling/selenium-wire) for inspecting browser requests. (``--wire``)
 * Can load Chrome Extension ZIP files. (``--extension-zip=ZIP``)
 * Can load Chrome Extension folders. (``--extension-dir=DIR``)
 * Powerful [console scripts](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/console_scripts/ReadMe.md). (Type **``seleniumbase``** or **``sbase``** to use.)

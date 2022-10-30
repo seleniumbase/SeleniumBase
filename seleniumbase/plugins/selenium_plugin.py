@@ -82,6 +82,7 @@ class SeleniumBrowser(Plugin):
     --maximize  (Start tests with the browser window maximized.)
     --screenshot  (Save a screenshot at the end of each test.)
     --visual-baseline  (Set the visual baseline for Visual/Layout tests.)
+    --wire  (Use selenium-wire's webdriver for replacing selenium webdriver.)
     --external-pdf (Set Chromium "plugins.always_open_pdf_externally": True.)
     --timeout-multiplier=MULTIPLIER  (Multiplies the default timeout values.)
     """
@@ -784,6 +785,13 @@ class SeleniumBrowser(Plugin):
                     rebuild its files in the visual_baseline folder.""",
         )
         parser.add_option(
+            "--wire",
+            action="store_true",
+            dest="use_wire",
+            default=False,
+            help="""Use selenium-wire's webdriver for selenium webdriver.""",
+        )
+        parser.add_option(
             "--external_pdf",
             "--external-pdf",
             action="store_true",
@@ -942,6 +950,7 @@ class SeleniumBrowser(Plugin):
         test.test.maximize_option = self.options.maximize_option
         test.test.save_screenshot_after_test = self.options.save_screenshot
         test.test.visual_baseline = self.options.visual_baseline
+        test.test.use_wire = self.options.use_wire
         test.test.external_pdf = self.options.external_pdf
         test.test.timeout_multiplier = self.options.timeout_multiplier
         test.test.dashboard = False

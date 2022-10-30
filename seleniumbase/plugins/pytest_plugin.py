@@ -108,7 +108,8 @@ def pytest_addoption(parser):
     --maximize  (Start tests with the browser window maximized.)
     --screenshot  (Save a screenshot at the end of each test.)
     --visual-baseline  (Set the visual baseline for Visual/Layout tests.)
-    --external-pdf (Set Chromium "plugins.always_open_pdf_externally": True.)
+    --wire  (Use selenium-wire's webdriver for replacing selenium webdriver.)
+    --external-pdf  (Set Chromium "plugins.always_open_pdf_externally":True.)
     --timeout-multiplier=MULTIPLIER  (Multiplies the default timeout values.)
     --list-fail-page  (After each failing test, list the URL of the failure.)
     """
@@ -1098,6 +1099,13 @@ def pytest_addoption(parser):
                 rebuild its files in the visual_baseline folder.""",
     )
     parser.addoption(
+        "--wire",
+        action="store_true",
+        dest="use_wire",
+        default=False,
+        help="""Use selenium-wire's webdriver for selenium webdriver.""",
+    )
+    parser.addoption(
         "--external_pdf",
         "--external-pdf",
         action="store_true",
@@ -1415,6 +1423,7 @@ def pytest_configure(config):
     sb_config.maximize_option = config.getoption("maximize_option")
     sb_config.save_screenshot = config.getoption("save_screenshot")
     sb_config.visual_baseline = config.getoption("visual_baseline")
+    sb_config.use_wire = config.getoption("use_wire")
     sb_config.external_pdf = config.getoption("external_pdf")
     sb_config.timeout_multiplier = config.getoption("timeout_multiplier")
     sb_config.list_fp = config.getoption("fail_page")

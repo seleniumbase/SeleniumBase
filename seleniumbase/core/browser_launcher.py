@@ -16,6 +16,7 @@ from seleniumbase.config import settings
 from seleniumbase.core import download_helper
 from seleniumbase.core import proxy_helper
 from seleniumbase.fixtures import constants
+from seleniumbase.fixtures import shared_utils
 from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
 from seleniumbase import extensions  # browser extensions storage folder
 
@@ -372,6 +373,7 @@ def _set_chrome_options(
     extension_zip,
     extension_dir,
     page_load_strategy,
+    use_wire,
     external_pdf,
     servername,
     mobile_emulator,
@@ -918,6 +920,7 @@ def get_driver(
     extension_zip=None,
     extension_dir=None,
     page_load_strategy=None,
+    use_wire=False,
     external_pdf=False,
     test_id=None,
     mobile_emulator=False,
@@ -1083,6 +1086,7 @@ def get_driver(
             extension_zip,
             extension_dir,
             page_load_strategy,
+            use_wire,
             external_pdf,
             test_id,
             mobile_emulator,
@@ -1130,6 +1134,7 @@ def get_driver(
             extension_zip,
             extension_dir,
             page_load_strategy,
+            use_wire,
             external_pdf,
             mobile_emulator,
             device_width,
@@ -1181,6 +1186,7 @@ def get_remote_driver(
     extension_zip,
     extension_dir,
     page_load_strategy,
+    use_wire,
     external_pdf,
     test_id,
     mobile_emulator,
@@ -1188,6 +1194,21 @@ def get_remote_driver(
     device_height,
     device_pixel_ratio,
 ):
+    if use_wire and selenium4_or_newer:
+        driver_fixing_lock = fasteners.InterProcessLock(
+            constants.MultiBrowser.DRIVER_FIXING_LOCK
+        )
+        with driver_fixing_lock:  # Prevent multi-processes mode issues
+            try:
+                from seleniumwire import webdriver
+            except Exception:
+                shared_utils.pip_install(
+                    "selenium-wire", version=constants.SeleniumWire.VER
+                )
+                from seleniumwire import webdriver
+    else:
+        from selenium import webdriver
+
     # Construct the address for connecting to a Selenium Grid
     if servername.startswith("https://"):
         protocol = "https"
@@ -1280,6 +1301,7 @@ def get_remote_driver(
             extension_zip,
             extension_dir,
             page_load_strategy,
+            use_wire,
             external_pdf,
             servername,
             mobile_emulator,
@@ -1510,6 +1532,7 @@ def get_remote_driver(
             extension_zip,
             extension_dir,
             page_load_strategy,
+            use_wire,
             external_pdf,
             servername,
             mobile_emulator,
@@ -1708,6 +1731,7 @@ def get_local_driver(
     extension_zip,
     extension_dir,
     page_load_strategy,
+    use_wire,
     external_pdf,
     mobile_emulator,
     device_width,
@@ -1719,6 +1743,20 @@ def get_local_driver(
     Can also be used to spin up additional browsers for the same test.
     """
     downloads_path = DOWNLOADS_FOLDER
+    if use_wire and selenium4_or_newer:
+        driver_fixing_lock = fasteners.InterProcessLock(
+            constants.MultiBrowser.DRIVER_FIXING_LOCK
+        )
+        with driver_fixing_lock:  # Prevent multi-processes mode issues
+            try:
+                from seleniumwire import webdriver
+            except Exception:
+                shared_utils.pip_install(
+                    "selenium-wire", version=constants.SeleniumWire.VER
+                )
+                from seleniumwire import webdriver
+    else:
+        from selenium import webdriver
 
     if browser_name == constants.Browser.FIREFOX:
         firefox_options = _set_firefox_options(
@@ -2308,6 +2346,7 @@ def get_local_driver(
                 extension_zip,
                 extension_dir,
                 page_load_strategy,
+                use_wire,
                 external_pdf,
                 servername,
                 mobile_emulator,
@@ -2372,6 +2411,7 @@ def get_local_driver(
                 extension_zip,
                 extension_dir,
                 page_load_strategy,
+                use_wire,
                 external_pdf,
                 servername,
                 mobile_emulator,
@@ -2754,6 +2794,7 @@ def get_local_driver(
                         extension_zip,
                         extension_dir,
                         page_load_strategy,
+                        use_wire,
                         external_pdf,
                         servername,
                         mobile_emulator,

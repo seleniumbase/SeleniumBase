@@ -536,6 +536,10 @@ self.get_session_storage_items()
 
 ############
 
+self.set_wire_proxy(string)  # Requires "--wire"!
+
+############
+
 self.add_css_link(css_link)
 
 self.add_js_link(js_link)

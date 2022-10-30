@@ -89,6 +89,7 @@ behave -D agent="User Agent String" -D demo
 -D maximize  (Start tests with the browser window maximized.)
 -D screenshot  (Save a screenshot at the end of each test.)
 -D visual-baseline  (Set the visual baseline for Visual/Layout tests.)
+-D wire  (Use selenium-wire's webdriver for replacing selenium webdriver.)
 -D external-pdf (Set Chromium "plugins.always_open_pdf_externally": True.)
 -D timeout-multiplier=MULTIPLIER  (Multiplies the default timeout values.)
 """
@@ -179,6 +180,7 @@ def get_configured_sb(context):
     sb._crumbs = False
     sb._disable_beforeunload = False
     sb.visual_baseline = False
+    sb.use_wire = False
     sb.window_size = None
     sb.maximize_option = False
     sb.is_context_manager = False
@@ -539,6 +541,10 @@ def get_configured_sb(context):
         # Handle: -D visual-baseline / visual_baseline
         if low_key in ["visual-baseline", "visual_baseline"]:
             sb.visual_baseline = True
+            continue
+        # Handle: -D wire
+        if low_key == "wire":
+            sb.use_wire = True
             continue
         # Handle: -D window-size=Width,Height / window_size=Width,Height
         if low_key in ["window-size", "window_size"]:
