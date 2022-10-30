@@ -261,9 +261,9 @@ setup(
             'pytest-cov==2.12.1;python_version<"3.6"',
             'pytest-cov==4.0.0;python_version>="3.6"',
         ],
-        # pip install -e .[flake]
+        # pip install -e .[flake8]
         # Usage: flake8
-        "flake": [
+        "flake8": [
             'flake8==3.7.9;python_version<"3.6"',
             'flake8==5.0.4;python_version>="3.6"',
             'mccabe==0.6.1;python_version<"3.6"',
@@ -284,6 +284,10 @@ setup(
             'Pillow==6.2.2;python_version<"3.6"',
             'Pillow==8.4.0;python_version>="3.6" and python_version<"3.7"',
             'Pillow==9.3.0;python_version>="3.7"',
+        ],
+        # pip install -e .[psutil]
+        "psutil": [
+            "psutil==5.9.3",
         ],
         # pip install -e .[selenium-wire]
         "selenium-wire": [
