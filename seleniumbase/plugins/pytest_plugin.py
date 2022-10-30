@@ -68,7 +68,6 @@ def pytest_addoption(parser):
     --start-page=URL  (The starting URL for the web browser when tests begin.)
     --archive-logs  (Archive existing log files instead of deleting them.)
     --archive-downloads  (Archive old downloads instead of deleting them.)
-    --sjw  (Skip JavaScript Waits such as readyState=="complete" or Angular.)
     --time-limit=SECONDS  (Safely fail any test that exceeds the time limit.)
     --slow  (Slow down the automation. Faster than using Demo Mode.)
     --demo  (Slow down and visually see test actions as they occur.)
@@ -1274,17 +1273,20 @@ def pytest_addoption(parser):
             '\n  (Your browser choice was: "%s")\n' % browser_list[0]
         )
         raise Exception(message)
+    undetectable = False
+    if (
+        "--undetected" in sys_argv
+        or "--undetectable" in sys_argv
+        or "--uc" in sys_argv
+        or "--uc-subprocess" in sys_argv
+        or "--uc_subprocess" in sys_argv
+        or "--uc-sub" in sys_argv
+    ):
+        undetectable = True
     if (
         browser_changes == 1
         and browser_text not in ["chrome"]
-        and (
-            "--undetected" in sys_argv
-            or "--undetectable" in sys_argv
-            or "--uc" in sys_argv
-            or "--uc-subprocess" in sys_argv
-            or "--uc_subprocess" in sys_argv
-            or "--uc-sub" in sys_argv
-        )
+        and undetectable
     ):
         message = (
             '\n\n  Undetected-Chromedriver Mode ONLY supports Chrome!'
@@ -1716,7 +1718,10 @@ def pytest_runtest_teardown(item):
                     if (
                         hasattr(self, "driver")
                         and self.driver
-                        and "--pdb" not in sys_argv
+                        and (
+                            "--pdb" not in sys_argv
+                            or not python3
+                        )
                     ):
                         if not is_windows or self.driver.service.process:
                             self.driver.quit()
