@@ -534,7 +534,6 @@ def _set_chrome_options(
             chrome_options.add_argument(
                 "--disable-blink-features=AutomationControlled"
             )
-        chrome_options.add_experimental_option("useAutomationExtension", False)
     if headless2:
         chrome_options.add_argument("--headless=chrome")
     elif headless:
@@ -595,7 +594,8 @@ def _set_chrome_options(
         chrome_options.add_argument("--ignore-certificate-errors")
         if not enable_ws:
             chrome_options.add_argument("--disable-web-security")
-        chrome_options.add_argument("--no-sandbox")
+        if "linux" in PLATFORM or not undetectable:
+            chrome_options.add_argument("--no-sandbox")
     else:
         # Opera Chromium only!
         chrome_options.add_argument("--allow-elevated-browser")
@@ -2025,7 +2025,6 @@ def get_local_driver(
         edge_options.add_argument(
             "--disable-blink-features=AutomationControlled"
         )
-        edge_options.add_experimental_option("useAutomationExtension", False)
         edge_options.add_experimental_option(
             "excludeSwitches", ["enable-automation", "enable-logging"]
         )
@@ -2142,7 +2141,8 @@ def get_local_driver(
         edge_options.add_argument("--allow-running-insecure-content")
         if user_agent:
             edge_options.add_argument("--user-agent=%s" % user_agent)
-        edge_options.add_argument("--no-sandbox")
+        if "linux" in PLATFORM or not undetectable:
+            edge_options.add_argument("--no-sandbox")
         if remote_debug:
             # To access the Remote Debugger, go to: http://localhost:9222
             # while a Chromium driver is running.
