@@ -8,6 +8,7 @@
 if [ $sourced = 1 ]
 then
   python3 -m pip install --upgrade pip
+  python3 -m pip install --upgrade wheel
   python3 -m pip install virtualenvwrapper --force-reinstall
   export WORKON_HOME=$HOME/.virtualenvs
   source `which virtualenvwrapper.sh`
