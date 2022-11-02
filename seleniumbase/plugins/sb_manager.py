@@ -92,6 +92,7 @@ def SB(
     pls=None,  # Shortcut / Duplicate of "page_load_strategy".
     sjw=None,  # Shortcut / Duplicate of "skip_js_waits".
     save_screenshot=None,  # Save a screenshot at the end of each test.
+    no_screenshot=None,  # No screenshots saved unless tests directly ask it.
     timeout_multiplier=None,  # Multiplies the default timeout values.
     js_checking_on=None,  # Check for JavaScript errors after page loads.
     slow=None,  # Slow down the automation. Faster than using Demo Mode.
@@ -136,7 +137,7 @@ def SB(
                 '\n  (Prevent that by using: `if __name__ == "__main__":`)'
             )
         elif hasattr(sb_config, "is_nosetest") and sb_config.is_nosetest:
-            print(
+            raise Exception(
                 "\n  SB Manager script was triggered by nosetest collection!"
                 '\n  (Prevent that by using: ``if __name__ == "__main__":``)'
             )
@@ -470,10 +471,21 @@ def SB(
     elif skip_js_waits:
         settings.SKIP_JS_WAITS = skip_js_waits
     if save_screenshot is None:
-        if "--screenshot" in sys_argv or "--save-screenshot" in sys_argv:
+        if (
+            "--screenshot" in sys_argv
+            or "--save-screenshot" in sys_argv
+            or "--ss" in sys_argv
+        ):
             save_screenshot = True
         else:
             save_screenshot = False
+    if no_screenshot is None:
+        if "--no-screenshot" in sys_argv or "--ns" in sys_argv:
+            no_screenshot = True
+        else:
+            no_screenshot = False
+    if save_screenshot and no_screenshot:
+        save_screenshot = False  # "no_screenshot" has priority
     if js_checking_on is None:
         if "--check-js" in sys_argv:
             js_checking_on = True
@@ -605,6 +617,7 @@ def SB(
     sb_config.maximize_option = maximize_option
     sb_config._disable_beforeunload = _disable_beforeunload
     sb_config.save_screenshot = save_screenshot
+    sb_config.no_screenshot = no_screenshot
     sb_config.page_load_strategy = page_load_strategy
     sb_config.timeout_multiplier = timeout_multiplier
     sb_config.pytest_html_report = None
@@ -699,6 +712,7 @@ def SB(
     sb.maximize_option = sb_config.maximize_option
     sb._disable_beforeunload = sb_config._disable_beforeunload
     sb.save_screenshot_after_test = sb_config.save_screenshot
+    sb.no_screenshot_after_test = sb_config.no_screenshot
     sb.page_load_strategy = sb_config.page_load_strategy
     sb.timeout_multiplier = sb_config.timeout_multiplier
     sb.pytest_html_report = sb_config.pytest_html_report

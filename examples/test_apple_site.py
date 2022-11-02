@@ -8,10 +8,15 @@ class AppleTests(BaseCase):
             self.demo_mode = True
             self.demo_sleep = 0.5
             self.message_duration = 2.0
-        if self.headless and (
-            self.browser == "chrome" or self.browser == "edge"
-        ):
-            self.get_new_driver(browser=self.browser, headless2=True)
+        if self.headless:
+            if self._multithreaded:
+                print("Skipping test in headless multi-threaded mode.")
+                self.skip("Skipping test in headless multi-threaded mode.")
+            elif self.undetectable:
+                print("Skipping test in headless undetectable mode.")
+                self.skip("Skipping test in headless undetectable mode.")
+            elif self.browser == "chrome" or self.browser == "edge":
+                self.get_new_driver(browser=self.browser, headless2=True)
         self.open("https://developer.apple.com/search/")
         title = "Testing with WebDriver in Safari"
         self.type('[placeholder*="developer.apple.com"]', title + "\n")

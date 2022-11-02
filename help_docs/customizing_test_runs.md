@@ -178,6 +178,7 @@ pytest my_first_test.py --settings-file=custom_settings.py
 --window-size=WIDTH,HEIGHT  # (Set the browser's starting window size.)
 --maximize  # (Start tests with the browser window maximized.)
 --screenshot  # (Save a screenshot at the end of each test.)
+--no-screenshot  # (No screenshots saved unless tests directly ask it.)
 --visual-baseline  # (Set the visual baseline for Visual/Layout tests.)
 --wire  # (Use selenium-wire's webdriver for replacing selenium webdriver.)
 --external-pdf  # (Set Chromium "plugins.always_open_pdf_externally":True.)

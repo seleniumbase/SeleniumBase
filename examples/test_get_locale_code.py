@@ -3,7 +3,7 @@ from seleniumbase import BaseCase
 
 class LocaleTests(BaseCase):
     def test_get_locale_code(self):
-        self.open("data:,")
+        self.open("about:blank")
         locale_code = self.get_locale_code()
         message = '\nLocale Code = "%s"' % locale_code
         print(message)

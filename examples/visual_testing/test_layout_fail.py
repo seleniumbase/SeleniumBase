@@ -22,7 +22,7 @@ class VisualLayoutFailureTests(BaseCase):
         # Click a button that changes the text of an element
         self.click('a[href="?diff1"]')
         # Click a button that makes a hidden element visible
-        self.click("button")
+        self.slow_click("button")
         print("(This test should fail)")  # due to image now seen
         self.check_window(name="helloworld", level=3)
 

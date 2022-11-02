@@ -142,6 +142,7 @@ class Values:
 
 
 class Warnings:
+    SCREENSHOT_SKIPPED = "Skipping screenshot!"
     SCREENSHOT_UNDEFINED = "Unable to get screenshot!"
     PAGE_SOURCE_UNDEFINED = "Unable to get page source!"
     INVALID_RUN_COMMAND = "INVALID RUN COMMAND!"

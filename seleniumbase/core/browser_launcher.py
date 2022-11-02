@@ -12,6 +12,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.edge.service import Service as EdgeService
 from selenium.webdriver.firefox.service import Service as FirefoxService
+from selenium.webdriver.safari.service import Service as SafariService
 from seleniumbase.config import settings
 from seleniumbase.core import download_helper
 from seleniumbase.core import proxy_helper
@@ -477,6 +478,18 @@ def _set_chrome_options(
         chrome_options.add_experimental_option(
             "mobileEmulation", emulator_settings
         )
+    if headless or headless2:
+        chrome_options.add_argument(
+            "--window-size=%s,%s" % (
+                settings.HEADLESS_START_WIDTH, settings.HEADLESS_START_HEIGHT
+            )
+        )
+    else:
+        chrome_options.add_argument(
+            "--window-size=%s,%s" % (
+                settings.CHROME_START_WIDTH, settings.CHROME_START_HEIGHT
+            )
+        )
     if (
         not proxy_auth
         and not disable_csp
@@ -498,7 +511,7 @@ def _set_chrome_options(
             chrome_options.add_argument("--guest")
         else:
             pass
-    if user_data_dir and not undetectable:
+    if user_data_dir and not is_using_uc(undetectable, browser_name):
         abs_path = os.path.abspath(user_data_dir)
         chrome_options.add_argument("user-data-dir=%s" % abs_path)
     if extension_zip:
@@ -527,13 +540,6 @@ def _set_chrome_options(
     ):
         # Only change it if not "normal", which is the default.
         chrome_options.page_load_strategy = settings.PAGE_LOAD_STRATEGY.lower()
-    if servername != "localhost":
-        use_auto_ext = True  # Use Automation Extension
-    if not use_auto_ext:  # Disable Automation Extension. (Default)
-        if browser_name != constants.Browser.OPERA:
-            chrome_options.add_argument(
-                "--disable-blink-features=AutomationControlled"
-            )
     if headless2:
         chrome_options.add_argument("--headless=chrome")
     elif headless:
@@ -591,10 +597,11 @@ def _set_chrome_options(
         chrome_options.add_argument("--proxy-pac-url=%s" % proxy_pac_url)
     if browser_name != constants.Browser.OPERA:
         # Opera Chromium doesn't support these switches
-        chrome_options.add_argument("--ignore-certificate-errors")
+        if not is_using_uc(undetectable, browser_name) or not enable_ws:
+            chrome_options.add_argument("--ignore-certificate-errors")
         if not enable_ws:
             chrome_options.add_argument("--disable-web-security")
-        if "linux" in PLATFORM or not undetectable:
+        if "linux" in PLATFORM or not is_using_uc(undetectable, browser_name):
             chrome_options.add_argument("--no-sandbox")
     else:
         # Opera Chromium only!
@@ -940,7 +947,7 @@ def get_driver(
         headless = True
     if uc_subprocess and not undetectable:
         undetectable = True
-    if undetectable and mobile_emulator:
+    if is_using_uc(undetectable, browser_name) and mobile_emulator:
         mobile_emulator = False
         user_agent = None
     proxy_auth = False
@@ -2060,7 +2067,21 @@ def get_local_driver(
             edge_options.add_experimental_option(
                 "mobileEmulation", emulator_settings
             )
-        if user_data_dir and not undetectable:
+        if headless or headless2:
+            edge_options.add_argument(
+                "--window-size=%s,%s" % (
+                    settings.HEADLESS_START_WIDTH,
+                    settings.HEADLESS_START_HEIGHT,
+                )
+            )
+        else:
+            edge_options.add_argument(
+                "--window-size=%s,%s" % (
+                    settings.CHROME_START_WIDTH,
+                    settings.CHROME_START_HEIGHT,
+                )
+            )
+        if user_data_dir and not is_using_uc(undetectable, browser_name):
             abs_path = os.path.abspath(user_data_dir)
             edge_options.add_argument("user-data-dir=%s" % abs_path)
         if extension_zip:
@@ -2144,7 +2165,7 @@ def get_local_driver(
         edge_options.add_argument("--allow-running-insecure-content")
         if user_agent:
             edge_options.add_argument("--user-agent=%s" % user_agent)
-        if "linux" in PLATFORM or not undetectable:
+        if "linux" in PLATFORM or not is_using_uc(undetectable, browser_name):
             edge_options.add_argument("--no-sandbox")
         if remote_debug:
             # To access the Remote Debugger, go to: http://localhost:9222
@@ -2298,7 +2319,8 @@ def get_local_driver(
             # Skip if multithreaded
             raise Exception("Can't run Safari tests in multithreaded mode!")
         warnings.simplefilter("ignore", category=DeprecationWarning)
-        return webdriver.safari.webdriver.WebDriver(quiet=False)
+        service = SafariService(quiet=False)
+        return webdriver.safari.webdriver.WebDriver(service=service)
     elif browser_name == constants.Browser.OPERA:
         try:
             if LOCAL_OPERADRIVER and os.path.exists(LOCAL_OPERADRIVER):
@@ -2635,7 +2657,7 @@ def get_local_driver(
                         if selenium4_or_newer:
                             if headless and "linux" not in PLATFORM:
                                 undetectable = False  # No support for headless
-                            if undetectable:
+                            if is_using_uc(undetectable, browser_name):
                                 from seleniumbase import undetected
                                 from urllib.error import URLError
 

@@ -475,7 +475,9 @@ class BaseCase(unittest.TestCase):
                 except Exception:
                     pass
         if self.browser == "safari":
-            time.sleep(0.02)
+            time.sleep(0.01)
+            self.wait_for_ready_state_complete()
+            time.sleep(0.01)
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self.__demo_mode_pause_if_active()
@@ -3120,6 +3122,12 @@ class BaseCase(unittest.TestCase):
     def open_new_window(self, switch_to=True):
         """Opens a new browser tab/window and switches to it by default."""
         self.wait_for_ready_state_complete()
+        if hasattr(self.driver, "tab_new"):
+            self.driver.tab_new("about:blank")
+            if switch_to:
+                self.switch_to_newest_window()
+            time.sleep(0.01)
+            return
         if selenium4_or_newer and switch_to:
             self.driver.switch_to.new_window("tab")
         else:
@@ -3454,38 +3462,38 @@ class BaseCase(unittest.TestCase):
                 # Make sure the invisible browser window is big enough
                 width = settings.HEADLESS_START_WIDTH
                 height = settings.HEADLESS_START_HEIGHT
-                try:
-                    self.driver.set_window_size(width, height)
-                    self.wait_for_ready_state_complete()
-                except Exception:
-                    # This shouldn't fail, but in case it does,
-                    # get safely through setUp() so that
-                    # WebDrivers can get closed during tearDown().
-                    pass
+                if self.browser != "chrome" and self.browser != "edge":
+                    try:
+                        self.driver.set_window_size(width, height)
+                        # self.wait_for_ready_state_complete()
+                    except Exception:
+                        # This shouldn't fail, but in case it does,
+                        # get safely through setUp() so that
+                        # WebDrivers can get closed during tearDown().
+                        pass
             else:
+                width = settings.CHROME_START_WIDTH
+                height = settings.CHROME_START_HEIGHT
                 if self.browser == "chrome" or self.browser == "edge":
-                    width = settings.CHROME_START_WIDTH
-                    height = settings.CHROME_START_HEIGHT
                     try:
                         if self.maximize_option:
                             self.driver.maximize_window()
+                            self.wait_for_ready_state_complete()
                         else:
-                            self.driver.set_window_size(width, height)
-                        self.wait_for_ready_state_complete()
+                            pass  # Now handled in browser_launcher.py
+                            # self.driver.set_window_size(width, height)
                     except Exception:
                         pass  # Keep existing browser resolution
                 elif self.browser == "firefox":
-                    width = settings.CHROME_START_WIDTH
                     try:
                         if self.maximize_option:
                             self.driver.maximize_window()
+                            self.wait_for_ready_state_complete()
                         else:
-                            self.driver.set_window_size(width, 720)
-                        self.wait_for_ready_state_complete()
+                            self.driver.set_window_size(width, height)
                     except Exception:
                         pass  # Keep existing browser resolution
                 elif self.browser == "safari":
-                    width = settings.CHROME_START_WIDTH
                     if self.maximize_option:
                         try:
                             self.driver.maximize_window()
@@ -3494,11 +3502,10 @@ class BaseCase(unittest.TestCase):
                             pass  # Keep existing browser resolution
                     else:
                         try:
-                            self.driver.set_window_rect(10, 30, width, 630)
+                            self.driver.set_window_rect(10, 20, width, height)
                         except Exception:
                             pass
                 elif self.browser == "opera":
-                    width = settings.CHROME_START_WIDTH
                     if self.maximize_option:
                         try:
                             self.driver.maximize_window()
@@ -3507,7 +3514,7 @@ class BaseCase(unittest.TestCase):
                             pass  # Keep existing browser resolution
                     else:
                         try:
-                            self.driver.set_window_rect(10, 30, width, 700)
+                            self.driver.set_window_rect(10, 20, width, height)
                         except Exception:
                             pass
             if self.start_page and len(self.start_page) >= 4:
@@ -11388,6 +11395,11 @@ class BaseCase(unittest.TestCase):
 
             raise VisualException(minified_exception)
 
+    def _process_visual_baseline_logs(self):
+        if sys.version_info < (3, 11):
+            return
+        self.__process_visual_baseline_logs()
+
     def __process_visual_baseline_logs(self):
         """Save copies of baseline PNGs in "./latest_logs" during failures.
         Also create a side_by_side.html file for visual comparisons."""
@@ -12925,6 +12937,7 @@ class BaseCase(unittest.TestCase):
                 settings.HEADLESS_START_HEIGHT = height
             self.maximize_option = sb_config.maximize_option
             self.save_screenshot_after_test = sb_config.save_screenshot
+            self.no_screenshot_after_test = sb_config.no_screenshot
             self.visual_baseline = sb_config.visual_baseline
             self.timeout_multiplier = sb_config.timeout_multiplier
             self.pytest_html_report = sb_config.pytest_html_report
@@ -13032,6 +13045,31 @@ class BaseCase(unittest.TestCase):
         self.data_path = os.path.join(self.log_path, self.__get_test_id())
         self.data_abspath = os.path.abspath(self.data_path)
 
+        # Add _test_logpath value to sb_config
+        test_id = self.__get_test_id()
+        test_logpath = os.path.join(self.log_path, test_id)
+        sb_config._test_logpath = test_logpath
+
+        # Add _process_dashboard_entry method to sb_config
+        sb_config._process_dashboard_entry = self._process_dashboard_entry
+
+        # Add _add_pytest_html_extra method to sb_config
+        sb_config._add_pytest_html_extra = self._add_pytest_html_extra
+
+        # Add _process_visual_baseline_logs method to sb_config
+        sb_config._process_v_baseline_logs = self._process_visual_baseline_logs
+
+        # Add _log_fail_data method to sb_config
+        sb_config._log_fail_data = self._log_fail_data
+
+        # Reset the last_page_screenshot variables
+        sb_config._last_page_screenshot = None
+        sb_config._last_page_screenshot_png = None
+
+        # Indictate to pytest reports that SeleniumBase is being used
+        sb_config._sbase_detected = True
+        sb_config._only_unittest = False
+
         # Mobile Emulator device metrics: CSS Width, CSS Height, & Pixel-Ratio
         if self.device_metrics:
             metrics_string = self.device_metrics
@@ -13074,15 +13112,11 @@ class BaseCase(unittest.TestCase):
         if self.dashboard:
             if self._multithreaded:
                 with self.dash_lock:
-                    sb_config._sbase_detected = True
-                    sb_config._only_unittest = False
                     if not self._dash_initialized:
                         sb_config._dashboard_initialized = True
                         self._dash_initialized = True
                         self.__process_dashboard(False, init=True)
             else:
-                sb_config._sbase_detected = True
-                sb_config._only_unittest = False
                 if not self._dash_initialized:
                     sb_config._dashboard_initialized = True
                     self._dash_initialized = True
@@ -13226,38 +13260,73 @@ class BaseCase(unittest.TestCase):
     def __set_last_page_screenshot(self):
         """self.__last_page_screenshot is only for pytest html report logs.
         self.__last_page_screenshot_png is for all screenshot log files."""
-        if not self.__last_page_screenshot and (
-            not self.__last_page_screenshot_png
+        SCREENSHOT_SKIPPED = constants.Warnings.SCREENSHOT_SKIPPED
+        SCREENSHOT_UNDEFINED = constants.Warnings.SCREENSHOT_UNDEFINED
+        if (
+            hasattr(self, "no_screenshot_after_test")
+            and self.no_screenshot_after_test
+        ):
+            from seleniumbase.core import encoded_images
+
+            NO_SCREENSHOT = encoded_images.get_no_screenshot_png()
+            self.__last_page_screenshot = NO_SCREENSHOT
+            self.__last_page_screenshot_png = SCREENSHOT_SKIPPED
+            sb_config._last_page_screenshot_png = NO_SCREENSHOT
+            return
+        element = None
+        if (
+            not self.__last_page_screenshot
+            and not self.__last_page_screenshot_png
         ):
             try:
                 element = self.driver.find_element(by="tag name", value="body")
-                if self.is_pytest and self.report_on:
-                    self.__last_page_screenshot_png = (
-                        self.driver.get_screenshot_as_png()
-                    )
+                try:
                     self.__last_page_screenshot = element.screenshot_as_base64
-                else:
-                    self.__last_page_screenshot_png = element.screenshot_as_png
-            except Exception:
-                if not self.__last_page_screenshot:
-                    if self.is_pytest and self.report_on:
-                        try:
-                            self.__last_page_screenshot = (
-                                self.driver.get_screenshot_as_base64()
-                            )
-                        except Exception:
-                            self.__last_page_screenshot = (
-                                constants.Warnings.SCREENSHOT_UNDEFINED
-                            )
-                if not self.__last_page_screenshot_png:
+                except Exception:
                     try:
-                        self.__last_page_screenshot_png = (
-                            self.driver.get_screenshot_as_png()
+                        self.__last_page_screenshot = (
+                            self.driver.get_screenshot_as_base64()
                         )
                     except Exception:
+                        pass
+            except Exception:
+                pass
+            if not self.__last_page_screenshot:
+                self.__last_page_screenshot = SCREENSHOT_UNDEFINED
+                self.__last_page_screenshot_png = SCREENSHOT_UNDEFINED
+                if element:
+                    try:
                         self.__last_page_screenshot_png = (
-                            constants.Warnings.SCREENSHOT_UNDEFINED
+                            element.screenshot_as_png
                         )
+                    except Exception:
+                        try:
+                            self.__last_page_screenshot_png = (
+                                self.driver.get_screenshot_as_png()
+                            )
+                        except Exception:
+                            pass
+            else:
+                import base64
+
+                try:
+                    self.__last_page_screenshot_png = (
+                        base64.b64decode(self.__last_page_screenshot)
+                    )
+                except Exception:
+                    if element:
+                        try:
+                            self.__last_page_screenshot_png = (
+                                element.screenshot_as_png
+                            )
+                        except Exception:
+                            try:
+                                self.__last_page_screenshot_png = (
+                                    self.driver.get_screenshot_as_png()
+                                )
+                            except Exception:
+                                pass
+        sb_config._last_page_screenshot_png = self.__last_page_screenshot_png
 
     def __set_last_page_url(self):
         if not self.__last_page_url:
@@ -13278,6 +13347,7 @@ class BaseCase(unittest.TestCase):
                 self.__last_page_source = (
                     constants.Warnings.PAGE_SOURCE_UNDEFINED
                 )
+            sb_config._last_page_source = self.__last_page_source
 
     def __get_exception_info(self):
         exc_message = None
@@ -13332,6 +13402,11 @@ class BaseCase(unittest.TestCase):
                     data_payload.message = "Skipped:   (no reason given)"
         self.testcase_manager.update_testcase_data(data_payload)
 
+    def _add_pytest_html_extra(self):
+        if sys.version_info < (3, 11):
+            return
+        self.__add_pytest_html_extra()
+
     def __add_pytest_html_extra(self):
         if not self.__added_pytest_html_extra:
             try:
@@ -13345,7 +13420,7 @@ class BaseCase(unittest.TestCase):
                         extra_url["name"] = "URL"
                         extra_url["format"] = "url"
                         extra_url["format_type"] = "url"
-                        extra_url["content"] = self.get_current_url()
+                        extra_url["content"] = self.__last_page_url
                         extra_url["mime_type"] = None
                         extra_url["extension"] = None
                         extra_image = {}
@@ -13429,8 +13504,12 @@ class BaseCase(unittest.TestCase):
                 return True
             else:
                 return False
-        elif python3 and hasattr(self, "_outcome"):
-            if hasattr(self._outcome, "errors") and self._outcome.errors:
+        elif (
+            python3
+            and hasattr(self, "_outcome")
+            and hasattr(self._outcome, "errors")
+        ):
+            if self._outcome.errors:
                 has_exception = True
         else:
             if python3:
@@ -13555,6 +13634,18 @@ class BaseCase(unittest.TestCase):
                 os.makedirs(test_logpath)
             except Exception:
                 pass  # Only reachable during multi-threaded runs
+
+    def _process_dashboard_entry(self, has_exception, init=False):
+        if self._multithreaded:
+            import fasteners
+
+            self.dash_lock = fasteners.InterProcessLock(
+                constants.Dashboard.LOCKFILE
+            )
+            with self.dash_lock:
+                self.__process_dashboard(has_exception, init)
+        else:
+            self.__process_dashboard(has_exception, init)
 
     def __process_dashboard(self, has_exception, init=False):
         """SeleniumBase Dashboard Processing"""
@@ -13959,6 +14050,66 @@ class BaseCase(unittest.TestCase):
             if self.is_pytest:
                 self.__add_pytest_html_extra()
 
+    def _log_fail_data(self):
+        if sys.version_info < (3, 11):
+            return
+        test_id = self.__get_test_id()
+        test_logpath = os.path.join(self.log_path, test_id)
+        log_helper.log_test_failure_data(
+            self,
+            test_logpath,
+            self.driver,
+            self.browser,
+            self.__last_page_url,
+        )
+
+    def _get_browser_version(self):
+        driver_capabilities = None
+        if hasattr(self, "driver") and hasattr(self.driver, "capabilities"):
+            driver_capabilities = self.driver.capabilities
+        elif hasattr(sb_config, "_browser_version"):
+            return sb_config._browser_version
+        else:
+            return "(Unknown Version)"
+        if "version" in driver_capabilities:
+            browser_version = driver_capabilities["version"]
+        else:
+            browser_version = driver_capabilities["browserVersion"]
+        return browser_version
+
+    def _get_driver_name_and_version(self):
+        if not hasattr(self.driver, "capabilities"):
+            if hasattr(sb_config, "_driver_name_version"):
+                return sb_config._driver_name_version
+            else:
+                return None
+        driver = self.driver
+        if driver.capabilities["browserName"].lower() == "chrome":
+            cap_dict = driver.capabilities["chrome"]
+            return (
+                "chromedriver", cap_dict["chromedriverVersion"].split(" ")[0]
+            )
+        elif driver.capabilities["browserName"].lower() == "msedge":
+            cap_dict = driver.capabilities["msedge"]
+            return (
+                "msedgedriver", cap_dict["msedgedriverVersion"].split(" ")[0]
+            )
+        elif driver.capabilities["browserName"].lower() == "opera":
+            cap_dict = driver.capabilities["opera"]
+            return (
+                "operadriver", cap_dict["operadriverVersion"].split(" ")[0]
+            )
+        elif driver.capabilities["browserName"].lower() == "firefox":
+            return (
+                "geckodriver", driver.capabilities["moz:geckodriverVersion"]
+            )
+        elif self.browser == "safari":
+            return ("safaridriver", self._get_browser_version())
+        elif self.browser == "ie":
+            return ("iedriver", self._get_browser_version())
+        else:
+            return None
+
     def tearDown(self):
         """
         Be careful if a subclass of BaseCase overrides setUp()
@@ -14006,6 +14157,10 @@ class BaseCase(unittest.TestCase):
         # *** Start tearDown() officially ***
         self.__slow_mode_pause_if_active()
         has_exception = self.__has_exception()
+        sb_config._has_exception = has_exception
+        sb_config._browser_version = self._get_browser_version()
+        sb_config._driver_name_version = self._get_driver_name_and_version()
+
         if self.__overrided_default_timeouts:
             # Reset default timeouts in case there are more tests
             # These were changed in set_default_timeout()
@@ -14055,6 +14210,11 @@ class BaseCase(unittest.TestCase):
                     )
                     self.__add_pytest_html_extra()
                     sb_config._has_logs = True
+                elif sys.version_info >= (3, 11) and not has_exception:
+                    # Handle a bug on Python 3.11 where exceptions aren't seen
+                    self.__set_last_page_screenshot()
+                    self.__set_last_page_url()
+                    self.__set_last_page_source()
                 if self.with_testing_base and has_exception:
                     test_logpath = os.path.join(self.log_path, test_id)
                     self.__create_log_path_as_needed(test_logpath)
@@ -14267,8 +14427,10 @@ class BaseCase(unittest.TestCase):
             # (Nosetests / Behave / Pure Python) Close all open browser windows
             self.__quit_all_drivers()
         # Resume tearDown() for all test runners, (Pytest / Nosetests / Behave)
-        if has_exception and self.__visual_baseline_copies:
-            self.__process_visual_baseline_logs()
+        if self.__visual_baseline_copies:
+            sb_config._visual_baseline_copies = True
+            if has_exception:
+                self.__process_visual_baseline_logs()
         if deferred_exception:
             # User forgot to call "self.process_deferred_asserts()" in test
             raise deferred_exception

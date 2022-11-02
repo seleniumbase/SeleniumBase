@@ -12,7 +12,15 @@ from seleniumbase.fixtures import constants
 def log_screenshot(test_logpath, driver, screenshot=None, get=False):
     screenshot_name = settings.SCREENSHOT_NAME
     screenshot_path = os.path.join(test_logpath, screenshot_name)
+    screenshot_skipped = constants.Warnings.SCREENSHOT_SKIPPED
     screenshot_warning = constants.Warnings.SCREENSHOT_UNDEFINED
+    if (
+        (hasattr(sb_config, "no_screenshot") and sb_config.no_screenshot)
+        or screenshot == screenshot_skipped
+    ):
+        if get:
+            return screenshot
+        return
     try:
         if not screenshot:
             element = driver.find_element_by_tag_name("body")
@@ -67,6 +75,8 @@ def get_master_time():
 
 
 def get_browser_version(driver):
+    if sys.version_info >= (3, 11) and hasattr(sb_config, "_browser_version"):
+        return sb_config._browser_version
     driver_capabilities = driver.capabilities
     if "version" in driver_capabilities:
         browser_version = driver_capabilities["version"]
@@ -76,6 +86,8 @@ def get_browser_version(driver):
 
 
 def get_driver_name_and_version(driver, browser):
+    if hasattr(sb_config, "_driver_name_version"):
+        return sb_config._driver_name_version
     if driver.capabilities["browserName"].lower() == "chrome":
         cap_dict = driver.capabilities["chrome"]
         return ("chromedriver", cap_dict["chromedriverVersion"].split(" ")[0])
@@ -202,6 +214,10 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
                 the_stacks = traceback.format_list(
                     traceback.extract_tb(sys.last_traceback)
                 )
+            elif hasattr(sb_config, "_excinfo_tb"):
+                the_stacks = traceback.format_list(
+                    traceback.extract_tb(sb_config._excinfo_tb)
+                )
             else:
                 message = None
                 if hasattr(test, "is_behave") and test.is_behave:
@@ -218,7 +234,9 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
             if hasattr(sys, "last_value"):
                 last_value = sys.last_value
                 if last_value:
-                    data_to_save.append("Exception: " + str(last_value))
+                    data_to_save.append("Exception: %s" + str(last_value))
+            elif hasattr(sb_config, "_excinfo_value"):
+                data_to_save.append("Exception: %s" % sb_config._excinfo_value)
         else:
             data_to_save.append("Traceback: " + traceback_message)
     if hasattr(test, "is_nosetest") and test.is_nosetest:
@@ -233,6 +251,11 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
         sb_config._report_time = the_time
         sb_config._report_traceback = traceback_message
         sb_config._report_exception = exc_message
+    try:
+        if not os.path.exists(test_logpath):
+            os.makedirs(test_logpath)
+    except Exception:
+        pass
     log_file = codecs.open(basic_file_path, "w+", "utf-8")
     log_file.writelines("\r\n".join(data_to_save))
     log_file.close()
@@ -315,6 +338,11 @@ def log_page_source(test_logpath, driver, source=None):
                 "unresponsive, or closed prematurely!</h4>"
             )
         )
+    try:
+        if not os.path.exists(test_logpath):
+            os.makedirs(test_logpath)
+    except Exception:
+        pass
     html_file_path = os.path.join(test_logpath, html_file_name)
     html_file = codecs.open(html_file_path, "w+", "utf-8")
     html_file.write(page_source)

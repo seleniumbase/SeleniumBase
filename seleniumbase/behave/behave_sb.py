@@ -88,9 +88,10 @@ behave -D agent="User Agent String" -D demo
 -D window-size=WIDTH,HEIGHT  (Set the browser's starting window size.)
 -D maximize  (Start tests with the browser window maximized.)
 -D screenshot  (Save a screenshot at the end of each test.)
+-D no-screenshot  (No screenshots saved unless tests directly ask it.)
 -D visual-baseline  (Set the visual baseline for Visual/Layout tests.)
 -D wire  (Use selenium-wire's webdriver for replacing selenium webdriver.)
--D external-pdf (Set Chromium "plugins.always_open_pdf_externally": True.)
+-D external-pdf  (Set Chromium "plugins.always_open_pdf_externally":True.)
 -D timeout-multiplier=MULTIPLIER  (Multiplies the default timeout values.)
 """
 
@@ -185,6 +186,7 @@ def get_configured_sb(context):
     sb.maximize_option = False
     sb.is_context_manager = False
     sb.save_screenshot_after_test = False
+    sb.no_screenshot_after_test = False
     sb.timeout_multiplier = None
     sb.pytest_html_report = None
     sb.with_db_reporting = False
@@ -565,6 +567,10 @@ def get_configured_sb(context):
         ]:
             sb.save_screenshot_after_test = True
             continue
+        # Handle: -D no-screenshot / no_screenshot / ns
+        if low_key in ["no-screenshot", "no_screenshot", "ns"]:
+            sb.no_screenshot_after_test = True
+            continue
         # Handle: -D timeout-multiplier=FLOAT / timeout_multiplier=FLOAT
         if low_key in ["timeout-multiplier", "timeout_multiplier"]:
             timeout_multiplier = userdata[key]
@@ -848,6 +854,7 @@ def get_configured_sb(context):
     sb_config.maximize_option = sb.maximize_option
     sb_config.xvfb = sb.xvfb
     sb_config.save_screenshot = sb.save_screenshot_after_test
+    sb_config.no_screenshot = sb.no_screenshot_after_test
     sb_config._has_logs = False
     sb_config.variables = sb.variables
     sb_config.dashboard = sb.dashboard
