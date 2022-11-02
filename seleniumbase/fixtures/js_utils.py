@@ -690,7 +690,7 @@ def activate_messenger(driver):
                 """ if (typeof Messenger === 'undefined') { return "U"; } """
             )
             if result == "U":
-                time.sleep(0.02)
+                time.sleep(0.022)
                 continue
             else:
                 break
