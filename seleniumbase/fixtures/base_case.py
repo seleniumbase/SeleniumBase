@@ -12252,7 +12252,7 @@ class BaseCase(unittest.TestCase):
             self.execute_script(script)
         try:
             element_location = element.location["y"]
-            element_location = element_location - 130 + y
+            element_location = element_location - constants.Scroll.Y_OFFSET + y
             if element_location < 0:
                 element_location = 0
             scroll_script = "window.scrollTo(0, %s);" % element_location
@@ -12352,8 +12352,8 @@ class BaseCase(unittest.TestCase):
         selector = self.__make_css_match_first_element_only(selector)
         scroll_script = (
             """jQuery([document.documentElement, document.body]).animate({"""
-            """scrollTop: jQuery('%s').offset().top - 130}, %s);"""
-            % (selector, scroll_time_ms)
+            """scrollTop: jQuery('%s').offset().top - %s}, %s);"""
+            % (selector, constants.Scroll.Y_OFFSET, scroll_time_ms)
         )
         if js_utils.is_jquery_activated(self.driver):
             self.execute_script(scroll_script)
