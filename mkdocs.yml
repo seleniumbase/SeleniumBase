@@ -46,7 +46,7 @@ theme:
     - toc.integrate
     - navigation.indexes
     # - navigation.sections
-    - navigation.expand
+    # - navigation.expand
     # - navigation.tabs
     - navigation.top
     - navigation.tracking
