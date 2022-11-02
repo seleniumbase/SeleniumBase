@@ -12925,6 +12925,7 @@ class BaseCase(unittest.TestCase):
                 settings.HEADLESS_START_HEIGHT = height
             self.maximize_option = sb_config.maximize_option
             self.save_screenshot_after_test = sb_config.save_screenshot
+            self.no_screenshot_after_test = sb_config.no_screenshot
             self.visual_baseline = sb_config.visual_baseline
             self.timeout_multiplier = sb_config.timeout_multiplier
             self.pytest_html_report = sb_config.pytest_html_report
@@ -13226,38 +13227,73 @@ class BaseCase(unittest.TestCase):
     def __set_last_page_screenshot(self):
         """self.__last_page_screenshot is only for pytest html report logs.
         self.__last_page_screenshot_png is for all screenshot log files."""
-        if not self.__last_page_screenshot and (
-            not self.__last_page_screenshot_png
+        SCREENSHOT_SKIPPED = constants.Warnings.SCREENSHOT_SKIPPED
+        SCREENSHOT_UNDEFINED = constants.Warnings.SCREENSHOT_UNDEFINED
+        if (
+            hasattr(self, "no_screenshot_after_test")
+            and self.no_screenshot_after_test
+        ):
+            from seleniumbase.core import encoded_images
+
+            NO_SCREENSHOT = encoded_images.get_no_screenshot_png()
+            self.__last_page_screenshot = NO_SCREENSHOT
+            self.__last_page_screenshot_png = SCREENSHOT_SKIPPED
+            sb_config._last_page_screenshot_png = NO_SCREENSHOT
+            return
+        element = None
+        if (
+            not self.__last_page_screenshot
+            and not self.__last_page_screenshot_png
         ):
             try:
                 element = self.driver.find_element(by="tag name", value="body")
-                if self.is_pytest and self.report_on:
-                    self.__last_page_screenshot_png = (
-                        self.driver.get_screenshot_as_png()
-                    )
+                try:
                     self.__last_page_screenshot = element.screenshot_as_base64
-                else:
-                    self.__last_page_screenshot_png = element.screenshot_as_png
-            except Exception:
-                if not self.__last_page_screenshot:
-                    if self.is_pytest and self.report_on:
-                        try:
-                            self.__last_page_screenshot = (
-                                self.driver.get_screenshot_as_base64()
-                            )
-                        except Exception:
-                            self.__last_page_screenshot = (
-                                constants.Warnings.SCREENSHOT_UNDEFINED
-                            )
-                if not self.__last_page_screenshot_png:
+                except Exception:
                     try:
-                        self.__last_page_screenshot_png = (
-                            self.driver.get_screenshot_as_png()
+                        self.__last_page_screenshot = (
+                            self.driver.get_screenshot_as_base64()
                         )
                     except Exception:
+                        pass
+            except Exception:
+                pass
+            if not self.__last_page_screenshot:
+                self.__last_page_screenshot = SCREENSHOT_UNDEFINED
+                self.__last_page_screenshot_png = SCREENSHOT_UNDEFINED
+                if element:
+                    try:
                         self.__last_page_screenshot_png = (
-                            constants.Warnings.SCREENSHOT_UNDEFINED
+                            element.screenshot_as_png
                         )
+                    except Exception:
+                        try:
+                            self.__last_page_screenshot_png = (
+                                self.driver.get_screenshot_as_png()
+                            )
+                        except Exception:
+                            pass
+            else:
+                import base64
+
+                try:
+                    self.__last_page_screenshot_png = (
+                        base64.b64decode(self.__last_page_screenshot)
+                    )
+                except Exception:
+                    if element:
+                        try:
+                            self.__last_page_screenshot_png = (
+                                element.screenshot_as_png
+                            )
+                        except Exception:
+                            try:
+                                self.__last_page_screenshot_png = (
+                                    self.driver.get_screenshot_as_png()
+                                )
+                            except Exception:
+                                pass
+        sb_config._last_page_screenshot_png = self.__last_page_screenshot_png
 
     def __set_last_page_url(self):
         if not self.__last_page_url:

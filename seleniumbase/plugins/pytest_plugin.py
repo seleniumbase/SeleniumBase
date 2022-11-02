@@ -106,6 +106,7 @@ def pytest_addoption(parser):
     --window-size=WIDTH,HEIGHT  (Set the browser's starting window size.)
     --maximize  (Start tests with the browser window maximized.)
     --screenshot  (Save a screenshot at the end of each test.)
+    --no-screenshot  (No screenshots saved unless tests directly ask it.)
     --visual-baseline  (Set the visual baseline for Visual/Layout tests.)
     --wire  (Use selenium-wire's webdriver for replacing selenium webdriver.)
     --external-pdf  (Set Chromium "plugins.always_open_pdf_externally":True.)
@@ -1083,8 +1084,20 @@ def pytest_addoption(parser):
         action="store_true",
         dest="save_screenshot",
         default=False,
-        help="""Save a screenshot at the end of the test.
-                (Added to the "latest_logs/" folder.)""",
+        help="""Save a screenshot at the end of every test.
+                By default, this is only done for failures.
+                Will be saved in the "latest_logs/" folder.""",
+    )
+    parser.addoption(
+        "--no-screenshot",
+        "--no_screenshot",
+        "--ns",
+        action="store_true",
+        dest="no_screenshot",
+        default=False,
+        help="""No screenshots saved unless tests directly ask it.
+                This changes default behavior where screenshots are
+                saved for test failures and pytest-html reports.""",
     )
     parser.addoption(
         "--visual_baseline",
@@ -1435,6 +1448,7 @@ def pytest_configure(config):
     sb_config.window_size = config.getoption("window_size")
     sb_config.maximize_option = config.getoption("maximize_option")
     sb_config.save_screenshot = config.getoption("save_screenshot")
+    sb_config.no_screenshot = config.getoption("no_screenshot")
     sb_config.visual_baseline = config.getoption("visual_baseline")
     sb_config.use_wire = config.getoption("use_wire")
     sb_config.external_pdf = config.getoption("external_pdf")
@@ -1559,12 +1573,14 @@ def pytest_configure(config):
     if sb_config.dash_title:
         constants.Dashboard.TITLE = sb_config.dash_title.replace("_", " ")
 
+    if sb_config.save_screenshot and sb_config.no_screenshot:
+        sb_config.save_screenshot = False  # "no_screenshot" has priority
+
     if (
         sb_config._multithreaded
         and "--co" not in sys_argv
         and "--collect-only" not in sys_argv
     ):
-        from seleniumbase.core import log_helper
         from seleniumbase.core import download_helper
         from seleniumbase.core import proxy_helper
 

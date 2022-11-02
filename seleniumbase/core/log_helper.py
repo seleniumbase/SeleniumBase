@@ -12,7 +12,15 @@ from seleniumbase.fixtures import constants
 def log_screenshot(test_logpath, driver, screenshot=None, get=False):
     screenshot_name = settings.SCREENSHOT_NAME
     screenshot_path = os.path.join(test_logpath, screenshot_name)
+    screenshot_skipped = constants.Warnings.SCREENSHOT_SKIPPED
     screenshot_warning = constants.Warnings.SCREENSHOT_UNDEFINED
+    if (
+        (hasattr(sb_config, "no_screenshot") and sb_config.no_screenshot)
+        or screenshot == screenshot_skipped
+    ):
+        if get:
+            return screenshot
+        return
     try:
         if not screenshot:
             element = driver.find_element_by_tag_name("body")

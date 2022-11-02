@@ -770,8 +770,20 @@ class SeleniumBrowser(Plugin):
             action="store_true",
             dest="save_screenshot",
             default=False,
-            help="""Save a screenshot at the end of the test.
-                    (Added to the "latest_logs/" folder.)""",
+            help="""Save a screenshot at the end of every test.
+                    By default, this is only done for failures.
+                    Will be saved in the "latest_logs/" folder.""",
+        )
+        parser.add_option(
+            "--no-screenshot",
+            "--no_screenshot",
+            "--ns",
+            action="store_true",
+            dest="no_screenshot",
+            default=False,
+            help="""No screenshots saved unless tests directly ask it.
+                    This changes default behavior where screenshots are
+                    saved for test failures and pytest-html reports.""",
         )
         parser.add_option(
             "--visual_baseline",
@@ -948,7 +960,10 @@ class SeleniumBrowser(Plugin):
         test.test._disable_beforeunload = self.options._disable_beforeunload
         test.test.window_size = self.options.window_size
         test.test.maximize_option = self.options.maximize_option
+        if self.options.save_screenshot and self.options.no_screenshot:
+            self.options.save_screenshot = False  # no_screenshot has priority
         test.test.save_screenshot_after_test = self.options.save_screenshot
+        test.test.no_screenshot_after_test = self.options.no_screenshot
         test.test.visual_baseline = self.options.visual_baseline
         test.test.use_wire = self.options.use_wire
         test.test.external_pdf = self.options.external_pdf
@@ -956,6 +971,7 @@ class SeleniumBrowser(Plugin):
         test.test.dashboard = False
         test.test._multithreaded = False
         test.test._reuse_session = False
+        sb_config.no_screenshot = test.test.no_screenshot_after_test
         if test.test.servername != "localhost":
             # Using Selenium Grid
             # (Set --server="127.0.0.1" for localhost Grid)
