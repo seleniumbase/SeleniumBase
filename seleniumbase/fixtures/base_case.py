@@ -475,7 +475,9 @@ class BaseCase(unittest.TestCase):
                 except Exception:
                     pass
         if self.browser == "safari":
-            time.sleep(0.02)
+            time.sleep(0.01)
+            self.wait_for_ready_state_complete()
+            time.sleep(0.01)
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self.__demo_mode_pause_if_active()
@@ -3454,38 +3456,38 @@ class BaseCase(unittest.TestCase):
                 # Make sure the invisible browser window is big enough
                 width = settings.HEADLESS_START_WIDTH
                 height = settings.HEADLESS_START_HEIGHT
-                try:
-                    self.driver.set_window_size(width, height)
-                    self.wait_for_ready_state_complete()
-                except Exception:
-                    # This shouldn't fail, but in case it does,
-                    # get safely through setUp() so that
-                    # WebDrivers can get closed during tearDown().
-                    pass
+                if self.browser != "chrome" and self.browser != "edge":
+                    try:
+                        self.driver.set_window_size(width, height)
+                        # self.wait_for_ready_state_complete()
+                    except Exception:
+                        # This shouldn't fail, but in case it does,
+                        # get safely through setUp() so that
+                        # WebDrivers can get closed during tearDown().
+                        pass
             else:
+                width = settings.CHROME_START_WIDTH
+                height = settings.CHROME_START_HEIGHT
                 if self.browser == "chrome" or self.browser == "edge":
-                    width = settings.CHROME_START_WIDTH
-                    height = settings.CHROME_START_HEIGHT
                     try:
                         if self.maximize_option:
                             self.driver.maximize_window()
+                            self.wait_for_ready_state_complete()
                         else:
-                            self.driver.set_window_size(width, height)
-                        self.wait_for_ready_state_complete()
+                            pass  # Now handled in browser_launcher.py
+                            # self.driver.set_window_size(width, height)
                     except Exception:
                         pass  # Keep existing browser resolution
                 elif self.browser == "firefox":
-                    width = settings.CHROME_START_WIDTH
                     try:
                         if self.maximize_option:
                             self.driver.maximize_window()
+                            self.wait_for_ready_state_complete()
                         else:
-                            self.driver.set_window_size(width, 720)
-                        self.wait_for_ready_state_complete()
+                            self.driver.set_window_size(width, height)
                     except Exception:
                         pass  # Keep existing browser resolution
                 elif self.browser == "safari":
-                    width = settings.CHROME_START_WIDTH
                     if self.maximize_option:
                         try:
                             self.driver.maximize_window()
@@ -3494,11 +3496,10 @@ class BaseCase(unittest.TestCase):
                             pass  # Keep existing browser resolution
                     else:
                         try:
-                            self.driver.set_window_rect(10, 30, width, 630)
+                            self.driver.set_window_rect(10, 20, width, height)
                         except Exception:
                             pass
                 elif self.browser == "opera":
-                    width = settings.CHROME_START_WIDTH
                     if self.maximize_option:
                         try:
                             self.driver.maximize_window()
@@ -3507,7 +3508,7 @@ class BaseCase(unittest.TestCase):
                             pass  # Keep existing browser resolution
                     else:
                         try:
-                            self.driver.set_window_rect(10, 30, width, 700)
+                            self.driver.set_window_rect(10, 20, width, height)
                         except Exception:
                             pass
             if self.start_page and len(self.start_page) >= 4:
