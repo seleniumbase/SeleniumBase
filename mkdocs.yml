@@ -124,8 +124,6 @@ nav:
     - Jenkins on Azure: integrations/azure/jenkins/ReadMe.md
     - Jenkins on Google Cloud: integrations/google_cloud/ReadMe.md
     - NodeJS Test Runner: https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js
-    - Katalon Recorder Export: integrations/katalon/ReadMe.md
-    - Selenium IDE Export: seleniumbase/utilities/selenium_ide/ReadMe.md
   - Help Docs:
     - Table of Contents: help_docs/ReadMe.md
     - JS Package Manager: help_docs/js_package_manager.md
