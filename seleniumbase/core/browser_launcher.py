@@ -511,7 +511,7 @@ def _set_chrome_options(
             chrome_options.add_argument("--guest")
         else:
             pass
-    if user_data_dir and not undetectable:
+    if user_data_dir and not is_using_uc(undetectable, browser_name):
         abs_path = os.path.abspath(user_data_dir)
         chrome_options.add_argument("user-data-dir=%s" % abs_path)
     if extension_zip:
@@ -597,10 +597,11 @@ def _set_chrome_options(
         chrome_options.add_argument("--proxy-pac-url=%s" % proxy_pac_url)
     if browser_name != constants.Browser.OPERA:
         # Opera Chromium doesn't support these switches
-        chrome_options.add_argument("--ignore-certificate-errors")
+        if not is_using_uc(undetectable, browser_name) or not enable_ws:
+            chrome_options.add_argument("--ignore-certificate-errors")
         if not enable_ws:
             chrome_options.add_argument("--disable-web-security")
-        if "linux" in PLATFORM or not undetectable:
+        if "linux" in PLATFORM or not is_using_uc(undetectable, browser_name):
             chrome_options.add_argument("--no-sandbox")
     else:
         # Opera Chromium only!
@@ -946,7 +947,7 @@ def get_driver(
         headless = True
     if uc_subprocess and not undetectable:
         undetectable = True
-    if undetectable and mobile_emulator:
+    if is_using_uc(undetectable, browser_name) and mobile_emulator:
         mobile_emulator = False
         user_agent = None
     proxy_auth = False
@@ -2164,7 +2165,7 @@ def get_local_driver(
         edge_options.add_argument("--allow-running-insecure-content")
         if user_agent:
             edge_options.add_argument("--user-agent=%s" % user_agent)
-        if "linux" in PLATFORM or not undetectable:
+        if "linux" in PLATFORM or not is_using_uc(undetectable, browser_name):
             edge_options.add_argument("--no-sandbox")
         if remote_debug:
             # To access the Remote Debugger, go to: http://localhost:9222
@@ -2656,7 +2657,7 @@ def get_local_driver(
                         if selenium4_or_newer:
                             if headless and "linux" not in PLATFORM:
                                 undetectable = False  # No support for headless
-                            if undetectable:
+                            if is_using_uc(undetectable, browser_name):
                                 from seleniumbase import undetected
                                 from urllib.error import URLError
 
