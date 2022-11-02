@@ -690,7 +690,7 @@ def activate_messenger(driver):
                 """ if (typeof Messenger === 'undefined') { return "U"; } """
             )
             if result == "U":
-                time.sleep(0.02)
+                time.sleep(0.022)
                 continue
             else:
                 break
@@ -1002,7 +1002,7 @@ def get_scroll_distance_to_element(driver, element):
         scroll_position = driver.execute_script("return window.scrollY;")
         element_location = None
         element_location = element.location["y"]
-        element_location = element_location - 130
+        element_location = element_location - constants.Scroll.Y_OFFSET
         if element_location < 0:
             element_location = 0
         distance = element_location - scroll_position
@@ -1026,7 +1026,7 @@ def scroll_to_element(driver, element):
         screen_width = driver.get_window_size()["width"]
     except Exception:
         element_location_x = 0
-    element_location_y = element_location_y - 130
+    element_location_y = element_location_y - constants.Scroll.Y_OFFSET
     if element_location_y < 0:
         element_location_y = 0
     element_location_x_fix = element_location_x - 400
@@ -1052,16 +1052,27 @@ def slow_scroll_to_element(driver, element, browser):
         scroll_to_element(driver, element)
         return
     scroll_position = driver.execute_script("return window.scrollY;")
-    element_location = None
+    element_location_y = None
     try:
-        element_location = element.location["y"]
+        element_location_y = element.location["y"]
     except Exception:
         element.location_once_scrolled_into_view
         return
-    element_location = element_location - 130
-    if element_location < 0:
-        element_location = 0
-    distance = element_location - scroll_position
+    try:
+        element_location_x = element.location["x"]
+        element_width = element.size["width"]
+        screen_width = driver.get_window_size()["width"]
+    except Exception:
+        element_location_x = 0
+    element_location_y = element_location_y - constants.Scroll.Y_OFFSET
+    if element_location_y < 0:
+        element_location_y = 0
+    element_location_x_fix = element_location_x - 400
+    if element_location_x_fix < 0:
+        element_location_x_fix = 0
+    if element_location_x + element_width <= screen_width:
+        element_location_x_fix = 0
+    distance = element_location_y - scroll_position
     if distance != 0:
         total_steps = int(abs(distance) / 50.0) + 2.0
         step_value = float(distance) / total_steps
@@ -1072,7 +1083,9 @@ def slow_scroll_to_element(driver, element, browser):
             scroll_script = "window.scrollTo(0, %s);" % new_position
             driver.execute_script(scroll_script)
     time.sleep(0.01)
-    scroll_script = "window.scrollTo(0, %s);" % element_location
+    scroll_script = "window.scrollTo(%s, %s);" % (
+        element_location_x_fix, element_location_y
+    )
     driver.execute_script(scroll_script)
     time.sleep(0.01)
     if distance > 430 or distance < -300:

@@ -474,10 +474,6 @@ class BaseCase(unittest.TestCase):
                     self.wait_for_ready_state_complete()
                 except Exception:
                     pass
-        if self.browser == "safari":
-            time.sleep(0.01)
-            self.wait_for_ready_state_complete()
-            time.sleep(0.01)
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self.__demo_mode_pause_if_active()
@@ -485,6 +481,10 @@ class BaseCase(unittest.TestCase):
                 self.__demo_mode_pause_if_active(tiny=True)
         elif self.slow_mode:
             self.__slow_mode_pause_if_active()
+        elif self.browser == "safari":
+            time.sleep(0.01)
+            self.wait_for_ready_state_complete()
+            time.sleep(0.01)
 
     def slow_click(self, selector, by="css selector", timeout=None):
         """Similar to click(), but pauses for a brief moment before clicking.
@@ -12252,7 +12252,7 @@ class BaseCase(unittest.TestCase):
             self.execute_script(script)
         try:
             element_location = element.location["y"]
-            element_location = element_location - 130 + y
+            element_location = element_location - constants.Scroll.Y_OFFSET + y
             if element_location < 0:
                 element_location = 0
             scroll_script = "window.scrollTo(0, %s);" % element_location
@@ -12352,8 +12352,8 @@ class BaseCase(unittest.TestCase):
         selector = self.__make_css_match_first_element_only(selector)
         scroll_script = (
             """jQuery([document.documentElement, document.body]).animate({"""
-            """scrollTop: jQuery('%s').offset().top - 130}, %s);"""
-            % (selector, scroll_time_ms)
+            """scrollTop: jQuery('%s').offset().top - %s}, %s);"""
+            % (selector, constants.Scroll.Y_OFFSET, scroll_time_ms)
         )
         if js_utils.is_jquery_activated(self.driver):
             self.execute_script(scroll_script)
@@ -14022,8 +14022,8 @@ class BaseCase(unittest.TestCase):
 
     def save_teardown_screenshot(self):
         """(Should ONLY be used at the start of custom tearDown() methods.)
-        This method takes a screenshot of the current web page for a
-        FAILING test (or when using "--screenshot" / "--save-screenshot").
+        This method takes a screenshot of the active page for FAILING tests
+        (or when using "--screenshot" / "--save-screenshot" / "--ss").
         That way your tearDown() method can navigate away from the last
         page where the test failed, and still get the correct screenshot
         before performing tearDown() steps on other pages. If this method
@@ -14040,15 +14040,20 @@ class BaseCase(unittest.TestCase):
         if self.recorder_mode:
             # In case tearDown() leaves the origin, save actions first.
             self.save_recorded_actions()
-        if self.__has_exception() or self.save_screenshot_after_test:
+        if (
+            self.__has_exception()
+            or self.save_screenshot_after_test
+            or sys.version_info >= (3, 11)
+        ):
             test_logpath = os.path.join(self.log_path, self.__get_test_id())
             self.__create_log_path_as_needed(test_logpath)
             self.__set_last_page_screenshot()
             self.__set_last_page_url()
             self.__set_last_page_source()
             sb_config._has_logs = True
-            if self.is_pytest:
-                self.__add_pytest_html_extra()
+            if self.__has_exception() or self.save_screenshot_after_test:
+                if self.is_pytest:
+                    self.__add_pytest_html_extra()
 
     def _log_fail_data(self):
         if sys.version_info < (3, 11):
