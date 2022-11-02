@@ -1,5 +1,7 @@
-""" Solve the Wordle game using SeleniumBase.
-    This test runs on archived versions of Wordle, containing Shadow-DOM. """
+"""
+Solve the Wordle game using SeleniumBase.
+This test runs on archived versions of Wordle, containing Shadow-DOM.
+"""
 
 import ast
 import random
@@ -86,7 +88,7 @@ class WordleTests(BaseCase):
         keyboard_base = "game-app::shadow game-keyboard::shadow "
         word = random.choice(self.word_list)
         num_attempts = 0
-        success = False
+        found_word = False
         for attempt in range(6):
             num_attempts += 1
             word = random.choice(self.word_list)
@@ -105,13 +107,13 @@ class WordleTests(BaseCase):
                 letter_eval = self.get_attribute(tile % str(i), "evaluation")
                 letter_status.append(letter_eval)
             if letter_status.count("correct") == 5:
-                success = True
+                found_word = True
                 break
             self.word_list.remove(word)
             self.modify_word_list(word, letter_status)
 
         self.save_screenshot_to_logs()
-        if success:
+        if found_word:
             print('Word: "%s"\nAttempts: %s' % (word.upper(), num_attempts))
         else:
             print('Final guess: "%s" (Not the correct word!)' % word.upper())

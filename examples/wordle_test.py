@@ -64,7 +64,7 @@ class WordleTests(BaseCase):
         self.initialize_word_list()
         word = random.choice(self.word_list)
         num_attempts = 0
-        success = False
+        found_word = False
         for attempt in range(6):
             num_attempts += 1
             word = random.choice(self.word_list)
@@ -74,6 +74,7 @@ class WordleTests(BaseCase):
                 button = 'button[data-key="%s"]' % letter
                 self.click(button)
             button = 'button[class*="oneAndAHalf"]'
+            self.wait_for_ready_state_complete()
             self.click(button)
             row = (
                 'div[class*="lbzlf"] div[class*="Row-module"]:nth-of-type(%s) '
@@ -81,18 +82,19 @@ class WordleTests(BaseCase):
             )
             tile = row + 'div:nth-child(%s) div[class*="module_tile__3ayIZ"]'
             self.wait_for_element(tile % "5" + '[data-state*="e"]')
+            self.wait_for_ready_state_complete()
             letter_status = []
             for i in range(1, 6):
                 letter_eval = self.get_attribute(tile % str(i), "data-state")
                 letter_status.append(letter_eval)
             if letter_status.count("correct") == 5:
-                success = True
+                found_word = True
                 break
             self.word_list.remove(word)
             self.modify_word_list(word, letter_status)
 
         self.save_screenshot_to_logs()
-        if success:
+        if found_word:
             print('\nWord: "%s"\nAttempts: %s' % (word.upper(), num_attempts))
         else:
             print('Final guess: "%s" (Not the correct word!)' % word.upper())
