@@ -14022,8 +14022,8 @@ class BaseCase(unittest.TestCase):
 
     def save_teardown_screenshot(self):
         """(Should ONLY be used at the start of custom tearDown() methods.)
-        This method takes a screenshot of the current web page for a
-        FAILING test (or when using "--screenshot" / "--save-screenshot").
+        This method takes a screenshot of the active page for FAILING tests
+        (or when using "--screenshot" / "--save-screenshot" / "--ss").
         That way your tearDown() method can navigate away from the last
         page where the test failed, and still get the correct screenshot
         before performing tearDown() steps on other pages. If this method
@@ -14040,15 +14040,20 @@ class BaseCase(unittest.TestCase):
         if self.recorder_mode:
             # In case tearDown() leaves the origin, save actions first.
             self.save_recorded_actions()
-        if self.__has_exception() or self.save_screenshot_after_test:
+        if (
+            self.__has_exception()
+            or self.save_screenshot_after_test
+            or sys.version_info >= (3, 11)
+        ):
             test_logpath = os.path.join(self.log_path, self.__get_test_id())
             self.__create_log_path_as_needed(test_logpath)
             self.__set_last_page_screenshot()
             self.__set_last_page_url()
             self.__set_last_page_source()
             sb_config._has_logs = True
-            if self.is_pytest:
-                self.__add_pytest_html_extra()
+            if self.__has_exception() or self.save_screenshot_after_test:
+                if self.is_pytest:
+                    self.__add_pytest_html_extra()
 
     def _log_fail_data(self):
         if sys.version_info < (3, 11):
