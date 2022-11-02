@@ -474,10 +474,6 @@ class BaseCase(unittest.TestCase):
                     self.wait_for_ready_state_complete()
                 except Exception:
                     pass
-        if self.browser == "safari":
-            time.sleep(0.01)
-            self.wait_for_ready_state_complete()
-            time.sleep(0.01)
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self.__demo_mode_pause_if_active()
@@ -485,6 +481,10 @@ class BaseCase(unittest.TestCase):
                 self.__demo_mode_pause_if_active(tiny=True)
         elif self.slow_mode:
             self.__slow_mode_pause_if_active()
+        elif self.browser == "safari":
+            time.sleep(0.01)
+            self.wait_for_ready_state_complete()
+            time.sleep(0.01)
 
     def slow_click(self, selector, by="css selector", timeout=None):
         """Similar to click(), but pauses for a brief moment before clicking.
