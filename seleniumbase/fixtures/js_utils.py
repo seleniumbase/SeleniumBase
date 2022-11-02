@@ -671,7 +671,7 @@ def activate_messenger(driver):
 
     if not is_jquery_activated(driver):
         add_js_link(driver, jquery_js)
-        wait_for_jquery_active(driver, timeout=0.9)
+        wait_for_jquery_active(driver, timeout=1)
     add_css_link(driver, messenger_css)
     add_css_link(driver, msgr_theme_flat_css)
     add_css_link(driver, msgr_theme_future_css)
@@ -756,8 +756,13 @@ def set_messenger_theme(
     try:
         driver.execute_script(msg_style)
     except Exception:
+        time.sleep(0.05)
         activate_messenger(driver)
-        driver.execute_script(msg_style)
+        time.sleep(0.05)
+        try:
+            driver.execute_script(msg_style)
+        except Exception:
+            pass
     time.sleep(0.1)
 
 
