@@ -19,6 +19,10 @@ class SeleniumBrowser(Plugin):
     """
     This plugin adds the following command-line options to nosetests:
     --browser=BROWSER  (The web browser to use. Default: "chrome".)
+    --chrome  (Shortcut for "--browser=chrome". On by default.)
+    --edge  (Shortcut for "--browser=edge".)
+    --firefox  (Shortcut for "--browser=firefox".)
+    --safari  (Shortcut for "--browser=safari".)
     --user-data-dir=DIR  (Set the Chrome user data directory to use.)
     --protocol=PROTOCOL  (The Selenium Grid protocol: http|https.)
     --server=SERVER  (The Selenium Grid server/IP used for tests.)
@@ -103,13 +107,46 @@ class SeleniumBrowser(Plugin):
                     Example: (--browser=firefox)""",
         )
         parser.add_option(
-            "--browser_version",
-            "--browser-version",
-            action="store",
-            dest="browser_version",
-            default="latest",
-            help="""The browser version to use. Explicitly select
-                    a version number or use "latest".""",
+            "--chrome",
+            action="store_true",
+            dest="use_chrome",
+            default=False,
+            help="""Shortcut for --browser=chrome. On by default.)""",
+        )
+        parser.add_option(
+            "--edge",
+            action="store_true",
+            dest="use_edge",
+            default=False,
+            help="""Shortcut for --browser=edge.)""",
+        )
+        parser.add_option(
+            "--firefox",
+            action="store_true",
+            dest="use_firefox",
+            default=False,
+            help="""Shortcut for --browser=firefox.)""",
+        )
+        parser.add_option(
+            "--ie",
+            action="store_true",
+            dest="use_ie",
+            default=False,
+            help="""Shortcut for --browser=ie.)""",
+        )
+        parser.add_option(
+            "--opera",
+            action="store_true",
+            dest="use_opera",
+            default=False,
+            help="""Shortcut for --browser=opera.)""",
+        )
+        parser.add_option(
+            "--safari",
+            action="store_true",
+            dest="use_safari",
+            default=False,
+            help="""Shortcut for --browser=safari.)""",
         )
         parser.add_option(
             "--cap_file",
@@ -622,7 +659,7 @@ class SeleniumBrowser(Plugin):
             action="store_true",
             dest="use_auto_ext",
             default=False,
-            help="""Using this enables Chrome's Automation Extension.
+            help="""(DEPRECATED) - Enable the automation extension.
                     It's not required, but some commands & advanced
                     features may need it.""",
         )
@@ -835,8 +872,88 @@ class SeleniumBrowser(Plugin):
         proxy_helper.remove_proxy_zip_if_present()
 
     def beforeTest(self, test):
-        sb_config._context_of_runner = False  # Context Manager Compatibility
         browser = self.options.browser
+        test.test.browser = browser
+        test.test.headless = None
+        test.test.headless2 = None
+        # As a shortcut, you can use "--edge" instead of "--browser=edge", etc,
+        # but you can only specify one default browser. (Default: chrome)
+        sb_config._browser_shortcut = None
+        sys_argv = sys.argv
+        browser_changes = 0
+        browser_set = None
+        browser_text = None
+        browser_list = []
+        if "--browser=chrome" in sys_argv or "--browser chrome" in sys_argv:
+            browser_changes += 1
+            browser_set = "chrome"
+            browser_list.append("--browser=chrome")
+        if "--browser=edge" in sys_argv or "--browser edge" in sys_argv:
+            browser_changes += 1
+            browser_set = "edge"
+            browser_list.append("--browser=edge")
+        if "--browser=firefox" in sys_argv or "--browser firefox" in sys_argv:
+            browser_changes += 1
+            browser_set = "firefox"
+            browser_list.append("--browser=firefox")
+        if "--browser=opera" in sys_argv or "--browser opera" in sys_argv:
+            browser_changes += 1
+            browser_set = "opera"
+            browser_list.append("--browser=opera")
+        if "--browser=safari" in sys_argv or "--browser safari" in sys_argv:
+            browser_changes += 1
+            browser_set = "safari"
+            browser_list.append("--browser=safari")
+        if "--browser=ie" in sys_argv or "--browser ie" in sys_argv:
+            browser_changes += 1
+            browser_set = "ie"
+            browser_list.append("--browser=ie")
+        if "--browser=remote" in sys_argv or "--browser remote" in sys_argv:
+            browser_changes += 1
+            browser_set = "remote"
+            browser_list.append("--browser=remote")
+        browser_text = browser_set
+        if "--chrome" in sys_argv and not browser_set == "chrome":
+            browser_changes += 1
+            browser_text = "chrome"
+            sb_config._browser_shortcut = "chrome"
+            browser_list.append("--chrome")
+        if "--edge" in sys_argv and not browser_set == "edge":
+            browser_changes += 1
+            browser_text = "edge"
+            sb_config._browser_shortcut = "edge"
+            browser_list.append("--edge")
+        if "--firefox" in sys_argv and not browser_set == "firefox":
+            browser_changes += 1
+            browser_text = "firefox"
+            sb_config._browser_shortcut = "firefox"
+            browser_list.append("--firefox")
+        if "--ie" in sys_argv and not browser_set == "ie":
+            browser_changes += 1
+            browser_text = "ie"
+            sb_config._browser_shortcut = "ie"
+            browser_list.append("--ie")
+        if "--opera" in sys_argv and not browser_set == "opera":
+            browser_changes += 1
+            browser_text = "opera"
+            sb_config._browser_shortcut = "opera"
+            browser_list.append("--opera")
+        if "--safari" in sys_argv and not browser_set == "safari":
+            browser_changes += 1
+            browser_text = "safari"
+            sb_config._browser_shortcut = "safari"
+            browser_list.append("--safari")
+        if browser_changes > 1:
+            message = "\n\n  TOO MANY browser types were entered!"
+            message += "\n  There were %s found:\n  >  %s" % (
+                browser_changes,
+                ", ".join(browser_list),
+            )
+            message += "\n  ONLY ONE default browser is allowed!"
+            message += "\n  Select a single browser & try again!\n"
+            raise Exception(message)
+        if browser_text:
+            browser = browser_text
         if self.options.recorder_mode and browser not in ["chrome", "edge"]:
             message = (
                 "\n\n  Recorder Mode ONLY supports Chrome and Edge!"
@@ -876,6 +993,9 @@ class SeleniumBrowser(Plugin):
         sb_config.is_pytest = False
         sb_config.is_context_manager = False
         test.test.browser = self.options.browser
+        if sb_config._browser_shortcut:
+            self.options.browser = sb_config._browser_shortcut
+            test.test.browser = sb_config._browser_shortcut
         test.test.cap_file = self.options.cap_file
         test.test.cap_string = self.options.cap_string
         test.test.headless = self.options.headless
@@ -1045,6 +1165,7 @@ class SeleniumBrowser(Plugin):
         sb_config._is_timeout_changed = False
         sb_config._SMALL_TIMEOUT = settings.SMALL_TIMEOUT
         sb_config._LARGE_TIMEOUT = settings.LARGE_TIMEOUT
+        sb_config._context_of_runner = False  # Context Manager Compatibility
         # The driver will be received later
         self.driver = None
         test.test.driver = self.driver
