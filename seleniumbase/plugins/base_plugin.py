@@ -291,7 +291,7 @@ class Base(Plugin):
                 )
             )
 
-    def add_fails_or_errors(self, test):
+    def add_fails_or_errors(self, test, err):
         if self.report_on:
             self.duration = str(
                 "%.2fs" % (float(time.time()) - float(self.start_time))
@@ -307,10 +307,36 @@ class Base(Plugin):
                     test, self.test_count, self.duration
                 )
             )
+        if sys.version_info >= (3, 11):
+            # Handle a bug on Python 3.11 where exceptions aren't seen
+            sb_config._browser_version = None
+            try:
+                test._BaseCase__set_last_page_screenshot()
+                test._BaseCase__set_last_page_url()
+                test._BaseCase__set_last_page_source()
+                sb_config._browser_version = test._get_browser_version()
+                test._log_fail_data()
+            except Exception:
+                pass
+            sb_config._excinfo_tb = err
+            log_path = None
+            if hasattr(sb_config, "_test_logpath"):
+                log_path = sb_config._test_logpath
+            if hasattr(sb_config, "_last_page_source"):
+                source = sb_config._last_page_source
+            if log_path and source:
+                log_helper.log_page_source(log_path, None, source)
+            last_page_screenshot_png = None
+            if hasattr(sb_config, "_last_page_screenshot_png"):
+                last_page_screenshot_png = sb_config._last_page_screenshot_png
+            if log_path and last_page_screenshot_png:
+                log_helper.log_screenshot(
+                    log_path, None, last_page_screenshot_png
+                )
 
     def addFailure(self, test, err, capt=None, tbinfo=None):
         # self.__log_all_options_if_none_specified(test)
-        self.add_fails_or_errors(test)
+        self.add_fails_or_errors(test, err)
 
     def addError(self, test, err, capt=None):
         """
@@ -338,7 +364,7 @@ class Base(Plugin):
         else:
             # self.__log_all_options_if_none_specified(test)
             pass
-        self.add_fails_or_errors(test)
+        self.add_fails_or_errors(test, err)
 
     def handleError(self, test, err, capt=None):
         """

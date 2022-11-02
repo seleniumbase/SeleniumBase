@@ -10,6 +10,7 @@ import sys
 import time
 from seleniumbase import config as sb_config
 from seleniumbase.config import settings
+from seleniumbase.core import log_helper
 from seleniumbase.fixtures import constants
 
 is_windows = False
@@ -898,7 +899,7 @@ def pytest_addoption(parser):
         action="store_true",
         dest="use_auto_ext",
         default=False,
-        help="""Using this enables Chrome's Automation Extension.
+        help="""(DEPRECATED) - Enable the automation extension.
                 It's not required, but some commands & advanced
                 features may need it.""",
     )
@@ -1682,7 +1683,6 @@ def pytest_collection_finish(session):
     if "--co" in sys_argv or "--collect-only" in sys_argv:
         return
     if len(session.items) > 0 and not sb_config._multithreaded:
-        from seleniumbase.core import log_helper
         from seleniumbase.core import download_helper
         from seleniumbase.core import proxy_helper
 
@@ -1829,7 +1829,6 @@ def pytest_terminal_summary(terminalreporter):
 
 
 def _perform_pytest_unconfigure_():
-    from seleniumbase.core import log_helper
     from seleniumbase.core import proxy_helper
 
     proxy_helper.remove_proxy_zip_if_present()
@@ -2106,6 +2105,41 @@ def pytest_runtest_makereport(item, call):
             sb_config._d_t_log_path[test_id] = ""
             if test_id not in sb_config._extra_dash_entries:
                 sb_config._extra_dash_entries.append(test_id)
+        elif (
+            sb_config._sbase_detected
+            and sys.version_info >= (3, 11)
+            and (report.outcome == "failed" or "AssertionError" in str(call))
+            and not sb_config._has_exception
+        ):
+            # Handle a bug on Python 3.11 where exceptions aren't seen
+            log_path = ""
+            if hasattr(sb_config, "_test_logpath"):
+                log_path = sb_config._test_logpath
+            if sb_config.dashboard:
+                sb_config._process_dashboard_entry(True)
+            if hasattr(sb_config, "_add_pytest_html_extra"):
+                sb_config._add_pytest_html_extra()
+            if hasattr(sb_config, "_visual_baseline_copies"):
+                sb_config._process_v_baseline_logs()
+            sb_config._excinfo_value = call.excinfo.value
+            sb_config._excinfo_tb = call.excinfo.tb
+            if "pytest_plugin.BaseClass.base_method" not in log_path:
+                source = None
+                if hasattr(sb_config, "_last_page_source"):
+                    source = sb_config._last_page_source
+                if log_path and source:
+                    log_helper.log_page_source(log_path, None, source)
+                last_page_screenshot_png = None
+                if hasattr(sb_config, "_last_page_screenshot_png"):
+                    last_page_screenshot_png = (
+                        sb_config._last_page_screenshot_png
+                    )
+                if log_path and last_page_screenshot_png:
+                    log_helper.log_screenshot(
+                        log_path, None, last_page_screenshot_png
+                    )
+                if log_path:
+                    sb_config._log_fail_data()
         try:
             extra_report = None
             if hasattr(item, "_testcase"):
