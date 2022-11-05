@@ -953,17 +953,28 @@ def main():
             from seleniumbase.console_scripts import sb_install
 
             need_retry = False
+            need_another_retry = False
+            retry_msg = "Unable to download driver! Retrying in 3 seconds..."
             try:
                 sb_install.main()
             except Exception as e:
                 invalid_run_cmd = constants.Warnings.INVALID_RUN_COMMAND
                 if invalid_run_cmd in str(e):
                     raise
-                print("\nDriver download failed! Retrying in 3 seconds...")
+                print()
+                print(retry_msg)
                 time.sleep(3)
                 print()
                 need_retry = True
             if need_retry:
+                try:
+                    sb_install.main()
+                except Exception:
+                    print(retry_msg)
+                    time.sleep(3)
+                    print()
+                    need_another_retry = True
+            if need_another_retry:
                 sb_install.main()
         else:
             show_basic_usage()
