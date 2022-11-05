@@ -625,7 +625,7 @@ class BaseCase(unittest.TestCase):
         if self.__is_shadow_selector(selector):
             self.__shadow_type(selector, text, timeout)
             return
-        element = self.wait_for_element_visible(
+        element = self.wait_for_element_clickable(
             selector, by=by, timeout=timeout
         )
         self.__demo_mode_highlight_if_active(selector, by)
@@ -638,7 +638,7 @@ class BaseCase(unittest.TestCase):
         except (StaleElementReferenceException, ENI_Exception):
             self.wait_for_ready_state_complete()
             time.sleep(0.16)
-            element = self.wait_for_element_visible(
+            element = self.wait_for_element_clickable(
                 selector, by=by, timeout=timeout
             )
             try:
@@ -672,7 +672,7 @@ class BaseCase(unittest.TestCase):
         except (StaleElementReferenceException, ENI_Exception):
             self.wait_for_ready_state_complete()
             time.sleep(0.16)
-            element = self.wait_for_element_visible(
+            element = self.wait_for_element_clickable(
                 selector, by=by, timeout=timeout
             )
             element.clear()
@@ -2667,7 +2667,7 @@ class BaseCase(unittest.TestCase):
         """Loads an HTML string into the web browser.
         If new_page==True, the page will switch to: "data:text/html,"
         If new_page==False, will load HTML into the current page."""
-        self.__check_scope()
+        self.wait_for_ready_state_complete()
         new_lines = []
         lines = html_string.split("\n")
         for line in lines:
@@ -12209,7 +12209,6 @@ class BaseCase(unittest.TestCase):
     ):
         from selenium.webdriver.common.action_chains import ActionChains
 
-        self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
@@ -12224,6 +12223,7 @@ class BaseCase(unittest.TestCase):
             self.__slow_scroll_to_element(element)
         else:
             self.__scroll_to_element(element, selector, by)
+        self.wait_for_ready_state_complete()
         if self.demo_mode and mark is None:
             mark = True
         if mark:
