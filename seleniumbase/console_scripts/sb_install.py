@@ -691,7 +691,6 @@ def main(override=None):
             driver_path = None
             driver_file = None
             for f_name in contents:
-                print(f_name)
                 # Remove existing version if exists
                 str_name = str(f_name)
                 new_file = os.path.join(downloads_folder, str_name)
