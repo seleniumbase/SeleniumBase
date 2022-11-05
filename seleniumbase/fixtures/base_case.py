@@ -13279,7 +13279,22 @@ class BaseCase(unittest.TestCase):
             and not self.__last_page_screenshot_png
         ):
             try:
-                element = self.driver.find_element(by="tag name", value="body")
+                try:
+                    element = page_actions.wait_for_element_visible(
+                        self.driver,
+                        "body",
+                        "css selector",
+                        timeout=0.1,
+                        ignore_test_time_limit=True,
+                    )
+                except Exception:
+                    element = page_actions.wait_for_element_present(
+                        self.driver,
+                        "body",
+                        "css selector",
+                        timeout=0.1,
+                        ignore_test_time_limit=True,
+                    )
                 try:
                     self.__last_page_screenshot = element.screenshot_as_base64
                 except Exception:

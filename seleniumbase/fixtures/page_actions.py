@@ -310,6 +310,7 @@ def wait_for_element_present(
     by="css selector",
     timeout=settings.LARGE_TIMEOUT,
     original_selector=None,
+    ignore_test_time_limit=False,
 ):
     """
     Searches for the specified element by the given selector. Returns the
@@ -322,6 +323,7 @@ def wait_for_element_present(
     by - the type of selector being used (Default: "css selector")
     timeout - the time to wait for elements in seconds
     original_selector - handle pre-converted ":contains(TEXT)" selector
+    ignore_test_time_limit - ignore test time limit (NOT related to timeout)
     @Returns
     A web element object
     """
@@ -329,7 +331,8 @@ def wait_for_element_present(
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
-        shared_utils.check_if_time_limit_exceeded()
+        if not ignore_test_time_limit:
+            shared_utils.check_if_time_limit_exceeded()
         try:
             element = driver.find_element(by=by, value=selector)
             return element
@@ -364,6 +367,7 @@ def wait_for_element_visible(
     by="css selector",
     timeout=settings.LARGE_TIMEOUT,
     original_selector=None,
+    ignore_test_time_limit=False,
 ):
     """
     Searches for the specified element by the given selector. Returns the
@@ -378,6 +382,7 @@ def wait_for_element_visible(
     by - the type of selector being used (Default: "css selector")
     timeout - the time to wait for elements in seconds
     original_selector - handle pre-converted ":contains(TEXT)" selector
+    ignore_test_time_limit - ignore test time limit (NOT related to timeout)
     @Returns
     A web element object
     """
@@ -386,7 +391,8 @@ def wait_for_element_visible(
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
-        shared_utils.check_if_time_limit_exceeded()
+        if not ignore_test_time_limit:
+            shared_utils.check_if_time_limit_exceeded()
         try:
             element = driver.find_element(by=by, value=selector)
             is_present = True
