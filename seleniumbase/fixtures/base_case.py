@@ -14059,12 +14059,9 @@ class BaseCase(unittest.TestCase):
             or self.save_screenshot_after_test
             or sys.version_info >= (3, 11)
         ):
-            test_logpath = os.path.join(self.log_path, self.__get_test_id())
-            self.__create_log_path_as_needed(test_logpath)
             self.__set_last_page_screenshot()
             self.__set_last_page_url()
             self.__set_last_page_source()
-            sb_config._has_logs = True
             if self.__has_exception() or self.save_screenshot_after_test:
                 if self.is_pytest:
                     self.__add_pytest_html_extra()

@@ -1802,9 +1802,22 @@ def pytest_sessionfinish(session):
 def pytest_terminal_summary(terminalreporter):
     if "--co" in sys_argv or "--collect-only" in sys_argv:
         return
-    if not sb_config.item_count > 0:
+    if (
+        not hasattr(terminalreporter, "stats")
+        or not hasattr(terminalreporter.stats, "keys")
+    ):
+        return
+    if len(terminalreporter.stats.keys()) == 0:
+        return
+    if not sb_config._multithreaded and not sb_config._sbase_detected:
         return
     latest_logs_dir = os.path.join(os.getcwd(), "latest_logs") + os.sep
+    if (
+        "failed" in terminalreporter.stats.keys()
+        and os.path.exists(latest_logs_dir)
+        and os.listdir(latest_logs_dir)
+    ):
+        sb_config._has_exception = True
     if sb_config._multithreaded:
         if os.path.exists(latest_logs_dir) and os.listdir(latest_logs_dir):
             sb_config._has_exception = True
@@ -1814,7 +1827,7 @@ def pytest_terminal_summary(terminalreporter):
             dash_lock_path = os.path.join(abs_path, dash_lock)
             if os.path.exists(dash_lock_path):
                 sb_config._only_unittest = False
-    if (sb_config._has_exception or sb_config._multithreaded) and (
+    if sb_config._has_exception and (
         sb_config.dashboard and not sb_config._only_unittest
     ):
         # Print link a second time because the first one may be off-screen
@@ -2114,6 +2127,7 @@ def pytest_runtest_makereport(item, call):
         ):
             # Handle a bug on Python 3.11 where exceptions aren't seen
             log_path = ""
+            sb_config._has_logs = True
             if hasattr(sb_config, "_test_logpath"):
                 log_path = sb_config._test_logpath
             if sb_config.dashboard:
