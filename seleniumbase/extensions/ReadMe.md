@@ -1,6 +1,8 @@
-[<img src="https://seleniumbase.io/cdn/img/sb_text_f.png" title="SeleniumBase" align="center" width="360">](https://github.com/seleniumbase/SeleniumBase)
+<!-- SeleniumBase Docs -->
 
-<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> SeleniumBase browser extension storage</h2>
+[<img src="https://seleniumbase.github.io/cdn/img/sb_text_f.png" title="SeleniumBase" align="center" width="360">](https://github.com/seleniumbase/SeleniumBase)
+
+<h2><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32" /> SeleniumBase browser extension storage</h2>
 
 <b>The List:</b>
 

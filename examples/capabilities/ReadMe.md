@@ -1,3 +1,5 @@
+<!-- SeleniumBase Docs -->
+
 <h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> Using Desired Capabilities</h3>
 
 You can specify browser capabilities when running SeleniumBase tests on a remote Selenium Grid server such as <a href="https://www.browserstack.com/automate/capabilities" target="_blank">BrowserStack</a>, <a href="https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/" target="_blank">Sauce Labs</a>, or another.

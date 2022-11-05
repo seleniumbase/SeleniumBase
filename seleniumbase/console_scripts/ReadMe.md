@@ -1,3 +1,5 @@
+<!-- SeleniumBase Docs -->
+
 ## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) 🔮 Console Scripts 🔮
 
 ⭐ SeleniumBase console scripts help you get things done, such as getting web drivers, creating a test directory with useful files, activating the SeleniumBase Recorder, launching the SeleniumBase Commander, translating tests into other languages, running a Selenium Grid, and more.
@@ -57,16 +59,15 @@ sbase install [DRIVER] [OPTIONS]
 * Examples:
 
 ```bash
-sbase get chromedriver  # (Default: 72.0.3626.69 - Tries to detect first.)
+sbase get chromedriver
 sbase get geckodriver
 sbase get edgedriver
-sbase get chromedriver 106
-sbase get chromedriver 106.0.5249.61
+sbase get chromedriver 107
+sbase get chromedriver 107.0.5304.62
 sbase get chromedriver latest
 sbase get chromedriver latest-1  # (Latest minus one)
 sbase get chromedriver -p
 sbase get chromedriver latest -p
-sbase get edgedriver 106.0.1370.42
 ```
 
 (Drivers:  ``chromedriver``, ``geckodriver``, ``edgedriver``,
@@ -80,12 +81,10 @@ sbase get edgedriver 106.0.1370.42
 
 * Output:
 
-Downloads the chosen webdriver to ``seleniumbase/drivers/``.
-(``chromedriver`` is required for Google Chrome automation)
-(``geckodriver`` is required for Mozilla Firefox automation)
-(``edgedriver`` is required for Microsoft Edge automation)
-(``iedriver`` is required for InternetExplorer automation)
-(``operadriver`` is required for Opera Browser automation)
+Downloads the webdriver to ``seleniumbase/drivers/``
+(``chromedriver`` is required for Chrome automation)
+(``geckodriver`` is required for Firefox automation)
+(``edgedriver`` is required for MS__Edge automation)
 
 <h3>methods</h3>
 

@@ -383,10 +383,6 @@ def SB(
         variables = {}
     if disable_csp is None:
         disable_csp = False
-    if enable_ws is None:
-        enable_ws = False
-    if enable_sync is None:
-        enable_sync = False
     if (
         (enable_ws is None and disable_ws is None)
         or (disable_ws is not None and not disable_ws)
@@ -401,8 +397,8 @@ def SB(
         undetectable = True
     if (
         (undetectable or undetected or uc)
-        and uc_subprocess is None
-        and uc_sub is None
+        and (uc_subprocess is None)
+        and (uc_sub is None)
     ):
         uc_subprocess = True  # Use UC as a subprocess by default.
     elif (
@@ -414,6 +410,8 @@ def SB(
         or "--uc-sub" in sys_argv
     ):
         undetectable = True
+        if uc_subprocess is None and uc_sub is None:
+            uc_subprocess = True  # Use UC as a subprocess by default.
     else:
         undetectable = False
     if uc_subprocess or uc_sub:

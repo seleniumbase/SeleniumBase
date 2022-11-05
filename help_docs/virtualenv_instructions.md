@@ -1,3 +1,5 @@
+<!-- SeleniumBase Docs -->
+
 ## Virtual Environment Tutorial
 
 There are multiple ways of creating a **[Python virtual environment](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/#creating-a-virtual-environment)**. This tutorial covers two of those:
@@ -96,6 +98,30 @@ Deleting a virtual environment:
 
 ```bash
 rmvirtualenv sbase_env
+```
+
+--------
+
+If the ``python`` and ``python3`` versions don't match (*while in a virtualenv on macOS or Linux*), the following command will sync the versions:
+
+```bash
+alias python=`which python3`
+```
+
+(To remove an alias, use: ``unalias NAME``)
+
+--------
+
+To verify the ``python`` version, use:
+
+```bash
+python --version
+```
+
+To see the PATH of your ``python`` (macOS/Linux), use:
+
+```bash
+which python
 ```
 
 --------

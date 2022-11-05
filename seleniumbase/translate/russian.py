@@ -64,6 +64,10 @@ class ТестНаСелен(BaseCase):  # noqa
         # assert_link_text(link_text)
         return self.assert_link_text(*args, **kwargs)
 
+    def подтвердить_текст_не_виден(self, *args, **kwargs):
+        # assert_text_not_visible(text, selector)
+        return self.assert_text_not_visible(*args, **kwargs)
+
     def подтвердить_элемент(self, *args, **kwargs):
         # assert_element(selector)
         return self.assert_element(*args, **kwargs)

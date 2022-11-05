@@ -6,7 +6,6 @@ Usage:
                     iedriver|operadriver} [OPTIONS]
 Options:
          VERSION         Specify the version.
-                         Default chromedriver = 72.0.3626.69.
                          Tries to detect the needed version.
                          Use "latest" for the latest version.
                          Use "latest-1" for one less than that.
@@ -15,20 +14,17 @@ Examples:
          sbase get chromedriver
          sbase get geckodriver
          sbase get edgedriver
-         sbase get chromedriver 106.0.5249.61
-         sbase get chromedriver 106
+         sbase get chromedriver 107
+         sbase get chromedriver 107.0.5304.62
          sbase get chromedriver latest
          sbase get chromedriver latest-1  # (Latest minus one)
          sbase get chromedriver -p
          sbase get chromedriver latest -p
-         sbase get edgedriver 106.0.1370.42
 Output:
-         Downloads the chosen webdriver to seleniumbase/drivers
+         Downloads the webdriver to seleniumbase/drivers/
          (chromedriver is required for Chrome automation)
          (geckodriver is required for Firefox automation)
-         (edgedriver is required for MS Edge automation)
-         (operadriver is required for Opera Browser automation)
-         (iedriver is required for InternetExplorer automation)
+         (edgedriver is required for MS__Edge automation)
 """
 
 import colorama
@@ -66,7 +62,6 @@ def invalid_run_command():
     exp += "                          iedriver, operadriver)\n"
     exp += "  Options:\n"
     exp += "           VERSION        Specify the version.\n"
-    exp += "                          Default chromedriver = 72.0.3626.69.\n"
     exp += "                          Tries to detect the needed version.\n"
     exp += '                          Use "latest" for the latest version.\n'
     exp += '                          Use "latest-1" for one less than that.\n'
@@ -77,20 +72,17 @@ def invalid_run_command():
     exp += "           sbase get chromedriver\n"
     exp += "           sbase get geckodriver\n"
     exp += "           sbase get edgedriver\n"
-    exp += "           sbase get chromedriver 105\n"
-    exp += "           sbase get chromedriver 105.0.5195.52\n"
+    exp += "           sbase get chromedriver 107\n"
+    exp += "           sbase get chromedriver 107.0.5304.62\n"
     exp += "           sbase get chromedriver latest\n"
     exp += "           sbase get chromedriver latest-1\n"
     exp += "           sbase get chromedriver -p\n"
     exp += "           sbase get chromedriver latest -p\n"
-    exp += "           sbase get edgedriver 105.0.1343.53\n"
     exp += "  Output:\n"
-    exp += "          Downloads the chosen webdriver to seleniumbase/drivers\n"
+    exp += "          Downloads the webdriver to seleniumbase/drivers/\n"
     exp += "          (chromedriver is required for Chrome automation)\n"
     exp += "          (geckodriver is required for Firefox automation)\n"
-    exp += "          (edgedriver is required for Microsoft Edge automation)\n"
-    exp += "          (iedriver is required for InternetExplorer automation)\n"
-    exp += "          (operadriver is required for Opera Browser automation)\n"
+    exp += "          (edgedriver is required for MS__Edge automation)\n"
     print("")
     raise Exception("%s\n\n%s" % (constants.Warnings.INVALID_RUN_COMMAND, exp))
 
@@ -691,7 +683,6 @@ def main(override=None):
             driver_path = None
             driver_file = None
             for f_name in contents:
-                print(f_name)
                 # Remove existing version if exists
                 str_name = str(f_name)
                 new_file = os.path.join(downloads_folder, str_name)

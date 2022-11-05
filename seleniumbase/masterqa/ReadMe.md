@@ -1,3 +1,5 @@
+<!-- SeleniumBase Docs -->
+
 ![](https://seleniumbase.io/cdn/img/masterqa_logo.png "MasterQA")
 
 <h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> MasterQA combines automation with manual verification steps.</h3>

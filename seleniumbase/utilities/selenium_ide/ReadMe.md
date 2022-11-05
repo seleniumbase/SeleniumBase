@@ -1,3 +1,5 @@
+<!-- SeleniumBase Docs -->
+
 ### Converting Katalon recordings into SeleniumBase test scripts
 
 ### (NOTE: **[SeleniumBase now has Recorder Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md)**, which is recommended over other record & playback tools.)

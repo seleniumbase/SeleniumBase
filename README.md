@@ -1,3 +1,5 @@
+<!-- SeleniumBase Docs -->
+
 <meta property="og:site_name" content="SeleniumBase">
 <meta property="og:title" content="SeleniumBase: Python Web Automation and E2E Testing" />
 <meta property="og:description" content="Fast, easy, and reliable Web/UI testing with Python." />
@@ -14,7 +16,7 @@
 <p align="center"><a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=3399EE" alt="PyPI version" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/releases" target="_blank"><img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=22AAEE" alt="GitHub version" /></a> <a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"><img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a></p>
 
 <p align="center">
-<a href="#python_installation">🚀 Start</a> |
+<a href="#python_installation">🏄 Start</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md">🏰 Features</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">📚 Examples</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md">🎛️ Options</a> |
@@ -202,7 +204,7 @@ Feature: SeleniumBase scenarios for the RealWorld App
 
 **You can install ``seleniumbase`` from [GitHub](https://github.com/seleniumbase/SeleniumBase) or [PyPI](https://pypi.org/project/seleniumbase/):**
 
-🔵 Installing ``seleniumbase`` from a GitHub clone:
+🔵 **Installing ``seleniumbase`` from a GitHub clone:**
 
 ```bash
 git clone https://github.com/seleniumbase/SeleniumBase.git
@@ -210,14 +212,14 @@ cd SeleniumBase/
 pip install -e .
 ```
 
-To upgrade an existing install from a GitHub clone:
+**To upgrade an existing install from a GitHub clone:**
 
 ```bash
 git pull
 pip install -e .
 ```
 
-🔵 Installing ``seleniumbase`` from PyPI:
+🔵 **Installing ``seleniumbase`` from PyPI:**
 
 ```bash
 pip install seleniumbase
@@ -227,7 +229,7 @@ pip install seleniumbase
 * (Add ``--force-reinstall`` to upgrade indirect libraries.)
 * (Use ``pip3`` if multiple versions of Python are present.)
 
-To upgrade an existing install from PyPI:
+**To upgrade an existing install from PyPI:**
 
 ```bash
 pip install -U seleniumbase
@@ -283,7 +285,7 @@ COMMANDS:
 
 <h3><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> Downloading web drivers:</h3>
 
-✅ SeleniumBase automatically downloads web drivers as needed, such as ``chromedriver`` and ``geckodriver`` (Firefox).
+✅ SeleniumBase automatically downloads web drivers as needed, such as ``chromedriver``, ``edgedriver``, and ``geckodriver``.
 
 ✅ To manually download a webdriver, see [Console Scripts](https://seleniumbase.io/seleniumbase/console_scripts/ReadMe/) OR [Webdriver Installation](https://seleniumbase.io/help_docs/webdriver_installation/).
 

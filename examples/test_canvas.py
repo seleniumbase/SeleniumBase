@@ -21,12 +21,12 @@ class CanvasTests(BaseCase):
 
     def test_canvas_click_from_center(self):
         self.open("https://seleniumbase.io/other/canvas")
-        self.click_with_offset("canvas", 0, 0, center=True)
-        self.sleep(1)  # Not needed (Lets you see the alert pop up)
+        self.click_with_offset("canvas", 0, 0, mark=True, center=True)
+        self.sleep(0.55)  # Not needed (Lets you see the alert pop up)
         alert = self.switch_to_alert()
         self.assert_equal(alert.text, "You clicked on the square!")
         self.accept_alert()
-        self.sleep(1)  # Not needed (Lets you see the alert go away)
+        self.sleep(0.55)  # Not needed (Lets you see the alert go away)
 
     def test_click_with_offset(self):
         self.open("https://seleniumbase.io/canvas/")

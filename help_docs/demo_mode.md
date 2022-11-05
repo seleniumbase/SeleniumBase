@@ -1,3 +1,5 @@
+<!-- SeleniumBase Docs -->
+
 ## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Demo Mode 🎦
 
 <p align="left"><img src="https://seleniumbase.github.io/cdn/gif/xkcd_vid.gif" width="400" alt="SeleniumBase Example" title="SeleniumBase Example" /></p>

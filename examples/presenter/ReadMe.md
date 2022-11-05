@@ -1,10 +1,12 @@
-## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) 📑 Presenter 🎞️
+<!-- SeleniumBase Docs -->
+
+## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) 📑 Presenter 🎞️
 
 <p>SeleniumBase Presenter (slide-maker) lets you use Python to generate HTML presentations.</p>
 
 <b>Here's a sample presentation:</b>
 
-<a href="https://seleniumbase.io/other/presenter.html"><img width="500" src="https://seleniumbase.io/other/presenter.gif" title="Screenshot"></a><br>
+<a href="https://seleniumbase.github.io/other/presenter.html"><img width="500" src="https://seleniumbase.io/other/presenter.gif" title="Screenshot"></a><br>
 
 ([Click on the image/GIF for the actual presentation](https://seleniumbase.io/other/presenter.html))
 
@@ -21,7 +23,7 @@ pytest my_presentation.py
 
 **Here's a presentation with a chart:**
 
-<a href="https://seleniumbase.io/other/core_presentation.html"><img width="428" src="https://seleniumbase.io/other/sb_core_areas.png" title="Screenshot"></a><br>
+<a href="https://seleniumbase.github.io/other/core_presentation.html"><img width="428" src="https://seleniumbase.io/other/sb_core_areas.png" title="Screenshot"></a><br>
 
 ([Click on the image/GIF for the actual presentation](https://seleniumbase.io/other/core_presentation.html))
 
@@ -35,7 +37,7 @@ pytest core_presentation.py
 ```
 
 
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="24" /> Creating a new presentation:</h3>
+<h3><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="24" /> Creating a new presentation:</h3>
 
 ```python
 self.create_presentation(name=None, theme="serif", transition="default")
@@ -58,7 +60,7 @@ Notes are disabled by default. You can enable notes by specifying:
 ``show_notes=True``
 
 
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="24" /> Adding a slide to a presentation:</h3>
+<h3><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="24" /> Adding a slide to a presentation:</h3>
 
 ```python
 self.add_slide(content=None, image=None, code=None, iframe=None,
@@ -81,7 +83,7 @@ self.add_slide(content=None, image=None, code=None, iframe=None,
 """
 ```
 
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="24" /> Running a presentation:</h3>
+<h3><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="24" /> Running a presentation:</h3>
 
 ```python
 self.begin_presentation(
@@ -104,7 +106,7 @@ Before the presentation is run, the full HTML is saved to the ``saved_presentati
 
 All methods have the optional ``name`` argument, which is only needed if you're creating multiple presentations at once.
 
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="24" /> Here's an example of using SeleniumBase Presenter:</h3>
+<h3><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="24" /> Here's an example of using SeleniumBase Presenter:</h3>
 
 ```python
 from seleniumbase import BaseCase
@@ -229,7 +231,7 @@ That example is from [my_presentation.py](https://github.com/seleniumbase/Seleni
 pytest my_presentation.py
 ```
 
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="24" /> Saving a presentation:</h3>
+<h3><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="24" /> Saving a presentation:</h3>
 
 If you want to save the presentation you created as an HTML file, use:
 
@@ -245,4 +247,4 @@ self.begin_presentation(show_notes=True)
 
 --------
 
-<h3 align="left"><img src="https://seleniumbase.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" width="240" /></h3>
+<h3 align="left"><img src="https://seleniumbase.github.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" width="240" /></h3>

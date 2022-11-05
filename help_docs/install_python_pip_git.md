@@ -1,4 +1,6 @@
-## Installation instructions for Git, Python, and Pip
+<!-- SeleniumBase Docs -->
+
+## Installation instructions for ``Git``, ``Python``, and ``pip``
 
 ### [Git](http://www.git-scm.com)
 
@@ -12,18 +14,11 @@ You can [download Git from here](http://git-scm.com/downloads).
 
 You can download Python from [https://www.python.org/downloads/](https://www.python.org/downloads/) if it's not already preinstalled on your machine.
 
-### [Pip](https://en.wikipedia.org/wiki/Pip_%28package_manager%29)
+### [pip](https://en.wikipedia.org/wiki/Pip_%28package_manager%29)
 
-You probably already have pip and setuptools installed. If not:
+**``pip`` already comes with Python!** (It lets you install packages, such as ``seleniumbase``.)
 
-```bash
-python -m easy_install -U pip
-pip install -U setuptools
-```
-
-If that didn't work, here are some more commands you can try:
-
-On macOS / Windows / Linux, run the following command:
+⚠️ If something went wrong with your ``pip`` installation, try this:
 
 ```bash
 python -m ensurepip --default-pip

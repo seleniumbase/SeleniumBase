@@ -1,3 +1,5 @@
+<!-- SeleniumBase Docs -->
+
 ## Showing hidden files on macOS
 
 Depending on your macOS settings, some files may be hidden from view in your Finder window, such as ``.gitignore``.

@@ -132,7 +132,6 @@ def show_install_usage():
     print("                           iedriver, operadriver)")
     print("  Options:")
     print("           VERSION         Specify the version to download.")
-    print("                           Default chromedriver = 72.0.3626.69.")
     print("                           Tries to detect the needed version.")
     print('                           Use "latest" for the latest version.')
     print('                           Use "latest-1" for one less than that.')
@@ -144,20 +143,17 @@ def show_install_usage():
     print("           sbase get chromedriver")
     print("           sbase get geckodriver")
     print("           sbase get edgedriver")
-    print("           sbase get chromedriver 106")
-    print("           sbase get chromedriver 106.0.5249.61")
+    print("           sbase get chromedriver 107")
+    print("           sbase get chromedriver 107.0.5304.62")
     print("           sbase get chromedriver latest")
     print("           sbase get chromedriver latest-1")
     print("           sbase get chromedriver -p")
     print("           sbase get chromedriver latest -p")
-    print("           sbase get edgedriver 106.0.1370.42")
     print("  Output:")
-    print("           Downloads the chosen webdriver to seleniumbase/drivers")
+    print("           Downloads the webdriver to seleniumbase/drivers/")
     print("           (chromedriver is required for Chrome automation)")
     print("           (geckodriver is required for Firefox automation)")
-    print("           (edgedriver is required for Microsoft Edge automation)")
-    print("           (iedriver is required for InternetExplorer automation)")
-    print("           (operadriver is required for Opera Browser automation)")
+    print("           (edgedriver is required for MS__Edge automation)")
     print("")
 
 
@@ -953,17 +949,28 @@ def main():
             from seleniumbase.console_scripts import sb_install
 
             need_retry = False
+            need_another_retry = False
+            retry_msg = "Unable to download driver! Retrying in 3 seconds..."
             try:
                 sb_install.main()
             except Exception as e:
                 invalid_run_cmd = constants.Warnings.INVALID_RUN_COMMAND
                 if invalid_run_cmd in str(e):
                     raise
-                print("\nDriver download failed! Retrying in 3 seconds...")
+                print()
+                print(retry_msg)
                 time.sleep(3)
                 print()
                 need_retry = True
             if need_retry:
+                try:
+                    sb_install.main()
+                except Exception:
+                    print(retry_msg)
+                    time.sleep(3)
+                    print()
+                    need_another_retry = True
+            if need_another_retry:
                 sb_install.main()
         else:
             show_basic_usage()

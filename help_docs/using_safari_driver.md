@@ -1,3 +1,5 @@
+<!-- SeleniumBase Docs -->
+
 ## Using Safari's WebDriver for running browser tests on macOS
 
 *(NOTE: Safari's WebDriver requires macOS 10.13 "High Sierra" or later.)*

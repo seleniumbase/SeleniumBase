@@ -5,7 +5,7 @@ from seleniumbase import BaseCase
 
 class DownloadImages(BaseCase):
     def test_download_images_directly(self):
-        self.open("seleniumbase.io/examples/ReadMe/")
+        self.open("https://seleniumbase.io/help_docs/chart_maker/")
         img_elements_with_src = self.find_elements("img[src]")
         unique_src_values = []
         for img in img_elements_with_src:
@@ -35,6 +35,8 @@ class DownloadImages(BaseCase):
         count = 0
         for src in unique_src_values:
             self.open(src)
+            if not self.headless and not self.headless2:
+                self.highlight("img", loops=1)
             image = self.find_element("img")
             if src.startswith("data:") or ";base64" in src:
                 # Special Cases: SVGs, etc. Convert to PNG.

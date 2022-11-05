@@ -1,3 +1,5 @@
+<!-- SeleniumBase Docs -->
+
 ## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) SeleniumBase Methods (API Reference)
 
 <!-- YouTube View --><a href="https://www.youtube.com/watch?v=_yNJlHnp2JA"><img src="https://seleniumbase.github.io/cdn/img/sb_api_youtube.png" title="SeleniumBase on YouTube" width="285" /></a>

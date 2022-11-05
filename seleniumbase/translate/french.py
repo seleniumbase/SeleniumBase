@@ -64,6 +64,10 @@ class CasDeBase(BaseCase):
         # assert_link_text(link_text)
         return self.assert_link_text(*args, **kwargs)
 
+    def vérifier_texte_pas_affiché(self, *args, **kwargs):
+        # assert_text_not_visible(text, selector)
+        return self.assert_text_not_visible(*args, **kwargs)
+
     def vérifier_élément(self, *args, **kwargs):
         # assert_element(selector)
         return self.assert_element(*args, **kwargs)

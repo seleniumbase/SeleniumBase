@@ -1,3 +1,5 @@
+<!-- SeleniumBase Docs -->
+
 ## Useful grep commands
 
 There are several useful **grep** commands for helping you find and/or replace text in multiple files. Examples:

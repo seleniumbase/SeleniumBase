@@ -1,3 +1,5 @@
+<!-- SeleniumBase Docs -->
+
 ## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Verifying that web drivers are installed
 
 On newer versions of SeleniumBase, the driver is automatically downloaded to the ``seleniumbase/drivers`` folder as needed, and does not need to be on the System Path when running tests.

@@ -282,6 +282,8 @@ class BaseCase(unittest.TestCase):
         if self.__is_shadow_selector(selector):
             self.__shadow_click(selector, timeout)
             return
+        if self.browser == "safari":
+            self.wait_for_ready_state_complete()
         element = page_actions.wait_for_element_visible(
             self.driver,
             selector,
@@ -482,9 +484,7 @@ class BaseCase(unittest.TestCase):
         elif self.slow_mode:
             self.__slow_mode_pause_if_active()
         elif self.browser == "safari":
-            time.sleep(0.01)
             self.wait_for_ready_state_complete()
-            time.sleep(0.01)
 
     def slow_click(self, selector, by="css selector", timeout=None):
         """Similar to click(), but pauses for a brief moment before clicking.
@@ -625,7 +625,7 @@ class BaseCase(unittest.TestCase):
         if self.__is_shadow_selector(selector):
             self.__shadow_type(selector, text, timeout)
             return
-        element = self.wait_for_element_visible(
+        element = self.wait_for_element_clickable(
             selector, by=by, timeout=timeout
         )
         self.__demo_mode_highlight_if_active(selector, by)
@@ -638,7 +638,7 @@ class BaseCase(unittest.TestCase):
         except (StaleElementReferenceException, ENI_Exception):
             self.wait_for_ready_state_complete()
             time.sleep(0.16)
-            element = self.wait_for_element_visible(
+            element = self.wait_for_element_clickable(
                 selector, by=by, timeout=timeout
             )
             try:
@@ -672,7 +672,7 @@ class BaseCase(unittest.TestCase):
         except (StaleElementReferenceException, ENI_Exception):
             self.wait_for_ready_state_complete()
             time.sleep(0.16)
-            element = self.wait_for_element_visible(
+            element = self.wait_for_element_clickable(
                 selector, by=by, timeout=timeout
             )
             element.clear()
@@ -734,8 +734,7 @@ class BaseCase(unittest.TestCase):
         ):
             # Shortcut to send multiple tabs followed by click_active_element()
             self.wait_for_ready_state_complete()
-            for tab in range(text.count("\t")):
-                element.send_keys("\t")
+            element.send_keys(Keys.TAB * text.count("\t"))
             self.click_active_element()
             return
         self.__demo_mode_highlight_if_active(selector, by)
@@ -2668,7 +2667,7 @@ class BaseCase(unittest.TestCase):
         """Loads an HTML string into the web browser.
         If new_page==True, the page will switch to: "data:text/html,"
         If new_page==False, will load HTML into the current page."""
-        self.__check_scope()
+        self.wait_for_ready_state_complete()
         new_lines = []
         lines = html_string.split("\n")
         for line in lines:
@@ -12210,7 +12209,6 @@ class BaseCase(unittest.TestCase):
     ):
         from selenium.webdriver.common.action_chains import ActionChains
 
-        self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
@@ -12225,6 +12223,7 @@ class BaseCase(unittest.TestCase):
             self.__slow_scroll_to_element(element)
         else:
             self.__scroll_to_element(element, selector, by)
+        self.wait_for_ready_state_complete()
         if self.demo_mode and mark is None:
             mark = True
         if mark:
@@ -13279,7 +13278,22 @@ class BaseCase(unittest.TestCase):
             and not self.__last_page_screenshot_png
         ):
             try:
-                element = self.driver.find_element(by="tag name", value="body")
+                try:
+                    element = page_actions.wait_for_element_visible(
+                        self.driver,
+                        "body",
+                        "css selector",
+                        timeout=0.1,
+                        ignore_test_time_limit=True,
+                    )
+                except Exception:
+                    element = page_actions.wait_for_element_present(
+                        self.driver,
+                        "body",
+                        "css selector",
+                        timeout=0.1,
+                        ignore_test_time_limit=True,
+                    )
                 try:
                     self.__last_page_screenshot = element.screenshot_as_base64
                 except Exception:
@@ -14045,12 +14059,9 @@ class BaseCase(unittest.TestCase):
             or self.save_screenshot_after_test
             or sys.version_info >= (3, 11)
         ):
-            test_logpath = os.path.join(self.log_path, self.__get_test_id())
-            self.__create_log_path_as_needed(test_logpath)
             self.__set_last_page_screenshot()
             self.__set_last_page_url()
             self.__set_last_page_source()
-            sb_config._has_logs = True
             if self.__has_exception() or self.save_screenshot_after_test:
                 if self.is_pytest:
                     self.__add_pytest_html_extra()

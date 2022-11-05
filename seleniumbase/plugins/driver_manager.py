@@ -3,10 +3,10 @@ The SeleniumBase Driver as a Python Context Manager or a returnable object.
 ###########################################################################
 
 The SeleniumBase Driver as a context manager:
-Usage --> ``with Driver() as driver:``
+Usage --> ``with DriverContext() as driver:``
 Usage example -->
     from seleniumbase import Driver
-    with Driver() as driver:
+    with DriverContext() as driver:
         driver.get("https://google.com/ncr")
     # The browser exits automatically after the "with" block ends.
 
@@ -25,6 +25,30 @@ Usage example -->
 
 ###########################################################################
 """
+import sys
+
+
+class DriverContext():
+    def __init__(self, *args, **kwargs):
+        self.driver = Driver(*args, **kwargs)
+
+    def __enter__(self):
+        return self.driver
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        try:
+            if (
+                hasattr(self, "driver")
+                and hasattr(self.driver, "quit")
+                and (
+                    sys.platform not in ["win32", "win64", "x64"]
+                    or self.driver.service.process
+                )
+            ):
+                self.driver.quit()
+        except Exception:
+            pass
+        return False
 
 
 def Driver(
@@ -46,6 +70,7 @@ def Driver(
     disable_js=None,  # Disable JavaScript on websites. Pages might break!
     disable_csp=None,  # Disable the Content Security Policy of websites.
     enable_ws=None,  # Enable Web Security on Chromium-based browsers.
+    disable_ws=None,  # Reverse of "enable_ws". (None and False are different)
     enable_sync=None,  # Enable "Chrome Sync" on websites.
     use_auto_ext=None,  # Use Chrome's automation extension.
     undetectable=None,  # Use undetected-chromedriver to evade bot-detection.
@@ -81,7 +106,6 @@ def Driver(
     wire=None,  # Shortcut / Duplicate of "use_wire".
     pls=None,  # Shortcut / Duplicate of "page_load_strategy".
 ):
-    import sys
     from seleniumbase.fixtures import constants
 
     sys_argv = sys.argv
@@ -243,12 +267,9 @@ def Driver(
         headless2 = False  # Only for Chromium browsers
     if disable_csp is None:
         disable_csp = False
-    if enable_ws is None:
-        enable_ws = False
-    if enable_sync is None:
-        enable_sync = False
     if (
-        enable_ws is None
+        (enable_ws is None and disable_ws is None)
+        or (disable_ws is not None and not disable_ws)
         or (enable_ws is not None and enable_ws)
     ):
         enable_ws = True
@@ -258,8 +279,8 @@ def Driver(
         undetectable = True
     if (
         (undetectable or undetected or uc)
-        and uc_subprocess is None
-        and uc_sub is None
+        and (uc_subprocess is None)
+        and (uc_sub is None)
     ):
         uc_subprocess = True  # Use UC as a subprocess by default.
     elif (
@@ -271,6 +292,8 @@ def Driver(
         or "--uc-sub" in sys_argv
     ):
         undetectable = True
+        if uc_subprocess is None and uc_sub is None:
+            uc_subprocess = True  # Use UC as a subprocess by default.
     else:
         undetectable = False
     if uc_subprocess or uc_sub:

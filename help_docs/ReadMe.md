@@ -1,20 +1,21 @@
+<!-- SeleniumBase Docs -->
+
 ## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Help Docs
 
 <p align="left">
-<a href="https://seleniumbase.io/#python_installation">🚁 Start</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">📊 Dashboard</a>
+<a href="https://seleniumbase.io/#python_installation">🏄 Start</a> |
+<a href="https://seleniumbase.io/examples/example_logs/ReadMe/">📊 Dashboard</a>
 <br />
 <a href="https://seleniumbase.io/help_docs/features_list/">🏰 Features</a> |
 <a href="https://seleniumbase.io/help_docs/customizing_test_runs/">🎛️ Options</a>
 <br />
-<a href="https://seleniumbase.io/examples/ReadMe/">📖 Examples</a> |
+<a href="https://seleniumbase.io/examples/ReadMe/">📚 Examples</a> |
 <a href="https://seleniumbase.io/help_docs/mobile_testing/">📱 Mobile</a>
 <br />
-<a href="https://seleniumbase.io/help_docs/syntax_formats/">📝 Syntax Formats</a> |
+<a href="https://seleniumbase.io/help_docs/syntax_formats/">🔡 Syntax Formats</a> |
 <a href="https://seleniumbase.io/integrations/github/workflows/ReadMe/">🤖 CI/CD</a>
 <br />
-<a href="https://seleniumbase.io/help_docs/method_summary/">📙 APIs</a> |
-<a href="https://seleniumbase.io/examples/example_logs/ReadMe/">📊 Reports</a> |
+<a href="https://seleniumbase.io/help_docs/method_summary/">📗 Methods / APIs</a> |
 <a href="https://seleniumbase.io/examples/tour_examples/ReadMe/">🚎 Tours</a>
 <br />
 <a href="https://seleniumbase.io/seleniumbase/console_scripts/ReadMe/">🔮 Console Scripts</a> |
@@ -29,11 +30,11 @@
 <a href="https://seleniumbase.io/help_docs/recorder_mode/">🔴 Recorder</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js">🚉 Node GUI</a>
 <br />
-<a href="https://seleniumbase.io/help_docs/translations/">🈺 Translator</a> |
+<a href="https://seleniumbase.io/help_docs/translations/">🌏 Translator</a> |
 <a href="https://seleniumbase.io/examples/dialog_boxes/ReadMe/">🛂 Dialog Boxes</a>
 <br />
 <a href="https://seleniumbase.io/examples/presenter/ReadMe/">🎞️ Slides</a> |
-<a href="https://seleniumbase.io/examples/chart_maker/ReadMe/">📊 Charts</a>
+<a href="https://seleniumbase.io/examples/chart_maker/ReadMe/">📶 Charts</a>
 </p>
 
 --------
