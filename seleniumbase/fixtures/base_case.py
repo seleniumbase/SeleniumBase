@@ -282,6 +282,8 @@ class BaseCase(unittest.TestCase):
         if self.__is_shadow_selector(selector):
             self.__shadow_click(selector, timeout)
             return
+        if self.browser == "safari":
+            self.wait_for_ready_state_complete()
         element = page_actions.wait_for_element_visible(
             self.driver,
             selector,
@@ -482,9 +484,7 @@ class BaseCase(unittest.TestCase):
         elif self.slow_mode:
             self.__slow_mode_pause_if_active()
         elif self.browser == "safari":
-            time.sleep(0.01)
             self.wait_for_ready_state_complete()
-            time.sleep(0.01)
 
     def slow_click(self, selector, by="css selector", timeout=None):
         """Similar to click(), but pauses for a brief moment before clicking.
