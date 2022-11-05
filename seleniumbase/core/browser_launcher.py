@@ -2691,7 +2691,7 @@ def get_local_driver(
                                             driver_executable_path=uc_path,
                                             headless=False,  # Xvfb needed!
                                             version_main=uc_chrome_version,
-                                            use_subprocess=uc_subprocess,
+                                            use_subprocess=True,  # Always!
                                         )
                                     except URLError as e:
                                         if (
@@ -2709,7 +2709,7 @@ def get_local_driver(
                                                 driver_executable_path=uc_path,
                                                 headless=False,  # Xvfb needed!
                                                 version_main=uc_chrome_version,
-                                                use_subprocess=uc_subprocess,
+                                                use_subprocess=True,  # Always!
                                             )
                                         else:
                                             raise

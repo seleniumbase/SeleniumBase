@@ -920,8 +920,9 @@ def pytest_addoption(parser):
         "--uc-sub",  # undetected-chromedriver subprocess mode
         action="store_true",
         dest="uc_subprocess",
-        default=False,
-        help="""Use undetectable-chromedriver as a subprocess,
+        default=None,
+        help="""(DEPRECATED) - Setting will always be enabled.
+                Use undetectable-chromedriver as a subprocess,
                 which can help avoid issues that might result.
                 It may reduce UC's ability to avoid detection.""",
     )

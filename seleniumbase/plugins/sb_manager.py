@@ -401,8 +401,8 @@ def SB(
         undetectable = True
     if (
         (undetectable or undetected or uc)
-        and uc_subprocess is None
-        and uc_sub is None
+        and (uc_subprocess is None)
+        and (uc_sub is None)
     ):
         uc_subprocess = True  # Use UC as a subprocess by default.
     elif (
@@ -414,6 +414,8 @@ def SB(
         or "--uc-sub" in sys_argv
     ):
         undetectable = True
+        if uc_subprocess is None and uc_sub is None:
+            uc_subprocess = True  # Use UC as a subprocess by default.
     else:
         undetectable = False
     if uc_subprocess or uc_sub:
