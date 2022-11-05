@@ -597,9 +597,13 @@ def _set_chrome_options(
         chrome_options.add_argument("--proxy-pac-url=%s" % proxy_pac_url)
     if browser_name != constants.Browser.OPERA:
         # Opera Chromium doesn't support these switches
-        if not is_using_uc(undetectable, browser_name) or not enable_ws:
+        if (
+            not is_using_uc(undetectable, browser_name)
+            or not enable_ws
+            or proxy_string
+        ):
             chrome_options.add_argument("--ignore-certificate-errors")
-        if not enable_ws:
+        if not enable_ws or not is_using_uc(undetectable, browser_name):
             chrome_options.add_argument("--disable-web-security")
         if "linux" in PLATFORM or not is_using_uc(undetectable, browser_name):
             chrome_options.add_argument("--no-sandbox")

@@ -213,7 +213,12 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         self.keep_user_data_dir = keep_user_data_dir
         if suppress_welcome:
             options.arguments.extend(
-                ["--no-default-browser-check", "--no-first-run"]
+                [
+                    "--no-default-browser-check",
+                    "--no-first-run",
+                    "--no-service-autorun",
+                    "--password-store=basic",
+                ]
             )
         if headless or options.headless:
             options.headless = True

@@ -46,6 +46,7 @@ def Driver(
     disable_js=None,  # Disable JavaScript on websites. Pages might break!
     disable_csp=None,  # Disable the Content Security Policy of websites.
     enable_ws=None,  # Enable Web Security on Chromium-based browsers.
+    disable_ws=None,  # Reverse of "enable_ws". (None and False are different)
     enable_sync=None,  # Enable "Chrome Sync" on websites.
     use_auto_ext=None,  # Use Chrome's automation extension.
     undetectable=None,  # Use undetected-chromedriver to evade bot-detection.
@@ -243,12 +244,9 @@ def Driver(
         headless2 = False  # Only for Chromium browsers
     if disable_csp is None:
         disable_csp = False
-    if enable_ws is None:
-        enable_ws = False
-    if enable_sync is None:
-        enable_sync = False
     if (
-        enable_ws is None
+        (enable_ws is None and disable_ws is None)
+        or (disable_ws is not None and not disable_ws)
         or (enable_ws is not None and enable_ws)
     ):
         enable_ws = True
