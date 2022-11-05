@@ -734,8 +734,7 @@ class BaseCase(unittest.TestCase):
         ):
             # Shortcut to send multiple tabs followed by click_active_element()
             self.wait_for_ready_state_complete()
-            for tab in range(text.count("\t")):
-                element.send_keys("\t")
+            element.send_keys(Keys.TAB * text.count("\t"))
             self.click_active_element()
             return
         self.__demo_mode_highlight_if_active(selector, by)
