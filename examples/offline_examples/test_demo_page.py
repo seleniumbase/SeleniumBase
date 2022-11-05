@@ -1,6 +1,5 @@
 import os
 import pytest
-from seleniumbase import version_tuple
 from seleniumbase import BaseCase
 
 
@@ -11,10 +10,6 @@ class OfflineTests(BaseCase):
         dir_path = os.path.dirname(os.path.abspath(__file__))
         file_path = dir_path + "/demo_page.html"
         self.load_html_file(file_path)
-
-        # Fail if the seleniumbase version is less than 4.0.0
-        if version_tuple < (4, 0, 0):
-            self.fail("This test requires seleniumbase>=4.0.0")
 
         # Assert the title of the current web page
         self.assert_title("Web Testing Page")

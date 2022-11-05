@@ -14,17 +14,19 @@ class PresentationWithChart(BaseCase):
             "<p>Basic API (test methods). Example test:</p>",
             code=(
                 "from seleniumbase import BaseCase\n\n"
-                "class MyTestClass(BaseCase):\n\n"
-                "    def test_basics(self):\n"
-                '        self.open("https://store.xkcd.com/search")\n'
-                '        self.type(\'input[name="q"]\', "xkcd book\\n")\n'
-                '        self.assert_text("xkcd book", "div.results")\n'
-                '        self.open("https://xkcd.com/353/")\n'
-                "        self.click('a[rel=\"license\"]')\n"
-                "        self.go_back()\n"
-                '        self.click_link("About")\n'
-                '        self.click_link("comic #249")\n'
-                "        self.assert_element('img[alt*=\"Chess\"]')\n"
+                "class TestMFALogin(BaseCase):\n\n"
+                "    def test_mfa_login(self):\n"
+                '        self.open("seleniumbase.io/realworld/login")\n'
+                '        self.type("#username", "demo_user")\n'
+                '        self.type("#password", "secret_pass")\n'
+                '        self.enter_mfa_code('
+                '"#totpcode", "GAXG2MTEOR3DMMDG")\n'
+                '        self.assert_text("Welcome!", "h1")\n'
+                '        self.highlight("img#image1")\n'
+                "        self.click('a:contains(\"This Page\")')\n"
+                "        self.save_screenshot_to_logs()\n"
+                '        self.click_link("Sign out")\n'
+                '        self.assert_element(\'a:contains("Sign in")\')\n'
             ),
         )
         self.add_slide(
@@ -42,25 +44,28 @@ class PresentationWithChart(BaseCase):
                 "$ pytest test_suite.py --dashboard --html=report.html\n"
                 "$ pytest github_test.py --demo --disable-csp\n"
                 "$ pytest test_suite.py -n=2 --rs --crumbs\n"
-                "$ pytest basic_test.py --incognito\n"
+                "$ pytest test_demo_site.py --incognito\n"
+                "$ pytest verify_undetected.py --uc\n"
+                "$ pytest basic_test.py --sjw --pls=none\n"
             ),
         )
         self.add_slide(
             "<p>The Console Scripts interface. Examples:</p>",
             code=(
-                "$ sbase install chromedriver\n"
-                "$ sbase install chromedriver latest\n"
+                "$ sbase get chromedriver\n"
                 "$ sbase mkdir new_test_folder\n"
                 "$ sbase mkfile new_test.py\n"
+                "$ sbase mkpres new_presentation.py\n"
+                "$ sbase mkchart new_chart.py\n"
                 "$ sbase print basic_test.py -n\n"
-                "$ sbase translate basic_test.py -p --chinese -n\n"
-                "$ sbase translate basic_test.py -p --japanese\n"
-                "$ sbase translate basic_test.py -c --russian\n"
-                "$ sbase download server\n"
+                "$ sbase translate basic_test.py -p --ru -n\n"
                 "$ sbase grid-hub start\n"
                 '$ sbase grid-node start --hub="127.0.0.1"\n'
                 "$ sbase grid-node stop\n"
                 "$ sbase grid-hub stop\n"
+                "$ sbase recorder\n"
+                "$ sbase commander\n"
+                "$ sbase methods\n"
                 "$ sbase options\n"
             ),
         )
@@ -68,7 +73,7 @@ class PresentationWithChart(BaseCase):
             '<p>Advanced API. "Presenter" example:</p>',
             code=(
                 "from seleniumbase import BaseCase\n\n"
-                "class MyPresenterClass(BaseCase):\n\n"
+                "class MyPresenterClass(BaseCase):\n"
                 "    def test_presenter(self):\n"
                 '        self.create_presentation(theme="serif")\n'
                 '        self.add_slide("Welcome to Presenter!")\n'

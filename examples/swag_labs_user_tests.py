@@ -81,6 +81,10 @@ class SwagLabsTests(BaseCase):
         self.save_teardown_screenshot()  # Only if a test fails
         # Reset App State and Logout if the controls are present
         try:
+            self.wait_for_ready_state_complete()
+            if self.is_element_visible("#react-burger-menu-btn"):
+                self.click("#react-burger-menu-btn")
+                self.wait_for_element("a#reset_sidebar_link")
             self.js_click_if_present("a#reset_sidebar_link")
             self.js_click_if_present("a#logout_sidebar_link")
         except Exception:

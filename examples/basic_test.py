@@ -1,6 +1,4 @@
-"""
-Add an item to a shopping cart; verify; remove item; verify.
-"""
+"""Add an item to a shopping cart. Verify. Remove item. Verify."""
 from seleniumbase import BaseCase
 
 
