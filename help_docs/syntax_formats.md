@@ -821,14 +821,14 @@ This pure Python format gives you a raw <code>webdriver</code> instance in a <co
 """This script can be run with pure "python". (pytest not needed)."""
 from seleniumbase import js_utils
 from seleniumbase import page_actions
-from seleniumbase import Driver
+from seleniumbase import DriverContext
 
-# Python Context Manager
-with Driver() as driver:  # By default, browser="chrome"
-    driver.get("https://google.com/ncr")
-    js_utils.highlight_with_js(driver, 'img[alt="Google"]', loops=6)
+# Driver Context Manager - (By default, browser="chrome". Lots of options)
+with DriverContext() as driver:
+    driver.get("https://seleniumbase.github.io/")
+    js_utils.highlight_with_js(driver, 'img[alt="SeleniumBase"]', loops=6)
 
-with Driver() as driver:  # Also accepts command-line options
+with DriverContext() as driver:
     driver.get("https://seleniumbase.github.io/demo_page")
     js_utils.highlight_with_js(driver, "h2", loops=5)
     by_css = "css selector"
@@ -836,8 +836,7 @@ with Driver() as driver:  # Also accepts command-line options
     driver.find_element(by_css, "#checkBox1").click()
     js_utils.highlight_with_js(driver, "img", loops=5)
 
-# Python Context Manager (with options given)
-with Driver(browser="chrome", incognito=True) as driver:
+with DriverContext(browser="chrome", incognito=True) as driver:
     driver.get("https://seleniumbase.io/apps/calculator")
     page_actions.wait_for_element(driver, "4", "id").click()
     page_actions.wait_for_element(driver, "2", "id").click()
@@ -845,7 +844,7 @@ with Driver(browser="chrome", incognito=True) as driver:
     js_utils.highlight_with_js(driver, "#output", loops=6)
 ```
 
-(See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_driver.py">examples/raw_driver.py</a> for an example.)
+(See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_driver_context.py">examples/raw_driver_context.py</a> for an example.)
 
 <a id="sb_sf_23"></a>
 <h3><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 23. The driver manager (via direct import)</h3>

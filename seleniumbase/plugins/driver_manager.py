@@ -3,10 +3,10 @@ The SeleniumBase Driver as a Python Context Manager or a returnable object.
 ###########################################################################
 
 The SeleniumBase Driver as a context manager:
-Usage --> ``with Driver() as driver:``
+Usage --> ``with DriverContext() as driver:``
 Usage example -->
     from seleniumbase import Driver
-    with Driver() as driver:
+    with DriverContext() as driver:
         driver.get("https://google.com/ncr")
     # The browser exits automatically after the "with" block ends.
 
@@ -25,6 +25,30 @@ Usage example -->
 
 ###########################################################################
 """
+import sys
+
+
+class DriverContext():
+    def __init__(self, *args, **kwargs):
+        self.driver = Driver(*args, **kwargs)
+
+    def __enter__(self):
+        return self.driver
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        try:
+            if (
+                hasattr(self, "driver")
+                and hasattr(self.driver, "quit")
+                and (
+                    sys.platform not in ["win32", "win64", "x64"]
+                    or self.driver.service.process
+                )
+            ):
+                self.driver.quit()
+        except Exception:
+            pass
+        return False
 
 
 def Driver(
@@ -82,7 +106,6 @@ def Driver(
     wire=None,  # Shortcut / Duplicate of "use_wire".
     pls=None,  # Shortcut / Duplicate of "page_load_strategy".
 ):
-    import sys
     from seleniumbase.fixtures import constants
 
     sys_argv = sys.argv
