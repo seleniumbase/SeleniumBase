@@ -75,12 +75,14 @@ def main(*args, **kwargs):
     files_to_process = ["README.md"]
     scanned_dir_list = []
     scanned_dir_list.append("help_docs")
+    scanned_dir_list.append("examples")
     scanned_dir_list.append("examples/example_logs")
     scanned_dir_list.append("examples/presenter")
     scanned_dir_list.append("examples/chart_maker")
     scanned_dir_list.append("examples/tour_examples")
     scanned_dir_list.append("examples/visual_testing")
     scanned_dir_list.append("integrations/google_cloud")
+    scanned_dir_list.append("seleniumbase/console_scripts")
     for scanned_dir in scanned_dir_list:
         for dir_ in os.listdir(ROOT_DIR / scanned_dir):
             files_to_process.append(os.path.join(scanned_dir, dir_))
@@ -122,6 +124,16 @@ def main(*args, **kwargs):
             if ' href="' in line and '.md"' in line:
                 changed = True
                 line = line.replace('.md"', '/"')
+            if "<!-- Hide TOC -->" in line:
+                changed = True
+                new_lines = []
+                new_lines.append("---")
+                new_lines.append("hide:")
+                new_lines.append("  - toc")
+                new_lines.append("---")
+                for line in new_lines:
+                    seleniumbase_lines.append(line)
+                continue
             if "<!-- View on GitHub -->" in line:
                 changed = True
                 line = (
