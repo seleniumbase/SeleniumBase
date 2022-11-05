@@ -1,3 +1,5 @@
+<!-- SeleniumBase Docs -->
+
 ## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Logs, The Dashboard, and Reports:
 
 <!-- YouTube View --><a href="https://www.youtube.com/watch?v=XpuJCjJhJwQ"><img src="http://img.youtube.com/vi/XpuJCjJhJwQ/0.jpg" title="SeleniumBase on YouTube" width="285" /></a>

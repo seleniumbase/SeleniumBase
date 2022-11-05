@@ -1,10 +1,20 @@
+<!-- SeleniumBase Docs -->
+
 ## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) JS Package Manager and Code Generators
 
 <h3>🕹️ SeleniumBase lets you load JavaScript packages from any CDN link into any website via Python.</h3>
 
 <b>🎨 The following SeleniumBase solutions utilize this feature:</b>
 
-🎦 (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/demo_mode.md">Demo Mode</a>) - 🚎 (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">Website Tours</a>) - 🎞️ (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/presenter/ReadMe.md">Presenter</a>) - 📊 (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/ReadMe.md">Chart Maker</a> / <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">Dashboard</a>) - 🛂 (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/dialog_boxes/ReadMe.md">Dialog Boxes</a> / <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">MasterQA</a>)
+🎦 (<a href="../demo_mode.md">Demo Mode</a>)
+
+🚎 (<a href="../../examples/tour_examples/ReadMe.md">Website Tours</a>)
+
+🎞️ (<a href="../../examples/presenter/ReadMe.md">Presentation Maker</a>)
+
+📊 (<a href="../../examples/chart_maker/ReadMe.md">Chart Maker</a> / <a href="../../examples/example_logs/ReadMe.md">Dashboard</a>)
+
+🛂 (<a href="../../examples/dialog_boxes/ReadMe.md">Dialog Boxes</a> / <a href="../../examples/master_qa/ReadMe.md">MasterQA</a>)
 
 --------
 

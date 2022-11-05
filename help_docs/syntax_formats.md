@@ -1,3 +1,5 @@
+<!-- SeleniumBase Docs -->
+
 <a id="syntax_formats"></a>
 
 ## [<img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="40">](https://github.com/seleniumbase/SeleniumBase/) The 23 Syntax Formats

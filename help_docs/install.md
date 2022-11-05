@@ -1,3 +1,5 @@
+<!-- SeleniumBase Docs -->
+
 ## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) SeleniumBase Installation
 
 <h4>If installing SeleniumBase directly from <a href="https://pypi.python.org/pypi/seleniumbase">PyPI</a>, (the Python Package Index), use:</h4>
@@ -6,7 +8,7 @@
 pip install seleniumbase
 ```
 
-To upgrade an existing ``seleniumbase`` install from PyPI:
+<h4>To upgrade an existing ``seleniumbase`` install from PyPI:</h4>
 
 ```bash
 pip install -U seleniumbase
@@ -28,7 +30,7 @@ cd SeleniumBase/
 pip install -e .
 ```
 
-To upgrade an existing ``seleniumbase`` install from GitHub:
+<h4>To upgrade an existing ``seleniumbase`` install from GitHub:</h4>
 
 ```bash
 git pull  # To pull the latest version

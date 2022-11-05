@@ -1,4 +1,6 @@
-<h3 align="left"><img src="https://seleniumbase.io/cdn/img/g_maps_tour.png" alt="SeleniumBase Tour" width="340" /></h3>
+<!-- SeleniumBase Docs -->
+
+<h3 align="left"><img src="https://seleniumbase.github.io/cdn/img/g_maps_tour.png" alt="SeleniumBase Tour" width="340" /></h3>
 
 ## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Interactive Product Tours 🚎
 
@@ -10,7 +12,7 @@
 
 <b>A tour demo: (with autoplay)</b>
 
-<img src="https://seleniumbase.io/cdn/gif/introjs_tour.gif" title="SeleniumBase Tour of Google"><br>
+<img src="https://seleniumbase.github.io/cdn/gif/introjs_tour.gif" title="SeleniumBase Tour of Google"><br>
 
 [SeleniumBase maps_introjs_tour.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/maps_introjs_tour.py)
 
@@ -21,7 +23,7 @@ pytest maps_introjs_tour.py --interval=1
 
 <b>Here's a longer version:</b>
 
-<img src="https://seleniumbase.io/cdn/gif/google_tour_4.gif" title="SeleniumBase Tour of Google"><br>
+<img src="https://seleniumbase.github.io/cdn/gif/google_tour_4.gif" title="SeleniumBase Tour of Google"><br>
 
 [SeleniumBase google_tour.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/google_tour.py)
 
@@ -142,6 +144,6 @@ OR
 
 --------
 
-<img src="https://seleniumbase.io/cdn/gif/driverjs_tour_2.gif" title="SeleniumBase Tour of Google"><br>
+<img src="https://seleniumbase.github.io/cdn/gif/driverjs_tour_2.gif" title="SeleniumBase Tour of Google"><br>
 
-<h3 align="left"><img src="https://seleniumbase.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" width="320" /></h3>
+<h3 align="left"><img src="https://seleniumbase.github.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" width="320" /></h3>

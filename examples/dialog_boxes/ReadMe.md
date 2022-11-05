@@ -1,15 +1,17 @@
-## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) 🛂 Dialog Boxes 🛂
+<!-- SeleniumBase Docs -->
+
+<h2><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32"> 🛂 Dialog Boxes 🛂</h2>
 
 SeleniumBase Dialog Boxes let your users provide input in the middle of automation scripts.
 
 * This feature utilizes the [jquery-confirm](https://craftpip.github.io/jquery-confirm/) library.
 * A Python API is used to call the JavaScript API.
 
-<img src="https://seleniumbase.io/cdn/img/emoji_sports_dialog.png" alt="SeleniumBase" width="400" />
+<img src="https://seleniumbase.github.io/cdn/img/emoji_sports_dialog.png" alt="SeleniumBase" width="400" />
 
 <h4>↕️ (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/dialog_boxes/dialog_box_tour.py">Example: dialog_box_tour.py</a>) ↕️</h4>
 
-<img src="https://seleniumbase.io/cdn/gif/sports_dialog.gif" alt="SeleniumBase" width="400" />
+<img src="https://seleniumbase.github.io/cdn/gif/sports_dialog.gif" alt="SeleniumBase" width="400" />
 
 <h4>Here's how to run that example:</h4>
 
@@ -175,4 +177,4 @@ self.activate_jquery_confirm()  # Automatic for jqc methods
 --------
 
 <h4>✅ 🛂 Automated/Manual Hybrid Mode (MasterQA)</h4>
-<p><b><a href="https://seleniumbase.io/seleniumbase/masterqa/ReadMe/">MasterQA</a></b> uses <b>SeleniumBase Dialog Boxes</b> to speed up manual testing by having automation perform all the browser actions while the manual tester handles validation. See <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/master_qa">the MasterQA GitHub page</a> for examples.</p>
+<p><b><a href="https://seleniumbase.github.io/seleniumbase/masterqa/ReadMe/">MasterQA</a></b> uses <b>SeleniumBase Dialog Boxes</b> to speed up manual testing by having automation perform all the browser actions while the manual tester handles validation. See <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/master_qa">the MasterQA GitHub page</a> for examples.</p>

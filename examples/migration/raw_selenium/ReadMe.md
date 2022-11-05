@@ -1,3 +1,5 @@
+<!-- SeleniumBase Docs -->
+
 ## ✅ Support for migrating from raw Selenium to SeleniumBase
 
 

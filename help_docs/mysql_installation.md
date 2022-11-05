@@ -1,3 +1,5 @@
+<!-- SeleniumBase Docs -->
+
 ## MySQL Installation Instructions
 
 

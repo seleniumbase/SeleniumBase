@@ -1,3 +1,5 @@
+<!-- SeleniumBase Docs -->
+
 ## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) SeleniumBase Case Plans 🗂️
 
 <img src="https://seleniumbase.io/cdn/img/cp/sb_case_plans.png" title="SeleniumBase Case Plans Summary" width="625">

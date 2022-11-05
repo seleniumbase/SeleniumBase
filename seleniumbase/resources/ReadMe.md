@@ -1,4 +1,6 @@
-## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Resource Files
+<!-- SeleniumBase Docs -->
+
+## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Resource Files
 
 SeleniumBase uses JavaScript libraries for bonus features such as the Website Tour Maker, Presentation Maker, Chart Maker, Demo Mode, HTML Inspector, and more. In general, SeleniumBase retrieves these resources via CDN link.
 

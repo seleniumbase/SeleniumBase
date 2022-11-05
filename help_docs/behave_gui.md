@@ -1,3 +1,5 @@
+<!-- SeleniumBase Docs -->
+
 ## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) SeleniumBase Behave GUI / Commander 🐝🎖️
 
 🐝🎖️ The <b>SeleniumBase Behave GUI</b> lets you run <code>behave</code> scripts from a Desktop GUI.<br>

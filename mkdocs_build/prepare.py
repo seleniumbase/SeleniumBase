@@ -124,7 +124,7 @@ def main(*args, **kwargs):
             if ' href="' in line and '.md"' in line:
                 changed = True
                 line = line.replace('.md"', '/"')
-            if "<!-- Hide TOC -->" in line:
+            if "<!-- SeleniumBase Docs -->" in line:
                 changed = True
                 new_lines = []
                 new_lines.append("---")

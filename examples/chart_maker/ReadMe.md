@@ -1,3 +1,5 @@
+<!-- SeleniumBase Docs -->
+
 ## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) 📊 ChartMaker 📶
 
 <p>SeleniumBase ChartMaker lets you use Python to generate HTML charts.</p>

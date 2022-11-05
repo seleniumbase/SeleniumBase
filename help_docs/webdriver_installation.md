@@ -1,3 +1,5 @@
+<!-- SeleniumBase Docs -->
+
 ## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Installing webdrivers
 
 To run web automation, you'll need webdrivers for each browser you plan on using.  With SeleniumBase, drivers are downloaded automatically as needed into the SeleniumBase ``drivers`` folder.
@@ -19,9 +21,9 @@ sbase get chromedriver latest
 * You can also get a specific version of chromedriver for a specific version of Chrome:
 
 ```bash
-sbase get chromedriver 105.0.5195.52
+sbase get chromedriver 107.0.5304.62
 
-sbase get chromedriver 105
+sbase get chromedriver 107
 ```
 
 * On Linux, you can run the following two commands (once you've installed SeleniumBase) to automatically upgrade your Chromedriver to match your version of Chrome: (``wget`` downloads the file, and ``pytest`` runs it.)
@@ -79,8 +81,8 @@ chmod +x /usr/local/bin/chromedriver
 ```
 
 ```bash
-wget https://github.com/mozilla/geckodriver/releases/download/v0.31.0/geckodriver-v0.31.0-linux64.tar.gz
-tar xvfz geckodriver-v0.31.0-linux64.tar.gz
+wget https://github.com/mozilla/geckodriver/releases/download/v0.32.0/geckodriver-v0.32.0-linux64.tar.gz
+tar xvfz geckodriver-v0.32.0-linux64.tar.gz
 mv geckodriver /usr/local/bin/
 chmod +x /usr/local/bin/geckodriver
 ```

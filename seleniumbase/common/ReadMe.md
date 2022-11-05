@@ -1,23 +1,24 @@
+<!-- SeleniumBase Docs -->
+
 ## Using [seleniumbase/common](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/common) methods.
 
 ### Part 1: Decorators - (from [decorators.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/common/decorators.py))
 
 #### Use these Python decorators with your test methods as needed:
 
-* @print_runtime(description=None, limit=None)
+* ``@print_runtime(description=None, limit=None)``
 
-* @runtime_limit(limit, description=None)
+* ``@runtime_limit(limit, description=None)``
 
-* @retry_on_exception(tries=6, delay=1, backoff=2, max_delay=32)
+* ``@retry_on_exception(tries=6, delay=1, backoff=2, max_delay=32)``
 
-* @rate_limited(max_per_second)
+* ``@rate_limited(max_per_second)``
 
 Example demonstrating a rate-limited printing functionality:
 
 ```python
 import unittest
 from seleniumbase import decorators
-
 
 class MyTestClass(unittest.TestCase):
 
