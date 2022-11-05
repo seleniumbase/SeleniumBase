@@ -425,6 +425,18 @@ class MD:
     md["assert_link_text"][8] = "подтвердить_ссылку"
     md["assert_link_text"][9] = "verificar_texto_del_enlace"
 
+    md["assert_text_not_visible"] = ["*"] * num_langs
+    md["assert_text_not_visible"][0] = "assert_text_not_visible"
+    md["assert_text_not_visible"][1] = "断言文本不可见"
+    md["assert_text_not_visible"][2] = "controleren_tekst_niet_zichtbaar"
+    md["assert_text_not_visible"][3] = "vérifier_texte_pas_affiché"
+    md["assert_text_not_visible"][4] = "verificare_testo_non_visto"
+    md["assert_text_not_visible"][5] = "テキが表示されていないことを確認します"
+    md["assert_text_not_visible"][6] = "텍스트_보이지_않는지_확인"
+    md["assert_text_not_visible"][7] = "verificar_texto_não_visível"
+    md["assert_text_not_visible"][8] = "подтвердить_текст_не_виден"
+    md["assert_text_not_visible"][9] = "verificar_texto_no_se_muestra"
+
     md["assert_element"] = ["*"] * num_langs
     md["assert_element"][0] = "assert_element"
     md["assert_element"][1] = "断言元素"
