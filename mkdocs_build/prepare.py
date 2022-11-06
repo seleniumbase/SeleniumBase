@@ -76,6 +76,7 @@ def main(*args, **kwargs):
     scanned_dir_list = []
     scanned_dir_list.append("help_docs")
     scanned_dir_list.append("examples")
+    scanned_dir_list.append("examples/behave_bdd")
     scanned_dir_list.append("examples/example_logs")
     scanned_dir_list.append("examples/presenter")
     scanned_dir_list.append("examples/chart_maker")

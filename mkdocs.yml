@@ -98,7 +98,7 @@ nav:
   - 🔴 Recorder Mode: help_docs/recorder_mode.md
   - 📗 API Reference: help_docs/method_summary.md
   - Python Setup / Install:
-    - 🐍 Get Python, pip, & git: help_docs/install_python_pip_git.md
+    - 🐉 Get Python, pip, & git: help_docs/install_python_pip_git.md
     - ⚙️ Virtualenv Instructions: help_docs/virtualenv_instructions.md
     - 🏄 Install SeleniumBase: help_docs/install.md
     - 👁️ How it Works: help_docs/how_it_works.md
@@ -114,7 +114,7 @@ nav:
     - 🤖 GitHub CI: integrations/github/workflows/ReadMe.md
     - 🗂️ Case Plans: help_docs/case_plans.md
     - 🖼️ Visual Testing: examples/visual_testing/ReadMe.md
-    - 🔎 The HTML Inspector: help_docs/html_inspector.md
+    - 🕵️ The HTML Inspector: help_docs/html_inspector.md
     - 🌐 Selenium Grid: seleniumbase/utilities/selenium_grid/ReadMe.md
     - 📶 HighCharts: examples/chart_maker/ReadMe.md
     - 🛂 MasterQA: examples/master_qa/ReadMe.md
@@ -123,55 +123,55 @@ nav:
     - 🤖 Jenkins on Google Cloud: integrations/google_cloud/ReadMe.md
     - 🤖 NodeJS Test Runner: https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js
   - Presentations:
-    - Presenter Demo: https://seleniumbase.io/other/presenter.html
-    - Core Presentation: https://seleniumbase.io/other/core_presentation.html
-    - Chart Maker Demo: https://seleniumbase.io/other/chart_presentation.html
-    - Python Virtual Envs: https://seleniumbase.io/other/py_virtual_envs.html
+    - ✅ Core Presentation: https://seleniumbase.io/other/core_presentation.html
+    - 🎞️ Presenter Demo: https://seleniumbase.io/other/presenter.html
+    - 📊 Chart Maker Demo: https://seleniumbase.io/other/chart_presentation.html
+    - ⚙️ Python Virtual Envs: https://seleniumbase.io/other/py_virtual_envs.html
   - Demo Pages:
-    - Demo Page (Test Page): https://seleniumbase.io/demo_page
-    - MFA Login (Test App): https://seleniumbase.io/realworld/login
-    - TinyMCE (Test Page): https://seleniumbase.io/tinymce/
-    - Calculator (Test App): https://seleniumbase.io/apps/calculator
-    - Error Page (Test Page): https://seleniumbase.io/error_page/
-    - Drag-&-Drop (Test Page): https://seleniumbase.io/other/drag_and_drop
-    - Device Farm (Virtual): https://seleniumbase.io/devices/
-    - SeleniumBase in iframe: https://seleniumbase.io/w3schools/sbase
-    - Page with broken links: https://seleniumbase.io/other/broken_page
-    - W3Schools Playground: https://seleniumbase.io/w3schools/
-    - W3Schools iframes: https://seleniumbase.io/w3schools/iframes
-    - W3Schools file upload: https://seleniumbase.io/w3schools/file_upload
-    - W3Schools doubleclick: https://seleniumbase.io/w3schools/double_click
-    - W3Schools drag & drop: https://seleniumbase.io/w3schools/drag_drop
-    - W3Schools checkboxes: https://seleniumbase.io/w3schools/checkboxes
-    - W3Schools radio buttons: https://seleniumbase.io/w3schools/radio_buttons
-    - Canvas Test Page One: https://seleniumbase.io/canvas/
-    - Canvas Test Page Two: https://seleniumbase.io/other/canvas
-    - Shadow DOM/Root Page: https://seleniumbase.io/other/shadow_dom
+    - 📑 Demo Page (Test Page): https://seleniumbase.io/demo_page
+    - 🔑 MFA Login (Test App): https://seleniumbase.io/realworld/login
+    - 📝 TinyMCE (Test Page): https://seleniumbase.io/tinymce/
+    - 🔢 Calculator (Test App): https://seleniumbase.io/apps/calculator
+    - 📱 Device Farm (Virtual): https://seleniumbase.io/devices/
+    - ⚠️ Error Page (Test Page): https://seleniumbase.io/error_page/
+    - ⚠️ Page with broken links: https://seleniumbase.io/other/broken_page
+    - ↔️ Drag & Drop (Test Page): https://seleniumbase.io/other/drag_and_drop
+    - 🖼️ Canvas Test Page One: https://seleniumbase.io/canvas/
+    - 🖼️ Canvas Test Page Two: https://seleniumbase.io/other/canvas
+    - 👤 Shadow DOM/Root Page: https://seleniumbase.io/other/shadow_dom
+    - 🖥️ SeleniumBase in iframe: https://seleniumbase.io/w3schools/sbase
+    - 🖥️ W3Schools Playground: https://seleniumbase.io/w3schools/
+    - 🖥️ W3Schools iframes: https://seleniumbase.io/w3schools/iframes
+    - 🗃️ W3Schools file upload: https://seleniumbase.io/w3schools/file_upload
+    - 🖱️ W3Schools doubleclick: https://seleniumbase.io/w3schools/double_click
+    - ↔️ W3Schools drag & drop: https://seleniumbase.io/w3schools/drag_drop
+    - ☑️ W3Schools checkboxes: https://seleniumbase.io/w3schools/checkboxes
+    - 🔘 W3Schools radio buttons: https://seleniumbase.io/w3schools/radio_buttons
   - Additional Help Docs:
-    - Table of Contents: help_docs/ReadMe.md
-    - Decorators / Security: seleniumbase/common/ReadMe.md
-    - Desired Capabilities: help_docs/desired_capabilities.md
-    - Docker Start Guide: integrations/docker/ReadMe.md
-    - Using Safari Driver: help_docs/using_safari_driver.md
-    - Shadow DOM Support: help_docs/shadow_dom.md
-    - macOS Hidden Files: help_docs/hidden_files_info.md
-    - MySQL Instructions: help_docs/mysql_installation.md
-    - Master QA Hybrid Mode: seleniumbase/masterqa/ReadMe.md
-    - Case Plans (examples): examples/case_summary.md
-    - Useful grep commands: help_docs/useful_grep_commands.md
-    - WebDriver Installation: help_docs/webdriver_installation.md
-    - Verifying WebDriver: help_docs/verify_webdriver.md
+    - 📑 Table of Contents: help_docs/ReadMe.md
+    - 🔐 Decorators / Security: seleniumbase/common/ReadMe.md
+    - 🐳 Docker Start Guide: integrations/docker/ReadMe.md
+    - 🗂️ Case Plans (examples): examples/case_summary.md
+    - 🧭 Using Safari Driver: help_docs/using_safari_driver.md
+    - 👤 Shadow DOM Support: help_docs/shadow_dom.md
+    - 👥 macOS Hidden Files: help_docs/hidden_files_info.md
+    - 🗄️ MySQL Instructions: help_docs/mysql_installation.md
+    - 🛂 Master QA Hybrid Mode: seleniumbase/masterqa/ReadMe.md
+    - 📃 Desired Capabilities: help_docs/desired_capabilities.md
+    - 📜 Useful grep commands: help_docs/useful_grep_commands.md
+    - ⚙️ WebDriver Installation: help_docs/webdriver_installation.md
+    - ✔️ Verifying WebDriver: help_docs/verify_webdriver.md
   - Behave-BDD Integration:
-    - Behave-BDD ReadMe: examples/behave_bdd/ReadMe.md
-    - Behave-BDD GUI App: help_docs/behave_gui.md
+    - 🐝 Behave-BDD ReadMe: examples/behave_bdd/ReadMe.md
+    - 🐝 Behave-BDD GUI App: help_docs/behave_gui.md
   - Languages:
-    - Translations: help_docs/translations.md
-    - Chinese Docs: help_docs/chinese.md
-    - Locale Codes: help_docs/locale_codes.md
+    - 🌏 Translations: help_docs/translations.md
+    - 🐲 Chinese Docs: help_docs/chinese.md
+    - 🗾 Locale Codes: help_docs/locale_codes.md
   - Other:
-    - YouTube Link: https://www.youtube.com/playlist?list=PLp9uKicxkBc5UIlGi2BuE3aWC7JyXpD3m
-    - Case Studies: help_docs/happy_customers.md
-    - Thank You: help_docs/thank_you.md
+    - 📺 YouTube Link: https://www.youtube.com/playlist?list=PLp9uKicxkBc5UIlGi2BuE3aWC7JyXpD3m
+    - 🔎 Case Studies: help_docs/happy_customers.md
+    - 🙏 Thank You: help_docs/thank_you.md
 # Google Analytics
 extra:
   analytics:
