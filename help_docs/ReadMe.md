@@ -15,10 +15,10 @@
 <a href="https://seleniumbase.io/help_docs/syntax_formats/">🔡 Syntax Formats</a> |
 <a href="https://seleniumbase.io/integrations/github/workflows/ReadMe/">🤖 CI/CD</a>
 <br />
-<a href="https://seleniumbase.io/help_docs/method_summary/">📗 Methods / APIs</a> |
+<a href="https://seleniumbase.io/help_docs/method_summary/">📘 Methods / APIs</a> |
 <a href="https://seleniumbase.io/examples/tour_examples/ReadMe/">🚎 Tours</a>
 <br />
-<a href="https://seleniumbase.io/seleniumbase/console_scripts/ReadMe/">🔮 Console Scripts</a> |
+<a href="https://seleniumbase.io/seleniumbase/console_scripts/ReadMe/">🌠 Console Scripts</a> |
 <a href="https://seleniumbase.io/seleniumbase/utilities/selenium_grid/ReadMe/">🌐 Grid</a>
 <br />
 <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/boilerplates">♻️ Boilerplates</a> |
@@ -27,7 +27,7 @@
 <a href="https://seleniumbase.io/help_docs/js_package_manager/">🕹️ JS Manager</a> |
 <a href="https://seleniumbase.io/examples/visual_testing/ReadMe/">🖼️ Visual Testing</a>
 <br />
-<a href="https://seleniumbase.io/help_docs/recorder_mode/">🔴 Recorder</a> |
+<a href="https://seleniumbase.io/help_docs/recorder_mode/">⏺️ Recorder</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js">🚉 Node GUI</a>
 <br />
 <a href="https://seleniumbase.io/help_docs/translations/">🌏 Translator</a> |

@@ -96,7 +96,7 @@ nav:
   - 🔮 Console Scripts: seleniumbase/console_scripts/ReadMe.md
   - 🔡 Syntax Formats: help_docs/syntax_formats.md
   - 🔴 Recorder Mode: help_docs/recorder_mode.md
-  - 📗 API Reference: help_docs/method_summary.md
+  - 📘 API Reference: help_docs/method_summary.md
   - Python Setup / Install:
     - 🐉 Get Python, pip, & git: help_docs/install_python_pip_git.md
     - ⚙️ Virtualenv Instructions: help_docs/virtualenv_instructions.md
@@ -143,7 +143,7 @@ nav:
     - 🖥️ W3Schools Playground: https://seleniumbase.io/w3schools/
     - 🖥️ W3Schools iframes: https://seleniumbase.io/w3schools/iframes
     - 🗃️ W3Schools file upload: https://seleniumbase.io/w3schools/file_upload
-    - 🖱️ W3Schools doubleclick: https://seleniumbase.io/w3schools/double_click
+    - 🖲️ W3Schools doubleclick: https://seleniumbase.io/w3schools/double_click
     - ↔️ W3Schools drag & drop: https://seleniumbase.io/w3schools/drag_drop
     - ☑️ W3Schools checkboxes: https://seleniumbase.io/w3schools/checkboxes
     - 🔘 W3Schools radio buttons: https://seleniumbase.io/w3schools/radio_buttons
@@ -170,7 +170,7 @@ nav:
     - 🗾 Locale Codes: help_docs/locale_codes.md
   - Other:
     - 📺 YouTube Link: https://www.youtube.com/playlist?list=PLp9uKicxkBc5UIlGi2BuE3aWC7JyXpD3m
-    - 🔎 Case Studies: help_docs/happy_customers.md
+    - 📋 Case Studies: help_docs/happy_customers.md
     - 🙏 Thank You: help_docs/thank_you.md
 # Google Analytics
 extra:

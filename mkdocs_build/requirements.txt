@@ -8,7 +8,7 @@ livereload==2.6.3
 joblib==1.2.0
 Markdown==3.3.7
 MarkupSafe==2.1.1
-keyring==23.10.0
+keyring==23.11.0
 pkginfo==1.8.3
 Jinja2==3.1.2
 click==8.1.3

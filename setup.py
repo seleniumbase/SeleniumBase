@@ -72,7 +72,6 @@ setup(
         "Changelog": "https://github.com/seleniumbase/SeleniumBase/releases",
         "Download": "https://pypi.org/project/seleniumbase/#files",
         "Gitter": "https://gitter.im/seleniumbase/SeleniumBase",
-        "Slack": "https://app.slack.com/client/T0ABCRTNX/C01SM888REZ",
         "Blog": "https://seleniumbase.com/",
         "PyPI": "https://pypi.org/project/seleniumbase/",
         "Source": "https://github.com/seleniumbase/SeleniumBase",
