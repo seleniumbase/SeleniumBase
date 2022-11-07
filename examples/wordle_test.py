@@ -1,4 +1,4 @@
-"""Solve Wordle with SeleniumBase. (No longer uses Shadow-DOM)"""
+"""Solve Wordle with SeleniumBase."""
 import ast
 import random
 import requests
@@ -50,14 +50,14 @@ class WordleTests(BaseCase):
                 self.word_list = new_word_list
                 new_word_list = []
 
-    def skip_if_incorrect_env(self):
+    def skip_if_headless_mode(self):
         if self.headless:
-            message = "This test doesn't run in headless mode!"
+            message = "Skip this test in headless mode!"
             print(message)
             self.skip(message)
 
     def test_wordle(self):
-        self.skip_if_incorrect_env()
+        self.skip_if_headless_mode()
         self.open("https://www.nytimes.com/games/wordle/index.html")
         self.click_if_visible('svg[data-testid="icon-close"]', timeout=2)
         self.remove_elements("div.place-ad")
