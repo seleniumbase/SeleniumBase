@@ -1,6 +1,6 @@
 <!-- SeleniumBase Docs -->
 
-<h2><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32"> 🛂 Dialog Boxes 🛂</h2>
+<h2><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32"> Dialog Boxes 🛂</h2>
 
 SeleniumBase Dialog Boxes let your users provide input in the middle of automation scripts.
 

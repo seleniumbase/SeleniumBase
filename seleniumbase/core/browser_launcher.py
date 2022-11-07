@@ -603,7 +603,7 @@ def _set_chrome_options(
             or proxy_string
         ):
             chrome_options.add_argument("--ignore-certificate-errors")
-        if not enable_ws or not is_using_uc(undetectable, browser_name):
+        if not enable_ws:
             chrome_options.add_argument("--disable-web-security")
         if "linux" in PLATFORM or not is_using_uc(undetectable, browser_name):
             chrome_options.add_argument("--no-sandbox")

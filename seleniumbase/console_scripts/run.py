@@ -38,6 +38,7 @@ sbase grid-node start --hub=127.0.0.1
 
 import colorama
 import sys
+import time
 from seleniumbase.fixtures import constants
 
 colorama.init(autoreset=True)
@@ -64,7 +65,6 @@ def show_usage():
 
 
 def show_basic_usage():
-    import time
     from seleniumbase.console_scripts import logo_helper
 
     seleniumbase_logo = logo_helper.get_seleniumbase_logo()
@@ -945,12 +945,12 @@ def main():
 
     if command == "get" or command == "install":
         if len(command_args) >= 1:
-            import time
             from seleniumbase.console_scripts import sb_install
 
             need_retry = False
             need_another_retry = False
-            retry_msg = "Unable to download driver! Retrying in 3 seconds..."
+            retry_msg_1 = "* Unable to download driver! Retrying in 3s..."
+            retry_msg_2 = "** Unable to download driver! Retrying in 5s..."
             try:
                 sb_install.main()
             except Exception as e:
@@ -958,7 +958,7 @@ def main():
                 if invalid_run_cmd in str(e):
                     raise
                 print()
-                print(retry_msg)
+                print(retry_msg_1)
                 time.sleep(3)
                 print()
                 need_retry = True
@@ -966,8 +966,8 @@ def main():
                 try:
                     sb_install.main()
                 except Exception:
-                    print(retry_msg)
-                    time.sleep(3)
+                    print(retry_msg_2)
+                    time.sleep(5)
                     print()
                     need_another_retry = True
             if need_another_retry:
