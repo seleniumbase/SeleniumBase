@@ -125,7 +125,7 @@ setup(
     install_requires=[
         'pip>=20.3.4;python_version<"3.6"',
         'pip>=21.3.1;python_version>="3.6" and python_version<"3.7"',
-        'pip>=22.3;python_version>="3.7"',
+        'pip>=22.3.1;python_version>="3.7"',
         'packaging>=20.9;python_version<"3.6"',
         'packaging>=21.3;python_version>="3.6"',
         'setuptools>=44.1.1;python_version<"3.6"',
@@ -135,7 +135,7 @@ setup(
         'tomli>=2.0.1;python_version>="3.7"',
         "tqdm>=4.64.1",
         'wheel>=0.37.1;python_version<"3.7"',
-        'wheel>=0.38.1;python_version>="3.7"',
+        'wheel>=0.38.2;python_version>="3.7"',
         'attrs>=21.4.0;python_version<"3.6"',
         'attrs>=22.1.0;python_version>="3.6"',
         'PyYAML>=6.0;python_version>="3.6"',
@@ -148,7 +148,7 @@ setup(
         'filelock>=3.8.0;python_version>="3.7"',
         'platformdirs>=2.0.2;python_version<"3.6"',
         'platformdirs>=2.4.0;python_version>="3.6" and python_version<"3.7"',
-        'platformdirs>=2.5.2;python_version>="3.7"',
+        'platformdirs>=2.5.3;python_version>="3.7"',
         'pyparsing>=2.4.7;python_version<"3.6"',
         'pyparsing>=3.0.7;python_version>="3.6" and python_version<"3.7"',
         'pyparsing>=3.0.9;python_version>="3.7"',
@@ -278,7 +278,7 @@ setup(
         "pdfminer": [
             'pdfminer.six==20191110;python_version<"3.6"',
             'pdfminer.six==20211012;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
-            'pdfminer.six==20220524;python_version>="3.7"',
+            'pdfminer.six==20221105;python_version>="3.7"',
         ],
         # pip install -e .[pillow]
         "pillow": [
