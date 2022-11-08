@@ -91,11 +91,11 @@ nav:
   - 🏰 List of Features: help_docs/features_list.md
   - 📚 Running Example Tests: examples/ReadMe.md
   - 🎛️ Command Line Options: help_docs/customizing_test_runs.md
+  - 🌠 Console Scripts: seleniumbase/console_scripts/ReadMe.md
   - 📊 Dashboard / Reports: examples/example_logs/ReadMe.md
-  - 🎖️ GUI / Commander: help_docs/commander.md
-  - 🔮 Console Scripts: seleniumbase/console_scripts/ReadMe.md
   - 🔡 Syntax Formats: help_docs/syntax_formats.md
-  - 🔴 Recorder Mode: help_docs/recorder_mode.md
+  - 🎖️ GUI / Commander: help_docs/commander.md
+  - ⏺️ Recorder Mode: help_docs/recorder_mode.md
   - 📘 API Reference: help_docs/method_summary.md
   - Python Setup / Install:
     - 🐉 Get Python, pip, & git: help_docs/install_python_pip_git.md
