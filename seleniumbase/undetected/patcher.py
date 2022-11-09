@@ -17,17 +17,17 @@ class Patcher(object):
     url_repo = "https://chromedriver.storage.googleapis.com"
     zip_name = "chromedriver_%s.zip"
     exe_name = "chromedriver%s"
-    platform = sys.platform
+    sys_plat = sys.platform
     # downloads_folder = "~/.undetected_drivers"
-    if platform.endswith("win32"):
+    if sys_plat.endswith("win32"):
         zip_name %= "win32"
         exe_name %= ".exe"
         # downloads_folder = "~/appdata/roaming/undetected_drivers"
-    if platform.endswith("linux"):
+    if sys_plat.endswith("linux"):
         zip_name %= "linux64"
         exe_name %= ""
         # downloads_folder = "~/.local/share/undetected_drivers"
-    if platform.endswith("darwin"):
+    if sys_plat.endswith("darwin"):
         zip_name %= "mac64"
         exe_name %= ""
         # downloads_folder = "~/Library/Application Support/undetected_drivers"

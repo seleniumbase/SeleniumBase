@@ -25,7 +25,7 @@ __all__ = (
 
 logger = logging.getLogger("uc")
 logger.setLevel(logging.getLogger().getEffectiveLevel())
-PLATFORM = sys.platform
+sys_plat = sys.platform
 
 
 class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
@@ -499,7 +499,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
 
     def __del__(self):
         try:
-            if "win32" in PLATFORM:
+            if "win32" in sys_plat:
                 self.stop_client()
                 self.command_executor.close()
             else:
@@ -536,7 +536,7 @@ def find_chrome_executable():
                 "google-chrome-stable",
             ):
                 candidates.add(os.sep.join((item, subitem)))
-        if "darwin" in sys.platform:
+        if "darwin" in sys_plat:
             gc = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
             candidates.update(
                 [
