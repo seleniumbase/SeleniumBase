@@ -117,7 +117,7 @@ def requests_get_with_retry(url):
     return response
 
 
-def main(override=None):
+def main(override=None, intel_for_uc=None):
     if override:
         if override == "chromedriver":
             sys.argv = ["seleniumbase", "get", "chromedriver"]
@@ -229,7 +229,10 @@ def main(override=None):
             else:
                 invalid_run_command()
         if "darwin" in sys_plat:
-            file_name = "chromedriver_mac64.zip"
+            if "arm" in platform.processor().lower() and not intel_for_uc:
+                file_name = "chromedriver_mac_arm64.zip"
+            else:
+                file_name = "chromedriver_mac64.zip"
         elif "linux" in sys_plat:
             file_name = "chromedriver_linux64.zip"
         elif "win32" in sys_plat or "win64" in sys_plat or "x64" in sys_plat:
@@ -393,7 +396,10 @@ def main(override=None):
             file_name = "edgedriver_win32.zip"
             suffix = "WINDOWS"
         elif "darwin" in sys_plat:
-            file_name = "edgedriver_mac64.zip"
+            if "arm" in platform.processor().lower():
+                file_name = "edgedriver_mac64_m1.zip"
+            else:
+                file_name = "edgedriver_mac64.zip"
             suffix = "MACOS"
         elif "linux" in sys_plat:
             file_name = "edgedriver_linux64.zip"
@@ -631,7 +637,23 @@ def main(override=None):
                     if os.path.exists(new_file):
                         os.remove(new_file)  # Technically the old file now
             print("Extracting %s from %s ..." % (contents, file_name))
-            zip_ref.extractall(downloads_folder)
+            if (
+                intel_for_uc
+                and "darwin" in sys_plat
+                and "arm" in platform.processor().lower()
+            ):
+                f_name = "uc_driver"
+                new_file = os.path.join(downloads_folder, f_name)
+                if os.path.exists(new_file):
+                    os.remove(new_file)
+                zipinfos = zip_ref.infolist()
+                for zipinfo in zipinfos:
+                    if zipinfo.filename == "chromedriver":
+                        zipinfo.filename = "uc_driver"
+                        zip_ref.extract(zipinfo, downloads_folder)
+                contents = zip_ref.namelist()
+            else:
+                zip_ref.extractall(downloads_folder)
             zip_ref.close()
             os.remove(zip_file_path)
             print("%sUnzip Complete!%s\n" % (c2, cr))

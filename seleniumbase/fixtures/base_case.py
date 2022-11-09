@@ -166,6 +166,8 @@ class BaseCase(unittest.TestCase):
         """Navigates the current browser window to the specified page."""
         self.__check_scope()
         self.__check_browser()
+        if self.__needs_minimum_wait():
+            time.sleep(0.01)
         pre_action_url = None
         try:
             pre_action_url = self.driver.current_url
@@ -238,6 +240,8 @@ class BaseCase(unittest.TestCase):
             time.sleep(0.1)  # Make sure load happens
         if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
             self.wait_for_ready_state_complete()
+        if self.__needs_minimum_wait():
+            time.sleep(0.03)  # Force a minimum wait, even if skipping waits.
         self.__demo_mode_pause_if_active()
 
     def get(self, url):
@@ -461,12 +465,16 @@ class BaseCase(unittest.TestCase):
                 self.wait_for_ready_state_complete()
             except Exception:
                 pass
+            if self.__needs_minimum_wait():
+                time.sleep(0.02)
         else:
             # A smaller subset of self.wait_for_ready_state_complete()
             try:
                 self.wait_for_angularjs(timeout=settings.MINI_TIMEOUT)
             except Exception:
                 pass
+            if self.__needs_minimum_wait():
+                time.sleep(0.01)
             try:
                 if self.driver.current_url != pre_action_url:
                     self.__ad_block_as_needed()
@@ -476,6 +484,8 @@ class BaseCase(unittest.TestCase):
                     self.wait_for_ready_state_complete()
                 except Exception:
                     pass
+                if self.__needs_minimum_wait():
+                    time.sleep(0.02)
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self.__demo_mode_pause_if_active()
@@ -923,6 +933,8 @@ class BaseCase(unittest.TestCase):
 
     def get_page_source(self):
         self.wait_for_ready_state_complete()
+        if self.__needs_minimum_wait:
+            time.sleep(0.02)
         return self.driver.page_source
 
     def get_page_title(self):
@@ -2106,7 +2118,7 @@ class BaseCase(unittest.TestCase):
         element is in a single-nested iframe) and returns the iframe name.
         If element is not in an iframe, returns None, and nothing happens.
         May not work if multiple iframes are nested within each other."""
-        self.__check_scope()
+        self.wait_for_ready_state_complete()
         selector, by = self.__recalculate_selector(selector, by)
         if self.is_element_present(selector, by=by):
             return None
@@ -2890,7 +2902,11 @@ class BaseCase(unittest.TestCase):
                         action = ["sw_fr", frame, origin, time_stamp]
                         self.__extra_actions.append(action)
                         return
+        self.wait_for_ready_state_complete()
+        if self.__needs_minimum_wait():
+            time.sleep(0.02)
         page_actions.switch_to_frame(self.driver, frame, timeout)
+        self.wait_for_ready_state_complete()
 
     def switch_to_default_content(self):
         """Brings driver control outside the current iframe.
@@ -3701,6 +3717,16 @@ class BaseCase(unittest.TestCase):
             if cookies_file_path.endswith(".txt"):
                 os.remove(cookies_file_path)
 
+    def __needs_minimum_wait(self):
+        if (
+            self.page_load_strategy == "none"
+            and hasattr(settings, "SKIP_JS_WAITS")
+            and settings.SKIP_JS_WAITS
+        ):
+            return True
+        else:
+            return False
+
     def __ad_block_as_needed(self):
         """This is an internal method for handling ad-blocking.
         Use "pytest --ad-block" to enable this during tests.
@@ -3730,6 +3756,13 @@ class BaseCase(unittest.TestCase):
             self.assert_no_js_errors()
         self.__ad_block_as_needed()
         self.__disable_beforeunload_as_needed()
+        if (
+            self.undetectable
+            and self.page_load_strategy == "none"
+            and hasattr(settings, "SKIP_JS_WAITS")
+            and settings.SKIP_JS_WAITS
+        ):
+            time.sleep(0.03)
         return True
 
     def wait_for_angularjs(self, timeout=None, **kwargs):
@@ -5666,13 +5699,14 @@ class BaseCase(unittest.TestCase):
         Page links include those obtained from:
         "a"->"href", "img"->"src", "link"->"href", and "script"->"src".
         """
-        self.__check_scope()
-        if settings.SKIP_JS_WAITS and self.page_load_strategy == "none":
-            time.sleep(0.16)
+        self.wait_for_ready_state_complete()
         try:
+            self.wait_for_element_present("body", timeout=1.5)
             self.wait_for_element_visible("body", timeout=1.5)
         except Exception:
             pass
+        if self.__needs_minimum_wait():
+            time.sleep(0.25)
         soup = self.get_beautiful_soup(self.get_page_source())
         page_url = self.get_current_url()
         links = page_utils._get_unique_links(page_url, soup)
@@ -11520,6 +11554,8 @@ class BaseCase(unittest.TestCase):
             self.check_window(name="wikipedia_page", level=3)
         """
         self.wait_for_ready_state_complete()
+        if self.__needs_minimum_wait():
+            time.sleep(0.02)  # Force a minimum wait, even if skipping waits.
         try:
             self.wait_for_element_visible(
                 "body", timeout=settings.MINI_TIMEOUT
@@ -12209,6 +12245,9 @@ class BaseCase(unittest.TestCase):
     ):
         from selenium.webdriver.common.action_chains import ActionChains
 
+        self.wait_for_ready_state_complete()
+        if self.__needs_minimum_wait():
+            time.sleep(0.02)  # Force a minimum wait, even if skipping waits.
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
