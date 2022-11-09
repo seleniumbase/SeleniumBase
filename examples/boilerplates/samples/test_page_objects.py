@@ -15,6 +15,7 @@ class GooglePage:
 
 class SeleniumBaseIOPage:
     def do_search_and_click(self, sb, search_term):
+        sb.sleep(0.05)
         sb.type('form[name="search"] input', search_term)
         sb.click("li.md-search-result__item h1:contains(%s)" % search_term)
 

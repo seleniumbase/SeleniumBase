@@ -7,6 +7,8 @@ class SwagLabsTests(BaseCase):
         """Login to Swag Labs and verify success."""
         url = "https://www.saucedemo.com"
         self.open(url)
+        self.wait_for_element("div.login_logo")
+        self.wait_for_element("div.bot_column")
         if username not in self.get_text("#login_credentials"):
             self.fail("Invalid user for login: %s" % username)
         self.type("#user-name", username)

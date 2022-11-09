@@ -6,11 +6,13 @@ class VisualLayoutTests(BaseCase):
         self.open("https://applitools.com/helloworld?diff1")
         self.wait_for_element('a[href="?diff1"]')
         print('\nCreating baseline in "visual_baseline" folder.')
+        self.sleep(0.05)
         self.check_window(name="helloworld", baseline=True)
         # Click a button that changes the text of an element
         # (Text changes do not impact visual comparisons)
+        self.sleep(0.05)
         self.click('a[href="?diff1"]')
-        self.wait_for_ready_state_complete()
+        self.sleep(0.05)
         # Verify html tags match the baseline
         self.check_window(name="helloworld", level=1)
         # Verify html tags and attribute names match the baseline
