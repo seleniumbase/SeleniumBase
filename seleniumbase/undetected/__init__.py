@@ -56,6 +56,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         enable_cdp_events=False,
         log_level=0,
         headless=False,
+        patch_driver=True,
         version_main=None,
         patcher_force_close=False,
         suppress_welcome=True,
@@ -98,9 +99,11 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         log_level: (default: adapts to python global log level)
 
         headless: (default: False)
-            (Can also be specified in the options instance.)
-            Specify whether you want to use the browser in headless mode.
+            Use headless mode. (Can also be specified with ChromeOptions.)
             Warning: this lowers undetectability and is not fully supported.
+
+        patch_driver: (default: True)
+            Patches uc_driver to be undetectable if not already patched.
 
         version_main: (default: None)
             Overrides the browser version for older versions of Chrome.
@@ -119,13 +122,15 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
             Subprocess chromedriver/python: Don't make Chrome a parent process.
         """
         self.debug = debug
-        patcher = Patcher(
-            executable_path=driver_executable_path,
-            force=patcher_force_close,
-            version_main=version_main,
-        )
-        patcher.auto()
-        self.patcher = patcher
+        self.patcher = None
+        if patch_driver:
+            patcher = Patcher(
+                executable_path=driver_executable_path,
+                force=patcher_force_close,
+                version_main=version_main,
+            )
+            patcher.auto()
+            self.patcher = patcher
         if not options:
             options = ChromeOptions()
         try:
@@ -266,10 +271,17 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                 close_fds=IS_POSIX,
             )
             self.browser_pid = browser.pid
-        service_ = selenium.webdriver.chrome.service.Service(
-            executable_path=patcher.executable_path,
-            log_path=os.devnull,
-        )
+        service_ = None
+        if patch_driver:
+            service_ = selenium.webdriver.chrome.service.Service(
+                executable_path=patcher.executable_path,
+                log_path=os.devnull,
+            )
+        else:
+            service_ = selenium.webdriver.chrome.service.Service(
+                executable_path=driver_executable_path,
+                log_path=os.devnull,
+            )
         super(Chrome, self).__init__(
             port=port,
             options=options,
