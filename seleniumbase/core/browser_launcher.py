@@ -1,6 +1,7 @@
 import fasteners
 import logging
 import os
+import platform
 import re
 import shutil
 import subprocess
@@ -49,6 +50,9 @@ PROXY_ZIP_LOCK = proxy_helper.PROXY_ZIP_LOCK
 PROXY_DIR_PATH = proxy_helper.PROXY_DIR_PATH
 PROXY_DIR_LOCK = proxy_helper.PROXY_DIR_LOCK
 PLATFORM = sys.platform
+IS_ARM_MAC = False
+if PLATFORM.endswith("darwin") and "arm" in platform.processor().lower():
+    IS_ARM_MAC = True
 IS_WINDOWS = False
 LOCAL_CHROMEDRIVER = None
 LOCAL_GECKODRIVER = None
@@ -128,6 +132,25 @@ def chromedriver_on_path():
         ):
             return os.path.join(path, "chromedriver.exe")
     return None
+
+
+def get_uc_driver_version():
+    uc_driver_version = None
+    if os.path.exists(LOCAL_UC_DRIVER):
+        try:
+            output = subprocess.check_output(
+                "%s --version" % LOCAL_UC_DRIVER, shell=True
+            )
+            if IS_WINDOWS:
+                output = output.decode("latin1")
+            else:
+                output = output.decode("utf-8")
+            output = output.split(" ")[1].split(".")[0]
+            if int(output) >= 72:
+                uc_driver_version = output
+        except Exception:
+            pass
+    return uc_driver_version
 
 
 def edgedriver_on_path():
@@ -2501,12 +2524,24 @@ def get_local_driver(
                 except Exception:
                     pass
             disable_build_check = False
+            uc_driver_version = None
+            if IS_ARM_MAC:
+                uc_driver_version = get_uc_driver_version()
             if (
                 LOCAL_CHROMEDRIVER
                 and os.path.exists(LOCAL_CHROMEDRIVER)
                 and (
                     use_version == driver_version
                     or use_version == "latest"
+                )
+                and (
+                    not is_using_uc(undetectable, browser_name)
+                    or not IS_ARM_MAC
+                )
+                or (
+                    is_using_uc(undetectable, browser_name)
+                    and IS_ARM_MAC
+                    and uc_driver_version == use_version
                 )
             ):
                 try:
@@ -2527,6 +2562,16 @@ def get_local_driver(
                         or driver_version != "72"
                     )
                 )
+                or (
+                    is_using_uc(undetectable, browser_name)
+                    and not os.path.exists(LOCAL_UC_DRIVER)
+                )
+                or (
+                    is_using_uc(undetectable, browser_name)
+                    and IS_ARM_MAC
+                    and use_version != "latest"
+                    and uc_driver_version != use_version
+                )
             ):
                 # chromedriver download needed in the seleniumbase/drivers dir
                 from seleniumbase.console_scripts import sb_install
@@ -2538,11 +2583,14 @@ def get_local_driver(
                     msg = "chromedriver update needed. Getting it now:"
                     if not path_chromedriver:
                         msg = "chromedriver not found. Getting it now:"
-
                     print("\nWarning: %s" % msg)
+                    intel_for_uc = False
+                    if IS_ARM_MAC and is_using_uc(undetectable, browser_name):
+                        intel_for_uc = True  # Use Intel's driver for UC Mode
                     try:
                         sb_install.main(
-                            override="chromedriver %s" % use_version
+                            override="chromedriver %s" % use_version,
+                            intel_for_uc=intel_for_uc,
                         )
                     except Exception:
                         d_latest = get_latest_chromedriver_version()
@@ -2613,27 +2661,15 @@ def get_local_driver(
                 uc_lock = fasteners.InterProcessLock(
                     constants.MultiBrowser.DRIVER_FIXING_LOCK
                 )
-                with uc_lock:  # No UC multithreaded tests
-                    uc_driver_version = None
-                    if os.path.exists(LOCAL_UC_DRIVER):
-                        try:
-                            output = subprocess.check_output(
-                                "%s --version" % LOCAL_UC_DRIVER, shell=True
-                            )
-                            if IS_WINDOWS:
-                                output = output.decode("latin1")
-                            else:
-                                output = output.decode("utf-8")
-                            output = output.split(" ")[1].split(".")[0]
-                            if int(output) >= 72:
-                                uc_driver_version = output
-                        except Exception:
-                            pass
+                with uc_lock:  # Avoid multithreaded issues
+                    uc_driver_version = get_uc_driver_version()
                     if (
                         uc_driver_version != use_version
                         and use_version != "latest"
                     ):
-                        if os.path.exists(LOCAL_CHROMEDRIVER):
+                        if IS_ARM_MAC:
+                            pass  # Already taken care of in sb_install
+                        elif os.path.exists(LOCAL_CHROMEDRIVER):
                             shutil.copyfile(
                                 LOCAL_CHROMEDRIVER, LOCAL_UC_DRIVER
                             )
@@ -2683,7 +2719,7 @@ def get_local_driver(
                                 uc_lock = fasteners.InterProcessLock(
                                     constants.MultiBrowser.DRIVER_FIXING_LOCK
                                 )
-                                with uc_lock:
+                                with uc_lock:  # Avoid multithreaded issues
                                     try:
                                         uc_path = None
                                         if os.path.exists(LOCAL_UC_DRIVER):
