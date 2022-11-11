@@ -89,7 +89,7 @@ jobs:
             ${{ steps.meta.outputs.labels }}
           cache-from: |
             type=gha
-            type=registry,ref=quay.io/k8start/http-headers
+            type=registry,ref=ghcr.io/bukforks/seleniumbase
           cache-to: |
             type=gha,mode=max
           platforms: linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64/v8,linux/ppc64le,linux/s390x
