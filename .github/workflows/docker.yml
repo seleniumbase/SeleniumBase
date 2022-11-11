@@ -23,20 +23,20 @@ jobs:
         name: Set up Docker Build
         uses: docker/setup-buildx-action@v2
 
-      -
-        name: Build Docker Test Image
-        uses: docker/build-push-action@v3
-        id: build
-        with:
-          context: .
-          load: true
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      -
-        name: Test Docker Image
-        run: |
-          docker run --rm -i ${{ steps.build.outputs.imageid }}
+#      -
+#        name: Build Docker Test Image
+#        uses: docker/build-push-action@v3
+#        id: build
+#        with:
+#          context: .
+#          load: true
+#          cache-from: type=gha
+#          cache-to: type=gha,mode=max
+#
+#      -
+#        name: Test Docker Image
+#        run: |
+#          docker run --rm -i ${{ steps.build.outputs.imageid }}
 
       - name: Get Docker Image Metadata
         id: meta
