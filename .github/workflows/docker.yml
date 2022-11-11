@@ -43,7 +43,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            bukforks/seleniumbase
+            ghcr.io/bukforks/seleniumbase
           tags: |
             type=schedule
             type=semver,pattern={{version}}
