@@ -1,0 +1,95 @@
+name: Build and Push Docker Images
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+
+  Docker:
+    name: Build and Push Docker Images
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+
+    steps:
+
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+
+      -
+        name: Set up Docker Build
+        uses: docker/setup-buildx-action@v2
+
+      -
+        name: Build Docker Test Image
+        uses: docker/build-push-action@v3
+        id: build
+        with:
+          context: .
+          load: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      -
+        name: Test Docker Image
+        run: |
+          docker run --rm -i ${{ steps.build.outputs.imageid }}
+
+      - name: Get Docker Image Metadata
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: |
+            bukforks/seleniumbase
+          tags: |
+            type=schedule
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=ref,event=branch
+            type=ref,event=pr
+
+      - name: Set up QEMU
+        id: qemu
+        uses: docker/setup-qemu-action@v2
+
+#      - name: Login to Docker Hub Container Registry
+#        uses: docker/login-action@v2
+#        with:
+#          username: ${{ secrets.DOCKERHUB_USERNAME }}
+#          password: ${{ secrets.DOCKERHUB_ROBOT_TOKEN }}
+
+      - name: Login to GHCR.io Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+#      - name: Login to Quay.io Container Registry
+#        uses: docker/login-action@v2
+#        with:
+#          registry: quay.io
+#          username: ${{ secrets.QUAY_USERNAME }}
+#          password: ${{ secrets.QUAY_ROBOT_TOKEN }}
+
+      -
+        # Push other images
+        name: Build and Push Docker Images
+        uses: docker/build-push-action@v3
+        id: build-all
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: |
+            ${{ steps.meta.outputs.labels }}
+          cache-from: |
+            type=gha
+            type=registry,ref=quay.io/k8start/http-headers
+          cache-to: |
+            type=gha,mode=max
+          platforms: linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64/v8,linux/ppc64le,linux/s390x
