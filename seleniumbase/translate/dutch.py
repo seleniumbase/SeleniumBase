@@ -32,9 +32,18 @@ class Testgeval(BaseCase):
         # click_if_visible(selector, by=By.CSS_SELECTOR)
         return self.click_if_visible(*args, **kwargs)
 
+    def js_klik_indien_aanwezig(self, *args, **kwargs):
+        # js_click_if_present(selector, by=By.CSS_SELECTOR)
+        return self.js_click_if_present(*args, **kwargs)
+
     def klik_linktekst(self, *args, **kwargs):
         # click_link_text(link_text)
         return self.click_link_text(*args, **kwargs)
+
+    def klik_op_locatie(self, *args, **kwargs):
+        # click_with_offset(selector, x, y, by=By.CSS_SELECTOR,
+        #                   mark=None, timeout=None, center=None)
+        return self.click_with_offset(*args, **kwargs)
 
     def tekst_bijwerken(self, *args, **kwargs):
         # update_text(selector, text)
@@ -179,6 +188,10 @@ class Testgeval(BaseCase):
     def wachten_op_attribuut(self, *args, **kwargs):
         # wait_for_attribute(selector, attribute, value)
         return self.wait_for_attribute(*args, **kwargs)
+
+    def wacht_tot_de_pagina_is_geladen(self, *args, **kwargs):
+        # wait_for_ready_state_complete()
+        return self.wait_for_ready_state_complete(*args, **kwargs)
 
     def slapen(self, *args, **kwargs):
         # sleep(seconds)

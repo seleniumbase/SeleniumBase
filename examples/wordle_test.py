@@ -50,18 +50,14 @@ class WordleTests(BaseCase):
                 self.word_list = new_word_list
                 new_word_list = []
 
-    def skip_if_headless_mode(self):
-        if self.headless:
-            message = "Skip this test in headless mode!"
-            print(message)
-            self.skip(message)
-
     def test_wordle(self):
-        self.skip_if_headless_mode()
+        if self.headless:
+            self.skip("Skip this test in headless mode!")
         self.open("https://www.nytimes.com/games/wordle/index.html")
         self.click_if_visible('svg[data-testid="icon-close"]', timeout=2)
         self.remove_elements("div.place-ad")
         self.initialize_word_list()
+        random.seed()
         word = random.choice(self.word_list)
         num_attempts = 0
         found_word = False
@@ -74,15 +70,14 @@ class WordleTests(BaseCase):
                 button = 'button[data-key="%s"]' % letter
                 self.click(button)
             button = 'button[class*="oneAndAHalf"]'
-            self.wait_for_ready_state_complete()
             self.click(button)
             row = (
                 'div[class*="lbzlf"] div[class*="Row-module"]:nth-of-type(%s) '
                 % num_attempts
             )
             tile = row + 'div:nth-child(%s) div[class*="module_tile__3ayIZ"]'
-            self.wait_for_element(tile % "5" + '[data-state*="e"]')
-            self.wait_for_ready_state_complete()
+            self.wait_for_element(tile % "5" + '[data-state$="t"]')
+            self.wait_for_element(tile % "5" + '[data-animation="idle"]')
             letter_status = []
             for i in range(1, 6):
                 letter_eval = self.get_attribute(tile % str(i), "data-state")

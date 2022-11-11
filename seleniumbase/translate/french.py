@@ -32,9 +32,18 @@ class CasDeBase(BaseCase):
         # click_if_visible(selector, by=By.CSS_SELECTOR)
         return self.click_if_visible(*args, **kwargs)
 
+    def js_cliquer_si_présent(self, *args, **kwargs):
+        # js_click_if_present(selector, by=By.CSS_SELECTOR)
+        return self.js_click_if_present(*args, **kwargs)
+
     def cliquer_texte_du_lien(self, *args, **kwargs):
         # click_link_text(link_text)
         return self.click_link_text(*args, **kwargs)
+
+    def cliquer_emplacement(self, *args, **kwargs):
+        # click_with_offset(selector, x, y, by=By.CSS_SELECTOR,
+        #                   mark=None, timeout=None, center=None)
+        return self.click_with_offset(*args, **kwargs)
 
     def modifier_texte(self, *args, **kwargs):
         # update_text(selector, text)
@@ -179,6 +188,10 @@ class CasDeBase(BaseCase):
     def attendre_un_attribut(self, *args, **kwargs):
         # wait_for_attribute(selector, attribute, value)
         return self.wait_for_attribute(*args, **kwargs)
+
+    def attendre_que_la_page_se_charge(self, *args, **kwargs):
+        # wait_for_ready_state_complete()
+        return self.wait_for_ready_state_complete(*args, **kwargs)
 
     def dormir(self, *args, **kwargs):
         # sleep(seconds)

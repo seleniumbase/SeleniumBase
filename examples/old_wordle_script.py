@@ -101,7 +101,10 @@ class WordleTests(BaseCase):
             self.click(keyboard_base + button)
             row = 'game-app::shadow game-row[letters="%s"]::shadow ' % word
             tile = row + "game-tile:nth-of-type(%s)"
-            self.wait_for_element(tile % "5" + '::shadow [data-state*="e"]')
+            self.wait_for_element(tile % "5" + '::shadow [data-state$="t"]')
+            self.wait_for_element(
+                tile % "5" + '::shadow [data-animation="idle"]'
+            )
             letter_status = []
             for i in range(1, 6):
                 letter_eval = self.get_attribute(tile % str(i), "evaluation")

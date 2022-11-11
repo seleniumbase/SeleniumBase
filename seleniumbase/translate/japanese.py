@@ -32,9 +32,18 @@ class セレニウムテストケース(BaseCase):  # noqa
         # click_if_visible(selector, by=By.CSS_SELECTOR)
         return self.click_if_visible(*args, **kwargs)
 
+    def 存在する場合はJSクリック(self, *args, **kwargs):
+        # js_click_if_present(selector, by=By.CSS_SELECTOR)
+        return self.js_click_if_present(*args, **kwargs)
+
     def リンクテキストをクリックします(self, *args, **kwargs):
         # click_link_text(link_text)
         return self.click_link_text(*args, **kwargs)
+
+    def オフセットでクリック(self, *args, **kwargs):
+        # click_with_offset(selector, x, y, by=By.CSS_SELECTOR,
+        #                   mark=None, timeout=None, center=None)
+        return self.click_with_offset(*args, **kwargs)
 
     def テキストを更新(self, *args, **kwargs):
         # update_text(selector, text)
@@ -179,6 +188,10 @@ class セレニウムテストケース(BaseCase):  # noqa
     def 属性を待つ(self, *args, **kwargs):
         # wait_for_attribute(selector, attribute, value)
         return self.wait_for_attribute(*args, **kwargs)
+
+    def ページがロードされるのを待ちます(self, *args, **kwargs):
+        # wait_for_ready_state_complete()
+        return self.wait_for_ready_state_complete(*args, **kwargs)
 
     def 眠る(self, *args, **kwargs):
         # sleep(seconds)

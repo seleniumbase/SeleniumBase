@@ -135,7 +135,7 @@ setup(
         'tomli>=2.0.1;python_version>="3.7"',
         "tqdm>=4.64.1",
         'wheel>=0.37.1;python_version<"3.7"',
-        'wheel>=0.38.3;python_version>="3.7"',
+        'wheel>=0.38.4;python_version>="3.7"',
         'attrs>=21.4.0;python_version<"3.6"',
         'attrs>=22.1.0;python_version>="3.6"',
         'PyYAML>=6.0;python_version>="3.6"',

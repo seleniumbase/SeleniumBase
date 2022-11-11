@@ -10,7 +10,6 @@ class HackTests(BaseCase):
         aybabtu = "%s %s" % (ayb, abtu)
         sb_banner_logo = "//seleniumbase.io/cdn/img/sb_logo_10.png"
         sb_dashboard_logo = "//seleniumbase.io/img/dash_pie_3.png"
-        yt_chip = "#chips yt-chip-cloud-chip-renderer:nth-of-type"
         wiki = "https://en.wikipedia.org/wiki/All_your_base_are_belong_to_us"
 
         self.open(wiki)
@@ -99,29 +98,6 @@ class HackTests(BaseCase):
             self.set_text_content('a[href*="w/signup"] span', aybabtu)
             self.highlight('a[href*="w/signup"] span', loops=6, scroll=False)
             self.highlight('a[href*="w/signup"]', loops=6, scroll=False)
-
-        self.open("https://www.youtube.com/")
-        self.set_text_content("%s(1)" % yt_chip, "ALL")
-        self.set_text_content("%s(2)" % yt_chip, "YOUR")
-        self.set_text_content("%s(3)" % yt_chip, "BASE")
-        self.set_text_content("%s(4)" % yt_chip, "ARE")
-        self.set_text_content("%s(5)" % yt_chip, "BELONG")
-        self.set_text_content("%s(6)" % yt_chip, "TO")
-        self.set_text_content("%s(7)" % yt_chip, "US")
-        self.set_text_content("%s(8)" % yt_chip, "!")
-        self.set_text_content("%s(9)" % yt_chip, "!")
-        self.set_text_content("%s(10)" % yt_chip, "!")
-        self.click_if_visible("#dismiss-button")
-        self.click_if_visible('button[aria-label="Close"]')
-        self.highlight("#scroll-container", loops=5, scroll=False)
-        self.highlight("%s(1)" % yt_chip, loops=1, scroll=False)
-        self.highlight("%s(2)" % yt_chip, loops=1, scroll=False)
-        self.highlight("%s(3)" % yt_chip, loops=3, scroll=False)
-        self.highlight("%s(4)" % yt_chip, loops=1, scroll=False)
-        self.highlight("%s(5)" % yt_chip, loops=1, scroll=False)
-        self.highlight("%s(6)" % yt_chip, loops=1, scroll=False)
-        self.highlight("%s(7)" % yt_chip, loops=3, scroll=False)
-        self.highlight("#scroll-container", loops=7, scroll=False)
 
         self.open("https://github.com/features/actions")
         self.set_text_content('a[href="/team"]', ayb)

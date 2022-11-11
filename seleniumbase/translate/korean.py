@@ -32,9 +32,18 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
         # click_if_visible(selector, by=By.CSS_SELECTOR)
         return self.click_if_visible(*args, **kwargs)
 
+    def JS_존재하는지_경우_클릭(self, *args, **kwargs):
+        # js_click_if_present(selector, by=By.CSS_SELECTOR)
+        return self.js_click_if_present(*args, **kwargs)
+
     def 링크_텍스트를_클릭합니다(self, *args, **kwargs):
         # click_link_text(link_text)
         return self.click_link_text(*args, **kwargs)
+
+    def 위치를_클릭(self, *args, **kwargs):
+        # click_with_offset(selector, x, y, by=By.CSS_SELECTOR,
+        #                   mark=None, timeout=None, center=None)
+        return self.click_with_offset(*args, **kwargs)
 
     def 텍스트를_업데이트(self, *args, **kwargs):
         # update_text(selector, text)
@@ -179,6 +188,10 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
     def 특성_때까지_기다립니다(self, *args, **kwargs):
         # wait_for_attribute(selector, attribute, value)
         return self.wait_for_attribute(*args, **kwargs)
+
+    def 페이지가_로드될_때까지_기다립니다(self, *args, **kwargs):
+        # wait_for_ready_state_complete()
+        return self.wait_for_ready_state_complete(*args, **kwargs)
 
     def 잠을(self, *args, **kwargs):
         # sleep(seconds)

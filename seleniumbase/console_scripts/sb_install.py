@@ -229,7 +229,11 @@ def main(override=None, intel_for_uc=None):
             else:
                 invalid_run_command()
         if "darwin" in sys_plat:
-            if "arm" in platform.processor().lower() and not intel_for_uc:
+            if (
+                "arm" in platform.processor().lower()
+                and not intel_for_uc
+                and int(use_version) > 105
+            ):
                 file_name = "chromedriver_mac_arm64.zip"
             else:
                 file_name = "chromedriver_mac64.zip"
@@ -396,7 +400,10 @@ def main(override=None, intel_for_uc=None):
             file_name = "edgedriver_win32.zip"
             suffix = "WINDOWS"
         elif "darwin" in sys_plat:
-            if "arm" in platform.processor().lower():
+            if (
+                "arm" in platform.processor().lower()
+                and int(use_version) > 104
+            ):
                 file_name = "edgedriver_mac64_m1.zip"
             else:
                 file_name = "edgedriver_mac64.zip"

@@ -32,9 +32,18 @@ class ТестНаСелен(BaseCase):  # noqa
         # click_if_visible(selector, by=By.CSS_SELECTOR)
         return self.click_if_visible(*args, **kwargs)
 
+    def JS_нажмите_если_присутствует(self, *args, **kwargs):
+        # js_click_if_present(selector, by=By.CSS_SELECTOR)
+        return self.js_click_if_present(*args, **kwargs)
+
     def нажмите_ссылку(self, *args, **kwargs):
         # click_link_text(link_text)
         return self.click_link_text(*args, **kwargs)
+
+    def нажмите_на_местоположение(self, *args, **kwargs):
+        # click_with_offset(selector, x, y, by=By.CSS_SELECTOR,
+        #                   mark=None, timeout=None, center=None)
+        return self.click_with_offset(*args, **kwargs)
 
     def обновить_текст(self, *args, **kwargs):
         # update_text(selector, text)
@@ -179,6 +188,10 @@ class ТестНаСелен(BaseCase):  # noqa
     def ждать_атрибут(self, *args, **kwargs):
         # wait_for_attribute(selector, attribute, value)
         return self.wait_for_attribute(*args, **kwargs)
+
+    def ждать_загрузки_страницы(self, *args, **kwargs):
+        # wait_for_ready_state_complete()
+        return self.wait_for_ready_state_complete(*args, **kwargs)
 
     def спать(self, *args, **kwargs):
         # sleep(seconds)

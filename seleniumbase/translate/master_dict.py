@@ -341,6 +341,18 @@ class MD:
     md["click_if_visible"][8] = "нажмите_если_виден"
     md["click_if_visible"][9] = "clic_si_está_muestra"
 
+    md["js_click_if_present"] = ["*"] * num_langs
+    md["js_click_if_present"][0] = "js_click_if_present"
+    md["js_click_if_present"][1] = "JS如果存在请单击"
+    md["js_click_if_present"][2] = "js_klik_indien_aanwezig"
+    md["js_click_if_present"][3] = "js_cliquer_si_présent"
+    md["js_click_if_present"][4] = "js_clic_se_presente"
+    md["js_click_if_present"][5] = "存在する場合はJSクリック"
+    md["js_click_if_present"][6] = "JS_존재하는지_경우_클릭"
+    md["js_click_if_present"][7] = "js_clique_se_está_presente"
+    md["js_click_if_present"][8] = "JS_нажмите_если_присутствует"
+    md["js_click_if_present"][9] = "js_clic_si_está_presente"
+
     md["click_link"] = ["*"] * num_langs
     md["click_link"][0] = "click_link"
     md["click_link"][1] = "单击链接文本"
@@ -352,6 +364,18 @@ class MD:
     md["click_link"][7] = "clique_texto_do_link"
     md["click_link"][8] = "нажмите_ссылку"
     md["click_link"][9] = "clic_texto_del_enlace"
+
+    md["click_with_offset"] = ["*"] * num_langs
+    md["click_with_offset"][0] = "click_with_offset"
+    md["click_with_offset"][1] = "鼠标点击偏移"
+    md["click_with_offset"][2] = "klik_op_locatie"
+    md["click_with_offset"][3] = "cliquer_emplacement"
+    md["click_with_offset"][4] = "clic_su_posizione"
+    md["click_with_offset"][5] = "オフセットでクリック"
+    md["click_with_offset"][6] = "위치를_클릭"
+    md["click_with_offset"][7] = "clique_com_deslocamento"
+    md["click_with_offset"][8] = "нажмите_на_местоположение"
+    md["click_with_offset"][9] = "clic_con_desplazamiento"
 
     md["update_text"] = ["*"] * num_langs
     md["update_text"][0] = "update_text"
@@ -772,6 +796,19 @@ class MD:
     md["wait_for_attribute"][7] = "aguardar_o_atributo"
     md["wait_for_attribute"][8] = "ждать_атрибут"
     md["wait_for_attribute"][9] = "espera_el_atributo"
+
+    md["wait_for_ready_state_complete"] = ["*"] * num_langs
+    md["wait_for_ready_state_complete"][0] = "wait_for_ready_state_complete"
+    md["wait_for_ready_state_complete"][1] = "等待页面加载完成"
+    md["wait_for_ready_state_complete"][2] = "wacht_tot_de_pagina_is_geladen"
+    md["wait_for_ready_state_complete"][3] = "attendre_que_la_page_se_charge"
+    wfrsc_it = "attendere_il_caricamento_della_pagina"
+    md["wait_for_ready_state_complete"][4] = wfrsc_it
+    md["wait_for_ready_state_complete"][5] = "ページがロードされるのを待ちます"
+    md["wait_for_ready_state_complete"][6] = "페이지가_로드될_때까지_기다립니다"
+    md["wait_for_ready_state_complete"][7] = "aguardar_a_página_carregar"
+    md["wait_for_ready_state_complete"][8] = "ждать_загрузки_страницы"
+    md["wait_for_ready_state_complete"][9] = "esperar_a_que_cargue_la_página"
 
     md["sleep"] = ["*"] * num_langs
     md["sleep"][0] = "sleep"
