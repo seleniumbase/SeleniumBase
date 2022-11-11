@@ -92,4 +92,4 @@ jobs:
             type=registry,ref=ghcr.io/bukforks/seleniumbase
           cache-to: |
             type=gha,mode=max
-          platforms: linux/amd64,linux/arm64/v8
+          platforms: linux/amd64
