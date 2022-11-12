@@ -91,14 +91,6 @@ class HackTests(BaseCase):
         self.highlight('a[href*="google.com/img"]', loops=3)
         self.highlight('form[role="search"]', loops=8)
 
-        self.open("https://twitter.com/")
-        if not self.is_element_visible('a[href*="w/signup"] span'):
-            self.refresh()
-        if self.is_element_visible('a[href*="w/signup"] span'):
-            self.set_text_content('a[href*="w/signup"] span', aybabtu)
-            self.highlight('a[href*="w/signup"] span', loops=6, scroll=False)
-            self.highlight('a[href*="w/signup"]', loops=6, scroll=False)
-
         self.open("https://github.com/features/actions")
         self.set_text_content('a[href="/team"]', ayb)
         self.set_text_content('a[href="/enterprise"]', abtu)
@@ -114,8 +106,6 @@ class HackTests(BaseCase):
         self.highlight("h1", loops=8, scroll=False)
 
         self.open("https://dev.to/top/infinity")
-        self.hide_elements("#js-hero-banner")
-        self.hide_elements('main > div:contains("Pinned")')
         self.click_if_visible('button[aria-label="Close campaign banner"]')
         self.set_text_content('nav a[data-text="Relevant"]', "ALL")
         self.set_text_content('nav a[data-text="Latest"]', "YOUR")
@@ -149,6 +139,7 @@ class HackTests(BaseCase):
             self.highlight('h2 a[href*="simonh"]', loops=7, scroll=False)
 
         self.open("https://azure.microsoft.com/en-us/services/playfab/")
+        self.remove_elements('div[role="dialog"]')
         self.set_text_content("h1", aybabtu)
         self.set_text_content('a[aria-label*="Try PlayF"]', ayb)
         self.set_text_content('a[aria-label*="Sign in to"]', abtu)
