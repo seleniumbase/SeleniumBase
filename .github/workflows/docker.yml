@@ -43,7 +43,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            ghcr.io/bukforks/seleniumbase
+            ghcr.io/seleniumbase/seleniumbase
           tags: |
             type=schedule
             type=semver,pattern={{version}}
@@ -89,7 +89,7 @@ jobs:
             ${{ steps.meta.outputs.labels }}
           cache-from: |
             type=gha
-            type=registry,ref=ghcr.io/bukforks/seleniumbase
+            type=registry,ref=ghcr.io/seleniumbase/seleniumbase
           cache-to: |
             type=gha,mode=max
           platforms: linux/amd64
