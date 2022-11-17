@@ -92,8 +92,7 @@ class HackTests(BaseCase):
         self.highlight('form[role="search"]', loops=8)
 
         self.open("https://github.com/features/actions")
-        self.set_text_content('a[href="/team"]', ayb)
-        self.set_text_content('a[href="/enterprise"]', abtu)
+        self.set_text_content('a[href="/pricing"]', aybabtu)
         self.set_text_content("h1 span:nth-child(1)", ayb)
         self.set_text_content("h1 span:nth-of-type(2)", "ARE")
         self.set_text_content("h1 span:nth-of-type(3)", "BELONG")
@@ -101,7 +100,7 @@ class HackTests(BaseCase):
         self.set_text_content("h1 span:nth-of-type(5)", "US")
         self.type('input[name="q"]', aybabtu.lower())
         self.click("h1", scroll=False)
-        self.highlight("nav", loops=5, scroll=False)
+        self.highlight('a[href="/pricing"]', loops=5, scroll=False)
         self.highlight('input[name="q"]', loops=5, scroll=False)
         self.highlight("h1", loops=8, scroll=False)
 
