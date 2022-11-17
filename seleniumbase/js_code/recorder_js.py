@@ -40,10 +40,8 @@ var cssPathByAttribute = function(el, attr) {
             !el.getAttribute(attr).includes('\n'))
         {
             the_attr = el.getAttribute(attr);
-            if (the_attr.includes('"'))
-                the_attr = the_attr.replace('"', '\\"');
-            if (the_attr.includes("'"))
-                the_attr = the_attr.replace("'", "\\'");
+            the_attr = the_attr.replaceAll('"', '\\"');
+            the_attr = the_attr.replaceAll("'", "\\'");
             selector += '[' + attr + '="' + the_attr + '"]';
             path.unshift(selector);
             break;
@@ -163,6 +161,7 @@ var getBestSelector = function(el) {
     non_id_attributes.push('for');
     non_id_attributes.push('placeholder');
     non_id_attributes.push('value');
+    non_id_attributes.push('ng-click');
     non_id_attributes.push('ng-if');
     non_id_attributes.push('src');
     selector_by_attr = [];
