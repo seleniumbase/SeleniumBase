@@ -310,9 +310,7 @@ class ValidBrowsers:
         "firefox",
         "ie",
         "opera",
-        "phantomjs",
         "safari",
-        "android",
         "iphone",
         "ipad",
         "remote",
@@ -325,9 +323,7 @@ class Browser:
     FIREFOX = "firefox"
     INTERNET_EXPLORER = "ie"
     OPERA = "opera"
-    PHANTOM_JS = "phantomjs"
     SAFARI = "safari"
-    ANDROID = "android"
     IPHONE = "iphone"
     IPAD = "ipad"
     REMOTE = "remote"
@@ -338,9 +334,7 @@ class Browser:
         "firefox": None,
         "ie": None,
         "opera": None,
-        "phantomjs": None,
         "safari": None,
-        "android": None,
         "iphone": None,
         "ipad": None,
         "remote": None,
@@ -352,9 +346,7 @@ class Browser:
         "firefox": None,
         "ie": None,
         "opera": None,
-        "phantomjs": None,
         "safari": None,
-        "android": None,
         "iphone": None,
         "ipad": None,
         "remote": None,

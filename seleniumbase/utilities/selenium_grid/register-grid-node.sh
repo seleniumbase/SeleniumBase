@@ -1,2 +1,2 @@
 #!/bin/bash
-java -jar selenium-server-standalone.jar -role node -hub http://127.0.0.1:4444/grid/register -browser browserName=chrome,maxInstances=5,version=latest,seleniumProtocol=WebDriver -browser browserName=firefox,maxInstances=5,version=latest,seleniumProtocol=WebDriver -browser browserName=opera,maxInstances=5,version=latest,seleniumProtocol=WebDriver
+java -jar selenium-server-standalone.jar -role node -hub http://127.0.0.1:4444/grid/register -browser browserName=chrome,maxInstances=5,version=latest,seleniumProtocol=WebDriver -browser browserName=firefox,maxInstances=5,version=latest,seleniumProtocol=WebDriver
