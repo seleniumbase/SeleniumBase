@@ -40,7 +40,7 @@ if [ "$GRID_NODE_VERBOSE_LOGS" == "True" ]; then
 fi
 
 WEBDRIVER_SERVER_JAR=${DIR}/selenium-server-standalone.jar
-WEBDRIVER_NODE_PARAMS="-role node -hub http://${GRID_HUB_SERVER_IP}:4444/grid/register -browser browserName=chrome,maxInstances=5,version=latest,seleniumProtocol=WebDriver -browser browserName=firefox,maxInstances=5,version=latest,seleniumProtocol=WebDriver -browser browserName=opera,maxInstances=5,version=latest,seleniumProtocol=WebDriver"
+WEBDRIVER_NODE_PARAMS="-role node -hub http://${GRID_HUB_SERVER_IP}:4444/grid/register -browser browserName=chrome,maxInstances=5,version=latest,seleniumProtocol=WebDriver -browser browserName=firefox,maxInstances=5,version=latest,seleniumProtocol=WebDriver"
 WEBDRIVER_NODE_PIDFILE="/tmp/webdriver_node.pid"
 
 if [ ! -f $WEBDRIVER_SERVER_JAR ]; then

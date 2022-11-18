@@ -1633,44 +1633,6 @@ def get_remote_driver(
                 desired_capabilities=capabilities,
                 keep_alive=True,
             )
-    elif browser_name == constants.Browser.PHANTOM_JS:
-        if selenium4_or_newer:
-            message = (
-                "\n"
-                "PhantomJS is no longer available for Selenium 4!\n"
-                'Try using "--headless" mode with Chrome instead!'
-            )
-            raise Exception(message)
-        capabilities = webdriver.DesiredCapabilities.PHANTOMJS
-        for key in desired_caps.keys():
-            capabilities[key] = desired_caps[key]
-        with warnings.catch_warnings():
-            # Ignore "PhantomJS has been deprecated" UserWarning
-            warnings.simplefilter("ignore", category=UserWarning)
-            return webdriver.Remote(
-                command_executor=address,
-                desired_capabilities=capabilities,
-                keep_alive=True,
-            )
-    elif browser_name == constants.Browser.ANDROID:
-        capabilities = webdriver.DesiredCapabilities.ANDROID
-        if selenium4_or_newer:
-            remote_options = ArgOptions()
-            remote_options.set_capability("cloud:options", desired_caps)
-            return webdriver.Remote(
-                command_executor=address,
-                options=remote_options,
-                keep_alive=True,
-            )
-        else:
-            warnings.simplefilter("ignore", category=DeprecationWarning)
-            for key in desired_caps.keys():
-                capabilities[key] = desired_caps[key]
-            return webdriver.Remote(
-                command_executor=address,
-                desired_capabilities=capabilities,
-                keep_alive=True,
-            )
     elif browser_name == constants.Browser.IPHONE:
         capabilities = webdriver.DesiredCapabilities.IPHONE
         if selenium4_or_newer:
@@ -2412,18 +2374,6 @@ def get_local_driver(
         except Exception:
             # Opera support was dropped! Downgrade to Python 3.6 to use it!
             return webdriver.Opera()
-    elif browser_name == constants.Browser.PHANTOM_JS:
-        if selenium4_or_newer:
-            message = (
-                "\n"
-                "PhantomJS is no longer available for Selenium 4!\n"
-                'Try using "--headless" mode with Chrome instead!'
-            )
-            raise Exception(message)
-        with warnings.catch_warnings():
-            # Ignore "PhantomJS has been deprecated" UserWarning
-            warnings.simplefilter("ignore", category=UserWarning)
-            return webdriver.PhantomJS()
     elif browser_name == constants.Browser.GOOGLE_CHROME:
         try:
             chrome_options = _set_chrome_options(

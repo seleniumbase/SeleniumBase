@@ -61,14 +61,6 @@ sudo apt-get install -y --force-yes libmysqlclient-dev
 sudo apt-get install -y --force-yes python-dev
 sudo apt-get install -y --force-yes python-MySQLdb
 
-# Install PhantomJS
-# cd ~
-# export PHANTOM_JS="phantomjs-2.1.1-linux-x86_64"
-# sudo wget https://bitbucket.org/ariya/phantomjs/downloads/$PHANTOM_JS.tar.bz2
-# sudo tar xvjf $PHANTOM_JS.tar.bz2
-# sudo mv -f $PHANTOM_JS /usr/local/share
-# sudo ln -sf /usr/local/share/$PHANTOM_JS/bin/phantomjs /usr/local/bin
-
 # Install Chrome
 cd /tmp
 sudo wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb

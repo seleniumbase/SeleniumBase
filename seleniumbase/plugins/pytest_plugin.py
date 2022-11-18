@@ -27,7 +27,7 @@ def pytest_addoption(parser):
     """
     This plugin adds the following command-line options to pytest:
     --browser=BROWSER  (The web browser to use. Default: "chrome".)
-    --chrome  (Shortcut for "--browser=chrome". On by default.)
+    --chrome  (Shortcut for "--browser=chrome". Default.)
     --edge  (Shortcut for "--browser=edge".)
     --firefox  (Shortcut for "--browser=firefox".)
     --safari  (Shortcut for "--browser=safari".)
@@ -137,50 +137,49 @@ def pytest_addoption(parser):
         choices=constants.ValidBrowsers.valid_browsers,
         default=constants.Browser.GOOGLE_CHROME,
         help="""Specifies the web browser to use. Default: Chrome.
-                If you want to use Firefox, explicitly indicate that.
-                Example: (--browser=firefox)""",
+                Examples: (--browser=edge OR --browser=firefox)""",
     )
     parser.addoption(
         "--chrome",
         action="store_true",
         dest="use_chrome",
         default=False,
-        help="""Shortcut for --browser=chrome. On by default.)""",
+        help="""Shortcut for --browser=chrome (Default)""",
     )
     parser.addoption(
         "--edge",
         action="store_true",
         dest="use_edge",
         default=False,
-        help="""Shortcut for --browser=edge.)""",
+        help="""Shortcut for --browser=edge""",
     )
     parser.addoption(
         "--firefox",
         action="store_true",
         dest="use_firefox",
         default=False,
-        help="""Shortcut for --browser=firefox.)""",
+        help="""Shortcut for --browser=firefox""",
     )
     parser.addoption(
         "--ie",
         action="store_true",
         dest="use_ie",
         default=False,
-        help="""Shortcut for --browser=ie.)""",
+        help="""Shortcut for --browser=ie""",
     )
     parser.addoption(
         "--opera",
         action="store_true",
         dest="use_opera",
         default=False,
-        help="""Shortcut for --browser=opera.)""",
+        help="""Shortcut for --browser=opera""",
     )
     parser.addoption(
         "--safari",
         action="store_true",
         dest="use_safari",
         default=False,
-        help="""Shortcut for --browser=safari.)""",
+        help="""Shortcut for --browser=safari""",
     )
     parser.addoption(
         "--with-selenium",
@@ -921,7 +920,7 @@ def pytest_addoption(parser):
         action="store_true",
         dest="uc_subprocess",
         default=None,
-        help="""(DEPRECATED) - Setting will always be enabled.
+        help="""(DEPRECATED) - (UC Mode always uses this now.)
                 Use undetectable-chromedriver as a subprocess,
                 which can help avoid issues that might result.
                 It may reduce UC's ability to avoid detection.""",
@@ -1230,10 +1229,6 @@ def pytest_addoption(parser):
         browser_changes += 1
         browser_set = "ie"
         browser_list.append("--browser=ie")
-    if "--browser=phantomjs" in sys_argv or "--browser phantomjs" in sys_argv:
-        browser_changes += 1
-        browser_set = "phantomjs"
-        browser_list.append("--browser=phantomjs")
     if "--browser=remote" in sys_argv or "--browser remote" in sys_argv:
         browser_changes += 1
         browser_set = "remote"
