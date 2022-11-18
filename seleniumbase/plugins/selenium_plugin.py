@@ -19,7 +19,7 @@ class SeleniumBrowser(Plugin):
     """
     This plugin adds the following command-line options to nosetests:
     --browser=BROWSER  (The web browser to use. Default: "chrome".)
-    --chrome  (Shortcut for "--browser=chrome". On by default.)
+    --chrome  (Shortcut for "--browser=chrome". Default.)
     --edge  (Shortcut for "--browser=edge".)
     --firefox  (Shortcut for "--browser=firefox".)
     --safari  (Shortcut for "--browser=safari".)
@@ -103,50 +103,49 @@ class SeleniumBrowser(Plugin):
             choices=constants.ValidBrowsers.valid_browsers,
             default=constants.Browser.GOOGLE_CHROME,
             help="""Specifies the web browser to use. Default: Chrome.
-                    If you want to use Firefox, explicitly indicate that.
-                    Example: (--browser=firefox)""",
+                    Examples: (--browser=edge OR --browser=firefox)""",
         )
         parser.add_option(
             "--chrome",
             action="store_true",
             dest="use_chrome",
             default=False,
-            help="""Shortcut for --browser=chrome. On by default.)""",
+            help="""Shortcut for --browser=chrome (Default)""",
         )
         parser.add_option(
             "--edge",
             action="store_true",
             dest="use_edge",
             default=False,
-            help="""Shortcut for --browser=edge.)""",
+            help="""Shortcut for --browser=edge""",
         )
         parser.add_option(
             "--firefox",
             action="store_true",
             dest="use_firefox",
             default=False,
-            help="""Shortcut for --browser=firefox.)""",
+            help="""Shortcut for --browser=firefox""",
         )
         parser.add_option(
             "--ie",
             action="store_true",
             dest="use_ie",
             default=False,
-            help="""Shortcut for --browser=ie.)""",
+            help="""Shortcut for --browser=ie""",
         )
         parser.add_option(
             "--opera",
             action="store_true",
             dest="use_opera",
             default=False,
-            help="""Shortcut for --browser=opera.)""",
+            help="""Shortcut for --browser=opera""",
         )
         parser.add_option(
             "--safari",
             action="store_true",
             dest="use_safari",
             default=False,
-            help="""Shortcut for --browser=safari.)""",
+            help="""Shortcut for --browser=safari""",
         )
         parser.add_option(
             "--cap_file",
@@ -681,7 +680,7 @@ class SeleniumBrowser(Plugin):
             action="store_true",
             dest="uc_subprocess",
             default=None,
-            help="""(DEPRECATED) - Setting will always be enabled.
+            help="""(DEPRECATED) - (UC Mode always uses this now.)
                     Use undetectable-chromedriver as a subprocess,
                     which can help avoid issues that might result.
                     It may reduce UC's ability to avoid detection.""",

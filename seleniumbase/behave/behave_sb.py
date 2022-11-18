@@ -8,7 +8,7 @@ behave -D rs -D dashboard
 behave -D agent="User Agent String" -D demo
 ****************************************************************
 -D browser=BROWSER  (The web browser to use. Default: "chrome".)
--D chrome  (Shortcut for "-D browser=chrome". On by default.)
+-D chrome  (Shortcut for "-D browser=chrome". Default.)
 -D edge  (Shortcut for "-D browser=edge".)
 -D firefox  (Shortcut for "-D browser=firefox".)
 -D safari  (Shortcut for "-D browser=safari".)
