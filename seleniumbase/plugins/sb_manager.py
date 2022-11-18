@@ -199,10 +199,6 @@ def SB(
         browser_changes += 1
         browser_set = "ie"
         browser_list.append("--browser=ie")
-    if "--browser=phantomjs" in sys_argv or "--browser phantomjs" in sys_argv:
-        browser_changes += 1
-        browser_set = "phantomjs"
-        browser_list.append("--browser=phantomjs")
     if "--browser=remote" in sys_argv or "--browser remote" in sys_argv:
         browser_changes += 1
         browser_set = "remote"
