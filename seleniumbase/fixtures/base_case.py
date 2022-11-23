@@ -32,8 +32,10 @@ Code becomes greatly simplified and easier to maintain.
 """
 
 import codecs
+import fasteners
 import json
 import logging
+import math
 import os
 import re
 import shutil
@@ -169,6 +171,8 @@ class BaseCase(unittest.TestCase):
         self.__check_browser()
         if self.__needs_minimum_wait():
             time.sleep(0.01)
+            if self.undetectable:
+                time.sleep(0.02)
         pre_action_url = None
         try:
             pre_action_url = self.driver.current_url
@@ -243,6 +247,8 @@ class BaseCase(unittest.TestCase):
             self.wait_for_ready_state_complete()
         if self.__needs_minimum_wait():
             time.sleep(0.03)  # Force a minimum wait, even if skipping waits.
+            if self.undetectable:
+                time.sleep(0.02)
         self.__demo_mode_pause_if_active()
 
     def get(self, url):
@@ -289,6 +295,8 @@ class BaseCase(unittest.TestCase):
             return
         if self.browser == "safari":
             self.wait_for_ready_state_complete()
+        if self.__needs_minimum_wait():
+            time.sleep(0.02)
         element = page_actions.wait_for_element_visible(
             self.driver,
             selector,
@@ -467,7 +475,7 @@ class BaseCase(unittest.TestCase):
             except Exception:
                 pass
             if self.__needs_minimum_wait():
-                time.sleep(0.02)
+                time.sleep(0.05)
         else:
             # A smaller subset of self.wait_for_ready_state_complete()
             try:
@@ -475,18 +483,26 @@ class BaseCase(unittest.TestCase):
             except Exception:
                 pass
             if self.__needs_minimum_wait():
-                time.sleep(0.01)
+                time.sleep(0.025)
+                if self.undetectable:
+                    time.sleep(0.025)
             try:
                 if self.driver.current_url != pre_action_url:
                     self.__ad_block_as_needed()
                     self.__disable_beforeunload_as_needed()
+                    if self.__needs_minimum_wait():
+                        time.sleep(0.025)
+                        if self.undetectable:
+                            time.sleep(0.025)
             except Exception:
                 try:
                     self.wait_for_ready_state_complete()
                 except Exception:
                     pass
                 if self.__needs_minimum_wait():
-                    time.sleep(0.02)
+                    time.sleep(0.025)
+                    if self.undetectable:
+                        time.sleep(0.025)
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self.__demo_mode_pause_if_active()
@@ -642,6 +658,8 @@ class BaseCase(unittest.TestCase):
         self.__demo_mode_highlight_if_active(selector, by)
         if not self.demo_mode and not self.slow_mode:
             self.__scroll_to_element(element, selector, by)
+            if self.__needs_minimum_wait():
+                time.sleep(0.01)
         try:
             element.clear()  # May need https://stackoverflow.com/a/50691625
             backspaces = Keys.BACK_SPACE * 42  # Is the answer to everything
@@ -703,6 +721,10 @@ class BaseCase(unittest.TestCase):
                         raise e
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
+                    if self.__needs_minimum_wait():
+                        time.sleep(0.01)
+                        if self.undetectable:
+                            time.sleep(0.015)
         if (
             retry
             and element.get_attribute("value") != text
@@ -2880,11 +2902,16 @@ class BaseCase(unittest.TestCase):
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        if self.__needs_minimum_wait():
+            time.sleep(0.03)
         if type(frame) is str and self.is_element_visible(frame):
             try:
                 self.scroll_to(frame, timeout=1)
             except Exception:
                 pass
+        else:
+            if self.__needs_minimum_wait():
+                time.sleep(0.03)
         if self.recorder_mode and self._rec_overrides_switch:
             url = self.get_current_url()
             if url and len(url) > 0:
@@ -2908,6 +2935,8 @@ class BaseCase(unittest.TestCase):
             time.sleep(0.02)
         page_actions.switch_to_frame(self.driver, frame, timeout)
         self.wait_for_ready_state_complete()
+        if self.__needs_minimum_wait():
+            time.sleep(0.01)
 
     def switch_to_default_content(self):
         """Brings driver control outside the current iframe.
@@ -3763,7 +3792,7 @@ class BaseCase(unittest.TestCase):
             and hasattr(settings, "SKIP_JS_WAITS")
             and settings.SKIP_JS_WAITS
         ):
-            time.sleep(0.03)
+            time.sleep(0.05)
         return True
 
     def wait_for_angularjs(self, timeout=None, **kwargs):
@@ -5041,6 +5070,10 @@ class BaseCase(unittest.TestCase):
         if self.browser == "ie":
             loops = 1  # Override previous setting because IE is slow
         loops = int(loops)
+        if self.headless or self.headless2 or self.xvfb:
+            # Headless modes have less need for highlighting elements.
+            # However, highlight() may be used as a sleep alternative.
+            loops = int(math.ceil(loops * 0.5))
 
         o_bs = ""  # original_box_shadow
         try:
@@ -5615,6 +5648,7 @@ class BaseCase(unittest.TestCase):
 
     def show_file_choosers(self):
         """Display hidden file-chooser input fields on sites if present."""
+        self.wait_for_ready_state_complete()
         css_selector = 'input[type="file"]'
         try:
             self.wait_for_element_present(
@@ -5622,6 +5656,8 @@ class BaseCase(unittest.TestCase):
             )
         except Exception:
             pass
+        if self.__needs_minimum_wait():
+            time.sleep(0.05)
         try:
             self.show_elements(css_selector)
         except Exception:
@@ -5701,6 +5737,10 @@ class BaseCase(unittest.TestCase):
         "a"->"href", "img"->"src", "link"->"href", and "script"->"src".
         """
         self.wait_for_ready_state_complete()
+        if self.__needs_minimum_wait():
+            time.sleep(0.05)
+            if self.undetectable:
+                time.sleep(0.05)
         try:
             self.wait_for_element_present("body", timeout=1.5)
             self.wait_for_element_visible("body", timeout=1.5)
@@ -5708,6 +5748,8 @@ class BaseCase(unittest.TestCase):
             pass
         if self.__needs_minimum_wait():
             time.sleep(0.25)
+            if self.undetectable:
+                time.sleep(0.123)
         soup = self.get_beautiful_soup(self.get_page_source())
         page_url = self.get_current_url()
         links = page_utils._get_unique_links(page_url, soup)
@@ -11558,7 +11600,7 @@ class BaseCase(unittest.TestCase):
         """
         self.wait_for_ready_state_complete()
         if self.__needs_minimum_wait():
-            time.sleep(0.02)  # Force a minimum wait, even if skipping waits.
+            time.sleep(0.05)  # Force a minimum wait, even if skipping waits.
         try:
             self.wait_for_element_visible(
                 "body", timeout=settings.MINI_TIMEOUT
@@ -11792,8 +11834,6 @@ class BaseCase(unittest.TestCase):
 
     def __get_new_timeout(self, timeout):
         """When using --timeout_multiplier=#.#"""
-        import math
-
         self.__check_scope()
         try:
             timeout_multiplier = float(self.timeout_multiplier)
@@ -11889,7 +11929,7 @@ class BaseCase(unittest.TestCase):
         try:
             url = self.get_current_url()
             if url == self.__last_url_of_deferred_assert:
-                timeout = 1  # Was already on page (full wait not needed)
+                timeout = 0.6  # Was already on page (full wait not needed)
             else:
                 self.__last_url_of_deferred_assert = url
         except Exception:
@@ -11930,7 +11970,7 @@ class BaseCase(unittest.TestCase):
         try:
             url = self.get_current_url()
             if url == self.__last_url_of_deferred_assert:
-                timeout = 1  # Was already on page (full wait not needed)
+                timeout = 0.6  # Was already on page (full wait not needed)
             else:
                 self.__last_url_of_deferred_assert = url
         except Exception:
@@ -11971,7 +12011,7 @@ class BaseCase(unittest.TestCase):
         try:
             url = self.get_current_url()
             if url == self.__last_url_of_deferred_assert:
-                timeout = 1  # Was already on page (full wait not needed)
+                timeout = 0.6  # Was already on page (full wait not needed)
             else:
                 self.__last_url_of_deferred_assert = url
         except Exception:
@@ -12013,7 +12053,7 @@ class BaseCase(unittest.TestCase):
         try:
             url = self.get_current_url()
             if url == self.__last_url_of_deferred_assert:
-                timeout = 1  # Was already on page (full wait not needed)
+                timeout = 0.6  # Was already on page (full wait not needed)
             else:
                 self.__last_url_of_deferred_assert = url
         except Exception:
@@ -12250,7 +12290,7 @@ class BaseCase(unittest.TestCase):
 
         self.wait_for_ready_state_complete()
         if self.__needs_minimum_wait():
-            time.sleep(0.02)  # Force a minimum wait, even if skipping waits.
+            time.sleep(0.03)  # Force a minimum wait, even if skipping waits.
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
@@ -12300,7 +12340,9 @@ class BaseCase(unittest.TestCase):
             self.driver.execute_script(scroll_script)
             time.sleep(0.1)
         except Exception:
-            pass
+            time.sleep(0.05)
+        if self.__needs_minimum_wait():
+            time.sleep(0.05)
         try:
             if selenium4_or_newer and not center:
                 element_rect = element.rect
@@ -12937,8 +12979,6 @@ class BaseCase(unittest.TestCase):
             self.dashboard = sb_config.dashboard
             self._dash_initialized = sb_config._dashboard_initialized
             if self.dashboard and self._multithreaded:
-                import fasteners
-
                 self.dash_lock = fasteners.InterProcessLock(
                     constants.Dashboard.LOCKFILE
                 )
@@ -13693,8 +13733,6 @@ class BaseCase(unittest.TestCase):
 
     def _process_dashboard_entry(self, has_exception, init=False):
         if self._multithreaded:
-            import fasteners
-
             self.dash_lock = fasteners.InterProcessLock(
                 constants.Dashboard.LOCKFILE
             )
