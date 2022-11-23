@@ -1633,44 +1633,6 @@ def get_remote_driver(
                 desired_capabilities=capabilities,
                 keep_alive=True,
             )
-    elif browser_name == constants.Browser.IPHONE:
-        capabilities = webdriver.DesiredCapabilities.IPHONE
-        if selenium4_or_newer:
-            remote_options = ArgOptions()
-            remote_options.set_capability("cloud:options", desired_caps)
-            return webdriver.Remote(
-                command_executor=address,
-                options=remote_options,
-                keep_alive=True,
-            )
-        else:
-            warnings.simplefilter("ignore", category=DeprecationWarning)
-            for key in desired_caps.keys():
-                capabilities[key] = desired_caps[key]
-            return webdriver.Remote(
-                command_executor=address,
-                desired_capabilities=capabilities,
-                keep_alive=True,
-            )
-    elif browser_name == constants.Browser.IPAD:
-        capabilities = webdriver.DesiredCapabilities.IPAD
-        if selenium4_or_newer:
-            remote_options = ArgOptions()
-            remote_options.set_capability("cloud:options", desired_caps)
-            return webdriver.Remote(
-                command_executor=address,
-                options=remote_options,
-                keep_alive=True,
-            )
-        else:
-            warnings.simplefilter("ignore", category=DeprecationWarning)
-            for key in desired_caps.keys():
-                capabilities[key] = desired_caps[key]
-            return webdriver.Remote(
-                command_executor=address,
-                desired_capabilities=capabilities,
-                keep_alive=True,
-            )
     elif browser_name == constants.Browser.REMOTE:
         if selenium4_or_newer:
             remote_options = ArgOptions()

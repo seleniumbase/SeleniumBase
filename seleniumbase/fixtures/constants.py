@@ -311,8 +311,6 @@ class ValidBrowsers:
         "ie",
         "opera",
         "safari",
-        "iphone",
-        "ipad",
         "remote",
     ]
 
@@ -324,8 +322,6 @@ class Browser:
     INTERNET_EXPLORER = "ie"
     OPERA = "opera"
     SAFARI = "safari"
-    IPHONE = "iphone"
-    IPAD = "ipad"
     REMOTE = "remote"
 
     VERSION = {
@@ -335,8 +331,6 @@ class Browser:
         "ie": None,
         "opera": None,
         "safari": None,
-        "iphone": None,
-        "ipad": None,
         "remote": None,
     }
 
@@ -347,8 +341,6 @@ class Browser:
         "ie": None,
         "opera": None,
         "safari": None,
-        "iphone": None,
-        "ipad": None,
         "remote": None,
     }
 
