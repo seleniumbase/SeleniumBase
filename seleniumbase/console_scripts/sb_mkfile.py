@@ -11,7 +11,7 @@ Example:
 
 Options:
     -b / --basic  (Basic boilerplate / single-line test)
-    -r / --rec  (adds ipdb breakpoint for Recorder Mode)
+    -r / --rec  (add pdb++ breakpoint for Recorder Mode)
 
 Language Options:
     --en / --English    |    --zh / --Chinese
@@ -46,7 +46,7 @@ def invalid_run_command(msg=None):
     exp += "           sbase mkfile new_test.py\n"
     exp += "  Options:\n"
     exp += "           -b / --basic  (Basic boilerplate / single-line test)\n"
-    exp += "           -r / --rec  (adds ipdb breakpoint for Recorder Mode)\n"
+    exp += "           -r / --rec  (add pdb++ breakpoint for Recorder Mode)\n"
     exp += "  Language Options:\n"
     exp += "           --en / --English    |    --zh / --Chinese\n"
     exp += "           --nl / --Dutch      |    --fr / --French\n"
@@ -232,7 +232,7 @@ def main():
         data.append('        self.open("%s")' % url)
     else:
         data.append("        if self.recorder_ext and not self.xvfb:")
-        data.append("            import ipdb; ipdb.set_trace()")
+        data.append("            import pdb; pdb.set_trace()")
     if not basic and not recorder:
         data.append(
             '        self.type("input", "%s")' "  # selector, text" % goodbye

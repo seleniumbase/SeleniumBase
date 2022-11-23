@@ -14050,16 +14050,16 @@ class BaseCase(unittest.TestCase):
 
     def __activate_behave_post_mortem_debug_mode(self):
         """Activate Post Mortem Debug Mode for failing tests that use Behave"""
-        import ipdb
+        import pdb
 
-        ipdb.post_mortem(sb_config.behave_step.exc_traceback)
+        pdb.post_mortem(sb_config.behave_step.exc_traceback)
         # Post Mortem Debug Mode ("behave -D pdb")
 
     def __activate_debug_mode_in_teardown(self):
         """Activate Debug Mode in tearDown() when using "--final-debug"."""
-        import ipdb
+        import pdb
 
-        ipdb.set_trace()
+        pdb.set_trace()
         # Final Debug Mode ("--final-debug")
 
     def has_exception(self):

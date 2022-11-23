@@ -1,4 +1,5 @@
 import collections
+import pdb
 import sys
 from selenium import webdriver
 from seleniumbase.__version__ import __version__
@@ -14,6 +15,15 @@ from seleniumbase.plugins.sb_manager import SB  # noqa
 from seleniumbase.plugins.driver_manager import Driver  # noqa
 from seleniumbase.plugins.driver_manager import DriverContext  # noqa
 
+if hasattr(pdb, "DefaultConfig"):
+    # Only load pdbpp configuration if pdbpp is installed
+    pdb.DefaultConfig.filename_color = pdb.Color.blue
+    pdb.DefaultConfig.line_number_color = pdb.Color.turquoise
+    pdb.DefaultConfig.show_hidden_frames_count = False
+    pdb.DefaultConfig.disable_pytest_capturing = True
+    pdb.DefaultConfig.enable_hidden_frames = False
+    pdb.DefaultConfig.truncate_long_lines = True
+    pdb.DefaultConfig.sticky_by_default = True
 if sys.version_info[0] >= 3:
     from seleniumbase import translate  # noqa
 if sys.version_info >= (3, 7):

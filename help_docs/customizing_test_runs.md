@@ -250,7 +250,7 @@ You can use the following calls in your scripts to help you debug issues:
 
 ```python
 import time; time.sleep(5)  # Makes the test wait and do nothing for 5 seconds.
-import ipdb; ipdb.set_trace()  # Enter debugging mode. n = next, c = continue, s = step.
+import pdb; pdb.set_trace()  # Enter debugging mode. n = next, c = continue, s = step.
 import pytest; pytest.set_trace()  # Enter debugging mode. n = next, c = continue, s = step.
 ```
 
@@ -260,7 +260,7 @@ To pause an active test that throws an exception or error, add ``--pdb -s``:
 pytest my_first_test.py --pdb -s
 ```
 
-The code above will leave your browser window open in case there's a failure. (ipdb commands: 'c', 's', 'n' => continue, step, next).
+The code above will leave your browser window open in case there's a failure. (pdb commands: 'c', 's', 'n' => continue, step, next).
 
 <h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> Combinations of options:</h3>
 

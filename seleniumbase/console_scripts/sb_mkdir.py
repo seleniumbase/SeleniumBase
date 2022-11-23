@@ -123,10 +123,7 @@ def main():
 
     data = []
     data.append("[pytest]")
-    data.append(
-        "addopts = --capture=no -p no:cacheprovider "
-        "--pdbcls=IPython.terminal.debugger:TerminalPdb"
-    )
+    data.append("addopts = --capture=no -p no:cacheprovider")
     data.append("filterwarnings =")
     data.append("    ignore::pytest.PytestWarning")
     data.append("    ignore:.*U.*mode is deprecated:DeprecationWarning")
@@ -164,9 +161,6 @@ def main():
     data = []
     data.append("[flake8]")
     data.append("exclude=recordings,temp")
-    data.append("")
-    data.append("[ipdb]")
-    data.append("context=5")
     data.append("")
     data.append("[nosetests]")
     data.append("nocapture=1")
