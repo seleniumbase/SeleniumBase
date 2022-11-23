@@ -43,6 +43,7 @@ import time
 import unittest
 import urllib3
 from contextlib import contextmanager
+from importlib.util import find_spec
 from selenium.common.exceptions import (
     ElementClickInterceptedException as ECI_Exception,
     ElementNotInteractableException as ENI_Exception,
@@ -5901,11 +5902,13 @@ class BaseCase(unittest.TestCase):
 
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", category=UserWarning)
-            try:
-                from pdfminer.high_level import extract_text
-            except Exception:
-                shared_utils.pip_install("pdfminer.six")
-                from pdfminer.high_level import extract_text
+            pip_find_lock = fasteners.InterProcessLock(
+                constants.PipInstall.FINDLOCK
+            )
+            with pip_find_lock:  # Prevent multi-processes mode issues
+                if not find_spec("pdfminer.six"):
+                    shared_utils.pip_install("pdfminer.six")
+            from pdfminer.high_level import extract_text
 
         if not password:
             password = ""

@@ -9,6 +9,7 @@ import sys
 import time
 import urllib3
 import warnings
+from importlib.util import find_spec
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.edge.service import Service as EdgeService
@@ -1232,17 +1233,15 @@ def get_remote_driver(
     device_pixel_ratio,
 ):
     if use_wire and selenium4_or_newer:
-        driver_fixing_lock = fasteners.InterProcessLock(
-            constants.MultiBrowser.DRIVER_FIXING_LOCK
+        pip_find_lock = fasteners.InterProcessLock(
+            constants.PipInstall.FINDLOCK
         )
-        with driver_fixing_lock:  # Prevent multi-processes mode issues
-            try:
-                from seleniumwire import webdriver
-            except Exception:
+        with pip_find_lock:  # Prevent multi-processes mode issues
+            if not find_spec("selenium-wire"):
                 shared_utils.pip_install(
                     "selenium-wire", version=constants.SeleniumWire.VER
                 )
-                from seleniumwire import webdriver
+        from seleniumwire import webdriver
     else:
         from selenium import webdriver
 
