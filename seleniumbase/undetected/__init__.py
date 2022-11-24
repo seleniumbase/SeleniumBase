@@ -225,8 +225,6 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                     "--password-store=basic",
                 ]
             )
-        options.add_argument("--disable-renderer-backgrounding")
-        options.add_argument("--disable-backgrounding-occluded-windows")
         if headless or options.headless:
             options.headless = True
             options.add_argument("--no-sandbox")

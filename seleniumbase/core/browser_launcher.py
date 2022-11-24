@@ -670,6 +670,9 @@ def _set_chrome_options(
     chrome_options.add_argument("--disable-translate")
     if not enable_3d_apis:
         chrome_options.add_argument("--disable-3d-apis")
+    if headless or headless2 or is_using_uc(undetectable, browser_name):
+        chrome_options.add_argument("--disable-renderer-backgrounding")
+    chrome_options.add_argument("--disable-backgrounding-occluded-windows")
     if (
         is_using_uc(undetectable, browser_name)
         and (
@@ -2062,6 +2065,9 @@ def get_local_driver(
         edge_options.add_argument("--disable-prompt-on-repost")
         if not enable_3d_apis:
             edge_options.add_argument("--disable-3d-apis")
+        if headless or headless2 or is_using_uc(undetectable, browser_name):
+            edge_options.add_argument("--disable-renderer-backgrounding")
+        edge_options.add_argument("--disable-backgrounding-occluded-windows")
         if (
             selenium4_or_newer
             and page_load_strategy
