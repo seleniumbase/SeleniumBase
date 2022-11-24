@@ -96,6 +96,11 @@ class Dashboard:
 
 
 class PipInstall:
+    # FINDLOCK - Checking to see if a package is installed
+    # (Make sure a package isn't installed multiple times)
+    FINDLOCK = Files.DOWNLOADS_FOLDER + "/pipfinding.lock"
+    # LOCKFILE - Locking before performing any pip install
+    # (Make sure that only one package installs at a time)
     LOCKFILE = Files.DOWNLOADS_FOLDER + "/pipinstall.lock"
 
 
