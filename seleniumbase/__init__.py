@@ -1,5 +1,6 @@
 import collections
 import pdb
+import shutil
 import sys
 from selenium import webdriver
 from seleniumbase.__version__ import __version__
@@ -24,6 +25,11 @@ if hasattr(pdb, "DefaultConfig"):
     pdb.DefaultConfig.enable_hidden_frames = False
     pdb.DefaultConfig.truncate_long_lines = True
     pdb.DefaultConfig.sticky_by_default = True
+    # Fix spacing for line numbers > 9999
+    pdb.Pdb.get_terminal_size = lambda x: (
+        shutil.get_terminal_size()[0] - 1,
+        shutil.get_terminal_size()[1],
+    )
 if sys.version_info[0] >= 3:
     from seleniumbase import translate  # noqa
 if sys.version_info >= (3, 7):
