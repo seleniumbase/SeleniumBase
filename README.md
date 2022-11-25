@@ -451,7 +451,7 @@ pytest my_first_test.py --demo
 
 ```python
 import time; time.sleep(5)  # Makes the test wait and do nothing for 5 seconds.
-import ipdb; ipdb.set_trace()  # Enter debugging mode. n = next, c = continue, s = step.
+import pdb; pdb.set_trace()  # Enter debugging mode. n = next, c = continue, s = step.
 import pytest; pytest.set_trace()  # Enter debugging mode. n = next, c = continue, s = step.
 ```
 
@@ -461,7 +461,7 @@ import pytest; pytest.set_trace()  # Enter debugging mode. n = next, c = continu
 pytest my_first_test.py --pdb
 ```
 
-(**``ipdb``** console commands: ``n``, ``c``, ``s`` => ``next``, ``continue``, ``step``).
+(**``pdb``** console commands: ``n``, ``c``, ``s`` => ``next``, ``continue``, ``step``).
 
 <a id="pytest_options"></a>
 🔵 Here are some useful command-line options that come with <code>pytest</code>:

@@ -130,7 +130,7 @@ setup(
         'packaging>=21.3;python_version>="3.6"',
         'setuptools>=44.1.1;python_version<"3.6"',
         'setuptools>=59.6.0;python_version>="3.6" and python_version<"3.7"',
-        'setuptools>=65.5.1;python_version>="3.7"',
+        'setuptools>=65.6.3;python_version>="3.7"',
         'tomli>=1.2.3;python_version>="3.6" and python_version<"3.7"',
         'tomli>=2.0.1;python_version>="3.7"',
         "tqdm>=4.64.1",
@@ -139,8 +139,6 @@ setup(
         'attrs>=21.4.0;python_version<"3.6"',
         'attrs>=22.1.0;python_version>="3.6"',
         'PyYAML>=6.0;python_version>="3.6"',
-        'traitlets>=4.3.3;python_version<"3.7"',
-        'traitlets>=5.5.0;python_version>="3.7"',
         'certifi>=2021.10.8;python_version<"3.6"',
         'certifi>=2022.9.24;python_version>="3.6"',
         'filelock>=3.2.1;python_version<"3.6"',
@@ -153,12 +151,6 @@ setup(
         'pyparsing>=3.0.7;python_version>="3.6" and python_version<"3.7"',
         'pyparsing>=3.0.9;python_version>="3.7"',
         "six==1.16.0",
-        'ipdb==0.13.4;python_version<"3.6"',
-        'ipdb==0.13.9;python_version>="3.6"',
-        'parso==0.7.1;python_version<"3.6"',
-        'parso==0.8.3;python_version>="3.6"',
-        'jedi==0.17.2;python_version<"3.6"',
-        'jedi==0.18.1;python_version>="3.6"',
         'idna==2.10;python_version<"3.6"',  # Must stay in sync with "requests"
         'idna==3.4;python_version>="3.6"',  # Must stay in sync with "requests"
         'chardet==3.0.4;python_version<"3.6"',  # Stay in sync with "requests"
@@ -166,7 +158,7 @@ setup(
         'chardet==5.0.0;python_version>="3.7"',  # Stay in sync with "requests"
         'charset-normalizer==2.0.12;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
         'charset-normalizer==2.1.1;python_version>="3.7"',  # Sync "requests"
-        'urllib3==1.26.12',  # Stay in sync with "requests"
+        'urllib3==1.26.13',  # Stay in sync with "requests"
         'requests==2.27.1;python_version<"3.7"',
         'requests==2.28.1;python_version>="3.7"',
         'requests-toolbelt==0.10.1',
@@ -180,7 +172,7 @@ setup(
         'pyopenssl==22.1.0;python_version>="3.7"',
         'wsproto==1.2.0;python_version>="3.7"',
         'selenium==3.141.0;python_version<"3.7"',
-        'selenium==4.6.0;python_version>="3.7"',
+        'selenium==4.6.1;python_version>="3.7"',
         'msedge-selenium-tools==3.141.3;python_version<"3.7"',
         'more-itertools==5.0.0;python_version<"3.6"',
         'more-itertools==8.14.0;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
@@ -208,7 +200,7 @@ setup(
         'pytest-metadata==2.0.4;python_version>="3.7"',
         "pytest-ordering==0.6",
         'pytest-rerunfailures==8.0;python_version<"3.6"',
-        'pytest-rerunfailures==10.2;python_version>="3.6"',
+        'pytest-rerunfailures==10.3;python_version>="3.6"',
         'pytest-xdist==1.34.0;python_version<"3.6"',
         'pytest-xdist==2.5.0;python_version>="3.6" and python_version<"3.7"',
         'pytest-xdist==3.0.2;python_version>="3.7"',
@@ -226,14 +218,10 @@ setup(
         'cryptography==38.0.3;python_version>="3.7"',
         'pygments==2.5.2;python_version<"3.6"',
         'pygments==2.13.0;python_version>="3.6"',
-        'prompt-toolkit==1.0.18;python_version<"3.6"',
-        'prompt-toolkit==3.0.32;python_version>="3.6"',
-        'decorator==4.4.2;python_version<"3.6"',
-        'decorator==5.1.1;python_version>="3.6"',
-        'ipython==5.10.0;python_version<"3.6"',
-        'ipython==7.16.1;python_version>="3.6" and python_version<"3.7"',
-        'ipython==7.34.0;python_version>="3.7"',  # Requires matplotlib-inline
-        'matplotlib-inline==0.1.6;python_version>="3.7"',  # ipython needs this
+        "wmctrl==0.4",
+        "pyrepl==0.9.0",
+        "fancycompleter==0.9.1",
+        "pdbpp==0.10.3",
         'colorama==0.4.6;python_version<"3.6"',
         'colorama==0.4.5;python_version>="3.6" and python_version<"3.7"',
         'colorama==0.4.6;python_version>="3.7"',
@@ -241,12 +229,9 @@ setup(
         'importlib-metadata==2.1.3;python_version<"3.6"',
         'importlib-metadata==4.2.0;python_version>="3.6" and python_version<"3.8"',  # noqa: E501
         "pycparser==2.21",
-        'pymysql==0.10.1;python_version<"3.6"',
-        'pymysql==1.0.2;python_version>="3.6"',
         'pyotp==2.3.0;python_version<"3.6"',
         'pyotp==2.7.0;python_version>="3.6"',
         "cffi==1.15.1",
-        "toml==0.10.2",
         'typing-extensions==3.10.0.2;python_version<"3.6"',  # <3.9 for "rich"
         'typing-extensions==4.1.1;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
         'typing-extensions==4.2.0;python_version>="3.7" and python_version<"3.9"',  # noqa: E501

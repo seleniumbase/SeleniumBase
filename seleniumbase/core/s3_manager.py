@@ -1,17 +1,12 @@
-"""
-Methods for uploading/managing files on Amazon S3.
-"""
-from seleniumbase.config import settings
-from seleniumbase.fixtures import shared_utils
+"""Methods for uploading/managing files on Amazon S3."""
 
 already_uploaded_files = []
 
 
 class S3LoggingBucket(object):
-    """
-    A class for uploading log files from tests to Amazon S3.
-    Those files can then be shared easily.
-    """
+    """A class for uploading log files from tests to Amazon S3.
+    Those files can then be shared easily."""
+    from seleniumbase.config import settings
 
     def __init__(
         self,
@@ -20,23 +15,26 @@ class S3LoggingBucket(object):
         selenium_access_key=settings.S3_SELENIUM_ACCESS_KEY,
         selenium_secret_key=settings.S3_SELENIUM_SECRET_KEY,
     ):
-        try:
-            from boto.s3.connection import S3Connection
-        except Exception:
-            shared_utils.pip_install("boto", version="2.49.0")
-            from boto.s3.connection import S3Connection
+        import fasteners
+        from seleniumbase.fixtures import constants
+        from seleniumbase.fixtures import shared_utils
 
+        pip_find_lock = fasteners.InterProcessLock(
+            constants.PipInstall.FINDLOCK
+        )
+        with pip_find_lock:
+            try:
+                from boto.s3.connection import S3Connection
+            except Exception:
+                shared_utils.pip_install("boto", version="2.49.0")
+                from boto.s3.connection import S3Connection
         self.conn = S3Connection(selenium_access_key, selenium_secret_key)
         self.bucket = self.conn.get_bucket(log_bucket)
         self.bucket_url = bucket_url
 
     def get_key(self, file_name):
         """Create a new Key instance with the given name."""
-        try:
-            from boto.s3.key import Key
-        except Exception:
-            shared_utils.pip_install("boto", version="2.49.0")
-            from boto.s3.key import Key
+        from boto.s3.key import Key
 
         return Key(bucket=self.bucket, name=file_name)
 

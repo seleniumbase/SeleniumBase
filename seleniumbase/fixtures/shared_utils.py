@@ -1,6 +1,5 @@
-"""
-This module contains shared utility methods.
-"""
+"""Shared utility methods."""
+
 import subprocess
 import sys
 from seleniumbase.fixtures import constants
@@ -50,9 +49,7 @@ def get_terminal_width():
 
 
 def format_exc(exception, message):
-    """
-    Formats an exception message to make the output cleaner.
-    """
+    """Formats an exception message to make the output cleaner."""
     from selenium.common.exceptions import ElementNotVisibleException
     from selenium.common.exceptions import NoAlertPresentException
     from selenium.common.exceptions import NoSuchAttributeException

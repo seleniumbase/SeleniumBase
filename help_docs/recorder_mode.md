@@ -26,12 +26,20 @@ sbase mkrec new_test.py --url=wikipedia.org
 
 pytest new_test.py --rec -q -s --url=wikipedia.org
 
-> .../SeleniumBase/examples/new_test.py(7)test_recording()
-      5     def test_recording(self):
-      6         if self.recorder_ext and not self.xvfb:
-----> 7             import ipdb; ipdb.set_trace()
+>>>>>>>>>>>>>>>>>> PDB set_trace >>>>>>>>>>>>>>>>>
 
-ipdb> c
+-> import pdb; pdb.set_trace()
+> .../YOUR_CURRENT_DIRECTORY/new_test.py(9)
+
+   5         def test_recording(self):
+   6             if self.recorder_ext and not self.xvfb:
+   7                 # When you are done recording actions,
+   8                 # type "c" and press [ENTER] to continue
+   9  ->             import pdb; pdb.set_trace()
+ return None
+(Pdb++) c
+
+>>>>>>>>>>>>>>>>>> PDB continue >>>>>>>>>>>>>>>>>>
 
 >>> RECORDING SAVED as: recordings/new_test_rec.py
 **************************************************
@@ -71,7 +79,7 @@ The first command creates a boilerplate test with a breakpoint; the second comma
 ⏺️ You can also use the Recorder to add code to an existing test. To do that, you'll first need to create a breakpoint in your code to insert manual browser actions:
 
 ```python
-import ipdb; ipdb.set_trace()
+import pdb; pdb.set_trace()
 ```
 
 Now you'll be able to run your test with ``pytest``, and it will stop at the breakpoint for you to add in actions: (Press ``c`` and ``ENTER`` on the command-line to continue from the breakpoint.)
@@ -80,7 +88,7 @@ Now you'll be able to run your test with ``pytest``, and it will stop at the bre
 pytest TEST_NAME.py --rec -s
 ```
 
-⏺️ You can also set a breakpoint at the start of your test by adding ``--trace`` as a ``pytest`` command-line option: (This is useful when running Recorder Mode without any ``ipdb`` breakpoints.)
+⏺️ You can also set a breakpoint at the start of your test by adding ``--trace`` as a ``pytest`` command-line option: (This is useful when running Recorder Mode without any ``pdb`` breakpoints.)
 
 ```bash
 pytest TEST_NAME.py --trace --rec -s

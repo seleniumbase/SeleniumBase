@@ -1,25 +1,32 @@
-"""
-Wrapper for MySQL DB functions to make life easier.
-"""
-
-import sys
-import time
-from seleniumbase import config as sb_config
-from seleniumbase.config import settings
-from seleniumbase.core import settings_parser
+"""Wrapper for MySQL DB functions."""
 
 
 class DatabaseManager:
-    """
-    This class wraps MySQL database methods for easy use.
-    """
+    """This class wraps MySQL database methods for easy use."""
 
     def __init__(self, database_env="test", conf_creds=None):
-        """
-        Create a connection to the MySQL DB.
-        """
-        import pymysql
+        """Create a connection to the MySQL DB."""
+        import fasteners
+        import sys
+        import time
+        from seleniumbase import config as sb_config
+        from seleniumbase.config import settings
+        from seleniumbase.core import settings_parser
+        from seleniumbase.fixtures import constants
+        from seleniumbase.fixtures import shared_utils
 
+        pip_find_lock = fasteners.InterProcessLock(
+            constants.PipInstall.FINDLOCK
+        )
+        with pip_find_lock:
+            try:
+                import pymysql
+            except Exception:
+                if sys.version_info >= (3, 6):
+                    shared_utils.pip_install("pymysql", version="1.0.2")
+                else:
+                    shared_utils.pip_install("pymysql", version="0.10.1")
+                import pymysql
         db_server = settings.DB_HOST
         db_port = settings.DB_PORT
         db_user = settings.DB_USERNAME
@@ -70,27 +77,21 @@ class DatabaseManager:
             raise Exception("Unable to connect to Database after 3 retries.")
 
     def query_fetch_all(self, query, values):
-        """
-        Executes a db query, gets all the values, and closes the connection.
-        """
+        """Execute db query, get all the values, and close the connection."""
         self.cursor.execute(query, values)
         retval = self.cursor.fetchall()
         self.__close_db()
         return retval
 
     def query_fetch_one(self, query, values):
-        """
-        Executes a db query, gets the first value, and closes the connection.
-        """
+        """Execute db query, get the first value, and close the connection."""
         self.cursor.execute(query, values)
         retval = self.cursor.fetchone()
         self.__close_db()
         return retval
 
     def execute_query(self, query, values):
-        """
-        Executes a query to the test_db and closes the connection afterwards.
-        """
+        """Execute db query, close the connection, and return the results."""
         retval = self.cursor.execute(query, values)
         self.__close_db()
         return retval

@@ -279,7 +279,7 @@ def recorder_still_running():
 
 def show_still_running_warning():
     """Give the user a chance to end the recording safely via the
-    pytest ipdb Debug Mode so that processes such as chromedriver
+    pytest pdb Debug Mode so that processes such as chromedriver
     and Python don't remain open and hanging in the background."""
     messagebox.showwarning(
         "SeleniumBase Recorder: Still Running!",

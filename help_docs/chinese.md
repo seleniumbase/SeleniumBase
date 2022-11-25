@@ -325,11 +325,11 @@ pytest --collect-only -q
 ```
 
 您可以在脚本中使用以下内容来帮助您调试问题:
-(<i>如果使用ipdb，请确保将“-s”添加到命令行选项中，除非已经在pytest.ini中</i>)
+(<i>如果使用pdb，请确保将“-s”添加到命令行选项中，除非已经在pytest.ini中</i>)
 
 ```python
 import time; time.sleep(5)  # Makes the test wait and do nothing for 5 seconds.
-import ipdb; ipdb.set_trace()  # Enter debugging mode. n = next, c = continue, s = step.
+import pdb; pdb.set_trace()  # Enter debugging mode. n = next, c = continue, s = step.
 import pytest; pytest.set_trace()  # Enter debugging mode. n = next, c = continue, s = step.
 ```
 
@@ -339,7 +339,7 @@ import pytest; pytest.set_trace()  # Enter debugging mode. n = next, c = continu
 pytest my_first_test.py --pdb -s
 ```
 
-上面的代码将在出现故障时打开浏览器窗口。(ipdb命令:'n'， 'c'， 's' => next, continue, step)。
+上面的代码将在出现故障时打开浏览器窗口。(pdb命令:'n'， 'c'， 's' => next, continue, step)。
 
 下面是Pytest附带的一些有用的命令行选项:
 

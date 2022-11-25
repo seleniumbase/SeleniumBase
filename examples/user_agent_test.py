@@ -12,8 +12,8 @@ class UserAgentTests(BaseCase):
         else:
             # User-agent was overridden using: --agent=STRING
             self._print("\n\nUser-Agent override = %s\n" % user_agent_detected)
-        self.sleep(3)
-
+        if not (self.headless or self.headless2 or self.xvfb):
+            self.sleep(3)
         if not self.is_chromium():
             # Skip the rest of the test if not using a Chromium browser
             msg = "\n* execute_cdp_cmd() is only for Chromium browsers"
@@ -34,7 +34,8 @@ class UserAgentTests(BaseCase):
             self.open("https://www.whatsmyua.info/")
             user_agent_detected = self.get_text("#custom-ua-string")
             self._print("\nUser-Agent override = %s\n" % user_agent_detected)
-            self.sleep(3)
+            if not (self.headless or self.headless2 or self.xvfb):
+                self.sleep(3)
         finally:
             # Reset the user-agent back to the original
             self.driver.execute_cdp_cmd(

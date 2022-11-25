@@ -96,6 +96,11 @@ class Dashboard:
 
 
 class PipInstall:
+    # FINDLOCK - Checking to see if a package is installed
+    # (Make sure a package isn't installed multiple times)
+    FINDLOCK = Files.DOWNLOADS_FOLDER + "/pipfinding.lock"
+    # LOCKFILE - Locking before performing any pip install
+    # (Make sure that only one package installs at a time)
     LOCKFILE = Files.DOWNLOADS_FOLDER + "/pipinstall.lock"
 
 
@@ -311,8 +316,6 @@ class ValidBrowsers:
         "ie",
         "opera",
         "safari",
-        "iphone",
-        "ipad",
         "remote",
     ]
 
@@ -324,8 +327,6 @@ class Browser:
     INTERNET_EXPLORER = "ie"
     OPERA = "opera"
     SAFARI = "safari"
-    IPHONE = "iphone"
-    IPAD = "ipad"
     REMOTE = "remote"
 
     VERSION = {
@@ -335,8 +336,6 @@ class Browser:
         "ie": None,
         "opera": None,
         "safari": None,
-        "iphone": None,
-        "ipad": None,
         "remote": None,
     }
 
@@ -347,8 +346,6 @@ class Browser:
         "ie": None,
         "opera": None,
         "safari": None,
-        "iphone": None,
-        "ipad": None,
         "remote": None,
     }
 

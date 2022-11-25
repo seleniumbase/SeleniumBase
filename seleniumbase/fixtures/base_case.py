@@ -32,8 +32,10 @@ Code becomes greatly simplified and easier to maintain.
 """
 
 import codecs
+import fasteners
 import json
 import logging
+import math
 import os
 import re
 import shutil
@@ -58,6 +60,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.remote_connection import LOGGER
 from seleniumbase import config as sb_config
 from seleniumbase.__version__ import __version__
+from seleniumbase.common import decorators
 from seleniumbase.config import settings
 from seleniumbase.core import download_helper
 from seleniumbase.core import log_helper
@@ -167,7 +170,9 @@ class BaseCase(unittest.TestCase):
         self.__check_scope()
         self.__check_browser()
         if self.__needs_minimum_wait():
-            time.sleep(0.01)
+            time.sleep(0.025)
+            if self.undetectable:
+                time.sleep(0.025)
         pre_action_url = None
         try:
             pre_action_url = self.driver.current_url
@@ -242,6 +247,8 @@ class BaseCase(unittest.TestCase):
             self.wait_for_ready_state_complete()
         if self.__needs_minimum_wait():
             time.sleep(0.03)  # Force a minimum wait, even if skipping waits.
+            if self.undetectable:
+                time.sleep(0.02)
         self.__demo_mode_pause_if_active()
 
     def get(self, url):
@@ -288,6 +295,8 @@ class BaseCase(unittest.TestCase):
             return
         if self.browser == "safari":
             self.wait_for_ready_state_complete()
+        if self.__needs_minimum_wait():
+            time.sleep(0.022)
         element = page_actions.wait_for_element_visible(
             self.driver,
             selector,
@@ -466,7 +475,7 @@ class BaseCase(unittest.TestCase):
             except Exception:
                 pass
             if self.__needs_minimum_wait():
-                time.sleep(0.02)
+                time.sleep(0.05)
         else:
             # A smaller subset of self.wait_for_ready_state_complete()
             try:
@@ -474,18 +483,26 @@ class BaseCase(unittest.TestCase):
             except Exception:
                 pass
             if self.__needs_minimum_wait():
-                time.sleep(0.01)
+                time.sleep(0.025)
+                if self.undetectable:
+                    time.sleep(0.025)
             try:
                 if self.driver.current_url != pre_action_url:
                     self.__ad_block_as_needed()
                     self.__disable_beforeunload_as_needed()
+                    if self.__needs_minimum_wait():
+                        time.sleep(0.025)
+                        if self.undetectable:
+                            time.sleep(0.025)
             except Exception:
                 try:
                     self.wait_for_ready_state_complete()
                 except Exception:
                     pass
                 if self.__needs_minimum_wait():
-                    time.sleep(0.02)
+                    time.sleep(0.025)
+                    if self.undetectable:
+                        time.sleep(0.025)
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self.__demo_mode_pause_if_active()
@@ -540,6 +557,8 @@ class BaseCase(unittest.TestCase):
         if not self.demo_mode and not self.slow_mode:
             self.__scroll_to_element(element, selector, by)
         self.wait_for_ready_state_complete()
+        if self.__needs_minimum_wait():
+            time.sleep(0.02)
         # Find the element one more time in case scrolling hid it
         element = page_actions.wait_for_element_visible(
             self.driver,
@@ -588,6 +607,8 @@ class BaseCase(unittest.TestCase):
                 self.__demo_mode_pause_if_active(tiny=True)
         elif self.slow_mode:
             self.__slow_mode_pause_if_active()
+        elif self.__needs_minimum_wait():
+            time.sleep(0.02)
 
     def click_chain(
         self, selectors_list, by="css selector", timeout=None, spacing=0
@@ -641,6 +662,8 @@ class BaseCase(unittest.TestCase):
         self.__demo_mode_highlight_if_active(selector, by)
         if not self.demo_mode and not self.slow_mode:
             self.__scroll_to_element(element, selector, by)
+            if self.__needs_minimum_wait():
+                time.sleep(0.01)
         try:
             element.clear()  # May need https://stackoverflow.com/a/50691625
             backspaces = Keys.BACK_SPACE * 42  # Is the answer to everything
@@ -702,6 +725,10 @@ class BaseCase(unittest.TestCase):
                         raise e
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
+                    if self.__needs_minimum_wait():
+                        time.sleep(0.01)
+                        if self.undetectable:
+                            time.sleep(0.015)
         if (
             retry
             and element.get_attribute("value") != text
@@ -2119,6 +2146,8 @@ class BaseCase(unittest.TestCase):
         If element is not in an iframe, returns None, and nothing happens.
         May not work if multiple iframes are nested within each other."""
         self.wait_for_ready_state_complete()
+        if self.__needs_minimum_wait():
+            time.sleep(0.02)
         selector, by = self.__recalculate_selector(selector, by)
         if self.is_element_present(selector, by=by):
             return None
@@ -2137,11 +2166,15 @@ class BaseCase(unittest.TestCase):
                 continue
             try:
                 self.switch_to_frame(iframe_identifier, timeout=1)
+                if self.__needs_minimum_wait():
+                    time.sleep(0.02)
                 if self.is_element_present(selector, by=by):
                     return iframe_identifier
             except Exception:
                 pass
             self.switch_to_default_content()
+            if self.__needs_minimum_wait():
+                time.sleep(0.02)
         try:
             self.switch_to_frame(selector, timeout=1)
             return selector
@@ -2879,11 +2912,18 @@ class BaseCase(unittest.TestCase):
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        if self.__needs_minimum_wait():
+            time.sleep(0.035)
         if type(frame) is str and self.is_element_visible(frame):
             try:
                 self.scroll_to(frame, timeout=1)
+                if self.__needs_minimum_wait():
+                    time.sleep(0.01)
             except Exception:
-                pass
+                time.sleep(0.01)
+        else:
+            if self.__needs_minimum_wait():
+                time.sleep(0.04)
         if self.recorder_mode and self._rec_overrides_switch:
             url = self.get_current_url()
             if url and len(url) > 0:
@@ -2904,9 +2944,11 @@ class BaseCase(unittest.TestCase):
                         return
         self.wait_for_ready_state_complete()
         if self.__needs_minimum_wait():
-            time.sleep(0.02)
+            time.sleep(0.035)
         page_actions.switch_to_frame(self.driver, frame, timeout)
         self.wait_for_ready_state_complete()
+        if self.__needs_minimum_wait():
+            time.sleep(0.015)
 
     def switch_to_default_content(self):
         """Brings driver control outside the current iframe.
@@ -3169,15 +3211,6 @@ class BaseCase(unittest.TestCase):
 
     def switch_to_default_window(self):
         self.switch_to_window(0)
-
-    def __switch_to_newest_window_if_not_blank(self):
-        current_window = self.driver.current_window_handle
-        try:
-            self.switch_to_window(len(self.driver.window_handles) - 1)
-            if self.get_current_url() == "about:blank":
-                self.switch_to_window(current_window)
-        except Exception:
-            self.switch_to_window(current_window)
 
     def switch_to_newest_window(self):
         self.switch_to_window(len(self.driver.window_handles) - 1)
@@ -3717,30 +3750,6 @@ class BaseCase(unittest.TestCase):
             if cookies_file_path.endswith(".txt"):
                 os.remove(cookies_file_path)
 
-    def __needs_minimum_wait(self):
-        if (
-            self.page_load_strategy == "none"
-            and hasattr(settings, "SKIP_JS_WAITS")
-            and settings.SKIP_JS_WAITS
-        ):
-            return True
-        else:
-            return False
-
-    def __ad_block_as_needed(self):
-        """This is an internal method for handling ad-blocking.
-        Use "pytest --ad-block" to enable this during tests.
-        When not Chromium or in headless mode, use the hack."""
-        if self.ad_block_on and (self.headless or not self.is_chromium()):
-            # (Chromium browsers in headed mode use the extension instead)
-            current_url = self.get_current_url()
-            if not current_url == self.__last_page_load_url:
-                if page_actions.is_element_present(
-                    self.driver, "iframe", By.CSS_SELECTOR
-                ):
-                    self.ad_block()
-                self.__last_page_load_url = current_url
-
     def wait_for_ready_state_complete(self, timeout=None):
         """Waits for the "readyState" of the page to be "complete".
         Returns True when the method completes."""
@@ -3762,7 +3771,7 @@ class BaseCase(unittest.TestCase):
             and hasattr(settings, "SKIP_JS_WAITS")
             and settings.SKIP_JS_WAITS
         ):
-            time.sleep(0.03)
+            time.sleep(0.05)
         return True
 
     def wait_for_angularjs(self, timeout=None, **kwargs):
@@ -3820,6 +3829,13 @@ class BaseCase(unittest.TestCase):
             )
         xpi_path = os.path.abspath(xpi_file)
         self.driver.install_addon(xpi_path, temporary=True)
+
+    def activate_jquery(self):
+        """If "jQuery is not defined", use this method to activate it for use.
+        This happens because jQuery is not always defined on web sites."""
+        self.wait_for_ready_state_complete()
+        js_utils.activate_jquery(self.driver)
+        self.wait_for_ready_state_complete()
 
     def activate_demo_mode(self):
         self.demo_mode = True
@@ -4915,22 +4931,6 @@ class BaseCase(unittest.TestCase):
             out_file.close()
             print("Created recordings/features/steps/imported.py")
 
-    def activate_jquery(self):
-        """If "jQuery is not defined", use this method to activate it for use.
-        This happens because jQuery is not always defined on web sites."""
-        self.wait_for_ready_state_complete()
-        js_utils.activate_jquery(self.driver)
-        self.wait_for_ready_state_complete()
-
-    def __are_quotes_escaped(self, string):
-        return js_utils.are_quotes_escaped(string)
-
-    def __escape_quotes_if_needed(self, string):
-        return js_utils.escape_quotes_if_needed(string)
-
-    def __is_in_frame(self):
-        return js_utils.is_in_frame(self.driver)
-
     def bring_active_window_to_front(self):
         """Brings the active browser window to the front.
         This is useful when multiple drivers are being used."""
@@ -5040,6 +5040,10 @@ class BaseCase(unittest.TestCase):
         if self.browser == "ie":
             loops = 1  # Override previous setting because IE is slow
         loops = int(loops)
+        if self.headless or self.headless2 or self.xvfb:
+            # Headless modes have less need for highlighting elements.
+            # However, highlight() may be used as a sleep alternative.
+            loops = int(math.ceil(loops * 0.5))
 
         o_bs = ""  # original_box_shadow
         try:
@@ -5081,14 +5085,6 @@ class BaseCase(unittest.TestCase):
                         action = ["hi_li", orig_selector, origin, time_stamp]
                         self.__extra_actions.append(action)
         time.sleep(0.065)
-
-    def __highlight_with_js(self, selector, loops, o_bs):
-        self.wait_for_ready_state_complete()
-        js_utils.highlight_with_js(self.driver, selector, loops, o_bs)
-
-    def __highlight_with_jquery(self, selector, loops, o_bs):
-        self.wait_for_ready_state_complete()
-        js_utils.highlight_with_jquery(self.driver, selector, loops, o_bs)
 
     def press_up_arrow(self, selector="html", times=1, by="css selector"):
         """Simulates pressing the UP Arrow on the keyboard.
@@ -5614,6 +5610,7 @@ class BaseCase(unittest.TestCase):
 
     def show_file_choosers(self):
         """Display hidden file-chooser input fields on sites if present."""
+        self.wait_for_ready_state_complete()
         css_selector = 'input[type="file"]'
         try:
             self.wait_for_element_present(
@@ -5621,6 +5618,8 @@ class BaseCase(unittest.TestCase):
             )
         except Exception:
             pass
+        if self.__needs_minimum_wait():
+            time.sleep(0.05)
         try:
             self.show_elements(css_selector)
         except Exception:
@@ -5665,13 +5664,6 @@ class BaseCase(unittest.TestCase):
             except Exception:
                 pass
 
-    def __disable_beforeunload_as_needed(self):
-        if (
-            hasattr(self, "_disable_beforeunload")
-            and self._disable_beforeunload
-        ):
-            self.disable_beforeunload()
-
     def get_domain_url(self, url):
         self.__check_scope()
         return page_utils.get_domain_url(url)
@@ -5700,6 +5692,10 @@ class BaseCase(unittest.TestCase):
         "a"->"href", "img"->"src", "link"->"href", and "script"->"src".
         """
         self.wait_for_ready_state_complete()
+        if self.__needs_minimum_wait():
+            time.sleep(0.05)
+            if self.undetectable:
+                time.sleep(0.05)
         try:
             self.wait_for_element_present("body", timeout=1.5)
             self.wait_for_element_visible("body", timeout=1.5)
@@ -5707,6 +5703,8 @@ class BaseCase(unittest.TestCase):
             pass
         if self.__needs_minimum_wait():
             time.sleep(0.25)
+            if self.undetectable:
+                time.sleep(0.123)
         soup = self.get_beautiful_soup(self.get_page_source())
         page_url = self.get_current_url()
         links = page_utils._get_unique_links(page_url, soup)
@@ -5901,12 +5899,15 @@ class BaseCase(unittest.TestCase):
 
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", category=UserWarning)
-            try:
-                from pdfminer.high_level import extract_text
-            except Exception:
-                shared_utils.pip_install("pdfminer.six")
-                from pdfminer.high_level import extract_text
-
+            pip_find_lock = fasteners.InterProcessLock(
+                constants.PipInstall.FINDLOCK
+            )
+            with pip_find_lock:
+                try:
+                    from pdfminer.high_level import extract_text
+                except Exception:
+                    shared_utils.pip_install("pdfminer.six")
+                    from pdfminer.high_level import extract_text
         if not password:
             password = ""
         if not maxpages:
@@ -6768,16 +6769,8 @@ class BaseCase(unittest.TestCase):
         return chromedriver_version
 
     def is_chromedriver_too_old(self):
-        """There are known issues with chromedriver versions below 73.
-        This can impact tests that need to hover over an element, or ones
-        that require a custom downloads folder ("./downloaded_files").
-        Due to the situation that newer versions of chromedriver require
-        an exact match to the version of Chrome, an "old" version of
-        chromedriver is installed by default. It is then up to the user
-        to upgrade to the correct version of chromedriver from there.
-        This method can be used to change test behavior when trying
-        to perform an action that is impacted by having an old version
-        of chromedriver installed."""
+        """Before chromedriver 73, there was no version check, which
+        means it's possible to run a new Chrome with old drivers."""
         self.__check_scope()
         self.__fail_if_not_using_chrome("is_chromedriver_too_old()")
         if int(self.get_chromedriver_version().split(".")[0]) < 73:
@@ -7191,494 +7184,6 @@ class BaseCase(unittest.TestCase):
         self._was_skipped = True
         # Finally skip the test for real
         self.skipTest(reason)
-
-    ############
-
-    # Shadow DOM / Shadow-root methods
-
-    def __get_shadow_element(
-        self, selector, timeout=None, must_be_visible=False
-    ):
-        self.wait_for_ready_state_complete()
-        if timeout is None:
-            timeout = settings.SMALL_TIMEOUT
-        elif timeout == 0:
-            timeout = 0.1  # Use for: is_shadow_element_* (* = present/visible)
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        self.__fail_if_invalid_shadow_selector_usage(selector)
-        if "::shadow " not in selector:
-            raise Exception(
-                'A Shadow DOM selector must contain at least one "::shadow "!'
-            )
-        selectors = selector.split("::shadow ")
-        element = self.get_element(selectors[0])
-        selector_chain = selectors[0]
-        is_present = False
-        for selector_part in selectors[1:]:
-            shadow_root = None
-            if (
-                selenium4_or_newer
-                and self.is_chromium()
-                and int(self.__get_major_browser_version()) >= 96
-            ):
-                try:
-                    shadow_root = element.shadow_root
-                except Exception:
-                    if self.browser == "chrome":
-                        chrome_dict = self.driver.capabilities["chrome"]
-                        chrome_dr_version = chrome_dict["chromedriverVersion"]
-                        chromedriver_version = chrome_dr_version.split(" ")[0]
-                        major_c_dr_version = chromedriver_version.split(".")[0]
-                        if int(major_c_dr_version) < 96:
-                            upgrade_to = "latest"
-                            major_browser_version = (
-                                self.__get_major_browser_version()
-                            )
-                            if int(major_browser_version) >= 96:
-                                upgrade_to = str(major_browser_version)
-                            message = (
-                                "You need to upgrade to a newer\n"
-                                "version of chromedriver to interact\n"
-                                "with Shadow root elements!\n"
-                                "(Current driver version is: %s)"
-                                "\n(Minimum driver version is: 96.*)"
-                                "\nTo upgrade, run this:"
-                                '\n"seleniumbase get chromedriver %s"'
-                                % (chromedriver_version, upgrade_to)
-                            )
-                            raise Exception(message)
-                    if timeout != 0.1:  # Skip wait for special 0.1 (See above)
-                        time.sleep(2)
-                    try:
-                        shadow_root = element.shadow_root
-                    except Exception:
-                        raise Exception(
-                            "Element {%s} has no shadow root!" % selector_chain
-                        )
-            else:  # This part won't work on Chrome 96 or newer.
-                # If using Chrome 96 or newer (and on an old Python version),
-                #     you'll need to upgrade in order to access Shadow roots.
-                # Firefox users will likely hit:
-                #     https://github.com/mozilla/geckodriver/issues/1711
-                #     When Firefox adds support, switch to element.shadow_root
-                try:
-                    shadow_root = self.execute_script(
-                        "return arguments[0].shadowRoot;", element
-                    )
-                except Exception:
-                    time.sleep(2)
-                    shadow_root = self.execute_script(
-                        "return arguments[0].shadowRoot;", element
-                    )
-            if timeout == 0.1 and not shadow_root:
-                raise Exception(
-                    "Element {%s} has no shadow root!" % selector_chain
-                )
-            elif not shadow_root:
-                time.sleep(2)  # Wait two seconds for the shadow root to appear
-                shadow_root = self.execute_script(
-                    "return arguments[0].shadowRoot;", element
-                )
-                if not shadow_root:
-                    raise Exception(
-                        "Element {%s} has no shadow root!" % selector_chain
-                    )
-            selector_chain += "::shadow "
-            selector_chain += selector_part
-            try:
-                if (
-                    selenium4_or_newer
-                    and self.is_chromium()
-                    and int(self.__get_major_browser_version()) >= 96
-                ):
-                    if timeout == 0.1:
-                        element = shadow_root.find_element(
-                            By.CSS_SELECTOR, value=selector_part
-                        )
-                    else:
-                        found = False
-                        for i in range(int(timeout) * 4):
-                            try:
-                                element = shadow_root.find_element(
-                                    By.CSS_SELECTOR, value=selector_part
-                                )
-                                is_present = True
-                                if must_be_visible:
-                                    if not element.is_displayed():
-                                        raise Exception(
-                                            "Shadow Root element not visible!"
-                                        )
-                                found = True
-                                break
-                            except Exception:
-                                time.sleep(0.2)
-                                continue
-                        if not found:
-                            element = shadow_root.find_element(
-                                By.CSS_SELECTOR, value=selector_part
-                            )
-                            is_present = True
-                            if must_be_visible and not element.is_displayed():
-                                raise Exception(
-                                    "Shadow Root element not visible!"
-                                )
-                else:
-                    element = page_actions.wait_for_element_present(
-                        shadow_root,
-                        selector_part,
-                        by="css selector",
-                        timeout=timeout,
-                    )
-            except Exception:
-                error = "not present"
-                the_exception = "NoSuchElementException"
-                if must_be_visible and is_present:
-                    error = "not visible"
-                    the_exception = "ElementNotVisibleException"
-                msg = (
-                    "Shadow DOM Element {%s} was %s after %s seconds!"
-                    % (selector_chain, error, timeout)
-                )
-                page_actions.timeout_exception(the_exception, msg)
-        return element
-
-    def __fail_if_invalid_shadow_selector_usage(self, selector):
-        if selector.strip().endswith("::shadow"):
-            msg = (
-                "A Shadow DOM selector cannot end on a shadow root element!"
-                " End the selector with an element inside the shadow root!"
-            )
-            raise Exception(msg)
-
-    def __is_shadow_selector(self, selector):
-        self.__fail_if_invalid_shadow_selector_usage(selector)
-        if "::shadow " in selector:
-            return True
-        return False
-
-    def __shadow_click(self, selector, timeout):
-        element = self.__get_shadow_element(
-            selector, timeout=timeout, must_be_visible=True
-        )
-        element.click()
-
-    def __shadow_type(self, selector, text, timeout, clear_first=True):
-        element = self.__get_shadow_element(
-            selector, timeout=timeout, must_be_visible=True
-        )
-        if clear_first:
-            try:
-                element.clear()
-                backspaces = Keys.BACK_SPACE * 42  # Autofill Defense
-                element.send_keys(backspaces)
-            except Exception:
-                pass
-        text = self.__get_type_checked_text(text)
-        if not text.endswith("\n"):
-            element.send_keys(text)
-            if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
-                self.wait_for_ready_state_complete()
-        else:
-            element.send_keys(text[:-1])
-            element.send_keys(Keys.RETURN)
-            if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
-                self.wait_for_ready_state_complete()
-
-    def __shadow_clear(self, selector, timeout):
-        element = self.__get_shadow_element(
-            selector, timeout=timeout, must_be_visible=True
-        )
-        try:
-            element.clear()
-            backspaces = Keys.BACK_SPACE * 42  # Autofill Defense
-            element.send_keys(backspaces)
-        except Exception:
-            pass
-
-    def __get_shadow_text(self, selector, timeout):
-        element = self.__get_shadow_element(
-            selector, timeout=timeout, must_be_visible=True
-        )
-        element_text = element.text
-        if self.browser == "safari":
-            element_text = element.get_attribute("innerText")
-        return element_text
-
-    def __get_shadow_attribute(self, selector, attribute, timeout):
-        element = self.__get_shadow_element(selector, timeout=timeout)
-        return element.get_attribute(attribute)
-
-    def __wait_for_shadow_text_visible(self, text, selector, timeout):
-        text = str(text)
-        start_ms = time.time() * 1000.0
-        stop_ms = start_ms + (settings.SMALL_TIMEOUT * 1000.0)
-        for x in range(int(settings.SMALL_TIMEOUT * 10)):
-            try:
-                actual_text = self.__get_shadow_text(
-                    selector, timeout=1
-                ).strip()
-                text = text.strip()
-                if text not in actual_text:
-                    msg = (
-                        "Expected text {%s} in element {%s} was not visible!"
-                        % (text, selector)
-                    )
-                    page_actions.timeout_exception(
-                        "ElementNotVisibleException", msg
-                    )
-                return True
-            except Exception:
-                now_ms = time.time() * 1000.0
-                if now_ms >= stop_ms:
-                    break
-                time.sleep(0.1)
-        actual_text = self.__get_shadow_text(selector, timeout=1).strip()
-        text = text.strip()
-        if text not in actual_text:
-            msg = "Expected text {%s} in element {%s} was not visible!" % (
-                text,
-                selector,
-            )
-            page_actions.timeout_exception("ElementNotVisibleException", msg)
-        return True
-
-    def __wait_for_exact_shadow_text_visible(self, text, selector, timeout):
-        text = str(text)
-        start_ms = time.time() * 1000.0
-        stop_ms = start_ms + (settings.SMALL_TIMEOUT * 1000.0)
-        for x in range(int(settings.SMALL_TIMEOUT * 10)):
-            try:
-                actual_text = self.__get_shadow_text(
-                    selector, timeout=1
-                ).strip()
-                text = text.strip()
-                if text != actual_text:
-                    msg = (
-                        "Expected exact text {%s} in element {%s} not visible!"
-                        "" % (text, selector)
-                    )
-                    page_actions.timeout_exception(
-                        "ElementNotVisibleException", msg
-                    )
-                return True
-            except Exception:
-                now_ms = time.time() * 1000.0
-                if now_ms >= stop_ms:
-                    break
-                time.sleep(0.1)
-        actual_text = self.__get_shadow_text(selector, timeout=1).strip()
-        text = text.strip()
-        if text != actual_text:
-            msg = (
-                "Expected exact text {%s} in element {%s} was not visible!"
-                % (text, selector)
-            )
-            page_actions.timeout_exception("ElementNotVisibleException", msg)
-        return True
-
-    def __assert_shadow_text_visible(self, text, selector, timeout):
-        self.__wait_for_shadow_text_visible(text, selector, timeout)
-        if self.demo_mode:
-            a_t = "ASSERT TEXT"
-            i_n = "in"
-            by = By.CSS_SELECTOR
-            if self._language != "English":
-                from seleniumbase.fixtures.words import SD
-
-                a_t = SD.translate_assert_text(self._language)
-                i_n = SD.translate_in(self._language)
-            messenger_post = "%s: {%s} %s %s: %s" % (
-                a_t,
-                text,
-                i_n,
-                by.upper(),
-                selector,
-            )
-            try:
-                js_utils.activate_jquery(self.driver)
-                js_utils.post_messenger_success_message(
-                    self.driver, messenger_post, self.message_duration
-                )
-            except Exception:
-                pass
-
-    def __assert_exact_shadow_text_visible(self, text, selector, timeout):
-        self.__wait_for_exact_shadow_text_visible(text, selector, timeout)
-        if self.demo_mode:
-            a_t = "ASSERT EXACT TEXT"
-            i_n = "in"
-            by = By.CSS_SELECTOR
-            if self._language != "English":
-                from seleniumbase.fixtures.words import SD
-
-                a_t = SD.translate_assert_exact_text(self._language)
-                i_n = SD.translate_in(self._language)
-            messenger_post = "%s: {%s} %s %s: %s" % (
-                a_t,
-                text,
-                i_n,
-                by.upper(),
-                selector,
-            )
-            try:
-                js_utils.activate_jquery(self.driver)
-                js_utils.post_messenger_success_message(
-                    self.driver, messenger_post, self.message_duration
-                )
-            except Exception:
-                pass
-
-    def __is_shadow_element_present(self, selector):
-        try:
-            element = self.__get_shadow_element(selector, timeout=0.1)
-            return element is not None
-        except Exception:
-            return False
-
-    def __is_shadow_element_visible(self, selector):
-        try:
-            element = self.__get_shadow_element(selector, timeout=0.1)
-            return element.is_displayed()
-        except Exception:
-            return False
-
-    def __is_shadow_element_clickable(self, selector):
-        try:
-            element = self.__get_shadow_element(selector, timeout=0.1)
-            if element.is_displayed() and element.is_enabled():
-                return True
-            return False
-        except Exception:
-            return False
-
-    def __is_shadow_element_enabled(self, selector):
-        try:
-            element = self.__get_shadow_element(selector, timeout=0.1)
-            return element.is_enabled()
-        except Exception:
-            return False
-
-    def __is_shadow_text_visible(self, text, selector):
-        text = str(text)
-        try:
-            element = self.__get_shadow_element(selector, timeout=0.1)
-            if self.browser == "safari":
-                return (
-                    element.is_displayed()
-                    and text in element.get_attribute("innerText")
-                )
-            return element.is_displayed() and text in element.text
-        except Exception:
-            return False
-
-    def __is_shadow_attribute_present(self, selector, attribute, value=None):
-        try:
-            element = self.__get_shadow_element(selector, timeout=0.1)
-            found_value = element.get_attribute(attribute)
-            if found_value is None:
-                return False
-            if value is not None:
-                if found_value == value:
-                    return True
-                else:
-                    return False
-            else:
-                return True
-        except Exception:
-            return False
-
-    def __wait_for_shadow_element_present(self, selector, timeout):
-        element = self.__get_shadow_element(selector, timeout=timeout)
-        return element
-
-    def __wait_for_shadow_element_visible(self, selector, timeout):
-        element = self.__get_shadow_element(
-            selector, timeout=timeout, must_be_visible=True
-        )
-        return element
-
-    def __wait_for_shadow_attribute_present(
-        self, selector, attribute, value=None, timeout=None
-    ):
-        element = self.__get_shadow_element(selector, timeout=timeout)
-        actual_value = element.get_attribute(attribute)
-        plural = "s"
-        if timeout == 1:
-            plural = ""
-        if value is None:
-            # The element attribute only needs to exist
-            if actual_value is not None:
-                return element
-            else:
-                # The element does not have the attribute
-                message = (
-                    "Expected attribute {%s} of element {%s} "
-                    "was not present after %s second%s!"
-                    % (attribute, selector, timeout, plural)
-                )
-                page_actions.timeout_exception(
-                    "NoSuchAttributeException", message
-                )
-        else:
-            if actual_value == value:
-                return element
-            else:
-                message = (
-                    "Expected value {%s} for attribute {%s} of element "
-                    "{%s} was not present after %s second%s! "
-                    "(The actual value was {%s})"
-                    % (
-                        value,
-                        attribute,
-                        selector,
-                        timeout,
-                        plural,
-                        actual_value,
-                    )
-                )
-                page_actions.timeout_exception(
-                    "NoSuchAttributeException", message
-                )
-
-    def __assert_shadow_element_present(self, selector):
-        self.__get_shadow_element(selector)
-        if self.demo_mode:
-            a_t = "ASSERT"
-            by = By.CSS_SELECTOR
-            if self._language != "English":
-                from seleniumbase.fixtures.words import SD
-
-                a_t = SD.translate_assert(self._language)
-            messenger_post = "%s %s: %s" % (a_t, by.upper(), selector)
-            try:
-                js_utils.activate_jquery(self.driver)
-                js_utils.post_messenger_success_message(
-                    self.driver, messenger_post, self.message_duration
-                )
-            except Exception:
-                pass
-
-    def __assert_shadow_element_visible(self, selector):
-        element = self.__get_shadow_element(selector)
-        if not element.is_displayed():
-            msg = "Shadow DOM Element {%s} was not visible!" % selector
-            page_actions.timeout_exception("NoSuchElementException", msg)
-        if self.demo_mode:
-            a_t = "ASSERT"
-            by = By.CSS_SELECTOR
-            if self._language != "English":
-                from seleniumbase.fixtures.words import SD
-
-                a_t = SD.translate_assert(self._language)
-            messenger_post = "%s %s: %s" % (a_t, by.upper(), selector)
-            try:
-                js_utils.activate_jquery(self.driver)
-                js_utils.post_messenger_success_message(
-                    self.driver, messenger_post, self.message_duration
-                )
-            except Exception:
-                pass
 
     ############
 
@@ -8144,9 +7649,6 @@ class BaseCase(unittest.TestCase):
         else:
             print(msg)
 
-    def start_tour(self, name=None, interval=0):
-        self.play_tour(name=name, interval=interval)
-
     ############
 
     def add_css_link(self, css_link):
@@ -8180,6 +7682,1893 @@ class BaseCase(unittest.TestCase):
         js_utils.add_meta_tag(
             self.driver, http_equiv=http_equiv, content=content
         )
+
+    ############
+
+    def activate_messenger(self):
+        self.__check_scope()
+        self.__check_browser()
+        js_utils.activate_messenger(self.driver)
+        self.wait_for_ready_state_complete()
+
+    def set_messenger_theme(
+        self, theme="default", location="default", max_messages="default"
+    ):
+        """Sets a theme for posting messages.
+        Themes: ["flat", "future", "block", "air", "ice"]
+        Locations: ["top_left", "top_center", "top_right",
+                    "bottom_left", "bottom_center", "bottom_right"]
+        max_messages is the limit of concurrent messages to display.
+        """
+        self.__check_scope()
+        self.__check_browser()
+        if not theme:
+            theme = "default"  # "flat"
+        if not location:
+            location = "default"  # "bottom_right"
+        if not max_messages:
+            max_messages = "default"  # "8"
+        else:
+            max_messages = str(max_messages)  # Value must be in string format
+        js_utils.set_messenger_theme(
+            self.driver,
+            theme=theme,
+            location=location,
+            max_messages=max_messages,
+        )
+
+    def post_message(self, message, duration=None, pause=True, style="info"):
+        """Post a message on the screen with Messenger.
+        Arguments:
+            message: The message to display.
+            duration: The time until the message vanishes. (Default: 2.55s)
+            pause: If True, the program waits until the message completes.
+            style: "info", "success", or "error".
+
+        You can also post messages by using =>
+            self.execute_script('Messenger().post("My Message")')
+        """
+        self.__check_scope()
+        self.__check_browser()
+        if style not in ["info", "success", "error"]:
+            style = "info"
+        if not duration:
+            if not self.message_duration:
+                duration = settings.DEFAULT_MESSAGE_DURATION
+            else:
+                duration = self.message_duration
+        if (
+            (self.headless or self.headless2 or self.xvfb)
+            and float(duration) > 0.75
+        ):
+            duration = 0.75
+        try:
+            js_utils.post_message(self.driver, message, duration, style=style)
+        except Exception:
+            print(" * %s message: %s" % (style.upper(), message))
+        if pause:
+            duration = float(duration) + 0.15
+            time.sleep(float(duration))
+
+    def post_message_and_highlight(self, message, selector, by="css selector"):
+        """Post a message on the screen and highlight an element.
+        Arguments:
+            message: The message to display.
+            selector: The selector of the Element to highlight.
+            by: The type of selector to search by. (Default: CSS Selector)
+        """
+        self.__check_scope()
+        self.__highlight_with_assert_success(message, selector, by=by)
+
+    def post_success_message(self, message, duration=None, pause=True):
+        """Post a success message on the screen with Messenger.
+        Arguments:
+            message: The success message to display.
+            duration: The time until the message vanishes. (Default: 2.55s)
+            pause: If True, the program waits until the message completes.
+        """
+        self.__check_scope()
+        self.__check_browser()
+        if not duration:
+            if not self.message_duration:
+                duration = settings.DEFAULT_MESSAGE_DURATION
+            else:
+                duration = self.message_duration
+        if (
+            (self.headless or self.headless2 or self.xvfb)
+            and float(duration) > 0.75
+        ):
+            duration = 0.75
+        try:
+            js_utils.post_message(
+                self.driver, message, duration, style="success"
+            )
+        except Exception:
+            print(" * SUCCESS message: %s" % message)
+        if pause:
+            duration = float(duration) + 0.15
+            time.sleep(float(duration))
+
+    def post_error_message(self, message, duration=None, pause=True):
+        """Post an error message on the screen with Messenger.
+        Arguments:
+            message: The error message to display.
+            duration: The time until the message vanishes. (Default: 2.55s)
+            pause: If True, the program waits until the message completes.
+        """
+        self.__check_scope()
+        self.__check_browser()
+        if not duration:
+            if not self.message_duration:
+                duration = settings.DEFAULT_MESSAGE_DURATION
+            else:
+                duration = self.message_duration
+        if (
+            (self.headless or self.headless2 or self.xvfb)
+            and float(duration) > 0.75
+        ):
+            duration = 0.75
+        try:
+            js_utils.post_message(
+                self.driver, message, duration, style="error"
+            )
+        except Exception:
+            print(" * ERROR message: %s" % message)
+        if pause:
+            duration = float(duration) + 0.15
+            time.sleep(float(duration))
+
+    ############
+
+    def generate_referral(self, start_page, destination_page, selector=None):
+        """This method opens the start_page, creates a referral link there,
+        and clicks on that link, which goes to the destination_page.
+        If a selector is given, clicks that on the destination_page,
+        which can prevent an artificial rise in website bounce-rate.
+        (This generates real traffic for testing analytics software.)"""
+        self.__check_scope()
+        if not page_utils.is_valid_url(destination_page):
+            raise Exception(
+                "Exception: destination_page {%s} is not a valid URL!"
+                % destination_page
+            )
+        if start_page:
+            if not page_utils.is_valid_url(start_page):
+                raise Exception(
+                    "Exception: start_page {%s} is not a valid URL! "
+                    "(Use an empty string or None to start from current page.)"
+                    % start_page
+                )
+            self.open(start_page)
+            time.sleep(0.08)
+            self.wait_for_ready_state_complete()
+        referral_link = (
+            """<body>"""
+            """<a class='analytics referral test' href='%s' """
+            """style='font-family: Arial,sans-serif; """
+            """font-size: 30px; color: #18a2cd'>"""
+            """Magic Link Button</a></body>""" % destination_page
+        )
+        self.execute_script(
+            '''document.body.outerHTML = \"%s\"''' % referral_link
+        )
+        # Now click the generated button
+        self.click("a.analytics.referral.test", timeout=2)
+        time.sleep(0.15)
+        if selector:
+            self.click(selector)
+            time.sleep(0.15)
+
+    def generate_traffic(
+        self, start_page, destination_page, loops=1, selector=None
+    ):
+        """Similar to generate_referral(), but can do multiple loops.
+        If a selector is given, clicks that on the destination_page,
+        which can prevent an artificial rise in website bounce-rate."""
+        self.__check_scope()
+        for loop in range(loops):
+            self.generate_referral(
+                start_page, destination_page, selector=selector
+            )
+            time.sleep(0.05)
+
+    def generate_referral_chain(self, pages):
+        """Use this method to chain the action of creating button links on
+        one website page that will take you to the next page.
+        (When you want to create a referral to a website for traffic
+        generation without increasing the bounce rate, you'll want to visit
+        at least one additional page on that site with a button click.)"""
+        self.__check_scope()
+        if not type(pages) is tuple and not type(pages) is list:
+            raise Exception(
+                "Exception: Expecting a list of website pages for chaining!"
+            )
+        if len(pages) < 2:
+            raise Exception(
+                "Exception: At least two website pages required for chaining!"
+            )
+        for page in pages:
+            # Find out if any of the web pages are invalid before continuing
+            if not page_utils.is_valid_url(page):
+                raise Exception(
+                    "Exception: Website page {%s} is not a valid URL!" % page
+                )
+        for page in pages:
+            self.generate_referral(None, page)
+
+    def generate_traffic_chain(self, pages, loops=1):
+        """Similar to generate_referral_chain(), but for multiple loops."""
+        self.__check_scope()
+        for loop in range(loops):
+            self.generate_referral_chain(pages)
+            time.sleep(0.05)
+
+    ############
+
+    def wait_for_element_present(
+        self, selector, by="css selector", timeout=None
+    ):
+        """Waits for an element to appear in the HTML of a page.
+        The element does not need be visible (it may be hidden)."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        original_selector = selector
+        selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_shadow_selector(selector):
+            return self.__wait_for_shadow_element_present(selector, timeout)
+        return page_actions.wait_for_element_present(
+            self.driver,
+            selector,
+            by,
+            timeout=timeout,
+            original_selector=original_selector,
+        )
+
+    def wait_for_element(self, selector, by="css selector", timeout=None):
+        """Waits for an element to appear in the HTML of a page.
+        The element must be visible (it cannot be hidden)."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        original_selector = selector
+        selector, by = self.__recalculate_selector(selector, by)
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        if by == By.XPATH:
+                            selector = original_selector
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        action = ["wf_el", selector, origin, time_stamp]
+                        self.__extra_actions.append(action)
+        if self.__is_shadow_selector(selector):
+            return self.__wait_for_shadow_element_visible(selector, timeout)
+        return page_actions.wait_for_element_visible(
+            self.driver, selector, by, timeout
+        )
+
+    def get_element(self, selector, by="css selector", timeout=None):
+        """Same as wait_for_element_present() - returns the element.
+        The element does not need be visible (it may be hidden)."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        return self.wait_for_element_present(selector, by=by, timeout=timeout)
+
+    def wait_for_query_selector(
+        self, selector, by="css selector", timeout=None
+    ):
+        """Waits for an element to appear in the HTML of a page.
+        The element does not need be visible (it may be hidden).
+        This method uses document.querySelector() over Selenium."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        css_selector = self.convert_to_css_selector(selector, by=by)
+        return js_utils.wait_for_css_query_selector(
+            self.driver, css_selector, timeout
+        )
+
+    def assert_element_present(
+        self, selector, by="css selector", timeout=None
+    ):
+        """Similar to wait_for_element_present(), but returns nothing.
+        Waits for an element to appear in the HTML of a page.
+        The element does not need be visible (it may be hidden).
+        Returns True if successful. Default timeout = SMALL_TIMEOUT."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        if type(selector) is list:
+            self.assert_elements_present(selector, by=by, timeout=timeout)
+            return True
+        if self.__is_shadow_selector(selector):
+            self.__assert_shadow_element_present(selector)
+            return True
+        self.wait_for_element_present(selector, by=by, timeout=timeout)
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        action = ["as_ep", selector, origin, time_stamp]
+                        self.__extra_actions.append(action)
+        return True
+
+    def assert_elements_present(self, *args, **kwargs):
+        """Similar to self.assert_element_present(),
+            but can assert that multiple elements are present in the HTML.
+        The input is a list of elements.
+        Optional kwargs include "by" and "timeout" (used by all selectors).
+        Raises an exception if any of the elements are not visible.
+        Examples:
+            self.assert_elements_present("head", "style", "script", "body")
+            OR
+            self.assert_elements_present(["head", "body", "h1", "h2"])
+        """
+        self.__check_scope()
+        selectors = []
+        timeout = None
+        by = By.CSS_SELECTOR
+        for kwarg in kwargs:
+            if kwarg == "timeout":
+                timeout = kwargs["timeout"]
+            elif kwarg == "by":
+                by = kwargs["by"]
+            elif kwarg == "selector":
+                selector = kwargs["selector"]
+                if type(selector) is str:
+                    selectors.append(selector)
+                elif type(selector) is list:
+                    selectors_list = selector
+                    for selector in selectors_list:
+                        if type(selector) is str:
+                            selectors.append(selector)
+            else:
+                raise Exception('Unknown kwarg: "%s"!' % kwarg)
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        for arg in args:
+            if type(arg) is list:
+                for selector in arg:
+                    if type(selector) is str:
+                        selectors.append(selector)
+            elif type(arg) is str:
+                selectors.append(arg)
+        for selector in selectors:
+            if self.__is_shadow_selector(selector):
+                self.__assert_shadow_element_visible(selector)
+                continue
+            self.wait_for_element_present(selector, by=by, timeout=timeout)
+            continue
+        return True
+
+    def find_element(self, selector, by="css selector", timeout=None):
+        """Same as wait_for_element_visible() - returns the element"""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        return self.wait_for_element_visible(selector, by=by, timeout=timeout)
+
+    def assert_element(self, selector, by="css selector", timeout=None):
+        """Similar to wait_for_element_visible(), but returns nothing.
+        As above, will raise an exception if nothing can be found.
+        Returns True if successful. Default timeout = SMALL_TIMEOUT."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        if type(selector) is list:
+            self.assert_elements(selector, by=by, timeout=timeout)
+            return True
+        if self.__is_shadow_selector(selector):
+            self.__assert_shadow_element_visible(selector)
+            return True
+        self.wait_for_element_visible(selector, by=by, timeout=timeout)
+        original_selector = selector
+        if self.demo_mode:
+            selector, by = self.__recalculate_selector(
+                selector, by, xp_ok=False
+            )
+            a_t = "ASSERT"
+            if self._language != "English":
+                from seleniumbase.fixtures.words import SD
+
+                a_t = SD.translate_assert(self._language)
+            messenger_post = "%s %s: %s" % (a_t, by.upper(), selector)
+            self.__highlight_with_assert_success(messenger_post, selector, by)
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        if by == By.XPATH:
+                            selector = original_selector
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        action = ["as_el", selector, origin, time_stamp]
+                        self.__extra_actions.append(action)
+        return True
+
+    def assert_element_visible(
+        self, selector, by="css selector", timeout=None
+    ):
+        """Same as self.assert_element()
+        As above, will raise an exception if nothing can be found."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        self.assert_element(selector, by=by, timeout=timeout)
+        return True
+
+    def assert_elements(self, *args, **kwargs):
+        """Similar to self.assert_element(), but can assert multiple elements.
+        The input is a list of elements.
+        Optional kwargs include "by" and "timeout" (used by all selectors).
+        Raises an exception if any of the elements are not visible.
+        Examples:
+            self.assert_elements("h1", "h2", "h3")
+            OR
+            self.assert_elements(["h1", "h2", "h3"])"""
+        self.__check_scope()
+        selectors = []
+        timeout = None
+        by = By.CSS_SELECTOR
+        for kwarg in kwargs:
+            if kwarg == "timeout":
+                timeout = kwargs["timeout"]
+            elif kwarg == "by":
+                by = kwargs["by"]
+            elif kwarg == "selector":
+                selector = kwargs["selector"]
+                if type(selector) is str:
+                    selectors.append(selector)
+                elif type(selector) is list:
+                    selectors_list = selector
+                    for selector in selectors_list:
+                        if type(selector) is str:
+                            selectors.append(selector)
+            else:
+                raise Exception('Unknown kwarg: "%s"!' % kwarg)
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        for arg in args:
+            if type(arg) is list:
+                for selector in arg:
+                    if type(selector) is str:
+                        selectors.append(selector)
+            elif type(arg) is str:
+                selectors.append(arg)
+        for selector in selectors:
+            if self.__is_shadow_selector(selector):
+                self.__assert_shadow_element_visible(selector)
+                continue
+            self.wait_for_element_visible(selector, by=by, timeout=timeout)
+            if self.demo_mode:
+                selector, by = self.__recalculate_selector(selector, by)
+                a_t = "ASSERT"
+                if self._language != "English":
+                    from seleniumbase.fixtures.words import SD
+
+                    a_t = SD.translate_assert(self._language)
+                messenger_post = "%s %s: %s" % (a_t, by.upper(), selector)
+                self.__highlight_with_assert_success(
+                    messenger_post, selector, by
+                )
+            continue
+        return True
+
+    def assert_elements_visible(self, *args, **kwargs):
+        """Same as self.assert_elements()
+        Raises an exception if any element cannot be found."""
+        return self.assert_elements(*args, **kwargs)
+
+    ############
+
+    def wait_for_text_visible(
+        self, text, selector="html", by="css selector", timeout=None
+    ):
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        text = self.__get_type_checked_text(text)
+        selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_shadow_selector(selector):
+            return self.__wait_for_shadow_text_visible(text, selector, timeout)
+        return page_actions.wait_for_text_visible(
+            self.driver, text, selector, by, timeout, self.browser
+        )
+
+    def wait_for_exact_text_visible(
+        self, text, selector="html", by="css selector", timeout=None
+    ):
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_shadow_selector(selector):
+            return self.__wait_for_exact_shadow_text_visible(
+                text, selector, timeout
+            )
+        return page_actions.wait_for_exact_text_visible(
+            self.driver, text, selector, by, timeout, self.browser
+        )
+
+    def wait_for_text(
+        self, text, selector="html", by="css selector", timeout=None
+    ):
+        """The shorter version of wait_for_text_visible()"""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        return self.wait_for_text_visible(
+            text, selector, by=by, timeout=timeout
+        )
+
+    def find_text(
+        self, text, selector="html", by="css selector", timeout=None
+    ):
+        """Same as wait_for_text_visible() - returns the element"""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        return self.wait_for_text_visible(
+            text, selector, by=by, timeout=timeout
+        )
+
+    def assert_text_visible(
+        self, text, selector="html", by="css selector", timeout=None
+    ):
+        """Same as assert_text()"""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        return self.assert_text(text, selector, by=by, timeout=timeout)
+
+    def assert_text(
+        self, text, selector="html", by="css selector", timeout=None
+    ):
+        """Similar to wait_for_text_visible()
+        Raises an exception if the element or the text is not found.
+        The text only needs to be a subset within the complete text.
+        Returns True if successful. Default timeout = SMALL_TIMEOUT."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        original_selector = selector
+        selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_shadow_selector(selector):
+            self.__assert_shadow_text_visible(text, selector, timeout)
+            return True
+        self.wait_for_text_visible(text, selector, by=by, timeout=timeout)
+        if self.demo_mode:
+            a_t = "ASSERT TEXT"
+            i_n = "in"
+            if self._language != "English":
+                from seleniumbase.fixtures.words import SD
+
+                a_t = SD.translate_assert_text(self._language)
+                i_n = SD.translate_in(self._language)
+            messenger_post = "%s: {%s} %s %s: %s" % (
+                a_t,
+                text,
+                i_n,
+                by.upper(),
+                selector,
+            )
+            self.__highlight_with_assert_success(messenger_post, selector, by)
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        if by == By.XPATH:
+                            selector = original_selector
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        text_selector = [text, selector]
+                        action = ["as_te", text_selector, origin, time_stamp]
+                        self.__extra_actions.append(action)
+        return True
+
+    def assert_exact_text(
+        self, text, selector="html", by="css selector", timeout=None
+    ):
+        """Similar to assert_text(), but the text must be exact,
+        rather than exist as a subset of the full text.
+        (Extra whitespace at the beginning or the end doesn't count.)
+        Raises an exception if the element or the text is not found.
+        Returns True if successful. Default timeout = SMALL_TIMEOUT."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        original_selector = selector
+        selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_shadow_selector(selector):
+            self.__assert_exact_shadow_text_visible(text, selector, timeout)
+            return True
+        self.wait_for_exact_text_visible(
+            text, selector, by=by, timeout=timeout
+        )
+        if self.demo_mode:
+            a_t = "ASSERT EXACT TEXT"
+            i_n = "in"
+            if self._language != "English":
+                from seleniumbase.fixtures.words import SD
+
+                a_t = SD.translate_assert_exact_text(self._language)
+                i_n = SD.translate_in(self._language)
+            messenger_post = "%s: {%s} %s %s: %s" % (
+                a_t,
+                text,
+                i_n,
+                by.upper(),
+                selector,
+            )
+            self.__highlight_with_assert_success(messenger_post, selector, by)
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        if by == By.XPATH:
+                            selector = original_selector
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        text_selector = [text, selector]
+                        action = ["as_et", text_selector, origin, time_stamp]
+                        self.__extra_actions.append(action)
+        return True
+
+    ############
+
+    def wait_for_link_text_present(self, link_text, timeout=None):
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        start_ms = time.time() * 1000.0
+        stop_ms = start_ms + (timeout * 1000.0)
+        for x in range(int(timeout * 5)):
+            shared_utils.check_if_time_limit_exceeded()
+            try:
+                if not self.is_link_text_present(link_text):
+                    raise Exception(
+                        "Link text {%s} was not found!" % link_text
+                    )
+                return
+            except Exception:
+                now_ms = time.time() * 1000.0
+                if now_ms >= stop_ms:
+                    break
+                time.sleep(0.2)
+        message = "Link text {%s} was not present after %s seconds!" % (
+            link_text,
+            timeout,
+        )
+        page_actions.timeout_exception("NoSuchElementException", message)
+
+    def wait_for_partial_link_text_present(self, link_text, timeout=None):
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        start_ms = time.time() * 1000.0
+        stop_ms = start_ms + (timeout * 1000.0)
+        for x in range(int(timeout * 5)):
+            shared_utils.check_if_time_limit_exceeded()
+            try:
+                if not self.is_partial_link_text_present(link_text):
+                    raise Exception(
+                        "Partial Link text {%s} was not found!" % link_text
+                    )
+                return
+            except Exception:
+                now_ms = time.time() * 1000.0
+                if now_ms >= stop_ms:
+                    break
+                time.sleep(0.2)
+        message = (
+            "Partial Link text {%s} was not present after %s seconds!"
+            "" % (link_text, timeout)
+        )
+        page_actions.timeout_exception("NoSuchElementException", message)
+
+    def wait_for_link_text_visible(self, link_text, timeout=None):
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        return self.wait_for_element_visible(
+            link_text, by="link text", timeout=timeout
+        )
+
+    def wait_for_link_text(self, link_text, timeout=None):
+        """The shorter version of wait_for_link_text_visible()"""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        return self.wait_for_link_text_visible(link_text, timeout=timeout)
+
+    def find_link_text(self, link_text, timeout=None):
+        """Same as wait_for_link_text_visible() - returns the element"""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        return self.wait_for_link_text_visible(link_text, timeout=timeout)
+
+    def assert_link_text(self, link_text, timeout=None):
+        """Similar to wait_for_link_text_visible(), but returns nothing.
+        As above, will raise an exception if nothing can be found.
+        Returns True if successful. Default timeout = SMALL_TIMEOUT."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        self.wait_for_link_text_visible(link_text, timeout=timeout)
+        if self.demo_mode:
+            a_t = "ASSERT LINK TEXT"
+            if self._language != "English":
+                from seleniumbase.fixtures.words import SD
+
+                a_t = SD.translate_assert_link_text(self._language)
+            messenger_post = "%s: {%s}" % (a_t, link_text)
+            self.__highlight_with_assert_success(
+                messenger_post, link_text, by="link text"
+            )
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        action = ["as_lt", link_text, origin, time_stamp]
+                        self.__extra_actions.append(action)
+        return True
+
+    def wait_for_partial_link_text(self, partial_link_text, timeout=None):
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        return self.wait_for_element_visible(
+            partial_link_text, by="partial link text", timeout=timeout
+        )
+
+    def find_partial_link_text(self, partial_link_text, timeout=None):
+        """Same as wait_for_partial_link_text() - returns the element"""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        return self.wait_for_partial_link_text(
+            partial_link_text, timeout=timeout
+        )
+
+    def assert_partial_link_text(self, partial_link_text, timeout=None):
+        """Similar to wait_for_partial_link_text(), but returns nothing.
+        As above, will raise an exception if nothing can be found.
+        Returns True if successful. Default timeout = SMALL_TIMEOUT."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        self.wait_for_partial_link_text(partial_link_text, timeout=timeout)
+        if self.demo_mode:
+            a_t = "ASSERT PARTIAL LINK TEXT"
+            if self._language != "English":
+                from seleniumbase.fixtures.words import SD
+
+                a_t = SD.translate_assert_link_text(self._language)
+            messenger_post = "%s: {%s}" % (a_t, partial_link_text)
+            self.__highlight_with_assert_success(
+                messenger_post, partial_link_text, by="partial link text"
+            )
+        return True
+
+    ############
+
+    def wait_for_element_absent(
+        self, selector, by="css selector", timeout=None
+    ):
+        """Waits for an element to no longer appear in the HTML of a page.
+        A hidden element counts as a present element, which fails this assert.
+        If waiting for elements to be hidden instead of nonexistent,
+        use wait_for_element_not_visible() instead.
+        """
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        original_selector = selector
+        selector, by = self.__recalculate_selector(selector, by)
+        return page_actions.wait_for_element_absent(
+            self.driver,
+            selector,
+            by,
+            timeout=timeout,
+            original_selector=original_selector,
+        )
+
+    def assert_element_absent(self, selector, by="css selector", timeout=None):
+        """Similar to wait_for_element_absent()
+        As above, will raise an exception if the element stays present.
+        A hidden element counts as a present element, which fails this assert.
+        If you want to assert that elements are hidden instead of nonexistent,
+        use assert_element_not_visible() instead.
+        (Note that hidden elements are still present in the HTML of the page.)
+        Returns True if successful. Default timeout = SMALL_TIMEOUT."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        self.wait_for_element_absent(selector, by=by, timeout=timeout)
+        return True
+
+    ############
+
+    def wait_for_element_not_visible(
+        self, selector, by="css selector", timeout=None
+    ):
+        """Waits for an element to no longer be visible on a page.
+        The element can be non-existent in the HTML or hidden on the page
+        to qualify as not visible."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        original_selector = selector
+        selector, by = self.__recalculate_selector(selector, by)
+        return page_actions.wait_for_element_not_visible(
+            self.driver,
+            selector,
+            by,
+            timeout=timeout,
+            original_selector=original_selector,
+        )
+
+    def assert_element_not_visible(
+        self, selector, by="css selector", timeout=None
+    ):
+        """Similar to wait_for_element_not_visible()
+        As above, will raise an exception if the element stays visible.
+        Returns True if successful. Default timeout = SMALL_TIMEOUT."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        self.wait_for_element_not_visible(selector, by=by, timeout=timeout)
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        action = ["asenv", selector, origin, time_stamp]
+                        self.__extra_actions.append(action)
+        return True
+
+    ############
+
+    def wait_for_text_not_visible(
+        self, text, selector="html", by="css selector", timeout=None
+    ):
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        return page_actions.wait_for_text_not_visible(
+            self.driver, text, selector, by, timeout, self.browser
+        )
+
+    def assert_text_not_visible(
+        self, text, selector="html", by="css selector", timeout=None
+    ):
+        """Similar to wait_for_text_not_visible()
+        Raises an exception if the text is still visible after timeout.
+        Returns True if successful. Default timeout = SMALL_TIMEOUT."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        self.wait_for_text_not_visible(text, selector, by=by, timeout=timeout)
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        text_selector = [text, selector]
+                        action = ["astnv", text_selector, origin, time_stamp]
+                        self.__extra_actions.append(action)
+        return True
+
+    ############
+
+    def wait_for_attribute_not_present(
+        self, selector, attribute, value=None, by="css selector", timeout=None
+    ):
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        return page_actions.wait_for_attribute_not_present(
+            self.driver, selector, attribute, value, by, timeout
+        )
+
+    def assert_attribute_not_present(
+        self, selector, attribute, value=None, by="css selector", timeout=None
+    ):
+        """Similar to wait_for_attribute_not_present()
+        Raises an exception if the attribute is still present after timeout.
+        Returns True if successful. Default timeout = SMALL_TIMEOUT."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        return self.wait_for_attribute_not_present(
+            selector, attribute, value=value, by=by, timeout=timeout
+        )
+
+    ############
+
+    def wait_for_and_accept_alert(self, timeout=None):
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        return page_actions.wait_for_and_accept_alert(self.driver, timeout)
+
+    def wait_for_and_dismiss_alert(self, timeout=None):
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        return page_actions.wait_for_and_dismiss_alert(self.driver, timeout)
+
+    def wait_for_and_switch_to_alert(self, timeout=None):
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        return page_actions.wait_for_and_switch_to_alert(self.driver, timeout)
+
+    ############
+
+    def accept_alert(self, timeout=None):
+        """Same as wait_for_and_accept_alert(), but smaller default T_O"""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        return page_actions.wait_for_and_accept_alert(self.driver, timeout)
+
+    def dismiss_alert(self, timeout=None):
+        """Same as wait_for_and_dismiss_alert(), but smaller default T_O"""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        return page_actions.wait_for_and_dismiss_alert(self.driver, timeout)
+
+    def switch_to_alert(self, timeout=None):
+        """Same as wait_for_and_switch_to_alert(), but smaller default T_O"""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        return page_actions.wait_for_and_switch_to_alert(self.driver, timeout)
+
+    ############
+
+    def quit_extra_driver(self, driver=None):
+        """Quits the driver only if it's not the default/initial driver.
+        If a driver is given, quits that, otherwise quits the active driver.
+        Raises an Exception if quitting the default/initial driver.
+        Should only be called if a test has already called get_new_driver().
+        Afterwards, self.driver points to the default/initial driver
+        if self.driver was the one being quit.
+        ----
+        If a test never calls get_new_driver(), this method isn't needed.
+        SeleniumBase automatically quits browsers after tests have ended.
+        Even if tests do call get_new_driver(), you don't need to use this
+        method unless you want to quit extra browsers before a test ends.
+        ----
+        Terminology and important details:
+        * Active driver: The one self.driver is set to. Used within methods.
+        * Default/initial driver: The one that is spun up when tests start.
+        Initially, the active driver and the default driver are the same.
+        The active driver can change when one of these methods is called:
+        > self.get_new_driver()
+        > self.switch_to_default_driver()
+        > self.switch_to_driver()
+        > self.quit_extra_driver()
+        """
+        self.__check_scope()
+        if not driver:
+            driver = self.driver
+        if type(driver).__name__ == "NoneType":
+            raise Exception("The driver to quit was a NoneType variable!")
+        elif (
+            not hasattr(driver, "get")
+            or not hasattr(driver, "name")
+            or not hasattr(driver, "quit")
+            or not hasattr(driver, "capabilities")
+            or not hasattr(driver, "window_handles")
+        ):
+            raise Exception("The driver to quit does not match a Driver!")
+        elif self._reuse_session and driver == self._default_driver:
+            raise Exception(
+                "Cannot quit the initial driver in --reuse-session mode!\n"
+                "This is done automatically after all tests have ended.\n"
+                "Use this method only if get_new_driver() has been called."
+            )
+        elif (
+            driver == self._default_driver
+            or (driver in self._drivers_list and len(self._drivers_list) == 1)
+        ):
+            raise Exception(
+                "Cannot quit the default/initial driver!\n"
+                "This is done automatically at the end of each test.\n"
+                "Use this method only if get_new_driver() has been called."
+            )
+        try:
+            if (
+                not is_windows
+                or self.browser == "ie"
+                or driver.service.process
+            ):
+                driver.quit()
+        except AttributeError:
+            pass
+        except Exception:
+            pass
+        if driver in self._drivers_list:
+            self._drivers_list.remove(driver)
+            if driver in self._drivers_browser_map:
+                del self._drivers_browser_map[driver]
+        # If the driver to quit was the active driver, switch drivers
+        if driver == self.driver:
+            self.switch_to_default_driver()
+
+    ############
+
+    def __assert_eq(self, *args, **kwargs):
+        """Minified assert_equal() using only the list diff."""
+        minified_exception = None
+        try:
+            self.assertEqual(*args, **kwargs)
+        except Exception as e:
+            str_e = str(e)
+            minified_exception = "\nAssertionError:\n"
+            lines = str_e.split("\n")
+            countdown = 3
+            countdown_on = False
+            first_differing = False
+            skip_lines = False
+            for line in lines:
+                if countdown_on:
+                    if not skip_lines:
+                        minified_exception += line + "\n"
+                    countdown = countdown - 1
+                    if countdown == 0:
+                        countdown_on = False
+                        skip_lines = False
+                elif line.startswith("First differing"):
+                    first_differing = True
+                    countdown_on = True
+                    countdown = 3
+                    minified_exception += line + "\n"
+                elif line.startswith("First list"):
+                    countdown_on = True
+                    countdown = 3
+                    if not first_differing:
+                        minified_exception += line + "\n"
+                    else:
+                        skip_lines = True
+                elif line.startswith("F"):
+                    countdown_on = True
+                    countdown = 3
+                    minified_exception += line + "\n"
+                elif line.startswith("+") or line.startswith("-"):
+                    minified_exception += line + "\n"
+                elif line.startswith("?"):
+                    minified_exception += line + "\n"
+                elif line.strip().startswith("*"):
+                    minified_exception += line + "\n"
+        if minified_exception:
+            from seleniumbase.common.exceptions import VisualException
+
+            raise VisualException(minified_exception)
+
+    def _process_visual_baseline_logs(self):
+        if sys.version_info < (3, 11):
+            return
+        self.__process_visual_baseline_logs()
+
+    def __process_visual_baseline_logs(self):
+        """Save copies of baseline PNGs in "./latest_logs" during failures.
+        Also create a side_by_side.html file for visual comparisons."""
+        test_logpath = os.path.join(self.log_path, self.__get_test_id())
+        for baseline_copy_tuple in self.__visual_baseline_copies:
+            baseline_path = baseline_copy_tuple[0]
+            baseline_copy_name = baseline_copy_tuple[1]
+            b_c_alt_name = baseline_copy_tuple[2]
+            latest_png_path = baseline_copy_tuple[3]
+            latest_copy_name = baseline_copy_tuple[4]
+            l_c_alt_name = baseline_copy_tuple[5]
+            baseline_copy_path = os.path.join(test_logpath, baseline_copy_name)
+            b_c_alt_path = os.path.join(test_logpath, b_c_alt_name)
+            latest_copy_path = os.path.join(test_logpath, latest_copy_name)
+            l_c_alt_path = os.path.join(test_logpath, l_c_alt_name)
+            if len(self.__visual_baseline_copies) == 1:
+                baseline_copy_path = b_c_alt_path
+                latest_copy_path = l_c_alt_path
+            if (
+                os.path.exists(baseline_path)
+                and not os.path.exists(baseline_copy_path)
+            ):
+                self.__create_log_path_as_needed(test_logpath)
+                shutil.copy(baseline_path, baseline_copy_path)
+            if (
+                os.path.exists(latest_png_path)
+                and not os.path.exists(latest_copy_path)
+            ):
+                self.__create_log_path_as_needed(test_logpath)
+                shutil.copy(latest_png_path, latest_copy_path)
+        if len(self.__visual_baseline_copies) != 1:
+            return  # Skip the rest when deferred visual asserts are used
+        from seleniumbase.core import visual_helper
+
+        the_html = visual_helper.get_sbs_html()
+        file_path = os.path.join(test_logpath, constants.SideBySide.HTML_FILE)
+        out_file = codecs.open(file_path, "w+", encoding="utf-8")
+        out_file.writelines(the_html)
+        out_file.close()
+
+    def check_window(
+        self,
+        name="default",
+        level=0,
+        baseline=False,
+        check_domain=True,
+        full_diff=False,
+    ):
+        """***  Automated Visual Testing with SeleniumBase  ***
+
+        The first time a test calls self.check_window() for a unique "name"
+        parameter provided, it will set a visual baseline, meaning that it
+        creates a folder, saves the URL to a file, saves the current window
+        screenshot to a file, and creates the following three files
+        with the listed data saved:
+        tags_level1.txt  ->  HTML tags from the window
+        tags_level2.txt  ->  HTML tags + attributes from the window
+        tags_level3.txt  ->  HTML tags + attributes/values from the window
+
+        Baseline folders are named based on the test name and the name
+        parameter passed to self.check_window(). The same test can store
+        multiple baseline folders.
+
+        If the baseline is being set/reset, the "level" doesn't matter.
+
+        After the first run of self.check_window(), it will compare the
+        HTML tags of the latest window to the one from the initial run.
+        Here's how the level system works:
+        * level=0 ->
+            DRY RUN ONLY - Will perform comparisons to the baseline (and
+                           print out any differences that are found) but
+                           won't fail the test even if differences exist.
+        * level=1 ->
+            HTML tags are compared to tags_level1.txt
+        * level=2 ->
+            HTML tags are compared to tags_level1.txt and
+            HTML tags/attributes are compared to tags_level2.txt
+        * level=3 ->
+            HTML tags are compared to tags_level1.txt and
+            HTML tags + attributes are compared to tags_level2.txt and
+            HTML tags + attributes/values are compared to tags_level3.txt
+        As shown, Level-3 is the most strict, Level-1 is the least strict.
+        If the comparisons from the latest window to the existing baseline
+        don't match, the current test will fail, except for Level-0 tests.
+
+        You can reset the visual baseline on the command line by using:
+            --visual_baseline
+        As long as "--visual_baseline" is used on the command line while
+        running tests, the self.check_window() method cannot fail because
+        it will rebuild the visual baseline rather than comparing the html
+        tags of the latest run to the existing baseline. If there are any
+        expected layout changes to a website that you're testing, you'll
+        need to reset the baseline to prevent unnecessary failures.
+
+        self.check_window() will fail with "Page Domain Mismatch Failure"
+        if the page domain doesn't match the domain of the baseline,
+        unless "check_domain" is set to False when calling check_window().
+
+        If you want to use self.check_window() to compare a web page to
+        a later version of itself from within the same test run, you can
+        add the parameter "baseline=True" to the first time you call
+        self.check_window() in a test to use that as the baseline. This
+        only makes sense if you're calling self.check_window() more than
+        once with the same name parameter in the same test.
+
+        If "full_diff" is set to False, the error output will only
+        include the first differing element in the list comparison.
+        Set "full_diff" to True if you want to see the full output.
+
+        Automated Visual Testing with self.check_window() is not very
+        effective for websites that have dynamic content that changes
+        the layout and structure of web pages. For those, you're much
+        better off using regular SeleniumBase functional testing.
+
+        Example usage:
+            self.check_window(name="testing", level=0)
+            self.check_window(name="xkcd_home", level=1)
+            self.check_window(name="github_page", level=2)
+            self.check_window(name="wikipedia_page", level=3)
+        """
+        self.wait_for_ready_state_complete()
+        if self.__needs_minimum_wait():
+            time.sleep(0.05)  # Force a minimum wait, even if skipping waits.
+        try:
+            self.wait_for_element_visible(
+                "body", timeout=settings.MINI_TIMEOUT
+            )
+        except Exception:
+            pass
+        if level == "0":
+            level = 0
+        if level == "1":
+            level = 1
+        if level == "2":
+            level = 2
+        if level == "3":
+            level = 3
+        if level != 0 and level != 1 and level != 2 and level != 3:
+            raise Exception('Parameter "level" must be set to 0, 1, 2, or 3!')
+
+        if self.demo_mode:
+            message = (
+                "WARNING: Using check_window() from Demo Mode may lead "
+                "to unexpected results caused by Demo Mode HTML changes."
+            )
+            logging.info(message)
+
+        test_id = self.__get_display_id().split("::")[-1]
+
+        if not name or len(name) < 1:
+            name = "default"
+        name = str(name)
+        from seleniumbase.core import visual_helper
+
+        visual_helper.visual_baseline_folder_setup()
+        baseline_dir = constants.VisualBaseline.STORAGE_FOLDER
+        visual_baseline_path = os.path.join(baseline_dir, test_id, name)
+        page_url_file = os.path.join(visual_baseline_path, "page_url.txt")
+        baseline_png = "baseline.png"
+        baseline_png_path = os.path.join(visual_baseline_path, baseline_png)
+        latest_png = "latest.png"
+        latest_png_path = os.path.join(visual_baseline_path, latest_png)
+        level_1_file = os.path.join(visual_baseline_path, "tags_level_1.txt")
+        level_2_file = os.path.join(visual_baseline_path, "tags_level_2.txt")
+        level_3_file = os.path.join(visual_baseline_path, "tags_level_3.txt")
+
+        set_baseline = False
+        if baseline or self.visual_baseline:
+            set_baseline = True
+        if not os.path.exists(visual_baseline_path):
+            set_baseline = True
+            try:
+                os.makedirs(visual_baseline_path)
+            except Exception:
+                pass  # Only reachable during multi-threaded test runs
+        if not os.path.exists(page_url_file):
+            set_baseline = True
+        if not os.path.exists(baseline_png_path):
+            set_baseline = True
+        if not os.path.exists(level_1_file):
+            set_baseline = True
+        if not os.path.exists(level_2_file):
+            set_baseline = True
+        if not os.path.exists(level_3_file):
+            set_baseline = True
+
+        page_url = self.get_current_url()
+        soup = self.get_beautiful_soup()
+        html_tags = soup.body.find_all()
+        level_1 = [[tag.name] for tag in html_tags]
+        level_1 = json.loads(json.dumps(level_1))  # Tuples become lists
+        level_2 = [[tag.name, sorted(tag.attrs.keys())] for tag in html_tags]
+        level_2 = json.loads(json.dumps(level_2))  # Tuples become lists
+        level_3 = [[tag.name, sorted(tag.attrs.items())] for tag in html_tags]
+        level_3 = json.loads(json.dumps(level_3))  # Tuples become lists
+
+        if set_baseline:
+            self.save_screenshot(
+                baseline_png, visual_baseline_path, selector="body"
+            )
+            out_file = codecs.open(page_url_file, "w+", encoding="utf-8")
+            out_file.writelines(page_url)
+            out_file.close()
+            out_file = codecs.open(level_1_file, "w+", encoding="utf-8")
+            out_file.writelines(json.dumps(level_1))
+            out_file.close()
+            out_file = codecs.open(level_2_file, "w+", encoding="utf-8")
+            out_file.writelines(json.dumps(level_2))
+            out_file.close()
+            out_file = codecs.open(level_3_file, "w+", encoding="utf-8")
+            out_file.writelines(json.dumps(level_3))
+            out_file.close()
+
+        baseline_path = os.path.join(visual_baseline_path, baseline_png)
+        baseline_copy_name = "baseline_%s.png" % name
+        b_c_alt_name = "baseline.png"
+        latest_copy_name = "baseline_diff_%s.png" % name
+        l_c_alt_name = "baseline_diff.png"
+        baseline_copy_tuple = (
+            baseline_path, baseline_copy_name, b_c_alt_name,
+            latest_png_path, latest_copy_name, l_c_alt_name,
+        )
+        self.__visual_baseline_copies.append(baseline_copy_tuple)
+
+        is_level_0_failure = False
+        if not set_baseline:
+            self.save_screenshot(
+                latest_png, visual_baseline_path, selector="body"
+            )
+            f = open(page_url_file, "r")
+            page_url_data = f.read().strip()
+            f.close()
+            f = open(level_1_file, "r")
+            level_1_data = json.loads(f.read())
+            f.close()
+            f = open(level_2_file, "r")
+            level_2_data = json.loads(f.read())
+            f.close()
+            f = open(level_3_file, "r")
+            level_3_data = json.loads(f.read())
+            f.close()
+
+            domain_fail = (
+                "\n*\nPage Domain Mismatch Failure: "
+                "Current Page Domain doesn't match the Page Domain of the "
+                "Baseline! Can't compare two completely different sites! "
+                "Run with --visual_baseline to reset the baseline!"
+            )
+            level_1_failure = (
+                "\n*\n*** Exception: <Level 1> Visual Diff Failure:\n"
+                "* HTML tags don't match the baseline!"
+            )
+            level_2_failure = (
+                "\n*\n*** Exception: <Level 2> Visual Diff Failure:\n"
+                "* HTML tag attribute names don't match the baseline!"
+            )
+            level_3_failure = (
+                "\n*\n*** Exception: <Level 3> Visual Diff Failure:\n"
+                "* HTML tag attribute values don't match the baseline!"
+            )
+
+            page_domain = self.get_domain_url(page_url)
+            page_data_domain = self.get_domain_url(page_url_data)
+            unittest.TestCase.maxDiff = 65536  # 2^16
+            if level != 0 and check_domain:
+                self.assertEqual(page_data_domain, page_domain, domain_fail)
+            if level == 3:
+                if not full_diff:
+                    self.__assert_eq(level_3_data, level_3, level_3_failure)
+                else:
+                    self.assertEqual(level_3_data, level_3, level_3_failure)
+            if level == 2:
+                if not full_diff:
+                    self.__assert_eq(level_2_data, level_2, level_2_failure)
+                else:
+                    self.assertEqual(level_2_data, level_2, level_2_failure)
+            if level == 1:
+                if not full_diff:
+                    self.__assert_eq(level_1_data, level_1, level_1_failure)
+                else:
+                    self.assertEqual(level_1_data, level_1, level_1_failure)
+            if level == 0:
+                try:
+                    if check_domain:
+                        self.assertEqual(
+                            page_domain, page_data_domain, domain_fail
+                        )
+                    try:
+                        if not full_diff:
+                            self.__assert_eq(
+                                level_1_data, level_1, level_1_failure
+                            )
+                        else:
+                            self.assertEqual(
+                                level_1_data, level_1, level_1_failure
+                            )
+                    except Exception as e:
+                        print(e)
+                    try:
+                        if not full_diff:
+                            self.__assert_eq(
+                                level_2_data, level_2, level_2_failure
+                            )
+                        else:
+                            self.assertEqual(
+                                level_2_data, level_2, level_2_failure
+                            )
+                    except Exception as e:
+                        print(e)
+                    if not full_diff:
+                        self.__assert_eq(
+                            level_3_data, level_3, level_3_failure
+                        )
+                    else:
+                        self.assertEqual(
+                            level_3_data, level_3, level_3_failure
+                        )
+                except Exception as e:
+                    print(e)  # Level-0 Dry Run (Only print the differences)
+                    is_level_0_failure = True
+            unittest.TestCase.maxDiff = None  # Reset unittest.TestCase.maxDiff
+        # Since the check passed, do not save an extra copy of the baseline
+        del self.__visual_baseline_copies[-1]  # .pop() returns the element
+        if is_level_0_failure:
+            # Generating the side_by_side.html file for Level-0 failures
+            test_logpath = os.path.join(self.log_path, self.__get_test_id())
+            if (
+                not os.path.exists(baseline_path)
+                or not os.path.exists(latest_png_path)
+            ):
+                return
+            self.__level_0_visual_f = True
+            if not os.path.exists(test_logpath):
+                self.__create_log_path_as_needed(test_logpath)
+            baseline_copy_path = os.path.join(test_logpath, baseline_copy_name)
+            latest_copy_path = os.path.join(test_logpath, latest_copy_name)
+            if (
+                not os.path.exists(baseline_copy_path)
+                and not os.path.exists(latest_copy_path)
+            ):
+                shutil.copy(baseline_path, baseline_copy_path)
+                shutil.copy(latest_png_path, latest_copy_path)
+            the_html = visual_helper.get_sbs_html(
+                baseline_copy_name, latest_copy_name
+            )
+            alpha_n_d_name = "".join([x if x.isalnum() else "_" for x in name])
+            side_by_side_name = "side_by_side_%s.html" % alpha_n_d_name
+            file_path = os.path.join(test_logpath, side_by_side_name)
+            out_file = codecs.open(file_path, "w+", encoding="utf-8")
+            out_file.writelines(the_html)
+            out_file.close()
+
+    ############
+
+    def __get_new_timeout(self, timeout):
+        """When using --timeout_multiplier=#.#"""
+        self.__check_scope()
+        try:
+            timeout_multiplier = float(self.timeout_multiplier)
+            if timeout_multiplier <= 0.5:
+                timeout_multiplier = 0.5
+            timeout = int(math.ceil(timeout_multiplier * timeout))
+            return timeout
+        except Exception:
+            # Wrong data type for timeout_multiplier (expecting int or float)
+            return timeout
+
+    ############
+
+    def __check_scope(self):
+        if hasattr(self, "browser"):  # self.browser stores the type of browser
+            return  # All good: setUp() already initialized variables in "self"
+        else:
+            from seleniumbase.common.exceptions import OutOfScopeException
+
+            message = (
+                "\n It looks like you are trying to call a SeleniumBase method"
+                "\n from outside the scope of your test class's `self` object,"
+                "\n which is initialized by calling BaseCase's setUp() method."
+                "\n The `self` object is where all test variables are defined."
+                "\n If you created a custom setUp() method (that overrided the"
+                "\n the default one), make sure to call super().setUp() in it."
+                "\n When using page objects, be sure to pass the `self` object"
+                "\n from your test class into your page object methods so that"
+                "\n they can call BaseCase class methods with all the required"
+                "\n variables, which are initialized during the setUp() method"
+                "\n that runs automatically before all tests called by pytest."
+            )
+            raise OutOfScopeException(message)
+
+    ############
+
+    def __check_browser(self):
+        """This method raises an exception if the window was already closed."""
+        active_window = None
+        try:
+            active_window = self.driver.current_window_handle  # Fails if None
+        except Exception:
+            pass
+        if not active_window:
+            raise NoSuchWindowException("Active window was already closed!")
+
+    ############
+
+    def __get_exception_message(self):
+        """This method extracts the message from an exception if there
+        was an exception that occurred during the test, assuming
+        that the exception was in a try/except block and not thrown."""
+        exception_info = sys.exc_info()[1]
+        if hasattr(exception_info, "msg"):
+            exc_message = exception_info.msg
+        elif hasattr(exception_info, "message"):
+            exc_message = exception_info.message
+        else:
+            exc_message = sys.exc_info()
+        return exc_message
+
+    def __add_deferred_assert_failure(self, fs=False):
+        """Add a deferred_assert failure to a list for future processing."""
+        self.__check_scope()
+        current_url = self.driver.current_url
+        message = self.__get_exception_message()
+        count = self.__deferred_assert_count
+        self.__deferred_assert_failures.append(
+            "DEFERRED ASSERT #%s: (%s) %s\n" % (count, current_url, message)
+        )
+        if fs:
+            self.save_screenshot_to_logs(name="deferred_#%s" % count)
+
+    ############
+
+    def deferred_assert_element(
+        self, selector, by="css selector", timeout=None, fs=False
+    ):
+        """A non-terminating assertion for an element visible on the page.
+        Failures will be saved until the process_deferred_asserts()
+        method is called from inside a test, likely at the end of it.
+        If "fs" is set to True, a failure screenshot is saved to the
+        "latest_logs/" folder for that assertion failure. Otherwise,
+        only the last page screenshot is taken for all failures when
+        calling the process_deferred_asserts() method.
+        """
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.MINI_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.MINI_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        self.__deferred_assert_count += 1
+        try:
+            url = self.get_current_url()
+            if url == self.__last_url_of_deferred_assert:
+                timeout = 0.6  # Was already on page (full wait not needed)
+            else:
+                self.__last_url_of_deferred_assert = url
+        except Exception:
+            pass
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        action = ["da_el", selector, origin, time_stamp]
+                        self.__extra_actions.append(action)
+        try:
+            self.wait_for_element_visible(selector, by=by, timeout=timeout)
+            return True
+        except Exception:
+            self.__add_deferred_assert_failure(fs=fs)
+            return False
+
+    def deferred_assert_element_present(
+        self, selector, by="css selector", timeout=None, fs=False
+    ):
+        """A non-terminating assertion for an element present in the page html.
+        Failures will be saved until the process_deferred_asserts()
+        method is called from inside a test, likely at the end of it.
+        If "fs" is set to True, a failure screenshot is saved to the
+        "latest_logs/" folder for that assertion failure. Otherwise,
+        only the last page screenshot is taken for all failures when
+        calling the process_deferred_asserts() method.
+        """
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.MINI_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.MINI_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        self.__deferred_assert_count += 1
+        try:
+            url = self.get_current_url()
+            if url == self.__last_url_of_deferred_assert:
+                timeout = 0.6  # Was already on page (full wait not needed)
+            else:
+                self.__last_url_of_deferred_assert = url
+        except Exception:
+            pass
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        action = ["da_ep", selector, origin, time_stamp]
+                        self.__extra_actions.append(action)
+        try:
+            self.wait_for_element_present(selector, by=by, timeout=timeout)
+            return True
+        except Exception:
+            self.__add_deferred_assert_failure(fs=fs)
+            return False
+
+    def deferred_assert_text(
+        self, text, selector="html", by="css selector", timeout=None, fs=False
+    ):
+        """A non-terminating assertion for text from an element on a page.
+        Failures will be saved until the process_deferred_asserts()
+        method is called from inside a test, likely at the end of it.
+        If "fs" is set to True, a failure screenshot is saved to the
+        "latest_logs/" folder for that assertion failure. Otherwise,
+        only the last page screenshot is taken for all failures when
+        calling the process_deferred_asserts() method.
+        """
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.MINI_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.MINI_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        self.__deferred_assert_count += 1
+        try:
+            url = self.get_current_url()
+            if url == self.__last_url_of_deferred_assert:
+                timeout = 0.6  # Was already on page (full wait not needed)
+            else:
+                self.__last_url_of_deferred_assert = url
+        except Exception:
+            pass
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        text_selector = [text, selector]
+                        action = ["da_te", text_selector, origin, time_stamp]
+                        self.__extra_actions.append(action)
+        try:
+            self.wait_for_text_visible(text, selector, by=by, timeout=timeout)
+            return True
+        except Exception:
+            self.__add_deferred_assert_failure(fs=fs)
+            return False
+
+    def deferred_assert_exact_text(
+        self, text, selector="html", by="css selector", timeout=None, fs=False
+    ):
+        """A non-terminating assertion for exact text from an element.
+        Failures will be saved until the process_deferred_asserts()
+        method is called from inside a test, likely at the end of it.
+        If "fs" is set to True, a failure screenshot is saved to the
+        "latest_logs/" folder for that assertion failure. Otherwise,
+        only the last page screenshot is taken for all failures when
+        calling the process_deferred_asserts() method.
+        """
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.MINI_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.MINI_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        self.__deferred_assert_count += 1
+        try:
+            url = self.get_current_url()
+            if url == self.__last_url_of_deferred_assert:
+                timeout = 0.6  # Was already on page (full wait not needed)
+            else:
+                self.__last_url_of_deferred_assert = url
+        except Exception:
+            pass
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        text_selector = [text, selector]
+                        action = ["da_et", text_selector, origin, time_stamp]
+                        self.__extra_actions.append(action)
+        try:
+            self.wait_for_exact_text_visible(
+                text, selector, by=by, timeout=timeout
+            )
+            return True
+        except Exception:
+            self.__add_deferred_assert_failure(fs=fs)
+            return False
+
+    def deferred_check_window(
+        self,
+        name="default",
+        level=0,
+        baseline=False,
+        check_domain=True,
+        full_diff=False,
+        fs=False,
+    ):
+        """A non-terminating assertion for the check_window() method.
+        Failures will be saved until the process_deferred_asserts()
+        method is called from inside a test, likely at the end of it.
+        If "fs" is set to True, a failure screenshot is saved to the
+        "latest_logs/" folder for that assertion failure. Otherwise,
+        only the last page screenshot is taken for all failures when
+        calling the process_deferred_asserts() method.
+        """
+        self.__check_scope()
+        self.__deferred_assert_count += 1
+        try:
+            self.check_window(
+                name=name,
+                level=level,
+                baseline=baseline,
+                check_domain=check_domain,
+                full_diff=full_diff,
+            )
+            return True
+        except Exception:
+            self.__add_deferred_assert_failure(fs=fs)
+            return False
+
+    def process_deferred_asserts(self, print_only=False):
+        """To be used with any test that uses deferred_asserts, which are
+        non-terminating verifications that only raise exceptions
+        after this method is called.
+        This is useful for pages with multiple elements to be checked when
+        you want to find as many bugs as possible in a single test run
+        before having all the exceptions get raised simultaneously.
+        Might be more useful if this method is called after processing all
+        the deferred asserts on a single html page so that the failure
+        screenshot matches the location of the deferred asserts.
+        If "print_only" is set to True, the exception won't get raised."""
+        if self.recorder_mode:
+            time_stamp = self.execute_script("return Date.now();")
+            origin = self.get_origin()
+            action = ["pr_da", "", origin, time_stamp]
+            self.__extra_actions.append(action)
+        if self.__deferred_assert_failures:
+            exception_output = ""
+            exception_output += "\n***** DEFERRED ASSERTION FAILURES:\n"
+            exception_output += "TEST: %s\n\n" % self.id()
+            all_failing_checks = self.__deferred_assert_failures
+            self.__deferred_assert_failures = []
+            for tb in all_failing_checks:
+                exception_output += "%s\n" % tb
+            if print_only:
+                print(exception_output)
+            else:
+                raise Exception(exception_output.replace("\\n", "\n"))
+
+    ############
+
+    # Alternate naming scheme for the "deferred_assert" methods.
+
+    def delayed_assert_element(
+        self, selector, by="css selector", timeout=None, fs=False
+    ):
+        """Same as self.deferred_assert_element()"""
+        return self.deferred_assert_element(
+            selector=selector, by=by, timeout=timeout, fs=fs
+        )
+
+    def delayed_assert_element_present(
+        self, selector, by="css selector", timeout=None, fs=False
+    ):
+        """Same as self.deferred_assert_element_present()"""
+        return self.deferred_assert_element_present(
+            selector=selector, by=by, timeout=timeout, fs=fs
+        )
+
+    def delayed_assert_text(
+        self, text, selector="html", by="css selector", timeout=None, fs=False
+    ):
+        """Same as self.deferred_assert_text()"""
+        return self.deferred_assert_text(
+            text=text, selector=selector, by=by, timeout=timeout, fs=fs
+        )
+
+    def delayed_assert_exact_text(
+        self, text, selector="html", by="css selector", timeout=None, fs=False
+    ):
+        """Same as self.deferred_assert_exact_text()"""
+        return self.deferred_assert_exact_text(
+            text=text, selector=selector, by=by, timeout=timeout, fs=fs
+        )
+
+    def delayed_check_window(
+        self,
+        name="default",
+        level=0,
+        baseline=False,
+        check_domain=True,
+        full_diff=False,
+        fs=False,
+    ):
+        """Same as self.deferred_check_window()"""
+        return self.deferred_check_window(
+            name=name,
+            level=level,
+            baseline=baseline,
+            check_domain=check_domain,
+            full_diff=full_diff,
+            fs=fs,
+        )
+
+    def process_delayed_asserts(self, print_only=False):
+        """Same as self.process_deferred_asserts()"""
+        self.process_deferred_asserts(print_only=print_only)
 
     ############
 
@@ -9915,7 +11304,6 @@ class BaseCase(unittest.TestCase):
                 interval=interval,
             )
         else:
-            # "Shepherd"
             tour_helper.play_shepherd_tour(
                 self.driver,
                 self._tour_steps,
@@ -9923,6 +11311,10 @@ class BaseCase(unittest.TestCase):
                 name=name,
                 interval=interval,
             )
+
+    def start_tour(self, name=None, interval=0):
+        """Same as self.play_tour()"""
+        self.play_tour(name=name, interval=interval)
 
     def export_tour(self, name=None, filename="my_tour.js", url=None):
         """Exports a tour as a JS file.
@@ -10267,1892 +11659,14 @@ class BaseCase(unittest.TestCase):
 
     ############
 
-    def activate_messenger(self):
-        self.__check_scope()
-        self.__check_browser()
-        js_utils.activate_messenger(self.driver)
-        self.wait_for_ready_state_complete()
+    def __are_quotes_escaped(self, string):
+        return js_utils.are_quotes_escaped(string)
 
-    def set_messenger_theme(
-        self, theme="default", location="default", max_messages="default"
-    ):
-        """Sets a theme for posting messages.
-        Themes: ["flat", "future", "block", "air", "ice"]
-        Locations: ["top_left", "top_center", "top_right",
-                    "bottom_left", "bottom_center", "bottom_right"]
-        max_messages is the limit of concurrent messages to display.
-        """
-        self.__check_scope()
-        self.__check_browser()
-        if not theme:
-            theme = "default"  # "flat"
-        if not location:
-            location = "default"  # "bottom_right"
-        if not max_messages:
-            max_messages = "default"  # "8"
-        else:
-            max_messages = str(max_messages)  # Value must be in string format
-        js_utils.set_messenger_theme(
-            self.driver,
-            theme=theme,
-            location=location,
-            max_messages=max_messages,
-        )
+    def __escape_quotes_if_needed(self, string):
+        return js_utils.escape_quotes_if_needed(string)
 
-    def post_message(self, message, duration=None, pause=True, style="info"):
-        """Post a message on the screen with Messenger.
-        Arguments:
-            message: The message to display.
-            duration: The time until the message vanishes. (Default: 2.55s)
-            pause: If True, the program waits until the message completes.
-            style: "info", "success", or "error".
-
-        You can also post messages by using =>
-            self.execute_script('Messenger().post("My Message")')
-        """
-        self.__check_scope()
-        self.__check_browser()
-        if style not in ["info", "success", "error"]:
-            style = "info"
-        if not duration:
-            if not self.message_duration:
-                duration = settings.DEFAULT_MESSAGE_DURATION
-            else:
-                duration = self.message_duration
-        if (
-            (self.headless or self.headless2 or self.xvfb)
-            and float(duration) > 0.75
-        ):
-            duration = 0.75
-        try:
-            js_utils.post_message(self.driver, message, duration, style=style)
-        except Exception:
-            print(" * %s message: %s" % (style.upper(), message))
-        if pause:
-            duration = float(duration) + 0.15
-            time.sleep(float(duration))
-
-    def post_message_and_highlight(self, message, selector, by="css selector"):
-        """Post a message on the screen and highlight an element.
-        Arguments:
-            message: The message to display.
-            selector: The selector of the Element to highlight.
-            by: The type of selector to search by. (Default: CSS Selector)
-        """
-        self.__check_scope()
-        self.__highlight_with_assert_success(message, selector, by=by)
-
-    def post_success_message(self, message, duration=None, pause=True):
-        """Post a success message on the screen with Messenger.
-        Arguments:
-            message: The success message to display.
-            duration: The time until the message vanishes. (Default: 2.55s)
-            pause: If True, the program waits until the message completes.
-        """
-        self.__check_scope()
-        self.__check_browser()
-        if not duration:
-            if not self.message_duration:
-                duration = settings.DEFAULT_MESSAGE_DURATION
-            else:
-                duration = self.message_duration
-        if (
-            (self.headless or self.headless2 or self.xvfb)
-            and float(duration) > 0.75
-        ):
-            duration = 0.75
-        try:
-            js_utils.post_message(
-                self.driver, message, duration, style="success"
-            )
-        except Exception:
-            print(" * SUCCESS message: %s" % message)
-        if pause:
-            duration = float(duration) + 0.15
-            time.sleep(float(duration))
-
-    def post_error_message(self, message, duration=None, pause=True):
-        """Post an error message on the screen with Messenger.
-        Arguments:
-            message: The error message to display.
-            duration: The time until the message vanishes. (Default: 2.55s)
-            pause: If True, the program waits until the message completes.
-        """
-        self.__check_scope()
-        self.__check_browser()
-        if not duration:
-            if not self.message_duration:
-                duration = settings.DEFAULT_MESSAGE_DURATION
-            else:
-                duration = self.message_duration
-        if (
-            (self.headless or self.headless2 or self.xvfb)
-            and float(duration) > 0.75
-        ):
-            duration = 0.75
-        try:
-            js_utils.post_message(
-                self.driver, message, duration, style="error"
-            )
-        except Exception:
-            print(" * ERROR message: %s" % message)
-        if pause:
-            duration = float(duration) + 0.15
-            time.sleep(float(duration))
-
-    ############
-
-    def generate_referral(self, start_page, destination_page, selector=None):
-        """This method opens the start_page, creates a referral link there,
-        and clicks on that link, which goes to the destination_page.
-        If a selector is given, clicks that on the destination_page,
-        which can prevent an artificial rise in website bounce-rate.
-        (This generates real traffic for testing analytics software.)"""
-        self.__check_scope()
-        if not page_utils.is_valid_url(destination_page):
-            raise Exception(
-                "Exception: destination_page {%s} is not a valid URL!"
-                % destination_page
-            )
-        if start_page:
-            if not page_utils.is_valid_url(start_page):
-                raise Exception(
-                    "Exception: start_page {%s} is not a valid URL! "
-                    "(Use an empty string or None to start from current page.)"
-                    % start_page
-                )
-            self.open(start_page)
-            time.sleep(0.08)
-            self.wait_for_ready_state_complete()
-        referral_link = (
-            """<body>"""
-            """<a class='analytics referral test' href='%s' """
-            """style='font-family: Arial,sans-serif; """
-            """font-size: 30px; color: #18a2cd'>"""
-            """Magic Link Button</a></body>""" % destination_page
-        )
-        self.execute_script(
-            '''document.body.outerHTML = \"%s\"''' % referral_link
-        )
-        # Now click the generated button
-        self.click("a.analytics.referral.test", timeout=2)
-        time.sleep(0.15)
-        if selector:
-            self.click(selector)
-            time.sleep(0.15)
-
-    def generate_traffic(
-        self, start_page, destination_page, loops=1, selector=None
-    ):
-        """Similar to generate_referral(), but can do multiple loops.
-        If a selector is given, clicks that on the destination_page,
-        which can prevent an artificial rise in website bounce-rate."""
-        self.__check_scope()
-        for loop in range(loops):
-            self.generate_referral(
-                start_page, destination_page, selector=selector
-            )
-            time.sleep(0.05)
-
-    def generate_referral_chain(self, pages):
-        """Use this method to chain the action of creating button links on
-        one website page that will take you to the next page.
-        (When you want to create a referral to a website for traffic
-        generation without increasing the bounce rate, you'll want to visit
-        at least one additional page on that site with a button click.)"""
-        self.__check_scope()
-        if not type(pages) is tuple and not type(pages) is list:
-            raise Exception(
-                "Exception: Expecting a list of website pages for chaining!"
-            )
-        if len(pages) < 2:
-            raise Exception(
-                "Exception: At least two website pages required for chaining!"
-            )
-        for page in pages:
-            # Find out if any of the web pages are invalid before continuing
-            if not page_utils.is_valid_url(page):
-                raise Exception(
-                    "Exception: Website page {%s} is not a valid URL!" % page
-                )
-        for page in pages:
-            self.generate_referral(None, page)
-
-    def generate_traffic_chain(self, pages, loops=1):
-        """Similar to generate_referral_chain(), but for multiple loops."""
-        self.__check_scope()
-        for loop in range(loops):
-            self.generate_referral_chain(pages)
-            time.sleep(0.05)
-
-    ############
-
-    def wait_for_element_present(
-        self, selector, by="css selector", timeout=None
-    ):
-        """Waits for an element to appear in the HTML of a page.
-        The element does not need be visible (it may be hidden)."""
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        original_selector = selector
-        selector, by = self.__recalculate_selector(selector, by)
-        if self.__is_shadow_selector(selector):
-            return self.__wait_for_shadow_element_present(selector, timeout)
-        return page_actions.wait_for_element_present(
-            self.driver,
-            selector,
-            by,
-            timeout=timeout,
-            original_selector=original_selector,
-        )
-
-    def wait_for_element(self, selector, by="css selector", timeout=None):
-        """Waits for an element to appear in the HTML of a page.
-        The element must be visible (it cannot be hidden)."""
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        original_selector = selector
-        selector, by = self.__recalculate_selector(selector, by)
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        if by == By.XPATH:
-                            selector = original_selector
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        action = ["wf_el", selector, origin, time_stamp]
-                        self.__extra_actions.append(action)
-        if self.__is_shadow_selector(selector):
-            return self.__wait_for_shadow_element_visible(selector, timeout)
-        return page_actions.wait_for_element_visible(
-            self.driver, selector, by, timeout
-        )
-
-    def get_element(self, selector, by="css selector", timeout=None):
-        """Same as wait_for_element_present() - returns the element.
-        The element does not need be visible (it may be hidden)."""
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        selector, by = self.__recalculate_selector(selector, by)
-        return self.wait_for_element_present(selector, by=by, timeout=timeout)
-
-    def wait_for_query_selector(
-        self, selector, by="css selector", timeout=None
-    ):
-        """Waits for an element to appear in the HTML of a page.
-        The element does not need be visible (it may be hidden).
-        This method uses document.querySelector() over Selenium."""
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        css_selector = self.convert_to_css_selector(selector, by=by)
-        return js_utils.wait_for_css_query_selector(
-            self.driver, css_selector, timeout
-        )
-
-    def assert_element_present(
-        self, selector, by="css selector", timeout=None
-    ):
-        """Similar to wait_for_element_present(), but returns nothing.
-        Waits for an element to appear in the HTML of a page.
-        The element does not need be visible (it may be hidden).
-        Returns True if successful. Default timeout = SMALL_TIMEOUT."""
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        if type(selector) is list:
-            self.assert_elements_present(selector, by=by, timeout=timeout)
-            return True
-        if self.__is_shadow_selector(selector):
-            self.__assert_shadow_element_present(selector)
-            return True
-        self.wait_for_element_present(selector, by=by, timeout=timeout)
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        action = ["as_ep", selector, origin, time_stamp]
-                        self.__extra_actions.append(action)
-        return True
-
-    def assert_elements_present(self, *args, **kwargs):
-        """Similar to self.assert_element_present(),
-            but can assert that multiple elements are present in the HTML.
-        The input is a list of elements.
-        Optional kwargs include "by" and "timeout" (used by all selectors).
-        Raises an exception if any of the elements are not visible.
-        Examples:
-            self.assert_elements_present("head", "style", "script", "body")
-            OR
-            self.assert_elements_present(["head", "body", "h1", "h2"])
-        """
-        self.__check_scope()
-        selectors = []
-        timeout = None
-        by = By.CSS_SELECTOR
-        for kwarg in kwargs:
-            if kwarg == "timeout":
-                timeout = kwargs["timeout"]
-            elif kwarg == "by":
-                by = kwargs["by"]
-            elif kwarg == "selector":
-                selector = kwargs["selector"]
-                if type(selector) is str:
-                    selectors.append(selector)
-                elif type(selector) is list:
-                    selectors_list = selector
-                    for selector in selectors_list:
-                        if type(selector) is str:
-                            selectors.append(selector)
-            else:
-                raise Exception('Unknown kwarg: "%s"!' % kwarg)
-        if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        for arg in args:
-            if type(arg) is list:
-                for selector in arg:
-                    if type(selector) is str:
-                        selectors.append(selector)
-            elif type(arg) is str:
-                selectors.append(arg)
-        for selector in selectors:
-            if self.__is_shadow_selector(selector):
-                self.__assert_shadow_element_visible(selector)
-                continue
-            self.wait_for_element_present(selector, by=by, timeout=timeout)
-            continue
-        return True
-
-    def find_element(self, selector, by="css selector", timeout=None):
-        """Same as wait_for_element_visible() - returns the element"""
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        return self.wait_for_element_visible(selector, by=by, timeout=timeout)
-
-    def assert_element(self, selector, by="css selector", timeout=None):
-        """Similar to wait_for_element_visible(), but returns nothing.
-        As above, will raise an exception if nothing can be found.
-        Returns True if successful. Default timeout = SMALL_TIMEOUT."""
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        if type(selector) is list:
-            self.assert_elements(selector, by=by, timeout=timeout)
-            return True
-        if self.__is_shadow_selector(selector):
-            self.__assert_shadow_element_visible(selector)
-            return True
-        self.wait_for_element_visible(selector, by=by, timeout=timeout)
-        original_selector = selector
-        if self.demo_mode:
-            selector, by = self.__recalculate_selector(
-                selector, by, xp_ok=False
-            )
-            a_t = "ASSERT"
-            if self._language != "English":
-                from seleniumbase.fixtures.words import SD
-
-                a_t = SD.translate_assert(self._language)
-            messenger_post = "%s %s: %s" % (a_t, by.upper(), selector)
-            self.__highlight_with_assert_success(messenger_post, selector, by)
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        if by == By.XPATH:
-                            selector = original_selector
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        action = ["as_el", selector, origin, time_stamp]
-                        self.__extra_actions.append(action)
-        return True
-
-    def assert_element_visible(
-        self, selector, by="css selector", timeout=None
-    ):
-        """Same as self.assert_element()
-        As above, will raise an exception if nothing can be found."""
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        self.assert_element(selector, by=by, timeout=timeout)
-        return True
-
-    def assert_elements(self, *args, **kwargs):
-        """Similar to self.assert_element(), but can assert multiple elements.
-        The input is a list of elements.
-        Optional kwargs include "by" and "timeout" (used by all selectors).
-        Raises an exception if any of the elements are not visible.
-        Examples:
-            self.assert_elements("h1", "h2", "h3")
-            OR
-            self.assert_elements(["h1", "h2", "h3"])"""
-        self.__check_scope()
-        selectors = []
-        timeout = None
-        by = By.CSS_SELECTOR
-        for kwarg in kwargs:
-            if kwarg == "timeout":
-                timeout = kwargs["timeout"]
-            elif kwarg == "by":
-                by = kwargs["by"]
-            elif kwarg == "selector":
-                selector = kwargs["selector"]
-                if type(selector) is str:
-                    selectors.append(selector)
-                elif type(selector) is list:
-                    selectors_list = selector
-                    for selector in selectors_list:
-                        if type(selector) is str:
-                            selectors.append(selector)
-            else:
-                raise Exception('Unknown kwarg: "%s"!' % kwarg)
-        if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        for arg in args:
-            if type(arg) is list:
-                for selector in arg:
-                    if type(selector) is str:
-                        selectors.append(selector)
-            elif type(arg) is str:
-                selectors.append(arg)
-        for selector in selectors:
-            if self.__is_shadow_selector(selector):
-                self.__assert_shadow_element_visible(selector)
-                continue
-            self.wait_for_element_visible(selector, by=by, timeout=timeout)
-            if self.demo_mode:
-                selector, by = self.__recalculate_selector(selector, by)
-                a_t = "ASSERT"
-                if self._language != "English":
-                    from seleniumbase.fixtures.words import SD
-
-                    a_t = SD.translate_assert(self._language)
-                messenger_post = "%s %s: %s" % (a_t, by.upper(), selector)
-                self.__highlight_with_assert_success(
-                    messenger_post, selector, by
-                )
-            continue
-        return True
-
-    def assert_elements_visible(self, *args, **kwargs):
-        """Same as self.assert_elements()
-        Raises an exception if any element cannot be found."""
-        return self.assert_elements(*args, **kwargs)
-
-    ############
-
-    def wait_for_text_visible(
-        self, text, selector="html", by="css selector", timeout=None
-    ):
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        text = self.__get_type_checked_text(text)
-        selector, by = self.__recalculate_selector(selector, by)
-        if self.__is_shadow_selector(selector):
-            return self.__wait_for_shadow_text_visible(text, selector, timeout)
-        return page_actions.wait_for_text_visible(
-            self.driver, text, selector, by, timeout, self.browser
-        )
-
-    def wait_for_exact_text_visible(
-        self, text, selector="html", by="css selector", timeout=None
-    ):
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        selector, by = self.__recalculate_selector(selector, by)
-        if self.__is_shadow_selector(selector):
-            return self.__wait_for_exact_shadow_text_visible(
-                text, selector, timeout
-            )
-        return page_actions.wait_for_exact_text_visible(
-            self.driver, text, selector, by, timeout, self.browser
-        )
-
-    def wait_for_text(
-        self, text, selector="html", by="css selector", timeout=None
-    ):
-        """The shorter version of wait_for_text_visible()"""
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        return self.wait_for_text_visible(
-            text, selector, by=by, timeout=timeout
-        )
-
-    def find_text(
-        self, text, selector="html", by="css selector", timeout=None
-    ):
-        """Same as wait_for_text_visible() - returns the element"""
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        return self.wait_for_text_visible(
-            text, selector, by=by, timeout=timeout
-        )
-
-    def assert_text_visible(
-        self, text, selector="html", by="css selector", timeout=None
-    ):
-        """Same as assert_text()"""
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        return self.assert_text(text, selector, by=by, timeout=timeout)
-
-    def assert_text(
-        self, text, selector="html", by="css selector", timeout=None
-    ):
-        """Similar to wait_for_text_visible()
-        Raises an exception if the element or the text is not found.
-        The text only needs to be a subset within the complete text.
-        Returns True if successful. Default timeout = SMALL_TIMEOUT."""
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        original_selector = selector
-        selector, by = self.__recalculate_selector(selector, by)
-        if self.__is_shadow_selector(selector):
-            self.__assert_shadow_text_visible(text, selector, timeout)
-            return True
-        self.wait_for_text_visible(text, selector, by=by, timeout=timeout)
-        if self.demo_mode:
-            a_t = "ASSERT TEXT"
-            i_n = "in"
-            if self._language != "English":
-                from seleniumbase.fixtures.words import SD
-
-                a_t = SD.translate_assert_text(self._language)
-                i_n = SD.translate_in(self._language)
-            messenger_post = "%s: {%s} %s %s: %s" % (
-                a_t,
-                text,
-                i_n,
-                by.upper(),
-                selector,
-            )
-            self.__highlight_with_assert_success(messenger_post, selector, by)
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        if by == By.XPATH:
-                            selector = original_selector
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        text_selector = [text, selector]
-                        action = ["as_te", text_selector, origin, time_stamp]
-                        self.__extra_actions.append(action)
-        return True
-
-    def assert_exact_text(
-        self, text, selector="html", by="css selector", timeout=None
-    ):
-        """Similar to assert_text(), but the text must be exact,
-        rather than exist as a subset of the full text.
-        (Extra whitespace at the beginning or the end doesn't count.)
-        Raises an exception if the element or the text is not found.
-        Returns True if successful. Default timeout = SMALL_TIMEOUT."""
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        original_selector = selector
-        selector, by = self.__recalculate_selector(selector, by)
-        if self.__is_shadow_selector(selector):
-            self.__assert_exact_shadow_text_visible(text, selector, timeout)
-            return True
-        self.wait_for_exact_text_visible(
-            text, selector, by=by, timeout=timeout
-        )
-        if self.demo_mode:
-            a_t = "ASSERT EXACT TEXT"
-            i_n = "in"
-            if self._language != "English":
-                from seleniumbase.fixtures.words import SD
-
-                a_t = SD.translate_assert_exact_text(self._language)
-                i_n = SD.translate_in(self._language)
-            messenger_post = "%s: {%s} %s %s: %s" % (
-                a_t,
-                text,
-                i_n,
-                by.upper(),
-                selector,
-            )
-            self.__highlight_with_assert_success(messenger_post, selector, by)
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        if by == By.XPATH:
-                            selector = original_selector
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        text_selector = [text, selector]
-                        action = ["as_et", text_selector, origin, time_stamp]
-                        self.__extra_actions.append(action)
-        return True
-
-    ############
-
-    def wait_for_link_text_present(self, link_text, timeout=None):
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        start_ms = time.time() * 1000.0
-        stop_ms = start_ms + (timeout * 1000.0)
-        for x in range(int(timeout * 5)):
-            shared_utils.check_if_time_limit_exceeded()
-            try:
-                if not self.is_link_text_present(link_text):
-                    raise Exception(
-                        "Link text {%s} was not found!" % link_text
-                    )
-                return
-            except Exception:
-                now_ms = time.time() * 1000.0
-                if now_ms >= stop_ms:
-                    break
-                time.sleep(0.2)
-        message = "Link text {%s} was not present after %s seconds!" % (
-            link_text,
-            timeout,
-        )
-        page_actions.timeout_exception("NoSuchElementException", message)
-
-    def wait_for_partial_link_text_present(self, link_text, timeout=None):
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        start_ms = time.time() * 1000.0
-        stop_ms = start_ms + (timeout * 1000.0)
-        for x in range(int(timeout * 5)):
-            shared_utils.check_if_time_limit_exceeded()
-            try:
-                if not self.is_partial_link_text_present(link_text):
-                    raise Exception(
-                        "Partial Link text {%s} was not found!" % link_text
-                    )
-                return
-            except Exception:
-                now_ms = time.time() * 1000.0
-                if now_ms >= stop_ms:
-                    break
-                time.sleep(0.2)
-        message = (
-            "Partial Link text {%s} was not present after %s seconds!"
-            "" % (link_text, timeout)
-        )
-        page_actions.timeout_exception("NoSuchElementException", message)
-
-    def wait_for_link_text_visible(self, link_text, timeout=None):
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        return self.wait_for_element_visible(
-            link_text, by="link text", timeout=timeout
-        )
-
-    def wait_for_link_text(self, link_text, timeout=None):
-        """The shorter version of wait_for_link_text_visible()"""
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        return self.wait_for_link_text_visible(link_text, timeout=timeout)
-
-    def find_link_text(self, link_text, timeout=None):
-        """Same as wait_for_link_text_visible() - returns the element"""
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        return self.wait_for_link_text_visible(link_text, timeout=timeout)
-
-    def assert_link_text(self, link_text, timeout=None):
-        """Similar to wait_for_link_text_visible(), but returns nothing.
-        As above, will raise an exception if nothing can be found.
-        Returns True if successful. Default timeout = SMALL_TIMEOUT."""
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        self.wait_for_link_text_visible(link_text, timeout=timeout)
-        if self.demo_mode:
-            a_t = "ASSERT LINK TEXT"
-            if self._language != "English":
-                from seleniumbase.fixtures.words import SD
-
-                a_t = SD.translate_assert_link_text(self._language)
-            messenger_post = "%s: {%s}" % (a_t, link_text)
-            self.__highlight_with_assert_success(
-                messenger_post, link_text, by="link text"
-            )
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        action = ["as_lt", link_text, origin, time_stamp]
-                        self.__extra_actions.append(action)
-        return True
-
-    def wait_for_partial_link_text(self, partial_link_text, timeout=None):
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        return self.wait_for_element_visible(
-            partial_link_text, by="partial link text", timeout=timeout
-        )
-
-    def find_partial_link_text(self, partial_link_text, timeout=None):
-        """Same as wait_for_partial_link_text() - returns the element"""
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        return self.wait_for_partial_link_text(
-            partial_link_text, timeout=timeout
-        )
-
-    def assert_partial_link_text(self, partial_link_text, timeout=None):
-        """Similar to wait_for_partial_link_text(), but returns nothing.
-        As above, will raise an exception if nothing can be found.
-        Returns True if successful. Default timeout = SMALL_TIMEOUT."""
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        self.wait_for_partial_link_text(partial_link_text, timeout=timeout)
-        if self.demo_mode:
-            a_t = "ASSERT PARTIAL LINK TEXT"
-            if self._language != "English":
-                from seleniumbase.fixtures.words import SD
-
-                a_t = SD.translate_assert_link_text(self._language)
-            messenger_post = "%s: {%s}" % (a_t, partial_link_text)
-            self.__highlight_with_assert_success(
-                messenger_post, partial_link_text, by="partial link text"
-            )
-        return True
-
-    ############
-
-    def wait_for_element_absent(
-        self, selector, by="css selector", timeout=None
-    ):
-        """Waits for an element to no longer appear in the HTML of a page.
-        A hidden element counts as a present element, which fails this assert.
-        If waiting for elements to be hidden instead of nonexistent,
-        use wait_for_element_not_visible() instead.
-        """
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        original_selector = selector
-        selector, by = self.__recalculate_selector(selector, by)
-        return page_actions.wait_for_element_absent(
-            self.driver,
-            selector,
-            by,
-            timeout=timeout,
-            original_selector=original_selector,
-        )
-
-    def assert_element_absent(self, selector, by="css selector", timeout=None):
-        """Similar to wait_for_element_absent()
-        As above, will raise an exception if the element stays present.
-        A hidden element counts as a present element, which fails this assert.
-        If you want to assert that elements are hidden instead of nonexistent,
-        use assert_element_not_visible() instead.
-        (Note that hidden elements are still present in the HTML of the page.)
-        Returns True if successful. Default timeout = SMALL_TIMEOUT."""
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        self.wait_for_element_absent(selector, by=by, timeout=timeout)
-        return True
-
-    ############
-
-    def wait_for_element_not_visible(
-        self, selector, by="css selector", timeout=None
-    ):
-        """Waits for an element to no longer be visible on a page.
-        The element can be non-existent in the HTML or hidden on the page
-        to qualify as not visible."""
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        original_selector = selector
-        selector, by = self.__recalculate_selector(selector, by)
-        return page_actions.wait_for_element_not_visible(
-            self.driver,
-            selector,
-            by,
-            timeout=timeout,
-            original_selector=original_selector,
-        )
-
-    def assert_element_not_visible(
-        self, selector, by="css selector", timeout=None
-    ):
-        """Similar to wait_for_element_not_visible()
-        As above, will raise an exception if the element stays visible.
-        Returns True if successful. Default timeout = SMALL_TIMEOUT."""
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        self.wait_for_element_not_visible(selector, by=by, timeout=timeout)
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        action = ["asenv", selector, origin, time_stamp]
-                        self.__extra_actions.append(action)
-        return True
-
-    ############
-
-    def wait_for_text_not_visible(
-        self, text, selector="html", by="css selector", timeout=None
-    ):
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        selector, by = self.__recalculate_selector(selector, by)
-        return page_actions.wait_for_text_not_visible(
-            self.driver, text, selector, by, timeout, self.browser
-        )
-
-    def assert_text_not_visible(
-        self, text, selector="html", by="css selector", timeout=None
-    ):
-        """Similar to wait_for_text_not_visible()
-        Raises an exception if the text is still visible after timeout.
-        Returns True if successful. Default timeout = SMALL_TIMEOUT."""
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        self.wait_for_text_not_visible(text, selector, by=by, timeout=timeout)
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        text_selector = [text, selector]
-                        action = ["astnv", text_selector, origin, time_stamp]
-                        self.__extra_actions.append(action)
-        return True
-
-    ############
-
-    def wait_for_attribute_not_present(
-        self, selector, attribute, value=None, by="css selector", timeout=None
-    ):
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        selector, by = self.__recalculate_selector(selector, by)
-        return page_actions.wait_for_attribute_not_present(
-            self.driver, selector, attribute, value, by, timeout
-        )
-
-    def assert_attribute_not_present(
-        self, selector, attribute, value=None, by="css selector", timeout=None
-    ):
-        """Similar to wait_for_attribute_not_present()
-        Raises an exception if the attribute is still present after timeout.
-        Returns True if successful. Default timeout = SMALL_TIMEOUT."""
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        return self.wait_for_attribute_not_present(
-            selector, attribute, value=value, by=by, timeout=timeout
-        )
-
-    ############
-
-    def wait_for_and_accept_alert(self, timeout=None):
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        return page_actions.wait_for_and_accept_alert(self.driver, timeout)
-
-    def wait_for_and_dismiss_alert(self, timeout=None):
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        return page_actions.wait_for_and_dismiss_alert(self.driver, timeout)
-
-    def wait_for_and_switch_to_alert(self, timeout=None):
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        return page_actions.wait_for_and_switch_to_alert(self.driver, timeout)
-
-    ############
-
-    def accept_alert(self, timeout=None):
-        """Same as wait_for_and_accept_alert(), but smaller default T_O"""
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        return page_actions.wait_for_and_accept_alert(self.driver, timeout)
-
-    def dismiss_alert(self, timeout=None):
-        """Same as wait_for_and_dismiss_alert(), but smaller default T_O"""
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        return page_actions.wait_for_and_dismiss_alert(self.driver, timeout)
-
-    def switch_to_alert(self, timeout=None):
-        """Same as wait_for_and_switch_to_alert(), but smaller default T_O"""
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        return page_actions.wait_for_and_switch_to_alert(self.driver, timeout)
-
-    ############
-
-    def quit_extra_driver(self, driver=None):
-        """Quits the driver only if it's not the default/initial driver.
-        If a driver is given, quits that, otherwise quits the active driver.
-        Raises an Exception if quitting the default/initial driver.
-        Should only be called if a test has already called get_new_driver().
-        Afterwards, self.driver points to the default/initial driver
-        if self.driver was the one being quit.
-        ----
-        If a test never calls get_new_driver(), this method isn't needed.
-        SeleniumBase automatically quits browsers after tests have ended.
-        Even if tests do call get_new_driver(), you don't need to use this
-        method unless you want to quit extra browsers before a test ends.
-        ----
-        Terminology and important details:
-        * Active driver: The one self.driver is set to. Used within methods.
-        * Default/initial driver: The one that is spun up when tests start.
-        Initially, the active driver and the default driver are the same.
-        The active driver can change when one of these methods is called:
-        > self.get_new_driver()
-        > self.switch_to_default_driver()
-        > self.switch_to_driver()
-        > self.quit_extra_driver()
-        """
-        self.__check_scope()
-        if not driver:
-            driver = self.driver
-        if type(driver).__name__ == "NoneType":
-            raise Exception("The driver to quit was a NoneType variable!")
-        elif (
-            not hasattr(driver, "get")
-            or not hasattr(driver, "name")
-            or not hasattr(driver, "quit")
-            or not hasattr(driver, "capabilities")
-            or not hasattr(driver, "window_handles")
-        ):
-            raise Exception("The driver to quit does not match a Driver!")
-        elif self._reuse_session and driver == self._default_driver:
-            raise Exception(
-                "Cannot quit the initial driver in --reuse-session mode!\n"
-                "This is done automatically after all tests have ended.\n"
-                "Use this method only if get_new_driver() has been called."
-            )
-        elif (
-            driver == self._default_driver
-            or (driver in self._drivers_list and len(self._drivers_list) == 1)
-        ):
-            raise Exception(
-                "Cannot quit the default/initial driver!\n"
-                "This is done automatically at the end of each test.\n"
-                "Use this method only if get_new_driver() has been called."
-            )
-        try:
-            if (
-                not is_windows
-                or self.browser == "ie"
-                or driver.service.process
-            ):
-                driver.quit()
-        except AttributeError:
-            pass
-        except Exception:
-            pass
-        if driver in self._drivers_list:
-            self._drivers_list.remove(driver)
-            if driver in self._drivers_browser_map:
-                del self._drivers_browser_map[driver]
-        # If the driver to quit was the active driver, switch drivers
-        if driver == self.driver:
-            self.switch_to_default_driver()
-
-    ############
-
-    def __assert_eq(self, *args, **kwargs):
-        """Minified assert_equal() using only the list diff."""
-        minified_exception = None
-        try:
-            self.assertEqual(*args, **kwargs)
-        except Exception as e:
-            str_e = str(e)
-            minified_exception = "\nAssertionError:\n"
-            lines = str_e.split("\n")
-            countdown = 3
-            countdown_on = False
-            first_differing = False
-            skip_lines = False
-            for line in lines:
-                if countdown_on:
-                    if not skip_lines:
-                        minified_exception += line + "\n"
-                    countdown = countdown - 1
-                    if countdown == 0:
-                        countdown_on = False
-                        skip_lines = False
-                elif line.startswith("First differing"):
-                    first_differing = True
-                    countdown_on = True
-                    countdown = 3
-                    minified_exception += line + "\n"
-                elif line.startswith("First list"):
-                    countdown_on = True
-                    countdown = 3
-                    if not first_differing:
-                        minified_exception += line + "\n"
-                    else:
-                        skip_lines = True
-                elif line.startswith("F"):
-                    countdown_on = True
-                    countdown = 3
-                    minified_exception += line + "\n"
-                elif line.startswith("+") or line.startswith("-"):
-                    minified_exception += line + "\n"
-                elif line.startswith("?"):
-                    minified_exception += line + "\n"
-                elif line.strip().startswith("*"):
-                    minified_exception += line + "\n"
-        if minified_exception:
-            from seleniumbase.common.exceptions import VisualException
-
-            raise VisualException(minified_exception)
-
-    def _process_visual_baseline_logs(self):
-        if sys.version_info < (3, 11):
-            return
-        self.__process_visual_baseline_logs()
-
-    def __process_visual_baseline_logs(self):
-        """Save copies of baseline PNGs in "./latest_logs" during failures.
-        Also create a side_by_side.html file for visual comparisons."""
-        test_logpath = os.path.join(self.log_path, self.__get_test_id())
-        for baseline_copy_tuple in self.__visual_baseline_copies:
-            baseline_path = baseline_copy_tuple[0]
-            baseline_copy_name = baseline_copy_tuple[1]
-            b_c_alt_name = baseline_copy_tuple[2]
-            latest_png_path = baseline_copy_tuple[3]
-            latest_copy_name = baseline_copy_tuple[4]
-            l_c_alt_name = baseline_copy_tuple[5]
-            baseline_copy_path = os.path.join(test_logpath, baseline_copy_name)
-            b_c_alt_path = os.path.join(test_logpath, b_c_alt_name)
-            latest_copy_path = os.path.join(test_logpath, latest_copy_name)
-            l_c_alt_path = os.path.join(test_logpath, l_c_alt_name)
-            if len(self.__visual_baseline_copies) == 1:
-                baseline_copy_path = b_c_alt_path
-                latest_copy_path = l_c_alt_path
-            if (
-                os.path.exists(baseline_path)
-                and not os.path.exists(baseline_copy_path)
-            ):
-                self.__create_log_path_as_needed(test_logpath)
-                shutil.copy(baseline_path, baseline_copy_path)
-            if (
-                os.path.exists(latest_png_path)
-                and not os.path.exists(latest_copy_path)
-            ):
-                self.__create_log_path_as_needed(test_logpath)
-                shutil.copy(latest_png_path, latest_copy_path)
-        if len(self.__visual_baseline_copies) != 1:
-            return  # Skip the rest when deferred visual asserts are used
-        from seleniumbase.core import visual_helper
-
-        the_html = visual_helper.get_sbs_html()
-        file_path = os.path.join(test_logpath, constants.SideBySide.HTML_FILE)
-        out_file = codecs.open(file_path, "w+", encoding="utf-8")
-        out_file.writelines(the_html)
-        out_file.close()
-
-    def check_window(
-        self,
-        name="default",
-        level=0,
-        baseline=False,
-        check_domain=True,
-        full_diff=False,
-    ):
-        """***  Automated Visual Testing with SeleniumBase  ***
-
-        The first time a test calls self.check_window() for a unique "name"
-        parameter provided, it will set a visual baseline, meaning that it
-        creates a folder, saves the URL to a file, saves the current window
-        screenshot to a file, and creates the following three files
-        with the listed data saved:
-        tags_level1.txt  ->  HTML tags from the window
-        tags_level2.txt  ->  HTML tags + attributes from the window
-        tags_level3.txt  ->  HTML tags + attributes/values from the window
-
-        Baseline folders are named based on the test name and the name
-        parameter passed to self.check_window(). The same test can store
-        multiple baseline folders.
-
-        If the baseline is being set/reset, the "level" doesn't matter.
-
-        After the first run of self.check_window(), it will compare the
-        HTML tags of the latest window to the one from the initial run.
-        Here's how the level system works:
-        * level=0 ->
-            DRY RUN ONLY - Will perform comparisons to the baseline (and
-                           print out any differences that are found) but
-                           won't fail the test even if differences exist.
-        * level=1 ->
-            HTML tags are compared to tags_level1.txt
-        * level=2 ->
-            HTML tags are compared to tags_level1.txt and
-            HTML tags/attributes are compared to tags_level2.txt
-        * level=3 ->
-            HTML tags are compared to tags_level1.txt and
-            HTML tags + attributes are compared to tags_level2.txt and
-            HTML tags + attributes/values are compared to tags_level3.txt
-        As shown, Level-3 is the most strict, Level-1 is the least strict.
-        If the comparisons from the latest window to the existing baseline
-        don't match, the current test will fail, except for Level-0 tests.
-
-        You can reset the visual baseline on the command line by using:
-            --visual_baseline
-        As long as "--visual_baseline" is used on the command line while
-        running tests, the self.check_window() method cannot fail because
-        it will rebuild the visual baseline rather than comparing the html
-        tags of the latest run to the existing baseline. If there are any
-        expected layout changes to a website that you're testing, you'll
-        need to reset the baseline to prevent unnecessary failures.
-
-        self.check_window() will fail with "Page Domain Mismatch Failure"
-        if the page domain doesn't match the domain of the baseline,
-        unless "check_domain" is set to False when calling check_window().
-
-        If you want to use self.check_window() to compare a web page to
-        a later version of itself from within the same test run, you can
-        add the parameter "baseline=True" to the first time you call
-        self.check_window() in a test to use that as the baseline. This
-        only makes sense if you're calling self.check_window() more than
-        once with the same name parameter in the same test.
-
-        If "full_diff" is set to False, the error output will only
-        include the first differing element in the list comparison.
-        Set "full_diff" to True if you want to see the full output.
-
-        Automated Visual Testing with self.check_window() is not very
-        effective for websites that have dynamic content that changes
-        the layout and structure of web pages. For those, you're much
-        better off using regular SeleniumBase functional testing.
-
-        Example usage:
-            self.check_window(name="testing", level=0)
-            self.check_window(name="xkcd_home", level=1)
-            self.check_window(name="github_page", level=2)
-            self.check_window(name="wikipedia_page", level=3)
-        """
-        self.wait_for_ready_state_complete()
-        if self.__needs_minimum_wait():
-            time.sleep(0.02)  # Force a minimum wait, even if skipping waits.
-        try:
-            self.wait_for_element_visible(
-                "body", timeout=settings.MINI_TIMEOUT
-            )
-        except Exception:
-            pass
-        if level == "0":
-            level = 0
-        if level == "1":
-            level = 1
-        if level == "2":
-            level = 2
-        if level == "3":
-            level = 3
-        if level != 0 and level != 1 and level != 2 and level != 3:
-            raise Exception('Parameter "level" must be set to 0, 1, 2, or 3!')
-
-        if self.demo_mode:
-            message = (
-                "WARNING: Using check_window() from Demo Mode may lead "
-                "to unexpected results caused by Demo Mode HTML changes."
-            )
-            logging.info(message)
-
-        test_id = self.__get_display_id().split("::")[-1]
-
-        if not name or len(name) < 1:
-            name = "default"
-        name = str(name)
-        from seleniumbase.core import visual_helper
-
-        visual_helper.visual_baseline_folder_setup()
-        baseline_dir = constants.VisualBaseline.STORAGE_FOLDER
-        visual_baseline_path = os.path.join(baseline_dir, test_id, name)
-        page_url_file = os.path.join(visual_baseline_path, "page_url.txt")
-        baseline_png = "baseline.png"
-        baseline_png_path = os.path.join(visual_baseline_path, baseline_png)
-        latest_png = "latest.png"
-        latest_png_path = os.path.join(visual_baseline_path, latest_png)
-        level_1_file = os.path.join(visual_baseline_path, "tags_level_1.txt")
-        level_2_file = os.path.join(visual_baseline_path, "tags_level_2.txt")
-        level_3_file = os.path.join(visual_baseline_path, "tags_level_3.txt")
-
-        set_baseline = False
-        if baseline or self.visual_baseline:
-            set_baseline = True
-        if not os.path.exists(visual_baseline_path):
-            set_baseline = True
-            try:
-                os.makedirs(visual_baseline_path)
-            except Exception:
-                pass  # Only reachable during multi-threaded test runs
-        if not os.path.exists(page_url_file):
-            set_baseline = True
-        if not os.path.exists(baseline_png_path):
-            set_baseline = True
-        if not os.path.exists(level_1_file):
-            set_baseline = True
-        if not os.path.exists(level_2_file):
-            set_baseline = True
-        if not os.path.exists(level_3_file):
-            set_baseline = True
-
-        page_url = self.get_current_url()
-        soup = self.get_beautiful_soup()
-        html_tags = soup.body.find_all()
-        level_1 = [[tag.name] for tag in html_tags]
-        level_1 = json.loads(json.dumps(level_1))  # Tuples become lists
-        level_2 = [[tag.name, sorted(tag.attrs.keys())] for tag in html_tags]
-        level_2 = json.loads(json.dumps(level_2))  # Tuples become lists
-        level_3 = [[tag.name, sorted(tag.attrs.items())] for tag in html_tags]
-        level_3 = json.loads(json.dumps(level_3))  # Tuples become lists
-
-        if set_baseline:
-            self.save_screenshot(
-                baseline_png, visual_baseline_path, selector="body"
-            )
-            out_file = codecs.open(page_url_file, "w+", encoding="utf-8")
-            out_file.writelines(page_url)
-            out_file.close()
-            out_file = codecs.open(level_1_file, "w+", encoding="utf-8")
-            out_file.writelines(json.dumps(level_1))
-            out_file.close()
-            out_file = codecs.open(level_2_file, "w+", encoding="utf-8")
-            out_file.writelines(json.dumps(level_2))
-            out_file.close()
-            out_file = codecs.open(level_3_file, "w+", encoding="utf-8")
-            out_file.writelines(json.dumps(level_3))
-            out_file.close()
-
-        baseline_path = os.path.join(visual_baseline_path, baseline_png)
-        baseline_copy_name = "baseline_%s.png" % name
-        b_c_alt_name = "baseline.png"
-        latest_copy_name = "baseline_diff_%s.png" % name
-        l_c_alt_name = "baseline_diff.png"
-        baseline_copy_tuple = (
-            baseline_path, baseline_copy_name, b_c_alt_name,
-            latest_png_path, latest_copy_name, l_c_alt_name,
-        )
-        self.__visual_baseline_copies.append(baseline_copy_tuple)
-
-        is_level_0_failure = False
-        if not set_baseline:
-            self.save_screenshot(
-                latest_png, visual_baseline_path, selector="body"
-            )
-            f = open(page_url_file, "r")
-            page_url_data = f.read().strip()
-            f.close()
-            f = open(level_1_file, "r")
-            level_1_data = json.loads(f.read())
-            f.close()
-            f = open(level_2_file, "r")
-            level_2_data = json.loads(f.read())
-            f.close()
-            f = open(level_3_file, "r")
-            level_3_data = json.loads(f.read())
-            f.close()
-
-            domain_fail = (
-                "\n*\nPage Domain Mismatch Failure: "
-                "Current Page Domain doesn't match the Page Domain of the "
-                "Baseline! Can't compare two completely different sites! "
-                "Run with --visual_baseline to reset the baseline!"
-            )
-            level_1_failure = (
-                "\n*\n*** Exception: <Level 1> Visual Diff Failure:\n"
-                "* HTML tags don't match the baseline!"
-            )
-            level_2_failure = (
-                "\n*\n*** Exception: <Level 2> Visual Diff Failure:\n"
-                "* HTML tag attribute names don't match the baseline!"
-            )
-            level_3_failure = (
-                "\n*\n*** Exception: <Level 3> Visual Diff Failure:\n"
-                "* HTML tag attribute values don't match the baseline!"
-            )
-
-            page_domain = self.get_domain_url(page_url)
-            page_data_domain = self.get_domain_url(page_url_data)
-            unittest.TestCase.maxDiff = 65536  # 2^16
-            if level != 0 and check_domain:
-                self.assertEqual(page_data_domain, page_domain, domain_fail)
-            if level == 3:
-                if not full_diff:
-                    self.__assert_eq(level_3_data, level_3, level_3_failure)
-                else:
-                    self.assertEqual(level_3_data, level_3, level_3_failure)
-            if level == 2:
-                if not full_diff:
-                    self.__assert_eq(level_2_data, level_2, level_2_failure)
-                else:
-                    self.assertEqual(level_2_data, level_2, level_2_failure)
-            if level == 1:
-                if not full_diff:
-                    self.__assert_eq(level_1_data, level_1, level_1_failure)
-                else:
-                    self.assertEqual(level_1_data, level_1, level_1_failure)
-            if level == 0:
-                try:
-                    if check_domain:
-                        self.assertEqual(
-                            page_domain, page_data_domain, domain_fail
-                        )
-                    try:
-                        if not full_diff:
-                            self.__assert_eq(
-                                level_1_data, level_1, level_1_failure
-                            )
-                        else:
-                            self.assertEqual(
-                                level_1_data, level_1, level_1_failure
-                            )
-                    except Exception as e:
-                        print(e)
-                    try:
-                        if not full_diff:
-                            self.__assert_eq(
-                                level_2_data, level_2, level_2_failure
-                            )
-                        else:
-                            self.assertEqual(
-                                level_2_data, level_2, level_2_failure
-                            )
-                    except Exception as e:
-                        print(e)
-                    if not full_diff:
-                        self.__assert_eq(
-                            level_3_data, level_3, level_3_failure
-                        )
-                    else:
-                        self.assertEqual(
-                            level_3_data, level_3, level_3_failure
-                        )
-                except Exception as e:
-                    print(e)  # Level-0 Dry Run (Only print the differences)
-                    is_level_0_failure = True
-            unittest.TestCase.maxDiff = None  # Reset unittest.TestCase.maxDiff
-        # Since the check passed, do not save an extra copy of the baseline
-        del self.__visual_baseline_copies[-1]  # .pop() returns the element
-        if is_level_0_failure:
-            # Generating the side_by_side.html file for Level-0 failures
-            test_logpath = os.path.join(self.log_path, self.__get_test_id())
-            if (
-                not os.path.exists(baseline_path)
-                or not os.path.exists(latest_png_path)
-            ):
-                return
-            self.__level_0_visual_f = True
-            if not os.path.exists(test_logpath):
-                self.__create_log_path_as_needed(test_logpath)
-            baseline_copy_path = os.path.join(test_logpath, baseline_copy_name)
-            latest_copy_path = os.path.join(test_logpath, latest_copy_name)
-            if (
-                not os.path.exists(baseline_copy_path)
-                and not os.path.exists(latest_copy_path)
-            ):
-                shutil.copy(baseline_path, baseline_copy_path)
-                shutil.copy(latest_png_path, latest_copy_path)
-            the_html = visual_helper.get_sbs_html(
-                baseline_copy_name, latest_copy_name
-            )
-            alpha_n_d_name = "".join([x if x.isalnum() else "_" for x in name])
-            side_by_side_name = "side_by_side_%s.html" % alpha_n_d_name
-            file_path = os.path.join(test_logpath, side_by_side_name)
-            out_file = codecs.open(file_path, "w+", encoding="utf-8")
-            out_file.writelines(the_html)
-            out_file.close()
-
-    ############
-
-    def __get_new_timeout(self, timeout):
-        """When using --timeout_multiplier=#.#"""
-        import math
-
-        self.__check_scope()
-        try:
-            timeout_multiplier = float(self.timeout_multiplier)
-            if timeout_multiplier <= 0.5:
-                timeout_multiplier = 0.5
-            timeout = int(math.ceil(timeout_multiplier * timeout))
-            return timeout
-        except Exception:
-            # Wrong data type for timeout_multiplier (expecting int or float)
-            return timeout
-
-    ############
-
-    def __check_scope(self):
-        if hasattr(self, "browser"):  # self.browser stores the type of browser
-            return  # All good: setUp() already initialized variables in "self"
-        else:
-            from seleniumbase.common.exceptions import OutOfScopeException
-
-            message = (
-                "\n It looks like you are trying to call a SeleniumBase method"
-                "\n from outside the scope of your test class's `self` object,"
-                "\n which is initialized by calling BaseCase's setUp() method."
-                "\n The `self` object is where all test variables are defined."
-                "\n If you created a custom setUp() method (that overrided the"
-                "\n the default one), make sure to call super().setUp() in it."
-                "\n When using page objects, be sure to pass the `self` object"
-                "\n from your test class into your page object methods so that"
-                "\n they can call BaseCase class methods with all the required"
-                "\n variables, which are initialized during the setUp() method"
-                "\n that runs automatically before all tests called by pytest."
-            )
-            raise OutOfScopeException(message)
-
-    ############
-
-    def __check_browser(self):
-        """This method raises an exception if the window was already closed."""
-        active_window = None
-        try:
-            active_window = self.driver.current_window_handle  # Fails if None
-        except Exception:
-            pass
-        if not active_window:
-            raise NoSuchWindowException("Active window was already closed!")
-
-    ############
-
-    def __get_exception_message(self):
-        """This method extracts the message from an exception if there
-        was an exception that occurred during the test, assuming
-        that the exception was in a try/except block and not thrown."""
-        exception_info = sys.exc_info()[1]
-        if hasattr(exception_info, "msg"):
-            exc_message = exception_info.msg
-        elif hasattr(exception_info, "message"):
-            exc_message = exception_info.message
-        else:
-            exc_message = sys.exc_info()
-        return exc_message
-
-    def __add_deferred_assert_failure(self, fs=False):
-        """Add a deferred_assert failure to a list for future processing."""
-        self.__check_scope()
-        current_url = self.driver.current_url
-        message = self.__get_exception_message()
-        count = self.__deferred_assert_count
-        self.__deferred_assert_failures.append(
-            "DEFERRED ASSERT #%s: (%s) %s\n" % (count, current_url, message)
-        )
-        if fs:
-            self.save_screenshot_to_logs(name="deferred_#%s" % count)
-
-    ############
-
-    def deferred_assert_element(
-        self, selector, by="css selector", timeout=None, fs=False
-    ):
-        """A non-terminating assertion for an element visible on the page.
-        Failures will be saved until the process_deferred_asserts()
-        method is called from inside a test, likely at the end of it.
-        If "fs" is set to True, a failure screenshot is saved to the
-        "latest_logs/" folder for that assertion failure. Otherwise,
-        only the last page screenshot is taken for all failures when
-        calling the process_deferred_asserts() method.
-        """
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.MINI_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.MINI_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        self.__deferred_assert_count += 1
-        try:
-            url = self.get_current_url()
-            if url == self.__last_url_of_deferred_assert:
-                timeout = 1  # Was already on page (full wait not needed)
-            else:
-                self.__last_url_of_deferred_assert = url
-        except Exception:
-            pass
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        action = ["da_el", selector, origin, time_stamp]
-                        self.__extra_actions.append(action)
-        try:
-            self.wait_for_element_visible(selector, by=by, timeout=timeout)
-            return True
-        except Exception:
-            self.__add_deferred_assert_failure(fs=fs)
-            return False
-
-    def deferred_assert_element_present(
-        self, selector, by="css selector", timeout=None, fs=False
-    ):
-        """A non-terminating assertion for an element present in the page html.
-        Failures will be saved until the process_deferred_asserts()
-        method is called from inside a test, likely at the end of it.
-        If "fs" is set to True, a failure screenshot is saved to the
-        "latest_logs/" folder for that assertion failure. Otherwise,
-        only the last page screenshot is taken for all failures when
-        calling the process_deferred_asserts() method.
-        """
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.MINI_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.MINI_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        self.__deferred_assert_count += 1
-        try:
-            url = self.get_current_url()
-            if url == self.__last_url_of_deferred_assert:
-                timeout = 1  # Was already on page (full wait not needed)
-            else:
-                self.__last_url_of_deferred_assert = url
-        except Exception:
-            pass
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        action = ["da_ep", selector, origin, time_stamp]
-                        self.__extra_actions.append(action)
-        try:
-            self.wait_for_element_present(selector, by=by, timeout=timeout)
-            return True
-        except Exception:
-            self.__add_deferred_assert_failure(fs=fs)
-            return False
-
-    def deferred_assert_text(
-        self, text, selector="html", by="css selector", timeout=None, fs=False
-    ):
-        """A non-terminating assertion for text from an element on a page.
-        Failures will be saved until the process_deferred_asserts()
-        method is called from inside a test, likely at the end of it.
-        If "fs" is set to True, a failure screenshot is saved to the
-        "latest_logs/" folder for that assertion failure. Otherwise,
-        only the last page screenshot is taken for all failures when
-        calling the process_deferred_asserts() method.
-        """
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.MINI_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.MINI_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        self.__deferred_assert_count += 1
-        try:
-            url = self.get_current_url()
-            if url == self.__last_url_of_deferred_assert:
-                timeout = 1  # Was already on page (full wait not needed)
-            else:
-                self.__last_url_of_deferred_assert = url
-        except Exception:
-            pass
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        text_selector = [text, selector]
-                        action = ["da_te", text_selector, origin, time_stamp]
-                        self.__extra_actions.append(action)
-        try:
-            self.wait_for_text_visible(text, selector, by=by, timeout=timeout)
-            return True
-        except Exception:
-            self.__add_deferred_assert_failure(fs=fs)
-            return False
-
-    def deferred_assert_exact_text(
-        self, text, selector="html", by="css selector", timeout=None, fs=False
-    ):
-        """A non-terminating assertion for exact text from an element.
-        Failures will be saved until the process_deferred_asserts()
-        method is called from inside a test, likely at the end of it.
-        If "fs" is set to True, a failure screenshot is saved to the
-        "latest_logs/" folder for that assertion failure. Otherwise,
-        only the last page screenshot is taken for all failures when
-        calling the process_deferred_asserts() method.
-        """
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.MINI_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.MINI_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        self.__deferred_assert_count += 1
-        try:
-            url = self.get_current_url()
-            if url == self.__last_url_of_deferred_assert:
-                timeout = 1  # Was already on page (full wait not needed)
-            else:
-                self.__last_url_of_deferred_assert = url
-        except Exception:
-            pass
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        text_selector = [text, selector]
-                        action = ["da_et", text_selector, origin, time_stamp]
-                        self.__extra_actions.append(action)
-        try:
-            self.wait_for_exact_text_visible(
-                text, selector, by=by, timeout=timeout
-            )
-            return True
-        except Exception:
-            self.__add_deferred_assert_failure(fs=fs)
-            return False
-
-    def deferred_check_window(
-        self,
-        name="default",
-        level=0,
-        baseline=False,
-        check_domain=True,
-        full_diff=False,
-        fs=False,
-    ):
-        """A non-terminating assertion for the check_window() method.
-        Failures will be saved until the process_deferred_asserts()
-        method is called from inside a test, likely at the end of it.
-        If "fs" is set to True, a failure screenshot is saved to the
-        "latest_logs/" folder for that assertion failure. Otherwise,
-        only the last page screenshot is taken for all failures when
-        calling the process_deferred_asserts() method.
-        """
-        self.__check_scope()
-        self.__deferred_assert_count += 1
-        try:
-            self.check_window(
-                name=name,
-                level=level,
-                baseline=baseline,
-                check_domain=check_domain,
-                full_diff=full_diff,
-            )
-            return True
-        except Exception:
-            self.__add_deferred_assert_failure(fs=fs)
-            return False
-
-    def process_deferred_asserts(self, print_only=False):
-        """To be used with any test that uses deferred_asserts, which are
-        non-terminating verifications that only raise exceptions
-        after this method is called.
-        This is useful for pages with multiple elements to be checked when
-        you want to find as many bugs as possible in a single test run
-        before having all the exceptions get raised simultaneously.
-        Might be more useful if this method is called after processing all
-        the deferred asserts on a single html page so that the failure
-        screenshot matches the location of the deferred asserts.
-        If "print_only" is set to True, the exception won't get raised."""
-        if self.recorder_mode:
-            time_stamp = self.execute_script("return Date.now();")
-            origin = self.get_origin()
-            action = ["pr_da", "", origin, time_stamp]
-            self.__extra_actions.append(action)
-        if self.__deferred_assert_failures:
-            exception_output = ""
-            exception_output += "\n***** DEFERRED ASSERTION FAILURES:\n"
-            exception_output += "TEST: %s\n\n" % self.id()
-            all_failing_checks = self.__deferred_assert_failures
-            self.__deferred_assert_failures = []
-            for tb in all_failing_checks:
-                exception_output += "%s\n" % tb
-            if print_only:
-                print(exception_output)
-            else:
-                raise Exception(exception_output.replace("\\n", "\n"))
-
-    ############
-
-    # Alternate naming scheme for the "deferred_assert" methods.
-
-    def delayed_assert_element(
-        self, selector, by="css selector", timeout=None, fs=False
-    ):
-        """Same as self.deferred_assert_element()"""
-        return self.deferred_assert_element(
-            selector=selector, by=by, timeout=timeout, fs=fs
-        )
-
-    def delayed_assert_element_present(
-        self, selector, by="css selector", timeout=None, fs=False
-    ):
-        """Same as self.deferred_assert_element_present()"""
-        return self.deferred_assert_element_present(
-            selector=selector, by=by, timeout=timeout, fs=fs
-        )
-
-    def delayed_assert_text(
-        self, text, selector="html", by="css selector", timeout=None, fs=False
-    ):
-        """Same as self.deferred_assert_text()"""
-        return self.deferred_assert_text(
-            text=text, selector=selector, by=by, timeout=timeout, fs=fs
-        )
-
-    def delayed_assert_exact_text(
-        self, text, selector="html", by="css selector", timeout=None, fs=False
-    ):
-        """Same as self.deferred_assert_exact_text()"""
-        return self.deferred_assert_exact_text(
-            text=text, selector=selector, by=by, timeout=timeout, fs=fs
-        )
-
-    def delayed_check_window(
-        self,
-        name="default",
-        level=0,
-        baseline=False,
-        check_domain=True,
-        full_diff=False,
-        fs=False,
-    ):
-        """Same as self.deferred_check_window()"""
-        return self.deferred_check_window(
-            name=name,
-            level=level,
-            baseline=baseline,
-            check_domain=check_domain,
-            full_diff=full_diff,
-            fs=fs,
-        )
-
-    def process_delayed_asserts(self, print_only=False):
-        """Same as self.process_deferred_asserts()"""
-        self.process_deferred_asserts(print_only=print_only)
+    def __is_in_frame(self):
+        return js_utils.is_in_frame(self.driver)
 
     ############
 
@@ -12247,7 +11761,7 @@ class BaseCase(unittest.TestCase):
 
         self.wait_for_ready_state_complete()
         if self.__needs_minimum_wait():
-            time.sleep(0.02)  # Force a minimum wait, even if skipping waits.
+            time.sleep(0.05)  # Force a minimum wait, even if skipping waits.
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
@@ -12297,7 +11811,9 @@ class BaseCase(unittest.TestCase):
             self.driver.execute_script(scroll_script)
             time.sleep(0.1)
         except Exception:
-            pass
+            time.sleep(0.05)
+        if self.__needs_minimum_wait():
+            time.sleep(0.05)
         try:
             if selenium4_or_newer and not center:
                 element_rect = element.rect
@@ -12607,6 +12123,25 @@ class BaseCase(unittest.TestCase):
         # Only get the first match
         return page_utils.make_css_match_first_element_only(selector)
 
+    def __switch_to_newest_window_if_not_blank(self):
+        current_window = self.driver.current_window_handle
+        try:
+            self.switch_to_window(len(self.driver.window_handles) - 1)
+            if self.get_current_url() == "about:blank":
+                self.switch_to_window(current_window)
+        except Exception:
+            self.switch_to_window(current_window)
+
+    def __needs_minimum_wait(self):
+        if (
+            self.page_load_strategy == "none"
+            and hasattr(settings, "SKIP_JS_WAITS")
+            and settings.SKIP_JS_WAITS
+        ):
+            return True
+        else:
+            return False
+
     def __demo_mode_pause_if_active(self, tiny=False):
         if self.demo_mode:
             wait_time = settings.DEFAULT_DEMO_MODE_TIMEOUT
@@ -12677,6 +12212,40 @@ class BaseCase(unittest.TestCase):
             # Scroll to the element instantly if the slow scroll fails
             js_utils.scroll_to_element(self.driver, element)
 
+    def __highlight_with_js(self, selector, loops, o_bs):
+        self.wait_for_ready_state_complete()
+        js_utils.highlight_with_js(self.driver, selector, loops, o_bs)
+
+    def __highlight_with_jquery(self, selector, loops, o_bs):
+        self.wait_for_ready_state_complete()
+        js_utils.highlight_with_jquery(self.driver, selector, loops, o_bs)
+
+    def __highlight_with_js_2(self, message, selector, o_bs):
+        duration = self.message_duration
+        if not duration:
+            duration = settings.DEFAULT_MESSAGE_DURATION
+        if (
+            (self.headless or self.headless2 or self.xvfb)
+            and float(duration) > 0.75
+        ):
+            duration = 0.75
+        js_utils.highlight_with_js_2(
+            self.driver, message, selector, o_bs, duration
+        )
+
+    def __highlight_with_jquery_2(self, message, selector, o_bs):
+        duration = self.message_duration
+        if not duration:
+            duration = settings.DEFAULT_MESSAGE_DURATION
+        if (
+            (self.headless or self.headless2 or self.xvfb)
+            and float(duration) > 0.75
+        ):
+            duration = 0.75
+        js_utils.highlight_with_jquery_2(
+            self.driver, message, selector, o_bs, duration
+        )
+
     def __highlight_with_assert_success(
         self, message, selector, by="css selector"
     ):
@@ -12739,32 +12308,6 @@ class BaseCase(unittest.TestCase):
                 pass  # JQuery probably couldn't load. Skip highlighting.
         time.sleep(0.065)
 
-    def __highlight_with_js_2(self, message, selector, o_bs):
-        duration = self.message_duration
-        if not duration:
-            duration = settings.DEFAULT_MESSAGE_DURATION
-        if (
-            (self.headless or self.headless2 or self.xvfb)
-            and float(duration) > 0.75
-        ):
-            duration = 0.75
-        js_utils.highlight_with_js_2(
-            self.driver, message, selector, o_bs, duration
-        )
-
-    def __highlight_with_jquery_2(self, message, selector, o_bs):
-        duration = self.message_duration
-        if not duration:
-            duration = settings.DEFAULT_MESSAGE_DURATION
-        if (
-            (self.headless or self.headless2 or self.xvfb)
-            and float(duration) > 0.75
-        ):
-            duration = 0.75
-        js_utils.highlight_with_jquery_2(
-            self.driver, message, selector, o_bs, duration
-        )
-
     def __activate_virtual_display_as_needed(self):
         if self.headless or self.headless2 or self.xvfb:
             width = settings.HEADLESS_START_WIDTH
@@ -12779,14 +12322,521 @@ class BaseCase(unittest.TestCase):
             except Exception:
                 pass
 
-    ############
+    def __ad_block_as_needed(self):
+        """This is an internal method for handling ad-blocking.
+        Use "pytest --ad-block" to enable this during tests.
+        When not Chromium or in headless mode, use the hack."""
+        if self.ad_block_on and (self.headless or not self.is_chromium()):
+            # (Chromium browsers in headed mode use the extension instead)
+            current_url = self.get_current_url()
+            if not current_url == self.__last_page_load_url:
+                if page_actions.is_element_present(
+                    self.driver, "iframe", By.CSS_SELECTOR
+                ):
+                    self.ad_block()
+                self.__last_page_load_url = current_url
 
-    from seleniumbase.common import decorators
+    def __disable_beforeunload_as_needed(self):
+        if (
+            hasattr(self, "_disable_beforeunload")
+            and self._disable_beforeunload
+        ):
+            self.disable_beforeunload()
+
+    ############
 
     @decorators.deprecated("You should use re.escape() instead.")
     def jq_format(self, code):
         # DEPRECATED - re.escape() already performs the intended action.
         return js_utils._jq_format(code)
+
+    ############
+
+    # Shadow DOM / Shadow-root methods
+
+    def __get_shadow_element(
+        self, selector, timeout=None, must_be_visible=False
+    ):
+        self.wait_for_ready_state_complete()
+        if timeout is None:
+            timeout = settings.SMALL_TIMEOUT
+        elif timeout == 0:
+            timeout = 0.1  # Use for: is_shadow_element_* (* = present/visible)
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        self.__fail_if_invalid_shadow_selector_usage(selector)
+        if "::shadow " not in selector:
+            raise Exception(
+                'A Shadow DOM selector must contain at least one "::shadow "!'
+            )
+        selectors = selector.split("::shadow ")
+        element = self.get_element(selectors[0])
+        selector_chain = selectors[0]
+        is_present = False
+        for selector_part in selectors[1:]:
+            shadow_root = None
+            if (
+                selenium4_or_newer
+                and self.is_chromium()
+                and int(self.__get_major_browser_version()) >= 96
+            ):
+                try:
+                    shadow_root = element.shadow_root
+                except Exception:
+                    if self.browser == "chrome":
+                        chrome_dict = self.driver.capabilities["chrome"]
+                        chrome_dr_version = chrome_dict["chromedriverVersion"]
+                        chromedriver_version = chrome_dr_version.split(" ")[0]
+                        major_c_dr_version = chromedriver_version.split(".")[0]
+                        if int(major_c_dr_version) < 96:
+                            upgrade_to = "latest"
+                            major_browser_version = (
+                                self.__get_major_browser_version()
+                            )
+                            if int(major_browser_version) >= 96:
+                                upgrade_to = str(major_browser_version)
+                            message = (
+                                "You need to upgrade to a newer\n"
+                                "version of chromedriver to interact\n"
+                                "with Shadow root elements!\n"
+                                "(Current driver version is: %s)"
+                                "\n(Minimum driver version is: 96.*)"
+                                "\nTo upgrade, run this:"
+                                '\n"seleniumbase get chromedriver %s"'
+                                % (chromedriver_version, upgrade_to)
+                            )
+                            raise Exception(message)
+                    if timeout != 0.1:  # Skip wait for special 0.1 (See above)
+                        time.sleep(2)
+                    try:
+                        shadow_root = element.shadow_root
+                    except Exception:
+                        raise Exception(
+                            "Element {%s} has no shadow root!" % selector_chain
+                        )
+            else:  # This part won't work on Chrome 96 or newer.
+                # If using Chrome 96 or newer (and on an old Python version),
+                #     you'll need to upgrade in order to access Shadow roots.
+                # Firefox users will likely hit:
+                #     https://github.com/mozilla/geckodriver/issues/1711
+                #     When Firefox adds support, switch to element.shadow_root
+                try:
+                    shadow_root = self.execute_script(
+                        "return arguments[0].shadowRoot;", element
+                    )
+                except Exception:
+                    time.sleep(2)
+                    shadow_root = self.execute_script(
+                        "return arguments[0].shadowRoot;", element
+                    )
+            if timeout == 0.1 and not shadow_root:
+                raise Exception(
+                    "Element {%s} has no shadow root!" % selector_chain
+                )
+            elif not shadow_root:
+                time.sleep(2)  # Wait two seconds for the shadow root to appear
+                shadow_root = self.execute_script(
+                    "return arguments[0].shadowRoot;", element
+                )
+                if not shadow_root:
+                    raise Exception(
+                        "Element {%s} has no shadow root!" % selector_chain
+                    )
+            selector_chain += "::shadow "
+            selector_chain += selector_part
+            try:
+                if (
+                    selenium4_or_newer
+                    and self.is_chromium()
+                    and int(self.__get_major_browser_version()) >= 96
+                ):
+                    if timeout == 0.1:
+                        element = shadow_root.find_element(
+                            By.CSS_SELECTOR, value=selector_part
+                        )
+                    else:
+                        found = False
+                        for i in range(int(timeout) * 4):
+                            try:
+                                element = shadow_root.find_element(
+                                    By.CSS_SELECTOR, value=selector_part
+                                )
+                                is_present = True
+                                if must_be_visible:
+                                    if not element.is_displayed():
+                                        raise Exception(
+                                            "Shadow Root element not visible!"
+                                        )
+                                found = True
+                                break
+                            except Exception:
+                                time.sleep(0.2)
+                                continue
+                        if not found:
+                            element = shadow_root.find_element(
+                                By.CSS_SELECTOR, value=selector_part
+                            )
+                            is_present = True
+                            if must_be_visible and not element.is_displayed():
+                                raise Exception(
+                                    "Shadow Root element not visible!"
+                                )
+                else:
+                    element = page_actions.wait_for_element_present(
+                        shadow_root,
+                        selector_part,
+                        by="css selector",
+                        timeout=timeout,
+                    )
+            except Exception:
+                error = "not present"
+                the_exception = "NoSuchElementException"
+                if must_be_visible and is_present:
+                    error = "not visible"
+                    the_exception = "ElementNotVisibleException"
+                msg = (
+                    "Shadow DOM Element {%s} was %s after %s seconds!"
+                    % (selector_chain, error, timeout)
+                )
+                page_actions.timeout_exception(the_exception, msg)
+        return element
+
+    def __fail_if_invalid_shadow_selector_usage(self, selector):
+        if selector.strip().endswith("::shadow"):
+            msg = (
+                "A Shadow DOM selector cannot end on a shadow root element!"
+                " End the selector with an element inside the shadow root!"
+            )
+            raise Exception(msg)
+
+    def __is_shadow_selector(self, selector):
+        self.__fail_if_invalid_shadow_selector_usage(selector)
+        if "::shadow " in selector:
+            return True
+        return False
+
+    def __shadow_click(self, selector, timeout):
+        element = self.__get_shadow_element(
+            selector, timeout=timeout, must_be_visible=True
+        )
+        element.click()
+
+    def __shadow_type(self, selector, text, timeout, clear_first=True):
+        element = self.__get_shadow_element(
+            selector, timeout=timeout, must_be_visible=True
+        )
+        if clear_first:
+            try:
+                element.clear()
+                backspaces = Keys.BACK_SPACE * 42  # Autofill Defense
+                element.send_keys(backspaces)
+            except Exception:
+                pass
+        text = self.__get_type_checked_text(text)
+        if not text.endswith("\n"):
+            element.send_keys(text)
+            if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
+                self.wait_for_ready_state_complete()
+        else:
+            element.send_keys(text[:-1])
+            element.send_keys(Keys.RETURN)
+            if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
+                self.wait_for_ready_state_complete()
+
+    def __shadow_clear(self, selector, timeout):
+        element = self.__get_shadow_element(
+            selector, timeout=timeout, must_be_visible=True
+        )
+        try:
+            element.clear()
+            backspaces = Keys.BACK_SPACE * 42  # Autofill Defense
+            element.send_keys(backspaces)
+        except Exception:
+            pass
+
+    def __get_shadow_text(self, selector, timeout):
+        element = self.__get_shadow_element(
+            selector, timeout=timeout, must_be_visible=True
+        )
+        element_text = element.text
+        if self.browser == "safari":
+            element_text = element.get_attribute("innerText")
+        return element_text
+
+    def __get_shadow_attribute(self, selector, attribute, timeout):
+        element = self.__get_shadow_element(selector, timeout=timeout)
+        return element.get_attribute(attribute)
+
+    def __wait_for_shadow_text_visible(self, text, selector, timeout):
+        text = str(text)
+        start_ms = time.time() * 1000.0
+        stop_ms = start_ms + (settings.SMALL_TIMEOUT * 1000.0)
+        for x in range(int(settings.SMALL_TIMEOUT * 10)):
+            try:
+                actual_text = self.__get_shadow_text(
+                    selector, timeout=1
+                ).strip()
+                text = text.strip()
+                if text not in actual_text:
+                    msg = (
+                        "Expected text {%s} in element {%s} was not visible!"
+                        % (text, selector)
+                    )
+                    page_actions.timeout_exception(
+                        "ElementNotVisibleException", msg
+                    )
+                return True
+            except Exception:
+                now_ms = time.time() * 1000.0
+                if now_ms >= stop_ms:
+                    break
+                time.sleep(0.1)
+        actual_text = self.__get_shadow_text(selector, timeout=1).strip()
+        text = text.strip()
+        if text not in actual_text:
+            msg = "Expected text {%s} in element {%s} was not visible!" % (
+                text,
+                selector,
+            )
+            page_actions.timeout_exception("ElementNotVisibleException", msg)
+        return True
+
+    def __wait_for_exact_shadow_text_visible(self, text, selector, timeout):
+        text = str(text)
+        start_ms = time.time() * 1000.0
+        stop_ms = start_ms + (settings.SMALL_TIMEOUT * 1000.0)
+        for x in range(int(settings.SMALL_TIMEOUT * 10)):
+            try:
+                actual_text = self.__get_shadow_text(
+                    selector, timeout=1
+                ).strip()
+                text = text.strip()
+                if text != actual_text:
+                    msg = (
+                        "Expected exact text {%s} in element {%s} not visible!"
+                        "" % (text, selector)
+                    )
+                    page_actions.timeout_exception(
+                        "ElementNotVisibleException", msg
+                    )
+                return True
+            except Exception:
+                now_ms = time.time() * 1000.0
+                if now_ms >= stop_ms:
+                    break
+                time.sleep(0.1)
+        actual_text = self.__get_shadow_text(selector, timeout=1).strip()
+        text = text.strip()
+        if text != actual_text:
+            msg = (
+                "Expected exact text {%s} in element {%s} was not visible!"
+                % (text, selector)
+            )
+            page_actions.timeout_exception("ElementNotVisibleException", msg)
+        return True
+
+    def __assert_shadow_text_visible(self, text, selector, timeout):
+        self.__wait_for_shadow_text_visible(text, selector, timeout)
+        if self.demo_mode:
+            a_t = "ASSERT TEXT"
+            i_n = "in"
+            by = By.CSS_SELECTOR
+            if self._language != "English":
+                from seleniumbase.fixtures.words import SD
+
+                a_t = SD.translate_assert_text(self._language)
+                i_n = SD.translate_in(self._language)
+            messenger_post = "%s: {%s} %s %s: %s" % (
+                a_t,
+                text,
+                i_n,
+                by.upper(),
+                selector,
+            )
+            try:
+                js_utils.activate_jquery(self.driver)
+                js_utils.post_messenger_success_message(
+                    self.driver, messenger_post, self.message_duration
+                )
+            except Exception:
+                pass
+
+    def __assert_exact_shadow_text_visible(self, text, selector, timeout):
+        self.__wait_for_exact_shadow_text_visible(text, selector, timeout)
+        if self.demo_mode:
+            a_t = "ASSERT EXACT TEXT"
+            i_n = "in"
+            by = By.CSS_SELECTOR
+            if self._language != "English":
+                from seleniumbase.fixtures.words import SD
+
+                a_t = SD.translate_assert_exact_text(self._language)
+                i_n = SD.translate_in(self._language)
+            messenger_post = "%s: {%s} %s %s: %s" % (
+                a_t,
+                text,
+                i_n,
+                by.upper(),
+                selector,
+            )
+            try:
+                js_utils.activate_jquery(self.driver)
+                js_utils.post_messenger_success_message(
+                    self.driver, messenger_post, self.message_duration
+                )
+            except Exception:
+                pass
+
+    def __is_shadow_element_present(self, selector):
+        try:
+            element = self.__get_shadow_element(selector, timeout=0.1)
+            return element is not None
+        except Exception:
+            return False
+
+    def __is_shadow_element_visible(self, selector):
+        try:
+            element = self.__get_shadow_element(selector, timeout=0.1)
+            return element.is_displayed()
+        except Exception:
+            return False
+
+    def __is_shadow_element_clickable(self, selector):
+        try:
+            element = self.__get_shadow_element(selector, timeout=0.1)
+            if element.is_displayed() and element.is_enabled():
+                return True
+            return False
+        except Exception:
+            return False
+
+    def __is_shadow_element_enabled(self, selector):
+        try:
+            element = self.__get_shadow_element(selector, timeout=0.1)
+            return element.is_enabled()
+        except Exception:
+            return False
+
+    def __is_shadow_text_visible(self, text, selector):
+        text = str(text)
+        try:
+            element = self.__get_shadow_element(selector, timeout=0.1)
+            if self.browser == "safari":
+                return (
+                    element.is_displayed()
+                    and text in element.get_attribute("innerText")
+                )
+            return element.is_displayed() and text in element.text
+        except Exception:
+            return False
+
+    def __is_shadow_attribute_present(self, selector, attribute, value=None):
+        try:
+            element = self.__get_shadow_element(selector, timeout=0.1)
+            found_value = element.get_attribute(attribute)
+            if found_value is None:
+                return False
+            if value is not None:
+                if found_value == value:
+                    return True
+                else:
+                    return False
+            else:
+                return True
+        except Exception:
+            return False
+
+    def __wait_for_shadow_element_present(self, selector, timeout):
+        element = self.__get_shadow_element(selector, timeout=timeout)
+        return element
+
+    def __wait_for_shadow_element_visible(self, selector, timeout):
+        element = self.__get_shadow_element(
+            selector, timeout=timeout, must_be_visible=True
+        )
+        return element
+
+    def __wait_for_shadow_attribute_present(
+        self, selector, attribute, value=None, timeout=None
+    ):
+        element = self.__get_shadow_element(selector, timeout=timeout)
+        actual_value = element.get_attribute(attribute)
+        plural = "s"
+        if timeout == 1:
+            plural = ""
+        if value is None:
+            # The element attribute only needs to exist
+            if actual_value is not None:
+                return element
+            else:
+                # The element does not have the attribute
+                message = (
+                    "Expected attribute {%s} of element {%s} "
+                    "was not present after %s second%s!"
+                    % (attribute, selector, timeout, plural)
+                )
+                page_actions.timeout_exception(
+                    "NoSuchAttributeException", message
+                )
+        else:
+            if actual_value == value:
+                return element
+            else:
+                message = (
+                    "Expected value {%s} for attribute {%s} of element "
+                    "{%s} was not present after %s second%s! "
+                    "(The actual value was {%s})"
+                    % (
+                        value,
+                        attribute,
+                        selector,
+                        timeout,
+                        plural,
+                        actual_value,
+                    )
+                )
+                page_actions.timeout_exception(
+                    "NoSuchAttributeException", message
+                )
+
+    def __assert_shadow_element_present(self, selector):
+        self.__get_shadow_element(selector)
+        if self.demo_mode:
+            a_t = "ASSERT"
+            by = By.CSS_SELECTOR
+            if self._language != "English":
+                from seleniumbase.fixtures.words import SD
+
+                a_t = SD.translate_assert(self._language)
+            messenger_post = "%s %s: %s" % (a_t, by.upper(), selector)
+            try:
+                js_utils.activate_jquery(self.driver)
+                js_utils.post_messenger_success_message(
+                    self.driver, messenger_post, self.message_duration
+                )
+            except Exception:
+                pass
+
+    def __assert_shadow_element_visible(self, selector):
+        element = self.__get_shadow_element(selector)
+        if not element.is_displayed():
+            msg = "Shadow DOM Element {%s} was not visible!" % selector
+            page_actions.timeout_exception("NoSuchElementException", msg)
+        if self.demo_mode:
+            a_t = "ASSERT"
+            by = By.CSS_SELECTOR
+            if self._language != "English":
+                from seleniumbase.fixtures.words import SD
+
+                a_t = SD.translate_assert(self._language)
+            messenger_post = "%s %s: %s" % (a_t, by.upper(), selector)
+            try:
+                js_utils.activate_jquery(self.driver)
+                js_utils.post_messenger_success_message(
+                    self.driver, messenger_post, self.message_duration
+                )
+            except Exception:
+                pass
 
     ############
 
@@ -12934,8 +12984,6 @@ class BaseCase(unittest.TestCase):
             self.dashboard = sb_config.dashboard
             self._dash_initialized = sb_config._dashboard_initialized
             if self.dashboard and self._multithreaded:
-                import fasteners
-
                 self.dash_lock = fasteners.InterProcessLock(
                     constants.Dashboard.LOCKFILE
                 )
@@ -13690,8 +13738,6 @@ class BaseCase(unittest.TestCase):
 
     def _process_dashboard_entry(self, has_exception, init=False):
         if self._multithreaded:
-            import fasteners
-
             self.dash_lock = fasteners.InterProcessLock(
                 constants.Dashboard.LOCKFILE
             )
@@ -14050,16 +14096,16 @@ class BaseCase(unittest.TestCase):
 
     def __activate_behave_post_mortem_debug_mode(self):
         """Activate Post Mortem Debug Mode for failing tests that use Behave"""
-        import ipdb
+        import pdb
 
-        ipdb.post_mortem(sb_config.behave_step.exc_traceback)
+        pdb.post_mortem(sb_config.behave_step.exc_traceback)
         # Post Mortem Debug Mode ("behave -D pdb")
 
     def __activate_debug_mode_in_teardown(self):
         """Activate Debug Mode in tearDown() when using "--final-debug"."""
-        import ipdb
+        import pdb
 
-        ipdb.set_trace()
+        pdb.set_trace()
         # Final Debug Mode ("--final-debug")
 
     def has_exception(self):

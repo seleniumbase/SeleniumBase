@@ -5,7 +5,7 @@ from seleniumbase import BaseCase
 class CoffeeCartTest(BaseCase):
     def test_coffee_cart(self):
         self.open("https://coffee-cart.netlify.app/")
-        self.click('div[data-test="Cappucino"]')
+        self.click('div[data-test="Cappuccino"]')
         self.click('div[data-test="Cafe_Latte"]')
         self.click('div[data-test="Cafe_Breve"]')
         self.click('a[aria-label="Cart page"]')
