@@ -558,6 +558,8 @@ class BaseCase(unittest.TestCase):
         if not self.demo_mode and not self.slow_mode:
             self.__scroll_to_element(element, selector, by)
         self.wait_for_ready_state_complete()
+        if self.__needs_minimum_wait():
+            time.sleep(0.02)
         # Find the element one more time in case scrolling hid it
         element = page_actions.wait_for_element_visible(
             self.driver,
@@ -606,6 +608,8 @@ class BaseCase(unittest.TestCase):
                 self.__demo_mode_pause_if_active(tiny=True)
         elif self.slow_mode:
             self.__slow_mode_pause_if_active()
+        elif self.__needs_minimum_wait():
+            time.sleep(0.02)
 
     def click_chain(
         self, selectors_list, by="css selector", timeout=None, spacing=0
@@ -2914,6 +2918,8 @@ class BaseCase(unittest.TestCase):
         if type(frame) is str and self.is_element_visible(frame):
             try:
                 self.scroll_to(frame, timeout=1)
+                if self.__needs_minimum_wait():
+                    time.sleep(0.01)
             except Exception:
                 time.sleep(0.01)
         else:
