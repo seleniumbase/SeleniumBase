@@ -1690,7 +1690,8 @@ def pytest_collection_finish(session):
         # Print the Dashboard path if at least one test runs.
         sb_config.item_count_untested = sb_config.item_count
         dash_path = os.path.join(os.getcwd(), "dashboard.html")
-        star_len = len("Dashboard: ") + len(dash_path)
+        dash_url = "file://" + dash_path.replace("\\", "/")
+        star_len = len("Dashboard: ") + len(dash_url)
         try:
             terminal_size = os.get_terminal_size().columns
             if terminal_size > 30 and star_len > terminal_size:
@@ -1710,10 +1711,10 @@ def pytest_collection_finish(session):
                 and session.config.workerinput["workerid"] == "gw0"
             ):
                 sys.stderr.write(
-                    "\nDashboard: %s%s%s\n%s\n" % (c1, dash_path, cr, stars)
+                    "\nDashboard: %s%s%s\n%s\n" % (c1, dash_url, cr, stars)
                 )
         else:
-            print("Dashboard: %s%s%s\n%s" % (c1, dash_path, cr, stars))
+            print("Dashboard: %s%s%s\n%s" % (c1, dash_url, cr, stars))
 
 
 def pytest_runtest_setup(item):
@@ -1827,14 +1828,17 @@ def pytest_terminal_summary(terminalreporter):
     ):
         # Print link a second time because the first one may be off-screen
         dashboard_file = os.path.join(os.getcwd(), "dashboard.html")
-        terminalreporter.write_sep("-", "Dashboard: %s" % dashboard_file)
+        dashboard_url = "file://" + dashboard_file.replace("\\", "/")
+        terminalreporter.write_sep("-", "Dashboard = %s" % dashboard_url)
     if (
         sb_config._has_exception
         or sb_config.save_screenshot
         or sb_config._has_logs
     ):
         # Log files are generated during test failures and Screenshot Mode
-        terminalreporter.write_sep("-", "LogPath: %s" % latest_logs_dir)
+        terminalreporter.write_sep(
+            "-", "Latest Logs dir: %s" % latest_logs_dir
+        )
 
 
 def _perform_pytest_unconfigure_():
