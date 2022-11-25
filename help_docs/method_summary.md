@@ -310,6 +310,8 @@ self.sleep(seconds)
 
 self.install_addon(xpi_file)
 
+self.activate_jquery()
+
 self.activate_demo_mode()
 
 self.deactivate_demo_mode()
@@ -321,8 +323,6 @@ self.deactivate_design_mode()
 self.activate_recorder()
 
 self.save_recorded_actions()
-
-self.activate_jquery()
 
 self.bring_active_window_to_front()
 
@@ -473,8 +473,6 @@ self.is_chromium()
 self.get_chrome_version()
 
 self.get_chromedriver_version()
-
-self.is_chromedriver_too_old()
 
 self.get_mfa_code(totp_key=None)
 # Duplicates: self.get_totp_code(totp_key=None)
@@ -632,7 +630,8 @@ self.set_introjs_colors(theme_color=None, hover_color=None)
 self.add_tour_step(message, selector=None, name=None,
                    title=None, theme=None, alignment=None)
 
-self.play_tour(name=None)
+self.play_tour(name=None, interval=0)
+# Duplicates: self.start_tour(name=None, interval=0):
 
 self.export_tour(name=None, filename="my_tour.js", url=None)
 
