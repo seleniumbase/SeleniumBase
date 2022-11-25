@@ -69,7 +69,7 @@ class MyTestClass(BaseCase):
         #    * Wait for the element to be interactive
         #    * Clear the text field
         #    * Type in the new text
-        #    * Press Enter/Submit if the text ends in "\n"
+        #    * Press Enter/Return if the text ends in "\n": {element.submit()}
         #
         # 4. Duplicate method names may exist for the same method:
         #    (This makes it easier to switch over from other test frameworks.)

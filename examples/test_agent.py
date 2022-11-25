@@ -13,7 +13,8 @@ class UserAgentTests(BaseCase):
             # User-agent was overridden using: --agent=STRING
             self._print("\n\nUser-Agent override: %s" % user_agent_detected)
         print("\n" + self.get_text(".ip-address p"))
-        self.sleep(3)
+        if not (self.headless or self.headless2 or self.xvfb):
+            self.sleep(3)
 
         # Now change the user-agent using "execute_cdp_cmd()"
         if not self.is_chromium():
@@ -35,7 +36,8 @@ class UserAgentTests(BaseCase):
             user_agent_detected = self.get_text(".user-agent p")
             self._print("\nUser-Agent override: %s" % user_agent_detected)
             print("\n" + self.get_text(".ip-address p") + "\n")
-            self.sleep(3)
+            if not (self.headless or self.headless2 or self.xvfb):
+                self.sleep(3)
         finally:
             # Reset the user-agent back to the original
             self.driver.execute_cdp_cmd(

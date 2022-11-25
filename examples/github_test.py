@@ -3,10 +3,11 @@ from seleniumbase import BaseCase
 
 class GitHubTests(BaseCase):
     def test_github(self):
-        if self.headless:
+        if self.headless or self.page_load_strategy == "none":
             self.open_if_not_url("about:blank")
-            print("\n  This test is not for Headless Mode.")
-            self.skip('Do not use "--headless" with this test.')
+            message = "Unsupported mode for this test."
+            print("\n  " + message)
+            self.skip(message)
         self.open("https://github.com/search?q=SeleniumBase")
         self.slow_click('a[href="/seleniumbase/SeleniumBase"]')
         self.click_if_visible('[data-action="click:signup-prompt#dismiss"]')
