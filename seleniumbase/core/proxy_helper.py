@@ -13,7 +13,7 @@ def create_proxy_ext(proxy_string, proxy_user, proxy_pass, zip_it=True):
     """Implementation of https://stackoverflow.com/a/35293284 for
     https://stackoverflow.com/questions/12848327/
     (Run Selenium on a proxy server that requires authentication.)
-    Solution involves creating & adding a Chromium extension on the fly.
+    Solution involves creating & adding a Chromium extension at runtime.
     CHROMIUM-ONLY! *** Only Chrome and Edge browsers are supported. ***
     """
     background_js = None
@@ -94,7 +94,7 @@ def create_proxy_ext(proxy_string, proxy_user, proxy_pass, zip_it=True):
     )
     import threading
 
-    lock = threading.RLock()  # Support multi-threaded test runs with Pytest
+    lock = threading.RLock()  # Support multi-threaded tests. Eg. "pytest -n=4"
     with lock:
         abs_path = os.path.abspath(".")
         downloads_path = os.path.join(abs_path, DOWNLOADS_DIR)

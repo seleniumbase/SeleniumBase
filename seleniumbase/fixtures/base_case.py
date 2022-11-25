@@ -61,6 +61,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.remote_connection import LOGGER
 from seleniumbase import config as sb_config
 from seleniumbase.__version__ import __version__
+from seleniumbase.common import decorators
 from seleniumbase.config import settings
 from seleniumbase.core import download_helper
 from seleniumbase.core import log_helper
@@ -170,9 +171,9 @@ class BaseCase(unittest.TestCase):
         self.__check_scope()
         self.__check_browser()
         if self.__needs_minimum_wait():
-            time.sleep(0.01)
+            time.sleep(0.025)
             if self.undetectable:
-                time.sleep(0.02)
+                time.sleep(0.025)
         pre_action_url = None
         try:
             pre_action_url = self.driver.current_url
@@ -3851,6 +3852,13 @@ class BaseCase(unittest.TestCase):
         xpi_path = os.path.abspath(xpi_file)
         self.driver.install_addon(xpi_path, temporary=True)
 
+    def activate_jquery(self):
+        """If "jQuery is not defined", use this method to activate it for use.
+        This happens because jQuery is not always defined on web sites."""
+        self.wait_for_ready_state_complete()
+        js_utils.activate_jquery(self.driver)
+        self.wait_for_ready_state_complete()
+
     def activate_demo_mode(self):
         self.demo_mode = True
 
@@ -4944,22 +4952,6 @@ class BaseCase(unittest.TestCase):
             out_file.writelines("\r\n".join(data))
             out_file.close()
             print("Created recordings/features/steps/imported.py")
-
-    def activate_jquery(self):
-        """If "jQuery is not defined", use this method to activate it for use.
-        This happens because jQuery is not always defined on web sites."""
-        self.wait_for_ready_state_complete()
-        js_utils.activate_jquery(self.driver)
-        self.wait_for_ready_state_complete()
-
-    def __are_quotes_escaped(self, string):
-        return js_utils.are_quotes_escaped(string)
-
-    def __escape_quotes_if_needed(self, string):
-        return js_utils.escape_quotes_if_needed(string)
-
-    def __is_in_frame(self):
-        return js_utils.is_in_frame(self.driver)
 
     def bring_active_window_to_front(self):
         """Brings the active browser window to the front.
@@ -6813,16 +6805,8 @@ class BaseCase(unittest.TestCase):
         return chromedriver_version
 
     def is_chromedriver_too_old(self):
-        """There are known issues with chromedriver versions below 73.
-        This can impact tests that need to hover over an element, or ones
-        that require a custom downloads folder ("./downloaded_files").
-        Due to the situation that newer versions of chromedriver require
-        an exact match to the version of Chrome, an "old" version of
-        chromedriver is installed by default. It is then up to the user
-        to upgrade to the correct version of chromedriver from there.
-        This method can be used to change test behavior when trying
-        to perform an action that is impacted by having an old version
-        of chromedriver installed."""
+        """Before chromedriver 73, there was no version check, which
+        means it's possible to run a new Chrome with old drivers."""
         self.__check_scope()
         self.__fail_if_not_using_chrome("is_chromedriver_too_old()")
         if int(self.get_chromedriver_version().split(".")[0]) < 73:
@@ -8188,9 +8172,6 @@ class BaseCase(unittest.TestCase):
             sys.stderr.write(msg + "\n")
         else:
             print(msg)
-
-    def start_tour(self, name=None, interval=0):
-        self.play_tour(name=name, interval=interval)
 
     ############
 
@@ -9960,7 +9941,6 @@ class BaseCase(unittest.TestCase):
                 interval=interval,
             )
         else:
-            # "Shepherd"
             tour_helper.play_shepherd_tour(
                 self.driver,
                 self._tour_steps,
@@ -9968,6 +9948,10 @@ class BaseCase(unittest.TestCase):
                 name=name,
                 interval=interval,
             )
+
+    def start_tour(self, name=None, interval=0):
+        """Same as self.play_tour()"""
+        self.play_tour(name=name, interval=interval)
 
     def export_tour(self, name=None, filename="my_tour.js", url=None):
         """Exports a tour as a JS file.
@@ -11425,6 +11409,17 @@ class BaseCase(unittest.TestCase):
 
     ############
 
+    def __are_quotes_escaped(self, string):
+        return js_utils.are_quotes_escaped(string)
+
+    def __escape_quotes_if_needed(self, string):
+        return js_utils.escape_quotes_if_needed(string)
+
+    def __is_in_frame(self):
+        return js_utils.is_in_frame(self.driver)
+
+    ############
+
     def __assert_eq(self, *args, **kwargs):
         """Minified assert_equal() using only the list diff."""
         minified_exception = None
@@ -12825,8 +12820,6 @@ class BaseCase(unittest.TestCase):
                 pass
 
     ############
-
-    from seleniumbase.common import decorators
 
     @decorators.deprecated("You should use re.escape() instead.")
     def jq_format(self, code):
