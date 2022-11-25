@@ -9,7 +9,6 @@ class DatabaseManager:
         import fasteners
         import sys
         import time
-        from importlib.util import find_spec
         from seleniumbase import config as sb_config
         from seleniumbase.config import settings
         from seleniumbase.core import settings_parser
@@ -19,14 +18,15 @@ class DatabaseManager:
         pip_find_lock = fasteners.InterProcessLock(
             constants.PipInstall.FINDLOCK
         )
-        with pip_find_lock:  # Prevent multi-processes mode issues
-            if not find_spec("pymysql"):
+        with pip_find_lock:
+            try:
+                import pymysql
+            except Exception:
                 if sys.version_info >= (3, 6):
                     shared_utils.pip_install("pymysql", version="1.0.2")
                 else:
                     shared_utils.pip_install("pymysql", version="0.10.1")
-        import pymysql
-
+                import pymysql
         db_server = settings.DB_HOST
         db_port = settings.DB_PORT
         db_user = settings.DB_USERNAME

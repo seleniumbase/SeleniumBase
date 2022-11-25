@@ -9,7 +9,6 @@ import sys
 import time
 import urllib3
 import warnings
-from importlib.util import find_spec
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.edge.service import Service as EdgeService
@@ -1239,12 +1238,14 @@ def get_remote_driver(
         pip_find_lock = fasteners.InterProcessLock(
             constants.PipInstall.FINDLOCK
         )
-        with pip_find_lock:  # Prevent multi-processes mode issues
-            if not find_spec("selenium-wire"):
+        with pip_find_lock:
+            try:
+                from seleniumwire import webdriver
+            except Exception:
                 shared_utils.pip_install(
                     "selenium-wire", version=constants.SeleniumWire.VER
                 )
-        from seleniumwire import webdriver
+                from seleniumwire import webdriver
     else:
         from selenium import webdriver
 
