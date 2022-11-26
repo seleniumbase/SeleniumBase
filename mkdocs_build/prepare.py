@@ -178,10 +178,12 @@ def main(*args, **kwargs):
             if "<!-- SeleniumBase Docs -->" in line:
                 changed = True
                 line = (
-                    '<h2><img src="https://seleniumbase.io/img/sb_icon.png" '
-                    'title="SeleniumBase" width="20" /> SeleniumBase Docs '
-                    '<img src="https://seleniumbase.io/img/sb_icon.png" '
-                    'title="SeleniumBase" width="20" /></h2>'
+                    '<h2><img '
+                    'src="https://seleniumbase.github.io/img/logo3b.png" '
+                    'title="SeleniumBase" width="24" /> SeleniumBase Docs '
+                    '<img '
+                    'src="https://seleniumbase.github.io/img/logo3b.png" '
+                    'title="SeleniumBase" width="24" /></h2>'
                 )
             seleniumbase_lines.append(line)
         if changed:

@@ -1,6 +1,6 @@
 <!-- SeleniumBase Docs -->
 
-## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) 🐝 Behave test runner for SeleniumBase 🐝
+## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) 🐝 Behave test runner for SeleniumBase 🐝
 
 🐝 (Utilizes the [Behave BDD Python library](https://github.com/behave/behave). For more info, see the [Behave tutorial](https://behave.readthedocs.io/en/stable/tutorial.html) and read about [Behave's Gherkin model](https://behave.readthedocs.io/en/stable/gherkin.html).)
 
@@ -76,7 +76,7 @@ Took 0m1.672s
 
 🐝⚪ With the Dashboard enabled, you'll get one of these:
 
-<img src="https://seleniumbase.io/cdn/img/sb_behave_dashboard.png" title="SeleniumBase" width="600">
+<img src="https://seleniumbase.github.io/cdn/img/sb_behave_dashboard.png" title="SeleniumBase" width="600">
 
 ### 🐝 Behave-Gherkin files:
 
@@ -219,7 +219,7 @@ sbase behave-gui
 * Starting the SeleniumBase Behave Commander GUI App...
 ```
 
-<img src="https://seleniumbase.io/cdn/img/sbase_behave_gui_wide_5.png" title="SeleniumBase" width="600">
+<img src="https://seleniumbase.github.io/cdn/img/sbase_behave_gui_wide_5.png" title="SeleniumBase" width="600">
 
 🐝🎖️ You can customize the tests that show up there:
 

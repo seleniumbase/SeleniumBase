@@ -74,10 +74,12 @@ plugins:
         - SECURITY.md
         - examples/case_summary.md
         - help_docs/chinese.md
+        - help_docs/chart_maker.md
         - help_docs/mysql_installation.md
         - integrations/katalon/ReadMe.md
         - help_docs/verify_webdriver.md
         - help_docs/webdriver_installation.md
+        - seleniumbase/masterqa/ReadMe.md
         - seleniumbase/utilities/selenium_ide/ReadMe.md
         - seleniumbase/examples/chart_maker/ReadMe.md
   - minify:
@@ -107,7 +109,7 @@ nav:
     - 🎦 Demo Mode: help_docs/demo_mode.md
     - 🚎 Tour Maker: examples/tour_examples/ReadMe.md
     - 🛂 Dialog Boxes: examples/dialog_boxes/ReadMe.md
-    - 📶 Chart Maker: help_docs/chart_maker.md
+    - 📶 Chart Maker: examples/chart_maker/ReadMe.md
     - 🎞️ Presentation Maker: examples/presenter/ReadMe.md
   - Integrations:
     - 📱 Mobile Testing: help_docs/mobile_testing.md
@@ -116,7 +118,6 @@ nav:
     - 🖼️ Visual Testing: examples/visual_testing/ReadMe.md
     - 🕵️ The HTML Inspector: help_docs/html_inspector.md
     - 🌐 Selenium Grid: seleniumbase/utilities/selenium_grid/ReadMe.md
-    - 📶 HighCharts: examples/chart_maker/ReadMe.md
     - 🛂 MasterQA: examples/master_qa/ReadMe.md
     - 🤖 Azure Pipelines: integrations/azure/azure_pipelines/ReadMe.md
     - 🤖 Jenkins on Azure: integrations/azure/jenkins/ReadMe.md
@@ -156,7 +157,6 @@ nav:
     - 👤 Shadow DOM Support: help_docs/shadow_dom.md
     - 👥 macOS Hidden Files: help_docs/hidden_files_info.md
     - 🗄️ MySQL Instructions: help_docs/mysql_installation.md
-    - 🛂 Master QA Hybrid Mode: seleniumbase/masterqa/ReadMe.md
     - 📃 Desired Capabilities: help_docs/desired_capabilities.md
     - 📜 Useful grep commands: help_docs/useful_grep_commands.md
     - ⚙️ WebDriver Installation: help_docs/webdriver_installation.md
