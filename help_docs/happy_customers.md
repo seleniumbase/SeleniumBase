@@ -1,8 +1,8 @@
 <!-- SeleniumBase Docs -->
 
-<h3 align="left"><img src="https://seleniumbase.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" width="300" /></h3>
+<h3 align="left"><img src="https://seleniumbase.github.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" width="300" /></h3>
 
-<h4> Here are some organizations that have grown their automation with SeleniumBase:</h4>
+### Organizations that have grown their automation with SeleniumBase:
 
 * [MIT](https://web.mit.edu/)
 * [iboss](https://www.iboss.com/)
@@ -19,6 +19,7 @@
 * [Texture Health](https://www.texturehealth.com/)
 * [The Very Group](https://www.theverygroup.com/)
 * [ActiveCampaign](https://www.activecampaign.com/)
+* [Blue Trail Software](https://www.bluetrail.software/)
 * [AutomationAnywhere](https://www.automationanywhere.com/)
 * [Harvard Medical School](https://hms.harvard.edu/)
 * [Singapore Institute of Tech](https://www.singaporetech.edu.sg)
@@ -27,7 +28,7 @@
 * [L1NNA Laboratory](https://l1nna.com/)
 * [Thomson Reuters](https://www.thomsonreuters.com/)
 * [Optum Financial](https://www.optum.com/financial-services.html)
-* [CA Technologies](https://www.ca.com/)
+* [CA Technologies](https://tinyurl.com/ca-technologies)
 * [ActiveCampaign](https://www.activecampaign.com/)
 * [Raid The Room](https://raidtheroom.com/)
 * [First American](https://www.firstam.com/)
@@ -46,6 +47,7 @@
 * [Empower](https://empower.me/)
 * [Streamlit](https://streamlit.io/)
 * [SunCorp](https://www.suncorpgroup.com.au/)
+* [Logitech](https://www.logitech.com/)
 * [VMware](https://www.vmware.com/)
 * [Rakuten](https://global.rakuten.com/corp/about/)
 * [Nagarro](https://www.nagarro.com/en)
@@ -67,7 +69,9 @@
 * [Iver](https://www.iver.com/)
 * And more...
 
-<h3>Case Study: (<i>HubSpot</i>)</h3>
+### Case Study:
+
+> **HubSpot**:
 
 In addition to using SeleniumBase for testing the UI of their content management system, HubSpot used SeleniumBase to automate the migration of website pages from their old CMS to their new one, which saved them over one million USD and a significant amount of time.
 
