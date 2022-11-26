@@ -109,6 +109,7 @@ nav:
     - 🎦 Demo Mode: help_docs/demo_mode.md
     - 🚎 Tour Maker: examples/tour_examples/ReadMe.md
     - 🛂 Dialog Boxes: examples/dialog_boxes/ReadMe.md
+    - 🛂 MasterQA Mode: examples/master_qa/ReadMe.md
     - 📶 Chart Maker: examples/chart_maker/ReadMe.md
     - 🎞️ Presentation Maker: examples/presenter/ReadMe.md
   - Integrations:
@@ -118,7 +119,8 @@ nav:
     - 🖼️ Visual Testing: examples/visual_testing/ReadMe.md
     - 🕵️ The HTML Inspector: help_docs/html_inspector.md
     - 🌐 Selenium Grid: seleniumbase/utilities/selenium_grid/ReadMe.md
-    - 🛂 MasterQA: examples/master_qa/ReadMe.md
+    - 📶 Highcharts: help_docs/chart_maker.md
+    - 🛂 MasterQA: seleniumbase/masterqa/ReadMe.md
     - 🤖 Azure Pipelines: integrations/azure/azure_pipelines/ReadMe.md
     - 🤖 Jenkins on Azure: integrations/azure/jenkins/ReadMe.md
     - 🤖 Jenkins on Google Cloud: integrations/google_cloud/ReadMe.md
