@@ -218,10 +218,6 @@ setup(
         'cryptography==38.0.3;python_version>="3.7"',
         'pygments==2.5.2;python_version<"3.6"',
         'pygments==2.13.0;python_version>="3.6"',
-        "wmctrl==0.4",
-        "pyrepl==0.9.0",
-        "fancycompleter==0.9.1",
-        "pdbpp==0.10.3",
         'colorama==0.4.6;python_version<"3.6"',
         'colorama==0.4.5;python_version>="3.6" and python_version<"3.7"',
         'colorama==0.4.6;python_version>="3.7"',
@@ -258,6 +254,21 @@ setup(
             'pyflakes==2.5.0;python_version>="3.6"',
             'pycodestyle==2.5.0;python_version<"3.6"',
             'pycodestyle==2.9.1;python_version>="3.6"',
+        ],
+        # pip install -e .[ipdb]
+        "ipdb": [
+            "ipdb==0.13.9",
+            "ipython==7.34.0",
+            "jedi==0.18.2",
+            "parso==0.8.3",
+        ],
+        # pip install -e .[pdbpp]
+        # (Currently Mac/Linux only until fixed on Windows)
+        "pdbpp": [
+            "pdbpp==0.10.3",
+            "fancycompleter==0.9.1",
+            "pyrepl==0.9.0",
+            "wmctrl==0.4",
         ],
         # pip install -e .[pdfminer]
         "pdfminer": [
