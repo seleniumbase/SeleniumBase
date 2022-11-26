@@ -3,13 +3,13 @@
 <meta property="og:site_name" content="SeleniumBase | Docs">
 <meta property="og:title" content="SeleniumBase | Reliable Test Automation" />
 <meta property="og:description" content="Simple browser automation and testing with Python." />
-<meta property="og:image" content="https://seleniumbase.io/img/sb_logo_10.png" />
-<link rel="icon" href="https://seleniumbase.io/img/logo3a.png" />
+<meta property="og:image" content="https://seleniumbase.github.io/img/sb_logo_10.png" />
+<link rel="icon" href="https://seleniumbase.github.io/img/logo3a.png" />
 <section align="center"><div align="center">
 <h2>✅ 可靠的测试自动化</h2>
 </div></section>
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/">
-<img src="https://seleniumbase.io/img/sb_logo_10.png" alt="SeleniumBase" width="260" />
+<img src="https://seleniumbase.github.io/img/sb_logo_10.png" alt="SeleniumBase" width="260" />
 </a></p>
 <p align="center"><div align="center"><b>测试框架 </b><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://img.shields.io/badge/✅%20💛%20查看代码-在GitHub%20🌎%20🚀-02A79E.svg" alt="SeleniumBase on GitHub" /></a></div></p>
 <section align="center"><div align="center"><h3>中文文件 <=> <a href="https://seleniumbase.io/">English Docs</h3></div></section>
@@ -48,10 +48,10 @@
 <p align="center">
 <div align="center"><b>Selenium 和 pytest 组合使用.</b></div>
 </p>
-<p align="center"><div align="center"><img src="https://seleniumbase.io/cdn/gif/swag_demo_2.gif" alt="SeleniumBase" title="SeleniumBase" /></div></p>
+<p align="center"><div align="center"><img src="https://seleniumbase.github.io/cdn/gif/swag_demo_2.gif" alt="SeleniumBase" title="SeleniumBase" /></div></p>
 
 <a id="python_installation"></a>
-<h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> 立即开始:</h2>
+<h2><img src="https://seleniumbase.github.io/img/sb_icon.png" title="SeleniumBase" width="30" /> 立即开始:</h2>
 
 * 需要 **[Python](https://www.python.org/downloads/)** 和 **[Git](https://git-scm.com/)**
 * [<img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=22AAEE" alt="Python:2.7|3.5|3.6|3.7|3.8" />](https://www.python.org/downloads/)
@@ -63,7 +63,7 @@ python -m pip install -U pip
 ```
 
 <a id="install_seleniumbase"></a>
-<h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> 安装 SeleniumBase:</h2>
+<h2><img src="https://seleniumbase.github.io/img/sb_icon.png" title="SeleniumBase" width="30" /> 安装 SeleniumBase:</h2>
 
 ```bash
 git clone https://github.com/seleniumbase/SeleniumBase.git
@@ -80,7 +80,7 @@ pip install seleniumbase
 * 添加 ``--upgrade`` 或 ``-U`` 来更新安装程序.
 * 添加 ``--force-reinstall`` 更新依赖包.
 
-<h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> 下载 webdriver:</h3>
+<h3><img src="https://seleniumbase.github.io/img/sb_icon.png" title="SeleniumBase" width="30" /> 下载 webdriver:</h3>
 
 SeleniumBase 下载 webdriver 驱动到 [seleniumbase/drivers](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/drivers) 文件夹下, 使用 ``install`` 命令:
 
@@ -94,7 +94,7 @@ seleniumbase install chromedriver
 seleniumbase install chromedriver latest
 ```
 
-<h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> 使用 Chrome 运行用例:</h3>
+<h3><img src="https://seleniumbase.github.io/img/sb_icon.png" title="SeleniumBase" width="30" /> 使用 Chrome 运行用例:</h3>
 
 ```bash
 cd examples/
@@ -110,7 +110,7 @@ pytest my_first_test.py
 pytest my_first_test.py --demo
 ```
 
-<img src="https://seleniumbase.io/cdn/gif/my_first_test_1.gif" title="SeleniumBase" />
+<img src="https://seleniumbase.github.io/cdn/gif/my_first_test_1.gif" title="SeleniumBase" />
 
 <b>此处为相关代码 [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py):</b>
 
@@ -223,7 +223,7 @@ self.保存截图(FILE_NAME)  # 保存当前页面的截图
 
 完整的 SeleniumBase methods, 可见: <b><a href="https://seleniumbase.io/help_docs/method_summary/">Method Summary</a></b>
 
-<h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> 了解更多信息:</h2>
+<h2><img src="https://seleniumbase.github.io/img/sb_icon.png" title="SeleniumBase" width="30" /> 了解更多信息:</h2>
 
 <h4>自动化 WebDriver 技能:</h4>
 SeleniumBase 自动化控制 WebDriver 操作 web browsers(浏览器),在运行失败后进行截图保存. (<i><a href="https://seleniumbase.io/help_docs/customizing_test_runs/">了解更多关于定制的启动测试用例</a>.</i>)
@@ -277,9 +277,9 @@ SeleniumBase包括一个名为 <b><a href="https://seleniumbase.io/examples/mast
 
 
 <a id="detailed_instructions"></a>
-<img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="290">
+<img src="https://seleniumbase.github.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="290">
 
-<h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> 详细说明书:</h2>
+<h2><img src="https://seleniumbase.github.io/img/sb_icon.png" title="SeleniumBase" width="30" /> 详细说明书:</h2>
 
 <h4><b>下面介绍如何在各种web浏览器上运行示例脚本:</b></h4>
 
@@ -468,7 +468,7 @@ pytest test_suite.py --browser=firefox
 现在在您的测试中，您可以使用 ``self.data`` 来访问。
 
 
-<h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> 测试目录定制:</h3>
+<h3><img src="https://seleniumbase.github.io/img/sb_icon.png" title="SeleniumBase" width="30" /> 测试目录定制:</h3>
 
 用于在SeleniumBase repo之外运行测试 <b>Pytest</b>, 你需要一份 <b>[pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini)</b> 在根目录上。用于在SeleniumBase repo之外运行测试 <b>Nosetests</b>, 你需要拷贝 <b>[setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/setup.cfg)</b> 在根目录上. (子文件夹应该包括一个空白的 "__init__.py" 文件。)这些文件指定测试的默认配置细节。(对于运行nosetest，还可以使用``--config ``指定.cfg文件。示例`` nosetests [MY_TEST].py--config=[MY_CONFIG].cfg `` ')
 
@@ -481,7 +481,7 @@ pytest my_first_test.py
 ```
 
 
-<h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> 日志记录/失败测试的结果:</h3>
+<h3><img src="https://seleniumbase.github.io/img/sb_icon.png" title="SeleniumBase" width="30" /> 日志记录/失败测试的结果:</h3>
 
 让我们尝试一个失败的测试示例:
 
@@ -506,7 +506,7 @@ pytest test_fail.py
 
 
 <a id="creating_visual_reports"></a>
-<h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> 创建可视化测试套件报告:</h3>
+<h3><img src="https://seleniumbase.github.io/img/sb_icon.png" title="SeleniumBase" width="30" /> 创建可视化测试套件报告:</h3>
 
 (注意:Pytest和nosetest的一些命令行参数是不同的)
 
@@ -518,7 +518,7 @@ pytest test_fail.py
 pytest test_suite.py --html=report.html
 ```
 
-<img src="https://seleniumbase.io/cdn/img/html_report.png" alt="Example Pytest Report" title="Example Pytest Report" width="520" />
+<img src="https://seleniumbase.github.io/cdn/img/html_report.png" alt="Example Pytest Report" title="Example Pytest Report" width="520" />
 
 还可以使用``--junit-xml=report``。获取一个xml报告。Jenkins可以使用这个文件为您的测试显示更好的报告。
 
@@ -534,12 +534,12 @@ pytest test_suite.py --junit-xml=report.xml
 nosetests test_suite.py --report
 ```
 
-<img src="https://seleniumbase.io/cdn/img/nose_report.png" alt="Example Nosetest Report" title="Example Nosetest Report" width="320" />
+<img src="https://seleniumbase.github.io/cdn/img/nose_report.png" alt="Example Nosetest Report" title="Example Nosetest Report" width="320" />
 
 (注意:您可以添加``--show-report ``来在测试套件完成后立即显示Nosetest报告。只在本地运行测试时使用``--show-report ``，因为它会暂停测试运行.)
 
 
-<h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> 使用代理服务器:</h3>
+<h3><img src="https://seleniumbase.github.io/img/sb_icon.png" title="SeleniumBase" width="30" /> 使用代理服务器:</h3>
 
 如果您希望为您的浏览器测试使用代理服务器(仅适用于Chrome和Firefox)，您可以在命令行上添加``--proxy=IP_ADDRESS:PORT ``作为参数。
 
@@ -560,7 +560,7 @@ pytest proxy_test.py --proxy=proxy1
 ```
 
 
-<h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> 变更 User-Agent:</h3>
+<h3><img src="https://seleniumbase.github.io/img/sb_icon.png" title="SeleniumBase" width="30" /> 变更 User-Agent:</h3>
 
 如果您希望为您的浏览器测试更改用户代理(仅限Chrome和Firefox)，您可以在命令行上添加``--agent="USER agent STRING" ``作为参数。
 
@@ -569,13 +569,13 @@ pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1
 ```
 
 
-<h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> 为网站建设导游服务:</h3>
+<h3><img src="https://seleniumbase.github.io/img/sb_icon.png" title="SeleniumBase" width="30" /> 为网站建设导游服务:</h3>
 
 学习更多内容 <a href="https://seleniumbase.io/examples/tour_examples/ReadMe/">SeleniumBase Interactive Walkthroughs</a> (在 ``examples/tour_examples`` 文件). 这对于构建一个在线体验网站的原型非常有用。
 
 
 <a id="utilizing_advanced_features"></a>
-<h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Production Environments & Integrations:</h3>
+<h3><img src="https://seleniumbase.github.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Production Environments & Integrations:</h3>
 
 下面是为测试设置生产环境时可以做的一些事情:
 
@@ -596,7 +596,7 @@ pytest [YOUR_TEST_FILE].py --with-db-reporting --with-s3-logging
 ```
 
 <a id="detailed_method_specifications"></a>
-<h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> 详细的方法说明和实例:</h3>
+<h3><img src="https://seleniumbase.github.io/img/sb_icon.png" title="SeleniumBase" width="30" /> 详细的方法说明和实例:</h3>
 
 <h4>导航到web页面 (使用相关commands)</h4>
 
@@ -892,7 +892,7 @@ pytest --reruns 5 --reruns-delay 1
 此外，可以使用`` @retry_on_exception() ``装饰器来特别重试失败的方法. (需要 import: ``from seleniumbase import decorators``) 了解更多关于SeleniumBase装饰器的信息, [click here](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/common).
 
 
-<h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> 简讯</h3>
+<h3><img src="https://seleniumbase.github.io/img/sb_icon.png" title="SeleniumBase" width="30" /> 简讯</h3>
 
 <b>祝贺您开始使用SeleniumBase!</b>
 
@@ -907,15 +907,15 @@ pytest --reruns 5 --reruns-delay 1
 </p>
 <p><div><a href="https://github.com/mdmintz">https://github.com/mdmintz</a></div></p>
 
-<div><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="290" /></a></div>
+<div><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="290" /></a></div>
 
 <div><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" title="SeleniumBase" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/releases"><img src="https://img.shields.io/github/repo-size/seleniumbase/seleniumbase.svg" title="SeleniumBase" alt="Repo Size" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" title="SeleniumBase" alt="Join the chat!" /></a></div>
 
 <div><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://img.shields.io/badge/tested%20with-SeleniumBase-04C38E.svg" alt="Tested with SeleniumBase" /></a> <a href="https://seleniumbase.io">
 <img src="https://img.shields.io/badge/docs-%20%20SeleniumBase.io-11BBDD.svg" alt="SeleniumBase.io Docs" /></a></div>
 
-<p><div><span><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.io/img/social/share_github.svg" title="SeleniumBase on GitHub" alt="SeleniumBase on GitHub" width="56" /></a></span>
-<span><a href="https://gitter.im/seleniumbase/SeleniumBase"><img src="https://seleniumbase.io/img/social/share_gitter.svg" title="SeleniumBase on Gitter" alt="SeleniumBase on Gitter" width="44" /></a></span>
-<span><a href="https://twitter.com/seleniumbase"><img src="https://seleniumbase.io/img/social/share_twitter.svg" title="SeleniumBase on Twitter" alt="SeleniumBase on Twitter" width="60" /></a></span>
-<span><a href="https://instagram.com/seleniumbase"><img src="https://seleniumbase.io/img/social/share_instagram.svg" title="SeleniumBase on Instagram" alt="SeleniumBase on Instagram" width="52" /></a></span>
-<span><a href="https://www.facebook.com/SeleniumBase"><img src="https://seleniumbase.io/img/social/share_facebook.svg" title="SeleniumBase on Facebook" alt="SeleniumBase on Facebook" width="56" /></a></span></div></p>
+<p><div><span><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.github.io/img/social/share_github.svg" title="SeleniumBase on GitHub" alt="SeleniumBase on GitHub" width="56" /></a></span>
+<span><a href="https://gitter.im/seleniumbase/SeleniumBase"><img src="https://seleniumbase.github.io/img/social/share_gitter.svg" title="SeleniumBase on Gitter" alt="SeleniumBase on Gitter" width="44" /></a></span>
+<span><a href="https://twitter.com/seleniumbase"><img src="https://seleniumbase.github.io/img/social/share_twitter.svg" title="SeleniumBase on Twitter" alt="SeleniumBase on Twitter" width="60" /></a></span>
+<span><a href="https://instagram.com/seleniumbase"><img src="https://seleniumbase.github.io/img/social/share_instagram.svg" title="SeleniumBase on Instagram" alt="SeleniumBase on Instagram" width="52" /></a></span>
+<span><a href="https://www.facebook.com/SeleniumBase"><img src="https://seleniumbase.github.io/img/social/share_facebook.svg" title="SeleniumBase on Facebook" alt="SeleniumBase on Facebook" width="56" /></a></span></div></p>

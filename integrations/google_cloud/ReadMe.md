@@ -2,7 +2,7 @@
 
 (This tutorial, [from a previous Google Cloud Meetup](https://www.meetup.com/Boston-Google-Cloud-Meetup/events/230839686/?showDescription=true), will teach you how to setup a Linux server for running automated browser tests. The cost of running this server is about [$13.60/month on Google Cloud](https://console.cloud.google.com/launcher/details/bitnami-launchpad/jenkins) (enough to handle **5 parallel tests**). This is less expensive than using other platforms.)
 
-<!-- YouTube View --><a href="https://www.youtube.com/watch?v=n-sno20R9P0"><img src="https://seleniumbase.io/other/gcp_video_thumb.png" title="SeleniumBase on YouTube" width="285" /></a>
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=n-sno20R9P0"><img src="https://seleniumbase.github.io/other/gcp_video_thumb.png" title="SeleniumBase on YouTube" width="380" /></a>
 <!-- GitHub Only --><p>(<b><a href="https://www.youtube.com/watch?v=n-sno20R9P0">SeleniumBase Google Cloud Video</a></b>)</p>
 
 #### Step 1. Open the Google Cloud Platform Cloud Launcher
@@ -12,7 +12,7 @@
 
 #### Step 2. Launch a Jenkins instance
 
-![](https://seleniumbase.io/cdn/img/gcp/gcp_cloud_launcher_jenkins.png "Finding Jenkins")
+![](https://seleniumbase.github.io/cdn/img/gcp/gcp_cloud_launcher_jenkins.png "Finding Jenkins")
 
 * Under "Cloud Launcher", Click on "Jenkins Certified by Bitnami"
 * Click on "Launch on Compute Engine"
@@ -22,7 +22,7 @@
 
 #### Step 3. Connect with your new Jenkins instance
 
-![](https://seleniumbase.io/cdn/img/gcp/gcp_ssh.png "SSH into your Jenkins instance")
+![](https://seleniumbase.github.io/cdn/img/gcp/gcp_ssh.png "SSH into your Jenkins instance")
 
 * SSH into your new instance by selecting: "SSH" => "Open in browser window" from the instance page.
 
@@ -84,7 +84,7 @@ sudo python setup.py develop
 
 #### Step 13. Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) on Chrome to verify installation (May take up to 10 seconds)
 
-![](https://seleniumbase.io/cdn/img/gcp/gcp_bitnami.png "Linux SSH Terminal")
+![](https://seleniumbase.github.io/cdn/img/gcp/gcp_bitnami.png "Linux SSH Terminal")
 
 ```bash
 pytest examples/my_first_test.py --headless
@@ -108,7 +108,7 @@ pytest examples/my_first_test.py --headless --browser=firefox
 
 #### Step 17. Create a new Jenkins job
 
-![](https://seleniumbase.io/cdn/img/gcp/gcp_jenkins_new_job.png "Create a Jenkins job")
+![](https://seleniumbase.github.io/cdn/img/gcp/gcp_jenkins_new_job.png "Create a Jenkins job")
 
 * Click on "New Item"
 * Give your new Jenkins job a name (ex: "My_First_Test")
@@ -143,7 +143,7 @@ If you have a web application that you want to test, you'll be able to create Se
 
 #### Step 21. Return to the Google Cloud Launcher and launch a MySQL Instance
 
-![](https://seleniumbase.io/cdn/img/gcp/gcp_mysql.png "Finding MySQL")
+![](https://seleniumbase.github.io/cdn/img/gcp/gcp_mysql.png "Finding MySQL")
 
 * Under "Featured Solutions", Click on "MySQL"
 * Click on "Launch on Compute Engine"

@@ -1,6 +1,6 @@
 <!-- SeleniumBase Docs -->
 
-## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Mobile Testing
+## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Mobile Testing
 
 Use ``--mobile`` to run SeleniumBase tests using Chrome's mobile device emulator with default values for Device Metrics and User-Agent.
 
@@ -12,7 +12,7 @@ Use ``--mobile`` to run SeleniumBase tests using Chrome's mobile device emulator
 pytest test_skype_site.py --mobile
 ```
 
-[<img src="https://seleniumbase.io/cdn/gif/skype_mobile_test_2.gif" title="SeleniumBase Mobile Testing">](https://seleniumbase.io/cdn/gif/skype_mobile_test_2.gif)
+[<img src="https://seleniumbase.github.io/cdn/gif/skype_mobile_test_2.gif" title="SeleniumBase Mobile Testing">](https://seleniumbase.io/cdn/gif/skype_mobile_test_2.gif)
 
 To configure Device Metrics, use:
 
@@ -44,7 +44,7 @@ To find real User-Agent strings, see:
 pytest test_swag_labs.py --mobile
 ```
 
-[<img src="https://seleniumbase.io/cdn/gif/swag_mobile_2.gif" alt="SeleniumBase Mobile Testing" title="SeleniumBase Mobile Testing">](https://seleniumbase.io/cdn/gif/swag_mobile.gif)
+[<img src="https://seleniumbase.github.io/cdn/gif/swag_mobile_2.gif" alt="SeleniumBase Mobile Testing" title="SeleniumBase Mobile Testing">](https://seleniumbase.github.io/cdn/gif/swag_mobile.gif)
 
 <b>Here's an example of configuring mobile settings for that test:</b>
 

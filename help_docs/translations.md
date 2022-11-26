@@ -2,7 +2,7 @@
 
 <a id="language_tests"></a>
 
-## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) 🌏 Translated Tests 🈺
+## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) 🌏 Translated Tests 🈺
 
 <b>SeleniumBase</b> supports the following 10 languages: <i>English</i>, <i>Chinese</i>, <i>Dutch</i>, <i>French</i>, <i>Italian</i>, <i>Japanese</i>, <i>Korean</i>, <i>Portuguese</i>, <i>Russian</i>, and <i>Spanish</i>. (Examples can be found in <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/translations">SeleniumBase/examples/translations</a>)
 
@@ -90,4 +90,4 @@ plus the 2-letter language code of the new language.
 
 --------
 
-<h3 align="left"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/super_logo_m.png" title="SeleniumBase" width="280" /></a></h3>
+<h3 align="left"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/super_logo_m.png" title="SeleniumBase" width="280" /></a></h3>

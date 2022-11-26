@@ -1,6 +1,6 @@
 <!-- SeleniumBase Docs -->
 
-## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) SeleniumBase Behave GUI / Commander 🐝🎖️
+## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) SeleniumBase Behave GUI / Commander 🐝🎖️
 
 🐝🎖️ The <b>SeleniumBase Behave GUI</b> lets you run <code>behave</code> scripts from a Desktop GUI.<br>
 
@@ -11,7 +11,7 @@
 * Starting the SeleniumBase Behave Commander GUI App...
 ```
 
-<img src="https://seleniumbase.io/cdn/img/sbase_behave_gui_wide_5.png" title="SeleniumBase Behave GUI" width="600">
+<img src="https://seleniumbase.github.io/cdn/img/sbase_behave_gui_wide_5.png" title="SeleniumBase Behave GUI" width="600">
 
 🐝🎖️ <b>SeleniumBase Behave GUI</b> loads the same tests that are found by:
 
@@ -38,7 +38,7 @@ sbase behave-gui features/calculator.feature  # tests in that feature
 
 🐝⚪ With the Dashboard enabled, you'll get one of these:
 
-<img src="https://seleniumbase.io/cdn/img/sb_behave_dashboard.png" title="SeleniumBase" width="600">
+<img src="https://seleniumbase.github.io/cdn/img/sb_behave_dashboard.png" title="SeleniumBase" width="600">
 
 --------
 

@@ -14,7 +14,7 @@ There are multiple ways of creating a **[Python virtual environment](https://pac
 (The [Python Software Foundation](https://www.python.org/psf/) recommends ``venv`` for creating virtual environments.)
 
 
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Option 1: Using "venv"</h3>
+<h3><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32" /> Option 1: Using "venv"</h3>
 
 > macOS/Linux terminal (``python3 -m venv ENV``)
 
@@ -34,7 +34,7 @@ To exit a virtual env, type ``deactivate``.
 
 --------
 
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Option 2: Using virtualenvwrapper</h3>
+<h3><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32" /> Option 2: Using virtualenvwrapper</h3>
 
 > macOS/Linux terminal:
 
@@ -68,7 +68,7 @@ mkvirtualenv sbase_env
 (If you have multiple versions of Python installed on your machine, and you want your virtual environment to use a specific Python version, add ``--python=PATH_TO_PYTHON_EXE`` to your ``mkvirtualenv`` command with the Python executable to use.)
 
 
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> virtualenvwrapper commands:</h3>
+<h3><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32" /> virtualenvwrapper commands:</h3>
 
 Creating a virtual environment:
 
@@ -105,7 +105,7 @@ rmvirtualenv sbase_env
 If the ``python`` and ``python3`` versions don't match (*while in a virtualenv on macOS or Linux*), the following command will sync the versions:
 
 ```bash
-alias python=`which python3`
+alias python=python3
 ```
 
 (To remove an alias, use: ``unalias NAME``)

@@ -1,6 +1,6 @@
 <!-- SeleniumBase Docs -->
 
-## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Help Docs
+## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Help Docs
 
 <p align="left">
 <a href="https://seleniumbase.io/#python_installation">🏄 Start</a> |
@@ -143,6 +143,6 @@
 --------
 
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/">
-<img src="https://seleniumbase.io/img/sb_logo_10.png" alt="SeleniumBase" width="260" />
+<img src="https://seleniumbase.github.io/img/sb_logo_10.png" alt="SeleniumBase" width="260" />
 </a></p>
 <!-- View on GitHub -->

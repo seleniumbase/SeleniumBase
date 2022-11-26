@@ -5,7 +5,7 @@
 
 ### Here's the web app you'll be creating:
 
-<img src="https://seleniumbase.io/cdn/img/brython_demo.png" alt="Brython Demo" title="Brython Demo" width="410" />
+<img src="https://seleniumbase.github.io/cdn/img/brython_demo.png" alt="Brython Demo" title="Brython Demo" width="410" />
 
 ### 0. Install ``brython``:
 

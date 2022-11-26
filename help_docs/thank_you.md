@@ -1,12 +1,12 @@
 <!-- SeleniumBase Docs -->
 
-[<img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="290">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://seleniumbase.github.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="290">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
-### Thank you for flying with SeleniumBase! 🛸
+### Thank you for flying with SeleniumBase! 🦅
 
 --------
 
-<p><div><a align="center" href="https://github.com/seleniumbase/SeleniumBase/"><img align="center" src="https://seleniumbase.io/img/sb_logo_10.png" alt="SeleniumBase" width="260"></a></div></p>
+<p><div><a align="center" href="https://github.com/seleniumbase/SeleniumBase/"><img align="center" src="https://seleniumbase.github.io/img/sb_logo_10.png" alt="SeleniumBase" width="260"></a></div></p>
 
 <p><div><b>Follow us on social media:</b></div></p>
 

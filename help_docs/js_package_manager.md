@@ -1,26 +1,26 @@
 <!-- SeleniumBase Docs -->
 
-## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) JS Package Manager and Code Generators
+## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) JS Package Manager and Code Generators
 
 <h3>🕹️ SeleniumBase lets you load JavaScript packages from any CDN link into any website via Python.</h3>
 
 <b>🎨 The following SeleniumBase solutions utilize this feature:</b>
 
-🎦 (<a href="../demo_mode.md">Demo Mode</a>)
+🎦 (<a href="https://seleniumbase.io/help_docs/demo_mode/">Demo Mode</a>)
 
-🚎 (<a href="../../examples/tour_examples/ReadMe.md">Website Tours</a>)
+🚎 (<a href="https://seleniumbase.io/examples/tour_examples/ReadMe/">Website Tours</a>)
 
-🎞️ (<a href="../../examples/presenter/ReadMe.md">Presentation Maker</a>)
+🎞️ (<a href="https://seleniumbase.io/examples/presenter/ReadMe/">Presentation Maker</a>)
 
-📊 (<a href="../../examples/chart_maker/ReadMe.md">Chart Maker</a> / <a href="../../examples/example_logs/ReadMe.md">Dashboard</a>)
+📊 (<a href="https://seleniumbase.io/examples/chart_maker/ReadMe/">Chart Maker</a> / <a href="https://seleniumbase.io/examples/example_logs/ReadMe/">Dashboard</a>)
 
-🛂 (<a href="../../examples/dialog_boxes/ReadMe.md">Dialog Boxes</a> / <a href="../../examples/master_qa/ReadMe.md">MasterQA</a>)
+🛂 (<a href="https://seleniumbase.io/examples/dialog_boxes/ReadMe/">Dialog Boxes</a> / <a href="https://seleniumbase.io/examples/master_qa/ReadMe/">MasterQA</a>)
 
 --------
 
 <p><div>🗺️ Here's an example of loading a website-tour library into the browser for a Google Maps tour:</div></p>
 
-<img src="https://seleniumbase.io/cdn/gif/introjs_tour.gif" title="SeleniumBase Tour of Google" /><br />
+<img src="https://seleniumbase.github.io/cdn/gif/introjs_tour.gif" title="SeleniumBase Tour of Google" /><br />
 
 <p>🗺️ This example is from <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/maps_introjs_tour.py">maps_introjs_tour.py</a>. (The <code>--interval=1</code> makes the tour go automatically to the next step after 1 second.)</p>
 
@@ -112,11 +112,11 @@ def add_css_link(driver, css_link):
 <div>🕹️ Website tours are just one of the many uses of the JS Package Manager.</div>
 <p><div>🛂 The following example shows the <a href="https://github.com/craftpip/jquery-confirm">JqueryConfirm</a> package loaded into a website for creating fancy dialog boxes:</div></p>
 
-<img src="https://seleniumbase.io/cdn/img/emoji_sports_dialog.png" alt="SeleniumBase" width="480" />
+<img src="https://seleniumbase.github.io/cdn/img/emoji_sports_dialog.png" alt="SeleniumBase" width="480" />
 
 <h4>↕️ (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/dialog_boxes/dialog_box_tour.py">Example: dialog_box_tour.py</a>) ↕️</h4>
 
-<img src="https://seleniumbase.io/cdn/gif/sports_dialog.gif" alt="SeleniumBase" width="480" />
+<img src="https://seleniumbase.github.io/cdn/gif/sports_dialog.gif" alt="SeleniumBase" width="480" />
 
 <h4>Here's how to run that example:</h4>
 
@@ -131,7 +131,7 @@ pytest test_dialog_boxes.py
 
 --------
 
-[<img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="220">](https://github.com/seleniumbase/SeleniumBase/)
+[<img src="https://seleniumbase.github.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="220">](https://github.com/seleniumbase/SeleniumBase/)
 
 <div>To learn more about SeleniumBase, check out the Docs Site:</div>
 <a href="https://seleniumbase.io">
@@ -140,5 +140,3 @@ pytest test_dialog_boxes.py
 <div>All the code is on GitHub:</div>
 <a href="https://github.com/seleniumbase/SeleniumBase">
 <img src="https://img.shields.io/badge/✅%20💛%20View%20Code-on%20GitHub%20🌎%20🚀-02A79E.svg" alt="SeleniumBase on GitHub" /></a>
-
-🚎 If you're only interested in creating website tours with SeleniumBase, here's the link to the <a href="https://seleniumbase.io/examples/tour_examples/ReadMe/">Website Tours ReadMe</a>.
