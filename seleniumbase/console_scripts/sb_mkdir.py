@@ -190,7 +190,7 @@ def main():
     data.append("*.egg-info")
     data.append("dist")
     data.append("build")
-    data.append("ghostdriver.log")
+    data.append(".eggs")
     data.append("eggs")
     data.append("parts")
     data.append("bin")
@@ -255,6 +255,7 @@ def main():
     data.append("log_archives")
     data.append("archived_logs")
     data.append("geckodriver.log")
+    data.append("ghostdriver.log")
     data.append("pytestdebug.log")
     data.append("reports/*.xml")
     data.append("latest_report")
@@ -618,7 +619,6 @@ def main():
     data.append(
         '        self.assert_text("github.com", ResultsPage.search_results)'
     )
-    data.append("        self.assert_element(ResultsPage.images_link)")
     data.append("")
     file_path = "%s/%s" % (dir_name_3, "google_test.py")
     file = codecs.open(file_path, "w+", "utf-8")
@@ -636,8 +636,6 @@ def main():
     data.append("")
     data.append("")
     data.append("class ResultsPage(object):")
-    data.append("    google_logo = 'img[alt=\"Google\"]'")
-    data.append('    images_link = "link=Images"')
     data.append('    search_results = "div#center_col"')
     data.append("")
     file_path = "%s/%s" % (dir_name_3, "google_objects.py")
