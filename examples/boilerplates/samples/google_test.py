@@ -14,4 +14,3 @@ class GoogleTests(BaseCase):
         self.assert_element(HomePage.feeling_lucky_button)
         self.click(HomePage.search_button)
         self.assert_text("github.com", ResultsPage.search_results)
-        self.assert_element(ResultsPage.images_link)

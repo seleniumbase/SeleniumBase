@@ -9,6 +9,4 @@ class HomePage(object):
 
 
 class ResultsPage(object):
-    google_logo = 'img[alt="Google"]'
-    images_link = "link=Images"
     search_results = "div#center_col"
