@@ -341,7 +341,7 @@ sbase mkfile new_test.py
 * Options:
 
 ``-b`` / ``--basic``  (Basic boilerplate / single-line test)
-``-r`` / ``--rec``  (adds ipdb breakpoint for Recorder Mode)
+``-r`` / ``--rec``  (adds Pdb+ breakpoint for Recorder Mode)
 
 * Language Options:
 
