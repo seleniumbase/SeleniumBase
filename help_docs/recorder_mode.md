@@ -37,7 +37,7 @@ pytest new_test.py --rec -q -s --url=wikipedia.org
    8                 # type "c" and press [ENTER] to continue
    9  ->             import pdb; pdb.set_trace()
  return None
-(Pdb++) c
+(Pdb+) c
 
 >>>>>>>>>>>>>>>>>> PDB continue >>>>>>>>>>>>>>>>>>
 

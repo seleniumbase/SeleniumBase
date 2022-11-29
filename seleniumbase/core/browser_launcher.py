@@ -51,7 +51,13 @@ PROXY_DIR_PATH = proxy_helper.PROXY_DIR_PATH
 PROXY_DIR_LOCK = proxy_helper.PROXY_DIR_LOCK
 PLATFORM = sys.platform
 IS_ARM_MAC = False
-if PLATFORM.endswith("darwin") and "arm" in platform.processor().lower():
+if (
+    PLATFORM.endswith("darwin")
+    and (
+        "arm" in platform.processor().lower()
+        or "arm64" in platform.version().lower()
+    )
+):
     IS_ARM_MAC = True
 IS_WINDOWS = False
 LOCAL_CHROMEDRIVER = None

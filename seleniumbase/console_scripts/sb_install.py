@@ -230,7 +230,10 @@ def main(override=None, intel_for_uc=None):
                 invalid_run_command()
         if "darwin" in sys_plat:
             if (
-                "arm" in platform.processor().lower()
+                (
+                    "arm" in platform.processor().lower()
+                    or "arm64" in platform.version().lower()
+                )
                 and not intel_for_uc
                 and int(use_version.split(".")[0]) > 105
             ):
@@ -401,7 +404,10 @@ def main(override=None, intel_for_uc=None):
             suffix = "WINDOWS"
         elif "darwin" in sys_plat:
             if (
-                "arm" in platform.processor().lower()
+                (
+                    "arm" in platform.processor().lower()
+                    or "arm64" in platform.version().lower()
+                )
                 and int(use_version.split(".")[0]) > 104
             ):
                 file_name = "edgedriver_mac64_m1.zip"
@@ -647,7 +653,10 @@ def main(override=None, intel_for_uc=None):
             if (
                 intel_for_uc
                 and "darwin" in sys_plat
-                and "arm" in platform.processor().lower()
+                and (
+                    "arm" in platform.processor().lower()
+                    or "arm64" in platform.version().lower()
+                )
             ):
                 f_name = "uc_driver"
                 new_file = os.path.join(downloads_folder, f_name)

@@ -33,4 +33,4 @@ mkdocs-material==8.5.10
 mkdocs-exclude-search==0.6.4
 mkdocs-simple-hooks==0.1.5
 mkdocs-material-extensions==1.1.1
-mkdocs-minify-plugin==0.6.1
+mkdocs-minify-plugin==0.6.2

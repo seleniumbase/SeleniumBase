@@ -6,7 +6,7 @@
 *.egg-info
 dist
 build
-ghostdriver.log
+.eggs
 eggs
 parts
 bin
@@ -90,6 +90,7 @@ latest_logs
 log_archives
 archived_logs
 geckodriver.log
+ghostdriver.log
 pytestdebug.log
 
 # Reports

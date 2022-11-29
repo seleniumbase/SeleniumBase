@@ -259,7 +259,7 @@ def show_mkfile_usage():
     print("           sbase mkfile new_test.py")
     print("  Options:")
     print("           -b / --basic  (Basic boilerplate / single-line test)")
-    print("           -r / --rec  (add pdb++ breakpoint for Recorder Mode)")
+    print("           -r / --rec  (adds Pdb+ breakpoint for Recorder Mode)")
     print("  Language Options:")
     print("           --en / --English    |    --zh / --Chinese")
     print("           --nl / --Dutch      |    --fr / --French")

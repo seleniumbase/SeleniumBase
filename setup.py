@@ -1,6 +1,6 @@
 """
 The setup package to install SeleniumBase dependencies and plugins.
-(Uses selenium 3.x and is compatible with Python 2.7+ and Python 3.6+)
+(Uses selenium 4.x and is compatible with Python 2.7+ and Python 3.6+)
 """
 
 from setuptools import setup, find_packages  # noqa: F401
@@ -205,7 +205,7 @@ setup(
         'pytest-xdist==2.5.0;python_version>="3.6" and python_version<"3.7"',
         'pytest-xdist==3.0.2;python_version>="3.7"',
         "parameterized==0.8.1",
-        "sbvirtualdisplay==1.1.0",
+        "sbvirtualdisplay==1.1.1",
         "behave==1.2.6",
         "parse==1.19.0",
         "parse-type==0.6.0",
@@ -215,9 +215,14 @@ setup(
         'beautifulsoup4==4.11.1;python_version>="3.6"',
         'cryptography==2.9.2;python_version<"3.6"',
         'cryptography==36.0.2;python_version>="3.6" and python_version<"3.7"',
-        'cryptography==38.0.3;python_version>="3.7"',
+        'cryptography==38.0.4;python_version>="3.7"',
         'pygments==2.5.2;python_version<"3.6"',
         'pygments==2.13.0;python_version>="3.6"',
+        'pyreadline==2.1;platform_system=="Windows" and python_version<"3.6"',
+        'pyreadline3==3.4.1;platform_system=="Windows" and python_version>="3.6"',  # noqa: E501
+        "pyrepl==0.9.0",
+        "tabcompleter==1.0.0",
+        "pdbp==1.0.0",
         'colorama==0.4.6;python_version<"3.6"',
         'colorama==0.4.5;python_version>="3.6" and python_version<"3.7"',
         'colorama==0.4.6;python_version>="3.7"',
@@ -261,14 +266,6 @@ setup(
             "ipython==7.34.0",
             "jedi==0.18.2",
             "parso==0.8.3",
-        ],
-        # pip install -e .[pdbpp]
-        # (Currently Mac/Linux only until fixed on Windows)
-        "pdbpp": [
-            "pdbpp==0.10.3",
-            "fancycompleter==0.9.1",
-            "pyrepl==0.9.0",
-            "wmctrl==0.4",
         ],
         # pip install -e .[pdfminer]
         "pdfminer": [
