@@ -33,16 +33,17 @@ def invalid_run_command(msg=None):
 
 
 def sc_ranges():
-    # Get the ranges of special characters of Chinese, Japanese, and Korean.
+    # Get the ranges of special double-width characters.
     special_char_ranges = [
         {"from": ord("\u4e00"), "to": ord("\u9FFF")},
         {"from": ord("\u3040"), "to": ord("\u30ff")},
         {"from": ord("\uac00"), "to": ord("\ud7a3")},
+        {"from": ord("\uff01"), "to": ord("\uff60")},
     ]
     return special_char_ranges
 
 
-def is_cjk(char):
+def is_char_wide(char):
     # Returns True if the special character is Chinese, Japanese, or Korean.
     sc = any(
         [range["from"] <= ord(char) <= range["to"] for range in sc_ranges()]
@@ -52,10 +53,10 @@ def is_cjk(char):
 
 def get_width(line):
     # Return the true width of the line. Not the same as line length.
-    # Chinese/Japanese/Korean characters take up double width visually.
+    # Chinese/Japanese/Korean characters take up two spaces of width.
     line_length = len(line)
     for char in line:
-        if is_cjk(char):
+        if is_char_wide(char):
             line_length += 1
     return line_length
 
