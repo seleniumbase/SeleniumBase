@@ -29,8 +29,8 @@ pytest new_test.py --rec -q -s --url=wikipedia.org
 >>>>>>>>>>>>>>>>>> PDB set_trace >>>>>>>>>>>>>>>>>
 
 -> import pdb; pdb.set_trace()
-> .../YOUR_CURRENT_DIRECTORY/new_test.py(9)
-
+> PATH_TO_YOUR_CURRENT_DIRECTORY/new_test.py(9)
+....
    5         def test_recording(self):
    6             if self.recorder_ext and not self.xvfb:
    7                 # When you are done recording actions,
