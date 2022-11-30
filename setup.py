@@ -158,7 +158,8 @@ setup(
         'chardet==5.0.0;python_version>="3.7"',  # Stay in sync with "requests"
         'charset-normalizer==2.0.12;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
         'charset-normalizer==2.1.1;python_version>="3.7"',  # Sync "requests"
-        'urllib3==1.26.13',  # Stay in sync with "requests"
+        'urllib3==1.26.12;python_version<"3.7"',
+        'urllib3==1.26.13;python_version>="3.7"',
         'requests==2.27.1;python_version<"3.7"',
         'requests==2.28.1;python_version>="3.7"',
         'requests-toolbelt==0.10.1',
@@ -222,7 +223,7 @@ setup(
         'pyreadline3==3.4.1;platform_system=="Windows" and python_version>="3.6"',  # noqa: E501
         "pyrepl==0.9.0",
         "tabcompleter==1.0.0",
-        "pdbp==1.0.0",
+        "pdbp==1.1.0",
         'colorama==0.4.6;python_version<"3.6"',
         'colorama==0.4.5;python_version>="3.6" and python_version<"3.7"',
         'colorama==0.4.6;python_version>="3.7"',
