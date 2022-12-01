@@ -660,8 +660,8 @@ def get_configured_sb(context):
         if low_key in ["external-pdf", "external_pdf"]:
             sb.external_pdf = True
             continue
-        # Handle: -D remote-debug / remote_debug
-        if low_key in ["remote-debug", "remote_debug"]:
+        # Handle: -D remote-debug / remote_debug / remote-debugger
+        if low_key in ["remote-debug", "remote_debug", "remote-debugger"]:
             sb.remote_debug = True
             continue
         # Handle: -D settings=FILE / settings-file=FILE / settings_file=FILE

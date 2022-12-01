@@ -704,12 +704,15 @@ class SeleniumBrowser(Plugin):
         parser.add_option(
             "--remote_debug",
             "--remote-debug",
+            "--remote-debugger",
+            "--remote_debugger",
             action="store_true",
             dest="remote_debug",
             default=False,
-            help="""This enables Chromium's remote debugger.
+            help="""This syncs the browser to Chromium's remote debugger.
                     To access the remote debugging interface, go to:
-                    http://localhost:9222 while Chromedriver is running.
+                    chrome://inspect/#devices while tests are running.
+                    The previous URL was at: http://localhost:9222/
                     Info: chromedevtools.github.io/devtools-protocol/""",
         )
         parser.add_option(
