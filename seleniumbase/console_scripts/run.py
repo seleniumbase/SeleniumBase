@@ -11,6 +11,7 @@ sbase methods
 sbase options
 sbase commander
 sbase behave-gui
+sbase behave-options
 sbase caseplans
 sbase mkdir ui_tests
 sbase mkfile new_test.py
