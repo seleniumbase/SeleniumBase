@@ -111,6 +111,9 @@ class BaseCase(unittest.TestCase):
         self.__extra_actions = []
         self.__js_start_time = 0
         self.__set_c_from_switch = False
+        self.__frame_switch_layer = 0  # Used by Recorder-Mode
+        self.__frame_switch_multi = False  # Used by Recorder-Mode
+        self.__last_saved_url = None  # Used by Recorder-Mode
         self.__called_setup = False
         self.__called_teardown = False
         self.__start_time_ms = None
@@ -3002,9 +3005,21 @@ class BaseCase(unittest.TestCase):
                 # Perform actions here that should be done within the iframe.
             # The iframe is automatically exited after the "with" block ends.
         """
+        if self.recorder_mode:
+            self.__frame_switch_layer += 1
+            if self.__frame_switch_layer >= 2:
+                self.__frame_switch_multi = True
         self.switch_to_frame(frame, timeout=timeout)
         yield
         self.switch_to_parent_frame()
+        if self.recorder_mode:
+            self.__frame_switch_layer -= 1
+            if self.__frame_switch_layer < 0:
+                self.__frame_switch_layer = 0
+                self.__frame_switch_multi = False
+            if self.__frame_switch_layer == 0 and self.__frame_switch_multi:
+                self.refresh()
+                self.__frame_switch_multi = False
 
     def set_content_to_frame(self, frame, timeout=None):
         """Replaces the page html with an iframe's html from that page.
@@ -12337,11 +12352,22 @@ class BaseCase(unittest.TestCase):
                 self.__last_page_load_url = current_url
 
     def __disable_beforeunload_as_needed(self):
+        """Disables beforeunload as needed. Also resets frame_switch state."""
         if (
             hasattr(self, "_disable_beforeunload")
             and self._disable_beforeunload
         ):
             self.disable_beforeunload()
+        if self.recorder_mode:
+            try:
+                current_url = self.get_current_url
+            except Exception:
+                current_url = None
+                self.__last_saved_url = None
+            if current_url != self.__last_saved_url:
+                self.__frame_switch_layer = 0
+                self.__frame_switch_multi = False
+                self.__last_saved_url = current_url
 
     ############
 
