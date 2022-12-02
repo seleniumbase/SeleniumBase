@@ -2,6 +2,7 @@
 # Minimum Python version: 3.7
 
 regex>=2022.10.31
+pkginfo>=1.9.2
 docutils==0.19
 python-dateutil==2.8.2
 livereload==2.6.3
@@ -9,7 +10,6 @@ joblib==1.2.0
 Markdown==3.3.7
 MarkupSafe==2.1.1
 keyring==23.11.0
-pkginfo==1.8.3
 Jinja2==3.1.2
 click==8.1.3
 zipp==3.11.0
@@ -29,7 +29,7 @@ cssselect2==0.7.0
 tinycss2==1.2.1
 defusedxml==0.7.1
 mkdocs==1.4.2
-mkdocs-material==8.5.10
+mkdocs-material==8.5.11
 mkdocs-exclude-search==0.6.4
 mkdocs-simple-hooks==0.1.5
 mkdocs-material-extensions==1.1.1
