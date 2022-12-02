@@ -18,7 +18,6 @@ Examples:
 Output:
       Launches SeleniumBase Commander | GUI for pytest.
 """
-
 import colorama
 import subprocess
 import sys

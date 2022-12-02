@@ -19,7 +19,6 @@ Output:
     and Python boilerplates for setting up customized
     test frameworks.
 """
-
 import codecs
 import colorama
 import os

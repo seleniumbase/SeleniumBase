@@ -14,7 +14,6 @@ Examples:
 Output:
       Launches SeleniumBase Behave Commander | GUI for Behave.
 """
-
 import colorama
 import subprocess
 import sys

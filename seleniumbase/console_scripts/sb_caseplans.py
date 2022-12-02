@@ -16,7 +16,6 @@ Examples:
 Output:
       Launches the SeleniumBase Case Plans Generator.
 """
-
 import codecs
 import colorama
 import os

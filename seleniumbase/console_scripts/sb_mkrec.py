@@ -30,7 +30,6 @@ Output:
     Creates a new SeleniumBase test using the Recorder.
     If the filename already exists, an error is raised.
 """
-
 import codecs
 import colorama
 import shutil

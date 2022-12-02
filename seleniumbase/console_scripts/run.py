@@ -36,7 +36,6 @@ sbase download server
 sbase grid-hub start
 sbase grid-node start --hub=127.0.0.1
 """
-
 import colorama
 import sys
 import time

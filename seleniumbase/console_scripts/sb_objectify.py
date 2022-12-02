@@ -8,7 +8,6 @@ Output:
         have been replaced with variable names defined in
         "page_objects.py", supporting the Page Object Pattern.
 """
-
 import codecs
 import os
 import re
