@@ -10,7 +10,6 @@ Output:
         Prints the code/text of any file
         with syntax-highlighting.
 """
-
 import colorama
 import os
 import sys

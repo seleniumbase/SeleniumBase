@@ -89,10 +89,8 @@ def pytest_addoption(parser):
     --disable-ws  (Disable Web Security on Chromium-based browsers.)
     --enable-ws  (Enable Web Security on Chromium-based browsers.)
     --enable-sync  (Enable "Chrome Sync" on websites.)
-    --use-auto-ext  (Use Chrome's automation extension.)
     --uc | --undetected  (Use undetected-chromedriver to evade bot-detection.)
-    --uc-sub | --uc-subprocess  (Use undetected-chromedriver as a subprocess.)
-    --remote-debug  (Enable Chrome's Remote Debugger on http://localhost:9222)
+    --remote-debug  (Sync to Chrome Remote Debugger chrome://inspect/#devices)
     --final-debug  (Enter Debug Mode after each test ends. Don't use with CI!)
     --dashboard  (Enable the SeleniumBase Dashboard. Saved at: dashboard.html)
     --dash-title=STRING  (Set the title shown for the generated dashboard.)
@@ -948,12 +946,15 @@ def pytest_addoption(parser):
     parser.addoption(
         "--remote_debug",
         "--remote-debug",
+        "--remote-debugger",
+        "--remote_debugger",
         action="store_true",
         dest="remote_debug",
         default=False,
-        help="""This enables Chromium's remote debugger.
+        help="""This syncs the browser to Chromium's remote debugger.
                 To access the remote debugging interface, go to:
-                http://localhost:9222 while Chromedriver is running.
+                chrome://inspect/#devices while tests are running.
+                The previous URL was at: http://localhost:9222/
                 Info: chromedevtools.github.io/devtools-protocol/""",
     )
     parser.addoption(

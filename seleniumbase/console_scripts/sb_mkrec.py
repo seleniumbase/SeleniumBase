@@ -30,7 +30,6 @@ Output:
     Creates a new SeleniumBase test using the Recorder.
     If the filename already exists, an error is raised.
 """
-
 import codecs
 import colorama
 import shutil
@@ -169,11 +168,11 @@ def main():
     data.append("from seleniumbase import BaseCase")
     data.append("")
     data.append("")
-    data.append("class RecorderTests(BaseCase):")
+    data.append("class RecorderTest(BaseCase):")
     data.append("    def test_recording(self):")
-    data.append("        if self.recorder_ext and not self.xvfb:")
-    data.append("            # When you are done recording actions,")
-    data.append('            # type "c" and press [ENTER] to continue')
+    data.append("        if self.recorder_ext:")
+    data.append("            # When done recording actions,")
+    data.append('            # type "c", and press [Enter].')
     data.append("            import pdb; pdb.set_trace()")
     data.append("")
     file = codecs.open(file_path, "w+", "utf-8")

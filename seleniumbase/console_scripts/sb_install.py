@@ -26,7 +26,6 @@ Output:
          (geckodriver is required for Firefox automation)
          (edgedriver is required for MS__Edge automation)
 """
-
 import colorama
 import os
 import platform

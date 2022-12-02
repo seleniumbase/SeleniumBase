@@ -13,7 +13,6 @@ Options:
 Output:
     Launches the SeleniumBase Recorder Desktop App.
 """
-
 import colorama
 import os
 import subprocess

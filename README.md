@@ -162,7 +162,7 @@ def test_mfa_login(sb):
 from seleniumbase import SB
 
 with SB() as sb:  # By default, browser="chrome" if not set.
-    sb.open("https://seleniumbase.github.io/realworld/login")
+    sb.open("https://seleniumbase.io/realworld/login")
     sb.type("#username", "demo_user")
     sb.type("#password", "secret_pass")
     sb.enter_mfa_code("#totpcode", "GAXG2MTEOR3DMMDG")  # 6-digit
@@ -547,10 +547,8 @@ pytest my_first_test.py --pdb
 --disable-ws  # (Disable Web Security on Chromium-based browsers.)
 --enable-ws  # (Enable Web Security on Chromium-based browsers.)
 --enable-sync  # (Enable "Chrome Sync" on websites.)
---use-auto-ext  # (Use Chrome's automation extension.)
 --uc | --undetected  # (Use undetected-chromedriver to evade bot-detection.)
---uc-sub | --uc-subprocess  # (Use undetected-chromedriver as a subprocess.)
---remote-debug  # (Enable Chrome's Remote Debugger on http://localhost:9222)
+--remote-debug  # (Sync to Chrome Remote Debugger chrome://inspect/#devices)
 --final-debug  # (Enter Debug Mode after each test ends. Don't use with CI!)
 --dashboard  # (Enable the SeleniumBase Dashboard. Saved at: dashboard.html)
 --dash-title=STRING  # (Set the title shown for the generated dashboard.)

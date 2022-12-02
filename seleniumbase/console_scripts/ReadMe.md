@@ -120,6 +120,7 @@ that are available when using SeleniumBase.
 --crumbs  (Clear all cookies between tests reusing a session.)
 --maximize  (Start tests with the web browser window maximized.)
 --dashboard  (Enable SeleniumBase\'s Dashboard at dashboard.html)
+--uc  (Enable undetected-chromedriver to evade bot-detection.)
 --incognito  (Enable Chromium\'s Incognito mode.)
 --guest  (Enable Chromium\'s Guest mode.)
 -m=MARKER  (Run tests with the specified pytest marker.)
@@ -136,6 +137,7 @@ that are available when using SeleniumBase.
       |  return / r: Run until method returns. j: Jump to line. |
       | where / w: Show stack spot. u: Up stack. d: Down stack. |
       | longlist / ll: See code. dir(): List namespace objects. |
+--final-debug  (Enter Final Debug Mode after each test ends.)
 --recorder  (Record browser actions to generate test scripts.)
 --save-screenshot  (Save a screenshot at the end of each test.)
 --archive-logs  (Archive old log files instead of deleting them.)
@@ -149,6 +151,7 @@ that are available when using SeleniumBase.
 --env=ENV  (Set the test env. Access with "self.env" in tests.)
 --data=DATA  (Extra test data. Access with "self.data" in tests.)
 --disable-csp  (Disable the Content Security Policy of websites.)
+--remote-debug  (Sync to Ch-R-Debugger chrome://inspect/#devices)
 --server=SERVER  (The Selenium Grid server/IP used for tests.)
 --port=PORT  (The Selenium Grid port used by the test server.)
 --proxy=SERVER:PORT  (Connect to a proxy server:port for tests.)
@@ -179,6 +182,7 @@ that are available when using SeleniumBase.
 -D crumbs  (Clear all cookies between tests reusing a session.)
 -D maximize  (Start tests with the web browser window maximized.)
 -D dashboard  (Enable SeleniumBase\'s Dashboard at dashboard.html)
+-D uc  (Enable undetected-chromedriver to evade bot-detection.)
 -D incognito  (Enable Chromium\'s Incognito mode.)
 -D guest  (Enable Chromium\'s Guest mode.)
 --no-snippets / -q  (Quiet mode. Don\'t print snippets.)
@@ -203,6 +207,7 @@ that are available when using SeleniumBase.
 -D env=ENV  (Set the test env. Access with "self.env" in tests.)
 -D data=DATA  (Extra test data. Access with "self.data" in tests.)
 -D disable-csp  (Disable the Content Security Policy of websites.)
+-D remote-debug  (Sync to Ch-R-Debugger chrome://inspect/#devices)
 -D server=SERVER  (The Selenium Grid server/IP used for tests.)
 -D port=PORT  (The Selenium Grid port used by the test server.)
 -D proxy=SERVER:PORT  (Connect to a proxy server:port for tests.)

@@ -49,7 +49,7 @@ if sys.argv[-1] == "publish":
         print("\n*** Installing build: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'build>=0.9.0'")
         print("\n*** Installing twine: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'twine>=4.0.1'")
+        os.system("python -m pip install --upgrade 'twine>=4.0.2'")
         print("\n*** Installing tqdm: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install --upgrade tqdm")
         print("\n*** Rebuilding distribution packages: ***\n")
@@ -155,7 +155,7 @@ setup(
         'idna==3.4;python_version>="3.6"',  # Must stay in sync with "requests"
         'chardet==3.0.4;python_version<"3.6"',  # Stay in sync with "requests"
         'chardet==4.0.0;python_version>="3.6" and python_version<"3.7"',
-        'chardet==5.0.0;python_version>="3.7"',  # Stay in sync with "requests"
+        'chardet==5.1.0;python_version>="3.7"',  # Stay in sync with "requests"
         'charset-normalizer==2.0.12;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
         'charset-normalizer==2.1.1;python_version>="3.7"',  # Sync "requests"
         'urllib3==1.26.12;python_version<"3.7"',
@@ -173,7 +173,7 @@ setup(
         'pyopenssl==22.1.0;python_version>="3.7"',
         'wsproto==1.2.0;python_version>="3.7"',
         'selenium==3.141.0;python_version<"3.7"',
-        'selenium==4.6.1;python_version>="3.7"',
+        'selenium==4.7.0;python_version>="3.7"',
         'msedge-selenium-tools==3.141.3;python_version<"3.7"',
         'more-itertools==5.0.0;python_version<"3.6"',
         'more-itertools==8.14.0;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
@@ -223,7 +223,7 @@ setup(
         'pyreadline3==3.4.1;platform_system=="Windows" and python_version>="3.6"',  # noqa: E501
         "pyrepl==0.9.0",
         "tabcompleter==1.0.0",
-        "pdbp==1.1.0",
+        "pdbp==1.2.2",
         'colorama==0.4.6;python_version<"3.6"',
         'colorama==0.4.5;python_version>="3.6" and python_version<"3.7"',
         'colorama==0.4.6;python_version>="3.7"',

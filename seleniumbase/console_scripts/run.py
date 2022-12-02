@@ -11,6 +11,7 @@ sbase methods
 sbase options
 sbase commander
 sbase behave-gui
+sbase behave-options
 sbase caseplans
 sbase mkdir ui_tests
 sbase mkfile new_test.py
@@ -35,7 +36,6 @@ sbase download server
 sbase grid-hub start
 sbase grid-node start --hub=127.0.0.1
 """
-
 import colorama
 import sys
 import time
@@ -808,6 +808,7 @@ def show_options():
     op += '--env=ENV  (Set the test env. Access with "self.env" in tests.)\n'
     op += '--data=DATA  (Extra test data. Access with "self.data" in tests.)\n'
     op += "--disable-csp  (Disable the Content Security Policy of websites.)\n"
+    op += "--remote-debug  (Sync to Ch-R-Debugger chrome://inspect/#devices)\n"
     op += "--server=SERVER  (The Selenium Grid server/IP used for tests.)\n"
     op += "--port=PORT  (The Selenium Grid port used by the test server.)\n"
     op += "--proxy=SERVER:PORT  (Connect to a proxy server:port for tests.)\n"
@@ -851,6 +852,7 @@ def show_behave_options():
     op += "-D crumbs  (Clear all cookies between tests reusing a session.)\n"
     op += "-D maximize  (Start tests with the web browser window maximized.)\n"
     op += "-D dashboard  (Enable SeleniumBase's Dashboard at dashboard.html)\n"
+    op += "-D uc  (Enable undetected-chromedriver to evade bot-detection.)\n"
     op += "-D incognito  (Enable Chromium's Incognito mode.)\n"
     op += "-D guest  (Enable Chromium's Guest mode.)\n"
     op += "--no-snippets / -q  (Quiet mode. Don't print snippets.)\n"
@@ -875,6 +877,7 @@ def show_behave_options():
     op += '-D env=ENV  (Set the test env. Access using "self.env" in tests.)\n'
     op += '-D data=DATA  (Extra test data. Access using "self.data".)\n'
     op += "-D disable-csp  (Disable the Content Security Policy of sites.)\n"
+    op += "-D remote-debug  (Sync Ch-R-Debugger chrome://inspect/#devices)\n"
     op += "-D server=SERVER  (The Selenium Grid server/IP used for tests.)\n"
     op += "-D port=PORT  (The Selenium Grid port used by the test server.)\n"
     op += "-D proxy=SERVER:PORT  (Connect to a proxy server:port for tests.)\n"

@@ -71,10 +71,8 @@ behave -D agent="User Agent String" -D demo
 -D disable-ws  (Disable Web Security on Chromium-based browsers.)
 -D enable-ws  (Enable Web Security on Chromium-based browsers.)
 -D enable-sync  (Enable "Chrome Sync".)
--D use-auto-ext  (Use Chrome's automation extension.)
 -D uc | -D undetected  (Use undetected-chromedriver to evade bot-detection)
--D uc-sub | -D uc-subprocess  (Use undetected-chromedriver as a subprocess)
--D remote-debug  (Enable Chrome's Remote Debugger on http://localhost:9222)
+-D remote-debug  (Sync to Chrome Remote Debugger chrome://inspect/#devices)
 -D dashboard  (Enable the SeleniumBase Dashboard. Saved at: dashboard.html)
 -D dash-title=STRING  (Set the title shown for the generated dashboard.)
 -D enable-3d-apis  (Enables WebGL and 3D APIs.)
@@ -662,8 +660,8 @@ def get_configured_sb(context):
         if low_key in ["external-pdf", "external_pdf"]:
             sb.external_pdf = True
             continue
-        # Handle: -D remote-debug / remote_debug
-        if low_key in ["remote-debug", "remote_debug"]:
+        # Handle: -D remote-debug / remote_debug / remote-debugger
+        if low_key in ["remote-debug", "remote_debug", "remote-debugger"]:
             sb.remote_debug = True
             continue
         # Handle: -D settings=FILE / settings-file=FILE / settings_file=FILE

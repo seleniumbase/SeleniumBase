@@ -23,7 +23,6 @@ Output:
     and use a "sky" theme with "slide" transition.
     The chart can be used as a basic boilerplate.
 """
-
 import codecs
 import colorama
 import os

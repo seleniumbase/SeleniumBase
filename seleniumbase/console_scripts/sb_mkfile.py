@@ -30,7 +30,6 @@ Output:
     basic boilerplate option, only the "open" method
     is included.
 """
-
 import codecs
 import colorama
 import os

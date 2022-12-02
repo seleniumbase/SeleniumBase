@@ -2,7 +2,7 @@
 from seleniumbase import SB
 
 with SB() as sb:  # By default, browser="chrome" if not set.
-    sb.open("https://seleniumbase.github.io/realworld/login")
+    sb.open("https://seleniumbase.io/realworld/login")
     sb.type("#username", "demo_user")
     sb.type("#password", "secret_pass")
     sb.enter_mfa_code("#totpcode", "GAXG2MTEOR3DMMDG")  # 6-digit

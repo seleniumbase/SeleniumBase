@@ -23,7 +23,6 @@ Output:
     and use "serif" theme with "slide" transition.
     The slides can be used as a basic boilerplate.
 """
-
 import codecs
 import colorama
 import os

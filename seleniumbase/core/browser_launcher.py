@@ -640,7 +640,7 @@ def _set_chrome_options(
         # Opera Chromium only!
         chrome_options.add_argument("--allow-elevated-browser")
     if remote_debug:
-        # To access the Remote Debugger, go to: http://localhost:9222
+        # To access the Debugger, go to: chrome://inspect/#devices
         # while a Chromium driver is running.
         # Info: https://chromedevtools.github.io/devtools-protocol/
         chrome_options.add_argument("--remote-debugging-port=9222")
@@ -2131,7 +2131,7 @@ def get_local_driver(
         if "linux" in PLATFORM or not is_using_uc(undetectable, browser_name):
             edge_options.add_argument("--no-sandbox")
         if remote_debug:
-            # To access the Remote Debugger, go to: http://localhost:9222
+            # To access the Debugger, go to: edge://inspect/#devices
             # while a Chromium driver is running.
             # Info: https://chromedevtools.github.io/devtools-protocol/
             edge_options.add_argument("--remote-debugging-port=9222")
