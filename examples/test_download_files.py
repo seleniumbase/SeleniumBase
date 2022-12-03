@@ -22,6 +22,9 @@ class DownloadTests(BaseCase):
 
     def test_download_files_from_pypi(self):
         self.open("https://pypi.org/project/sbvirtualdisplay/#files")
+        self.assert_element('[data-clipboard-target="#pip-command"]')
+        self.assert_text("Download files", "div#files h2.page-title")
+        self.assert_text("Download files", "a#files-tab")
         pkg_header = self.get_text("h1.package-header__name").strip()
         pkg_name = pkg_header.replace(" ", "-")
         whl_file = pkg_name + "-py2.py3-none-any.whl"
