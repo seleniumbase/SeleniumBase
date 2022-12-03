@@ -558,7 +558,12 @@ def find_chrome_executable():
     else:
         for item in map(
             os.environ.get,
-            ("PROGRAMFILES", "PROGRAMFILES(X86)", "LOCALAPPDATA"),
+            (
+                "PROGRAMFILES",
+                "PROGRAMFILES(X86)",
+                "LOCALAPPDATA",
+                "PROGRAMW6432",
+            ),
         ):
             for subitem in (
                 "Google/Chrome/Application",

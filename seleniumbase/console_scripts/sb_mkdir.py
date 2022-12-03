@@ -610,6 +610,7 @@ def main():
     data.append("    def test_google_dot_com(self):")
     data.append('        self.open("https://google.com/ncr")')
     data.append("        self.sleep(0.1)")
+    data.append("        self.hide_elements('iframe[name=\"callout\"]')")
     data.append("        self.save_screenshot_to_logs()")
     data.append('        self.type(HomePage.search_box, "github.com")')
     data.append("        self.assert_element(HomePage.search_button)")
