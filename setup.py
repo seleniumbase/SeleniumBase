@@ -173,7 +173,7 @@ setup(
         'pyopenssl==22.1.0;python_version>="3.7"',
         'wsproto==1.2.0;python_version>="3.7"',
         'selenium==3.141.0;python_version<"3.7"',
-        'selenium==4.7.0;python_version>="3.7"',
+        'selenium==4.7.2;python_version>="3.7"',
         'msedge-selenium-tools==3.141.3;python_version<"3.7"',
         'more-itertools==5.0.0;python_version<"3.6"',
         'more-itertools==8.14.0;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
@@ -223,7 +223,7 @@ setup(
         'pyreadline3==3.4.1;platform_system=="Windows" and python_version>="3.6"',  # noqa: E501
         "pyrepl==0.9.0",
         "tabcompleter==1.0.0",
-        "pdbp==1.2.2",
+        "pdbp==1.2.3",
         'colorama==0.4.6;python_version<"3.6"',
         'colorama==0.4.5;python_version>="3.6" and python_version<"3.7"',
         'colorama==0.4.6;python_version>="3.7"',
