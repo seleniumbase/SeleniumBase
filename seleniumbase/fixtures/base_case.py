@@ -241,9 +241,13 @@ class BaseCase(unittest.TestCase):
                 "cannot determine loading status" in e.msg
                 or "unexpected command response" in e.msg
             ):
-                pass  # Odd issue where the open did happen. Continue.
+                if self.__needs_minimum_wait():
+                    time.sleep(0.2)
+                    self.driver.get(url)
+                else:
+                    pass  # Odd issue where the open did happen. Continue.
             else:
-                raise Exception(e.msg)
+                raise
         if self.driver.current_url == pre_action_url and pre_action_url != url:
             time.sleep(0.1)  # Make sure load happens
         if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
@@ -702,7 +706,7 @@ class BaseCase(unittest.TestCase):
                     ):
                         pass  # Odd issue where the click did happen. Continue.
                     else:
-                        raise e
+                        raise
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
         except (StaleElementReferenceException, ENI_Exception):
@@ -725,7 +729,7 @@ class BaseCase(unittest.TestCase):
                     ):
                         pass  # Odd issue where the click did happen. Continue.
                     else:
-                        raise e
+                        raise
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
                     if self.__needs_minimum_wait():
@@ -2206,7 +2210,7 @@ class BaseCase(unittest.TestCase):
         # (Pure hover actions won't work on early chromedriver versions)
         try:
             return page_actions.hover_on_element(self.driver, selector, by)
-        except WebDriverException as e:
+        except WebDriverException:
             driver_capabilities = self.driver.capabilities
             if "version" in driver_capabilities:
                 chrome_version = driver_capabilities["version"]
@@ -2232,7 +2236,7 @@ class BaseCase(unittest.TestCase):
                 )
                 raise Exception(message)
             else:
-                raise Exception(e)
+                raise
 
     def hover_and_click(
         self,
@@ -11859,9 +11863,9 @@ class BaseCase(unittest.TestCase):
                 "The offset must stay inside the target element!"
             )
             raise Exception(message)
-        except InvalidArgumentException as e:
+        except InvalidArgumentException:
             if not self.browser == "chrome":
-                raise Exception(e)
+                raise
             driver_capabilities = self.driver.capabilities
             if "version" in driver_capabilities:
                 chrome_version = driver_capabilities["version"]
@@ -11876,7 +11880,7 @@ class BaseCase(unittest.TestCase):
                 int(major_chromedriver_version) >= 76
                 and int(major_chrome_version) >= 76
             ):
-                raise Exception(e)
+                raise
             install_sb = (
                 "seleniumbase get chromedriver %s" % major_chrome_version
             )
@@ -11893,7 +11897,7 @@ class BaseCase(unittest.TestCase):
                 )
                 raise Exception(message)
             else:
-                raise Exception(e)
+                raise
         if self.demo_mode:
             self.__demo_mode_pause_if_active()
         elif self.slow_mode:
