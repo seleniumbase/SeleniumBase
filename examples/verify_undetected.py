@@ -8,7 +8,7 @@ from seleniumbase import BaseCase
 
 class UndetectedTest(BaseCase):
     def test_browser_is_undetected(self):
-        self.open("https://nowsecure.nl")
+        self.open("https://nowsecure.nl/#relax")
         try:
             self.assert_text("OH YEAH, you passed!", "h1", timeout=6.75)
             self.post_message("Selenium wasn't detected!", duration=1.6)
