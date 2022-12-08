@@ -22,9 +22,9 @@ css_5 = "downloads-manager::shadow downloads-toolbar::shadow cr-toolbar::shadow 
 
 🔵 The shadow-root (``::shadow``) elements are transitional, and therefore cannot be the final part of your CSS selectors. Complete your CSS selectors by including an element that's inside a shadow-root.
 
-🔵 Note that ``::shadow`` selectors only exist within SeleniumBase, and do not exist outside of it.
+🔵 NOTE: ``::shadow`` selectors only exist within SeleniumBase. (They are not part of standard CSS.)
 
 🔵 Here are some examples of tests that interact with Shadow DOM elements:
 * [examples/shadow_root_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/shadow_root_test.py)
 * [examples/test_shadow_dom.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_shadow_dom.py)
-* [examples/wordle_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/wordle_test.py)
+* [examples/old_wordle_script.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/old_wordle_script.py)
