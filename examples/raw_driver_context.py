@@ -18,7 +18,7 @@ with DriverContext() as driver:
 
 with DriverContext(browser="chrome", incognito=True) as driver:
     driver.get("https://seleniumbase.io/apps/calculator")
-    page_actions.wait_for_element(driver, "4", "id").click()
-    page_actions.wait_for_element(driver, "2", "id").click()
-    page_actions.wait_for_text(driver, "42", "output", "id")
+    page_actions.wait_for_element(driver, "4", by="id").click()
+    page_actions.wait_for_element(driver, "2", by="id").click()
+    page_actions.wait_for_text(driver, "42", "output", by="id")
     js_utils.highlight_with_js(driver, "#output", loops=6)
