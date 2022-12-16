@@ -20,7 +20,7 @@ importlib-metadata==5.1.0
 bleach==5.0.1
 jsmin==3.0.1
 lunr==0.6.2
-nltk==3.7
+nltk==3.8
 tornado==6.2
 watchdog==2.2.0
 cairocffi==1.4.0

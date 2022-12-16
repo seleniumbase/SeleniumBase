@@ -36,7 +36,10 @@ if sys.argv[-1] == "publish":
     reply = str(input_method(confirm_text)).lower().strip()
     if reply == "yes":
         print("\n*** Checking code health with flake8:\n")
-        os.system("python -m pip install 'flake8==5.0.4'")
+        if sys.version_info >= (3, 9):
+            os.system("python -m pip install 'flake8==6.0.0'")
+        else:
+            os.system("python -m pip install 'flake8==5.0.4'")
         flake8_status = os.system("flake8 --exclude=recordings,temp")
         if flake8_status != 0:
             print("\nWARNING! Fix flake8 issues before publishing to PyPI!\n")
@@ -127,7 +130,8 @@ setup(
         'pip>=21.3.1;python_version>="3.6" and python_version<"3.7"',
         'pip>=22.3.1;python_version>="3.7"',
         'packaging>=20.9;python_version<"3.6"',
-        'packaging>=21.3;python_version>="3.6"',
+        'packaging>=21.3;python_version>="3.6" and python_version<"3.7"',
+        'packaging>=22.0;python_version>="3.7"',
         'setuptools>=44.1.1;python_version<"3.6"',
         'setuptools>=59.6.0;python_version>="3.6" and python_version<"3.7"',
         'setuptools>=65.6.3;python_version>="3.7"',
@@ -140,7 +144,7 @@ setup(
         'attrs>=22.1.0;python_version>="3.6"',
         'PyYAML>=6.0;python_version>="3.6"',
         'certifi>=2021.10.8;python_version<"3.6"',
-        'certifi>=2022.9.24;python_version>="3.6"',
+        'certifi>=2022.12.7;python_version>="3.6"',
         'filelock>=3.2.1;python_version<"3.6"',
         'filelock>=3.4.1;python_version>="3.6" and python_version<"3.7"',
         'filelock>=3.8.2;python_version>="3.7"',
@@ -222,7 +226,7 @@ setup(
         'pyreadline==2.1;platform_system=="Windows" and python_version<"3.6"',
         'pyreadline3==3.4.1;platform_system=="Windows" and python_version>="3.6"',  # noqa: E501
         "tabcompleter==1.1.0",
-        "pdbp==1.2.5",
+        "pdbp==1.2.6",
         'colorama==0.4.6;python_version<"3.6"',
         'colorama==0.4.5;python_version>="3.6" and python_version<"3.7"',
         'colorama==0.4.6;python_version>="3.7"',
@@ -231,11 +235,12 @@ setup(
         'importlib-metadata==4.2.0;python_version>="3.6" and python_version<"3.8"',  # noqa: E501
         "pycparser==2.21",
         'pyotp==2.3.0;python_version<"3.6"',
-        'pyotp==2.7.0;python_version>="3.6"',
+        'pyotp==2.7.0;python_version>="3.6" and python_version<"3.7"',
+        'pyotp==2.8.0;python_version>="3.7"',
         "cffi==1.15.1",
         'typing-extensions==3.10.0.2;python_version<"3.6"',  # <3.9 for "rich"
         'typing-extensions==4.1.1;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
-        'typing-extensions==4.2.0;python_version>="3.7" and python_version<"3.9"',  # noqa: E501
+        'typing-extensions==4.4.0;python_version>="3.7" and python_version<"3.9"',  # noqa: E501
         'rich==12.6.0;python_version>="3.6" and python_version<"4.0"',
     ],
     extras_require={
@@ -252,20 +257,25 @@ setup(
         # Usage: flake8
         "flake8": [
             'flake8==3.7.9;python_version<"3.6"',
-            'flake8==5.0.4;python_version>="3.6"',
+            'flake8==5.0.4;python_version>="3.6" and python_version<"3.9"',
+            'flake8==6.0.0;python_version>="3.9"',
             'mccabe==0.6.1;python_version<"3.6"',
             'mccabe==0.7.0;python_version>="3.6"',
             'pyflakes==2.1.1;python_version<"3.6"',
-            'pyflakes==2.5.0;python_version>="3.6"',
+            'pyflakes==2.5.0;python_version>="3.6" and python_version<"3.9"',
+            'pyflakes==3.0.1;python_version>="3.9"',
             'pycodestyle==2.5.0;python_version<"3.6"',
-            'pycodestyle==2.9.1;python_version>="3.6"',
+            'pycodestyle==2.9.1;python_version>="3.6" and python_version<"3.9"',  # noqa: E501
+            'pycodestyle==2.10.0;python_version>="3.9"',
         ],
         # pip install -e .[ipdb]
+        # (Not needed for debugging anymore. SeleniumBase now includes "pdbp".)
         "ipdb": [
-            "ipdb==0.13.9",
-            "ipython==7.34.0",
-            "jedi==0.18.2",
-            "parso==0.8.3",
+            'ipdb==0.13.4;python_version<"3.6"',
+            'ipdb==0.13.11;python_version>="3.6"',
+            'ipython==5.10.0;python_version<"3.6"',
+            'ipython==7.16.3;python_version>="3.6" and python_version<"3.7"',
+            'ipython==7.34.0;python_version>="3.7"',
         ],
         # pip install -e .[pdfminer]
         "pdfminer": [
@@ -281,7 +291,7 @@ setup(
         ],
         # pip install -e .[psutil]
         "psutil": [
-            "psutil==5.9.3",
+            "psutil==5.9.4",
         ],
         # pip install -e .[selenium-wire]
         "selenium-wire": [

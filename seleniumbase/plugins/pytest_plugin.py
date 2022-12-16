@@ -19,6 +19,9 @@ if sys.platform in ["win32", "win64", "x64"]:
 python3 = True
 if sys.version_info[0] < 3:
     python3 = False
+python3_11_or_newer = False
+if sys.version_info >= (3, 11):
+    python3_11_or_newer = True
 sys_argv = sys.argv
 pytest_plugins = ["pytester"]  # Adds the "testdir" fixture
 
@@ -2121,7 +2124,7 @@ def pytest_runtest_makereport(item, call):
                 sb_config._extra_dash_entries.append(test_id)
         elif (
             sb_config._sbase_detected
-            and sys.version_info >= (3, 11)
+            and python3_11_or_newer
             and (report.outcome == "failed" or "AssertionError" in str(call))
             and not sb_config._has_exception
         ):
