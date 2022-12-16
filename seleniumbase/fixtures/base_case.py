@@ -14131,6 +14131,13 @@ class BaseCase(unittest.TestCase):
         pdb.post_mortem(sb_config.behave_step.exc_traceback)
         # Post Mortem Debug Mode ("behave -D pdb")
 
+    def __activate_sb_mgr_post_mortem_debug_mode(self):
+        """Activate Post Mortem Debug Mode for failing tests that use SB Mgr"""
+        import pdb
+
+        pdb.post_mortem()
+        # Post Mortem Debug Mode ("python --pdb")
+
     def __activate_debug_mode_in_teardown(self):
         """Activate Debug Mode in tearDown() when using "--final-debug"."""
         import pdb
@@ -14555,6 +14562,11 @@ class BaseCase(unittest.TestCase):
                     self.__activate_behave_post_mortem_debug_mode()
             if self._final_debug:
                 self.__activate_debug_mode_in_teardown()
+            elif (
+                hasattr(sb_config, "_do_sb_post_mortem")
+                and sb_config._do_sb_post_mortem
+            ):
+                self.__activate_sb_mgr_post_mortem_debug_mode()
             # (Nosetests / Behave / Pure Python) Close all open browser windows
             self.__quit_all_drivers()
         # Resume tearDown() for all test runners, (Pytest / Nosetests / Behave)
