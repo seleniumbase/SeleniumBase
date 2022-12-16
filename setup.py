@@ -130,7 +130,8 @@ setup(
         'pip>=21.3.1;python_version>="3.6" and python_version<"3.7"',
         'pip>=22.3.1;python_version>="3.7"',
         'packaging>=20.9;python_version<"3.6"',
-        'packaging>=21.3;python_version>="3.6"',
+        'packaging>=21.3;python_version>="3.6" and python_version<"3.7"',
+        'packaging>=22.0;python_version>="3.7"',
         'setuptools>=44.1.1;python_version<"3.6"',
         'setuptools>=59.6.0;python_version>="3.6" and python_version<"3.7"',
         'setuptools>=65.6.3;python_version>="3.7"',
@@ -143,7 +144,7 @@ setup(
         'attrs>=22.1.0;python_version>="3.6"',
         'PyYAML>=6.0;python_version>="3.6"',
         'certifi>=2021.10.8;python_version<"3.6"',
-        'certifi>=2022.9.24;python_version>="3.6"',
+        'certifi>=2022.12.7;python_version>="3.6"',
         'filelock>=3.2.1;python_version<"3.6"',
         'filelock>=3.4.1;python_version>="3.6" and python_version<"3.7"',
         'filelock>=3.8.2;python_version>="3.7"',
@@ -225,7 +226,7 @@ setup(
         'pyreadline==2.1;platform_system=="Windows" and python_version<"3.6"',
         'pyreadline3==3.4.1;platform_system=="Windows" and python_version>="3.6"',  # noqa: E501
         "tabcompleter==1.1.0",
-        "pdbp==1.2.5",
+        "pdbp==1.2.6",
         'colorama==0.4.6;python_version<"3.6"',
         'colorama==0.4.5;python_version>="3.6" and python_version<"3.7"',
         'colorama==0.4.6;python_version>="3.7"',
@@ -234,11 +235,12 @@ setup(
         'importlib-metadata==4.2.0;python_version>="3.6" and python_version<"3.8"',  # noqa: E501
         "pycparser==2.21",
         'pyotp==2.3.0;python_version<"3.6"',
-        'pyotp==2.7.0;python_version>="3.6"',
+        'pyotp==2.7.0;python_version>="3.6" and python_version<"3.7"',
+        'pyotp==2.8.0;python_version>="3.7"',
         "cffi==1.15.1",
         'typing-extensions==3.10.0.2;python_version<"3.6"',  # <3.9 for "rich"
         'typing-extensions==4.1.1;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
-        'typing-extensions==4.2.0;python_version>="3.7" and python_version<"3.9"',  # noqa: E501
+        'typing-extensions==4.4.0;python_version>="3.7" and python_version<"3.9"',  # noqa: E501
         'rich==12.6.0;python_version>="3.6" and python_version<"4.0"',
     ],
     extras_require={
