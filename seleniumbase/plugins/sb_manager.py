@@ -6,7 +6,7 @@ The SeleniumBase SB Context Manager:
 Usage --> ``with SB() as sb:``
 Usage example -->
     from seleniumbase import SB
-    with SB() as sb:  # Lots of args! (Eg. headless=True)
+    with SB() as sb:  # Many args! Eg. SB(browser="edge")
         sb.open("https://google.com/ncr")
         sb.type('[name="q"]', "SeleniumBase on GitHub\n")
         sb.click('a[href*="github.com/seleniumbase"]')
@@ -109,10 +109,12 @@ def SB(
     from seleniumbase import BaseCase
     from seleniumbase import config as sb_config
     from seleniumbase.config import settings
+    from seleniumbase.core import colored_traceback
     from seleniumbase.fixtures import constants
     from seleniumbase.fixtures import shared_utils
 
     sb_config_backup = sb_config
+    sb_config._do_sb_post_mortem = False
     sys_argv = sys.argv
     archive_logs = False
     existing_runner = False
@@ -753,6 +755,7 @@ def SB(
         sb.headless_active = False
     test_name = None
     terminal_width = shared_utils.get_terminal_width()
+    colored_traceback.add_hook()
     if test:
         import colorama
         import os
@@ -787,6 +790,11 @@ def SB(
     sb.setUp()
     test_passed = True  # This can change later
     teardown_exception = None
+    if "--trace" in sys_argv:
+        import pdb
+
+        pdb.set_trace()  # Debug Mode
+        # Type "s" and press [Enter] to step into "yield sb".
     try:
         yield sb
     except Exception as e:
@@ -803,8 +811,10 @@ def SB(
                 sb.cm_filename = filename
             except Exception:
                 sb.cm_filename = None
-        # Tests will raise an exception later if "raise_test_failure"
+        # Tests will raise an exception if raise_test_failure is True
     finally:
+        if sb._has_failure and "--pdb" in sys_argv:
+            sb_config._do_sb_post_mortem = True
         try:
             sb.tearDown()
         except Exception as t_e:
@@ -821,7 +831,7 @@ def SB(
             sb_config._context_of_runner = True
         if test_name:
             result = "passed"
-            if not test_passed:
+            if test and not test_passed:
                 result = "failed"
                 c1 = colorama.Fore.RED
             end_text = (
@@ -840,7 +850,7 @@ def SB(
                 left_space = left_spaces * "="
                 right_spaces = remaining_spaces - left_spaces
                 right_space = right_spaces * "="
-            if not test_passed:
+            if test and not test_passed:
                 print(the_traceback)
             if not test_name.startswith("runpy.py:"):
                 print(
