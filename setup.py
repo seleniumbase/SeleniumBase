@@ -255,20 +255,25 @@ setup(
         # Usage: flake8
         "flake8": [
             'flake8==3.7.9;python_version<"3.6"',
-            'flake8==5.0.4;python_version>="3.6"',
+            'flake8==5.0.4;python_version>="3.6" and python_version<"3.9"',
+            'flake8==6.0.0;python_version>="3.9"',
             'mccabe==0.6.1;python_version<"3.6"',
             'mccabe==0.7.0;python_version>="3.6"',
             'pyflakes==2.1.1;python_version<"3.6"',
-            'pyflakes==2.5.0;python_version>="3.6"',
+            'pyflakes==2.5.0;python_version>="3.6" and python_version<"3.9"',
+            'pyflakes==3.0.1;python_version>="3.9"',
             'pycodestyle==2.5.0;python_version<"3.6"',
-            'pycodestyle==2.9.1;python_version>="3.6"',
+            'pycodestyle==2.9.1;python_version>="3.6" and python_version<"3.9"',  # noqa: E501
+            'pycodestyle==2.10.0;python_version>="3.9"',
         ],
         # pip install -e .[ipdb]
+        # (Not needed for debugging anymore. SeleniumBase now includes "pdbp".)
         "ipdb": [
-            "ipdb==0.13.9",
-            "ipython==7.34.0",
-            "jedi==0.18.2",
-            "parso==0.8.3",
+            'ipdb==0.13.4;python_version<"3.6"',
+            'ipdb==0.13.11;python_version>="3.6"',
+            'ipython==5.10.0;python_version<"3.6"',
+            'ipython==7.16.3;python_version>="3.6" and python_version<"3.7"',
+            'ipython==7.34.0;python_version>="3.7"',
         ],
         # pip install -e .[pdfminer]
         "pdfminer": [
@@ -284,7 +289,7 @@ setup(
         ],
         # pip install -e .[psutil]
         "psutil": [
-            "psutil==5.9.3",
+            "psutil==5.9.4",
         ],
         # pip install -e .[selenium-wire]
         "selenium-wire": [
