@@ -36,7 +36,10 @@ if sys.argv[-1] == "publish":
     reply = str(input_method(confirm_text)).lower().strip()
     if reply == "yes":
         print("\n*** Checking code health with flake8:\n")
-        os.system("python -m pip install 'flake8==5.0.4'")
+        if sys.version_info >= (3, 9):
+            os.system("python -m pip install 'flake8==6.0.0'")
+        else:
+            os.system("python -m pip install 'flake8==5.0.4'")
         flake8_status = os.system("flake8 --exclude=recordings,temp")
         if flake8_status != 0:
             print("\nWARNING! Fix flake8 issues before publishing to PyPI!\n")
