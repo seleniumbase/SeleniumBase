@@ -14,6 +14,10 @@ from seleniumbase.core import log_helper
 from seleniumbase.core import report_helper
 from seleniumbase.fixtures import constants
 
+python3_11_or_newer = False
+if sys.version_info >= (3, 11):
+    python3_11_or_newer = True
+
 
 class Base(Plugin):
     """
@@ -307,7 +311,7 @@ class Base(Plugin):
                     test, self.test_count, self.duration
                 )
             )
-        if sys.version_info >= (3, 11):
+        if python3_11_or_newer:
             # Handle a bug on Python 3.11 where exceptions aren't seen
             sb_config._browser_version = None
             try:

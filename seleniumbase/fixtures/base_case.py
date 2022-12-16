@@ -86,6 +86,9 @@ if sys.version_info[0] < 3:
     python3 = False
     reload(sys)  # noqa: F821
     sys.setdefaultencoding("utf8")
+python3_11_or_newer = False
+if sys.version_info >= (3, 11):
+    python3_11_or_newer = True
 selenium4_or_newer = False
 if sys.version_info >= (3, 7):
     selenium4_or_newer = True
@@ -116,7 +119,7 @@ class BaseCase(unittest.TestCase):
         self.__last_saved_url = None  # Used by Recorder-Mode
         self.__called_setup = False
         self.__called_teardown = False
-        self.__start_time_ms = None
+        self.__start_time_ms = int(time.time() * 1000.0)
         self.__requests_timeout = None
         self.__screenshot_count = 0
         self.__level_0_visual_f = False
@@ -173,9 +176,9 @@ class BaseCase(unittest.TestCase):
         self.__check_scope()
         self.__check_browser()
         if self.__needs_minimum_wait():
-            time.sleep(0.025)
+            time.sleep(0.026)
             if self.undetectable:
-                time.sleep(0.025)
+                time.sleep(0.024)
         pre_action_url = None
         try:
             pre_action_url = self.driver.current_url
@@ -490,26 +493,26 @@ class BaseCase(unittest.TestCase):
             except Exception:
                 pass
             if self.__needs_minimum_wait():
-                time.sleep(0.025)
+                time.sleep(0.026)
                 if self.undetectable:
-                    time.sleep(0.025)
+                    time.sleep(0.024)
             try:
                 if self.driver.current_url != pre_action_url:
                     self.__ad_block_as_needed()
                     self.__disable_beforeunload_as_needed()
                     if self.__needs_minimum_wait():
-                        time.sleep(0.025)
+                        time.sleep(0.026)
                         if self.undetectable:
-                            time.sleep(0.025)
+                            time.sleep(0.024)
             except Exception:
                 try:
                     self.wait_for_ready_state_complete()
                 except Exception:
                     pass
                 if self.__needs_minimum_wait():
-                    time.sleep(0.025)
+                    time.sleep(0.026)
                     if self.undetectable:
-                        time.sleep(0.025)
+                        time.sleep(0.024)
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self.__demo_mode_pause_if_active()
@@ -2154,7 +2157,7 @@ class BaseCase(unittest.TestCase):
         May not work if multiple iframes are nested within each other."""
         self.wait_for_ready_state_complete()
         if self.__needs_minimum_wait():
-            time.sleep(0.02)
+            time.sleep(0.04)
         selector, by = self.__recalculate_selector(selector, by)
         if self.is_element_present(selector, by=by):
             return None
@@ -2920,14 +2923,14 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         if self.__needs_minimum_wait():
-            time.sleep(0.035)
+            time.sleep(0.04)
         if type(frame) is str and self.is_element_visible(frame):
             try:
                 self.scroll_to(frame, timeout=1)
                 if self.__needs_minimum_wait():
-                    time.sleep(0.01)
+                    time.sleep(0.02)
             except Exception:
-                time.sleep(0.01)
+                time.sleep(0.02)
         else:
             if self.__needs_minimum_wait():
                 time.sleep(0.04)
@@ -5712,9 +5715,9 @@ class BaseCase(unittest.TestCase):
         """
         self.wait_for_ready_state_complete()
         if self.__needs_minimum_wait():
-            time.sleep(0.05)
+            time.sleep(0.08)
             if self.undetectable:
-                time.sleep(0.05)
+                time.sleep(0.02)
         try:
             self.wait_for_element_present("body", timeout=1.5)
             self.wait_for_element_visible("body", timeout=1.5)
@@ -6071,6 +6074,8 @@ class BaseCase(unittest.TestCase):
         element = self.wait_for_element_present(
             selector, by=by, timeout=timeout
         )
+        if self.__needs_minimum_wait():
+            time.sleep(0.08)  # Force a minimum wait, even if skipping waits.
         if self.is_element_visible(selector, by=by):
             self.__demo_mode_highlight_if_active(selector, by)
             if not self.demo_mode and not self.slow_mode:
@@ -8866,7 +8871,7 @@ class BaseCase(unittest.TestCase):
             raise VisualException(minified_exception)
 
     def _process_visual_baseline_logs(self):
-        if sys.version_info < (3, 11):
+        if not python3_11_or_newer:
             return
         self.__process_visual_baseline_logs()
 
@@ -8991,14 +8996,14 @@ class BaseCase(unittest.TestCase):
             self.check_window(name="wikipedia_page", level=3)
         """
         self.wait_for_ready_state_complete()
-        if self.__needs_minimum_wait():
-            time.sleep(0.05)  # Force a minimum wait, even if skipping waits.
         try:
             self.wait_for_element_visible(
                 "body", timeout=settings.MINI_TIMEOUT
             )
         except Exception:
             pass
+        if self.__needs_minimum_wait():
+            time.sleep(0.08)
         if level == "0":
             level = 0
         if level == "1":
@@ -11780,7 +11785,7 @@ class BaseCase(unittest.TestCase):
 
         self.wait_for_ready_state_complete()
         if self.__needs_minimum_wait():
-            time.sleep(0.05)  # Force a minimum wait, even if skipping waits.
+            time.sleep(0.08)  # Force a minimum wait, even if skipping waits.
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
@@ -13534,7 +13539,7 @@ class BaseCase(unittest.TestCase):
         self.testcase_manager.update_testcase_data(data_payload)
 
     def _add_pytest_html_extra(self):
-        if sys.version_info < (3, 11):
+        if not python3_11_or_newer:
             return
         self.__add_pytest_html_extra()
 
@@ -14179,7 +14184,7 @@ class BaseCase(unittest.TestCase):
         if (
             self.__has_exception()
             or self.save_screenshot_after_test
-            or sys.version_info >= (3, 11)
+            or python3_11_or_newer
         ):
             self.__set_last_page_screenshot()
             self.__set_last_page_url()
@@ -14189,7 +14194,7 @@ class BaseCase(unittest.TestCase):
                     self.__add_pytest_html_extra()
 
     def _log_fail_data(self):
-        if sys.version_info < (3, 11):
+        if not python3_11_or_newer:
             return
         test_id = self.__get_test_id()
         test_logpath = os.path.join(self.log_path, test_id)
@@ -14348,7 +14353,7 @@ class BaseCase(unittest.TestCase):
                     )
                     self.__add_pytest_html_extra()
                     sb_config._has_logs = True
-                elif sys.version_info >= (3, 11) and not has_exception:
+                elif python3_11_or_newer and not has_exception:
                     # Handle a bug on Python 3.11 where exceptions aren't seen
                     self.__set_last_page_screenshot()
                     self.__set_last_page_url()

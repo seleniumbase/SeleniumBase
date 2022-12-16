@@ -8,6 +8,10 @@ from seleniumbase import config as sb_config
 from seleniumbase.config import settings
 from seleniumbase.fixtures import constants
 
+python3_11_or_newer = False
+if sys.version_info >= (3, 11):
+    python3_11_or_newer = True
+
 
 def log_screenshot(test_logpath, driver, screenshot=None, get=False):
     screenshot_name = settings.SCREENSHOT_NAME
@@ -75,7 +79,7 @@ def get_master_time():
 
 
 def get_browser_version(driver):
-    if sys.version_info >= (3, 11) and hasattr(sb_config, "_browser_version"):
+    if python3_11_or_newer and hasattr(sb_config, "_browser_version"):
         return sb_config._browser_version
     driver_capabilities = driver.capabilities
     if "version" in driver_capabilities:
