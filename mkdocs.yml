@@ -82,8 +82,10 @@ plugins:
         - seleniumbase/masterqa/ReadMe.md
         - seleniumbase/utilities/selenium_ide/ReadMe.md
         - seleniumbase/examples/chart_maker/ReadMe.md
-  - minify:
-      minify_html: true
+  # - minify:
+  #     minify_html: true
+  #     minify_css: true
+  #     minify_js: true
   - mkdocs-simple-hooks:
       hooks:
         on_pre_build: mkdocs_build.prepare:main

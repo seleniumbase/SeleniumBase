@@ -7,7 +7,7 @@
 <meta property="og:image" content="https://seleniumbase.github.io/cdn/img/mac_sb_logo_5b.png" />
 <link rel="icon" href="https://seleniumbase.github.io/img/logo3b.png" />
 
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/sb_logo_p3.png" alt="SeleniumBase" title="SeleniumBase" width="382" /></a></p>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/sb_logo_i3.png" alt="SeleniumBase" title="SeleniumBase" width="365" /></a></p>
 
 <h3 align="center"><img src="https://seleniumbase.github.io/cdn/img/python_logo.png" title="Python" width="29" /> <b>All-in-one Test Automation Framework</b> <img src="https://seleniumbase.github.io/cdn/img/python_logo.png" title="Python" width="29" /></h3>
 
@@ -1192,5 +1192,5 @@ pytest --reruns=1 --reruns-delay=1
 <span><a href="https://twitter.com/seleniumbase" target="_blank"><img src="https://seleniumbase.github.io/img/social/share_twitter.svg" title="SeleniumBase on Twitter" alt="SeleniumBase on Twitter" width="39" /></a></span>
 </div></p>
 
-<p><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/sb_logo_i2.png" alt="SeleniumBase" title="SeleniumBase" width="240" /></a></p>
+<p><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/sb_logo_i3.png" alt="SeleniumBase" title="SeleniumBase" width="240" /></a></p>
 <p><a href="https://www.python.org/downloads/" target="_blank"><img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=22AAEE&logo=python&logoColor=FEDC54" title="Supported Python Versions" /></a></p>
