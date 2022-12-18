@@ -226,7 +226,7 @@ setup(
         'pyreadline==2.1;platform_system=="Windows" and python_version<"3.6"',
         'pyreadline3==3.4.1;platform_system=="Windows" and python_version>="3.6"',  # noqa: E501
         "tabcompleter==1.1.0",
-        "pdbp==1.2.6",
+        "pdbp==1.2.7",
         'colorama==0.4.6;python_version<"3.6"',
         'colorama==0.4.5;python_version>="3.6" and python_version<"3.7"',
         'colorama==0.4.6;python_version>="3.7"',
