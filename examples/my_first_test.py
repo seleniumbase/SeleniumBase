@@ -22,6 +22,7 @@ class MyTestClass(BaseCase):
         self.click("input#continue")
         self.assert_text("CHECKOUT: OVERVIEW")
         self.assert_text("Backpack", "div.cart_item")
+        self.assert_text("29.99", "div.inventory_item_price")
         self.click("button#finish")
         self.assert_exact_text("THANK YOU FOR YOUR ORDER", "h2")
         self.assert_element('img[alt="Pony Express"]')
