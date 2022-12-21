@@ -1,5 +1,4 @@
-""" Testing the self.choose_file() and self.assert_attribute() methods. """
-
+"""Testing the self.choose_file() and self.assert_attribute() methods."""
 import os
 from seleniumbase import BaseCase
 

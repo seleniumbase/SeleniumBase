@@ -14,8 +14,8 @@ Examples:
          sbase get chromedriver
          sbase get geckodriver
          sbase get edgedriver
-         sbase get chromedriver 107
-         sbase get chromedriver 107.0.5304.62
+         sbase get chromedriver 108
+         sbase get chromedriver 108.0.5359.71
          sbase get chromedriver latest
          sbase get chromedriver latest-1  # (Latest minus one)
          sbase get chromedriver -p
@@ -42,11 +42,20 @@ urllib3.disable_warnings()
 selenium4_or_newer = False
 if sys.version_info[0] == 3 and sys.version_info[1] >= 7:
     selenium4_or_newer = True
+IS_ARM_MAC = False
+if (
+    sys.platform.endswith("darwin")
+    and (
+        "arm" in platform.processor().lower()
+        or "arm64" in platform.version().lower()
+    )
+):
+    IS_ARM_MAC = True
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 LOCAL_PATH = "/usr/local/bin/"  # On Mac and Linux systems
 DEFAULT_CHROMEDRIVER_VERSION = "72.0.3626.69"  # (If can't find LATEST_STABLE)
 DEFAULT_GECKODRIVER_VERSION = "v0.32.0"
-DEFAULT_EDGEDRIVER_VERSION = "106.0.1370.42"  # (If can't find LATEST_STABLE)
+DEFAULT_EDGEDRIVER_VERSION = "108.0.1462.54"  # (If can't find LATEST_STABLE)
 DEFAULT_OPERADRIVER_VERSION = "v.96.0.4664.45"
 
 
@@ -58,7 +67,7 @@ def invalid_run_command():
     exp += "           OR  seleniumbase get [DRIVER] [OPTIONS]\n"
     exp += "           OR         sbase get [DRIVER] [OPTIONS]\n"
     exp += "                (Drivers: chromedriver, geckodriver, edgedriver,\n"
-    exp += "                          iedriver, operadriver)\n"
+    exp += "                          iedriver, operadriver, uc_driver)\n"
     exp += "  Options:\n"
     exp += "           VERSION        Specify the version.\n"
     exp += "                          Tries to detect the needed version.\n"
@@ -71,8 +80,8 @@ def invalid_run_command():
     exp += "           sbase get chromedriver\n"
     exp += "           sbase get geckodriver\n"
     exp += "           sbase get edgedriver\n"
-    exp += "           sbase get chromedriver 107\n"
-    exp += "           sbase get chromedriver 107.0.5304.62\n"
+    exp += "           sbase get chromedriver 108\n"
+    exp += "           sbase get chromedriver 108.0.5359.71\n"
     exp += "           sbase get chromedriver latest\n"
     exp += "           sbase get chromedriver latest-1\n"
     exp += "           sbase get chromedriver -p\n"
@@ -179,7 +188,9 @@ def main(override=None, intel_for_uc=None):
         c3 = ""
         cr = ""
 
-    if name == "chromedriver":
+    if name == "chromedriver" or name == "uc_driver":
+        if name == "uc_driver" and IS_ARM_MAC:
+            intel_for_uc = True  # uc_driver is generated from chromedriver
         last = "https://chromedriver.storage.googleapis.com/LATEST_RELEASE"
         use_version = DEFAULT_CHROMEDRIVER_VERSION
 
@@ -229,10 +240,7 @@ def main(override=None, intel_for_uc=None):
                 invalid_run_command()
         if "darwin" in sys_plat:
             if (
-                (
-                    "arm" in platform.processor().lower()
-                    or "arm64" in platform.version().lower()
-                )
+                IS_ARM_MAC
                 and not intel_for_uc
                 and int(use_version.split(".")[0]) > 105
             ):
@@ -402,13 +410,7 @@ def main(override=None, intel_for_uc=None):
             file_name = "edgedriver_win32.zip"
             suffix = "WINDOWS"
         elif "darwin" in sys_plat:
-            if (
-                (
-                    "arm" in platform.processor().lower()
-                    or "arm64" in platform.version().lower()
-                )
-                and int(use_version.split(".")[0]) > 104
-            ):
+            if IS_ARM_MAC and int(use_version.split(".")[0]) > 104:
                 file_name = "edgedriver_mac64_m1.zip"
             else:
                 file_name = "edgedriver_mac64.zip"
@@ -645,18 +647,19 @@ def main(override=None, intel_for_uc=None):
             for f_name in contents:
                 # Remove existing version if exists
                 new_file = os.path.join(downloads_folder, str(f_name))
+                if (
+                    intel_for_uc
+                    and "darwin" in sys_plat
+                    and new_file.endswith("drivers/chromedriver")
+                ):
+                    new_file = new_file.replace(
+                        "drivers/chromedriver", "drivers/uc_driver"
+                    )
                 if "Driver" in new_file or "driver" in new_file:
                     if os.path.exists(new_file):
                         os.remove(new_file)  # Technically the old file now
             print("Extracting %s from %s ..." % (contents, file_name))
-            if (
-                intel_for_uc
-                and "darwin" in sys_plat
-                and (
-                    "arm" in platform.processor().lower()
-                    or "arm64" in platform.version().lower()
-                )
-            ):
+            if intel_for_uc and IS_ARM_MAC:
                 f_name = "uc_driver"
                 new_file = os.path.join(downloads_folder, f_name)
                 if os.path.exists(new_file):
@@ -873,6 +876,11 @@ def main(override=None, intel_for_uc=None):
             make_executable(file_path)
             print("%s[%s] is now ready for use!%s" % (c1, file_name, cr))
             print("Location of [%s]:\n%s\n" % (file_name, file_path))
+    if name == "uc_driver" and not IS_ARM_MAC:
+        print(
+            "%s[uc_driver] will be created from [chromedriver] at runtime!%s\n"
+            % (c5, cr)
+        )
 
 
 if __name__ == "__main__":

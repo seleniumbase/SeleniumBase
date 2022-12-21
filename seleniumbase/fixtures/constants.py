@@ -22,6 +22,7 @@ class Environment:
     BETA = "beta"
     MAIN = "main"
     TEST = "test"
+    UAT = "uat"
 
 
 class ValidEnvs:
@@ -40,6 +41,7 @@ class ValidEnvs:
         "beta",
         "main",
         "test",
+        "uat",
     ]
 
 
@@ -158,7 +160,7 @@ class Warnings:
 
 
 class JQuery:
-    VER = "3.6.0"
+    VER = "3.6.3"
     MIN_JS = "https://cdn.jsdelivr.net/npm/jquery@%s/dist/jquery.min.js" % VER
 
 
