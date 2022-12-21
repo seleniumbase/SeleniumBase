@@ -160,7 +160,7 @@ class Warnings:
 
 
 class JQuery:
-    VER = "3.6.0"
+    VER = "3.6.3"
     MIN_JS = "https://cdn.jsdelivr.net/npm/jquery@%s/dist/jquery.min.js" % VER
 
 
