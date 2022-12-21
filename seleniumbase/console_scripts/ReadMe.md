@@ -62,8 +62,8 @@ sbase install [DRIVER] [OPTIONS]
 sbase get chromedriver
 sbase get geckodriver
 sbase get edgedriver
-sbase get chromedriver 107
-sbase get chromedriver 107.0.5304.62
+sbase get chromedriver 108
+sbase get chromedriver 108.0.5359.71
 sbase get chromedriver latest
 sbase get chromedriver latest-1  # (Latest minus one)
 sbase get chromedriver -p
@@ -71,7 +71,7 @@ sbase get chromedriver latest -p
 ```
 
 (Drivers:  ``chromedriver``, ``geckodriver``, ``edgedriver``,
-           ``iedriver``, ``operadriver``)
+           ``iedriver``, ``operadriver``, ``uc_driver``)
 
 (Options:  ``latest`` or a specific driver version.
            For chromedriver, you can also specify the major
