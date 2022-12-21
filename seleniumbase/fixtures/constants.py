@@ -22,6 +22,7 @@ class Environment:
     BETA = "beta"
     MAIN = "main"
     TEST = "test"
+    UAT = "uat"
 
 
 class ValidEnvs:
@@ -40,6 +41,7 @@ class ValidEnvs:
         "beta",
         "main",
         "test",
+        "uat",
     ]
 
 
