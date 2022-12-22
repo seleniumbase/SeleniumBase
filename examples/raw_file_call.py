@@ -20,5 +20,4 @@ class TinyMceTest(BaseCase):
         with self.frame_switch("iframe"):
             self.add_text("#tinymce", "SeleniumBase!")
             self.highlight("#tinymce")
-        self.switch_to_default_content()
-        self.post_message("SeleniumBase is the best!")
+            self.post_message("SeleniumBase is cool!")
