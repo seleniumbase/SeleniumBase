@@ -23,5 +23,4 @@ class CleanSeleniumBase(BaseCase):
 # When run with "python" instead of "pytest"
 if __name__ == "__main__":
     from pytest import main
-
     main([__file__])

@@ -80,5 +80,4 @@ class MessyRawSelenium(TestCase):
 # When run with "python" instead of "pytest" or "python -m unittest"
 if __name__ == "__main__":
     from unittest import main
-
     main()

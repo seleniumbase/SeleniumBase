@@ -5,6 +5,10 @@ To evade detection, add --uc as a pytest command-line option.
 """
 from seleniumbase import BaseCase
 
+if __name__ == "__main__":
+    from pytest import main
+    main([__file__, "--uc"])
+
 
 class UndetectedTest(BaseCase):
     def test_browser_is_undetected(self):
