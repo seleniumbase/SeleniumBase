@@ -2342,7 +2342,6 @@ def get_local_driver(
                 device_height,
                 device_pixel_ratio,
             )
-            opera_options.headless = False  # No support for headless Opera
             warnings.simplefilter("ignore", category=DeprecationWarning)
             return webdriver.Opera(options=opera_options)
         except Exception:
@@ -2626,7 +2625,6 @@ def get_local_driver(
                                 from urllib.error import URLError
 
                                 if "linux" in PLATFORM:
-                                    chrome_options.headless = False  # Use Xvfb
                                     if "--headless" in (
                                         chrome_options.arguments
                                     ):
@@ -2919,7 +2917,8 @@ def get_local_driver(
                         " headless mode. Attempting to use the"
                         " SeleniumBase virtual display on Linux..."
                     )
-                    chrome_options.headless = False
+                    if "--headless" in chrome_options.arguments:
+                        chrome_options.arguments.remove("--headless")
                     return webdriver.Chrome(options=chrome_options)
         except Exception:
             try:
