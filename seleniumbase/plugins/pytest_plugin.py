@@ -210,6 +210,7 @@ def pytest_addoption(parser):
             constants.Environment.BETA,
             constants.Environment.MAIN,
             constants.Environment.TEST,
+            constants.Environment.UAT,
         ),
         default=constants.Environment.TEST,
         help="""This option sets a test env from a list of choices.
