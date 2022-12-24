@@ -1,8 +1,8 @@
 <!-- SeleniumBase Docs -->
 
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_logo_f6.png" alt="SeleniumBase" width="445" /></a></p>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/sb_logo_f6.png" alt="SeleniumBase" width="445" /></a></p>
 
-## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Automated Visual Regression Testing
+## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Automated Visual Regression Testing
 
 Automated Visual Regression Testing can help you detect when the layout of a web page has changed. Instead of comparing pixels from screenshots, layout differences can be detected by comparing HTML tags and attributes with a baseline. If a change is detected, it could mean that something broke, the web page was redesigned, or dynamic content changed.
 
@@ -138,7 +138,7 @@ First differing element 33:
 
 Here's the ``side_by_side.html`` file for that, (from the ``./latest_logs/`` folder), which shows a visual comparison of the two screenshots as a result of the missing "Donate" button:
 
-<img style="border: 1px solid #222222;" src="https://seleniumbase.io/cdn/img/visual_comparison.png" title="SeleniumBase Visual Comparison" />
+<img style="border: 1px solid #222222;" src="https://seleniumbase.github.io/cdn/img/visual_comparison.png" title="SeleniumBase Visual Comparison" />
 
 Here's another example, where a web site logo is resized:
 
@@ -185,7 +185,7 @@ pytest test_layout_fail.py --html=report.html
 ```
 
 Here's what the pytest HTML Report looks like:<br />
-[<img src="https://seleniumbase.io/cdn/img/visual_testing_report_2.png" title="Test Report">](https://seleniumbase.io/cdn/img/visual_testing_report_2.png)
+[<img src="https://seleniumbase.github.io/cdn/img/visual_testing_report_2.png" title="Test Report">](https://seleniumbase.github.io/cdn/img/visual_testing_report_2.png)
 
 --------
 

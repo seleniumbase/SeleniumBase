@@ -6,7 +6,7 @@
 
 <b>Here's a sample presentation:</b>
 
-<a href="https://seleniumbase.github.io/other/presenter.html"><img width="500" src="https://seleniumbase.io/other/presenter.gif" title="Screenshot"></a><br>
+<a href="https://seleniumbase.github.io/other/presenter.html"><img width="500" src="https://seleniumbase.github.io/other/presenter.gif" title="Screenshot"></a><br>
 
 ([Click on the image/GIF for the actual presentation](https://seleniumbase.io/other/presenter.html))
 
@@ -23,7 +23,7 @@ pytest my_presentation.py
 
 **Here's a presentation with a chart:**
 
-<a href="https://seleniumbase.github.io/other/core_presentation.html"><img width="428" src="https://seleniumbase.io/other/sb_core_areas.png" title="Screenshot"></a><br>
+<a href="https://seleniumbase.github.io/other/core_presentation.html"><img width="428" src="https://seleniumbase.github.io/other/sb_core_areas.png" title="Screenshot"></a><br>
 
 ([Click on the image/GIF for the actual presentation](https://seleniumbase.io/other/core_presentation.html))
 
@@ -150,7 +150,7 @@ class MyPresenterClass(BaseCase):
             )
         self.add_slide(
             '<h3>Add <b>images</b> to slides:</h3>',
-            image="https://seleniumbase.io/other/seagulls.jpg")
+            image="https://seleniumbase.github.io/other/seagulls.jpg")
         self.add_slide(
             '<h3>Add <b>code</b> to slides:</h3>',
             code=(
@@ -220,7 +220,7 @@ class MyPresenterClass(BaseCase):
                 'self.create_presentation(theme="league")'))
         self.add_slide(
             '<h2><b>The End</b></h2>',
-            image="https://seleniumbase.io/img/sb_logo_10.png")
+            image="https://seleniumbase.github.io/img/sb_logo_10.png")
         self.begin_presentation(
             filename="presenter.html", show_notes=True, interval=0)
 ```

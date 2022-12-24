@@ -84,7 +84,7 @@ pytest my_first_test.py --settings-file=custom_settings.py
 🎛️ Here are some useful command-line options that come with ``pytest``:
 
 ```bash
--v  # Verbose mode. Prints the full name of each test run.
+-v  # Verbose mode. Prints the full name of each test and shows more details.
 -q  # Quiet mode. Print fewer details in the console output when running tests.
 -x  # Stop running the tests after the first failure is reached.
 --html=report.html  # Creates a detailed pytest-html report after tests finish.
@@ -172,7 +172,8 @@ pytest my_first_test.py --settings-file=custom_settings.py
 --incognito  # (Enable Chrome's Incognito mode.)
 --guest  # (Enable Chrome's Guest mode.)
 --devtools  # (Open Chrome's DevTools when the browser opens.)
---reuse-session | --rs  # (Reuse the browser session between tests.)
+--reuse-session | --rs  # (Reuse browser session for all tests.)
+--reuse-class-session | --rcs  # (Reuse session for tests in class.)
 --crumbs  # (Delete all cookies between tests reusing a session.)
 --disable-beforeunload  # (Disable the "beforeunload" event on Chrome.)
 --window-size=WIDTH,HEIGHT  # (Set the browser's starting window size.)

@@ -12,7 +12,7 @@ Use ``--mobile`` to run SeleniumBase tests using Chrome's mobile device emulator
 pytest test_skype_site.py --mobile
 ```
 
-[<img src="https://seleniumbase.github.io/cdn/gif/skype_mobile_test_2.gif" title="SeleniumBase Mobile Testing">](https://seleniumbase.io/cdn/gif/skype_mobile_test_2.gif)
+[<img src="https://seleniumbase.github.io/cdn/gif/skype_mobile_test_2.gif" title="SeleniumBase Mobile Testing">](https://seleniumbase.github.io/cdn/gif/skype_mobile_test_2.gif)
 
 To configure Device Metrics, use:
 

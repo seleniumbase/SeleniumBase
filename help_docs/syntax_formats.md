@@ -4,7 +4,7 @@
 
 ## [<img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="40">](https://github.com/seleniumbase/SeleniumBase/) The 23 Syntax Formats
 
-<b>SeleniumBase</b> currently supports 23 unique syntax formats (AKA "design patterns") for structuring tests.
+<h3><b>SeleniumBase</b> currently supports 23 unique syntax formats (<i>"design patterns"</i>) for structuring tests.</h3>
 
 --------
 
@@ -42,7 +42,11 @@
 <a id="sb_sf_01"></a>
 <h3><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 1. BaseCase direct class inheritance</h3>
 
-This format is used by most of the examples in the <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples">SeleniumBase examples folder</a>. It's a great starting point for anyone learning SeleniumBase, and it follows good object-oriented programming principles. In this format, <code>BaseCase</code> is imported at the top of a Python file, followed by a Python class inheriting <code>BaseCase</code>. Then, any test method defined in that class automatically gains access to SeleniumBase methods, including the <code>setUp()</code> and <code>tearDown()</code> methods that are automatically called to spin up and spin down web browsers at the beginning and end of test methods. Here's an example of that:
+This format is used by most of the examples in the <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples">SeleniumBase examples folder</a>. It's a great starting point for anyone learning SeleniumBase, and it follows good object-oriented programming principles.
+
+In this format, <code>BaseCase</code> is imported at the top of a Python file, followed by a Python class inheriting <code>BaseCase</code>. Then, any test method defined in that class automatically gains access to SeleniumBase methods, including the <code>setUp()</code> and <code>tearDown()</code> methods that are automatically called to spin up and spin down web browsers at the beginning and end of test methods.
+
+To run a test of this format, use **``pytest``** or ``nosetests``. If you add: ``if __name__ == "__main__":`` ``pytest.main([__file__])`` to the file, you can also use ``python`` as a runner, which invokes ``pytest``. Here's an example a script that uses ``BaseCase`` inheritance:
 
 ```python
 from seleniumbase import BaseCase
@@ -57,6 +61,10 @@ class MyTestClass(BaseCase):
         self.click_link("SeleniumBase Demo Page")
         self.assert_exact_text("Demo Page", "h1")
         self.assert_no_js_errors()
+
+if __name__ == "__main__":  # To run with "python" instead of "pytest".
+    from pytest import main
+    main([__file__])
 ```
 
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py">examples/test_demo_site.py</a> for the full test.)
@@ -238,7 +246,7 @@ class OverrideDriverTest(BaseCase):
         options.add_argument("--disable-3d-apis")
         options.add_argument("--disable-notifications")
         if self.headless:
-            options.add_argument("--headless")
+            options.add_argument("--headless=chrome")
             options.add_argument("--disable-gpu")
         options.add_experimental_option(
             "excludeSwitches", ["enable-automation", "enable-logging"],
@@ -292,41 +300,37 @@ import pytest
 
 @pytest.fixture()
 def sb(request):
-    import sys
     from selenium import webdriver
     from seleniumbase import BaseCase
 
     class BaseClass(BaseCase):
-        def setUp(self):
-            super(BaseClass, self).setUp()
-
-        def tearDown(self):
-            self.save_teardown_screenshot()  # On failure or "--screenshot"
-            super(BaseClass, self).tearDown()
-
-        def base_method(self):
-            pass
-
         def get_new_driver(self, *args, **kwargs):
             """This method overrides get_new_driver() from BaseCase."""
             options = webdriver.ChromeOptions()
-            if "linux" in sys.platform:
+            if self.headless:
                 options.add_argument("--headless=chrome")
+                options.add_argument("--disable-gpu")
             options.add_experimental_option(
                 "excludeSwitches", ["enable-automation"],
             )
             return webdriver.Chrome(options=options)
 
-    if request.cls:
-        request.cls.sb = BaseClass("base_method")
-        request.cls.sb.setUp()
-        yield request.cls.sb
-        request.cls.sb.tearDown()
-    else:
-        sb = BaseClass("base_method")
-        sb.setUp()
-        yield sb
-        sb.tearDown()
+        def setUp(self):
+            super(BaseClass, self).setUp()
+
+        def base_method(self):
+            pass
+
+        def tearDown(self):
+            self.save_teardown_screenshot()  # On failure or "--screenshot"
+            super(BaseClass, self).tearDown()
+
+    sb = BaseClass("base_method")
+    sb.setUpClass()
+    sb.setUp()
+    yield sb
+    sb.tearDown()
+    sb.tearDownClass()
 
 def test_override_fixture_no_class(sb):
     sb.open("https://seleniumbase.io/demo_page")
@@ -352,6 +356,15 @@ def sb(request):
     from seleniumwire import webdriver  # Requires "pip install selenium-wire"
 
     class BaseClass(BaseCase):
+        def get_new_driver(self, *args, **kwargs):
+            options = webdriver.ChromeOptions()
+            if "linux" in sys.platform:
+                options.add_argument("--headless=chrome")
+            options.add_experimental_option(
+                "excludeSwitches", ["enable-automation"],
+            )
+            return webdriver.Chrome(options=options)
+
         def setUp(self):
             super(BaseClass, self).setUp()
 
@@ -362,25 +375,12 @@ def sb(request):
         def base_method(self):
             pass
 
-        def get_new_driver(self, *args, **kwargs):
-            options = webdriver.ChromeOptions()
-            if "linux" in sys.platform:
-                options.add_argument("--headless=chrome")
-            options.add_experimental_option(
-                "excludeSwitches", ["enable-automation"],
-            )
-            return webdriver.Chrome(options=options)
-
-    if request.cls:
-        request.cls.sb = BaseClass("base_method")
-        request.cls.sb.setUp()
-        yield request.cls.sb
-        request.cls.sb.tearDown()
-    else:
-        sb = BaseClass("base_method")
-        sb.setUp()
-        yield sb
-        sb.tearDown()
+    sb = BaseClass("base_method")
+    sb.setUpClass()
+    sb.setUp()
+    yield sb
+    sb.tearDown()
+    sb.tearDownClass()
 
 def test_wire_with_no_class(sb):
     sb.open("https://seleniumbase.io/demo_page")
@@ -394,7 +394,7 @@ class TestWire:
             print(request.url)
 ```
 
-(NOTE: The ``selenium-wire`` integration is now included with ``seleniumbase``: Add ``--wire`` as a ``pytest`` command-line option to activate. If you need both ``--wire`` with ``--undetected`` together, you'll still need to override ``get_new_driver()``.)
+(NOTE: The ``selenium-wire`` integration is now included with ``seleniumbase``: Add ``--wire`` as a ``pytest`` command-line option to activate. If you need both ``--wire`` with ``--undetected`` modes together, you'll still need to override ``get_new_driver()``.)
 
 <a id="sb_sf_11"></a>
 <h3><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 11. BaseCase with Chinese translations</h3>
