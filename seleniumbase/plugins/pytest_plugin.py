@@ -102,7 +102,8 @@ def pytest_addoption(parser):
     --incognito  (Enable Chrome's Incognito mode.)
     --guest  (Enable Chrome's Guest mode.)
     --devtools  (Open Chrome's DevTools when the browser opens.)
-    --reuse-session | --rs  (Reuse browser session between tests.)
+    --reuse-session | --rs  (Reuse browser session for all tests.)
+    --reuse-class-session | --rcs  (Reuse session for tests in class.)
     --crumbs  (Delete all cookies between tests reusing a session.)
     --disable-beforeunload  (Disable the "beforeunload" event on Chrome.)
     --window-size=WIDTH,HEIGHT  (Set the browser's starting window size.)
@@ -1039,7 +1040,17 @@ def pytest_addoption(parser):
         dest="reuse_session",
         default=False,
         help="""The option to reuse the selenium browser window
-                session between tests.""",
+                session for all tests.""",
+    )
+    parser.addoption(
+        "--rcs",
+        "--reuse_class_session",
+        "--reuse-class-session",
+        action="store_true",
+        dest="reuse_class_session",
+        default=False,
+        help="""The option to reuse the selenium browser window
+                session for all tests within the same class.""",
     )
     parser.addoption(
         "--crumbs",
@@ -1048,7 +1059,9 @@ def pytest_addoption(parser):
         default=False,
         help="""The option to delete all cookies between tests
                 that reuse the same browser session. This option
-                is only needed when using "--reuse-session".""",
+                is only useful if using "--reuse-session"/"--rs"
+                or "--reuse-class-session"/"--rcs" because tests
+                use a new clean browser if not reusing sessions.""",
     )
     parser.addoption(
         "--disable-beforeunload",
@@ -1444,6 +1457,9 @@ def pytest_configure(config):
     sb_config.guest_mode = config.getoption("guest_mode")
     sb_config.devtools = config.getoption("devtools")
     sb_config.reuse_session = config.getoption("reuse_session")
+    sb_config.reuse_class_session = config.getoption("reuse_class_session")
+    if sb_config.reuse_class_session:
+        sb_config.reuse_session = True
     sb_config.shared_driver = None  # The default driver for session reuse
     sb_config.crumbs = config.getoption("crumbs")
     sb_config._disable_beforeunload = config.getoption("_disable_beforeunload")

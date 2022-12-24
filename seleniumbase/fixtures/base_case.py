@@ -64,6 +64,7 @@ from seleniumbase.common import decorators
 from seleniumbase.config import settings
 from seleniumbase.core import download_helper
 from seleniumbase.core import log_helper
+from seleniumbase.core import session_helper
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import css_to_xpath
 from seleniumbase.fixtures import js_utils
@@ -14609,6 +14610,37 @@ class BaseCase(unittest.TestCase):
         if deferred_exception:
             # User forgot to call "self.process_deferred_asserts()" in test
             raise deferred_exception
+
+    def __end_reused_class_session_as_needed(self):
+        if (
+            hasattr(sb_config, "reuse_class_session")
+            and sb_config.reuse_class_session
+            and hasattr(sb_config, "shared_driver")
+            and sb_config.shared_driver
+        ):
+            if (
+                not is_windows
+                or (
+                    hasattr(sb_config.shared_driver, "service")
+                    and sb_config.shared_driver.service.process
+                )
+            ):
+                try:
+                    sb_config.shared_driver.quit()
+                except Exception:
+                    sb_config.shared_driver = None
+
+    @classmethod
+    def setUpClass(self):
+        # Only used when: "--rcs" / "--reuse-class-session"
+        # Close existing sessions before the class starts.
+        session_helper.end_reused_class_session_as_needed()
+
+    @classmethod
+    def tearDownClass(self):
+        # Only used when: "--rcs" / "--reuse-class-session"
+        # Close existing sessions after the class finishes.
+        session_helper.end_reused_class_session_as_needed()
 
 
 r"""----------------------------------------------------------------->
