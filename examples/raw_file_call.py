@@ -3,7 +3,7 @@ To run, use: "python raw_file_call.py".
 Works by using pytest.main([__file__])."""
 from seleniumbase import BaseCase
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # Use "python" to call "pytest"
     from pytest import main
     main([__file__])
 
@@ -19,4 +19,5 @@ class TinyMceTest(BaseCase):
         with self.frame_switch("iframe"):
             self.add_text("#tinymce", "SeleniumBase!")
             self.highlight("#tinymce")
-            self.post_message("SeleniumBase is cool!")
+            self.post_message("SeleniumBase is fast!")
+        self.post_message("And SeleniumBase is fun!")

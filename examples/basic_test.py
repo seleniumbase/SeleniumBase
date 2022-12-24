@@ -17,3 +17,8 @@ class MyTestClass(BaseCase):
         self.assert_text_not_visible("Backpack", "div.cart_item")
         self.js_click("a#logout_sidebar_link")
         self.assert_element("div#login_button_container")
+
+
+if __name__ == "__main__":  # Use "python" to call "pytest"
+    from pytest import main
+    main([__file__])

@@ -15,3 +15,8 @@ class CoffeeCartTest(BaseCase):
         self.type("input#email", "test@test.test")
         self.click("button#submit-payment")
         self.assert_text("Thanks for your purchase.", "div#app div")
+
+
+if __name__ == "__main__":  # Use "python" to call "pytest"
+    from pytest import main
+    main([__file__])

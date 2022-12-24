@@ -78,3 +78,8 @@ class SwagLabsTests(BaseCase):
         except Exception:
             pass
         super(SwagLabsTests, self).tearDown()
+
+
+if __name__ == "__main__":  # Use "python" to call "pytest"
+    from pytest import main
+    main([__file__])

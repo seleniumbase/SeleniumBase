@@ -14,3 +14,8 @@ class TestMFALogin(BaseCase):
         self.click_link("Sign out")  # Link must be "a" tag. Not "button".
         self.assert_element('a:contains("Sign in")')
         self.assert_exact_text("You have been signed out!", "#top_message")
+
+
+if __name__ == "__main__":  # Use "python" to call "pytest"
+    from pytest import main
+    main([__file__])

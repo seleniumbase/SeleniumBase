@@ -28,7 +28,7 @@ class MyTestClass(BaseCase):
         self.assert_element("div#login_button_container")
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # Use "python" to call "pytest"
     from pytest import main
     main([__file__])
 

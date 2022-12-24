@@ -6,7 +6,6 @@ from seleniumbase import BaseCase
 
 
 class WordleTests(BaseCase):
-
     word_list = []
 
     def initialize_word_list(self):
@@ -95,3 +94,8 @@ class WordleTests(BaseCase):
             print('Final guess: "%s" (Not the correct word!)' % word.upper())
             self.fail("Unable to solve for the correct word in 6 attempts!")
         self.sleep(3)
+
+
+if __name__ == "__main__":  # Use "python" to call "pytest"
+    from pytest import main
+    main([__file__])

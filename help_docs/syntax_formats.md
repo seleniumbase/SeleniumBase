@@ -62,7 +62,7 @@ class MyTestClass(BaseCase):
         self.assert_exact_text("Demo Page", "h1")
         self.assert_no_js_errors()
 
-if __name__ == "__main__":  # To run with "python" instead of "pytest".
+if __name__ == "__main__":  # Use "python" to call "pytest"
     from pytest import main
     main([__file__])
 ```
