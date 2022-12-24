@@ -9,9 +9,11 @@ class MyPresenterClass(BaseCase):
         )
         self.add_slide(
             "<h3>SeleniumBase Presenter</h3><br />\n"
-            '<img width="240" src="https://seleniumbase.io/img/logo3a.png" />'
+            '<img width="240" '
+            'src="https://seleniumbase.github.io/img/logo3a.png" />'
             '<span style="margin:144px;" />'
-            '<img src="https://seleniumbase.io/other/python_3d_logo.png" />'
+            '<img '
+            'src="https://seleniumbase.github.io/other/python_3d_logo.png" />'
             "<br /><br />\n<h4>Create presentations with <b>Python</b></h4>"
         )
         self.add_slide(
@@ -40,7 +42,7 @@ class MyPresenterClass(BaseCase):
         )
         self.add_slide(
             "<h3>Add <b>images</b> to slides:</h3>",
-            image="https://seleniumbase.io/other/seagulls.jpg",
+            image="https://seleniumbase.github.io/other/seagulls.jpg",
         )
         self.add_slide(
             "<h3>Add <b>code</b> to slides:</h3>",
@@ -125,7 +127,7 @@ class MyPresenterClass(BaseCase):
         )
         self.add_slide(
             "<h2><b>The End</b></h2>",
-            image="https://seleniumbase.io/img/sb_logo_10.png",
+            image="https://seleniumbase.github.io/img/sb_logo_10.png",
         )
         self.begin_presentation(
             filename="presenter.html", show_notes=True, interval=0
