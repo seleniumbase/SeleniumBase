@@ -212,8 +212,8 @@ def main():
         parent_class = MD_F.get_lang_parent_class(language)
     class_line = "class %s(%s):" % (class_name, parent_class)
     settings = 'theme="serif", transition="slide"'
-    img_src_1 = 'src="https://seleniumbase.io/cdn/gif/chart_pres.gif"'
-    img_src_2 = 'src="https://seleniumbase.io/cdn/img/sb_logo_10.png"'
+    img_src_1 = 'src="https://seleniumbase.github.io/cdn/gif/chart_pres.gif"'
+    img_src_2 = 'src="https://seleniumbase.github.io/cdn/img/sb_logo_10.png"'
     hello_page = (
         "\n            '<h1>%s</h1><hr /><br />'"
         "\n            '<p>%s</p>'"
