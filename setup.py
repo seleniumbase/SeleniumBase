@@ -231,7 +231,7 @@ setup(
         'colorama==0.4.6;python_version<"3.6"',
         'colorama==0.4.5;python_version>="3.6" and python_version<"3.7"',
         'colorama==0.4.6;python_version>="3.7"',
-        'exceptiongroup==1.0.4;python_version>="3.7"',
+        'exceptiongroup==1.1.0;python_version>="3.7"',
         'importlib-metadata==2.1.3;python_version<"3.6"',
         'importlib-metadata==4.2.0;python_version>="3.6" and python_version<"3.8"',  # noqa: E501
         "pycparser==2.21",
