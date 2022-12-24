@@ -117,10 +117,6 @@ pytest test_swag_labs.py --demo
 
 --------
 
-<h4>Here's a 2FA/MFA app that can be tested with SeleniumBase:</h4>
-
-<p align="left"><a href="https://seleniumbase.io/realworld/login" target="_blank"><img src="https://seleniumbase.github.io/cdn/img/mfa_login_s.png" width="350" alt="SeleniumBase MFA Demo App" title="SeleniumBase MFA Demo App" /></a></p>
-
 <h4>Here are a few scripts to test that app with SeleniumBase:</h4>
 
 <p align="left">📘📝 An example test with the <b>BaseCase</b> class. Runs with <b><a href="https://docs.pytest.org/en/latest/how-to/usage.html">pytest</a></b> or <b>nosetests</b>. (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">Learn more</a>)</p>
