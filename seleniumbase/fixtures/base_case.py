@@ -64,6 +64,7 @@ from seleniumbase.common import decorators
 from seleniumbase.config import settings
 from seleniumbase.core import download_helper
 from seleniumbase.core import log_helper
+from seleniumbase.core import session_helper
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import css_to_xpath
 from seleniumbase.fixtures import js_utils
@@ -259,7 +260,10 @@ class BaseCase(unittest.TestCase):
             time.sleep(0.03)  # Force a minimum wait, even if skipping waits.
             if self.undetectable:
                 time.sleep(0.02)
-        self.__demo_mode_pause_if_active()
+        if self.demo_mode:
+            if not js_utils.is_jquery_activated(self.driver):
+                js_utils.add_js_link(self.driver, constants.JQuery.MIN_JS)
+            self.__demo_mode_pause_if_active()
 
     def get(self, url):
         """If "url" looks like a page URL, open the URL in the web browser.
@@ -515,6 +519,8 @@ class BaseCase(unittest.TestCase):
                         time.sleep(0.024)
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
+                if not js_utils.is_jquery_activated(self.driver):
+                    js_utils.add_js_link(self.driver, constants.JQuery.MIN_JS)
                 self.__demo_mode_pause_if_active()
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
@@ -612,6 +618,8 @@ class BaseCase(unittest.TestCase):
                 self.__disable_beforeunload_as_needed()
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
+                if not js_utils.is_jquery_activated(self.driver):
+                    js_utils.add_js_link(self.driver, constants.JQuery.MIN_JS)
                 self.__demo_mode_pause_if_active()
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
@@ -748,6 +756,8 @@ class BaseCase(unittest.TestCase):
             self.set_value(selector, text, by=by)
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
+                if not js_utils.is_jquery_activated(self.driver):
+                    js_utils.add_js_link(self.driver, constants.JQuery.MIN_JS)
                 self.__demo_mode_pause_if_active()
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
@@ -812,6 +822,8 @@ class BaseCase(unittest.TestCase):
                     self.wait_for_ready_state_complete()
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
+                if not js_utils.is_jquery_activated(self.driver):
+                    js_utils.add_js_link(self.driver, constants.JQuery.MIN_JS)
                 self.__demo_mode_pause_if_active()
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
@@ -1335,6 +1347,8 @@ class BaseCase(unittest.TestCase):
                 pass
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
+                if not js_utils.is_jquery_activated(self.driver):
+                    js_utils.add_js_link(self.driver, constants.JQuery.MIN_JS)
                 self.__demo_mode_pause_if_active()
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
@@ -1476,6 +1490,8 @@ class BaseCase(unittest.TestCase):
                 pass
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
+                if not js_utils.is_jquery_activated(self.driver):
+                    js_utils.add_js_link(self.driver, constants.JQuery.MIN_JS)
                 self.__demo_mode_pause_if_active()
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
@@ -1998,6 +2014,8 @@ class BaseCase(unittest.TestCase):
                 self.__disable_beforeunload_as_needed()
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
+                if not js_utils.is_jquery_activated(self.driver):
+                    js_utils.add_js_link(self.driver, constants.JQuery.MIN_JS)
                 self.__demo_mode_pause_if_active()
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
@@ -2342,6 +2360,8 @@ class BaseCase(unittest.TestCase):
                 pass
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
+                if not js_utils.is_jquery_activated(self.driver):
+                    js_utils.add_js_link(self.driver, constants.JQuery.MIN_JS)
                 self.__demo_mode_pause_if_active()
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
@@ -2422,6 +2442,8 @@ class BaseCase(unittest.TestCase):
             self.__switch_to_newest_window_if_not_blank()
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
+                if not js_utils.is_jquery_activated(self.driver):
+                    js_utils.add_js_link(self.driver, constants.JQuery.MIN_JS)
                 self.__demo_mode_pause_if_active()
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
@@ -2595,6 +2617,8 @@ class BaseCase(unittest.TestCase):
                 self.__disable_beforeunload_as_needed()
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
+                if not js_utils.is_jquery_activated(self.driver):
+                    js_utils.add_js_link(self.driver, constants.JQuery.MIN_JS)
                 self.__demo_mode_pause_if_active()
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
@@ -5831,7 +5855,7 @@ class BaseCase(unittest.TestCase):
                 from seleniumbase.fixtures.words import SD
 
                 a_t = SD.translate_assert_no_404_errors(self._language)
-            messenger_post = "%s" % a_t
+            messenger_post = "<b>%s</b>" % a_t
             self.__highlight_with_assert_success(messenger_post, "html")
 
     def print_unique_links_with_status_codes(self):
@@ -6125,6 +6149,8 @@ class BaseCase(unittest.TestCase):
                 element.send_keys(abs_path)
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
+                if not js_utils.is_jquery_activated(self.driver):
+                    js_utils.add_js_link(self.driver, constants.JQuery.MIN_JS)
                 self.__demo_mode_pause_if_active()
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
@@ -6374,7 +6400,7 @@ class BaseCase(unittest.TestCase):
                         action = ["as_df", file, origin, time_stamp]
                         self.__extra_actions.append(action)
         if self.demo_mode:
-            messenger_post = "ASSERT DOWNLOADED FILE: [%s]" % file
+            messenger_post = "<b>ASSERT DOWNLOADED FILE</b>: [%s]" % file
             try:
                 js_utils.activate_jquery(self.driver)
                 js_utils.post_messenger_success_message(
@@ -6477,7 +6503,7 @@ class BaseCase(unittest.TestCase):
                 a_a = SD.translate_assert_attribute(self._language)
                 i_n = SD.translate_in(self._language)
             if not value:
-                messenger_post = "%s: [%s] %s %s: %s" % (
+                messenger_post = "<b>%s</b>: [%s] %s %s: %s" % (
                     a_a,
                     attribute,
                     i_n,
@@ -6485,7 +6511,7 @@ class BaseCase(unittest.TestCase):
                     selector,
                 )
             else:
-                messenger_post = '%s: [%s="%s"] %s %s: %s' % (
+                messenger_post = '<b>%s</b>: [%s="%s"] %s %s: %s' % (
                     a_a,
                     attribute,
                     value,
@@ -6540,7 +6566,7 @@ class BaseCase(unittest.TestCase):
                 from seleniumbase.fixtures.words import SD
 
                 a_t = SD.translate_assert_title(self._language)
-            messenger_post = "%s: {%s}" % (a_t, expected)
+            messenger_post = "<b>%s</b>: {%s}" % (a_t, expected)
             self.__highlight_with_assert_success(messenger_post, "html")
         if self.recorder_mode:
             url = self.get_current_url()
@@ -6583,7 +6609,7 @@ class BaseCase(unittest.TestCase):
                 self.assertIn(expected, actual, error % (expected, actual))
         if self.demo_mode and not self.recorder_mode:
             a_t = "ASSERT TITLE CONTAINS"
-            messenger_post = "%s: {%s}" % (a_t, expected)
+            messenger_post = "<b>%s</b>: {%s}" % (a_t, expected)
             self.__highlight_with_assert_success(messenger_post, "html")
         if self.recorder_mode:
             url = self.get_current_url()
@@ -6687,7 +6713,7 @@ class BaseCase(unittest.TestCase):
                     from seleniumbase.fixtures.words import SD
 
                     a_t = SD.translate_assert_no_js_errors(self._language)
-                messenger_post = "%s" % a_t
+                messenger_post = "<b>%s</b>" % a_t
                 self.__highlight_with_assert_success(messenger_post, "html")
 
     def __activate_html_inspector(self):
@@ -8120,7 +8146,7 @@ class BaseCase(unittest.TestCase):
                 from seleniumbase.fixtures.words import SD
 
                 a_t = SD.translate_assert(self._language)
-            messenger_post = "%s %s: %s" % (a_t, by.upper(), selector)
+            messenger_post = "<b>%s %s</b>: %s" % (a_t, by.upper(), selector)
             self.__highlight_with_assert_success(messenger_post, selector, by)
         if self.recorder_mode:
             url = self.get_current_url()
@@ -8200,7 +8226,9 @@ class BaseCase(unittest.TestCase):
                     from seleniumbase.fixtures.words import SD
 
                     a_t = SD.translate_assert(self._language)
-                messenger_post = "%s %s: %s" % (a_t, by.upper(), selector)
+                messenger_post = "<b>%s %s</b>: %s" % (
+                    a_t, by.upper(), selector
+                )
                 self.__highlight_with_assert_success(
                     messenger_post, selector, by
                 )
@@ -8310,7 +8338,7 @@ class BaseCase(unittest.TestCase):
 
                 a_t = SD.translate_assert_text(self._language)
                 i_n = SD.translate_in(self._language)
-            messenger_post = "%s: {%s} %s %s: %s" % (
+            messenger_post = "<b>%s</b>: {%s} %s %s: %s" % (
                 a_t,
                 text,
                 i_n,
@@ -8361,7 +8389,7 @@ class BaseCase(unittest.TestCase):
 
                 a_t = SD.translate_assert_exact_text(self._language)
                 i_n = SD.translate_in(self._language)
-            messenger_post = "%s: {%s} %s %s: %s" % (
+            messenger_post = "<b>%s</b>: {%s} %s %s: %s" % (
                 a_t,
                 text,
                 i_n,
@@ -8479,7 +8507,7 @@ class BaseCase(unittest.TestCase):
                 from seleniumbase.fixtures.words import SD
 
                 a_t = SD.translate_assert_link_text(self._language)
-            messenger_post = "%s: {%s}" % (a_t, link_text)
+            messenger_post = "<b>%s</b>: {%s}" % (a_t, link_text)
             self.__highlight_with_assert_success(
                 messenger_post, link_text, by="link text"
             )
@@ -8531,7 +8559,7 @@ class BaseCase(unittest.TestCase):
                 from seleniumbase.fixtures.words import SD
 
                 a_t = SD.translate_assert_link_text(self._language)
-            messenger_post = "%s: {%s}" % (a_t, partial_link_text)
+            messenger_post = "<b>%s</b>: {%s}" % (a_t, partial_link_text)
             self.__highlight_with_assert_success(
                 messenger_post, partial_link_text, by="partial link text"
             )
@@ -12681,7 +12709,7 @@ class BaseCase(unittest.TestCase):
 
                 a_t = SD.translate_assert_text(self._language)
                 i_n = SD.translate_in(self._language)
-            messenger_post = "%s: {%s} %s %s: %s" % (
+            messenger_post = "<b>%s</b>: {%s} %s %s: %s" % (
                 a_t,
                 text,
                 i_n,
@@ -12707,7 +12735,7 @@ class BaseCase(unittest.TestCase):
 
                 a_t = SD.translate_assert_exact_text(self._language)
                 i_n = SD.translate_in(self._language)
-            messenger_post = "%s: {%s} %s %s: %s" % (
+            messenger_post = "<b>%s</b>: {%s} %s %s: %s" % (
                 a_t,
                 text,
                 i_n,
@@ -12843,7 +12871,7 @@ class BaseCase(unittest.TestCase):
                 from seleniumbase.fixtures.words import SD
 
                 a_t = SD.translate_assert(self._language)
-            messenger_post = "%s %s: %s" % (a_t, by.upper(), selector)
+            messenger_post = "<b>%s %s</b>: %s" % (a_t, by.upper(), selector)
             try:
                 js_utils.activate_jquery(self.driver)
                 js_utils.post_messenger_success_message(
@@ -12864,7 +12892,7 @@ class BaseCase(unittest.TestCase):
                 from seleniumbase.fixtures.words import SD
 
                 a_t = SD.translate_assert(self._language)
-            messenger_post = "%s %s: %s" % (a_t, by.upper(), selector)
+            messenger_post = "<b>%s %s</b>: %s" % (a_t, by.upper(), selector)
             try:
                 js_utils.activate_jquery(self.driver)
                 js_utils.post_messenger_success_message(
@@ -14582,6 +14610,37 @@ class BaseCase(unittest.TestCase):
         if deferred_exception:
             # User forgot to call "self.process_deferred_asserts()" in test
             raise deferred_exception
+
+    def __end_reused_class_session_as_needed(self):
+        if (
+            hasattr(sb_config, "reuse_class_session")
+            and sb_config.reuse_class_session
+            and hasattr(sb_config, "shared_driver")
+            and sb_config.shared_driver
+        ):
+            if (
+                not is_windows
+                or (
+                    hasattr(sb_config.shared_driver, "service")
+                    and sb_config.shared_driver.service.process
+                )
+            ):
+                try:
+                    sb_config.shared_driver.quit()
+                except Exception:
+                    sb_config.shared_driver = None
+
+    @classmethod
+    def setUpClass(self):
+        # Only used when: "--rcs" / "--reuse-class-session"
+        # Close existing sessions before the class starts.
+        session_helper.end_reused_class_session_as_needed()
+
+    @classmethod
+    def tearDownClass(self):
+        # Only used when: "--rcs" / "--reuse-class-session"
+        # Close existing sessions after the class finishes.
+        session_helper.end_reused_class_session_as_needed()
 
 
 r"""----------------------------------------------------------------->

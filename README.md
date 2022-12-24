@@ -7,11 +7,9 @@
 <meta property="og:image" content="https://seleniumbase.github.io/cdn/img/mac_sb_logo_5b.png" />
 <link rel="icon" href="https://seleniumbase.github.io/img/logo3b.png" />
 
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/sb_word_cloud.png" alt="SeleniumBase" title="SeleniumBase" width="450" /></a></p>
+<h2 align="center"><b>SeleniumBase - Python Web UI Testing Made Easy</b><br /><a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=3399EE" alt="PyPI version" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/releases" target="_blank"><img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=22AAEE" alt="GitHub version" /></a> <a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"><img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a></h2>
 
-<h3 align="center"><b>SeleniumBase - Python Web UI Testing Made Easy</b></h3>
-
-<p align="center"><a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=3399EE" alt="PyPI version" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/releases" target="_blank"><img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=22AAEE" alt="GitHub version" /></a> <a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"><img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a></p>
+<p align="center"><a href="https://seleniumbase.github.io/cdn/gif/my_first_test_2.gif" target="_blank"><img src="https://seleniumbase.github.io/cdn/gif/my_first_test_2.gif" width="480"  alt="SeleniumBase Example" title="SeleniumBase Example" /></a></p>
 
 <p align="center">
 <a href="#python_installation">🚀 Start</a> |
@@ -54,7 +52,7 @@
 --------
 
 <blockquote>
-<p dir="auto"><strong>Table of Contents:</strong></p>
+<p dir="auto"><strong>SeleniumBase - Table of Contents:</strong></p>
 <ul dir="auto">
 <li><a href="#python_installation"    ><strong>Set up Python & Git</strong></a></li>
 <li><a href="#install_seleniumbase"   ><strong>Install SeleniumBase</strong></a></li>
@@ -465,7 +463,7 @@ pytest my_first_test.py --pdb
 🔵 Here are some useful command-line options that come with <code>pytest</code>:
 
 ```bash
--v  # Verbose mode. Prints the full name of each test run.
+-v  # Verbose mode. Prints the full name of each test and shows more details.
 -q  # Quiet mode. Print fewer details in the console output when running tests.
 -x  # Stop running the tests after the first failure is reached.
 --html=report.html  # Creates a detailed pytest-html report after tests finish.
@@ -554,7 +552,8 @@ pytest my_first_test.py --pdb
 --incognito  # (Enable Chrome's Incognito mode.)
 --guest  # (Enable Chrome's Guest mode.)
 --devtools  # (Open Chrome's DevTools when the browser opens.)
---reuse-session | --rs  # (Reuse the browser session between tests.)
+--reuse-session | --rs  # (Reuse browser session for all tests.)
+--reuse-class-session | --rcs  # (Reuse session for tests in class.)
 --crumbs  # (Delete all cookies between tests reusing a session.)
 --disable-beforeunload  # (Disable the "beforeunload" event on Chrome.)
 --window-size=WIDTH,HEIGHT  # (Set the browser's starting window size.)

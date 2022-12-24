@@ -666,7 +666,7 @@ def activate_messenger(driver):
         "Messenger.options = {'maxMessages': 8, "
         "extraClasses: 'messenger-fixed "
         "messenger-on-bottom messenger-on-right', "
-        "theme: 'flat'}"
+        "theme: 'future'}"
     )
 
     if not is_jquery_activated(driver):
@@ -711,7 +711,7 @@ def set_messenger_theme(
     driver, theme="default", location="default", max_messages="default"
 ):
     if theme == "default":
-        theme = "flat"
+        theme = "future"
     if location == "default":
         location = "bottom_right"
         if hasattr(sb_config, "mobile_emulator") and sb_config.mobile_emulator:
@@ -800,7 +800,7 @@ def post_messenger_success_message(driver, message, msg_dur):
         msg_dur = settings.DEFAULT_MESSAGE_DURATION
     msg_dur = float(msg_dur)
     try:
-        theme = "flat"
+        theme = "future"
         location = "bottom_right"
         if hasattr(sb_config, "mobile_emulator") and sb_config.mobile_emulator:
             location = "top_center"

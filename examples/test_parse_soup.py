@@ -24,7 +24,7 @@ class SoupParsingTests(BaseCase):
         self.switch_to_default_content()
         self.click("button i.mce-i-image")
         self.type('input[aria-label="Width"].mce-textbox', "300")
-        image_url = "https://seleniumbase.io/img/sb_logo_10.png"
+        image_url = "https://seleniumbase.github.io/img/sb_logo_10.png"
         self.type("input.mce-textbox", image_url + "\n")
         self.switch_to_frame("iframe")
         self.click("h2")

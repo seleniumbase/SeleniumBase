@@ -8,8 +8,8 @@ class HackTests(BaseCase):
         ayb = "ALL YOUR BASE"
         abtu = "ARE BELONG TO US"
         aybabtu = "%s %s" % (ayb, abtu)
-        sb_banner_logo = "//seleniumbase.io/cdn/img/sb_logo_10.png"
-        sb_dashboard_logo = "//seleniumbase.io/img/dash_pie_3.png"
+        sb_banner_logo = "//seleniumbase.github.io/cdn/img/sb_logo_10.png"
+        sb_dashboard_logo = "//seleniumbase.github.io/img/dash_pie_3.png"
         wiki = "https://en.wikipedia.org/wiki/All_your_base_are_belong_to_us"
 
         self.open(wiki)

@@ -20,7 +20,7 @@ def get_report_style():
     title = """<meta id="OGTitle" property="og:title" content="SeleniumBase">
         <title>Test Report</title>
         <link rel="SHORTCUT ICON"
-        href="%s" /> """ % REPORT_FAVICON
+        href="%s" />""" % REPORT_FAVICON
 
     style = (
         title
@@ -131,8 +131,7 @@ def get_bt_backdrop_style():
         :not(.tour-tour-element) .orphan.tour-tour {
             box-shadow: 0 0 0 88422px rgba(0, 0, 0, 0.42);
             pointer-events: auto !important;
-        }
-        """
+        }"""
     Saved.bt_backdrop_style = bt_backdrop_style
     return bt_backdrop_style
 
@@ -150,8 +149,7 @@ def get_dt_backdrop_style():
         }
         button.driver-prev-btn.driver-disabled {
             visibility: hidden;
-        }
-        """
+        }"""
     Saved.dt_backdrop_style = dt_backdrop_style
     return dt_backdrop_style
 
@@ -159,17 +157,16 @@ def get_dt_backdrop_style():
 def get_messenger_style():
     if hasattr(Saved, "messenger_style"):
         return Saved.messenger_style
-    font_family = '"Proxima Nova","proxima-nova",Arial,sans-serif !important'
+    font_family = '"open-sans",Arial,sans-serif !important'
     messenger_style = """
         .messenger-message-inner {
             font-family: %s;
             font-size: 17px;
         }
-        ul.messenger-theme-flat {
-            box-shadow: 2px 2px 5px 2px rgba(16, 128, 120, 0.34),
-            2px 2px 10px 2px rgba(16, 128, 120, 0.28) !important;
-        }
-        """ % font_family
+        ul.messenger-theme-flat, ul.messenger-theme-future {
+            box-shadow: 2px 2px 9px 4px rgba(32, 142, 120, 0.28),
+            2px 2px 9px 4px rgba(200, 240, 80, 0.34) !important;
+        }""" % font_family
     Saved.messenger_style = messenger_style
     return messenger_style
 
@@ -183,8 +180,7 @@ def get_sh_style_test():
             classes: 'shepherd-theme-dark',
             scrollTo: true
           }
-        });
-        """
+        });"""
     Saved.sh_style_test = sh_style_test
     return sh_style_test
 
@@ -196,8 +192,7 @@ def get_hops_backdrop_style():
     hops_backdrop_style = """
         .hopscotch-bubble-container {
             font-size: 110%;
-        }
-        """
+        }"""
     Saved.hops_backdrop_style = hops_backdrop_style
     return hops_backdrop_style
 
@@ -231,8 +226,7 @@ def get_introjs_style():
         .introjs-tooltip, .introjs-floating {
             box-sizing: content-box;
             position: absolute;
-        }
-    """
+        }"""
     Saved.introjs_style = introjs_style
     return introjs_style
 
@@ -266,8 +260,7 @@ def get_sh_backdrop_style():
         }
         body.shepherd-active {
             pointer-events: none !important;
-        }
-        """
+        }"""
     Saved.sh_backdrop_style = sh_backdrop_style
     return sh_backdrop_style
 
@@ -393,7 +386,6 @@ def get_pytest_style():
         }
         .desc.active .sort-icon {
             border-top: 8px solid #999;
-        }
-        """
+        }"""
     Saved.pytest_style = pytest_style
     return pytest_style

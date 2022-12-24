@@ -4,41 +4,37 @@ import pytest
 
 @pytest.fixture()
 def sb(request):
-    import sys
     from selenium import webdriver
     from seleniumbase import BaseCase
 
     class BaseClass(BaseCase):
-        def setUp(self):
-            super(BaseClass, self).setUp()
-
-        def tearDown(self):
-            self.save_teardown_screenshot()
-            super(BaseClass, self).tearDown()
-
-        def base_method(self):
-            pass
-
         def get_new_driver(self, *args, **kwargs):
             """This method overrides get_new_driver() from BaseCase."""
             options = webdriver.ChromeOptions()
-            if "linux" in sys.platform:
+            if self.headless:
                 options.add_argument("--headless=chrome")
+                options.add_argument("--disable-gpu")
             options.add_experimental_option(
                 "excludeSwitches", ["enable-automation"],
             )
             return webdriver.Chrome(options=options)
 
-    if request.cls:
-        request.cls.sb = BaseClass("base_method")
-        request.cls.sb.setUp()
-        yield request.cls.sb
-        request.cls.sb.tearDown()
-    else:
-        sb = BaseClass("base_method")
-        sb.setUp()
-        yield sb
-        sb.tearDown()
+        def setUp(self):
+            super(BaseClass, self).setUp()
+
+        def base_method(self):
+            pass
+
+        def tearDown(self):
+            self.save_teardown_screenshot()
+            super(BaseClass, self).tearDown()
+
+    sb = BaseClass("base_method")
+    sb.setUpClass()
+    sb.setUp()
+    yield sb
+    sb.tearDown()
+    sb.tearDownClass()
 
 
 def test_override_fixture_no_class(sb):

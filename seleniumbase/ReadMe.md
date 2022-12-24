@@ -1,6 +1,6 @@
-<img src="https://seleniumbase.io/img/sb_logo_10.png" alt="SeleniumBase" width="212" />
+<img src="https://seleniumbase.github.io/cdn/img/sb_word_cloud.png" alt="SeleniumBase" title="SeleniumBase" width="400" />
 
-<h2><img src="https://seleniumbase.io/img/logo3b.png" title="SeleniumBase" width="32" /> Framework Folders</h2>
+<h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> Framework Folders</h2>
 
 * <b>[fixtures](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/fixtures):</b> Includes [base_case.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py), where SeleniumBase test methods are defined.
 * <b>[core](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/core):</b> Includes [browser_launcher.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/core/browser_launcher.py), which is used for spinning up browsers for tests.
@@ -20,6 +20,6 @@
 
 --------
 
-<img src="https://seleniumbase.io/cdn/img/sb_text_f.png" title="SeleniumBase" align="center" width="300">
+<img src="https://seleniumbase.github.io/cdn/img/sb_text_f.png" title="SeleniumBase" align="center" width="360">
 
-<div><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.io/cdn/img/sb_logo_gs.png" alt="SeleniumBase" width="300" /></a></div>
+<div><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.github.io/cdn/img/sb_logo_gs.png" alt="SeleniumBase" width="360" /></a></div>

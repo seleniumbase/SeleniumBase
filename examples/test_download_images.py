@@ -49,3 +49,8 @@ class DownloadImages(BaseCase):
             image.screenshot(file_path)
             self.assert_downloaded_file(filename)
             self._print(file_path)
+
+
+if __name__ == "__main__":
+    from pytest import main
+    main([__file__])

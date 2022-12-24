@@ -1,8 +1,8 @@
 <!-- SeleniumBase Docs -->
 
-## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) SeleniumBase Case Plans 🗂️
+## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) SeleniumBase Case Plans 🗂️
 
-<img src="https://seleniumbase.io/cdn/img/cp/sb_case_plans.png" title="SeleniumBase Case Plans Summary" width="625">
+<img src="https://seleniumbase.github.io/cdn/img/cp/sb_case_plans.png" title="SeleniumBase Case Plans Summary" width="625">
 
 🗂️ <b>SeleniumBase Case Plans</b> is Test Case Management Software that uses Markdown tables for displaying test plans directly in GitHub (and other source code management systems that support Markdown format).
 
@@ -160,7 +160,7 @@
 sbase caseplans
 ```
 
-<img src="https://seleniumbase.io/cdn/img/cp/case_plan_boilerplate_gen.png" title="SeleniumBase Case Plans GUI" width="525">
+<img src="https://seleniumbase.github.io/cdn/img/cp/case_plan_boilerplate_gen.png" title="SeleniumBase Case Plans GUI" width="525">
 
 🗂️ Once you are running the Case Plans GUI, select the existing tests that need Case Plans, and then click: ``Generate boilerplate Case Plans for selected tests missing them``. For each selected test that didn't already have a Case Plan file, one will be generated. Each new Case Plan file starts with default boilerplate code with a Markdown table. Eg:
 
@@ -200,11 +200,11 @@ sbase caseplans
 
 🗂️ After you've created some Case Plans, you can use the ``Generate Summary of existing Case Plans`` button in the Case Plans GUI to generate the Case Plans Summary file.
 
-<img src="https://seleniumbase.io/cdn/img/cp/case_plan_summary_gen.png" title="SeleniumBase Case Plans GUI" width="550">
+<img src="https://seleniumbase.githb.io/cdn/img/cp/case_plan_summary_gen.png" title="SeleniumBase Case Plans GUI" width="550">
 
 🗂️ The generated Case Plans summary file, ``case_summary.md``, gets created in the same location where the Case Plans GUI was launched. This is NOT the same location where individual Case Plan boilerplates are generated, which is in the ``case_plans/`` folders. The ``case_plans/`` folders are generated where individual tests live, which means that if you have your tests in multiple folders, then you could also have multiple ``case_plans/`` folders. A ``case_summary.md`` file may look like this when rendered:
 
-<img src="https://seleniumbase.io/cdn/img/cp/case_plan_summary.png" title="SeleniumBase Case Plans Summary" width="550">
+<img src="https://seleniumbase.github.io/cdn/img/cp/case_plan_summary.png" title="SeleniumBase Case Plans Summary" width="550">
 
 🗂️ When calling ``sbase caseplans``, you can provide additional arguments to limit the tests that appear in the list. The same discovery rules apply as when using ``pytest``. Eg:
 
