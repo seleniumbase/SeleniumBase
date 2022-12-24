@@ -259,7 +259,10 @@ class BaseCase(unittest.TestCase):
             time.sleep(0.03)  # Force a minimum wait, even if skipping waits.
             if self.undetectable:
                 time.sleep(0.02)
-        self.__demo_mode_pause_if_active()
+        if self.demo_mode:
+            if not js_utils.is_jquery_activated(self.driver):
+                js_utils.add_js_link(self.driver, constants.JQuery.MIN_JS)
+            self.__demo_mode_pause_if_active()
 
     def get(self, url):
         """If "url" looks like a page URL, open the URL in the web browser.
@@ -515,6 +518,8 @@ class BaseCase(unittest.TestCase):
                         time.sleep(0.024)
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
+                if not js_utils.is_jquery_activated(self.driver):
+                    js_utils.add_js_link(self.driver, constants.JQuery.MIN_JS)
                 self.__demo_mode_pause_if_active()
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
@@ -612,6 +617,8 @@ class BaseCase(unittest.TestCase):
                 self.__disable_beforeunload_as_needed()
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
+                if not js_utils.is_jquery_activated(self.driver):
+                    js_utils.add_js_link(self.driver, constants.JQuery.MIN_JS)
                 self.__demo_mode_pause_if_active()
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
@@ -748,6 +755,8 @@ class BaseCase(unittest.TestCase):
             self.set_value(selector, text, by=by)
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
+                if not js_utils.is_jquery_activated(self.driver):
+                    js_utils.add_js_link(self.driver, constants.JQuery.MIN_JS)
                 self.__demo_mode_pause_if_active()
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
@@ -812,6 +821,8 @@ class BaseCase(unittest.TestCase):
                     self.wait_for_ready_state_complete()
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
+                if not js_utils.is_jquery_activated(self.driver):
+                    js_utils.add_js_link(self.driver, constants.JQuery.MIN_JS)
                 self.__demo_mode_pause_if_active()
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
@@ -1335,6 +1346,8 @@ class BaseCase(unittest.TestCase):
                 pass
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
+                if not js_utils.is_jquery_activated(self.driver):
+                    js_utils.add_js_link(self.driver, constants.JQuery.MIN_JS)
                 self.__demo_mode_pause_if_active()
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
@@ -1476,6 +1489,8 @@ class BaseCase(unittest.TestCase):
                 pass
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
+                if not js_utils.is_jquery_activated(self.driver):
+                    js_utils.add_js_link(self.driver, constants.JQuery.MIN_JS)
                 self.__demo_mode_pause_if_active()
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
@@ -1998,6 +2013,8 @@ class BaseCase(unittest.TestCase):
                 self.__disable_beforeunload_as_needed()
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
+                if not js_utils.is_jquery_activated(self.driver):
+                    js_utils.add_js_link(self.driver, constants.JQuery.MIN_JS)
                 self.__demo_mode_pause_if_active()
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
@@ -2342,6 +2359,8 @@ class BaseCase(unittest.TestCase):
                 pass
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
+                if not js_utils.is_jquery_activated(self.driver):
+                    js_utils.add_js_link(self.driver, constants.JQuery.MIN_JS)
                 self.__demo_mode_pause_if_active()
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
@@ -2422,6 +2441,8 @@ class BaseCase(unittest.TestCase):
             self.__switch_to_newest_window_if_not_blank()
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
+                if not js_utils.is_jquery_activated(self.driver):
+                    js_utils.add_js_link(self.driver, constants.JQuery.MIN_JS)
                 self.__demo_mode_pause_if_active()
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
@@ -2595,6 +2616,8 @@ class BaseCase(unittest.TestCase):
                 self.__disable_beforeunload_as_needed()
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
+                if not js_utils.is_jquery_activated(self.driver):
+                    js_utils.add_js_link(self.driver, constants.JQuery.MIN_JS)
                 self.__demo_mode_pause_if_active()
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
@@ -6125,6 +6148,8 @@ class BaseCase(unittest.TestCase):
                 element.send_keys(abs_path)
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
+                if not js_utils.is_jquery_activated(self.driver):
+                    js_utils.add_js_link(self.driver, constants.JQuery.MIN_JS)
                 self.__demo_mode_pause_if_active()
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
