@@ -1158,6 +1158,7 @@ def pytest_addoption(parser):
                 Unused when tests override the default value.""",
     )
     parser.addoption(
+        "--lfp",
         "--list-fail-page",
         "--list-fail-pages",
         action="store_true",
@@ -1503,6 +1504,7 @@ def pytest_configure(config):
     if (
         "-n" in sys_argv
         or " -n=" in arg_join
+        or " -n" in arg_join
         or "-c" in sys_argv
         or (
             python3
@@ -1510,6 +1512,7 @@ def pytest_configure(config):
             and (
                 "-n=" in config.inicfg["addopts"]
                 or "-n " in config.inicfg["addopts"]
+                or "-n" in config.inicfg["addopts"]
             )
         )
     ):
@@ -1593,6 +1596,21 @@ def pytest_configure(config):
 
     if sb_config.save_screenshot and sb_config.no_screenshot:
         sb_config.save_screenshot = False  # "no_screenshot" has priority
+
+    if (
+        "-v" in sys_argv and not sb_config._multithreaded
+        or (
+            python3
+            and hasattr(config, "invocation_params")
+            and "-v" in config.invocation_params.args
+            and (
+                "-n=1" in config.invocation_params.args
+                or "-n1" in config.invocation_params.args
+                or "-n 1" in " ".join(config.invocation_params.args)
+            )
+        )
+    ):
+        sb_config.list_fp = True  # List the fail pages in console output
 
     if (
         sb_config._multithreaded
@@ -1808,7 +1826,11 @@ def pytest_runtest_teardown(item):
             pass
     except Exception:
         pass
-    if sb_config._has_exception and sb_config.list_fp and sb_config._fail_page:
+    if (
+        (sb_config._has_exception or python3_11_or_newer)
+        and sb_config.list_fp
+        and sb_config._fail_page
+    ):
         sys.stderr.write("\n=> Fail Page: %s\n" % sb_config._fail_page)
 
 
