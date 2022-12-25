@@ -42,11 +42,9 @@
 <a id="sb_sf_01"></a>
 <h3><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 1. BaseCase direct class inheritance</h3>
 
-This format is used by most of the examples in the <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples">SeleniumBase examples folder</a>. It's a great starting point for anyone learning SeleniumBase, and it follows good object-oriented programming principles.
+In this format, (which is used by most of the tests in the <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples">SeleniumBase examples folder</a>), <code>BaseCase</code> is imported at the top of a Python file, followed by a Python class inheriting <code>BaseCase</code>. Then, any test method defined in that class automatically gains access to SeleniumBase methods, including the <code>setUp()</code> and <code>tearDown()</code> methods that are automatically called for opening and closing web browsers at the start and end of tests.
 
-In this format, <code>BaseCase</code> is imported at the top of a Python file, followed by a Python class inheriting <code>BaseCase</code>. Then, any test method defined in that class automatically gains access to SeleniumBase methods, including the <code>setUp()</code> and <code>tearDown()</code> methods that are automatically called to spin up and spin down web browsers at the beginning and end of test methods.
-
-To run a test of this format, use **``pytest``** or ``nosetests``. If you add: ``if __name__ == "__main__":`` ``pytest.main([__file__])`` to the file, you can also use ``python`` as a runner, which invokes ``pytest``. Here's an example a script that uses ``BaseCase`` inheritance:
+To run a test of this format, use **``pytest``** or ``nosetests``. If you add: ``if __name__ == "__main__":`` ``pytest.main([__file__])`` to a file, you can also use ``python`` as a runner, which invokes ``pytest``. Here's an example:
 
 ```python
 from seleniumbase import BaseCase
@@ -68,6 +66,8 @@ if __name__ == "__main__":  # Use "python" to call "pytest"
 ```
 
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py">examples/test_demo_site.py</a> for the full test.)
+
+Using ``BaseCase`` inheritance is a great starting point for anyone learning SeleniumBase, and it follows good object-oriented programming principles.
 
 <a id="sb_sf_02"></a>
 <h3><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 2. BaseCase subclass inheritance</h3>
