@@ -172,6 +172,35 @@ class BaseCase(unittest.TestCase):
         self._chart_series_count = {}
         self._tour_steps = {}
 
+    @classmethod
+    def main(self, name, file, *args):
+        """Run pytest if file was called with "python".
+        Usage example:
+
+            from seleniumbase import BaseCase
+            BaseCase.main(__name__, __file__)
+
+            class MyTestClass(BaseCase):
+                def test_example(self):
+                    pass
+
+        The run command:
+            python my_test.py  # (Instead of "pytest my_test.py")
+
+        This is useful when sharing code with people who may not be aware
+        that SeleniumBase tests are run with "pytest" instead of "python".
+        Now, if they accidentally type "python", the tests will still run.
+        Eg. "python my_test.py" instead of "pytest my_test.py".
+        """
+        if name == "__main__":  # Test called with "python"
+            from pytest import main as pytest_main
+            all_args = []
+            for arg in args:
+                all_args.append(arg)
+            for arg in sys.argv[1:]:
+                all_args.append(arg)
+            pytest_main([file, "-s", *all_args])
+
     def open(self, url):
         """Navigates the current browser window to the specified page."""
         self.__check_scope()
