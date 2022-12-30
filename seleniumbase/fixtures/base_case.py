@@ -2243,50 +2243,34 @@ class BaseCase(unittest.TestCase):
                 "element {%s}!" % selector
             )
 
-    def hover_on_element(self, selector, by="css selector"):
+    def hover(self, selector, by="css selector", timeout=None):
         self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
         original_selector = selector
         original_by = by
         selector, by = self.__recalculate_selector(selector, by)
         self.wait_for_element_visible(
-            original_selector, by=original_by, timeout=settings.SMALL_TIMEOUT
+            original_selector, by=original_by, timeout=timeout
         )
         self.__demo_mode_highlight_if_active(original_selector, original_by)
         self.scroll_to(selector, by=by)
         time.sleep(0.05)  # Settle down from scrolling before hovering
-        if self.browser != "chrome":
-            return page_actions.hover_on_element(self.driver, selector, by)
-        # Using Chrome
-        # (Pure hover actions won't work on early chromedriver versions)
-        try:
-            return page_actions.hover_on_element(self.driver, selector, by)
-        except WebDriverException:
-            driver_capabilities = self.driver.capabilities
-            if "version" in driver_capabilities:
-                chrome_version = driver_capabilities["version"]
-            else:
-                chrome_version = driver_capabilities["browserVersion"]
-            major_chrome_version = chrome_version.split(".")[0]
-            chrome_dict = self.driver.capabilities["chrome"]
-            chromedriver_version = chrome_dict["chromedriverVersion"]
-            chromedriver_version = chromedriver_version.split(" ")[0]
-            major_chromedriver_version = chromedriver_version.split(".")[0]
-            install_sb = (
-                "seleniumbase get chromedriver %s" % major_chrome_version
-            )
-            if int(major_chromedriver_version) < int(major_chrome_version):
-                # Upgrading the driver is required for performing hover actions
-                message = (
-                    "You need a newer version of\n"
-                    "chromedriver to perform hover actions!\n"
-                    "Your version of chromedriver is: %s\n"
-                    "And your version of Chrome is: %s\n"
-                    "You can fix this issue by running:\n>>> %s\n"
-                    % (chromedriver_version, chrome_version, install_sb)
-                )
-                raise Exception(message)
-            else:
-                raise
+        element = page_actions.hover_on_element(self.driver, selector, by)
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        if by == By.XPATH:
+                            selector = original_selector
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        action = ["hover", selector, origin, time_stamp]
+                        self.__extra_actions.append(action)
+        return element
 
     def hover_and_click(
         self,
@@ -7588,6 +7572,24 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         self.click_partial_link_text(partial_link_text, timeout=timeout)
+
+    def hover_on_element(self, selector, by="css selector", timeout=None):
+        """Same as self.hover()"""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        return self.hover(selector, by=by, timeout=timeout)
+
+    def hover_over_element(self, selector, by="css selector", timeout=None):
+        """Same as self.hover()"""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        return self.hover(selector, by=by, timeout=timeout)
 
     def wait_for_element_visible(
         self, selector, by="css selector", timeout=None

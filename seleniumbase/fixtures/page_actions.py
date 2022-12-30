@@ -174,6 +174,7 @@ def hover_on_element(driver, selector, by="css selector"):
     element = driver.find_element(by=by, value=selector)
     hover = ActionChains(driver).move_to_element(element)
     hover.perform()
+    return element
 
 
 def hover_element(driver, element):
@@ -182,6 +183,7 @@ def hover_element(driver, element):
     """
     hover = ActionChains(driver).move_to_element(element)
     hover.perform()
+    return element
 
 
 def timeout_exception(exception, message):
