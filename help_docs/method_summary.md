@@ -24,6 +24,9 @@ self.slow_click(selector, by="css selector", timeout=None)
 
 self.double_click(selector, by="css selector", timeout=None)
 
+self.context_click(selector, by="css selector", timeout=None)
+# Duplicates: self.right_click(selector, by="css selector", timeout=None)
+
 self.click_chain(selectors_list, by="css selector", timeout=None, spacing=0)
 
 self.type(selector, text, by="css selector", timeout=None)

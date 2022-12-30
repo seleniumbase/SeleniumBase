@@ -657,6 +657,95 @@ class BaseCase(unittest.TestCase):
         elif self.__needs_minimum_wait():
             time.sleep(0.02)
 
+    def context_click(self, selector, by="css selector", timeout=None):
+        """(A context click is a right-click that opens a context menu.)"""
+        from selenium.webdriver.common.action_chains import ActionChains
+
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        original_selector = selector
+        original_by = by
+        selector, by = self.__recalculate_selector(selector, by)
+        element = page_actions.wait_for_element_visible(
+            self.driver,
+            selector,
+            by,
+            timeout=timeout,
+            original_selector=original_selector,
+        )
+        self.__demo_mode_highlight_if_active(original_selector, original_by)
+        if not self.demo_mode and not self.slow_mode:
+            self.__scroll_to_element(element, selector, by)
+        self.wait_for_ready_state_complete()
+        if self.__needs_minimum_wait():
+            time.sleep(0.02)
+        # Find the element one more time in case scrolling hid it
+        element = page_actions.wait_for_element_visible(
+            self.driver,
+            selector,
+            by,
+            timeout=timeout,
+            original_selector=original_selector,
+        )
+        pre_action_url = self.driver.current_url
+        try:
+            if self.browser == "safari":
+                # Jump to the "except" block where the other script should work
+                raise Exception("This Exception will be caught.")
+            actions = ActionChains(self.driver)
+            actions.context_click(element).perform()
+        except Exception:
+            css_selector = self.convert_to_css_selector(selector, by=by)
+            css_selector = re.escape(css_selector)  # Add "\\" to special chars
+            css_selector = self.__escape_quotes_if_needed(css_selector)
+            right_click_script = (
+                """var targetElement1 = document.querySelector('%s');
+                var clickEvent1 = document.createEvent('MouseEvents');
+                clickEvent1.initEvent('contextmenu', true, true);
+                targetElement1.dispatchEvent(clickEvent1);"""
+                % css_selector
+            )
+            if ":contains\\(" not in css_selector:
+                self.execute_script(right_click_script)
+            else:
+                right_click_script = (
+                    """jQuery('%s').contextmenu();""" % css_selector
+                )
+                self.safe_execute_script(right_click_script)
+        if settings.WAIT_FOR_RSC_ON_CLICKS:
+            self.wait_for_ready_state_complete()
+        else:
+            # A smaller subset of self.wait_for_ready_state_complete()
+            self.wait_for_angularjs(timeout=settings.MINI_TIMEOUT)
+            if self.driver.current_url != pre_action_url:
+                self.__ad_block_as_needed()
+                self.__disable_beforeunload_as_needed()
+        if self.demo_mode:
+            if self.driver.current_url != pre_action_url:
+                if not js_utils.is_jquery_activated(self.driver):
+                    js_utils.add_js_link(self.driver, constants.JQuery.MIN_JS)
+                self.__demo_mode_pause_if_active()
+            else:
+                self.__demo_mode_pause_if_active(tiny=True)
+        elif self.slow_mode:
+            self.__slow_mode_pause_if_active()
+        elif self.__needs_minimum_wait():
+            time.sleep(0.02)
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        if by == By.XPATH:
+                            selector = original_selector
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        action = ["r_clk", selector, origin, time_stamp]
+                        self.__extra_actions.append(action)
+
     def click_chain(
         self, selectors_list, by="css selector", timeout=None, spacing=0
     ):
@@ -7572,6 +7661,15 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         self.click_partial_link_text(partial_link_text, timeout=timeout)
+
+    def right_click(self, selector, by="css selector", timeout=None):
+        """Same as self.context_click()"""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        self.context_click(selector, by=by, timeout=timeout)
 
     def hover_on_element(self, selector, by="css selector", timeout=None):
         """Same as self.hover()"""
