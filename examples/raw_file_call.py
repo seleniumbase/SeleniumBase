@@ -1,10 +1,10 @@
-"""Call a file with "python" instead of using "pytest" directly.
+"""Call a file with "python" instead of "pytest".
 To run, use: "python raw_file_call.py".
 On newer version of SeleniumBase, use:
 BaseCase.main(__name__, __file__)"""
 from seleniumbase import BaseCase
 
-if __name__ == "__main__":  # If "python", run pytest
+if __name__ == "__main__":
     from pytest import main
     main([__file__, "-s"])
 

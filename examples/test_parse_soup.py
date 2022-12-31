@@ -26,11 +26,10 @@ class SoupParsingTests(BaseCase):
         self.type('input[aria-label="Width"].mce-textbox', "300")
         image_url = "https://seleniumbase.github.io/img/sb_logo_10.png"
         self.type("input.mce-textbox", image_url + "\n")
-        self.switch_to_frame("iframe")
-        self.click("h2")
-        self.switch_to_default_content()
-        self.post_message("Automate anything with SeleniumBase!")
+        with self.frame_switch("iframe"):
+            self.click("h2")
+            self.post_message("Automate anything with SeleniumBase!")
         self.click_menu_item("File")
         self.click_menu_item("Preview")
-        self.switch_to_frame('iframe[sandbox="allow-scripts"]')
-        self.post_message("Learn SeleniumBase Today!")
+        with self.frame_switch('iframe[sandbox="allow-scripts"]'):
+            self.post_message("Learn SeleniumBase Today!")
