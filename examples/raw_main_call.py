@@ -1,12 +1,7 @@
 """Call a file with "python" instead of using "pytest" directly.
-To run, use: "python raw_file_call.py".
-On newer version of SeleniumBase, use:
-BaseCase.main(__name__, __file__)"""
+To run, type: "python raw_main_call.py"."""
 from seleniumbase import BaseCase
-
-if __name__ == "__main__":  # If "python", run pytest
-    from pytest import main
-    main([__file__, "-s"])
+BaseCase.main(__name__, __file__)
 
 
 class TinyMceTest(BaseCase):

@@ -612,3 +612,29 @@ def assert_title_contains(context, substring):
     sb = context.sb
     substring = normalize_text(substring)
     sb.assert_title_contains(substring)
+
+
+@step("Hover '{selector}'")
+@step('Hover "{selector}"')
+@step("Hover on '{selector}'")
+@step('Hover on "{selector}"')
+@step("Hover over '{selector}'")
+@step('Hover over "{selector}"')
+@step("Hover element '{selector}'")
+@step('Hover element "{selector}"')
+def hover(context, selector):
+    sb = context.sb
+    sb.hover(selector)
+
+
+@step("Context click '{selector}'")
+@step('Context click "{selector}"')
+@step("Context click element '{selector}'")
+@step('Context click element "{selector}"')
+@step("Right click '{selector}'")
+@step('Right click "{selector}"')
+@step("Right click element '{selector}'")
+@step('Right click element "{selector}"')
+def context_click(context, selector):
+    sb = context.sb
+    sb.context_click(selector)

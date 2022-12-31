@@ -1,5 +1,5 @@
 # Japanese Language Test
-from seleniumbase.translate.japanese import セレニウムテストケース  # noqa
+from seleniumbase.translate.japanese import セレニウムテストケース
 
 
 class 私のテストクラス(セレニウムテストケース):

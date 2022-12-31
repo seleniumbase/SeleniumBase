@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 r"""----------------------------------------------------------------->
 |    ______     __           _                  ____                 |
 |   / ____/__  / /__  ____  (_)_  ______ ___   / _  \____  ________  |
@@ -82,11 +81,6 @@ LOGGER.setLevel(logging.WARNING)
 is_windows = False
 if sys.platform in ["win32", "win64", "x64"]:
     is_windows = True
-python3 = True
-if sys.version_info[0] < 3:
-    python3 = False
-    reload(sys)  # noqa: F821
-    sys.setdefaultencoding("utf8")
 python3_11_or_newer = False
 if sys.version_info >= (3, 11):
     python3_11_or_newer = True
@@ -171,6 +165,35 @@ class BaseCase(unittest.TestCase):
         self._chart_first_series = {}
         self._chart_series_count = {}
         self._tour_steps = {}
+
+    @classmethod
+    def main(self, name, file, *args):
+        """Run pytest if file was called with "python".
+        Usage example:
+
+            from seleniumbase import BaseCase
+            BaseCase.main(__name__, __file__)
+
+            class MyTestClass(BaseCase):
+                def test_example(self):
+                    pass
+
+        The run command:
+            python my_test.py  # (Instead of "pytest my_test.py")
+
+        This is useful when sharing code with people who may not be aware
+        that SeleniumBase tests are run with "pytest" instead of "python".
+        Now, if they accidentally type "python", the tests will still run.
+        Eg. "python my_test.py" instead of "pytest my_test.py".
+        """
+        if name == "__main__":  # Test called with "python"
+            from pytest import main as pytest_main
+            all_args = []
+            for arg in args:
+                all_args.append(arg)
+            for arg in sys.argv[1:]:
+                all_args.append(arg)
+            pytest_main([file, "-s", *all_args])
 
     def open(self, url):
         """Navigates the current browser window to the specified page."""
@@ -628,6 +651,95 @@ class BaseCase(unittest.TestCase):
         elif self.__needs_minimum_wait():
             time.sleep(0.02)
 
+    def context_click(self, selector, by="css selector", timeout=None):
+        """(A context click is a right-click that opens a context menu.)"""
+        from selenium.webdriver.common.action_chains import ActionChains
+
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        original_selector = selector
+        original_by = by
+        selector, by = self.__recalculate_selector(selector, by)
+        element = page_actions.wait_for_element_visible(
+            self.driver,
+            selector,
+            by,
+            timeout=timeout,
+            original_selector=original_selector,
+        )
+        self.__demo_mode_highlight_if_active(original_selector, original_by)
+        if not self.demo_mode and not self.slow_mode:
+            self.__scroll_to_element(element, selector, by)
+        self.wait_for_ready_state_complete()
+        if self.__needs_minimum_wait():
+            time.sleep(0.02)
+        # Find the element one more time in case scrolling hid it
+        element = page_actions.wait_for_element_visible(
+            self.driver,
+            selector,
+            by,
+            timeout=timeout,
+            original_selector=original_selector,
+        )
+        pre_action_url = self.driver.current_url
+        try:
+            if self.browser == "safari":
+                # Jump to the "except" block where the other script should work
+                raise Exception("This Exception will be caught.")
+            actions = ActionChains(self.driver)
+            actions.context_click(element).perform()
+        except Exception:
+            css_selector = self.convert_to_css_selector(selector, by=by)
+            css_selector = re.escape(css_selector)  # Add "\\" to special chars
+            css_selector = self.__escape_quotes_if_needed(css_selector)
+            right_click_script = (
+                """var targetElement1 = document.querySelector('%s');
+                var clickEvent1 = document.createEvent('MouseEvents');
+                clickEvent1.initEvent('contextmenu', true, true);
+                targetElement1.dispatchEvent(clickEvent1);"""
+                % css_selector
+            )
+            if ":contains\\(" not in css_selector:
+                self.execute_script(right_click_script)
+            else:
+                right_click_script = (
+                    """jQuery('%s').contextmenu();""" % css_selector
+                )
+                self.safe_execute_script(right_click_script)
+        if settings.WAIT_FOR_RSC_ON_CLICKS:
+            self.wait_for_ready_state_complete()
+        else:
+            # A smaller subset of self.wait_for_ready_state_complete()
+            self.wait_for_angularjs(timeout=settings.MINI_TIMEOUT)
+            if self.driver.current_url != pre_action_url:
+                self.__ad_block_as_needed()
+                self.__disable_beforeunload_as_needed()
+        if self.demo_mode:
+            if self.driver.current_url != pre_action_url:
+                if not js_utils.is_jquery_activated(self.driver):
+                    js_utils.add_js_link(self.driver, constants.JQuery.MIN_JS)
+                self.__demo_mode_pause_if_active()
+            else:
+                self.__demo_mode_pause_if_active(tiny=True)
+        elif self.slow_mode:
+            self.__slow_mode_pause_if_active()
+        elif self.__needs_minimum_wait():
+            time.sleep(0.02)
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        if by == By.XPATH:
+                            selector = original_selector
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        action = ["r_clk", selector, origin, time_stamp]
+                        self.__extra_actions.append(action)
+
     def click_chain(
         self, selectors_list, by="css selector", timeout=None, spacing=0
     ):
@@ -967,7 +1079,7 @@ class BaseCase(unittest.TestCase):
     def get_current_url(self):
         self.__check_scope()
         current_url = self.driver.current_url
-        if "%" in current_url and python3:
+        if "%" in current_url:
             try:
                 from urllib.parse import unquote
 
@@ -2214,50 +2326,34 @@ class BaseCase(unittest.TestCase):
                 "element {%s}!" % selector
             )
 
-    def hover_on_element(self, selector, by="css selector"):
+    def hover(self, selector, by="css selector", timeout=None):
         self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
         original_selector = selector
         original_by = by
         selector, by = self.__recalculate_selector(selector, by)
         self.wait_for_element_visible(
-            original_selector, by=original_by, timeout=settings.SMALL_TIMEOUT
+            original_selector, by=original_by, timeout=timeout
         )
         self.__demo_mode_highlight_if_active(original_selector, original_by)
         self.scroll_to(selector, by=by)
         time.sleep(0.05)  # Settle down from scrolling before hovering
-        if self.browser != "chrome":
-            return page_actions.hover_on_element(self.driver, selector, by)
-        # Using Chrome
-        # (Pure hover actions won't work on early chromedriver versions)
-        try:
-            return page_actions.hover_on_element(self.driver, selector, by)
-        except WebDriverException:
-            driver_capabilities = self.driver.capabilities
-            if "version" in driver_capabilities:
-                chrome_version = driver_capabilities["version"]
-            else:
-                chrome_version = driver_capabilities["browserVersion"]
-            major_chrome_version = chrome_version.split(".")[0]
-            chrome_dict = self.driver.capabilities["chrome"]
-            chromedriver_version = chrome_dict["chromedriverVersion"]
-            chromedriver_version = chromedriver_version.split(" ")[0]
-            major_chromedriver_version = chromedriver_version.split(".")[0]
-            install_sb = (
-                "seleniumbase get chromedriver %s" % major_chrome_version
-            )
-            if int(major_chromedriver_version) < int(major_chrome_version):
-                # Upgrading the driver is required for performing hover actions
-                message = (
-                    "You need a newer version of\n"
-                    "chromedriver to perform hover actions!\n"
-                    "Your version of chromedriver is: %s\n"
-                    "And your version of Chrome is: %s\n"
-                    "You can fix this issue by running:\n>>> %s\n"
-                    % (chromedriver_version, chrome_version, install_sb)
-                )
-                raise Exception(message)
-            else:
-                raise
+        element = page_actions.hover_on_element(self.driver, selector, by)
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        if by == By.XPATH:
+                            selector = original_selector
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        action = ["hover", selector, origin, time_stamp]
+                        self.__extra_actions.append(action)
+        return element
 
     def hover_and_click(
         self,
@@ -2895,8 +2991,6 @@ class BaseCase(unittest.TestCase):
     def execute_script(self, script, *args, **kwargs):
         self.__check_scope()
         self.__check_browser()
-        if not python3:
-            script = unicode(script.decode("latin-1"))  # noqa: F821
         return self.driver.execute_script(script, *args, **kwargs)
 
     def execute_async_script(self, script, timeout=None):
@@ -3089,8 +3183,6 @@ class BaseCase(unittest.TestCase):
             url = self.execute_script(
                 """return document.querySelector('%s').src;""" % frame
             )
-            if not python3:
-                url = str(url)
             if url and len(url) > 0:
                 if ("http:") in url or ("https:") in url or ("file:") in url:
                     pass
@@ -4209,6 +4301,7 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("js_cl")
         ext_actions.append("js_ca")
         ext_actions.append("js_ty")
+        ext_actions.append("r_clk")
         ext_actions.append("as_el")
         ext_actions.append("as_ep")
         ext_actions.append("asenv")
@@ -4228,6 +4321,7 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("sw_pf")
         ext_actions.append("s_c_f")
         ext_actions.append("s_c_d")
+        ext_actions.append("hover")
         ext_actions.append("sleep")
         ext_actions.append("sh_fc")
         ext_actions.append("c_l_s")
@@ -4274,7 +4368,7 @@ class BaseCase(unittest.TestCase):
             cleaned_actions.append(srt_actions[n])
         for action in srt_actions:
             if action[0] == "begin" or action[0] == "_url_":
-                if "%" in action[2] and python3:
+                if "%" in action[2]:
                     try:
                         from urllib.parse import unquote
 
@@ -4290,7 +4384,7 @@ class BaseCase(unittest.TestCase):
                         'self.open("%s")' % action[2].replace('"', '\\"')
                     )
             elif action[0] == "f_url":
-                if "%" in action[2] and python3:
+                if "%" in action[2]:
                     try:
                         from urllib.parse import unquote
 
@@ -4320,6 +4414,12 @@ class BaseCase(unittest.TestCase):
                     sb_actions.append("self.%s('%s')" % (method, action[1]))
             elif action[0] == "js_ca":
                 method = "js_click_all"
+                if '"' not in action[1]:
+                    sb_actions.append('self.%s("%s")' % (method, action[1]))
+                else:
+                    sb_actions.append("self.%s('%s')" % (method, action[1]))
+            elif action[0] == "r_clk":
+                method = "context_click"
                 if '"' not in action[1]:
                     sb_actions.append('self.%s("%s")' % (method, action[1]))
                 else:
@@ -4358,6 +4458,12 @@ class BaseCase(unittest.TestCase):
                     sb_actions.append(
                         "self.%s('%s', '%s')" % (method, action[1], text)
                     )
+            elif action[0] == "hover":
+                method = "hover"
+                if '"' not in action[1]:
+                    sb_actions.append('self.%s("%s")' % (method, action[1]))
+                else:
+                    sb_actions.append("self.%s('%s')" % (method, action[1]))
             elif action[0] == "e_mfa":
                 method = "enter_mfa_code"
                 text = action[2].replace("\n", "\\n")
@@ -4728,6 +4834,7 @@ class BaseCase(unittest.TestCase):
             new_file = True
             sb_config._recorded_actions[filename] = []
             data.append("from seleniumbase import BaseCase")
+            data.append("BaseCase.main(__name__, __file__)")
             data.append("")
             data.append("")
             data.append("class %s(BaseCase):" % classname)
@@ -5902,8 +6009,6 @@ class BaseCase(unittest.TestCase):
             raise Exception("text must be a string! Set found!")
         elif type(text) is dict:
             raise Exception("text must be a string! Dict found!")
-        elif not python3 and type(text) is unicode:  # noqa: F821
-            return text  # (For old Python versions with unicode)
         else:
             return str(text)
 
@@ -7559,6 +7664,33 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         self.click_partial_link_text(partial_link_text, timeout=timeout)
+
+    def right_click(self, selector, by="css selector", timeout=None):
+        """Same as self.context_click()"""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        self.context_click(selector, by=by, timeout=timeout)
+
+    def hover_on_element(self, selector, by="css selector", timeout=None):
+        """Same as self.hover()"""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        return self.hover(selector, by=by, timeout=timeout)
+
+    def hover_over_element(self, selector, by="css selector", timeout=None):
+        """Same as self.hover()"""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        return self.hover(selector, by=by, timeout=timeout)
 
     def wait_for_element_visible(
         self, selector, by="css selector", timeout=None
@@ -12122,12 +12254,8 @@ class BaseCase(unittest.TestCase):
         used to make the ":contains()" selector valid outside of JS calls."""
         _type = type(selector)  # First make sure the selector is a string
         not_string = False
-        if not python3:
-            if _type is not str and _type is not unicode:  # noqa: F821
-                not_string = True
-        else:
-            if _type is not str:
-                not_string = True
+        if _type is not str:
+            not_string = True
         if not_string:
             msg = "Expecting a selector of type: \"<class 'str'>\" (string)!"
             raise Exception('Invalid selector type: "%s"\n%s' % (_type, msg))
@@ -13516,9 +13644,9 @@ class BaseCase(unittest.TestCase):
     def __get_exception_info(self):
         exc_message = None
         if (
-            python3
-            and hasattr(self, "_outcome")
-            and (hasattr(self._outcome, "errors") and self._outcome.errors)
+            hasattr(self, "_outcome")
+            and hasattr(self._outcome, "errors")
+            and self._outcome.errors
         ):
             try:
                 exc_message = self._outcome.errors[0][1][1]
@@ -13668,27 +13796,12 @@ class BaseCase(unittest.TestCase):
                 return True
             else:
                 return False
-        elif (
-            python3
-            and hasattr(self, "_outcome")
-            and hasattr(self._outcome, "errors")
-        ):
+        elif hasattr(self, "_outcome") and hasattr(self._outcome, "errors"):
             if self._outcome.errors:
                 has_exception = True
         else:
-            if python3:
-                has_exception = sys.exc_info()[1] is not None
-            else:
-                if not hasattr(self, "_using_sb_fixture_class") and (
-                    not hasattr(self, "_using_sb_fixture_no_class")
-                ):
-                    has_exception = sys.exc_info()[1] is not None
-                else:
-                    has_exception = len(str(sys.exc_info()[1]).strip()) > 0
-        if (
-            self.__will_be_skipped
-            and (hasattr(self, "_using_sb_fixture") or not python3)
-        ):
+            has_exception = sys.exc_info()[1] is not None
+        if self.__will_be_skipped and hasattr(self, "_using_sb_fixture"):
             has_exception = False
         return has_exception
 
@@ -13978,12 +14091,7 @@ class BaseCase(unittest.TestCase):
                     pie_file = codecs.open(pie_path, "w+", encoding="utf-8")
                     pie_file.writelines(dash_pie)
                     pie_file.close()
-        if python3:
-            DASH_PIE_PNG_1 = constants.Dashboard.get_dash_pie_1()
-        else:
-            from seleniumbase.core import encoded_images
-
-            DASH_PIE_PNG_1 = encoded_images.get_dash_pie_png1()
+        DASH_PIE_PNG_1 = constants.Dashboard.get_dash_pie_1()
         head = (
             '<head><meta charset="utf-8">'
             '<meta name="viewport" content="shrink-to-fit=no">'

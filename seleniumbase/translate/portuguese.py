@@ -28,7 +28,7 @@ class CasoDeTeste(BaseCase):
         # slow_click(selector)
         return self.slow_click(*args, **kwargs)
 
-    def clique_se_está_visível(self, *args, **kwargs):  # noqa
+    def clique_se_está_visível(self, *args, **kwargs):
         # click_if_visible(selector, by=By.CSS_SELECTOR)
         return self.click_if_visible(*args, **kwargs)
 

@@ -3,7 +3,7 @@ from seleniumbase import BaseCase
 from seleniumbase import MasterQA
 
 
-class 硒测试用例(BaseCase):  # noqa
+class 硒测试用例(BaseCase):
     def __init__(self, *args, **kwargs):
         super(硒测试用例, self).__init__(*args, **kwargs)
         self._language = "Chinese"

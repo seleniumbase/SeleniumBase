@@ -5,7 +5,7 @@ from seleniumbase.translate.french import CasDeBase
 class MaClasseDeTest(CasDeBase):
     def test_exemple_1(self):
         self.ouvrir("https://fr.wikipedia.org/wiki/")
-        self.vérifier_texte("Wikipédia")  # noqa
+        self.vérifier_texte("Wikipédia")
         self.vérifier_élément('[alt="Wikipédia"]')
         self.js_taper("#searchform input", "Crème brûlée")
         self.cliquer("#searchform button")

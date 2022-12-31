@@ -1,7 +1,4 @@
-# -*- coding: utf-8 -*-
-"""
-Small Dictionary for Demo Mode translations
-"""
+"""Small Dictionary for Demo Mode translations"""
 
 
 class SD:

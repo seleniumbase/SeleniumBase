@@ -1,16 +1,11 @@
-# -*- coding: utf-8 -*-
-import sys
-
-python3 = True
-if sys.version_info[0] < 3:
-    python3 = False
+"""Generating Gherkin-formatted code from the Recorder."""
 
 
 def generate_gherkin(srt_actions):
     sb_actions = []
     for action in srt_actions:
         if action[0] == "begin" or action[0] == "_url_":
-            if "%" in action[2] and python3:
+            if "%" in action[2]:
                 try:
                     from urllib.parse import unquote
 
@@ -24,7 +19,7 @@ def generate_gherkin(srt_actions):
             else:
                 sb_actions.append('Open "%s"' % action[2].replace('"', '\\"'))
         elif action[0] == "f_url":
-            if "%" in action[2] and python3:
+            if "%" in action[2]:
                 try:
                     from urllib.parse import unquote
 
@@ -54,6 +49,11 @@ def generate_gherkin(srt_actions):
                 sb_actions.append('JS click all "%s"' % action[1])
             else:
                 sb_actions.append("JS click all '%s'" % action[1])
+        elif action[0] == "r_clk":
+            if '"' not in action[1]:
+                sb_actions.append('Context click "%s"' % action[1])
+            else:
+                sb_actions.append("Context click '%s'" % action[1])
         elif action[0] == "canva":
             selector = action[1][0]
             p_x = action[1][1]
@@ -78,6 +78,11 @@ def generate_gherkin(srt_actions):
                 sb_actions.append('Into \'%s\' type "%s"' % (action[1], text))
             elif '"' in action[1] and '"' in text:
                 sb_actions.append("Into '%s' type '%s'" % (action[1], text))
+        elif action[0] == "hover":
+            if '"' not in action[1]:
+                sb_actions.append('Hover "%s"' % action[1])
+            else:
+                sb_actions.append("Hover '%s'" % action[1])
         elif action[0] == "e_mfa":
             text = action[2].replace("\n", "\\n")
             if '"' not in action[1] and '"' not in text:

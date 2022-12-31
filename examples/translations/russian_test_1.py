@@ -1,5 +1,5 @@
 # Russian Language Test
-from seleniumbase.translate.russian import ТестНаСелен  # noqa
+from seleniumbase.translate.russian import ТестНаСелен
 
 
 class МойТестовыйКласс(ТестНаСелен):

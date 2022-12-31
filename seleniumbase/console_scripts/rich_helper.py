@@ -19,7 +19,7 @@ def display_markdown(code):
     try:
         markdown = Markdown(code)
         console = Console()
-        console.print(markdown)  # noqa
+        console.print(markdown)
         return True  # Success
     except Exception:
         return False  # Failure
@@ -28,7 +28,7 @@ def display_markdown(code):
 def display_code(code):
     try:
         console = Console()
-        console.print(code)  # noqa
+        console.print(code)
         return True  # Success
     except Exception:
         return False  # Failure

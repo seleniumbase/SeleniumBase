@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Launches SeleniumBase Commander | GUI for pytest.
 

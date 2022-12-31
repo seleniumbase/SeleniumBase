@@ -24,6 +24,9 @@ self.slow_click(selector, by="css selector", timeout=None)
 
 self.double_click(selector, by="css selector", timeout=None)
 
+self.context_click(selector, by="css selector", timeout=None)
+# Duplicates: self.right_click(selector, by="css selector", timeout=None)
+
 self.click_chain(selectors_list, by="css selector", timeout=None, spacing=0)
 
 self.type(selector, text, by="css selector", timeout=None)
@@ -151,7 +154,9 @@ self.is_element_in_an_iframe(selector, by="css selector")
 
 self.switch_to_frame_of_element(selector, by="css selector")
 
-self.hover_on_element(selector, by="css selector")
+self.hover(selector, by="css selector", timeout=None)
+# Duplicates: self.hover_on_element(selector, by="css selector", timeout=None)
+#             self.hover_over_element(selector, by="css selector", timeout=None)
 
 self.hover_and_click(
     hover_selector, click_selector,

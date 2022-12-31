@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Translates a SeleniumBase Python file into a different language
 
@@ -75,11 +74,12 @@ def invalid_run_command(msg=None):
 
 
 def sc_ranges():
-    # Get the ranges of special characters of Chinese, Japanese, and Korean.
+    # Get the ranges of special double-width characters.
     special_char_ranges = [
         {"from": ord("\u4e00"), "to": ord("\u9FFF")},
         {"from": ord("\u3040"), "to": ord("\u30ff")},
         {"from": ord("\uac00"), "to": ord("\ud7a3")},
+        {"from": ord("\uff01"), "to": ord("\uff60")},
     ]
     return special_char_ranges
 
@@ -219,6 +219,19 @@ def process_test_file(code_lines, new_lang):
                 # Add the class definition line as it is and move on.
                 seleniumbase_lines.append(line)
             continue
+
+        if (
+            ".main(__name__, __file__)" in line
+            and detected_lang
+            and new_lang
+            and (detected_lang != new_lang)
+        ):
+            old_basecase = MD_F.get_lang_parent_class(detected_lang)
+            new_basecase = MD_F.get_lang_parent_class(new_lang)
+            if old_basecase in line:
+                new_line = line.replace(old_basecase, new_basecase)
+                seleniumbase_lines.append(new_line)
+                continue
 
         if (
             "self." in line
@@ -995,7 +1008,7 @@ def main():
         print_success = False
         if magic_syntax:
             try:
-                magic_console.print(magic_syntax)  # noqa
+                magic_console.print(magic_syntax)
                 print_success = True
             except Exception:
                 pass

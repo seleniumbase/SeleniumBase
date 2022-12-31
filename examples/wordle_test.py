@@ -96,6 +96,6 @@ class WordleTests(BaseCase):
         self.sleep(3)
 
 
-if __name__ == "__main__":  # Use "python" to call "pytest"
+if __name__ == "__main__":
     from pytest import main
-    main([__file__])
+    main([__file__, "-s"])

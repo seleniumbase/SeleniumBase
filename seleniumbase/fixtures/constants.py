@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-"""
-SeleniumBase constants are stored in this file.
-"""
-
+"""SeleniumBase constants are stored in this file."""
 from seleniumbase.core import encoded_images
 
 

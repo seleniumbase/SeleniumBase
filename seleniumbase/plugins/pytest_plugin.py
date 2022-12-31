@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 This is the pytest configuration file for setting test options.
 """
@@ -16,9 +15,6 @@ from seleniumbase.fixtures import constants
 is_windows = False
 if sys.platform in ["win32", "win64", "x64"]:
     is_windows = True
-python3 = True
-if sys.version_info[0] < 3:
-    python3 = False
 python3_11_or_newer = False
 if sys.version_info >= (3, 11):
     python3_11_or_newer = True
@@ -1507,8 +1503,7 @@ def pytest_configure(config):
         or " -n" in arg_join
         or "-c" in sys_argv
         or (
-            python3
-            and "addopts" in config.inicfg.keys()
+            "addopts" in config.inicfg.keys()
             and (
                 "-n=" in config.inicfg["addopts"]
                 or "-n " in config.inicfg["addopts"]
@@ -1521,8 +1516,7 @@ def pytest_configure(config):
         "--html" in sys_argv
         or " --html=" in arg_join
         or (
-            python3
-            and "addopts" in config.inicfg.keys()
+            "addopts" in config.inicfg.keys()
             and (
                 "--html=" in config.inicfg["addopts"]
                 or "--html " in config.inicfg["addopts"]
@@ -1600,8 +1594,7 @@ def pytest_configure(config):
     if (
         "-v" in sys_argv and not sb_config._multithreaded
         or (
-            python3
-            and hasattr(config, "invocation_params")
+            hasattr(config, "invocation_params")
             and "-v" in config.invocation_params.args
             and (
                 "-n=1" in config.invocation_params.args
@@ -1781,10 +1774,7 @@ def pytest_runtest_teardown(item):
                     if (
                         hasattr(self, "driver")
                         and self.driver
-                        and (
-                            "--pdb" not in sys_argv
-                            or not python3
-                        )
+                        and "--pdb" not in sys_argv
                     ):
                         if not is_windows or self.driver.service.process:
                             self.driver.quit()
@@ -1928,17 +1918,10 @@ def _perform_pytest_unconfigure_():
     )
     find_it_3 = '<td class="col-result">Untested</td>'
     swap_with_3 = '<td class="col-result">Unreported</td>'
-    if python3:
-        # These use caching to prevent extra method calls
-        DASH_PIE_PNG_1 = constants.Dashboard.get_dash_pie_1()
-        DASH_PIE_PNG_2 = constants.Dashboard.get_dash_pie_2()
-        DASH_PIE_PNG_3 = constants.Dashboard.get_dash_pie_3()
-    else:
-        from seleniumbase.core import encoded_images
-
-        DASH_PIE_PNG_1 = encoded_images.get_dash_pie_png1()
-        DASH_PIE_PNG_2 = encoded_images.get_dash_pie_png2()
-        DASH_PIE_PNG_3 = encoded_images.get_dash_pie_png3()
+    # These use caching to prevent extra method calls
+    DASH_PIE_PNG_1 = constants.Dashboard.get_dash_pie_1()
+    DASH_PIE_PNG_2 = constants.Dashboard.get_dash_pie_2()
+    DASH_PIE_PNG_3 = constants.Dashboard.get_dash_pie_3()
     find_it_4 = 'href="%s"' % DASH_PIE_PNG_1
     swap_with_4 = 'href="%s"' % DASH_PIE_PNG_2
     try:
@@ -1947,14 +1930,8 @@ def _perform_pytest_unconfigure_():
         # Part 1: Finalizing the dashboard / integrating html report
         if os.path.exists(dashboard_path):
             the_html_d = None
-            if python3:
-                with open(dashboard_path, "r", encoding="utf-8") as f:
-                    the_html_d = f.read()
-            else:
-                import io
-
-                with io.open(dashboard_path, "r", encoding="utf-8") as f:
-                    the_html_d = f.read()
+            with open(dashboard_path, "r", encoding="utf-8") as f:
+                the_html_d = f.read()
             if sb_config._multithreaded and "-c" in sys_argv:
                 # Threads have "-c" in sys.argv, except for the last
                 raise Exception('Break out of "try" block.')
@@ -1995,22 +1972,14 @@ def _perform_pytest_unconfigure_():
                 if sb_config._dash_final_summary:
                     the_html_d += sb_config._dash_final_summary
                 time.sleep(0.1)  # Add time for "livejs" to detect changes
-                if python3:
-                    with open(dashboard_path, "w", encoding="utf-8") as f:
-                        f.write(the_html_d)  # Finalize the dashboard
-                else:
-                    with io.open(dashboard_path, "w", encoding="utf-8") as f:
-                        f.write(the_html_d)  # Finalize the dashboard
+                with open(dashboard_path, "w", encoding="utf-8") as f:
+                    f.write(the_html_d)  # Finalize the dashboard
                 time.sleep(0.1)  # Add time for "livejs" to detect changes
                 the_html_d = the_html_d.replace(
                     "</head>", "</head><!-- Dashboard Report Done -->"
                 )
-            if python3:
-                with open(dashboard_path, "w", encoding="utf-8") as f:
-                    f.write(the_html_d)  # Finalize the dashboard
-            else:
-                with io.open(dashboard_path, "w", encoding="utf-8") as f:
-                    f.write(the_html_d)  # Finalize the dashboard
+            with open(dashboard_path, "w", encoding="utf-8") as f:
+                f.write(the_html_d)  # Finalize the dashboard
             # Part 2: Appending a pytest html report with dashboard data
             html_report_path = None
             if sb_config._html_report_name:

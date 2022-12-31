@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Creates a new folder for running SeleniumBase scripts.
 
@@ -318,6 +317,7 @@ def main():
 
     data = []
     data.append("from seleniumbase import BaseCase")
+    data.append("BaseCase.main(__name__, __file__)")
     data.append("")
     data.append("")
     data.append("class MyTestClass(BaseCase):")
@@ -353,6 +353,7 @@ def main():
 
     data = []
     data.append("from seleniumbase import BaseCase")
+    data.append("BaseCase.main(__name__, __file__)")
     data.append("")
     data.append("")
     data.append("class DemoSiteTests(BaseCase):")
@@ -448,6 +449,7 @@ def main():
     data = []
     data.append("from parameterized import parameterized")
     data.append("from seleniumbase import BaseCase")
+    data.append("BaseCase.main(__name__, __file__)")
     data.append("")
     data.append("")
     data.append("class GoogleTests(BaseCase):")
@@ -485,14 +487,12 @@ def main():
 
     data = []
     data.append("from seleniumbase import BaseCase")
+    data.append("BaseCase.main(__name__, __file__)")
     data.append("")
     data.append("")
     data.append("class BaseTestCase(BaseCase):")
     data.append("    def setUp(self):")
-    if sys.version_info[0] >= 3:
-        data.append("        super().setUp()")
-    else:
-        data.append("        super(BaseTestCase, self).setUp()")
+    data.append("        super().setUp()")
     data.append("        # <<< Run custom code AFTER the super() line >>>")
     data.append("")
     data.append("    def tearDown(self):")
@@ -505,10 +505,7 @@ def main():
     data.append("            pass")
     data.append("        # (Wrap unreliable code in a try/except block.)")
     data.append("        # <<< Run custom code BEFORE the super() line >>>")
-    if sys.version_info[0] >= 3:
-        data.append("        super().tearDown()")
-    else:
-        data.append("        super(BaseTestCase, self).tearDown()")
+    data.append("        super().tearDown()")
     data.append("")
     data.append("    def login(self):")
     data.append("        # <<< Placeholder. Add your code here. >>>")
@@ -550,6 +547,7 @@ def main():
 
     data = []
     data.append("from seleniumbase import BaseCase")
+    data.append("BaseCase.main(__name__, __file__)")
     data.append("")
     data.append("")
     data.append("class DataPage:")
@@ -647,6 +645,7 @@ def main():
     data.append('""" Classic Page Object Model with BaseCase inheritance """')
     data.append("")
     data.append("from seleniumbase import BaseCase")
+    data.append("BaseCase.main(__name__, __file__)")
     data.append("")
     data.append("")
     data.append("class LoginPage:")

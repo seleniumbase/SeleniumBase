@@ -28,7 +28,7 @@ class CasDeBase(BaseCase):
         # slow_click(selector)
         return self.slow_click(*args, **kwargs)
 
-    def cliquer_si_affiché(self, *args, **kwargs):  # noqa
+    def cliquer_si_affiché(self, *args, **kwargs):
         # click_if_visible(selector, by=By.CSS_SELECTOR)
         return self.click_if_visible(*args, **kwargs)
 
