@@ -53,4 +53,4 @@ class DownloadImages(BaseCase):
 
 if __name__ == "__main__":
     from pytest import main
-    main([__file__])
+    main([__file__, "-s"])

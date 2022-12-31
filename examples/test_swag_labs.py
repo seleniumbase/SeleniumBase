@@ -80,6 +80,7 @@ class SwagLabsTests(BaseCase):
         super(SwagLabsTests, self).tearDown()
 
 
-if __name__ == "__main__":  # Use "python" to call "pytest"
+if __name__ == "__main__":  # If "python", run pytest
     from pytest import main
-    main([__file__])
+    from sys import argv
+    main([*argv, "-s"])  # Run pytest using same args
