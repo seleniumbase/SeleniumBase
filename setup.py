@@ -148,10 +148,10 @@ setup(
         'certifi>=2022.12.7;python_version>="3.6"',
         'filelock>=3.2.1;python_version<"3.6"',
         'filelock>=3.4.1;python_version>="3.6" and python_version<"3.7"',
-        'filelock>=3.8.2;python_version>="3.7"',
+        'filelock>=3.9.0;python_version>="3.7"',
         'platformdirs>=2.0.2;python_version<"3.6"',
         'platformdirs>=2.4.0;python_version>="3.6" and python_version<"3.7"',
-        'platformdirs>=2.6.0;python_version>="3.7"',
+        'platformdirs>=2.6.2;python_version>="3.7"',
         'pyparsing>=2.4.7;python_version<"3.6"',
         'pyparsing>=3.0.7;python_version>="3.6" and python_version<"3.7"',
         'pyparsing>=3.0.9;python_version>="3.7"',
@@ -242,7 +242,8 @@ setup(
         'typing-extensions==3.10.0.2;python_version<"3.6"',  # <3.9 for "rich"
         'typing-extensions==4.1.1;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
         'typing-extensions==4.4.0;python_version>="3.7" and python_version<"3.9"',  # noqa: E501
-        'rich==12.6.0;python_version>="3.6" and python_version<"4.0"',
+        'rich==12.6.0;python_version>="3.6" and python_version<"3.7"',
+        'rich==13.0.0;python_version>="3.7" and python_version<"4.0"',
     ],
     extras_require={
         # pip install -e .[coverage]
