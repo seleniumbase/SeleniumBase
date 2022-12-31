@@ -318,6 +318,7 @@ def main():
 
     data = []
     data.append("from seleniumbase import BaseCase")
+    data.append("BaseCase.main(__name__, __file__)")
     data.append("")
     data.append("")
     data.append("class MyTestClass(BaseCase):")
@@ -353,6 +354,7 @@ def main():
 
     data = []
     data.append("from seleniumbase import BaseCase")
+    data.append("BaseCase.main(__name__, __file__)")
     data.append("")
     data.append("")
     data.append("class DemoSiteTests(BaseCase):")
@@ -448,6 +450,7 @@ def main():
     data = []
     data.append("from parameterized import parameterized")
     data.append("from seleniumbase import BaseCase")
+    data.append("BaseCase.main(__name__, __file__)")
     data.append("")
     data.append("")
     data.append("class GoogleTests(BaseCase):")
@@ -485,6 +488,7 @@ def main():
 
     data = []
     data.append("from seleniumbase import BaseCase")
+    data.append("BaseCase.main(__name__, __file__)")
     data.append("")
     data.append("")
     data.append("class BaseTestCase(BaseCase):")
@@ -550,6 +554,7 @@ def main():
 
     data = []
     data.append("from seleniumbase import BaseCase")
+    data.append("BaseCase.main(__name__, __file__)")
     data.append("")
     data.append("")
     data.append("class DataPage:")
@@ -647,6 +652,7 @@ def main():
     data.append('""" Classic Page Object Model with BaseCase inheritance """')
     data.append("")
     data.append("from seleniumbase import BaseCase")
+    data.append("BaseCase.main(__name__, __file__)")
     data.append("")
     data.append("")
     data.append("class LoginPage:")

@@ -11,7 +11,7 @@ Example:
 
 Options:
     -b / --basic  (Basic boilerplate / single-line test)
-    -r / --rec  (add pdb++ breakpoint for Recorder Mode)
+    -r / --rec  (adds Pdb+ breakpoint for Recorder Mode)
 
 Language Options:
     --en / --English    |    --zh / --Chinese
@@ -45,7 +45,7 @@ def invalid_run_command(msg=None):
     exp += "           sbase mkfile new_test.py\n"
     exp += "  Options:\n"
     exp += "           -b / --basic  (Basic boilerplate / single-line test)\n"
-    exp += "           -r / --rec  (add pdb++ breakpoint for Recorder Mode)\n"
+    exp += "           -r / --rec  (adds Pdb+ breakpoint for Recorder Mode)\n"
     exp += "  Language Options:\n"
     exp += "           --en / --English    |    --zh / --Chinese\n"
     exp += "           --nl / --Dutch      |    --fr / --French\n"
@@ -220,9 +220,12 @@ def main():
         import_line = MD_F.get_import_line(language)
         parent_class = MD_F.get_lang_parent_class(language)
     class_line = "class %s(%s):" % (class_name, parent_class)
+    main_line = "BaseCase.main(__name__, __file__)"
 
     data = []
     data.append("%s" % import_line)
+    if not recorder:
+        data.append(main_line)
     data.append("")
     data.append("")
     data.append("%s" % class_line)
@@ -272,6 +275,10 @@ def main():
                         # Example: self.assert_true("Name" in self.get_title())
                         line = new_line
                         continue
+            if main_line in line:
+                new_main = "%s.main(__name__, __file__)" % parent_class
+                new_line = line.replace(main_line, new_main)
+                found_swap = True
             if found_swap:
                 if new_line.endswith("  # noqa"):  # Remove flake8 skip
                     new_line = new_line[0 : -len("  # noqa")]
