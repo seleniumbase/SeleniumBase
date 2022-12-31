@@ -1,6 +1,6 @@
 <!-- SeleniumBase Docs -->
 
-## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Example Tests:
+## [<img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Example Tests:
 
 <p align="left"><a align="center" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py"><img align="center" src="https://seleniumbase.github.io/cdn/img/sb_demo_page.png" alt="SeleniumBase Demo Page" width="420" /></a></p>
 
@@ -13,17 +13,13 @@
 
 (NOTE: Some example tests fail on purpose to demonstrate [logging features](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).)
 
-<h3><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32" /> Example tests with run commands to help you get started:</h3>
+--------
 
-Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) in Chrome: (Default: ``--browser=chrome``)
+<h3><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" /> Example tests with run commands to help you get started:</h3>
 
-```bash
-pytest my_first_test.py
-```
+--------
 
-<img src="https://seleniumbase.github.io/cdn/gif/swag_labs_4.gif" title="Testing Swag Labs with SeleniumBase" /><br />
-
-Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py) on the SeleniumBase Demo Site:
+Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py): (Default option: ``--browser=chrome``)
 
 ```bash
 pytest test_demo_site.py
@@ -31,11 +27,15 @@ pytest test_demo_site.py
 
 <img src="https://seleniumbase.github.io/cdn/gif/demo_page_4.gif" title="SeleniumBase Demo Page" /><br />
 
+--------
+
 Run an example test in Firefox:
 
 ```bash
 pytest my_first_test.py --browser=firefox
 ```
+
+--------
 
 Run an example test in Demo Mode: (highlight assertions)
 
@@ -45,6 +45,18 @@ pytest test_swag_labs.py --demo
 
 <img src="https://seleniumbase.github.io/cdn/gif/swag_demo_3.gif" /><br />
 
+--------
+
+Run [test_coffee_cart.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_coffee_cart.py) to test the [Coffee Cart](https://seleniumbase.io/coffee/) app:
+
+```bash
+pytest test_coffee_cart.py --demo
+```
+
+<img src="https://seleniumbase.github.io/cdn/gif/coffee_cart.gif" title="SeleniumBase Coffee App Example" alt="SeleniumBase Example" title="SeleniumBase Coffee App Example" />
+
+--------
+
 Run a [Wordle-solver example](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/wordle_test.py):
 
 ```bash
@@ -53,11 +65,15 @@ pytest wordle_test.py
 
 <img src="https://seleniumbase.github.io/cdn/gif/wordle.gif" title="Solving Wordle with SeleniumBase" /><br />
 
+--------
+
 Run an example test in Headless Mode: (invisible browser)
 
 ```bash
 pytest my_first_test.py --headless
 ```
+
+--------
 
 Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py) using Chrome's mobile device emulator: (default settings)
 
@@ -67,6 +83,8 @@ pytest test_swag_labs.py --mobile
 
 <img src="https://seleniumbase.github.io/cdn/gif/swag_mobile_2.gif" title="SeleniumBase Mobile Mode" /><br />
 
+--------
+
 Run another [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_xkcd.py) in Demo Mode: (highlight assertions)
 
 ```bash
@@ -75,11 +93,15 @@ pytest test_xkcd.py --demo
 
 <img src="https://seleniumbase.github.io/cdn/gif/xkcd_vid.gif" title="SeleniumBase Demo Mode" /><br />
 
+--------
+
 Run a [test suite](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_suite.py) with verbose output: (see more details)
 
 ```bash
 pytest test_suite.py -v
 ```
+
+--------
 
 Run a test suite multi-threaded using [n] threads:
 
@@ -87,11 +109,15 @@ Run a test suite multi-threaded using [n] threads:
 pytest test_suite.py -n=4
 ```
 
+--------
+
 Run a [parameterized test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/parameterized_test.py): (Generates multiple tests from one)
 
 ```bash
 pytest parameterized_test.py -v
 ```
+
+--------
 
 Run a test suite and generate a SeleniumBase Dashboard:
 
@@ -99,11 +125,15 @@ Run a test suite and generate a SeleniumBase Dashboard:
 pytest test_suite.py --dashboard
 ```
 
+--------
+
 Run a test suite and generate a pytest report:
 
 ```bash
 pytest test_suite.py --html=report.html
 ```
+
+--------
 
 Run a [failing test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_fail.py): (See the ``latest_logs/`` folder for logs and screenshots)
 
@@ -111,11 +141,15 @@ Run a [failing test](https://github.com/seleniumbase/SeleniumBase/blob/master/ex
 pytest test_fail.py
 ```
 
+--------
+
 Run a failing test with Debug-mode enabled: (``pdb`` activates on failures)
 
 ```bash
 pytest test_fail.py --pdb -s
 ```
+
+--------
 
 Run a test suite that demonstrates the use of pytest markers:
 
@@ -123,17 +157,23 @@ Run a test suite that demonstrates the use of pytest markers:
 pytest -m marker_test_suite -v
 ```
 
+--------
+
 Run a test suite that reuses the browser session between tests:
 
 ```bash
 pytest test_suite.py --reuse-session
 ```
 
+--------
+
 Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/rate_limiting_test.py) demonstrating the ``rate_limited`` Python decorator:
 
 ```bash
 pytest rate_limiting_test.py
 ```
+
+--------
 
 Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/upload_file_test.py) that demonstrates how to upload a file to a website:
 
@@ -161,11 +201,15 @@ Run an example test with nosetests:
 nosetests my_first_test.py
 ```
 
+--------
+
 Run an example test suite and generate a nosetest report:
 
 ```bash
 nosetests test_suite.py --report --show-report
 ```
+
+--------
 
 Run an example test using a nosetest configuration file:
 
@@ -181,7 +225,7 @@ For more advanced run commands, such as using a proxy server, see [../help_docs/
 
 If you just need to perform some quick website verification on various devices, you can use the <a href="https://seleniumbase.io/devices/">SeleniumBase Device Farm</a>. Just plug in a website URL, and it will display how the website looks on four different devices:
 
-<a href="https://seleniumbase.io/devices/"><img src="https://seleniumbase.github.io/cdn/img/github_demo2.png" width="540" title="SeleniumBase Mobile Mode" /></a><br />
+<a href="https://seleniumbase.io/devices/?url=github.com"><img src="https://seleniumbase.github.io/cdn/img/github_demo2.png" width="540" title="SeleniumBase Mobile Mode" /></a><br />
 
 --------
 
@@ -192,6 +236,18 @@ python gui_test_runner.py
 ```
 
 <img src="https://seleniumbase.github.io/cdn/img/gui_test_runner.png" title="GUI Test Runner" width="320" />
+
+(The newer [SeleniumBase Commander](https://seleniumbase.io/help_docs/commander/) improves on that.)
+
+--------
+
+🎖️ To launch the SeleniumBase Commander GUI for pytest:
+
+```bash
+sbase gui
+```
+
+<img src="https://seleniumbase.github.io/cdn/img/sbase_commander_wide.png" title="SeleniumBase Commander" width="600">
 
 --------
 

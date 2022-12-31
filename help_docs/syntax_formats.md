@@ -44,7 +44,7 @@
 
 In this format, (which is used by most of the tests in the <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples">SeleniumBase examples folder</a>), <code>BaseCase</code> is imported at the top of a Python file, followed by a Python class inheriting <code>BaseCase</code>. Then, any test method defined in that class automatically gains access to SeleniumBase methods, including the <code>setUp()</code> and <code>tearDown()</code> methods that are automatically called for opening and closing web browsers at the start and end of tests.
 
-To run a test of this format, use **``pytest``** or ``nosetests``. If you add: ``if __name__ == "__main__":`` ``pytest.main([__file__])`` to a file, you can also use ``python`` as a runner, which invokes ``pytest``. Here's an example:
+To run a test of this format, use **``pytest``** or ``nosetests``. If you add: ``if __name__ == "__main__":`` ``pytest.main([__file__])`` to a file, you can also use ``python`` as a test runner, which invokes ``pytest``. Here's an example:
 
 ```python
 from seleniumbase import BaseCase
@@ -60,12 +60,14 @@ class MyTestClass(BaseCase):
         self.assert_exact_text("Demo Page", "h1")
         self.assert_no_js_errors()
 
-if __name__ == "__main__":  # Use "python" to call "pytest"
+if __name__ == "__main__":
     from pytest import main
-    main([__file__])
+    main([__file__, "-s"])
 ```
 
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py">examples/test_demo_site.py</a> for the full test.)
+
+Starting with ``seleniumbase`` ``4.11.0``, you can also include ``BaseCase.main(__name__, __file__)`` in your script to invoke ``pytest`` via ``python``. (Eg. [coffee_cart_tests.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/coffee_cart_tests.py))
 
 Using ``BaseCase`` inheritance is a great starting point for anyone learning SeleniumBase, and it follows good object-oriented programming principles.
 
