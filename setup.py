@@ -122,15 +122,12 @@ setup(
         "Topic :: Software Development :: Testing :: Traffic Generation",
         "Topic :: Utilities",
     ],
-    python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*",  # noqa: E501
+    python_requires=">=3.6",
     install_requires=[
-        'pip>=20.3.4;python_version<"3.6"',
         'pip>=21.3.1;python_version>="3.6" and python_version<"3.7"',
         'pip>=22.3.1;python_version>="3.7"',
-        'packaging>=20.9;python_version<"3.6"',
         'packaging>=21.3;python_version>="3.6" and python_version<"3.7"',
         'packaging>=22.0;python_version>="3.7"',
-        'setuptools>=44.1.1;python_version<"3.6"',
         'setuptools>=59.6.0;python_version>="3.6" and python_version<"3.7"',
         'setuptools>=65.6.3;python_version>="3.7"',
         'tomli>=1.2.3;python_version>="3.6" and python_version<"3.7"',
@@ -138,25 +135,18 @@ setup(
         "tqdm>=4.64.1",
         'wheel>=0.37.1;python_version<"3.7"',
         'wheel>=0.38.4;python_version>="3.7"',
-        'attrs==21.4.0;python_version<"3.6"',
         'attrs==22.1.0;python_version>="3.6" and python_version<"3.7"',
         'attrs>=22.2.0;python_version>="3.7"',
         'PyYAML>=6.0;python_version>="3.6"',
-        'certifi>=2021.10.8;python_version<"3.6"',
         'certifi>=2022.12.7;python_version>="3.6"',
-        'filelock>=3.2.1;python_version<"3.6"',
         'filelock>=3.4.1;python_version>="3.6" and python_version<"3.7"',
         'filelock>=3.9.0;python_version>="3.7"',
-        'platformdirs>=2.0.2;python_version<"3.6"',
         'platformdirs>=2.4.0;python_version>="3.6" and python_version<"3.7"',
         'platformdirs>=2.6.2;python_version>="3.7"',
-        'pyparsing>=2.4.7;python_version<"3.6"',
         'pyparsing>=3.0.7;python_version>="3.6" and python_version<"3.7"',
         'pyparsing>=3.0.9;python_version>="3.7"',
         "six==1.16.0",
-        'idna==2.10;python_version<"3.6"',  # Must stay in sync with "requests"
         'idna==3.4;python_version>="3.6"',  # Must stay in sync with "requests"
-        'chardet==3.0.4;python_version<"3.6"',  # Stay in sync with "requests"
         'chardet==4.0.0;python_version>="3.6" and python_version<"3.7"',
         'chardet==5.1.0;python_version>="3.7"',  # Stay in sync with "requests"
         'charset-normalizer==2.0.12;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
@@ -178,34 +168,24 @@ setup(
         'selenium==3.141.0;python_version<"3.7"',
         'selenium==4.7.2;python_version>="3.7"',
         'msedge-selenium-tools==3.141.3;python_version<"3.7"',
-        'more-itertools==5.0.0;python_version<"3.6"',
         'more-itertools==8.14.0;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
         'more-itertools==9.0.0;python_version>="3.7"',
         'cssselect==1.1.0;python_version<"3.7"',
         'cssselect==1.2.0;python_version>="3.7"',
         "sortedcontainers==2.4.0",
-        'fasteners==0.16;python_version<"3.6"',
         'fasteners==0.17.3;python_version>="3.6" and python_version<"3.7"',
         'fasteners==0.18;python_version>="3.7"',
         "execnet==1.9.0",
-        'pluggy==0.13.1;python_version<"3.6"',
         'pluggy==1.0.0;python_version>="3.6"',
-        'py==1.8.1;python_version<"3.6"',
         'py==1.11.0;python_version>="3.6"',
-        'pytest==4.6.11;python_version<"3.6"',
         'pytest==7.0.1;python_version>="3.6" and python_version<"3.7"',
         'pytest==7.2.0;python_version>="3.7"',
-        'pytest-forked==1.3.0;python_version<"3.6"',
         'pytest-forked==1.4.0;python_version>="3.6"',
-        'pytest-html==1.22.1;python_version<"3.6"',
         'pytest-html==2.0.1;python_version>="3.6"',  # Newer ones had issues
-        'pytest-metadata==1.8.0;python_version<"3.6"',
         'pytest-metadata==1.11.0;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
         'pytest-metadata==2.0.4;python_version>="3.7"',
         "pytest-ordering==0.6",
-        'pytest-rerunfailures==8.0;python_version<"3.6"',
         'pytest-rerunfailures==10.3;python_version>="3.6"',
-        'pytest-xdist==1.34.0;python_version<"3.6"',
         'pytest-xdist==2.5.0;python_version>="3.6" and python_version<"3.7"',
         'pytest-xdist==3.1.0;python_version>="3.7"',
         "parameterized==0.8.1",
@@ -213,31 +193,22 @@ setup(
         "behave==1.2.6",
         "parse==1.19.0",
         "parse-type==0.6.0",
-        'soupsieve==1.9.6;python_version<"3.6"',
         'soupsieve==2.3.2.post1;python_version>="3.6"',
-        'beautifulsoup4==4.9.3;python_version<"3.6"',
         'beautifulsoup4==4.11.1;python_version>="3.6"',
-        'cryptography==2.9.2;python_version<"3.6"',
         'cryptography==36.0.2;python_version>="3.6" and python_version<"3.7"',
         'cryptography==38.0.4;python_version>="3.7"',
-        'pygments==2.5.2;python_version<"3.6"',
         'pygments==2.13.0;python_version>="3.6"',
-        'pyreadline==2.1;platform_system=="Windows" and python_version<"3.6"',
         'pyreadline3==3.4.1;platform_system=="Windows" and python_version>="3.6"',  # noqa: E501
         "tabcompleter==1.1.0",
         "pdbp==1.2.7",
-        'colorama==0.4.6;python_version<"3.6"',
         'colorama==0.4.5;python_version>="3.6" and python_version<"3.7"',
         'colorama==0.4.6;python_version>="3.7"',
         'exceptiongroup==1.1.0;python_version>="3.7"',
-        'importlib-metadata==2.1.3;python_version<"3.6"',
         'importlib-metadata==4.2.0;python_version>="3.6" and python_version<"3.8"',  # noqa: E501
         "pycparser==2.21",
-        'pyotp==2.3.0;python_version<"3.6"',
         'pyotp==2.7.0;python_version>="3.6" and python_version<"3.7"',
         'pyotp==2.8.0;python_version>="3.7"',
         "cffi==1.15.1",
-        'typing-extensions==3.10.0.2;python_version<"3.6"',  # <3.9 for "rich"
         'typing-extensions==4.1.1;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
         'typing-extensions==4.4.0;python_version>="3.7" and python_version<"3.9"',  # noqa: E501
         'rich==12.6.0;python_version>="3.6" and python_version<"3.7"',
@@ -247,45 +218,35 @@ setup(
         # pip install -e .[coverage]
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
-            'coverage==5.5;python_version<"3.6"',
             'coverage==6.2;python_version>="3.6" and python_version<"3.7"',
             'coverage==7.0.1;python_version>="3.7"',
-            'pytest-cov==2.12.1;python_version<"3.6"',
             'pytest-cov==4.0.0;python_version>="3.6"',
         ],
         # pip install -e .[flake8]
         # Usage: flake8
         "flake8": [
-            'flake8==3.7.9;python_version<"3.6"',
             'flake8==5.0.4;python_version>="3.6" and python_version<"3.9"',
             'flake8==6.0.0;python_version>="3.9"',
-            'mccabe==0.6.1;python_version<"3.6"',
             'mccabe==0.7.0;python_version>="3.6"',
-            'pyflakes==2.1.1;python_version<"3.6"',
             'pyflakes==2.5.0;python_version>="3.6" and python_version<"3.9"',
             'pyflakes==3.0.1;python_version>="3.9"',
-            'pycodestyle==2.5.0;python_version<"3.6"',
             'pycodestyle==2.9.1;python_version>="3.6" and python_version<"3.9"',  # noqa: E501
             'pycodestyle==2.10.0;python_version>="3.9"',
         ],
         # pip install -e .[ipdb]
         # (Not needed for debugging anymore. SeleniumBase now includes "pdbp".)
         "ipdb": [
-            'ipdb==0.13.4;python_version<"3.6"',
             'ipdb==0.13.11;python_version>="3.6"',
-            'ipython==5.10.0;python_version<"3.6"',
             'ipython==7.16.3;python_version>="3.6" and python_version<"3.7"',
             'ipython==7.34.0;python_version>="3.7"',
         ],
         # pip install -e .[pdfminer]
         "pdfminer": [
-            'pdfminer.six==20191110;python_version<"3.6"',
             'pdfminer.six==20211012;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
             'pdfminer.six==20221105;python_version>="3.7"',
         ],
         # pip install -e .[pillow]
         "pillow": [
-            'Pillow==6.2.2;python_version<"3.6"',
             'Pillow==8.4.0;python_version>="3.6" and python_version<"3.7"',
             'Pillow==9.3.0;python_version>="3.7"',
         ],
