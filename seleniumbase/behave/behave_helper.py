@@ -54,6 +54,11 @@ def generate_gherkin(srt_actions):
                 sb_actions.append('JS click all "%s"' % action[1])
             else:
                 sb_actions.append("JS click all '%s'" % action[1])
+        elif action[0] == "r_clk":
+            if '"' not in action[1]:
+                sb_actions.append('Context click "%s"' % action[1])
+            else:
+                sb_actions.append("Context click '%s'" % action[1])
         elif action[0] == "canva":
             selector = action[1][0]
             p_x = action[1][1]
@@ -78,6 +83,11 @@ def generate_gherkin(srt_actions):
                 sb_actions.append('Into \'%s\' type "%s"' % (action[1], text))
             elif '"' in action[1] and '"' in text:
                 sb_actions.append("Into '%s' type '%s'" % (action[1], text))
+        elif action[0] == "hover":
+            if '"' not in action[1]:
+                sb_actions.append('Hover "%s"' % action[1])
+            else:
+                sb_actions.append("Hover '%s'" % action[1])
         elif action[0] == "e_mfa":
             text = action[2].replace("\n", "\\n")
             if '"' not in action[1] and '"' not in text:

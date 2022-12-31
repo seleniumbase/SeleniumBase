@@ -4311,6 +4311,7 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("js_cl")
         ext_actions.append("js_ca")
         ext_actions.append("js_ty")
+        ext_actions.append("r_clk")
         ext_actions.append("as_el")
         ext_actions.append("as_ep")
         ext_actions.append("asenv")
@@ -4330,6 +4331,7 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("sw_pf")
         ext_actions.append("s_c_f")
         ext_actions.append("s_c_d")
+        ext_actions.append("hover")
         ext_actions.append("sleep")
         ext_actions.append("sh_fc")
         ext_actions.append("c_l_s")
@@ -4426,6 +4428,12 @@ class BaseCase(unittest.TestCase):
                     sb_actions.append('self.%s("%s")' % (method, action[1]))
                 else:
                     sb_actions.append("self.%s('%s')" % (method, action[1]))
+            elif action[0] == "r_clk":
+                method = "context_click"
+                if '"' not in action[1]:
+                    sb_actions.append('self.%s("%s")' % (method, action[1]))
+                else:
+                    sb_actions.append("self.%s('%s')" % (method, action[1]))
             elif action[0] == "canva":
                 method = "click_with_offset"
                 selector = action[1][0]
@@ -4460,6 +4468,12 @@ class BaseCase(unittest.TestCase):
                     sb_actions.append(
                         "self.%s('%s', '%s')" % (method, action[1], text)
                     )
+            elif action[0] == "hover":
+                method = "hover"
+                if '"' not in action[1]:
+                    sb_actions.append('self.%s("%s")' % (method, action[1]))
+                else:
+                    sb_actions.append("self.%s('%s')" % (method, action[1]))
             elif action[0] == "e_mfa":
                 method = "enter_mfa_code"
                 text = action[2].replace("\n", "\\n")
@@ -4830,6 +4844,7 @@ class BaseCase(unittest.TestCase):
             new_file = True
             sb_config._recorded_actions[filename] = []
             data.append("from seleniumbase import BaseCase")
+            data.append("BaseCase.main(__name__, __file__)")
             data.append("")
             data.append("")
             data.append("class %s(BaseCase):" % classname)
