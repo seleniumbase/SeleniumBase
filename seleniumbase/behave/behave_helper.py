@@ -1,16 +1,11 @@
-# -*- coding: utf-8 -*-
-import sys
-
-python3 = True
-if sys.version_info[0] < 3:
-    python3 = False
+"""Generating Gherkin-formatted code from the Recorder."""
 
 
 def generate_gherkin(srt_actions):
     sb_actions = []
     for action in srt_actions:
         if action[0] == "begin" or action[0] == "_url_":
-            if "%" in action[2] and python3:
+            if "%" in action[2]:
                 try:
                     from urllib.parse import unquote
 
@@ -24,7 +19,7 @@ def generate_gherkin(srt_actions):
             else:
                 sb_actions.append('Open "%s"' % action[2].replace('"', '\\"'))
         elif action[0] == "f_url":
-            if "%" in action[2] and python3:
+            if "%" in action[2]:
                 try:
                     from urllib.parse import unquote
 

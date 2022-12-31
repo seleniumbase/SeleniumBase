@@ -1,6 +1,4 @@
-# -\*- coding: utf-8 -\*-
-
-""" This is mainly for string obfuscation. """
+"""This is mainly for string obfuscation."""
 
 import base64
 import codecs

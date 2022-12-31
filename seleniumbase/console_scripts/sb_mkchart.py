@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Creates a new SeleniumBase chart presentation with boilerplate code.
 

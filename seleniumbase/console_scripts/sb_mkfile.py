@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Creates a new SeleniumBase test file with boilerplate code.
 

@@ -30,8 +30,6 @@ with open(os.path.join(this_dir, "seleniumbase", "__version__.py"), "rb") as f:
 if sys.argv[-1] == "publish":
     reply = None
     input_method = input
-    if not sys.version_info[0] >= 3:
-        input_method = raw_input  # noqa: F821
     confirm_text = ">>> Confirm release PUBLISH to PyPI? (yes/no): "
     reply = str(input_method(confirm_text)).lower().strip()
     if reply == "yes":

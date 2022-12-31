@@ -9,16 +9,11 @@ Works the same as obfuscate.py, but doesn't mask the input.
 """
 
 from seleniumbase.common import encryption
-import sys
 import time
 
 
 def main():
-    if sys.version_info[0] >= 3:
-        input_method = input  # Using Python 3 (or higher)
-    else:
-        # Python 2 has the raw_input() method. Python 3 does not.
-        input_method = raw_input  # noqa: ignore=F821
+    input_method = input
     try:
         while 1:
             code = input_method(

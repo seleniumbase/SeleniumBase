@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Launches the SeleniumBase Recorder Desktop App.
 

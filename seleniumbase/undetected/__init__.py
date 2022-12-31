@@ -264,7 +264,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
             import subprocess
 
             browser = subprocess.Popen(
-                [options.binary_location, *options.arguments],  # noqa
+                [options.binary_location, *options.arguments],
                 stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,

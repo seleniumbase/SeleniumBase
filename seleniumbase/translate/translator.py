@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Translates a SeleniumBase Python file into a different language
 
@@ -1009,7 +1008,7 @@ def main():
         print_success = False
         if magic_syntax:
             try:
-                magic_console.print(magic_syntax)  # noqa
+                magic_console.print(magic_syntax)
                 print_success = True
             except Exception:
                 pass

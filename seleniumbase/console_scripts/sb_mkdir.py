@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Creates a new folder for running SeleniumBase scripts.
 
@@ -493,10 +492,7 @@ def main():
     data.append("")
     data.append("class BaseTestCase(BaseCase):")
     data.append("    def setUp(self):")
-    if sys.version_info[0] >= 3:
-        data.append("        super().setUp()")
-    else:
-        data.append("        super(BaseTestCase, self).setUp()")
+    data.append("        super().setUp()")
     data.append("        # <<< Run custom code AFTER the super() line >>>")
     data.append("")
     data.append("    def tearDown(self):")
@@ -509,10 +505,7 @@ def main():
     data.append("            pass")
     data.append("        # (Wrap unreliable code in a try/except block.)")
     data.append("        # <<< Run custom code BEFORE the super() line >>>")
-    if sys.version_info[0] >= 3:
-        data.append("        super().tearDown()")
-    else:
-        data.append("        super(BaseTestCase, self).tearDown()")
+    data.append("        super().tearDown()")
     data.append("")
     data.append("    def login(self):")
     data.append("        # <<< Placeholder. Add your code here. >>>")

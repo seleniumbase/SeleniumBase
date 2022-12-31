@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 r"""----------------------------------------------------------------->
 |    ______     __           _                  ____                 |
 |   / ____/__  / /__  ____  (_)_  ______ ___   / _  \____  ________  |
@@ -82,11 +81,6 @@ LOGGER.setLevel(logging.WARNING)
 is_windows = False
 if sys.platform in ["win32", "win64", "x64"]:
     is_windows = True
-python3 = True
-if sys.version_info[0] < 3:
-    python3 = False
-    reload(sys)  # noqa: F821
-    sys.setdefaultencoding("utf8")
 python3_11_or_newer = False
 if sys.version_info >= (3, 11):
     python3_11_or_newer = True
@@ -1085,7 +1079,7 @@ class BaseCase(unittest.TestCase):
     def get_current_url(self):
         self.__check_scope()
         current_url = self.driver.current_url
-        if "%" in current_url and python3:
+        if "%" in current_url:
             try:
                 from urllib.parse import unquote
 
@@ -2997,8 +2991,6 @@ class BaseCase(unittest.TestCase):
     def execute_script(self, script, *args, **kwargs):
         self.__check_scope()
         self.__check_browser()
-        if not python3:
-            script = unicode(script.decode("latin-1"))  # noqa: F821
         return self.driver.execute_script(script, *args, **kwargs)
 
     def execute_async_script(self, script, timeout=None):
@@ -3191,8 +3183,6 @@ class BaseCase(unittest.TestCase):
             url = self.execute_script(
                 """return document.querySelector('%s').src;""" % frame
             )
-            if not python3:
-                url = str(url)
             if url and len(url) > 0:
                 if ("http:") in url or ("https:") in url or ("file:") in url:
                     pass
@@ -4378,7 +4368,7 @@ class BaseCase(unittest.TestCase):
             cleaned_actions.append(srt_actions[n])
         for action in srt_actions:
             if action[0] == "begin" or action[0] == "_url_":
-                if "%" in action[2] and python3:
+                if "%" in action[2]:
                     try:
                         from urllib.parse import unquote
 
@@ -4394,7 +4384,7 @@ class BaseCase(unittest.TestCase):
                         'self.open("%s")' % action[2].replace('"', '\\"')
                     )
             elif action[0] == "f_url":
-                if "%" in action[2] and python3:
+                if "%" in action[2]:
                     try:
                         from urllib.parse import unquote
 
@@ -6019,8 +6009,6 @@ class BaseCase(unittest.TestCase):
             raise Exception("text must be a string! Set found!")
         elif type(text) is dict:
             raise Exception("text must be a string! Dict found!")
-        elif not python3 and type(text) is unicode:  # noqa: F821
-            return text  # (For old Python versions with unicode)
         else:
             return str(text)
 
@@ -12266,12 +12254,8 @@ class BaseCase(unittest.TestCase):
         used to make the ":contains()" selector valid outside of JS calls."""
         _type = type(selector)  # First make sure the selector is a string
         not_string = False
-        if not python3:
-            if _type is not str and _type is not unicode:  # noqa: F821
-                not_string = True
-        else:
-            if _type is not str:
-                not_string = True
+        if _type is not str:
+            not_string = True
         if not_string:
             msg = "Expecting a selector of type: \"<class 'str'>\" (string)!"
             raise Exception('Invalid selector type: "%s"\n%s' % (_type, msg))
@@ -13660,9 +13644,9 @@ class BaseCase(unittest.TestCase):
     def __get_exception_info(self):
         exc_message = None
         if (
-            python3
-            and hasattr(self, "_outcome")
-            and (hasattr(self._outcome, "errors") and self._outcome.errors)
+            hasattr(self, "_outcome")
+            and hasattr(self._outcome, "errors")
+            and self._outcome.errors
         ):
             try:
                 exc_message = self._outcome.errors[0][1][1]
@@ -13812,27 +13796,12 @@ class BaseCase(unittest.TestCase):
                 return True
             else:
                 return False
-        elif (
-            python3
-            and hasattr(self, "_outcome")
-            and hasattr(self._outcome, "errors")
-        ):
+        elif hasattr(self, "_outcome") and hasattr(self._outcome, "errors"):
             if self._outcome.errors:
                 has_exception = True
         else:
-            if python3:
-                has_exception = sys.exc_info()[1] is not None
-            else:
-                if not hasattr(self, "_using_sb_fixture_class") and (
-                    not hasattr(self, "_using_sb_fixture_no_class")
-                ):
-                    has_exception = sys.exc_info()[1] is not None
-                else:
-                    has_exception = len(str(sys.exc_info()[1]).strip()) > 0
-        if (
-            self.__will_be_skipped
-            and (hasattr(self, "_using_sb_fixture") or not python3)
-        ):
+            has_exception = sys.exc_info()[1] is not None
+        if self.__will_be_skipped and hasattr(self, "_using_sb_fixture"):
             has_exception = False
         return has_exception
 
@@ -14122,12 +14091,7 @@ class BaseCase(unittest.TestCase):
                     pie_file = codecs.open(pie_path, "w+", encoding="utf-8")
                     pie_file.writelines(dash_pie)
                     pie_file.close()
-        if python3:
-            DASH_PIE_PNG_1 = constants.Dashboard.get_dash_pie_1()
-        else:
-            from seleniumbase.core import encoded_images
-
-            DASH_PIE_PNG_1 = encoded_images.get_dash_pie_png1()
+        DASH_PIE_PNG_1 = constants.Dashboard.get_dash_pie_1()
         head = (
             '<head><meta charset="utf-8">'
             '<meta name="viewport" content="shrink-to-fit=no">'

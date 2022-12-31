@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Converts a Selenium IDE recording that was exported as a Python WebDriver
 unittest file into SeleniumBase Python file.

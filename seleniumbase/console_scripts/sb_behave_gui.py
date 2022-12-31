@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Launches SeleniumBase Behave Commander | GUI for Behave.
 

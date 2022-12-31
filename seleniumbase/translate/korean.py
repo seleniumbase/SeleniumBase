@@ -3,7 +3,7 @@ from seleniumbase import BaseCase
 from seleniumbase import MasterQA
 
 
-class 셀레늄_테스트_케이스(BaseCase):  # noqa
+class 셀레늄_테스트_케이스(BaseCase):
     def __init__(self, *args, **kwargs):
         super(셀레늄_테스트_케이스, self).__init__(*args, **kwargs)
         self._language = "Korean"

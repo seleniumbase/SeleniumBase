@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Creates a new SeleniumBase presentation with boilerplate code.
 

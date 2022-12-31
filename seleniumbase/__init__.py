@@ -18,6 +18,7 @@ from seleniumbase.masterqa.master_qa import MasterQA  # noqa
 from seleniumbase.plugins.sb_manager import SB  # noqa
 from seleniumbase.plugins.driver_manager import Driver  # noqa
 from seleniumbase.plugins.driver_manager import DriverContext  # noqa
+from seleniumbase import translate  # noqa
 
 if sys.version_info[0] < 3 and "pdbp" in locals():
     # With Python3, "import pdbp" is all you need
@@ -33,8 +34,6 @@ if sys.version_info[0] < 3 and "pdbp" in locals():
         pdb.DefaultConfig.enable_hidden_frames = False
         pdb.DefaultConfig.truncate_long_lines = True
         pdb.DefaultConfig.sticky_by_default = True
-if sys.version_info[0] >= 3:
-    from seleniumbase import translate  # noqa
 if sys.version_info >= (3, 7):
     webdriver.TouchActions = None  # Lifeline for past selenium-wire versions
 if sys.version_info >= (3, 10):

@@ -145,7 +145,7 @@ class CasoDiProva(BaseCase):
         # go_forward()
         return self.go_forward(*args, **kwargs)
 
-    def è_testo_visto(self, *args, **kwargs):  # noqa
+    def è_testo_visto(self, *args, **kwargs):
         # is_text_visible(text, selector="html")
         return self.is_text_visible(*args, **kwargs)
 
