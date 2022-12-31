@@ -1,5 +1,5 @@
 # Chinese Language Test
-from seleniumbase.translate.chinese import 硒测试用例  # noqa
+from seleniumbase.translate.chinese import 硒测试用例
 
 
 class 我的测试类(硒测试用例):

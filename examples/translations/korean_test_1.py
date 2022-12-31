@@ -1,5 +1,5 @@
 # Korean Language Test
-from seleniumbase.translate.korean import 셀레늄_테스트_케이스  # noqa
+from seleniumbase.translate.korean import 셀레늄_테스트_케이스
 
 
 class 테스트_클래스(셀레늄_테스트_케이스):
