@@ -91,4 +91,4 @@ class SwagLabsTests(BaseCase):
             self.js_click_if_present("a#logout_sidebar_link")
         except Exception:
             pass
-        super(SwagLabsTests, self).tearDown()
+        super().tearDown()

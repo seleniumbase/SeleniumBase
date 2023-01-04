@@ -20,14 +20,14 @@ def sb(request):
             return webdriver.Chrome(options=options)
 
         def setUp(self):
-            super(BaseClass, self).setUp()
+            super().setUp()
 
         def base_method(self):
             pass
 
         def tearDown(self):
             self.save_teardown_screenshot()
-            super(BaseClass, self).tearDown()
+            super().tearDown()
 
     sb = BaseClass("base_method")
     sb.setUpClass()
