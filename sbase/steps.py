@@ -650,3 +650,19 @@ def accept_alert(context):
 def dismiss_alert(context):
     sb = context.sb
     sb.dismiss_alert()
+
+
+@step("Assert URL '{url}'")
+@step('Assert URL "{url}"')
+def assert_url(context, url):
+    sb = context.sb
+    url = normalize_text(url)
+    sb.assert_url(url)
+
+
+@step("Assert URL contains '{substring}'")
+@step('Assert URL contains "{substring}"')
+def assert_url_contains(context, substring):
+    sb = context.sb
+    substring = normalize_text(substring)
+    sb.assert_url_contains(substring)
