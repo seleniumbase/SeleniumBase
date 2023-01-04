@@ -1,11 +1,11 @@
-# Italian / Italiano - Translations - Python 3 Only!
+# Italian / Italiano - Translations
 from seleniumbase import BaseCase
 from seleniumbase import MasterQA
 
 
 class CasoDiProva(BaseCase):
     def __init__(self, *args, **kwargs):
-        super(CasoDiProva, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self._language = "Italian"
 
     def apri(self, *args, **kwargs):

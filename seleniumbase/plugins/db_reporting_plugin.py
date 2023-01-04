@@ -1,7 +1,4 @@
-"""
-This plugin is for recording test results in the Testcase Database.
-"""
-
+"""The plugin for recording test results in the Testcase Database."""
 import getpass
 import time
 import uuid
@@ -16,10 +13,7 @@ from seleniumbase.fixtures import errors
 
 
 class DBReporting(Plugin):
-    """
-    This plugin records test results in the Testcase Database.
-    """
-
+    """This plugin records test results in the Testcase Database."""
     name = "db_reporting"  # Usage: --with-db_reporting
 
     def __init__(self):
@@ -33,7 +27,7 @@ class DBReporting(Plugin):
         self._test = None
 
     def options(self, parser, env):
-        super(DBReporting, self).options(parser, env=env)
+        super().options(parser, env=env)
         parser.add_option(
             "--database_env",
             "--database-env",
@@ -57,7 +51,7 @@ class DBReporting(Plugin):
         )
 
     def configure(self, options, conf):
-        super(DBReporting, self).configure(options, conf)
+        super().configure(options, conf)
         self.options = options
         self.testcase_manager = TestcaseManager(self.options.database_env)
 

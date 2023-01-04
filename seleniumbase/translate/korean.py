@@ -1,11 +1,11 @@
-# Korean / 한국어 - Translations - Python 3 Only!
+# Korean / 한국어 - Translations
 from seleniumbase import BaseCase
 from seleniumbase import MasterQA
 
 
 class 셀레늄_테스트_케이스(BaseCase):
     def __init__(self, *args, **kwargs):
-        super(셀레늄_테스트_케이스, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self._language = "Korean"
 
     def 열기(self, *args, **kwargs):

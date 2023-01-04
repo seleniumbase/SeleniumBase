@@ -1,7 +1,4 @@
-"""
-This is the pytest configuration file for setting test options.
-"""
-
+"""This is the pytest configuration file for setting test options."""
 import colorama
 import os
 import pytest
@@ -2072,11 +2069,11 @@ def sb(request):
 
     class BaseClass(BaseCase):
         def setUp(self):
-            super(BaseClass, self).setUp()
+            super().setUp()
 
         def tearDown(self):
             self.save_teardown_screenshot()
-            super(BaseClass, self).tearDown()
+            super().tearDown()
 
         def base_method(self):
             pass

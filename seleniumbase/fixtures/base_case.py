@@ -5770,13 +5770,13 @@ class BaseCase(unittest.TestCase):
                 css_selector, timeout=settings.MINI_TIMEOUT
             )
         except Exception:
-            pass
+            time.sleep(0.14)
         if self.__needs_minimum_wait():
             time.sleep(0.05)
         try:
             self.show_elements(css_selector)
         except Exception:
-            pass
+            time.sleep(0.16)
         css_selector = re.escape(css_selector)  # Add "\\" to special chars
         css_selector = self.__escape_quotes_if_needed(css_selector)
         script = (
@@ -7880,7 +7880,7 @@ class BaseCase(unittest.TestCase):
         Themes: ["flat", "future", "block", "air", "ice"]
         Locations: ["top_left", "top_center", "top_right",
                     "bottom_left", "bottom_center", "bottom_right"]
-        max_messages is the limit of concurrent messages to display.
+        max_messages: The limit of concurrent messages to display.
         """
         self.__check_scope()
         self.__check_browser()
@@ -8070,7 +8070,6 @@ class BaseCase(unittest.TestCase):
                 "Exception: At least two website pages required for chaining!"
             )
         for page in pages:
-            # Find out if any of the web pages are invalid before continuing
             if not page_utils.is_valid_url(page):
                 raise Exception(
                     "Exception: Website page {%s} is not a valid URL!" % page
@@ -12003,8 +12002,8 @@ class BaseCase(unittest.TestCase):
                 element_rect = element.rect
                 left_offset = element_rect["width"] / 2
                 top_offset = element_rect["height"] / 2
-                x = -left_offset + (x or 0)
-                y = -top_offset + (y or 0)
+                x = -left_offset + (math.ceil(float(x)) or 0)
+                y = -top_offset + (math.ceil(float(y)) or 0)
             elif selenium4_or_newer and center:
                 pass
             elif not selenium4_or_newer and not center:

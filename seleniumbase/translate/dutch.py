@@ -1,11 +1,11 @@
-# Dutch / Nederlands - Translations - Python 3 Only!
+# Dutch / Nederlands - Translations
 from seleniumbase import BaseCase
 from seleniumbase import MasterQA
 
 
 class Testgeval(BaseCase):
     def __init__(self, *args, **kwargs):
-        super(Testgeval, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self._language = "Dutch"
 
     def openen(self, *args, **kwargs):

@@ -1,11 +1,11 @@
-# Japanese / 日本語 - Translations - Python 3 Only!
+# Japanese / 日本語 - Translations
 from seleniumbase import BaseCase
 from seleniumbase import MasterQA
 
 
 class セレニウムテストケース(BaseCase):
     def __init__(self, *args, **kwargs):
-        super(セレニウムテストケース, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self._language = "Japanese"
 
     def を開く(self, *args, **kwargs):

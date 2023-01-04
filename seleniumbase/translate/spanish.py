@@ -1,11 +1,11 @@
-# Spanish / Español - Translations - Python 3 Only!
+# Spanish / Español - Translations
 from seleniumbase import BaseCase
 from seleniumbase import MasterQA
 
 
 class CasoDePrueba(BaseCase):
     def __init__(self, *args, **kwargs):
-        super(CasoDePrueba, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self._language = "Spanish"
 
     def abrir(self, *args, **kwargs):

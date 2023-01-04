@@ -1,7 +1,4 @@
-"""
-The S3 Logging Plugin lets you upload test logs to the S3 bucket specified.
-"""
-
+"""The S3 Plugin for uploading test logs to the S3 bucket specified."""
 import uuid
 import logging
 import os
@@ -11,12 +8,11 @@ from nose.plugins import Plugin
 
 class S3Logging(Plugin):
     """The plugin for uploading test logs to the S3 bucket specified."""
-
     name = "s3_logging"  # Usage: --with-s3-logging
 
     def configure(self, options, conf):
         """Get the options."""
-        super(S3Logging, self).configure(options, conf)
+        super().configure(options, conf)
         self.options = options
 
     def afterTest(self, test):
