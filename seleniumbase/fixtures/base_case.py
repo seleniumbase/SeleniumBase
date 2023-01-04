@@ -4296,6 +4296,10 @@ class BaseCase(unittest.TestCase):
                 and srt_actions[n - 1][0] == "sh_fc"
             ):
                 srt_actions[n - 1][0] = "_skip"
+        for n in range(len(srt_actions)):
+            if srt_actions[n][0] == "canva":
+                srt_actions[n][1][1] = math.ceil(float(srt_actions[n][1][1]))
+                srt_actions[n][1][2] = math.ceil(float(srt_actions[n][1][2]))
         ext_actions = []
         ext_actions.append("_url_")
         ext_actions.append("js_cl")
@@ -4305,6 +4309,8 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("as_el")
         ext_actions.append("as_ep")
         ext_actions.append("asenv")
+        ext_actions.append("acc_a")
+        ext_actions.append("dis_a")
         ext_actions.append("hi_li")
         ext_actions.append("as_lt")
         ext_actions.append("as_ti")
@@ -4635,6 +4641,10 @@ class BaseCase(unittest.TestCase):
                     sb_actions.append('self.%s("%s")' % (method, action[1]))
                 else:
                     sb_actions.append("self.%s('%s')" % (method, action[1]))
+            elif action[0] == "acc_a":
+                sb_actions.append("self.accept_alert()")
+            elif action[0] == "dis_a":
+                sb_actions.append("self.dismiss_alert()")
             elif action[0] == "hi_li":
                 method = "highlight"
                 if '"' not in action[1]:
@@ -8860,7 +8870,17 @@ class BaseCase(unittest.TestCase):
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        return page_actions.wait_for_and_accept_alert(self.driver, timeout)
+        alert = page_actions.wait_for_and_accept_alert(self.driver, timeout)
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        action = ["acc_a", "", origin, time_stamp]
+                        self.__extra_actions.append(action)
+        return alert
 
     def wait_for_and_dismiss_alert(self, timeout=None):
         self.__check_scope()
@@ -8868,7 +8888,17 @@ class BaseCase(unittest.TestCase):
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        return page_actions.wait_for_and_dismiss_alert(self.driver, timeout)
+        alert = page_actions.wait_for_and_dismiss_alert(self.driver, timeout)
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        action = ["dis_a", "", origin, time_stamp]
+                        self.__extra_actions.append(action)
+        return alert
 
     def wait_for_and_switch_to_alert(self, timeout=None):
         self.__check_scope()
@@ -8887,7 +8917,17 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        return page_actions.wait_for_and_accept_alert(self.driver, timeout)
+        alert = page_actions.wait_for_and_accept_alert(self.driver, timeout)
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        action = ["acc_a", "", origin, time_stamp]
+                        self.__extra_actions.append(action)
+        return alert
 
     def dismiss_alert(self, timeout=None):
         """Same as wait_for_and_dismiss_alert(), but smaller default T_O"""
@@ -8896,7 +8936,17 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        return page_actions.wait_for_and_dismiss_alert(self.driver, timeout)
+        alert = page_actions.wait_for_and_dismiss_alert(self.driver, timeout)
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        action = ["dis_a", "", origin, time_stamp]
+                        self.__extra_actions.append(action)
+        return alert
 
     def switch_to_alert(self, timeout=None):
         """Same as wait_for_and_switch_to_alert(), but smaller default T_O"""

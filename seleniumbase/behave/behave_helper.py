@@ -231,6 +231,10 @@ def generate_gherkin(srt_actions):
                 sb_actions.append('%s "%s"' % (method, action[1]))
             else:
                 sb_actions.append("%s '%s'" % (method, action[1]))
+        elif action[0] == "acc_a":
+            sb_actions.append("Accept alert")
+        elif action[0] == "dis_a":
+            sb_actions.append("Dismiss alert")
         elif action[0] == "hi_li":
             method = "Highlight"
             if '"' not in action[1]:
