@@ -100,6 +100,48 @@ class SD:
         words["Spanish"] = "VERIFICAR TÍTULO"
         return words[language]
 
+    def translate_assert_title_contains(language):
+        words = {}
+        words["English"] = "ASSERT TITLE CONTAINS"
+        words["Chinese"] = "断言标题包含"
+        words["Dutch"] = "CONTROLEREN TITEL BEVAT"
+        words["French"] = "VÉRIFIER TITRE CONTIENT"
+        words["Italian"] = "VERIFICARE TITOLO CONTIENE"
+        words["Japanese"] = "タイトル部分文字列を確認する"
+        words["Korean"] = "제목 부분 확인"
+        words["Portuguese"] = "VERIFICAR TÍTULO CONTÉM"
+        words["Russian"] = "ПОДТВЕРДИТЬ НАЗВАНИЕ СОДЕРЖИТ"
+        words["Spanish"] = "VERIFICAR TÍTULO CONTIENE"
+        return words[language]
+
+    def translate_assert_url(language):
+        words = {}
+        words["English"] = "ASSERT URL"
+        words["Chinese"] = "断言 URL"
+        words["Dutch"] = "CONTROLEREN URL"
+        words["French"] = "VÉRIFIER URL"
+        words["Italian"] = "VERIFICARE URL"
+        words["Japanese"] = "URL を確認する"
+        words["Korean"] = "URL 확인"
+        words["Portuguese"] = "VERIFICAR URL"
+        words["Russian"] = "ПОДТВЕРДИТЬ URL"
+        words["Spanish"] = "VERIFICAR URL"
+        return words[language]
+
+    def translate_assert_url_contains(language):
+        words = {}
+        words["English"] = "ASSERT URL CONTAINS"
+        words["Chinese"] = "断言 URL 包含"
+        words["Dutch"] = "CONTROLEREN URL BEVAT"
+        words["French"] = "VÉRIFIER URL CONTIENT"
+        words["Italian"] = "VERIFICARE URL CONTIENE"
+        words["Japanese"] = "URL を確認する"
+        words["Korean"] = "URL 확인"
+        words["Portuguese"] = "VERIFICAR URL CONTÉM"
+        words["Russian"] = "ПОДТВЕРДИТЬ URL СОДЕРЖИТ"
+        words["Spanish"] = "VERIFICAR URL CONTIENE"
+        return words[language]
+
     def translate_assert_no_404_errors(language):
         words = {}
         words["English"] = "ASSERT NO 404 ERRORS"

@@ -6724,6 +6724,10 @@ class BaseCase(unittest.TestCase):
                 self.assertIn(expected, actual, error % (expected, actual))
         if self.demo_mode and not self.recorder_mode:
             a_t = "ASSERT TITLE CONTAINS"
+            if self._language != "English":
+                from seleniumbase.fixtures.words import SD
+
+                a_t = SD.translate_assert_title_contains(self._language)
             messenger_post = "<b>%s</b>: {%s}" % (a_t, expected)
             self.__highlight_with_assert_success(messenger_post, "html")
         if self.recorder_mode:
