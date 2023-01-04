@@ -6,7 +6,7 @@ BaseCase.main(__name__, __file__)
 class CoffeeCartTests(BaseCase):
     def test_1_verify_nav_link_to_coffee_cart(self):
         self.open("https://seleniumbase.io/")
-        self.click('nav a:contains("Coffee Cart")')
+        self.js_click('nav a:contains("Coffee Cart")')
         self.assert_title("Coffee Cart")
         self.assert_element('h4:contains("Espresso")')
 
