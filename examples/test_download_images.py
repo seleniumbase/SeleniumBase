@@ -5,7 +5,7 @@ from seleniumbase import BaseCase
 
 class DownloadImages(BaseCase):
     def test_download_images_directly(self):
-        self.open("https://seleniumbase.io/help_docs/chart_maker/")
+        self.open("seleniumbase.io/examples/chart_maker/ReadMe")
         img_elements_with_src = self.find_elements("img[src]")
         unique_src_values = []
         for img in img_elements_with_src:
