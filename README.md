@@ -65,7 +65,7 @@ pytest test_coffee_cart.py --demo
 
 <p>(<code>--demo</code> mode slows down tests and highlights actions)</p>
 
-<p align="left"><a href="https://seleniumbase.io/demo_page" target="_blank"><img src="https://seleniumbase.github.io/cdn/gif/coffee_cart.gif" width="480" alt="SeleniumBase Example" title="SeleniumBase Example" /></a></p>
+<p align="left"><a href="https://seleniumbase.io/coffee/" target="_blank"><img src="https://seleniumbase.github.io/cdn/gif/coffee_cart.gif" width="480" alt="SeleniumBase Coffee Cart Test" title="SeleniumBase Coffee Cart Test" /></a></p>
 
 * Here's a preview of that test:
 
