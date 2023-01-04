@@ -74,7 +74,6 @@ plugins:
         - SECURITY.md
         - examples/case_summary.md
         - help_docs/chinese.md
-        - help_docs/chart_maker.md
         - help_docs/mysql_installation.md
         - integrations/katalon/ReadMe.md
         - help_docs/verify_webdriver.md
@@ -99,7 +98,7 @@ nav:
   - 📊 Dashboard / Reports: examples/example_logs/ReadMe.md
   - 🔡 Syntax Formats: help_docs/syntax_formats.md
   - 🎖️ GUI / Commander: help_docs/commander.md
-  - ⏺️ Recorder Mode: help_docs/recorder_mode.md
+  - 🔴 Recorder Mode: help_docs/recorder_mode.md
   - 📘 API Reference: help_docs/method_summary.md
   - Python Setup / Install:
     - 🐉 Get Python, pip, & git: help_docs/install_python_pip_git.md
@@ -121,7 +120,6 @@ nav:
     - 🖼️ Visual Testing: examples/visual_testing/ReadMe.md
     - 🕵️ The HTML Inspector: help_docs/html_inspector.md
     - 🌐 Selenium Grid: seleniumbase/utilities/selenium_grid/ReadMe.md
-    - 📶 Highcharts: help_docs/chart_maker.md
     - 🛂 MasterQA: seleniumbase/masterqa/ReadMe.md
     - 🤖 Azure Pipelines: integrations/azure/azure_pipelines/ReadMe.md
     - 🤖 Jenkins on Azure: integrations/azure/jenkins/ReadMe.md
