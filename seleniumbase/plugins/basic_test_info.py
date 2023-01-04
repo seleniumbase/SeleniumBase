@@ -1,14 +1,4 @@
-"""
-The plugin for saving basic test info to the logs for Selenium tests.
-The created file will be saved in the default logs folder (in .../logs)
-Data to be saved includes:
-* Last page url
-* Browser
-* Server
-* Error
-* Traceback
-"""
-
+"""The plugin for saving basic test info for Selenium tests."""
 import os
 import codecs
 import time
@@ -18,21 +8,15 @@ from seleniumbase.config import settings
 
 
 class BasicTestInfo(Plugin):
-    """
-    This plugin will capture basic info when a test fails or
-    raises an error. It will store that basic test info in
-    the default logs or in the file specified by the user.
-    """
-
+    """This plugin captures basic info when a test fails or raises an error."""
     name = "basic_test_info"  # Usage: --with-basic_test_info
-
     logfile_name = settings.BASIC_INFO_NAME
 
     def options(self, parser, env):
-        super(BasicTestInfo, self).options(parser, env=env)
+        super().options(parser, env=env)
 
     def configure(self, options, conf):
-        super(BasicTestInfo, self).configure(options, conf)
+        super().configure(options, conf)
         if not self.enabled:
             return
         self.options = options

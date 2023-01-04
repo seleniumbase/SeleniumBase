@@ -1,11 +1,11 @@
-# Russian / Русский - Translations - Python 3 Only!
+# Russian / Русский - Translations
 from seleniumbase import BaseCase
 from seleniumbase import MasterQA
 
 
 class ТестНаСелен(BaseCase):
     def __init__(self, *args, **kwargs):
-        super(ТестНаСелен, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self._language = "Russian"
 
     def открыть(self, *args, **kwargs):

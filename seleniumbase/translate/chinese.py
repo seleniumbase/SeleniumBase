@@ -1,11 +1,11 @@
-# Chinese / 中文 - Translations - Python 3 Only!
+# Chinese / 中文 - Translations
 from seleniumbase import BaseCase
 from seleniumbase import MasterQA
 
 
 class 硒测试用例(BaseCase):
     def __init__(self, *args, **kwargs):
-        super(硒测试用例, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self._language = "Chinese"
 
     def 开启(self, *args, **kwargs):

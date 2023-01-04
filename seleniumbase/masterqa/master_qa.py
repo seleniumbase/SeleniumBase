@@ -1,6 +1,4 @@
-"""
-This tool allows testers to quickly verify pages while assisted by automation.
-"""
+"""Manually verify pages quickly while assisted by automation."""
 import os
 import shutil
 import sys
@@ -17,7 +15,7 @@ class MasterQA(BaseCase):
     def setUp(self):
         self.check_count = 0
         self.auto_close_results_page = False
-        super(MasterQA, self).setUp(masterqa_mode=True)
+        super().setUp(masterqa_mode=True)
         self.LATEST_REPORT_DIR = settings.LATEST_REPORT_DIR
         self.ARCHIVE_DIR = settings.REPORT_ARCHIVE_DIR
         self.RESULTS_PAGE = settings.HTML_REPORT
@@ -67,7 +65,7 @@ class MasterQA(BaseCase):
         if self.__has_exception():
             self.__add_failure(sys.exc_info()[1])
         self.__process_manual_check_results(self.auto_close_results_page)
-        super(MasterQA, self).tearDown()
+        super().tearDown()
 
     ####################
 

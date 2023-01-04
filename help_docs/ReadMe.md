@@ -32,7 +32,7 @@
 <a href="https://seleniumbase.io/help_docs/translations/">🌏 Translator</a> |
 <a href="https://seleniumbase.io/examples/dialog_boxes/ReadMe/">🛂 Dialog Boxes</a>
 <br />
-<a href="https://seleniumbase.io/help_docs/recorder_mode/">⏺️ Recorder</a> |
+<a href="https://seleniumbase.io/help_docs/recorder_mode/">🔴 Recorder</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/migration/raw_selenium">🚝 Migrate</a>
 <br />
 <a href="https://seleniumbase.io/examples/presenter/ReadMe/">🎞️ Slides</a> |

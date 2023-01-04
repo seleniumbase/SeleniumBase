@@ -5,9 +5,9 @@ To evade detection, add --uc as a pytest command-line option.
 """
 from seleniumbase import BaseCase
 
-if __name__ == "__main__":  # If "python", use "pytest"
+if __name__ == "__main__":
     from pytest import main
-    main([__file__, "--uc"])
+    main([__file__, "--uc", "-s"])
 
 
 class UndetectedTest(BaseCase):

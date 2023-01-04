@@ -282,7 +282,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                 executable_path=driver_executable_path,
                 log_path=os.devnull,
             )
-        super(Chrome, self).__init__(
+        super().__init__(
             port=port,
             options=options,
             service=service_,

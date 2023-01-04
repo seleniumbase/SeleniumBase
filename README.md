@@ -7,9 +7,9 @@
 <meta property="og:image" content="https://seleniumbase.github.io/cdn/img/mac_sb_logo_5b.png" />
 <link rel="icon" href="https://seleniumbase.github.io/img/logo7.png" />
 
-<h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/mac_sb_logo_b.png" alt="SeleniumBase" title="SeleniumBase" width="408" /></a></h3>
+<h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_logo_10t.png" alt="SeleniumBase" title="SeleniumBase" width="350" /></a></h3>
 
-<h2 align="center">SeleniumBase: Enterprise Python Web Testing</h2>
+<h2 align="center">Python Web UI Testing Framework</h2>
 
 <p align="center"><a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=3399EE" alt="PyPI version" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/releases" target="_blank"><img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=22AAEE" alt="GitHub version" /></a> <a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"><img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a></p>
 
@@ -24,7 +24,7 @@
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">📘 APIs</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md"> 🔡 Formats</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">📊 Dashboard</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md">⏺️ Recorder</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md">🔴 Recorder</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/locale_codes.md">🗾 Locales</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md">🌐 Grid</a>
 <br />
@@ -53,23 +53,42 @@
 
 --------
 
-
 <a id="multiple_examples"></a>
-<p align="left"><b>Example:</b> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_coffee_cart.py" target="_blank">test_coffee_cart.py</a> from <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples" target="_blank">SeleniumBase/examples/</a></p>
+<p align="left"><b>Example:</b> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_coffee_cart.py" target="_blank">test_coffee_cart.py</a> from <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples" target="_blank">./examples/</a></p>
 
 ```bash
 cd examples/
 pytest test_coffee_cart.py --demo
 ```
 
-<p>(<code>--demo</code> slows the test with highlighting for better visibility.)</p>
+<p>(<code>--demo</code> mode slows down tests and highlights actions)</p>
 
 <p align="left"><a href="https://seleniumbase.io/demo_page" target="_blank"><img src="https://seleniumbase.github.io/cdn/gif/coffee_cart.gif" width="480" alt="SeleniumBase Example" title="SeleniumBase Example" /></a></p>
+
+* Here's a preview of that test:
+
+```python
+from seleniumbase import BaseCase
+
+class CoffeeCartTest(BaseCase):
+    def test_coffee_cart(self):
+        self.open("https://seleniumbase.io/coffee/")
+        self.click('div[data-sb="Cappuccino"]')
+        self.click('div[data-sb="Flat-White"]')
+        self.click('div[data-sb="Cafe-Latte"]')
+        self.click('a[aria-label="Cart page"]')
+        self.assert_exact_text("Total: $53.00", "button.pay")
+        self.click("button.pay")
+        self.type("input#name", "Selenium Coffee")
+        self.type("input#email", "test@test.test")
+        self.click("button#submit-payment")
+        self.assert_text("Thanks for your purchase.", "#app")
+```
 
 --------
 
 <details>
-<summary> ▶️ How is SeleniumBase different from raw Selenium? (<b>click to expand</b>)</summary>
+<summary> ▶️ How is <b>SeleniumBase</b> different from raw Selenium? (<b>click to expand</b>)</summary>
 <div>
 
 <p>💡 SeleniumBase is a Python framework for browser automation and testing. SeleniumBase uses <a href="https://www.w3.org/TR/webdriver2/#endpoints" target="_blank">Selenium/WebDriver</a> APIs, and incorporates test-runners such as <code>pytest</code>, <code>nosetests</code>, and <code>behave</code> to provide organized structure, test discovery, test execution, test state (<i>eg. passed, failed, or skipped</i>), and command-line options for changing default settings (<i>such as choosing the browser to use</i>). With raw Selenium, you would need to set up your own options-parser for configuring tests from the command-line.</p>

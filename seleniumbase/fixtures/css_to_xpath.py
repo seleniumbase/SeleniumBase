@@ -1,6 +1,4 @@
-"""
-Convert CSS selectors into XPath selectors
-"""
+"""Convert CSS selectors into XPath selectors"""
 from cssselect.xpath import GenericTranslator
 
 
@@ -12,9 +10,7 @@ class ConvertibleToCssTranslator(GenericTranslator):
     """
 
     def css_to_xpath(self, css, prefix="//"):
-        return super(ConvertibleToCssTranslator, self).css_to_xpath(
-            css, prefix
-        )
+        return super().css_to_xpath(css, prefix)
 
     def xpath_attrib_equals(self, xpath, name, value):
         xpath.add_condition("%s=%s" % (name, self.xpath_literal(value)))

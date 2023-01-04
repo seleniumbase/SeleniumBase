@@ -1,7 +1,4 @@
-"""
-This is the Nosetest plugin for setting Selenium test configuration.
-"""
-
+"""The Nosetest plugin for setting Selenium test configuration."""
 import sys
 from nose.plugins import Plugin
 from seleniumbase import config as sb_config
@@ -87,11 +84,10 @@ class SeleniumBrowser(Plugin):
     --external-pdf (Set Chromium "plugins.always_open_pdf_externally": True.)
     --timeout-multiplier=MULTIPLIER  (Multiplies the default timeout values.)
     """
-
     name = "selenium"  # Usage: --with-selenium
 
     def options(self, parser, env):
-        super(SeleniumBrowser, self).options(parser, env=env)
+        super().options(parser, env=env)
 
         parser.add_option(
             "--browser",
@@ -863,7 +859,7 @@ class SeleniumBrowser(Plugin):
         )
 
     def configure(self, options, conf):
-        super(SeleniumBrowser, self).configure(options, conf)
+        super().configure(options, conf)
         self.enabled = True  # Used if test class inherits BaseCase
         self.options = options
         self.headless_active = False  # Default setting

@@ -1,7 +1,4 @@
-"""
-This is the Nosetest plugin for setting base configuration and logging.
-"""
-
+"""The Nosetest plugin for setting base configuration and logging."""
 import ast
 import sys
 import time
@@ -37,11 +34,10 @@ class Base(Plugin):
                     Only use this when running tests locally, as this will
                     pause the test run until the report window is closed.
     """
-
     name = "testing_base"  # Usage: --with-testing_base  (Enabled by default)
 
     def options(self, parser, env):
-        super(Base, self).options(parser, env=env)
+        super().options(parser, env=env)
         parser.add_option(
             "--env",
             action="store",
@@ -189,7 +185,7 @@ class Base(Plugin):
             )
 
     def configure(self, options, conf):
-        super(Base, self).configure(options, conf)
+        super().configure(options, conf)
         self.enabled = True  # Used if test class inherits BaseCase
         self.options = options
         self.report_on = options.report

@@ -1,22 +1,31 @@
-examples.test_fail.MyTestClass.test_find_army_of_robots_on_xkcd_desert_island
-----------------------------------------------------
+test_fail.py::FailingTests::test_find_army_of_robots_on_xkcd_desert_island
+--------------------------------------------------------------------
 Last Page: https://xkcd.com/731/
-  Browser: firefox
-Timestamp: 1599068455  (Unix Timestamp)
-     Date: Wednesday, September 2, 2020
-     Time: 1:40:55 PM  (EDT, UTC-05:00)
-----------------------------------------------------
-Traceback: File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/unittest/case.py", line 615, in run
-    testMethod()
-  File "/Users/michael/github/SeleniumBase/examples/test_fail.py", line 17, in test_find_army_of_robots_on_xkcd_desert_island
+ Duration: 1.63s
+  Browser: Chrome 108.0.5359.124
+   Driver: chromedriver 108.0.5359.71
+Timestamp: 1672785363  (Unix Timestamp)
+     Date: Tuesday, January 3, 2023
+     Time: 5:36:03 PM  (EDT, UTC-05:00)
+--------------------------------------------------------------------
+Traceback:   File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 57, in testPartExecutor
+    yield
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 623, in run
+    self._callTestMethod(testMethod)
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py", line 579, in _callTestMethod
+    if method() is not None:
+       ^^^^^^^^
+  File "/Users/michael/github/SeleniumBase/examples/test_fail.py", line 16, in test_find_army_of_robots_on_xkcd_desert_island
     self.assert_element("div#ARMY_OF_ROBOTS", timeout=1)
-  File "/Users/michael/github/SeleniumBase/seleniumbase/fixtures/base_case.py", line 4931, in assert_element
+  File "/Users/michael/github/SeleniumBase/seleniumbase/fixtures/base_case.py", line 8279, in assert_element
     self.wait_for_element_visible(selector, by=by, timeout=timeout)
-  File "/Users/michael/github/SeleniumBase/seleniumbase/fixtures/base_case.py", line 3290, in wait_for_element_visible
-    self.driver, selector, by, timeout)
-  File "/Users/michael/github/SeleniumBase/seleniumbase/fixtures/page_actions.py", line 299, in wait_for_element_visible
+  File "/Users/michael/github/SeleniumBase/seleniumbase/fixtures/base_case.py", line 7718, in wait_for_element_visible
+    return page_actions.wait_for_element_visible(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/michael/github/SeleniumBase/seleniumbase/fixtures/page_actions.py", line 428, in wait_for_element_visible
     timeout_exception(NoSuchElementException, message)
-  File "/Users/michael/github/SeleniumBase/seleniumbase/fixtures/page_actions.py", line 117, in timeout_exception
-    raise exc(message)
+  File "/Users/michael/github/SeleniumBase/seleniumbase/fixtures/page_actions.py", line 191, in timeout_exception
+    raise exc(msg)
+
 Exception: Message: 
  Element {div#ARMY_OF_ROBOTS} was not present after 1 second!

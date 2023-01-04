@@ -1,14 +1,10 @@
-"""
-Demonstration of parsing data from files.
-In this example, login information is pulled for tests.
-"""
-
+"""Example of parsing data from files."""
 from seleniumbase import BaseCase
 
 
 class ParseTestCase(BaseCase):
     def setUp(self):
-        super(ParseTestCase, self).setUp()
+        super().setUp()
 
     def get_login_credentials(self, user_type):
         # Example of parsing data from a file (Method 1)

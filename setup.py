@@ -163,7 +163,7 @@ setup(
         'trio==0.22.0;python_version>="3.7"',
         'trio-websocket==0.9.2;python_version>="3.7"',
         'websockets==10.4;python_version>="3.7"',
-        'pyopenssl==22.1.0;python_version>="3.7"',
+        'pyopenssl==23.0.0;python_version>="3.7"',
         'wsproto==1.2.0;python_version>="3.7"',
         'selenium==3.141.0;python_version<"3.7"',
         'selenium==4.7.2;python_version>="3.7"',
@@ -196,8 +196,8 @@ setup(
         'soupsieve==2.3.2.post1;python_version>="3.6"',
         'beautifulsoup4==4.11.1;python_version>="3.6"',
         'cryptography==36.0.2;python_version>="3.6" and python_version<"3.7"',
-        'cryptography==38.0.4;python_version>="3.7"',
-        'pygments==2.13.0;python_version>="3.6"',
+        'cryptography==39.0.0;python_version>="3.7"',
+        'pygments==2.14.0;python_version>="3.6"',
         'pyreadline3==3.4.1;platform_system=="Windows" and python_version>="3.6"',  # noqa: E501
         "tabcompleter==1.1.0",
         "pdbp==1.2.7",
@@ -219,7 +219,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage==6.2;python_version>="3.6" and python_version<"3.7"',
-            'coverage==7.0.1;python_version>="3.7"',
+            'coverage==7.0.3;python_version>="3.7"',
             'pytest-cov==4.0.0;python_version>="3.6"',
         ],
         # pip install -e .[flake8]
@@ -248,7 +248,7 @@ setup(
         # pip install -e .[pillow]
         "pillow": [
             'Pillow==8.4.0;python_version>="3.6" and python_version<"3.7"',
-            'Pillow==9.3.0;python_version>="3.7"',
+            'Pillow==9.4.0;python_version>="3.7"',
         ],
         # pip install -e .[psutil]
         "psutil": [

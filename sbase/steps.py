@@ -638,3 +638,15 @@ def hover(context, selector):
 def context_click(context, selector):
     sb = context.sb
     sb.context_click(selector)
+
+
+@step("Accept alert")
+def accept_alert(context):
+    sb = context.sb
+    sb.accept_alert()
+
+
+@step("Dismiss alert")
+def dismiss_alert(context):
+    sb = context.sb
+    sb.dismiss_alert()

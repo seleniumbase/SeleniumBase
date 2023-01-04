@@ -1,5 +1,10 @@
 from seleniumbase import BaseCase
 
+if __name__ == "__main__":  # If "python" called
+    from pytest import main
+    from sys import argv
+    main([*argv, "-s"])  # Run pytest, same args
+
 
 class TestMFALogin(BaseCase):
     def test_mfa_login(self):
@@ -14,9 +19,3 @@ class TestMFALogin(BaseCase):
         self.click_link("Sign out")  # Link must be "a" tag. Not "button".
         self.assert_element('a:contains("Sign in")')
         self.assert_exact_text("You have been signed out!", "#top_message")
-
-
-if __name__ == "__main__":  # If "python", run pytest
-    from pytest import main
-    from sys import argv
-    main([*argv, "-s"])  # Run pytest using same args

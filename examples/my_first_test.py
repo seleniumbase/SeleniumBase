@@ -1,6 +1,11 @@
 """A complete end-to-end test for an e-commerce website."""
 from seleniumbase import BaseCase
 
+if __name__ == "__main__":  # If "python" called
+    from pytest import main
+    from sys import argv
+    main([*argv, "-s"])  # Run pytest, same args
+
 
 class MyTestClass(BaseCase):
     def test_swag_labs(self):
@@ -26,12 +31,6 @@ class MyTestClass(BaseCase):
         self.assert_element('img[alt="Pony Express"]')
         self.js_click("a#logout_sidebar_link")
         self.assert_element("div#login_button_container")
-
-
-if __name__ == "__main__":  # If "python", run pytest
-    from pytest import main
-    from sys import argv
-    main([*argv, "-s"])  # Run pytest using same args
 
 
 #######################################################################

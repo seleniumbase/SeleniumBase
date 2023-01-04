@@ -1,5 +1,10 @@
 from seleniumbase import BaseCase
 
+if __name__ == "__main__":  # If "python" called
+    from pytest import main
+    from sys import argv
+    main([*argv, "-s"])  # Run pytest, same args
+
 
 class SwagLabsTests(BaseCase):
     def login_to_swag_labs(self, username="standard_user"):
@@ -77,10 +82,4 @@ class SwagLabsTests(BaseCase):
             self.js_click_if_present("a#logout_sidebar_link")
         except Exception:
             pass
-        super(SwagLabsTests, self).tearDown()
-
-
-if __name__ == "__main__":  # If "python", run pytest
-    from pytest import main
-    from sys import argv
-    main([*argv, "-s"])  # Run pytest using same args
+        super().tearDown()

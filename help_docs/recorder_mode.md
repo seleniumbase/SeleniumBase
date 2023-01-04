@@ -1,11 +1,11 @@
 <!-- SeleniumBase Docs -->
 
-## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Recorder Mode ⏺️
+## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Recorder Mode 🔴/⏺️
 
 <!-- YouTube View --><a href="https://www.youtube.com/watch?v=eKN5nq7YbdM"><img src="http://img.youtube.com/vi/eKN5nq7YbdM/0.jpg" title="SeleniumBase on YouTube" width="285" /></a>
 <!-- GitHub Only --><p>(<b><a href="https://www.youtube.com/watch?v=eKN5nq7YbdM">Watch the tutorial on YouTube</a></b>)</p>
 
-⏺️ <b>SeleniumBase Recorder Mode</b> lets you record & export browser actions into test automation scripts.<br>
+🔴 <b>SeleniumBase Recorder Mode</b> lets you record & export browser actions into test automation scripts.<br>
 
 <img src="https://seleniumbase.github.io/cdn/img/sb_recorder_notification.png" title="SeleniumBase" width="380">
 
@@ -46,7 +46,7 @@ pytest new_test.py --rec -q -s --url=wikipedia.org
 *** RECORDING COPIED to: new_test.py
 ```
 
-⏺️ You can also activate Recorder Mode from the Recorder Desktop App:
+🔴 You can also activate Recorder Mode from the Desktop App:
 
 ```bash
 sbase recorder

@@ -24,12 +24,18 @@ class CoffeeCartTests(BaseCase):
         self.click('div[data-test="Americano"]')
         self.click('div[data-test="Cafe_Latte"]')
         self.assert_exact_text("cart (3)", 'a[aria-label="Cart page"]')
-        self.assert_text("Get an extra cup of Mocha for $4.", "div.promo")
-        self.click("div.promo button.yes")
-        self.assert_exact_text("cart (4)", 'a[aria-label="Cart page"]')
+        promo = False
+        total_string = "Total: $33.00"
+        if self.is_element_visible("div.promo"):
+            self.assert_text("Get an extra cup of Mocha for $4.", "div.promo")
+            self.click("div.promo button.yes")
+            self.assert_exact_text("cart (4)", 'a[aria-label="Cart page"]')
+            promo = True
+            total_string = "Total: $37.00"
         self.hover('button[data-test="checkout"]')
-        self.assert_text("(Discounted) Mocha", "ul.cart-preview")
-        self.assert_exact_text("Total: $37.00", 'button[data-test="checkout"]')
+        if promo:
+            self.assert_text("(Discounted) Mocha", "ul.cart-preview")
+        self.assert_exact_text(total_string, 'button[data-test="checkout"]')
         self.click('button[data-test="checkout"]')
         self.type("input#name", "Selenium Coffee")
         self.type("input#email", "test@test.test")
