@@ -2,7 +2,7 @@
 # Minimum Python version: 3.8 (for generating docs only)
 
 regex>=2022.10.31
-pkginfo>=1.9.2
+pkginfo>=1.9.3
 docutils==0.19
 python-dateutil==2.8.2
 livereload==2.6.3
@@ -16,19 +16,20 @@ zipp==3.11.0
 ghp-import==2.1.0
 readme-renderer==37.3
 pymdown-extensions==9.9
-importlib-metadata==5.2.0
+importlib-metadata==6.0.0
+pipdeptree==2.3.3
 bleach==5.0.1
 lunr==0.6.2
-nltk==3.8
+nltk==3.8.1
 tornado==6.2
-watchdog==2.2.0
+watchdog==2.2.1
 cairocffi==1.4.0
 cairosvg==2.5.2
 cssselect2==0.7.0
 tinycss2==1.2.1
 defusedxml==0.7.1
 mkdocs==1.4.2
-mkdocs-material==8.5.11
+mkdocs-material==9.0.1
 mkdocs-exclude-search==0.6.4
 mkdocs-simple-hooks==0.1.5
 mkdocs-material-extensions==1.1.1
