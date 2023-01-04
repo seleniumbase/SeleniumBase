@@ -4315,6 +4315,8 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("as_lt")
         ext_actions.append("as_ti")
         ext_actions.append("as_tc")
+        ext_actions.append("a_url")
+        ext_actions.append("a_u_c")
         ext_actions.append("as_df")
         ext_actions.append("do_fi")
         ext_actions.append("as_at")
@@ -4665,6 +4667,18 @@ class BaseCase(unittest.TestCase):
                     sb_actions.append("self.%s('%s')" % (method, action[1]))
             elif action[0] == "as_tc":
                 method = "assert_title_contains"
+                if '"' not in action[1]:
+                    sb_actions.append('self.%s("%s")' % (method, action[1]))
+                else:
+                    sb_actions.append("self.%s('%s')" % (method, action[1]))
+            elif action[0] == "a_url":
+                method = "assert_url"
+                if '"' not in action[1]:
+                    sb_actions.append('self.%s("%s")' % (method, action[1]))
+                else:
+                    sb_actions.append("self.%s('%s')" % (method, action[1]))
+            elif action[0] == "a_u_c":
+                method = "assert_url_contains"
                 if '"' not in action[1]:
                     sb_actions.append('self.%s("%s")' % (method, action[1]))
                 else:
