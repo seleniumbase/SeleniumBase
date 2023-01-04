@@ -101,9 +101,21 @@ class 셀레늄_테스트_케이스(BaseCase):
         # assert_attribute(selector, attribute, value)
         return self.assert_attribute(*args, **kwargs)
 
+    def URL_확인(self, *args, **kwargs):
+        # assert_url(url)
+        return self.assert_url(*args, **kwargs)
+
+    def URL_부분_확인(self, *args, **kwargs):
+        # assert_url_contains(substring)
+        return self.assert_url_contains(*args, **kwargs)
+
     def 제목_확인(self, *args, **kwargs):
         # assert_title(title)
         return self.assert_title(*args, **kwargs)
+
+    def 제목_부분_확인(self, *args, **kwargs):
+        # assert_title_contains(substring)
+        return self.assert_title_contains(*args, **kwargs)
 
     def 제목_검색(self, *args, **kwargs):
         # get_title()

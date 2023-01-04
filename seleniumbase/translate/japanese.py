@@ -101,9 +101,21 @@ class セレニウムテストケース(BaseCase):
         # assert_attribute(selector, attribute, value)
         return self.assert_attribute(*args, **kwargs)
 
+    def URLを確認する(self, *args, **kwargs):
+        # assert_url(url)
+        return self.assert_url(*args, **kwargs)
+
+    def URL部分文字列を確認する(self, *args, **kwargs):
+        # assert_url_contains(substring)
+        return self.assert_url_contains(*args, **kwargs)
+
     def タイトルを確認(self, *args, **kwargs):
         # assert_title(title)
         return self.assert_title(*args, **kwargs)
+
+    def タイトル部分文字列を確認する(self, *args, **kwargs):
+        # assert_title_contains(substring)
+        return self.assert_title_contains(*args, **kwargs)
 
     def タイトルを取得する(self, *args, **kwargs):
         # get_title()

@@ -467,6 +467,10 @@ self.assert_title(title)
 
 self.assert_title_contains(substring)
 
+self.assert_url(url)
+
+self.assert_url_contains(substring)
+
 self.assert_no_js_errors(exclude=[])
 
 self.inspect_html()

@@ -532,6 +532,30 @@ class MD:
     md["assert_attribute"][8] = "подтвердить_атрибут"
     md["assert_attribute"][9] = "verificar_atributo"
 
+    md["assert_url"] = ["*"] * num_langs
+    md["assert_url"][0] = "assert_url"
+    md["assert_url"][1] = "断言URL"
+    md["assert_url"][2] = "controleren_url"
+    md["assert_url"][3] = "vérifier_url"
+    md["assert_url"][4] = "verificare_url"
+    md["assert_url"][5] = "URLを確認する"
+    md["assert_url"][6] = "URL_확인"
+    md["assert_url"][7] = "verificar_url"
+    md["assert_url"][8] = "подтвердить_URL"
+    md["assert_url"][9] = "verificar_url"
+
+    md["assert_url_contains"] = ["*"] * num_langs
+    md["assert_url_contains"][0] = "assert_url_contains"
+    md["assert_url_contains"][1] = "断言URL包含"
+    md["assert_url_contains"][2] = "controleren_url_bevat"
+    md["assert_url_contains"][3] = "vérifier_url_contient"
+    md["assert_url_contains"][4] = "verificare_url_contiene"
+    md["assert_url_contains"][5] = "URL部分文字列を確認する"
+    md["assert_url_contains"][6] = "URL_부분_확인"
+    md["assert_url_contains"][7] = "verificar_url_contém"
+    md["assert_url_contains"][8] = "подтвердить_URL_содержит"
+    md["assert_url_contains"][9] = "verificar_url_contiene"
+
     md["assert_title"] = ["*"] * num_langs
     md["assert_title"][0] = "assert_title"
     md["assert_title"][1] = "断言标题"
@@ -543,6 +567,18 @@ class MD:
     md["assert_title"][7] = "verificar_título"
     md["assert_title"][8] = "подтвердить_название"
     md["assert_title"][9] = "verificar_título"
+
+    md["assert_title_contains"] = ["*"] * num_langs
+    md["assert_title_contains"][0] = "assert_title_contains"
+    md["assert_title_contains"][1] = "断言标题包含"
+    md["assert_title_contains"][2] = "controleren_titel_bevat"
+    md["assert_title_contains"][3] = "vérifier_titre_contient"
+    md["assert_title_contains"][4] = "verificare_titolo_contiene"
+    md["assert_title_contains"][5] = "タイトル部分文字列を確認する"
+    md["assert_title_contains"][6] = "제목_부분_확인"
+    md["assert_title_contains"][7] = "verificar_título_contém"
+    md["assert_title_contains"][8] = "подтвердить_название_содержит"
+    md["assert_title_contains"][9] = "verificar_título_contiene"
 
     md["get_title"] = ["*"] * num_langs
     md["get_title"][0] = "get_title"

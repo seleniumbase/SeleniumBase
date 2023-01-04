@@ -101,9 +101,21 @@ class CasDeBase(BaseCase):
         # assert_attribute(selector, attribute, value)
         return self.assert_attribute(*args, **kwargs)
 
+    def vérifier_url(self, *args, **kwargs):
+        # assert_url(url)
+        return self.assert_url(*args, **kwargs)
+
+    def vérifier_url_contient(self, *args, **kwargs):
+        # assert_url_contains(substring)
+        return self.assert_url_contains(*args, **kwargs)
+
     def vérifier_titre(self, *args, **kwargs):
         # assert_title(title)
         return self.assert_title(*args, **kwargs)
+
+    def vérifier_titre_contient(self, *args, **kwargs):
+        # assert_title_contains(substring)
+        return self.assert_title_contains(*args, **kwargs)
 
     def obtenir_titre(self, *args, **kwargs):
         # get_title()

@@ -4315,6 +4315,8 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("as_lt")
         ext_actions.append("as_ti")
         ext_actions.append("as_tc")
+        ext_actions.append("a_url")
+        ext_actions.append("a_u_c")
         ext_actions.append("as_df")
         ext_actions.append("do_fi")
         ext_actions.append("as_at")
@@ -4665,6 +4667,18 @@ class BaseCase(unittest.TestCase):
                     sb_actions.append("self.%s('%s')" % (method, action[1]))
             elif action[0] == "as_tc":
                 method = "assert_title_contains"
+                if '"' not in action[1]:
+                    sb_actions.append('self.%s("%s")' % (method, action[1]))
+                else:
+                    sb_actions.append("self.%s('%s')" % (method, action[1]))
+            elif action[0] == "a_url":
+                method = "assert_url"
+                if '"' not in action[1]:
+                    sb_actions.append('self.%s("%s")' % (method, action[1]))
+                else:
+                    sb_actions.append("self.%s('%s')" % (method, action[1]))
+            elif action[0] == "a_u_c":
+                method = "assert_url_contains"
                 if '"' not in action[1]:
                     sb_actions.append('self.%s("%s")' % (method, action[1]))
                 else:
@@ -6724,6 +6738,10 @@ class BaseCase(unittest.TestCase):
                 self.assertIn(expected, actual, error % (expected, actual))
         if self.demo_mode and not self.recorder_mode:
             a_t = "ASSERT TITLE CONTAINS"
+            if self._language != "English":
+                from seleniumbase.fixtures.words import SD
+
+                a_t = SD.translate_assert_title_contains(self._language)
             messenger_post = "<b>%s</b>: {%s}" % (a_t, expected)
             self.__highlight_with_assert_success(messenger_post, "html")
         if self.recorder_mode:
@@ -6734,6 +6752,85 @@ class BaseCase(unittest.TestCase):
                         time_stamp = self.execute_script("return Date.now();")
                         origin = self.get_origin()
                         action = ["as_tc", expected, origin, time_stamp]
+                        self.__extra_actions.append(action)
+        return True
+
+    def assert_url(self, url):
+        """Asserts that the web page URL matches the expected URL."""
+        self.wait_for_ready_state_complete()
+        expected = url.strip()
+        actual = self.get_current_url().strip()
+        error = "Expected URL [%s] does not match the actual URL [%s]!"
+        try:
+            self.assertEqual(expected, actual, error % (expected, actual))
+        except Exception:
+            self.wait_for_ready_state_complete()
+            time.sleep(2)
+            actual = self.get_current_url().strip()
+            try:
+                self.assertEqual(expected, actual, error % (expected, actual))
+            except Exception:
+                self.wait_for_ready_state_complete()
+                time.sleep(2)
+                actual = self.get_current_url().strip()
+                self.assertEqual(expected, actual, error % (expected, actual))
+        if self.demo_mode and not self.recorder_mode:
+            a_u = "ASSERT URL"
+            if self._language != "English":
+                from seleniumbase.fixtures.words import SD
+
+                a_u = SD.translate_assert_url(self._language)
+            messenger_post = "<b>%s</b>: {%s}" % (a_u, expected)
+            self.__highlight_with_assert_success(messenger_post, "html")
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        action = ["a_url", expected, origin, time_stamp]
+                        self.__extra_actions.append(action)
+        return True
+
+    def assert_url_contains(self, substring):
+        """Asserts that the URL substring appears in the full URL."""
+        self.wait_for_ready_state_complete()
+        expected = substring.strip()
+        actual = self.get_current_url().strip()
+        error = (
+            "Expected URL substring [%s] does not appear "
+            "in the full URL [%s]!"
+        )
+        try:
+            self.assertIn(expected, actual, error % (expected, actual))
+        except Exception:
+            self.wait_for_ready_state_complete()
+            time.sleep(2)
+            actual = self.get_current_url().strip()
+            try:
+                self.assertIn(expected, actual, error % (expected, actual))
+            except Exception:
+                self.wait_for_ready_state_complete()
+                time.sleep(2)
+                actual = self.get_current_url().strip()
+                self.assertIn(expected, actual, error % (expected, actual))
+        if self.demo_mode and not self.recorder_mode:
+            a_u = "ASSERT URL CONTAINS"
+            if self._language != "English":
+                from seleniumbase.fixtures.words import SD
+
+                a_u = SD.translate_assert_url_contains(self._language)
+            messenger_post = "<b>%s</b>: {%s}" % (a_u, expected)
+            self.__highlight_with_assert_success(messenger_post, "html")
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        action = ["a_u_c", expected, origin, time_stamp]
                         self.__extra_actions.append(action)
         return True
 

@@ -101,9 +101,21 @@ class CasoDiProva(BaseCase):
         # assert_attribute(selector, attribute, value)
         return self.assert_attribute(*args, **kwargs)
 
+    def verificare_url(self, *args, **kwargs):
+        # assert_url(url)
+        return self.assert_url(*args, **kwargs)
+
+    def verificare_url_contiene(self, *args, **kwargs):
+        # assert_url_contains(substring)
+        return self.assert_url_contains(*args, **kwargs)
+
     def verificare_titolo(self, *args, **kwargs):
         # assert_title(title)
         return self.assert_title(*args, **kwargs)
+
+    def verificare_titolo_contiene(self, *args, **kwargs):
+        # assert_title_contains(substring)
+        return self.assert_title_contains(*args, **kwargs)
 
     def ottenere_titolo(self, *args, **kwargs):
         # get_title()

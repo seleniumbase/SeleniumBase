@@ -101,9 +101,21 @@ class Testgeval(BaseCase):
         # assert_attribute(selector, attribute, value)
         return self.assert_attribute(*args, **kwargs)
 
+    def controleren_url(self, *args, **kwargs):
+        # assert_url(url)
+        return self.assert_url(*args, **kwargs)
+
+    def controleren_url_bevat(self, *args, **kwargs):
+        # assert_url_contains(substring)
+        return self.assert_url_contains(*args, **kwargs)
+
     def controleren_titel(self, *args, **kwargs):
         # assert_title(title)
         return self.assert_title(*args, **kwargs)
+
+    def controleren_titel_bevat(self, *args, **kwargs):
+        # assert_title_contains(substring)
+        return self.assert_title_contains(*args, **kwargs)
 
     def titel_ophalen(self, *args, **kwargs):
         # get_title()
