@@ -1,5 +1,6 @@
 """Test double_click() after switching into iframes."""
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 
 class DoubleClickTests(BaseCase):

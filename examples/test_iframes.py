@@ -1,5 +1,6 @@
 """Use SeleniumBase methods to interact with iframes."""
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 
 class FrameTests(BaseCase):

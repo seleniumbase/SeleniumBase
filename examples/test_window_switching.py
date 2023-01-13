@@ -4,6 +4,7 @@ to switch to them first in order to interact with them.
 The starting window is window(0). Then increments by 1.
 """
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 
 class TabSwitchingTests(BaseCase):
