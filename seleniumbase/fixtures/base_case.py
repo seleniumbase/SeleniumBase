@@ -14052,6 +14052,10 @@ class BaseCase(unittest.TestCase):
             test_id = self._sb_test_identifier
             test_id = test_id.replace(".py::", ".").replace("::", ".")
             test_id = test_id.replace("/", ".")
+        elif hasattr(self, "_using_sb_fixture") and self._using_sb_fixture:
+            test_id = sb_config._latest_display_id
+            test_id = test_id.replace(".py::", ".").replace("::", ".")
+            test_id = test_id.replace("/", ".")
         return test_id
 
     def __get_test_id_2(self):
