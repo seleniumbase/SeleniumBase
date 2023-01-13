@@ -13,6 +13,7 @@ from .options import ChromeOptions
 from .patcher import IS_POSIX
 from .patcher import Patcher
 from .reactor import Reactor
+from .webelement import WebElement
 
 __all__ = (
     "Chrome",
@@ -263,12 +264,17 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         else:
             import subprocess
 
+            creationflags = 0
+            sys_plat = sys.platform
+            if "win32" in sys_plat or "win64" in sys_plat or "x64" in sys_plat:
+                creationflags = subprocess.CREATE_NO_WINDOW
             browser = subprocess.Popen(
                 [options.binary_location, *options.arguments],
                 stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 close_fds=IS_POSIX,
+                creationflags=creationflags,
             )
             self.browser_pid = browser.pid
         service_ = None
@@ -298,6 +304,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
             self.reactor = reactor
         if options.headless:
             self._configure_headless()
+        self._web_element_cls = WebElement
 
     def __getattribute__(self, item):
         if not super().__getattribute__("debug"):
@@ -375,40 +382,32 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
             let objectToInspect = window,
                 result = [];
             while(objectToInspect !== null)
-            {
-                result = result.concat(
-                    Object.getOwnPropertyNames(objectToInspect)
-                );
-                objectToInspect = Object.getPrototypeOf(objectToInspect);
-            }
-            return result.filter(
-                i => i.match(/.+_.+_(Array|Promise|Symbol)/ig)
-            )
+            { result = result.concat(
+                Object.getOwnPropertyNames(objectToInspect)
+              );
+              objectToInspect = Object.getPrototypeOf(objectToInspect); }
+            return result.filter(i => i.match(/^[a-z]{3}_[a-z]{22}_.*/i))
             """
         )
 
-    def _hook_remove_cdc_props(self):
+    def _hook_remove_cdc_props(self, cdc_props):
+        cdc_props_js_array = '[' + str().join(
+            '"' + p + '", ' for p in cdc_props
+        )[:-2] + ']'
         self.execute_cdp_cmd(
             "Page.addScriptToEvaluateOnNewDocument",
             {
-                "source": """
-                let objectToInspect = window, result = [];
-                while(objectToInspect !== null)
-                {
-                    result = result.concat(
-                        Object.getOwnPropertyNames(objectToInspect)
-                    );
-                    objectToInspect = Object.getPrototypeOf(objectToInspect);
-                }
-                result.forEach(p => p.match(/.+_.+_(Array|Promise|Symbol)/ig)
-                                &&delete window[p]&&console.log('removed',p))
-                """
+                "source": cdc_props_js_array + (
+                    ".forEach(p => "
+                    "delete window[p] && console.log('removed',p));"
+                )
             },
         )
 
     def get(self, url):
-        if self._get_cdc_props():
-            self._hook_remove_cdc_props()
+        cdc_props = self._get_cdc_props()
+        if len(cdc_props) > 0:
+            self._hook_remove_cdc_props(cdc_props)
         return super().get(url)
 
     def add_cdp_listener(self, event_name, callback):

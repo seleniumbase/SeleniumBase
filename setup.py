@@ -48,7 +48,9 @@ if sys.argv[-1] == "publish":
         os.system("rm -f dist/*.egg; rm -f dist/*.tar.gz; rm -f dist/*.whl")
         os.system("rm -rf build/bdist.*; rm -rf build/lib")
         print("\n*** Installing build: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'build>=0.9.0'")
+        os.system("python -m pip install --upgrade 'build>=0.10.0'")
+        print("\n*** Installing pkginfo: *** (Required for PyPI uploads)\n")
+        os.system("python -m pip install --upgrade 'pkginfo>=1.9.6'")
         print("\n*** Installing twine: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'twine>=4.0.2'")
         print("\n*** Installing tqdm: *** (Required for PyPI uploads)\n")
@@ -127,9 +129,9 @@ setup(
         'pip>=21.3.1;python_version>="3.6" and python_version<"3.7"',
         'pip>=22.3.1;python_version>="3.7"',
         'packaging>=21.3;python_version>="3.6" and python_version<"3.7"',
-        'packaging>=22.0;python_version>="3.7"',
+        'packaging>=23.0;python_version>="3.7"',
         'setuptools>=59.6.0;python_version>="3.6" and python_version<"3.7"',
-        'setuptools>=65.6.3;python_version>="3.7"',
+        'setuptools>=65.7.0;python_version>="3.7"',
         'tomli>=1.2.3;python_version>="3.6" and python_version<"3.7"',
         'tomli>=2.0.1;python_version>="3.7"',
         "tqdm>=4.64.1",
@@ -149,12 +151,12 @@ setup(
         'idna==3.4;python_version>="3.6"',  # Must stay in sync with "requests"
         'chardet==4.0.0;python_version>="3.6" and python_version<"3.7"',
         'chardet==5.1.0;python_version>="3.7"',  # Stay in sync with "requests"
-        'charset-normalizer==2.0.12;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
-        'charset-normalizer==2.1.1;python_version>="3.7"',  # Sync "requests"
+        'charset-normalizer==2.0.12;python_version<"3.7"',
+        'charset-normalizer==3.0.1;python_version>="3.7"',  # Sync "requests"
         'urllib3==1.26.12;python_version<"3.7"',
-        'urllib3==1.26.13;python_version>="3.7"',
+        'urllib3==1.26.14;python_version>="3.7"',
         'requests==2.27.1;python_version<"3.7"',
-        'requests==2.28.1;python_version>="3.7"',
+        'requests==2.28.2;python_version>="3.7"',
         'requests-toolbelt==0.10.1',
         "nose==1.3.7",
         'sniffio==1.3.0;python_version>="3.7"',
@@ -176,17 +178,20 @@ setup(
         'fasteners==0.17.3;python_version>="3.6" and python_version<"3.7"',
         'fasteners==0.18;python_version>="3.7"',
         "execnet==1.9.0",
+        'iniconfig==1.1.1;python_version<"3.7"',
+        'iniconfig==2.0.0;python_version>="3.7"',
         'pluggy==1.0.0;python_version>="3.6"',
         'py==1.11.0;python_version>="3.6"',
-        'pytest==7.0.1;python_version>="3.6" and python_version<"3.7"',
+        'pytest==7.0.1;python_version<"3.7"',
         'pytest==7.2.0;python_version>="3.7"',
         'pytest-forked==1.4.0;python_version>="3.6"',
         'pytest-html==2.0.1;python_version>="3.6"',  # Newer ones had issues
-        'pytest-metadata==1.11.0;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
+        'pytest-metadata==1.11.0;python_version<"3.7"',
         'pytest-metadata==2.0.4;python_version>="3.7"',
         "pytest-ordering==0.6",
-        'pytest-rerunfailures==10.3;python_version>="3.6"',
-        'pytest-xdist==2.5.0;python_version>="3.6" and python_version<"3.7"',
+        'pytest-rerunfailures==10.3;python_version<"3.7"',
+        'pytest-rerunfailures==11.0;python_version>="3.7"',
+        'pytest-xdist==2.5.0;python_version<"3.7"',
         'pytest-xdist==3.1.0;python_version>="3.7"',
         "parameterized==0.8.1",
         "sbvirtualdisplay==1.1.1",
@@ -212,14 +217,14 @@ setup(
         'typing-extensions==4.1.1;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
         'typing-extensions==4.4.0;python_version>="3.7" and python_version<"3.9"',  # noqa: E501
         'rich==12.6.0;python_version>="3.6" and python_version<"3.7"',
-        'rich==13.0.0;python_version>="3.7" and python_version<"4.0"',
+        'rich==13.0.1;python_version>="3.7" and python_version<"4.0"',
     ],
     extras_require={
         # pip install -e .[coverage]
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage==6.2;python_version>="3.6" and python_version<"3.7"',
-            'coverage==7.0.3;python_version>="3.7"',
+            'coverage==7.0.5;python_version>="3.7"',
             'pytest-cov==4.0.0;python_version>="3.6"',
         ],
         # pip install -e .[flake8]

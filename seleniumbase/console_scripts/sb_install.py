@@ -51,6 +51,10 @@ if (
     )
 ):
     IS_ARM_MAC = True
+PLAT = sys.platform
+IS_WINDOWS = False
+if "win32" in PLAT or "win64" in PLAT or "x64" in PLAT or "x86" in PLAT:
+    IS_WINDOWS = True
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 LOCAL_PATH = "/usr/local/bin/"  # On Mac and Linux systems
 DEFAULT_CHROMEDRIVER_VERSION = "72.0.3626.69"  # (If can't find LATEST_STABLE)
@@ -249,7 +253,7 @@ def main(override=None, intel_for_uc=None):
                 file_name = "chromedriver_mac64.zip"
         elif "linux" in sys_plat:
             file_name = "chromedriver_linux64.zip"
-        elif "win32" in sys_plat or "win64" in sys_plat or "x64" in sys_plat:
+        elif IS_WINDOWS:
             file_name = "chromedriver_win32.zip"  # Works for win32 / win_x64
             if not get_latest and not get_v_latest and num_args < 4:
                 get_latest = True
@@ -348,7 +352,7 @@ def main(override=None, intel_for_uc=None):
                 file_name = "geckodriver-%s-linux64.tar.gz" % use_version
             else:
                 file_name = "geckodriver-%s-linux32.tar.gz" % use_version
-        elif "win32" in sys_plat or "win64" in sys_plat or "x64" in sys_plat:
+        elif IS_WINDOWS:
             file_name = "geckodriver-%s-win64.zip" % use_version
         else:
             raise Exception(
@@ -546,6 +550,9 @@ def main(override=None, intel_for_uc=None):
     if not os.path.exists(downloads_folder):
         os.makedirs(downloads_folder)
 
+    driver_name = None  # The name of the driver executable
+    driver_contents = []  # The contents of the driver zip file
+
     if headless_ie_exists:
         headless_ie_file_path = os.path.join(
             downloads_folder, headless_ie_file_name
@@ -641,10 +648,20 @@ def main(override=None, intel_for_uc=None):
         zip_file_path = file_path
         zip_ref = zipfile.ZipFile(zip_file_path, "r")
         contents = zip_ref.namelist()
-        if len(contents) == 1:
-            if name == "operadriver":
-                raise Exception("Zip file for OperaDriver is missing content!")
+        if (
+            len(contents) >= 1
+            and name in ["chromedriver", "uc_driver"]
+        ):
             for f_name in contents:
+                if (
+                    name == "chromedriver"
+                    and (
+                        f_name == "chromedriver"
+                        or f_name == "chromedriver.exe"
+                    )
+                ):
+                    driver_name = f_name
+                    driver_contents = [driver_name]
                 # Remove existing version if exists
                 new_file = os.path.join(downloads_folder, str(f_name))
                 if (
@@ -658,6 +675,8 @@ def main(override=None, intel_for_uc=None):
                 if "Driver" in new_file or "driver" in new_file:
                     if os.path.exists(new_file):
                         os.remove(new_file)  # Technically the old file now
+            if driver_contents:
+                contents = driver_contents
             print("Extracting %s from %s ..." % (contents, file_name))
             if intel_for_uc and IS_ARM_MAC:
                 f_name = "uc_driver"
@@ -670,12 +689,30 @@ def main(override=None, intel_for_uc=None):
                         zipinfo.filename = "uc_driver"
                         zip_ref.extract(zipinfo, downloads_folder)
                 contents = zip_ref.namelist()
+                if driver_contents:
+                    contents = driver_contents
+            elif name == "chromedriver":
+                zipinfos = zip_ref.infolist()
+                for zipinfo in zipinfos:
+                    if (
+                        zipinfo.filename == "chromedriver"
+                        or zipinfo.filename == "chromedriver.exe"
+                    ):
+                        zip_ref.extract(zipinfo, downloads_folder)
+                contents = zip_ref.namelist()
+                if driver_contents:
+                    contents = driver_contents
             else:
                 zip_ref.extractall(downloads_folder)
             zip_ref.close()
             os.remove(zip_file_path)
             print("%sUnzip Complete!%s\n" % (c2, cr))
             for f_name in contents:
+                if intel_for_uc:
+                    if IS_WINDOWS:
+                        f_name = "uc_driver.exe"
+                    else:
+                        f_name = "uc_driver"
                 new_file = os.path.join(downloads_folder, str(f_name))
                 pr_file = c3 + new_file + cr
                 print("The file [%s] was saved to:\n%s\n" % (f_name, pr_file))

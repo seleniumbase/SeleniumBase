@@ -112,6 +112,7 @@ class BaseCase(unittest.TestCase):
         self.__frame_switch_layer = 0  # Used by Recorder-Mode
         self.__frame_switch_multi = False  # Used by Recorder-Mode
         self.__last_saved_url = None  # Used by Recorder-Mode
+        self.__uc_frame_layer = 0
         self.__called_setup = False
         self.__called_teardown = False
         self.__start_time_ms = int(time.time() * 1000.0)
@@ -275,14 +276,25 @@ class BaseCase(unittest.TestCase):
                     pass  # Odd issue where the open did happen. Continue.
             else:
                 raise
-        if self.driver.current_url == pre_action_url and pre_action_url != url:
+        if (
+            self.undetectable
+            or (
+                self.driver.current_url == pre_action_url
+                and pre_action_url != url
+            )
+        ):
             time.sleep(0.1)  # Make sure load happens
         if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
-            self.wait_for_ready_state_complete()
+            if not self.undetectable:
+                self.wait_for_ready_state_complete()
+            else:
+                time.sleep(0.15)
         if self.__needs_minimum_wait():
             time.sleep(0.03)  # Force a minimum wait, even if skipping waits.
             if self.undetectable:
                 time.sleep(0.02)
+        if self.undetectable:
+            self.__uc_frame_layer = 0
         if self.demo_mode:
             if not js_utils.is_jquery_activated(self.driver):
                 js_utils.add_js_link(self.driver, constants.JQuery.MIN_JS)
@@ -383,7 +395,10 @@ class BaseCase(unittest.TestCase):
                 except Exception:
                     pass
                 # Normal click
-                element.click()
+                if not self.undetectable or self.__uc_frame_layer > 0:
+                    element.click()
+                else:
+                    element.uc_click()
         except StaleElementReferenceException:
             self.wait_for_ready_state_complete()
             time.sleep(0.16)
@@ -401,7 +416,10 @@ class BaseCase(unittest.TestCase):
             if self.browser == "safari" and by == By.LINK_TEXT:
                 self.__jquery_click(selector, by=by)
             else:
-                element.click()
+                if not self.undetectable or self.__uc_frame_layer > 0:
+                    element.click()
+                else:
+                    element.uc_click()
         except ENI_Exception:
             self.wait_for_ready_state_complete()
             time.sleep(0.1)
@@ -446,7 +464,10 @@ class BaseCase(unittest.TestCase):
                 else:
                     self.__js_click(selector, by=by)
             else:
-                element.click()
+                if not self.undetectable or self.__uc_frame_layer > 0:
+                    element.click()
+                else:
+                    element.uc_click()
         except MoveTargetOutOfBoundsException:
             self.wait_for_ready_state_complete()
             try:
@@ -463,7 +484,10 @@ class BaseCase(unittest.TestCase):
                         timeout=timeout,
                         original_selector=original_selector,
                     )
-                    element.click()
+                    if not self.undetectable or self.__uc_frame_layer > 0:
+                        element.click()
+                    else:
+                        element.uc_click()
         except WebDriverException as e:
             if (
                 "cannot determine loading status" in e.msg
@@ -486,7 +510,10 @@ class BaseCase(unittest.TestCase):
                             timeout=timeout,
                             original_selector=original_selector,
                         )
-                        element.click()
+                        if not self.undetectable or self.__uc_frame_layer > 0:
+                            element.click()
+                        else:
+                            element.uc_click()
         latest_window_count = len(self.driver.window_handles)
         if (
             latest_window_count > pre_window_count
@@ -507,39 +534,39 @@ class BaseCase(unittest.TestCase):
             # switch to the last one if it exists.
             self.switch_to_window(-1)
         if settings.WAIT_FOR_RSC_ON_CLICKS:
-            try:
-                self.wait_for_ready_state_complete()
-            except Exception:
-                pass
-            if self.__needs_minimum_wait():
-                time.sleep(0.05)
-        else:
-            # A smaller subset of self.wait_for_ready_state_complete()
-            try:
-                self.wait_for_angularjs(timeout=settings.MINI_TIMEOUT)
-            except Exception:
-                pass
-            if self.__needs_minimum_wait():
-                time.sleep(0.026)
-                if self.undetectable:
-                    time.sleep(0.024)
-            try:
-                if self.driver.current_url != pre_action_url:
-                    self.__ad_block_as_needed()
-                    self.__disable_beforeunload_as_needed()
-                    if self.__needs_minimum_wait():
-                        time.sleep(0.026)
-                        if self.undetectable:
-                            time.sleep(0.024)
-            except Exception:
+            if not self.undetectable:
                 try:
                     self.wait_for_ready_state_complete()
                 except Exception:
                     pass
                 if self.__needs_minimum_wait():
+                    time.sleep(0.05)
+            else:
+                time.sleep(0.08)
+        else:
+            if not self.undetectable:
+                # A smaller subset of self.wait_for_ready_state_complete()
+                try:
+                    self.wait_for_angularjs(timeout=settings.MINI_TIMEOUT)
+                except Exception:
+                    pass
+                if self.__needs_minimum_wait():
                     time.sleep(0.026)
-                    if self.undetectable:
-                        time.sleep(0.024)
+                try:
+                    if self.driver.current_url != pre_action_url:
+                        self.__ad_block_as_needed()
+                        self.__disable_beforeunload_as_needed()
+                        if self.__needs_minimum_wait():
+                            time.sleep(0.026)
+                except Exception:
+                    try:
+                        self.wait_for_ready_state_complete()
+                    except Exception:
+                        pass
+                    if self.__needs_minimum_wait():
+                        time.sleep(0.026)
+            else:
+                time.sleep(0.08)
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 if not js_utils.is_jquery_activated(self.driver):
@@ -1384,7 +1411,10 @@ class BaseCase(unittest.TestCase):
             element = self.wait_for_link_text_visible(link_text, timeout=0.2)
             self.__demo_mode_highlight_if_active(link_text, by="link text")
             try:
-                element.click()
+                if not self.undetectable or self.__uc_frame_layer > 0:
+                    element.click()
+                else:
+                    element.uc_click()
             except (
                 StaleElementReferenceException,
                 ENI_Exception,
@@ -1395,7 +1425,10 @@ class BaseCase(unittest.TestCase):
                 element = self.wait_for_link_text_visible(
                     link_text, timeout=timeout
                 )
-                element.click()
+                if not self.undetectable or self.__uc_frame_layer > 0:
+                    element.click()
+                else:
+                    element.uc_click()
         except Exception:
             found_css = False
             text_id = self.get_link_attribute(link_text, "id", False)
@@ -1432,7 +1465,10 @@ class BaseCase(unittest.TestCase):
                 element = self.wait_for_link_text_visible(
                     link_text, timeout=settings.MINI_TIMEOUT
                 )
-                element.click()
+                if not self.undetectable or self.__uc_frame_layer > 0:
+                    element.click()
+                else:
+                    element.uc_click()
         latest_window_count = len(self.driver.window_handles)
         if (
             latest_window_count > pre_window_count
@@ -1479,7 +1515,10 @@ class BaseCase(unittest.TestCase):
         if self.browser == "phantomjs":
             if self.is_partial_link_text_visible(partial_link_text):
                 element = self.wait_for_partial_link_text(partial_link_text)
-                element.click()
+                if not self.undetectable or self.__uc_frame_layer > 0:
+                    element.click()
+                else:
+                    element.uc_click()
                 return
             soup = self.get_beautiful_soup()
             html_links = soup.fetch("a")
@@ -1519,7 +1558,10 @@ class BaseCase(unittest.TestCase):
                 partial_link_text, by="link text"
             )
             try:
-                element.click()
+                if not self.undetectable or self.__uc_frame_layer > 0:
+                    element.click()
+                else:
+                    element.uc_click()
             except (
                 StaleElementReferenceException,
                 ENI_Exception,
@@ -1530,7 +1572,10 @@ class BaseCase(unittest.TestCase):
                 element = self.wait_for_partial_link_text(
                     partial_link_text, timeout=timeout
                 )
-                element.click()
+                if not self.undetectable or self.__uc_frame_layer > 0:
+                    element.click()
+                else:
+                    element.uc_click()
         except Exception:
             found_css = False
             text_id = self.get_partial_link_text_attribute(
@@ -1575,7 +1620,10 @@ class BaseCase(unittest.TestCase):
                 element = self.wait_for_partial_link_text(
                     partial_link_text, timeout=settings.MINI_TIMEOUT
                 )
-                element.click()
+                if not self.undetectable or self.__uc_frame_layer > 0:
+                    element.click()
+                else:
+                    element.uc_click()
         latest_window_count = len(self.driver.window_handles)
         if (
             latest_window_count > pre_window_count
@@ -2317,6 +2365,8 @@ class BaseCase(unittest.TestCase):
                 time.sleep(0.02)
         try:
             self.switch_to_frame(selector, timeout=1)
+            if self.undetectable:
+                self.__uc_frame_layer += 1
             return selector
         except Exception:
             if self.is_element_present(selector, by=by):
@@ -3052,6 +3102,8 @@ class BaseCase(unittest.TestCase):
         else:
             if self.__needs_minimum_wait():
                 time.sleep(0.04)
+        if self.undetectable:
+            self.__uc_frame_layer += 1
         if self.recorder_mode and self._rec_overrides_switch:
             url = self.get_current_url()
             if url and len(url) > 0:
@@ -3099,6 +3151,8 @@ class BaseCase(unittest.TestCase):
                         self.__extra_actions.append(action)
                         return
         self.driver.switch_to.default_content()
+        if self.undetectable:
+            self.__uc_frame_layer = 0
 
     def switch_to_parent_frame(self):
         """Brings driver control outside the current iframe.
@@ -3121,6 +3175,10 @@ class BaseCase(unittest.TestCase):
                         self.__extra_actions.append(action)
                         return
         self.driver.switch_to.parent_frame()
+        if self.undetectable:
+            self.__uc_frame_layer -= 1
+            if self.__uc_frame_layer < 0:
+                self.__uc_frame_layer = 0
 
     @contextmanager
     def frame_switch(self, frame, timeout=None):
@@ -3135,7 +3193,13 @@ class BaseCase(unittest.TestCase):
             if self.__frame_switch_layer >= 2:
                 self.__frame_switch_multi = True
         self.switch_to_frame(frame, timeout=timeout)
+        if self.undetectable:
+            self.__uc_frame_layer += 1
         yield
+        if self.undetectable:
+            self.__uc_frame_layer -= 1
+            if self.__uc_frame_layer < 0:
+                self.__uc_frame_layer = 0
         self.switch_to_parent_frame()
         if self.recorder_mode:
             self.__frame_switch_layer -= 1
@@ -13986,6 +14050,10 @@ class BaseCase(unittest.TestCase):
         )
         if self._sb_test_identifier and len(str(self._sb_test_identifier)) > 6:
             test_id = self._sb_test_identifier
+            test_id = test_id.replace(".py::", ".").replace("::", ".")
+            test_id = test_id.replace("/", ".")
+        elif hasattr(self, "_using_sb_fixture") and self._using_sb_fixture:
+            test_id = sb_config._latest_display_id
             test_id = test_id.replace(".py::", ".").replace("::", ".")
             test_id = test_id.replace("/", ".")
         return test_id

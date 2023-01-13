@@ -60,6 +60,8 @@ def wait_for_angularjs(driver, timeout=settings.LARGE_TIMEOUT, **kwargs):
         return
     if not settings.WAIT_FOR_ANGULARJS:
         return
+    if timeout == settings.MINI_TIMEOUT:
+        timeout = settings.MINI_TIMEOUT / 2.0
 
     NG_WRAPPER = (
         "%(prefix)s"

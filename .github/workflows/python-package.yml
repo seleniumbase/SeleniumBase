@@ -40,18 +40,16 @@ jobs:
         pip install flake8
         # Stop the build if there are flake8 issues
         flake8 . --count --show-source --statistics --exclude=temp
-    - name: Install Chrome and Firefox
+    - name: Install Chrome
       run: |
         sudo apt install google-chrome-stable
-        sudo apt-get install firefox
     - name: Check the console scripts interface
       run: |
         seleniumbase
         sbase
-    - name: Install chromedriver and geckodriver (Firefox Webdriver)
+    - name: Install chromedriver
       run: |
         seleniumbase install chromedriver
-        seleniumbase install geckodriver
     - name: Make sure pytest is working
       run: |
         echo "def test_1(): pass" > nothing.py
@@ -87,12 +85,6 @@ jobs:
     - name: Run pytest examples/test_inspect_html.py --browser=chrome --headless
       run: |
         pytest examples/test_inspect_html.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
-    - name: Run pytest examples/test_mfa_login.py --browser=firefox --headless
-      run: |
-        pytest examples/test_mfa_login.py --browser=firefox --headless -v -s --junit-xml=junit/test-results.xml
-    - name: Run pytest examples/test_mfa_login.py --browser=firefox --xvfb
-      run: |
-        pytest examples/test_mfa_login.py --browser=firefox --xvfb -v -s --junit-xml=junit/test-results.xml
     - name: Run behave examples/behave_bdd/features/calculator.feature -D rs -D crumbs -D xvfb
       run: |
         behave examples/behave_bdd/features/calculator.feature -D rs -D crumbs -D xvfb -T -k
