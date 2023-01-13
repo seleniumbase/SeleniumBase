@@ -264,12 +264,17 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         else:
             import subprocess
 
+            creationflags = 0
+            sys_plat = sys.platform
+            if "win32" in sys_plat or "win64" in sys_plat or "x64" in sys_plat:
+                creationflags = subprocess.CREATE_NO_WINDOW
             browser = subprocess.Popen(
                 [options.binary_location, *options.arguments],
                 stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 close_fds=IS_POSIX,
+                creationflags=creationflags,
             )
             self.browser_pid = browser.pid
         service_ = None
