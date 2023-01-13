@@ -986,6 +986,8 @@ def get_driver(
     if is_using_uc(undetectable, browser_name) and mobile_emulator:
         mobile_emulator = False
         user_agent = None
+    if page_load_strategy and page_load_strategy.lower() == "none":
+        settings.PAGE_LOAD_STRATEGY = "none"
     proxy_auth = False
     proxy_user = None
     proxy_pass = None
