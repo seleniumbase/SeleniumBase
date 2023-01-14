@@ -1752,6 +1752,7 @@ def pytest_runtest_setup(item):
         return
     if sb_config.dashboard:
         sb_config._sbase_detected = False
+    sb_config._fail_page = None
     test_id, display_id = _get_test_ids_(item)
     sb_config._test_id = test_id
     sb_config._latest_display_id = display_id
@@ -1818,7 +1819,22 @@ def pytest_runtest_teardown(item):
         and sb_config.list_fp
         and sb_config._fail_page
     ):
-        sys.stderr.write("\n=> Fail Page: %s\n" % sb_config._fail_page)
+        if (
+            "-s" in sys_argv
+            or "--capture=no" in sys_argv
+            or (
+                hasattr(sb_config.pytest_config, "invocation_params")
+                and (
+                    "-s" in sb_config.pytest_config.invocation_params.args
+                    or "--capture=no" in (
+                        sb_config.pytest_config.invocation_params.args
+                    )
+                )
+            )
+        ):
+            print("\n=> Fail Page: %s" % sb_config._fail_page)
+        else:
+            sys.stdout.write("\n=> Fail Page: %s\n" % sb_config._fail_page)
 
 
 def pytest_sessionfinish(session):
