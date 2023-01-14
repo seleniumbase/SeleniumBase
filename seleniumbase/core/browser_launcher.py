@@ -570,7 +570,7 @@ def _set_chrome_options(
         # Only change it if not "normal", which is the default.
         chrome_options.page_load_strategy = settings.PAGE_LOAD_STRATEGY.lower()
     if headless2:
-        chrome_options.add_argument("--headless=chrome")
+        pass  # Processed After Version Check
     elif headless:
         chrome_options.add_argument("--headless")
     if (settings.DISABLE_CSP_ON_CHROME or disable_csp) and not headless:
@@ -2005,7 +2005,13 @@ def get_local_driver(
         if guest_mode:
             edge_options.add_argument("--guest")
         if headless2:
-            edge_options.add_argument("--headless=chrome")
+            try:
+                if use_version == "latest" or int(use_version) >= 109:
+                    edge_options.add_argument("--headless=new")
+                else:
+                    edge_options.add_argument("--headless=chrome")
+            except Exception:
+                edge_options.add_argument("--headless=new")
         elif headless:
             edge_options.add_argument("--headless")
         if mobile_emulator:
@@ -2448,6 +2454,14 @@ def get_local_driver(
                         driver_version = output
                 except Exception:
                     pass
+            if headless2:
+                try:
+                    if use_version == "latest" or int(use_version) >= 109:
+                        chrome_options.add_argument("--headless=new")
+                    else:
+                        chrome_options.add_argument("--headless=chrome")
+                except Exception:
+                    chrome_options.add_argument("--headless=new")
             disable_build_check = False
             uc_driver_version = None
             if IS_ARM_MAC:
