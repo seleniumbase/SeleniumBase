@@ -14,8 +14,8 @@ Examples:
          sbase get chromedriver
          sbase get geckodriver
          sbase get edgedriver
-         sbase get chromedriver 108
-         sbase get chromedriver 108.0.5359.71
+         sbase get chromedriver 109
+         sbase get chromedriver 109.0.5414.74
          sbase get chromedriver latest
          sbase get chromedriver latest-1  # (Latest minus one)
          sbase get chromedriver -p
@@ -59,7 +59,7 @@ DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 LOCAL_PATH = "/usr/local/bin/"  # On Mac and Linux systems
 DEFAULT_CHROMEDRIVER_VERSION = "72.0.3626.69"  # (If can't find LATEST_STABLE)
 DEFAULT_GECKODRIVER_VERSION = "v0.32.0"
-DEFAULT_EDGEDRIVER_VERSION = "108.0.1462.54"  # (If can't find LATEST_STABLE)
+DEFAULT_EDGEDRIVER_VERSION = "109.0.1518.52"  # (If can't find LATEST_STABLE)
 DEFAULT_OPERADRIVER_VERSION = "v.96.0.4664.45"
 
 
@@ -84,8 +84,8 @@ def invalid_run_command():
     exp += "           sbase get chromedriver\n"
     exp += "           sbase get geckodriver\n"
     exp += "           sbase get edgedriver\n"
-    exp += "           sbase get chromedriver 108\n"
-    exp += "           sbase get chromedriver 108.0.5359.71\n"
+    exp += "           sbase get chromedriver 109\n"
+    exp += "           sbase get chromedriver 109.0.5414.74\n"
     exp += "           sbase get chromedriver latest\n"
     exp += "           sbase get chromedriver latest-1\n"
     exp += "           sbase get chromedriver -p\n"
@@ -184,7 +184,6 @@ def main(override=None, intel_for_uc=None):
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     c4 = colorama.Fore.LIGHTRED_EX + colorama.Back.LIGHTWHITE_EX
     c5 = colorama.Fore.RED + colorama.Back.LIGHTWHITE_EX
-    c6 = colorama.Fore.LIGHTYELLOW_EX + colorama.Back.BLUE
     cr = colorama.Style.RESET_ALL
     if "linux" in sys_plat:
         c1 = ""
@@ -243,6 +242,11 @@ def main(override=None, intel_for_uc=None):
             else:
                 invalid_run_command()
         if "darwin" in sys_plat:
+            if IS_ARM_MAC and not intel_for_uc:
+                if use_version == "latest" or use_version == "latest-1":
+                    use_version = requests_get(last).text
+                if use_version == "latest-1":
+                    use_version = str(int(use_version.split(".")[0]) - 1)
             if (
                 IS_ARM_MAC
                 and not intel_for_uc
@@ -299,12 +303,12 @@ def main(override=None, intel_for_uc=None):
             if get_latest:
                 p_version = p_version + " " + c2 + "(Latest)" + cr
             else:
-                n_l_s = "NOT Latest"
+                n_l_s = "Not Latest"
                 try:
                     int_use_version = int(use_version.split(".")[0])
                     int_latest_version = int(latest_version.split(".")[0])
                     if int_use_version > int_latest_version:
-                        n_l_s = "NOT Latest Stable"
+                        n_l_s = "Not Latest Stable"
                 except Exception:
                     pass
                 not_latest = c5 + "(" + c4 + n_l_s + c5 + ")" + cr
@@ -314,12 +318,7 @@ def main(override=None, intel_for_uc=None):
         else:
             raise Exception("Could not find chromedriver to download!\n")
         if not get_latest:
-            to_upgrade = " " + c3 + "To upgrade" + cr
-            run_this = c3 + "run this" + cr
-            install_sb = c6 + "sbase get chromedriver latest" + cr
-            print("\n %s to the latest version of chromedriver," % to_upgrade)
-            print("   %s: >>> %s" % (run_this, install_sb))
-            print("  (Requires the latest version of Chrome installed)")
+            pass  # Previously recommended: "sbase get chromedriver latest"
     elif name == "geckodriver" or name == "firefoxdriver":
         use_version = DEFAULT_GECKODRIVER_VERSION
         found_geckodriver = False
@@ -381,6 +380,33 @@ def main(override=None, intel_for_uc=None):
             "https://msedgewebdriverstorage.blob.core.windows.net"
             "/edgewebdriver/LATEST_STABLE"
         )
+
+        if (
+            selenium4_or_newer
+            and not override
+            and (
+                num_args == 3
+                or (num_args == 4 and "-p" in sys.argv[3].lower())
+            )
+        ):
+            use_version = "latest"
+            major_edge_version = None
+            try:
+                from seleniumbase.core import detect_b_ver
+
+                br_app = "edge"
+                major_edge_version = (
+                    detect_b_ver.get_browser_version_from_os(br_app)
+                ).split(".")[0]
+                if int(major_edge_version) < 80:
+                    major_edge_version = None
+            except Exception:
+                major_edge_version = None
+            if major_edge_version and major_edge_version.isnumeric():
+                num_args += 1
+                sys.argv.insert(3, major_edge_version)
+                use_version = major_edge_version
+
         get_latest = False
         if num_args == 3:
             get_latest = True

@@ -41,10 +41,12 @@ class OSType(object):
 
 class ChromeType(object):
     GOOGLE = "google-chrome"
+    MSEDGE = "edge"
 
 
 PATTERN = {
     ChromeType.GOOGLE: r"\d+\.\d+\.\d+",
+    ChromeType.MSEDGE: r"\d+\.\d+\.\d+",
 }
 
 
@@ -131,6 +133,63 @@ def get_browser_version_from_os(browser_type=None):
                 r'(Get-ItemProperty -Path Registry::"HKLM\SOFTWARE'
                 r'\Wow6432Node\Microsoft\Windows'
                 r'\CurrentVersion\Uninstall\Google Chrome").version',
+            ),
+        },
+        ChromeType.MSEDGE: {
+            OSType.LINUX: linux_browser_apps_to_cmd(
+                "microsoft-edge",
+                "microsoft-edge-stable",
+                "microsoft-edge-beta",
+                "microsoft-edge-dev",
+            ),
+            OSType.MAC: r"/Applications/Microsoft\ Edge.app"
+                        r"/Contents/MacOS/Microsoft\ Edge --version",
+            OSType.WIN: windows_browser_apps_to_cmd(
+                # stable edge
+                r'(Get-Item -Path "$env:PROGRAMFILES\Microsoft\Edge'
+                r'\Application\msedge.exe").VersionInfo.FileVersion',
+                r'(Get-Item -Path "$env:PROGRAMFILES (x86)\Microsoft'
+                r'\Edge\Application\msedge.exe").VersionInfo.FileVersion',
+                r'(Get-ItemProperty -Path Registry::"HKCU\SOFTWARE'
+                r'\Microsoft\Edge\BLBeacon").version',
+                r'(Get-ItemProperty -Path Registry::"HKLM\SOFTWARE'
+                r'\Microsoft\EdgeUpdate\Clients'
+                r'\{56EB18F8-8008-4CBD-B6D2-8C97FE7E9062}").pv',
+                # beta edge
+                r'(Get-Item -Path "$env:LOCALAPPDATA\Microsoft\Edge Beta'
+                r'\Application\msedge.exe").VersionInfo.FileVersion',
+                r'(Get-Item -Path "$env:PROGRAMFILES\Microsoft\Edge Beta'
+                r'\Application\msedge.exe").VersionInfo.FileVersion',
+                r'(Get-Item -Path "$env:PROGRAMFILES (x86)\Microsoft\Edge Beta'
+                r'\Application\msedge.exe").VersionInfo.FileVersion',
+                r'(Get-ItemProperty -Path Registry::"HKCU\SOFTWARE\Microsoft'
+                r'\Edge Beta\BLBeacon").version',
+                # dev edge
+                r'(Get-Item -Path "$env:LOCALAPPDATA\Microsoft\Edge Dev'
+                r'\Application\msedge.exe").VersionInfo.FileVersion',
+                r'(Get-Item -Path "$env:PROGRAMFILES\Microsoft\Edge Dev'
+                r'\Application\msedge.exe").VersionInfo.FileVersion',
+                r'(Get-Item -Path "$env:PROGRAMFILES (x86)\Microsoft\Edge Dev'
+                r'\Application\msedge.exe").VersionInfo.FileVersion',
+                r'(Get-ItemProperty -Path Registry::"HKCU\SOFTWARE\Microsoft'
+                r'\Edge Dev\BLBeacon").version',
+                # canary edge
+                r'(Get-Item -Path "$env:LOCALAPPDATA\Microsoft\Edge SxS'
+                r'\Application\msedge.exe").VersionInfo.FileVersion',
+                r'(Get-ItemProperty -Path Registry::"HKCU\SOFTWARE'
+                r'\Microsoft\Edge SxS\BLBeacon").version',
+                # highest edge
+                r"(Get-Item (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft"
+                r"\Windows\CurrentVersion\App Paths\msedge.exe')."
+                r"'(Default)').VersionInfo.ProductVersion",
+                r"[System.Diagnostics.FileVersionInfo]::GetVersionInfo(("
+                r"Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows"
+                r"\CurrentVersion\App Paths\msedge.exe')."
+                r"'(Default)').ProductVersion",
+                r"Get-AppxPackage -Name *MicrosoftEdge.* | Foreach Version",
+                r'(Get-ItemProperty -Path Registry::"HKLM\SOFTWARE\Wow6432Node'
+                r'\Microsoft\Windows\CurrentVersion\Uninstall'
+                r'\Microsoft Edge").version',
             ),
         },
     }
