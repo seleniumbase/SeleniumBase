@@ -1932,37 +1932,86 @@ def get_local_driver(
             "profile.managed_default_content_settings.popups": 0,
             "profile.default_content_setting_values.automatic_downloads": 1,
         }
-        if LOCAL_EDGEDRIVER and os.path.exists(LOCAL_EDGEDRIVER):
+        use_version = "latest"
+        major_edge_version = None
+        try:
+            from seleniumbase.core import detect_b_ver
+
+            br_app = "edge"
+            major_edge_version = (
+                detect_b_ver.get_browser_version_from_os(br_app)
+            ).split(".")[0]
+            if int(major_edge_version) < 80:
+                major_edge_version = None
+        except Exception:
+            major_edge_version = None
+        if major_edge_version:
+            use_version = major_edge_version
+        driver_version = None
+        if os.path.exists(LOCAL_EDGEDRIVER):
             try:
-                make_driver_executable_if_not(LOCAL_EDGEDRIVER)
-            except Exception as e:
-                logging.debug(
-                    "\nWarning: Could not make edgedriver"
-                    " executable: %s" % e
+                output = subprocess.check_output(
+                    "%s --version" % LOCAL_EDGEDRIVER, shell=True
                 )
-        elif not edgedriver_on_path():
+                if IS_WINDOWS:
+                    output = output.decode("latin1")
+                else:
+                    output = output.decode("utf-8")
+                if output.split(" ")[0] == "MSEdgeDriver":
+                    # MSEdgeDriver VERSION
+                    output = output.split(" ")[1].split(".")[0]
+                elif output.split(" ")[0] == "Microsoft":
+                    # Microsoft Edge WebDriver VERSION
+                    output = output.split(" ")[3].split(".")[0]
+                else:
+                    output = 0
+                if int(output) >= 2:
+                    driver_version = output
+            except Exception:
+                pass
+        edgedriver_upgrade_needed = False
+        local_edgedriver_exists = False
+        if LOCAL_EDGEDRIVER and os.path.exists(LOCAL_EDGEDRIVER):
+            local_edgedriver_exists = True
+            if (
+                use_version != "latest"
+                and driver_version
+                and use_version != driver_version
+            ):
+                edgedriver_upgrade_needed = True
+            else:
+                try:
+                    make_driver_executable_if_not(LOCAL_EDGEDRIVER)
+                except Exception as e:
+                    logging.debug(
+                        "\nWarning: Could not make edgedriver"
+                        " executable: %s" % e
+                    )
+        if not local_edgedriver_exists or edgedriver_upgrade_needed:
             from seleniumbase.console_scripts import sb_install
 
             args = " ".join(sys.argv)
             if not ("-n" in sys.argv or " -n=" in args or args == "-c"):
                 # (Not multithreaded)
+                msg = "Microsoft Edge Driver not found."
+                if edgedriver_upgrade_needed:
+                    msg = "Microsoft Edge Driver update needed."
                 sys_args = sys.argv  # Save a copy of current sys args
-                print("\nWarning: msedgedriver not found. Getting it now:")
-                sb_install.main(override="edgedriver")
+                print("\n%s Getting it now:" % msg)
+                sb_install.main(override="edgedriver %s" % use_version)
                 sys.argv = sys_args  # Put back the original sys args
             else:
                 edgedriver_fixing_lock = fasteners.InterProcessLock(
                     constants.MultiBrowser.DRIVER_FIXING_LOCK
                 )
                 with edgedriver_fixing_lock:
-                    if not edgedriver_on_path():
-                        sys_args = sys.argv  # Save a copy of sys args
-                        print(
-                            "\nWarning: msedgedriver not found. "
-                            "Getting it now:"
-                        )
-                        sb_install.main(override="edgedriver")
-                        sys.argv = sys_args  # Put back original sys args
+                    msg = "Microsoft Edge Driver not found."
+                    if edgedriver_upgrade_needed:
+                        msg = "Microsoft Edge Driver update needed."
+                    sys_args = sys.argv  # Save a copy of current sys args
+                    print("\n%s Getting it now:" % msg)
+                    sb_install.main(override="edgedriver %s" % use_version)
+                    sys.argv = sys_args  # Put back the original sys args
 
         # For Microsoft Edge (Chromium) version 80 or higher
         if selenium4_or_newer:

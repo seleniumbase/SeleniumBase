@@ -380,6 +380,33 @@ def main(override=None, intel_for_uc=None):
             "https://msedgewebdriverstorage.blob.core.windows.net"
             "/edgewebdriver/LATEST_STABLE"
         )
+
+        if (
+            selenium4_or_newer
+            and not override
+            and (
+                num_args == 3
+                or (num_args == 4 and "-p" in sys.argv[3].lower())
+            )
+        ):
+            use_version = "latest"
+            major_edge_version = None
+            try:
+                from seleniumbase.core import detect_b_ver
+
+                br_app = "edge"
+                major_edge_version = (
+                    detect_b_ver.get_browser_version_from_os(br_app)
+                ).split(".")[0]
+                if int(major_edge_version) < 80:
+                    major_edge_version = None
+            except Exception:
+                major_edge_version = None
+            if major_edge_version and major_edge_version.isnumeric():
+                num_args += 1
+                sys.argv.insert(3, major_edge_version)
+                use_version = major_edge_version
+
         get_latest = False
         if num_args == 3:
             get_latest = True
