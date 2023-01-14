@@ -646,7 +646,7 @@ def _set_chrome_options(
         chrome_options.add_argument("--remote-debugging-port=9222")
     if swiftshader:
         chrome_options.add_argument("--use-gl=swiftshader")
-    else:
+    elif not is_using_uc(undetectable, browser_name):
         chrome_options.add_argument("--disable-gpu")
     if "linux" in PLATFORM:
         chrome_options.add_argument("--disable-dev-shm-usage")
@@ -673,7 +673,7 @@ def _set_chrome_options(
     chrome_options.add_argument("--disable-prompt-on-repost")
     chrome_options.add_argument("--dns-prefetch-disable")
     chrome_options.add_argument("--disable-translate")
-    if not enable_3d_apis:
+    if not enable_3d_apis and not is_using_uc(undetectable, browser_name):
         chrome_options.add_argument("--disable-3d-apis")
     if headless or headless2 or is_using_uc(undetectable, browser_name):
         chrome_options.add_argument("--disable-renderer-backgrounding")
