@@ -242,6 +242,11 @@ def main(override=None, intel_for_uc=None):
             else:
                 invalid_run_command()
         if "darwin" in sys_plat:
+            if IS_ARM_MAC and not intel_for_uc:
+                if use_version == "latest" or use_version == "latest-1":
+                    use_version = requests_get(last).text
+                if use_version == "latest-1":
+                    use_version = str(int(use_version.split(".")[0]) - 1)
             if (
                 IS_ARM_MAC
                 and not intel_for_uc
