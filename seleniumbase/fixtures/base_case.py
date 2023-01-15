@@ -395,10 +395,7 @@ class BaseCase(unittest.TestCase):
                 except Exception:
                     pass
                 # Normal click
-                if not self.undetectable or self.__uc_frame_layer > 0:
-                    element.click()
-                else:
-                    element.uc_click()
+                self.__element_click(element)
         except StaleElementReferenceException:
             self.wait_for_ready_state_complete()
             time.sleep(0.16)
@@ -416,10 +413,7 @@ class BaseCase(unittest.TestCase):
             if self.browser == "safari" and by == By.LINK_TEXT:
                 self.__jquery_click(selector, by=by)
             else:
-                if not self.undetectable or self.__uc_frame_layer > 0:
-                    element.click()
-                else:
-                    element.uc_click()
+                self.__element_click(element)
         except ENI_Exception:
             self.wait_for_ready_state_complete()
             time.sleep(0.1)
@@ -464,10 +458,7 @@ class BaseCase(unittest.TestCase):
                 else:
                     self.__js_click(selector, by=by)
             else:
-                if not self.undetectable or self.__uc_frame_layer > 0:
-                    element.click()
-                else:
-                    element.uc_click()
+                self.__element_click(element)
         except MoveTargetOutOfBoundsException:
             self.wait_for_ready_state_complete()
             try:
@@ -484,10 +475,7 @@ class BaseCase(unittest.TestCase):
                         timeout=timeout,
                         original_selector=original_selector,
                     )
-                    if not self.undetectable or self.__uc_frame_layer > 0:
-                        element.click()
-                    else:
-                        element.uc_click()
+                    self.__element_click(element)
         except WebDriverException as e:
             if (
                 "cannot determine loading status" in e.msg
@@ -510,10 +498,7 @@ class BaseCase(unittest.TestCase):
                             timeout=timeout,
                             original_selector=original_selector,
                         )
-                        if not self.undetectable or self.__uc_frame_layer > 0:
-                            element.click()
-                        else:
-                            element.uc_click()
+                        self.__element_click(element)
         latest_window_count = len(self.driver.window_handles)
         if (
             latest_window_count > pre_window_count
@@ -1411,10 +1396,7 @@ class BaseCase(unittest.TestCase):
             element = self.wait_for_link_text_visible(link_text, timeout=0.2)
             self.__demo_mode_highlight_if_active(link_text, by="link text")
             try:
-                if not self.undetectable or self.__uc_frame_layer > 0:
-                    element.click()
-                else:
-                    element.uc_click()
+                self.__element_click(element)
             except (
                 StaleElementReferenceException,
                 ENI_Exception,
@@ -1425,10 +1407,7 @@ class BaseCase(unittest.TestCase):
                 element = self.wait_for_link_text_visible(
                     link_text, timeout=timeout
                 )
-                if not self.undetectable or self.__uc_frame_layer > 0:
-                    element.click()
-                else:
-                    element.uc_click()
+                self.__element_click(element)
         except Exception:
             found_css = False
             text_id = self.get_link_attribute(link_text, "id", False)
@@ -1465,10 +1444,7 @@ class BaseCase(unittest.TestCase):
                 element = self.wait_for_link_text_visible(
                     link_text, timeout=settings.MINI_TIMEOUT
                 )
-                if not self.undetectable or self.__uc_frame_layer > 0:
-                    element.click()
-                else:
-                    element.uc_click()
+                self.__element_click(element)
         latest_window_count = len(self.driver.window_handles)
         if (
             latest_window_count > pre_window_count
@@ -1558,10 +1534,7 @@ class BaseCase(unittest.TestCase):
                 partial_link_text, by="link text"
             )
             try:
-                if not self.undetectable or self.__uc_frame_layer > 0:
-                    element.click()
-                else:
-                    element.uc_click()
+                self.__element_click(element)
             except (
                 StaleElementReferenceException,
                 ENI_Exception,
@@ -1572,10 +1545,7 @@ class BaseCase(unittest.TestCase):
                 element = self.wait_for_partial_link_text(
                     partial_link_text, timeout=timeout
                 )
-                if not self.undetectable or self.__uc_frame_layer > 0:
-                    element.click()
-                else:
-                    element.uc_click()
+                self.__element_click(element)
         except Exception:
             found_css = False
             text_id = self.get_partial_link_text_attribute(
@@ -1620,10 +1590,7 @@ class BaseCase(unittest.TestCase):
                 element = self.wait_for_partial_link_text(
                     partial_link_text, timeout=settings.MINI_TIMEOUT
                 )
-                if not self.undetectable or self.__uc_frame_layer > 0:
-                    element.click()
-                else:
-                    element.uc_click()
+                self.__element_click(element)
         latest_window_count = len(self.driver.window_handles)
         if (
             latest_window_count > pre_window_count
@@ -2099,7 +2066,7 @@ class BaseCase(unittest.TestCase):
         pre_window_count = len(self.driver.window_handles)
         try:
             self.__scroll_to_element(element)
-            element.click()
+            self.__element_click(element)
         except (StaleElementReferenceException, ENI_Exception, ECI_Exception):
             time.sleep(0.12)
             self.wait_for_ready_state_complete()
@@ -2114,7 +2081,7 @@ class BaseCase(unittest.TestCase):
             if number < 0:
                 number = 0
             element = elements[number]
-            element.click()
+            self.__element_click(element)
         latest_window_count = len(self.driver.window_handles)
         if (
             latest_window_count > pre_window_count
@@ -2674,6 +2641,17 @@ class BaseCase(unittest.TestCase):
         elif self.slow_mode:
             self.__slow_mode_pause_if_active()
         return element
+
+    def __element_click(self, element):
+        self.__check_scope()
+        if (
+            not self.undetectable
+            or self.__uc_frame_layer > 0
+            or not hasattr(element, "uc_click")
+        ):
+            element.click()
+        else:
+            element.uc_click()
 
     def __select_option(
         self,
