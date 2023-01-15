@@ -1,5 +1,6 @@
 from parameterized import parameterized
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 
 class TodoMVC(BaseCase):

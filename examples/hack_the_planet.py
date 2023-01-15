@@ -1,5 +1,6 @@
 """ Video Link: https://youtu.be/1s-Tj65AKZA """
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 
 class HackTests(BaseCase):
