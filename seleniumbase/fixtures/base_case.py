@@ -395,10 +395,7 @@ class BaseCase(unittest.TestCase):
                 except Exception:
                     pass
                 # Normal click
-                if not self.undetectable or self.__uc_frame_layer > 0:
-                    element.click()
-                else:
-                    element.uc_click()
+                self.__element_click(element)
         except StaleElementReferenceException:
             self.wait_for_ready_state_complete()
             time.sleep(0.16)
@@ -416,10 +413,7 @@ class BaseCase(unittest.TestCase):
             if self.browser == "safari" and by == By.LINK_TEXT:
                 self.__jquery_click(selector, by=by)
             else:
-                if not self.undetectable or self.__uc_frame_layer > 0:
-                    element.click()
-                else:
-                    element.uc_click()
+                self.__element_click(element)
         except ENI_Exception:
             self.wait_for_ready_state_complete()
             time.sleep(0.1)
@@ -464,10 +458,7 @@ class BaseCase(unittest.TestCase):
                 else:
                     self.__js_click(selector, by=by)
             else:
-                if not self.undetectable or self.__uc_frame_layer > 0:
-                    element.click()
-                else:
-                    element.uc_click()
+                self.__element_click(element)
         except MoveTargetOutOfBoundsException:
             self.wait_for_ready_state_complete()
             try:
@@ -484,10 +475,7 @@ class BaseCase(unittest.TestCase):
                         timeout=timeout,
                         original_selector=original_selector,
                     )
-                    if not self.undetectable or self.__uc_frame_layer > 0:
-                        element.click()
-                    else:
-                        element.uc_click()
+                    self.__element_click(element)
         except WebDriverException as e:
             if (
                 "cannot determine loading status" in e.msg
@@ -510,10 +498,7 @@ class BaseCase(unittest.TestCase):
                             timeout=timeout,
                             original_selector=original_selector,
                         )
-                        if not self.undetectable or self.__uc_frame_layer > 0:
-                            element.click()
-                        else:
-                            element.uc_click()
+                        self.__element_click(element)
         latest_window_count = len(self.driver.window_handles)
         if (
             latest_window_count > pre_window_count
@@ -1362,7 +1347,6 @@ class BaseCase(unittest.TestCase):
 
     def click_link_text(self, link_text, timeout=None):
         """This method clicks link text on a page."""
-        # If using phantomjs, might need to extract and open the link directly
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -1371,15 +1355,6 @@ class BaseCase(unittest.TestCase):
         pre_action_url = self.driver.current_url
         pre_window_count = len(self.driver.window_handles)
         link_text = self.__get_type_checked_text(link_text)
-        if self.browser == "phantomjs":
-            if self.is_link_text_visible(link_text):
-                element = self.wait_for_link_text_visible(
-                    link_text, timeout=timeout
-                )
-                element.click()
-                return
-            self.open(self.__get_href_from_link_text(link_text))
-            return
         if self.browser == "safari":
             if self.demo_mode:
                 self.wait_for_link_text_present(link_text, timeout=timeout)
@@ -1411,10 +1386,7 @@ class BaseCase(unittest.TestCase):
             element = self.wait_for_link_text_visible(link_text, timeout=0.2)
             self.__demo_mode_highlight_if_active(link_text, by="link text")
             try:
-                if not self.undetectable or self.__uc_frame_layer > 0:
-                    element.click()
-                else:
-                    element.uc_click()
+                self.__element_click(element)
             except (
                 StaleElementReferenceException,
                 ENI_Exception,
@@ -1425,10 +1397,7 @@ class BaseCase(unittest.TestCase):
                 element = self.wait_for_link_text_visible(
                     link_text, timeout=timeout
                 )
-                if not self.undetectable or self.__uc_frame_layer > 0:
-                    element.click()
-                else:
-                    element.uc_click()
+                self.__element_click(element)
         except Exception:
             found_css = False
             text_id = self.get_link_attribute(link_text, "id", False)
@@ -1465,10 +1434,7 @@ class BaseCase(unittest.TestCase):
                 element = self.wait_for_link_text_visible(
                     link_text, timeout=settings.MINI_TIMEOUT
                 )
-                if not self.undetectable or self.__uc_frame_layer > 0:
-                    element.click()
-                else:
-                    element.uc_click()
+                self.__element_click(element)
         latest_window_count = len(self.driver.window_handles)
         if (
             latest_window_count > pre_window_count
@@ -1505,45 +1471,12 @@ class BaseCase(unittest.TestCase):
 
     def click_partial_link_text(self, partial_link_text, timeout=None):
         """This method clicks the partial link text on a page."""
-        # If using phantomjs, might need to extract and open the link directly
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         partial_link_text = self.__get_type_checked_text(partial_link_text)
-        if self.browser == "phantomjs":
-            if self.is_partial_link_text_visible(partial_link_text):
-                element = self.wait_for_partial_link_text(partial_link_text)
-                if not self.undetectable or self.__uc_frame_layer > 0:
-                    element.click()
-                else:
-                    element.uc_click()
-                return
-            soup = self.get_beautiful_soup()
-            html_links = soup.fetch("a")
-            for html_link in html_links:
-                if partial_link_text in html_link.text:
-                    for html_attribute in html_link.attrs:
-                        if html_attribute[0] == "href":
-                            href = html_attribute[1]
-                            if href.startswith("//"):
-                                link = "http:" + href
-                            elif href.startswith("/"):
-                                url = self.driver.current_url
-                                domain_url = self.get_domain_url(url)
-                                link = domain_url + href
-                            else:
-                                link = href
-                            self.open(link)
-                            return
-                    raise Exception(
-                        "Could not parse link from partial link_text "
-                        "{%s}" % partial_link_text
-                    )
-            raise Exception(
-                "Partial link text {%s} was not found!" % partial_link_text
-            )
         if not self.is_partial_link_text_present(partial_link_text):
             self.wait_for_partial_link_text_present(
                 partial_link_text, timeout=timeout
@@ -1558,10 +1491,7 @@ class BaseCase(unittest.TestCase):
                 partial_link_text, by="link text"
             )
             try:
-                if not self.undetectable or self.__uc_frame_layer > 0:
-                    element.click()
-                else:
-                    element.uc_click()
+                self.__element_click(element)
             except (
                 StaleElementReferenceException,
                 ENI_Exception,
@@ -1572,10 +1502,7 @@ class BaseCase(unittest.TestCase):
                 element = self.wait_for_partial_link_text(
                     partial_link_text, timeout=timeout
                 )
-                if not self.undetectable or self.__uc_frame_layer > 0:
-                    element.click()
-                else:
-                    element.uc_click()
+                self.__element_click(element)
         except Exception:
             found_css = False
             text_id = self.get_partial_link_text_attribute(
@@ -1620,10 +1547,7 @@ class BaseCase(unittest.TestCase):
                 element = self.wait_for_partial_link_text(
                     partial_link_text, timeout=settings.MINI_TIMEOUT
                 )
-                if not self.undetectable or self.__uc_frame_layer > 0:
-                    element.click()
-                else:
-                    element.uc_click()
+                self.__element_click(element)
         latest_window_count = len(self.driver.window_handles)
         if (
             latest_window_count > pre_window_count
@@ -2099,7 +2023,7 @@ class BaseCase(unittest.TestCase):
         pre_window_count = len(self.driver.window_handles)
         try:
             self.__scroll_to_element(element)
-            element.click()
+            self.__element_click(element)
         except (StaleElementReferenceException, ENI_Exception, ECI_Exception):
             time.sleep(0.12)
             self.wait_for_ready_state_complete()
@@ -2114,7 +2038,7 @@ class BaseCase(unittest.TestCase):
             if number < 0:
                 number = 0
             element = elements[number]
-            element.click()
+            self.__element_click(element)
         latest_window_count = len(self.driver.window_handles)
         if (
             latest_window_count > pre_window_count
@@ -2674,6 +2598,17 @@ class BaseCase(unittest.TestCase):
         elif self.slow_mode:
             self.__slow_mode_pause_if_active()
         return element
+
+    def __element_click(self, element):
+        self.__check_scope()
+        if (
+            not self.undetectable
+            or self.__uc_frame_layer > 0
+            or not hasattr(element, "uc_click")
+        ):
+            element.click()
+        else:
+            element.uc_click()
 
     def __select_option(
         self,
@@ -9241,7 +9176,7 @@ class BaseCase(unittest.TestCase):
             raise VisualException(minified_exception)
 
     def _process_visual_baseline_logs(self):
-        if not python3_11_or_newer:
+        if not (python3_11_or_newer or "--pdb" in sys.argv):
             return
         self.__process_visual_baseline_logs()
 
@@ -13905,7 +13840,7 @@ class BaseCase(unittest.TestCase):
         self.testcase_manager.update_testcase_data(data_payload)
 
     def _add_pytest_html_extra(self):
-        if not python3_11_or_newer:
+        if not (python3_11_or_newer or "--pdb" in sys.argv):
             return
         self.__add_pytest_html_extra()
 
@@ -14138,6 +14073,19 @@ class BaseCase(unittest.TestCase):
 
     def __process_dashboard(self, has_exception, init=False):
         """SeleniumBase Dashboard Processing"""
+        if (
+            self.is_pytest
+            and "--pdb" in sys.argv
+            and has_exception
+        ):
+            sb_config._pdb_failure = True
+        elif (
+            self.is_pytest
+            and hasattr(sb_config, "_pdb_failure")
+            and sb_config._pdb_failure
+            and not has_exception
+        ):
+            return  # Handle case where "pytest --pdb" marks failures as Passed
         if self._multithreaded:
             existing_res = sb_config._results  # For recording "Skipped" tests
             abs_path = os.path.abspath(".")
@@ -14535,6 +14483,7 @@ class BaseCase(unittest.TestCase):
             self.__has_exception()
             or self.save_screenshot_after_test
             or python3_11_or_newer
+            or "--pdb" in sys.argv
         ):
             self.__set_last_page_screenshot()
             self.__set_last_page_url()
@@ -14544,7 +14493,7 @@ class BaseCase(unittest.TestCase):
                     self.__add_pytest_html_extra()
 
     def _log_fail_data(self):
-        if not python3_11_or_newer:
+        if not (python3_11_or_newer or "--pdb" in sys.argv):
             return
         test_id = self.__get_test_id()
         test_logpath = os.path.join(self.log_path, test_id)
@@ -14703,8 +14652,11 @@ class BaseCase(unittest.TestCase):
                     )
                     self.__add_pytest_html_extra()
                     sb_config._has_logs = True
-                elif python3_11_or_newer and not has_exception:
-                    # Handle a bug on Python 3.11 where exceptions aren't seen
+                elif (
+                    (python3_11_or_newer or "--pdb" in sys.argv)
+                    and not has_exception
+                ):
+                    # Handle a bug where exceptions aren't seen
                     self.__set_last_page_screenshot()
                     self.__set_last_page_url()
                     self.__set_last_page_source()

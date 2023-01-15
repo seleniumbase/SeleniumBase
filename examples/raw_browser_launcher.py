@@ -16,10 +16,12 @@ finally:
 
 # Example 2 using default args or command-line options
 driver = Driver()
-driver.get("https://seleniumbase.github.io/demo_page")
-js_utils.highlight_with_js(driver, "h2", loops=5)
-by_css = "css selector"
-driver.find_element(by_css, "#myTextInput").send_keys("Automation")
-driver.find_element(by_css, "#checkBox1").click()
-js_utils.highlight_with_js(driver, "img", loops=5)
-driver.quit()  # If the script fails early, the driver still quits
+try:
+    driver.get("https://seleniumbase.github.io/demo_page")
+    js_utils.highlight_with_js(driver, "h2", loops=5)
+    by_css = "css selector"
+    driver.find_element(by_css, "#myTextInput").send_keys("Automation")
+    driver.find_element(by_css, "#checkBox1").click()
+    js_utils.highlight_with_js(driver, "img", loops=5)
+finally:
+    driver.quit()

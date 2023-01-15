@@ -1752,6 +1752,7 @@ def pytest_runtest_setup(item):
         return
     if sb_config.dashboard:
         sb_config._sbase_detected = False
+        sb_config._pdb_failure = False
     sb_config._fail_page = None
     test_id, display_id = _get_test_ids_(item)
     sb_config._test_id = test_id
@@ -1815,7 +1816,11 @@ def pytest_runtest_teardown(item):
     except Exception:
         pass
     if (
-        (sb_config._has_exception or python3_11_or_newer)
+        (
+            sb_config._has_exception
+            or python3_11_or_newer
+            or "--pdb" in sys_argv
+        )
         and sb_config.list_fp
         and sb_config._fail_page
     ):
@@ -2145,7 +2150,7 @@ def pytest_runtest_makereport(item, call):
                 sb_config._extra_dash_entries.append(test_id)
         elif (
             sb_config._sbase_detected
-            and python3_11_or_newer
+            and (python3_11_or_newer or "--pdb" in sys_argv)
             and (report.outcome == "failed" or "AssertionError" in str(call))
             and not sb_config._has_exception
         ):

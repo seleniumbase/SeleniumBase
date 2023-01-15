@@ -832,6 +832,13 @@ with DriverContext() as driver:
     driver.get("https://seleniumbase.github.io/")
     js_utils.highlight_with_js(driver, 'img[alt="SeleniumBase"]', loops=6)
 
+with DriverContext(browser="chrome", incognito=True) as driver:
+    driver.get("https://seleniumbase.io/apps/calculator")
+    page_actions.wait_for_element(driver, "4", by="id").click()
+    page_actions.wait_for_element(driver, "2", by="id").click()
+    page_actions.wait_for_text(driver, "42", "output", by="id")
+    js_utils.highlight_with_js(driver, "#output", loops=6)
+
 with DriverContext() as driver:
     driver.get("https://seleniumbase.github.io/demo_page")
     js_utils.highlight_with_js(driver, "h2", loops=5)
@@ -839,13 +846,6 @@ with DriverContext() as driver:
     driver.find_element(by_css, "#myTextInput").send_keys("Automation")
     driver.find_element(by_css, "#checkBox1").click()
     js_utils.highlight_with_js(driver, "img", loops=5)
-
-with DriverContext(browser="chrome", incognito=True) as driver:
-    driver.get("https://seleniumbase.io/apps/calculator")
-    page_actions.wait_for_element(driver, "4", by="id").click()
-    page_actions.wait_for_element(driver, "2", by="id").click()
-    page_actions.wait_for_text(driver, "42", "output", by="id")
-    js_utils.highlight_with_js(driver, "#output", loops=6)
 ```
 
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_driver_context.py">examples/raw_driver_context.py</a> for an example.)
@@ -874,13 +874,15 @@ finally:
 
 # Example 2 using default args or command-line options
 driver = Driver()
-driver.get("https://seleniumbase.github.io/demo_page")
-js_utils.highlight_with_js(driver, "h2", loops=5)
-by_css = "css selector"
-driver.find_element(by_css, "#myTextInput").send_keys("Automation")
-driver.find_element(by_css, "#checkBox1").click()
-js_utils.highlight_with_js(driver, "img", loops=5)
-driver.quit()  # If the script fails early, the driver still quits
+try:
+    driver.get("https://seleniumbase.github.io/demo_page")
+    js_utils.highlight_with_js(driver, "h2", loops=5)
+    by_css = "css selector"
+    driver.find_element(by_css, "#myTextInput").send_keys("Automation")
+    driver.find_element(by_css, "#checkBox1").click()
+    js_utils.highlight_with_js(driver, "img", loops=5)
+finally:
+    driver.quit()
 ```
 
 (From <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_browser_launcher.py">examples/raw_browser_launcher.py</a>)
