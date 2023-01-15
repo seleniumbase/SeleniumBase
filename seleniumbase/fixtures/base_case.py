@@ -1347,7 +1347,6 @@ class BaseCase(unittest.TestCase):
 
     def click_link_text(self, link_text, timeout=None):
         """This method clicks link text on a page."""
-        # If using phantomjs, might need to extract and open the link directly
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -1356,15 +1355,6 @@ class BaseCase(unittest.TestCase):
         pre_action_url = self.driver.current_url
         pre_window_count = len(self.driver.window_handles)
         link_text = self.__get_type_checked_text(link_text)
-        if self.browser == "phantomjs":
-            if self.is_link_text_visible(link_text):
-                element = self.wait_for_link_text_visible(
-                    link_text, timeout=timeout
-                )
-                element.click()
-                return
-            self.open(self.__get_href_from_link_text(link_text))
-            return
         if self.browser == "safari":
             if self.demo_mode:
                 self.wait_for_link_text_present(link_text, timeout=timeout)
@@ -1481,45 +1471,12 @@ class BaseCase(unittest.TestCase):
 
     def click_partial_link_text(self, partial_link_text, timeout=None):
         """This method clicks the partial link text on a page."""
-        # If using phantomjs, might need to extract and open the link directly
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         partial_link_text = self.__get_type_checked_text(partial_link_text)
-        if self.browser == "phantomjs":
-            if self.is_partial_link_text_visible(partial_link_text):
-                element = self.wait_for_partial_link_text(partial_link_text)
-                if not self.undetectable or self.__uc_frame_layer > 0:
-                    element.click()
-                else:
-                    element.uc_click()
-                return
-            soup = self.get_beautiful_soup()
-            html_links = soup.fetch("a")
-            for html_link in html_links:
-                if partial_link_text in html_link.text:
-                    for html_attribute in html_link.attrs:
-                        if html_attribute[0] == "href":
-                            href = html_attribute[1]
-                            if href.startswith("//"):
-                                link = "http:" + href
-                            elif href.startswith("/"):
-                                url = self.driver.current_url
-                                domain_url = self.get_domain_url(url)
-                                link = domain_url + href
-                            else:
-                                link = href
-                            self.open(link)
-                            return
-                    raise Exception(
-                        "Could not parse link from partial link_text "
-                        "{%s}" % partial_link_text
-                    )
-            raise Exception(
-                "Partial link text {%s} was not found!" % partial_link_text
-            )
         if not self.is_partial_link_text_present(partial_link_text):
             self.wait_for_partial_link_text_present(
                 partial_link_text, timeout=timeout
