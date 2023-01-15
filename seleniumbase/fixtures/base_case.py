@@ -9176,7 +9176,7 @@ class BaseCase(unittest.TestCase):
             raise VisualException(minified_exception)
 
     def _process_visual_baseline_logs(self):
-        if not python3_11_or_newer:
+        if not (python3_11_or_newer or "--pdb" in sys.argv):
             return
         self.__process_visual_baseline_logs()
 
@@ -13840,7 +13840,7 @@ class BaseCase(unittest.TestCase):
         self.testcase_manager.update_testcase_data(data_payload)
 
     def _add_pytest_html_extra(self):
-        if not python3_11_or_newer:
+        if not (python3_11_or_newer or "--pdb" in sys.argv):
             return
         self.__add_pytest_html_extra()
 
@@ -14073,6 +14073,19 @@ class BaseCase(unittest.TestCase):
 
     def __process_dashboard(self, has_exception, init=False):
         """SeleniumBase Dashboard Processing"""
+        if (
+            self.is_pytest
+            and "--pdb" in sys.argv
+            and has_exception
+        ):
+            sb_config._pdb_failure = True
+        elif (
+            self.is_pytest
+            and hasattr(sb_config, "_pdb_failure")
+            and sb_config._pdb_failure
+            and not has_exception
+        ):
+            return  # Handle case where "pytest --pdb" marks failures as Passed
         if self._multithreaded:
             existing_res = sb_config._results  # For recording "Skipped" tests
             abs_path = os.path.abspath(".")
@@ -14470,6 +14483,7 @@ class BaseCase(unittest.TestCase):
             self.__has_exception()
             or self.save_screenshot_after_test
             or python3_11_or_newer
+            or "--pdb" in sys.argv
         ):
             self.__set_last_page_screenshot()
             self.__set_last_page_url()
@@ -14479,7 +14493,7 @@ class BaseCase(unittest.TestCase):
                     self.__add_pytest_html_extra()
 
     def _log_fail_data(self):
-        if not python3_11_or_newer:
+        if not (python3_11_or_newer or "--pdb" in sys.argv):
             return
         test_id = self.__get_test_id()
         test_logpath = os.path.join(self.log_path, test_id)
@@ -14638,8 +14652,11 @@ class BaseCase(unittest.TestCase):
                     )
                     self.__add_pytest_html_extra()
                     sb_config._has_logs = True
-                elif python3_11_or_newer and not has_exception:
-                    # Handle a bug on Python 3.11 where exceptions aren't seen
+                elif (
+                    (python3_11_or_newer or "--pdb" in sys.argv)
+                    and not has_exception
+                ):
+                    # Handle a bug where exceptions aren't seen
                     self.__set_last_page_screenshot()
                     self.__set_last_page_url()
                     self.__set_last_page_source()
