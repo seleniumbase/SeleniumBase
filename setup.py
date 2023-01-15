@@ -183,7 +183,7 @@ setup(
         'pluggy==1.0.0;python_version>="3.6"',
         'py==1.11.0;python_version>="3.6"',
         'pytest==7.0.1;python_version<"3.7"',
-        'pytest==7.2.0;python_version>="3.7"',
+        'pytest==7.2.1;python_version>="3.7"',
         'pytest-forked==1.4.0;python_version>="3.6"',
         'pytest-html==2.0.1;python_version>="3.6"',  # Newer ones had issues
         'pytest-metadata==1.11.0;python_version<"3.7"',
@@ -217,7 +217,7 @@ setup(
         'typing-extensions==4.1.1;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
         'typing-extensions==4.4.0;python_version>="3.7" and python_version<"3.9"',  # noqa: E501
         'rich==12.6.0;python_version>="3.6" and python_version<"3.7"',
-        'rich==13.0.1;python_version>="3.7" and python_version<"4.0"',
+        'rich==13.1.0;python_version>="3.7" and python_version<"4.0"',
     ],
     extras_require={
         # pip install -e .[coverage]
