@@ -25,6 +25,7 @@ Feature: SeleniumBase scenarios for the RealWorld App # features/realworld.featu
    ✅ Scenario Passed!
 
 - Dashboard: /Users/michael/github/SeleniumBase/examples/behave_bdd/dashboard.html
+--- LogPath: /Users/michael/github/SeleniumBase/examples/behave_bdd/latest_logs/
 ==================================================================================
 1 feature passed, 0 failed, 0 skipped
 1 scenario passed, 0 failed, 0 skipped
@@ -62,6 +63,7 @@ Feature: SeleniumBase scenarios for the Calculator App # features/calculator.fea
    ✅ Scenario Passed!
 
 - Dashboard: /Users/michael/github/SeleniumBase/examples/behave_bdd/dashboard.html
+--- LogPath: /Users/michael/github/SeleniumBase/examples/behave_bdd/latest_logs/
 ==================================================================================
 1 feature passed, 0 failed, 0 skipped
 1 scenario passed, 0 failed, 8 skipped
