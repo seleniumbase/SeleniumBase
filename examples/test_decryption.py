@@ -1,10 +1,8 @@
-"""
-This test demonstrates the use of password encryption/decryption.
-(Technically considered to be obfuscation/unobfuscation.)
-"""
-
+"""This test demonstrates the use of password encryption/decryption.
+(Technically considered to be obfuscation/unobfuscation.)"""
 from seleniumbase import BaseCase
 from seleniumbase import encryption
+BaseCase.main(__name__, __file__)
 
 
 class DecryptionTests(BaseCase):

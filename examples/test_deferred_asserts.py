@@ -1,10 +1,9 @@
-"""
-This test demonstrates the use of deferred asserts.
-Deferred asserts won't raise exceptions from failures until either
-process_deferred_asserts() is called, or the test reaches the tearDown() step.
-"""
+"""This test shows the use of SeleniumBase deferred asserts.
+Deferred asserts won't raise exceptions from failures until
+process_deferred_asserts() is called, or the test completes."""
 import pytest
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 
 class DeferredAssertTests(BaseCase):

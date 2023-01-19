@@ -1,10 +1,7 @@
-"""
-You can use this as a boilerplate for your test framework.
-Define your customized library methods in a master class like this.
-Then have all your test classes inherit it.
-BaseTestCase will inherit SeleniumBase methods from BaseCase.
-"""
-
+"""Use this as a boilerplate for your test framework.
+Define customized library methods in a class like this.
+Then have your test classes inherit it.
+BaseTestCase inherits SeleniumBase methods from BaseCase."""
 from seleniumbase import BaseCase
 
 

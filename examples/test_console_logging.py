@@ -1,5 +1,6 @@
 """Use SeleniumBase methods to interact with console logs."""
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 
 class TestConsoleLogging(BaseCase):

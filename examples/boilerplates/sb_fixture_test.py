@@ -1,4 +1,4 @@
-""" Classic Page Object Model with the "sb" fixture """
+"""Classic Page Object Model with the "sb" fixture."""
 
 
 class DataPage:

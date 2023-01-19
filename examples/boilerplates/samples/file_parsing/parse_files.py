@@ -1,11 +1,9 @@
 """Example of parsing data from files."""
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 
 class ParseTestCase(BaseCase):
-    def setUp(self):
-        super().setUp()
-
     def get_login_credentials(self, user_type):
         # Example of parsing data from a file (Method 1)
         with open("qa_login_example.txt") as f:
