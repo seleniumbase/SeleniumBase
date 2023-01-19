@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 The SeleniumBase-Behave Connector configures command-line options.
 ******************************************************************

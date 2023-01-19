@@ -935,8 +935,7 @@ def pytest_addoption(parser):
         default=None,
         help="""(DEPRECATED) - (UC Mode always uses this now.)
                 Use undetectable-chromedriver as a subprocess,
-                which can help avoid issues that might result.
-                It may reduce UC's ability to avoid detection.""",
+                which can help avoid issues that might result.""",
     )
     parser.addoption(
         "--no_sandbox",

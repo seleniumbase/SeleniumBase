@@ -171,13 +171,13 @@ def activate_jquery(driver):
         pass
     jquery_js = constants.JQuery.MIN_JS
     add_js_link(driver, jquery_js)
-    for x in range(27):
+    for x in range(32):
         # jQuery needs a small amount of time to activate.
         try:
             driver.execute_script("jQuery('html');")
             return
         except Exception:
-            if x == 15:
+            if x == 16:
                 add_js_link(driver, jquery_js)
             time.sleep(0.1)
     # Since jQuery still isn't activating, give up and raise an exception
@@ -768,7 +768,7 @@ def set_messenger_theme(
     time.sleep(0.1)
 
 
-def post_message(driver, message, msg_dur, style="info"):
+def post_message(driver, message, msg_dur=None, style="info"):
     """A helper method to post a message on the screen with Messenger.
     (Should only be called from post_message() in base_case.py)"""
     if not msg_dur:
@@ -797,7 +797,7 @@ def post_message(driver, message, msg_dur, style="info"):
             driver.execute_script(messenger_script)
 
 
-def post_messenger_success_message(driver, message, msg_dur):
+def post_messenger_success_message(driver, message, msg_dur=None):
     if not msg_dur:
         msg_dur = settings.DEFAULT_MESSAGE_DURATION
     msg_dur = float(msg_dur)
@@ -813,7 +813,7 @@ def post_messenger_success_message(driver, message, msg_dur):
         pass
 
 
-def post_messenger_error_message(driver, message, msg_dur):
+def post_messenger_error_message(driver, message, msg_dur=None):
     if not msg_dur:
         msg_dur = settings.DEFAULT_MESSAGE_DURATION
     msg_dur = float(msg_dur)
