@@ -1,8 +1,5 @@
-"""
-The setup package to install SeleniumBase dependencies and plugins.
-(Uses selenium 4.x and is compatible with Python 3.6+)
-"""
-
+"""Setup steps for installing SeleniumBase dependencies and plugins.
+(Uses selenium 4.x and is compatible with Python 3.6+)"""
 from setuptools import setup, find_packages  # noqa: F401
 import os
 import sys
