@@ -72,6 +72,7 @@ behave -D agent="User Agent String" -D demo
 -D enable-ws  (Enable Web Security on Chromium-based browsers.)
 -D enable-sync  (Enable "Chrome Sync".)
 -D uc | -D undetected  (Use undetected-chromedriver to evade bot-detection)
+-D uc-cdp-events  (Capture CDP events when running in "--undetected" mode.)
 -D remote-debug  (Sync to Chrome Remote Debugger chrome://inspect/#devices)
 -D dashboard  (Enable the SeleniumBase Dashboard. Saved at: dashboard.html)
 -D dash-title=STRING  (Set the title shown for the generated dashboard.)
@@ -171,6 +172,7 @@ def get_configured_sb(context):
     sb.enable_sync = False
     sb.use_auto_ext = False
     sb.undetectable = False
+    sb.uc_cdp_events = False
     sb.uc_subprocess = False
     sb.no_sandbox = False
     sb.disable_gpu = False
@@ -507,6 +509,11 @@ def get_configured_sb(context):
             continue
         # Handle: -D undetected / undetectable / uc
         if low_key in ["undetected", "undetectable", "uc"]:
+            sb.undetectable = True
+            continue
+        # Handle: -D uc-cdp-events / uc_cdp_events / uc-cdp
+        if low_key in ["uc-cdp-events", "uc_cdp_events", "uc-cdp"]:
+            sb.uc_cdp_events = True
             sb.undetectable = True
             continue
         # Handle: -D uc-subprocess / uc_subprocess / uc-sub

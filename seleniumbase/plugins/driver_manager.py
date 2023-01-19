@@ -74,6 +74,7 @@ def Driver(
     enable_sync=None,  # Enable "Chrome Sync" on websites.
     use_auto_ext=None,  # Use Chrome's automation extension.
     undetectable=None,  # Use undetected-chromedriver to evade bot-detection.
+    uc_cdp_events=None,  # Capture CDP events in undetected-chromedriver mode.
     uc_subprocess=None,  # Use undetected-chromedriver as a subprocess.
     no_sandbox=None,  # (DEPRECATED) - "--no-sandbox" is always used now.
     disable_gpu=None,  # (DEPRECATED) - GPU is disabled if no "swiftshader".
@@ -102,6 +103,7 @@ def Driver(
     d_p_r=None,  # Set device pixel ratio
     uc=None,  # Shortcut / Duplicate of "undetectable".
     undetected=None,  # Shortcut / Duplicate of "undetectable".
+    uc_cdp=None,  # Shortcut / Duplicate of "uc_cdp_events".
     uc_sub=None,  # Shortcut / Duplicate of "uc_subprocess".
     wire=None,  # Shortcut / Duplicate of "use_wire".
     pls=None,  # Shortcut / Duplicate of "page_load_strategy".
@@ -271,7 +273,15 @@ def Driver(
         enable_ws = True
     else:
         enable_ws = False
-    if undetectable or undetected or uc or uc_subprocess or uc_sub:
+    if (
+        undetectable
+        or undetected
+        or uc
+        or uc_cdp_events
+        or uc_cdp
+        or uc_subprocess
+        or uc_sub
+    ):
         undetectable = True
     if (
         (undetectable or undetected or uc)
@@ -283,6 +293,9 @@ def Driver(
         "--undetectable" in sys_argv
         or "--undetected" in sys_argv
         or "--uc" in sys_argv
+        or "--uc-cdp-events" in sys_argv
+        or "--uc_cdp_events" in sys_argv
+        or "--uc-cdp" in sys_argv
         or "--uc-subprocess" in sys_argv
         or "--uc_subprocess" in sys_argv
         or "--uc-sub" in sys_argv
@@ -399,6 +412,7 @@ def Driver(
         enable_sync=enable_sync,
         use_auto_ext=use_auto_ext,
         undetectable=undetectable,
+        uc_cdp_events=uc_cdp_events,
         uc_subprocess=uc_subprocess,
         no_sandbox=no_sandbox,
         disable_gpu=disable_gpu,

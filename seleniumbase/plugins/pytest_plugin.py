@@ -86,6 +86,7 @@ def pytest_addoption(parser):
     --enable-ws  (Enable Web Security on Chromium-based browsers.)
     --enable-sync  (Enable "Chrome Sync" on websites.)
     --uc | --undetected  (Use undetected-chromedriver to evade bot-detection.)
+    --uc-cdp-events  (Capture CDP events when running in "--undetected" mode.)
     --remote-debug  (Sync to Chrome Remote Debugger chrome://inspect/#devices)
     --final-debug  (Enter Debug Mode after each test ends. Don't use with CI!)
     --dashboard  (Enable the SeleniumBase Dashboard. Saved at: dashboard.html)
@@ -910,6 +911,22 @@ def pytest_addoption(parser):
                 automation tools from navigating them freely.""",
     )
     parser.addoption(
+        "--uc_cdp_events",
+        "--uc-cdp-events",
+        "--uc-cdp",  # For capturing CDP events during UC Mode
+        action="store_true",
+        dest="uc_cdp_events",
+        default=None,
+        help="""Captures CDP events during Undetectable Mode runs.
+                Then you can add a listener to perform actions on
+                received data, such as printing it to the console:
+                    from pprint import pformat
+                    self.driver.add_cdp_listener(
+                        "*", lambda data: print(pformat(data))
+                    )
+                    self.open(URL)""",
+    )
+    parser.addoption(
         "--uc_subprocess",
         "--uc-subprocess",
         "--uc-sub",  # undetected-chromedriver subprocess mode
@@ -1300,6 +1317,9 @@ def pytest_addoption(parser):
         "--undetected" in sys_argv
         or "--undetectable" in sys_argv
         or "--uc" in sys_argv
+        or "--uc-cdp-events" in sys_argv
+        or "--uc_cdp_events" in sys_argv
+        or "--uc-cdp" in sys_argv
         or "--uc-subprocess" in sys_argv
         or "--uc_subprocess" in sys_argv
         or "--uc-sub" in sys_argv
@@ -1436,6 +1456,9 @@ def pytest_configure(config):
     sb_config.enable_sync = config.getoption("enable_sync")
     sb_config.use_auto_ext = config.getoption("use_auto_ext")
     sb_config.undetectable = config.getoption("undetectable")
+    sb_config.uc_cdp_events = config.getoption("uc_cdp_events")
+    if sb_config.uc_cdp_events and not sb_config.undetectable:
+        sb_config.undetectable = True
     sb_config.uc_subprocess = config.getoption("uc_subprocess")
     if sb_config.uc_subprocess and not sb_config.undetectable:
         sb_config.undetectable = True

@@ -385,6 +385,7 @@ def _set_chrome_options(
     enable_sync,
     use_auto_ext,
     undetectable,
+    uc_cdp_events,
     uc_subprocess,
     no_sandbox,
     disable_gpu,
@@ -943,6 +944,7 @@ def get_driver(
     enable_sync=False,
     use_auto_ext=False,
     undetectable=False,
+    uc_cdp_events=False,
     uc_subprocess=False,
     no_sandbox=False,
     disable_gpu=False,
@@ -981,7 +983,7 @@ def get_driver(
     if headless2 and browser_name == constants.Browser.FIREFOX:
         headless2 = False  # Only for Chromium
         headless = True
-    if uc_subprocess and not undetectable:
+    if (uc_cdp_events or uc_subprocess) and not undetectable:
         undetectable = True
     if is_using_uc(undetectable, browser_name) and mobile_emulator:
         mobile_emulator = False
@@ -1114,6 +1116,7 @@ def get_driver(
             enable_sync,
             use_auto_ext,
             undetectable,
+            uc_cdp_events,
             uc_subprocess,
             no_sandbox,
             disable_gpu,
@@ -1162,6 +1165,7 @@ def get_driver(
             enable_sync,
             use_auto_ext,
             undetectable,
+            uc_cdp_events,
             uc_subprocess,
             no_sandbox,
             disable_gpu,
@@ -1214,6 +1218,7 @@ def get_remote_driver(
     enable_sync,
     use_auto_ext,
     undetectable,
+    uc_cdp_events,
     uc_subprocess,
     no_sandbox,
     disable_gpu,
@@ -1331,6 +1336,7 @@ def get_remote_driver(
             enable_sync,
             use_auto_ext,
             undetectable,
+            uc_cdp_events,
             uc_subprocess,
             no_sandbox,
             disable_gpu,
@@ -1562,6 +1568,7 @@ def get_remote_driver(
             enable_sync,
             use_auto_ext,
             undetectable,
+            uc_cdp_events,
             uc_subprocess,
             no_sandbox,
             disable_gpu,
@@ -1683,6 +1690,7 @@ def get_local_driver(
     enable_sync,
     use_auto_ext,
     undetectable,
+    uc_cdp_events,
     uc_subprocess,
     no_sandbox,
     disable_gpu,
@@ -2373,6 +2381,7 @@ def get_local_driver(
                 enable_sync,
                 use_auto_ext,
                 undetectable,
+                uc_cdp_events,
                 uc_subprocess,
                 no_sandbox,
                 disable_gpu,
@@ -2425,6 +2434,7 @@ def get_local_driver(
                 enable_sync,
                 use_auto_ext,
                 undetectable,
+                uc_cdp_events,
                 uc_subprocess,
                 no_sandbox,
                 disable_gpu,
@@ -2707,6 +2717,7 @@ def get_local_driver(
                                     constants.MultiBrowser.DRIVER_FIXING_LOCK
                                 )
                                 with uc_lock:  # Avoid multithreaded issues
+                                    cdp_events = uc_cdp_events
                                     try:
                                         uc_path = None
                                         if os.path.exists(LOCAL_UC_DRIVER):
@@ -2716,6 +2727,7 @@ def get_local_driver(
                                             options=chrome_options,
                                             user_data_dir=user_data_dir,
                                             driver_executable_path=uc_path,
+                                            enable_cdp_events=cdp_events,
                                             headless=False,  # Xvfb needed!
                                             version_main=uc_chrome_version,
                                             use_subprocess=True,  # Always!
@@ -2734,6 +2746,7 @@ def get_local_driver(
                                                 options=chrome_options,
                                                 user_data_dir=user_data_dir,
                                                 driver_executable_path=uc_path,
+                                                enable_cdp_events=cdp_events,
                                                 headless=False,  # Xvfb needed!
                                                 version_main=uc_chrome_version,
                                                 use_subprocess=True,  # Always!
@@ -2828,6 +2841,7 @@ def get_local_driver(
                         enable_sync,
                         use_auto_ext,
                         undetectable,
+                        uc_cdp_events,
                         uc_subprocess,
                         no_sandbox,
                         disable_gpu,
