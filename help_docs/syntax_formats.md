@@ -289,7 +289,7 @@ class WireTestCase(BaseCase):
             print(request.url)
 ```
 
-(NOTE: The ``selenium-wire`` integration is now included with ``seleniumbase``: Add ``--wire`` as a ``pytest`` command-line option to activate. If you need both ``--wire`` with ``--undetected`` together, you'll still need to override ``get_new_driver()``.)
+(NOTE: The ``selenium-wire`` integration is now included with ``seleniumbase``: Add ``--wire`` as a ``pytest`` command-line option to activate.)
 
 <a id="sb_sf_10"></a>
 <h3><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 10. Overriding the driver via "sb" fixture</h3>

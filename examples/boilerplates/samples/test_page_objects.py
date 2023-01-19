@@ -1,4 +1,4 @@
-""" An example test using the Classic Page Object Model """
+"""An example using the Classic Page Object Model."""
 from seleniumbase import BaseCase
 
 

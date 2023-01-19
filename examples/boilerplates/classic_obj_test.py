@@ -1,4 +1,4 @@
-""" Classic Page Object Model with BaseCase inheritance """
+"""Classic Page Object Model with BaseCase inheritance."""
 from seleniumbase import BaseCase
 
 

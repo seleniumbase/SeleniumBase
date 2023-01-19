@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 
 class ChinesePdfTests(BaseCase):

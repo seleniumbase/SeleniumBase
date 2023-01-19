@@ -45,6 +45,7 @@ def SB(
     enable_sync=None,  # Enable "Chrome Sync" on websites.
     use_auto_ext=None,  # Use Chrome's automation extension.
     undetectable=None,  # Use undetected-chromedriver to evade bot-detection.
+    uc_cdp_events=None,  # Capture CDP events in undetected-chromedriver mode.
     uc_subprocess=None,  # Use undetected-chromedriver as a subprocess.
     incognito=None,  # Enable Chromium's Incognito mode.
     guest_mode=None,  # Enable Chromium's Guest mode.
@@ -87,6 +88,7 @@ def SB(
     settings_file=None,  # A file for overriding default SeleniumBase settings.
     uc=None,  # Shortcut / Duplicate of "undetectable".
     undetected=None,  # Shortcut / Duplicate of "undetectable".
+    uc_cdp=None,  # Shortcut / Duplicate of "uc_cdp_events".
     uc_sub=None,  # Shortcut / Duplicate of "uc_subprocess".
     wire=None,  # Shortcut / Duplicate of "use_wire".
     pls=None,  # Shortcut / Duplicate of "page_load_strategy".
@@ -391,7 +393,15 @@ def SB(
     else:
         enable_ws = False
         disable_ws = True
-    if undetectable or undetected or uc or uc_subprocess or uc_sub:
+    if (
+        undetectable
+        or undetected
+        or uc
+        or uc_cdp_events
+        or uc_cdp
+        or uc_subprocess
+        or uc_sub
+    ):
         undetectable = True
     if (
         (undetectable or undetected or uc)
@@ -403,6 +413,9 @@ def SB(
         "--undetectable" in sys_argv
         or "--undetected" in sys_argv
         or "--uc" in sys_argv
+        or "--uc-cdp-events" in sys_argv
+        or "--uc_cdp_events" in sys_argv
+        or "--uc-cdp" in sys_argv
         or "--uc-subprocess" in sys_argv
         or "--uc_subprocess" in sys_argv
         or "--uc-sub" in sys_argv
@@ -600,6 +613,7 @@ def SB(
     sb_config.enable_sync = enable_sync
     sb_config.use_auto_ext = use_auto_ext
     sb_config.undetectable = undetectable
+    sb_config.uc_cdp_events = uc_cdp_events
     sb_config.uc_subprocess = uc_subprocess
     sb_config.no_sandbox = None
     sb_config.disable_gpu = None
@@ -695,6 +709,7 @@ def SB(
     sb.enable_sync = sb_config.enable_sync
     sb.use_auto_ext = sb_config.use_auto_ext
     sb.undetectable = sb_config.undetectable
+    sb.uc_cdp_events = sb_config.uc_cdp_events
     sb.uc_subprocess = sb_config.uc_subprocess
     sb.no_sandbox = sb_config.no_sandbox
     sb.disable_gpu = sb_config.disable_gpu

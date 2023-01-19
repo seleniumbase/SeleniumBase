@@ -68,6 +68,7 @@ class SeleniumBrowser(Plugin):
     --enable-ws  (Enable Web Security on Chromium-based browsers.)
     --enable-sync  (Enable "Chrome Sync" on websites.)
     --uc | --undetected  (Use undetected-chromedriver to evade bot-detection.)
+    --uc-cdp-events  (Capture CDP events when running in "--undetected" mode.)
     --remote-debug  (Sync to Chrome Remote Debugger chrome://inspect/#devices)
     --final-debug  (Enter Debug Mode after each test ends. Don't use with CI!)
     --enable-3d-apis  (Enables WebGL and 3D APIs.)
@@ -667,6 +668,22 @@ class SeleniumBrowser(Plugin):
                     automation tools from navigating them freely.""",
         )
         parser.add_option(
+            "--uc_cdp_events",
+            "--uc-cdp-events",
+            "--uc-cdp",  # For capturing CDP events during UC Mode
+            action="store_true",
+            dest="uc_cdp_events",
+            default=None,
+            help="""Captures CDP events during Undetectable Mode runs.
+                    Then you can add a listener to perform actions on
+                    received data, such as printing it to the console:
+                        from pprint import pformat
+                        self.driver.add_cdp_listener(
+                            "*", lambda data: print(pformat(data))
+                        )
+                        self.open(URL)""",
+        )
+        parser.add_option(
             "--uc_subprocess",
             "--uc-subprocess",
             "--uc-sub",  # undetected-chromedriver subprocess mode
@@ -675,8 +692,7 @@ class SeleniumBrowser(Plugin):
             default=None,
             help="""(DEPRECATED) - (UC Mode always uses this now.)
                     Use undetectable-chromedriver as a subprocess,
-                    which can help avoid issues that might result.
-                    It may reduce UC's ability to avoid detection.""",
+                    which can help avoid issues that might result.""",
         )
         parser.add_option(
             "--no_sandbox",
@@ -1061,6 +1077,9 @@ class SeleniumBrowser(Plugin):
         test.test.enable_sync = self.options.enable_sync
         test.test.use_auto_ext = self.options.use_auto_ext
         test.test.undetectable = self.options.undetectable
+        test.test.uc_cdp_events = self.options.uc_cdp_events
+        if test.test.uc_cdp_events and not test.test.undetectable:
+            test.test.undetectable = True
         test.test.uc_subprocess = self.options.uc_subprocess
         if test.test.uc_subprocess and not test.test.undetectable:
             test.test.undetectable = True

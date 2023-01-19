@@ -2,6 +2,7 @@
 import logging
 import os
 import re
+import subprocess
 import sys
 import time
 import selenium.webdriver.chrome.service
@@ -214,7 +215,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
             options.binary_location = (
                 browser_executable_path or find_chrome_executable()
             )
-        self._delay = 3
+        self._delay = 2
         self.user_data_dir = user_data_dir
         self.keep_user_data_dir = keep_user_data_dir
         if suppress_welcome:
@@ -256,18 +257,15 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                 logger.debug("Fixed exit_type flag.")
         except Exception:
             logger.debug("Did not find a bad exit_type flag.")
+        creationflags = 0
+        if "win32" in sys_plat or "win64" in sys_plat or "x64" in sys_plat:
+            creationflags = subprocess.CREATE_NO_WINDOW
         self.options = options
         if not use_subprocess:
             self.browser_pid = start_detached(
                 options.binary_location, *options.arguments
             )
         else:
-            import subprocess
-
-            creationflags = 0
-            sys_plat = sys.platform
-            if "win32" in sys_plat or "win64" in sys_plat or "x64" in sys_plat:
-                creationflags = subprocess.CREATE_NO_WINDOW
             browser = subprocess.Popen(
                 [options.binary_location, *options.arguments],
                 stdin=subprocess.PIPE,
@@ -288,6 +286,10 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                 executable_path=driver_executable_path,
                 log_path=os.devnull,
             )
+        if hasattr(service_, "creationflags"):
+            setattr(service_, "creationflags", creationflags)
+        if hasattr(service_, "creation_flags"):
+            setattr(service_, "creation_flags", creationflags)
         super().__init__(
             port=port,
             options=options,

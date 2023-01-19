@@ -1,8 +1,6 @@
-"""
-Example of using the Page Object Pattern for tests, using CSS selectors.
-Helps make your code more Readable, Maintainable, and Reusable.
-Import a file like this at the top of your test files.
-"""
+"""Example of using the Page Object Pattern in tests.
+Makes code more Readable, Maintainable, and Reusable.
+Import files like this at the top of your test files."""
 
 
 class Page(object):
