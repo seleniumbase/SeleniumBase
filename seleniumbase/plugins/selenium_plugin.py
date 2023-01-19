@@ -667,7 +667,7 @@ class SeleniumBrowser(Plugin):
                     to websites that use anti-bot services to block
                     automation tools from navigating them freely.""",
         )
-        parser.addoption(
+        parser.add_option(
             "--uc_cdp_events",
             "--uc-cdp-events",
             "--uc-cdp",  # For capturing CDP events during UC Mode
