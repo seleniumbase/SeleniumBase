@@ -1,6 +1,5 @@
 import logging
 import math
-import sys
 import time
 import warnings
 from contextlib import contextmanager
@@ -174,17 +173,11 @@ def rate_limited(max_per_second):
             try:
                 rate_lock.acquire(True)
                 elapsed = None
-                if sys.version_info[0] >= 3:
-                    elapsed = time.process_time() - last_time_called[0]
-                else:
-                    elapsed = time.clock() - last_time_called[0]
+                elapsed = time.process_time() - last_time_called[0]
                 wait_time_remaining = min_interval - elapsed
                 if wait_time_remaining > 0:
                     time.sleep(wait_time_remaining)
-                if sys.version_info[0] >= 3:
-                    last_time_called[0] = time.process_time()
-                else:
-                    last_time_called[0] = time.clock()
+                last_time_called[0] = time.process_time()
             finally:
                 rate_lock.release()
             return func(*args, **kargs)
