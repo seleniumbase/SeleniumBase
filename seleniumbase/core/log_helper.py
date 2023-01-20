@@ -176,9 +176,9 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
         "--------------------------------------------------------------------"
     )
     if (
-        sys.version_info[0] >= 3
-        and hasattr(test, "_outcome")
-        and (hasattr(test._outcome, "errors") and test._outcome.errors)
+        hasattr(test, "_outcome")
+        and hasattr(test._outcome, "errors")
+        and test._outcome.errors
     ):
         try:
             exc_message = test._outcome.errors[0][1][1]

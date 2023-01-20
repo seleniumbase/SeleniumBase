@@ -1,13 +1,8 @@
-""" Downloads the Selenium Server JAR file and renames it. """
-
+"""Downloads the Selenium Server JAR file and renames it."""
 import os
 import shutil
 import sys
-
-if sys.version_info[0] == 2:
-    from urllib import urlopen
-else:
-    from urllib.request import urlopen
+from urllib.request import urlopen
 
 SELENIUM_JAR = (
     "http://selenium-release.storage.googleapis.com"
@@ -22,10 +17,7 @@ FULL_DOWNLOAD_PATH = os.getcwd() + "/" + RENAMED_JAR_FILE
 
 
 def download_selenium_server():
-    """
-    Downloads the Selenium Server JAR file from its
-    online location and stores it locally.
-    """
+    """Downloads the Selenium Server JAR file."""
     try:
         local_file = open(JAR_FILE, "wb")
         remote_file = urlopen(SELENIUM_JAR)

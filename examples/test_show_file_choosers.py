@@ -1,7 +1,5 @@
-"""
-self.show_file_choosers() is used to show hidden file-upload fields.
-Verify that one can choose a file after the hidden input is visible.
-"""
+"""self.show_file_choosers() is used to show hidden file-upload fields.
+Verify that one can choose a file after the hidden input is visible."""
 import os
 from seleniumbase import BaseCase
 BaseCase.main(__name__, __file__)

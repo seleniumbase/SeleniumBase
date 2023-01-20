@@ -1,16 +1,8 @@
-"""
-GUI TEST RUNNER
+"""GUI TEST RUNNER
 Run by Typing: "python gui_test_runner.py"
-(Use Python 3 - There are GUI issues when using Python 2)
-"""
-
+(Use Python 3)"""
 import subprocess
-import sys
-
-if sys.version_info[0] >= 3:
-    from tkinter import Tk, Frame, Button, Label
-else:
-    from Tkinter import Tk, Frame, Button, Label
+from tkinter import Tk, Frame, Button, Label
 
 
 class App:

@@ -598,12 +598,6 @@ def main():
     print_success = False
     if use_rich and code_lang == "markdown" and not line_numbers:
         all_code = rich_helper.fix_emoji_spacing(all_code)
-        all_code = all_code.replace("<br />", "\n")
-        all_code = all_code.replace('<p align="center">', "\n")
-        all_code = all_code.replace('<p align="left">', "\n")
-        all_code = all_code.replace('<p align="right">', "\n")
-        all_code = all_code.replace("<p>", "\n")
-        all_code = all_code.replace("</p>", "\n")
         if "<b>*" not in all_code and "*<b>" not in all_code:
             if "</b>*" not in all_code and "*</b>" not in all_code:
                 all_code = all_code.replace("<b>", "**")
@@ -617,6 +611,16 @@ def main():
         all_code = all_code.replace("\n<h2>", "\n# ").replace("</h2>", "")
         all_code = all_code.replace("\n<h3>", "\n# ").replace("</h3>", "")
         all_code = all_code.replace("\n<h4>", "\n# ").replace("</h4>", "")
+        all_code = rich_helper.get_code_without_tag(all_code, "summary")
+        all_code = rich_helper.get_code_without_tag(all_code, "details")
+        all_code = rich_helper.get_code_without_tag(all_code, "span")
+        all_code = rich_helper.get_code_without_tag(all_code, "div")
+        all_code = rich_helper.get_code_without_tag(all_code, "img")
+        all_code = rich_helper.get_code_without_tag(all_code, "li")
+        all_code = rich_helper.get_code_without_tag(all_code, "ul")
+        all_code = rich_helper.get_code_without_tag(all_code, "a")
+        all_code = rich_helper.get_code_without_tag(all_code, "p")
+        all_code = all_code.replace("<br />", "\n")
         print_success = rich_helper.display_markdown(all_code)
         if all_code.endswith("\n"):
             print()  # Because "rich" skips the last line if new-line

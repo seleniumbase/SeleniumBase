@@ -1,27 +1,27 @@
-pip>=21.3.1;python_version>="3.6" and python_version<"3.7"
+pip>=21.3.1;python_version<"3.7"
 pip>=22.3.1;python_version>="3.7"
-packaging>=21.3;python_version>="3.6" and python_version<"3.7"
+packaging>=21.3;python_version<"3.7"
 packaging>=23.0;python_version>="3.7"
-setuptools>=59.6.0;python_version>="3.6" and python_version<"3.7"
+setuptools>=59.6.0;python_version<"3.7"
 setuptools>=65.7.0;python_version>="3.7"
-tomli>=1.2.3;python_version>="3.6" and python_version<"3.7"
+tomli>=1.2.3;python_version<"3.7"
 tomli>=2.0.1;python_version>="3.7"
 tqdm>=4.64.1
 wheel>=0.37.1;python_version<"3.7"
 wheel>=0.38.4;python_version>="3.7"
-attrs==22.1.0;python_version>="3.6" and python_version<"3.7"
+attrs==22.1.0;python_version<"3.7"
 attrs>=22.2.0;python_version>="3.7"
-PyYAML>=6.0;python_version>="3.6"
-certifi>=2022.12.7;python_version>="3.6"
-filelock>=3.4.1;python_version>="3.6" and python_version<"3.7"
+PyYAML>=6.0
+certifi>=2022.12.7
+filelock>=3.4.1;python_version<"3.7"
 filelock>=3.9.0;python_version>="3.7"
-platformdirs>=2.4.0;python_version>="3.6" and python_version<"3.7"
+platformdirs>=2.4.0;python_version<"3.7"
 platformdirs>=2.6.2;python_version>="3.7"
-pyparsing>=3.0.7;python_version>="3.6" and python_version<"3.7"
+pyparsing>=3.0.7;python_version<"3.7"
 pyparsing>=3.0.9;python_version>="3.7"
 six==1.16.0
-idna==3.4;python_version>="3.6"
-chardet==4.0.0;python_version>="3.6" and python_version<"3.7"
+idna==3.4
+chardet==4.0.0;python_version<"3.7"
 chardet==5.1.0;python_version>="3.7"
 charset-normalizer==2.0.12;python_version<"3.7"
 charset-normalizer==3.0.1;python_version>="3.7"
@@ -42,22 +42,22 @@ wsproto==1.2.0;python_version>="3.7"
 selenium==3.141.0;python_version<"3.7"
 selenium==4.7.2;python_version>="3.7"
 msedge-selenium-tools==3.141.3;python_version<"3.7"
-more-itertools==8.14.0;python_version>="3.6" and python_version<"3.7"
+more-itertools==8.14.0;python_version<"3.7"
 more-itertools==9.0.0;python_version>="3.7"
 cssselect==1.1.0;python_version<"3.7"
 cssselect==1.2.0;python_version>="3.7"
 sortedcontainers==2.4.0
-fasteners==0.17.3;python_version>="3.6" and python_version<"3.7"
+fasteners==0.17.3;python_version<"3.7"
 fasteners==0.18;python_version>="3.7"
 execnet==1.9.0
 iniconfig==1.1.1;python_version<"3.7"
 iniconfig==2.0.0;python_version>="3.7"
-pluggy==1.0.0;python_version>="3.6"
-py==1.11.0;python_version>="3.6"
+pluggy==1.0.0
+py==1.11.0
 pytest==7.0.1;python_version<"3.7"
 pytest==7.2.1;python_version>="3.7"
-pytest-forked==1.4.0;python_version>="3.6"
-pytest-html==2.0.1;python_version>="3.6"
+pytest-forked==1.4.0
+pytest-html==2.0.1
 pytest-metadata==1.11.0;python_version<"3.7"
 pytest-metadata==2.0.4;python_version>="3.7"
 pytest-ordering==0.6
@@ -70,37 +70,40 @@ sbvirtualdisplay==1.1.1
 behave==1.2.6
 parse==1.19.0
 parse-type==0.6.0
-soupsieve==2.3.2.post1;python_version>="3.6"
-beautifulsoup4==4.11.1;python_version>="3.6"
-cryptography==36.0.2;python_version>="3.6" and python_version<"3.7"
+soupsieve==2.3.2.post1
+beautifulsoup4==4.11.1
+cryptography==36.0.2;python_version<"3.7"
 cryptography==39.0.0;python_version>="3.7"
-pygments==2.14.0;python_version>="3.6"
-pyreadline3==3.4.1;platform_system=="Windows" and python_version>="3.6"
+pygments==2.14.0
+pyreadline3==3.4.1;platform_system=="Windows"
 tabcompleter==1.1.0
-pdbp==1.2.7
-colorama==0.4.5;python_version>="3.6" and python_version<"3.7"
+pdbp==1.2.8
+colorama==0.4.5;python_version<"3.7"
 colorama==0.4.6;python_version>="3.7"
 exceptiongroup==1.1.0;python_version>="3.7"
-importlib-metadata==4.2.0;python_version>="3.6" and python_version<"3.8"
+importlib-metadata==4.2.0;python_version<"3.8"
 pycparser==2.21
-pyotp==2.7.0;python_version>="3.6" and python_version<"3.7"
+pyotp==2.7.0;python_version<"3.7"
 pyotp==2.8.0;python_version>="3.7"
 cffi==1.15.1
-typing-extensions==4.1.1;python_version>="3.6" and python_version<"3.7"
+typing-extensions==4.1.1;python_version<"3.7"
 typing-extensions==4.4.0;python_version>="3.7" and python_version<"3.9"
-rich==12.6.0;python_version>="3.6" and python_version<"3.7"
-rich==13.1.0;python_version>="3.7" and python_version<"4.0"
+commonmark==0.9.1;python_version<"3.7"
+markdown-it-py==2.1.0;python_version>="3.7"
+mdurl==0.1.2;python_version>="3.7"
+rich==12.6.0;python_version<"3.7"
+rich==13.2.0;python_version>="3.7"
 
 # --- Testing Requirements --- #
 # ("pip install -r requirements.txt" also installs this, but "pip install -e ." won't.)
 
-coverage==6.2;python_version>="3.6" and python_version<"3.7"
+coverage==6.2;python_version<"3.7"
 coverage==7.0.5;python_version>="3.7"
-pytest-cov==4.0.0;python_version>="3.6"
-flake8==5.0.4;python_version>="3.6" and python_version<"3.9"
+pytest-cov==4.0.0
+flake8==5.0.4;python_version<"3.9"
 flake8==6.0.0;python_version>="3.9"
-mccabe==0.7.0;python_version>="3.6"
-pyflakes==2.5.0;python_version>="3.6" and python_version<"3.9"
+mccabe==0.7.0
+pyflakes==2.5.0;python_version<"3.9"
 pyflakes==3.0.1;python_version>="3.9"
-pycodestyle==2.9.1;python_version>="3.6" and python_version<"3.9"
+pycodestyle==2.9.1;python_version<"3.9"
 pycodestyle==2.10.0;python_version>="3.9"

@@ -3,7 +3,6 @@ import os
 import shutil
 import sys
 import time
-import traceback
 from seleniumbase import config as sb_config
 from seleniumbase.config import settings
 from seleniumbase.core.style_sheet import get_report_style
@@ -72,8 +71,7 @@ def save_test_failure_data(test, name, folder=None):
             "----------------------------------------------------------------"
         )
         data_to_save.append("Traceback: %s" % traceback_message)
-        if sys.version_info[0] >= 3:
-            data_to_save.append("Exception: %s" % exc_message)
+        data_to_save.append("Exception: %s" % exc_message)
         failure_data_file.writelines("\r\n".join(data_to_save))
         failure_data_file.close()
         return
@@ -92,8 +90,7 @@ def save_test_failure_data(test, name, folder=None):
         "--------------------------------------------------------------------"
     )
     data_to_save.append("Traceback: %s" % sb_config._report_traceback)
-    if sys.version_info[0] >= 3:
-        data_to_save.append("Exception: %s" % sb_config._report_exception)
+    data_to_save.append("Exception: %s" % sb_config._report_exception)
     failure_data_file.writelines("\r\n".join(data_to_save))
     failure_data_file.close()
 
@@ -105,28 +102,12 @@ def process_failures(test, test_count, duration):
     if hasattr(test, "_last_page_screenshot") and test._last_page_screenshot:
         with open(screenshot_path, "wb") as file:
             file.write(test._last_page_screenshot)
-    elif sys.version_info[0] < 3:
-        try:
-            sb_config._report_exception = sys.exc_info()
-            sb_config._report_traceback = "".join(
-                traceback.format_exception(
-                    sb_config._report_exception[0],
-                    sb_config._report_exception[1],
-                    sb_config._report_exception[2],
-                )
-            )
-            test._last_page_url = test.driver.current_url
-            test._last_page_screenshot = test.driver.get_screenshot_as_png()
-            with open(screenshot_path, "wb") as file:
-                file.write(test._last_page_screenshot)
-        except Exception:
-            pass
     save_test_failure_data(test, bad_page_data, folder=LATEST_REPORT_DIR)
     exc_message = None
     if (
-        sys.version_info[0] >= 3
-        and hasattr(test, "_outcome")
-        and (hasattr(test._outcome, "errors") and test._outcome.errors)
+        hasattr(test, "_outcome")
+        and hasattr(test._outcome, "errors")
+        and test._outcome.errors
     ):
         try:
             exc_message = test._outcome.errors[0][1][1]
@@ -193,9 +174,9 @@ def add_bad_page_log_file(page_results_list):
     file_path = os.path.join(abs_path, LATEST_REPORT_DIR)
     log_file = os.path.join(file_path, RESULTS_TABLE)
     f = open(log_file, "w")
-    h_p1 = """"Num","Result","Stacktrace","Screenshot","""
-    h_p2 = """"URL","Browser","Epoch Time","Duration","""
-    h_p3 = """"Test Case Address","Additional Info"\n"""
+    h_p1 = '"Num","Result","Stacktrace","Screenshot",'
+    h_p2 = '"URL","Browser","Epoch Time","Duration",'
+    h_p3 = '"Test Case Address","Additional Info"\n'
     page_header = h_p1 + h_p2 + h_p3
     f.write(page_header)
     for line in page_results_list:

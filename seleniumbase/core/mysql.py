@@ -7,7 +7,6 @@ class DatabaseManager:
     def __init__(self, database_env="test", conf_creds=None):
         """Create a connection to the MySQL DB."""
         import fasteners
-        import sys
         import time
         from seleniumbase import config as sb_config
         from seleniumbase.config import settings
@@ -22,10 +21,7 @@ class DatabaseManager:
             try:
                 import pymysql
             except Exception:
-                if sys.version_info >= (3, 6):
-                    shared_utils.pip_install("pymysql", version="1.0.2")
-                else:
-                    shared_utils.pip_install("pymysql", version="0.10.1")
+                shared_utils.pip_install("pymysql", version="1.0.2")
                 import pymysql
         db_server = settings.DB_HOST
         db_port = settings.DB_PORT
@@ -49,24 +45,13 @@ class DatabaseManager:
         count = 0
         while count < retry_count:
             try:
-                if sys.version_info >= (3, 6):
-                    # PyMySQL 1.0.0 or above renamed the variables.
-                    self.conn = pymysql.connect(
-                        host=db_server,
-                        port=db_port,
-                        user=db_user,
-                        password=db_pass,
-                        database=db_schema,
-                    )
-                else:
-                    # PyMySQL 0.10.1 for Python 2.7 and Python 3.5
-                    self.conn = pymysql.connect(
-                        host=db_server,
-                        port=db_port,
-                        user=db_user,
-                        passwd=db_pass,
-                        db=db_schema,
-                    )
+                self.conn = pymysql.connect(
+                    host=db_server,
+                    port=db_port,
+                    user=db_user,
+                    password=db_pass,
+                    database=db_schema,
+                )
                 self.conn.autocommit(True)
                 self.cursor = self.conn.cursor()
                 return

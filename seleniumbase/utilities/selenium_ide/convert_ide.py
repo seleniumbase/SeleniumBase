@@ -13,7 +13,6 @@ Output:
         [NEW_FILE_SB].py  (adds "_SB" to the original file name)
                           (the original file is kept intact)
 """
-
 import codecs
 import re
 import sys
@@ -62,7 +61,6 @@ def main():
 
     ide_base_url = ""
     in_test_method = False
-    has_unicode = False
     uses_keys = False
     uses_select = False
 
@@ -82,7 +80,6 @@ def main():
         # Handle utf-8 encoding if present
         data = re.findall(r"^\s*# -\*- coding: utf-8 -\*-\s*$", line)
         if data:
-            has_unicode = True
             continue
 
         # Keep SeleniumBase classes if already used in the test script
@@ -110,7 +107,6 @@ def main():
             method_name = data.group(1)
             if method_name.startswith("test_"):
                 in_test_method = True
-                seleniumbase_lines.append("")
                 seleniumbase_lines.append(data.group())
             else:
                 in_test_method = False
@@ -535,7 +531,6 @@ def main():
             uni = ""
             if '(u"' in line:
                 uni = "u"
-                has_unicode = True
             command = """%sself.click(%s"%s")""" % (whitespace, uni, xpath)
             seleniumbase_lines.append(command)
             continue
@@ -552,7 +547,6 @@ def main():
             uni = ""
             if '(u"' in line:
                 uni = "u"
-                has_unicode = True
             command = """%sself.submit(%s"%s")""" % (whitespace, uni, xpath)
             seleniumbase_lines.append(command)
             continue
@@ -569,7 +563,6 @@ def main():
             uni = ""
             if '(u"' in line:
                 uni = "u"
-                has_unicode = True
             command = """%sself.click(%s"link=%s")""" % (
                 whitespace,
                 uni,
@@ -592,7 +585,6 @@ def main():
             uni = ""
             if '(u"' in line:
                 uni = "u"
-                has_unicode = True
             command = """%s%sself.is_link_text_present(%s"%s")%s""" % (
                 whitespace,
                 pre,
@@ -617,7 +609,6 @@ def main():
             uni = ""
             if '(u"' in line:
                 uni = "u"
-                has_unicode = True
             command = """%s%sself.is_element_present('[name="%s"]')%s""" % (
                 whitespace,
                 pre,
@@ -641,7 +632,6 @@ def main():
             uni = ""
             if '(u"' in line:
                 uni = "u"
-                has_unicode = True
             command = """%s%sself.is_element_present("#%s")%s""" % (
                 whitespace,
                 pre,
@@ -665,7 +655,6 @@ def main():
             uni = ""
             if '(u"' in line:
                 uni = "u"
-                has_unicode = True
             command = """%s%sself.is_element_present(".%s")%s""" % (
                 whitespace,
                 pre,
@@ -689,7 +678,6 @@ def main():
             uni = ""
             if '(u"' in line:
                 uni = "u"
-                has_unicode = True
             command = """%s%sself.is_element_present("%s")%s""" % (
                 whitespace,
                 pre,
@@ -713,7 +701,6 @@ def main():
             uni = ""
             if '(u"' in line:
                 uni = "u"
-                has_unicode = True
             command = """%s%sself.is_element_present("%s")%s""" % (
                 whitespace,
                 pre,
@@ -895,8 +882,6 @@ def main():
         seleniumbase_lines.append(lines[line_num])
 
     seleniumbase_code = ""
-    if has_unicode and sys.version_info[0] < 3:
-        seleniumbase_code = "# -*- coding: utf-8 -*-\n"
     if uses_keys:
         seleniumbase_code += (
             "from selenium.webdriver.common.keys import Keys\n"

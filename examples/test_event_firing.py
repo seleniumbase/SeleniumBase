@@ -1,8 +1,8 @@
 """ Testing EventFiringWebDriver with AbstractEventListener """
-
 from selenium.webdriver.support.events import EventFiringWebDriver
 from selenium.webdriver.support.events import AbstractEventListener
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 
 class MyListener(AbstractEventListener):

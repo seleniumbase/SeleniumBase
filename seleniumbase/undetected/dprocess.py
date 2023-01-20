@@ -47,10 +47,7 @@ def _start_detached(executable, *args, writer=None):
         kwargs.update(
             creationflags=DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP
         )
-    elif sys.version_info < (3, 2):
-        # Assume POSIX
-        kwargs.update(preexec_fn=os.setsid)
-    else:  # Python 3.2+ and Unix
+    else:
         kwargs.update(start_new_session=True)
     p = Popen(
         [executable, *args], stdin=PIPE, stdout=PIPE, stderr=PIPE, **kwargs

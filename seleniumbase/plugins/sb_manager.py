@@ -111,7 +111,6 @@ def SB(
     from seleniumbase import BaseCase
     from seleniumbase import config as sb_config
     from seleniumbase.config import settings
-    from seleniumbase.core import colored_traceback
     from seleniumbase.fixtures import constants
     from seleniumbase.fixtures import shared_utils
 
@@ -770,7 +769,6 @@ def SB(
         sb.headless_active = False
     test_name = None
     terminal_width = shared_utils.get_terminal_width()
-    colored_traceback.add_hook()
     if test:
         import colorama
         import os

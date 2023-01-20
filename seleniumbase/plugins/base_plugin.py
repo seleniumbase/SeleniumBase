@@ -38,7 +38,8 @@ class Base(Plugin):
 
     def options(self, parser, env):
         super().options(parser, env=env)
-        parser.add_option(
+        parser.addoption = parser.add_option  # Reuse name from pytest parser
+        parser.addoption(
             "--env",
             action="store",
             dest="environment",
@@ -63,38 +64,38 @@ class Base(Plugin):
             help="""This option sets a test env from a list of choices.
                     Access using "self.env" or "self.environment".""",
         )
-        parser.add_option(
+        parser.addoption(
             "--account",
             dest="account",
             default=None,
             help="""This option sets a test account string.
                     In tests, use "self.account" to get the value.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--data",
             dest="data",
             default=None,
             help="Extra data to pass to tests from the command line.",
         )
-        parser.add_option(
+        parser.addoption(
             "--var1",
             dest="var1",
             default=None,
             help="Extra data to pass to tests from the command line.",
         )
-        parser.add_option(
+        parser.addoption(
             "--var2",
             dest="var2",
             default=None,
             help="Extra data to pass to tests from the command line.",
         )
-        parser.add_option(
+        parser.addoption(
             "--var3",
             dest="var3",
             default=None,
             help="Extra data to pass to tests from the command line.",
         )
-        parser.add_option(
+        parser.addoption(
             "--variables",
             dest="variables",
             default=None,
@@ -109,7 +110,7 @@ class Base(Plugin):
                     Access: self.variables["num"]
                     ----------------------------------------------""",
         )
-        parser.add_option(
+        parser.addoption(
             "--settings_file",
             "--settings-file",
             "--settings",
@@ -119,7 +120,7 @@ class Base(Plugin):
             help="""The file that stores key/value pairs for overriding
                     values in the SeleniumBase settings.py file.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--log_path",
             "--log-path",
             dest="log_path",
@@ -127,7 +128,7 @@ class Base(Plugin):
             help="""(DEPRECATED) - This field is NOT EDITABLE anymore.
                     Log files are saved to the "latest_logs/" folder.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--archive_logs",
             "--archive-logs",
             action="store_true",
@@ -135,7 +136,7 @@ class Base(Plugin):
             default=False,
             help="Archive old log files instead of deleting them.",
         )
-        parser.add_option(
+        parser.addoption(
             "--archive_downloads",
             "--archive-downloads",
             action="store_true",
@@ -143,14 +144,14 @@ class Base(Plugin):
             default=False,
             help="Archive old downloads instead of deleting them.",
         )
-        parser.add_option(
+        parser.addoption(
             "--report",
             action="store_true",
             dest="report",
             default=False,
             help="Create a fancy report at the end of the test suite.",
         )
-        parser.add_option(
+        parser.addoption(
             "--show_report",
             "--show-report",
             action="store_true",
@@ -167,7 +168,7 @@ class Base(Plugin):
                 found_timeout_arg = True
         if found_processes_arg:
             print("* WARNING: Don't use multi-threading with nosetests! *")
-            parser.add_option(
+            parser.addoption(
                 "--processes",
                 dest="processes",
                 default=0,
@@ -177,7 +178,7 @@ class Base(Plugin):
             print("\n  WARNING: Don't use --timeout=s from pytest-timeout!")
             print("  It's not thread-safe for WebDriver processes!")
             print("  Use --time-limit=s from SeleniumBase instead!\n")
-            parser.add_option(
+            parser.addoption(
                 "--timeout",
                 dest="timeout",
                 default=0,

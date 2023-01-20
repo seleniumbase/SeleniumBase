@@ -149,14 +149,6 @@ def main():
     if help_me:
         invalid_run_command(invalid_cmd)
 
-    if language != "English" and sys.version_info[0] == 2:
-        print("")
-        msg = 'Multi-language support for "sbase mkfile" '
-        msg += "is not available on Python 2!"
-        msg = "\n" + c5 + msg + cr
-        msg += '\nPlease run in "English" mode or upgrade to Python 3!\n'
-        raise Exception(msg)
-
     dir_name = os.getcwd()
     file_path = "%s/%s" % (dir_name, file_name)
 

@@ -89,8 +89,8 @@ class SeleniumBrowser(Plugin):
 
     def options(self, parser, env):
         super().options(parser, env=env)
-
-        parser.add_option(
+        parser.addoption = parser.add_option  # Reuse name from pytest parser
+        parser.addoption(
             "--browser",
             action="store",
             dest="browser",
@@ -99,49 +99,49 @@ class SeleniumBrowser(Plugin):
             help="""Specifies the web browser to use. Default: Chrome.
                     Examples: (--browser=edge OR --browser=firefox)""",
         )
-        parser.add_option(
+        parser.addoption(
             "--chrome",
             action="store_true",
             dest="use_chrome",
             default=False,
             help="""Shortcut for --browser=chrome (Default)""",
         )
-        parser.add_option(
+        parser.addoption(
             "--edge",
             action="store_true",
             dest="use_edge",
             default=False,
             help="""Shortcut for --browser=edge""",
         )
-        parser.add_option(
+        parser.addoption(
             "--firefox",
             action="store_true",
             dest="use_firefox",
             default=False,
             help="""Shortcut for --browser=firefox""",
         )
-        parser.add_option(
+        parser.addoption(
             "--ie",
             action="store_true",
             dest="use_ie",
             default=False,
             help="""Shortcut for --browser=ie""",
         )
-        parser.add_option(
+        parser.addoption(
             "--opera",
             action="store_true",
             dest="use_opera",
             default=False,
             help="""Shortcut for --browser=opera""",
         )
-        parser.add_option(
+        parser.addoption(
             "--safari",
             action="store_true",
             dest="use_safari",
             default=False,
             help="""Shortcut for --browser=safari""",
         )
-        parser.add_option(
+        parser.addoption(
             "--cap_file",
             "--cap-file",
             action="store",
@@ -151,7 +151,7 @@ class SeleniumBrowser(Plugin):
                     for BrowserStack, LambdaTest, Sauce Labs,
                     and other remote web drivers to use.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--cap_string",
             "--cap-string",
             dest="cap_string",
@@ -163,7 +163,7 @@ class SeleniumBrowser(Plugin):
                     Enclose parameter keys in double quotes.
                     Example: --cap-string='{"name":"test1","v":"42"}'""",
         )
-        parser.add_option(
+        parser.addoption(
             "--user_data_dir",
             "--user-data-dir",
             action="store",
@@ -172,7 +172,7 @@ class SeleniumBrowser(Plugin):
             help="""The Chrome User Data Directory to use. (Chrome Profile)
                     If the directory doesn't exist, it'll be created.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--sjw",
             "--skip_js_waits",
             "--skip-js-waits",
@@ -183,7 +183,7 @@ class SeleniumBrowser(Plugin):
                     and wait_for_angularjs(), which are part of many
                     SeleniumBase methods for improving reliability.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--protocol",
             action="store",
             dest="protocol",
@@ -195,7 +195,7 @@ class SeleniumBrowser(Plugin):
             help="""Designates the Selenium Grid protocol to use.
                     Default: http.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--server",
             action="store",
             dest="servername",
@@ -205,7 +205,7 @@ class SeleniumBrowser(Plugin):
                     If unset or set to "localhost", Grid isn't used.
                     Default: "localhost".""",
         )
-        parser.add_option(
+        parser.addoption(
             "--port",
             action="store",
             dest="port",
@@ -213,7 +213,7 @@ class SeleniumBrowser(Plugin):
             help="""Designates the Selenium Grid port to use.
                     Default: 4444. (If 443, protocol becomes "https")""",
         )
-        parser.add_option(
+        parser.addoption(
             "--proxy",
             "--proxy-server",
             "--proxy-string",
@@ -226,7 +226,7 @@ class SeleniumBrowser(Plugin):
                             A dict key from proxy_list.PROXY_LIST
                     Default: None.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--proxy-bypass-list",
             "--proxy_bypass_list",
             action="store",
@@ -244,7 +244,7 @@ class SeleniumBrowser(Plugin):
                             --proxy-bypass-list="127.0.0.1:8080"
                     Default: None.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--proxy-pac-url",
             "--pac-url",
             action="store",
@@ -255,7 +255,7 @@ class SeleniumBrowser(Plugin):
                             A username:password@URL string
                     Default: None.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--agent",
             "--user-agent",
             "--user_agent",
@@ -266,7 +266,7 @@ class SeleniumBrowser(Plugin):
                     Format: A string.
                     Default: None.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--mobile",
             "--mobile-emulator",
             "--mobile_emulator",
@@ -276,7 +276,7 @@ class SeleniumBrowser(Plugin):
             help="""If this option is enabled, the mobile emulator
                     will be used while running tests.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--metrics",
             "--device-metrics",
             "--device_metrics",
@@ -289,7 +289,7 @@ class SeleniumBrowser(Plugin):
                     Example: "375,734,3"
                     Default: None. (Will use default values if None)""",
         )
-        parser.add_option(
+        parser.addoption(
             "--chromium_arg",
             "--chromium-arg",
             action="store",
@@ -301,7 +301,7 @@ class SeleniumBrowser(Plugin):
                     added to the beginning of the arg automatically.
                     Default: None.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--firefox_arg",
             "--firefox-arg",
             action="store",
@@ -313,7 +313,7 @@ class SeleniumBrowser(Plugin):
                     added to the beginning of the arg automatically.
                     Default: None.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--firefox_pref",
             "--firefox-pref",
             action="store",
@@ -330,7 +330,7 @@ class SeleniumBrowser(Plugin):
                     If there's no ":" in the string, then True is used.
                     Default: None.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--extension_zip",
             "--extension-zip",
             "--crx",
@@ -342,7 +342,7 @@ class SeleniumBrowser(Plugin):
                     containing the Chrome extensions to load.
                     Default: None.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--extension_dir",
             "--extension-dir",
             action="store",
@@ -353,7 +353,7 @@ class SeleniumBrowser(Plugin):
                     (Can also be a comma-separated list of directories.)
                     Default: None.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--pls",
             "--page_load_strategy",
             "--page-load-strategy",
@@ -368,7 +368,7 @@ class SeleniumBrowser(Plugin):
             help="""This option sets Chrome's pageLoadStrategy.
                     List of choices: "normal", "eager", "none".""",
         )
-        parser.add_option(
+        parser.addoption(
             "--headless",
             action="store_true",
             dest="headless",
@@ -378,7 +378,7 @@ class SeleniumBrowser(Plugin):
                 UNLESS using a virtual display with Xvfb.
                 Default: False on Mac/Windows. True on Linux.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--headless2",
             action="store_true",
             dest="headless2",
@@ -387,7 +387,7 @@ class SeleniumBrowser(Plugin):
                     which supports Chromium extensions, and more,
                     but is slower than the standard headless mode.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--headed",
             "--gui",
             action="store_true",
@@ -398,7 +398,7 @@ class SeleniumBrowser(Plugin):
                     (The default setting on Linux is headless.)
                     (The default setting on Mac or Windows is headed.)""",
         )
-        parser.add_option(
+        parser.addoption(
             "--xvfb",
             action="store_true",
             dest="xvfb",
@@ -409,7 +409,7 @@ class SeleniumBrowser(Plugin):
                     will no longer be enabled by default on Linux.
                     Default: False. (Linux-ONLY!)""",
         )
-        parser.add_option(
+        parser.addoption(
             "--locale_code",
             "--locale-code",
             "--locale",
@@ -422,7 +422,7 @@ class SeleniumBrowser(Plugin):
                     See: https://seleniumbase.io/help_docs/locale_codes/
                     Default: None. (The web browser's default mode.)""",
         )
-        parser.add_option(
+        parser.addoption(
             "--interval",
             action="store",
             dest="interval",
@@ -433,7 +433,7 @@ class SeleniumBrowser(Plugin):
                     Overrides from methods take priority over this.
                     (Headless Mode skips tours and presentations.)""",
         )
-        parser.add_option(
+        parser.addoption(
             "--start_page",
             "--start-page",
             "--url",
@@ -444,7 +444,7 @@ class SeleniumBrowser(Plugin):
                     when each test begins.
                     Default: None.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--time_limit",
             "--time-limit",
             "--timelimit",
@@ -454,7 +454,7 @@ class SeleniumBrowser(Plugin):
             help="""Use this to set a time limit per test, in seconds.
                     If a test runs beyond the limit, it fails.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--slow_mode",
             "--slow-mode",
             "--slowmo",
@@ -464,7 +464,7 @@ class SeleniumBrowser(Plugin):
             default=False,
             help="""Using this slows down the automation.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--demo_mode",
             "--demo-mode",
             "--demo",
@@ -474,7 +474,7 @@ class SeleniumBrowser(Plugin):
             help="""Using this slows down the automation and lets you
                     visually see what the tests are actually doing.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--demo_sleep",
             "--demo-sleep",
             action="store",
@@ -483,7 +483,7 @@ class SeleniumBrowser(Plugin):
             help="""Setting this overrides the Demo Mode sleep
                     time that happens after browser actions.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--highlights",
             action="store",
             dest="highlights",
@@ -491,7 +491,7 @@ class SeleniumBrowser(Plugin):
             help="""Setting this overrides the default number of
                     highlight animation loops to have per call.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--message_duration",
             "--message-duration",
             action="store",
@@ -501,7 +501,7 @@ class SeleniumBrowser(Plugin):
                     messenger notifications remain visible when reaching
                     assert statements during Demo Mode.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--check_js",
             "--check-js",
             action="store_true",
@@ -510,7 +510,7 @@ class SeleniumBrowser(Plugin):
             help="""The option to check for JavaScript errors after
                     every page load.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--adblock",
             "--ad_block",
             "--ad-block",
@@ -522,7 +522,7 @@ class SeleniumBrowser(Plugin):
             help="""Using this makes WebDriver block display ads
                     that are defined in ad_block_list.AD_BLOCK_LIST.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--block_images",
             "--block-images",
             action="store_true",
@@ -531,7 +531,7 @@ class SeleniumBrowser(Plugin):
             help="""Using this makes WebDriver block images from
                     loading on web pages during tests.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--do_not_track",
             "--do-not-track",
             action="store_true",
@@ -542,7 +542,7 @@ class SeleniumBrowser(Plugin):
                     header each time it requests a web page.
                     https://support.google.com/chrome/answer/2790761""",
         )
-        parser.add_option(
+        parser.addoption(
             "--verify_delay",
             "--verify-delay",
             action="store",
@@ -551,7 +551,7 @@ class SeleniumBrowser(Plugin):
             help="""Setting this overrides the default wait time
                     before each MasterQA verification pop-up.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--recorder",
             "--record",
             "--rec",
@@ -563,7 +563,7 @@ class SeleniumBrowser(Plugin):
                     which records browser actions for converting
                     into SeleniumBase scripts.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--rec-behave",
             "--rec-gherkin",
             action="store_true",
@@ -575,7 +575,7 @@ class SeleniumBrowser(Plugin):
                     feature file, an imported steps file,
                     and the environment.py file.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--rec-sleep",
             "--record-sleep",
             action="store_true",
@@ -584,7 +584,7 @@ class SeleniumBrowser(Plugin):
             help="""If Recorder Mode is enabled,
                     records sleep(seconds) calls.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--rec-print",
             action="store_true",
             dest="rec_print",
@@ -592,7 +592,7 @@ class SeleniumBrowser(Plugin):
             help="""If Recorder Mode is enabled,
                     prints output after tests end.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--disable_js",
             "--disable-js",
             action="store_true",
@@ -601,7 +601,7 @@ class SeleniumBrowser(Plugin):
             help="""The option to disable JavaScript on web pages.
                     Warning: Most web pages will stop working!""",
         )
-        parser.add_option(
+        parser.addoption(
             "--disable_csp",
             "--disable-csp",
             "--no_csp",
@@ -617,7 +617,7 @@ class SeleniumBrowser(Plugin):
                     Setting this to True (--disable-csp) overrides the
                     value set in seleniumbase/config/settings.py""",
         )
-        parser.add_option(
+        parser.addoption(
             "--disable_ws",
             "--disable-ws",
             "--disable-web-security",
@@ -627,7 +627,7 @@ class SeleniumBrowser(Plugin):
             help="""Using this disables the "Web Security" feature of
                     Chrome and Chromium-based browsers such as Edge.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--enable_ws",
             "--enable-ws",
             "--enable-web-security",
@@ -637,7 +637,7 @@ class SeleniumBrowser(Plugin):
             help="""Using this enables the "Web Security" feature of
                     Chrome and Chromium-based browsers such as Edge.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--enable_sync",
             "--enable-sync",
             action="store_true",
@@ -645,7 +645,7 @@ class SeleniumBrowser(Plugin):
             default=False,
             help="""Using this enables the "Chrome Sync" feature.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--use_auto_ext",
             "--use-auto-ext",
             "--auto-ext",
@@ -656,7 +656,7 @@ class SeleniumBrowser(Plugin):
                     It's not required, but some commands & advanced
                     features may need it.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--undetected",
             "--undetectable",
             "--uc",  # undetected-chromedriver
@@ -667,7 +667,7 @@ class SeleniumBrowser(Plugin):
                     to websites that use anti-bot services to block
                     automation tools from navigating them freely.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--uc_cdp_events",
             "--uc-cdp-events",
             "--uc-cdp",  # For capturing CDP events during UC Mode
@@ -683,7 +683,7 @@ class SeleniumBrowser(Plugin):
                         )
                         self.open(URL)""",
         )
-        parser.add_option(
+        parser.addoption(
             "--uc_subprocess",
             "--uc-subprocess",
             "--uc-sub",  # undetected-chromedriver subprocess mode
@@ -694,7 +694,7 @@ class SeleniumBrowser(Plugin):
                     Use undetectable-chromedriver as a subprocess,
                     which can help avoid issues that might result.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--no_sandbox",
             "--no-sandbox",
             action="store_true",
@@ -703,7 +703,7 @@ class SeleniumBrowser(Plugin):
             help="""Using this enables the "No Sandbox" feature.
                     (This setting is now always enabled by default.)""",
         )
-        parser.add_option(
+        parser.addoption(
             "--disable_gpu",
             "--disable-gpu",
             action="store_true",
@@ -712,7 +712,7 @@ class SeleniumBrowser(Plugin):
             help="""Using this enables the "Disable GPU" feature.
                     (This setting is now always enabled by default.)""",
         )
-        parser.add_option(
+        parser.addoption(
             "--remote_debug",
             "--remote-debug",
             "--remote-debugger",
@@ -726,7 +726,7 @@ class SeleniumBrowser(Plugin):
                     The previous URL was at: http://localhost:9222/
                     Info: chromedevtools.github.io/devtools-protocol/""",
         )
-        parser.add_option(
+        parser.addoption(
             "--final-debug",
             action="store_true",
             dest="final_debug",
@@ -736,7 +736,7 @@ class SeleniumBrowser(Plugin):
                     If using both "--final-debug" and "--pdb" together,
                     then Debug Mode will activate twice on failures.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--enable_3d_apis",
             "--enable-3d-apis",
             action="store_true",
@@ -744,7 +744,7 @@ class SeleniumBrowser(Plugin):
             default=False,
             help="""Using this enables WebGL and 3D APIs.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--swiftshader",
             action="store_true",
             dest="swiftshader",
@@ -752,7 +752,7 @@ class SeleniumBrowser(Plugin):
             help="""Using this enables the "--use-gl=swiftshader"
                     feature when running tests on Chrome.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--incognito",
             "--incognito_mode",
             "--incognito-mode",
@@ -761,7 +761,7 @@ class SeleniumBrowser(Plugin):
             default=False,
             help="""Using this enables Chrome's Incognito mode.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--guest",
             "--guest_mode",
             "--guest-mode",
@@ -770,7 +770,7 @@ class SeleniumBrowser(Plugin):
             default=False,
             help="""Using this enables Chrome's Guest mode.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--devtools",
             "--open_devtools",
             "--open-devtools",
@@ -779,7 +779,7 @@ class SeleniumBrowser(Plugin):
             default=False,
             help="""Using this opens Chrome's DevTools.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--disable-beforeunload",
             "--disable_beforeunload",
             action="store_true",
@@ -789,7 +789,7 @@ class SeleniumBrowser(Plugin):
                     on Chromium browsers (Chrome or Edge).
                     This is already the default Firefox option.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--window-size",
             "--window_size",
             action="store",
@@ -800,7 +800,7 @@ class SeleniumBrowser(Plugin):
                     Example: "1200,800"
                     Default: None. (Will use default values if None)""",
         )
-        parser.add_option(
+        parser.addoption(
             "--maximize_window",
             "--maximize-window",
             "--maximize",
@@ -811,7 +811,7 @@ class SeleniumBrowser(Plugin):
             help="""The option to start with a maximized browser window.
                     (Overrides the "window-size" option if used.)""",
         )
-        parser.add_option(
+        parser.addoption(
             "--screenshot",
             "--save_screenshot",
             "--save-screenshot",
@@ -823,7 +823,7 @@ class SeleniumBrowser(Plugin):
                     By default, this is only done for failures.
                     Will be saved in the "latest_logs/" folder.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--no-screenshot",
             "--no_screenshot",
             "--ns",
@@ -834,7 +834,7 @@ class SeleniumBrowser(Plugin):
                     This changes default behavior where screenshots are
                     saved for test failures and pytest-html reports.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--visual_baseline",
             "--visual-baseline",
             action="store_true",
@@ -845,14 +845,14 @@ class SeleniumBrowser(Plugin):
                     When a test calls self.check_window(), it will
                     rebuild its files in the visual_baseline folder.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--wire",
             action="store_true",
             dest="use_wire",
             default=False,
             help="""Use selenium-wire's webdriver for selenium webdriver.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--external_pdf",
             "--external-pdf",
             action="store_true",
@@ -863,7 +863,7 @@ class SeleniumBrowser(Plugin):
                     which causes opened PDF URLs to download immediately,
                     instead of being displayed in the browser window.""",
         )
-        parser.add_option(
+        parser.addoption(
             "--timeout_multiplier",
             "--timeout-multiplier",
             action="store",
