@@ -212,8 +212,10 @@ setup(
         "cffi==1.15.1",
         'typing-extensions==4.1.1;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
         'typing-extensions==4.4.0;python_version>="3.7" and python_version<"3.9"',  # noqa: E501
+        'markdown-it-py==2.1.0;python_version>="3.7"',  # For "rich"
+        'mdurl==0.1.2;python_version>="3.7"',  # For "rich"
         'rich==12.6.0;python_version>="3.6" and python_version<"3.7"',
-        'rich==13.1.0;python_version>="3.7" and python_version<"4.0"',
+        'rich==13.2.0;python_version>="3.7"',
     ],
     extras_require={
         # pip install -e .[coverage]

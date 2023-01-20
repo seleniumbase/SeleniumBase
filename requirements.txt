@@ -88,8 +88,10 @@ pyotp==2.8.0;python_version>="3.7"
 cffi==1.15.1
 typing-extensions==4.1.1;python_version>="3.6" and python_version<"3.7"
 typing-extensions==4.4.0;python_version>="3.7" and python_version<"3.9"
+markdown-it-py==2.1.0;python_version>="3.7"
+mdurl==0.1.2;python_version>="3.7"
 rich==12.6.0;python_version>="3.6" and python_version<"3.7"
-rich==13.1.0;python_version>="3.7" and python_version<"4.0"
+rich==13.2.0;python_version>="3.7"
 
 # --- Testing Requirements --- #
 # ("pip install -r requirements.txt" also installs this, but "pip install -e ." won't.)
