@@ -1,6 +1,6 @@
 """
 This is a mobile device test for Chromium-based browsers (such as MS Edge)
-Usage:  pytest test_skype_site.py --mobile --browser=edge
+Usage:  pytest test_skype_site.py --mobile --edge
 
 Default mobile settings for User Agent and Device Metrics if not specified:
         User Agent:   --agent="Mozilla/5.0 (Linux; Android 11; Pixel 4 XL)"
@@ -27,3 +27,8 @@ class SkypeTests(BaseCase):
         self.highlight("#get-skype-0_android-download")
         self.highlight('[data-bi-id*="ios"]')
         self.highlight('[data-bi-id*="windows10"]')
+
+
+if __name__ == "__main__":
+    from pytest import main
+    main([__file__, "--mobile", "--edge", "-s"])
