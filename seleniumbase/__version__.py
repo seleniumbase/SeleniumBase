@@ -1,2 +1,2 @@
 # seleniumbase package
-__version__ = "4.11.7"
+__version__ = "4.11.8"
