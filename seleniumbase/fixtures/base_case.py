@@ -13239,6 +13239,8 @@ class BaseCase(unittest.TestCase):
                         '\nExpecting a Python dictionary for "variables"!'
                         "\nEg. --variables=\"{'KEY1':'VALUE', 'KEY2':123}\""
                     )
+            elif type(variables) is dict:
+                pass  # Already processed
             else:
                 variables = {}
             sb_config.variables = variables

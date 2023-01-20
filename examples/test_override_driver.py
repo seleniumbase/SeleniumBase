@@ -9,7 +9,7 @@ class OverrideDriverTest(BaseCase):
         options.add_argument("--disable-3d-apis")
         options.add_argument("--disable-notifications")
         if self.headless:
-            options.add_argument("--headless=chrome")
+            options.add_argument("--headless=new")
             options.add_argument("--disable-gpu")
         options.add_experimental_option(
             "excludeSwitches", ["enable-automation", "enable-logging"],
