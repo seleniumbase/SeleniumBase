@@ -14,7 +14,7 @@ class UndetectedTest(BaseCase):
     def test_browser_is_undetected(self):
         self.open("https://nowsecure.nl/#relax")
         try:
-            self.assert_text("OH YEAH, you passed!", "h1", timeout=6.75)
+            self.assert_text("OH YEAH, you passed!", "h1", timeout=7.25)
             self.post_message("Selenium wasn't detected!", duration=2.8)
             self._print("\n Success! Website did not detect Selenium! ")
         except Exception:

@@ -17,5 +17,5 @@ class CDPTests(BaseCase):
             lambda data: print(pformat(data))
         )
         self.open("https://nowsecure.nl/#relax")
-        self.assert_text("OH YEAH, you passed!", "h1", timeout=6.75)
+        self.assert_text("OH YEAH, you passed!", "h1", timeout=7.25)
         self.sleep(2)

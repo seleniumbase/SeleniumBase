@@ -12,7 +12,7 @@ class MessyRawSelenium(TestCase):
         options = webdriver.ChromeOptions()
         options.add_argument("--disable-notifications")
         if "linux" in sys.platform:
-            options.add_argument("--headless=chrome")
+            options.add_argument("--headless=new")
         options.add_experimental_option(
             "excludeSwitches", ["enable-automation", "enable-logging"],
         )

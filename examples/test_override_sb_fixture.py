@@ -12,7 +12,7 @@ def sb(request):
             """This method overrides get_new_driver() from BaseCase."""
             options = webdriver.ChromeOptions()
             if self.headless:
-                options.add_argument("--headless=chrome")
+                options.add_argument("--headless=new")
                 options.add_argument("--disable-gpu")
             options.add_experimental_option(
                 "excludeSwitches", ["enable-automation"],
