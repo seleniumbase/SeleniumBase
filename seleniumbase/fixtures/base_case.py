@@ -239,6 +239,7 @@ class BaseCase(unittest.TestCase):
             if (
                 "ERR_CONNECTION_TIMED_OUT" in e.msg
                 or "ERR_CONNECTION_CLOSED" in e.msg
+                or "ERR_CONNECTION_RESET" in e.msg
             ):
                 time.sleep(0.5)
                 self.driver.get(url)
