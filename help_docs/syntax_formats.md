@@ -248,7 +248,7 @@ class OverrideDriverTest(BaseCase):
         options.add_argument("--disable-3d-apis")
         options.add_argument("--disable-notifications")
         if self.headless:
-            options.add_argument("--headless=chrome")
+            options.add_argument("--headless=new")
             options.add_argument("--disable-gpu")
         options.add_experimental_option(
             "excludeSwitches", ["enable-automation", "enable-logging"],
@@ -310,7 +310,7 @@ def sb(request):
             """This method overrides get_new_driver() from BaseCase."""
             options = webdriver.ChromeOptions()
             if self.headless:
-                options.add_argument("--headless=chrome")
+                options.add_argument("--headless=new")
                 options.add_argument("--disable-gpu")
             options.add_experimental_option(
                 "excludeSwitches", ["enable-automation"],
@@ -361,7 +361,7 @@ def sb(request):
         def get_new_driver(self, *args, **kwargs):
             options = webdriver.ChromeOptions()
             if "linux" in sys.platform:
-                options.add_argument("--headless=chrome")
+                options.add_argument("--headless=new")
             options.add_experimental_option(
                 "excludeSwitches", ["enable-automation"],
             )
