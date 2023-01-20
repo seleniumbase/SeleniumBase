@@ -24,6 +24,7 @@
 * [Harvard Medical School](https://hms.harvard.edu/)
 * [Singapore Institute of Tech](https://www.singaporetech.edu.sg)
 * [Mississippi State University](https://www.msstate.edu/)
+* [The New York Public Libary](https://www.nypl.org/)
 * [Queen's University](https://www.queensu.ca/)
 * [L1NNA Laboratory](https://l1nna.com/)
 * [Thomson Reuters](https://www.thomsonreuters.com/)
@@ -68,6 +69,8 @@
 * [Pico](https://trypico.com/)
 * [Iver](https://www.iver.com/)
 * And more...
+
+--------
 
 ### Case Study:
 
