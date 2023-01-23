@@ -712,6 +712,18 @@ class MD:
     md["is_text_visible"][8] = "текст_виден"
     md["is_text_visible"][9] = "se_muestra_el_texto"
 
+    md["is_exact_text_visible"] = ["*"] * num_langs
+    md["is_exact_text_visible"][0] = "is_exact_text_visible"
+    md["is_exact_text_visible"][1] = "确切文本是否显示"
+    md["is_exact_text_visible"][2] = "exacte_tekst_zichtbaar"
+    md["is_exact_text_visible"][3] = "est_texte_exactement_affiché"
+    md["is_exact_text_visible"][4] = "è_testo_esatto_visto"
+    md["is_exact_text_visible"][5] = "正確なテキストが表示されています"
+    md["is_exact_text_visible"][6] = "정확한_텍스트가_표시됩니다"
+    md["is_exact_text_visible"][7] = "o_texto_exato_está_visível"
+    md["is_exact_text_visible"][8] = "точный_текст_виден"
+    md["is_exact_text_visible"][9] = "se_muestra_el_texto_exacto"
+
     md["is_element_visible"] = ["*"] * num_langs
     md["is_element_visible"][0] = "is_element_visible"
     md["is_element_visible"][1] = "元素是否可见"
