@@ -1,5 +1,6 @@
 # Japanese Language Test
 from seleniumbase.translate.japanese import セレニウムテストケース
+セレニウムテストケース.main(__name__, __file__)
 
 
 class 私のテストクラス(セレニウムテストケース):

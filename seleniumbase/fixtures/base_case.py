@@ -1232,6 +1232,16 @@ class BaseCase(unittest.TestCase):
             self.driver, text, selector, by, self.browser
         )
 
+    def is_exact_text_visible(self, text, selector="html", by="css selector"):
+        self.wait_for_ready_state_complete()
+        time.sleep(0.01)
+        selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_shadow_selector(selector):
+            return self.__is_shadow_exact_text_visible(text, selector)
+        return page_actions.is_exact_text_visible(
+            self.driver, text, selector, by, self.browser
+        )
+
     def is_attribute_present(
         self, selector, attribute, value=None, by="css selector"
     ):
@@ -13070,6 +13080,22 @@ class BaseCase(unittest.TestCase):
                     and text in element.get_attribute("innerText")
                 )
             return element.is_displayed() and text in element.text
+        except Exception:
+            return False
+
+    def __is_shadow_exact_text_visible(self, text, selector):
+        text = str(text)
+        try:
+            element = self.__get_shadow_element(selector, timeout=0.1)
+            if self.browser == "safari":
+                return (
+                    element.is_displayed()
+                    and text in element.get_attribute("innerText")
+                )
+            return (
+                element.is_displayed()
+                and text.strip() == element.text.strip()
+            )
         except Exception:
             return False
 

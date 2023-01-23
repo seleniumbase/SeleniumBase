@@ -1,5 +1,6 @@
 # Portuguese Language Test
 from seleniumbase.translate.portuguese import CasoDeTeste
+CasoDeTeste.main(__name__, __file__)
 
 
 class MinhaClasseDeTeste(CasoDeTeste):

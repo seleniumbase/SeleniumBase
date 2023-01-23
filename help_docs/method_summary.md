@@ -78,6 +78,8 @@ self.is_element_enabled(selector, by="css selector")
 
 self.is_text_visible(text, selector="html", by="css selector")
 
+self.is_exact_text_visible(text, selector="html", by="css selector")
+
 self.is_attribute_present(selector, attribute, value=None, by="css selector")
 
 self.is_link_text_visible(link_text)

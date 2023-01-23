@@ -1,5 +1,6 @@
 # Russian Language Test
 from seleniumbase.translate.russian import ТестНаСелен
+ТестНаСелен.main(__name__, __file__)
 
 
 class МойТестовыйКласс(ТестНаСелен):

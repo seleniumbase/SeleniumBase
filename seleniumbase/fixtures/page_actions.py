@@ -133,6 +133,43 @@ def is_text_visible(driver, text, selector, by="css selector", browser=None):
         return False
 
 
+def is_exact_text_visible(
+    driver,
+    text,
+    selector,
+    by="css selector",
+    browser=None
+):
+    """
+    Returns whether the exact text is visible in the given selector.
+    (Ignores leading and trailing whitespace)
+    @Params
+    driver - the webdriver object (required)
+    text - the text string to search for (required)
+    selector - the locator for identifying the page element (required)
+    by - the type of selector being used (Default: "css selector")
+    @Returns
+    Boolean (is text visible)
+    """
+    text = str(text)
+    try:
+        element = driver.find_element(by=by, value=selector)
+        element_text = element.text
+        if browser == "safari":
+            if element.tag_name.lower() in ["input", "textarea"]:
+                element_text = element.get_attribute("value")
+            else:
+                element_text = element.get_attribute("innerText")
+        elif element.tag_name.lower() in ["input", "textarea"]:
+            element_text = element.get_property("value")
+        return (
+            element.is_displayed()
+            and text.strip() == element_text.strip()
+        )
+    except Exception:
+        return False
+
+
 def is_attribute_present(
     driver, selector, attribute, value=None, by="css selector"
 ):

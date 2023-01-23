@@ -1,5 +1,6 @@
 # Dutch Language Test
 from seleniumbase.translate.dutch import Testgeval
+Testgeval.main(__name__, __file__)
 
 
 class MijnTestklasse(Testgeval):

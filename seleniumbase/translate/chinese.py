@@ -161,6 +161,10 @@ class 硒测试用例(BaseCase):
         # is_text_visible(text, selector="html")
         return self.is_text_visible(*args, **kwargs)
 
+    def 确切文本是否显示(self, *args, **kwargs):
+        # is_exact_text_visible(text, selector="html")
+        return self.is_exact_text_visible(*args, **kwargs)
+
     def 元素是否可见(self, *args, **kwargs):
         # is_element_visible(selector)
         return self.is_element_visible(*args, **kwargs)

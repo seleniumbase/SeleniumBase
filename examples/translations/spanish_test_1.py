@@ -1,5 +1,6 @@
 # Spanish Language Test
 from seleniumbase.translate.spanish import CasoDePrueba
+CasoDePrueba.main(__name__, __file__)
 
 
 class MiClaseDePrueba(CasoDePrueba):

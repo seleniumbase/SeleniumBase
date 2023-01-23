@@ -2709,7 +2709,7 @@ def get_local_driver(
                                 cert = "unable to get local issuer certificate"
                                 uc_chrome_version = None
                                 if (
-                                    use_version.isnumeric
+                                    use_version.isnumeric()
                                     and int(use_version) >= 72
                                 ):
                                     uc_chrome_version = int(use_version)

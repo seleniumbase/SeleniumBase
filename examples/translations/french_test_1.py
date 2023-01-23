@@ -1,5 +1,6 @@
 # French Language Test
 from seleniumbase.translate.french import CasDeBase
+CasDeBase.main(__name__, __file__)
 
 
 class MaClasseDeTest(CasDeBase):
