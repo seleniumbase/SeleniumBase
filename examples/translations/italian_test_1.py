@@ -1,5 +1,6 @@
 # Italian Language Test
 from seleniumbase.translate.italian import CasoDiProva
+CasoDiProva.main(__name__, __file__)
 
 
 class MiaClasseDiTest(CasoDiProva):

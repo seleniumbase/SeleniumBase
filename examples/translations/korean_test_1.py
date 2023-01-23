@@ -1,5 +1,6 @@
 # Korean Language Test
 from seleniumbase.translate.korean import 셀레늄_테스트_케이스
+셀레늄_테스트_케이스.main(__name__, __file__)
 
 
 class 테스트_클래스(셀레늄_테스트_케이스):

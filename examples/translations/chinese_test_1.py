@@ -1,5 +1,6 @@
 # Chinese Language Test
 from seleniumbase.translate.chinese import 硒测试用例
+硒测试用例.main(__name__, __file__)
 
 
 class 我的测试类(硒测试用例):
