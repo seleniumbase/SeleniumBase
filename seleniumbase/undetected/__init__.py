@@ -101,8 +101,8 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         log_level: (default: adapts to python global log level)
 
         headless: (default: False)
-            Use headless mode. (Can also be specified with ChromeOptions.)
-            Warning: this lowers undetectability and is not fully supported.
+            Use headless mode.
+            (Already handled by seleniumbase/core/browser_launcher.py)
 
         patch_driver: (default: True)
             Patches uc_driver to be undetectable if not already patched.
@@ -227,11 +227,6 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                     "--password-store=basic",
                 ]
             )
-        if headless or options.headless:
-            options.headless = True
-            options.add_argument("--no-sandbox")
-            # Fixes "could not connect to chrome" error when running
-            # on Linux when using a privileged user such as root.
         options.add_argument(
             "--log-level=%d" % log_level
             or divmod(logging.getLogger().getEffectiveLevel(), 10)[0]
@@ -304,8 +299,6 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
             reactor = Reactor(self)
             reactor.start()
             self.reactor = reactor
-        if options.headless:
-            self._configure_headless()
         self._web_element_cls = WebElement
 
     def __getattribute__(self, item):
@@ -324,56 +317,6 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                     return original(*args, **kwargs)
                 return newfunc
             return original
-
-    def _configure_headless(self):
-        orig_get = self.get
-        logger.info("setting properties for headless")
-
-        def get_wrapped(*args, **kwargs):
-            if self.execute_script("return navigator.webdriver"):
-                logger.info("patch navigator.webdriver")
-                self.execute_cdp_cmd(
-                    "Page.addScriptToEvaluateOnNewDocument",
-                    {
-                        "source": """
-                        Object.defineProperty(window, 'navigator', {
-                        value: new Proxy(navigator, {
-                            has: (target, key) => (
-                                key === 'webdriver' ? false : key in target
-                            ),
-                            get: (target, key) =>
-                                key === 'webdriver' ?
-                                false :
-                                typeof target[key] === 'function' ?
-                                target[key].bind(target) :
-                                target[key]
-                        })
-                        });
-                    """
-                    },
-                )
-                logger.info("Patch user-agent string")
-                self.execute_cdp_cmd(
-                    "Network.setUserAgentOverride",
-                    {
-                        "userAgent": self.execute_script(
-                            "return navigator.userAgent"
-                        ).replace("Headless", "")
-                    },
-                )
-                self.execute_cdp_cmd(
-                    "Page.addScriptToEvaluateOnNewDocument",
-                    {
-                        "source": """
-                            Object.defineProperty(
-                                navigator, 'maxTouchPoints', {
-                                    get: () => 1
-                            })"""
-                    },
-                )
-            return orig_get(*args, **kwargs)
-
-        self.get = get_wrapped
 
     def __dir__(self):
         return object.__dir__(self)

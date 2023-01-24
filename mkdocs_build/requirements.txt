@@ -18,7 +18,7 @@ readme-renderer==37.3
 pymdown-extensions==9.9.2
 importlib-metadata==6.0.0
 pipdeptree==2.3.3
-bleach==5.0.1
+bleach==6.0.0
 lunr==0.6.2
 nltk==3.8.1
 tornado==6.2
