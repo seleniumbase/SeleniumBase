@@ -164,7 +164,7 @@ setup(
         'pyopenssl==23.0.0;python_version>="3.7"',
         'wsproto==1.2.0;python_version>="3.7"',
         'selenium==3.141.0;python_version<"3.7"',
-        'selenium==4.7.2;python_version>="3.7"',
+        'selenium==4.8.0;python_version>="3.7"',
         'msedge-selenium-tools==3.141.3;python_version<"3.7"',
         'more-itertools==8.14.0;python_version<"3.7"',
         'more-itertools==9.0.0;python_version>="3.7"',
