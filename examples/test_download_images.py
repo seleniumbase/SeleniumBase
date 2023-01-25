@@ -1,6 +1,7 @@
 """Use SeleniumBase to download images and verify."""
 import os
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 
 class DownloadImages(BaseCase):
@@ -21,7 +22,7 @@ class DownloadImages(BaseCase):
             self.assert_downloaded_file(filename)
             folder = "downloaded_files"
             file_path = os.path.join(folder, filename)
-            self._print(file_path)
+            print(file_path)
 
     def test_download_images_via_screenshot(self):
         self.open("seleniumbase.io/error_page/")
@@ -48,9 +49,4 @@ class DownloadImages(BaseCase):
             file_path = os.path.join(folder, filename)
             image.screenshot(file_path)
             self.assert_downloaded_file(filename)
-            self._print(file_path)
-
-
-if __name__ == "__main__":
-    from pytest import main
-    main([__file__, "-s"])
+            print(file_path)

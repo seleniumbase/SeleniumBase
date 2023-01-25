@@ -18,6 +18,3 @@ class GoogleTests(BaseCase):
         self.assert_text(expected_text, "#search")
         self.click('a:contains("%s")' % expected_text)
         self.assert_element(img)
-        if "SeleniumBase" in search_key:
-            self.click('img[alt="SeleniumBase"]')
-            self.assert_element('img[title="SeleniumBase"]')

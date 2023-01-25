@@ -51,7 +51,8 @@ from selenium.common.exceptions import (
     MoveTargetOutOfBoundsException,
     NoSuchElementException,
     NoSuchWindowException,
-    StaleElementReferenceException,
+    StaleElementReferenceException as Stale_Exception,
+    TimeoutException,
     WebDriverException,
 )
 from selenium.webdriver.common.by import By
@@ -93,7 +94,7 @@ class BaseCase(unittest.TestCase):
     """<Class seleniumbase.BaseCase>"""
 
     def __init__(self, *args, **kwargs):
-        super(BaseCase, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.__initialize_variables()
 
     def __initialize_variables(self):
@@ -397,7 +398,7 @@ class BaseCase(unittest.TestCase):
                     pass
                 # Normal click
                 self.__element_click(element)
-        except StaleElementReferenceException:
+        except Stale_Exception:
             self.wait_for_ready_state_complete()
             time.sleep(0.16)
             element = page_actions.wait_for_element_visible(
@@ -811,7 +812,7 @@ class BaseCase(unittest.TestCase):
             element.clear()  # May need https://stackoverflow.com/a/50691625
             backspaces = Keys.BACK_SPACE * 42  # Is the answer to everything
             element.send_keys(backspaces)  # In case autocomplete keeps text
-        except (StaleElementReferenceException, ENI_Exception):
+        except (Stale_Exception, ENI_Exception):
             self.wait_for_ready_state_complete()
             time.sleep(0.16)
             element = self.wait_for_element_clickable(
@@ -845,7 +846,7 @@ class BaseCase(unittest.TestCase):
                         raise
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
-        except (StaleElementReferenceException, ENI_Exception):
+        except (Stale_Exception, ENI_Exception):
             self.wait_for_ready_state_complete()
             time.sleep(0.16)
             element = self.wait_for_element_clickable(
@@ -932,7 +933,7 @@ class BaseCase(unittest.TestCase):
                 element.send_keys(Keys.RETURN)
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
-        except (StaleElementReferenceException, ENI_Exception):
+        except (Stale_Exception, ENI_Exception):
             self.wait_for_ready_state_complete()
             time.sleep(0.16)
             element = self.wait_for_element_visible(
@@ -1034,7 +1035,7 @@ class BaseCase(unittest.TestCase):
             element.clear()
             backspaces = Keys.BACK_SPACE * 42  # Autofill Defense
             element.send_keys(backspaces)
-        except (StaleElementReferenceException, ENI_Exception):
+        except (Stale_Exception, ENI_Exception):
             self.wait_for_ready_state_complete()
             time.sleep(0.16)
             element = self.wait_for_element_visible(
@@ -1065,7 +1066,7 @@ class BaseCase(unittest.TestCase):
         self.scroll_to(selector, by=by, timeout=timeout)
         try:
             element.send_keys(Keys.NULL)
-        except (StaleElementReferenceException, ENI_Exception):
+        except (Stale_Exception, ENI_Exception):
             self.wait_for_ready_state_complete()
             time.sleep(0.12)
             element = self.wait_for_element_visible(
@@ -1398,11 +1399,7 @@ class BaseCase(unittest.TestCase):
             self.__demo_mode_highlight_if_active(link_text, by="link text")
             try:
                 self.__element_click(element)
-            except (
-                StaleElementReferenceException,
-                ENI_Exception,
-                ECI_Exception,
-            ):
+            except (Stale_Exception, ENI_Exception, ECI_Exception):
                 self.wait_for_ready_state_complete()
                 time.sleep(0.16)
                 element = self.wait_for_link_text_visible(
@@ -1503,11 +1500,7 @@ class BaseCase(unittest.TestCase):
             )
             try:
                 self.__element_click(element)
-            except (
-                StaleElementReferenceException,
-                ENI_Exception,
-                ECI_Exception,
-            ):
+            except (Stale_Exception, ENI_Exception, ECI_Exception):
                 self.wait_for_ready_state_complete()
                 time.sleep(0.16)
                 element = self.wait_for_partial_link_text(
@@ -1616,7 +1609,7 @@ class BaseCase(unittest.TestCase):
                     element_text = element.get_attribute("innerText")
             elif element.tag_name.lower() in ["input", "textarea"]:
                 element_text = element.get_property("value")
-        except (StaleElementReferenceException, ENI_Exception):
+        except (Stale_Exception, ENI_Exception, TimeoutException):
             self.wait_for_ready_state_complete()
             time.sleep(0.14)
             element = page_actions.wait_for_element_visible(
@@ -1660,7 +1653,7 @@ class BaseCase(unittest.TestCase):
         )
         try:
             attribute_value = element.get_attribute(attribute)
-        except (StaleElementReferenceException, ENI_Exception):
+        except (Stale_Exception, ENI_Exception, TimeoutException):
             self.wait_for_ready_state_complete()
             time.sleep(0.14)
             element = page_actions.wait_for_element_present(
@@ -1820,7 +1813,7 @@ class BaseCase(unittest.TestCase):
         )
         try:
             property_value = element.get_property(property)
-        except (StaleElementReferenceException, ENI_Exception):
+        except (Stale_Exception, ENI_Exception, TimeoutException):
             self.wait_for_ready_state_complete()
             time.sleep(0.14)
             element = page_actions.wait_for_element_present(
@@ -1969,8 +1962,8 @@ class BaseCase(unittest.TestCase):
                     click_count += 1
                     self.wait_for_ready_state_complete()
             except ECI_Exception:
-                continue  # ElementClickInterceptedException (Overlay likely)
-            except (StaleElementReferenceException, ENI_Exception):
+                continue  # (Overlay likely)
+            except (Stale_Exception, ENI_Exception):
                 self.wait_for_ready_state_complete()
                 time.sleep(0.12)
                 try:
@@ -1979,7 +1972,7 @@ class BaseCase(unittest.TestCase):
                         element.click()
                         click_count += 1
                         self.wait_for_ready_state_complete()
-                except (StaleElementReferenceException, ENI_Exception):
+                except (Stale_Exception, ENI_Exception):
                     latest_window_count = len(self.driver.window_handles)
                     if (
                         latest_window_count > pre_window_count
@@ -2035,7 +2028,7 @@ class BaseCase(unittest.TestCase):
         try:
             self.__scroll_to_element(element)
             self.__element_click(element)
-        except (StaleElementReferenceException, ENI_Exception, ECI_Exception):
+        except (Stale_Exception, ENI_Exception, ECI_Exception):
             time.sleep(0.12)
             self.wait_for_ready_state_complete()
             self.wait_for_element_present(selector, by=by, timeout=timeout)
@@ -5382,7 +5375,7 @@ class BaseCase(unittest.TestCase):
         )
         try:
             self.__scroll_to_element(element, selector, by)
-        except (StaleElementReferenceException, ENI_Exception):
+        except (Stale_Exception, ENI_Exception):
             self.wait_for_ready_state_complete()
             time.sleep(0.12)
             element = self.wait_for_element_visible(
@@ -6279,7 +6272,7 @@ class BaseCase(unittest.TestCase):
                     pass  # May get this error on Safari even if upload works.
             else:
                 element.send_keys(abs_path)
-        except (StaleElementReferenceException, ENI_Exception):
+        except (Stale_Exception, ENI_Exception):
             self.wait_for_ready_state_complete()
             time.sleep(0.16)
             element = self.wait_for_element_present(
@@ -9931,8 +9924,7 @@ class BaseCase(unittest.TestCase):
                               "beige", "blood", and "solarized".
         transition - Set a transition between slides.
                      Valid transitions: "none" (default), "slide", "fade",
-                                        "zoom", "convex", and "concave".
-        """
+                                        "zoom", "convex", and "concave"."""
         if not name:
             name = "default"
         if not theme or theme == "default":
@@ -9972,7 +9964,6 @@ class BaseCase(unittest.TestCase):
                 "Transition {%s} not found! Valid transitions: %s"
                 % (transition, valid_transitions)
             )
-
         reveal_theme_css = None
         if theme == "serif":
             reveal_theme_css = constants.Reveal.SERIF_MIN_CSS
@@ -9999,7 +9990,6 @@ class BaseCase(unittest.TestCase):
         else:
             # Use the default if unable to determine the theme
             reveal_theme_css = constants.Reveal.SERIF_MIN_CSS
-
         new_presentation = (
             "<html>\n"
             "<head>\n"
@@ -10021,7 +10011,6 @@ class BaseCase(unittest.TestCase):
             '<div class="slides">\n'
             % (constants.Reveal.MIN_CSS, reveal_theme_css)
         )
-
         self._presentation_slides[name] = []
         self._presentation_slides[name].append(new_presentation)
         self._presentation_transition[name] = transition
@@ -10051,9 +10040,7 @@ class BaseCase(unittest.TestCase):
                      Valid transitions: "none" (default), "slide", "fade",
                                         "zoom", "convex", and "concave".
         name - If creating multiple presentations at the same time,
-               use this to select the presentation to add slides to.
-        """
-
+               use this to select the presentation to add slides to."""
         if not name:
             name = "default"
         if name not in self._presentation_slides:
@@ -10109,7 +10096,6 @@ class BaseCase(unittest.TestCase):
             html += "%s%s" % (add_line, content2)
         html += '\n<aside class="notes">%s</aside>' % notes
         html += "\n</section>\n"
-
         self._presentation_slides[name].append(html)
 
     def save_presentation(
@@ -10124,9 +10110,7 @@ class BaseCase(unittest.TestCase):
         show_notes - When set to True, the Notes feature becomes enabled,
                      which allows presenters to see notes next to slides.
         interval - The delay time between autoplaying slides. (in seconds)
-                   If set to 0 (default), autoplay is disabled.
-        """
-
+                   If set to 0 (default), autoplay is disabled."""
         if not name:
             name = "default"
         if not filename:
@@ -10144,15 +10128,12 @@ class BaseCase(unittest.TestCase):
         if interval < 0:
             raise Exception('The "interval" cannot be a negative number!')
         interval_ms = float(interval) * 1000.0
-
         show_notes_str = "false"
         if show_notes:
             show_notes_str = "true"
-
         the_html = ""
         for slide in self._presentation_slides[name]:
             the_html += slide
-
         the_html += (
             "\n</div>\n"
             "</div>\n"
@@ -10189,7 +10170,6 @@ class BaseCase(unittest.TestCase):
             the_html = the_html.replace(chart_libs, chart_libs_comment)
             # Only need to import the HighCharts libraries once
             the_html = the_html.replace(chart_libs_comment, chart_libs, 1)
-
         saved_presentations_folder = constants.Presentations.SAVED_FOLDER
         if saved_presentations_folder.endswith("/"):
             saved_presentations_folder = saved_presentations_folder[:-1]
@@ -10217,8 +10197,7 @@ class BaseCase(unittest.TestCase):
         show_notes - When set to True, the Notes feature becomes enabled,
                      which allows presenters to see notes next to slides.
         interval - The delay time between autoplaying slides. (in seconds)
-                   If set to 0 (default), autoplay is disabled.
-        """
+                   If set to 0 (default), autoplay is disabled."""
         if self.headless or self.headless2 or self.xvfb:
             return  # Presentations should not run in headless mode.
         if not name:
@@ -10237,7 +10216,6 @@ class BaseCase(unittest.TestCase):
             raise Exception('Expecting a numeric value for "interval"!')
         if interval < 0:
             raise Exception('The "interval" cannot be a negative number!')
-
         end_slide = (
             '\n<section data-transition="none">\n'
             '<p class="End_Presentation_Now"> </p>\n</section>\n'
@@ -10250,7 +10228,6 @@ class BaseCase(unittest.TestCase):
             interval=interval,
         )
         self._presentation_slides[name].pop()
-
         self.open_html_file(file_path)
         presentation_folder = constants.Presentations.SAVED_FOLDER
         try:
@@ -10295,8 +10272,7 @@ class BaseCase(unittest.TestCase):
                same web page, you won't need to re-import the libraries
                when creating additional charts.
         labels - If True, displays labels on the chart for data points.
-        legend - If True, displays the data point legend on the chart.
-        """
+        legend - If True, displays the data point legend on the chart."""
         if not chart_name:
             chart_name = "default"
         if not data_name:
@@ -10340,8 +10316,7 @@ class BaseCase(unittest.TestCase):
                same web page, you won't need to re-import the libraries
                when creating additional charts.
         labels - If True, displays labels on the chart for data points.
-        legend - If True, displays the data point legend on the chart.
-        """
+        legend - If True, displays the data point legend on the chart."""
         if not chart_name:
             chart_name = "default"
         if not data_name:
@@ -10385,8 +10360,7 @@ class BaseCase(unittest.TestCase):
                same web page, you won't need to re-import the libraries
                when creating additional charts.
         labels - If True, displays labels on the chart for data points.
-        legend - If True, displays the data point legend on the chart.
-        """
+        legend - If True, displays the data point legend on the chart."""
         if not chart_name:
             chart_name = "default"
         if not data_name:
@@ -10432,8 +10406,7 @@ class BaseCase(unittest.TestCase):
                same web page, you won't need to re-import the libraries
                when creating additional charts.
         labels - If True, displays labels on the chart for data points.
-        legend - If True, displays the data point legend on the chart.
-        """
+        legend - If True, displays the data point legend on the chart."""
         if not chart_name:
             chart_name = "default"
         if not data_name:
@@ -10480,8 +10453,7 @@ class BaseCase(unittest.TestCase):
                same web page, you won't need to re-import the libraries
                when creating additional charts.
         labels - If True, displays labels on the chart for data points.
-        legend - If True, displays the data point legend on the chart.
-        """
+        legend - If True, displays the data point legend on the chart."""
         if not chart_name:
             chart_name = "default"
         if not data_name:
@@ -10782,8 +10754,7 @@ class BaseCase(unittest.TestCase):
         @Params
         data_name - Set the series name. Useful for multi-series charts.
         chart_name - If creating multiple charts,
-                     use this to select which one.
-        """
+                     use this to select which one."""
         if not chart_name:
             chart_name = "default"
         self._chart_series_count[chart_name] += 1
@@ -10812,8 +10783,7 @@ class BaseCase(unittest.TestCase):
                 Can be an RGB color. Eg: "#55ACDC".
                 Can also be a named color. Eg: "Teal".
         chart_name - If creating multiple charts,
-                     use this to select which one.
-        """
+                     use this to select which one."""
         if not chart_name:
             chart_name = "default"
         if chart_name not in self._chart_data:
@@ -10851,8 +10821,7 @@ class BaseCase(unittest.TestCase):
         filename - The name of the HTML file that you wish to
                    save the chart to. (filename must end in ".html")
         folder - The name of the folder where you wish to
-                 save the HTML file. (Default: "./saved_charts/")
-        """
+                 save the HTML file. (Default: "./saved_charts/")"""
         if not chart_name:
             chart_name = "default"
         if not filename:
@@ -10910,8 +10879,7 @@ class BaseCase(unittest.TestCase):
         filename - The name of the HTML file that you wish to
                    save the chart to. (filename must end in ".html")
         interval - The delay time for auto-advancing charts. (in seconds)
-                   If set to 0 (default), auto-advancing is disabled.
-        """
+                   If set to 0 (default), auto-advancing is disabled."""
         if self.headless or self.headless2 or self.xvfb:
             interval = 1  # Race through chart if running in headless mode
         if not chart_name:
@@ -10963,8 +10931,7 @@ class BaseCase(unittest.TestCase):
         """Extracts the HTML from a SeleniumBase-generated chart.
         @Params
         chart_name - If creating multiple charts at the same time,
-                     use this to select the one you wish to use.
-        """
+                     use this to select the one you wish to use."""
         if not chart_name:
             chart_name = "default"
         if chart_name not in self._chart_data:
@@ -11006,12 +10973,10 @@ class BaseCase(unittest.TestCase):
                use this to select the tour you wish to add steps to.
         theme - Sets the default theme for the website tour. Available themes:
                 "Bootstrap", "DriverJS", "Hopscotch", "IntroJS", "Shepherd".
-                The "Shepherd" library also contains multiple variation themes:
-                "light"/"arrows", "dark", "default", "square", "square-dark".
-        """
+                The "Shepherd" library includes variations: "light"/"arrows",
+                "dark", "default", "square", and "square-dark"."""
         if not name:
             name = "default"
-
         if theme:
             if theme.lower() == "bootstrap":
                 self.create_bootstrap_tour(name)
@@ -11051,9 +11016,7 @@ class BaseCase(unittest.TestCase):
                use this to select the tour you wish to add steps to.
         theme - Sets the default theme for the tour.
                 Choose from "light"/"arrows", "dark", "default", "square",
-                and "square-dark". ("light" is used if None is selected.)
-        """
-
+                and "square-dark". ("light" is used if None is selected.)"""
         shepherd_theme = "shepherd-theme-arrows"
         if theme:
             if theme.lower() == "default":
@@ -11068,10 +11031,8 @@ class BaseCase(unittest.TestCase):
                 shepherd_theme = "shepherd-theme-square"
             elif theme.lower() == "square-dark":
                 shepherd_theme = "shepherd-theme-square-dark"
-
         if not name:
             name = "default"
-
         new_tour = (
             """
             // Shepherd Tour
@@ -11110,11 +11071,9 @@ class BaseCase(unittest.TestCase):
         """Creates a Bootstrap tour for a website.
         @Params
         name - If creating multiple tours at the same time,
-               use this to select the tour you wish to add steps to.
-        """
+               use this to select the tour you wish to add steps to."""
         if not name:
             name = "default"
-
         new_tour = """
             // Bootstrap Tour
             var tour = new Tour({
@@ -11130,7 +11089,6 @@ class BaseCase(unittest.TestCase):
             });
             tour.addSteps([
             """
-
         self._tour_steps[name] = []
         self._tour_steps[name].append(new_tour)
 
@@ -11138,11 +11096,9 @@ class BaseCase(unittest.TestCase):
         """Creates a DriverJS tour for a website.
         @Params
         name - If creating multiple tours at the same time,
-               use this to select the tour you wish to add steps to.
-        """
+               use this to select the tour you wish to add steps to."""
         if not name:
             name = "default"
-
         new_tour = """
             // DriverJS Tour
             var tour = new Driver({
@@ -11160,7 +11116,6 @@ class BaseCase(unittest.TestCase):
             });
             tour.defineSteps([
             """
-
         self._tour_steps[name] = []
         self._tour_steps[name].append(new_tour)
 
@@ -11168,8 +11123,7 @@ class BaseCase(unittest.TestCase):
         """Creates a Hopscotch tour for a website.
         @Params
         name - If creating multiple tours at the same time,
-               use this to select the tour you wish to add steps to.
-        """
+               use this to select the tour you wish to add steps to."""
         if not name:
             name = "default"
 
@@ -11187,15 +11141,13 @@ class BaseCase(unittest.TestCase):
         """Creates an IntroJS tour for a website.
         @Params
         name - If creating multiple tours at the same time,
-               use this to select the tour you wish to add steps to.
-        """
+               use this to select the tour you wish to add steps to."""
         if not hasattr(sb_config, "introjs_theme_color"):
             sb_config.introjs_theme_color = constants.TourColor.theme_color
         if not hasattr(sb_config, "introjs_hover_color"):
             sb_config.introjs_hover_color = constants.TourColor.hover_color
         if not name:
             name = "default"
-
         new_tour = """
             // IntroJS Tour
             function startIntro(){
@@ -11203,7 +11155,6 @@ class BaseCase(unittest.TestCase):
             intro.setOptions({
             steps: [
             """
-
         self._tour_steps[name] = []
         self._tour_steps[name].append(new_tour)
 
@@ -11214,8 +11165,7 @@ class BaseCase(unittest.TestCase):
         The border color of buttons is set to the hover color.
         @Params
         theme_color - The color of buttons.
-        hover_color - The color of buttons after hovering over them.
-        """
+        hover_color - The color of buttons after hovering over them."""
         if not hasattr(sb_config, "introjs_theme_color"):
             sb_config.introjs_theme_color = constants.TourColor.theme_color
         if not hasattr(sb_config, "introjs_hover_color"):
@@ -11262,8 +11212,7 @@ class BaseCase(unittest.TestCase):
         alignment - Choose from "top", "bottom", "left", and "right".
                     ("top" is default, except for Hopscotch and DriverJS).
         duration - (Bootstrap Tours ONLY) The amount of time, in seconds,
-                   before automatically advancing to the next tour step.
-        """
+                   before automatically advancing to the next tour step."""
         if not selector:
             selector = "html"
         if page_utils.is_name_selector(selector):
@@ -11272,22 +11221,18 @@ class BaseCase(unittest.TestCase):
         if page_utils.is_xpath_selector(selector):
             selector = self.convert_to_css_selector(selector, By.XPATH)
         selector = self.__escape_quotes_if_needed(selector)
-
         if not name:
             name = "default"
         if name not in self._tour_steps:
             # By default, will create an IntroJS tour if no tours exist
             self.create_tour(name=name, theme="introjs")
-
         if not title:
             title = ""
         title = self.__escape_quotes_if_needed(title)
-
         if message:
             message = self.__escape_quotes_if_needed(message)
         else:
             message = ""
-
         if not alignment or alignment not in [
             "top",
             "bottom",
@@ -11299,7 +11244,6 @@ class BaseCase(unittest.TestCase):
                 alignment = "top"
             else:
                 alignment = "bottom"
-
         if "Bootstrap" in self._tour_steps[name][0]:
             self.__add_bootstrap_tour_step(
                 message,
@@ -11363,8 +11307,7 @@ class BaseCase(unittest.TestCase):
                 Choose from "light"/"arrows", "dark", "default", "square",
                 and "square-dark". ("arrows" is used if None is selected.)
         alignment - Choose from "top", "bottom", "left", and "right".
-                    ("top" is the default alignment).
-        """
+                    ("top" is the default alignment)."""
         if theme == "default":
             shepherd_theme = "shepherd-theme-default"
         elif theme == "dark":
@@ -11383,14 +11326,12 @@ class BaseCase(unittest.TestCase):
                 self._tour_steps[name][0],
             ).group(1)
             shepherd_theme = shepherd_base_theme
-
         shepherd_classes = shepherd_theme
         if selector == "html":
             shepherd_classes += " shepherd-orphan"
         buttons = "firstStepButtons"
         if len(self._tour_steps[name]) > 1:
             buttons = "midTourButtons"
-
         step = """tour.addStep('%s', {
                     title: '%s',
                     classes: '%s',
@@ -11407,7 +11348,6 @@ class BaseCase(unittest.TestCase):
             alignment,
             buttons,
         )
-
         self._tour_steps[name].append(step)
 
     def __add_bootstrap_tour_step(
@@ -11429,8 +11369,7 @@ class BaseCase(unittest.TestCase):
         alignment - Choose from "top", "bottom", "left", and "right".
                     ("top" is the default alignment).
         duration - (Bootstrap Tours ONLY) The amount of time, in seconds,
-                   before automatically advancing to the next tour step.
-        """
+                   before automatically advancing to the next tour step."""
         if selector != "html":
             selector = self.__make_css_match_first_element_only(selector)
             element_row = "element: '%s'," % selector
@@ -11440,11 +11379,9 @@ class BaseCase(unittest.TestCase):
             duration = "0"
         else:
             duration = str(float(duration) * 1000.0)
-
         bd = "backdrop: true,"
         if selector == "html":
             bd = "backdrop: false,"
-
         step = """{
                 %s
                 title: '%s',
@@ -11463,7 +11400,6 @@ class BaseCase(unittest.TestCase):
             alignment,
             duration,
         )
-
         self._tour_steps[name].append(step)
 
     def __add_driverjs_tour_step(
@@ -11477,8 +11413,7 @@ class BaseCase(unittest.TestCase):
                use this to select the tour you wish to add steps to.
         title - Additional header text that appears above the message.
         alignment - Choose from "top", "bottom", "left", and "right".
-                    ("top" is the default alignment).
-        """
+                    ("top" is the default alignment)."""
         message = (
             '<font size="3" color="#33477B"><b>' + message + "</b></font>"
         )
@@ -11496,7 +11431,6 @@ class BaseCase(unittest.TestCase):
             align_row = "position: '%s'," % "mid-center"
         element_row = "element: '%s'," % selector
         desc_row = "description: '%s'," % message
-
         step = """{
                 %s
                 %s
@@ -11513,7 +11447,6 @@ class BaseCase(unittest.TestCase):
             desc_row,
             align_row,
         )
-
         self._tour_steps[name].append(step)
 
     def __add_hopscotch_tour_step(
@@ -11527,8 +11460,7 @@ class BaseCase(unittest.TestCase):
                use this to select the tour you wish to add steps to.
         title - Additional header text that appears above the message.
         alignment - Choose from "top", "bottom", "left", and "right".
-                    ("bottom" is the default alignment).
-        """
+                    ("bottom" is the default alignment)."""
         arrow_offset_row = None
         if not selector or selector == "html":
             selector = "head"
@@ -11536,7 +11468,6 @@ class BaseCase(unittest.TestCase):
             arrow_offset_row = "arrowOffset: '200',"
         else:
             arrow_offset_row = ""
-
         step = """{
                 target: '%s',
                 title: '%s',
@@ -11552,7 +11483,6 @@ class BaseCase(unittest.TestCase):
             arrow_offset_row,
             alignment,
         )
-
         self._tour_steps[name].append(step)
 
     def __add_introjs_tour_step(
@@ -11566,18 +11496,14 @@ class BaseCase(unittest.TestCase):
                use this to select the tour you wish to add steps to.
         title - Additional header text that appears above the message.
         alignment - Choose from "top", "bottom", "left", and "right".
-                    ("top" is the default alignment).
-        """
+                    ("top" is the default alignment)."""
         if selector != "html":
             element_row = "element: '%s'," % selector
         else:
             element_row = ""
-
         if title:
             message = "<center><b>" + title + "</b></center><hr>" + message
-
         message = '<font size="3" color="#33477B">' + message + "</font>"
-
         step = """{%s
             intro: '%s',
             position: '%s'},""" % (
@@ -11585,7 +11511,6 @@ class BaseCase(unittest.TestCase):
             message,
             alignment,
         )
-
         self._tour_steps[name].append(step)
 
     def play_tour(self, name=None, interval=0):
@@ -11594,25 +11519,20 @@ class BaseCase(unittest.TestCase):
         name - If creating multiple tours at the same time,
                use this to select the tour you wish to add steps to.
         interval - The delay time between autoplaying tour steps. (Seconds)
-                   If set to 0 (default), the tour is fully manual control.
-        """
+                   If set to 0 (default), the tour is fully manual control."""
         from seleniumbase.core import tour_helper
 
         if self.headless or self.headless2 or self.xvfb:
             return  # Tours should not run in headless mode.
-
         self.wait_for_ready_state_complete()
-
         if not interval:
             interval = 0
         if interval == 0 and self.interval:
             interval = float(self.interval)
-
         if not name:
             name = "default"
         if name not in self._tour_steps:
             raise Exception("Tour {%s} does not exist!" % name)
-
         if "Bootstrap" in self._tour_steps[name][0]:
             tour_helper.play_bootstrap_tour(
                 self.driver,
@@ -11675,8 +11595,7 @@ class BaseCase(unittest.TestCase):
         filename - The name of the JavaScript file that you wish to
                    save the tour to.
         url - The URL where the tour starts. If not specified, the URL
-              of the current page will be used.
-        """
+              of the current page will be used."""
         from seleniumbase.core import tour_helper
 
         if not url:
@@ -11700,8 +11619,7 @@ class BaseCase(unittest.TestCase):
                           "light", "dark", and "seamless".
         Available colors: (This sets the BORDER color, NOT the button color.)
             "blue", "default", "green", "red", "purple", "orange", "dark".
-        Width can be set using percent or pixels. Eg: "36.0%", "450px".
-        """
+        Width can be set using percent or pixels. Eg: "36.0%", "450px"."""
         if not self.__changed_jqc_theme:
             self.__jqc_default_theme = constants.JqueryConfirm.DEFAULT_THEME
             self.__jqc_default_color = constants.JqueryConfirm.DEFAULT_COLOR
@@ -11790,8 +11708,7 @@ class BaseCase(unittest.TestCase):
             Available colors: (For the BORDER color, NOT the button color.)
                 "blue", "default", "green", "red", "purple", "orange", "dark".
             Example option for changing the border color: ("color", "default")
-            Width can be set using percent or pixels. Eg: "36.0%", "450px".
-        """
+            Width can be set using percent or pixels. Eg: "36.0%", "450px"."""
         from seleniumbase.core import jqc_helper
 
         if message and type(message) is not str:
@@ -11861,8 +11778,7 @@ class BaseCase(unittest.TestCase):
             Available colors: (For the BORDER color, NOT the button color.)
                 "blue", "default", "green", "red", "purple", "orange", "dark".
             Example option for changing the border color: ("color", "default")
-            Width can be set using percent or pixels. Eg: "36.0%", "450px".
-        """
+            Width can be set using percent or pixels. Eg: "36.0%", "450px"."""
         from seleniumbase.core import jqc_helper
 
         if message and type(message) is not str:
@@ -11897,7 +11813,6 @@ class BaseCase(unittest.TestCase):
                 button = (str(button), "")
         else:
             button = ("Submit", "blue")
-
         if options:
             for option in options:
                 if not type(option) is list and not type(option) is tuple:
@@ -11944,8 +11859,7 @@ class BaseCase(unittest.TestCase):
             Available colors: (For the BORDER color, NOT the button color.)
                 "blue", "default", "green", "red", "purple", "orange", "dark".
             Example option for changing the border color: ("color", "default")
-            Width can be set using percent or pixels. Eg: "36.0%", "450px".
-        """
+            Width can be set using percent or pixels. Eg: "36.0%", "450px"."""
         from seleniumbase.core import jqc_helper
 
         if message and type(message) is not str:
@@ -12529,7 +12443,7 @@ class BaseCase(unittest.TestCase):
                         self.__slow_scroll_to_element(element)
                 else:
                     self.__jquery_slow_scroll_to(selector, by)
-            except (StaleElementReferenceException, ENI_Exception):
+            except (Stale_Exception, ENI_Exception):
                 self.wait_for_ready_state_complete()
                 time.sleep(0.12)
                 element = self.wait_for_element_visible(
@@ -13211,9 +13125,9 @@ class BaseCase(unittest.TestCase):
 
     def setUp(self, masterqa_mode=False):
         """
-        Be careful if a subclass of BaseCase overrides setUp()
-        You'll need to add the following line to the subclass setUp() method:
-        super(SubClassOfBaseCase, self).setUp()
+        Be careful if a subclass of BaseCase overrides setUp().
+        If so, add the following line to the subclass setUp() method:
+        super().setUp()
         """
         if not hasattr(self, "_using_sb_fixture") and self.__called_setup:
             # This test already called setUp()
@@ -14504,9 +14418,7 @@ class BaseCase(unittest.TestCase):
         page where the test failed, and still get the correct screenshot
         before performing tearDown() steps on other pages. If this method
         is not included in your custom tearDown() method, a screenshot
-        will still be taken after the last step of your tearDown(), where
-        you should be calling "super(SubClassOfBaseCase, self).tearDown()"
-        or "super().tearDown()".
+        will still be taken after calling "super().tearDown()" there.
         This method also saves recorded actions when using Recorder Mode.
         """
         try:
@@ -14591,14 +14503,14 @@ class BaseCase(unittest.TestCase):
 
     def tearDown(self):
         """
-        Be careful if a subclass of BaseCase overrides setUp()
-        You'll need to add the following line to the subclass's tearDown():
-        super(SubClassOfBaseCase, self).tearDown()
+        Be careful if a subclass of BaseCase overrides setUp().
+        If so, add the following line to the subclass's tearDown() method:
+        super().tearDown()
         """
         if not hasattr(self, "_using_sb_fixture") and self.__called_teardown:
             # This test already called tearDown()
             return
-        if self.recorder_mode:
+        if hasattr(self, "recorder_mode") and self.recorder_mode:
             self.__process_recorded_actions()
         self.__called_teardown = True
         self.__called_setup = False
@@ -14619,18 +14531,16 @@ class BaseCase(unittest.TestCase):
             if sub_class_name == "BaseCase":
                 class_name_used = class_name
                 file_name_used = file_name
-            fix_setup = "super(%s, self).setUp()" % class_name_used
-            fix_teardown = "super(%s, self).tearDown()" % class_name_used
             message = (
                 "You're overriding SeleniumBase's BaseCase setUp() "
                 "method with your own setUp() method, which breaks "
                 "SeleniumBase. You can fix this by going to your "
-                "%s class located in your %s file and adding the "
-                "following line of code AT THE BEGINNING of your "
-                "setUp() method:\n%s\n\nAlso make sure "
-                "you have added the following line of code AT THE "
-                "END of your tearDown() method:\n%s\n"
-                % (class_name_used, file_name_used, fix_setup, fix_teardown)
+                "%s class located in %s, and adding the "
+                "following line AT THE BEGINNING of your "
+                "setUp() method:\nsuper().setUp()\n\n"
+                "Also make sure the following line is AT THE END "
+                "of your tearDown() method:\nsuper().tearDown()\n"
+                % (class_name_used, file_name_used)
             )
             raise Exception(message)
         # *** Start tearDown() officially ***

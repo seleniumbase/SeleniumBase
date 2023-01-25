@@ -1,4 +1,5 @@
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 
 class AppleTests(BaseCase):
@@ -9,9 +10,11 @@ class AppleTests(BaseCase):
             self.message_duration = 2.0
         if self.headless:
             if self._multithreaded:
+                self.open("data:,")
                 print("Skipping test in headless multi-threaded mode.")
                 self.skip("Skipping test in headless multi-threaded mode.")
             elif self.undetectable:
+                self.open("data:,")
                 print("Skipping test in headless undetectable mode.")
                 self.skip("Skipping test in headless undetectable mode.")
             elif self.browser == "chrome" or self.browser == "edge":

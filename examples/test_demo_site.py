@@ -1,4 +1,5 @@
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 
 class DemoSiteTests(BaseCase):
@@ -115,8 +116,3 @@ class DemoSiteTests(BaseCase):
         self.demo_mode = True
         self.type("input", "Have a Nice Day!")
         self.assert_text("SeleniumBase", "h2")
-
-
-if __name__ == "__main__":
-    from pytest import main
-    main([__file__, "-s"])

@@ -5,6 +5,7 @@ class ChromedriverTests(BaseCase):
     def test_fail_if_using_an_old_chromedriver(self):
         self.open("data:,")
         if self.browser != "chrome":
+            self.open_if_not_url("data:,")
             print("\n  This test is only for Chrome!")
             print("  (Run with: '--browser=chrome')")
             self.skip("This test is only for Chrome!")
