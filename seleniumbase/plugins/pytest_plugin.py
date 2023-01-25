@@ -1588,21 +1588,20 @@ def pytest_configure(config):
     if not sb_config.headless and not sb_config.headless2:
         sb_config.headed = True
 
-    if sb_config._multithreaded:
-        if config.getoption("use_chrome"):
-            sb_config.browser = "chrome"
-        elif config.getoption("use_edge"):
-            sb_config.browser = "edge"
-        elif config.getoption("use_firefox"):
-            sb_config.browser = "firefox"
-        elif config.getoption("use_ie"):
-            sb_config.browser = "ie"
-        elif config.getoption("use_opera"):
-            sb_config.browser = "opera"
-        elif config.getoption("use_safari"):
-            sb_config.browser = "safari"
-        else:
-            pass  # Use the browser specified using "--browser=BROWSER"
+    if config.getoption("use_chrome"):
+        sb_config.browser = "chrome"
+    elif config.getoption("use_edge"):
+        sb_config.browser = "edge"
+    elif config.getoption("use_firefox"):
+        sb_config.browser = "firefox"
+    elif config.getoption("use_ie"):
+        sb_config.browser = "ie"
+    elif config.getoption("use_opera"):
+        sb_config.browser = "opera"
+    elif config.getoption("use_safari"):
+        sb_config.browser = "safari"
+    else:
+        pass  # Use the browser specified by "--browser=BROWSER"
 
     if sb_config.dash_title:
         constants.Dashboard.TITLE = sb_config.dash_title.replace("_", " ")
