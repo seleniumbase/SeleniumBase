@@ -116,8 +116,11 @@ def get_browser_version_from_os(browser_type=None):
             OSType.LINUX: linux_browser_apps_to_cmd(
                 "google-chrome",
                 "google-chrome-stable",
+                "chrome",
                 "google-chrome-beta",
                 "google-chrome-dev",
+                "chromium",
+                "chromium-browser",
             ),
             OSType.MAC: r"/Applications/Google\ Chrome.app"
                         r"/Contents/MacOS/Google\ Chrome --version",
