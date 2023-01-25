@@ -1,11 +1,12 @@
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 
 class YouTubeSearchTests(BaseCase):
     def test_youtube_autocomplete_results(self):
         """Verify YouTube autocomplete search results."""
         if self.headless:
-            self.open("about:blank")
+            self.open_if_not_url("data:,")
             message = "This test is skipped in headless mode."
             print(message)
             self.skip(message)

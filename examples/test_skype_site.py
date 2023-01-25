@@ -8,10 +8,15 @@ Default mobile settings for User Agent and Device Metrics if not specified:
 """
 from seleniumbase import BaseCase
 
+if __name__ == "__main__":
+    from pytest import main
+    main([__file__, "--mobile", "--edge", "-s"])
+
 
 class SkypeTests(BaseCase):
     def test_skype_mobile_site(self):
         if not self.mobile_emulator:
+            self.open("data:,")
             print("\n  This test is only for mobile-device web browsers!")
             print('  (Use "--mobile" to run this test in Mobile Mode!)')
             self.skip('Use "--mobile" to run this test in Mobile Mode!')
@@ -27,8 +32,3 @@ class SkypeTests(BaseCase):
         self.highlight("#get-skype-0_android-download")
         self.highlight('[data-bi-id*="ios"]')
         self.highlight('[data-bi-id*="windows10"]')
-
-
-if __name__ == "__main__":
-    from pytest import main
-    main([__file__, "--mobile", "--edge", "-s"])

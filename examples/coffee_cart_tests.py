@@ -1,4 +1,4 @@
-"""Use SeleniumBase to test a Coffee Cart App."""
+"""Use SeleniumBase to test the Coffee Cart App."""
 from seleniumbase import BaseCase
 BaseCase.main(__name__, __file__)
 

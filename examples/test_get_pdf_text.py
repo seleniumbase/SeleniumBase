@@ -1,4 +1,5 @@
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 
 class PdfTests(BaseCase):
@@ -9,4 +10,4 @@ class PdfTests(BaseCase):
             "Automate_the_Boring_Stuff_sample_ch17.pdf"
         )
         pdf_text = self.get_pdf_text(pdf, page=1)
-        self._print("\n" + pdf_text)
+        print("\n" + pdf_text)

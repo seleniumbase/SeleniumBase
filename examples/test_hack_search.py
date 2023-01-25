@@ -2,14 +2,13 @@
     to modify a Google search into becoming a Bing search.
     set_attribute() -> Modifies the attribute of the first matching element.
     set_attributes() -> Modifies the attribute of all matching elements. """
-
 from seleniumbase import BaseCase
 
 
 class HackingTests(BaseCase):
     def test_hack_search(self):
         if self.headless:
-            self.open_if_not_url("about:blank")
+            self.open_if_not_url("data:,")
             print("\n  This test is not for Headless Mode.")
             self.skip('Do not use "--headless" with this test.')
         self.open("https://google.com/ncr")

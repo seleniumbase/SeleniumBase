@@ -1,8 +1,9 @@
-"""
-This test is only for Microsoft Edge (Chromium)!
-(Tested on Edge Version 96.0.1054.62)
-"""
+"""This test is only for Microsoft Edge (Chromium)!"""
 from seleniumbase import BaseCase
+
+if __name__ == "__main__":
+    from pytest import main
+    main([__file__, "--edge", "-s"])
 
 
 class EdgeTests(BaseCase):
@@ -13,7 +14,7 @@ class EdgeTests(BaseCase):
             print('  (Run this test using "--edge" or "--browser=edge")')
             self.skip('Use "--edge" or "--browser=edge"')
         if self.headless:
-            self.open_if_not_url("about:blank")
+            self.open("data:,")
             print("\n  This test is NOT designed for Headless Mode!")
             self.skip('Do NOT use "--headless" with this test!')
         self.open("edge://settings/help")

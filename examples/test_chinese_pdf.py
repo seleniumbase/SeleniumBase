@@ -9,7 +9,7 @@ class ChinesePdfTests(BaseCase):
 
         # Get and print PDF text
         pdf_text = self.get_pdf_text(pdf, page=2)
-        self._print("\n" + pdf_text)
+        print("\n" + pdf_text)
 
         # Assert PDF contains the expected text on Page 2
         self.assert_pdf_text(pdf, "个测试类", page=2)

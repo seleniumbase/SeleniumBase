@@ -1,13 +1,14 @@
-"""
-Solve the Wordle game using SeleniumBase.
-This test runs on archived versions of Wordle, containing Shadow-DOM.
-"""
-
+"""Solve the Wordle game using SeleniumBase.
+This test runs on archived versions of Wordle, containing Shadow-DOM."""
 import ast
 import random
 import requests
 from seleniumbase import version_tuple
 from seleniumbase import BaseCase
+
+if __name__ == "__main__":
+    from pytest import main
+    main([__file__, "--sjw", "--pls=none"])
 
 
 class WordleTests(BaseCase):
