@@ -573,11 +573,8 @@ def main():
 
         the_code = rich_helper.fix_emoji_spacing(the_code)
         the_theme = "monokai"
-        platform = sys.platform
         if file_to_print.split(os.sep)[-1].startswith("."):
             the_theme = "tango"
-        elif "win32" in platform or "win64" in platform or "x64" in platform:
-            the_theme = "abap"
 
         magic_syntax = rich_helper.process_syntax(
             the_code,
