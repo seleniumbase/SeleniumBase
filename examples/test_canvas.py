@@ -1,5 +1,6 @@
 """Use SeleniumBase methods to interact with "canvas" elements."""
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 
 class CanvasTests(BaseCase):

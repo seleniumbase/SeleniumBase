@@ -1,4 +1,4 @@
-""" Testing EventFiringWebDriver with AbstractEventListener """
+"""Test EventFiringWebDriver with AbstractEventListener"""
 from selenium.webdriver.support.events import EventFiringWebDriver
 from selenium.webdriver.support.events import AbstractEventListener
 from seleniumbase import BaseCase
