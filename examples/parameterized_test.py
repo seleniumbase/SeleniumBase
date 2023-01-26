@@ -6,9 +6,9 @@ BaseCase.main(__name__, __file__)
 class GoogleTests(BaseCase):
     @parameterized.expand(
         [
-            ["Download Python", "Download Python", "img.python-logo"],
-            ["Wikipedia", "www.wikipedia.org", "img.central-featured-logo"],
-            ["SeleniumBase.io Docs", "SeleniumBase", 'img[alt*="SeleniumB"]'],
+            ["site:Python.org Download", "Download Python", "img.python-logo"],
+            ["site:SeleniumBase.io", "SeleniumBase", 'img[alt*="SeleniumB"]'],
+            ["site:Wikipedia.org", "Wikipedia", "img.central-featured-logo"],
         ]
     )
     def test_parameterized_google_search(self, search_key, expected_text, img):

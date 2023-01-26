@@ -123,6 +123,7 @@ class SideBySide:
 class MultiBrowser:
     DRIVER_FIXING_LOCK = Files.DOWNLOADS_FOLDER + "/driver_fixing.lock"
     DRIVER_REPAIRED = Files.DOWNLOADS_FOLDER + "/driver_fixed.lock"
+    CERT_FIXING_LOCK = Files.DOWNLOADS_FOLDER + "/cert_fixing.lock"
 
 
 class SavedCookies:

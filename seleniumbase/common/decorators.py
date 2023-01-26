@@ -24,8 +24,7 @@ def print_runtime(description=None, limit=None):
 
         with decorators.print_runtime("My Code Block"):
             # code ...
-            # code ...
-    """
+            # code ... """
     if not description:
         description = "Code Block"
     description = str(description)
@@ -68,8 +67,7 @@ def print_runtime(description=None, limit=None):
 
 @contextmanager
 def runtime_limit(limit, description=None):
-    """
-    Fail if the runtime duration of a method or "with"-block exceeds the limit.
+    """Fail if the runtime duration of a method or "with"-block exceeds limit.
     (The failure won't occur until after the method or "with"-block completes.)
 
     Method / Function example usage ->
@@ -85,8 +83,7 @@ def runtime_limit(limit, description=None):
 
         with decorators.runtime_limit(32):
             # code ...
-            # code ...
-    """
+            # code ... """
     limit = float("%.2f" % limit)
     if limit < 0.01:
         limit = 0.01  # Minimum runtime limit
@@ -115,14 +112,12 @@ def runtime_limit(limit, description=None):
 
 
 def retry_on_exception(tries=6, delay=1, backoff=2, max_delay=32):
-    """
-    Decorator for implementing exponential backoff for retrying on failures.
+    """Decorator for implementing exponential backoff for retrying on failures.
 
     tries: Max number of tries to execute the wrapped function before failing.
     delay: Delay time in seconds before the FIRST retry.
     backoff: Multiplier to extend the initial delay by for each retry.
-    max_delay: Max time in seconds to wait between retries.
-    """
+    max_delay: Max time in seconds to wait between retries."""
     tries = math.floor(tries)
     if tries < 1:
         raise ValueError('"tries" must be greater than or equal to 1.')

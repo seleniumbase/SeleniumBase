@@ -2,7 +2,6 @@
     The 1st example uses the "parameterized" library.
     The 2nd example uses "pytest.mark.parametrize()". (NO class)
     The 3rd example uses "pytest.mark.parametrize()". (in class) """
-
 import pytest
 from parameterized import parameterized
 from seleniumbase import BaseCase
@@ -11,6 +10,7 @@ from seleniumbase import BaseCase
 class RepeatTests(BaseCase):
     @parameterized.expand([[]] * 2)
     def test_repeat_this_test_with_parameterized(self):
+        self.page_load_strategy = "none"
         self.open("https://seleniumbase.io")
         self.click('a[href="help_docs/method_summary/"]')
         self.assert_text("API Reference", "h1")
@@ -18,6 +18,7 @@ class RepeatTests(BaseCase):
 
 @pytest.mark.parametrize("", [[]] * 2)
 def test_repeat_this_test_with_pytest_parametrize(sb):
+    sb.page_load_strategy = "none"
     sb.open("https://seleniumbase.io")
     sb.click('a[href="seleniumbase/console_scripts/ReadMe/"]')
     sb.assert_text("Console Scripts", "h1")
@@ -26,6 +27,7 @@ def test_repeat_this_test_with_pytest_parametrize(sb):
 class RepeatTestsWithPytest:
     @pytest.mark.parametrize("", [[]] * 2)
     def test_repeat_test_with_pytest_parametrize(self, sb):
+        sb.page_load_strategy = "none"
         sb.open("https://seleniumbase.io")
         sb.click('a[href="help_docs/customizing_test_runs/"]')
         sb.assert_text("Command Line Options", "h1")

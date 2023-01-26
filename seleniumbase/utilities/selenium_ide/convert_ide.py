@@ -1,5 +1,4 @@
-"""
-Converts a Selenium IDE recording that was exported as a Python WebDriver
+"""Converts a Selenium IDE recording that was exported as a Python WebDriver
 unittest file into SeleniumBase Python file.
 Works with Katalon Recorder scripts: http://www.katalon.com/automation-recorder
 
@@ -11,8 +10,7 @@ Usage:
                 (when run from the "selenium_ide/" folder)
 Output:
         [NEW_FILE_SB].py  (adds "_SB" to the original file name)
-                          (the original file is kept intact)
-"""
+                          (the original file is kept intact)"""
 import codecs
 import re
 import sys

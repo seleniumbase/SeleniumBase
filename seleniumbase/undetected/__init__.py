@@ -126,13 +126,20 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         self.debug = debug
         self.patcher = None
         if patch_driver:
-            patcher = Patcher(
-                executable_path=driver_executable_path,
-                force=patcher_force_close,
-                version_main=version_main,
+            import fasteners
+            from seleniumbase.fixtures import constants
+
+            uc_lock = fasteners.InterProcessLock(
+                constants.MultiBrowser.DRIVER_FIXING_LOCK
             )
-            patcher.auto()
-            self.patcher = patcher
+            with uc_lock:
+                patcher = Patcher(
+                    executable_path=driver_executable_path,
+                    force=patcher_force_close,
+                    version_main=version_main,
+                )
+                patcher.auto()
+                self.patcher = patcher
         if not options:
             options = ChromeOptions()
         try:

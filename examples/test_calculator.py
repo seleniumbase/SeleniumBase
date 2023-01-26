@@ -1,5 +1,6 @@
-"""Test the SeleniumBase Calculator App with SeleniumBase."""
+"""Test the SeleniumBase Calculator App"""
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 
 class CalculatorTests(BaseCase):
@@ -13,8 +14,3 @@ class CalculatorTests(BaseCase):
         self.click('button[id="2"]')
         self.click("button#equal")
         self.assert_exact_text("54", "input#output")
-
-
-if __name__ == "__main__":
-    from pytest import main
-    main([__file__, "-s"])

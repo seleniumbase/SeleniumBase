@@ -1,7 +1,5 @@
-"""
-Detect the browser version before launching tests.
-Eg. detect_b_ver.get_browser_version_from_os("google-chrome")
-"""
+"""Detect the browser version before launching tests.
+Eg. detect_b_ver.get_browser_version_from_os("google-chrome")"""
 import datetime
 import os
 import platform

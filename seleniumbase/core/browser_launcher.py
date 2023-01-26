@@ -2523,7 +2523,7 @@ def get_local_driver(
                     chrome_options.add_argument("--headless=new")
             disable_build_check = False
             uc_driver_version = None
-            if IS_ARM_MAC:
+            if is_using_uc(undetectable, browser_name):
                 uc_driver_version = get_uc_driver_version()
             if (
                 LOCAL_CHROMEDRIVER
@@ -2609,22 +2609,39 @@ def get_local_driver(
                                     )
                                 )
                             ):
-                                sb_install.main(
-                                    override="chromedriver latest"
-                                )
+                                sb_install.main(override="chromedriver latest")
                     sys.argv = sys_args  # Put back the original sys args
                 else:
+                    # (Multithreaded)
                     chromedriver_fixing_lock = fasteners.InterProcessLock(
                         constants.MultiBrowser.DRIVER_FIXING_LOCK
                     )
                     with chromedriver_fixing_lock:
-                        if not chromedriver_on_path():
-                            sys_args = sys.argv  # Save a copy of sys args
+                        msg = "chromedriver update needed. Getting it now:"
+                        if not path_chromedriver:
                             msg = "chromedriver not found. Getting it now:"
+                        intel_for_uc = False
+                        if (
+                            IS_ARM_MAC
+                            and is_using_uc(undetectable, browser_name)
+                        ):
+                            intel_for_uc = True  # Use Intel driver for UC Mode
+                        if (
+                            (
+                                not is_using_uc(undetectable, browser_name)
+                                and not os.path.exists(LOCAL_CHROMEDRIVER)
+                            )
+                            or (
+                                is_using_uc(undetectable, browser_name)
+                                and not os.path.exists(LOCAL_UC_DRIVER)
+                            )
+                        ):
                             print("\nWarning: %s" % msg)
+                            sys_args = sys.argv  # Save a copy of sys args
                             try:
                                 sb_install.main(
-                                    override="chromedriver %s" % use_version
+                                    override="chromedriver %s" % use_version,
+                                    intel_for_uc=intel_for_uc,
                                 )
                             except Exception:
                                 d_latest = get_latest_chromedriver_version()
@@ -2651,7 +2668,8 @@ def get_local_driver(
                                         sb_install.main(
                                             override="chromedriver latest"
                                         )
-                            sys.argv = sys_args  # Put back original sys args
+                            finally:
+                                sys.argv = sys_args  # Put back original args
             service_args = []
             if disable_build_check:
                 service_args = ["--disable-build-check"]
@@ -2662,10 +2680,13 @@ def get_local_driver(
                 with uc_lock:  # Avoid multithreaded issues
                     uc_driver_version = get_uc_driver_version()
                     if (
-                        uc_driver_version != use_version
-                        and use_version != "latest"
+                        (
+                            uc_driver_version != use_version
+                            and use_version != "latest"
+                        )
+                        or not os.path.exists(LOCAL_UC_DRIVER)
                     ):
-                        if IS_ARM_MAC:
+                        if IS_ARM_MAC and os.path.exists(LOCAL_UC_DRIVER):
                             pass  # Already taken care of in sb_install
                         elif os.path.exists(LOCAL_CHROMEDRIVER):
                             shutil.copyfile(
@@ -2706,53 +2727,62 @@ def get_local_driver(
                                         chrome_options.arguments.remove(
                                             "--headless"
                                         )
-                                cert = "unable to get local issuer certificate"
                                 uc_chrome_version = None
                                 if (
                                     use_version.isnumeric()
                                     and int(use_version) >= 72
                                 ):
                                     uc_chrome_version = int(use_version)
-                                uc_lock = fasteners.InterProcessLock(
-                                    constants.MultiBrowser.DRIVER_FIXING_LOCK
-                                )
-                                with uc_lock:  # Avoid multithreaded issues
-                                    cdp_events = uc_cdp_events
-                                    try:
-                                        uc_path = None
-                                        if os.path.exists(LOCAL_UC_DRIVER):
-                                            uc_path = LOCAL_UC_DRIVER
-                                            uc_path = os.path.realpath(uc_path)
-                                        driver = undetected.Chrome(
-                                            options=chrome_options,
-                                            user_data_dir=user_data_dir,
-                                            driver_executable_path=uc_path,
-                                            enable_cdp_events=cdp_events,
-                                            headless=False,  # Xvfb needed!
-                                            version_main=uc_chrome_version,
-                                            use_subprocess=True,  # Always!
-                                        )
-                                    except URLError as e:
-                                        if (
-                                            cert in e.args[0]
-                                            and "darwin" in PLATFORM
-                                        ):
+                                cdp_events = uc_cdp_events
+                                cert = "unable to get local issuer certificate"
+                                mac_certificate_error = False
+                                try:
+                                    uc_path = None
+                                    if os.path.exists(LOCAL_UC_DRIVER):
+                                        uc_path = LOCAL_UC_DRIVER
+                                        uc_path = os.path.realpath(uc_path)
+                                    driver = undetected.Chrome(
+                                        options=chrome_options,
+                                        user_data_dir=user_data_dir,
+                                        driver_executable_path=uc_path,
+                                        enable_cdp_events=cdp_events,
+                                        headless=False,  # Xvfb needed!
+                                        version_main=uc_chrome_version,
+                                        use_subprocess=True,  # Always!
+                                    )
+                                except URLError as e:
+                                    if (
+                                        cert in e.args[0]
+                                        and "darwin" in PLATFORM
+                                    ):
+                                        mac_certificate_error = True
+                                    else:
+                                        raise
+                                if mac_certificate_error:
+                                    cf_lock_path = (
+                                        constants.MultiBrowser.CERT_FIXING_LOCK
+                                    )
+                                    cf_lock = fasteners.InterProcessLock(
+                                        constants.MultiBrowser.CERT_FIXING_LOCK
+                                    )
+                                    if not os.path.exists(cf_lock_path):
+                                        # Avoid multithreaded issues
+                                        with cf_lock:
+                                            # Install Python Certificates (MAC)
                                             os.system(
                                                 r"bash /Applications/Python*/"
                                                 r"Install\ "
                                                 r"Certificates.command"
                                             )
-                                            driver = undetected.Chrome(
-                                                options=chrome_options,
-                                                user_data_dir=user_data_dir,
-                                                driver_executable_path=uc_path,
-                                                enable_cdp_events=cdp_events,
-                                                headless=False,  # Xvfb needed!
-                                                version_main=uc_chrome_version,
-                                                use_subprocess=True,  # Always!
-                                            )
-                                        else:
-                                            raise
+                                    driver = undetected.Chrome(
+                                        options=chrome_options,
+                                        user_data_dir=user_data_dir,
+                                        driver_executable_path=uc_path,
+                                        enable_cdp_events=cdp_events,
+                                        headless=False,  # Xvfb needed!
+                                        version_main=uc_chrome_version,
+                                        use_subprocess=True,  # Always!
+                                    )
                             else:
                                 service = ChromeService(
                                     executable_path=LOCAL_CHROMEDRIVER,

@@ -2610,6 +2610,7 @@ class BaseCase(unittest.TestCase):
             or self.uc_cdp_events
             or self.__uc_frame_layer > 0
             or not hasattr(element, "uc_click")
+            or element.tag_name.lower() != "a"
         ):
             element.click()
         else:
