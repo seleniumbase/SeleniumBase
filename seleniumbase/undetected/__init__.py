@@ -495,9 +495,9 @@ def find_chrome_executable():
                 "google-chrome",
                 "google-chrome-stable",
                 "chrome",
+                "chromium",
                 "google-chrome-beta",
                 "google-chrome-dev",
-                "chromium",
                 "chromium-browser",
             ):
                 candidates.add(os.sep.join((item, subitem)))

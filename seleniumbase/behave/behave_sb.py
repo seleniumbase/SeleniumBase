@@ -38,6 +38,7 @@ behave -D agent="User Agent String" -D demo
 -D firefox-pref=SET  (Set a Firefox preference:value set, comma-separated.)
 -D extension-zip=ZIP  (Load a Chrome Extension .zip|.crx, comma-separated.)
 -D extension-dir=DIR  (Load a Chrome Extension directory, comma-separated.)
+-D binary-location=PATH  (Set path of the Chromium browser binary to use.)
 -D sjw  (Skip JS Waits for readyState to be "complete" or Angular to load.)
 -D pls=PLS  (Set pageLoadStrategy on Chrome: "normal", "eager", or "none".)
 -D headless  (Run tests in headless mode. The default arg on Linux OS.)
@@ -160,6 +161,7 @@ def get_configured_sb(context):
     sb.device_metrics = None
     sb.extension_zip = None
     sb.extension_dir = None
+    sb.binary_location = None
     sb.page_load_strategy = None
     sb.database_env = "test"
     sb.log_path = "latest_logs" + os.sep
@@ -440,6 +442,13 @@ def get_configured_sb(context):
             if extension_dir == "true":
                 extension_dir = sb.extension_dir  # revert to default
             sb.extension_dir = extension_dir
+            continue
+        # Handle: -D binary-location=PATH / binary_location=PATH
+        if low_key in ["binary-location", "binary_location"]:
+            binary_location = userdata[key]
+            if binary_location == "true":
+                binary_location = sb.binary_location  # revert to default
+            sb.binary_location = binary_location
             continue
         # Handle: -D pls=PLS / page-load-strategy=PLS / page_load_strategy=PLS
         if low_key in ["pls", "page-load-strategy", "page_load_strategy"]:

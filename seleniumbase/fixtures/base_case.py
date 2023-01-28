@@ -3400,6 +3400,7 @@ class BaseCase(unittest.TestCase):
         user_data_dir=None,
         extension_zip=None,
         extension_dir=None,
+        binary_location=None,
         page_load_strategy=None,
         use_wire=None,
         external_pdf=None,
@@ -3452,6 +3453,7 @@ class BaseCase(unittest.TestCase):
         user_data_dir - Chrome's User Data Directory to use (Chrome-only)
         extension_zip - A Chrome Extension ZIP file to use (Chrome-only)
         extension_dir - A Chrome Extension folder to use (Chrome-only)
+        binary_location - the path of the browser binary to use (Chromium)
         page_load_strategy - the option to change pageLoadStrategy (Chrome)
         use_wire - Use selenium-wire webdriver instead of the selenium one
         external_pdf - "plugins.always_open_pdf_externally": True. (Chrome)
@@ -3570,6 +3572,8 @@ class BaseCase(unittest.TestCase):
             extension_zip = self.extension_zip
         if extension_dir is None:
             extension_dir = self.extension_dir
+        if binary_location is None:
+            binary_location = self.binary_location
         if page_load_strategy is None:
             page_load_strategy = self.page_load_strategy
         if use_wire is None:
@@ -3639,6 +3643,7 @@ class BaseCase(unittest.TestCase):
             user_data_dir=user_data_dir,
             extension_zip=extension_zip,
             extension_dir=extension_dir,
+            binary_location=binary_location,
             page_load_strategy=page_load_strategy,
             use_wire=use_wire,
             external_pdf=external_pdf,
@@ -13279,6 +13284,7 @@ class BaseCase(unittest.TestCase):
             self.user_data_dir = sb_config.user_data_dir
             self.extension_zip = sb_config.extension_zip
             self.extension_dir = sb_config.extension_dir
+            self.binary_location = sb_config.binary_location
             self.page_load_strategy = sb_config.page_load_strategy
             self.use_wire = sb_config.use_wire
             self.external_pdf = sb_config.external_pdf
@@ -13590,6 +13596,7 @@ class BaseCase(unittest.TestCase):
                 user_data_dir=self.user_data_dir,
                 extension_zip=self.extension_zip,
                 extension_dir=self.extension_dir,
+                binary_location=self.binary_location,
                 page_load_strategy=self.page_load_strategy,
                 use_wire=self.use_wire,
                 external_pdf=self.external_pdf,

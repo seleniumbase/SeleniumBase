@@ -54,6 +54,7 @@ def pytest_addoption(parser):
     --firefox-pref=SET  (Set a Firefox preference:value set, comma-separated.)
     --extension-zip=ZIP  (Load a Chrome Extension .zip|.crx, comma-separated.)
     --extension-dir=DIR  (Load a Chrome Extension directory, comma-separated.)
+    --binary-location=PATH  (Set path of the Chromium browser binary to use.)
     --sjw  (Skip JS Waits for readyState to be "complete" or Angular to load.)
     --pls=PLS  (Set pageLoadStrategy on Chrome: "normal", "eager", or "none".)
     --headless  (Run tests in headless mode. The default arg on Linux OS.)
@@ -585,6 +586,15 @@ def pytest_addoption(parser):
                 Format: A directory containing the Chrome extension.
                 (Can also be a comma-separated list of directories.)
                 Default: None.""",
+    )
+    parser.addoption(
+        "--binary_location",
+        "--binary-location",
+        action="store",
+        dest="binary_location",
+        default=None,
+        help="""Sets the path of the Chromium browser binary to use.
+                Uses the default location if not os.path.exists(PATH)""",
     )
     parser.addoption(
         "--pls",
@@ -1391,6 +1401,7 @@ def pytest_configure(config):
     sb_config.firefox_pref = config.getoption("firefox_pref")
     sb_config.extension_zip = config.getoption("extension_zip")
     sb_config.extension_dir = config.getoption("extension_dir")
+    sb_config.binary_location = config.getoption("binary_location")
     sb_config.page_load_strategy = config.getoption("page_load_strategy")
     sb_config.with_testing_base = config.getoption("with_testing_base")
     sb_config.with_db_reporting = config.getoption("with_db_reporting")
