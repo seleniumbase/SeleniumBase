@@ -142,7 +142,6 @@ setup(
         'platformdirs>=2.4.0;python_version<"3.7"',
         'platformdirs>=2.6.2;python_version>="3.7"',
         'pyparsing>=3.0.7;python_version<"3.7"',
-        'pyparsing>=3.0.9;python_version>="3.7"',
         "six==1.16.0",
         "idna==3.4",
         'chardet==4.0.0;python_version<"3.7"',
@@ -216,7 +215,7 @@ setup(
         'markdown-it-py==2.1.0;python_version>="3.7"',  # For new "rich"
         'mdurl==0.1.2;python_version>="3.7"',  # For new "rich"
         'rich==12.6.0;python_version<"3.7"',
-        'rich==13.2.0;python_version>="3.7"',
+        'rich==13.3.1;python_version>="3.7"',
     ],
     extras_require={
         # pip install -e .[coverage]
