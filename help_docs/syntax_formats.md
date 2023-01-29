@@ -405,6 +405,8 @@ This format is similar to the English version with <code>BaseCase</code> inherit
 
 ```python
 from seleniumbase.translate.chinese import 硒测试用例
+硒测试用例.main(__name__, __file__)
+
 
 class 我的测试类(硒测试用例):
     def test_例子1(self):
@@ -435,6 +437,8 @@ This format is similar to the English version with <code>BaseCase</code> inherit
 
 ```python
 from seleniumbase.translate.dutch import Testgeval
+Testgeval.main(__name__, __file__)
+
 
 class MijnTestklasse(Testgeval):
     def test_voorbeeld_1(self):
@@ -450,9 +454,9 @@ class MijnTestklasse(Testgeval):
         self.controleren_tekst("Rijksmuseum", "#firstHeading")
         self.controleren_element('img[src*="Rijksmuseum"]')
         self.terug()
-        self.controleren_ware("Stroopwafel" in self.huidige_url_ophalen())
+        self.controleren_url_bevat("Stroopwafel")
         self.vooruit()
-        self.controleren_ware("Rijksmuseum" in self.huidige_url_ophalen())
+        self.controleren_url_bevat("Rijksmuseum")
 ```
 
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/translations/dutch_test_1.py">examples/translations/dutch_test_1.py</a> for the Dutch test.)
@@ -464,6 +468,8 @@ This format is similar to the English version with <code>BaseCase</code> inherit
 
 ```python
 from seleniumbase.translate.french import CasDeBase
+CasDeBase.main(__name__, __file__)
+
 
 class MaClasseDeTest(CasDeBase):
     def test_exemple_1(self):
@@ -479,9 +485,9 @@ class MaClasseDeTest(CasDeBase):
         self.vérifier_texte("Jardin des Tuileries", "#firstHeading")
         self.vérifier_élément('img[alt*="Jardin des Tuileries"]')
         self.retour()
-        self.vérifier_vrai("brûlée" in self.obtenir_url_actuelle())
+        self.vérifier_url_contient("brûlée")
         self.en_avant()
-        self.vérifier_vrai("Jardin" in self.obtenir_url_actuelle())
+        self.vérifier_url_contient("Jardin")
 ```
 
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/translations/french_test_1.py">examples/translations/french_test_1.py</a> for the French test.)
@@ -493,6 +499,8 @@ This format is similar to the English version with <code>BaseCase</code> inherit
 
 ```python
 from seleniumbase.translate.italian import CasoDiProva
+CasoDiProva.main(__name__, __file__)
+
 
 class MiaClasseDiTest(CasoDiProva):
     def test_esempio_1(self):
@@ -508,9 +516,9 @@ class MiaClasseDiTest(CasoDiProva):
         self.verificare_testo("Colosseo", "#firstHeading")
         self.verificare_elemento('img[alt*="Colosse"]')
         self.indietro()
-        self.verificare_vero("Pizza" in self.ottenere_url_corrente())
+        self.verificare_url_contiene("Pizza")
         self.avanti()
-        self.verificare_vero("Colosseo" in self.ottenere_url_corrente())
+        self.verificare_url_contiene("Colosseo")
 ```
 
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/translations/italian_test_1.py">examples/translations/italian_test_1.py</a> for the Italian test.)
@@ -522,6 +530,8 @@ This format is similar to the English version with <code>BaseCase</code> inherit
 
 ```python
 from seleniumbase.translate.japanese import セレニウムテストケース
+セレニウムテストケース.main(__name__, __file__)
+
 
 class 私のテストクラス(セレニウムテストケース):
     def test_例1(self):
@@ -552,6 +562,8 @@ This format is similar to the English version with <code>BaseCase</code> inherit
 
 ```python
 from seleniumbase.translate.korean import 셀레늄_테스트_케이스
+셀레늄_테스트_케이스.main(__name__, __file__)
+
 
 class 테스트_클래스(셀레늄_테스트_케이스):
     def test_실시예_1(self):
@@ -580,6 +592,8 @@ This format is similar to the English version with <code>BaseCase</code> inherit
 
 ```python
 from seleniumbase.translate.portuguese import CasoDeTeste
+CasoDeTeste.main(__name__, __file__)
+
 
 class MinhaClasseDeTeste(CasoDeTeste):
     def test_exemplo_1(self):
@@ -595,9 +609,9 @@ class MinhaClasseDeTeste(CasoDeTeste):
         self.verificar_texto("Florianópolis", "h1#firstHeading")
         self.verificar_elemento('td:contains("Avenida Beira-Mar")')
         self.voltar()
-        self.verificar_verdade("João" in self.obter_url_atual())
+        self.verificar_url_contém("João_Pessoa")
         self.atualizar_a_página()
-        self.digitar("#searchform input", "Teatro Amazonas")
+        self.js_digitar("#searchform input", "Teatro Amazonas")
         self.clique("#searchform button")
         self.verificar_texto("Teatro Amazonas", "#firstHeading")
         self.verificar_texto_do_link("Festival Amazonas de Ópera")
@@ -612,6 +626,8 @@ This format is similar to the English version with <code>BaseCase</code> inherit
 
 ```python
 from seleniumbase.translate.russian import ТестНаСелен
+ТестНаСелен.main(__name__, __file__)
+
 
 class МойТестовыйКласс(ТестНаСелен):
     def test_пример_1(self):
@@ -627,9 +643,9 @@ class МойТестовыйКласс(ТестНаСелен):
         self.подтвердить_текст("Операция «Ы» и другие приключения Шурика")
         self.подтвердить_элемент('img[alt="Постер фильма"]')
         self.назад()
-        self.подтвердить_правду("университет" in self.получить_текущий_URL())
+        self.подтвердить_URL_содержит("университет")
         self.вперед()
-        self.подтвердить_правду("Шурика" in self.получить_текущий_URL())
+        self.подтвердить_URL_содержит("Шурика")
 ```
 
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/translations/russian_test_1.py">examples/translations/russian_test_1.py</a> for the Russian test.)
@@ -641,6 +657,8 @@ This format is similar to the English version with <code>BaseCase</code> inherit
 
 ```python
 from seleniumbase.translate.spanish import CasoDePrueba
+CasoDePrueba.main(__name__, __file__)
+
 
 class MiClaseDePrueba(CasoDePrueba):
     def test_ejemplo_1(self):
@@ -656,9 +674,9 @@ class MiClaseDePrueba(CasoDePrueba):
         self.verificar_texto("Palma de Mallorca", "#firstHeading")
         self.verificar_elemento('img[alt*="Palma"]')
         self.volver()
-        self.verificar_verdad("Tibidabo" in self.obtener_url_actual())
+        self.verificar_url_contiene("Tibidabo")
         self.adelante()
-        self.verificar_verdad("Mallorca" in self.obtener_url_actual())
+        self.verificar_url_contiene("Mallorca")
 ```
 
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/translations/spanish_test_1.py">examples/translations/spanish_test_1.py</a> for the Spanish test.)

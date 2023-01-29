@@ -17,6 +17,6 @@ class MaClasseDeTest(CasDeBase):
         self.vérifier_texte("Jardin des Tuileries", "#firstHeading")
         self.vérifier_élément('img[alt*="Jardin des Tuileries"]')
         self.retour()
-        self.vérifier_vrai("brûlée" in self.obtenir_url_actuelle())
+        self.vérifier_url_contient("brûlée")
         self.en_avant()
-        self.vérifier_vrai("Jardin" in self.obtenir_url_actuelle())
+        self.vérifier_url_contient("Jardin")

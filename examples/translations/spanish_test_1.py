@@ -17,6 +17,6 @@ class MiClaseDePrueba(CasoDePrueba):
         self.verificar_texto("Palma de Mallorca", "#firstHeading")
         self.verificar_elemento('img[alt*="Palma"]')
         self.volver()
-        self.verificar_verdad("Tibidabo" in self.obtener_url_actual())
+        self.verificar_url_contiene("Tibidabo")
         self.adelante()
-        self.verificar_verdad("Mallorca" in self.obtener_url_actual())
+        self.verificar_url_contiene("Mallorca")

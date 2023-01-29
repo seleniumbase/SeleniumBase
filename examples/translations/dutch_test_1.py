@@ -17,6 +17,6 @@ class MijnTestklasse(Testgeval):
         self.controleren_tekst("Rijksmuseum", "#firstHeading")
         self.controleren_element('img[src*="Rijksmuseum"]')
         self.terug()
-        self.controleren_ware("Stroopwafel" in self.huidige_url_ophalen())
+        self.controleren_url_bevat("Stroopwafel")
         self.vooruit()
-        self.controleren_ware("Rijksmuseum" in self.huidige_url_ophalen())
+        self.controleren_url_bevat("Rijksmuseum")

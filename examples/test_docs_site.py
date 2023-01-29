@@ -4,9 +4,7 @@ BaseCase.main(__name__, __file__)
 
 class DocsSiteTests(BaseCase):
     def test_docs(self):
-        self.open("https://seleniumbase.io/examples/ReadMe/")
-        self.assert_text("Running Example Tests", "h1")
-        self.js_click('a[href="../../help_docs/customizing_test_runs/"]')
+        self.open("https://seleniumbase.io/help_docs/customizing_test_runs/")
         self.assert_text("Command Line Options", "h1")
         self.js_click('a[href="../../examples/example_logs/ReadMe/"]')
         self.assert_text("Dashboard / Reports", "h1")
