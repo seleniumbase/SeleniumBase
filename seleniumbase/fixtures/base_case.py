@@ -1138,6 +1138,8 @@ class BaseCase(unittest.TestCase):
 
     def go_back(self):
         self.__check_scope()
+        if hasattr(self, "recorder_mode") and self.recorder_mode:
+            self.save_recorded_actions()
         pre_action_url = self.driver.current_url
         self.__last_page_load_url = None
         self.driver.back()
@@ -1156,6 +1158,8 @@ class BaseCase(unittest.TestCase):
 
     def go_forward(self):
         self.__check_scope()
+        if hasattr(self, "recorder_mode") and self.recorder_mode:
+            self.save_recorded_actions()
         self.__last_page_load_url = None
         self.driver.forward()
         if self.recorder_mode:
@@ -3995,9 +3999,19 @@ class BaseCase(unittest.TestCase):
 
     def activate_demo_mode(self):
         self.demo_mode = True
+        if self.recorder_mode:
+            time_stamp = self.execute_script("return Date.now();")
+            origin = self.get_origin()
+            action = ["a_d_m", "", origin, time_stamp]
+            self.__extra_actions.append(action)
 
     def deactivate_demo_mode(self):
         self.demo_mode = False
+        if self.recorder_mode:
+            time_stamp = self.execute_script("return Date.now();")
+            origin = self.get_origin()
+            action = ["d_d_m", "", origin, time_stamp]
+            self.__extra_actions.append(action)
 
     def activate_design_mode(self):
         # Activate Chrome's Design Mode, which lets you edit a site directly.
@@ -4052,6 +4066,8 @@ class BaseCase(unittest.TestCase):
         end of the test. This is only needed in special cases because most
         actions that result in a new origin, (such as clicking on a link),
         should automatically open a new tab while Recorder Mode is enabled."""
+        if self.driver is None:
+            return
         url = self.get_current_url()
         if url and len(url) > 0:
             if ("http:") in url or ("https:") in url or ("file:") in url:
@@ -4087,6 +4103,8 @@ class BaseCase(unittest.TestCase):
             return []
 
     def __process_recorded_actions(self):
+        if self.driver is None:
+            return
         import colorama
 
         raw_actions = []  # All raw actions from sessionStorage
@@ -4351,6 +4369,8 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("hover")
         ext_actions.append("sleep")
         ext_actions.append("sh_fc")
+        ext_actions.append("a_d_m")
+        ext_actions.append("d_d_m")
         ext_actions.append("c_l_s")
         ext_actions.append("c_s_s")
         ext_actions.append("d_a_c")
@@ -4813,6 +4833,10 @@ class BaseCase(unittest.TestCase):
                 sb_actions.append("self.%s()" % method)
             elif action[0] == "pr_da":
                 sb_actions.append("self.process_deferred_asserts()")
+            elif action[0] == "a_d_m":
+                sb_actions.append("self.activate_demo_mode()")
+            elif action[0] == "d_d_m":
+                sb_actions.append("self.deactivate_demo_mode()")
             elif action[0] == "c_l_s":
                 sb_actions.append("self.clear_local_storage()")
             elif action[0] == "c_s_s":
@@ -5260,8 +5284,6 @@ class BaseCase(unittest.TestCase):
                 box_end = style.find(";", box_start) + 1
                 original_box_shadow = style[box_start:box_end]
                 o_bs = original_box_shadow
-
-        orig_selector = selector
         if ":contains" not in selector and ":first" not in selector:
             selector = re.escape(selector)
             selector = self.__escape_quotes_if_needed(selector)
@@ -5281,9 +5303,8 @@ class BaseCase(unittest.TestCase):
                     if self.get_session_storage_item("pause_recorder") == "no":
                         time_stamp = self.execute_script("return Date.now();")
                         origin = self.get_origin()
-                        action = ["hi_li", orig_selector, origin, time_stamp]
+                        action = ["hi_li", selector, origin, time_stamp]
                         self.__extra_actions.append(action)
-        time.sleep(0.065)
 
     def press_up_arrow(self, selector="html", times=1, by="css selector"):
         """Simulates pressing the UP Arrow on the keyboard.
@@ -14592,6 +14613,10 @@ class BaseCase(unittest.TestCase):
             return
         if hasattr(self, "recorder_mode") and self.recorder_mode:
             self.__process_recorded_actions()
+            try:
+                self.remove_session_storage_item("recorded_actions")
+            except Exception:
+                pass
         self.__called_teardown = True
         self.__called_setup = False
         try:
