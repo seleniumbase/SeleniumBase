@@ -202,9 +202,9 @@ class BaseCase(unittest.TestCase):
         self.__check_scope()
         self.__check_browser()
         if self.__needs_minimum_wait():
-            time.sleep(0.026)
+            time.sleep(0.03)
             if self.undetectable:
-                time.sleep(0.024)
+                time.sleep(0.02)
         pre_action_url = None
         try:
             pre_action_url = self.driver.current_url
@@ -292,7 +292,7 @@ class BaseCase(unittest.TestCase):
             else:
                 time.sleep(0.15)
         if self.__needs_minimum_wait():
-            time.sleep(0.03)  # Force a minimum wait, even if skipping waits.
+            time.sleep(0.07)  # Force a minimum wait, even if skipping waits.
             if self.undetectable:
                 time.sleep(0.02)
         if self.undetectable:
@@ -307,8 +307,7 @@ class BaseCase(unittest.TestCase):
         Otherwise, return self.get_element(URL_AS_A_SELECTOR)
         Examples:
             self.get("https://seleniumbase.io")  # Navigates to the URL
-            self.get("input.class")  # Finds and returns the WebElement
-        """
+            self.get("input.class")  # Finds and returns the WebElement """
         self.__check_scope()
         if self.__looks_like_a_page_url(url):
             self.open(url)
@@ -453,14 +452,26 @@ class BaseCase(unittest.TestCase):
                         return
             except Exception:
                 pass
-            self.__scroll_to_element(element, selector, by)
+            if scroll and not self.demo_mode and not self.slow_mode:
+                self.__scroll_to_element(element, selector, by)
             if self.browser == "firefox" or self.browser == "safari":
                 if by == By.LINK_TEXT or "contains(" in selector:
                     self.__jquery_click(selector, by=by)
                 else:
                     self.__js_click(selector, by=by)
             else:
-                self.__element_click(element)
+                try:
+                    self.__element_click(element)
+                except Exception:
+                    self.wait_for_ready_state_complete()
+                    element = page_actions.wait_for_element_visible(
+                        self.driver,
+                        selector,
+                        by,
+                        timeout=timeout,
+                        original_selector=original_selector,
+                    )
+                    self.__element_click(element)
         except MoveTargetOutOfBoundsException:
             self.wait_for_ready_state_complete()
             try:
@@ -573,8 +584,7 @@ class BaseCase(unittest.TestCase):
         not a bot. (Useful on websites that block web automation tools.)
         To set the user-agent, use: ``--agent=AGENT``.
         Here's an example message from GitHub's bot-blocker:
-        ``You have triggered an abuse detection mechanism...``
-        """
+        ``You have triggered an abuse detection mechanism...`` """
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -762,8 +772,7 @@ class BaseCase(unittest.TestCase):
         selectors_list - The list of selectors to click on.
         by - The type of selector to search by (Default: CSS_Selector).
         timeout - How long to wait for the selector to be visible.
-        spacing - The amount of time to wait between clicks (in seconds).
-        """
+        spacing - The amount of time to wait between clicks (in seconds). """
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -789,8 +798,7 @@ class BaseCase(unittest.TestCase):
         text - the new text to type into the text field
         by - the type of selector to search by (Default: CSS Selector)
         timeout - how long to wait for the selector to be visible
-        retry - if True, use JS if the Selenium text update fails
-        """
+        retry - if True, use JS if the Selenium text update fails """
         self.__check_scope()
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
@@ -846,13 +854,13 @@ class BaseCase(unittest.TestCase):
                         raise
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
-        except (Stale_Exception, ENI_Exception):
+        except Exception:
             self.wait_for_ready_state_complete()
-            time.sleep(0.16)
-            element = self.wait_for_element_clickable(
+            time.sleep(0.14)
+            element = self.wait_for_element_visible(
                 selector, by=by, timeout=timeout
             )
-            element.clear()
+            time.sleep(0.04)
             if not text.endswith("\n"):
                 element.send_keys(text)
             else:
@@ -1016,8 +1024,7 @@ class BaseCase(unittest.TestCase):
         @Params
         selector - the selector of the text field
         by - the type of selector to search by (Default: CSS Selector)
-        timeout - how long to wait for the selector to be visible
-        """
+        timeout - how long to wait for the selector to be visible """
         self.__check_scope()
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
@@ -1400,7 +1407,7 @@ class BaseCase(unittest.TestCase):
             return
         if not self.is_link_text_present(link_text):
             self.wait_for_link_text_present(link_text, timeout=timeout)
-        pre_action_url = self.get_current_url()
+        pre_action_url = self.driver.current_url
         try:
             element = self.wait_for_link_text_visible(link_text, timeout=0.2)
             self.__demo_mode_highlight_if_active(link_text, by="link text")
@@ -1805,8 +1812,7 @@ class BaseCase(unittest.TestCase):
         the value of an element's computed style using a different algorithm.
         If no result is found, an empty string (instead of None) is returned.
         Example:
-            html_text = self.get_property(SELECTOR, "textContent")
-        """
+            html_text = self.get_property(SELECTOR, "textContent") """
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -1847,7 +1853,7 @@ class BaseCase(unittest.TestCase):
         """Returns the property value of a page element's computed style.
         Example:
             opacity = self.get_property_value("html body a", "opacity")
-            self.assertTrue(float(opacity) > 0, "Element not visible!")"""
+            self.assertTrue(float(opacity) > 0, "Element not visible!") """
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -1930,7 +1936,17 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
-        self.wait_for_element_present(selector, by=by, timeout=timeout)
+        if self.__needs_minimum_wait():
+            time.sleep(0.03)
+        element = self.wait_for_element_present(
+            selector, by=by, timeout=timeout
+        )
+        try:
+            # If the first element isn't visible, wait a little.
+            if not element.is_displayed():
+                time.sleep(0.2)
+        except Exception:
+            pass
         elements = self.find_elements(selector, by=by)
         if self.browser == "safari":
             if not limit:
@@ -2127,13 +2143,11 @@ class BaseCase(unittest.TestCase):
         timeout=None,
         center=None,
     ):
-        """
-        Click an element at an {X,Y}-offset location.
+        """Click an element at an {X,Y}-offset location.
         {0,0} is the top-left corner of the element.
         If center==True, {0,0} becomes the center of the element.
         If mark==True, will draw a dot at location. (Useful for debugging)
-        In Demo Mode, mark becomes True unless set to False. (Default: None)
-        """
+        In Demo Mode, mark becomes True unless set to False. (Default: None)"""
         self.__check_scope()
         self.__click_with_offset(
             selector,
@@ -2156,13 +2170,11 @@ class BaseCase(unittest.TestCase):
         timeout=None,
         center=None,
     ):
-        """
-        Double click an element at an {X,Y}-offset location.
+        """Double click an element at an {X,Y}-offset location.
         {0,0} is the top-left corner of the element.
         If center==True, {0,0} becomes the center of the element.
         If mark==True, will draw a dot at location. (Useful for debugging)
-        In Demo Mode, mark becomes True unless set to False. (Default: None)
-        """
+        In Demo Mode, mark becomes True unless set to False. (Default: None)"""
         self.__check_scope()
         self.__click_with_offset(
             selector,
@@ -3031,25 +3043,24 @@ class BaseCase(unittest.TestCase):
         for visible iframes with a string selector.
         @Params
         frame - the frame element, name, id, index, or selector
-        timeout - the time to wait for the alert in seconds
-        """
+        timeout - the time to wait for the alert in seconds """
         self.__check_scope()
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         if self.__needs_minimum_wait():
-            time.sleep(0.04)
+            time.sleep(0.05)
         if type(frame) is str and self.is_element_visible(frame):
             try:
                 self.scroll_to(frame, timeout=1)
                 if self.__needs_minimum_wait():
-                    time.sleep(0.02)
+                    time.sleep(0.04)
             except Exception:
                 time.sleep(0.02)
         else:
             if self.__needs_minimum_wait():
-                time.sleep(0.04)
+                time.sleep(0.05)
         if self.undetectable:
             self.__uc_frame_layer += 1
         if self.recorder_mode and self._rec_overrides_switch:
@@ -5194,7 +5205,7 @@ class BaseCase(unittest.TestCase):
     ):
         self.__check_scope()
         if not self.demo_mode:
-            self.highlight(selector, by=by, loops=loops, scroll=scroll)
+            self.__highlight(selector, by=by, loops=loops, scroll=scroll)
         self.click(selector, by=by)
 
     def highlight_update_text(
@@ -5203,7 +5214,7 @@ class BaseCase(unittest.TestCase):
         """Highlights the element and then types text into the field."""
         self.__check_scope()
         if not self.demo_mode:
-            self.highlight(selector, by=by, loops=loops, scroll=scroll)
+            self.__highlight(selector, by=by, loops=loops, scroll=scroll)
         self.update_text(selector, text, by=by)
 
     def highlight_type(
@@ -5213,19 +5224,14 @@ class BaseCase(unittest.TestCase):
         As above, highlights the element and then types text into the field."""
         self.__check_scope()
         if not self.demo_mode:
-            self.highlight(selector, by=by, loops=loops, scroll=scroll)
+            self.__highlight(selector, by=by, loops=loops, scroll=scroll)
         self.update_text(selector, text, by=by)
 
-    def highlight(self, selector, by="css selector", loops=None, scroll=True):
+    def __highlight(
+        self, selector, by="css selector", loops=None, scroll=True
+    ):
         """This method uses fancy JavaScript to highlight an element.
-        Used during demo_mode.
-        @Params
-        selector - the selector of the element to find
-        by - the type of selector to search by (Default: CSS)
-        loops - # of times to repeat the highlight animation
-                (Default: 4. Each loop lasts for about 0.18s)
-        scroll - the option to scroll to the element first (Default: True)
-        """
+        (Commonly used during Demo Mode automatically)"""
         self.__check_scope()
         selector, by = self.__recalculate_selector(selector, by, xp_ok=False)
         element = self.wait_for_element_visible(
@@ -5257,7 +5263,6 @@ class BaseCase(unittest.TestCase):
         except Exception:
             # Don't highlight if can't convert to CSS_SELECTOR
             return
-
         if self.highlights:
             loops = self.highlights
         if self.browser == "ie":
@@ -5267,7 +5272,6 @@ class BaseCase(unittest.TestCase):
             # Headless modes have less need for highlighting elements.
             # However, highlight() may be used as a sleep alternative.
             loops = int(math.ceil(loops * 0.5))
-
         o_bs = ""  # original_box_shadow
         try:
             style = element.get_attribute("style")
@@ -5296,6 +5300,18 @@ class BaseCase(unittest.TestCase):
                 self.__highlight_with_jquery(selector, loops, o_bs)
             except Exception:
                 pass  # JQuery probably couldn't load. Skip highlighting.
+        time.sleep(0.065)
+
+    def highlight(self, selector, by="css selector", loops=None, scroll=True):
+        """This method uses fancy JavaScript to highlight an element.
+        @Params
+        selector - the selector of the element to find
+        by - the type of selector to search by (Default: CSS)
+        loops - # of times to repeat the highlight animation
+                (Default: 4. Each loop lasts for about 0.2s)
+        scroll - the option to scroll to the element first (Default: True) """
+        self.__check_scope()
+        self.__highlight(selector=selector, by=by, loops=loops, scroll=scroll)
         if self.recorder_mode:
             url = self.get_current_url()
             if url and len(url) > 0:
@@ -5979,8 +5995,7 @@ class BaseCase(unittest.TestCase):
         Timeout is on a per-link basis using the "requests" library.
         If timeout is None, uses the one set in get_link_status_code().
         (That timeout value is currently set to 5 seconds per link.)
-        (A 404 error represents a broken link on a web page.)
-        """
+        (A 404 error represents a broken link on a web page.)"""
         all_links = self.get_unique_links()
         links = []
         for link in all_links:
@@ -6895,8 +6910,7 @@ class BaseCase(unittest.TestCase):
             self.assert_no_js_errors(exclude=["/api.", "/analytics."])
             self.assert_no_js_errors(exclude="//api.go,/analytics.go")
             self.assert_no_js_errors(exclude=["Uncaught SyntaxError"])
-            self.assert_no_js_errors(exclude=["TypeError", "SyntaxE"])
-        """
+            self.assert_no_js_errors(exclude=["TypeError", "SyntaxE"]) """
         self.__check_scope()
         if (
             exclude
@@ -7242,8 +7256,7 @@ class BaseCase(unittest.TestCase):
         """JavaScript + send_keys are used to update a text field.
         Performs self.set_value() and triggers event listeners.
         If text ends in "\n", set_value() presses RETURN after.
-        Works faster than send_keys() alone due to the JS call.
-        """
+        Works faster than send_keys() alone due to the JS call."""
         self.__check_scope()
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
@@ -7266,8 +7279,7 @@ class BaseCase(unittest.TestCase):
         JavaScript + send_keys are used to update a text field.
         Performs self.set_value() and triggers event listeners.
         If text ends in "\n", set_value() presses RETURN after.
-        Works faster than send_keys() alone due to the JS call.
-        """
+        Works faster than send_keys() alone due to the JS call."""
         self.__check_scope()
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
@@ -7423,8 +7435,7 @@ class BaseCase(unittest.TestCase):
             * settings.LARGE_TIMEOUT - (default value: 10 seconds)
         The minimum allowable default timeout is: 0.5 seconds.
         The maximum allowable default timeout is: 60.0 seconds.
-        (Test methods can still override timeouts outside that range.)
-        """
+        (Test methods can still override timeouts outside that range.)"""
         self.__check_scope()
         if not type(timeout) is int and not type(timeout) is float:
             raise Exception('Expecting a numeric value for "timeout"!')
@@ -7495,14 +7506,12 @@ class BaseCase(unittest.TestCase):
     # Console Log controls
 
     def start_recording_console_logs(self):
-        """
-        Starts recording console logs. Logs are saved to: "console.logs".
+        """Starts recording console logs. Logs are saved to: "console.logs".
         To get those logs later, call "self.get_recorded_console_logs()".
         If navigating to a new page, then the current recorded logs will be
         lost, and you'll have to call start_recording_console_logs() again.
         # Link1: https://stackoverflow.com/a/19846113/7058266
-        # Link2: https://stackoverflow.com/a/74196986/7058266
-        """
+        # Link2: https://stackoverflow.com/a/74196986/7058266 """
         self.driver.execute_script(
             """
             console.stdlog = console.log.bind(console);
@@ -7515,25 +7524,19 @@ class BaseCase(unittest.TestCase):
         )
 
     def console_log_string(self, string):
-        """
-        Log a string to the Web Browser's Console.
+        """Log a string to the Web Browser's Console.
         Example:
-        self.console_log_string("Hello World!")
-        """
+        self.console_log_string("Hello World!") """
         self.driver.execute_script("""console.log(`%s`);""" % string)
 
     def console_log_script(self, script):
-        """
-        Log output of JavaScript to the Web Browser's Console.
+        """Log output of JavaScript to the Web Browser's Console.
         Example:
-        self.console_log_script('document.querySelector("h2").textContent')
-        """
+        self.console_log_script('document.querySelector("h2").textContent') """
         self.driver.execute_script("""console.log(%s);""" % script)
 
     def get_recorded_console_logs(self):
-        """
-        Returns console logs recorded after "start_recording_console_logs()".
-        """
+        """Get console logs recorded after "start_recording_console_logs()"."""
         logs = []
         try:
             logs = self.driver.execute_script("return console.logs;")
@@ -7690,8 +7693,7 @@ class BaseCase(unittest.TestCase):
         Examples:
             self.set_wire_proxy("SERVER:PORT")
             self.set_wire_proxy("socks5://SERVER:PORT")
-            self.set_wire_proxy("USERNAME:PASSWORD@SERVER:PORT")
-        """
+            self.set_wire_proxy("USERNAME:PASSWORD@SERVER:PORT") """
         if not string:
             self.driver.proxy = {}
             return
@@ -7750,7 +7752,7 @@ class BaseCase(unittest.TestCase):
         """Same as self.switch_to_window()
         Switches control of the browser to the specified window.
         The window can be an integer: 0 -> 1st tab, 1 -> 2nd tab, etc...
-            Or it can be a list item from self.driver.window_handles"""
+            Or it can be a list item from self.driver.window_handles """
         self.switch_to_window(window=tab, timeout=timeout)
 
     def switch_to_default_tab(self):
@@ -7892,8 +7894,7 @@ class BaseCase(unittest.TestCase):
         Waits for an element to no longer appear in the HTML of a page.
         A hidden element still counts as appearing in the page HTML.
         If waiting for elements to be hidden instead of nonexistent,
-        use wait_for_element_not_visible() instead.
-        """
+        use wait_for_element_not_visible() instead."""
         self.__check_scope()
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
@@ -8030,8 +8031,7 @@ class BaseCase(unittest.TestCase):
         Themes: ["flat", "future", "block", "air", "ice"]
         Locations: ["top_left", "top_center", "top_right",
                     "bottom_left", "bottom_center", "bottom_right"]
-        max_messages: The limit of concurrent messages to display.
-        """
+        max_messages: The limit of concurrent messages to display."""
         self.__check_scope()
         self.__check_browser()
         if not theme:
@@ -8058,8 +8058,7 @@ class BaseCase(unittest.TestCase):
             style: "info", "success", or "error".
 
         You can also post messages by using =>
-            self.execute_script('Messenger().post("My Message")')
-        """
+            self.execute_script('Messenger().post("My Message")') """
         self.__check_scope()
         self.__check_browser()
         if style not in ["info", "success", "error"]:
@@ -8087,8 +8086,7 @@ class BaseCase(unittest.TestCase):
         Arguments:
             message: The message to display.
             selector: The selector of the Element to highlight.
-            by: The type of selector to search by. (Default: CSS Selector)
-        """
+            by: The type of selector to search by. (Default: CSS Selector)"""
         self.__check_scope()
         self.__highlight_with_assert_success(message, selector, by=by)
 
@@ -8097,8 +8095,7 @@ class BaseCase(unittest.TestCase):
         Arguments:
             message: The success message to display.
             duration: The time until the message vanishes. (Default: 2.55s)
-            pause: If True, the program waits until the message completes.
-        """
+            pause: If True, the program waits until the message completes."""
         self.__check_scope()
         self.__check_browser()
         if not duration:
@@ -8126,8 +8123,7 @@ class BaseCase(unittest.TestCase):
         Arguments:
             message: The error message to display.
             duration: The time until the message vanishes. (Default: 2.55s)
-            pause: If True, the program waits until the message completes.
-        """
+            pause: If True, the program waits until the message completes."""
         self.__check_scope()
         self.__check_browser()
         if not duration:
@@ -8351,8 +8347,7 @@ class BaseCase(unittest.TestCase):
         Examples:
             self.assert_elements_present("head", "style", "script", "body")
             OR
-            self.assert_elements_present(["head", "body", "h1", "h2"])
-        """
+            self.assert_elements_present(["head", "body", "h1", "h2"]) """
         self.__check_scope()
         selectors = []
         timeout = None
@@ -8463,7 +8458,7 @@ class BaseCase(unittest.TestCase):
         Examples:
             self.assert_elements("h1", "h2", "h3")
             OR
-            self.assert_elements(["h1", "h2", "h3"])"""
+            self.assert_elements(["h1", "h2", "h3"]) """
         self.__check_scope()
         selectors = []
         timeout = None
@@ -8840,7 +8835,7 @@ class BaseCase(unittest.TestCase):
         )
 
     def find_partial_link_text(self, partial_link_text, timeout=None):
-        """Same as wait_for_partial_link_text() - returns the element"""
+        """Same as wait_for_partial_link_text() - returns the element."""
         self.__check_scope()
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
@@ -8880,8 +8875,7 @@ class BaseCase(unittest.TestCase):
         """Waits for an element to no longer appear in the HTML of a page.
         A hidden element counts as a present element, which fails this assert.
         If waiting for elements to be hidden instead of nonexistent,
-        use wait_for_element_not_visible() instead.
-        """
+        use wait_for_element_not_visible() instead."""
         self.__check_scope()
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
@@ -9185,8 +9179,7 @@ class BaseCase(unittest.TestCase):
         > self.get_new_driver()
         > self.switch_to_default_driver()
         > self.switch_to_driver()
-        > self.quit_extra_driver()
-        """
+        > self.quit_extra_driver() """
         self.__check_scope()
         if not driver:
             driver = self.driver
@@ -9407,8 +9400,7 @@ class BaseCase(unittest.TestCase):
             self.check_window(name="testing", level=0)
             self.check_window(name="xkcd_home", level=1)
             self.check_window(name="github_page", level=2)
-            self.check_window(name="wikipedia_page", level=3)
-        """
+            self.check_window(name="wikipedia_page", level=3) """
         self.wait_for_ready_state_complete()
         try:
             self.wait_for_element_visible(
@@ -9729,8 +9721,7 @@ class BaseCase(unittest.TestCase):
         If "fs" is set to True, a failure screenshot is saved to the
         "latest_logs/" folder for that assertion failure. Otherwise,
         only the last page screenshot is taken for all failures when
-        calling the process_deferred_asserts() method.
-        """
+        calling the process_deferred_asserts() method."""
         self.__check_scope()
         if not timeout:
             timeout = settings.MINI_TIMEOUT
@@ -9770,8 +9761,7 @@ class BaseCase(unittest.TestCase):
         If "fs" is set to True, a failure screenshot is saved to the
         "latest_logs/" folder for that assertion failure. Otherwise,
         only the last page screenshot is taken for all failures when
-        calling the process_deferred_asserts() method.
-        """
+        calling the process_deferred_asserts() method."""
         self.__check_scope()
         if not timeout:
             timeout = settings.MINI_TIMEOUT
@@ -9811,8 +9801,7 @@ class BaseCase(unittest.TestCase):
         If "fs" is set to True, a failure screenshot is saved to the
         "latest_logs/" folder for that assertion failure. Otherwise,
         only the last page screenshot is taken for all failures when
-        calling the process_deferred_asserts() method.
-        """
+        calling the process_deferred_asserts() method."""
         self.__check_scope()
         if not timeout:
             timeout = settings.MINI_TIMEOUT
@@ -9853,8 +9842,7 @@ class BaseCase(unittest.TestCase):
         If "fs" is set to True, a failure screenshot is saved to the
         "latest_logs/" folder for that assertion failure. Otherwise,
         only the last page screenshot is taken for all failures when
-        calling the process_deferred_asserts() method.
-        """
+        calling the process_deferred_asserts() method."""
         self.__check_scope()
         if not timeout:
             timeout = settings.MINI_TIMEOUT
@@ -9903,8 +9891,7 @@ class BaseCase(unittest.TestCase):
         If "fs" is set to True, a failure screenshot is saved to the
         "latest_logs/" folder for that assertion failure. Otherwise,
         only the last page screenshot is taken for all failures when
-        calling the process_deferred_asserts() method.
-        """
+        calling the process_deferred_asserts() method."""
         self.__check_scope()
         self.__deferred_assert_count += 1
         try:
@@ -12130,12 +12117,14 @@ class BaseCase(unittest.TestCase):
             self.driver, selector, by, timeout
         )
         if self.demo_mode:
-            self.highlight(selector, by=by, loops=1)
+            self.__highlight(selector, by=by, loops=1)
         elif self.slow_mode:
             self.__slow_scroll_to_element(element)
         else:
             self.__scroll_to_element(element, selector, by)
         self.wait_for_ready_state_complete()
+        if self.__needs_minimum_wait():
+            time.sleep(0.025)
         if self.demo_mode and mark is None:
             mark = True
         if mark:
@@ -12168,7 +12157,7 @@ class BaseCase(unittest.TestCase):
                 element_location = 0
             scroll_script = "window.scrollTo(0, %s);" % element_location
             self.driver.execute_script(scroll_script)
-            time.sleep(0.1)
+            time.sleep(0.12)
         except Exception:
             time.sleep(0.05)
         if self.__needs_minimum_wait():
@@ -12523,7 +12512,7 @@ class BaseCase(unittest.TestCase):
     def __demo_mode_highlight_if_active(self, selector, by):
         if self.demo_mode:
             # Includes self.slow_scroll_to(selector, by=by) by default
-            self.highlight(selector, by=by)
+            self.__highlight(selector, by=by)
         elif self.slow_mode:
             # Just do the slow scroll part of the highlight() method
             time.sleep(0.08)
