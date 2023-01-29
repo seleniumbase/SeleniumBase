@@ -1138,8 +1138,11 @@ class BaseCase(unittest.TestCase):
 
     def go_back(self):
         self.__check_scope()
+        pre_action_url = self.driver.current_url
         self.__last_page_load_url = None
         self.driver.back()
+        if pre_action_url == self.driver.current_url:
+            self.driver.back()  # Again because the page was redirected
         if self.recorder_mode:
             time_stamp = self.execute_script("return Date.now();")
             origin = self.get_origin()
