@@ -1031,6 +1031,54 @@ def wait_for_text_not_visible(
     timeout_exception(Exception, message)
 
 
+def wait_for_exact_text_not_visible(
+    driver,
+    text,
+    selector,
+    by="css selector",
+    timeout=settings.LARGE_TIMEOUT,
+    browser=None,
+):
+    """
+    Searches for the text in the element of the given selector on the page.
+    Returns True if the element is missing the exact text within the timeout.
+    Raises an exception if the exact text is still present after the timeout.
+    @Params
+    driver - the webdriver object (required)
+    text - the text that is being searched for in the element (required)
+    selector - the locator for identifying the page element (required)
+    by - the type of selector being used (Default: "css selector")
+    timeout - the time to wait for elements in seconds
+    @Returns
+    A web element object that contains the text searched for
+    """
+    text = str(text)
+    start_ms = time.time() * 1000.0
+    stop_ms = start_ms + (timeout * 1000.0)
+    for x in range(int(timeout * 10)):
+        shared_utils.check_if_time_limit_exceeded()
+        if not is_exact_text_visible(
+            driver, text, selector, by=by, browser=browser
+        ):
+            return True
+        now_ms = time.time() * 1000.0
+        if now_ms >= stop_ms:
+            break
+        time.sleep(0.1)
+    plural = "s"
+    if timeout == 1:
+        plural = ""
+    message = (
+        "Exact text {%s} for {%s} was still visible after %s second%s!" % (
+            text,
+            selector,
+            timeout,
+            plural,
+        )
+    )
+    timeout_exception(Exception, message)
+
+
 def wait_for_attribute_not_present(
     driver,
     selector,

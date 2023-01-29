@@ -4337,6 +4337,7 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("as_at")
         ext_actions.append("as_te")
         ext_actions.append("astnv")
+        ext_actions.append("aetnv")
         ext_actions.append("as_et")
         ext_actions.append("wf_el")
         ext_actions.append("sw_fr")
@@ -4740,6 +4741,7 @@ class BaseCase(unittest.TestCase):
                 action[0] == "as_te"
                 or action[0] == "as_et"
                 or action[0] == "astnv"
+                or action[0] == "aetnv"
                 or action[0] == "da_te"
                 or action[0] == "da_et"
             ):
@@ -4752,6 +4754,8 @@ class BaseCase(unittest.TestCase):
                     method = "assert_exact_text"
                 elif action[0] == "astnv":
                     method = "assert_text_not_visible"
+                elif action[0] == "aetnv":
+                    method = "assert_exact_text_not_visible"
                 elif action[0] == "da_te":
                     method = "deferred_assert_text"
                 elif action[0] == "da_et":
@@ -8541,6 +8545,19 @@ class BaseCase(unittest.TestCase):
             text, selector, by=by, timeout=timeout
         )
 
+    def wait_for_exact_text(
+        self, text, selector="html", by="css selector", timeout=None
+    ):
+        """The shorter version of wait_for_exact_text_visible()"""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        return self.wait_for_exact_text_visible(
+            text, selector, by=by, timeout=timeout
+        )
+
     def find_text(
         self, text, selector="html", by="css selector", timeout=None
     ):
@@ -8551,6 +8568,19 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         return self.wait_for_text_visible(
+            text, selector, by=by, timeout=timeout
+        )
+
+    def find_exact_text(
+        self, text, selector="html", by="css selector", timeout=None
+    ):
+        """Same as wait_for_exact_text_visible() - returns the element"""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        return self.wait_for_exact_text_visible(
             text, selector, by=by, timeout=timeout
         )
 
@@ -8920,6 +8950,19 @@ class BaseCase(unittest.TestCase):
             self.driver, text, selector, by, timeout, self.browser
         )
 
+    def wait_for_exact_text_not_visible(
+        self, text, selector="html", by="css selector", timeout=None
+    ):
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        return page_actions.wait_for_exact_text_not_visible(
+            self.driver, text, selector, by, timeout, self.browser
+        )
+
     def assert_text_not_visible(
         self, text, selector="html", by="css selector", timeout=None
     ):
@@ -8941,6 +8984,32 @@ class BaseCase(unittest.TestCase):
                         origin = self.get_origin()
                         text_selector = [text, selector]
                         action = ["astnv", text_selector, origin, time_stamp]
+                        self.__extra_actions.append(action)
+        return True
+
+    def assert_exact_text_not_visible(
+        self, text, selector="html", by="css selector", timeout=None
+    ):
+        """Similar to wait_for_exact_text_not_visible()
+        Raises an exception if the exact text is still visible after timeout.
+        Returns True if successful. Default timeout = SMALL_TIMEOUT."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        self.wait_for_exact_text_not_visible(
+            text, selector, by=by, timeout=timeout
+        )
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        text_selector = [text, selector]
+                        action = ["aetnv", text_selector, origin, time_stamp]
                         self.__extra_actions.append(action)
         return True
 
