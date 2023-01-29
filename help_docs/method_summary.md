@@ -713,8 +713,9 @@ self.find_text(text, selector="html", by="css selector", timeout=None)
 # Duplicates: self.wait_for_text(text, selector="html", by="css selector", timeout=None)
 #             self.wait_for_text_visible(text, selector="html", by="css selector", timeout=None)
 
-self.wait_for_exact_text_visible(
-    text, selector="html", by="css selector", timeout=None)
+self.find_exact_text(text, selector="html", by="css selector", timeout=None)
+# Duplicates: self.wait_for_exact_text(text, selector="html", by="css selector", timeout=None)
+#             self.wait_for_exact_text_visible(text, selector="html", by="css selector", timeout=None)
 
 self.assert_text(text, selector="html", by="css selector", timeout=None)
 # Duplicates: self.assert_text_visible(text, selector="html", by="css selector", timeout=None)
@@ -762,7 +763,11 @@ self.assert_element_not_visible(selector, by="css selector", timeout=None)
 
 self.wait_for_text_not_visible(text, selector="html", by="css selector", timeout=None)
 
+self.wait_for_exact_text_not_visible(text, selector="html", by="css selector", timeout=None)
+
 self.assert_text_not_visible(text, selector="html", by="css selector", timeout=None)
+
+self.assert_exact_text_not_visible(text, selector="html", by="css selector", timeout=None)
 
 ############
 

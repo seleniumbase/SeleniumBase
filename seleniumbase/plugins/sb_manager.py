@@ -62,6 +62,7 @@ def SB(
     user_data_dir=None,  # Set the Chrome user data directory to use.
     extension_zip=None,  # Load a Chrome Extension .zip|.crx, comma-separated.
     extension_dir=None,  # Load a Chrome Extension directory, comma-separated.
+    binary_location=None,  # Set path of the Chromium browser binary to use.
     page_load_strategy=None,  # Set Chrome PLS to "normal", "eager", or "none".
     skip_js_waits=None,  # Skip JS Waits (readyState=="complete" and Angular).
     use_wire=None,  # Use selenium-wire's webdriver over selenium webdriver.
@@ -627,6 +628,7 @@ def SB(
     sb_config._disable_beforeunload = _disable_beforeunload
     sb_config.save_screenshot = save_screenshot
     sb_config.no_screenshot = no_screenshot
+    sb_config.binary_location = binary_location
     sb_config.page_load_strategy = page_load_strategy
     sb_config.timeout_multiplier = timeout_multiplier
     sb_config.pytest_html_report = None
@@ -695,6 +697,7 @@ def SB(
     sb.incognito = sb_config.incognito
     sb.guest_mode = sb_config.guest_mode
     sb.devtools = sb_config.devtools
+    sb.binary_location = sb_config.binary_location
     sb.mobile_emulator = sb_config.mobile_emulator
     sb.device_metrics = sb_config.device_metrics
     sb.extension_zip = sb_config.extension_zip

@@ -113,6 +113,6 @@ class DemoSiteTests(BaseCase):
         self.highlight("h2")
 
         # Actions with Demo Mode enabled
-        self.demo_mode = True
+        self.activate_demo_mode()
         self.type("input", "Have a Nice Day!")
         self.assert_text("SeleniumBase", "h2")

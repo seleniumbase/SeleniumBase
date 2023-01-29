@@ -65,6 +65,7 @@ class CoffeeCartTests(BaseCase):
         self.open("https://seleniumbase.io/coffee/")
         self.assert_exact_text("cart (0)", 'a[aria-label="Cart page"]')
         self.assert_exact_text("Total: $0.00", "button.pay")
+        self.wait_for_element('div[class="cup-body"]')
         self.click_visible_elements('div[class="cup-body"]', limit=6)
         self.assert_exact_text("cart (6)", 'a[aria-label="Cart page"]')
         self.assert_exact_text("Total: $74.00", 'button[data-test="checkout"]')

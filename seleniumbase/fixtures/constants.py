@@ -319,6 +319,38 @@ class ValidBrowsers:
     ]
 
 
+class ValidBinaries:
+    valid_chrome_binaries_on_linux = [
+        "google-chrome",
+        "google-chrome-stable",
+        "chrome",
+        "chromium",
+        "google-chrome-beta",
+        "google-chrome-dev",
+        "chromium-browser",
+    ]
+    valid_edge_binaries_on_linux = [
+        "microsoft-edge",
+        "microsoft-edge-stable",
+        "microsoft-edge-beta",
+        "microsoft-edge-dev",
+    ]
+    valid_chrome_binaries_on_macos = [
+        "Google Chrome",
+        "Chromium",
+    ]
+    valid_edge_binaries_on_macos = [
+        "Microsoft Edge",
+    ]
+    valid_chrome_binaries_on_windows = [
+        "chrome.exe",
+        "chromium.exe",
+    ]
+    valid_edge_binaries_on_windows = [
+        "msedge.exe",
+    ]
+
+
 class Browser:
     GOOGLE_CHROME = "chrome"
     EDGE = "edge"

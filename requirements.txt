@@ -18,7 +18,6 @@ filelock>=3.9.0;python_version>="3.7"
 platformdirs>=2.4.0;python_version<"3.7"
 platformdirs>=2.6.2;python_version>="3.7"
 pyparsing>=3.0.7;python_version<"3.7"
-pyparsing>=3.0.9;python_version>="3.7"
 six==1.16.0
 idna==3.4
 chardet==4.0.0;python_version<"3.7"
@@ -92,7 +91,7 @@ commonmark==0.9.1;python_version<"3.7"
 markdown-it-py==2.1.0;python_version>="3.7"
 mdurl==0.1.2;python_version>="3.7"
 rich==12.6.0;python_version<"3.7"
-rich==13.2.0;python_version>="3.7"
+rich==13.3.1;python_version>="3.7"
 
 # --- Testing Requirements --- #
 # ("pip install -r requirements.txt" also installs this, but "pip install -e ." won't.)

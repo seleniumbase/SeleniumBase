@@ -107,6 +107,18 @@ def windows_browser_apps_to_cmd(*apps):
     return '%s -NoProfile "%s"' % (powershell, script)
 
 
+def get_browser_version_from_binary(binary_location):
+    try:
+        if binary_location.count(r"\ ") != binary_location.count(" "):
+            binary_location = binary_location.replace(" ", r"\ ")
+        cmd_mapping = binary_location + " --version"
+        pattern = r"\d+\.\d+\.\d+"
+        version = read_version_from_cmd(cmd_mapping, pattern)
+        return version
+    except Exception:
+        return None
+
+
 def get_browser_version_from_os(browser_type=None):
     """Return installed browser version."""
     cmd_mapping = {
@@ -115,9 +127,9 @@ def get_browser_version_from_os(browser_type=None):
                 "google-chrome",
                 "google-chrome-stable",
                 "chrome",
+                "chromium",
                 "google-chrome-beta",
                 "google-chrome-dev",
-                "chromium",
                 "chromium-browser",
             ),
             OSType.MAC: r"/Applications/Google\ Chrome.app"

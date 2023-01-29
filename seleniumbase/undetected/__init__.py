@@ -343,23 +343,27 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         )
 
     def _hook_remove_cdc_props(self, cdc_props):
-        cdc_props_js_array = '[' + str().join(
-            '"' + p + '", ' for p in cdc_props
-        )[:-2] + ']'
+        if len(cdc_props) < 1:
+            return
+        cdc_props_js_array = "[" + ", ".join(
+            '"' + p + '"' for p in cdc_props
+        ) + "]"
         self.execute_cdp_cmd(
             "Page.addScriptToEvaluateOnNewDocument",
             {
                 "source": cdc_props_js_array + (
-                    ".forEach(p => "
-                    "delete window[p] && console.log('removed',p));"
+                    ".forEach(p => delete window[p]);"
                 )
             },
         )
 
-    def get(self, url):
+    def remove_cdc_props_as_needed(self):
         cdc_props = self._get_cdc_props()
         if len(cdc_props) > 0:
             self._hook_remove_cdc_props(cdc_props)
+
+    def get(self, url):
+        self.remove_cdc_props_as_needed()
         return super().get(url)
 
     def add_cdp_listener(self, event_name, callback):
@@ -495,9 +499,9 @@ def find_chrome_executable():
                 "google-chrome",
                 "google-chrome-stable",
                 "chrome",
+                "chromium",
                 "google-chrome-beta",
                 "google-chrome-dev",
-                "chromium",
                 "chromium-browser",
             ):
                 candidates.add(os.sep.join((item, subitem)))

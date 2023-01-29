@@ -17,6 +17,6 @@ class MiaClasseDiTest(CasoDiProva):
         self.verificare_testo("Colosseo", "#firstHeading")
         self.verificare_elemento('img[alt*="Colosse"]')
         self.indietro()
-        self.verificare_vero("Pizza" in self.ottenere_url_corrente())
+        self.verificare_url_contiene("Pizza")
         self.avanti()
-        self.verificare_vero("Colosseo" in self.ottenere_url_corrente())
+        self.verificare_url_contiene("Colosseo")

@@ -102,6 +102,7 @@ if pure_python:
     sb.dashboard = False
     sb._dash_initialized = False
     sb.message_duration = None
+    sb.binary_location = None
     sb.enable_3d_apis = False
     sb.block_images = False
     sb.do_not_track = False

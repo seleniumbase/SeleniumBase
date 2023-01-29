@@ -52,14 +52,13 @@ PROXY_DIR_LOCK = proxy_helper.PROXY_DIR_LOCK
 PLATFORM = sys.platform
 IS_ARM_MAC = False
 if (
-    PLATFORM.endswith("darwin")
+    "darwin" in PLATFORM
     and (
         "arm" in platform.processor().lower()
         or "arm64" in platform.version().lower()
     )
 ):
     IS_ARM_MAC = True
-IS_WINDOWS = False
 LOCAL_CHROMEDRIVER = None
 LOCAL_GECKODRIVER = None
 LOCAL_EDGEDRIVER = None
@@ -67,12 +66,19 @@ LOCAL_IEDRIVER = None
 LOCAL_HEADLESS_IEDRIVER = None
 LOCAL_OPERADRIVER = None
 LOCAL_UC_DRIVER = None
+IS_WINDOWS = False
+IS_LINUX = False
+IS_MAC = False
 if "darwin" in PLATFORM or "linux" in PLATFORM:
     LOCAL_CHROMEDRIVER = DRIVER_DIR + "/chromedriver"
     LOCAL_GECKODRIVER = DRIVER_DIR + "/geckodriver"
     LOCAL_EDGEDRIVER = DRIVER_DIR + "/msedgedriver"
     LOCAL_OPERADRIVER = DRIVER_DIR + "/operadriver"
     LOCAL_UC_DRIVER = DRIVER_DIR + "/uc_driver"
+    if "darwin" in PLATFORM:
+        IS_MAC = True
+    elif "linux" in PLATFORM:
+        IS_LINUX = True
 elif "win32" in PLATFORM or "win64" in PLATFORM or "x64" in PLATFORM:
     IS_WINDOWS = True
     LOCAL_EDGEDRIVER = DRIVER_DIR + "/msedgedriver.exe"
@@ -183,6 +189,29 @@ def iedriver_on_path():
 
 def headless_iedriver_on_path():
     return os.path.exists(LOCAL_HEADLESS_IEDRIVER)
+
+
+def get_valid_binary_names_for_browser(browser):
+    if browser == constants.Browser.GOOGLE_CHROME:
+        if IS_LINUX:
+            return constants.ValidBinaries.valid_chrome_binaries_on_linux
+        elif IS_MAC:
+            return constants.ValidBinaries.valid_chrome_binaries_on_macos
+        elif IS_WINDOWS:
+            return constants.ValidBinaries.valid_chrome_binaries_on_windows
+        else:
+            raise Exception("Could not determine OS, or unsupported!")
+    elif browser == constants.Browser.EDGE:
+        if IS_LINUX:
+            return constants.ValidBinaries.valid_edge_binaries_on_linux
+        elif IS_MAC:
+            return constants.ValidBinaries.valid_edge_binaries_on_macos
+        elif IS_WINDOWS:
+            return constants.ValidBinaries.valid_edge_binaries_on_windows
+        else:
+            raise Exception("Could not determine OS, or unsupported!")
+    else:
+        raise Exception("Invalid combination for os browser binaries!")
 
 
 def _repair_chromedriver(chrome_options, headless_options, mcv=None):
@@ -403,6 +432,7 @@ def _set_chrome_options(
     user_data_dir,
     extension_zip,
     extension_dir,
+    binary_location,
     page_load_strategy,
     use_wire,
     external_pdf,
@@ -635,7 +665,7 @@ def _set_chrome_options(
             chrome_options.add_argument("--ignore-certificate-errors")
         if not enable_ws:
             chrome_options.add_argument("--disable-web-security")
-        if "linux" in PLATFORM or not is_using_uc(undetectable, browser_name):
+        if IS_LINUX or not is_using_uc(undetectable, browser_name):
             chrome_options.add_argument("--no-sandbox")
     else:
         # Opera Chromium only!
@@ -649,7 +679,7 @@ def _set_chrome_options(
         chrome_options.add_argument("--use-gl=swiftshader")
     elif not is_using_uc(undetectable, browser_name):
         chrome_options.add_argument("--disable-gpu")
-    if "linux" in PLATFORM:
+    if IS_LINUX:
         chrome_options.add_argument("--disable-dev-shm-usage")
     if chromium_arg:
         # Can be a comma-separated list of Chromium args
@@ -674,6 +704,8 @@ def _set_chrome_options(
     chrome_options.add_argument("--disable-prompt-on-repost")
     chrome_options.add_argument("--dns-prefetch-disable")
     chrome_options.add_argument("--disable-translate")
+    if binary_location:
+        chrome_options.binary_location = binary_location
     if not enable_3d_apis and not is_using_uc(undetectable, browser_name):
         chrome_options.add_argument("--disable-3d-apis")
     if headless or headless2 or is_using_uc(undetectable, browser_name):
@@ -683,7 +715,7 @@ def _set_chrome_options(
         is_using_uc(undetectable, browser_name)
         and (
             not headless
-            or "linux" in PLATFORM  # switches to Xvfb (non-headless)
+            or IS_LINUX  # switches to Xvfb (non-headless)
         )
     ):
         # Skip remaining options that trigger anti-bot services
@@ -792,7 +824,7 @@ def _set_firefox_options(
     options.set_preference(
         "browser.download.manager.showAlertOnComplete", False
     )
-    if headless and "linux" not in PLATFORM:
+    if headless and not IS_LINUX:
         options.add_argument("--headless")
     if locale_code:
         options.set_preference("intl.accept_languages", locale_code)
@@ -964,6 +996,7 @@ def get_driver(
     user_data_dir=None,
     extension_zip=None,
     extension_dir=None,
+    binary_location=None,
     page_load_strategy=None,
     use_wire=False,
     external_pdf=False,
@@ -983,6 +1016,38 @@ def get_driver(
     if headless2 and browser_name == constants.Browser.FIREFOX:
         headless2 = False  # Only for Chromium
         headless = True
+    if (
+        binary_location
+        and type(binary_location) is str
+        and (
+            browser_name == constants.Browser.GOOGLE_CHROME
+            or browser_name == constants.Browser.EDGE
+        )
+    ):
+        if not os.path.exists(binary_location):
+            print(
+                "\nWarning: The Chromium binary specified (%s) was NOT found!"
+                "\n(Will use default settings...)\n" % binary_location
+            )
+            binary_location = None
+        elif binary_location.endswith("/") or binary_location.endswith("\\"):
+            print(
+                "\nWarning: The Chromium binary path must be a full path "
+                "that includes the driver filename at the end of it!"
+                "\n(Will use default settings...)\n" % binary_location
+            )
+            binary_location = None
+        else:
+            binary_name = binary_location.split("/")[-1].split("\\")[-1]
+            valid_names = get_valid_binary_names_for_browser(browser_name)
+            if binary_name not in valid_names:
+                print(
+                    "\nWarning: The Chromium binary specified is NOT valid!"
+                    '\nExpecting "%s" to be found in %s for the browser / OS!'
+                    "\n(Will use default settings...)\n"
+                    "" % (binary_name, valid_names)
+                )
+                binary_location = None
     if (uc_cdp_events or uc_subprocess) and not undetectable:
         undetectable = True
     if is_using_uc(undetectable, browser_name) and mobile_emulator:
@@ -1048,7 +1113,7 @@ def get_driver(
             proxy_auth = True
     if (
         is_using_uc(undetectable, browser_name)
-        and "linux" not in PLATFORM
+        and not IS_LINUX
         and headless
     ):
         headless = False
@@ -1076,7 +1141,7 @@ def get_driver(
         # using Chrome's built-in headless mode. See link for details:
         # https://bugs.chromium.org/p/chromium/issues/detail?id=706008
         headless = False
-        if "linux" not in PLATFORM:
+        if not IS_LINUX:
             # Use the new headless mode on Chrome if not using Linux:
             # bugs.chromium.org/p/chromium/issues/detail?id=706008#c36
             # Although Linux is technically supported, there are a lot
@@ -1136,6 +1201,7 @@ def get_driver(
             user_data_dir,
             extension_zip,
             extension_dir,
+            binary_location,
             page_load_strategy,
             use_wire,
             external_pdf,
@@ -1185,6 +1251,7 @@ def get_driver(
             user_data_dir,
             extension_zip,
             extension_dir,
+            binary_location,
             page_load_strategy,
             use_wire,
             external_pdf,
@@ -1238,6 +1305,7 @@ def get_remote_driver(
     user_data_dir,
     extension_zip,
     extension_dir,
+    binary_location,
     page_load_strategy,
     use_wire,
     external_pdf,
@@ -1354,6 +1422,7 @@ def get_remote_driver(
             user_data_dir,
             extension_zip,
             extension_dir,
+            binary_location,
             page_load_strategy,
             use_wire,
             external_pdf,
@@ -1438,9 +1507,8 @@ def get_remote_driver(
         else:
             capabilities = firefox_options.to_capabilities()
         capabilities["marionette"] = True
-        if "linux" in PLATFORM:
-            if headless:
-                capabilities["moz:firefoxOptions"] = {"args": ["-headless"]}
+        if IS_LINUX and headless:
+            capabilities["moz:firefoxOptions"] = {"args": ["-headless"]}
         # Set custom desired capabilities
         selenoid = False
         selenoid_options = None
@@ -1586,6 +1654,7 @@ def get_remote_driver(
             user_data_dir,
             extension_zip,
             extension_dir,
+            binary_location,
             page_load_strategy,
             use_wire,
             external_pdf,
@@ -1654,7 +1723,6 @@ def get_remote_driver(
     elif browser_name == constants.Browser.REMOTE:
         if selenium4_or_newer:
             remote_options = ArgOptions()
-            # shovel caps into remote options.
             for cap_name, cap_value in desired_caps.items():
                 remote_options.set_capability(cap_name, cap_value)
             return webdriver.Remote(
@@ -1710,6 +1778,7 @@ def get_local_driver(
     user_data_dir,
     extension_zip,
     extension_dir,
+    binary_location,
     page_load_strategy,
     use_wire,
     external_pdf,
@@ -1718,11 +1787,10 @@ def get_local_driver(
     device_height,
     device_pixel_ratio,
 ):
-    """
-    Spins up a new web browser and returns the driver.
-    Can also be used to spin up additional browsers for the same test.
-    """
+    """Spins up a new web browser and returns the driver.
+    Can also be used to spin up additional browsers for the same test."""
     downloads_path = DOWNLOADS_FOLDER
+    b_path = binary_location
     if use_wire and selenium4_or_newer:
         driver_fixing_lock = fasteners.InterProcessLock(
             constants.MultiBrowser.DRIVER_FIXING_LOCK
@@ -1945,10 +2013,22 @@ def get_local_driver(
         try:
             from seleniumbase.core import detect_b_ver
 
-            br_app = "edge"
-            major_edge_version = (
-                detect_b_ver.get_browser_version_from_os(br_app)
-            ).split(".")[0]
+            if binary_location:
+                try:
+                    major_edge_version = (
+                        detect_b_ver.get_browser_version_from_binary(
+                            binary_location
+                        )
+                    ).split(".")[0]
+                    if len(major_edge_version) < 2:
+                        major_edge_version = None
+                except Exception:
+                    major_edge_version = None
+            if not major_edge_version:
+                br_app = "edge"
+                major_edge_version = (
+                    detect_b_ver.get_browser_version_from_os(br_app)
+                ).split(".")[0]
             if int(major_edge_version) < 80:
                 major_edge_version = None
         except Exception:
@@ -2128,6 +2208,8 @@ def get_local_driver(
         )
         edge_options.add_argument("--disable-browser-side-navigation")
         edge_options.add_argument("--disable-translate")
+        if binary_location:
+            edge_options.binary_location = binary_location
         if not enable_ws:
             edge_options.add_argument("--disable-web-security")
         edge_options.add_argument("--homepage=about:blank")
@@ -2193,7 +2275,7 @@ def get_local_driver(
         edge_options.add_argument("--allow-running-insecure-content")
         if user_agent:
             edge_options.add_argument("--user-agent=%s" % user_agent)
-        if "linux" in PLATFORM or not is_using_uc(undetectable, browser_name):
+        if IS_LINUX or not is_using_uc(undetectable, browser_name):
             edge_options.add_argument("--no-sandbox")
         if remote_debug:
             # To access the Debugger, go to: edge://inspect/#devices
@@ -2204,7 +2286,7 @@ def get_local_driver(
             edge_options.add_argument("--use-gl=swiftshader")
         else:
             edge_options.add_argument("--disable-gpu")
-        if "linux" in PLATFORM:
+        if IS_LINUX:
             edge_options.add_argument("--disable-dev-shm-usage")
         if chromium_arg:
             # Can be a comma-separated list of Chromium args
@@ -2399,6 +2481,7 @@ def get_local_driver(
                 user_data_dir,
                 extension_zip,
                 extension_dir,
+                binary_location,
                 page_load_strategy,
                 use_wire,
                 external_pdf,
@@ -2452,6 +2535,7 @@ def get_local_driver(
                 user_data_dir,
                 extension_zip,
                 extension_dir,
+                binary_location,
                 page_load_strategy,
                 use_wire,
                 external_pdf,
@@ -2467,10 +2551,22 @@ def get_local_driver(
                 try:
                     from seleniumbase.core import detect_b_ver
 
-                    br_app = "google-chrome"
-                    major_chrome_version = (
-                        detect_b_ver.get_browser_version_from_os(br_app)
-                    ).split(".")[0]
+                    if binary_location:
+                        try:
+                            major_chrome_version = (
+                                detect_b_ver.get_browser_version_from_binary(
+                                    binary_location
+                                )
+                            ).split(".")[0]
+                            if len(major_chrome_version) < 2:
+                                major_chrome_version = None
+                        except Exception:
+                            major_chrome_version = None
+                    if not major_chrome_version:
+                        br_app = "google-chrome"
+                        major_chrome_version = (
+                            detect_b_ver.get_browser_version_from_os(br_app)
+                        ).split(".")[0]
                     if int(major_chrome_version) < 67:
                         major_chrome_version = None
                     elif (
@@ -2705,7 +2801,7 @@ def get_local_driver(
                             )
             if (
                 not headless
-                or "linux" not in PLATFORM
+                or not IS_LINUX
                 or is_using_uc(undetectable, browser_name)
             ):
                 try:
@@ -2714,13 +2810,13 @@ def get_local_driver(
                         or is_using_uc(undetectable, browser_name)
                     ):
                         if selenium4_or_newer:
-                            if headless and "linux" not in PLATFORM:
+                            if headless and not IS_LINUX:
                                 undetectable = False  # No support for headless
                             if is_using_uc(undetectable, browser_name):
                                 from seleniumbase import undetected
                                 from urllib.error import URLError
 
-                                if "linux" in PLATFORM:
+                                if IS_LINUX:
                                     if "--headless" in (
                                         chrome_options.arguments
                                     ):
@@ -2745,16 +2841,14 @@ def get_local_driver(
                                         options=chrome_options,
                                         user_data_dir=user_data_dir,
                                         driver_executable_path=uc_path,
+                                        browser_executable_path=b_path,
                                         enable_cdp_events=cdp_events,
                                         headless=False,  # Xvfb needed!
                                         version_main=uc_chrome_version,
                                         use_subprocess=True,  # Always!
                                     )
                                 except URLError as e:
-                                    if (
-                                        cert in e.args[0]
-                                        and "darwin" in PLATFORM
-                                    ):
+                                    if cert in e.args[0] and IS_MAC:
                                         mac_certificate_error = True
                                     else:
                                         raise
@@ -2778,6 +2872,7 @@ def get_local_driver(
                                         options=chrome_options,
                                         user_data_dir=user_data_dir,
                                         driver_executable_path=uc_path,
+                                        browser_executable_path=b_path,
                                         enable_cdp_events=cdp_events,
                                         headless=False,  # Xvfb needed!
                                         version_main=uc_chrome_version,
@@ -2889,6 +2984,7 @@ def get_local_driver(
                         user_data_dir,
                         extension_zip,
                         extension_dir,
+                        binary_location,
                         page_load_strategy,
                         use_wire,
                         external_pdf,

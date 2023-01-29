@@ -93,6 +93,7 @@ def Driver(
     user_data_dir=None,  # Set the Chrome user data directory to use.
     extension_zip=None,  # Load a Chrome Extension .zip|.crx, comma-separated.)
     extension_dir=None,  # Load a Chrome Extension directory, comma-separated.)
+    binary_location=None,  # Set path of the Chromium browser binary to use.
     page_load_strategy=None,  # Set Chrome PLS to "normal", "eager", or "none".
     use_wire=None,  # Use selenium-wire's webdriver over selenium webdriver.
     external_pdf=None,  # Set Chrome "plugins.always_open_pdf_externally":True.
@@ -432,6 +433,7 @@ def Driver(
         user_data_dir=user_data_dir,
         extension_zip=extension_zip,
         extension_dir=extension_dir,
+        binary_location=binary_location,
         page_load_strategy=page_load_strategy,
         use_wire=use_wire,
         external_pdf=external_pdf,

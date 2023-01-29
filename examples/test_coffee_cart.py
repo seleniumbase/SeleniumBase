@@ -10,6 +10,7 @@ if __name__ == "__main__":  # If "python" called
 class CoffeeCartTest(BaseCase):
     def test_coffee_cart(self):
         self.open("https://seleniumbase.io/coffee/")
+        self.assert_title("Coffee Cart")
         self.click('div[data-sb="Cappuccino"]')
         self.click('div[data-sb="Flat-White"]')
         self.click('div[data-sb="Cafe-Latte"]')

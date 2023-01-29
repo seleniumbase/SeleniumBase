@@ -70,14 +70,14 @@ def generate_gherkin(srt_actions):
             if action[0] == "js_ty":
                 method = "js_type"
             text = action[2].replace("\n", "\\n")
-            if '"' not in action[1] and '"' not in text:
-                sb_actions.append('Into "%s" type "%s"' % (action[1], text))
-            elif '"' not in action[1] and '"' in text:
-                sb_actions.append('Into "%s" type \'%s\'' % (action[1], text))
-            elif '"' in action[1] and '"' not in text:
-                sb_actions.append('Into \'%s\' type "%s"' % (action[1], text))
-            elif '"' in action[1] and '"' in text:
-                sb_actions.append("Into '%s' type '%s'" % (action[1], text))
+            if '"' not in text and '"' not in action[1]:
+                sb_actions.append('Type "%s" into "%s"' % (text, action[1]))
+            elif '"' in text and '"' not in action[1]:
+                sb_actions.append('Type \'%s\' into "%s"' % (text, action[1]))
+            elif '"' not in text and '"' in action[1]:
+                sb_actions.append('Type "%s" into \'%s\'' % (text, action[1]))
+            elif '"' in text and '"' in action[1]:
+                sb_actions.append("Type '%s' into '%s'" % (text, action[1]))
         elif action[0] == "hover":
             if '"' not in action[1]:
                 sb_actions.append('Hover "%s"' % action[1])
@@ -310,6 +310,7 @@ def generate_gherkin(srt_actions):
             action[0] == "as_te"
             or action[0] == "as_et"
             or action[0] == "astnv"
+            or action[0] == "aetnv"
             or action[0] == "da_te"
             or action[0] == "da_et"
         ):
@@ -322,6 +323,8 @@ def generate_gherkin(srt_actions):
                 method = "Assert exact text"
             elif action[0] == "astnv":
                 method = "Assert text not visible"
+            elif action[0] == "aetnv":
+                method = "Assert exact text not visible"
             elif action[0] == "da_te":
                 method = "Deferred assert text"
             elif action[0] == "da_et":
@@ -370,6 +373,10 @@ def generate_gherkin(srt_actions):
             sb_actions.append("Show file choosers")
         elif action[0] == "pr_da":
             sb_actions.append("Process deferred asserts")
+        elif action[0] == "a_d_m":
+            sb_actions.append("Activate Demo Mode")
+        elif action[0] == "d_d_m":
+            sb_actions.append("Deactivate Demo Mode")
         elif action[0] == "c_l_s":
             sb_actions.append("Clear Local Storage")
         elif action[0] == "c_s_s":

@@ -38,6 +38,7 @@ class SeleniumBrowser(Plugin):
     --firefox-pref=SET  (Set a Firefox preference:value set, comma-separated.)
     --extension-zip=ZIP  (Load a Chrome Extension .zip|.crx, comma-separated.)
     --extension-dir=DIR  (Load a Chrome Extension directory, comma-separated.)
+    --binary-location=PATH  (Set path of the Chromium browser binary to use.)
     --sjw  (Skip JS Waits for readyState to be "complete" or Angular to load.)
     --pls=PLS  (Set pageLoadStrategy on Chrome: "normal", "eager", or "none".)
     --headless  (Run tests in headless mode. The default arg on Linux OS.)
@@ -352,6 +353,15 @@ class SeleniumBrowser(Plugin):
                     Format: A directory containing the Chrome extension.
                     (Can also be a comma-separated list of directories.)
                     Default: None.""",
+        )
+        parser.addoption(
+            "--binary_location",
+            "--binary-location",
+            action="store",
+            dest="binary_location",
+            default=None,
+            help="""Sets the path of the Chromium browser binary to use.
+                    Uses the default location if not os.path.exists(PATH)""",
         )
         parser.addoption(
             "--pls",
@@ -1033,6 +1043,7 @@ class SeleniumBrowser(Plugin):
         test.test.user_data_dir = self.options.user_data_dir
         test.test.extension_zip = self.options.extension_zip
         test.test.extension_dir = self.options.extension_dir
+        test.test.binary_location = self.options.binary_location
         test.test.page_load_strategy = self.options.page_load_strategy
         test.test.chromium_arg = self.options.chromium_arg
         test.test.firefox_arg = self.options.firefox_arg
