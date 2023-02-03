@@ -44,6 +44,7 @@ EXTENSIONS_DIR = os.path.dirname(os.path.realpath(extensions.__file__))
 DISABLE_CSP_ZIP_PATH = os.path.join(EXTENSIONS_DIR, "disable_csp.zip")
 AD_BLOCK_ZIP_PATH = os.path.join(EXTENSIONS_DIR, "ad_block.zip")
 RECORDER_ZIP_PATH = os.path.join(EXTENSIONS_DIR, "recorder.zip")
+SBASE_EXT_ZIP_PATH = os.path.join(EXTENSIONS_DIR, "sbase_ext.zip")
 DOWNLOADS_FOLDER = download_helper.get_downloads_folder()
 PROXY_ZIP_PATH = proxy_helper.PROXY_ZIP_PATH
 PROXY_ZIP_LOCK = proxy_helper.PROXY_ZIP_LOCK
@@ -601,9 +602,19 @@ def _set_chrome_options(
         # Only change it if not "normal", which is the default.
         chrome_options.page_load_strategy = settings.PAGE_LOAD_STRATEGY.lower()
     if headless2:
-        pass  # Processed After Version Check
+        if servername and servername != "localhost":
+            # The Grid Node will need Chrome 109 or newer
+            chrome_options.add_argument("--headless=new")
+        else:
+            pass  # Processed After Version Check
     elif headless:
-        chrome_options.add_argument("--headless")
+        if not undetectable:
+            chrome_options.add_argument("--headless")
+        if undetectable and servername and servername != "localhost":
+            # The Grid Node will need Chrome 109 or newer
+            chrome_options.add_argument("--headless=new")
+        else:
+            pass  # Processed After Version Check
     if (settings.DISABLE_CSP_ON_CHROME or disable_csp) and not headless:
         # Headless Chrome does not support extensions, which are required
         # for disabling the Content Security Policy on Chrome.
@@ -633,6 +644,11 @@ def _set_chrome_options(
             chrome_options = add_chrome_ext_dir(chrome_options, recorder_dir)
         else:
             chrome_options = _add_chrome_recorder_extension(chrome_options)
+    if is_using_uc(undetectable, browser_name):
+        sbase_ext_zip = SBASE_EXT_ZIP_PATH
+        sbase_ext_dir = os.path.join(DOWNLOADS_FOLDER, "sbase_ext")
+        _unzip_to_new_folder(sbase_ext_zip, sbase_ext_dir)
+        chrome_options = add_chrome_ext_dir(chrome_options, sbase_ext_dir)
     if proxy_string:
         if proxy_auth:
             zip_it = True
@@ -2149,8 +2165,23 @@ def get_local_driver(
                     edge_options.add_argument("--headless=chrome")
             except Exception:
                 edge_options.add_argument("--headless=new")
+        elif headless and undetectable:
+            # (For later: UC Mode doesn't support Edge now)
+            try:
+                if int(use_version) >= 109:
+                    edge_options.add_argument("--headless=new")
+                elif (
+                    int(use_version) >= 96
+                    and int(use_version) <= 108
+                ):
+                    edge_options.add_argument("--headless=chrome")
+                else:
+                    pass  # Will need Xvfb on Linux
+            except Exception:
+                pass
         elif headless:
-            edge_options.add_argument("--headless")
+            if "--headless" not in edge_options.arguments:
+                edge_options.add_argument("--headless")
         if mobile_emulator:
             emulator_settings = {}
             device_metrics = {}
@@ -2617,6 +2648,22 @@ def get_local_driver(
                         chrome_options.add_argument("--headless=chrome")
                 except Exception:
                     chrome_options.add_argument("--headless=new")
+            elif headless and undetectable:
+                try:
+                    if int(use_version) >= 109:
+                        chrome_options.add_argument("--headless=new")
+                    elif (
+                        int(use_version) >= 96
+                        and int(use_version) <= 108
+                    ):
+                        chrome_options.add_argument("--headless=chrome")
+                    else:
+                        pass  # Will need Xvfb on Linux
+                except Exception:
+                    pass
+            elif headless:
+                if "--headless" not in chrome_options.arguments:
+                    chrome_options.add_argument("--headless")
             disable_build_check = False
             uc_driver_version = None
             if is_using_uc(undetectable, browser_name):
