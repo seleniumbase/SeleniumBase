@@ -18,7 +18,7 @@
 * Can run tests in Headless Mode to hide the browser. (``--headless``)
 * Can run tests multithreaded from parallel browsers. (``-n NUM_THREADS``)
 * Can run tests from a shared browser session. (``--reuse-session``/``--rs``)
-* Can run tests using Chromium's mobile device emulator. (``--mobile``)
+* Can run tests using [Chromium's mobile device emulator](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mobile_testing.md). (``--mobile``)
 * Can run tests through a proxy server. (``--proxy=IP_ADDRESS:PORT``)
 * Can run tests with proxy settings via PAC URL. (``--proxy-pac-url=URL.pac``)
 * Can run tests through an authenticated proxy server. (``--proxy=USER:PASS@HOST:PORT``)
@@ -44,7 +44,7 @@
 * Can inspect HTML to find issues and points of interest with the [HTML Inspector](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/html_inspector.md).
 * Is backwards-compatible with Python [WebDriver](https://www.selenium.dev/projects/) methods. (Use: ``self.driver``)
 * Can execute JavaScript code from Python calls. (Use: ``self.execute_script()``)
-* Can pierce through Shadow DOM selectors. (Add ``::shadow`` to CSS fragments.)
+* Can pierce through [Shadow DOM selectors](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/shadow_dom.md). (Add ``::shadow`` to CSS fragments.)
 * Includes a hybrid-automation solution, [MasterQA](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md), to speed up manual testing.
 * Includes useful [Python decorators and password obfuscation methods](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/common/ReadMe.md).
 
