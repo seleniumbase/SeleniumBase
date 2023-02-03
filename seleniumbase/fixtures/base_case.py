@@ -1936,15 +1936,16 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
+        self.wait_for_ready_state_complete()
         if self.__needs_minimum_wait():
-            time.sleep(0.03)
+            time.sleep(0.12)
         element = self.wait_for_element_present(
             selector, by=by, timeout=timeout
         )
         try:
             # If the first element isn't visible, wait a little.
             if not element.is_displayed():
-                time.sleep(0.2)
+                time.sleep(0.16)
         except Exception:
             pass
         elements = self.find_elements(selector, by=by)
