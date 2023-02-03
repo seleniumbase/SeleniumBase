@@ -1,10 +1,10 @@
-""" Shadow DOM test.
-    First download files from PyPI.
-    Then search for them on a multi-layered Shadow DOM page.
-    This uses the "::shadow" selector for piercing shadow-root elements.
-    Here's the URL that contains Shadow DOM: chrome://downloads/ """
-
+"""Shadow DOM test.
+First download files from PyPI.
+Then search for them on a multi-layered Shadow DOM page.
+This uses the "::shadow" selector for piercing shadow-root elements.
+Here's the URL that contains Shadow DOM: chrome://downloads/ """
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 
 class ShadowDomTests(BaseCase):

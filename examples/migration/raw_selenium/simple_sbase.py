@@ -1,5 +1,6 @@
 """Clean SeleniumBase Example - (Uses simple, reliable methods)"""
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 
 class CleanSeleniumBase(BaseCase):
@@ -18,9 +19,3 @@ class CleanSeleniumBase(BaseCase):
         self.click("#react-burger-menu-btn")
         self.click("a#logout_sidebar_link")
         self.assert_element("input#login-button")
-
-
-# When run with "python" instead of "pytest"
-if __name__ == "__main__":
-    from pytest import main
-    main([__file__, "-s"])

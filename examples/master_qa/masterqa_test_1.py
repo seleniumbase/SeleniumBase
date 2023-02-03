@@ -1,4 +1,5 @@
 from seleniumbase import MasterQA
+MasterQA.main(__name__, __file__)
 
 
 class MasterQATests(MasterQA):

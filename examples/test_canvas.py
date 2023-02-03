@@ -22,6 +22,7 @@ class CanvasTests(BaseCase):
 
     def test_canvas_click_from_center(self):
         self.open("https://seleniumbase.io/other/canvas")
+        self.assert_title_contains("Canvas")
         self.click_with_offset("canvas", 0, 0, mark=True, center=True)
         self.sleep(0.55)  # Not needed (Lets you see the alert pop up)
         alert = self.switch_to_alert()
@@ -31,6 +32,7 @@ class CanvasTests(BaseCase):
 
     def test_click_with_offset(self):
         self.open("https://seleniumbase.io/canvas/")
+        self.assert_title_contains("Canvas")
         self.highlight("canvas")
         rgb = self.get_pixel_colors()
         self.assert_equal(rgb, [221, 242, 231])  # Looks greenish

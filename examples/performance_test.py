@@ -1,5 +1,4 @@
-"""
-Performance test example.
+"""Performance test example.
 
 Uses decorators.print_runtime(), which prints the runtime duration
 of a method or "with"-block after the method (or block) completes.
@@ -22,10 +21,10 @@ Method / Function example usage ->
 
     with decorators.print_runtime("My Code Block"):
         # code ...
-        # code ...
-"""
+        # code ... """
 from seleniumbase import BaseCase
 from seleniumbase import decorators
+BaseCase.main(__name__, __file__)
 
 
 class PerformanceClass(BaseCase):

@@ -1,5 +1,6 @@
 """Test that SeleniumBase can autodetect and use xpath selectors."""
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 
 class XPathTests(BaseCase):

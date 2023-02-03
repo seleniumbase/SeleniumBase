@@ -1,4 +1,5 @@
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 
 class VisualLayoutTests(BaseCase):

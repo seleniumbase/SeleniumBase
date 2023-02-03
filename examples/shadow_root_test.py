@@ -1,7 +1,7 @@
-""" Piercing through shadow-root elements with the "::shadow" selector.
-    To confirm that "::shadow" works, print text and assert exact text. """
-
+"""Piercing through shadow-root elements with the "::shadow" selector.
+To confirm that "::shadow" works, print text and assert exact text."""
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 
 class ShadowRootTest(BaseCase):

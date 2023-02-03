@@ -9,3 +9,4 @@
 * ad_block.zip => This extension blocks certain types of iframe ads from loading.
 * disable_csp.zip => This extension disables a website's Content-Security-Policy.
 * recorder.zip => Save browser actions to sessionStorage with good CSS selectors.
+* sbase_ext.zip => An extension that does nothing, but helps people learn things.

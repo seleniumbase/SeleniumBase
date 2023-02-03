@@ -1,8 +1,8 @@
 """ * Asserting that multiple elements are present or visible:
 HTML Presence: assert_elements_present()
-HTML Visibility: assert_elements() <> assert_elements_visible()
-"""
+HTML Visibility: assert_elements() <> assert_elements_visible()"""
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 
 class MyTestClass(BaseCase):

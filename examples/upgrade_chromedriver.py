@@ -1,8 +1,6 @@
-"""
-This script installs the chromedriver version that matches your Chrome.
+"""This script installs the chromedriver version that matches your Chrome.
 On newer versions of Python, you may replace "testdir" with "pytester".
-(Run with "pytest")
-"""
+(Run with "pytest")"""
 import subprocess
 
 

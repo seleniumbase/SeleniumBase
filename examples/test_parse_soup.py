@@ -1,5 +1,6 @@
 import re
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 
 class SoupParsingTests(BaseCase):

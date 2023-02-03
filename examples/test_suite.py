@@ -1,6 +1,7 @@
 """This test suite contains 2 passing tests and 2 failing tests."""
 import pytest
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 
 class MyTestSuite(BaseCase):

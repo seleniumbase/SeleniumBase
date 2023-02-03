@@ -58,7 +58,7 @@ if "win32" in PLAT or "win64" in PLAT or "x64" in PLAT or "x86" in PLAT:
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 LOCAL_PATH = "/usr/local/bin/"  # On Mac and Linux systems
 DEFAULT_CHROMEDRIVER_VERSION = "72.0.3626.69"  # (If can't find LATEST_STABLE)
-DEFAULT_GECKODRIVER_VERSION = "v0.32.0"
+DEFAULT_GECKODRIVER_VERSION = "v0.32.1"
 DEFAULT_EDGEDRIVER_VERSION = "109.0.1518.52"  # (If can't find LATEST_STABLE)
 DEFAULT_OPERADRIVER_VERSION = "v.96.0.4664.45"
 

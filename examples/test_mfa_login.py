@@ -1,9 +1,5 @@
 from seleniumbase import BaseCase
-
-if __name__ == "__main__":  # If "python" called
-    from pytest import main
-    from sys import argv
-    main([*argv, "-s"])  # Run pytest, same args
+BaseCase.main(__name__, __file__)
 
 
 class TestMFALogin(BaseCase):

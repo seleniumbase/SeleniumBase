@@ -63,6 +63,7 @@ class CoffeeCartTests(BaseCase):
 
     def test_remove_added_coffee(self):
         self.open("https://seleniumbase.io/coffee/")
+        self.assert_title("Coffee Cart")
         self.assert_exact_text("cart (0)", 'a[aria-label="Cart page"]')
         self.assert_exact_text("Total: $0.00", "button.pay")
         self.wait_for_element('div[class="cup-body"]')
