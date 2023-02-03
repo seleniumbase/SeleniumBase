@@ -71,10 +71,12 @@ pytest test_coffee_cart.py --demo
 
 ```python
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 class CoffeeCartTest(BaseCase):
     def test_coffee_cart(self):
         self.open("https://seleniumbase.io/coffee/")
+        self.assert_title("Coffee Cart")
         self.click('div[data-sb="Cappuccino"]')
         self.click('div[data-sb="Flat-White"]')
         self.click('div[data-sb="Cafe-Latte"]')
@@ -84,7 +86,7 @@ class CoffeeCartTest(BaseCase):
         self.type("input#name", "Selenium Coffee")
         self.type("input#email", "test@test.test")
         self.click("button#submit-payment")
-        self.assert_text("Thanks for your purchase.", "#app")
+        self.assert_text("Thanks for your purchase.", "#app .success")
 ```
 
 --------
