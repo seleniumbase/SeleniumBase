@@ -2,10 +2,10 @@
     the logging capabilities of SeleniumBase.
     >>> pytest test_fail.py --html=report.html
     This creates ``report.html`` with details.
-    (Also find log files in ``latest_logs/``) """
-
+    (Also find log files in ``latest_logs/``)"""
 import pytest
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 
 class FailingTests(BaseCase):

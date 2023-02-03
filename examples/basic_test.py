@@ -1,5 +1,6 @@
 """Add an item to a shopping cart. Verify. Remove item. Verify."""
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 
 class MyTestClass(BaseCase):
@@ -17,9 +18,3 @@ class MyTestClass(BaseCase):
         self.assert_text_not_visible("Backpack", "div.cart_item")
         self.js_click("a#logout_sidebar_link")
         self.assert_element("div#login_button_container")
-
-
-if __name__ == "__main__":  # If "python" called
-    from pytest import main
-    from sys import argv
-    main([*argv, "-s"])  # Run pytest, same args

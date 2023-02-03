@@ -1,5 +1,6 @@
 """A SeleniumBase test for verifying Login functionality on Swag Labs."""
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 
 class SwagLabsLoginTests(BaseCase):

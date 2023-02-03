@@ -15,6 +15,7 @@
 import os
 # import pytest  # For ordering tests globally with @pytest.mark.run()
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 
 class ImageTests(BaseCase):

@@ -1,6 +1,6 @@
-""" Visual Layout Testing with different Syntax Formats """
-
+"""Visual Layout Testing with different Syntax Formats"""
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 
 class VisualLayout_FixtureTests:

@@ -1,6 +1,7 @@
 import pytest
 from seleniumbase import BaseCase
 from seleniumbase import decorators
+BaseCase.main(__name__, __file__)
 
 
 class TimeLimitTests(BaseCase):

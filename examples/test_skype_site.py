@@ -1,5 +1,4 @@
-"""
-This is a mobile device test for Chromium-based browsers (such as MS Edge)
+"""This is a mobile device test for Chromium-based browsers (such as MS Edge)
 Usage:  pytest test_skype_site.py --mobile --edge
 
 Default mobile settings for User Agent and Device Metrics if not specified:

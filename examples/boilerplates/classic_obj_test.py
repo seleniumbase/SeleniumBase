@@ -1,5 +1,6 @@
 """Classic Page Object Model with BaseCase inheritance."""
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 
 class DataPage:

@@ -1,9 +1,8 @@
-"""
-This test is only for Chrome!
-(Verify that your chromedriver is compatible with your version of Chrome.)
-"""
+"""This test is only for Chrome!
+(Verify that your chromedriver is compatible with your version of Chrome.)"""
 import colorama
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 
 class ChromedriverTests(BaseCase):

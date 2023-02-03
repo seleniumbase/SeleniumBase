@@ -1,10 +1,6 @@
 """A complete end-to-end test for an e-commerce website."""
 from seleniumbase import BaseCase
-
-if __name__ == "__main__":  # If "python" called
-    from pytest import main
-    from sys import argv
-    main([*argv, "-s"])  # Run pytest, same args
+BaseCase.main(__name__, __file__)
 
 
 class MyTestClass(BaseCase):
@@ -13,10 +9,10 @@ class MyTestClass(BaseCase):
         self.type("#user-name", "standard_user")
         self.type("#password", "secret_sauce\n")
         self.assert_element("div.inventory_list")
-        self.assert_text("PRODUCTS", "span.title")
+        self.assert_exact_text("PRODUCTS", "span.title")
         self.click('button[name*="backpack"]')
         self.click("#shopping_cart_container a")
-        self.assert_text("YOUR CART", "span.title")
+        self.assert_exact_text("YOUR CART", "span.title")
         self.assert_text("Backpack", "div.cart_item")
         self.click("button#checkout")
         self.type("#first-name", "SeleniumBase")
@@ -74,7 +70,7 @@ class MyTestClass(BaseCase):
 #    * Type in the new text
 #    * Press Enter/Return if the text ends in "\n": {element.submit()}
 #
-# 4. Duplicate method names may exist for the same method:
+# 4. There are duplicate method names that exist for the same method:
 #    (This makes it easier to switch over from other test frameworks.)
 #    Example:
 #    self.open() = self.visit() = self.open_url() = self.goto()
@@ -144,4 +140,5 @@ class MyTestClass(BaseCase):
 #    * SeleniumBase/seleniumbase/fixtures/base_case.py
 #    * SeleniumBase/help_docs/method_summary.md
 #
-# 10. pytest.main([__file__]) lets you run with "python" (vs. "pytest")
+# 10. BaseCase.main(__name__, __file__) enables "python" to run pytest,
+#     which is useful if someone forgets that tests run with "pytest".

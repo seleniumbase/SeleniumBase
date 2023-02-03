@@ -7,7 +7,8 @@ BaseCase.main(__name__, __file__)
 
 class FileUpload(BaseCase):
     def test_show_file_choosers(self):
-        self.open("https://imgbb.com/upload")
+        self.open("https://seleniumbase.io/apps/img_upload")
+        self.wait_for_element('img[alt="ImgBB"]')
         choose_file_selector = 'input[type="file"]'
         uploaded_image = "#anywhere-upload-queue li.queue-item"
         self.assert_element_not_visible(choose_file_selector)

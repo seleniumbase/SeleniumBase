@@ -1,10 +1,12 @@
 """An example using the Classic Page Object Model."""
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 
 class GooglePage:
     def go_to_google(self, sb):
         sb.open("https://google.com/ncr")
+        sb.remove_elements("iframe")
 
     def do_search(self, sb, search_term):
         sb.type('input[title="Search"]', search_term + "\n")
