@@ -4,6 +4,7 @@ import logging
 import os
 import random
 import re
+import string
 import sys
 import time
 
@@ -182,28 +183,44 @@ class Patcher(object):
     def is_binary_patched(self, executable_path=None):
         executable_path = executable_path or self.executable_path
         with io.open(executable_path, "rb") as fh:
-            for line in iter(lambda: fh.readline(), b""):
-                if b"cdc_" in line:
-                    return False
-            else:
-                return True
+            if b"window.cdc_adoQpoasnfa76pfcZLmcfl_" in fh.read():
+                return False
+        return True
 
     def patch_exe(self):
-        """
-        Patches the ChromeDriver binary
-        :return: False on failure, binary name on success
-        """
-        logger.info("patching driver executable %s" % self.executable_path)
-        linect = 0
-        replacement = self.gen_random_cdc()
+        """Patches the ChromeDriver binary"""
+        def gen_js_whitespaces(match):
+            return b"\n" * len(match.group())
+
+        def gen_call_function_js_cache_name(match):
+            rep_len = len(match.group()) - 3
+            ran_len = random.randint(6, rep_len)
+            bb = b"'" + bytes(str().join(random.choices(
+                population=string.ascii_letters, k=ran_len
+            )), 'ascii') + b"';" + (b"\n" * (rep_len - ran_len))
+            return bb
+
         with io.open(self.executable_path, "r+b") as fh:
-            for line in iter(lambda: fh.readline(), b""):
-                if b"cdc_" in line:
-                    fh.seek(-len(line), 1)
-                    newline = re.sub(b"cdc_.{22}", replacement, line)
-                    fh.write(newline)
-                    linect += 1
-            return linect
+            file_bin = fh.read()
+            file_bin = re.sub(
+                b"window\\.cdc_[a-zA-Z0-9]{22}_(Array|Promise|Symbol)"
+                b" = window\\.(Array|Promise|Symbol);",
+                gen_js_whitespaces,
+                file_bin,
+            )
+            file_bin = re.sub(
+                b"window\\.cdc_[a-zA-Z0-9]{22}_(Array|Promise|Symbol) \\|\\|",
+                gen_js_whitespaces,
+                file_bin,
+            )
+            file_bin = re.sub(
+                b"'\\$cdc_[a-zA-Z0-9]{22}_';",
+                gen_call_function_js_cache_name,
+                file_bin,
+            )
+            fh.seek(0)
+            fh.write(file_bin)
+        return True
 
     def __repr__(self):
         return "{0:s}({1:s})".format(

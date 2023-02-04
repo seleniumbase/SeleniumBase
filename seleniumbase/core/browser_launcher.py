@@ -644,7 +644,7 @@ def _set_chrome_options(
             chrome_options = add_chrome_ext_dir(chrome_options, recorder_dir)
         else:
             chrome_options = _add_chrome_recorder_extension(chrome_options)
-    if is_using_uc(undetectable, browser_name):
+    if chromium_arg and "sbase" in chromium_arg:
         sbase_ext_zip = SBASE_EXT_ZIP_PATH
         sbase_ext_dir = os.path.join(DOWNLOADS_FOLDER, "sbase_ext")
         _unzip_to_new_folder(sbase_ext_zip, sbase_ext_dir)
