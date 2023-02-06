@@ -5,7 +5,7 @@ from seleniumbase import BaseCase
 
 if __name__ == "__main__":
     from pytest import main
-    main([__file__, "--uc", "--incognito", "-s"])
+    main([__file__, "--uc", "--incognito", "-s", "--uc-cdp-events"])
 
 
 class UndetectedTest(BaseCase):
