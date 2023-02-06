@@ -734,6 +734,7 @@ def _set_chrome_options(
             or IS_LINUX  # switches to Xvfb (non-headless)
         )
     ):
+        chrome_options.add_argument("--disable-popup-blocking")
         # Skip remaining options that trigger anti-bot services
         return chrome_options
     chrome_options.add_argument("--test-type")

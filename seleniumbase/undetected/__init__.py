@@ -9,6 +9,8 @@ import selenium.webdriver.chrome.service
 import selenium.webdriver.chrome.webdriver
 import selenium.webdriver.common.service
 import selenium.webdriver.remote.command
+from .cdp import CDP
+from .cdp import PageElement
 from .dprocess import start_detached
 from .options import ChromeOptions
 from .patcher import IS_POSIX
@@ -133,13 +135,12 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                 constants.MultiBrowser.DRIVER_FIXING_LOCK
             )
             with uc_lock:
-                patcher = Patcher(
+                self.patcher = Patcher(
                     executable_path=driver_executable_path,
                     force=patcher_force_close,
                     version_main=version_main,
                 )
-                patcher.auto()
-                self.patcher = patcher
+                self.patcher.auto()
         if not options:
             options = ChromeOptions()
         try:
@@ -280,7 +281,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         service_ = None
         if patch_driver:
             service_ = selenium.webdriver.chrome.service.Service(
-                executable_path=patcher.executable_path,
+                executable_path=self.patcher.executable_path,
                 log_path=os.devnull,
             )
         else:
@@ -380,19 +381,28 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         if self.reactor and isinstance(self.reactor, Reactor):
             self.reactor.handlers.clear()
 
-    def window_new(self):
+    def window_new(self, url=None):
         self.execute(
             selenium.webdriver.remote.command.Command.NEW_WINDOW,
             {"type": "window"},
         )
+        if url:
+            self.remove_cdc_props_as_needed()
+            return super().get(url)
+        return None
 
     def tab_new(self, url):
         """This opens a url in a new tab."""
         if not hasattr(self, "cdp"):
-            from .cdp import CDP
+            self.cdp = CDP(self.options)
+        self.cdp.tab_new(str(url))
 
-            cdp = CDP(self.options)
-            cdp.tab_new(str(url))
+    def tab_list(self):
+        if not hasattr(self, "cdp"):
+            self.cdp = CDP(self.options)
+
+        retval = self.get(self.cdp.endpoints["list"])
+        return [PageElement(o) for o in retval]
 
     def reconnect(self, timeout=0.1):
         try:
