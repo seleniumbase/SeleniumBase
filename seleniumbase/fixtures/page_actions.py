@@ -1328,6 +1328,8 @@ def switch_to_window(driver, window, timeout=settings.SMALL_TIMEOUT):
     window - the window index or window handle
     timeout - the time to wait for the window in seconds
     """
+    if window == -1:
+        window = len(driver.window_handles) - 1
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     if isinstance(window, int):
@@ -1335,9 +1337,8 @@ def switch_to_window(driver, window, timeout=settings.SMALL_TIMEOUT):
         if (
             caps["browserName"].lower() == "safari"
             and "safari:platformVersion" in caps
-            and caps["safari:platformVersion"].split(".") < ["10", "15"]
         ):
-            # Fix reversed window_handles on Safari 10.14 or lower
+            # Reversed window_handles on Safari
             window = len(driver.window_handles) - 1 - window
             if window < 0:
                 window = 0

@@ -2634,7 +2634,19 @@ class BaseCase(unittest.TestCase):
         ):
             element.click()
         else:
-            element.uc_click()
+            try:
+                href = element.get_attribute("href")
+                target = element.get_attribute("target")
+                if len(href) > 0 and target == "_blank":
+                    self.driver.tab_new(href)
+                    self.switch_to_window(-1)
+                    time.sleep(0.01)
+                elif len(href) > 0:
+                    element.uc_click()
+                else:
+                    element.click()
+            except Exception:
+                element.click()
 
     def __select_option(
         self,
@@ -3344,7 +3356,7 @@ class BaseCase(unittest.TestCase):
         if hasattr(self.driver, "tab_new"):
             self.driver.tab_new("about:blank")
             if switch_to:
-                self.switch_to_newest_window()
+                self.switch_to_window(-1)
             time.sleep(0.01)
             return
         if selenium4_or_newer and switch_to:
@@ -3375,7 +3387,7 @@ class BaseCase(unittest.TestCase):
         self.switch_to_window(0)
 
     def switch_to_newest_window(self):
-        self.switch_to_window(len(self.driver.window_handles) - 1)
+        self.switch_to_window(-1)
 
     def get_new_driver(
         self,
@@ -12471,7 +12483,7 @@ class BaseCase(unittest.TestCase):
     def __switch_to_newest_window_if_not_blank(self):
         current_window = self.driver.current_window_handle
         try:
-            self.switch_to_window(len(self.driver.window_handles) - 1)
+            self.switch_to_window(-1)
             if self.get_current_url() == "about:blank":
                 self.switch_to_window(current_window)
         except Exception:
@@ -13603,9 +13615,7 @@ class BaseCase(unittest.TestCase):
                         has_url = True
                     if len(self.driver.window_handles) > 1:
                         while len(self.driver.window_handles) > 1:
-                            self.switch_to_window(
-                                len(self.driver.window_handles) - 1
-                            )
+                            self.switch_to_window(-1)
                             self.driver.close()
                         self.switch_to_window(0)
                     if self._crumbs:

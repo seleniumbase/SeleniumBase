@@ -47,11 +47,9 @@ class Patcher(object):
             version_main: 0 = auto
                 Specify main chrome version (rounded, ex: 82)
         """
-        import secrets
-
         self.force = force
         self.executable_path = None
-        prefix = secrets.token_hex(8)
+        prefix = "undetected"
         if not os.path.exists(self.data_path):
             os.makedirs(self.data_path, exist_ok=True)
         if not executable_path:
@@ -221,6 +219,33 @@ class Patcher(object):
             fh.seek(0)
             fh.write(file_bin)
         return True
+
+    def is_binary_patched_new(self, executable_path=None):
+        executable_path = executable_path or self.executable_path
+        with io.open(executable_path, "rb") as fh:
+            return fh.read().find(b"undetected chromedriver") != -1
+
+    def patch_exe_new(self):
+        logger.info("patching driver executable %s" % self.executable_path)
+        with io.open(self.executable_path, "r+b") as fh:
+            content = fh.read()
+            match_injected_codeblock = re.search(rb"{window.*;}", content)
+            if match_injected_codeblock:
+                target_bytes = match_injected_codeblock[0]
+                new_target_bytes = (
+                    b'{console.log("undetected chromedriver 1337!")}'.ljust(
+                        len(target_bytes), b" "
+                    )
+                )
+                new_content = content.replace(target_bytes, new_target_bytes)
+                if new_content == content:
+                    pass  # Failure to patch driver
+                else:
+                    # Patch now
+                    fh.seek(0)
+                    fh.write(new_content)
+            else:
+                pass  # Already patched
 
     def __repr__(self):
         return "{0:s}({1:s})".format(

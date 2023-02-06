@@ -89,6 +89,9 @@ class CDP:
             self.log.info(self._last_json)
 
     def get(self, uri):
+        from urllib.parse import unquote
+
+        uri = unquote(uri, errors="strict")
         resp = self._session.get(self.server_addr + uri)
         try:
             self._last_resp = resp
@@ -99,6 +102,9 @@ class CDP:
             return self._last_json
 
     def post(self, uri, data=None):
+        from urllib.parse import unquote
+
+        uri = unquote(uri, errors="strict")
         if not data:
             data = {}
         resp = self._session.post(self.server_addr + uri, json=data)
