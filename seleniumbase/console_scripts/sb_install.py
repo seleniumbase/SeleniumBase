@@ -676,7 +676,7 @@ def main(override=None, intel_for_uc=None):
         contents = zip_ref.namelist()
         if (
             len(contents) >= 1
-            and name in ["chromedriver", "uc_driver"]
+            and name in ["chromedriver", "uc_driver", "geckodriver"]
         ):
             for f_name in contents:
                 if (
