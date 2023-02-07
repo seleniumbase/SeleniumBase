@@ -17,7 +17,7 @@ class OfflineTests(BaseCase):
             self.skip(msg)
         print("\n--------------------------")
         try:
-            self.driver.execute_cdp_cmd(
+            self.execute_cdp_cmd(
                 "Network.setUserAgentOverride",
                 {
                     "userAgent": "Mozilla/5.0 "
@@ -30,7 +30,7 @@ class OfflineTests(BaseCase):
             print('\nOverrided User Agent = "%s"' % new_user_agent)
         finally:
             # Reset the user-agent back to the original
-            self.driver.execute_cdp_cmd(
+            self.execute_cdp_cmd(
                 "Network.setUserAgentOverride",
                 {"userAgent": user_agent},
             )

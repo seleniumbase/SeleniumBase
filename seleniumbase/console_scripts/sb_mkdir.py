@@ -159,6 +159,7 @@ def main():
     data = []
     data.append("[flake8]")
     data.append("exclude=recordings,temp")
+    data.append("ignore=W503")
     data.append("")
     data.append("[nosetests]")
     data.append("nocapture=1")

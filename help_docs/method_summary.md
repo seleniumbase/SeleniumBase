@@ -206,6 +206,8 @@ self.open_html_file(html_file)
 
 self.execute_script(script, *args, **kwargs)
 
+self.execute_cdp_cmd(script, *args, **kwargs)
+
 self.execute_async_script(script, timeout=None)
 
 self.safe_execute_script(script, *args, **kwargs)

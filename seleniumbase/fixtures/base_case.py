@@ -1130,15 +1130,11 @@ class BaseCase(unittest.TestCase):
         return self.get_page_title()
 
     def get_user_agent(self):
-        self.__check_scope()
-        self.__check_browser()
-        user_agent = self.driver.execute_script("return navigator.userAgent;")
+        user_agent = self.execute_script("return navigator.userAgent;")
         return user_agent
 
     def get_locale_code(self):
-        self.__check_scope()
-        self.__check_browser()
-        locale_code = self.driver.execute_script(
+        locale_code = self.execute_script(
             "return navigator.language || navigator.languages[0];"
         )
         return locale_code
@@ -1939,6 +1935,8 @@ class BaseCase(unittest.TestCase):
         self.wait_for_ready_state_complete()
         if self.__needs_minimum_wait():
             time.sleep(0.12)
+            if self.undetectable:
+                time.sleep(0.06)
         element = self.wait_for_element_present(
             selector, by=by, timeout=timeout
         )
@@ -1946,6 +1944,8 @@ class BaseCase(unittest.TestCase):
             # If the first element isn't visible, wait a little.
             if not element.is_displayed():
                 time.sleep(0.16)
+                if self.undetectable:
+                    time.sleep(0.06)
         except Exception:
             pass
         elements = self.find_elements(selector, by=by)
@@ -2284,6 +2284,8 @@ class BaseCase(unittest.TestCase):
         self.wait_for_ready_state_complete()
         if self.__needs_minimum_wait():
             time.sleep(0.04)
+            if self.undetectable:
+                time.sleep(0.04)
         selector, by = self.__recalculate_selector(selector, by)
         if self.is_element_present(selector, by=by):
             return None
@@ -2640,11 +2642,11 @@ class BaseCase(unittest.TestCase):
                 if len(href) > 0 and target == "_blank":
                     self.driver.tab_new(href)
                     self.switch_to_window(-1)
-                    time.sleep(0.01)
                 elif len(href) > 0:
                     element.uc_click()
                 else:
                     element.click()
+                time.sleep(0.012)
             except Exception:
                 element.click()
 
@@ -3016,6 +3018,11 @@ class BaseCase(unittest.TestCase):
         self.__check_browser()
         return self.driver.execute_script(script, *args, **kwargs)
 
+    def execute_cdp_cmd(self, script, *args, **kwargs):
+        self.__check_scope()
+        self.__check_browser()
+        return self.driver.execute_cdp_cmd(script, *args, **kwargs)
+
     def execute_async_script(self, script, timeout=None):
         self.__check_scope()
         self.__check_browser()
@@ -3064,16 +3071,22 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         if self.__needs_minimum_wait():
             time.sleep(0.05)
+            if self.undetectable:
+                time.sleep(0.05)
         if type(frame) is str and self.is_element_visible(frame):
             try:
                 self.scroll_to(frame, timeout=1)
                 if self.__needs_minimum_wait():
                     time.sleep(0.04)
+                    if self.undetectable:
+                        time.sleep(0.04)
             except Exception:
                 time.sleep(0.02)
         else:
             if self.__needs_minimum_wait():
                 time.sleep(0.05)
+                if self.undetectable:
+                    time.sleep(0.05)
         if self.undetectable:
             self.__uc_frame_layer += 1
         if self.recorder_mode and self._rec_overrides_switch:
@@ -3097,10 +3110,14 @@ class BaseCase(unittest.TestCase):
         self.wait_for_ready_state_complete()
         if self.__needs_minimum_wait():
             time.sleep(0.035)
+            if self.undetectable:
+                time.sleep(0.035)
         page_actions.switch_to_frame(self.driver, frame, timeout)
         self.wait_for_ready_state_complete()
         if self.__needs_minimum_wait():
             time.sleep(0.015)
+            if self.undetectable:
+                time.sleep(0.015)
 
     def switch_to_default_content(self):
         """Brings driver control outside the current iframe.
@@ -7525,7 +7542,7 @@ class BaseCase(unittest.TestCase):
         lost, and you'll have to call start_recording_console_logs() again.
         # Link1: https://stackoverflow.com/a/19846113/7058266
         # Link2: https://stackoverflow.com/a/74196986/7058266 """
-        self.driver.execute_script(
+        self.execute_script(
             """
             console.stdlog = console.log.bind(console);
             console.logs = [];
@@ -7540,19 +7557,19 @@ class BaseCase(unittest.TestCase):
         """Log a string to the Web Browser's Console.
         Example:
         self.console_log_string("Hello World!") """
-        self.driver.execute_script("""console.log(`%s`);""" % string)
+        self.execute_script("""console.log(`%s`);""" % string)
 
     def console_log_script(self, script):
         """Log output of JavaScript to the Web Browser's Console.
         Example:
         self.console_log_script('document.querySelector("h2").textContent') """
-        self.driver.execute_script("""console.log(%s);""" % script)
+        self.execute_script("""console.log(%s);""" % script)
 
     def get_recorded_console_logs(self):
         """Get console logs recorded after "start_recording_console_logs()"."""
         logs = []
         try:
-            logs = self.driver.execute_script("return console.logs;")
+            logs = self.execute_script("return console.logs;")
         except Exception:
             pass
         return logs
@@ -12120,7 +12137,7 @@ class BaseCase(unittest.TestCase):
 
         self.wait_for_ready_state_complete()
         if self.__needs_minimum_wait():
-            time.sleep(0.08)  # Force a minimum wait, even if skipping waits.
+            time.sleep(0.14)  # Force a minimum wait, even if skipping waits.
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
@@ -12169,7 +12186,7 @@ class BaseCase(unittest.TestCase):
             if element_location < 0:
                 element_location = 0
             scroll_script = "window.scrollTo(0, %s);" % element_location
-            self.driver.execute_script(scroll_script)
+            self.execute_script(scroll_script)
             time.sleep(0.12)
         except Exception:
             time.sleep(0.05)
