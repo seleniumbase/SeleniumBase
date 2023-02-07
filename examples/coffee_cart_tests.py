@@ -12,6 +12,7 @@ class CoffeeCartTests(BaseCase):
 
     def test_buy_one_cappuccino(self):
         self.open("https://seleniumbase.io/coffee/")
+        self.assert_title("Coffee Cart")
         self.click('div[data-test="Cappuccino"]')
         self.assert_exact_text("cart (1)", 'a[aria-label="Cart page"]')
         self.click('a[aria-label="Cart page"]')
@@ -50,6 +51,7 @@ class CoffeeCartTests(BaseCase):
 
     def test_context_click_add_coffee(self):
         self.open("https://seleniumbase.io/coffee/")
+        self.assert_title("Coffee Cart")
         self.context_click('div[data-test="Espresso_Macchiato"]')
         self.click('form button:contains("Yes")')
         self.assert_exact_text("cart (1)", 'a[aria-label="Cart page"]')

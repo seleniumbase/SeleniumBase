@@ -24,7 +24,7 @@ class UserAgentTests(BaseCase):
             self.skip(msg)
         print("\n--------------------------")
         try:
-            self.driver.execute_cdp_cmd(
+            self.execute_cdp_cmd(
                 "Network.setUserAgentOverride",
                 {
                     "userAgent": "Mozilla/5.0 "
@@ -41,7 +41,7 @@ class UserAgentTests(BaseCase):
                 self.sleep(3)
         finally:
             # Reset the user-agent back to the original
-            self.driver.execute_cdp_cmd(
+            self.execute_cdp_cmd(
                 "Network.setUserAgentOverride",
                 {"userAgent": original_user_agent},
             )
