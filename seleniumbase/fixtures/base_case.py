@@ -3016,6 +3016,11 @@ class BaseCase(unittest.TestCase):
         self.__check_browser()
         return self.driver.execute_script(script, *args, **kwargs)
 
+    def execute_cdp_cmd(self, script, *args, **kwargs):
+        self.__check_scope()
+        self.__check_browser()
+        return self.driver.execute_cdp_cmd(script, *args, **kwargs)
+
     def execute_async_script(self, script, timeout=None):
         self.__check_scope()
         self.__check_browser()
