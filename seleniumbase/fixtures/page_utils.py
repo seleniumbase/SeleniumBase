@@ -1,10 +1,10 @@
-"""
-This module contains useful utility methods.
-"""
+"""This module contains useful utility methods."""
 import codecs
+import fasteners
 import os
 import re
 import requests
+from seleniumbase.fixtures import constants
 
 
 def get_domain_url(url):
@@ -24,9 +24,7 @@ def get_domain_url(url):
 
 
 def is_xpath_selector(selector):
-    """
-    A basic method to determine if a selector is an xpath selector.
-    """
+    """Determine if a selector is an xpath selector."""
     if (
         selector.startswith("/")
         or selector.startswith("./")
@@ -37,9 +35,7 @@ def is_xpath_selector(selector):
 
 
 def is_link_text_selector(selector):
-    """
-    A basic method to determine if a selector is a link text selector.
-    """
+    """Determine if a selector is a link text selector."""
     if (
         selector.startswith("link=")
         or selector.startswith("link_text=")
@@ -50,9 +46,7 @@ def is_link_text_selector(selector):
 
 
 def is_partial_link_text_selector(selector):
-    """
-    A basic method to determine if a selector is a partial link text selector.
-    """
+    """Determine if a selector is a partial link text selector."""
     if (
         selector.startswith("partial_link=")
         or selector.startswith("partial_link_text=")
@@ -66,18 +60,14 @@ def is_partial_link_text_selector(selector):
 
 
 def is_name_selector(selector):
-    """
-    A basic method to determine if a selector is a name selector.
-    """
+    """Determine if a selector is a name selector."""
     if selector.startswith("name=") or selector.startswith("&"):
         return True
     return False
 
 
 def get_link_text_from_selector(selector):
-    """
-    A basic method to get the link text from a link text selector.
-    """
+    """Get the link text from a link text selector."""
     if selector.startswith("link="):
         return selector[len("link="):]
     elif selector.startswith("link_text="):
@@ -88,9 +78,7 @@ def get_link_text_from_selector(selector):
 
 
 def get_partial_link_text_from_selector(selector):
-    """
-    A basic method to get the partial link text from a partial link selector.
-    """
+    """Get the partial link text from a partial link selector."""
     if selector.startswith("partial_link="):
         return selector[len("partial_link="):]
     elif selector.startswith("partial_link_text="):
@@ -107,9 +95,7 @@ def get_partial_link_text_from_selector(selector):
 
 
 def get_name_from_selector(selector):
-    """
-    A basic method to get the name from a name selector.
-    """
+    """Get the name from a name selector."""
     if selector.startswith("name="):
         return selector[len("name="):]
     if selector.startswith("&"):
@@ -143,8 +129,7 @@ def is_valid_url(url):
 
 
 def _get_unique_links(page_url, soup):
-    """
-    Returns all unique links.
+    """Returns all unique links.
     Includes:
         "a"->"href", "img"->"src", "link"->"href", and "script"->"src" links.
     """
@@ -225,8 +210,7 @@ def _get_link_status_code(
     If the timeout is exceeded, will return a 404.
     If "verify" is False, will ignore certificate errors.
     For a list of available status codes, see:
-    https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
-    """
+    https://en.wikipedia.org/wiki/List_of_HTTP_status_codes """
     status_code = None
     try:
         response = requests.head(
@@ -246,8 +230,7 @@ def _print_unique_links_with_status_codes(page_url, soup):
     and then prints out those links with their status codes.
     Format:  ["link"  ->  "status_code"]  (per line)
     Page links include those obtained from:
-    "a"->"href", "img"->"src", "link"->"href", and "script"->"src".
-    """
+    "a"->"href", "img"->"src", "link"->"href", and "script"->"src". """
     links = _get_unique_links(page_url, soup)
     for link in links:
         status_code = _get_link_status_code(link)
@@ -261,8 +244,12 @@ def _download_file_to(file_url, destination_folder, new_file_name=None):
         file_name = file_url.split("/")[-1]
     r = requests.get(file_url)
     file_path = os.path.join(destination_folder, file_name)
-    with open(file_path, "wb") as code:
-        code.write(r.content)
+    download_file_lock = fasteners.InterProcessLock(
+        constants.MultiBrowser.DOWNLOAD_FILE_LOCK
+    )
+    with download_file_lock:
+        with open(file_path, "wb") as code:
+            code.write(r.content)
 
 
 def _save_data_as(data, destination_folder, file_name):

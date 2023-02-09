@@ -485,7 +485,11 @@ self.is_chromium()
 
 self.get_chrome_version()
 
+self.get_chromium_version()
+
 self.get_chromedriver_version()
+
+self.get_chromium_driver_version()
 
 self.get_mfa_code(totp_key=None)
 # Duplicates: self.get_totp_code(totp_key=None)

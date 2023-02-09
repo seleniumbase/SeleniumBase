@@ -9,6 +9,7 @@ import sys
 import time
 import urllib3
 import warnings
+import zipfile
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.edge.service import Service as EdgeService
@@ -351,8 +352,6 @@ def _unzip_to_new_folder(zip_file, folder):
     proxy_dir_lock = fasteners.InterProcessLock(PROXY_DIR_LOCK)
     with proxy_dir_lock:
         if not os.path.exists(folder):
-            import zipfile
-
             zip_ref = zipfile.ZipFile(zip_file, "r")
             os.makedirs(folder)
             zip_ref.extractall(folder)

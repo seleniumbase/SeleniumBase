@@ -7,6 +7,7 @@ import re
 import string
 import sys
 import time
+import zipfile
 
 logger = logging.getLogger(__name__)
 IS_POSIX = sys.platform.startswith(("darwin", "cygwin", "linux"))
@@ -137,8 +138,6 @@ class Patcher(object):
         """
         :return: path to unpacked executable
         """
-        import zipfile
-
         logger.debug("unzipping %s" % fp)
         try:
             os.unlink(self.zip_path)
@@ -147,12 +146,19 @@ class Patcher(object):
         os.makedirs(self.zip_path, mode=0o755, exist_ok=True)
         with zipfile.ZipFile(fp, mode="r") as zf:
             zf.extract(self.exe_name, self.zip_path)
-        os.rename(
-            os.path.join(self.zip_path, self.exe_name), self.executable_path
-        )
-        os.remove(fp)
-        os.rmdir(self.zip_path)
-        os.chmod(self.executable_path, 0o755)
+        try:
+            os.rename(
+                os.path.join(self.zip_path, self.exe_name),
+                self.executable_path,
+            )
+            os.remove(fp)
+        except PermissionError:
+            pass
+        try:
+            os.rmdir(self.zip_path)
+            os.chmod(self.executable_path, 0o755)
+        except PermissionError:
+            pass
         return self.executable_path
 
     @staticmethod
@@ -170,8 +176,6 @@ class Patcher(object):
 
     @staticmethod
     def gen_random_cdc():
-        import string
-
         cdc = random.choices(string.ascii_lowercase, k=26)
         cdc[-6:-4] = map(str.upper, cdc[-6:-4])
         cdc[2] = cdc[0]
@@ -220,32 +224,40 @@ class Patcher(object):
             fh.write(file_bin)
         return True
 
-    def is_binary_patched_new(self, executable_path=None):
-        executable_path = executable_path or self.executable_path
-        with io.open(executable_path, "rb") as fh:
-            return fh.read().find(b"undetected chromedriver") != -1
+    @staticmethod
+    def gen_random_cdc_beta():
+        cdc = random.choices(string.ascii_letters, k=27)
+        return "".join(cdc).encode()
 
-    def patch_exe_new(self):
-        logger.info("patching driver executable %s" % self.executable_path)
+    def is_binary_patched_beta(self, executable_path=None):
+        executable_path = executable_path or self.executable_path
+        try:
+            with io.open(executable_path, "rb") as fh:
+                return fh.read().find(b"undetected chromedriver") != -1
+        except FileNotFoundError:
+            return False
+
+    def patch_exe_beta(self):
         with io.open(self.executable_path, "r+b") as fh:
             content = fh.read()
-            match_injected_codeblock = re.search(rb"{window.*;}", content)
+            match_injected_codeblock = re.search(
+                rb"\{window\.cdc.*?;\}", content
+            )
+            target_bytes = None
             if match_injected_codeblock:
                 target_bytes = match_injected_codeblock[0]
                 new_target_bytes = (
-                    b'{console.log("undetected chromedriver 1337!")}'.ljust(
+                    b'{console.log("chromedriver is undetectable!")}'.ljust(
                         len(target_bytes), b" "
                     )
                 )
+            if target_bytes:
                 new_content = content.replace(target_bytes, new_target_bytes)
                 if new_content == content:
-                    pass  # Failure to patch driver
+                    pass  # Unable to patch driver
                 else:
-                    # Patch now
                     fh.seek(0)
                     fh.write(new_content)
-            else:
-                pass  # Already patched
 
     def __repr__(self):
         return "{0:s}({1:s})".format(

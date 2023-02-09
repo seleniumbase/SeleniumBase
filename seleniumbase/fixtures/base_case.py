@@ -61,6 +61,12 @@ from selenium.webdriver.remote.remote_connection import LOGGER
 from seleniumbase import config as sb_config
 from seleniumbase.__version__ import __version__
 from seleniumbase.common import decorators
+from seleniumbase.common.exceptions import (
+    NotUsingChromeException,
+    NotUsingChromiumException,
+    OutOfScopeException,
+    VisualException,
+)
 from seleniumbase.config import settings
 from seleniumbase.core import download_helper
 from seleniumbase.core import log_helper
@@ -6427,11 +6433,15 @@ class BaseCase(unittest.TestCase):
     def download_file(self, file_url, destination_folder=None):
         """Downloads the file from the url to the destination folder.
         If no destination folder is specified, the default one is used.
-        (The default [Downloads Folder] = "./downloaded_files")"""
-        if not destination_folder:
-            destination_folder = constants.Files.DOWNLOADS_FOLDER
-        if not os.path.exists(destination_folder):
-            os.makedirs(destination_folder)
+        (The default folder for downloads is "./downloaded_files")"""
+        download_file_lock = fasteners.InterProcessLock(
+            constants.MultiBrowser.DOWNLOAD_FILE_LOCK
+        )
+        with download_file_lock:
+            if not destination_folder:
+                destination_folder = constants.Files.DOWNLOADS_FOLDER
+            if not os.path.exists(destination_folder):
+                os.makedirs(destination_folder)
         page_utils._download_file_to(file_url, destination_folder)
         if self.recorder_mode:
             url = self.get_current_url()
@@ -6489,6 +6499,12 @@ class BaseCase(unittest.TestCase):
             and self.headless
         ):
             return os.path.join(os.path.expanduser("~"), "downloads")
+        elif (
+            self.driver.capabilities["browserName"].lower() == "chrome"
+            and int(self.get_chromedriver_version().split(".")[0]) >= 110
+            and self.headless
+        ):
+            return os.path.abspath(".")
         else:
             return download_helper.get_downloads_folder()
         return os.path.join(os.path.expanduser("~"), "downloads")
@@ -7088,16 +7104,26 @@ class BaseCase(unittest.TestCase):
         if browser_name.lower() == "chrome":
             chrome = True
         if not chrome:
-            from seleniumbase.common.exceptions import NotUsingChromeException
-
             message = (
-                'Error: "%s" should only be called '
-                'by tests running with self.browser == "chrome"! '
+                'Error: "%s" should only be called by tests '
+                'running with "--browser=chrome" / "--chrome"! '
                 'You should add an "if" statement to your code before calling '
                 "this method if using browsers that are Not Chrome! "
                 'The browser detected was: "%s".' % (method, browser_name)
             )
             raise NotUsingChromeException(message)
+
+    def __fail_if_not_using_chromium(self, method):
+        browser_name = self.driver.capabilities["browserName"]
+        if not self.is_chromium():
+            message = (
+                'Error: "%s" should only be called by tests '
+                'running with a Chromium browser! (Chrome or Edge) '
+                'You should add an "if" statement to your code before calling '
+                "this method if using browsers that are Not Chromium! "
+                'The browser detected was: "%s".' % (method, browser_name)
+            )
+            raise NotUsingChromiumException(message)
 
     def get_chrome_version(self):
         self.__check_scope()
@@ -7109,6 +7135,11 @@ class BaseCase(unittest.TestCase):
             chrome_version = driver_capabilities["browserVersion"]
         return chrome_version
 
+    def get_chromium_version(self):
+        self.__check_scope()
+        self.__fail_if_not_using_chromium("get_chromium_version()")
+        return self.__get_major_browser_version()
+
     def get_chromedriver_version(self):
         self.__check_scope()
         self.__fail_if_not_using_chrome("get_chromedriver_version()")
@@ -7117,14 +7148,19 @@ class BaseCase(unittest.TestCase):
         chromedriver_version = chromedriver_version.split(" ")[0]
         return chromedriver_version
 
-    def is_chromedriver_too_old(self):
-        """Before chromedriver 73, there was no version check, which
-        means it's possible to run a new Chrome with old drivers."""
+    def get_chromium_driver_version(self):
         self.__check_scope()
-        self.__fail_if_not_using_chrome("is_chromedriver_too_old()")
-        if int(self.get_chromedriver_version().split(".")[0]) < 73:
-            return True  # chromedriver is too old! Please upgrade!
-        return False
+        self.__fail_if_not_using_chromium("get_chromium_version()")
+        driver_version = None
+        if "chrome" in self.driver.capabilities:
+            chrome_dict = self.driver.capabilities["chrome"]
+            driver_version = chrome_dict["chromedriverVersion"]
+            driver_version = driver_version.split(" ")[0]
+        elif "msedge" in self.driver.capabilities:
+            edge_dict = self.driver.capabilities["msedge"]
+            driver_version = edge_dict["msedgedriverVersion"]
+            driver_version = driver_version.split(" ")[0]
+        return driver_version
 
     def get_mfa_code(self, totp_key=None):
         """Same as get_totp_code() and get_google_auth_password().
@@ -9303,8 +9339,6 @@ class BaseCase(unittest.TestCase):
                 elif line.strip().startswith("*"):
                     minified_exception += line + "\n"
         if minified_exception:
-            from seleniumbase.common.exceptions import VisualException
-
             raise VisualException(minified_exception)
 
     def _process_visual_baseline_logs(self):
@@ -9684,8 +9718,6 @@ class BaseCase(unittest.TestCase):
         if hasattr(self, "browser"):  # self.browser stores the type of browser
             return  # All good: setUp() already initialized variables in "self"
         else:
-            from seleniumbase.common.exceptions import OutOfScopeException
-
             message = (
                 "\n It looks like you are trying to call a SeleniumBase method"
                 "\n from outside the scope of your test class's `self` object,"
@@ -12730,9 +12762,18 @@ class BaseCase(unittest.TestCase):
 
     ############
 
+    @decorators.deprecated("The Driver Manager prevents old drivers.")
+    def is_chromedriver_too_old(self):
+        """Before chromedriver 73, there was no version check, which
+        means it's possible to run a new Chrome with old drivers."""
+        self.__fail_if_not_using_chrome("is_chromedriver_too_old()")
+        if int(self.get_chromedriver_version().split(".")[0]) < 73:
+            return True  # chromedriver is too old! Please upgrade!
+        return False
+
     @decorators.deprecated("You should use re.escape() instead.")
     def jq_format(self, code):
-        # DEPRECATED - re.escape() already performs the intended action.
+        # DEPRECATED - re.escape() already performs this action.
         return js_utils._jq_format(code)
 
     ############
