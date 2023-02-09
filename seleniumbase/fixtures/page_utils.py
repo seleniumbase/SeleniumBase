@@ -1,10 +1,10 @@
-"""
-This module contains useful utility methods.
-"""
+"""This module contains useful utility methods."""
 import codecs
+import fasteners
 import os
 import re
 import requests
+from seleniumbase.fixtures import constants
 
 
 def get_domain_url(url):
@@ -261,8 +261,12 @@ def _download_file_to(file_url, destination_folder, new_file_name=None):
         file_name = file_url.split("/")[-1]
     r = requests.get(file_url)
     file_path = os.path.join(destination_folder, file_name)
-    with open(file_path, "wb") as code:
-        code.write(r.content)
+    download_file_lock = fasteners.InterProcessLock(
+        constants.MultiBrowser.DOWNLOAD_FILE_LOCK
+    )
+    with download_file_lock:
+        with open(file_path, "wb") as code:
+            code.write(r.content)
 
 
 def _save_data_as(data, destination_folder, file_name):

@@ -6427,11 +6427,15 @@ class BaseCase(unittest.TestCase):
     def download_file(self, file_url, destination_folder=None):
         """Downloads the file from the url to the destination folder.
         If no destination folder is specified, the default one is used.
-        (The default [Downloads Folder] = "./downloaded_files")"""
-        if not destination_folder:
-            destination_folder = constants.Files.DOWNLOADS_FOLDER
-        if not os.path.exists(destination_folder):
-            os.makedirs(destination_folder)
+        (The default folder for downloads is "./downloaded_files")"""
+        download_file_lock = fasteners.InterProcessLock(
+            constants.MultiBrowser.DOWNLOAD_FILE_LOCK
+        )
+        with download_file_lock:
+            if not destination_folder:
+                destination_folder = constants.Files.DOWNLOADS_FOLDER
+            if not os.path.exists(destination_folder):
+                os.makedirs(destination_folder)
         page_utils._download_file_to(file_url, destination_folder)
         if self.recorder_mode:
             url = self.get_current_url()
