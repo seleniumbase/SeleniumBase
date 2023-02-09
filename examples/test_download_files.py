@@ -42,6 +42,11 @@ class DownloadTests(BaseCase):
             or self.browser == "ie"
             or (self.is_chromium() and self.guest_mode and not self.headless)
             or (self.undetectable and (self.headless or self.headless2))
+            or (
+                self.is_chromium()
+                and int(self.get_chromium_version()) >= 110
+                and self.headless
+            )
         ):
             whl_href = self.get_attribute(whl_selector, "href")
             tar_href = self.get_attribute(tar_selector, "href")
