@@ -6,6 +6,10 @@ BaseCase.main(__name__, __file__)
 
 class ShadowRootTest(BaseCase):
     def test_shadow_root(self):
+        if self.recorder_mode:
+            self.open("about:blank")
+            print("Skipping test in Recorder Mode.")
+            self.skip("Skipping test in Recorder Mode.")
         self.open("https://seleniumbase.io/other/shadow_dom")
         print("")
         self.click("button.tab_1")

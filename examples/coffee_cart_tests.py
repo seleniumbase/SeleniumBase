@@ -1,4 +1,5 @@
 """Use SeleniumBase to test the Coffee Cart App."""
+from parameterized import parameterized
 from seleniumbase import BaseCase
 BaseCase.main(__name__, __file__)
 
@@ -25,7 +26,8 @@ class CoffeeCartTests(BaseCase):
         self.assert_exact_text("cart (0)", 'a[aria-label="Cart page"]')
         self.assert_exact_text("Total: $0.00", 'button[data-test="checkout"]')
 
-    def test_coffee_promo_with_preview(self):
+    @parameterized.expand([[False], [True]])
+    def test_coffee_promo_with_preview(self, accept_promo):
         self.open("https://seleniumbase.io/coffee/")
         self.click('div[data-test="Espresso"]')
         self.click('div[data-test="Americano"]')
@@ -35,15 +37,23 @@ class CoffeeCartTests(BaseCase):
         total_string = "Total: $33.00"
         if self.is_element_visible("div.promo"):
             self.assert_text("Get an extra cup of Mocha for $4.", "div.promo")
-            self.click("div.promo button.yes")
-            self.assert_exact_text("cart (4)", 'a[aria-label="Cart page"]')
-            promo = True
-            total_string = "Total: $37.00"
-        self.hover('button[data-test="checkout"]')
+            if accept_promo:
+                self.click("div.promo button.yes")
+                self.assert_exact_text("cart (4)", 'a[aria-label="Cart page"]')
+                promo = True
+                total_string = "Total: $37.00"
+            else:
+                self.click("div.promo button.no")
+        checkout_button = 'button[data-test="checkout"]'
         if promo:
+            self.hover(checkout_button)
+            if not self.is_element_visible("ul.cart-preview"):
+                self.highlight(checkout_button)
+                self.post_message("STOP moving the mouse!<br />Hover blocked!")
+                self.hover(checkout_button)
             self.assert_text("(Discounted) Mocha", "ul.cart-preview")
-        self.assert_exact_text(total_string, 'button[data-test="checkout"]')
-        self.click('button[data-test="checkout"]')
+        self.assert_exact_text(total_string, checkout_button)
+        self.click(checkout_button)
         self.type("input#name", "Selenium Coffee")
         self.type("input#email", "test@test.test")
         self.click("button#submit-payment")

@@ -33,20 +33,14 @@ class DownloadTests(BaseCase):
         # Click the links to download the files into: "./downloaded_files/"
         # (If using Safari, IE, or Chromium Guest Mode: download directly.)
         # (The default Downloads Folder can't be changed when using those.)
-        # (The same problem occurs when using an out-of-date chromedriver.)
         # (Use self.get_browser_downloads_folder() to get the folder used.)
         whl_selector = 'div#files a[href$="%s"]' % whl_file
         tar_selector = 'div#files a[href$="%s"]' % tar_gz_file
         if (
             self.browser == "safari"
             or self.browser == "ie"
-            or (self.is_chromium() and self.guest_mode and not self.headless)
-            or (self.undetectable and (self.headless or self.headless2))
-            or (
-                self.is_chromium()
-                and int(self.get_chromium_version()) >= 110
-                and self.headless
-            )
+            or (self.is_chromium() and self.guest_mode)
+            or (self.is_chromium() and (self.headless or self.headless2))
         ):
             whl_href = self.get_attribute(whl_selector, "href")
             tar_href = self.get_attribute(tar_selector, "href")

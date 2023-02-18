@@ -43,7 +43,7 @@ class HackTests(BaseCase):
             self.set_text_content('#shelf-1 a[href*="airtag"]', "TO")
             self.set_text_content('#shelf-1 a[href*="tv"]', "US")
             self.set_text_content('#shelf-1 a[href*="homepod"]', ".")
-            self.set_text_content("h2", aybabtu + ". ")
+            self.set_text_content("#shelf-3 h2", aybabtu + ". ")
             self.highlight("div.rs-shop-subheader", loops=6, scroll=False)
             self.highlight("#shelf-1", loops=2, scroll=False)
             self.highlight('#shelf-1 a[href*="mac"]', loops=1, scroll=False)
@@ -53,7 +53,7 @@ class HackTests(BaseCase):
             self.highlight('#shelf-1 a[href*="airpod"]', loops=1, scroll=False)
             self.highlight('#shelf-1 a[href*="airtag"]', loops=1, scroll=False)
             self.highlight('#shelf-1 a[href*="tv"]', loops=3, scroll=False)
-            self.highlight("h2", loops=9, scroll=False)
+            self.highlight("#shelf-3 h2", loops=9, scroll=False)
 
         self.open("https://google.com/ncr")
         self.hide_elements("iframe")
@@ -240,11 +240,11 @@ class HackTests(BaseCase):
         self.set_text_content('li a:contains("Support")', "BELONG")
         self.set_text_content('li a:contains("Blog")', "TO")
         self.set_text_content('li a:contains("English")', "US")
-        self.set_text_content("div.lead", aybabtu)
+        self.set_text_content("div.mx-auto p", aybabtu)
         self.set_text_content("h2", aybabtu)
         if self.is_element_visible('button[data-dismiss="alert"] span'):
             self.js_click('button[data-dismiss="alert"] span', scroll=False)
-        zoom_in = "div.lead{zoom: 1.25;-moz-transform: scale(1.25);}"
+        zoom_in = "div.mx-auto p{zoom: 1.1;-moz-transform: scale(1.1);}"
         self.add_css_style(zoom_in)
         self.highlight("div#main_navbar", loops=1, scroll=False)
         self.highlight('li a:contains("ALL")', loops=1, scroll=False)
@@ -254,7 +254,7 @@ class HackTests(BaseCase):
         self.highlight('li a:contains("BELONG")', loops=1, scroll=False)
         self.highlight('li a:contains("TO")', loops=1, scroll=False)
         self.highlight('li a:contains("US")', loops=2, scroll=False)
-        self.highlight("div.lead", loops=6, scroll=False)
+        self.highlight("div.mx-auto p", loops=6, scroll=False)
         self.highlight("h2", loops=8, scroll=False)
 
         self.open("https://www.python.org/")
@@ -284,6 +284,8 @@ class HackTests(BaseCase):
         self.set_text_content('a[title="Plans & Pricing"]', aybabtu)
         self.set_text_content('a[title="Get Started"]', ayb)
         self.set_text_content("p.no-widows", aybabtu)
+        zoom_out = "h1{zoom: 0.8;-moz-transform: scale(0.8);}"
+        self.add_css_style(zoom_out)
         self.set_text_content("h1.no-widows", aybabtu)
         self.set_text_content("a#lpc-button", "Automate with SeleniumBase")
         self.highlight('a[title="Plans & Pricing"]', loops=6, scroll=False)
@@ -308,7 +310,6 @@ class HackTests(BaseCase):
         self.set_text_content('a[href*="jira/pricing"]', ayb)
         self.set_text_content('a[href*="jira/enterprise"]', abtu)
         self.set_text_content('a[href="/software/jira/features"]', "")
-        self.set_text_content('a[href="/software/jira/guides"]', "")
         self.set_text_content("h1", aybabtu)
         self.highlight("ul.imkt-navbar__link-list", loops=2, scroll=False)
         self.highlight('a[href*="jira/pricing"]', loops=3, scroll=False)
