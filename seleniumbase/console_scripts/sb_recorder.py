@@ -1,4 +1,6 @@
 """
+** recorder **
+
 Launches the SeleniumBase Recorder Desktop App.
 
 Usage:
@@ -19,6 +21,10 @@ import sys
 from seleniumbase import config as sb_config
 from seleniumbase.fixtures import page_utils
 
+PLATFORM = sys.platform
+IS_WINDOWS = False
+if "win32" in PLATFORM or "win64" in PLATFORM or "x64" in PLATFORM:
+    IS_WINDOWS = True
 sb_config.rec_subprocess_p = None
 sb_config.rec_subprocess_used = False
 if sys.version_info <= (3, 7):
@@ -128,7 +134,9 @@ def do_recording(file_name, url, overwrite_enabled, use_chrome, window):
             or "--gherkin" in command_args
         ):
             add_on = " --rec-behave"
-        command = "sbase mkrec %s --url=%s --gui" % (file_name, url)
+        command = "seleniumbase mkrec %s --url=%s --gui" % (file_name, url)
+        if IS_WINDOWS:
+            command = "python.exe -m %s" % command
         if not use_chrome:
             command += " --edge"
         if (
@@ -164,6 +172,8 @@ def do_playback(file_name, use_chrome, window, demo_mode=False):
         )
         return
     command = "pytest %s -q -s" % file_name
+    if IS_WINDOWS:
+        command = "python.exe -m %s" % command
     if "linux" in sys.platform:
         command += " --gui"
     if not use_chrome:
@@ -320,4 +330,4 @@ def main():
 
 
 if __name__ == "__main__":
-    print('To open the Recorder Desktop App: "sbase recorder"')
+    print('To open the Recorder Desktop App: "seleniumbase recorder"')

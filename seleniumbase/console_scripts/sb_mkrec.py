@@ -35,6 +35,11 @@ import shutil
 import os
 import sys
 
+PLATFORM = sys.platform
+IS_WINDOWS = False
+if "win32" in PLATFORM or "win64" in PLATFORM or "x64" in PLATFORM:
+    IS_WINDOWS = True
+
 
 def invalid_run_command(msg=None):
     exp = "  ** mkrec / record / codegen **\n\n"
@@ -195,6 +200,8 @@ def main():
         run_cmd += " --uc"
     if rec_behave:
         run_cmd += " --rec-behave"
+    if IS_WINDOWS:
+        run_cmd = "python.exe -m %s" % run_cmd
     print(run_cmd)
     os.system(run_cmd)
     if os.path.exists(file_path):
@@ -202,12 +209,15 @@ def main():
     recorded_filename = file_name[:-3] + "_rec.py"
     recordings_dir = os.path.join(dir_name, "recordings")
     recorded_file = os.path.join(recordings_dir, recorded_filename)
+    prefix = ""
+    if IS_WINDOWS:
+        prefix = "python.exe -m "
     if " " not in recorded_file:
-        os.system("sbase print %s -n" % recorded_file)
+        os.system("%sseleniumbase print %s -n" % (prefix, recorded_file))
     elif '"' not in recorded_file:
-        os.system('sbase print "%s" -n' % recorded_file)
+        os.system('%sseleniumbase print "%s" -n' % (prefix, recorded_file))
     else:
-        os.system("sbase print '%s' -n" % recorded_file)
+        os.system("%sseleniumbase print '%s' -n" % (prefix, recorded_file))
     shutil.copy(recorded_file, file_path)
     success = (
         "\n" + c2 + "***" + cr + " RECORDING COPIED to: "
@@ -220,11 +230,11 @@ def main():
         features_dir = os.path.join(recordings_dir, "features")
         recorded_file = os.path.join(features_dir, recorded_filename)
         if " " not in recorded_file:
-            os.system("sbase print %s -n" % recorded_file)
+            os.system("%sseleniumbase print %s -n" % (prefix, recorded_file))
         elif '"' not in recorded_file:
-            os.system('sbase print "%s" -n' % recorded_file)
+            os.system('%sseleniumbase print "%s" -n' % (prefix, recorded_file))
         else:
-            os.system("sbase print '%s' -n" % recorded_file)
+            os.system("%sseleniumbase print '%s' -n" % (prefix, recorded_file))
         success = (
             "\n" + c2 + "***" + cr + " BEHAVE RECORDING at: "
             "" + c1 + os.path.relpath(recorded_file) + cr + "\n"
