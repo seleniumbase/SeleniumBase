@@ -39,6 +39,11 @@ def generate_gherkin(srt_actions):
                 sb_actions.append('Click "%s"' % action[1])
             else:
                 sb_actions.append("Click '%s'" % action[1])
+        elif action[0] == "dbclk":
+            if '"' not in action[1]:
+                sb_actions.append('Double click "%s"' % action[1])
+            else:
+                sb_actions.append("Double click '%s'" % action[1])
         elif action[0] == "js_cl":
             if '"' not in action[1]:
                 sb_actions.append('JS click "%s"' % action[1])
@@ -49,6 +54,16 @@ def generate_gherkin(srt_actions):
                 sb_actions.append('JS click all "%s"' % action[1])
             else:
                 sb_actions.append("JS click all '%s'" % action[1])
+        elif action[0] == "jq_cl":
+            if '"' not in action[1]:
+                sb_actions.append('jQuery click "%s"' % action[1])
+            else:
+                sb_actions.append("jQuery click '%s'" % action[1])
+        elif action[0] == "jq_ca":
+            if '"' not in action[1]:
+                sb_actions.append('jQuery click all "%s"' % action[1])
+            else:
+                sb_actions.append("jQuery click all '%s'" % action[1])
         elif action[0] == "r_clk":
             if '"' not in action[1]:
                 sb_actions.append('Context click "%s"' % action[1])
@@ -66,9 +81,7 @@ def generate_gherkin(srt_actions):
                 sb_actions.append(
                     "Click '%s' at (%s, %s)" % (selector, p_x, p_y)
                 )
-        elif action[0] == "input" or action[0] == "js_ty":
-            if action[0] == "js_ty":
-                method = "js_type"
+        elif action[0] == "input":
             text = action[2].replace("\n", "\\n")
             if '"' not in text and '"' not in action[1]:
                 sb_actions.append('Type "%s" into "%s"' % (text, action[1]))
@@ -78,6 +91,34 @@ def generate_gherkin(srt_actions):
                 sb_actions.append('Type "%s" into \'%s\'' % (text, action[1]))
             elif '"' in text and '"' in action[1]:
                 sb_actions.append("Type '%s' into '%s'" % (text, action[1]))
+        elif action[0] == "js_ty":
+            text = action[2].replace("\n", "\\n")
+            if '"' not in text and '"' not in action[1]:
+                sb_actions.append('JS type "%s" in "%s"' % (text, action[1]))
+            elif '"' in text and '"' not in action[1]:
+                sb_actions.append('JS type \'%s\' in "%s"' % (text, action[1]))
+            elif '"' not in text and '"' in action[1]:
+                sb_actions.append('JS type "%s" in \'%s\'' % (text, action[1]))
+            elif '"' in text and '"' in action[1]:
+                sb_actions.append("JS type '%s' in '%s'" % (text, action[1]))
+        elif action[0] == "jq_ty":
+            text = action[2].replace("\n", "\\n")
+            if '"' not in text and '"' not in action[1]:
+                sb_actions.append(
+                    'jQuery type "%s" in "%s"' % (text, action[1])
+                )
+            elif '"' in text and '"' not in action[1]:
+                sb_actions.append(
+                    'jQuery type \'%s\' in "%s"' % (text, action[1])
+                )
+            elif '"' not in text and '"' in action[1]:
+                sb_actions.append(
+                    'jQuery type "%s" in \'%s\'' % (text, action[1])
+                )
+            elif '"' in text and '"' in action[1]:
+                sb_actions.append(
+                    "jQuery type '%s' in '%s'" % (text, action[1])
+                )
         elif action[0] == "hover":
             if '"' not in action[1]:
                 sb_actions.append('Hover "%s"' % action[1])
@@ -211,26 +252,64 @@ def generate_gherkin(srt_actions):
             method = "Wait for element"
             if '"' not in action[1]:
                 sb_actions.append('%s "%s"' % (method, action[1]))
-            else:
+            elif "'" not in action[1]:
                 sb_actions.append("%s '%s'" % (method, action[1]))
+            else:
+                sb_actions.append(
+                    "%s '%s'" % (method, action[1].replace("'", "\\'"))
+                )
         elif action[0] == "as_el":
             method = "Assert element"
             if '"' not in action[1]:
                 sb_actions.append('%s "%s"' % (method, action[1]))
-            else:
+            elif "'" not in action[1]:
                 sb_actions.append("%s '%s'" % (method, action[1]))
+            else:
+                sb_actions.append(
+                    "%s '%s'" % (method, action[1].replace("'", "\\'"))
+                )
         elif action[0] == "as_ep":
             method = "Assert element present"
             if '"' not in action[1]:
                 sb_actions.append('%s "%s"' % (method, action[1]))
-            else:
+            elif "'" not in action[1]:
                 sb_actions.append("%s '%s'" % (method, action[1]))
+            else:
+                sb_actions.append(
+                    "%s '%s'" % (method, action[1].replace("'", "\\'"))
+                )
         elif action[0] == "asenv":
             method = "Assert element not visible"
             if '"' not in action[1]:
                 sb_actions.append('%s "%s"' % (method, action[1]))
-            else:
+            elif "'" not in action[1]:
                 sb_actions.append("%s '%s'" % (method, action[1]))
+            else:
+                sb_actions.append(
+                    "%s '%s'" % (method, action[1].replace("'", "\\'"))
+                )
+        elif action[0] == "s_at_" or action[0] == "s_ats":
+            start = "Find"
+            if action[0] == "s_ats":
+                start = "Find all"
+            if '"' not in action[1][0]:
+                sb_actions.append(
+                    '%s "%s" and set %s to "%s"'
+                    % (start, action[1][0], action[1][1], action[1][2])
+                )
+            elif "'" not in action[1][0]:
+                sb_actions.append(
+                    "%s '%s' and set %s to \"%s\""
+                    % (start, action[1][0], action[1][1], action[1][2])
+                )
+            else:
+                sb_actions.append(
+                    '%s "%s" and set %s to "%s")'
+                    % (
+                        start.replace('"', '\\"'),
+                        action[1][0], action[1][1], action[1][2]
+                    )
+                )
         elif action[0] == "acc_a":
             sb_actions.append("Accept alert")
         elif action[0] == "dis_a":
@@ -318,6 +397,7 @@ def generate_gherkin(srt_actions):
 
             action[1][0] = unicodedata.normalize("NFKC", action[1][0])
             action[1][0] = action[1][0].replace("\n", "\\n")
+            action[1][0] = action[1][0].replace("\u00B6", "")
             method = "Assert text"
             if action[0] == "as_et":
                 method = "Assert exact text"
@@ -367,6 +447,33 @@ def generate_gherkin(srt_actions):
                 sb_actions.append('%s "%s"' % (method, action[1]))
             else:
                 sb_actions.append("%s '%s'" % (method, action[1]))
+        elif action[0] == "s_scr":
+            method = "Save screenshot as"
+            if '"' not in action[1]:
+                sb_actions.append('%s "%s"' % (method, action[1]))
+            else:
+                sb_actions.append("%s '%s'" % (method, action[1]))
+        elif action[0] == "ss_tf":
+            if '"' not in action[2] and '"' not in action[1]:
+                sb_actions.append(
+                    'Save screenshot to "%s" as "%s"'
+                    % (action[2], action[1])
+                )
+            elif '"' not in action[2] and '"' in action[1]:
+                sb_actions.append(
+                    'Save screenshot to "%s" as \'%s\''
+                    % (action[2], action[1])
+                )
+            elif '"' in action[2] and '"' not in action[1]:
+                sb_actions.append(
+                    'Save screenshot to \'%s\' as "%s"'
+                    % (action[2], action[1])
+                )
+            elif '"' in action[2] and '"' in action[1]:
+                sb_actions.append(
+                    "Save screenshot to '%s' as '%s'"
+                    % (action[2], action[1])
+                )
         elif action[0] == "ss_tl":
             sb_actions.append("Save screenshot to logs")
         elif action[0] == "sh_fc":

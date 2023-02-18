@@ -997,6 +997,12 @@ def highlight_with_jquery_2(driver, message, selector, o_bs, msg_dur):
         return
 
 
+def get_active_element_css(driver):
+    from seleniumbase.js_code import active_css_js
+
+    return driver.execute_script(active_css_js.get_active_element_css)
+
+
 def get_scroll_distance_to_element(driver, element):
     try:
         scroll_position = driver.execute_script("return window.scrollY;")
