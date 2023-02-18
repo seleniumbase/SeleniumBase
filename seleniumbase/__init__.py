@@ -40,7 +40,6 @@ if sys.version_info >= (3, 7):
     webdriver.TouchActions = None  # Lifeline for past selenium-wire versions
 if sys.version_info >= (3, 10):
     collections.Callable = collections.abc.Callable  # Lifeline for nosetests
-del collections  # Undo "import collections" / Simplify "dir(seleniumbase)"
 del sys  # Undo "import sys" / Simplify "dir(seleniumbase)"
 del webdriver  # Undo "import webdriver" / Simplify "dir(seleniumbase)"
 
