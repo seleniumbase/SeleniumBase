@@ -9,7 +9,7 @@ class OfflineTests(BaseCase):
     def test_demo_page(self):
         # Load a local html file into the web browser
         dir_path = os.path.dirname(os.path.abspath(__file__))
-        file_path = dir_path + "/demo_page.html"
+        file_path = os.path.join(dir_path, "demo_page.html")
         self.load_html_file(file_path)
 
         # Assert the title of the current web page

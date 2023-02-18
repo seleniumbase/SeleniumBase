@@ -25,6 +25,10 @@ class DownloadImages(BaseCase):
             print(file_path)
 
     def test_download_images_via_screenshot(self):
+        if self.recorder_mode:
+            self.open("about:blank")
+            print("Skipping test in Recorder Mode.")
+            self.skip("Skipping test in Recorder Mode.")
         self.open("seleniumbase.io/error_page/")
         img_elements_with_src = self.find_elements("img[src]")
         unique_src_values = []

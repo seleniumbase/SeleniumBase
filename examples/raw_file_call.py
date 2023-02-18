@@ -1,7 +1,10 @@
-"""Call a file with "python" instead of "pytest".
+"""Call a file with "python" instead of "pytest" directly.
+Added pytest args from the command-line won't be included.
 To run, use: "python raw_file_call.py"."""
 from seleniumbase import BaseCase
-BaseCase.main(__name__, __file__)
+if __name__ == "__main__":
+    from pytest import main
+    main([__file__, "-s"])
 
 
 class TinyMceTest(BaseCase):

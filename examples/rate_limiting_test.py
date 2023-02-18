@@ -14,6 +14,10 @@ class RateLimitingTests(BaseCase):
             self.open("data:,")
             print("Skipping test in multi-threaded mode.")
             self.skip("Skipping test in multi-threaded mode.")
+        if self.recorder_mode:
+            self.open("data:,")
+            print("Skipping test in Recorder Mode.")
+            self.skip("Skipping test in Recorder Mode.")
         message = "Running rate-limited print() on the command line"
         self.open("data:text/html,<p>%s</p>" % message)
         print("\n%s:" % message)

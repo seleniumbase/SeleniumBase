@@ -24,6 +24,7 @@ Here's what a full test might look like:
 
 ```python
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 class TestMFALogin(BaseCase):
     def test_mfa_login(self):
@@ -75,9 +76,7 @@ pytest -k agent
 
 * ``--sjw`` --> Skip JS Waits, which include ``wait_for_ready_state_complete()`` and ``wait_for_angularjs()``.
 
-(NOTE: Those command-line options were added in SeleniumBase ``4.2.0``. Using both could lead to a 15% increase in test speed, but it could also lead to flaky tests, so use with caution.)
-
 --------
 
-<p><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" alt="SeleniumBase" title="SeleniumBase" width="300" /></a></p>
+<p><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/super_logo_sb.png" alt="SeleniumBase" title="SeleniumBase" width="300" /></a></p>
 <p><a href="https://www.python.org/downloads/" target="_blank"><img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=22AAEE&logo=python" title="Supported Python Versions" /></a></p>

@@ -1494,14 +1494,12 @@ def get_remote_driver(
             return webdriver.Remote(
                 command_executor=address,
                 options=chrome_options,
-                keep_alive=True,
             )
         else:
             warnings.simplefilter("ignore", category=DeprecationWarning)
             return webdriver.Remote(
                 command_executor=address,
                 desired_capabilities=capabilities,
-                keep_alive=True,
             )
     elif browser_name == constants.Browser.FIREFOX:
         firefox_options = _set_firefox_options(
@@ -1566,14 +1564,12 @@ def get_remote_driver(
             return webdriver.Remote(
                 command_executor=address,
                 options=firefox_options,
-                keep_alive=True,
             )
         else:
             warnings.simplefilter("ignore", category=DeprecationWarning)
             return webdriver.Remote(
                 command_executor=address,
                 desired_capabilities=capabilities,
-                keep_alive=True,
             )
     elif browser_name == constants.Browser.INTERNET_EXPLORER:
         capabilities = webdriver.DesiredCapabilities.INTERNETEXPLORER
@@ -1583,7 +1579,6 @@ def get_remote_driver(
             return webdriver.Remote(
                 command_executor=address,
                 options=remote_options,
-                keep_alive=True,
             )
         else:
             warnings.simplefilter("ignore", category=DeprecationWarning)
@@ -1592,7 +1587,6 @@ def get_remote_driver(
             return webdriver.Remote(
                 command_executor=address,
                 desired_capabilities=capabilities,
-                keep_alive=True,
             )
     elif browser_name == constants.Browser.EDGE:
         capabilities = webdriver.DesiredCapabilities.EDGE
@@ -1602,7 +1596,6 @@ def get_remote_driver(
             return webdriver.Remote(
                 command_executor=address,
                 options=remote_options,
-                keep_alive=True,
             )
         else:
             warnings.simplefilter("ignore", category=DeprecationWarning)
@@ -1611,7 +1604,6 @@ def get_remote_driver(
             return webdriver.Remote(
                 command_executor=address,
                 desired_capabilities=capabilities,
-                keep_alive=True,
             )
     elif browser_name == constants.Browser.SAFARI:
         capabilities = webdriver.DesiredCapabilities.SAFARI
@@ -1621,7 +1613,6 @@ def get_remote_driver(
             return webdriver.Remote(
                 command_executor=address,
                 options=remote_options,
-                keep_alive=True,
             )
         else:
             warnings.simplefilter("ignore", category=DeprecationWarning)
@@ -1630,7 +1621,6 @@ def get_remote_driver(
             return webdriver.Remote(
                 command_executor=address,
                 desired_capabilities=capabilities,
-                keep_alive=True,
             )
     elif browser_name == constants.Browser.OPERA:
         opera_options = _set_chrome_options(
@@ -1727,14 +1717,12 @@ def get_remote_driver(
             return webdriver.Remote(
                 command_executor=address,
                 options=opera_options,
-                keep_alive=True,
             )
         else:
             warnings.simplefilter("ignore", category=DeprecationWarning)
             return webdriver.Remote(
                 command_executor=address,
                 desired_capabilities=capabilities,
-                keep_alive=True,
             )
     elif browser_name == constants.Browser.REMOTE:
         if selenium4_or_newer:
@@ -1744,14 +1732,12 @@ def get_remote_driver(
             return webdriver.Remote(
                 command_executor=address,
                 options=remote_options,
-                keep_alive=True,
             )
         else:
             warnings.simplefilter("ignore", category=DeprecationWarning)
             return webdriver.Remote(
                 command_executor=address,
                 desired_capabilities=desired_caps,
-                keep_alive=True,
             )
 
 

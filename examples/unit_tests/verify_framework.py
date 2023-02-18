@@ -1,10 +1,13 @@
-""" Run with pytest """
+""" SeleniumBase Verification """
+if __name__ == "__main__":
+    from pytest import main
+    main([__file__, "-v", "-s"])
 
 
-def test_simple_cases(testdir):
+def test_simple_cases(pytester):
     """Verify a simple passing test and a simple failing test.
     The failing test is marked as xfail to have it skipped."""
-    testdir.makepyfile(
+    pytester.makepyfile(
         """
         import pytest
         from seleniumbase import BaseCase
@@ -16,13 +19,13 @@ def test_simple_cases(testdir):
                 self.assert_equal('yes', 'no')
         """
     )
-    result = testdir.inline_run("--headless", "--rs", "-v")
+    result = pytester.inline_run("--headless", "--rs", "-v")
     assert result.matchreport("test_passing").passed
     assert result.matchreport("test_failing").skipped
 
 
-def test_basecase(testdir):
-    testdir.makepyfile(
+def test_basecase(pytester):
+    pytester.makepyfile(
         """
         from seleniumbase import BaseCase
         class MyTest(BaseCase):
@@ -34,12 +37,12 @@ def test_basecase(testdir):
                 self.click("body p")  # selector
         """
     )
-    result = testdir.inline_run("--headless", "-v")
+    result = pytester.inline_run("--headless", "-v")
     assert result.matchreport("test_basecase").passed
 
 
-def test_run_with_dashboard(testdir):
-    testdir.makepyfile(
+def test_run_with_dashboard(pytester):
+    pytester.makepyfile(
         """
         from seleniumbase import BaseCase
         class MyTestCase(BaseCase):
@@ -51,14 +54,14 @@ def test_run_with_dashboard(testdir):
                 self.skip("Skip!")
         """
     )
-    result = testdir.inline_run("--headless", "--rs", "--dashboard", "-v")
+    result = pytester.inline_run("--headless", "--rs", "--dashboard", "-v")
     assert result.matchreport("test_1_passing").passed
     assert result.matchreport("test_2_failing").failed
     assert result.matchreport("test_3_skipped").skipped
 
 
-def test_sb_fixture(testdir):
-    testdir.makepyfile(
+def test_sb_fixture(pytester):
+    pytester.makepyfile(
         """
         def test_sb_fixture(sb):
             sb.open("data:text/html,<p>Hello<br><input></p>")
@@ -68,12 +71,12 @@ def test_sb_fixture(testdir):
             sb.click("body p")  # selector
         """
     )
-    result = testdir.inline_run("--headless", "-v")
+    result = pytester.inline_run("--headless", "-v")
     assert result.matchreport("test_sb_fixture").passed
 
 
-def test_request_sb_fixture(testdir):
-    testdir.makepyfile(
+def test_request_sb_fixture(pytester):
+    pytester.makepyfile(
         """
         def test_request_sb_fixture(request):
             sb = request.getfixturevalue('sb')
@@ -85,7 +88,7 @@ def test_request_sb_fixture(testdir):
             sb.tearDown()
         """
     )
-    result = testdir.inline_run("--headless", "-v")
+    result = pytester.inline_run("--headless", "-v")
     assert result.matchreport("test_request_sb_fixture").passed
 
 
@@ -116,8 +119,8 @@ def assert_outcomes(
     check_outcome_field(outcomes, "rerun", rerun)
 
 
-def test_rerun_failures(testdir):
-    testdir.makepyfile(
+def test_rerun_failures(pytester):
+    pytester.makepyfile(
         """
         from seleniumbase import BaseCase
         class MyTestCase(BaseCase):
@@ -127,12 +130,12 @@ def test_rerun_failures(testdir):
                 self.assert_equal('yes', 'no')
         """
     )
-    result = testdir.runpytest("--headless", "--reruns=1", "--rs", "-v")
+    result = pytester.runpytest("--headless", "--reruns=1", "--rs", "-v")
     assert_outcomes(result, passed=1, failed=1, rerun=1)
 
 
-def test_browser_launcher(testdir):
-    testdir.makepyfile(
+def test_browser_launcher(pytester):
+    pytester.makepyfile(
         """
         from seleniumbase import get_driver
         def test_browser_launcher():
@@ -148,12 +151,12 @@ def test_browser_launcher(testdir):
             assert success
         """
     )
-    result = testdir.inline_run("--headless", "-v")
+    result = pytester.inline_run("--headless", "-v")
     assert result.matchreport("test_browser_launcher").passed
 
 
-def test_framework_components(testdir):
-    testdir.makepyfile(
+def test_framework_components(pytester):
+    pytester.makepyfile(
         """
         from seleniumbase import get_driver
         from seleniumbase import js_utils
@@ -173,5 +176,5 @@ def test_framework_components(testdir):
             assert success
         """
     )
-    result = testdir.inline_run("--headless", "-v")
+    result = pytester.inline_run("--headless", "-v", "-s")
     assert result.matchreport("test_framework_components").passed

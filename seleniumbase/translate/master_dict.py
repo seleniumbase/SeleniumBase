@@ -953,6 +953,42 @@ class MD:
     md["js_type"][8] = "JS_введите"
     md["js_type"][9] = "js_escriba"
 
+    md["jquery_click"] = ["*"] * num_langs
+    md["jquery_click"][0] = "jquery_click"
+    md["jquery_click"][1] = "JQUERY单击"
+    md["jquery_click"][2] = "jquery_klik"
+    md["jquery_click"][3] = "jquery_cliquer"
+    md["jquery_click"][4] = "jquery_fare_clic"
+    md["jquery_click"][5] = "JQUERYクリックして"
+    md["jquery_click"][6] = "JQUERY_클릭"
+    md["jquery_click"][7] = "jquery_clique"
+    md["jquery_click"][8] = "JQUERY_нажмите"
+    md["jquery_click"][9] = "jquery_haga_clic"
+
+    md["jquery_update_text"] = ["*"] * num_langs
+    md["jquery_update_text"][0] = "jquery_update_text"
+    md["jquery_update_text"][1] = "JQUERY更新文本"
+    md["jquery_update_text"][2] = "jquery_tekst_bijwerken"
+    md["jquery_update_text"][3] = "jquery_modifier_texte"
+    md["jquery_update_text"][4] = "jquery_aggiornare_testo"
+    md["jquery_update_text"][5] = "JQUERYテキストを更新"
+    md["jquery_update_text"][6] = "JQUERY_텍스트를_업데이트"
+    md["jquery_update_text"][7] = "jquery_atualizar_texto"
+    md["jquery_update_text"][8] = "JQUERY_обновить_текст"
+    md["jquery_update_text"][9] = "jquery_actualizar_texto"
+
+    md["jquery_type"] = ["*"] * num_langs
+    md["jquery_type"][0] = "jquery_type"
+    md["jquery_type"][1] = "JQUERY输入文本"
+    md["jquery_type"][2] = "jquery_typ"
+    md["jquery_type"][3] = "jquery_taper"
+    md["jquery_type"][4] = "jquery_digitare"
+    md["jquery_type"][5] = "JQUERY入力"
+    md["jquery_type"][6] = "JQUERY_입력"
+    md["jquery_type"][7] = "jquery_digitar"
+    md["jquery_type"][8] = "JQUERY_введите"
+    md["jquery_type"][9] = "jquery_escriba"
+
     md["inspect_html"] = ["*"] * num_langs
     md["inspect_html"][0] = "inspect_html"
     md["inspect_html"][1] = "检查HTML"

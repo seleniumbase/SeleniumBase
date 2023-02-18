@@ -173,6 +173,7 @@ class BaseCase(unittest.TestCase):
         self._chart_first_series = {}
         self._chart_series_count = {}
         self._tour_steps = {}
+        self._xvfb_display = None
 
     @classmethod
     def main(self, name, file, *args):
@@ -233,6 +234,8 @@ class BaseCase(unittest.TestCase):
         if self.recorder_mode and not self.__dont_record_open:
             time_stamp = self.execute_script("return Date.now();")
             origin = self.get_origin()
+            action = ["o_url", origin, url, str(int(time_stamp) - 1)]
+            self.__extra_actions.append(action)
             action = ["_url_", origin, url, time_stamp]
             self.__extra_actions.append(action)
         if self.recorder_mode and self.__new_window_on_rec_open:
@@ -247,6 +250,7 @@ class BaseCase(unittest.TestCase):
                 "ERR_CONNECTION_TIMED_OUT" in e.msg
                 or "ERR_CONNECTION_CLOSED" in e.msg
                 or "ERR_CONNECTION_RESET" in e.msg
+                or "ERR_NAME_NOT_RESOLVED" in e.msg
             ):
                 time.sleep(0.5)
                 self.driver.get(url)
@@ -758,17 +762,14 @@ class BaseCase(unittest.TestCase):
             self.__slow_mode_pause_if_active()
         elif self.__needs_minimum_wait():
             time.sleep(0.02)
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        if by == By.XPATH:
-                            selector = original_selector
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        action = ["r_clk", selector, origin, time_stamp]
-                        self.__extra_actions.append(action)
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                if by == By.XPATH:
+                    selector = original_selector
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                action = ["r_clk", selector, origin, time_stamp]
+                self.__extra_actions.append(action)
 
     def click_chain(
         self, selectors_list, by="css selector", timeout=None, spacing=0
@@ -1206,10 +1207,29 @@ class BaseCase(unittest.TestCase):
                 self.open("about:blank")
 
     def open_if_not_url(self, url):
-        """Opens the url in the browser if it's not the current url."""
+        """Opens the url in the browser if it's not the current url (*).
+        Parameters tagged on by search engines are ignored for this method.
+        Eg. If the current url is:
+            * https://www.bing.com/search?q=SeleniumBase&source=hp
+            And the url privided by this method call is:
+            * https://www.bing.com/search?q=SeleniumBase
+            Then the urls will be considered the same,
+            and no open() action will be performed.
+        This method is primarily used by Recorder Mode script generation,
+        where both clicks and opens are recorded. So if a click() action
+        leads to an open() action, then the script generator will attempt
+        to convert the open() action into open_if_not_url() so that the
+        same page isn't opened again if the user is already on the page."""
         self.__check_scope()
-        if self.driver.current_url != url:
-            self.open(url)
+        current_url = self.driver.current_url
+        if current_url != url:
+            if (
+                "?q=" not in current_url
+                or "&" not in current_url
+                or current_url.find("?q=") >= current_url.find("&")
+                or current_url.split("&")[0] != url
+            ):
+                self.open(url)
 
     def is_element_present(self, selector, by="css selector"):
         self.wait_for_ready_state_complete()
@@ -1704,6 +1724,8 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
+        original_attribute = attribute
+        original_value = value
         if scroll and self.is_element_visible(selector, by=by):
             try:
                 self.scroll_to(selector, by=by, timeout=timeout)
@@ -1721,6 +1743,13 @@ class BaseCase(unittest.TestCase):
             % (css_selector, attribute, value)
         )
         self.execute_script(script)
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                sele_attr_val = [selector, original_attribute, original_value]
+                action = ["s_at_", sele_attr_val, origin, time_stamp]
+                self.__extra_actions.append(action)
 
     def set_attributes(self, selector, attribute, value, by="css selector"):
         """This method uses JavaScript to set/update a common attribute.
@@ -1729,6 +1758,8 @@ class BaseCase(unittest.TestCase):
         self.set_attributes("a", "href", "https://google.com")"""
         self.__check_scope()
         selector, by = self.__recalculate_selector(selector, by)
+        original_attribute = attribute
+        original_value = value
         attribute = re.escape(attribute)
         attribute = self.__escape_quotes_if_needed(attribute)
         value = re.escape(value)
@@ -1748,6 +1779,13 @@ class BaseCase(unittest.TestCase):
             self.execute_script(script)
         except Exception:
             pass
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                sele_attr_val = [selector, original_attribute, original_value]
+                action = ["s_ats", sele_attr_val, origin, time_stamp]
+                self.__extra_actions.append(action)
 
     def set_attribute_all(self, selector, attribute, value, by="css selector"):
         """Same as set_attributes(), but using querySelectorAll naming scheme.
@@ -2109,7 +2147,12 @@ class BaseCase(unittest.TestCase):
         self.wait_for_ready_state_complete()
         pre_action_url = self.driver.current_url
         pre_window_count = len(self.driver.window_handles)
-        self.execute_script("document.activeElement.click();")
+        if self.recorder_mode:
+            selector = js_utils.get_active_element_css(self.driver)
+            self.click(selector)
+            return
+        else:
+            self.execute_script("document.activeElement.click();")
         latest_window_count = len(self.driver.window_handles)
         if (
             latest_window_count > pre_window_count
@@ -2348,17 +2391,14 @@ class BaseCase(unittest.TestCase):
         self.scroll_to(selector, by=by)
         time.sleep(0.05)  # Settle down from scrolling before hovering
         element = page_actions.hover_on_element(self.driver, selector, by)
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        if by == By.XPATH:
-                            selector = original_selector
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        action = ["hover", selector, origin, time_stamp]
-                        self.__extra_actions.append(action)
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                if by == By.XPATH:
+                    selector = original_selector
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                action = ["hover", selector, origin, time_stamp]
+                self.__extra_actions.append(action)
         return element
 
     def hover_and_click(
@@ -2392,20 +2432,17 @@ class BaseCase(unittest.TestCase):
         self.scroll_to(hover_selector, by=hover_by)
         pre_action_url = self.driver.current_url
         pre_window_count = len(self.driver.window_handles)
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        if hover_by == By.XPATH:
-                            hover_selector = original_selector
-                        if click_by == By.XPATH:
-                            click_selector = original_click_selector
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        the_selectors = [hover_selector, click_selector]
-                        action = ["ho_cl", the_selectors, origin, time_stamp]
-                        self.__extra_actions.append(action)
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                if hover_by == By.XPATH:
+                    hover_selector = original_selector
+                if click_by == By.XPATH:
+                    click_selector = original_click_selector
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                the_selectors = [hover_selector, click_selector]
+                action = ["ho_cl", the_selectors, origin, time_stamp]
+                self.__extra_actions.append(action)
         outdated_driver = False
         element = None
         try:
@@ -3095,24 +3132,25 @@ class BaseCase(unittest.TestCase):
                     time.sleep(0.05)
         if self.undetectable:
             self.__uc_frame_layer += 1
-        if self.recorder_mode and self._rec_overrides_switch:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    r_a = self.get_session_storage_item("recorder_activated")
-                    if r_a == "yes":
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        action = ["sk_op", "", origin, time_stamp]
-                        self.__extra_actions.append(action)
-                        self.__set_c_from_switch = True
-                        self.set_content_to_frame(frame, timeout=timeout)
-                        self.__set_c_from_switch = False
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        action = ["sw_fr", frame, origin, time_stamp]
-                        self.__extra_actions.append(action)
-                        return
+        if (
+            self.recorder_mode
+            and self._rec_overrides_switch
+            and self.__current_url_is_recordable()
+        ):
+            r_a = self.get_session_storage_item("recorder_activated")
+            if r_a == "yes":
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                action = ["sk_op", "", origin, time_stamp]
+                self.__extra_actions.append(action)
+                time_stamp = self.execute_script("return Date.now();")
+                self.__set_c_from_switch = True
+                self.set_content_to_frame(frame, timeout=timeout)
+                self.__set_c_from_switch = False
+                origin = self.get_origin()
+                action = ["sw_fr", frame, origin, time_stamp]
+                self.__extra_actions.append(action)
+                return
         self.wait_for_ready_state_complete()
         if self.__needs_minimum_wait():
             time.sleep(0.035)
@@ -3131,20 +3169,21 @@ class BaseCase(unittest.TestCase):
         then the driver control will exit from all entered iframes.
         If the driver is not currently set in an iframe, nothing happens."""
         self.__check_scope()
-        if self.recorder_mode and self._rec_overrides_switch:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    r_a = self.get_session_storage_item("recorder_activated")
-                    if r_a == "yes":
-                        self.__set_c_from_switch = True
-                        self.set_content_to_default()
-                        self.__set_c_from_switch = False
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        action = ["sw_dc", "", origin, time_stamp]
-                        self.__extra_actions.append(action)
-                        return
+        if (
+            self.recorder_mode
+            and self._rec_overrides_switch
+            and self.__current_url_is_recordable()
+        ):
+            r_a = self.get_session_storage_item("recorder_activated")
+            if r_a == "yes":
+                time_stamp = self.execute_script("return Date.now();")
+                self.__set_c_from_switch = True
+                self.set_content_to_default()
+                self.__set_c_from_switch = False
+                origin = self.get_origin()
+                action = ["sw_dc", "", origin, time_stamp]
+                self.__extra_actions.append(action)
+                return
         self.driver.switch_to.default_content()
         if self.undetectable:
             self.__uc_frame_layer = 0
@@ -3155,20 +3194,21 @@ class BaseCase(unittest.TestCase):
         the driver control will be set to one level above the current frame.
         If the driver is not currently set in an iframe, nothing happens."""
         self.__check_scope()
-        if self.recorder_mode and self._rec_overrides_switch:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    r_a = self.get_session_storage_item("recorder_activated")
-                    if r_a == "yes":
-                        self.__set_c_from_switch = True
-                        self.set_content_to_default(nested=True)
-                        self.__set_c_from_switch = False
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        action = ["sw_pf", "", origin, time_stamp]
-                        self.__extra_actions.append(action)
-                        return
+        if (
+            self.recorder_mode
+            and self._rec_overrides_switch
+            and self.__current_url_is_recordable()
+        ):
+            r_a = self.get_session_storage_item("recorder_activated")
+            if r_a == "yes":
+                time_stamp = self.execute_script("return Date.now();")
+                self.__set_c_from_switch = True
+                self.set_content_to_default(nested=True)
+                self.__set_c_from_switch = False
+                origin = self.get_origin()
+                action = ["sw_pf", "", origin, time_stamp]
+                self.__extra_actions.append(action)
+                return
         self.driver.switch_to.parent_frame()
         if self.undetectable:
             self.__uc_frame_layer -= 1
@@ -3237,6 +3277,7 @@ class BaseCase(unittest.TestCase):
             frame = 'iframe[name="%s"]' % frame
             if self.is_element_present(frame):
                 frame_found = True
+        time_stamp = 0
         url = None
         if frame_found:
             url = self.execute_script(
@@ -3257,6 +3298,7 @@ class BaseCase(unittest.TestCase):
             origin = self.get_origin()
             action = ["sk_op", "", origin, time_stamp]
             self.__extra_actions.append(action)
+            time_stamp = str(int(time_stamp) + 1)
 
         if cframe_tab:
             self.execute_script("document.cframe_tab = 1;")
@@ -3271,7 +3313,6 @@ class BaseCase(unittest.TestCase):
                 self.execute_script("document.cframe_swap += 1;")
 
         if self.recorder_mode and not self.__set_c_from_switch:
-            time_stamp = self.execute_script("return Date.now();")
             origin = self.get_origin()
             action = ["s_c_f", o_frame, origin, time_stamp]
             self.__extra_actions.append(action)
@@ -3285,12 +3326,14 @@ class BaseCase(unittest.TestCase):
         self.__check_scope()
         swap_cnt = self.execute_script("return document.cframe_swap;")
         tab_sta = self.execute_script("return document.cframe_tab;")
+        time_stamp = 0
 
         if self.recorder_mode and not self.__set_c_from_switch:
             time_stamp = self.execute_script("return Date.now();")
             origin = self.get_origin()
             action = ["sk_op", "", origin, time_stamp]
             self.__extra_actions.append(action)
+            time_stamp = str(int(time_stamp) + 1)
 
         if not nested:
             # Sets the page to the outer-most content.
@@ -3312,11 +3355,15 @@ class BaseCase(unittest.TestCase):
                     if past_tab in self.driver.window_handles:
                         self.switch_to_window(past_tab)
                 url_of_past_tab = self.get_current_url()
+                if self.recorder_mode and not self.__set_c_from_switch:
+                    time_stamp = self.execute_script("return Date.now();")
                 if url_of_past_tab == past_url:
                     self.set_content(past_source)
                 else:
                     self.refresh_page()
             else:
+                if self.recorder_mode and not self.__set_c_from_switch:
+                    time_stamp = self.execute_script("return Date.now();")
                 self.refresh_page()
             self.execute_script("document.cframe_swap = 0;")
             self.__page_sources = []
@@ -3345,12 +3392,13 @@ class BaseCase(unittest.TestCase):
             else:
                 just_refresh = True
             if just_refresh:
+                if self.recorder_mode and not self.__set_c_from_switch:
+                    time_stamp = self.execute_script("return Date.now();")
                 self.refresh_page()
                 self.execute_script("document.cframe_swap = 0;")
                 self.__page_sources = []
 
         if self.recorder_mode and not self.__set_c_from_switch:
-            time_stamp = self.execute_script("return Date.now();")
             origin = self.get_origin()
             action = ["s_c_d", nested, origin, time_stamp]
             self.__extra_actions.append(action)
@@ -3819,6 +3867,19 @@ class BaseCase(unittest.TestCase):
                 return page_actions.save_screenshot(
                     self.driver, name, folder, selector, by
                 )
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        if not folder:
+                            action = ["s_scr", name, origin, time_stamp]
+                        else:
+                            name_folder = [name, folder]
+                            action = ["ss_tf", name_folder, origin, time_stamp]
+                        self.__extra_actions.append(action)
         return page_actions.save_screenshot(self.driver, name, folder)
 
     def save_screenshot_to_logs(
@@ -4105,6 +4166,13 @@ class BaseCase(unittest.TestCase):
         except Exception:
             pass
 
+    def __current_url_is_recordable(self):
+        url = self.get_current_url()
+        if url and len(url) > 0:
+            if ("http:") in url or ("https:") in url or ("file:") in url:
+                return True
+        return False
+
     def save_recorded_actions(self):
         """(When using Recorder Mode, use this method if you plan on
             navigating to a different domain/origin in the same tab.)
@@ -4153,10 +4221,10 @@ class BaseCase(unittest.TestCase):
         if self.driver is None:
             return
         import colorama
+        from seleniumbase.core import recorder_helper
 
         raw_actions = []  # All raw actions from sessionStorage
         srt_actions = []
-        cleaned_actions = []
         sb_actions = []
         action_dict = {}
         for window in self.driver.window_handles:
@@ -4204,6 +4272,43 @@ class BaseCase(unittest.TestCase):
                 srt_actions[n][0] = "_skip"
         for n in range(len(srt_actions)):
             if (
+                srt_actions[n][0] == "c_box"
+                and n > 0
+                and (
+                    (
+                        srt_actions[n - 1][0] == "click"
+                        and int(srt_actions[n][3]) - int(srt_actions[n - 1][3])
+                        < 5
+                    )
+                    or (
+                        srt_actions[n - 1][0] == "js_cl"
+                        and int(srt_actions[n][3]) - int(srt_actions[n - 1][3])
+                        < 42
+                    )
+                    or (
+                        srt_actions[n - 1][0] == "jq_cl"
+                        and int(srt_actions[n][3]) - int(srt_actions[n - 1][3])
+                        < 440
+                    )
+                )
+            ):
+                srt_actions[n][0] = "_skip"
+        for n in range(len(srt_actions)):
+            if (
+                n > 0
+                and srt_actions[n - 1][0] == "c_box"
+                and (
+                    srt_actions[n][0] == "click"
+                    or srt_actions[n][0] == "js_cl"
+                    or srt_actions[n][0] == "jq_cl"
+                )
+                and (
+                    int(srt_actions[n][3]) - int(srt_actions[n - 1][3]) < 5
+                )
+            ):
+                srt_actions[n - 1][0] = "_skip"
+        for n in range(len(srt_actions)):
+            if (
                 (srt_actions[n][0] == "begin" or srt_actions[n][0] == "_url_")
                 and n > 1
                 and srt_actions[n - 1][0] == "_skip"
@@ -4219,6 +4324,8 @@ class BaseCase(unittest.TestCase):
                     srt_actions[n - 1][0] == "click"
                     or srt_actions[n - 1][0] == "js_cl"
                     or srt_actions[n - 1][0] == "js_ca"
+                    or srt_actions[n - 1][0] == "jq_cl"
+                    or srt_actions[n - 1][0] == "jq_ca"
                 )
             ):
                 sel1 = srt_actions[n - 1][1]
@@ -4226,6 +4333,8 @@ class BaseCase(unittest.TestCase):
                 if (
                     srt_actions[n - 1][0] == "js_cl"
                     or srt_actions[n - 1][0] == "js_ca"
+                    or srt_actions[n - 1][0] == "jq_cl"
+                    or srt_actions[n - 1][0] == "jq_ca"
                 ):
                     url1 = srt_actions[n - 1][2][0]
                 if url1.endswith("/#/"):
@@ -4298,16 +4407,18 @@ class BaseCase(unittest.TestCase):
                     srt_actions[n - 1][0] == "click"
                     or srt_actions[n - 1][0] == "js_cl"
                     or srt_actions[n - 1][0] == "js_ca"
+                    or srt_actions[n - 1][0] == "jq_cl"
+                    or srt_actions[n - 1][0] == "jq_ca"
                     or srt_actions[n - 1][0] == "input"
                 )
-                and (
-                    int(srt_actions[n][3]) - int(srt_actions[n - 1][3]) < 6500
-                )
+                and int(srt_actions[n][3]) - int(srt_actions[n - 1][3]) < 6500
             ):
                 if (
                     srt_actions[n - 1][0] == "click"
                     or srt_actions[n - 1][0] == "js_cl"
                     or srt_actions[n - 1][0] == "js_ca"
+                    or srt_actions[n - 1][0] == "jq_cl"
+                    or srt_actions[n - 1][0] == "jq_ca"
                 ):
                     if (
                         srt_actions[n - 1][1].startswith("input")
@@ -4317,6 +4428,17 @@ class BaseCase(unittest.TestCase):
                 elif srt_actions[n - 1][0] == "input":
                     if srt_actions[n - 1][2].endswith("\n"):
                         srt_actions[n][0] = "f_url"
+        for n in range(len(srt_actions)):
+            if (
+                srt_actions[n][0] == "dbclk"
+                and n > 1
+                and srt_actions[n - 2][0] == "click"
+                and srt_actions[n - 1][0] == "click"
+                and srt_actions[n - 2][1] == srt_actions[n - 1][1]
+            ):
+                srt_actions[n - 2][0] = "_skip"
+                srt_actions[n - 1][0] = "_skip"
+                srt_actions[n][1] = srt_actions[n - 1][1]
         for n in range(len(srt_actions)):
             if (
                 srt_actions[n][0] == "cho_f"
@@ -4342,6 +4464,147 @@ class BaseCase(unittest.TestCase):
                 )
             ):
                 srt_actions[n][0] = "f_url"
+        for n in range(len(srt_actions)):
+            if (
+                (srt_actions[n][0] == "begin" or srt_actions[n][0] == "_url_")
+                and n > 1
+                and srt_actions[n - 1][0] == "_url_"
+                and srt_actions[n - 2][0] == "o_url"
+                and (
+                    int(srt_actions[n][3]) - int(srt_actions[n - 1][3]) < 4800
+                )
+            ):
+                srt_actions[n][0] = "f_url"
+        for n in range(len(srt_actions)):
+            if (
+                (srt_actions[n][0] == "begin" or srt_actions[n][0] == "_url_")
+                and n > 0
+                and (
+                    srt_actions[n - 1][0] == "click"
+                    or srt_actions[n - 1][0] == "js_cl"
+                    or srt_actions[n - 1][0] == "js_ca"
+                    or srt_actions[n - 1][0] == "jq_cl"
+                    or srt_actions[n - 1][0] == "jq_ca"
+                )
+                and (
+                    int(srt_actions[n][3]) - int(srt_actions[n - 1][3]) < 5200
+                )
+            ):
+                srt_actions[n][0] = "f_url"
+        for n in range(len(srt_actions)):
+            if (
+                n > 1
+                and srt_actions[n][0] == "f_url"
+                and srt_actions[n - 1][0] == "_url_"
+            ):
+                url0 = srt_actions[n][2]
+                url1 = srt_actions[n - 1][2]
+                if url0.endswith("/"):
+                    url0 = url0[0:-1]
+                if url1.endswith("/"):
+                    url1 = url1[0:-1]
+                url0 = url0.replace("http://", "https://")
+                url0 = url0.replace("://www.", "://")
+                url1 = url1.replace("http://", "https://")
+                url1 = url1.replace("://www.", "://")
+                if url0 == url1:
+                    srt_actions[n][0] = "_url_"
+                    srt_actions[n - 1][0] = "_skip"
+        for n in range(len(srt_actions)):
+            if (
+                srt_actions[n][0] == "f_url"
+                and "?q=" in srt_actions[n][2]
+                and "&" in srt_actions[n][2]
+                and srt_actions[n][2].find("?q=") < srt_actions[n][2].find("&")
+            ):
+                srt_actions[n][2] = srt_actions[n][2].split("&")[0]
+        for n in range(len(srt_actions)):
+            if (
+                (srt_actions[n][0] == "begin" or srt_actions[n][0] == "_url_")
+                and n > 2
+                and srt_actions[n - 1][0] == "_skip"
+                and srt_actions[n - 2][0] == "o_url"
+                and (
+                    srt_actions[n - 3][0] == "sw_fr"
+                    or srt_actions[n - 3][0] == "sw_dc"
+                    or srt_actions[n - 3][0] == "sw_pf"
+                    or srt_actions[n - 3][0] == "s_c_d"
+                    or srt_actions[n - 3][0] == "s_c_f"
+                )
+                and (
+                    int(srt_actions[n][3]) - int(srt_actions[n - 3][3]) < 4200
+                )
+            ):
+                srt_actions[n][0] = "_skip"
+        for n in range(len(srt_actions)):
+            if (
+                (srt_actions[n][0] == "begin" or srt_actions[n][0] == "_url_")
+                and n > 0
+                and (
+                    srt_actions[n - 1][0] == "sw_fr"
+                    or srt_actions[n - 1][0] == "sw_dc"
+                    or srt_actions[n - 1][0] == "sw_pf"
+                    or srt_actions[n - 1][0] == "s_c_d"
+                    or srt_actions[n - 1][0] == "s_c_f"
+                )
+                and (
+                    int(srt_actions[n][3]) - int(srt_actions[n - 1][3]) < 4200
+                )
+            ):
+                srt_actions[n][0] = "_skip"
+        for n in range(len(srt_actions)):
+            if (
+                srt_actions[n][0] == "input"
+                and n > 2
+                and srt_actions[n - 1][0] == "js_cl"
+                and srt_actions[n - 2][0] == "input"
+                and srt_actions[n][2].endswith("\n")
+                and srt_actions[n][1] == srt_actions[n - 2][1]
+                and srt_actions[n][2][0:-1] == srt_actions[n - 2][2]
+                and (
+                    int(srt_actions[n][3]) - int(srt_actions[n - 1][3]) < 440
+                )
+            ):
+                srt_actions[n - 1][0] = "_skip"
+                srt_actions[n - 2][0] = "_skip"
+        for n in range(len(srt_actions)):
+            if (
+                srt_actions[n][0] == "input"
+                and n > 1
+                and srt_actions[n - 1][0] == "jq_cl"
+                and srt_actions[n][2].endswith("\n")
+                and (
+                    int(srt_actions[n][3]) - int(srt_actions[n - 1][3]) < 900
+                )
+            ):
+                srt_actions[n - 1][0] = "_skip"
+        for n in range(len(srt_actions)):
+            if (
+                srt_actions[n][0] == "input"
+                and n > 2
+                and srt_actions[n - 3][0] == "js_ty"
+                and srt_actions[n - 1][0] == "_skip"
+                and srt_actions[n - 2][0] == "_skip"
+                and srt_actions[n][2].endswith("\n")
+                and srt_actions[n][2][0:-1] == srt_actions[n - 3][1][1]
+                and (
+                    int(srt_actions[n][3]) - int(srt_actions[n - 3][3]) < 440
+                )
+            ):
+                srt_actions[n - 3][0] = "_skip"
+        for n in range(len(srt_actions)):
+            if (
+                srt_actions[n][0] == "input"
+                and n > 1
+                and srt_actions[n - 2][0] == "jq_ty"
+                and srt_actions[n - 1][0] == "_skip"
+                and srt_actions[n][2].endswith("\n")
+                and srt_actions[n][2][0:-1] == srt_actions[n - 2][1][1]
+                and (
+                    int(srt_actions[n][3]) - int(srt_actions[n - 2][3]) < 900
+                )
+            ):
+                srt_actions[n - 2][0] = "_skip"
         origins = []
         for n in range(len(srt_actions)):
             if (
@@ -4388,6 +4651,9 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("js_cl")
         ext_actions.append("js_ca")
         ext_actions.append("js_ty")
+        ext_actions.append("jq_cl")
+        ext_actions.append("jq_ca")
+        ext_actions.append("jq_ty")
         ext_actions.append("r_clk")
         ext_actions.append("as_el")
         ext_actions.append("as_ep")
@@ -4416,6 +4682,8 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("hover")
         ext_actions.append("sleep")
         ext_actions.append("sh_fc")
+        ext_actions.append("s_at_")
+        ext_actions.append("s_ats")
         ext_actions.append("a_d_m")
         ext_actions.append("d_d_m")
         ext_actions.append("c_l_s")
@@ -4424,6 +4692,8 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("e_mfa")
         ext_actions.append("go_bk")
         ext_actions.append("go_fw")
+        ext_actions.append("s_scr")
+        ext_actions.append("ss_tf")
         ext_actions.append("ss_tl")
         ext_actions.append("da_el")
         ext_actions.append("da_ep")
@@ -4436,11 +4706,16 @@ class BaseCase(unittest.TestCase):
                 if (
                     srt_actions[n][0] == "js_cl"
                     or srt_actions[n][0] == "js_ca"
+                    or srt_actions[n][0] == "jq_cl"
+                    or srt_actions[n][0] == "jq_ca"
                 ):
                     origin = srt_actions[n][2][1]
                 if origin.endswith("/"):
                     origin = origin[0:-1]
                 if srt_actions[n][0] == "js_ty":
+                    srt_actions[n][2] = srt_actions[n][1][1]
+                    srt_actions[n][1] = srt_actions[n][1][0]
+                if srt_actions[n][0] == "jq_ty":
                     srt_actions[n][2] = srt_actions[n][1][1]
                     srt_actions[n][1] = srt_actions[n][1][0]
                 if srt_actions[n][0] == "e_mfa":
@@ -4454,455 +4729,16 @@ class BaseCase(unittest.TestCase):
             if (
                 srt_actions[n][0] == "input"
                 and n > 0
-                and srt_actions[n - 1][0] == "js_ty"
+                and (
+                    srt_actions[n - 1][0] == "js_ty"
+                    or srt_actions[n - 1][0] == "jq_ty"
+                )
                 and srt_actions[n][2] == srt_actions[n - 1][2]
             ):
                 srt_actions[n][0] = "_skip"
-        for n in range(len(srt_actions)):
-            cleaned_actions.append(srt_actions[n])
-        for action in srt_actions:
-            if action[0] == "begin" or action[0] == "_url_":
-                if "%" in action[2]:
-                    try:
-                        from urllib.parse import unquote
 
-                        action[2] = unquote(action[2], errors="strict")
-                    except Exception:
-                        pass
-                if '"' not in action[2]:
-                    sb_actions.append('self.open("%s")' % action[2])
-                elif "'" not in action[2]:
-                    sb_actions.append("self.open('%s')" % action[2])
-                else:
-                    sb_actions.append(
-                        'self.open("%s")' % action[2].replace('"', '\\"')
-                    )
-            elif action[0] == "f_url":
-                if "%" in action[2]:
-                    try:
-                        from urllib.parse import unquote
-
-                        action[2] = unquote(action[2], errors="strict")
-                    except Exception:
-                        pass
-                if '"' not in action[2]:
-                    sb_actions.append('self.open_if_not_url("%s")' % action[2])
-                elif "'" not in action[2]:
-                    sb_actions.append("self.open_if_not_url('%s')" % action[2])
-                else:
-                    sb_actions.append(
-                        'self.open_if_not_url("%s")'
-                        % action[2].replace('"', '\\"')
-                    )
-            elif action[0] == "click":
-                method = "click"
-                if '"' not in action[1]:
-                    sb_actions.append('self.%s("%s")' % (method, action[1]))
-                else:
-                    sb_actions.append("self.%s('%s')" % (method, action[1]))
-            elif action[0] == "js_cl":
-                method = "js_click"
-                if '"' not in action[1]:
-                    sb_actions.append('self.%s("%s")' % (method, action[1]))
-                else:
-                    sb_actions.append("self.%s('%s')" % (method, action[1]))
-            elif action[0] == "js_ca":
-                method = "js_click_all"
-                if '"' not in action[1]:
-                    sb_actions.append('self.%s("%s")' % (method, action[1]))
-                else:
-                    sb_actions.append("self.%s('%s')" % (method, action[1]))
-            elif action[0] == "r_clk":
-                method = "context_click"
-                if '"' not in action[1]:
-                    sb_actions.append('self.%s("%s")' % (method, action[1]))
-                else:
-                    sb_actions.append("self.%s('%s')" % (method, action[1]))
-            elif action[0] == "canva":
-                method = "click_with_offset"
-                selector = action[1][0]
-                p_x = action[1][1]
-                p_y = action[1][2]
-                if '"' not in selector:
-                    sb_actions.append(
-                        'self.%s("%s", %s, %s)' % (method, selector, p_x, p_y)
-                    )
-                else:
-                    sb_actions.append(
-                        "self.%s('%s', %s, %s)" % (method, selector, p_x, p_y)
-                    )
-            elif action[0] == "input" or action[0] == "js_ty":
-                method = "type"
-                if action[0] == "js_ty":
-                    method = "js_type"
-                text = action[2].replace("\n", "\\n")
-                if '"' not in action[1] and '"' not in text:
-                    sb_actions.append(
-                        'self.%s("%s", "%s")' % (method, action[1], text)
-                    )
-                elif '"' not in action[1] and '"' in text:
-                    sb_actions.append(
-                        'self.%s("%s", \'%s\')' % (method, action[1], text)
-                    )
-                elif '"' in action[1] and '"' not in text:
-                    sb_actions.append(
-                        'self.%s(\'%s\', "%s")' % (method, action[1], text)
-                    )
-                elif '"' in action[1] and '"' in text:
-                    sb_actions.append(
-                        "self.%s('%s', '%s')" % (method, action[1], text)
-                    )
-            elif action[0] == "hover":
-                method = "hover"
-                if '"' not in action[1]:
-                    sb_actions.append('self.%s("%s")' % (method, action[1]))
-                else:
-                    sb_actions.append("self.%s('%s')" % (method, action[1]))
-            elif action[0] == "e_mfa":
-                method = "enter_mfa_code"
-                text = action[2].replace("\n", "\\n")
-                if '"' not in action[1] and '"' not in text:
-                    sb_actions.append(
-                        'self.%s("%s", "%s")' % (method, action[1], text)
-                    )
-                elif '"' not in action[1] and '"' in text:
-                    sb_actions.append(
-                        'self.%s("%s", \'%s\')' % (method, action[1], text)
-                    )
-                elif '"' in action[1] and '"' not in text:
-                    sb_actions.append(
-                        'self.%s(\'%s\', "%s")' % (method, action[1], text)
-                    )
-                elif '"' in action[1] and '"' in text:
-                    sb_actions.append(
-                        "self.%s('%s', '%s')" % (method, action[1], text)
-                    )
-            elif action[0] == "h_clk":
-                method = "hover_and_click"
-                if '"' not in action[1] and '"' not in action[2]:
-                    sb_actions.append(
-                        'self.%s("%s", "%s")' % (method, action[1], action[2])
-                    )
-                elif '"' not in action[1] and '"' in action[2]:
-                    sb_actions.append(
-                        'self.%s("%s", \'%s\')'
-                        % (method, action[1], action[2])
-                    )
-                elif '"' in action[1] and '"' not in action[2]:
-                    sb_actions.append(
-                        'self.%s(\'%s\', "%s")'
-                        % (method, action[1], action[2])
-                    )
-                elif '"' in action[1] and '"' in action[2]:
-                    sb_actions.append(
-                        "self.%s('%s', '%s')" % (method, action[1], action[2])
-                    )
-            elif action[0] == "ddrop":
-                method = "drag_and_drop"
-                if '"' not in action[1] and '"' not in action[2]:
-                    sb_actions.append(
-                        'self.%s("%s", "%s")' % (method, action[1], action[2])
-                    )
-                elif '"' not in action[1] and '"' in action[2]:
-                    sb_actions.append(
-                        'self.%s("%s", \'%s\')'
-                        % (method, action[1], action[2])
-                    )
-                elif '"' in action[1] and '"' not in action[2]:
-                    sb_actions.append(
-                        'self.%s(\'%s\', "%s")'
-                        % (method, action[1], action[2])
-                    )
-                elif '"' in action[1] and '"' in action[2]:
-                    sb_actions.append(
-                        "self.%s('%s', '%s')" % (method, action[1], action[2])
-                    )
-            elif action[0] == "s_opt":
-                method = "select_option_by_text"
-                if '"' not in action[1] and '"' not in action[2]:
-                    sb_actions.append(
-                        'self.%s("%s", "%s")' % (method, action[1], action[2])
-                    )
-                elif '"' not in action[1] and '"' in action[2]:
-                    sb_actions.append(
-                        'self.%s("%s", \'%s\')'
-                        % (method, action[1], action[2])
-                    )
-                elif '"' in action[1] and '"' not in action[2]:
-                    sb_actions.append(
-                        'self.%s(\'%s\', "%s")'
-                        % (method, action[1], action[2])
-                    )
-                elif '"' in action[1] and '"' in action[2]:
-                    sb_actions.append(
-                        "self.%s('%s', '%s')" % (method, action[1], action[2])
-                    )
-            elif action[0] == "set_v":
-                method = "set_value"
-                if '"' not in action[1] and '"' not in action[2]:
-                    sb_actions.append(
-                        'self.%s("%s", "%s")' % (method, action[1], action[2])
-                    )
-                elif '"' not in action[1] and '"' in action[2]:
-                    sb_actions.append(
-                        'self.%s("%s", \'%s\')'
-                        % (method, action[1], action[2])
-                    )
-                elif '"' in action[1] and '"' not in action[2]:
-                    sb_actions.append(
-                        'self.%s(\'%s\', "%s")'
-                        % (method, action[1], action[2])
-                    )
-                elif '"' in action[1] and '"' in action[2]:
-                    sb_actions.append(
-                        "self.%s('%s', '%s')" % (method, action[1], action[2])
-                    )
-            elif action[0] == "cho_f":
-                method = "choose_file"
-                action[2] = action[2].replace("\\", "\\\\")
-                if '"' not in action[1] and '"' not in action[2]:
-                    sb_actions.append(
-                        'self.%s("%s", "%s")' % (method, action[1], action[2])
-                    )
-                elif '"' not in action[1] and '"' in action[2]:
-                    sb_actions.append(
-                        'self.%s("%s", \'%s\')'
-                        % (method, action[1], action[2])
-                    )
-                elif '"' in action[1] and '"' not in action[2]:
-                    sb_actions.append(
-                        'self.%s(\'%s\', "%s")'
-                        % (method, action[1], action[2])
-                    )
-                elif '"' in action[1] and '"' in action[2]:
-                    sb_actions.append(
-                        "self.%s('%s', '%s')" % (method, action[1], action[2])
-                    )
-            elif action[0] == "sw_fr":
-                method = "switch_to_frame"
-                if '"' not in action[1]:
-                    sb_actions.append('self.%s("%s")' % (method, action[1]))
-                else:
-                    sb_actions.append("self.%s('%s')" % (method, action[1]))
-            elif action[0] == "sw_dc":
-                sb_actions.append("self.switch_to_default_content()")
-            elif action[0] == "sw_pf":
-                sb_actions.append("self.switch_to_parent_frame()")
-            elif action[0] == "s_c_f":
-                method = "set_content_to_frame"
-                if '"' not in action[1]:
-                    sb_actions.append('self.%s("%s")' % (method, action[1]))
-                else:
-                    sb_actions.append("self.%s('%s')" % (method, action[1]))
-            elif action[0] == "s_c_d":
-                method = "set_content_to_default"
-                nested = action[1]
-                if nested:
-                    method = "set_content_to_parent"
-                    sb_actions.append("self.%s()" % method)
-                else:
-                    sb_actions.append("self.%s()" % method)
-            elif action[0] == "sleep":
-                method = "sleep"
-                sb_actions.append("self.%s(%s)" % (method, action[1]))
-            elif action[0] == "wf_el":
-                method = "wait_for_element"
-                if '"' not in action[1]:
-                    sb_actions.append('self.%s("%s")' % (method, action[1]))
-                else:
-                    sb_actions.append("self.%s('%s')" % (method, action[1]))
-            elif action[0] == "as_el":
-                method = "assert_element"
-                if '"' not in action[1]:
-                    sb_actions.append('self.%s("%s")' % (method, action[1]))
-                else:
-                    sb_actions.append("self.%s('%s')" % (method, action[1]))
-            elif action[0] == "as_ep":
-                method = "assert_element_present"
-                if '"' not in action[1]:
-                    sb_actions.append('self.%s("%s")' % (method, action[1]))
-                else:
-                    sb_actions.append("self.%s('%s')" % (method, action[1]))
-            elif action[0] == "asenv":
-                method = "assert_element_not_visible"
-                if '"' not in action[1]:
-                    sb_actions.append('self.%s("%s")' % (method, action[1]))
-                else:
-                    sb_actions.append("self.%s('%s')" % (method, action[1]))
-            elif action[0] == "acc_a":
-                sb_actions.append("self.accept_alert()")
-            elif action[0] == "dis_a":
-                sb_actions.append("self.dismiss_alert()")
-            elif action[0] == "hi_li":
-                method = "highlight"
-                if '"' not in action[1]:
-                    sb_actions.append('self.%s("%s")' % (method, action[1]))
-                else:
-                    sb_actions.append("self.%s('%s')" % (method, action[1]))
-            elif action[0] == "as_lt":
-                method = "assert_link_text"
-                if '"' not in action[1]:
-                    sb_actions.append('self.%s("%s")' % (method, action[1]))
-                else:
-                    sb_actions.append("self.%s('%s')" % (method, action[1]))
-            elif action[0] == "as_ti":
-                method = "assert_title"
-                if '"' not in action[1]:
-                    sb_actions.append('self.%s("%s")' % (method, action[1]))
-                else:
-                    sb_actions.append("self.%s('%s')" % (method, action[1]))
-            elif action[0] == "as_tc":
-                method = "assert_title_contains"
-                if '"' not in action[1]:
-                    sb_actions.append('self.%s("%s")' % (method, action[1]))
-                else:
-                    sb_actions.append("self.%s('%s')" % (method, action[1]))
-            elif action[0] == "a_url":
-                method = "assert_url"
-                if '"' not in action[1]:
-                    sb_actions.append('self.%s("%s")' % (method, action[1]))
-                else:
-                    sb_actions.append("self.%s('%s')" % (method, action[1]))
-            elif action[0] == "a_u_c":
-                method = "assert_url_contains"
-                if '"' not in action[1]:
-                    sb_actions.append('self.%s("%s")' % (method, action[1]))
-                else:
-                    sb_actions.append("self.%s('%s')" % (method, action[1]))
-            elif action[0] == "as_df":
-                method = "assert_downloaded_file"
-                if '"' not in action[1]:
-                    sb_actions.append('self.%s("%s")' % (method, action[1]))
-                else:
-                    sb_actions.append("self.%s('%s')" % (method, action[1]))
-            elif action[0] == "do_fi":
-                method = "download_file"
-                file_url = action[1][0]
-                dest = action[1][1]
-                if not dest:
-                    sb_actions.append('self.%s("%s")' % (method, file_url))
-                else:
-                    sb_actions.append(
-                        'self.%s("%s", "%s")' % (method, file_url, dest)
-                    )
-            elif action[0] == "as_at":
-                method = "assert_attribute"
-                if ('"' not in action[1][0]) and action[1][2]:
-                    sb_actions.append(
-                        'self.%s("%s", "%s", "%s")'
-                        % (method, action[1][0], action[1][1], action[1][2])
-                    )
-                elif ('"' not in action[1][0]) and not action[1][2]:
-                    sb_actions.append(
-                        'self.%s("%s", "%s")'
-                        % (method, action[1][0], action[1][1])
-                    )
-                elif ('"' in action[1][0]) and action[1][2]:
-                    sb_actions.append(
-                        'self.%s(\'%s\', "%s", "%s")'
-                        % (method, action[1][0], action[1][1], action[1][2])
-                    )
-                else:
-                    sb_actions.append(
-                        'self.%s(\'%s\', "%s")'
-                        % (method, action[1][0], action[1][1])
-                    )
-            elif (
-                action[0] == "as_te"
-                or action[0] == "as_et"
-                or action[0] == "astnv"
-                or action[0] == "aetnv"
-                or action[0] == "da_te"
-                or action[0] == "da_et"
-            ):
-                import unicodedata
-
-                action[1][0] = unicodedata.normalize("NFKC", action[1][0])
-                action[1][0] = action[1][0].replace("\n", "\\n")
-                method = "assert_text"
-                if action[0] == "as_et":
-                    method = "assert_exact_text"
-                elif action[0] == "astnv":
-                    method = "assert_text_not_visible"
-                elif action[0] == "aetnv":
-                    method = "assert_exact_text_not_visible"
-                elif action[0] == "da_te":
-                    method = "deferred_assert_text"
-                elif action[0] == "da_et":
-                    method = "deferred_assert_exact_text"
-                if action[1][1] != "html":
-                    if '"' not in action[1][0] and '"' not in action[1][1]:
-                        sb_actions.append(
-                            'self.%s("%s", "%s")'
-                            % (method, action[1][0], action[1][1])
-                        )
-                    elif '"' not in action[1][0] and '"' in action[1][1]:
-                        sb_actions.append(
-                            'self.%s("%s", \'%s\')'
-                            % (method, action[1][0], action[1][1])
-                        )
-                    elif '"' in action[1] and '"' not in action[1][1]:
-                        sb_actions.append(
-                            'self.%s(\'%s\', "%s")'
-                            % (method, action[1][0], action[1][1])
-                        )
-                    elif '"' in action[1] and '"' in action[1][1]:
-                        sb_actions.append(
-                            "self.%s('%s', '%s')"
-                            % (method, action[1][0], action[1][1])
-                        )
-                else:
-                    if '"' not in action[1][0]:
-                        sb_actions.append(
-                            'self.%s("%s")' % (method, action[1][0])
-                        )
-                    else:
-                        sb_actions.append(
-                            "self.%s('%s')" % (method, action[1][0])
-                        )
-            elif action[0] == "da_el":
-                method = "deferred_assert_element"
-                if '"' not in action[1]:
-                    sb_actions.append('self.%s("%s")' % (method, action[1]))
-                else:
-                    sb_actions.append("self.%s('%s')" % (method, action[1]))
-            elif action[0] == "da_ep":
-                method = "deferred_assert_element_present"
-                if '"' not in action[1]:
-                    sb_actions.append('self.%s("%s")' % (method, action[1]))
-                else:
-                    sb_actions.append("self.%s('%s')" % (method, action[1]))
-            elif action[0] == "ss_tl":
-                method = "save_screenshot_to_logs"
-                sb_actions.append("self.%s()" % method)
-            elif action[0] == "sh_fc":
-                method = "show_file_choosers"
-                sb_actions.append("self.%s()" % method)
-            elif action[0] == "pr_da":
-                sb_actions.append("self.process_deferred_asserts()")
-            elif action[0] == "a_d_m":
-                sb_actions.append("self.activate_demo_mode()")
-            elif action[0] == "d_d_m":
-                sb_actions.append("self.deactivate_demo_mode()")
-            elif action[0] == "c_l_s":
-                sb_actions.append("self.clear_local_storage()")
-            elif action[0] == "c_s_s":
-                sb_actions.append("self.clear_session_storage()")
-            elif action[0] == "d_a_c":
-                sb_actions.append("self.delete_all_cookies()")
-            elif action[0] == "go_bk":
-                sb_actions.append("self.go_back()")
-            elif action[0] == "go_fw":
-                sb_actions.append("self.go_forward()")
-            elif action[0] == "c_box":
-                method = "check_if_unchecked"
-                if action[2] == "no":
-                    method = "uncheck_if_checked"
-                if '"' not in action[1]:
-                    sb_actions.append('self.%s("%s")' % (method, action[1]))
-                else:
-                    sb_actions.append("self.%s('%s')" % (method, action[1]))
-
+        # Generate the script from processed actions
+        sb_actions = recorder_helper.generate_sbase_code(srt_actions)
         filename = self.__get_filename()
         classname = self.__class__.__name__
         methodname = self._testMethodName
@@ -4920,9 +4756,19 @@ class BaseCase(unittest.TestCase):
                 filename = self.cm_filename
             else:
                 filename = test_base.split('"')[0]
-            classname = "SB"
+            classname = "SB_Test"
             methodname = "test_line_" + test_base.split(", line ")[-1]
             context_filename = filename.split(".")[0] + "_rec.py"
+        if hasattr(self, "_using_sb_fixture"):
+            test_id = sb_config._test_id
+            filename = test_id.split("::")[0]
+            methodname = test_id.split("::")[-1]
+            if test_id.count("::") >= 2:
+                classname = test_id.split("::")[-2]
+            else:
+                classname = "MyTestClass"
+            methodname = methodname.replace("[", "__").replace("]", "")
+            methodname = re.sub(r"[\W]", "_", methodname)
         if hasattr(self, "is_behave") and self.is_behave:
             classname = sb_config.behave_feature.name
             classname = classname.replace("/", " ").replace(" & ", " ")
@@ -4957,6 +4803,8 @@ class BaseCase(unittest.TestCase):
             data.append("class %s(BaseCase):" % classname)
         else:
             data = sb_config._recorded_actions[filename]
+        if not new_file and classname not in " ".join(data):
+            data.append("class %s(BaseCase):" % classname)
         data.append("    def %s(self):" % methodname)
         if len(sb_actions) > 0:
             for action in sb_actions:
@@ -4965,6 +4813,7 @@ class BaseCase(unittest.TestCase):
             data.append("        pass")
         data.append("")
         sb_config._recorded_actions[filename] = data
+        saved_data = data
 
         recordings_folder = constants.Recordings.SAVED_FOLDER
         if recordings_folder.endswith("/"):
@@ -4972,14 +4821,101 @@ class BaseCase(unittest.TestCase):
         if not os.path.exists(recordings_folder):
             try:
                 os.makedirs(recordings_folder)
+                sys.stdout.write("\nCreated recordings%s" % os.sep)
             except Exception:
                 pass
 
+        data = []
+        data.append("")
+        extra_file_name = "__init__.py"
+        extra_file_path = os.path.join(recordings_folder, extra_file_name)
+        if not os.path.exists(extra_file_path):
+            out_file = codecs.open(extra_file_path, "w+", "utf-8")
+            out_file.writelines("\r\n".join(data))
+            out_file.close()
+            sys.stdout.write("\nCreated recordings%s__init__.py" % os.sep)
+
+        data = []
+        data.append("[pytest]")
+        data.append(
+            "addopts = --capture=no -p no:cacheprovider --ignore=recordings"
+        )
+        data.append("norecursedirs = .* build dist recordings temp")
+        data.append("filterwarnings =")
+        data.append("    ignore::pytest.PytestWarning")
+        data.append("    ignore:.*U.*mode is deprecated:DeprecationWarning")
+        data.append("junit_family = legacy")
+        data.append("python_files =")
+        data.append("    test_*.py ")
+        data.append("    *_test.py ")
+        data.append("    *_tests.py")
+        data.append("    *_suite.py")
+        data.append("    *_feature.py")
+        data.append("    *_test_rec.py")
+        data.append("    *_feature_rec.py")
+        data.append("python_classes = Test* *Test* *Test *Tests *Suite")
+        data.append("python_functions = test_*")
+        data.append("markers =")
+        data.append("    marker1: custom marker")
+        data.append("    marker2: custom marker")
+        data.append("    marker3: custom marker")
+        data.append("    marker_test_suite: custom marker")
+        data.append("    expected_failure: custom marker")
+        data.append("    local: custom marker")
+        data.append("    remote: custom marker")
+        data.append("    offline: custom marker")
+        data.append("    develop: custom marker")
+        data.append("    qa: custom marker")
+        data.append("    ci: custom marker")
+        data.append("    e2e: custom marker")
+        data.append("    ready: custom marker")
+        data.append("    smoke: custom marker")
+        data.append("    deploy: custom marker")
+        data.append("    active: custom marker")
+        data.append("    master: custom marker")
+        data.append("    release: custom marker")
+        data.append("    staging: custom marker")
+        data.append("    production: custom marker")
+        data.append("")
+        extra_file_name = "pytest.ini"
+        extra_file_path = os.path.join(recordings_folder, extra_file_name)
+        if not os.path.exists(extra_file_path):
+            out_file = codecs.open(extra_file_path, "w+", "utf-8")
+            out_file.writelines("\r\n".join(data))
+            out_file.close()
+            sys.stdout.write("\nCreated recordings%spytest.ini" % os.sep)
+
+        data = []
+        data.append("[flake8]")
+        data.append("exclude=recordings,temp")
+        data.append("ignore=W503")
+        data.append("")
+        data.append("[nosetests]")
+        data.append("nocapture=1")
+        data.append("logging-level=INFO")
+        data.append("")
+        data.append("[behave]")
+        data.append("show_skipped=false")
+        data.append("show_timings=false")
+        data.append("")
+        extra_file_name = "setup.cfg"
+        extra_file_path = os.path.join(recordings_folder, extra_file_name)
+        if not os.path.exists(extra_file_path):
+            out_file = codecs.open(extra_file_path, "w+", "utf-8")
+            out_file.writelines("\r\n".join(data))
+            out_file.close()
+            sys.stdout.write("\nCreated recordings%ssetup.cfg" % os.sep)
+
+        data = saved_data
         file_name = self.__class__.__module__.split(".")[-1] + "_rec.py"
+        if hasattr(self, "_using_sb_fixture"):
+            test_id = sb_config._test_id
+            file_name = test_id.split("::")[0].split("/")[-1].split("\\")[-1]
+            file_name = file_name.split(".py")[0] + "_rec.py"
         if hasattr(self, "is_behave") and self.is_behave:
             file_name = sb_config.behave_scenario.filename.replace(".", "_")
-            file_name = file_name.split("/")[-1].split("\\")[-1]
-            file_name = file_name + "_rec.py"
+            file_name = file_name.split("/")[-1].split("\\")[-1] + "_rec.py"
+            file_name = file_name
         elif context_filename:
             file_name = context_filename
         file_path = os.path.join(recordings_folder, file_name)
@@ -4999,6 +4935,7 @@ class BaseCase(unittest.TestCase):
         spc = "\n\n"
         if hasattr(self, "rec_print") and self.rec_print:
             spc = ""
+            sys.stdout.write("\nCreated recordings%s%s" % (os.sep, file_name))
             print()
             if " " not in file_path:
                 os.system("sbase print %s -n" % file_path)
@@ -5011,12 +4948,12 @@ class BaseCase(unittest.TestCase):
         c2 = ""
         cr = ""
         if "linux" not in sys.platform:
-            colorama.init(autoreset=True)
             c1 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
             c2 = colorama.Fore.LIGHTRED_EX + colorama.Back.LIGHTYELLOW_EX
             cr = colorama.Style.RESET_ALL
             rec_message = rec_message.replace(">>>", c2 + ">>>" + cr)
         print("%s%s%s%s%s\n%s" % (spc, rec_message, c1, file_path, cr, stars))
+
         if hasattr(self, "rec_behave") and self.rec_behave:
             # Also generate necessary behave-gherkin files.
             self.__process_recorded_behave_actions(srt_actions, colorama)
@@ -5034,6 +4971,14 @@ class BaseCase(unittest.TestCase):
         else:
             feature_class = self.__class__.__name__
             scenario_test = self._testMethodName
+            if hasattr(self, "_using_sb_fixture"):
+                test_id = sb_config._test_id
+                filename = test_id.split("::")[0]
+                scenario_test = test_id.split("::")[-1]
+                if test_id.count("::") >= 2:
+                    feature_class = test_id.split("::")[-2]
+                else:
+                    feature_class = "MyTestClass"
         new_file = False
         data = []
         if filename not in sb_config._behave_recorded_actions:
@@ -5076,11 +5021,10 @@ class BaseCase(unittest.TestCase):
             except Exception:
                 pass
 
-        file_name = filename.split(".")[0] + "_rec.feature"
+        file_name = filename.split(".")[0]
         if hasattr(self, "is_behave") and self.is_behave:
             file_name = sb_config.behave_scenario.filename.replace(".", "_")
-            file_name = file_name.split("/")[-1].split("\\")[-1]
-            file_name = file_name + "_rec.feature"
+        file_name = file_name.split("/")[-1].split("\\")[-1] + "_rec.feature"
         file_path = os.path.join(features_folder, file_name)
         out_file = codecs.open(file_path, "w+", "utf-8")
         out_file.writelines("\r\n".join(data))
@@ -5111,7 +5055,6 @@ class BaseCase(unittest.TestCase):
         c2 = ""
         cr = ""
         if "linux" not in sys.platform:
-            colorama.init(autoreset=True)
             c1 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
             c2 = colorama.Fore.LIGHTRED_EX + colorama.Back.LIGHTYELLOW_EX
             cr = colorama.Style.RESET_ALL
@@ -5239,6 +5182,7 @@ class BaseCase(unittest.TestCase):
     def highlight_click(
         self, selector, by="css selector", loops=3, scroll=True
     ):
+        """Highlights the element and then clicks it."""
         self.__check_scope()
         if not self.demo_mode:
             self.__highlight(selector, by=by, loops=loops, scroll=scroll)
@@ -5348,15 +5292,12 @@ class BaseCase(unittest.TestCase):
         scroll - the option to scroll to the element first (Default: True) """
         self.__check_scope()
         self.__highlight(selector=selector, by=by, loops=loops, scroll=scroll)
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        action = ["hi_li", selector, origin, time_stamp]
-                        self.__extra_actions.append(action)
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                action = ["hi_li", selector, origin, time_stamp]
+                self.__extra_actions.append(action)
 
     def press_up_arrow(self, selector="html", times=1, by="css selector"):
         """Simulates pressing the UP Arrow on the keyboard.
@@ -5470,6 +5411,7 @@ class BaseCase(unittest.TestCase):
             self.__scroll_to_element(element, selector, by)
 
     def scroll_to_element(self, selector, by="css selector", timeout=None):
+        """Same as self.scroll_to()"""
         self.scroll_to(selector, by=by, timeout=timeout)
 
     def slow_scroll_to(self, selector, by="css selector", timeout=None):
@@ -5507,7 +5449,20 @@ class BaseCase(unittest.TestCase):
     def slow_scroll_to_element(
         self, selector, by="css selector", timeout=None
     ):
+        """Same as self.slow_scroll_to()"""
         self.slow_scroll_to(selector, by=by, timeout=timeout)
+
+    def scroll_into_view(self, selector, by="css selector", timeout=None):
+        """Uses the JS scrollIntoView() method to scroll to an element.
+        Unlike other scroll methods, (which put elements upper-center),
+        this method places elements at the very top of the screen."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        element = self.wait_for_element_visible(selector, by, timeout=timeout)
+        self.execute_script("arguments[0].scrollIntoView();", element)
 
     def scroll_to_top(self):
         """Scroll to the top of the page."""
@@ -5532,8 +5487,8 @@ class BaseCase(unittest.TestCase):
             return False
 
     def click_xpath(self, xpath):
-        # Technically self.click() will automatically detect an xpath selector,
-        # so self.click_xpath() is just a longer name for the same action.
+        """Technically, self.click() automatically detects xpath selectors,
+        so self.click_xpath() is just a longer name for the same action."""
         self.click(xpath, by="xpath")
 
     def js_click(
@@ -5575,7 +5530,8 @@ class BaseCase(unittest.TestCase):
         css_selector = self.convert_to_css_selector(selector, by=by)
         css_selector = re.escape(css_selector)  # Add "\\" to special chars
         css_selector = self.__escape_quotes_if_needed(css_selector)
-        action = None
+        time_stamp = 0
+        action = ["", "", "", time_stamp]
         pre_action_url = self.driver.current_url
         pre_window_count = len(self.driver.window_handles)
         if self.recorder_mode and not self.__dont_record_js_click:
@@ -5606,20 +5562,32 @@ class BaseCase(unittest.TestCase):
                         element = page_actions.wait_for_element_present(
                             self.driver, selector, by, timeout=timeout
                         )
+        if self.recorder_mode and not self.__dont_record_js_click:
+            action[3] = self.execute_script("return Date.now();")
+            self.__extra_actions.append(action)
         if not all_matches:
             if ":contains\\(" not in css_selector:
                 self.__js_click(selector, by=by)
             else:
                 click_script = """jQuery('%s')[0].click();""" % css_selector
-                self.safe_execute_script(click_script)
+                try:
+                    self.safe_execute_script(click_script)
+                except Exception:
+                    self.wait_for_ready_state_complete()
+                    element = self.wait_for_element_present(
+                        selector, by, timeout=settings.SMALL_TIMEOUT
+                    )
+                    time.sleep(0.05)
+                    if self.is_element_clickable(selector):
+                        self.__element_click(element)
+                    else:
+                        self.safe_execute_script(click_script)
         else:
             if ":contains\\(" not in css_selector:
                 self.__js_click_all(selector, by=by)
             else:
                 click_script = """jQuery('%s').click();""" % css_selector
                 self.safe_execute_script(click_script)
-        if self.recorder_mode and action:
-            self.__extra_actions.append(action)
         latest_window_count = len(self.driver.window_handles)
         if (
             latest_window_count > pre_window_count
@@ -5689,6 +5657,7 @@ class BaseCase(unittest.TestCase):
         """Clicks an element using jQuery. (Different from using pure JS.)
         Can be used to click hidden / invisible elements."""
         self.__check_scope()
+        original_selector = selector
         selector, by = self.__recalculate_selector(selector, by, xp_ok=False)
         self.wait_for_element_present(
             selector, by=by, timeout=settings.SMALL_TIMEOUT
@@ -5696,14 +5665,37 @@ class BaseCase(unittest.TestCase):
         if self.is_element_visible(selector, by=by):
             self.__demo_mode_highlight_if_active(selector, by)
         selector = self.convert_to_css_selector(selector, by=by)
+        css_selector = selector
         selector = self.__make_css_match_first_element_only(selector)
         click_script = """jQuery('%s')[0].click();""" % selector
+        if (
+            self.recorder_mode
+            and self.__current_url_is_recordable()
+            and self.get_session_storage_item("pause_recorder") == "no"
+        ):
+            time_stamp = self.execute_script("return Date.now();")
+            tag_name = None
+            href = ""
+            if ":contains\\(" not in css_selector:
+                tag_name = self.execute_script(
+                    "return document.querySelector('%s').tagName.toLowerCase()"
+                    ";" % css_selector
+                )
+            if tag_name == "a":
+                href = self.execute_script(
+                    "return document.querySelector('%s').href;" % css_selector
+                )
+            origin = self.get_origin()
+            href_origin = [href, origin]
+            action = ["jq_cl", original_selector, href_origin, time_stamp]
+            self.__extra_actions.append(action)
         self.safe_execute_script(click_script)
         self.__demo_mode_pause_if_active()
 
     def jquery_click_all(self, selector, by="css selector"):
         """Clicks all matching elements using jQuery."""
         self.__check_scope()
+        original_selector = selector
         selector, by = self.__recalculate_selector(selector, by, xp_ok=False)
         self.wait_for_element_present(
             selector, by=by, timeout=settings.SMALL_TIMEOUT
@@ -5712,6 +5704,27 @@ class BaseCase(unittest.TestCase):
             self.__demo_mode_highlight_if_active(selector, by)
         css_selector = self.convert_to_css_selector(selector, by=by)
         click_script = """jQuery('%s').click();""" % css_selector
+        if (
+            self.recorder_mode
+            and self.__current_url_is_recordable()
+            and self.get_session_storage_item("pause_recorder") == "no"
+        ):
+            time_stamp = self.execute_script("return Date.now();")
+            tag_name = None
+            href = ""
+            if ":contains\\(" not in css_selector:
+                tag_name = self.execute_script(
+                    "return document.querySelector('%s').tagName.toLowerCase()"
+                    ";" % css_selector
+                )
+            if tag_name == "a":
+                href = self.execute_script(
+                    "return document.querySelector('%s').href;" % css_selector
+                )
+            origin = self.get_origin()
+            href_origin = [href, origin]
+            action = ["jq_ca", original_selector, href_origin, time_stamp]
+            self.__extra_actions.append(action)
         self.safe_execute_script(click_script)
         self.__demo_mode_pause_if_active()
 
@@ -5911,15 +5924,12 @@ class BaseCase(unittest.TestCase):
             self.execute_script(script)
         except Exception:
             pass
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        action = ["sh_fc", "", origin, time_stamp]
-                        self.__extra_actions.append(action)
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                action = ["sh_fc", "", origin, time_stamp]
+                self.__extra_actions.append(action)
 
     def disable_beforeunload(self):
         """This prevents: "Leave Site? Changes you made may not be saved."
@@ -5943,8 +5953,7 @@ class BaseCase(unittest.TestCase):
     def get_beautiful_soup(self, source=None):
         """BeautifulSoup is a toolkit for dissecting an HTML document
         and extracting what you need. It's great for screen-scraping!
-        See: https://www.crummy.com/software/BeautifulSoup/bs4/doc/
-        """
+        See: https://www.crummy.com/software/BeautifulSoup/bs4/doc/ """
         from bs4 import BeautifulSoup
 
         if not source:
@@ -5961,8 +5970,7 @@ class BaseCase(unittest.TestCase):
     def get_unique_links(self):
         """Get all unique links in the html of the page source.
         Page links include those obtained from:
-        "a"->"href", "img"->"src", "link"->"href", and "script"->"src".
-        """
+        "a"->"href", "img"->"src", "link"->"href", and "script"->"src"."""
         self.wait_for_ready_state_complete()
         if self.__needs_minimum_wait():
             time.sleep(0.08)
@@ -5994,8 +6002,7 @@ class BaseCase(unittest.TestCase):
         If the timeout is exceeded by requests.head(), it will return a 404.
         If "verify" is False, will ignore certificate errors.
         For a list of available status codes, see:
-        https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
-        """
+        https://en.wikipedia.org/wiki/List_of_HTTP_status_codes """
         if self.__requests_timeout:
             timeout = self.__requests_timeout
         if timeout < 1:
@@ -6088,8 +6095,7 @@ class BaseCase(unittest.TestCase):
         and then prints out those links with their status codes.
         Format:  ["link"  ->  "status_code"]  (per line)
         Page links include those obtained from:
-        "a"->"href", "img"->"src", "link"->"href", and "script"->"src".
-        """
+        "a"->"href", "img"->"src", "link"->"href", and "script"->"src"."""
         page_url = self.get_current_url()
         soup = self.get_beautiful_soup(self.get_page_source())
         page_utils._print_unique_links_with_status_codes(page_url, soup)
@@ -6109,8 +6115,7 @@ class BaseCase(unittest.TestCase):
     def __get_type_checked_text(self, text):
         """Do type-checking on text. Then return it when valid.
         If the text is acceptable, return the text or str(text).
-        If the text is not acceptable, raise a Python Exception.
-        """
+        If the text is not acceptable, raise a Python Exception."""
         if type(text) is str:
             return text
         elif type(text) is int or type(text) is float:
@@ -6309,8 +6314,7 @@ class BaseCase(unittest.TestCase):
         A relative file_path will get converted into an absolute file_path.
 
         Example usage:
-            self.choose_file('input[type="file"]', "my_dir/my_file.txt")
-        """
+            self.choose_file('input[type="file"]', "my_dir/my_file.txt") """
         self.__check_scope()
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
@@ -6337,16 +6341,13 @@ class BaseCase(unittest.TestCase):
                         if not self.demo_mode and not self.slow_mode:
                             self.__scroll_to_element(element, selector, by)
         pre_action_url = self.driver.current_url
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        sele_file_path = [selector, file_path]
-                        action = ["chfil", sele_file_path, origin, time_stamp]
-                        self.__extra_actions.append(action)
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                sele_file_path = [selector, file_path]
+                action = ["chfil", sele_file_path, origin, time_stamp]
+                self.__extra_actions.append(action)
         if type(abs_path) is int or type(abs_path) is float:
             abs_path = str(abs_path)
         try:
@@ -6443,22 +6444,25 @@ class BaseCase(unittest.TestCase):
             if not os.path.exists(destination_folder):
                 os.makedirs(destination_folder)
         page_utils._download_file_to(file_url, destination_folder)
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        url_dest = [file_url, destination_folder]
-                        action = ["do_fi", url_dest, origin, time_stamp]
-                        self.__extra_actions.append(action)
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                url_dest = [file_url, destination_folder]
+                action = ["do_fi", url_dest, origin, time_stamp]
+                self.__extra_actions.append(action)
 
     def save_file_as(self, file_url, new_file_name, destination_folder=None):
         """Similar to self.download_file(), except that you get to rename the
         file being downloaded to whatever you want."""
-        if not destination_folder:
-            destination_folder = constants.Files.DOWNLOADS_FOLDER
+        download_file_lock = fasteners.InterProcessLock(
+            constants.MultiBrowser.DOWNLOAD_FILE_LOCK
+        )
+        with download_file_lock:
+            if not destination_folder:
+                destination_folder = constants.Files.DOWNLOADS_FOLDER
+            if not os.path.exists(destination_folder):
+                os.makedirs(destination_folder)
         page_utils._download_file_to(
             file_url, destination_folder, new_file_name
         )
@@ -6475,8 +6479,8 @@ class BaseCase(unittest.TestCase):
         """Returns the path of the SeleniumBase "downloaded_files/" folder.
         Calling self.download_file(file_url) will put that file in here.
         With the exception of Safari, IE, and Chromium Guest Mode,
-          any clicks that download files will also use this folder
-          rather than using the browser's default "downloads/" path."""
+            any clicks that download files will also use this folder
+            rather than using the browser's default "downloads/" path."""
         self.__check_scope()
         return download_helper.get_downloads_folder()
 
@@ -6484,8 +6488,7 @@ class BaseCase(unittest.TestCase):
         """Returns the path that is used when a click initiates a download.
         SeleniumBase overrides the system path to be "downloaded_files/"
         The path can't be changed on Safari, IE, or Chromium Guest Mode.
-        The same problem occurs when using an out-of-date chromedriver.
-        """
+        The same problem occurs when using an out-of-date chromedriver."""
         self.__check_scope()
         if self.is_chromium() and self.guest_mode and not self.headless:
             # Guest Mode (non-headless) can force the default downloads path
@@ -6528,8 +6531,7 @@ class BaseCase(unittest.TestCase):
         browser - If True, uses the path set by click-initiated downloads.
                   If False, uses the self.download_file(file_url) path.
                   Those paths are often the same. (browser-dependent)
-                  (Default: False).
-        """
+                  (Default: False)."""
         return os.path.exists(
             self.get_path_of_downloaded_file(file, browser=browser)
         )
@@ -6546,8 +6548,7 @@ class BaseCase(unittest.TestCase):
         browser - If True, uses the path set by click-initiated downloads.
                   If False, uses the self.download_file(file_url) path.
                   Those paths are usually the same. (browser-dependent)
-                  (Default: False).
-        """
+                  (Default: False)."""
         if self.is_downloaded_file_present(file, browser=browser):
             file_path = self.get_path_of_downloaded_file(file, browser=browser)
             try:
@@ -6568,8 +6569,7 @@ class BaseCase(unittest.TestCase):
         browser - If True, uses the path set by click-initiated downloads.
                   If False, uses the self.download_file(file_url) path.
                   Those paths are usually the same. (browser-dependent)
-                  (Default: False).
-        """
+                  (Default: False)."""
         if self.is_downloaded_file_present(file, browser=browser):
             file_path = self.get_path_of_downloaded_file(file, browser=browser)
             try:
@@ -6590,8 +6590,7 @@ class BaseCase(unittest.TestCase):
         browser - If True, uses the path set by click-initiated downloads.
                   If False, uses the self.download_file(file_url) path.
                   Those paths are often the same. (browser-dependent)
-                  (Default: False).
-        """
+                  (Default: False)."""
         self.__check_scope()
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
@@ -6623,15 +6622,12 @@ class BaseCase(unittest.TestCase):
                 % (file, self.get_downloads_folder(), timeout)
             )
             page_actions.timeout_exception("NoSuchFileException", message)
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        action = ["as_df", file, origin, time_stamp]
-                        self.__extra_actions.append(action)
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                action = ["as_df", file, origin, time_stamp]
+                self.__extra_actions.append(action)
         if self.demo_mode:
             messenger_post = "<b>ASSERT DOWNLOADED FILE</b>: [%s]" % file
             try:
@@ -6678,8 +6674,7 @@ class BaseCase(unittest.TestCase):
         Usage Example =>
                 # Verify that the expected exception is raised.
                 with self.assert_raises(Exception):
-                    raise Exception("Expected Exception!")
-        """
+                    raise Exception("Expected Exception!") """
         return self.assertRaises(*args, **kwargs)
 
     def wait_for_attribute(
@@ -6753,17 +6748,14 @@ class BaseCase(unittest.TestCase):
                     selector,
                 )
             self.__highlight_with_assert_success(messenger_post, selector, by)
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        value = value.replace("\\", "\\\\")
-                        sel_att_val = [selector, attribute, value]
-                        action = ["as_at", sel_att_val, origin, time_stamp]
-                        self.__extra_actions.append(action)
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                value = value.replace("\\", "\\\\")
+                sel_att_val = [selector, attribute, value]
+                action = ["as_at", sel_att_val, origin, time_stamp]
+                self.__extra_actions.append(action)
         return True
 
     def assert_title(self, title):
@@ -6771,8 +6763,7 @@ class BaseCase(unittest.TestCase):
         When a web page initially loads, the title starts as the URL,
             but then the title switches over to the actual page title.
         In Recorder Mode, this assertion is skipped because the Recorder
-            changes the page title to the selector of the hovered element.
-        """
+            changes the page title to the selector of the hovered element."""
         self.wait_for_ready_state_complete()
         expected = title.strip()
         actual = self.get_page_title().strip()
@@ -6801,15 +6792,12 @@ class BaseCase(unittest.TestCase):
                 a_t = SD.translate_assert_title(self._language)
             messenger_post = "<b>%s</b>: {%s}" % (a_t, expected)
             self.__highlight_with_assert_success(messenger_post, "html")
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        action = ["as_ti", expected, origin, time_stamp]
-                        self.__extra_actions.append(action)
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                action = ["as_ti", expected, origin, time_stamp]
+                self.__extra_actions.append(action)
         return True
 
     def assert_title_contains(self, substring):
@@ -6817,8 +6805,7 @@ class BaseCase(unittest.TestCase):
         When a web page initially loads, the title starts as the URL,
             but then the title switches over to the actual page title.
         In Recorder Mode, this assertion is skipped because the Recorder
-            changes the page title to the selector of the hovered element.
-        """
+            changes the page title to the selector of the hovered element."""
         self.wait_for_ready_state_complete()
         expected = substring.strip()
         actual = self.get_page_title().strip()
@@ -6848,15 +6835,12 @@ class BaseCase(unittest.TestCase):
                 a_t = SD.translate_assert_title_contains(self._language)
             messenger_post = "<b>%s</b>: {%s}" % (a_t, expected)
             self.__highlight_with_assert_success(messenger_post, "html")
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        action = ["as_tc", expected, origin, time_stamp]
-                        self.__extra_actions.append(action)
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                action = ["as_tc", expected, origin, time_stamp]
+                self.__extra_actions.append(action)
         return True
 
     def assert_url(self, url):
@@ -6886,15 +6870,12 @@ class BaseCase(unittest.TestCase):
                 a_u = SD.translate_assert_url(self._language)
             messenger_post = "<b>%s</b>: {%s}" % (a_u, expected)
             self.__highlight_with_assert_success(messenger_post, "html")
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        action = ["a_url", expected, origin, time_stamp]
-                        self.__extra_actions.append(action)
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                action = ["a_url", expected, origin, time_stamp]
+                self.__extra_actions.append(action)
         return True
 
     def assert_url_contains(self, substring):
@@ -6927,15 +6908,12 @@ class BaseCase(unittest.TestCase):
                 a_u = SD.translate_assert_url_contains(self._language)
             messenger_post = "<b>%s</b>: {%s}" % (a_u, expected)
             self.__highlight_with_assert_success(messenger_post, "html")
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        action = ["a_u_c", expected, origin, time_stamp]
-                        self.__extra_actions.append(action)
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                action = ["a_u_c", expected, origin, time_stamp]
+                self.__extra_actions.append(action)
         return True
 
     def assert_no_js_errors(self, exclude=[]):
@@ -7204,19 +7182,16 @@ class BaseCase(unittest.TestCase):
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
         self.wait_for_element_visible(selector, by=by, timeout=timeout)
-        if self.recorder_mode:
-            css_selector = self.convert_to_css_selector(selector, by=by)
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    origin = self.get_origin()
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        time_stamp = self.execute_script("return Date.now();")
-                        sel_key = [css_selector, totp_key]
-                        action = ["e_mfa", sel_key, origin, time_stamp]
-                        self.__extra_actions.append(action)
-                    # Sometimes Sign-In leaves the origin... Save work first.
-                    self.save_recorded_actions()
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                css_selector = self.convert_to_css_selector(selector, by=by)
+                time_stamp = self.execute_script("return Date.now();")
+                sel_key = [css_selector, totp_key]
+                origin = self.get_origin()
+                action = ["e_mfa", sel_key, origin, time_stamp]
+                self.__extra_actions.append(action)
+            # Sometimes Sign-In leaves the origin... Save work first.
+            self.save_recorded_actions()
         mfa_code = self.get_mfa_code(totp_key)
         self.update_text(selector, mfa_code + "\n", by=by, timeout=timeout)
 
@@ -7265,11 +7240,11 @@ class BaseCase(unittest.TestCase):
         selector, by = self.__recalculate_selector(selector, by, xp_ok=False)
         self.wait_for_ready_state_complete()
         self.wait_for_element_present(selector, by=by, timeout=timeout)
-        orginal_selector = selector
+        original_selector = selector
         css_selector = self.convert_to_css_selector(selector, by=by)
-        self.__demo_mode_highlight_if_active(orginal_selector, by)
+        self.__demo_mode_highlight_if_active(original_selector, by)
         if scroll and not self.demo_mode and not self.slow_mode:
-            self.scroll_to(orginal_selector, by=by, timeout=timeout)
+            self.scroll_to(original_selector, by=by, timeout=timeout)
         text = self.__get_type_checked_text(text)
         value = re.escape(text)
         value = self.__escape_quotes_if_needed(value)
@@ -7277,6 +7252,13 @@ class BaseCase(unittest.TestCase):
         css_selector = re.escape(css_selector)  # Add "\\" to special chars
         css_selector = self.__escape_quotes_if_needed(css_selector)
         the_type = None
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                sel_tex = [pre_escape_css_selector, text]
+                action = ["js_ty", sel_tex, origin, time_stamp]
+                self.__extra_actions.append(action)
         if ":contains\\(" not in css_selector:
             get_type_script = (
                 """return document.querySelector('%s').getAttribute('type');"""
@@ -7288,18 +7270,12 @@ class BaseCase(unittest.TestCase):
                 value,
             )
             self.execute_script(script)
-            if self.recorder_mode:
-                time_stamp = self.execute_script("return Date.now();")
-                origin = self.get_origin()
-                sel_tex = [pre_escape_css_selector, text]
-                action = ["js_ty", sel_tex, origin, time_stamp]
-                self.__extra_actions.append(action)
         else:
             script = """jQuery('%s')[0].value='%s';""" % (css_selector, value)
             self.safe_execute_script(script)
         if text.endswith("\n"):
             element = self.wait_for_element_present(
-                orginal_selector, by=by, timeout=timeout
+                original_selector, by=by, timeout=timeout
             )
             element.send_keys(Keys.RETURN)
             if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
@@ -7394,12 +7370,12 @@ class BaseCase(unittest.TestCase):
         if element.tag_name.lower() in ["input", "textarea"]:
             self.js_update_text(selector, text, by=by, timeout=timeout)
             return
-        orginal_selector = selector
+        original_selector = selector
         css_selector = self.convert_to_css_selector(selector, by=by)
         if scroll:
-            self.__demo_mode_highlight_if_active(orginal_selector, by)
+            self.__demo_mode_highlight_if_active(original_selector, by)
             if not self.demo_mode and not self.slow_mode:
-                self.scroll_to(orginal_selector, by=by, timeout=timeout)
+                self.scroll_to(original_selector, by=by, timeout=timeout)
         text = self.__get_type_checked_text(text)
         value = re.escape(text)
         value = self.__escape_quotes_if_needed(value)
@@ -7425,8 +7401,11 @@ class BaseCase(unittest.TestCase):
         """This method uses jQuery to update a text field.
         If the text string ends with the newline character,
         Selenium finishes the call, which simulates pressing
-        {Enter/Return} after the text is entered."""
+        {Enter/Return} after the text is entered.
+        This method also triggers event listeners."""
         self.__check_scope()
+        original_selector = selector
+        original_by = by
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
@@ -7438,15 +7417,47 @@ class BaseCase(unittest.TestCase):
         self.__demo_mode_highlight_if_active(selector, by)
         self.scroll_to(selector, by=by)
         selector = self.convert_to_css_selector(selector, by=by)
+        css_selector = selector
         selector = self.__make_css_match_first_element_only(selector)
         selector = self.__escape_quotes_if_needed(selector)
         text = re.escape(text)
         text = self.__escape_quotes_if_needed(text)
         update_text_script = """jQuery('%s').val('%s');""" % (selector, text)
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                sel_tex = [css_selector, text]
+                action = ["jq_ty", sel_tex, origin, time_stamp]
+                self.__extra_actions.append(action)
         self.safe_execute_script(update_text_script)
         if text.endswith("\n"):
-            element.send_keys("\n")
+            element = self.wait_for_element_present(
+                original_selector, by=original_by, timeout=0.2
+            )
+            element.send_keys(Keys.RETURN)
+        else:
+            try:
+                element = self.wait_for_element_present(
+                    original_selector, by=original_by, timeout=0.2
+                )
+                element.send_keys(" " + Keys.BACK_SPACE)
+            except Exception:
+                pass
         self.__demo_mode_pause_if_active()
+
+    def jquery_type(self, selector, text, by="css selector", timeout=None):
+        """Same as self.jquery_update_text()
+        JQuery is used to update a text field.
+        Performs jQuery(selector).val(text); and triggers event listeners.
+        If text ends in "\n", presses RETURN after."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        self.jquery_update_text(selector, text, by=by, timeout=timeout)
 
     def get_value(self, selector, by="css selector", timeout=None):
         """This method uses JavaScript to get the value of an input field.
@@ -7459,11 +7470,11 @@ class BaseCase(unittest.TestCase):
         selector, by = self.__recalculate_selector(selector, by)
         self.wait_for_ready_state_complete()
         self.wait_for_element_present(selector, by=by, timeout=timeout)
-        orginal_selector = selector
+        original_selector = selector
         css_selector = self.convert_to_css_selector(selector, by=by)
-        self.__demo_mode_highlight_if_active(orginal_selector, by)
+        self.__demo_mode_highlight_if_active(original_selector, by)
         if not self.demo_mode and not self.slow_mode:
-            self.scroll_to(orginal_selector, by=by, timeout=timeout)
+            self.scroll_to(original_selector, by=by, timeout=timeout)
         css_selector = re.escape(css_selector)  # Add "\\" to special chars
         css_selector = self.__escape_quotes_if_needed(css_selector)
         if ":contains\\(" not in css_selector:
@@ -8330,17 +8341,14 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         original_selector = selector
         selector, by = self.__recalculate_selector(selector, by)
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        if by == By.XPATH:
-                            selector = original_selector
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        action = ["wf_el", selector, origin, time_stamp]
-                        self.__extra_actions.append(action)
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                if by == By.XPATH:
+                    selector = original_selector
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                action = ["wf_el", selector, origin, time_stamp]
+                self.__extra_actions.append(action)
         if self.__is_shadow_selector(selector):
             return self.__wait_for_shadow_element_visible(selector, timeout)
         return page_actions.wait_for_element_visible(
@@ -8393,15 +8401,12 @@ class BaseCase(unittest.TestCase):
             self.__assert_shadow_element_present(selector)
             return True
         self.wait_for_element_present(selector, by=by, timeout=timeout)
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        action = ["as_ep", selector, origin, time_stamp]
-                        self.__extra_actions.append(action)
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                action = ["as_ep", selector, origin, time_stamp]
+                self.__extra_actions.append(action)
         return True
 
     def assert_elements_present(self, *args, **kwargs):
@@ -8490,17 +8495,14 @@ class BaseCase(unittest.TestCase):
                 a_t = SD.translate_assert(self._language)
             messenger_post = "<b>%s %s</b>: %s" % (a_t, by.upper(), selector)
             self.__highlight_with_assert_success(messenger_post, selector, by)
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        if by == By.XPATH:
-                            selector = original_selector
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        action = ["as_el", selector, origin, time_stamp]
-                        self.__extra_actions.append(action)
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                if by == By.XPATH:
+                    selector = original_selector
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                action = ["as_el", selector, origin, time_stamp]
+                self.__extra_actions.append(action)
         return True
 
     def assert_element_visible(
@@ -8714,18 +8716,15 @@ class BaseCase(unittest.TestCase):
                 selector,
             )
             self.__highlight_with_assert_success(messenger_post, selector, by)
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        if by == By.XPATH:
-                            selector = original_selector
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        text_selector = [text, selector]
-                        action = ["as_te", text_selector, origin, time_stamp]
-                        self.__extra_actions.append(action)
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                if by == By.XPATH:
+                    selector = original_selector
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                text_selector = [text, selector]
+                action = ["as_te", text_selector, origin, time_stamp]
+                self.__extra_actions.append(action)
         return True
 
     def assert_exact_text(
@@ -8765,18 +8764,15 @@ class BaseCase(unittest.TestCase):
                 selector,
             )
             self.__highlight_with_assert_success(messenger_post, selector, by)
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        if by == By.XPATH:
-                            selector = original_selector
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        text_selector = [text, selector]
-                        action = ["as_et", text_selector, origin, time_stamp]
-                        self.__extra_actions.append(action)
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                if by == By.XPATH:
+                    selector = original_selector
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                text_selector = [text, selector]
+                action = ["as_et", text_selector, origin, time_stamp]
+                self.__extra_actions.append(action)
         return True
 
     ############
@@ -8879,15 +8875,12 @@ class BaseCase(unittest.TestCase):
             self.__highlight_with_assert_success(
                 messenger_post, link_text, by="link text"
             )
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        action = ["as_lt", link_text, origin, time_stamp]
-                        self.__extra_actions.append(action)
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                action = ["as_lt", link_text, origin, time_stamp]
+                self.__extra_actions.append(action)
         return True
 
     def wait_for_partial_link_text(self, partial_link_text, timeout=None):
@@ -9008,15 +9001,12 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         self.wait_for_element_not_visible(selector, by=by, timeout=timeout)
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        action = ["asenv", selector, origin, time_stamp]
-                        self.__extra_actions.append(action)
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                action = ["asenv", selector, origin, time_stamp]
+                self.__extra_actions.append(action)
         return True
 
     ############
@@ -9059,16 +9049,13 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         self.wait_for_text_not_visible(text, selector, by=by, timeout=timeout)
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        text_selector = [text, selector]
-                        action = ["astnv", text_selector, origin, time_stamp]
-                        self.__extra_actions.append(action)
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                text_selector = [text, selector]
+                action = ["astnv", text_selector, origin, time_stamp]
+                self.__extra_actions.append(action)
         return True
 
     def assert_exact_text_not_visible(
@@ -9085,16 +9072,13 @@ class BaseCase(unittest.TestCase):
         self.wait_for_exact_text_not_visible(
             text, selector, by=by, timeout=timeout
         )
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        text_selector = [text, selector]
-                        action = ["aetnv", text_selector, origin, time_stamp]
-                        self.__extra_actions.append(action)
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                text_selector = [text, selector]
+                action = ["aetnv", text_selector, origin, time_stamp]
+                self.__extra_actions.append(action)
         return True
 
     ############
@@ -9136,15 +9120,12 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         alert = page_actions.wait_for_and_accept_alert(self.driver, timeout)
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        action = ["acc_a", "", origin, time_stamp]
-                        self.__extra_actions.append(action)
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                action = ["acc_a", "", origin, time_stamp]
+                self.__extra_actions.append(action)
         return alert
 
     def wait_for_and_dismiss_alert(self, timeout=None):
@@ -9154,15 +9135,12 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         alert = page_actions.wait_for_and_dismiss_alert(self.driver, timeout)
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        action = ["dis_a", "", origin, time_stamp]
-                        self.__extra_actions.append(action)
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                action = ["dis_a", "", origin, time_stamp]
+                self.__extra_actions.append(action)
         return alert
 
     def wait_for_and_switch_to_alert(self, timeout=None):
@@ -9183,15 +9161,12 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         alert = page_actions.wait_for_and_accept_alert(self.driver, timeout)
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        action = ["acc_a", "", origin, time_stamp]
-                        self.__extra_actions.append(action)
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                action = ["acc_a", "", origin, time_stamp]
+                self.__extra_actions.append(action)
         return alert
 
     def dismiss_alert(self, timeout=None):
@@ -9202,15 +9177,12 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         alert = page_actions.wait_for_and_dismiss_alert(self.driver, timeout)
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        action = ["dis_a", "", origin, time_stamp]
-                        self.__extra_actions.append(action)
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                action = ["dis_a", "", origin, time_stamp]
+                self.__extra_actions.append(action)
         return alert
 
     def switch_to_alert(self, timeout=None):
@@ -9798,15 +9770,12 @@ class BaseCase(unittest.TestCase):
                 self.__last_url_of_deferred_assert = url
         except Exception:
             pass
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        action = ["da_el", selector, origin, time_stamp]
-                        self.__extra_actions.append(action)
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                action = ["da_el", selector, origin, time_stamp]
+                self.__extra_actions.append(action)
         try:
             self.wait_for_element_visible(selector, by=by, timeout=timeout)
             return True
@@ -9838,15 +9807,12 @@ class BaseCase(unittest.TestCase):
                 self.__last_url_of_deferred_assert = url
         except Exception:
             pass
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        action = ["da_ep", selector, origin, time_stamp]
-                        self.__extra_actions.append(action)
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                action = ["da_ep", selector, origin, time_stamp]
+                self.__extra_actions.append(action)
         try:
             self.wait_for_element_present(selector, by=by, timeout=timeout)
             return True
@@ -9878,16 +9844,13 @@ class BaseCase(unittest.TestCase):
                 self.__last_url_of_deferred_assert = url
         except Exception:
             pass
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        text_selector = [text, selector]
-                        action = ["da_te", text_selector, origin, time_stamp]
-                        self.__extra_actions.append(action)
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                text_selector = [text, selector]
+                action = ["da_te", text_selector, origin, time_stamp]
+                self.__extra_actions.append(action)
         try:
             self.wait_for_text_visible(text, selector, by=by, timeout=timeout)
             return True
@@ -9919,16 +9882,13 @@ class BaseCase(unittest.TestCase):
                 self.__last_url_of_deferred_assert = url
         except Exception:
             pass
-        if self.recorder_mode:
-            url = self.get_current_url()
-            if url and len(url) > 0:
-                if ("http:") in url or ("https:") in url or ("file:") in url:
-                    if self.get_session_storage_item("pause_recorder") == "no":
-                        time_stamp = self.execute_script("return Date.now();")
-                        origin = self.get_origin()
-                        text_selector = [text, selector]
-                        action = ["da_et", text_selector, origin, time_stamp]
-                        self.__extra_actions.append(action)
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                text_selector = [text, selector]
+                action = ["da_et", text_selector, origin, time_stamp]
+                self.__extra_actions.append(action)
         try:
             self.wait_for_exact_text_visible(
                 text, selector, by=by, timeout=timeout
@@ -12099,6 +12059,8 @@ class BaseCase(unittest.TestCase):
                simulateClick(someLink);"""
             % css_selector
         )
+        if hasattr(self, "recorder_mode") and self.recorder_mode:
+            self.save_recorded_actions()
         try:
             self.execute_script(script)
         except Exception as e:
@@ -12334,6 +12296,8 @@ class BaseCase(unittest.TestCase):
         selector = self.convert_to_css_selector(selector, by=by)
         selector = self.__make_css_match_first_element_only(selector)
         click_script = """jQuery('%s')[0].click();""" % selector
+        if hasattr(self, "recorder_mode") and self.recorder_mode:
+            self.save_recorded_actions()
         self.safe_execute_script(click_script)
 
     def __get_major_browser_version(self):
@@ -12721,8 +12685,9 @@ class BaseCase(unittest.TestCase):
             try:
                 from sbvirtualdisplay import Display
 
-                self.display = Display(visible=0, size=(width, height))
-                self.display.start()
+                self._xvfb_display = Display(visible=0, size=(width, height))
+                self._xvfb_display.start()
+                sb_config._virtual_display = self._xvfb_display
                 self.headless_active = True
                 sb_config.headless_active = True
             except Exception:
@@ -13283,7 +13248,7 @@ class BaseCase(unittest.TestCase):
     ############
 
     def setUp(self, masterqa_mode=False):
-        """
+        """This method runs before every test begins.
         Be careful if a subclass of BaseCase overrides setUp().
         If so, add the following line to the subclass setUp() method:
         super().setUp()
@@ -14584,7 +14549,7 @@ class BaseCase(unittest.TestCase):
             self.__check_scope()
         except Exception:
             return
-        if self.recorder_mode:
+        if hasattr(self, "recorder_mode") and self.recorder_mode:
             # In case tearDown() leaves the origin, save actions first.
             self.save_recorded_actions()
         if (
@@ -14661,7 +14626,7 @@ class BaseCase(unittest.TestCase):
             return None
 
     def tearDown(self):
-        """
+        """This method runs after every test completes.
         Be careful if a subclass of BaseCase overrides setUp().
         If so, add the following line to the subclass's tearDown() method:
         super().tearDown()
@@ -14671,10 +14636,6 @@ class BaseCase(unittest.TestCase):
             return
         if hasattr(self, "recorder_mode") and self.recorder_mode:
             self.__process_recorded_actions()
-            try:
-                self.remove_session_storage_item("recorded_actions")
-            except Exception:
-                pass
         self.__called_teardown = True
         self.__called_setup = False
         try:
@@ -14833,15 +14794,6 @@ class BaseCase(unittest.TestCase):
                     self.__activate_debug_mode_in_teardown()
                 # (Pytest) Finally close all open browser windows
                 self.__quit_all_drivers()
-            if self.headless or self.headless2 or self.xvfb:
-                if self.headless_active:
-                    try:
-                        self.display.stop()
-                    except AttributeError:
-                        pass
-                    except Exception:
-                        pass
-                    self.display = None
             if self.with_db_reporting:
                 if has_exception:
                     self.__insert_test_result(constants.State.FAILED, True)
@@ -14924,15 +14876,6 @@ class BaseCase(unittest.TestCase):
                     print(msg)
                 if self.dashboard:
                     self.__process_dashboard(has_exception)
-                if self.headless or self.headless2 or self.xvfb:
-                    if self.headless_active:
-                        try:
-                            self.display.stop()
-                        except AttributeError:
-                            pass
-                        except Exception:
-                            pass
-                        self.display = None
             if has_exception:
                 test_id = self.__get_test_id()
                 test_logpath = os.path.join(self.log_path, test_id)
@@ -14987,6 +14930,16 @@ class BaseCase(unittest.TestCase):
             # (Nosetests / Behave / Pure Python) Close all open browser windows
             self.__quit_all_drivers()
         # Resume tearDown() for all test runners, (Pytest / Nosetests / Behave)
+        if hasattr(self, "_xvfb_display") and self._xvfb_display:
+            try:
+                if hasattr(self._xvfb_display, "stop"):
+                    self._xvfb_display.stop()
+                self._xvfb_display = None
+                self.headless_active = False
+            except AttributeError:
+                pass
+            except Exception:
+                pass
         if self.__visual_baseline_copies:
             sb_config._visual_baseline_copies = True
             if has_exception:

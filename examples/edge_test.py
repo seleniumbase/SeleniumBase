@@ -9,12 +9,12 @@ if __name__ == "__main__":
 class EdgeTests(BaseCase):
     def test_edge(self):
         if self.browser != "edge":
-            self.open("data:,")
+            self.open("about:blank")
             print("\n  This test is only for Microsoft Edge (Chromium)!")
             print('  (Run this test using "--edge" or "--browser=edge")')
             self.skip('Use "--edge" or "--browser=edge"')
         if self.headless:
-            self.open("data:,")
+            self.open("about:blank")
             print("\n  This test is NOT designed for Headless Mode!")
             self.skip('Do NOT use "--headless" with this test!')
         self.open("edge://settings/help")

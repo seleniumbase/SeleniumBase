@@ -1825,24 +1825,22 @@ def pytest_runtest_teardown(item):
                 except Exception:
                     pass
         try:
-            if hasattr(self, "xvfb") and self.xvfb:
-                if self.headless_active and "--pdb" not in sys_argv:
-                    if hasattr(self, "display") and self.display:
-                        self.headless_active = False
-                        sb_config.headless_active = False
-                        self.display.stop()
-            elif hasattr(self, "headless") and self.headless:
-                if self.headless_active and "--pdb" not in sys_argv:
-                    if hasattr(self, "display") and self.display:
-                        self.headless_active = False
-                        sb_config.headless_active = False
-                        self.display.stop()
-            elif hasattr(self, "headless2") and self.headless2:
-                if self.headless_active and "--pdb" not in sys_argv:
-                    if hasattr(self, "display") and self.display:
-                        self.headless_active = False
-                        sb_config.headless_active = False
-                        self.display.stop()
+            if (
+                hasattr(self, "_xvfb_display")
+                and self._xvfb_display
+                and hasattr(self._xvfb_display, "stop")
+            ):
+                self.headless_active = False
+                sb_config.headless_active = False
+                self._xvfb_display.stop()
+                self._xvfb_display = None
+            if (
+                hasattr(sb_config, "_virtual_display")
+                and sb_config._virtual_display
+                and hasattr(sb_config._virtual_display, "stop")
+            ):
+                sb_config._virtual_display.stop()
+                sb_config._virtual_display = None
         except Exception:
             pass
     except Exception:

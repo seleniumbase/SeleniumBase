@@ -13,7 +13,7 @@ class SoupParsingTests(BaseCase):
         the_id = soup.find(string=pattern).parent.parent.attrs["id"]
         self.click("#%s" % the_id)
 
-    def test_beautiful_soup_and_tinymce(self):
+    def test_beautiful_soup_parsing(self):
         self.open("https://seleniumbase.io/tinymce/")
         self.wait_for_element("div.mce-container-body")
         self.click_menu_item("File")

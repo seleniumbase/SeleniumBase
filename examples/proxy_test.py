@@ -5,6 +5,10 @@ BaseCase.main(__name__, __file__)
 
 class ProxyTests(BaseCase):
     def test_proxy(self):
+        if self.recorder_mode:
+            self.open("about:blank")
+            print("Skipping test in Recorder Mode.")
+            self.skip("Skipping test in Recorder Mode.")
         settings.SKIP_JS_WAITS = True
         if not self.page_load_strategy == "none":
             # This page takes too long to load otherwise

@@ -2,19 +2,19 @@
 
 ## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) SeleniumBase Installation
 
-<h4>If installing SeleniumBase directly from <a href="https://pypi.python.org/pypi/seleniumbase">PyPI</a>, (the Python Package Index), use:</h4>
+<h4>If installing <code>seleniumbase</code> directly from <a href="https://pypi.python.org/pypi/seleniumbase">PyPI</a>, (the Python Package Index), use:</h4>
 
 ```bash
 pip install seleniumbase
 ```
 
-<h4>To upgrade an existing <code>seleniumbase<code> install from PyPI:</h4>
+<h4>To upgrade an existing <code>seleniumbase</code> install from PyPI:</h4>
 
 ```bash
 pip install -U seleniumbase
 ```
 
-<h4>If installing SeleniumBase from a Git clone, use:</h4>
+<h4>If installing <code>seleniumbase</code> from a Git clone, use:</h4>
 
 ```bash
 git clone https://github.com/seleniumbase/SeleniumBase.git
@@ -37,7 +37,7 @@ git pull  # To pull the latest version
 pip install -e .  # Or "pip install ."
 ```
 
-<h4>If installing SeleniumBase from a <a href="https://github.com/seleniumbase/SeleniumBase">GitHub branch</a>, use:</h4>
+<h4>If installing <code>seleniumbase</code> from a <a href="https://github.com/seleniumbase/SeleniumBase">GitHub branch</a>, use:</h4>
 
 ```bash
 pip install git+https://github.com/seleniumbase/SeleniumBase.git@master#egg=seleniumbase
@@ -53,4 +53,4 @@ pip install git+https://github.com/seleniumbase/SeleniumBase.git@master#egg=sele
 
 --------
 
-[<img src="https://seleniumbase.github.io/cdn/img/sb_logo_10t.png" title="SeleniumBase" width="290">](https://github.com/seleniumbase/SeleniumBase/)
+[<img src="https://seleniumbase.github.io/cdn/img/sb_logo_10t.png" title="SeleniumBase" width="290" />](https://github.com/seleniumbase/SeleniumBase/)

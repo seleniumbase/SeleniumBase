@@ -6,14 +6,13 @@ BaseCase.main(__name__, __file__)
 class SearchTests(BaseCase):
     @parameterized.expand(
         [
-            ["site:Python.org Download", "Download Python", "img.python-logo"],
-            ["site:SeleniumBase.io", "SeleniumBase", 'img[alt*="SeleniumB"]'],
-            ["site:Wikipedia.org", "Wikipedia", "img.central-featured-logo"],
+            ["SeleniumBase Commander", "Commander", "GUI / Commander"],
+            ["SeleniumBase Recorder", "Recorder", "Recorder Mode"],
+            ["SeleniumBase Syntax", "Syntax", "Syntax Formats"],
         ]
     )
-    def test_parameterized_search(self, search_key, expected_text, img):
-        self.open("https://duckduckgo.com/")
-        self.type('input[name="q"]', search_key + "\n")
-        self.assert_text(expected_text, "div.results")
-        self.click('a:contains("%s")' % expected_text)
-        self.assert_element(img)
+    def test_parameterized_search(self, search_term, keyword, title_text):
+        self.open("https://seleniumbase.io/help_docs/how_it_works/")
+        self.type('input[aria-label="Search"]', search_term)
+        self.click('mark:contains("%s")' % keyword)
+        self.assert_title_contains(title_text)

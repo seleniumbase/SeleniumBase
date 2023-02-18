@@ -134,8 +134,8 @@ def assert_element(context, selector):
 @step('Assert text "{text}" in \'{selector}\'')
 @step("Text in '{selector}' should contain '{text}'")
 @step('Text in "{selector}" should contain "{text}"')
-@step('Text in "{selector}" should contain \'{text}\'')
 @step("Text in '{selector}' should contain \"{text}\"")
+@step('Text in "{selector}" should contain \'{text}\'')
 def assert_text_in_element(context, text, selector):
     sb = context.sb
     text = normalize_text(text)
@@ -160,8 +160,8 @@ def assert_text(context, text):
 @step('Assert exact text "{text}" in \'{selector}\'')
 @step("Text in '{selector}' should be '{text}'")
 @step('Text in "{selector}" should be "{text}"')
-@step('Text in "{selector}" should be \'{text}\'')
 @step("Text in '{selector}' should be \"{text}\"")
+@step('Text in "{selector}" should be \'{text}\'')
 def assert_exact_text(context, text, selector):
     sb = context.sb
     text = normalize_text(text)
@@ -172,8 +172,8 @@ def assert_exact_text(context, text, selector):
 @step('Highlight "{selector}"')
 @step("Highlight element '{selector}'")
 @step('Highlight element "{selector}"')
-@step("User uses JS to highlight '{selector}'")
-@step('User uses JS to highlight "{selector}"')
+@step("Use JS to highlight '{selector}'")
+@step('Use JS to highlight "{selector}"')
 def highlight_element(context, selector):
     sb = context.sb
     sb.highlight(selector)
@@ -192,11 +192,35 @@ def click_link(context, link):
 @step('JS click "{selector}"')
 @step("JS click element '{selector}'")
 @step('JS click element "{selector}"')
-@step("User uses JS to click '{selector}'")
-@step('User uses JS to click "{selector}"')
+@step("Use JS to click '{selector}'")
+@step('Use JS to click "{selector}"')
 def js_click(context, selector):
     sb = context.sb
     sb.js_click(selector)
+
+
+@step("Save screenshot as '{name}'")
+@step('Save screenshot as "{name}"')
+@step("User saves screenshot as '{name}'")
+@step('User saves screenshot as "{name}"')
+def save_screenshot_as(context, name):
+    sb = context.sb
+    name = normalize_text(name)
+    sb.save_screenshot(name)
+
+
+@step("Save screenshot to '{folder}' as '{name}'")
+@step('Save screenshot to "{folder}" as "{name}"')
+@step("Save screenshot to '{folder}' as \"{name}\"")
+@step('Save screenshot to "{folder}" as \'{name}\'')
+@step("User saves screenshot to '{folder}' as '{name}'")
+@step('User saves screenshot to "{folder}" as "{name}"')
+@step("User saves screenshot to '{folder}' as \"{name}\"")
+@step('User saves screenshot to "{folder}" as \'{name}\'')
+def save_screenshot_to_folder_as(context, name, folder):
+    sb = context.sb
+    name = normalize_text(name)
+    sb.save_screenshot(name, folder)
 
 
 @step("Save screenshot to logs")
@@ -233,36 +257,6 @@ def go_forward(context):
     sb.go_forward()
 
 
-@step("JS type '{text}' in '{selector}'")
-@step('JS type "{text}" in "{selector}"')
-@step("JS type '{text}' in \"{selector}\"")
-@step('JS type "{text}" in \'{selector}\'')
-@step("JS type '{text}' into '{selector}'")
-@step('JS type "{text}" into "{selector}"')
-@step("JS type '{text}' into \"{selector}\"")
-@step('JS type "{text}" into \'{selector}\'')
-@step("JS type text '{text}' in '{selector}'")
-@step('JS type text "{text}" in "{selector}"')
-@step("JS type text '{text}' in \"{selector}\"")
-@step('JS type text "{text}" in \'{selector}\'')
-@step("JS type text '{text}' into '{selector}'")
-@step('JS type text "{text}" into "{selector}"')
-@step("JS type text '{text}' into \"{selector}\"")
-@step('JS type text "{text}" into \'{selector}\'')
-@step("User uses JS to type '{text}' in '{selector}'")
-@step('User uses JS to type "{text}" in "{selector}"')
-@step("User uses JS to type '{text}' in \"{selector}\"")
-@step('User uses JS to type "{text}" in \'{selector}\'')
-@step("User uses JS to type '{text}' into '{selector}'")
-@step('User uses JS to type "{text}" into "{selector}"')
-@step("User uses JS to type '{text}' into \"{selector}\"")
-@step('User uses JS to type "{text}" into \'{selector}\'')
-def js_type(context, text, selector):
-    sb = context.sb
-    text = normalize_text(text)
-    sb.js_type(selector, text)
-
-
 @step("Set value of '{selector}' to '{text}'")
 @step('Set value of "{selector}" to "{text}"')
 @step("Set value of \"{selector}\" to '{text}'")
@@ -271,7 +265,7 @@ def js_type(context, text, selector):
 @step('User sets value of "{selector}" to "{text}"')
 @step("User sets value of \"{selector}\" to '{text}'")
 @step('User sets value of \'{selector}\' to "{text}"')
-def set_value(context, text, selector):
+def set_value(context, selector, text):
     sb = context.sb
     text = normalize_text(text)
     sb.set_value(selector, text)
@@ -627,8 +621,8 @@ def clear_session_storage(context):
 
 @step("JS click all '{selector}'")
 @step('JS click all "{selector}"')
-@step("User uses JS to click all '{selector}'")
-@step('User uses JS to click all "{selector}"')
+@step("Use JS to click all '{selector}'")
+@step('Use JS to click all "{selector}"')
 def js_click_all(context, selector):
     sb = context.sb
     sb.js_click_all(selector)
@@ -781,8 +775,8 @@ def assert_attribute_has_value(context, selector, attribute, value):
 
 @step("Show file choosers")
 @step("Show hidden file choosers")
-@step("User uses JS to show file choosers")
-@step("User uses JS to show hidden file choosers")
+@step("Use JS to show file choosers")
+@step("Use JS to show hidden file choosers")
 def show_file_choosers(context):
     sb = context.sb
     sb.show_file_choosers()
@@ -924,40 +918,6 @@ def open_new_window(context):
     sb.open_new_window()
 
 
-@step("Hover '{selector}'")
-@step('Hover "{selector}"')
-@step("Hover on '{selector}'")
-@step('Hover on "{selector}"')
-@step("Hover over '{selector}'")
-@step('Hover over "{selector}"')
-@step("Hover element '{selector}'")
-@step('Hover element "{selector}"')
-@step("User hovers over '{selector}'")
-@step('User hovers over "{selector}"')
-@step("User hovers over element '{selector}'")
-@step('User hovers over element "{selector}"')
-def hover(context, selector):
-    sb = context.sb
-    sb.hover(selector)
-
-
-@step("Context click '{selector}'")
-@step('Context click "{selector}"')
-@step("Context click element '{selector}'")
-@step('Context click element "{selector}"')
-@step("Right click '{selector}'")
-@step('Right click "{selector}"')
-@step("Right click element '{selector}'")
-@step('Right click element "{selector}"')
-@step("User right clicks '{selector}'")
-@step('User right clicks "{selector}"')
-@step("User right clicks element '{selector}'")
-@step('User right clicks element "{selector}"')
-def context_click(context, selector):
-    sb = context.sb
-    sb.context_click(selector)
-
-
 @step("Accept alert")
 @step("User accepts alert")
 def accept_alert(context):
@@ -990,3 +950,143 @@ def assert_url_contains(context, substring):
     sb = context.sb
     substring = normalize_text(substring)
     sb.assert_url_contains(substring)
+
+
+@step("Hover '{selector}'")
+@step('Hover "{selector}"')
+@step("Hover over '{selector}'")
+@step('Hover over "{selector}"')
+@step("Hover element '{selector}'")
+@step('Hover element "{selector}"')
+@step("User hovers over '{selector}'")
+@step('User hovers over "{selector}"')
+@step("User hovers over element '{selector}'")
+@step('User hovers over element "{selector}"')
+def hover(context, selector):
+    sb = context.sb
+    sb.hover(selector)
+
+
+@step("Context click '{selector}'")
+@step('Context click "{selector}"')
+@step("Context click element '{selector}'")
+@step('Context click element "{selector}"')
+@step("Right click '{selector}'")
+@step('Right click "{selector}"')
+@step("Right click element '{selector}'")
+@step('Right click element "{selector}"')
+@step("User right clicks '{selector}'")
+@step('User right clicks "{selector}"')
+@step("User right clicks element '{selector}'")
+@step('User right clicks element "{selector}"')
+def context_click(context, selector):
+    sb = context.sb
+    sb.context_click(selector)
+
+
+@step("JS type '{text}' in '{selector}'")
+@step('JS type "{text}" in "{selector}"')
+@step("JS type '{text}' in \"{selector}\"")
+@step('JS type "{text}" in \'{selector}\'')
+@step("JS type '{text}' into '{selector}'")
+@step('JS type "{text}" into "{selector}"')
+@step("JS type '{text}' into \"{selector}\"")
+@step('JS type "{text}" into \'{selector}\'')
+@step("JS type text '{text}' in '{selector}'")
+@step('JS type text "{text}" in "{selector}"')
+@step("JS type text '{text}' in \"{selector}\"")
+@step('JS type text "{text}" in \'{selector}\'')
+@step("JS type text '{text}' into '{selector}'")
+@step('JS type text "{text}" into "{selector}"')
+@step("JS type text '{text}' into \"{selector}\"")
+@step('JS type text "{text}" into \'{selector}\'')
+@step("Use JS to type '{text}' in '{selector}'")
+@step('Use JS to type "{text}" in "{selector}"')
+@step("Use JS to type '{text}' in \"{selector}\"")
+@step('Use JS to type "{text}" in \'{selector}\'')
+@step("Use JS to type '{text}' into '{selector}'")
+@step('Use JS to type "{text}" into "{selector}"')
+@step("Use JS to type '{text}' into \"{selector}\"")
+@step('Use JS to type "{text}" into \'{selector}\'')
+def js_type(context, text, selector):
+    sb = context.sb
+    text = normalize_text(text)
+    sb.js_type(selector, text)
+
+
+@step("jQuery click '{selector}'")
+@step('jQuery click "{selector}"')
+@step("jQuery click element '{selector}'")
+@step('jQuery click element "{selector}"')
+@step("Use jQuery to click '{selector}'")
+@step('Use jQuery to click "{selector}"')
+def jquery_click(context, selector):
+    sb = context.sb
+    sb.jquery_click(selector)
+
+
+@step("jQuery click all '{selector}'")
+@step('jQuery click all "{selector}"')
+@step("Use jQuery to click all '{selector}'")
+@step('Use jQuery to click all "{selector}"')
+def jquery_click_all(context, selector):
+    sb = context.sb
+    sb.jquery_click_all(selector)
+
+
+@step("jQuery type '{text}' in '{selector}'")
+@step('jQuery type "{text}" in "{selector}"')
+@step("jQuery type '{text}' in \"{selector}\"")
+@step('jQuery type "{text}" in \'{selector}\'')
+@step("jQuery type '{text}' into '{selector}'")
+@step('jQuery type "{text}" into "{selector}"')
+@step("jQuery type '{text}' into \"{selector}\"")
+@step('jQuery type "{text}" into \'{selector}\'')
+@step("jQuery type text '{text}' in '{selector}'")
+@step('jQuery type text "{text}" in "{selector}"')
+@step("jQuery type text '{text}' in \"{selector}\"")
+@step('jQuery type text "{text}" in \'{selector}\'')
+@step("jQuery type text '{text}' into '{selector}'")
+@step('jQuery type text "{text}" into "{selector}"')
+@step("jQuery type text '{text}' into \"{selector}\"")
+@step('jQuery type text "{text}" into \'{selector}\'')
+@step("Use jQuery to type '{text}' in '{selector}'")
+@step('Use jQuery to type "{text}" in "{selector}"')
+@step("Use jQuery to type '{text}' in \"{selector}\"")
+@step('Use jQuery to type "{text}" in \'{selector}\'')
+@step("Use jQuery to type '{text}' into '{selector}'")
+@step('Use jQuery to type "{text}" into "{selector}"')
+@step("Use jQuery to type '{text}' into \"{selector}\"")
+@step('Use jQuery to type "{text}" into \'{selector}\'')
+def jquery_type(context, text, selector):
+    sb = context.sb
+    text = normalize_text(text)
+    sb.jquery_type(selector, text)
+
+
+@step("Find '{selector}' and set {attribute} to '{value}'")
+@step('Find "{selector}" and set {attribute} to "{value}"')
+@step("Find '{selector}' and set {attribute} to \"{value}\"")
+@step('Find "{selector}" and set {attribute} to \'{value}\'')
+def set_attribute(context, selector, attribute, value):
+    sb = context.sb
+    value = normalize_text(value)
+    if attribute.startswith("'") or attribute.startswith('"'):
+        attribute = attribute[1:]
+    if attribute.endswith("'") or attribute.endswith('"'):
+        attribute = attribute[:-1]
+    sb.set_attribute(selector, attribute, value)
+
+
+@step("Find all '{selector}' and set {attribute} to '{value}'")
+@step('Find all "{selector}" and set {attribute} to "{value}"')
+@step("Find all '{selector}' and set {attribute} to \"{value}\"")
+@step('Find all "{selector}" and set {attribute} to \'{value}\'')
+def set_attributes(context, selector, attribute, value):
+    sb = context.sb
+    value = normalize_text(value)
+    if attribute.startswith("'") or attribute.startswith('"'):
+        attribute = attribute[1:]
+    if attribute.endswith("'") or attribute.endswith('"'):
+        attribute = attribute[:-1]
+    sb.set_attributes(selector, attribute, value)

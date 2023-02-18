@@ -262,6 +262,14 @@ var getBestSelector = function(el) {
     return best_selector;
 };
 
+function useHref(tag_name, el) {
+    return (tag_name === 'a' && el.hasAttribute('href') &&
+            el.getAttribute('href').length > 0 && el.origin != 'null');
+};
+function saveRecordedActions() {
+    json_rec_act = JSON.stringify(document.recorded_actions);
+    sessionStorage.setItem('recorded_actions', json_rec_act);
+};
 function new_tab_on_new_origin() {
     var AllAnchorTags = document.getElementsByTagName('a');
     for (var i = 0; i < AllAnchorTags.length; i++) {
@@ -323,8 +331,7 @@ var reset_recorder_state = function() {
         sessionStorage.setItem('recorder_activated', 'yes');
         document.recorded_actions.push(['begin', w_orig, w_href, d_now]);
     }
-    json_rec_act = JSON.stringify(document.recorded_actions);
-    sessionStorage.setItem('recorded_actions', json_rec_act);
+    saveRecordedActions();
     return;
 };
 reset_recorder_state();
@@ -366,7 +373,6 @@ window.addEventListener('blur', () => {
         Date.now() - document.recorder_last_mouseup > 32)
     {
         const selector = getBestSelector(el);
-        ra_len = document.recorded_actions.length;
         const el_cw = el.contentWindow;
         origin = window.location.origin;
         if (el.hasAttribute('src') && el.getAttribute('src').length > 0) {
@@ -378,13 +384,18 @@ window.addEventListener('blur', () => {
         document.recorded_actions.push(['sw_fr', selector, origin, d_now]);
         if (skip_open)
             document.recorded_actions.push(['sk_fo', '', origin, d_now2]);
-        json_rec_act = JSON.stringify(document.recorded_actions);
-        sessionStorage.setItem('recorded_actions', json_rec_act);
+        saveRecordedActions();
     }
     });
 }, { once: false });
 document.body.addEventListener('click', function (event) {
     // do nothing
+});
+document.body.addEventListener('dblclick', function (event) {
+    reset_if_recorder_undefined();
+    if (sessionStorage.getItem('pause_recorder') === 'yes') return;
+    document.recorded_actions.push(['dbclk', '', '', Date.now()+1]);
+    saveRecordedActions();
 });
 document.body.addEventListener('submit', function (event) {
     reset_if_recorder_undefined();
@@ -399,8 +410,7 @@ document.body.addEventListener('submit', function (event) {
         text = document.recorded_actions[ra_len-1][2] + '\n';
         document.recorded_actions.pop();
         document.recorded_actions.push(['input', selector, text, d_now]);
-        json_rec_act = JSON.stringify(document.recorded_actions);
-        sessionStorage.setItem('recorded_actions', json_rec_act);
+        saveRecordedActions();
     }
 });
 document.body.addEventListener('formdata', function (event) {
@@ -416,8 +426,7 @@ document.body.addEventListener('formdata', function (event) {
         text = document.querySelector(selector).value + '\n';
         document.recorded_actions.pop();
         document.recorded_actions.push(['input', selector, text, d_now]);
-        json_rec_act = JSON.stringify(document.recorded_actions);
-        sessionStorage.setItem('recorded_actions', json_rec_act);
+        saveRecordedActions();
     }
 });
 document.body.addEventListener('dragstart', function (event) {
@@ -438,8 +447,7 @@ document.body.addEventListener('dragstart', function (event) {
     if (el.draggable === true) {
         document.recorded_actions.push(['drags', selector, '', d_now]);
     }
-    json_rec_act = JSON.stringify(document.recorded_actions);
-    sessionStorage.setItem('recorded_actions', json_rec_act);
+    saveRecordedActions();
 });
 document.body.addEventListener('dragend', function (event) {
     reset_if_recorder_undefined();
@@ -448,8 +456,7 @@ document.body.addEventListener('dragend', function (event) {
     if (ra_len > 0 && document.recorded_actions[ra_len-1][0] === 'drags')
     {
         document.recorded_actions.pop();
-        json_rec_act = JSON.stringify(document.recorded_actions);
-        sessionStorage.setItem('recorded_actions', json_rec_act);
+        saveRecordedActions();
     }
 });
 document.body.addEventListener('drop', function (event) {
@@ -464,8 +471,7 @@ document.body.addEventListener('drop', function (event) {
         drg_s = document.recorded_actions[ra_len-1][1];
         document.recorded_actions.pop();
         document.recorded_actions.push(['ddrop', drg_s, selector, d_now]);
-        json_rec_act = JSON.stringify(document.recorded_actions);
-        sessionStorage.setItem('recorded_actions', json_rec_act);
+        saveRecordedActions();
     }
 });
 document.body.addEventListener('change', function (event) {
@@ -520,8 +526,7 @@ document.body.addEventListener('change', function (event) {
         document.recorded_actions.push(['c_box', selector, 'yes', d_now]);
     else if (tag_name === 'input' && e_type === 'checkbox' && !el.checked)
         document.recorded_actions.push(['c_box', selector, 'no', d_now]);
-    json_rec_act = JSON.stringify(document.recorded_actions);
-    sessionStorage.setItem('recorded_actions', json_rec_act);
+    saveRecordedActions();
 });
 document.body.addEventListener('mousedown', function (event) {
     reset_if_recorder_undefined();
@@ -549,8 +554,7 @@ document.body.addEventListener('mousedown', function (event) {
             rec_mode === '3' && sel_has_contains && text === t_con.trim()))
         {
             document.recorded_actions.push(['as_el', selector, origin, d_now]);
-            json_rec_act = JSON.stringify(document.recorded_actions);
-            sessionStorage.setItem('recorded_actions', json_rec_act);
+            saveRecordedActions();
             return;
         }
         else if (rec_mode === '3') {
@@ -567,8 +571,7 @@ document.body.addEventListener('mousedown', function (event) {
             }
             tex_sel = [text, selector];
             document.recorded_actions.push([action, tex_sel, origin, d_now]);
-            json_rec_act = JSON.stringify(document.recorded_actions);
-            sessionStorage.setItem('recorded_actions', json_rec_act);
+            saveRecordedActions();
             return;
         }
     }
@@ -579,8 +582,7 @@ document.body.addEventListener('mousedown', function (event) {
     }
     else
         document.recorded_actions.push(['mo_dn', selector, '', d_now]);
-    json_rec_act = JSON.stringify(document.recorded_actions);
-    sessionStorage.setItem('recorded_actions', json_rec_act);
+    saveRecordedActions();
 });
 document.body.addEventListener('mouseup', function (event) {
     reset_if_recorder_undefined();
@@ -607,24 +609,15 @@ document.body.addEventListener('mouseup', function (event) {
          tag_name === 'a' || parent_tag_name === 'a') && tag_name !== 'select')
     {
         href = '';
-        if (tag_name === 'a' &&
-            el.hasAttribute('href') &&
-            el.getAttribute('href').length > 0 &&
-            el.origin != 'null')
+        if (useHref(tag_name, el))
         {
             href = el.href; origin = el.origin;
         }
-        else if (parent_tag_name === 'a' &&
-            parent_el.hasAttribute('href') &&
-            parent_el.getAttribute('href').length > 0 &&
-            parent_el.origin != 'null')
+        else if (useHref(parent_tag_name, parent_el))
         {
             href = parent_el.href; origin = parent_el.origin;
         }
-        else if (grand_tag_name === 'a' &&
-            grand_el.hasAttribute('href') &&
-            grand_el.getAttribute('href').length > 0 &&
-            grand_el.origin != 'null')
+        else if (useHref(grand_tag_name, grand_el))
         {
             href = grand_el.href; origin = grand_el.origin;
         }
@@ -683,8 +676,7 @@ document.body.addEventListener('mouseup', function (event) {
         // accidental drag&drop
         document.recorded_actions.pop();
     }
-    json_rec_act = JSON.stringify(document.recorded_actions);
-    sessionStorage.setItem('recorded_actions', json_rec_act);
+    saveRecordedActions();
 });
 document.body.addEventListener('contextmenu', function (event) {
     reset_if_recorder_undefined();
@@ -697,12 +689,26 @@ document.body.addEventListener('contextmenu', function (event) {
         document.recorded_actions[ra_len-1][1] === selector)
     {
         document.recorded_actions.pop();
-        json_rec_act = JSON.stringify(document.recorded_actions);
-        sessionStorage.setItem('recorded_actions', json_rec_act);
+        saveRecordedActions();
     }
 });
 document.body.addEventListener('keydown', function (event) {
-    // do nothing
+    reset_if_recorder_undefined();
+    if (sessionStorage.getItem('pause_recorder') === 'yes') return;
+    if (document.recorded_actions.length == 0) return;
+    const el = event.target;
+    const selector = getBestSelector(el);
+    const d_now = Date.now();
+    const tag_name = tagName(el);
+    const l_key = event.key.toLowerCase();
+    if (l_key === 'enter' && (tag_name === 'button' || tag_name === 'a'))
+    {
+        href = '';
+        if (useHref(tag_name, el))
+            href = el.href;
+        document.recorded_actions.push(['click', selector, href, d_now]);
+        saveRecordedActions();
+    }
 });
 document.body.addEventListener('keyup', function (event) {
     reset_if_recorder_undefined();
@@ -769,7 +775,8 @@ document.body.addEventListener('keyup', function (event) {
         else if (ra_len > 0 &&
             document.recorded_actions[ra_len-1][0] === 'input' &&
             document.recorded_actions[ra_len-1][1] === selector &&
-            !document.recorded_actions[ra_len-1][2].endsWith('\n'))
+            !document.recorded_actions[ra_len-1][2].endsWith('\n') &&
+            l_key !== 'tab')
         {
             document.recorded_actions.pop();
         }
@@ -780,13 +787,12 @@ document.body.addEventListener('keyup', function (event) {
         {
             skip_input = true;
         }
-        if (!skip_input && !el.hasAttribute('readonly')) {
+        if (!skip_input && !el.hasAttribute('readonly') && l_key !== 'tab') {
             document.recorded_actions.push(
                 ['input', selector, el.value, d_now]);
         }
     }
-    json_rec_act = JSON.stringify(document.recorded_actions);
-    sessionStorage.setItem('recorded_actions', json_rec_act);
+    saveRecordedActions();
 });
 set_border('#F43344');
 """

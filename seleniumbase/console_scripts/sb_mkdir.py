@@ -121,7 +121,10 @@ def main():
 
     data = []
     data.append("[pytest]")
-    data.append("addopts = --capture=no -p no:cacheprovider")
+    data.append(
+        "addopts = --capture=no -p no:cacheprovider --ignore=recordings"
+    )
+    data.append("norecursedirs = .* build dist recordings temp")
     data.append("filterwarnings =")
     data.append("    ignore::pytest.PytestWarning")
     data.append("    ignore:.*U.*mode is deprecated:DeprecationWarning")
@@ -450,23 +453,33 @@ def main():
     data.append("BaseCase.main(__name__, __file__)")
     data.append("")
     data.append("")
-    data.append("class GoogleTests(BaseCase):")
+    data.append("class SearchTests(BaseCase):")
     data.append("    @parameterized.expand(")
     data.append("        [")
-    data.append('            ["Download Python", "Download Python"],')
-    data.append('            ["wikipedia", "www.wikipedia.org"],')
-    data.append('            ["SeleniumBase.io Docs", "SeleniumBase"],')
+    data.append(
+        "            "
+        '["SeleniumBase Commander", "Commander", "GUI / Commander"],'
+    )
+    data.append(
+        '            ["SeleniumBase Recorder", "Recorder", "Recorder Mode"],'
+    )
+    data.append(
+        '            ["SeleniumBase Syntax", "Syntax", "Syntax Formats"],'
+    )
     data.append("        ]")
     data.append("    )")
     data.append(
-        "    def test_parameterized_google_search("
-        "self, search_term, expected_text):"
+        "    def test_parameterized_search("
+        "self, search_term, keyword, title_text):"
     )
-    data.append('        self.open("https://google.com/ncr")')
     data.append(
-        '        self.type(\'input[title="Search"]\', search_term + "\\n")'
+        '        self.open("https://seleniumbase.io/help_docs/how_it_works/")'
     )
-    data.append('        self.assert_text(expected_text, "#search")')
+    data.append(
+        '        self.type(\'input[aria-label="Search"]\', search_term)'
+    )
+    data.append('        self.click(\'mark:contains("%s")\' % keyword)')
+    data.append('        self.assert_title_contains(title_text)')
     data.append("")
     file_path = "%s/%s" % (dir_name, "parameterized_test.py")
     file = codecs.open(file_path, "w+", "utf-8")

@@ -27,6 +27,10 @@ class ShadowDomTests(BaseCase):
             self.open("about:blank")
             print("\n  This test doesn't run in headless mode!")
             self.skip("This test doesn't run in headless mode!")
+        if self.recorder_mode:
+            self.open("about:blank")
+            print("Skipping test in Recorder Mode.")
+            self.skip("Skipping test in Recorder Mode.")
 
         # Download Python package files from PyPI
         file_name_1 = self.download_tar_file_from_pypi("sbase")

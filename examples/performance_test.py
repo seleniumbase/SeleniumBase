@@ -30,6 +30,7 @@ BaseCase.main(__name__, __file__)
 class PerformanceClass(BaseCase):
     @decorators.print_runtime("Open Swag Labs and Log In")
     def login_to_swag_labs(self):
+        print()
         with decorators.print_runtime("Open Swag Labs"):
             self.open("https://www.saucedemo.com")
         self.type("#user-name", "standard_user")

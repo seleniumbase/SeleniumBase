@@ -1123,9 +1123,6 @@ class SeleniumBrowser(Plugin):
             # (Set --server="127.0.0.1" for localhost Grid)
             if str(self.options.port) == "443":
                 test.test.protocol = "https"
-        if self.options.xvfb and "linux" not in sys.platform:
-            # The Xvfb virtual display server is for Linux OS Only!
-            self.options.xvfb = False
         if (
             "linux" in sys.platform
             and not self.options.headed
@@ -1171,6 +1168,9 @@ class SeleniumBrowser(Plugin):
         if not self.options.headless and not self.options.headless2:
             self.options.headed = True
             test.test.headed = True
+        sb_config._virtual_display = None
+        sb_config.headless_active = False
+        self.headless_active = False
         if (
             self.options.headless
             or self.options.headless2
@@ -1180,8 +1180,9 @@ class SeleniumBrowser(Plugin):
                 # from pyvirtualdisplay import Display  # Skip for own lib
                 from sbvirtualdisplay import Display
 
-                self.display = Display(visible=0, size=(1440, 1880))
-                self.display.start()
+                self._xvfb_display = Display(visible=0, size=(1440, 1880))
+                self._xvfb_display.start()
+                sb_config._virtual_display = self._xvfb_display
                 self.headless_active = True
                 sb_config.headless_active = True
             except Exception:
@@ -1213,13 +1214,22 @@ class SeleniumBrowser(Plugin):
             pass
         except Exception:
             pass
-        if self.options.headless or self.options.xvfb:
-            if self.headless_active:
-                try:
-                    self.headless_active = False
-                    sb_config.headless_active = False
-                    self.display.stop()
-                except AttributeError:
-                    pass
-                except Exception:
-                    pass
+        try:
+            if (
+                hasattr(self, "_xvfb_display")
+                and self._xvfb_display
+                and hasattr(self._xvfb_display, "stop")
+            ):
+                self.headless_active = False
+                sb_config.headless_active = False
+                self._xvfb_display.stop()
+                self._xvfb_display = None
+            if (
+                hasattr(sb_config, "_virtual_display")
+                and sb_config._virtual_display
+                and hasattr(sb_config._virtual_display, "stop")
+            ):
+                sb_config._virtual_display.stop()
+                sb_config._virtual_display = None
+        except Exception:
+            pass

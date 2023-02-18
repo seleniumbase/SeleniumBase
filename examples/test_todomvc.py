@@ -6,7 +6,6 @@ BaseCase.main(__name__, __file__)
 class TodoMVC(BaseCase):
     @parameterized.expand(
         [
-            ["angularjs"],
             ["mithril"],
             ["react"],
             ["vue"],
