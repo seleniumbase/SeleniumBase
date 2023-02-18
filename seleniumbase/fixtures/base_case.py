@@ -5471,6 +5471,7 @@ class BaseCase(unittest.TestCase):
             self.__scroll_to_element(element, selector, by)
 
     def scroll_to_element(self, selector, by="css selector", timeout=None):
+        """Same as self.scroll_to()"""
         self.scroll_to(selector, by=by, timeout=timeout)
 
     def slow_scroll_to(self, selector, by="css selector", timeout=None):
@@ -5508,7 +5509,20 @@ class BaseCase(unittest.TestCase):
     def slow_scroll_to_element(
         self, selector, by="css selector", timeout=None
     ):
+        """Same as self.slow_scroll_to()"""
         self.slow_scroll_to(selector, by=by, timeout=timeout)
+
+    def scroll_into_view(self, selector, by="css selector", timeout=None):
+        """Uses the JS scrollIntoView() method to scroll to an element.
+        Unlike other scroll methods, (which put elements upper-center),
+        this method places elements at the very top of the screen."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        element = self.wait_for_element_visible(selector, by, timeout=timeout)
+        self.execute_script("arguments[0].scrollIntoView();", element)
 
     def scroll_to_top(self):
         """Scroll to the top of the page."""

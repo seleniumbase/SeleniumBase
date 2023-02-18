@@ -1039,6 +1039,8 @@ def scroll_to_element(driver, element):
     )
     # The old jQuery scroll_script required by=By.CSS_SELECTOR
     # scroll_script = "jQuery('%s')[0].scrollIntoView()" % selector
+    # This other scroll_script does not centralize the element
+    # driver.execute_script("arguments[0].scrollIntoView();", element)
     try:
         driver.execute_script(scroll_script)
         return True

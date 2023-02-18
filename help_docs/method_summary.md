@@ -359,6 +359,8 @@ self.scroll_to(selector, by="css selector", timeout=None)
 self.slow_scroll_to(selector, by="css selector", timeout=None)
 # Duplicates: self.slow_scroll_to_element(selector, by="css selector")
 
+self.scroll_into_view(selector, by="css selector", timeout=None)
+
 self.scroll_to_top()
 
 self.scroll_to_bottom()
