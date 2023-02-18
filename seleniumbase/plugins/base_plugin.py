@@ -1,5 +1,6 @@
 """The Nosetest plugin for setting base configuration and logging."""
 import ast
+import collections
 import sys
 import time
 from nose.plugins import Plugin
@@ -13,6 +14,8 @@ from seleniumbase.fixtures import constants
 python3_11_or_newer = False
 if sys.version_info >= (3, 11):
     python3_11_or_newer = True
+if sys.version_info >= (3, 10):
+    collections.Callable = collections.abc.Callable
 
 
 class Base(Plugin):

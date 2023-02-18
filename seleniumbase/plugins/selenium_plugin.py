@@ -1,4 +1,5 @@
 """The Nosetest plugin for setting Selenium test configuration."""
+import collections
 import sys
 from nose.plugins import Plugin
 from seleniumbase import config as sb_config
@@ -9,6 +10,8 @@ from seleniumbase.fixtures import constants
 is_windows = False
 if sys.platform in ["win32", "win64", "x64"]:
     is_windows = True
+if sys.version_info >= (3, 10):
+    collections.Callable = collections.abc.Callable
 
 
 class SeleniumBrowser(Plugin):
