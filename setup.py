@@ -262,6 +262,7 @@ setup(
         # pip install -e .[selenium-wire]
         "selenium-wire": [
             'selenium-wire==5.1.0;python_version>="3.7"',
+            'pyparsing==3.0.9;python_version>="3.7"',
             'Brotli==1.0.9;python_version>="3.7"',
             'blinker==1.5;python_version>="3.7"',
             'h2==4.1.0;python_version>="3.7"',
