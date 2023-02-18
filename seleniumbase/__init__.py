@@ -1,4 +1,3 @@
-import collections
 import pdb
 try:
     import pdbp  # (Pdb+) --- Python Debugger Plus
@@ -39,7 +38,15 @@ colored_traceback.add_hook()
 if sys.version_info >= (3, 7):
     webdriver.TouchActions = None  # Lifeline for past selenium-wire versions
 if sys.version_info >= (3, 10):
+    import collections
     collections.Callable = collections.abc.Callable  # Lifeline for nosetests
+    del collections
+    try:
+        from nose.suite import collections
+        collections.Callable = collections.abc.Callable
+        del collections
+    except Exception:
+        pass
 del sys  # Undo "import sys" / Simplify "dir(seleniumbase)"
 del webdriver  # Undo "import webdriver" / Simplify "dir(seleniumbase)"
 
