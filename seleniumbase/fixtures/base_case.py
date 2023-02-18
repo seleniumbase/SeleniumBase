@@ -173,6 +173,7 @@ class BaseCase(unittest.TestCase):
         self._chart_first_series = {}
         self._chart_series_count = {}
         self._tour_steps = {}
+        self._xvfb_display = None
 
     @classmethod
     def main(self, name, file, *args):
@@ -12721,8 +12722,9 @@ class BaseCase(unittest.TestCase):
             try:
                 from sbvirtualdisplay import Display
 
-                self.display = Display(visible=0, size=(width, height))
-                self.display.start()
+                self._xvfb_display = Display(visible=0, size=(width, height))
+                self._xvfb_display.start()
+                sb_config._virtual_display = self._xvfb_display
                 self.headless_active = True
                 sb_config.headless_active = True
             except Exception:
@@ -14833,15 +14835,6 @@ class BaseCase(unittest.TestCase):
                     self.__activate_debug_mode_in_teardown()
                 # (Pytest) Finally close all open browser windows
                 self.__quit_all_drivers()
-            if self.headless or self.headless2 or self.xvfb:
-                if self.headless_active:
-                    try:
-                        self.display.stop()
-                    except AttributeError:
-                        pass
-                    except Exception:
-                        pass
-                    self.display = None
             if self.with_db_reporting:
                 if has_exception:
                     self.__insert_test_result(constants.State.FAILED, True)
@@ -14924,15 +14917,6 @@ class BaseCase(unittest.TestCase):
                     print(msg)
                 if self.dashboard:
                     self.__process_dashboard(has_exception)
-                if self.headless or self.headless2 or self.xvfb:
-                    if self.headless_active:
-                        try:
-                            self.display.stop()
-                        except AttributeError:
-                            pass
-                        except Exception:
-                            pass
-                        self.display = None
             if has_exception:
                 test_id = self.__get_test_id()
                 test_logpath = os.path.join(self.log_path, test_id)
@@ -14987,6 +14971,16 @@ class BaseCase(unittest.TestCase):
             # (Nosetests / Behave / Pure Python) Close all open browser windows
             self.__quit_all_drivers()
         # Resume tearDown() for all test runners, (Pytest / Nosetests / Behave)
+        if hasattr(self, "_xvfb_display") and self._xvfb_display:
+            try:
+                if hasattr(self._xvfb_display, "stop"):
+                    self._xvfb_display.stop()
+                self._xvfb_display = None
+                self.headless_active = False
+            except AttributeError:
+                pass
+            except Exception:
+                pass
         if self.__visual_baseline_copies:
             sb_config._visual_baseline_copies = True
             if has_exception:
