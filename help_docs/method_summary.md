@@ -514,6 +514,7 @@ self.js_update_text(selector, text, by="css selector", timeout=None)
 self.set_text_content(selector, text, by="css selector", timeout=None, scroll=False)
 
 self.jquery_update_text(selector, text, by="css selector", timeout=None)
+# Duplicates: self.jquery_type(selector, text, by="css selector", timeout=None)
 
 self.get_value(selector, by="css selector", timeout=None)
 

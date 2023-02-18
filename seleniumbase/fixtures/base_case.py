@@ -7439,15 +7439,47 @@ class BaseCase(unittest.TestCase):
         self.__demo_mode_highlight_if_active(selector, by)
         self.scroll_to(selector, by=by)
         selector = self.convert_to_css_selector(selector, by=by)
+        css_selector = selector
         selector = self.__make_css_match_first_element_only(selector)
         selector = self.__escape_quotes_if_needed(selector)
         text = re.escape(text)
         text = self.__escape_quotes_if_needed(text)
         update_text_script = """jQuery('%s').val('%s');""" % (selector, text)
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                sel_tex = [css_selector, text]
+                action = ["jq_ty", sel_tex, origin, time_stamp]
+                self.__extra_actions.append(action)
         self.safe_execute_script(update_text_script)
         if text.endswith("\n"):
-            element.send_keys("\n")
+            element = self.wait_for_element_present(
+                original_selector, by=original_by, timeout=0.2
+            )
+            element.send_keys(Keys.RETURN)
+        else:
+            try:
+                element = self.wait_for_element_present(
+                    original_selector, by=original_by, timeout=0.2
+                )
+                element.send_keys(" " + Keys.BACK_SPACE)
+            except Exception:
+                pass
         self.__demo_mode_pause_if_active()
+
+    def jquery_type(self, selector, text, by="css selector", timeout=None):
+        """Same as self.jquery_update_text()
+        JQuery is used to update a text field.
+        Performs jQuery(selector).val(text); and triggers event listeners.
+        If text ends in "\n", presses RETURN after."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        self.jquery_update_text(selector, text, by=by, timeout=timeout)
 
     def get_value(self, selector, by="css selector", timeout=None):
         """This method uses JavaScript to get the value of an input field.
