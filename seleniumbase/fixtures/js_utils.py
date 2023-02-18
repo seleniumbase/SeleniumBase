@@ -157,10 +157,8 @@ def raise_unable_to_load_jquery_exception(driver):
 
 
 def activate_jquery(driver):
-    """
-    If "jQuery is not defined" on a website, use this method to activate it.
-    This method is needed because jQuery is not always defined on web sites.
-    """
+    """If "jQuery is not defined" on a website, use this method to activate it.
+    This method is needed because jQuery is not always defined on web sites."""
     try:
         # Let's first find out if jQuery is already defined.
         driver.execute_script("jQuery('html');")
@@ -171,13 +169,13 @@ def activate_jquery(driver):
         pass
     jquery_js = constants.JQuery.MIN_JS
     add_js_link(driver, jquery_js)
-    for x in range(32):
+    for x in range(36):
         # jQuery needs a small amount of time to activate.
         try:
             driver.execute_script("jQuery('html');")
             return
         except Exception:
-            if x == 16:
+            if x == 18:
                 add_js_link(driver, jquery_js)
             time.sleep(0.1)
     # Since jQuery still isn't activating, give up and raise an exception
