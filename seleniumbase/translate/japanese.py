@@ -241,6 +241,18 @@ class セレニウムテストケース(BaseCase):
         # js_type(selector, text)
         return self.js_type(*args, **kwargs)
 
+    def JQUERYクリックして(self, *args, **kwargs):
+        # jquery_click(selector)
+        return self.jquery_click(*args, **kwargs)
+
+    def JQUERYテキストを更新(self, *args, **kwargs):
+        # jquery_update_text(selector, text)
+        return self.jquery_update_text(*args, **kwargs)
+
+    def JQUERY入力(self, *args, **kwargs):
+        # jquery_type(selector, text)
+        return self.jquery_type(*args, **kwargs)
+
     def HTMLをチェック(self, *args, **kwargs):
         # inspect_html()
         return self.inspect_html(*args, **kwargs)

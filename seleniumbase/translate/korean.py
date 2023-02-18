@@ -241,6 +241,18 @@ class 셀레늄_테스트_케이스(BaseCase):
         # js_type(selector, text)
         return self.js_type(*args, **kwargs)
 
+    def JQUERY_클릭(self, *args, **kwargs):
+        # jquery_click(selector)
+        return self.jquery_click(*args, **kwargs)
+
+    def JQUERY_텍스트를_업데이트(self, *args, **kwargs):
+        # jquery_update_text(selector, text)
+        return self.jquery_update_text(*args, **kwargs)
+
+    def JQUERY_입력(self, *args, **kwargs):
+        # jquery_type(selector, text)
+        return self.jquery_type(*args, **kwargs)
+
     def HTML_확인(self, *args, **kwargs):
         # inspect_html()
         return self.inspect_html(*args, **kwargs)

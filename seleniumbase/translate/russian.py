@@ -241,6 +241,18 @@ class ТестНаСелен(BaseCase):
         # js_type(selector, text)
         return self.js_type(*args, **kwargs)
 
+    def JQUERY_нажмите(self, *args, **kwargs):
+        # jquery_click(selector)
+        return self.jquery_click(*args, **kwargs)
+
+    def JQUERY_обновить_текст(self, *args, **kwargs):
+        # jquery_update_text(selector, text)
+        return self.jquery_update_text(*args, **kwargs)
+
+    def JQUERY_введите(self, *args, **kwargs):
+        # jquery_type(selector, text)
+        return self.jquery_type(*args, **kwargs)
+
     def проверить_HTML(self, *args, **kwargs):
         # inspect_html()
         return self.inspect_html(*args, **kwargs)

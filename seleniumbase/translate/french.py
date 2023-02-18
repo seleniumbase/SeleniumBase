@@ -241,6 +241,18 @@ class CasDeBase(BaseCase):
         # js_type(selector, text)
         return self.js_type(*args, **kwargs)
 
+    def jquery_cliquer(self, *args, **kwargs):
+        # jquery_click(selector)
+        return self.jquery_click(*args, **kwargs)
+
+    def jquery_modifier_texte(self, *args, **kwargs):
+        # jquery_update_text(selector, text)
+        return self.jquery_update_text(*args, **kwargs)
+
+    def jquery_taper(self, *args, **kwargs):
+        # jquery_type(selector, text)
+        return self.jquery_type(*args, **kwargs)
+
     def vérifier_html(self, *args, **kwargs):
         # inspect_html()
         return self.inspect_html(*args, **kwargs)

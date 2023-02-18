@@ -241,6 +241,18 @@ class 硒测试用例(BaseCase):
         # js_type(selector, text)
         return self.js_type(*args, **kwargs)
 
+    def JQUERY单击(self, *args, **kwargs):
+        # jquery_click(selector)
+        return self.jquery_click(*args, **kwargs)
+
+    def JQUERY更新文本(self, *args, **kwargs):
+        # jquery_update_text(selector, text)
+        return self.jquery_update_text(*args, **kwargs)
+
+    def JQUERY输入文本(self, *args, **kwargs):
+        # jquery_type(selector, text)
+        return self.jquery_type(*args, **kwargs)
+
     def 检查HTML(self, *args, **kwargs):
         # inspect_html()
         return self.inspect_html(*args, **kwargs)

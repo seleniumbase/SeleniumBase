@@ -241,6 +241,18 @@ class CasoDePrueba(BaseCase):
         # js_type(selector, text)
         return self.js_type(*args, **kwargs)
 
+    def jquery_haga_clic(self, *args, **kwargs):
+        # jquery_click(selector)
+        return self.jquery_click(*args, **kwargs)
+
+    def jquery_actualizar_texto(self, *args, **kwargs):
+        # jquery_update_text(selector, text)
+        return self.jquery_update_text(*args, **kwargs)
+
+    def jquery_escriba(self, *args, **kwargs):
+        # jquery_type(selector, text)
+        return self.jquery_type(*args, **kwargs)
+
     def comprobar_html(self, *args, **kwargs):
         # inspect_html()
         return self.inspect_html(*args, **kwargs)
