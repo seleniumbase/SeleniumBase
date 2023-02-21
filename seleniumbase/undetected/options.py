@@ -49,11 +49,19 @@ class ChromeOptions(ChromiumOptions):
                     undot_prefs, self._undot_key(key, value)
                 )
             prefs_file = os.path.join(default_path, "Preferences")
-            if os.path.exists(prefs_file):
-                with open(prefs_file, encoding="latin1", mode="r") as f:
-                    undot_prefs = self._merge_nested(json.load(f), undot_prefs)
-            with open(prefs_file, encoding="latin1", mode="w") as f:
-                json.dump(undot_prefs, f)
+            try:
+                if os.path.exists(prefs_file):
+                    with open(prefs_file, encoding="utf-8", mode="r") as f:
+                        undot_prefs = self._merge_nested(
+                            json.load(f), undot_prefs
+                        )
+            except Exception:
+                pass
+            try:
+                with open(prefs_file, encoding="utf-8", mode="w") as f:
+                    json.dump(undot_prefs, f)
+            except Exception:
+                pass
             # Remove experimental_options to avoid errors
             del self._experimental_options["prefs"]
         exclude_switches = self.experimental_options.get("excludeSwitches")
