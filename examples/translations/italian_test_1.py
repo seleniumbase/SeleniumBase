@@ -11,7 +11,7 @@ class MiaClasseDiTest(CasoDiProva):
         self.digitare("#searchInput", "Pizza")
         self.fare_clic("#searchButton")
         self.verificare_testo("Pizza", "#firstHeading")
-        self.verificare_elemento('img[alt*="pizza"]')
+        self.verificare_elemento('figure img[src*="pizza"]')
         self.digitare("#searchInput", "Colosseo")
         self.fare_clic("#searchButton")
         self.verificare_testo("Colosseo", "#firstHeading")
