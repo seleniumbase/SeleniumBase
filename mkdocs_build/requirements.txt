@@ -15,7 +15,7 @@ ghp-import==2.1.0
 readme-renderer==37.3
 pymdown-extensions==9.9.2
 importlib-metadata==6.0.0
-pipdeptree==2.4.0
+pipdeptree==2.5.0
 bleach==6.0.0
 lunr==0.6.2
 nltk==3.8.1
@@ -27,7 +27,7 @@ cssselect2==0.7.0
 tinycss2==1.2.1
 defusedxml==0.7.1
 mkdocs==1.4.2
-mkdocs-material==9.0.12
+mkdocs-material==9.0.13
 mkdocs-exclude-search==0.6.5
 mkdocs-simple-hooks==0.1.5
 mkdocs-material-extensions==1.1.1
