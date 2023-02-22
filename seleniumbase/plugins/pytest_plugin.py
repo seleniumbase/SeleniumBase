@@ -1682,7 +1682,10 @@ def _create_dashboard_assets_():
     abs_path = os.path.abspath(".")
     assets_folder = os.path.join(abs_path, "assets")
     if not os.path.exists(assets_folder):
-        os.makedirs(assets_folder)
+        try:
+            os.makedirs(assets_folder, exist_ok=True)
+        except Exception:
+            pass
     pytest_style_css = os.path.join(assets_folder, "pytest_style.css")
     add_pytest_style_css = True
     if os.path.exists(pytest_style_css):
