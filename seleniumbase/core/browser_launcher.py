@@ -696,6 +696,9 @@ def _set_chrome_options(
         chrome_options.add_argument("--disable-gpu")
     if IS_LINUX:
         chrome_options.add_argument("--disable-dev-shm-usage")
+        if is_using_uc(undetectable, browser_name):
+            chrome_options.add_argument("--disable-application-cache")
+            chrome_options.add_argument("--disable-setuid-sandbox")
     if chromium_arg:
         # Can be a comma-separated list of Chromium args
         chromium_arg_list = chromium_arg.split(",")
