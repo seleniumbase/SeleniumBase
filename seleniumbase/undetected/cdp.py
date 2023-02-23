@@ -74,7 +74,7 @@ class CDP:
         opentabs = [s for s in sessions if s["type"] == "page"]
         return self.post(self.endpoints["close"].format(id=opentabs[-1]["id"]))
 
-    async def send(self, method, params):  # noqa
+    async def send(self, method, params):
         import websockets
 
         self._reqid += 1

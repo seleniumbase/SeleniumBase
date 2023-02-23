@@ -33,19 +33,8 @@ sys_plat = sys.platform
 
 
 class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
-    """
-    Controls chromedriver to drive a browser.
-    The driver gets downloaded automatically.
-
-    *** Methods ***
-    ---------------
-
-    * reconnect()
-        This can be useful when sites use heavy detection methods:
-        - Stops the chromedriver service that runs in the background.
-        - Starts the chromedriver service that runs in the background.
-        - Recreates the session.
-    """
+    """Controls chromedriver to drive a browser.
+    The driver gets downloaded automatically."""
     _instances = set()
     session_id = None
     debug = False
@@ -66,7 +55,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         suppress_welcome=True,
         use_subprocess=True,
         debug=False,
-        **kw
+        **kw,
     ):
         """
         Starts the Chrome service and creates a new instance of chromedriver.
@@ -216,7 +205,11 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                 language = locale.getlocale()[0].replace("_", "-")
             except Exception:
                 pass
-            if not language:
+            if (
+                not language
+                or "English" in language
+                or "United States" in language
+            ):
                 language = "en-US"
         options.add_argument("--lang=%s" % language)
         if not options.binary_location:
@@ -245,9 +238,14 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
             import json
 
             with open(
-                os.path.join(user_data_dir, "Default/Preferences"),
-                encoding="latin1",
+                os.path.join(
+                    os.path.abspath(user_data_dir),
+                    "Default",
+                    "Preferences",
+                ),
+                encoding="utf-8",
                 mode="r+",
+                errors="ignore",
             ) as fs:
                 config = json.load(fs)
                 if (
@@ -405,6 +403,10 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         return [PageElement(o) for o in retval]
 
     def reconnect(self, timeout=0.1):
+        """This can be useful when sites use heavy detection methods:
+        - Stops the chromedriver service that runs in the background.
+        - Starts the chromedriver service that runs in the background.
+        - Recreates the session. """
         try:
             self.service.stop()
         except Exception as e:

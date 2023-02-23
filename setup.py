@@ -216,7 +216,7 @@ setup(
         'typing-extensions==4.1.1;python_version<"3.7"',
         'typing-extensions==4.4.0;python_version>="3.7" and python_version<"3.9"',  # noqa: E501
         'commonmark==0.9.1;python_version<"3.7"',  # For old "rich"
-        'markdown-it-py==2.1.0;python_version>="3.7"',  # For new "rich"
+        'markdown-it-py==2.2.0;python_version>="3.7"',  # For new "rich"
         'mdurl==0.1.2;python_version>="3.7"',  # For new "rich"
         'rich==12.6.0;python_version<"3.7"',
         'rich==13.3.1;python_version>="3.7"',
@@ -226,7 +226,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage==6.2;python_version<"3.7"',
-            'coverage==7.1.0;python_version>="3.7"',
+            'coverage==7.2.0;python_version>="3.7"',
             "pytest-cov==4.0.0",
         ],
         # pip install -e .[flake8]
