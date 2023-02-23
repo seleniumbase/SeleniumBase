@@ -5,6 +5,10 @@ BaseCase.main(__name__, __file__)
 
 class ProxyTests(BaseCase):
     def test_proxy(self):
+        if self.headless:
+            self.open("about:blank")
+            print("Skipping test in Headless Mode.")
+            self.skip("Skipping test in Headless Mode.")
         if self.recorder_mode:
             self.open("about:blank")
             print("Skipping test in Recorder Mode.")
