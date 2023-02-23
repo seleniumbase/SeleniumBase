@@ -39,15 +39,13 @@ class Patcher(object):
     data_path = os.path.abspath(os.path.expanduser(downloads_folder))
 
     def __init__(self, executable_path=None, force=False, version_main=0):
-        """
-        Args:
-            executable_path: None = automatic
-                A full file path to the chromedriver executable
-            force: False
-                Terminate processes which are holding lock
-            version_main: 0 = auto
-                Specify main chrome version (rounded, ex: 82)
-        """
+        """Args:
+        executable_path: None = automatic
+            A full file path to the chromedriver executable
+        force: False
+            Terminate processes which are holding lock
+        version_main: 0 = auto
+            Specify main chrome version (rounded, ex: 82) """
         self.force = force
         self.executable_path = None
         prefix = "undetected"
@@ -89,7 +87,7 @@ class Patcher(object):
             self.force = force
         try:
             os.unlink(self.executable_path)
-        except PermissionError:  # noqa
+        except PermissionError:
             if self.force:
                 self.force_kill_instances(self.executable_path)
                 not_force = not self.force
@@ -97,9 +95,9 @@ class Patcher(object):
             try:
                 if self.is_binary_patched():
                     return True  # Running AND patched
-            except PermissionError:  # noqa
+            except PermissionError:
                 pass
-        except FileNotFoundError:  # noqa
+        except FileNotFoundError:
             pass
         release = self.fetch_release_number()
         self.version_main = release.split(".")[0]
@@ -122,10 +120,8 @@ class Patcher(object):
         return urlopen(self.url_repo + path).read().decode()
 
     def fetch_package(self):
-        """
-        Downloads chromedriver from source.
-        :return: path to downloaded file
-        """
+        """Downloads chromedriver from source.
+        :return: path to downloaded file """
         from urllib.request import urlretrieve
 
         u = "%s/%s/%s" % (
@@ -135,13 +131,11 @@ class Patcher(object):
         return urlretrieve(u)[0]
 
     def unzip_package(self, fp):
-        """
-        :return: path to unpacked executable
-        """
+        """ :return: path to unpacked executable """
         logger.debug("unzipping %s" % fp)
         try:
             os.unlink(self.zip_path)
-        except (FileNotFoundError, OSError):  # noqa
+        except (FileNotFoundError, OSError):
             pass
         os.makedirs(self.zip_path, mode=0o755, exist_ok=True)
         with zipfile.ZipFile(fp, mode="r") as zf:
@@ -163,10 +157,9 @@ class Patcher(object):
 
     @staticmethod
     def force_kill_instances(exe_name):
-        """
+        """ Terminate instances of UC.
         :param: executable name to kill, may be a path as well
-        :return: True on success else False
-        """
+        :return: True on success else False """
         exe_name = os.path.basename(exe_name)
         if IS_POSIX:
             r = os.system("kill -f -9 $(pidof %s)" % exe_name)
@@ -288,8 +281,8 @@ class Patcher(object):
                         % self.executable_path
                     )
                     break
-                except (OSError, RuntimeError, PermissionError):  # noqa
+                except (OSError, RuntimeError, PermissionError):
                     time.sleep(0.1)
                     continue
-                except FileNotFoundError:  # noqa
+                except FileNotFoundError:
                     break

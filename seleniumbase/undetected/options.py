@@ -51,7 +51,9 @@ class ChromeOptions(ChromiumOptions):
             prefs_file = os.path.join(default_path, "Preferences")
             try:
                 if os.path.exists(prefs_file):
-                    with open(prefs_file, encoding="utf-8", mode="r") as f:
+                    with open(
+                        prefs_file, encoding="utf-8", mode="r", errors="ignore"
+                    ) as f:
                         undot_prefs = self._merge_nested(
                             json.load(f), undot_prefs
                         )

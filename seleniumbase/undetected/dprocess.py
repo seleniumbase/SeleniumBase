@@ -11,20 +11,17 @@ REGISTERED = []
 
 
 def start_detached(executable, *args):
-    """
-    Starts a fully independent subprocess with no parent.
+    """Starts a fully independent subprocess with no parent.
     :param executable: executable
     :param args: arguments to the executable,
         eg: ["--param1_key=param1_val", "-vvv"]
-    :return: pid of the grandchild process
-    """
+    :return: pid of the grandchild process """
     import multiprocessing
 
     reader, writer = multiprocessing.Pipe(False)  # Create pipe
-    # Do not keep reference
     multiprocessing.Process(
         target=_start_detached,
-        args=(executable, *args),  # noqa
+        args=(executable, *args),
         kwargs={"writer": writer},
         daemon=True,
     ).start()

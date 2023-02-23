@@ -41,7 +41,7 @@ class Reactor(threading.Thread):
         except Exception as e:
             logger.warning("Reactor.run() => %s", e)
 
-    async def _wait_service_started(self):  # noqa
+    async def _wait_service_started(self):
         while True:
             with self.lock:
                 if (
@@ -53,7 +53,7 @@ class Reactor(threading.Thread):
                 else:
                     break
 
-    async def listen(self):  # noqa
+    async def listen(self):
         while self.running:
             await self._wait_service_started()
             await asyncio.sleep(1)
