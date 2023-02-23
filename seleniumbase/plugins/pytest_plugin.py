@@ -1196,7 +1196,7 @@ def pytest_addoption(parser):
     for arg in sys_argv:
         if "--timeout=" in arg:
             raise Exception(
-                "\n\n  Don't use --timeout=s from pytest-timeout! "
+                "\n  Don't use --timeout=s from pytest-timeout! "
                 "\n  It's not thread-safe for WebDriver processes! "
                 "\n  Use --time-limit=s from SeleniumBase instead!\n"
             )
@@ -1204,7 +1204,7 @@ def pytest_addoption(parser):
     # Dashboard Mode does not support tests using forked subprocesses.
     if "--forked" in sys_argv and "--dashboard" in sys_argv:
         raise Exception(
-            "\n\n  Dashboard Mode does NOT support forked subprocesses!"
+            "\n  Dashboard Mode does NOT support forked subprocesses!"
             '\n  (*** DO NOT combine "--forked" with "--dashboard"! ***)\n'
         )
 
@@ -1213,7 +1213,7 @@ def pytest_addoption(parser):
         "--rs" in sys_argv or "--reuse-session" in sys_argv
     ):
         raise Exception(
-            "\n\n  Reuse-Session Mode does NOT support forked subprocesses!"
+            "\n  Reuse-Session Mode does NOT support forked subprocesses!"
             '\n  (DO NOT combine "--forked" with "--rs"/"--reuse-session"!)\n'
         )
 
@@ -1225,7 +1225,7 @@ def pytest_addoption(parser):
     ):
         if ("-n" in sys_argv) or (" -n=" in arg_join) or ("-c" in sys_argv):
             raise Exception(
-                "\n\n  Recorder Mode does NOT support multi-process mode (-n)!"
+                "\n  Recorder Mode does NOT support multi-process mode (-n)!"
                 '\n  (DO NOT combine "--recorder" with "-n NUM_PROCESSES"!)\n'
             )
 
@@ -1303,7 +1303,7 @@ def pytest_addoption(parser):
         sb_config._browser_shortcut = "safari"
         browser_list.append("--safari")
     if browser_changes > 1:
-        message = "\n\n  TOO MANY browser types were entered!"
+        message = "\n  TOO MANY browser types were entered!"
         message += "\n  There were %s found:\n  >  %s" % (
             browser_changes,
             ", ".join(browser_list),
@@ -1317,7 +1317,7 @@ def pytest_addoption(parser):
         and browser_text not in ["chrome", "edge"]
     ):
         message = (
-            "\n\n  Recorder Mode ONLY supports Chrome and Edge!"
+            "\n  Recorder Mode ONLY supports Chrome and Edge!"
             '\n  (Your browser choice was: "%s")\n' % browser_list[0]
         )
         raise Exception(message)
@@ -1340,21 +1340,20 @@ def pytest_addoption(parser):
         and undetectable
     ):
         message = (
-            '\n\n  Undetected-Chromedriver Mode ONLY supports Chrome!'
+            '\n  Undetected-Chromedriver Mode ONLY supports Chrome!'
             '\n  ("--uc" / "--undetected" / "--undetectable")'
             '\n  (Your browser choice was: "%s")\n' % browser_list[0]
         )
         raise Exception(message)
     if undetectable and "--wire" in sys_argv:
         raise Exception(
-            "\n\n  SeleniumBase doesn't support mixing --uc with --wire mode!"
+            "\n  SeleniumBase doesn't support mixing --uc with --wire mode!"
             "\n  If you need both, override get_new_driver() from BaseCase:"
             "\n  https://seleniumbase.io/help_docs/syntax_formats/#sb_sf_09\n"
         )
     if undetectable and "--mobile" in sys_argv:
         raise Exception(
-            "\n\n  SeleniumBase doesn't support mixing --uc with --mobile"
-            '\n  UC has: "unrecognized chrome option: mobileEmulation"!\n'
+            "\n  SeleniumBase doesn't support mixing --uc with --mobile\n"
         )
 
 
