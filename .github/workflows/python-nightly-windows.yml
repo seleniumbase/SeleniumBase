@@ -1,0 +1,64 @@
+name: Nightly Tests (Windows)
+
+on:
+  schedule:
+    - cron: "50 1 * * *"
+  workflow_dispatch:
+    branches:
+
+jobs:
+  build:
+
+    env:
+      PY_COLORS: "1"
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install --upgrade wheel
+        pip install -r requirements.txt
+    - name: Install SeleniumBase
+      run: |
+        python setup.py install
+    - name: Check the console scripts interface
+      run: |
+        seleniumbase
+        sbase
+    - name: Install chromedriver
+      run: |
+        seleniumbase install chromedriver
+    - name: Make sure pytest is working
+      run: |
+        echo "def test_1(): pass" > nothing.py
+        pytest nothing.py
+    - name: Make sure nosetests is working
+      run: |
+        echo "def test_2(): pass" > nothing2.py
+        nosetests nothing2.py
+    - name: Run pytest examples/unit_tests/verify_framework.py --browser=chrome --headless
+      run: |
+        pytest examples/unit_tests/verify_framework.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
+    - name: Run pytest examples/offline_examples --browser=chrome --headless --rs
+      run: |
+        pytest examples/offline_examples --rs --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
+    - name: Run pytest examples/boilerplate_test.py --browser=chrome --headless
+      run: |
+        pytest examples/boilerplates/boilerplate_test.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
+    - name: Run pytest examples/test_window_switching.py --browser=chrome --headless
+      run: |
+        pytest examples/test_window_switching.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
+    - name: Verify seleniumbase install from PyPI
+      run: |
+        pip install seleniumbase -U --no-deps --force-reinstall --no-cache-dir
