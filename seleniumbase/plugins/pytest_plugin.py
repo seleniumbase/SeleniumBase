@@ -983,6 +983,9 @@ def pytest_addoption(parser):
     )
     parser.addoption(
         "--final-debug",
+        "--final-trace",
+        "--fdebug",
+        "--ftrace",
         action="store_true",
         dest="final_debug",
         default=False,
