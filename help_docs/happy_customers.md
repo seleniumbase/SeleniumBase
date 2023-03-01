@@ -2,7 +2,7 @@
 
 <h3 align="left"><img src="https://seleniumbase.github.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" width="300" /></h3>
 
-### Some organizations who have used SeleniumBase for automation:
+### Organizations who have used SeleniumBase:
 
 * [MIT](https://web.mit.edu/)
 * [Sony](https://www.sony.com/)
