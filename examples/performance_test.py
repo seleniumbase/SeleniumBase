@@ -39,7 +39,7 @@ class PerformanceClass(BaseCase):
     def test_performance_of_swag_labs(self):
         self.login_to_swag_labs()
         self.assert_element("div.inventory_list")
-        self.assert_exact_text("PRODUCTS", "span.title")
+        self.assert_exact_text("Products", "span.title")
         with decorators.print_runtime("Add backpack and see cart"):
             self.click('button[name*="backpack"]')
             self.click("#shopping_cart_container a")

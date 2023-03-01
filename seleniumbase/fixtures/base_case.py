@@ -425,7 +425,17 @@ class BaseCase(unittest.TestCase):
                 self.__jquery_click(selector, by=by)
             else:
                 self.__element_click(element)
-        except ENI_Exception:
+        except ENI_Exception as e:
+            try:
+                if (
+                    "element has zero size" in e.msg
+                    and element.tag_name.lower() == "a"
+                    and ":contains(" not in selector
+                ):
+                    self.js_click(selector, by=by)
+                    return
+            except Exception:
+                pass
             self.wait_for_ready_state_complete()
             time.sleep(0.1)
             element = page_actions.wait_for_element_visible(
@@ -465,7 +475,7 @@ class BaseCase(unittest.TestCase):
             if scroll and not self.demo_mode and not self.slow_mode:
                 self.__scroll_to_element(element, selector, by)
             if self.browser == "firefox" or self.browser == "safari":
-                if by == By.LINK_TEXT or "contains(" in selector:
+                if by == By.LINK_TEXT or ":contains(" in selector:
                     self.__jquery_click(selector, by=by)
                 else:
                     self.__js_click(selector, by=by)

@@ -145,7 +145,9 @@ setup(
         'platformdirs>=3.0.0;python_version>="3.7"',
         'pyparsing>=3.0.7;python_version<"3.7"',
         'zipp==3.6.0;python_version<"3.7"',
-        'zipp>=3.14.0;python_version>="3.7"',
+        'zipp>=3.15.0;python_version>="3.7"',
+        'more-itertools==8.14.0;python_version<"3.7"',
+        'more-itertools>=9.1.0;python_version>="3.7"',
         "six==1.16.0",
         "idna==3.4",
         'chardet==4.0.0;python_version<"3.7"',
@@ -157,7 +159,7 @@ setup(
         'requests==2.27.1;python_version<"3.7"',
         'requests==2.28.2;python_version>="3.7"',
         'requests-toolbelt==0.10.1',
-        "nose==1.3.7",
+        "pynose==1.4.1",
         'sniffio==1.3.0;python_version>="3.7"',
         'h11==0.14.0;python_version>="3.7"',
         'outcome==1.2.0;python_version>="3.7"',
@@ -169,8 +171,6 @@ setup(
         'selenium==3.141.0;python_version<"3.7"',
         'selenium==4.8.2;python_version>="3.7"',
         'msedge-selenium-tools==3.141.3;python_version<"3.7"',
-        'more-itertools==8.14.0;python_version<"3.7"',
-        'more-itertools==9.0.0;python_version>="3.7"',
         'cssselect==1.1.0;python_version<"3.7"',
         'cssselect==1.2.0;python_version>="3.7"',
         "sortedcontainers==2.4.0",
@@ -222,11 +222,22 @@ setup(
         'rich==13.3.1;python_version>="3.7"',
     ],
     extras_require={
+        # pip install -e .[allure]
+        # Usage: pytest --alluredir=allure_results
+        # Serve: allure serve allure_results
+        "allure": [
+            'allure-pytest==2.9.45;python_version<"3.7"',
+            'allure-pytest==2.12.0;python_version>="3.7"',
+            'allure-python-commons==2.9.45;python_version<"3.7"',
+            'allure-python-commons==2.12.0;python_version>="3.7"',
+            'allure-behave==2.9.45;python_version<"3.7"',
+            'allure-behave==2.12.0;python_version>="3.7"',
+        ],
         # pip install -e .[coverage]
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage==6.2;python_version<"3.7"',
-            'coverage==7.2.0;python_version>="3.7"',
+            'coverage==7.2.1;python_version>="3.7"',
             "pytest-cov==4.0.0",
         ],
         # pip install -e .[flake8]

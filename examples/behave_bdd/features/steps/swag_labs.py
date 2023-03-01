@@ -133,7 +133,7 @@ def click_finish(context):
 @step("Verify order complete")
 def verify_order_complete(context):
     sb = context.sb
-    sb.assert_exact_text("THANK YOU FOR YOUR ORDER", "h2")
+    sb.assert_exact_text("Thank you for your order!", "h2")
     sb.assert_element('img[alt="Pony Express"]')
 
 

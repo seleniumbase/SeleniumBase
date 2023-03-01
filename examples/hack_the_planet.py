@@ -127,10 +127,10 @@ class HackTests(BaseCase):
         self.open("https://azure.microsoft.com/en-us/services/playfab/")
         self.remove_elements('div[role="dialog"]')
         self.set_text_content("h1", aybabtu)
-        self.set_text_content('a[aria-label*="Try PlayF"]', ayb)
+        self.set_text_content('a[aria-label*="Try Azure"]', ayb)
         self.set_text_content('a[aria-label*="Sign in to"]', abtu)
         self.highlight("h1", loops=6, scroll=False)
-        self.highlight('a[aria-label*="Try PlayF"]', loops=4, scroll=False)
+        self.highlight('a[aria-label*="Try Azure"]', loops=4, scroll=False)
         self.highlight('a[aria-label*="Sign in to"]', loops=6, scroll=False)
 
         self.open("https://store.steampowered.com/")

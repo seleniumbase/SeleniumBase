@@ -28,10 +28,10 @@ class SwagLabsTests(BaseCase):
             self.fail('Sort Failed! Expecting "%s" on top!' % item_name)
 
         # Add the "Test.allTheThings() T-Shirt" to the cart
-        self.assert_exact_text("ADD TO CART", "button.btn_inventory")
+        self.assert_exact_text("Add to cart", "button.btn_inventory")
         item_price = self.get_text("div.inventory_item_price")
         self.click("button.btn_inventory")
-        self.assert_exact_text("REMOVE", "button.btn_inventory")
+        self.assert_exact_text("Remove", "button.btn_inventory")
         self.assert_exact_text("1", "span.shopping_cart_badge")
 
         # Verify your cart
@@ -39,7 +39,7 @@ class SwagLabsTests(BaseCase):
         self.assert_element('span:contains("Your Cart")')
         self.assert_text(item_name, "div.inventory_item_name")
         self.assert_exact_text("1", "div.cart_quantity")
-        self.assert_exact_text("REMOVE", "button.cart_button")
+        self.assert_exact_text("Remove", "button.cart_button")
         self.assert_element("button#continue-shopping")
 
         # Checkout - Add info
@@ -60,7 +60,7 @@ class SwagLabsTests(BaseCase):
 
         # Finish Checkout and verify that the cart is now empty
         self.click("button#finish")
-        self.assert_exact_text("THANK YOU FOR YOUR ORDER", "h2")
+        self.assert_exact_text("Thank you for your order!", "h2")
         self.click("#shopping_cart_container a")
         self.assert_element_absent("div.inventory_item_name")
         self.click("button#continue-shopping")

@@ -7,7 +7,6 @@ class SwagLabsLoginTests(BaseCase):
     def login_to_swag_labs(self):
         self.open("https://www.saucedemo.com")
         self.wait_for_element("div.login_logo")
-        self.wait_for_element("div.bot_column")
         self.type("#user-name", "standard_user")
         self.type("#password", "secret_sauce")
         self.click('input[type="submit"]')

@@ -52,7 +52,7 @@ class LongMessyRawSelenium(TestCase):
         element = WebDriverWait(self.driver, 10).until(
             EC.visibility_of_element_located((by_css, "span.title"))
         )
-        self.assertEqual(element.text, "PRODUCTS")
+        self.assertEqual(element.text, "Products")
         element = WebDriverWait(self.driver, 10).until(
             EC.element_to_be_clickable((by_css, 'button[name*="backpack"]'))
         )
@@ -64,7 +64,7 @@ class LongMessyRawSelenium(TestCase):
         element = WebDriverWait(self.driver, 10).until(
             EC.visibility_of_element_located((by_css, "span.title"))
         )
-        self.assertEqual(element.text, "YOUR CART")
+        self.assertEqual(element.text, "Your Cart")
         element = WebDriverWait(self.driver, 10).until(
             EC.visibility_of_element_located((by_css, "div.cart_item"))
         )
