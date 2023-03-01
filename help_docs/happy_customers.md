@@ -5,6 +5,7 @@
 ### Some organizations who have used SeleniumBase for automation:
 
 * [MIT](https://web.mit.edu/)
+* [Sony](https://www.sony.com/)
 * [iboss](https://www.iboss.com/)
 * [Akamai](https://www.akamai.com/)
 * [HubSpot](https://www.hubspot.com/)
@@ -13,6 +14,7 @@
 * [Broadcom](https://www.broadcom.com/)
 * [Medtronic](https://www.medtronic.com/)
 * [FortressIQ](https://www.fortressiq.com/)
+* [PlayStation](https://www.playstation.com/)
 * [Thoma Bravo](https://www.thomabravo.com/)
 * [ASICS Digital](https://www.asicsdigital.com/)
 * [Texture Health](https://www.texturehealth.com/)
