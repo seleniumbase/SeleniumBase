@@ -252,7 +252,9 @@ class BaseCase(unittest.TestCase):
                 or "ERR_CONNECTION_RESET" in e.msg
                 or "ERR_NAME_NOT_RESOLVED" in e.msg
             ):
-                time.sleep(0.5)
+                shared_utils.check_if_time_limit_exceeded()
+                self.__check_browser()
+                time.sleep(0.8)
                 self.driver.get(url)
             elif "Timed out receiving message from renderer" in e.msg:
                 page_load_timeout = None
@@ -430,9 +432,11 @@ class BaseCase(unittest.TestCase):
                 if (
                     "element has zero size" in e.msg
                     and element.tag_name.lower() == "a"
-                    and ":contains(" not in selector
                 ):
-                    self.js_click(selector, by=by)
+                    if "contains(" not in selector:
+                        self.js_click(selector, by=by)
+                    else:
+                        self.jquery_click(selector, by=by)
                     return
             except Exception:
                 pass
@@ -475,7 +479,7 @@ class BaseCase(unittest.TestCase):
             if scroll and not self.demo_mode and not self.slow_mode:
                 self.__scroll_to_element(element, selector, by)
             if self.browser == "firefox" or self.browser == "safari":
-                if by == By.LINK_TEXT or ":contains(" in selector:
+                if by == By.LINK_TEXT or "contains(" in selector:
                     self.__jquery_click(selector, by=by)
                 else:
                     self.__js_click(selector, by=by)
@@ -557,7 +561,7 @@ class BaseCase(unittest.TestCase):
                     self.wait_for_ready_state_complete()
                 except Exception:
                     pass
-                if self.__needs_minimum_wait():
+                if self.__needs_minimum_wait() or self.browser == "safari":
                     time.sleep(0.05)
             else:
                 time.sleep(0.08)
@@ -568,7 +572,7 @@ class BaseCase(unittest.TestCase):
                     self.wait_for_angularjs(timeout=settings.MINI_TIMEOUT)
                 except Exception:
                     pass
-                if self.__needs_minimum_wait():
+                if self.__needs_minimum_wait() or self.browser == "safari":
                     time.sleep(0.026)
                 try:
                     if self.driver.current_url != pre_action_url:
@@ -1172,7 +1176,9 @@ class BaseCase(unittest.TestCase):
             self.__extra_actions.append(action)
         if self.browser == "safari":
             self.wait_for_ready_state_complete()
+            time.sleep(0.02)
             self.driver.refresh()
+            time.sleep(0.02)
         self.wait_for_ready_state_complete()
         self.__demo_mode_pause_if_active()
 
@@ -1979,7 +1985,7 @@ class BaseCase(unittest.TestCase):
         If "limit" is set and > 0, will only click that many elements.
         Also clicks elements that become visible from previous clicks.
         Works best for actions such as clicking all checkboxes on a page.
-        Example:  self.click_visible_elements('input[type="checkbox"]')"""
+        Example: self.click_visible_elements('input[type="checkbox"]')"""
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -2003,30 +2009,6 @@ class BaseCase(unittest.TestCase):
         except Exception:
             pass
         elements = self.find_elements(selector, by=by)
-        if self.browser == "safari":
-            if not limit:
-                limit = 0
-            num_elements = len(elements)
-            if num_elements == 0:
-                raise Exception(
-                    "No matching elements found for selector {%s}!" % selector
-                )
-            elif num_elements < limit or limit == 0:
-                limit = num_elements
-            selector, by = self.__recalculate_selector(selector, by)
-            css_selector = self.convert_to_css_selector(selector, by=by)
-            last_css_chunk = css_selector.split(" ")[-1]
-            if ":" in last_css_chunk:
-                self.__js_click_all(css_selector)
-                self.wait_for_ready_state_complete()
-                return
-            else:
-                for i in range(1, limit + 1):
-                    new_selector = css_selector + ":nth-of-type(%s)" % str(i)
-                    if self.is_element_visible(new_selector):
-                        self.__js_click(new_selector)
-                        self.wait_for_ready_state_complete()
-                return
         pre_action_url = self.driver.current_url
         pre_window_count = len(self.driver.window_handles)
         click_count = 0
@@ -2081,7 +2063,7 @@ class BaseCase(unittest.TestCase):
         self, selector, number, by="css selector", timeout=None
     ):
         """Finds all matching page elements and clicks the nth visible one.
-        Example:  self.click_nth_visible_element('[type="checkbox"]', 5)
+        Example: self.click_nth_visible_element('[type="checkbox"]', 5)
                     (Clicks the 5th visible checkbox on the page.)"""
         self.__check_scope()
         if not timeout:
@@ -12689,7 +12671,10 @@ class BaseCase(unittest.TestCase):
         time.sleep(0.065)
 
     def __activate_virtual_display_as_needed(self):
-        if self.headless or self.headless2 or self.xvfb:
+        """Should be needed only on Linux.
+        The "--xvfb" arg is still useful, as it prevents headless mode,
+        which is the default mode on Linux unless using another arg."""
+        if "linux" in sys.platform:
             width = settings.HEADLESS_START_WIDTH
             height = settings.HEADLESS_START_HEIGHT
             try:
@@ -13508,7 +13493,7 @@ class BaseCase(unittest.TestCase):
         elif hasattr(self, "is_nosetest") and self.is_nosetest:
             pass  # Setup performed in plugins for nosetests
         else:
-            # Pure Python run
+            # Pure Python run. Eg. SB() Manager
             self.__activate_virtual_display_as_needed()
 
         # Verify that SeleniumBase is installed successfully
