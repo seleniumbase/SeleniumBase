@@ -15,7 +15,7 @@ if __name__ == "__main__":
 class SkypeTests(BaseCase):
     def test_skype_mobile_site(self):
         if not self.mobile_emulator:
-            self.open("data:,")
+            self.open_if_not_url("about:blank")
             print("\n  This test is only for mobile-device web browsers!")
             print('  (Use "--mobile" to run this test in Mobile Mode!)')
             self.skip('Use "--mobile" to run this test in Mobile Mode!')

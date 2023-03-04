@@ -16,4 +16,4 @@ class MyChartMakerClass(BaseCase):
         self.add_data_point("Fri", 65)
         self.add_data_point("Sat", 50)
         self.add_slide("<p>Line Chart</p>" + self.extract_chart())
-        self.begin_presentation(filename="line_chart.html", interval=8)
+        self.begin_presentation(filename="line_chart.html", interval=4)

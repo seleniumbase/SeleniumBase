@@ -10,9 +10,9 @@ class TimeLimitTests(BaseCase):
         """This test fails on purpose to show the runtime_limit() decorator
         for code blocks that run longer than the time limit specified."""
         print("\n(This test should fail)")
-        self.open("https://xkcd.com/1190")
-        with decorators.runtime_limit(0.5):
-            self.sleep(0.75)
+        self.open("https://xkcd.com/2511")
+        with decorators.runtime_limit(0.7):
+            self.sleep(0.95)
 
     @pytest.mark.expected_failure
     def test_set_time_limit_method(self):
@@ -22,7 +22,7 @@ class TimeLimitTests(BaseCase):
         which is after pytest starts it's own internal clock for tests.
         Usage: (inside tests) =>  self.set_time_limit(SECONDS)
         Usage: (command-line) =>  --time-limit=SECONDS"""
-        self.set_time_limit(2.5)  # Fail test if time exceeds 2.5 seconds
+        self.set_time_limit(2.2)  # Fail test if time exceeds 2.2 seconds
         print("\n(This test should fail)")
         self.open("https://xkcd.com/1658")
         self.sleep(3)

@@ -51,6 +51,7 @@ class WordleTests(BaseCase):
 
     def test_wordle(self):
         if self.headless:
+            self.open_if_not_url("about:blank")
             self.skip("Skip this test in headless mode!")
         self.open("https://www.nytimes.com/games/wordle/index.html")
         self.click_if_visible('svg[data-testid="icon-close"]', timeout=2)

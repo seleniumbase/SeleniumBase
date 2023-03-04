@@ -1,8 +1,8 @@
 <!-- SeleniumBase Docs -->
 
-<h3 align="left"><img src="https://seleniumbase.github.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" width="300" /></h3>
+<h3 align="left"><img src="https://seleniumbase.github.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" width="320" /></h3>
 
-### Organizations who have used SeleniumBase:
+### Businesses who have used SeleniumBase:
 
 * [MIT](https://web.mit.edu/)
 * [Sony](https://www.sony.com/)

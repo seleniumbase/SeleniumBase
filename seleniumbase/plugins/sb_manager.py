@@ -495,6 +495,8 @@ def SB(
             no_screenshot = False
     if save_screenshot and no_screenshot:
         save_screenshot = False  # "no_screenshot" has priority
+    if browser == "safari" and headless:
+        headless = False  # Safari doesn't support headless mode
     if js_checking_on is None:
         if "--check-js" in sys_argv:
             js_checking_on = True

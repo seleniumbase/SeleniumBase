@@ -17,3 +17,6 @@ class OfflineTests(BaseCase):
         self.assert_equal(alert.text, "My Prompt")  # Not input field
         self.dismiss_alert()
         self.sleep(1)  # Not needed (Lets you see the alert go away)
+        if self.browser == "safari" and self._reuse_session:
+            # Alerts can freeze Safari if reusing the browser session
+            self.driver.quit()

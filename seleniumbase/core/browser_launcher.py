@@ -2444,13 +2444,34 @@ def get_local_driver(
                 )
             return driver
     elif browser_name == constants.Browser.SAFARI:
+        from selenium.webdriver.safari.options import Options as SafariOptions
+
         arg_join = " ".join(sys.argv)
         if ("-n" in sys.argv) or (" -n=" in arg_join) or (arg_join == "-c"):
             # Skip if multithreaded
             raise Exception("Can't run Safari tests in multithreaded mode!")
         warnings.simplefilter("ignore", category=DeprecationWarning)
         service = SafariService(quiet=False)
-        return webdriver.safari.webdriver.WebDriver(service=service)
+        options = SafariOptions()
+        if (
+            selenium4_or_newer
+            and page_load_strategy
+            and page_load_strategy.lower() in ["eager", "none"]
+        ):
+            # Only change it if not "normal", which is the default.
+            options.page_load_strategy = page_load_strategy.lower()
+        elif (
+            selenium4_or_newer
+            and not page_load_strategy
+            and hasattr(settings, "PAGE_LOAD_STRATEGY")
+            and settings.PAGE_LOAD_STRATEGY
+            and settings.PAGE_LOAD_STRATEGY.lower() in ["eager", "none"]
+        ):
+            # Only change it if not "normal", which is the default.
+            options.page_load_strategy = settings.PAGE_LOAD_STRATEGY.lower()
+        return webdriver.safari.webdriver.WebDriver(
+            service=service, options=options
+        )
     elif browser_name == constants.Browser.OPERA:
         try:
             if LOCAL_OPERADRIVER and os.path.exists(LOCAL_OPERADRIVER):

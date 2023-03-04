@@ -823,6 +823,10 @@ def get_configured_sb(context):
         sb.headless2 = True
     if not sb.headless and not sb.headless2:
         sb.headed = True
+    if sb.browser == "safari" and sb.headless:
+        sb.headless = False  # Safari doesn't support headless mode
+    if sb.save_screenshot_after_test and sb.no_screenshot_after_test:
+        sb.save_screenshot_after_test = False  # "no_screenshot" has priority
     if sb.servername != "localhost":
         # Using Selenium Grid
         # (Set -D server="127.0.0.1" for localhost Grid)
