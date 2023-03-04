@@ -355,9 +355,7 @@ class BaseCase(unittest.TestCase):
         if self.__is_shadow_selector(selector):
             self.__shadow_click(selector, timeout)
             return
-        if self.browser == "safari":
-            self.wait_for_ready_state_complete()
-        if self.__needs_minimum_wait():
+        if self.__needs_minimum_wait() or self.browser == "safari":
             time.sleep(0.022)
         element = page_actions.wait_for_element_visible(
             self.driver,
@@ -374,9 +372,7 @@ class BaseCase(unittest.TestCase):
         try:
             if (
                 by == By.LINK_TEXT
-                and (
-                    self.browser == "ie" or self.browser == "safari"
-                )
+                and (self.browser == "ie" or self.browser == "safari")
             ):
                 self.__jquery_click(selector, by=by)
             else:
@@ -598,8 +594,6 @@ class BaseCase(unittest.TestCase):
                 self.__demo_mode_pause_if_active(tiny=True)
         elif self.slow_mode:
             self.__slow_mode_pause_if_active()
-        elif self.browser == "safari":
-            self.wait_for_ready_state_complete()
 
     def slow_click(self, selector, by="css selector", timeout=None):
         """Similar to click(), but pauses for a brief moment before clicking.
@@ -2969,7 +2963,7 @@ class BaseCase(unittest.TestCase):
         html_string = html_string.replace("\\ ", " ")
 
         if new_page:
-            self.open("data:text/html,<head></head><body></body>")
+            self.open("data:text/html,<head></head><body><div></div></body>")
         inner_head = """document.getElementsByTagName("head")[0].innerHTML"""
         inner_body = """document.getElementsByTagName("body")[0].innerHTML"""
         try:
@@ -3011,8 +3005,7 @@ class BaseCase(unittest.TestCase):
         """Loads a local html file into the browser from a relative file path.
         If new_page==True, the page will switch to: "data:text/html,"
         If new_page==False, will load HTML into the current page.
-        Local images and other local src content WILL BE IGNORED.
-        """
+        Local images and other local src content WILL BE IGNORED."""
         self.__check_scope()
         if self.__looks_like_a_page_url(html_file):
             self.open(html_file)
@@ -3032,8 +3025,7 @@ class BaseCase(unittest.TestCase):
 
     def open_html_file(self, html_file):
         """Opens a local html file into the browser from a relative file path.
-        The URL displayed in the web browser will start with "file://".
-        """
+        The URL displayed in the web browser will start with "file://"."""
         self.__check_scope()
         if self.__looks_like_a_page_url(html_file):
             self.open(html_file)
