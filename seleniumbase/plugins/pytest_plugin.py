@@ -20,8 +20,7 @@ pytest_plugins = ["pytester"]  # Adds the "testdir" fixture
 
 
 def pytest_addoption(parser):
-    """
-    This plugin adds the following command-line options to pytest:
+    """This plugin adds the following command-line options to pytest:
     --browser=BROWSER  (The web browser to use. Default: "chrome".)
     --chrome  (Shortcut for "--browser=chrome". Default.)
     --edge  (Shortcut for "--browser=edge".)
@@ -1616,6 +1615,9 @@ def pytest_configure(config):
     else:
         pass  # Use the browser specified by "--browser=BROWSER"
 
+    if sb_config.browser == "safari" and sb_config.headless:
+        sb_config.headless = False  # Safari doesn't support headless mode
+
     if sb_config.dash_title:
         constants.Dashboard.TITLE = sb_config.dash_title.replace("_", " ")
 
@@ -1659,8 +1661,7 @@ def _get_test_ids_(the_item):
         test_id = "unidentified_TestCase"
     display_id = test_id
     r"""
-    # Due to changes in SeleniumBase 1.66.0, we're now using the
-    # item's original nodeid for both the test_id and display_id.
+    # Now using the nodeid for both the test_id and display_id.
     # (This only impacts tests using The Dashboard.)
     # If there are any issues, we'll revert back to the old code.
     test_id = the_item.nodeid.split("/")[-1].replace(" ", "_")
@@ -1739,8 +1740,7 @@ def pytest_deselected(items):
 
 def pytest_collection_finish(session):
     """This runs after item collection is finalized.
-    https://docs.pytest.org/en/stable/reference.html
-    """
+    https://docs.pytest.org/en/stable/reference.html """
     sb_config._context_of_runner = False  # Context Manager Compatibility
     if "--co" in sys_argv or "--collect-only" in sys_argv:
         return
@@ -2234,8 +2234,7 @@ def pytest_runtest_makereport(item, call):
                 if not test_id:
                     test_id = "unidentified_TestCase"
                 r"""
-                # Due to changes in SeleniumBase 1.66.0, we're now using the
-                # item's original nodeid for both the test_id and display_id.
+                # Now using the nodeid for both the test_id and display_id.
                 # (This only impacts tests using The Dashboard.)
                 # If there are any issues, we'll revert back to the old code.
                 test_id = test_id.split("/")[-1].replace(" ", "_")
@@ -2258,8 +2257,8 @@ def pytest_runtest_makereport(item, call):
             if len(extra_report) > 1 and extra_report[1]["content"]:
                 report.extra = extra + extra_report
             if sb_config._dash_is_html_report:
-                # (If the Dashboard URL is the same as the HTML Report URL:)
-                # Have the html report refresh back to a dashboard on update
+                # If the Dashboard URL is the same as the HTML Report URL,
+                # have the html report refresh back to a dashboard on update.
                 refresh_updates = (
                     '<script type="text/javascript" src="%s">'
                     "</script>" % constants.Dashboard.LIVE_JS

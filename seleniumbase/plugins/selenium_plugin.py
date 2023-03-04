@@ -12,8 +12,7 @@ if sys.platform in ["win32", "win64", "x64"]:
 
 
 class SeleniumBrowser(Plugin):
-    """
-    This plugin adds the following command-line options to nosetests:
+    """This plugin adds the following command-line options to nosetests:
     --browser=BROWSER  (The web browser to use. Default: "chrome".)
     --chrome  (Shortcut for "--browser=chrome". Default.)
     --edge  (Shortcut for "--browser=edge".)
@@ -1025,6 +1024,8 @@ class SeleniumBrowser(Plugin):
         test.test.cap_string = self.options.cap_string
         test.test.headless = self.options.headless
         test.test.headless2 = self.options.headless2
+        if test.test.headless and test.test.browser == "safari":
+            test.test.headless = False  # Safari doesn't use headless
         if test.test.headless2 and test.test.browser == "firefox":
             test.test.headless2 = False  # Only for Chromium browsers
             test.test.headless = True  # Firefox has regular headless
@@ -1174,23 +1175,18 @@ class SeleniumBrowser(Plugin):
         sb_config._virtual_display = None
         sb_config.headless_active = False
         self.headless_active = False
-        if (
-            self.options.headless
-            or self.options.headless2
-            or self.options.xvfb
-        ):
+        if "linux" in sys.platform:
+            width = settings.HEADLESS_START_WIDTH
+            height = settings.HEADLESS_START_HEIGHT
             try:
-                # from pyvirtualdisplay import Display  # Skip for own lib
                 from sbvirtualdisplay import Display
 
-                self._xvfb_display = Display(visible=0, size=(1440, 1880))
+                self._xvfb_display = Display(visible=0, size=(width, height))
                 self._xvfb_display.start()
                 sb_config._virtual_display = self._xvfb_display
                 self.headless_active = True
                 sb_config.headless_active = True
             except Exception:
-                # pyvirtualdisplay might not be necessary anymore because
-                # Chrome and Firefox now have built-in headless displays
                 pass
         sb_config._is_timeout_changed = False
         sb_config._SMALL_TIMEOUT = settings.SMALL_TIMEOUT

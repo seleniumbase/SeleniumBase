@@ -1,15 +1,8 @@
 """The plugin for recording test results in the Testcase Database."""
-import getpass
 import time
 import uuid
 from nose.plugins import Plugin
-from nose.exc import SkipTest
-from seleniumbase.core.application_manager import ApplicationManager
-from seleniumbase.core.testcase_manager import ExecutionQueryPayload
-from seleniumbase.core.testcase_manager import TestcaseDataPayload
-from seleniumbase.core.testcase_manager import TestcaseManager
 from seleniumbase.fixtures import constants
-from seleniumbase.fixtures import errors
 
 
 class DBReporting(Plugin):
@@ -51,6 +44,8 @@ class DBReporting(Plugin):
         )
 
     def configure(self, options, conf):
+        from seleniumbase.core.testcase_manager import TestcaseManager
+
         super().configure(options, conf)
         self.options = options
         self.testcase_manager = TestcaseManager(self.options.database_env)
@@ -58,6 +53,9 @@ class DBReporting(Plugin):
     def begin(self):
         """At the start of the run, we want to record the test
         execution information in the database."""
+        import getpass
+        from seleniumbase.core.testcase_manager import ExecutionQueryPayload
+
         exec_payload = ExecutionQueryPayload()
         exec_payload.execution_start_time = int(time.time() * 1000)
         self.execution_start_time = exec_payload.execution_start_time
@@ -67,6 +65,9 @@ class DBReporting(Plugin):
 
     def startTest(self, test):
         """At the start of the test, set the testcase details."""
+        from seleniumbase.core.application_manager import ApplicationManager
+        from seleniumbase.core.testcase_manager import TestcaseDataPayload
+
         data_payload = TestcaseDataPayload()
         self.testcase_guid = str(uuid.uuid4())
         data_payload.guid = self.testcase_guid
@@ -111,52 +112,43 @@ class DBReporting(Plugin):
             self.__insert_test_result(constants.State.SKIPPED, self._test, err)
 
     def addSuccess(self, test, capt):
-        """
-        After each test success, record testcase run information.
-        """
+        """After each test success, record testcase run information."""
         self.__insert_test_result(constants.State.PASSED, test)
         self._result_set = True
 
     def addFailure(self, test, err, capt=None, tbinfo=None):
-        """
-        After each test failure, record testcase run information.
-        """
+        """After each test failure, record testcase run information."""
         self.__insert_test_result(constants.State.FAILED, test, err)
         self._result_set = True
 
     def addError(self, test, err, capt=None):
-        """
-        After each test error, record testcase run information.
-        (Test errors should be treated the same as test failures.)
-        """
+        """After each test error, record testcase run information.
+        (Test errors should be treated the same as test failures.)"""
         self.__insert_test_result(constants.State.FAILED, test, err)
         self._result_set = True
 
     def handleError(self, test, err, capt=None):
-        """
-        After each test error, record testcase run information.
-        "Error" also encompasses any states other than Pass or Fail, so we
-        check for those first.
-        """
+        """After each test error, record testcase run information.
+        "Error" also encompasses any states other than Pass or Fail."""
+        from nose.exc import SkipTest
+        from seleniumbase.fixtures import errors
+
         if err[0] == errors.BlockedTest:
             self.__insert_test_result(constants.State.BLOCKED, test, err)
             self._result_set = True
             raise SkipTest(err[1])
-            return True
-
         elif err[0] == errors.DeprecatedTest:
             self.__insert_test_result(constants.State.DEPRECATED, test, err)
             self._result_set = True
             raise SkipTest(err[1])
-            return True
-
         elif err[0] == errors.SkipTest:
             self.__insert_test_result(constants.State.SKIPPED, test, err)
             self._result_set = True
             raise SkipTest(err[1])
-            return True
 
     def __insert_test_result(self, state, test, err=None):
+        from seleniumbase.core.testcase_manager import TestcaseDataPayload
+
         data_payload = TestcaseDataPayload()
         data_payload.runtime = int(time.time() * 1000) - self.case_start_time
         data_payload.guid = self.testcase_guid
