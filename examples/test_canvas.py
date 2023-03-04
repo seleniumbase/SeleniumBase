@@ -29,10 +29,15 @@ class CanvasTests(BaseCase):
         self.assert_equal(alert.text, "You clicked on the square!")
         self.accept_alert()
         self.sleep(0.55)  # Not needed (Lets you see the alert go away)
+        if self.browser == "safari" and self._reuse_session:
+            # Alerts can freeze Safari if reusing the browser session
+            self.driver.quit()
 
     def test_click_with_offset(self):
         self.open("https://seleniumbase.io/canvas/")
         if self.undetectable:
+            self.open_if_not_url("about:blank")
+            print("Skip this test in undetectable mode.")
             self.skip("Skip this test in undetectable mode.")
         self.assert_title_contains("Canvas")
         self.highlight("canvas")

@@ -5,7 +5,7 @@ BaseCase.main(__name__, __file__)
 class GitHubTests(BaseCase):
     def test_github(self):
         if self.headless or self.page_load_strategy == "none":
-            self.open_if_not_url("data:,")
+            self.open_if_not_url("about:blank")
             message = "Unsupported mode for this test."
             print("\n  " + message)
             self.skip(message)

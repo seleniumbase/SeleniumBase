@@ -10,15 +10,15 @@ class AppleTests(BaseCase):
             self.message_duration = 2.0
         if self.headless:
             if self._multithreaded:
-                self.open("about:blank")
+                self.open_if_not_url("about:blank")
                 print("Skipping test in headless multi-threaded mode.")
                 self.skip("Skipping test in headless multi-threaded mode.")
             elif self.undetectable:
-                self.open("about:blank")
+                self.open_if_not_url("about:blank")
                 print("Skipping test in headless undetectable mode.")
                 self.skip("Skipping test in headless undetectable mode.")
             elif self.recorder_mode:
-                self.open("about:blank")
+                self.open_if_not_url("about:blank")
                 print("Skipping test in headless Recorder Mode.")
                 self.skip("Skipping test in headless Recorder Mode.")
             elif self.browser == "chrome" or self.browser == "edge":

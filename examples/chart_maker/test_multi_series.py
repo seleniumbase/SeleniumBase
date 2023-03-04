@@ -45,4 +45,4 @@ class MyChartMakerClass(BaseCase):
         self.add_data_point("Sat", 31)
 
         self.add_slide("<p>Multi-Series Line Chart</p>" + self.extract_chart())
-        self.begin_presentation(filename="multi_series_chart.html", interval=8)
+        self.begin_presentation(filename="multi_series_chart.html", interval=4)
