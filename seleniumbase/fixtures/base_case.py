@@ -251,6 +251,7 @@ class BaseCase(unittest.TestCase):
                 or "ERR_CONNECTION_CLOSED" in e.msg
                 or "ERR_CONNECTION_RESET" in e.msg
                 or "ERR_NAME_NOT_RESOLVED" in e.msg
+                or "ERR_INTERNET_DISCONNECTED" in e.msg
             ):
                 shared_utils.check_if_time_limit_exceeded()
                 self.__check_browser()
@@ -14048,17 +14049,21 @@ class BaseCase(unittest.TestCase):
         if self._sb_test_identifier and len(str(self._sb_test_identifier)) > 6:
             test_id = self._sb_test_identifier
             test_id = test_id.replace(".py::", ".").replace("::", ".")
-            test_id = test_id.replace("/", ".")
+            test_id = test_id.replace("/", ".").replace(" ", "_")
         elif hasattr(self, "_using_sb_fixture") and self._using_sb_fixture:
             test_id = sb_config._latest_display_id
             test_id = test_id.replace(".py::", ".").replace("::", ".")
-            test_id = test_id.replace("/", ".")
+            test_id = test_id.replace("/", ".").replace(" ", "_")
         return test_id
 
     def __get_test_id_2(self):
         """The id for SeleniumBase Dashboard entries."""
         if "PYTEST_CURRENT_TEST" in os.environ:
-            return os.environ["PYTEST_CURRENT_TEST"].split(" ")[0]
+            full_name = os.environ["PYTEST_CURRENT_TEST"]
+            if "] " in full_name:
+                return full_name.split("] ")[0] + "]"
+            else:
+                return full_name.split(" ")[0]
         if hasattr(self, "is_behave") and self.is_behave:
             return self.__get_test_id()
         test_id = "%s.%s.%s" % (
@@ -14075,7 +14080,11 @@ class BaseCase(unittest.TestCase):
     def __get_display_id(self):
         """The id for running a test from pytest. (Displayed on Dashboard)"""
         if "PYTEST_CURRENT_TEST" in os.environ:
-            return os.environ["PYTEST_CURRENT_TEST"].split(" ")[0]
+            full_name = os.environ["PYTEST_CURRENT_TEST"]
+            if "] " in full_name:
+                return full_name.split("] ")[0] + "]"
+            else:
+                return full_name.split(" ")[0]
         if hasattr(self, "is_behave") and self.is_behave:
             file_name = sb_config.behave_scenario.filename
             line_num = sb_config.behave_line_num
@@ -14222,6 +14231,7 @@ class BaseCase(unittest.TestCase):
                     alt_test_id = sb_config._display_id[test_id]
                     alt_test_id = alt_test_id.replace(".py::", ".")
                     alt_test_id = alt_test_id.replace("::", ".")
+                    alt_test_id = alt_test_id.replace(" ", "_")
                     if alt_test_id in sb_config._results.keys():
                         sb_config._results.pop(alt_test_id)
             if test_id in sb_config._results.keys() and (

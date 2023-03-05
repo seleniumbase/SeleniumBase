@@ -71,7 +71,9 @@ def show_no_case_plans_warning():
 
 def get_test_id(display_id):
     """The id used in various places such as the test log path."""
-    return display_id.replace(".py::", ".").replace("::", ".")
+    return (
+        display_id.replace(".py::", ".").replace("::", ".").replace(" ", "_")
+    )
 
 
 def generate_case_plan_boilerplates(

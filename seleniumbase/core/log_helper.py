@@ -190,8 +190,9 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
         except Exception:
             exc_message = "(Unknown Exception)"
             traceback_message = "(Unknown Traceback)"
-        data_to_save.append("Traceback: " + traceback_message)
-        data_to_save.append("Exception: " + str(exc_message))
+        traceback_message = str(traceback_message).strip()
+        data_to_save.append("Traceback:\n  %s" % traceback_message)
+        data_to_save.append("Exception: %s" % exc_message)
     else:
         traceback_message = None
         if hasattr(test, "is_behave") and test.is_behave:
@@ -232,16 +233,16 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
                 if "/site-packages/pluggy/" not in stack:
                     if "/site-packages/_pytest/" not in stack:
                         good_stack.append(stack)
-            traceback_message = "".join(good_stack)
-            data_to_save.append("Traceback: " + traceback_message)
+            traceback_message = str("".join(good_stack)).strip()
+            data_to_save.append("Traceback:\n  %s" % traceback_message)
             if hasattr(sys, "last_value"):
                 last_value = sys.last_value
                 if last_value:
-                    data_to_save.append("Exception: %s" + str(last_value))
+                    data_to_save.append("Exception: %s" % last_value)
             elif hasattr(sb_config, "_excinfo_value"):
                 data_to_save.append("Exception: %s" % sb_config._excinfo_value)
         else:
-            data_to_save.append("Traceback: " + traceback_message)
+            data_to_save.append("Traceback:\n  %s" % traceback_message)
     if hasattr(test, "is_nosetest") and test.is_nosetest:
         # Also save the data for the report
         sb_config._report_test_id = test_id
@@ -395,7 +396,11 @@ def get_test_id(test):
 
 def get_test_name(test):
     if "PYTEST_CURRENT_TEST" in os.environ:
-        test_name = os.environ["PYTEST_CURRENT_TEST"].split(" ")[0]
+        full_name = os.environ["PYTEST_CURRENT_TEST"]
+        if "] " in full_name:
+            test_name = full_name.split("] ")[0] + "]"
+        else:
+            test_name = full_name.split(" ")[0]
     elif test.is_pytest:
         test_name = "%s.py::%s::%s" % (
             test.__class__.__module__.split(".")[-1],
@@ -410,16 +415,6 @@ def get_test_name(test):
         )
     if test._sb_test_identifier and len(str(test._sb_test_identifier)) > 6:
         test_name = test._sb_test_identifier
-        if hasattr(test, "_using_sb_fixture_class"):
-            if test_name.count(".") >= 2:
-                parts = test_name.split(".")
-                full = parts[-3] + ".py::" + parts[-2] + "::" + parts[-1]
-                test_name = full
-        elif hasattr(test, "_using_sb_fixture_no_class"):
-            if test_name.count(".") >= 1:
-                parts = test_name.split(".")
-                full = parts[-2] + ".py::" + parts[-1]
-                test_name = full
     return test_name
 
 

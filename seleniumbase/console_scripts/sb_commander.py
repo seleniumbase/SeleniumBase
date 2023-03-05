@@ -93,7 +93,12 @@ def do_pytest_run(
         for test_number, test in enumerate(tests):
             if selected_tests[test_number].get():
                 full_run_command += " "
-                full_run_command += test
+                if ' ' not in test:
+                    full_run_command += test
+                elif '"' not in test:
+                    full_run_command += '"%s"' % test
+                else:
+                    full_run_command += test.replace(" ", "\\ ")
 
     if "(--edge)" in browser_string:
         full_run_command += " --edge"
