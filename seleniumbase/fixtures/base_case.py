@@ -251,6 +251,7 @@ class BaseCase(unittest.TestCase):
                 or "ERR_CONNECTION_CLOSED" in e.msg
                 or "ERR_CONNECTION_RESET" in e.msg
                 or "ERR_NAME_NOT_RESOLVED" in e.msg
+                or "ERR_INTERNET_DISCONNECTED" in e.msg
             ):
                 shared_utils.check_if_time_limit_exceeded()
                 self.__check_browser()
