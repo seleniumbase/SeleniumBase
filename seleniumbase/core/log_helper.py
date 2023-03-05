@@ -190,8 +190,9 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
         except Exception:
             exc_message = "(Unknown Exception)"
             traceback_message = "(Unknown Traceback)"
-        data_to_save.append("Traceback: " + traceback_message)
-        data_to_save.append("Exception: " + str(exc_message))
+        traceback_message = str(traceback_message).strip()
+        data_to_save.append("Traceback:\n  %s" % traceback_message)
+        data_to_save.append("Exception: %s" % exc_message)
     else:
         traceback_message = None
         if hasattr(test, "is_behave") and test.is_behave:
@@ -232,16 +233,16 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
                 if "/site-packages/pluggy/" not in stack:
                     if "/site-packages/_pytest/" not in stack:
                         good_stack.append(stack)
-            traceback_message = "".join(good_stack)
-            data_to_save.append("Traceback: " + traceback_message)
+            traceback_message = str("".join(good_stack)).strip()
+            data_to_save.append("Traceback:\n  %s" % traceback_message)
             if hasattr(sys, "last_value"):
                 last_value = sys.last_value
                 if last_value:
-                    data_to_save.append("Exception: %s" + str(last_value))
+                    data_to_save.append("Exception: %s" % last_value)
             elif hasattr(sb_config, "_excinfo_value"):
                 data_to_save.append("Exception: %s" % sb_config._excinfo_value)
         else:
-            data_to_save.append("Traceback: " + traceback_message)
+            data_to_save.append("Traceback:\n  %s" % traceback_message)
     if hasattr(test, "is_nosetest") and test.is_nosetest:
         # Also save the data for the report
         sb_config._report_test_id = test_id
