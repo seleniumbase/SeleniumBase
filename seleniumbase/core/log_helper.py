@@ -395,7 +395,11 @@ def get_test_id(test):
 
 def get_test_name(test):
     if "PYTEST_CURRENT_TEST" in os.environ:
-        test_name = os.environ["PYTEST_CURRENT_TEST"].split(" ")[0]
+        full_name = os.environ["PYTEST_CURRENT_TEST"]
+        if "] " in full_name:
+            test_name = full_name.split("] ")[0] + "]"
+        else:
+            test_name = full_name.split(" ")[0]
     elif test.is_pytest:
         test_name = "%s.py::%s::%s" % (
             test.__class__.__module__.split(".")[-1],
@@ -410,16 +414,6 @@ def get_test_name(test):
         )
     if test._sb_test_identifier and len(str(test._sb_test_identifier)) > 6:
         test_name = test._sb_test_identifier
-        if hasattr(test, "_using_sb_fixture_class"):
-            if test_name.count(".") >= 2:
-                parts = test_name.split(".")
-                full = parts[-3] + ".py::" + parts[-2] + "::" + parts[-1]
-                test_name = full
-        elif hasattr(test, "_using_sb_fixture_no_class"):
-            if test_name.count(".") >= 1:
-                parts = test_name.split(".")
-                full = parts[-2] + ".py::" + parts[-1]
-                test_name = full
     return test_name
 
 
