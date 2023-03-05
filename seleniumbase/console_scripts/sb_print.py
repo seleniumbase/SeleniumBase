@@ -91,6 +91,10 @@ def main():
         code_lang = "java"
     elif file_to_print.lower().endswith(".feature"):
         code_lang = "gherkin"
+    elif file_to_print.lower().endswith(".txt"):
+        code_lang = "javascript"
+    elif file_to_print.lower().endswith(".yml"):
+        code_lang = "javascript"
     elif file_to_print.lower().endswith(".in"):
         code_lang = "javascript"
     elif "." not in file_to_print:
