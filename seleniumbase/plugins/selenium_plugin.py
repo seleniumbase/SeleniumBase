@@ -1138,8 +1138,8 @@ class SeleniumBrowser(Plugin):
                 "(Linux uses --headless by default. "
                 "To override, use --headed / --gui. "
                 "For Xvfb mode instead, use --xvfb. "
-                "Or hide this info with --headless, "
-                "or by calling the new --headless2.)"
+                "Or you can hide this info by using "
+                "--headless / --headless2.)"
             )
             self.options.headless = True
             test.test.headless = True

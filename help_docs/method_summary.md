@@ -434,6 +434,10 @@ self.save_file_as(file_url, new_file_name, destination_folder=None)
 
 self.save_data_as(data, file_name, destination_folder=None)
 
+self.append_data_to_file(data, file_name, destination_folder=None)
+
+self.get_file_data(file_name, folder=None)
+
 self.get_downloads_folder()
 
 self.get_browser_downloads_folder()
