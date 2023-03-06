@@ -6453,12 +6453,31 @@ class BaseCase(unittest.TestCase):
         )
 
     def save_data_as(self, data, file_name, destination_folder=None):
-        """Saves the data specified to a file of the name specified.
+        """Saves the data specified to the file specified.
         If no destination folder is specified, the default one is used.
-        (The default [Downloads Folder] = "./downloaded_files")"""
+        (The default folder = "./downloaded_files")
+        Use "." as the destination folder for the current directory."""
         if not destination_folder:
             destination_folder = constants.Files.DOWNLOADS_FOLDER
         page_utils._save_data_as(data, destination_folder, file_name)
+
+    def append_data_to_file(self, data, file_name, destination_folder=None):
+        """Appends the data specified to the file specified.
+        If no destination folder is specified, the default one is used.
+        (The default folder = "./downloaded_files")
+        Use "." as the folder for the current directory."""
+        if not destination_folder:
+            destination_folder = constants.Files.DOWNLOADS_FOLDER
+        page_utils._append_data_to_file(data, destination_folder, file_name)
+
+    def get_file_data(self, file_name, folder=None):
+        """Gets the data from the file specified.
+        If no folder is specified, the default one is used.
+        (The default folder = "./downloaded_files")
+        Use "." as the folder for the current directory."""
+        if not folder:
+            folder = constants.Files.DOWNLOADS_FOLDER
+        return page_utils._get_file_data(folder, file_name)
 
     def get_downloads_folder(self):
         """Returns the path of the SeleniumBase "downloaded_files/" folder.
