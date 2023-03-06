@@ -154,7 +154,7 @@ setup(
         'chardet==4.0.0;python_version<"3.7"',
         'chardet==5.1.0;python_version>="3.7"',  # Stay in sync with "requests"
         'charset-normalizer==2.0.12;python_version<"3.7"',
-        'charset-normalizer==3.0.1;python_version>="3.7"',  # Sync "requests"
+        'charset-normalizer==3.1.0;python_version>="3.7"',  # Sync "requests"
         'urllib3==1.26.12;python_version<"3.7"',
         'urllib3==1.26.14;python_version>="3.7"',
         'requests==2.27.1;python_version<"3.7"',
