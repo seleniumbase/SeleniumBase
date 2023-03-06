@@ -813,8 +813,8 @@ def get_configured_sb(context):
             '(Linux uses "-D headless" by default. '
             'To override, use "-D headed" / "-D gui". '
             'For Xvfb mode instead, use "-D xvfb". '
-            'Or hide this info with "-D headless",'
-            'or by calling the new "-D headless2".)'
+            "Or you can hide this info by using"
+            '"-D headless" / "-D headless2".)'
         )
         sb.headless = True
     # Recorder Mode can still optimize scripts in --headless2 mode.
