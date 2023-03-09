@@ -190,6 +190,8 @@ def _get_unique_links(page_url, soup):
                 if len(simple_url.split("/")) > 1:
                     f_b_url = full_base_url + "/" + simple_url.split("/")[1]
                 link = f_b_url + "/" + link
+            elif link.startswith('"') and link.endswith('"') and len(link) > 4:
+                link = link[1:-1]
             else:
                 pass
             unique_links.append(link)
