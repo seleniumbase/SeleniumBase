@@ -27,8 +27,7 @@ class MyTestClass(BaseCase):
 SeleniumBase methods expand and improve on existing WebDriver commands.
 Improvements include making WebDriver more robust, reliable, and flexible.
 Page elements are given enough time to load before WebDriver acts on them.
-Code becomes greatly simplified and easier to maintain.
-"""
+Code becomes greatly simplified and easier to maintain."""
 
 import codecs
 import fasteners
@@ -193,8 +192,7 @@ class BaseCase(unittest.TestCase):
         This is useful when sharing code with people who may not be aware
         that SeleniumBase tests are run with "pytest" instead of "python".
         Now, if they accidentally type "python", the tests will still run.
-        Eg. "python my_test.py" instead of "pytest my_test.py".
-        """
+        Eg. "python my_test.py" instead of "pytest my_test.py"."""
         if name == "__main__":  # Test called with "python"
             from pytest import main as pytest_main
             all_args = []
@@ -14963,25 +14961,6 @@ class BaseCase(unittest.TestCase):
         if deferred_exception:
             # User forgot to call "self.process_deferred_asserts()" in test
             raise deferred_exception
-
-    def __end_reused_class_session_as_needed(self):
-        if (
-            hasattr(sb_config, "reuse_class_session")
-            and sb_config.reuse_class_session
-            and hasattr(sb_config, "shared_driver")
-            and sb_config.shared_driver
-        ):
-            if (
-                not is_windows
-                or (
-                    hasattr(sb_config.shared_driver, "service")
-                    and sb_config.shared_driver.service.process
-                )
-            ):
-                try:
-                    sb_config.shared_driver.quit()
-                except Exception:
-                    sb_config.shared_driver = None
 
     @classmethod
     def setUpClass(self):
