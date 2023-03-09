@@ -91,8 +91,8 @@ def do_behave_run(
             if selected_tests[test_number].get():
                 full_run_command += " "
                 test_to_run = test
-                if test.startswith("(GROUP) "):
-                    test_to_run = test.split("(GROUP) ")[1]
+                if test.startswith("(GROUP)  "):
+                    test_to_run = test.split("(GROUP)  ")[1]
                     full_run_command += test_to_run.split(" => ")[0]
                 else:
                     full_run_command += test.split(" => ")[0]
@@ -108,6 +108,10 @@ def do_behave_run(
         full_run_command += " -D rs"
     elif "(-D rs -D crumbs)" in rs_string:
         full_run_command += " -D rs -D crumbs"
+    elif "(-D rcs)" in rs_string:
+        full_run_command += " -D rcs"
+    elif "(-D rcs -D crumbs)" in rs_string:
+        full_run_command += " -D rcs -D crumbs"
 
     if quiet_mode:
         full_run_command += " --quiet"
@@ -173,7 +177,7 @@ def do_behave_run(
     send_window_to_front(root)
 
 
-def create_tkinter_gui(tests, command_string):
+def create_tkinter_gui(tests, command_string, t_count, f_count, s_tests):
     root = tk.Tk()
     root.title("SeleniumBase Behave Commander | GUI for Behave")
     root.minsize(820, 656)
@@ -193,8 +197,10 @@ def create_tkinter_gui(tests, command_string):
 
     options_list = [
         "New Session Per Test  (Default)",
-        "Reuse Session for all tests  (-D rs)",
-        "Reuse Session / clear cookies  (-D rs -D crumbs)",
+        "Reuse Session for ALL the tests  (-D rs)",
+        "Reuse Session and clear cookies  (-D rs -D crumbs)",
+        "Reuse Session in the SAME class/feature  (-D rcs)",
+        "Reuse Session in class and clear cookies  (-D rcs -D crumbs)",
     ]
     rsx = tk.StringVar(root)
     rsx.set(options_list[2])
@@ -239,13 +245,17 @@ def create_tkinter_gui(tests, command_string):
     chk.pack()
 
     tk.Label(root, text="").pack()
+    plural = "s"
+    if f_count == 1:
+        plural = ""
     run_display = (
-        "Select from %s tests:  "
-        "(If NO TESTS are selected, then ALL TESTS will run)"
-        % len(tests)
+        "Select from %s rows (%s feature%s with %s scenarios):  "
+        "(All tests will run if none are selected)"
+        % (len(tests), f_count, plural, t_count)
     )
-    if len(tests) == 1:
-        run_display = "Only ONE TEST was found:  (Will run automatically)"
+    if t_count == 1:
+        run_display = "Only ONE TEST was found and will be run:"
+        tests = s_tests
     tk.Label(root, text=run_display, fg="blue").pack()
     text_area = ScrolledText(
         root, width=100, height=12, wrap="word", state=tk.DISABLED
@@ -399,6 +409,7 @@ def main():
     file_scenario_count = {}
     f_count = 0
     s_count = 0
+    t_count = 0
     if is_windows:
         output = output.decode("latin1")
     else:
@@ -436,13 +447,14 @@ def main():
                 feature_name = feature_name.split(" # ")[-1]
             s_count = file_scenario_count[str(f_count)]
             filename = filename.strip()
-            t_name = "(GROUP) %s => %s" % (filename, feature_name)
-            t_name += " <> (%s Total)" % s_count
+            t_name = "(GROUP)  %s => %s" % (filename, feature_name)
+            t_name += "  <>  (%s Total)" % s_count
             f_tests.append(t_name)
         elif (
             row.startswith("  Scenario: ")
             or row.startswith("  Scenario Outline: ")
         ):
+            t_count += 1
             line_num = row.split(":")[-1]
             scenario_name = None
             if row.startswith("  Scenario: "):
@@ -470,7 +482,7 @@ def main():
         print(error_msg)
         return
 
-    create_tkinter_gui(tests, command_string)
+    create_tkinter_gui(tests, command_string, t_count, f_count, s_tests)
 
 
 if __name__ == "__main__":
