@@ -22,6 +22,6 @@ class OverrideDriverTest(BaseCase):
         options.add_experimental_option("prefs", prefs)
         return webdriver.Chrome(options=options)
 
-    def test_simple(self):
+    def test_driver_override(self):
         self.open("https://seleniumbase.io/demo_page")
         self.assert_text("Demo Page", "h1")
