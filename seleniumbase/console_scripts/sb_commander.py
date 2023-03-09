@@ -276,16 +276,20 @@ def create_tkinter_gui(tests, command_string, files, solo_tests):
     chk.pack()
 
     tk.Label(root, text="").pack()
-    plural = "s"
-    if len(files) == 1:
-        plural = ""
     run_display = (
-        "Select from %s rows (%s file%s with %s tests):  "
+        "Select from %s rows (%s files with %s tests):  "
         "(All tests will run if none are selected)"
-        % (len(tests), len(files), plural, len(solo_tests))
+        % (len(tests), len(files), len(solo_tests))
     )
     if len(solo_tests) == 1:
         run_display = "Only ONE TEST was found and will be run:"
+        tests = solo_tests
+    elif len(files) == 1:
+        run_display = (
+            "Select from %s tests:  "
+            "(All tests will run if none are selected)"
+            % (len(solo_tests))
+        )
         tests = solo_tests
     tk.Label(root, text=run_display, fg="blue").pack()
     text_area = ScrolledText(
