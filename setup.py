@@ -123,11 +123,11 @@ setup(
     python_requires=">=3.6",
     install_requires=[
         'pip>=21.3.1;python_version<"3.7"',
-        'pip>=22.3.1;python_version>="3.7"',
+        'pip>=23.0.1;python_version>="3.7"',
         'packaging>=21.3;python_version<"3.7"',
         'packaging>=23.0;python_version>="3.7"',
         'setuptools>=59.6.0;python_version<"3.7"',
-        'setuptools>=65.7.0;python_version>="3.7"',
+        'setuptools>=67.6.0;python_version>="3.7"',
         'keyring>=23.4.1;python_version<"3.8"',
         'keyring>=23.13.1;python_version>="3.8"',
         'tomli>=1.2.3;python_version<"3.7"',

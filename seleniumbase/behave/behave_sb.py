@@ -72,16 +72,17 @@ behave -D agent="User Agent String" -D demo
 -D enable-ws  (Enable Web Security on Chromium-based browsers.)
 -D enable-sync  (Enable "Chrome Sync".)
 -D uc | -D undetected  (Use undetected-chromedriver to evade bot-detection)
--D uc-cdp-events  (Capture CDP events when running in "--undetected" mode.)
+-D uc-cdp-events  (Capture CDP events when running in "-D undetected" mode)
 -D remote-debug  (Sync to Chrome Remote Debugger chrome://inspect/#devices)
 -D dashboard  (Enable the SeleniumBase Dashboard. Saved at: dashboard.html)
 -D dash-title=STRING  (Set the title shown for the generated dashboard.)
 -D enable-3d-apis  (Enables WebGL and 3D APIs.)
--D swiftshader  (Use Chrome's "--use-gl=swiftshader" feature.)
+-D swiftshader  (Use Chrome's SwiftShader Graphics Library.)
 -D incognito  (Enable Chrome's Incognito mode.)
 -D guest  (Enable Chrome's Guest mode.)
 -D devtools  (Open Chrome's DevTools when the browser opens.)
--D reuse-session | -D rs  (Reuse browser session between tests.)
+-D reuse-session | -D rs  (Reuse browser session for all tests.)
+-D reuse-class-session | -D rcs  (Reuse session for tests in class/feature)
 -D crumbs  (Delete all cookies between tests reusing a session.)
 -D disable-beforeunload  (Disable the "beforeunload" event on Chrome.)
 -D window-size=WIDTH,HEIGHT  (Set the browser's starting window size.)
@@ -103,6 +104,7 @@ from seleniumbase.config import settings
 from seleniumbase.core import log_helper
 from seleniumbase.core import download_helper
 from seleniumbase.core import proxy_helper
+from seleniumbase.core import session_helper
 from seleniumbase.fixtures import constants
 from seleniumbase import config as sb_config
 
@@ -179,6 +181,7 @@ def get_configured_sb(context):
     sb.disable_gpu = False
     sb._multithreaded = False
     sb._reuse_session = False
+    sb._reuse_class_session = False
     sb._crumbs = False
     sb._disable_beforeunload = False
     sb.visual_baseline = False
@@ -234,6 +237,7 @@ def get_configured_sb(context):
     sb_config._has_logs = None
     sb_config._has_exception = None
     sb_config.save_screenshot = None
+    sb_config.reuse_class_session = None
 
     browsers = set()  # To error if selecting more than one
     valid_browsers = constants.ValidBrowsers.valid_browsers
@@ -540,6 +544,13 @@ def get_configured_sb(context):
         # Handle: -D rs / reuse-session / reuse_session
         if low_key in ["rs", "reuse-session", "reuse_session"]:
             sb._reuse_session = True
+            continue
+        # Handle: -D rcs / rfs / reuse-class-session / reuse-feature-session
+        if low_key in [
+            "rcs", "rfs", "reuse-class-session", "reuse-feature-session"
+        ]:
+            sb._reuse_session = True
+            sb._reuse_class_session = True
             continue
         # Handle: -D crumbs
         if low_key == "crumbs":
@@ -870,6 +881,7 @@ def get_configured_sb(context):
     sb_config.window_size = sb.window_size
     sb_config.maximize_option = sb.maximize_option
     sb_config.xvfb = sb.xvfb
+    sb_config.reuse_class_session = sb._reuse_class_session
     sb_config.save_screenshot = sb.save_screenshot_after_test
     sb_config.no_screenshot = sb.no_screenshot_after_test
     sb_config._has_logs = False
@@ -1256,6 +1268,7 @@ def before_all(context):
 
 def before_feature(context, feature):
     sb_config.behave_feature = feature
+    session_helper.end_reused_class_session_as_needed()
 
 
 def before_scenario(context, scenario):
@@ -1290,6 +1303,7 @@ def after_scenario(context, scenario):
 
 def after_feature(context, feature):
     sb_config.feature = feature
+    session_helper.end_reused_class_session_as_needed()
 
 
 def after_all(context):

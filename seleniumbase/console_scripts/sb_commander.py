@@ -18,6 +18,7 @@ Output:
       Launches SeleniumBase Commander | GUI for pytest.
 """
 import colorama
+import os
 import subprocess
 import sys
 
@@ -78,6 +79,14 @@ def do_pytest_run(
     save_screenshots,
     additional_options,
 ):
+    cleaned_tests = []
+    for test in tests:
+        if test.startswith("(FILE)  "):
+            clean_test = test.split("(FILE)  ")[1].split("  =>  ")[0]
+            cleaned_tests.append(clean_test)
+        else:
+            cleaned_tests.append(test)
+    tests = cleaned_tests
     total_tests = len(tests)
     total_selected_tests = 0
     for selected_test in selected_tests:
@@ -111,6 +120,10 @@ def do_pytest_run(
         full_run_command += " --rs"
     elif "(--rs --crumbs)" in rs_string:
         full_run_command += " --rs --crumbs"
+    elif "(--rcs)" in rs_string:
+        full_run_command += " --rcs"
+    elif "(--rcs --crumbs)" in rs_string:
+        full_run_command += " --rcs --crumbs"
 
     if "(-n=2)" in thread_string:
         full_run_command += " -n=2"
@@ -118,6 +131,14 @@ def do_pytest_run(
         full_run_command += " -n=3"
     elif "(-n=4)" in thread_string:
         full_run_command += " -n=4"
+    elif "(-n=5)" in thread_string:
+        full_run_command += " -n=5"
+    elif "(-n=6)" in thread_string:
+        full_run_command += " -n=6"
+    elif "(-n=7)" in thread_string:
+        full_run_command += " -n=7"
+    elif "(-n=8)" in thread_string:
+        full_run_command += " -n=8"
 
     if demo_mode:
         full_run_command += " --demo"
@@ -159,7 +180,7 @@ def do_pytest_run(
     send_window_to_front(root)
 
 
-def create_tkinter_gui(tests, command_string):
+def create_tkinter_gui(tests, command_string, files, solo_tests):
     root = tk.Tk()
     root.title("SeleniumBase Commander | GUI for pytest")
     root.minsize(820, 658)
@@ -179,8 +200,10 @@ def create_tkinter_gui(tests, command_string):
 
     options_list = [
         "New Session Per Test  (Default)",
-        "Reuse Session for all tests in thread  (--rs)",
-        "Reuse Session / clear cookies  (--rs --crumbs)",
+        "Reuse Session for ALL tests in thread  (--rs)",
+        "Reuse Session and also clear cookies  (--rs --crumbs)",
+        "Reuse Session for tests with same CLASS  (--rcs)",
+        "Reuse Session for class and clear cookies  (--rcs --crumbs)",
     ]
     rsx = tk.StringVar(root)
     rsx.set(options_list[2])
@@ -193,6 +216,15 @@ def create_tkinter_gui(tests, command_string):
         "Number of Threads: 3  (-n=3)",
         "Number of Threads: 4  (-n=4)",
     ]
+    try:
+        if int(os.cpu_count()) >= 8:
+            options_list.append("Number of Threads: 5  (-n=5)")
+            options_list.append("Number of Threads: 6  (-n=6)")
+            options_list.append("Number of Threads: 7  (-n=7)")
+            options_list.append("Number of Threads: 8  (-n=8)")
+    except Exception:
+        pass
+
     ntx = tk.StringVar(root)
     ntx.set(options_list[0])
     question_menu = tk.OptionMenu(root, ntx, *options_list)
@@ -244,13 +276,17 @@ def create_tkinter_gui(tests, command_string):
     chk.pack()
 
     tk.Label(root, text="").pack()
+    plural = "s"
+    if len(files) == 1:
+        plural = ""
     run_display = (
-        "Select from %s tests:  "
-        "(If NO TESTS are selected, then ALL TESTS will run)"
-        % len(tests)
+        "Select from %s rows (%s file%s with %s tests):  "
+        "(All tests will run if none are selected)"
+        % (len(tests), len(files), plural, len(solo_tests))
     )
-    if len(tests) == 1:
-        run_display = "Only ONE TEST was found:  (Will run automatically)"
+    if len(solo_tests) == 1:
+        run_display = "Only ONE TEST was found and will be run:"
+        tests = solo_tests
     tk.Label(root, text=run_display, fg="blue").pack()
     text_area = ScrolledText(
         root, width=100, height=12, wrap="word", state=tk.DISABLED
@@ -403,8 +439,25 @@ def main():
         error_msg = c5 + "ERROR: " + error_msg + cr
         print(error_msg)
         return
+    groups = []
+    for row in tests:
+        if row.count("::") >= 1:
+            g_name = "(FILE)  %s" % row.split("::")[0]
+            groups.append(g_name)
+    files = []
+    used_files = []
+    for row in groups:
+        if row not in used_files:
+            used_files.append(row)
+            plural = "s"
+            if groups.count(row) == 1:
+                plural = ""
+            f_row = "%s  =>  (%s Test%s)" % (row, groups.count(row), plural)
+            files.append(f_row)
+    solo_tests = tests
+    tests = [*files, *tests]
 
-    create_tkinter_gui(tests, command_string)
+    create_tkinter_gui(tests, command_string, files, solo_tests)
 
 
 if __name__ == "__main__":
