@@ -191,7 +191,7 @@ setup(
         'pytest-metadata==2.0.4;python_version>="3.7"',
         "pytest-ordering==0.6",
         'pytest-rerunfailures==10.3;python_version<"3.7"',
-        'pytest-rerunfailures==11.1.1;python_version>="3.7"',
+        'pytest-rerunfailures==11.1.2;python_version>="3.7"',
         'pytest-xdist==2.5.0;python_version<"3.7"',
         'pytest-xdist==3.2.0;python_version>="3.7"',
         "parameterized==0.8.1",
