@@ -13647,7 +13647,11 @@ class BaseCase(unittest.TestCase):
                             self.driver.close()
                         self.switch_to_window(0)
                     if self._crumbs:
-                        self.driver.delete_all_cookies()
+                        self.wait_for_ready_state_complete()
+                        try:
+                            self.driver.delete_all_cookies()
+                        except Exception:
+                            pass
                 except Exception:
                     pass
         if self._reuse_session and sb_config.shared_driver and has_url:
