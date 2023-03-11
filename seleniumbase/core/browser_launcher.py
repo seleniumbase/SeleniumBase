@@ -449,6 +449,8 @@ def _set_chrome_options(
         chrome_options = undetected.ChromeOptions()
     elif browser_name == constants.Browser.OPERA:
         chrome_options = webdriver.opera.options.Options()
+    elif browser_name == constants.Browser.EDGE:
+        chrome_options = webdriver.edge.options.Options()
 
     prefs = {}
     prefs["download.default_directory"] = downloads_path
@@ -1592,13 +1594,99 @@ def get_remote_driver(
                 desired_capabilities=capabilities,
             )
     elif browser_name == constants.Browser.EDGE:
-        capabilities = webdriver.DesiredCapabilities.EDGE
+        edge_options = _set_chrome_options(
+            browser_name,
+            downloads_path,
+            headless,
+            locale_code,
+            proxy_string,
+            proxy_auth,
+            proxy_user,
+            proxy_pass,
+            proxy_bypass_list,
+            proxy_pac_url,
+            user_agent,
+            recorder_ext,
+            disable_js,
+            disable_csp,
+            enable_ws,
+            enable_sync,
+            use_auto_ext,
+            undetectable,
+            uc_cdp_events,
+            uc_subprocess,
+            no_sandbox,
+            disable_gpu,
+            headless2,
+            incognito,
+            guest_mode,
+            devtools,
+            remote_debug,
+            enable_3d_apis,
+            swiftshader,
+            ad_block_on,
+            block_images,
+            do_not_track,
+            chromium_arg,
+            user_data_dir,
+            extension_zip,
+            extension_dir,
+            binary_location,
+            page_load_strategy,
+            use_wire,
+            external_pdf,
+            servername,
+            mobile_emulator,
+            device_width,
+            device_height,
+            device_pixel_ratio,
+        )
+        capabilities = None
         if selenium4_or_newer:
-            remote_options = ArgOptions()
-            remote_options.set_capability("cloud:options", desired_caps)
+            capabilities = webdriver.EdgeOptions().to_capabilities()
+        else:
+            capabilities = chrome_options.to_capabilities()
+        # Set custom desired capabilities
+        selenoid = False
+        selenoid_options = None
+        screen_resolution = None
+        browser_version = None
+        platform_name = None
+        extension_capabilities = {}
+        for key in desired_caps.keys():
+            capabilities[key] = desired_caps[key]
+            if key == "selenoid:options":
+                selenoid = True
+                selenoid_options = desired_caps[key]
+            elif key == "screenResolution":
+                screen_resolution = desired_caps[key]
+            elif key == "version" or key == "browserVersion":
+                browser_version = desired_caps[key]
+            elif key == "platform" or key == "platformName":
+                platform_name = desired_caps[key]
+            elif re.match("[a-zA-Z0-9]*:[a-zA-Z0-9]*", key):
+                extension_capabilities[key] = desired_caps[key]
+        if selenium4_or_newer:
+            edge_options.set_capability("cloud:options", capabilities)
+            if selenoid:
+                snops = selenoid_options
+                edge_options.set_capability("selenoid:options", snops)
+            if screen_resolution:
+                scres = screen_resolution
+                edge_options.set_capability("screenResolution", scres)
+            if browser_version:
+                br_vers = browser_version
+                edge_options.set_capability("browserVersion", br_vers)
+            if platform_name:
+                plat_name = platform_name
+                edge_options.set_capability("platformName", plat_name)
+            if extension_capabilities:
+                for key in extension_capabilities:
+                    ext_caps = extension_capabilities
+                    edge_options.set_capability(key, ext_caps[key])
             return webdriver.Remote(
                 command_executor=address,
-                options=remote_options,
+                options=edge_options,
             )
         else:
             warnings.simplefilter("ignore", category=DeprecationWarning)
