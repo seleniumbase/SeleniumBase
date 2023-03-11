@@ -93,6 +93,8 @@ class HackTests(BaseCase):
 
         self.open("https://dev.to/top/infinity")
         self.click_if_visible('button[aria-label="Close campaign banner"]')
+        self.click_if_visible('svg[aria-label="Close campaign banner"]')
+        self.hide_elements('main div:contains("Pinned")')
         self.set_text_content('nav a[data-text="Relevant"]', "ALL")
         self.set_text_content('nav a[data-text="Latest"]', "YOUR")
         self.set_text_content('nav a[data-text="Top"]', "BASE")
