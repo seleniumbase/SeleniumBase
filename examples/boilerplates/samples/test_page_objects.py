@@ -11,8 +11,8 @@ class GooglePage:
         sb.sleep(0.1)
 
     def do_search(self, sb, search_term):
-        sb.click('input[title="Search"]')
-        sb.type('input[title="Search"]', search_term + "\n")
+        sb.click('[title="Search"]')
+        sb.type('[title="Search"]', search_term + "\n")
 
     def click_search_result(self, sb, content):
         sb.click('a:contains("%s")' % content)
