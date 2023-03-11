@@ -143,7 +143,7 @@ setup(
         'filelock>=3.4.1;python_version<"3.7"',
         'filelock>=3.9.0;python_version>="3.7"',
         'platformdirs>=2.4.0;python_version<"3.7"',
-        'platformdirs>=3.1.0;python_version>="3.7"',
+        'platformdirs>=3.1.1;python_version>="3.7"',
         'pyparsing>=3.0.7;python_version<"3.7"',
         'zipp==3.6.0;python_version<"3.7"',
         'zipp>=3.15.0;python_version>="3.7"',
@@ -156,7 +156,7 @@ setup(
         'charset-normalizer==2.0.12;python_version<"3.7"',
         'charset-normalizer==3.1.0;python_version>="3.7"',  # Sync "requests"
         'urllib3==1.26.12;python_version<"3.7"',
-        'urllib3==1.26.14;python_version>="3.7"',
+        'urllib3==1.26.15;python_version>="3.7"',
         'requests==2.27.1;python_version<"3.7"',
         'requests==2.28.2;python_version>="3.7"',
         'requests-toolbelt==0.10.1',
