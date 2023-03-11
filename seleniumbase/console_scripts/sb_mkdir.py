@@ -477,7 +477,7 @@ def main():
         '        self.open("https://seleniumbase.io/help_docs/how_it_works/")'
     )
     data.append(
-        '        self.type(\'input[aria-label="Search"]\', search_term)'
+        '        self.type(\'[aria-label="Search"]\', search_term)'
     )
     data.append('        self.click(\'mark:contains("%s")\' % keyword)')
     data.append('        self.assert_title_contains(title_text)')
