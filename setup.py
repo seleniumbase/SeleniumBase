@@ -193,7 +193,7 @@ setup(
         'pytest-rerunfailures==10.3;python_version<"3.7"',
         'pytest-rerunfailures==11.1.2;python_version>="3.7"',
         'pytest-xdist==2.5.0;python_version<"3.7"',
-        'pytest-xdist==3.2.0;python_version>="3.7"',
+        'pytest-xdist==3.2.1;python_version>="3.7"',
         "parameterized==0.8.1",
         "sbvirtualdisplay==1.2.0",
         "behave==1.2.6",
