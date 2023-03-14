@@ -27,7 +27,7 @@ cssselect2==0.7.0
 tinycss2==1.2.1
 defusedxml==0.7.1
 mkdocs==1.4.2
-mkdocs-material==9.1.2
+mkdocs-material==9.1.3
 mkdocs-exclude-search==0.6.5
 mkdocs-simple-hooks==0.1.5
 mkdocs-material-extensions==1.1.1
