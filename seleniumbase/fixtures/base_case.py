@@ -2257,10 +2257,33 @@ class BaseCase(unittest.TestCase):
             if self.is_element_visible(selector, by=by):
                 self.click(selector, by=by)
             else:
-                selector = self.convert_to_css_selector(selector, by=by)
-                self.__dont_record_js_click = True
-                self.js_click(selector, by="css selector")
-                self.__dont_record_js_click = False
+                element = self.wait_for_element_present(selector, by=by)
+                opacity = self.execute_script(
+                    'return arguments[0].style.opacity;', element
+                )
+                # Handle switches that sit on checkboxes with zero opacity:
+                # Change the opacity a bit to allow the click to succeed.
+                try:
+                    self.execute_script(
+                        'arguments[0].style.opacity="0.001";', element
+                    )
+                except Exception:
+                    pass
+                if self.is_element_visible(selector, by=by):
+                    self.click(selector, by=by)
+                else:
+                    selector = self.convert_to_css_selector(selector, by=by)
+                    self.__dont_record_js_click = True
+                    self.js_click(selector, by="css selector")
+                    self.__dont_record_js_click = False
+                try:
+                    self.execute_script(
+                        'arguments[0].style.opacity="arguments[1]";',
+                        element,
+                        opacity,
+                    )
+                except Exception:
+                    pass
 
     def select_if_unselected(self, selector, by="css selector"):
         """Same as check_if_unchecked()"""
@@ -2274,10 +2297,33 @@ class BaseCase(unittest.TestCase):
             if self.is_element_visible(selector, by=by):
                 self.click(selector, by=by)
             else:
-                selector = self.convert_to_css_selector(selector, by=by)
-                self.__dont_record_js_click = True
-                self.js_click(selector, by="css selector")
-                self.__dont_record_js_click = False
+                element = self.wait_for_element_present(selector, by=by)
+                opacity = self.execute_script(
+                    'return arguments[0].style.opacity;', element
+                )
+                # Handle switches that sit on checkboxes with zero opacity:
+                # Change the opacity a bit to allow the click to succeed.
+                try:
+                    self.execute_script(
+                        'arguments[0].style.opacity="0.001";', element
+                    )
+                except Exception:
+                    pass
+                if self.is_element_visible(selector, by=by):
+                    self.click(selector, by=by)
+                else:
+                    selector = self.convert_to_css_selector(selector, by=by)
+                    self.__dont_record_js_click = True
+                    self.js_click(selector, by="css selector")
+                    self.__dont_record_js_click = False
+                try:
+                    self.execute_script(
+                        'arguments[0].style.opacity="arguments[1]";',
+                        element,
+                        opacity,
+                    )
+                except Exception:
+                    pass
 
     def unselect_if_selected(self, selector, by="css selector"):
         """Same as uncheck_if_checked()"""
