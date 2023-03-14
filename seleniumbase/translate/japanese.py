@@ -24,6 +24,10 @@ class セレニウムテストケース(BaseCase):
         # double_click(selector)
         return self.double_click(*args, **kwargs)
 
+    def コンテキストクリック(self, *args, **kwargs):
+        # context_click(selector)
+        return self.context_click(*args, **kwargs)
+
     def ゆっくりクリックして(self, *args, **kwargs):
         # slow_click(selector)
         return self.slow_click(*args, **kwargs)
@@ -357,9 +361,13 @@ class セレニウムテストケース(BaseCase):
         # scroll_to_bottom()
         return self.scroll_to_bottom(*args, **kwargs)
 
-    def 上にマウスを移動しクリック(self, *args, **kwargs):
+    def マウスオーバーしてクリック(self, *args, **kwargs):
         # hover_and_click(hover_selector, click_selector)
         return self.hover_and_click(*args, **kwargs)
+
+    def マウスオーバー(self, *args, **kwargs):
+        # hover(selector)
+        return self.hover(*args, **kwargs)
 
     def 選択されていることを(self, *args, **kwargs):
         # is_selected(selector)

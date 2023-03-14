@@ -24,6 +24,10 @@ class CasoDiProva(BaseCase):
         # double_click(selector)
         return self.double_click(*args, **kwargs)
 
+    def clic_contestuale(self, *args, **kwargs):
+        # context_click(selector)
+        return self.context_click(*args, **kwargs)
+
     def clic_lentamente(self, *args, **kwargs):
         # slow_click(selector)
         return self.slow_click(*args, **kwargs)
@@ -357,9 +361,13 @@ class CasoDiProva(BaseCase):
         # scroll_to_bottom()
         return self.scroll_to_bottom(*args, **kwargs)
 
-    def passa_il_mouse_sopra_e_fai_clic(self, *args, **kwargs):
+    def passare_il_mouse_e_fare_clic(self, *args, **kwargs):
         # hover_and_click(hover_selector, click_selector)
         return self.hover_and_click(*args, **kwargs)
+
+    def passaggio_del_mouse(self, *args, **kwargs):
+        # hover(selector)
+        return self.hover(*args, **kwargs)
 
     def è_selezionato(self, *args, **kwargs):
         # is_selected(selector)

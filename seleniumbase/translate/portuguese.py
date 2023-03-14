@@ -24,6 +24,10 @@ class CasoDeTeste(BaseCase):
         # double_click(selector)
         return self.double_click(*args, **kwargs)
 
+    def clique_de_contexto(self, *args, **kwargs):
+        # context_click(selector)
+        return self.context_click(*args, **kwargs)
+
     def clique_devagar(self, *args, **kwargs):
         # slow_click(selector)
         return self.slow_click(*args, **kwargs)
@@ -360,6 +364,10 @@ class CasoDeTeste(BaseCase):
     def passe_o_mouse_e_clique(self, *args, **kwargs):
         # hover_and_click(hover_selector, click_selector)
         return self.hover_and_click(*args, **kwargs)
+
+    def passe_o_mouse(self, *args, **kwargs):
+        # hover(selector)
+        return self.hover(*args, **kwargs)
 
     def é_selecionado(self, *args, **kwargs):
         # is_selected(selector)

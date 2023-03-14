@@ -316,6 +316,18 @@ class MD:
     md["double_click"][8] = "дважды_нажмите"
     md["double_click"][9] = "doble_clic"
 
+    md["context_click"] = ["*"] * num_langs
+    md["context_click"][0] = "context_click"
+    md["context_click"][1] = "上下文点击"
+    md["context_click"][2] = "contextklik"
+    md["context_click"][3] = "contextuel_cliquer"
+    md["context_click"][4] = "clic_contestuale"
+    md["context_click"][5] = "コンテキストクリック"
+    md["context_click"][6] = "컨텍스트_클릭"
+    md["context_click"][7] = "clique_de_contexto"
+    md["context_click"][8] = "контекстный_щелчок"
+    md["context_click"][9] = "clic_de_contexto"
+
     md["slow_click"] = ["*"] * num_langs
     md["slow_click"][0] = "slow_click"
     md["slow_click"][1] = "慢单击"
@@ -1304,15 +1316,27 @@ class MD:
 
     md["hover_and_click"] = ["*"] * num_langs
     md["hover_and_click"][0] = "hover_and_click"
-    md["hover_and_click"][1] = "悬停并单击"
+    md["hover_and_click"][1] = "鼠标悬停并单击"
     md["hover_and_click"][2] = "zweven_en_klik"
-    md["hover_and_click"][3] = "planer_au_dessus_et_cliquer"
-    md["hover_and_click"][4] = "passa_il_mouse_sopra_e_fai_clic"
-    md["hover_and_click"][5] = "上にマウスを移動しクリック"
-    md["hover_and_click"][6] = "위로_마우스를_이동하고_클릭"
+    md["hover_and_click"][3] = "passer_la_souris_et_cliquer"
+    md["hover_and_click"][4] = "passare_il_mouse_e_fare_clic"
+    md["hover_and_click"][5] = "マウスオーバーしてクリック"
+    md["hover_and_click"][6] = "마우스오버_및_클릭"
     md["hover_and_click"][7] = "passe_o_mouse_e_clique"
     md["hover_and_click"][8] = "наведите_и_нажмите"
     md["hover_and_click"][9] = "pasar_el_ratón_y_hacer_clic"
+
+    md["hover"] = ["*"] * num_langs
+    md["hover"][0] = "hover"
+    md["hover"][1] = "鼠标悬停"
+    md["hover"][2] = "zweven"
+    md["hover"][3] = "survol_de_la_souris"
+    md["hover"][4] = "passaggio_del_mouse"
+    md["hover"][5] = "マウスオーバー"
+    md["hover"][6] = "마우스오버"
+    md["hover"][7] = "passe_o_mouse"
+    md["hover"][8] = "наведение_мыши"
+    md["hover"][9] = "pasar_el_ratón"
 
     md["is_selected"] = ["*"] * num_langs
     md["is_selected"][0] = "is_selected"
@@ -2302,6 +2326,19 @@ class MD:
     md["click_link_text"][7] = "clique_texto_do_link"
     md["click_link_text"][8] = "нажмите_ссылку"
     md["click_link_text"][9] = "clic_texto_del_enlace"
+
+    # "right_click" -> duplicate of "context_click"
+    md["right_click"] = ["*"] * num_langs
+    md["right_click"][0] = "right_click"
+    md["right_click"][1] = "上下文点击"
+    md["right_click"][2] = "contextklik"
+    md["right_click"][3] = "contextuel_cliquer"
+    md["right_click"][4] = "clic_contestuale"
+    md["right_click"][5] = "コンテキストクリック"
+    md["right_click"][6] = "컨텍스트_클릭"
+    md["right_click"][7] = "clique_de_contexto"
+    md["right_click"][8] = "контекстный_щелчок"
+    md["right_click"][9] = "clic_de_contexto"
 
     # "send_keys" -> duplicate of "add_text"
     md["send_keys"] = ["*"] * num_langs
