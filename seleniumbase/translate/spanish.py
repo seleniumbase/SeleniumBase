@@ -24,6 +24,10 @@ class CasoDePrueba(BaseCase):
         # double_click(selector)
         return self.double_click(*args, **kwargs)
 
+    def clic_de_contexto(self, *args, **kwargs):
+        # context_click(selector)
+        return self.context_click(*args, **kwargs)
+
     def clic_lentamente(self, *args, **kwargs):
         # slow_click(selector)
         return self.slow_click(*args, **kwargs)
@@ -360,6 +364,10 @@ class CasoDePrueba(BaseCase):
     def pasar_el_ratón_y_hacer_clic(self, *args, **kwargs):
         # hover_and_click(hover_selector, click_selector)
         return self.hover_and_click(*args, **kwargs)
+
+    def pasar_el_ratón(self, *args, **kwargs):
+        # hover(selector)
+        return self.hover(*args, **kwargs)
 
     def está_seleccionado(self, *args, **kwargs):
         # is_selected(selector)

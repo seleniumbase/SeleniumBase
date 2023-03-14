@@ -24,6 +24,10 @@ class 硒测试用例(BaseCase):
         # double_click(selector)
         return self.double_click(*args, **kwargs)
 
+    def 上下文点击(self, *args, **kwargs):
+        # context_click(selector)
+        return self.context_click(*args, **kwargs)
+
     def 慢单击(self, *args, **kwargs):
         # slow_click(selector)
         return self.slow_click(*args, **kwargs)
@@ -357,9 +361,13 @@ class 硒测试用例(BaseCase):
         # scroll_to_bottom()
         return self.scroll_to_bottom(*args, **kwargs)
 
-    def 悬停并单击(self, *args, **kwargs):
+    def 鼠标悬停并单击(self, *args, **kwargs):
         # hover_and_click(hover_selector, click_selector)
         return self.hover_and_click(*args, **kwargs)
+
+    def 鼠标悬停(self, *args, **kwargs):
+        # hover(selector)
+        return self.hover(*args, **kwargs)
 
     def 是否被选中(self, *args, **kwargs):
         # is_selected(selector)
