@@ -12721,7 +12721,7 @@ class BaseCase(unittest.TestCase):
         """Should be needed only on Linux.
         The "--xvfb" arg is still useful, as it prevents headless mode,
         which is the default mode on Linux unless using another arg."""
-        if "linux" in sys.platform:
+        if "linux" in sys.platform and (not self.headed or self.xvfb):
             width = settings.HEADLESS_START_WIDTH
             height = settings.HEADLESS_START_HEIGHT
             try:
