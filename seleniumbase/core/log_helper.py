@@ -49,6 +49,7 @@ def get_master_time():
     timestamp = str(int(time.time())) + "  (Unix Timestamp)"
     now = datetime.datetime.now()
     utc_offset = -time.timezone / 3600.0
+    utc_offset += time.daylight
     utc_str = "UTC+0"
     if utc_offset > 0:
         if utc_offset < 10:
