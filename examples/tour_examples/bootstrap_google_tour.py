@@ -5,15 +5,15 @@ BaseCase.main(__name__, __file__)
 class MyTourClass(BaseCase):
     def test_google_tour(self):
         self.open("https://google.com/ncr")
-        self.wait_for_element('input[title="Search"]')
+        self.wait_for_element('[title="Search"]')
         self.hide_elements("iframe")
 
         self.create_bootstrap_tour()  # OR self.create_tour(theme="bootstrap")
         self.add_tour_step("Welcome to Google!", title="SeleniumBase Tours")
-        self.add_tour_step("Type in your query here.", 'input[title="Search"]')
+        self.add_tour_step("Type in your query here.", '[title="Search"]')
         self.play_tour()
 
-        self.highlight_type('input[title="Search"]', "Google")
+        self.highlight_type('[title="Search"]', "Google")
         self.wait_for_element('[role="listbox"]')  # Wait for autocomplete
 
         self.create_bootstrap_tour()
@@ -21,7 +21,7 @@ class MyTourClass(BaseCase):
         self.add_tour_step("Or press [ENTER] after entry.", '[title="Search"]')
         self.play_tour()
 
-        self.highlight_type('input[title="Search"]', "GitHub\n")
+        self.highlight_type('[title="Search"]', "GitHub\n")
         self.ad_block()
         self.wait_for_element("#search")
 
