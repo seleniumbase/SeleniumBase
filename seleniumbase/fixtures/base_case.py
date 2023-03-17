@@ -407,7 +407,7 @@ class BaseCase(unittest.TestCase):
         except Stale_Exception:
             self.wait_for_ready_state_complete()
             time.sleep(0.16)
-            element = page_actions.wait_for_element_visible(
+            element = page_actions.wait_for_element_clickable(
                 self.driver,
                 selector,
                 by,
@@ -444,6 +444,22 @@ class BaseCase(unittest.TestCase):
                 timeout=timeout,
                 original_selector=original_selector,
             )
+            if not page_actions.is_element_clickable(
+                self.driver, selector, by
+            ):
+                try:
+                    self.wait_for_element_clickable(
+                        selector, by, timeout=1.8
+                    )
+                except Exception:
+                    pass  # Find out which element would get the click instead
+                element = page_actions.wait_for_element_visible(
+                    self.driver,
+                    selector,
+                    by,
+                    timeout=timeout,
+                    original_selector=original_selector,
+                )
             href = None
             new_tab = False
             onclick = None
@@ -500,7 +516,7 @@ class BaseCase(unittest.TestCase):
                     self.__jquery_click(selector, by=by)
                 except Exception:
                     # One more attempt to click on the element
-                    element = page_actions.wait_for_element_visible(
+                    element = page_actions.wait_for_element_clickable(
                         self.driver,
                         selector,
                         by,
@@ -2748,7 +2764,7 @@ class BaseCase(unittest.TestCase):
         )
         try:
             element = self.wait_for_element_clickable(
-                dropdown_selector, by=dropdown_by, timeout=1.2
+                dropdown_selector, by=dropdown_by, timeout=1.8
             )
         except Exception:
             self.wait_for_ready_state_complete()
@@ -2775,7 +2791,7 @@ class BaseCase(unittest.TestCase):
             )
             try:
                 element = self.wait_for_element_clickable(
-                    dropdown_selector, by=dropdown_by, timeout=1.2
+                    dropdown_selector, by=dropdown_by, timeout=1.8
                 )
             except Exception:
                 self.wait_for_ready_state_complete()
@@ -12121,7 +12137,7 @@ class BaseCase(unittest.TestCase):
                 ):
                     try:
                         self.wait_for_element_clickable(
-                            selector, by, timeout=1.2
+                            selector, by, timeout=1.8
                         )
                     except Exception:
                         pass
