@@ -1175,7 +1175,10 @@ class SeleniumBrowser(Plugin):
         sb_config._virtual_display = None
         sb_config.headless_active = False
         self.headless_active = False
-        if "linux" in sys.platform:
+        if (
+            "linux" in sys.platform
+            and (not self.options.headed or self.options.xvfb)
+        ):
             width = settings.HEADLESS_START_WIDTH
             height = settings.HEADLESS_START_HEIGHT
             try:

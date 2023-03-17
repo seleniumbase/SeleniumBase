@@ -141,7 +141,7 @@ setup(
         "PyYAML>=6.0",
         "certifi>=2022.12.7",
         'filelock>=3.4.1;python_version<"3.7"',
-        'filelock>=3.9.1;python_version>="3.7"',
+        'filelock>=3.10.0;python_version>="3.7"',
         'platformdirs>=2.4.0;python_version<"3.7"',
         'platformdirs>=3.1.1;python_version>="3.7"',
         'pyparsing>=3.0.7;python_version<"3.7"',
@@ -238,7 +238,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage==6.2;python_version<"3.7"',
-            'coverage==7.2.1;python_version>="3.7"',
+            'coverage==7.2.2;python_version>="3.7"',
             "pytest-cov==4.0.0",
         ],
         # pip install -e .[flake8]

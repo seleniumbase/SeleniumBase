@@ -21,7 +21,7 @@ lunr==0.6.2
 nltk==3.8.1
 tornado==6.2
 watchdog==2.3.1
-cairocffi==1.4.0
+cairocffi==1.5.0
 cairosvg==2.6.0
 cssselect2==0.7.0
 tinycss2==1.2.1
