@@ -10,6 +10,7 @@
 
 ```python
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 class HtmlInspectorTests(BaseCase):
     def test_html_inspector(self):
@@ -20,17 +21,15 @@ class HtmlInspectorTests(BaseCase):
 --------
 
 ```bash
-pytest test_inspect_html.py 
+pytest test_inspect_html.py
 ============== test session starts ==============
 
 * HTML Inspection Results: https://xkcd.com/1144/
 ⚠️  'property' is not a valid attribute of the <meta> element.
 ⚠️  Do not use <div> or <span> elements without any attributes.
-⚠️  The 'alt' attribute is required for <img> elements.
-⚠️  The 'border' attribute is no longer valid on the <img> element and should not be used.
 ⚠️  'srcset' is not a valid attribute of the <img> element.
+⚠️  The 'border' attribute is no longer valid on the <img> element and should not be used.
 ⚠️  The <center> element is obsolete and should not be used.
-⚠️  <script> elements should appear right before the closing </body> tag for optimal performance.
 ⚠️  The id 'comicLinks' appears more than once in the document.
 * (See the Console output for details!)
 ```
