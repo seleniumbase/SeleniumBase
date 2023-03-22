@@ -847,6 +847,11 @@ def _set_firefox_options(
     )
     if headless and not IS_LINUX:
         options.add_argument("--headless")
+    elif headless and IS_LINUX:
+        # This assumes Xvfb is running, which prevents many Linux issues.
+        # If not, we'll fix this later during the error-handling process.
+        # To override this feature: ``pytest --firefox-arg="-headless"``.
+        pass
     if locale_code:
         options.set_preference("intl.accept_languages", locale_code)
     options.set_preference("browser.shell.checkDefaultBrowser", False)
@@ -1972,10 +1977,18 @@ def get_local_driver(
                             or "A connection attempt failed" in e.msg
                         )
                     ):
-                        # Firefox probably just auto-updated itself,
-                        # which causes intermittent issues to occur.
-                        # Trying again right after that often works.
                         time.sleep(0.1)
+                        if (
+                            IS_LINUX
+                            and headless
+                            and (
+                                "unexpected" in str(e)
+                                or (
+                                    hasattr(e, "msg") and "unexpected" in e.msg
+                                )
+                            )
+                        ):
+                            firefox_options.add_argument("-headless")
                         return webdriver.Firefox(
                             service=service,
                             options=firefox_options,
@@ -1993,7 +2006,8 @@ def get_local_driver(
                 service = FirefoxService(log_path=os.devnull)
                 try:
                     return webdriver.Firefox(
-                        service=service, options=firefox_options
+                        service=service,
+                        options=firefox_options,
                     )
                 except BaseException as e:
                     if (
@@ -2008,10 +2022,18 @@ def get_local_driver(
                             or "A connection attempt failed" in e.msg
                         )
                     ):
-                        # Firefox probably just auto-updated itself,
-                        # which causes intermittent issues to occur.
-                        # Trying again right after that often works.
                         time.sleep(0.1)
+                        if (
+                            IS_LINUX
+                            and headless
+                            and (
+                                "unexpected" in str(e)
+                                or (
+                                    hasattr(e, "msg") and "unexpected" in e.msg
+                                )
+                            )
+                        ):
+                            firefox_options.add_argument("-headless")
                         return webdriver.Firefox(
                             service=service,
                             options=firefox_options,
