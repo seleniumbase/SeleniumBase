@@ -1718,8 +1718,8 @@ def _create_dashboard_assets_():
 def pytest_itemcollected(item):
     if "--co" in sys_argv or "--collect-only" in sys_argv:
         return
+    sb_config.item_count += 1
     if sb_config.dashboard:
-        sb_config.item_count += 1
         test_id, display_id = _get_test_ids_(item)
         sb_config._results[test_id] = "Untested"
         sb_config._duration[test_id] = "-"
