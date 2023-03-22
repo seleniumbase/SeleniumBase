@@ -143,14 +143,14 @@ self.click_with_offset(
 self.double_click_with_offset(
     selector, x, y, by="css selector", mark=None, timeout=None, center=None)
 
-self.is_selected(selector, by="css selector", timeout=None)
-# Duplicates: self.is_checked(selector, by="css selector", timeout=None)
+self.is_checked(selector, by="css selector", timeout=None)
+# Duplicates: self.is_selected(selector, by="css selector", timeout=None)
 
-self.select_if_unselected(selector, by="css selector")
-# Duplicates: self.check_if_unchecked(selector, by="css selector")
+self.check_if_unchecked(selector, by="css selector")
+# Duplicates: self.select_if_unselected(selector, by="css selector")
 
-self.unselect_if_selected(selector, by="css selector")
-# Duplicates: self.uncheck_if_checked(selector, by="css selector")
+self.uncheck_if_checked(selector, by="css selector")
+# Duplicates: self.unselect_if_selected(selector, by="css selector")
 
 self.is_element_in_an_iframe(selector, by="css selector")
 
