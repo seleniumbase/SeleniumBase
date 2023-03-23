@@ -67,15 +67,15 @@ jobs:
     - name: Run pytest examples/test_demo_site.py --browser=chrome --xvfb
       run: |
         pytest examples/test_demo_site.py --browser=chrome --xvfb -v -s --junit-xml=junit/test-results.xml
-    - name: Run pytest examples/test_iframes.py --browser=chrome --xvfb --rs --crumbs
+    - name: Run pytest examples/iframe_tests.py --browser=chrome --xvfb --rs --crumbs
       run: |
-        pytest examples/test_iframes.py --browser=chrome --xvfb --rs --crumbs -v -s --junit-xml=junit/test-results.xml
+        pytest examples/iframe_tests.py --browser=chrome --xvfb --rs --crumbs -v -s --junit-xml=junit/test-results.xml
     - name: Run pytest examples/test_mfa_login.py --browser=chrome --xvfb
       run: |
         pytest examples/test_mfa_login.py --browser=chrome --xvfb -v -s --junit-xml=junit/test-results.xml
-    - name: Run pytest examples/test_iframes.py --browser=chrome --xvfb --rs
+    - name: Run pytest examples/iframe_tests.py --browser=chrome --xvfb --rs
       run: |
-        pytest examples/test_iframes.py --browser=chrome --xvfb --rs -v -s --junit-xml=junit/test-results.xml
+        pytest examples/iframe_tests.py --browser=chrome --xvfb --rs -v -s --junit-xml=junit/test-results.xml
     - name: Run pytest examples/test_window_switching.py --browser=chrome --headless
       run: |
         pytest examples/test_window_switching.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
