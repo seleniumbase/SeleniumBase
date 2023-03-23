@@ -121,10 +121,8 @@ def main():
 
     data = []
     data.append("[pytest]")
-    data.append(
-        "addopts = --capture=no -p no:cacheprovider --ignore=recordings"
-    )
-    data.append("norecursedirs = .* build dist recordings temp")
+    data.append("addopts = --capture=no -p no:cacheprovider")
+    data.append("norecursedirs = .* build dist recordings temp assets")
     data.append("filterwarnings =")
     data.append("    ignore::pytest.PytestWarning")
     data.append("    ignore:.*U.*mode is deprecated:DeprecationWarning")
