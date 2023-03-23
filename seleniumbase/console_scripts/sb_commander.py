@@ -206,7 +206,7 @@ def create_tkinter_gui(tests, command_string, files, solo_tests):
         "Reuse Session for class and clear cookies  (--rcs --crumbs)",
     ]
     rsx = tk.StringVar(root)
-    rsx.set(options_list[2])
+    rsx.set(options_list[0])
     question_menu = tk.OptionMenu(root, rsx, *options_list)
     question_menu.pack()
 
