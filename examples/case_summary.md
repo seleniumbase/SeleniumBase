@@ -24,18 +24,6 @@
 </details>
 
 <details>
-<summary> 🔵 <code><b>list_assert_test.py::MyTestClass::test_assert_list_of_elements</b></code></summary>
-
-| # | Step Description | Expected Result |
-| - | ---------------- | --------------- |
-| 1 | Open https://seleniumbase.io/demo_page. | |
-| 2 | Use ``self.assert_elements_present("head", "style", "script")`` to verify that multiple elements are present in the HTML. | The assertion is successful. |
-| 3 | Use ``self.assert_elements("h1", "h2", "h3")`` to verify that multiple elements are visible. | The assertion is successful. |
-| 4 | Use ``self.assert_elements(["#myDropdown", "#myButton", "#svgRect"])`` to verify that multiple elements are visible. | The assertion is successful. |
-
-</details>
-
-<details>
 <summary> 🔵 <code><b>my_first_test.py::MyTestClass::test_swag_labs</b></code></summary>
 
 | # | Step Description | Expected Result |
@@ -44,7 +32,7 @@
 | 2 | Click on the ``Backpack`` ``ADD TO CART`` button. | The button text changed to ``REMOVE``. |
 | 3 | Click on the cart icon. | The ``Backpack`` is seen in the cart. |
 | 4 | Click on the ``CHECKOUT`` button. <br /> Enter user details and click ``CONTINUE``. | The ``Backpack`` is seen in the cart on the ``CHECKOUT: OVERVIEW`` page. |
-| 5 | Click on the ``FINISH`` button. | There is a ``Thank You`` message and a ``Pony Express`` delivery logo. |
+| 5 | Click on the ``FINISH`` button. | There is a ``Thank you`` message. |
 | 6 | Log out from the website. | Logout was successful. |
 
 </details>
@@ -55,6 +43,18 @@
 | # | Step Description | Expected Result |
 | - | ---------------- | --------------- |
 | 1 | Open https://seleniumbase.io/other/shadow_dom. <br /> Click each tab and verify the text contained within the Shadow Root sections. | Tab 1 text: ``Content Panel 1`` <br /> Tab 2 text: ``Content Panel 2`` <br /> Tab 3 text: ``Content Panel 3`` |
+
+</details>
+
+<details>
+<summary> 🔵 <code><b>test_assert_elements.py::ListAssertTests::test_assert_list_of_elements</b></code></summary>
+
+| # | Step Description | Expected Result |
+| - | ---------------- | --------------- |
+| 1 | Open https://seleniumbase.io/demo_page. | |
+| 2 | Use ``self.assert_elements_present("head", "style", "script")`` to verify that multiple elements are present in the HTML. | The assertion is successful. |
+| 3 | Use ``self.assert_elements("h1", "h2", "h3")`` to verify that multiple elements are visible. | The assertion is successful. |
+| 4 | Use ``self.assert_elements(["#myDropdown", "#myButton", "#svgRect"])`` to verify that multiple elements are visible. | The assertion is successful. |
 
 </details>
 

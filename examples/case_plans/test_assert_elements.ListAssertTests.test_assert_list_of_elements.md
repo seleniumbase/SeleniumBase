@@ -1,4 +1,4 @@
-``list_assert_test.py::MyTestClass::test_assert_list_of_elements``
+``test_assert_elements.py::ListAssertTests::test_assert_list_of_elements``
 ---
 | # | Step Description | Expected Result |
 | - | ---------------- | --------------- |
