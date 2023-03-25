@@ -200,7 +200,7 @@ sbase caseplans
 
 🗂️ After you've created some Case Plans, you can use the ``Generate Summary of existing Case Plans`` button in the Case Plans GUI to generate the Case Plans Summary file.
 
-<img src="https://seleniumbase.githb.io/cdn/img/cp/case_plan_summary_gen.png" title="SeleniumBase Case Plans GUI" width="550">
+<img src="https://seleniumbase.github.io/cdn/img/cp/case_plan_summary_gen.png" title="SeleniumBase Case Plans GUI" width="550">
 
 🗂️ The generated Case Plans summary file, ``case_summary.md``, gets created in the same location where the Case Plans GUI was launched. This is NOT the same location where individual Case Plan boilerplates are generated, which is in the ``case_plans/`` folders. The ``case_plans/`` folders are generated where individual tests live, which means that if you have your tests in multiple folders, then you could also have multiple ``case_plans/`` folders. A ``case_summary.md`` file may look like this when rendered:
 
