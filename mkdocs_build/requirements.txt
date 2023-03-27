@@ -15,7 +15,7 @@ ghp-import==2.1.0
 readme-renderer==37.3
 pymdown-extensions==9.10
 importlib-metadata==6.1.0
-pipdeptree==2.6.0
+pipdeptree==2.7.0
 bleach==6.0.0
 lunr==0.6.2
 nltk==3.8.1
