@@ -6823,20 +6823,24 @@ class BaseCase(unittest.TestCase):
         error = (
             "Expected page title [%s] does not match the actual title [%s]!"
         )
-        try:
-            if not self.recorder_mode:
-                self.assertEqual(expected, actual, error % (expected, actual))
-        except Exception:
-            self.wait_for_ready_state_complete()
-            time.sleep(2)
-            actual = self.get_page_title().strip()
+        if not self.recorder_mode:
             try:
                 self.assertEqual(expected, actual, error % (expected, actual))
             except Exception:
                 self.wait_for_ready_state_complete()
                 time.sleep(2)
                 actual = self.get_page_title().strip()
-                self.assertEqual(expected, actual, error % (expected, actual))
+                try:
+                    self.assertEqual(
+                        expected, actual, error % (expected, actual)
+                    )
+                except Exception:
+                    self.wait_for_ready_state_complete()
+                    time.sleep(2)
+                    actual = self.get_page_title().strip()
+                    self.assertEqual(
+                        expected, actual, error % (expected, actual)
+                    )
         if self.demo_mode and not self.recorder_mode:
             a_t = "ASSERT TITLE"
             if self._language != "English":
@@ -6866,20 +6870,24 @@ class BaseCase(unittest.TestCase):
             "Expected title substring [%s] does not appear "
             "in the actual page title [%s]!"
         )
-        try:
-            if not self.recorder_mode:
-                self.assertIn(expected, actual, error % (expected, actual))
-        except Exception:
-            self.wait_for_ready_state_complete()
-            time.sleep(2)
-            actual = self.get_page_title().strip()
+        if not self.recorder_mode:
             try:
                 self.assertIn(expected, actual, error % (expected, actual))
             except Exception:
                 self.wait_for_ready_state_complete()
                 time.sleep(2)
                 actual = self.get_page_title().strip()
-                self.assertIn(expected, actual, error % (expected, actual))
+                try:
+                    self.assertIn(
+                        expected, actual, error % (expected, actual)
+                    )
+                except Exception:
+                    self.wait_for_ready_state_complete()
+                    time.sleep(2)
+                    actual = self.get_page_title().strip()
+                    self.assertIn(
+                        expected, actual, error % (expected, actual)
+                    )
         if self.demo_mode and not self.recorder_mode:
             a_t = "ASSERT TITLE CONTAINS"
             if self._language != "English":
