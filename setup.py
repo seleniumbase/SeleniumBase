@@ -141,9 +141,9 @@ setup(
         "PyYAML>=6.0",
         "certifi>=2022.12.7",
         'filelock>=3.4.1;python_version<"3.7"',
-        'filelock>=3.10.4;python_version>="3.7"',
+        'filelock>=3.10.7;python_version>="3.7"',
         'platformdirs>=2.4.0;python_version<"3.7"',
-        'platformdirs>=3.1.1;python_version>="3.7"',
+        'platformdirs>=3.2.0;python_version>="3.7"',
         'pyparsing>=3.0.7;python_version<"3.7"',
         'zipp==3.6.0;python_version<"3.7"',
         'zipp>=3.15.0;python_version>="3.7"',
@@ -194,7 +194,8 @@ setup(
         'pytest-rerunfailures==11.1.2;python_version>="3.7"',
         'pytest-xdist==2.5.0;python_version<"3.7"',
         'pytest-xdist==3.2.1;python_version>="3.7"',
-        "parameterized==0.8.1",
+        'parameterized==0.8.1;python_version<"3.7"',
+        'parameterized==0.9.0;python_version>="3.7"',
         "sbvirtualdisplay==1.2.0",
         "behave==1.2.6",
         'soupsieve==2.3.2.post1;python_version<"3.7"',
@@ -220,7 +221,7 @@ setup(
         'markdown-it-py==2.2.0;python_version>="3.7"',  # For new "rich"
         'mdurl==0.1.2;python_version>="3.7"',  # For new "rich"
         'rich==12.6.0;python_version<"3.7"',
-        'rich==13.3.2;python_version>="3.7"',
+        'rich==13.3.3;python_version>="3.7"',
     ],
     extras_require={
         # pip install -e .[allure]
