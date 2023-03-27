@@ -229,11 +229,11 @@ setup(
         # Serve: allure serve allure_results
         "allure": [
             'allure-pytest==2.9.45;python_version<"3.7"',
-            'allure-pytest==2.12.0;python_version>="3.7"',
+            'allure-pytest==2.13.1;python_version>="3.7"',
             'allure-python-commons==2.9.45;python_version<"3.7"',
-            'allure-python-commons==2.12.0;python_version>="3.7"',
+            'allure-python-commons==2.13.1;python_version>="3.7"',
             'allure-behave==2.9.45;python_version<"3.7"',
-            'allure-behave==2.12.0;python_version>="3.7"',
+            'allure-behave==2.13.1;python_version>="3.7"',
         ],
         # pip install -e .[coverage]
         # Usage: coverage run -m pytest; coverage html; coverage report
