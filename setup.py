@@ -167,7 +167,7 @@ setup(
         'trio==0.22.0;python_version>="3.7"',
         'trio-websocket==0.10.2;python_version>="3.7"',
         'websockets==10.4;python_version>="3.7"',
-        'pyopenssl==23.1.0;python_version>="3.7"',
+        'pyopenssl==23.1.1;python_version>="3.7"',
         'wsproto==1.2.0;python_version>="3.7"',
         'selenium==3.141.0;python_version<"3.7"',
         'selenium==4.8.3;python_version>="3.7"',
