@@ -203,7 +203,8 @@ class MyTestClass(BaseCase):
             "<h4>What are some disadvantages of using <b>raw</b> Selenium "
             "without additional libraries or frameworks?</h4><hr />"
             "<h4>\n"
-            "<br /><br /><br /><br /><br /><br /><br /><br /><br /><br />",
+            "<br />",
+            image="https://seleniumbase.io/other/sel_and_py_2.png",
         )
         self.add_slide(
             "<h4>What are some disadvantages of using <b>raw</b> Selenium "
@@ -211,7 +212,7 @@ class MyTestClass(BaseCase):
             "<h4>\n"
             "<mark>The default timeout is 0: If an element isn't immediately "
             "ready to be interacted with, you'll get errors when trying "
-            "to interact with those elements.<mark>\n"
+            "to interact with those elements.</mark>\n"
             "</h4>\n",
             image="https://seleniumbase.io/other/messy_stacktrace.png",
         )
@@ -257,6 +258,21 @@ class MyTestClass(BaseCase):
         self.add_slide(
             "<h4>Raw Selenium disadvantages, continued...</h4><hr />\n"
             "<br />\n"
+            "<p><mark>It takes multiple lines of code to do simple tasks:"
+            "</mark></p>\n"
+            "<pre>\n"
+            'element = driver.find_element("css selector", "#password")\n'
+            "element.clear()\n"
+            'element.send_keys("secret_sauce")\n'
+            'element.submit()\n'
+            "</pre>\n"
+            "<br />\n"
+            "<p>But with a framework, do all that in ONE line:</p>\n"
+            '<pre>self.type("#password", "secret_sauce\\n")</pre>'
+        )
+        self.add_slide(
+            "<h4>Raw Selenium disadvantages, continued...</h4><hr />\n"
+            "<br />\n"
             "<p>It takes multiple lines of code to do simple tasks:</p>\n"
             "<pre>\n"
             'element = driver.find_element("css selector", "#password")\n'
@@ -265,7 +281,8 @@ class MyTestClass(BaseCase):
             'element.submit()\n'
             "</pre>\n"
             "<br />\n"
-            "<p>But with a framework:</p>\n"
+            "<p><mark>But with a framework, do all that in ONE line:"
+            "</mark></p>\n"
             '<pre>self.type("#password", "secret_sauce\\n")</pre>'
         )
         self.add_slide(
@@ -328,6 +345,164 @@ class MyTestClass(BaseCase):
             "<hr /><br />\n"
             "<h3><code><mark>pip install seleniumbase</mark></code></h3>",
             image="https://seleniumbase.io/other/seleniumbase_github.png",
+        )
+        self.add_slide(
+            "<h3>SeleniumBase example test:</h3><hr />",
+            code=(
+                "from seleniumbase import BaseCase\n"
+                "BaseCase.main(__name__, __file__)\n\n"
+                "class MyTestClass(BaseCase):\n"
+                "    def test_basics(self):\n"
+                '        self.open("https://www.saucedemo.com")\n'
+                '        self.type("#user-name", "standard_user")\n'
+                '        self.type("#password", "secret_sauce\\n")\n'
+                '        self.assert_element("div.inventory_list")\n'
+                '        self.assert_exact_text("Products", "span.title")\n'
+                "        self.click('button[name*=\"backpack\"]')\n"
+                '        self.click("#shopping_cart_container a")\n'
+                '        self.assert_exact_text("Your Cart", "span.title")\n'
+                '        self.assert_text("Backpack", "div.cart_item")\n'
+                '        self.click("button#checkout")\n'
+                '        self.type("#first-name", "SeleniumBase")\n'
+                '        self.type("#last-name", "Automation")\n'
+                '        self.type("#postal-code", "77123")\n'
+                '        self.click("input#continue")\n'
+                '        self.assert_text("Checkout: Overview")'
+            ),
+        )
+        self.add_slide(
+            "<h3>Common SeleniumBase methods:</h3><hr />",
+            code=(
+                "self.open(url)  # Navigate the browser window to the URL.\n"
+                "self.type(selector, text)  # Update field with the text.\n"
+                "self.click(selector)  # Click element with the selector.\n"
+                "self.click_link(link_text)  # Click link containing text.\n"
+                "self.check_if_unchecked(selector)  # Check checkbox.\n"
+                "self.uncheck_if_checked(selector)  # Uncheck checkbox.\n"
+                "self.select_option_by_text(dropdown_selector, option)\n"
+                "self.hover_and_click(hover_selector, click_selector)\n"
+                "self.drag_and_drop(drag_selector, drop_selector)\n"
+                "self.choose_file(selector, file_path)  # Upload a file.\n"
+                "self.switch_to_frame(frame)  # Switch into the iframe.\n"
+                "self.switch_to_default_content()  # Exit all iframes.\n"
+                "self.switch_to_parent_frame()  # Exit current iframe.\n"
+                "self.open_new_window()  # Open new window in same browser.\n"
+                "self.switch_to_window(window)  # Switch to browser window.\n"
+                "self.switch_to_default_window()  # Go to original window.\n"
+                "self.assert_element(selector)  # Verify element is visible.\n"
+                "self.assert_text(text, selector)  # Verify text substring.\n"
+                "self.assert_exact_text(text, selector)  # Verify exact text."
+            ),
+        )
+        self.add_slide(
+            "<h3>Common command-line options:</h3><hr />"
+            "<pre>\n"
+            '<span class="kwd">--browser=BROWSER</span>'
+            '<span class="str">'
+            '  (Choose web browser. Default: "chrome".)'
+            '</span>\n'
+            '<span class="kwd">--edge / --firefox / --safari</span>'
+            '<span class="str">'
+            '  (Browser Shortcut.)'
+            '</span>\n'
+            '<span class="kwd">--headless</span>'
+            '<span class="str">'
+            '  (Run tests headlessly.  Default on Linux OS.)'
+            '</span>\n'
+            '<span class="kwd">--demo</span>'
+            '<span class="str">'
+            '  (Slow down and see test actions as they occur.)'
+            '</span>\n'
+            '<span class="kwd">--slow</span>'
+            '<span class="str">'
+            '  (Slow down the automation. Faster than Demo Mode.)'
+            '</span>\n'
+            '<span class="kwd">--reuse-session / --rs</span>'
+            '<span class="str">'
+            '  (Reuse browser session for tests.)'
+            '</span>\n'
+            '<span class="kwd">--reuse-class-session / --rcs</span>'
+            '<span class="str">'
+            '  (RS, but for class tests.)'
+            '</span>\n'
+            '<span class="kwd">--crumbs</span>'
+            '<span class="str">'
+            '  (Clear cookies between tests reusing a session.)'
+            '</span>\n'
+            '<span class="kwd">--maximize</span>'
+            '<span class="str">'
+            '  (Start tests with the web browser maximized.)'
+            '</span>\n'
+            '<span class="kwd">--dashboard</span>'
+            '<span class="str">'
+            '  (Enable the SB Dashboard at dashboard.html)'
+            '</span>\n'
+            '<span class="kwd">--uc</span>'
+            '<span class="str">'
+            '  (Enable undetected-chromedriver mode.)'
+            '</span>\n'
+            '<span class="kwd">--incognito</span>'
+            '<span class="str">'
+            '  (Enable Incognito mode.)'
+            '</span>\n'
+            '<span class="kwd">--guest</span>'
+            '<span class="str">'
+            '  (Enable Guest mode.)'
+            '</span>\n'
+            '<span class="kwd">-m=MARKER</span>'
+            '<span class="str">'
+            '  (Run tests with the specified pytest marker.)'
+            '</span>\n'
+            '<span class="kwd">-n=NUM</span>'
+            '<span class="str">'
+            '  (Multithread the tests using that many threads.)'
+            '</span>\n'
+            '<span class="kwd">-v</span>'
+            '<span class="str">'
+            '  (Verbose mode. Print the full names of each test run.)'
+            '</span>\n'
+            '<span class="kwd">--html=report.html</span>'
+            '<span class="str">'
+            '  (Create a detailed pytest-html report.)'
+            '</span>\n'
+            '<span class="kwd">--collect-only / --co</span>'
+            '<span class="str">'
+            '  (Only show discovered tests. No run.)'
+            '</span>\n'
+            '<span class="kwd">--co -q</span>'
+            '<span class="str">'
+            '  (Only show full names of discovered tests. No run.)'
+            '</span>\n'
+            '<span class="kwd">-x</span>'
+            '<span class="str">'
+            '  (Stop running tests after the first failure is reached.)'
+            '</span>\n'
+            "</pre>"
+        )
+        self.add_slide(
+            "<h3>Common console scripts:</h3><hr />",
+            code=(
+                "seleniumbase get [DRIVER] [OPTIONS]  # Eg. chromedriver\n"
+                "seleniumbase methods  # List common Python methods\n"
+                "seleniumbase options  # List common pytest options\n"
+                "seleniumbase gui  # Open the SB GUI for pytest\n"
+                "seleniumbase caseplans  # Open the SB Case Plans App\n"
+                "seleniumbase mkdir [DIRECTORY]  # Create a test directory\n"
+                "seleniumbase mkfile [FILE.py]  # Create a test file\n"
+                "seleniumbase codegen [FILE.py] [OPTIONS]  # Record a test\n"
+                "seleniumbase recorder  # Open the SB Recorder App\n"
+                "seleniumbase mkpres  # Create a Presentation boilerplate\n"
+                "seleniumbase mkchart  # Create a Chart boilerplate\n"
+                "seleniumbase print [FILE]  # Print file to console\n"
+                "seleniumbase translate [FILE.py] [OPTIONS]  # Translate\n"
+                "seleniumbase extract-objects [SB_FILE.py]  # Get objects\n"
+                "seleniumbase inject-objects [SB_FILE.py]  # Swap selectors\n"
+                "seleniumbase objectify [SB_FILE.py]  # Get & swap objects\n"
+                "seleniumbase revert-objects [SB_FILE.py]  # Undo objectify\n"
+                "seleniumbase download server  # Get Selenium Grid JAR file\n"
+                "seleniumbase grid-hub [start|stop] [OPTIONS]  # Start Grid\n"
+                "seleniumbase grid-node [start|stop] --hub=[IP]  # Add Node"
+            ),
         )
         self.add_slide(
             "<h2><b>Live Demo Time!</b></h2><hr /><br />"
