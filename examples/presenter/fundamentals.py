@@ -65,7 +65,7 @@ class MyTestClass(BaseCase):
         )
         self.add_slide(
             "<h3>What does Selenium provide?</h3>\n"
-            "<br /><hr /><br />\n"
+            "<hr /><br /><br />\n"
             "<h4><b>Selenium provides an automation library!</b></h4><br />\n",
             image="https://seleniumbase.io/other/selenium_slogan.png",
         )
