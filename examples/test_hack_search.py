@@ -20,7 +20,7 @@ class HackingTests(BaseCase):
         self.type('input[title="Search"]', "GitHub SeleniumBase Docs Install")
         self.sleep(0.5)
         self.js_click('[value="Bing Search"]')
-        self.highlight("h1.b_logo")
+        self.highlight("h1.b_logo", loops=8)
         self.highlight_click('[href*="github.com/seleniumbase/SeleniumBase"]')
         self.highlight_click('[href="/seleniumbase/SeleniumBase"]')
         self.highlight_click('a[title="examples"]')

@@ -4,6 +4,7 @@ BaseCase.main(__name__, __file__)
 
 class VisualLayoutTests(BaseCase):
     def test_applitools_layout_change(self):
+        self.demo_mode = False  # (It would interfere with html comparisons)
         self.open("https://applitools.com/helloworld/?diff1")
         self.wait_for_element('a[href="?diff1"]')
         print('\nCreating baseline in "visual_baseline" folder.')
