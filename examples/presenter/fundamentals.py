@@ -65,8 +65,9 @@ class MyTestClass(BaseCase):
         )
         self.add_slide(
             "<h3>What does Selenium provide?</h3>\n"
-            "<hr /><br /><br />\n"
-            "<h4><b>Selenium provides an automation library!</b></h4><br />\n",
+            "<hr /><br />\n"
+            "<h4><b>Selenium provides an automation library!</b></h4>\n"
+            "<br /><h5>(It does NOT provide a test framework.)</h5>\n",
             image="https://seleniumbase.io/other/selenium_slogan.png",
         )
         self.add_slide(
@@ -389,9 +390,9 @@ class MyTestClass(BaseCase):
                 "self.open_new_window()  # Open new window in same browser.\n"
                 "self.switch_to_window(window)  # Switch to browser window.\n"
                 "self.switch_to_default_window()  # Go to original window.\n"
-                "self.assert_element(selector)  # Verify element is visible.\n"
-                "self.assert_text(text, selector)  # Verify text substring.\n"
-                "self.assert_exact_text(text, selector)  # Verify exact text."
+                "self.assert_element(selector)  # Verify element visible.\n"
+                "self.assert_text(text, selector)  # Substring assertion.\n"
+                "self.assert_exact_text(text, selector)  # String assert."
             ),
         )
         self.add_slide(
@@ -482,26 +483,26 @@ class MyTestClass(BaseCase):
         self.add_slide(
             "<h3>Common console scripts:</h3><hr />",
             code=(
-                "seleniumbase get [DRIVER] [OPTIONS]  # Eg. chromedriver\n"
-                "seleniumbase methods  # List common Python methods\n"
-                "seleniumbase options  # List common pytest options\n"
-                "seleniumbase gui  # Open the SB GUI for pytest\n"
-                "seleniumbase caseplans  # Open the SB Case Plans App\n"
-                "seleniumbase mkdir [DIRECTORY]  # Create a test directory\n"
-                "seleniumbase mkfile [FILE.py]  # Create a test file\n"
-                "seleniumbase codegen [FILE.py] [OPTIONS]  # Record a test\n"
-                "seleniumbase recorder  # Open the SB Recorder App\n"
-                "seleniumbase mkpres  # Create a Presentation boilerplate\n"
-                "seleniumbase mkchart  # Create a Chart boilerplate\n"
-                "seleniumbase print [FILE]  # Print file to console\n"
-                "seleniumbase translate [FILE.py] [OPTIONS]  # Translate\n"
-                "seleniumbase extract-objects [SB_FILE.py]  # Get objects\n"
-                "seleniumbase inject-objects [SB_FILE.py]  # Swap selectors\n"
-                "seleniumbase objectify [SB_FILE.py]  # Get & swap objects\n"
-                "seleniumbase revert-objects [SB_FILE.py]  # Undo objectify\n"
-                "seleniumbase download server  # Get Selenium Grid JAR file\n"
-                "seleniumbase grid-hub [start|stop] [OPTIONS]  # Start Grid\n"
-                "seleniumbase grid-node [start|stop] --hub=[IP]  # Add Node"
+                "sbase get [DRIVER] [OPTIONS]  # Eg. chromedriver\n"
+                "sbase methods  # List common Python methods\n"
+                "sbase options  # List common pytest options\n"
+                "sbase gui  # Open the SB GUI for pytest\n"
+                "sbase caseplans  # Open the SB Case Plans App\n"
+                "sbase mkdir [DIRECTORY]  # Create a test directory\n"
+                "sbase mkfile [FILE.py]  # Create a test file\n"
+                "sbase codegen [FILE.py] [OPTIONS]  # Record a test\n"
+                "sbase recorder  # Open the SB Recorder App\n"
+                "sbase mkpres  # Create a Presentation boilerplate\n"
+                "sbase mkchart  # Create a Chart boilerplate\n"
+                "sbase print [FILE]  # Print file to console\n"
+                "sbase translate [FILE.py] [OPTIONS]  # Translate\n"
+                "sbase extract-objects [SB_FILE.py]  # Get objects\n"
+                "sbase inject-objects [SB_FILE.py]  # Swap selectors\n"
+                "sbase objectify [SB_FILE.py]  # Get & swap objects\n"
+                "sbase revert-objects [SB_FILE.py]  # Undo objectify\n"
+                "sbase download server  # Get Selenium Grid JAR file\n"
+                "sbase grid-hub [start|stop] [OPTIONS]  # Start Grid\n"
+                "sbase grid-node [start|stop] --hub=[IP]  # Add Node"
             ),
         )
         self.add_slide(
