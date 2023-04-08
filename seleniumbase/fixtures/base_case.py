@@ -309,8 +309,18 @@ class BaseCase(unittest.TestCase):
         if self.undetectable:
             self.__uc_frame_layer = 0
         if self.demo_mode:
-            if not js_utils.is_jquery_activated(self.driver):
-                js_utils.add_js_link(self.driver, constants.JQuery.MIN_JS)
+            if (
+                self.driver.current_url.startswith("http")
+                or self.driver.current_url.startswith("file")
+                or self.driver.current_url.startswith("data")
+            ):
+                if not js_utils.is_jquery_activated(self.driver):
+                    try:
+                        js_utils.add_js_link(
+                            self.driver, constants.JQuery.MIN_JS
+                        )
+                    except Exception:
+                        pass
             self.__demo_mode_pause_if_active()
 
     def get(self, url):
