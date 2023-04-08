@@ -6450,12 +6450,15 @@ class BaseCase(unittest.TestCase):
             file.write(element_png)
         # Add a text overlay if given
         if type(overlay_text) is str and len(overlay_text) > 0:
-            try:
-                from PIL import Image, ImageDraw
-            except Exception:
-                shared_utils.pip_install("Pillow")
-                from PIL import Image, ImageDraw
-
+            pip_find_lock = fasteners.InterProcessLock(
+                constants.PipInstall.FINDLOCK
+            )
+            with pip_find_lock:
+                try:
+                    from PIL import Image, ImageDraw
+                except Exception:
+                    shared_utils.pip_install("Pillow")
+                    from PIL import Image, ImageDraw
             text_rows = overlay_text.split("\n")
             len_text_rows = len(text_rows)
             max_width = 0
