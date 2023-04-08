@@ -208,7 +208,7 @@ class PrettifyJS:
 class Reveal:
     LIB = "https://cdn.jsdelivr.net/npm/reveal.js"
     VER = "3.8.0"
-    MIN_CSS = "%s@%s/css/reveal.css" % (LIB, VER)
+    MIN_CSS = "%s@%s/css/reveal.min.css" % (LIB, VER)
     SERIF_MIN_CSS = "%s@%s/css/theme/serif.min.css" % (LIB, VER)
     WHITE_MIN_CSS = "%s@%s/css/theme/white.min.css" % (LIB, VER)
     BLACK_MIN_CSS = "%s@%s/css/theme/black.min.css" % (LIB, VER)
