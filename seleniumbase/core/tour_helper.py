@@ -1,7 +1,5 @@
-"""
-This module contains methods for running website tours.
-These helper methods SHOULD NOT be called directly from tests.
-"""
+"""This module contains methods for running website tours.
+These helper methods SHOULD NOT be called directly from tests."""
 import os
 import re
 import textwrap
@@ -16,12 +14,14 @@ from seleniumbase.fixtures import page_actions
 EXPORTED_TOURS_FOLDER = constants.Tours.EXPORTED_TOURS_FOLDER
 
 
-def activate_bootstrap(driver):
+def activate_bootstrap(driver, pgkeys=False):
     """Allows you to use Bootstrap Tours with SeleniumBase
     http://bootstraptour.com/
     """
     bootstrap_tour_css = constants.BootstrapTour.MIN_CSS
     bootstrap_tour_js = constants.BootstrapTour.MIN_JS
+    if pgkeys:
+        bootstrap_tour_js = constants.BootstrapTour.MIN_JS_SB
 
     verify_script = """// Verify Bootstrap Tour activated
                      var tour2 = new Tour({
@@ -58,19 +58,20 @@ def is_bootstrap_activated(driver):
         return False
 
 
-def activate_driverjs(driver):
+def activate_driverjs(driver, pgkeys=False):
     """Allows you to use DriverJS Tours with SeleniumBase
     https://kamranahmed.info/driver.js/
     """
     backdrop_style = style_sheet.get_dt_backdrop_style()
     driverjs_css = constants.DriverJS.MIN_CSS
     driverjs_js = constants.DriverJS.MIN_JS
+    if pgkeys:
+        driverjs_js = constants.DriverJS.MIN_JS_SB
 
     verify_script = """// Verify DriverJS activated
                      var driverjs2 = Driver.name;
                      """
 
-    activate_bootstrap(driver)
     js_utils.wait_for_ready_state_complete(driver)
     js_utils.wait_for_angularjs(driver)
     js_utils.add_css_style(driver, backdrop_style)
@@ -115,7 +116,6 @@ def activate_hopscotch(driver):
                      var hops = hopscotch.isActive;
                      """
 
-    activate_bootstrap(driver)
     js_utils.wait_for_ready_state_complete(driver)
     js_utils.wait_for_angularjs(driver)
     js_utils.add_css_style(driver, backdrop_style)
@@ -148,12 +148,14 @@ def is_hopscotch_activated(driver):
         return False
 
 
-def activate_introjs(driver):
+def activate_introjs(driver, pgkeys=False):
     """Allows you to use IntroJS Tours with SeleniumBase
     https://introjs.com/
     """
     intro_css = constants.IntroJS.MIN_CSS
     intro_js = constants.IntroJS.MIN_JS
+    if pgkeys:
+        intro_js = constants.IntroJS.MIN_JS_SB
 
     theme_color = sb_config.introjs_theme_color
     hover_color = sb_config.introjs_hover_color
@@ -169,7 +171,6 @@ def activate_introjs(driver):
                      var intro2 = introJs();
                      """
 
-    activate_bootstrap(driver)
     js_utils.wait_for_ready_state_complete(driver)
     js_utils.wait_for_angularjs(driver)
     js_utils.add_css_style(driver, backdrop_style)
@@ -218,7 +219,6 @@ def activate_shepherd(driver):
     sh_style = style_sheet.get_sh_style_test()
     backdrop_style = style_sheet.get_sh_backdrop_style()
 
-    activate_bootstrap(driver)
     js_utils.wait_for_ready_state_complete(driver)
     js_utils.wait_for_angularjs(driver)
     js_utils.add_css_style(driver, backdrop_style)
@@ -389,7 +389,13 @@ def play_shepherd_tour(driver, tour_steps, msg_dur, name=None, interval=0):
 
 
 def play_bootstrap_tour(
-    driver, tour_steps, browser, msg_dur, name=None, interval=0
+    driver,
+    tour_steps,
+    browser,
+    msg_dur,
+    name=None,
+    interval=0,
+    pgkeys=False,
 ):
     """Plays a Bootstrap tour on the current website."""
     instructions = ""
@@ -414,7 +420,7 @@ def play_bootstrap_tour(
         )
 
     if not is_bootstrap_activated(driver):
-        activate_bootstrap(driver)
+        activate_bootstrap(driver, pgkeys)
 
     if len(tour_steps[name]) > 1:
         try:
@@ -444,6 +450,16 @@ def play_bootstrap_tour(
 
     driver.execute_script(instructions)
     tour_on = True
+    try:
+        page_actions.wait_for_element_visible(
+            driver, ".tour-tour", by="css selector", timeout=1.2
+        )
+    except Exception:
+        pass
+    try:
+        driver.execute_script('document.activeElement.blur();')
+    except Exception:
+        pass
     while tour_on:
         try:
             time.sleep(0.01)
@@ -451,7 +467,7 @@ def play_bootstrap_tour(
                 result = driver.execute_script("return $tour.ended()")
             else:
                 page_actions.wait_for_element_present(
-                    driver, ".tour-tour", by="css selector", timeout=0.65
+                    driver, ".tour-tour", by="css selector", timeout=0.48
                 )
                 result = False
         except Exception:
@@ -467,7 +483,7 @@ def play_bootstrap_tour(
                     result = driver.execute_script("return $tour.ended()")
                 else:
                     page_actions.wait_for_element_present(
-                        driver, ".tour-tour", by="css selector", timeout=0.65
+                        driver, ".tour-tour", by="css selector", timeout=0.48
                     )
                     result = False
                 if result is False:
@@ -481,7 +497,13 @@ def play_bootstrap_tour(
 
 
 def play_driverjs_tour(
-    driver, tour_steps, browser, msg_dur, name=None, interval=0
+    driver,
+    tour_steps,
+    browser,
+    msg_dur,
+    name=None,
+    interval=0,
+    pgkeys=False,
 ):
     """Plays a DriverJS tour on the current website."""
     instructions = ""
@@ -500,7 +522,7 @@ def play_driverjs_tour(
             interval = 0.5
 
     if not is_driverjs_activated(driver):
-        activate_driverjs(driver)
+        activate_driverjs(driver, pgkeys)
 
     if len(tour_steps[name]) > 1:
         try:
@@ -727,7 +749,13 @@ def play_hopscotch_tour(
 
 
 def play_introjs_tour(
-    driver, tour_steps, browser, msg_dur, name=None, interval=0
+    driver,
+    tour_steps,
+    browser,
+    msg_dur,
+    name=None,
+    interval=0,
+    pgkeys=False,
 ):
     """Plays an IntroJS tour on the current website."""
     instructions = ""
@@ -759,7 +787,7 @@ def play_introjs_tour(
             interval = 0.5
 
     if not is_introjs_activated(driver):
-        activate_introjs(driver)
+        activate_introjs(driver, pgkeys)
 
     if len(tour_steps[name]) > 1:
         try:

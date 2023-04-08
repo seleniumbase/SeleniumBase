@@ -654,8 +654,8 @@ self.set_introjs_colors(theme_color=None, hover_color=None)
 self.add_tour_step(message, selector=None, name=None,
                    title=None, theme=None, alignment=None)
 
-self.play_tour(name=None, interval=0)
-# Duplicates: self.start_tour(name=None, interval=0):
+self.play_tour(name=None, interval=0, pgkeys=False)
+# Duplicates: self.start_tour(name=None, interval=0, pgkeys=False):
 
 self.export_tour(name=None, filename="my_tour.js", url=None)
 
