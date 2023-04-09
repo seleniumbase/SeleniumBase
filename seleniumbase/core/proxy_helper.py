@@ -1,11 +1,13 @@
 import os
 import zipfile
+import random
 from seleniumbase.fixtures import constants
 
+RANDOM_FOLDER_DIR = str(random.randint(1000, 9999))
 DOWNLOADS_DIR = constants.Files.DOWNLOADS_FOLDER
 PROXY_ZIP_PATH = os.path.join(DOWNLOADS_DIR, "proxy.zip")
 PROXY_ZIP_LOCK = os.path.join(DOWNLOADS_DIR, "proxy.lock")
-PROXY_DIR_PATH = os.path.join(DOWNLOADS_DIR, "proxy_ext_dir")
+PROXY_DIR_PATH = os.path.join(DOWNLOADS_DIR, "proxy_ext_dir_" + RANDOM_FOLDER_DIR)
 PROXY_DIR_LOCK = os.path.join(DOWNLOADS_DIR, "proxy_dir.lock")
 
 
@@ -106,7 +108,7 @@ def create_proxy_ext(proxy_string, proxy_user, proxy_pass, zip_it=True):
             zf.writestr("manifest.json", manifest_json)
             zf.close()
         else:
-            proxy_ext_dir = os.path.join(downloads_path, "proxy_ext_dir")
+            proxy_ext_dir = os.path.join(downloads_path, "proxy_ext_dir_" + RANDOM_FOLDER_DIR)
             if not os.path.exists(proxy_ext_dir):
                 os.mkdir(proxy_ext_dir)
             manifest_file = os.path.join(proxy_ext_dir, "manifest.json")
@@ -129,5 +131,7 @@ def remove_proxy_zip_if_present():
             os.remove(PROXY_ZIP_PATH)
         if os.path.exists(PROXY_ZIP_LOCK):
             os.remove(PROXY_ZIP_LOCK)
+        if os.path.exists(PROXY_DIR_PATH):
+            os.remove(PROXY_DIR_PATH)
     except Exception:
         pass
