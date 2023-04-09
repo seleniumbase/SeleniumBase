@@ -208,7 +208,7 @@ class PrettifyJS:
 class Reveal:
     LIB = "https://cdn.jsdelivr.net/npm/reveal.js"
     VER = "3.8.0"
-    MIN_CSS = "%s@%s/css/reveal.css" % (LIB, VER)
+    MIN_CSS = "%s@%s/css/reveal.min.css" % (LIB, VER)
     SERIF_MIN_CSS = "%s@%s/css/theme/serif.min.css" % (LIB, VER)
     WHITE_MIN_CSS = "%s@%s/css/theme/white.min.css" % (LIB, VER)
     BLACK_MIN_CSS = "%s@%s/css/theme/black.min.css" % (LIB, VER)
@@ -240,7 +240,8 @@ class BootstrapTour:
     LIB = "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tour"
     VER = "0.12.0"
     MIN_CSS = "%s/%s/css/bootstrap-tour-standalone.min.css" % (LIB, VER)
-    MIN_JS = "%s/%s/js/bootstrap-tour-standalone.min.js" % (LIB, VER)
+    # MIN_JS = "%s/%s/js/bootstrap-tour-standalone.min.js" % (LIB, VER)
+    MIN_JS = "https://seleniumbase.github.io/cdn/js/bootstraptour.min.js"
 
 
 class DriverJS:

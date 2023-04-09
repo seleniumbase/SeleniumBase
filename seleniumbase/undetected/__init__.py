@@ -134,13 +134,15 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
             options = ChromeOptions()
         try:
             if hasattr(options, "_session") and options._session is not None:
-                #  Prevent reuse of options
+                # Prevent reuse of options
                 raise RuntimeError("you cannot reuse the ChromeOptions object")
         except AttributeError:
             pass
         options._session = self
-        debug_port = selenium.webdriver.common.service.utils.free_port()
         debug_host = "127.0.0.1"
+        debug_port = 9222
+        if hasattr(options, "_remote_debugging_port"):
+            debug_port = options._remote_debugging_port
         if not options.debugger_address:
             options.debugger_address = "%s:%d" % (debug_host, debug_port)
         if enable_cdp_events:

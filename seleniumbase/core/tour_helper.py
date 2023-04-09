@@ -1,7 +1,5 @@
-"""
-This module contains methods for running website tours.
-These helper methods SHOULD NOT be called directly from tests.
-"""
+"""This module contains methods for running website tours.
+These helper methods SHOULD NOT be called directly from tests."""
 import os
 import re
 import textwrap
@@ -70,7 +68,6 @@ def activate_driverjs(driver):
                      var driverjs2 = Driver.name;
                      """
 
-    activate_bootstrap(driver)
     js_utils.wait_for_ready_state_complete(driver)
     js_utils.wait_for_angularjs(driver)
     js_utils.add_css_style(driver, backdrop_style)
@@ -115,7 +112,6 @@ def activate_hopscotch(driver):
                      var hops = hopscotch.isActive;
                      """
 
-    activate_bootstrap(driver)
     js_utils.wait_for_ready_state_complete(driver)
     js_utils.wait_for_angularjs(driver)
     js_utils.add_css_style(driver, backdrop_style)
@@ -169,7 +165,6 @@ def activate_introjs(driver):
                      var intro2 = introJs();
                      """
 
-    activate_bootstrap(driver)
     js_utils.wait_for_ready_state_complete(driver)
     js_utils.wait_for_angularjs(driver)
     js_utils.add_css_style(driver, backdrop_style)
@@ -218,7 +213,6 @@ def activate_shepherd(driver):
     sh_style = style_sheet.get_sh_style_test()
     backdrop_style = style_sheet.get_sh_backdrop_style()
 
-    activate_bootstrap(driver)
     js_utils.wait_for_ready_state_complete(driver)
     js_utils.wait_for_angularjs(driver)
     js_utils.add_css_style(driver, backdrop_style)
@@ -269,6 +263,13 @@ def play_shepherd_tour(driver, tour_steps, msg_dur, name=None, interval=0):
         // Start the tour
         tour.start();
         $tour = tour;"""
+    instructions += """
+        document.body.addEventListener('keyup', function (event) {
+        if (event.key === 'PageUp' || event.key === 'ArrowLeft') {
+            Shepherd.activeTour.back(); }
+        if (event.key === 'PageDown' || event.key === 'ArrowRight') {
+            Shepherd.activeTour.next(); }
+        })"""
     autoplay = False
     if interval and interval > 0:
         autoplay = True
@@ -302,6 +303,16 @@ def play_shepherd_tour(driver, tour_steps, msg_dur, name=None, interval=0):
                 "" % selector
             )
     driver.execute_script(instructions)
+    try:
+        page_actions.wait_for_element_visible(
+            driver, "a.tour-button-right", by="css selector", timeout=1.2
+        )
+    except Exception:
+        pass
+    try:
+        driver.execute_script('document.activeElement.blur();')
+    except Exception:
+        pass
     tour_on = True
     if autoplay:
         start_ms = time.time() * 1000.0
@@ -404,7 +415,6 @@ def play_bootstrap_tour(
         tour.restart();
         // Save for later
         $tour = tour;"""
-
     if interval and interval > 0:
         if interval < 1:
             interval = 1
@@ -412,10 +422,8 @@ def play_bootstrap_tour(
         instructions = instructions.replace(
             "duration: 0,", "duration: %s," % interval
         )
-
     if not is_bootstrap_activated(driver):
         activate_bootstrap(driver)
-
     if len(tour_steps[name]) > 1:
         try:
             if "element: " in tour_steps[name][1]:
@@ -441,9 +449,18 @@ def play_bootstrap_tour(
                 "Exiting due to failure on first tour step!"
                 "" % selector
             )
-
     driver.execute_script(instructions)
     tour_on = True
+    try:
+        page_actions.wait_for_element_visible(
+            driver, ".tour-tour", by="css selector", timeout=1.2
+        )
+    except Exception:
+        pass
+    try:
+        driver.execute_script('document.activeElement.blur();')
+    except Exception:
+        pass
     while tour_on:
         try:
             time.sleep(0.01)
@@ -451,7 +468,7 @@ def play_bootstrap_tour(
                 result = driver.execute_script("return $tour.ended()")
             else:
                 page_actions.wait_for_element_present(
-                    driver, ".tour-tour", by="css selector", timeout=0.65
+                    driver, ".tour-tour", by="css selector", timeout=0.48
                 )
                 result = False
         except Exception:
@@ -467,7 +484,7 @@ def play_bootstrap_tour(
                     result = driver.execute_script("return $tour.ended()")
                 else:
                     page_actions.wait_for_element_present(
-                        driver, ".tour-tour", by="css selector", timeout=0.65
+                        driver, ".tour-tour", by="css selector", timeout=0.48
                     )
                     result = False
                 if result is False:
@@ -492,6 +509,11 @@ def play_driverjs_tour(
         // Start the tour!
         tour.start();
         $tour = tour;"""
+    instructions += """
+        document.body.addEventListener('keyup', function (event) {
+        if (event.key === 'PageUp') { $tour.movePrevious(); }
+        if (event.key === 'PageDown') { $tour.moveNext(); }
+        })"""
     autoplay = False
     if interval and interval > 0:
         autoplay = True
@@ -619,6 +641,13 @@ def play_hopscotch_tour(
         // Start the tour!
         hopscotch.startTour(tour);
         $tour = hopscotch;"""
+    instructions += """
+        document.body.addEventListener('keyup', function (event) {
+        if (event.key === 'PageUp' || event.key === 'ArrowLeft') {
+            $tour.prevStep(); }
+        if (event.key === 'PageDown' || event.key === 'ArrowRight') {
+            $tour.nextStep(); }
+        })"""
     autoplay = False
     if interval and interval > 0:
         autoplay = True
@@ -656,6 +685,16 @@ def play_hopscotch_tour(
             )
 
     driver.execute_script(instructions)
+    try:
+        page_actions.wait_for_element_visible(
+            driver, "button.hopscotch-next", by="css selector", timeout=1.2
+        )
+    except Exception:
+        pass
+    try:
+        driver.execute_script('document.activeElement.blur();')
+    except Exception:
+        pass
     tour_on = True
     if autoplay:
         start_ms = time.time() * 1000.0
@@ -751,6 +790,11 @@ def play_introjs_tour(
         // Start the tour
         startIntro();
         """
+    instructions += """
+        document.body.addEventListener('keyup', function (event) {
+        if (event.key === 'PageUp') { $tour.previousStep(); }
+        if (event.key === 'PageDown') { $tour.nextStep(); }
+        })"""
     autoplay = False
     if interval and interval > 0:
         autoplay = True

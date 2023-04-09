@@ -711,6 +711,14 @@ def _set_chrome_options(
                     chromium_arg_item = "-" + chromium_arg_item
                 else:
                     chromium_arg_item = "--" + chromium_arg_item
+            if "remote-debugging-port=" in chromium_arg_item:
+                try:
+                    # Extra processing for UC Mode
+                    chrome_options._remote_debugging_port = int(
+                        chromium_arg_item.split("remote-debugging-port=")[1]
+                    )
+                except Exception:
+                    pass
             if len(chromium_arg_item) >= 3:
                 chrome_options.add_argument(chromium_arg_item)
     if devtools and not headless:

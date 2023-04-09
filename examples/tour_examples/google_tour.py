@@ -69,11 +69,18 @@ class MyTourClass(BaseCase):
         self.add_tour_step(
             "Or click here to zoom out.", "#widget-zoom-out", alignment="left"
         )
-        self.add_tour_step(
-            "Use the Menu button to see more options.",
-            'button[jsaction*="settings.open;"]',
-            alignment="right",
-        )
+        if self.is_element_visible('button[jsaction*="settings.open;"]'):
+            self.add_tour_step(
+                "Use the Menu button to see more options.",
+                'button[jsaction*="settings.open;"]',
+                alignment="right",
+            )
+        elif self.is_element_visible('button[jsaction="navigationrail.more"]'):
+            self.add_tour_step(
+                "Use the Menu button to see more options.",
+                'button[jsaction="navigationrail.more"]',
+                alignment="right",
+            )
         self.add_tour_step(
             "Or click here to see more Google apps.",
             '[title="Google apps"]',

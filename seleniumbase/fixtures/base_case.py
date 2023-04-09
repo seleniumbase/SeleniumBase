@@ -309,8 +309,18 @@ class BaseCase(unittest.TestCase):
         if self.undetectable:
             self.__uc_frame_layer = 0
         if self.demo_mode:
-            if not js_utils.is_jquery_activated(self.driver):
-                js_utils.add_js_link(self.driver, constants.JQuery.MIN_JS)
+            if (
+                self.driver.current_url.startswith("http")
+                or self.driver.current_url.startswith("file")
+                or self.driver.current_url.startswith("data")
+            ):
+                if not js_utils.is_jquery_activated(self.driver):
+                    try:
+                        js_utils.add_js_link(
+                            self.driver, constants.JQuery.MIN_JS
+                        )
+                    except Exception:
+                        pass
             self.__demo_mode_pause_if_active()
 
     def get(self, url):
@@ -6440,12 +6450,15 @@ class BaseCase(unittest.TestCase):
             file.write(element_png)
         # Add a text overlay if given
         if type(overlay_text) is str and len(overlay_text) > 0:
-            try:
-                from PIL import Image, ImageDraw
-            except Exception:
-                shared_utils.pip_install("Pillow")
-                from PIL import Image, ImageDraw
-
+            pip_find_lock = fasteners.InterProcessLock(
+                constants.PipInstall.FINDLOCK
+            )
+            with pip_find_lock:
+                try:
+                    from PIL import Image, ImageDraw
+                except Exception:
+                    shared_utils.pip_install("Pillow")
+                    from PIL import Image, ImageDraw
             text_rows = overlay_text.split("\n")
             len_text_rows = len(text_rows)
             max_width = 0

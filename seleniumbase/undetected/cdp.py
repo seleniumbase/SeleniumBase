@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
+import fasteners
 import json
 import logging
 import requests
+from seleniumbase.fixtures import constants
+from seleniumbase.fixtures import shared_utils
 
 log = logging.getLogger(__name__)
 
@@ -75,8 +78,15 @@ class CDP:
         return self.post(self.endpoints["close"].format(id=opentabs[-1]["id"]))
 
     async def send(self, method, params):
-        import websockets
-
+        pip_find_lock = fasteners.InterProcessLock(
+            constants.PipInstall.FINDLOCK
+        )
+        with pip_find_lock:
+            try:
+                import websockets
+            except Exception:
+                shared_utils.pip_install("websockets")
+                import websockets
         self._reqid += 1
         async with websockets.connect(self.wsurl) as ws:
             await ws.send(

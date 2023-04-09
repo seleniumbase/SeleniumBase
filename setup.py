@@ -127,7 +127,7 @@ setup(
         'packaging>=21.3;python_version<"3.7"',
         'packaging>=23.0;python_version>="3.7"',
         'setuptools>=59.6.0;python_version<"3.7"',
-        'setuptools>=67.6.0;python_version>="3.7"',
+        'setuptools>=67.6.1;python_version>="3.7"',
         'keyring>=23.4.1;python_version<"3.8"',
         'keyring>=23.13.1;python_version>="3.8"',
         'tomli>=1.2.3;python_version<"3.7"',
@@ -141,10 +141,11 @@ setup(
         "PyYAML>=6.0",
         "certifi>=2022.12.7",
         'filelock>=3.4.1;python_version<"3.7"',
-        'filelock>=3.10.7;python_version>="3.7"',
+        'filelock>=3.11.0;python_version>="3.7"',
         'platformdirs>=2.4.0;python_version<"3.7"',
         'platformdirs>=3.2.0;python_version>="3.7"',
         'pyparsing>=3.0.7;python_version<"3.7"',
+        'pyparsing>=3.0.9;python_version>="3.7"',
         'zipp==3.6.0;python_version<"3.7"',
         'zipp>=3.15.0;python_version>="3.7"',
         'more-itertools==8.14.0;python_version<"3.7"',
@@ -166,7 +167,6 @@ setup(
         'outcome==1.2.0;python_version>="3.7"',
         'trio==0.22.0;python_version>="3.7"',
         'trio-websocket==0.10.2;python_version>="3.7"',
-        'websockets==10.4;python_version>="3.7"',
         'pyopenssl==23.1.1;python_version>="3.7"',
         'wsproto==1.2.0;python_version>="3.7"',
         'selenium==3.141.0;python_version<"3.7"',
@@ -183,7 +183,7 @@ setup(
         "pluggy==1.0.0",
         "py==1.11.0",
         'pytest==7.0.1;python_version<"3.7"',
-        'pytest==7.2.2;python_version>="3.7"',
+        'pytest==7.3.0;python_version>="3.7"',
         'pytest-forked==1.4.0;python_version<"3.7"',
         'pytest-forked==1.6.0;python_version>="3.7"',
         "pytest-html==2.0.1",  # Newer ones had issues
@@ -200,7 +200,7 @@ setup(
         "behave==1.2.6",
         'soupsieve==2.3.2.post1;python_version<"3.7"',
         'soupsieve==2.4;python_version>="3.7"',
-        "beautifulsoup4==4.12.0",
+        "beautifulsoup4==4.12.2",
         'cryptography==36.0.2;python_version<"3.7"',
         'cryptography==40.0.1;python_version>="3.7"',
         "pygments==2.14.0",
@@ -239,7 +239,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage==6.2;python_version<"3.7"',
-            'coverage==7.2.2;python_version>="3.7"',
+            'coverage==7.2.3;python_version>="3.7"',
             "pytest-cov==4.0.0",
         ],
         # pip install -e .[flake8]
@@ -268,7 +268,7 @@ setup(
         # pip install -e .[pillow]
         "pillow": [
             'Pillow==8.4.0;python_version<"3.7"',
-            'Pillow==9.4.0;python_version>="3.7"',
+            'Pillow==9.5.0;python_version>="3.7"',
         ],
         # pip install -e .[psutil]
         "psutil": [
@@ -277,7 +277,6 @@ setup(
         # pip install -e .[selenium-wire]
         "selenium-wire": [
             'selenium-wire==5.1.0;python_version>="3.7"',
-            'pyparsing==3.0.9;python_version>="3.7"',
             'Brotli==1.0.9;python_version>="3.7"',
             'blinker==1.5;python_version>="3.7"',
             'h2==4.1.0;python_version>="3.7"',
