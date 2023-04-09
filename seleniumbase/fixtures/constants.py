@@ -240,11 +240,8 @@ class BootstrapTour:
     LIB = "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tour"
     VER = "0.12.0"
     MIN_CSS = "%s/%s/css/bootstrap-tour-standalone.min.css" % (LIB, VER)
-    MIN_JS = "%s/%s/js/bootstrap-tour-standalone.min.js" % (LIB, VER)
-    MIN_JS_SB = (
-        "https://seleniumbase.github.io/cdn/js/"
-        "bootstrap-tour-standalone.min.js"
-    )
+    # MIN_JS = "%s/%s/js/bootstrap-tour-standalone.min.js" % (LIB, VER)
+    MIN_JS = "https://seleniumbase.github.io/cdn/js/bootstraptour.min.js"
 
 
 class DriverJS:
@@ -252,7 +249,6 @@ class DriverJS:
     VER = "0.9.8"
     MIN_CSS = "%s@%s/dist/driver.min.css" % (LIB, VER)
     MIN_JS = "%s@%s/dist/driver.min.js" % (LIB, VER)
-    MIN_JS_SB = "https://seleniumbase.github.io/cdn/js/driver.min.js"
 
 
 class Hopscotch:
@@ -269,7 +265,6 @@ class IntroJS:
         "intro.js@%s/minified/introjs.min.css" % VER
     )
     MIN_JS = "https://cdn.jsdelivr.net/npm/intro.js@%s/intro.min.js" % VER
-    MIN_JS_SB = "https://seleniumbase.github.io/cdn/js/intro.min.js"
 
 
 class TourColor:

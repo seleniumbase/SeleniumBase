@@ -11695,17 +11695,13 @@ class BaseCase(unittest.TestCase):
         )
         self._tour_steps[name].append(step)
 
-    def play_tour(self, name=None, interval=0, pgkeys=False):
+    def play_tour(self, name=None, interval=0):
         """Plays a tour on the current website.
         @Params
         name - If creating multiple tours at the same time,
                use this to select the tour you wish to add steps to.
         interval - The delay time between autoplaying tour steps. (Seconds)
-                   If set to 0 (default), the tour is fully manual control.
-        pgkeys - Lets you control tours using the page-up / page-down keys.
-                 This only works on Bootstrap, DriverJS, and IntroJS tours.
-                 If the tour is part of a presentation that uses a clicker,
-                 then you'll need this enabled for the clicker to work."""
+                   If set to 0 (default), the tour is fully manual control."""
         from seleniumbase.core import tour_helper
 
         if self.headless or self.headless2 or self.xvfb:
@@ -11727,7 +11723,6 @@ class BaseCase(unittest.TestCase):
                 self.message_duration,
                 name=name,
                 interval=interval,
-                pgkeys=pgkeys,
             )
         elif "DriverJS" in self._tour_steps[name][0]:
             tour_helper.play_driverjs_tour(
@@ -11737,7 +11732,6 @@ class BaseCase(unittest.TestCase):
                 self.message_duration,
                 name=name,
                 interval=interval,
-                pgkeys=pgkeys,
             )
         elif "Hopscotch" in self._tour_steps[name][0]:
             tour_helper.play_hopscotch_tour(
@@ -11756,7 +11750,6 @@ class BaseCase(unittest.TestCase):
                 self.message_duration,
                 name=name,
                 interval=interval,
-                pgkeys=pgkeys,
             )
         else:
             tour_helper.play_shepherd_tour(
@@ -11767,9 +11760,9 @@ class BaseCase(unittest.TestCase):
                 interval=interval,
             )
 
-    def start_tour(self, name=None, interval=0, pgkeys=False):
+    def start_tour(self, name=None, interval=0):
         """Same as self.play_tour()"""
-        self.play_tour(name=name, interval=interval, pgkeys=pgkeys)
+        self.play_tour(name=name, interval=interval)
 
     def export_tour(self, name=None, filename="my_tour.js", url=None):
         """Exports a tour as a JS file.

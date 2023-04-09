@@ -14,14 +14,12 @@ from seleniumbase.fixtures import page_actions
 EXPORTED_TOURS_FOLDER = constants.Tours.EXPORTED_TOURS_FOLDER
 
 
-def activate_bootstrap(driver, pgkeys=False):
+def activate_bootstrap(driver):
     """Allows you to use Bootstrap Tours with SeleniumBase
     http://bootstraptour.com/
     """
     bootstrap_tour_css = constants.BootstrapTour.MIN_CSS
     bootstrap_tour_js = constants.BootstrapTour.MIN_JS
-    if pgkeys:
-        bootstrap_tour_js = constants.BootstrapTour.MIN_JS_SB
 
     verify_script = """// Verify Bootstrap Tour activated
                      var tour2 = new Tour({
@@ -58,15 +56,13 @@ def is_bootstrap_activated(driver):
         return False
 
 
-def activate_driverjs(driver, pgkeys=False):
+def activate_driverjs(driver):
     """Allows you to use DriverJS Tours with SeleniumBase
     https://kamranahmed.info/driver.js/
     """
     backdrop_style = style_sheet.get_dt_backdrop_style()
     driverjs_css = constants.DriverJS.MIN_CSS
     driverjs_js = constants.DriverJS.MIN_JS
-    if pgkeys:
-        driverjs_js = constants.DriverJS.MIN_JS_SB
 
     verify_script = """// Verify DriverJS activated
                      var driverjs2 = Driver.name;
@@ -148,14 +144,12 @@ def is_hopscotch_activated(driver):
         return False
 
 
-def activate_introjs(driver, pgkeys=False):
+def activate_introjs(driver):
     """Allows you to use IntroJS Tours with SeleniumBase
     https://introjs.com/
     """
     intro_css = constants.IntroJS.MIN_CSS
     intro_js = constants.IntroJS.MIN_JS
-    if pgkeys:
-        intro_js = constants.IntroJS.MIN_JS_SB
 
     theme_color = sb_config.introjs_theme_color
     hover_color = sb_config.introjs_hover_color
@@ -269,6 +263,13 @@ def play_shepherd_tour(driver, tour_steps, msg_dur, name=None, interval=0):
         // Start the tour
         tour.start();
         $tour = tour;"""
+    instructions += """
+        document.body.addEventListener('keyup', function (event) {
+        if (event.key === 'PageUp' || event.key === 'ArrowLeft') {
+            Shepherd.activeTour.back(); }
+        if (event.key === 'PageDown' || event.key === 'ArrowRight') {
+            Shepherd.activeTour.next(); }
+        })"""
     autoplay = False
     if interval and interval > 0:
         autoplay = True
@@ -302,6 +303,16 @@ def play_shepherd_tour(driver, tour_steps, msg_dur, name=None, interval=0):
                 "" % selector
             )
     driver.execute_script(instructions)
+    try:
+        page_actions.wait_for_element_visible(
+            driver, "a.tour-button-right", by="css selector", timeout=1.2
+        )
+    except Exception:
+        pass
+    try:
+        driver.execute_script('document.activeElement.blur();')
+    except Exception:
+        pass
     tour_on = True
     if autoplay:
         start_ms = time.time() * 1000.0
@@ -389,13 +400,7 @@ def play_shepherd_tour(driver, tour_steps, msg_dur, name=None, interval=0):
 
 
 def play_bootstrap_tour(
-    driver,
-    tour_steps,
-    browser,
-    msg_dur,
-    name=None,
-    interval=0,
-    pgkeys=False,
+    driver, tour_steps, browser, msg_dur, name=None, interval=0
 ):
     """Plays a Bootstrap tour on the current website."""
     instructions = ""
@@ -410,7 +415,6 @@ def play_bootstrap_tour(
         tour.restart();
         // Save for later
         $tour = tour;"""
-
     if interval and interval > 0:
         if interval < 1:
             interval = 1
@@ -418,10 +422,8 @@ def play_bootstrap_tour(
         instructions = instructions.replace(
             "duration: 0,", "duration: %s," % interval
         )
-
     if not is_bootstrap_activated(driver):
-        activate_bootstrap(driver, pgkeys)
-
+        activate_bootstrap(driver)
     if len(tour_steps[name]) > 1:
         try:
             if "element: " in tour_steps[name][1]:
@@ -447,7 +449,6 @@ def play_bootstrap_tour(
                 "Exiting due to failure on first tour step!"
                 "" % selector
             )
-
     driver.execute_script(instructions)
     tour_on = True
     try:
@@ -497,13 +498,7 @@ def play_bootstrap_tour(
 
 
 def play_driverjs_tour(
-    driver,
-    tour_steps,
-    browser,
-    msg_dur,
-    name=None,
-    interval=0,
-    pgkeys=False,
+    driver, tour_steps, browser, msg_dur, name=None, interval=0
 ):
     """Plays a DriverJS tour on the current website."""
     instructions = ""
@@ -514,6 +509,11 @@ def play_driverjs_tour(
         // Start the tour!
         tour.start();
         $tour = tour;"""
+    instructions += """
+        document.body.addEventListener('keyup', function (event) {
+        if (event.key === 'PageUp') { $tour.movePrevious(); }
+        if (event.key === 'PageDown') { $tour.moveNext(); }
+        })"""
     autoplay = False
     if interval and interval > 0:
         autoplay = True
@@ -522,7 +522,7 @@ def play_driverjs_tour(
             interval = 0.5
 
     if not is_driverjs_activated(driver):
-        activate_driverjs(driver, pgkeys)
+        activate_driverjs(driver)
 
     if len(tour_steps[name]) > 1:
         try:
@@ -641,6 +641,13 @@ def play_hopscotch_tour(
         // Start the tour!
         hopscotch.startTour(tour);
         $tour = hopscotch;"""
+    instructions += """
+        document.body.addEventListener('keyup', function (event) {
+        if (event.key === 'PageUp' || event.key === 'ArrowLeft') {
+            $tour.prevStep(); }
+        if (event.key === 'PageDown' || event.key === 'ArrowRight') {
+            $tour.nextStep(); }
+        })"""
     autoplay = False
     if interval and interval > 0:
         autoplay = True
@@ -678,6 +685,16 @@ def play_hopscotch_tour(
             )
 
     driver.execute_script(instructions)
+    try:
+        page_actions.wait_for_element_visible(
+            driver, "button.hopscotch-next", by="css selector", timeout=1.2
+        )
+    except Exception:
+        pass
+    try:
+        driver.execute_script('document.activeElement.blur();')
+    except Exception:
+        pass
     tour_on = True
     if autoplay:
         start_ms = time.time() * 1000.0
@@ -749,13 +766,7 @@ def play_hopscotch_tour(
 
 
 def play_introjs_tour(
-    driver,
-    tour_steps,
-    browser,
-    msg_dur,
-    name=None,
-    interval=0,
-    pgkeys=False,
+    driver, tour_steps, browser, msg_dur, name=None, interval=0
 ):
     """Plays an IntroJS tour on the current website."""
     instructions = ""
@@ -779,6 +790,11 @@ def play_introjs_tour(
         // Start the tour
         startIntro();
         """
+    instructions += """
+        document.body.addEventListener('keyup', function (event) {
+        if (event.key === 'PageUp') { $tour.previousStep(); }
+        if (event.key === 'PageDown') { $tour.nextStep(); }
+        })"""
     autoplay = False
     if interval and interval > 0:
         autoplay = True
@@ -787,7 +803,7 @@ def play_introjs_tour(
             interval = 0.5
 
     if not is_introjs_activated(driver):
-        activate_introjs(driver, pgkeys)
+        activate_introjs(driver)
 
     if len(tour_steps[name]) > 1:
         try:
