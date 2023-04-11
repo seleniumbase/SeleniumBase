@@ -35,6 +35,7 @@ def SB(
     proxy=None,  # Use proxy. Format: "SERVER:PORT" or "USER:PASS@SERVER:PORT".
     proxy_bypass_list=None,  # Skip proxy when using the listed domains.
     proxy_pac_url=None,  # Use PAC file. (Format: URL or USERNAME:PASSWORD@URL)
+    multi_proxy=False,  # Allow multiple proxies with auth when multi-threaded.
     agent=None,  # Modify the web browser's User-Agent string.
     cap_file=None,  # The desired capabilities to use with a Selenium Grid.
     cap_string=None,  # The desired capabilities to use with a Selenium Grid.
@@ -663,6 +664,7 @@ def SB(
     sb_config.proxy_string = proxy_string
     sb_config.proxy_bypass_list = proxy_bypass_list
     sb_config.proxy_pac_url = proxy_pac_url
+    sb_config.multi_proxy = multi_proxy
     sb_config.enable_3d_apis = enable_3d_apis
     sb_config.swiftshader = swiftshader
     sb_config.ad_block_on = ad_block_on
@@ -760,6 +762,7 @@ def SB(
     sb.proxy_string = sb_config.proxy_string
     sb.proxy_bypass_list = sb_config.proxy_bypass_list
     sb.proxy_pac_url = sb_config.proxy_pac_url
+    sb.multi_proxy = sb_config.multi_proxy
     sb.enable_3d_apis = sb_config.enable_3d_apis
     sb.swiftshader = sb_config.swiftshader
     sb.ad_block_on = sb_config.ad_block_on
@@ -803,7 +806,8 @@ def SB(
 
         log_helper.log_folder_setup(sb_config.log_path)
         download_helper.reset_downloads_folder()
-        proxy_helper.remove_proxy_zip_if_present()
+        if not sb_config.multi_proxy:
+            proxy_helper.remove_proxy_zip_if_present()
     start_time = time.time()
     sb.setUp()
     test_passed = True  # This can change later

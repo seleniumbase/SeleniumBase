@@ -63,6 +63,7 @@ def Driver(
     proxy=None,  # Use proxy. Format: "SERVER:PORT" or "USER:PASS@SERVER:PORT".
     proxy_bypass_list=None,  # Skip proxy when using the listed domains.
     proxy_pac_url=None,  # Use PAC file. (Format: URL or USERNAME:PASSWORD@URL)
+    multi_proxy=False,  # Allow multiple proxies with auth when multi-threaded.
     agent=None,  # Modify the web browser's User-Agent string.
     cap_file=None,  # The desired capabilities to use with a Selenium Grid.
     cap_string=None,  # The desired capabilities to use with a Selenium Grid.
@@ -403,6 +404,7 @@ def Driver(
         proxy_string=proxy_string,
         proxy_bypass_list=proxy_bypass_list,
         proxy_pac_url=proxy_pac_url,
+        multi_proxy=multi_proxy,
         user_agent=user_agent,
         cap_file=cap_file,
         cap_string=cap_string,

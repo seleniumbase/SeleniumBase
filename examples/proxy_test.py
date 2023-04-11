@@ -18,7 +18,7 @@ class ProxyTests(BaseCase):
             print("Skipping test for using Safari.")
             self.skip("Skipping test for using Safari.")
         settings.SKIP_JS_WAITS = True
-        if not self.page_load_strategy == "none":
+        if not self.page_load_strategy == "none" and not self.undetectable:
             # This page takes too long to load otherwise
             self.get_new_driver(page_load_strategy="none")
         self.open("https://ipinfo.io/")

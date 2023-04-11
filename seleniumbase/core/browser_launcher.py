@@ -12,6 +12,7 @@ import warnings
 import zipfile
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.common.service import utils as service_utils
 from selenium.webdriver.edge.service import Service as EdgeService
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.safari.service import Service as SafariService
@@ -295,45 +296,74 @@ def _was_driver_repaired():
     return os.path.exists(file_path)
 
 
+def _set_proxy_filenames():
+    DOWNLOADS_DIR = constants.Files.DOWNLOADS_FOLDER
+    for num in range(1000):
+        PROXY_ZIP_PATH = os.path.join(DOWNLOADS_DIR, "proxy_%s.zip" % num)
+        PROXY_DIR_PATH = os.path.join(DOWNLOADS_DIR, "proxy_ext_dir_%s" % num)
+        if os.path.exists(PROXY_ZIP_PATH) or os.path.exists(PROXY_DIR_PATH):
+            continue
+        proxy_helper.PROXY_ZIP_PATH = PROXY_ZIP_PATH
+        proxy_helper.PROXY_DIR_PATH = PROXY_DIR_PATH
+        return
+    # Exceeded upper bound. Use Defaults:
+    PROXY_ZIP_PATH = os.path.join(DOWNLOADS_DIR, "proxy.zip")
+    PROXY_DIR_PATH = os.path.join(DOWNLOADS_DIR, "proxy_ext_dir")
+    proxy_helper.PROXY_ZIP_PATH = PROXY_ZIP_PATH
+    proxy_helper.PROXY_DIR_PATH = PROXY_DIR_PATH
+
+
 def _add_chrome_proxy_extension(
-    chrome_options, proxy_string, proxy_user, proxy_pass, zip_it=True
+    chrome_options,
+    proxy_string,
+    proxy_user,
+    proxy_pass,
+    zip_it=True,
+    multi_proxy=False,
 ):
     """Implementation of https://stackoverflow.com/a/35293284 for
     https://stackoverflow.com/questions/12848327/
     (Run Selenium on a proxy server that requires authentication.)"""
     arg_join = " ".join(sys.argv)
-    if not ("-n" in sys.argv or " -n=" in arg_join or arg_join == "-c"):
+    if (
+        not ("-n" in sys.argv or " -n=" in arg_join or arg_join == "-c")
+        and not multi_proxy
+    ):
         # Single-threaded
         if zip_it:
             proxy_helper.create_proxy_ext(proxy_string, proxy_user, proxy_pass)
-            proxy_zip = PROXY_ZIP_PATH
+            proxy_zip = proxy_helper.PROXY_ZIP_PATH
             chrome_options.add_extension(proxy_zip)
         else:
             proxy_helper.create_proxy_ext(
                 proxy_string, proxy_user, proxy_pass, zip_it=False
             )
-            chrome_options = add_chrome_ext_dir(chrome_options, PROXY_DIR_PATH)
-
+            proxy_dir_path = proxy_helper.PROXY_DIR_PATH
+            chrome_options = add_chrome_ext_dir(chrome_options, proxy_dir_path)
     else:
-        # Pytest multithreaded test
+        # Multi-threaded
         if zip_it:
             proxy_zip_lock = fasteners.InterProcessLock(PROXY_ZIP_LOCK)
             with proxy_zip_lock:
-                if not os.path.exists(PROXY_ZIP_PATH):
+                if multi_proxy:
+                    _set_proxy_filenames()
+                if not os.path.exists(proxy_helper.PROXY_ZIP_PATH):
                     proxy_helper.create_proxy_ext(
                         proxy_string, proxy_user, proxy_pass
                     )
-                proxy_zip = PROXY_ZIP_PATH
+                proxy_zip = proxy_helper.PROXY_ZIP_PATH
                 chrome_options.add_extension(proxy_zip)
         else:
             proxy_dir_lock = fasteners.InterProcessLock(PROXY_DIR_LOCK)
             with proxy_dir_lock:
-                if not os.path.exists(PROXY_DIR_PATH):
+                if multi_proxy:
+                    _set_proxy_filenames()
+                if not os.path.exists(proxy_helper.PROXY_DIR_PATH):
                     proxy_helper.create_proxy_ext(
                         proxy_string, proxy_user, proxy_pass, False
                     )
                 chrome_options = add_chrome_ext_dir(
-                    chrome_options, PROXY_DIR_PATH
+                    chrome_options, proxy_helper.PROXY_DIR_PATH
                 )
     return chrome_options
 
@@ -406,6 +436,7 @@ def _set_chrome_options(
     proxy_pass,
     proxy_bypass_list,
     proxy_pac_url,
+    multi_proxy,
     user_agent,
     recorder_ext,
     disable_js,
@@ -656,7 +687,12 @@ def _set_chrome_options(
             if is_using_uc(undetectable, browser_name):
                 zip_it = False  # undetected-chromedriver needs a folder ext
             chrome_options = _add_chrome_proxy_extension(
-                chrome_options, proxy_string, proxy_user, proxy_pass, zip_it
+                chrome_options,
+                proxy_string,
+                proxy_user,
+                proxy_pass,
+                zip_it,
+                multi_proxy,
             )
         chrome_options.add_argument("--proxy-server=%s" % proxy_string)
         if proxy_bypass_list:
@@ -669,7 +705,12 @@ def _set_chrome_options(
             if is_using_uc(undetectable, browser_name):
                 zip_it = False
             chrome_options = _add_chrome_proxy_extension(
-                chrome_options, None, proxy_user, proxy_pass, zip_it
+                chrome_options,
+                None,
+                proxy_user,
+                proxy_pass,
+                zip_it,
+                multi_proxy,
             )
         chrome_options.add_argument("--proxy-pac-url=%s" % proxy_pac_url)
     if browser_name != constants.Browser.OPERA:
@@ -691,7 +732,12 @@ def _set_chrome_options(
         # To access the Debugger, go to: chrome://inspect/#devices
         # while a Chromium driver is running.
         # Info: https://chromedevtools.github.io/devtools-protocol/
-        chrome_options.add_argument("--remote-debugging-port=9222")
+        sys_argv = sys.argv
+        arg_join = " ".join(sys_argv)
+        debug_port = 9222
+        if ("-n" in sys.argv) or (" -n=" in arg_join) or ("-c" in sys.argv):
+            debug_port = service_utils.free_port()
+        chrome_options.add_argument("--remote-debugging-port=%s" % debug_port)
     if swiftshader:
         chrome_options.add_argument("--use-gl=swiftshader")
     elif not is_using_uc(undetectable, browser_name):
@@ -1000,6 +1046,7 @@ def get_driver(
     proxy_string=None,
     proxy_bypass_list=None,
     proxy_pac_url=None,
+    multi_proxy=None,
     user_agent=None,
     cap_file=None,
     cap_string=None,
@@ -1205,6 +1252,7 @@ def get_driver(
             proxy_pass,
             proxy_bypass_list,
             proxy_pac_url,
+            multi_proxy,
             user_agent,
             cap_file,
             cap_string,
@@ -1257,6 +1305,7 @@ def get_driver(
             proxy_pass,
             proxy_bypass_list,
             proxy_pac_url,
+            multi_proxy,
             user_agent,
             recorder_ext,
             disable_js,
@@ -1309,6 +1358,7 @@ def get_remote_driver(
     proxy_pass,
     proxy_bypass_list,
     proxy_pac_url,
+    multi_proxy,
     user_agent,
     cap_file,
     cap_string,
@@ -1430,6 +1480,7 @@ def get_remote_driver(
             proxy_pass,
             proxy_bypass_list,
             proxy_pac_url,
+            multi_proxy,
             user_agent,
             recorder_ext,
             disable_js,
@@ -1618,6 +1669,7 @@ def get_remote_driver(
             proxy_pass,
             proxy_bypass_list,
             proxy_pac_url,
+            multi_proxy,
             user_agent,
             recorder_ext,
             disable_js,
@@ -1738,6 +1790,7 @@ def get_remote_driver(
             proxy_pass,
             proxy_bypass_list,
             proxy_pac_url,
+            multi_proxy,
             user_agent,
             recorder_ext,
             disable_js,
@@ -1856,6 +1909,7 @@ def get_local_driver(
     proxy_pass,
     proxy_bypass_list,
     proxy_pac_url,
+    multi_proxy,
     user_agent,
     recorder_ext,
     disable_js,
@@ -2389,7 +2443,12 @@ def get_local_driver(
         if proxy_string:
             if proxy_auth:
                 edge_options = _add_chrome_proxy_extension(
-                    edge_options, proxy_string, proxy_user, proxy_pass
+                    edge_options,
+                    proxy_string,
+                    proxy_user,
+                    proxy_pass,
+                    zip_it=True,
+                    multi_proxy=multi_proxy,
                 )
             edge_options.add_argument("--proxy-server=%s" % proxy_string)
             if proxy_bypass_list:
@@ -2399,7 +2458,12 @@ def get_local_driver(
         elif proxy_pac_url:
             if proxy_auth:
                 edge_options = _add_chrome_proxy_extension(
-                    edge_options, None, proxy_user, proxy_pass
+                    edge_options,
+                    None,
+                    proxy_user,
+                    proxy_pass,
+                    zip_it=True,
+                    multi_proxy=multi_proxy,
                 )
             edge_options.add_argument("--proxy-pac-url=%s" % proxy_pac_url)
         edge_options.add_argument("--test-type")
@@ -2419,7 +2483,12 @@ def get_local_driver(
             # To access the Debugger, go to: edge://inspect/#devices
             # while a Chromium driver is running.
             # Info: https://chromedevtools.github.io/devtools-protocol/
-            edge_options.add_argument("--remote-debugging-port=9222")
+            sys_argv = sys.argv
+            arg_join = " ".join(sys_argv)
+            free_port = 9222
+            if ("-n" in sys.argv or " -n=" in args or args == "-c"):
+                free_port = service_utils.free_port()
+            edge_options.add_argument("--remote-debugging-port=%s" % free_port)
         if swiftshader:
             edge_options.add_argument("--use-gl=swiftshader")
         else:
@@ -2469,7 +2538,14 @@ def get_local_driver(
                         log_path=os.devnull,
                     )
                     # https://stackoverflow.com/a/56638103/7058266
-                    edge_options.add_argument("--remote-debugging-port=9222")
+                    sys_argv = sys.argv
+                    arg_join = " ".join(sys_argv)
+                    free_port = 9222
+                    if ("-n" in sys.argv or " -n=" in args or args == "-c"):
+                        free_port = service_utils.free_port()
+                    edge_options.add_argument(
+                        "--remote-debugging-port=%s" % free_port
+                    )
                     return Edge(service=service, options=edge_options)
                 if not auto_upgrade_edgedriver:
                     raise  # Not an obvious fix.
@@ -2535,7 +2611,14 @@ def get_local_driver(
                         log_path=os.devnull,
                     )
                     # https://stackoverflow.com/a/56638103/7058266
-                    edge_options.add_argument("--remote-debugging-port=9222")
+                    sys_argv = sys.argv
+                    arg_join = " ".join(sys_argv)
+                    free_port = 9222
+                    if ("-n" in sys.argv or " -n=" in args or args == "-c"):
+                        free_port = service_utils.free_port()
+                    edge_options.add_argument(
+                        "--remote-debugging-port=%s" % free_port
+                    )
                     return Edge(service=service, options=edge_options)
                 if not auto_upgrade_edgedriver:
                     raise  # Not an obvious fix.
@@ -2614,6 +2697,7 @@ def get_local_driver(
                 proxy_pass,
                 proxy_bypass_list,
                 proxy_pac_url,
+                multi_proxy,
                 user_agent,
                 recorder_ext,
                 disable_js,
@@ -2668,6 +2752,7 @@ def get_local_driver(
                 proxy_pass,
                 proxy_bypass_list,
                 proxy_pac_url,
+                multi_proxy,
                 user_agent,
                 recorder_ext,
                 disable_js,
@@ -2796,6 +2881,10 @@ def get_local_driver(
             uc_driver_version = None
             if is_using_uc(undetectable, browser_name):
                 uc_driver_version = get_uc_driver_version()
+                if multi_proxy:
+                    from seleniumbase import config as sb_config
+
+                    sb_config.multi_proxy = True
             if (
                 LOCAL_CHROMEDRIVER
                 and os.path.exists(LOCAL_CHROMEDRIVER)
@@ -3133,6 +3222,7 @@ def get_local_driver(
                         proxy_pass,
                         proxy_bypass_list,
                         proxy_pac_url,
+                        multi_proxy,
                         user_agent,
                         recorder_ext,
                         disable_js,

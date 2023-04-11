@@ -40,11 +40,12 @@ def pytest_addoption(parser):
     --port=PORT  (The Selenium Grid port used by the test server.)
     --cap-file=FILE  (The web browser's desired capabilities to use.)
     --cap-string=STRING  (The web browser's desired capabilities to use.)
-    --proxy=SERVER:PORT  (Connect to a proxy server:port for tests.)
-    --proxy=USERNAME:PASSWORD@SERVER:PORT  (Use authenticated proxy server.)
+    --proxy=SERVER:PORT  (Connect to a proxy server:port as tests are running)
+    --proxy=USERNAME:PASSWORD@SERVER:PORT  (Use an authenticated proxy server)
     --proxy-bypass-list=STRING (";"-separated hosts to bypass, Eg "*.foo.com")
     --proxy-pac-url=URL  (Connect to a proxy server using a PAC_URL.pac file.)
     --proxy-pac-url=USERNAME:PASSWORD@URL  (Authenticated proxy with PAC URL.)
+    --multi-proxy  (Allow multiple authenticated proxies when multi-threaded.)
     --agent=STRING  (Modify the web browser's User-Agent string.)
     --mobile  (Use the mobile device emulator while running tests.)
     --metrics=STRING  (Set mobile metrics: "CSSWidth,CSSHeight,PixelRatio".)
@@ -487,6 +488,16 @@ def pytest_addoption(parser):
                 Format: A URL string  OR
                         A username:password@URL string
                 Default: None.""",
+    )
+    parser.addoption(
+        "--multi-proxy",
+        "--multi_proxy",
+        action="store_true",
+        dest="multi_proxy",
+        default=False,
+        help="""If you need to run multi-threaded tests with
+                multiple proxies that require authentication,
+                set this to allow multiple configurations.""",
     )
     parser.addoption(
         "--agent",
@@ -1421,6 +1432,7 @@ def pytest_configure(config):
     sb_config.proxy_string = config.getoption("proxy_string")
     sb_config.proxy_bypass_list = config.getoption("proxy_bypass_list")
     sb_config.proxy_pac_url = config.getoption("proxy_pac_url")
+    sb_config.multi_proxy = config.getoption("multi_proxy")
     sb_config.cap_file = config.getoption("cap_file")
     sb_config.cap_string = config.getoption("cap_string")
     sb_config.settings_file = config.getoption("settings_file")
@@ -1930,7 +1942,8 @@ def pytest_terminal_summary(terminalreporter):
 def _perform_pytest_unconfigure_():
     from seleniumbase.core import proxy_helper
 
-    proxy_helper.remove_proxy_zip_if_present()
+    if not sb_config.multi_proxy:
+        proxy_helper.remove_proxy_zip_if_present()
     if hasattr(sb_config, "reuse_session") and sb_config.reuse_session:
         # Close the shared browser session
         if sb_config.shared_driver:

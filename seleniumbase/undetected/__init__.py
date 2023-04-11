@@ -141,7 +141,28 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         options._session = self
         debug_host = "127.0.0.1"
         debug_port = 9222
+        import requests
+
+        special_port_free = False  # If the port isn't free, don't use 9222
+        try:
+            res = requests.get("http://127.0.0.1:9222")
+            if res.status_code != 200:
+                raise Exception("The port is free! It will be used!")
+        except Exception:
+            # Use port 9222, which outputs to chrome://inspect/#devices
+            special_port_free = True
+        sys_argv = sys.argv
+        arg_join = " ".join(sys_argv)
+        from seleniumbase import config as sb_config
+
+        if (
+            (("-n" in sys.argv) or (" -n=" in arg_join) or ("-c" in sys.argv))
+            or (hasattr(sb_config, "multi_proxy") and sb_config.multi_proxy)
+            or not special_port_free
+        ):
+            debug_port = selenium.webdriver.common.service.utils.free_port()
         if hasattr(options, "_remote_debugging_port"):
+            # The user chooses the port. Errors happen if the port is taken.
             debug_port = options._remote_debugging_port
         if not options.debugger_address:
             options.debugger_address = "%s:%d" % (debug_host, debug_port)
