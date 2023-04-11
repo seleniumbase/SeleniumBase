@@ -93,7 +93,7 @@ def do_pytest_run(
         if selected_tests[selected_test].get():
             total_selected_tests += 1
 
-    full_run_command = "pytest"
+    full_run_command = "%s -m pytest" % sys.executable
     if total_selected_tests == 0 or total_tests == total_selected_tests:
         if command_string:
             full_run_command += " "
@@ -424,7 +424,8 @@ def main():
     print(message)
 
     proc = subprocess.Popen(
-        'pytest --co -q --rootdir="./" %s' % command_string,
+        '%s -m pytest --collect-only -q --rootdir="./" %s'
+        % (sys.executable, command_string),
         stdout=subprocess.PIPE,
         shell=True,
     )

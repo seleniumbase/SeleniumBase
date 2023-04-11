@@ -28,8 +28,8 @@ pytest test_inspect_html.py
 ⚠️  'property' is not a valid attribute of the <meta> element.
 ⚠️  Do not use <div> or <span> elements without any attributes.
 ⚠️  'srcset' is not a valid attribute of the <img> element.
-⚠️  The 'border' attribute is no longer valid on the <img> element and should not be used.
-⚠️  The <center> element is obsolete and should not be used.
+⚠️  The 'border' attribute is no longer valid on the <img> element.
+⚠️  The <center> element is obsolete.
 ⚠️  The id 'comicLinks' appears more than once in the document.
 * (See the Console output for details!)
 ```

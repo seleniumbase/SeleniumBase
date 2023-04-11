@@ -7127,9 +7127,15 @@ class BaseCase(unittest.TestCase):
             if "0:6053 " in message:
                 message = message.split("0:6053")[1]
             message = message.replace("\\u003C", "<")
+            message = message.replace(" and should not be used", "")
             if message.startswith(' "') and message.count('"') == 2:
                 message = message.split('"')[1]
-            message = "⚠️  " + message
+            if "but not found in any stylesheet" in message:
+                continue
+            if not is_windows:
+                message = "⚠️  " + message
+            else:
+                message = "!-> " + message  # CMD prompt compatibility
             if messenger_library not in message:
                 if message not in results:
                     results.append(message)

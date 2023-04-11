@@ -391,7 +391,10 @@ def create_tkinter_gui(tests, command_string):
         )
     run_display_2 = "(Tests with existing Case Plans are already checked)"
     tk.Label(root, text=run_display, fg="blue").pack()
-    tk.Label(root, text=run_display_2, fg="purple").pack()
+    try:
+        tk.Label(root, text=run_display_2, fg="purple").pack()
+    except Exception:
+        tk.Label(root, text=run_display_2, fg="magenta").pack()
     text_area = ScrolledText(
         root, width=100, height=12, wrap="word", state=tk.DISABLED
     )
@@ -465,13 +468,22 @@ def create_tkinter_gui(tests, command_string):
     ).pack()
 
     tk.Label(root, text="").pack()
-    tk.Button(
-        root,
-        text=(
-            "Generate Summary of existing Case Plans"),
-        fg="teal",
-        command=lambda: view_summary_of_existing_case_plans(root, tests),
-    ).pack()
+    try:
+        tk.Button(
+            root,
+            text=(
+                "Generate Summary of existing Case Plans"),
+            fg="teal",
+            command=lambda: view_summary_of_existing_case_plans(root, tests),
+        ).pack()
+    except Exception:
+        tk.Button(
+            root,
+            text=(
+                "Generate Summary of existing Case Plans"),
+            fg="green",
+            command=lambda: view_summary_of_existing_case_plans(root, tests),
+        ).pack()
     tk.Label(root, text="\n").pack()
 
     # Bring form window to front
@@ -515,7 +527,8 @@ def main():
     print(message)
 
     proc = subprocess.Popen(
-        'pytest --co -q --rootdir="./" %s' % command_string,
+        '%s -m pytest --collect-only -q --rootdir="./" %s'
+        % (sys.executable, command_string),
         stdout=subprocess.PIPE,
         shell=True,
     )

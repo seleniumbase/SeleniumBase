@@ -21,10 +21,6 @@ import sys
 from seleniumbase import config as sb_config
 from seleniumbase.fixtures import page_utils
 
-PLATFORM = sys.platform
-IS_WINDOWS = False
-if "win32" in PLATFORM or "win64" in PLATFORM or "x64" in PLATFORM:
-    IS_WINDOWS = True
 sb_config.rec_subprocess_p = None
 sb_config.rec_subprocess_used = False
 if sys.version_info <= (3, 7):
@@ -134,9 +130,10 @@ def do_recording(file_name, url, overwrite_enabled, use_chrome, window):
             or "--gherkin" in command_args
         ):
             add_on = " --rec-behave"
-        command = "seleniumbase mkrec %s --url=%s --gui" % (file_name, url)
-        if IS_WINDOWS:
-            command = "python.exe -m %s" % command
+        command = (
+            "%s -m seleniumbase mkrec %s --url=%s --gui"
+            % (sys.executable, file_name, url)
+        )
         if not use_chrome:
             command += " --edge"
         if (
@@ -171,9 +168,7 @@ def do_playback(file_name, use_chrome, window, demo_mode=False):
             'File "%s" does not exist in the current directory!' % file_name,
         )
         return
-    command = "pytest %s -q -s" % file_name
-    if IS_WINDOWS:
-        command = "python.exe -m %s" % command
+    command = "%s -m pytest %s -q -s" % (sys.executable, file_name)
     if "linux" in sys.platform:
         command += " --gui"
     if not use_chrome:
@@ -248,14 +243,24 @@ def create_tkinter_gui():
     ).pack()
     tk.Label(window, text="").pack()
     tk.Label(window, text="Playback recording (Demo Mode):").pack()
-    tk.Button(
-        window,
-        text="Playback (Demo Mode)",
-        fg="teal",
-        command=lambda: do_playback(
-            fname.get(), cbb.get(), window, demo_mode=True
-        ),
-    ).pack()
+    try:
+        tk.Button(
+            window,
+            text="Playback (Demo Mode)",
+            fg="teal",
+            command=lambda: do_playback(
+                fname.get(), cbb.get(), window, demo_mode=True
+            ),
+        ).pack()
+    except Exception:
+        tk.Button(
+            window,
+            text="Playback (Demo Mode)",
+            fg="blue",
+            command=lambda: do_playback(
+                fname.get(), cbb.get(), window, demo_mode=True
+            ),
+        ).pack()
 
     # Bring form window to front
     send_window_to_front(window)
