@@ -81,7 +81,7 @@ def do_behave_run(
         if selected_tests[selected_test].get():
             total_selected_tests += 1
 
-    full_run_command = "behave"
+    full_run_command = "%s -m behave" % sys.executable
     if total_selected_tests == 0 or total_tests == total_selected_tests:
         if command_string:
             full_run_command += " "
@@ -390,7 +390,8 @@ def main():
     command_string = command_string.replace("--quiet", "")
     command_string = command_string.replace("-q", "")
     proc = subprocess.Popen(
-        "behave -d %s --show-source" % command_string,
+        "%s -m behave -d %s --show-source"
+        % (sys.executable, command_string),
         stdout=subprocess.PIPE,
         shell=True,
     )
