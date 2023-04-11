@@ -12,6 +12,7 @@ import warnings
 import zipfile
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.common.service import utils as service_utils
 from selenium.webdriver.edge.service import Service as EdgeService
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.safari.service import Service as SafariService
@@ -731,7 +732,12 @@ def _set_chrome_options(
         # To access the Debugger, go to: chrome://inspect/#devices
         # while a Chromium driver is running.
         # Info: https://chromedevtools.github.io/devtools-protocol/
-        chrome_options.add_argument("--remote-debugging-port=9222")
+        sys_argv = sys.argv
+        arg_join = " ".join(sys_argv)
+        debug_port = 9222
+        if ("-n" in sys.argv) or (" -n=" in arg_join) or ("-c" in sys.argv):
+            debug_port = service_utils.free_port()
+        chrome_options.add_argument("--remote-debugging-port=%s" % debug_port)
     if swiftshader:
         chrome_options.add_argument("--use-gl=swiftshader")
     elif not is_using_uc(undetectable, browser_name):
@@ -2477,7 +2483,12 @@ def get_local_driver(
             # To access the Debugger, go to: edge://inspect/#devices
             # while a Chromium driver is running.
             # Info: https://chromedevtools.github.io/devtools-protocol/
-            edge_options.add_argument("--remote-debugging-port=9222")
+            sys_argv = sys.argv
+            arg_join = " ".join(sys_argv)
+            free_port = 9222
+            if ("-n" in sys.argv or " -n=" in args or args == "-c"):
+                free_port = service_utils.free_port()
+            edge_options.add_argument("--remote-debugging-port=%s" % free_port)
         if swiftshader:
             edge_options.add_argument("--use-gl=swiftshader")
         else:
@@ -2527,7 +2538,14 @@ def get_local_driver(
                         log_path=os.devnull,
                     )
                     # https://stackoverflow.com/a/56638103/7058266
-                    edge_options.add_argument("--remote-debugging-port=9222")
+                    sys_argv = sys.argv
+                    arg_join = " ".join(sys_argv)
+                    free_port = 9222
+                    if ("-n" in sys.argv or " -n=" in args or args == "-c"):
+                        free_port = service_utils.free_port()
+                    edge_options.add_argument(
+                        "--remote-debugging-port=%s" % free_port
+                    )
                     return Edge(service=service, options=edge_options)
                 if not auto_upgrade_edgedriver:
                     raise  # Not an obvious fix.
@@ -2593,7 +2611,14 @@ def get_local_driver(
                         log_path=os.devnull,
                     )
                     # https://stackoverflow.com/a/56638103/7058266
-                    edge_options.add_argument("--remote-debugging-port=9222")
+                    sys_argv = sys.argv
+                    arg_join = " ".join(sys_argv)
+                    free_port = 9222
+                    if ("-n" in sys.argv or " -n=" in args or args == "-c"):
+                        free_port = service_utils.free_port()
+                    edge_options.add_argument(
+                        "--remote-debugging-port=%s" % free_port
+                    )
                     return Edge(service=service, options=edge_options)
                 if not auto_upgrade_edgedriver:
                     raise  # Not an obvious fix.
