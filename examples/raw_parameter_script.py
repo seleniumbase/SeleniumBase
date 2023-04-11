@@ -116,6 +116,7 @@ if pure_python:
     sb.proxy_string = None
     sb.proxy_bypass_list = None
     sb.proxy_pac_url = None
+    sb.multi_proxy = False
     sb.swiftshader = False
     sb.ad_block_on = False
     sb.highlights = None

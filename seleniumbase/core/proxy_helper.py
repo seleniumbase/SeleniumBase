@@ -106,7 +106,7 @@ def create_proxy_ext(proxy_string, proxy_user, proxy_pass, zip_it=True):
             zf.writestr("manifest.json", manifest_json)
             zf.close()
         else:
-            proxy_ext_dir = os.path.join(downloads_path, "proxy_ext_dir")
+            proxy_ext_dir = PROXY_DIR_PATH
             if not os.path.exists(proxy_ext_dir):
                 os.mkdir(proxy_ext_dir)
             manifest_file = os.path.join(proxy_ext_dir, "manifest.json")

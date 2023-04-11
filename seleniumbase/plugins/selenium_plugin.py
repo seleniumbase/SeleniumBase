@@ -24,11 +24,12 @@ class SeleniumBrowser(Plugin):
     --port=PORT  (The Selenium Grid port used by the test server.)
     --cap-file=FILE  (The web browser's desired capabilities to use.)
     --cap-string=STRING  (The web browser's desired capabilities to use.)
-    --proxy=SERVER:PORT  (Connect to a proxy server:port for tests.)
-    --proxy=USERNAME:PASSWORD@SERVER:PORT  (Use authenticated proxy server.)
+    --proxy=SERVER:PORT  (Connect to a proxy server:port as tests are running)
+    --proxy=USERNAME:PASSWORD@SERVER:PORT  (Use an authenticated proxy server)
     --proxy-bypass-list=STRING (";"-separated hosts to bypass, Eg "*.foo.com")
     --proxy-pac-url=URL  (Connect to a proxy server using a PAC_URL.pac file.)
     --proxy-pac-url=USERNAME:PASSWORD@URL  (Authenticated proxy with PAC URL.)
+    --multi-proxy  (Allow multiple authenticated proxies when multi-threaded.)
     --agent=STRING  (Modify the web browser's User-Agent string.)
     --mobile  (Use the mobile device emulator while running tests.)
     --metrics=STRING  (Set mobile metrics: "CSSWidth,CSSHeight,PixelRatio".)
@@ -254,6 +255,16 @@ class SeleniumBrowser(Plugin):
                     Format: A URL string  OR
                             A username:password@URL string
                     Default: None.""",
+        )
+        parser.addoption(
+            "--multi-proxy",
+            "--multi_proxy",
+            action="store_true",
+            dest="multi_proxy",
+            default=False,
+            help="""If you need to run multi-threaded tests with
+                    multiple proxies that require authentication,
+                    set this to allow multiple configurations.""",
         )
         parser.addoption(
             "--agent",
@@ -1055,6 +1066,7 @@ class SeleniumBrowser(Plugin):
         test.test.proxy_string = self.options.proxy_string
         test.test.proxy_bypass_list = self.options.proxy_bypass_list
         test.test.proxy_pac_url = self.options.proxy_pac_url
+        test.test.multi_proxy = self.options.multi_proxy
         test.test.user_agent = self.options.user_agent
         test.test.mobile_emulator = self.options.mobile_emulator
         test.test.device_metrics = self.options.device_metrics
@@ -1195,13 +1207,15 @@ class SeleniumBrowser(Plugin):
         sb_config._SMALL_TIMEOUT = settings.SMALL_TIMEOUT
         sb_config._LARGE_TIMEOUT = settings.LARGE_TIMEOUT
         sb_config._context_of_runner = False  # Context Manager Compatibility
+        sb_config.multi_proxy = self.options.multi_proxy
         # The driver will be received later
         self.driver = None
         test.test.driver = self.driver
 
     def finalize(self, result):
         """This runs after all tests have completed with nosetests."""
-        proxy_helper.remove_proxy_zip_if_present()
+        if not sb_config.multi_proxy:
+            proxy_helper.remove_proxy_zip_if_present()
 
     def afterTest(self, test):
         try:

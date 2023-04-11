@@ -25,11 +25,12 @@ behave -D agent="User Agent String" -D demo
 -D port=PORT  (The Selenium Grid port used by the test server.)
 -D cap-file=FILE  (The web browser's desired capabilities to use.)
 -D cap-string=STRING  (The web browser's desired capabilities to use.)
--D proxy=SERVER:PORT  (Connect to a proxy server:port for tests.)
--D proxy=USERNAME:PASSWORD@SERVER:PORT  (Use authenticated proxy server.)
+-D proxy=SERVER:PORT  (Connect to a proxy server:port as tests are running)
+-D proxy=USERNAME:PASSWORD@SERVER:PORT  (Use an authenticated proxy server)
 -D proxy-bypass-list=STRING (";"-separated hosts to bypass, Eg "*.foo.com")
 -D proxy-pac-url=URL  (Connect to a proxy server using a PAC_URL.pac file.)
 -D proxy-pac-url=USERNAME:PASSWORD@URL  (Authenticated proxy with PAC URL.)
+-D multi-proxy  (Allow multiple authenticated proxies when multi-threaded.)
 -D agent=STRING  (Modify the web browser's User-Agent string.)
 -D mobile  (Use the mobile device emulator while running tests.)
 -D metrics=STRING  (Set mobile metrics: "CSSWidth,CSSHeight,PixelRatio".)
@@ -223,6 +224,7 @@ def get_configured_sb(context):
     sb.proxy_string = None
     sb.proxy_bypass_list = None
     sb.proxy_pac_url = None
+    sb.multi_proxy = False
     sb.enable_3d_apis = False
     sb.swiftshader = False
     sb.ad_block_on = False
@@ -746,6 +748,10 @@ def get_configured_sb(context):
                 proxy_pac_url = sb.proxy_pac_url  # revert to default
             sb.proxy_pac_url = proxy_pac_url
             continue
+        # Handle: -D multi-proxy / multi_proxy
+        if low_key in ["multi-proxy", "multi_proxy"]:
+            sb.multi_proxy = True
+            continue
         # Handle: -D enable-3d-apis / enable_3d_apis
         if low_key in ["enable-3d-apis", "enable_3d_apis"]:
             sb.enable_3d_apis = True
@@ -1121,7 +1127,8 @@ def _perform_behave_unconfigure_():
     from seleniumbase.core import log_helper
     from seleniumbase.core import proxy_helper
 
-    proxy_helper.remove_proxy_zip_if_present()
+    if hasattr(sb_config, "multi_proxy") and not sb_config.multi_proxy:
+        proxy_helper.remove_proxy_zip_if_present()
     if hasattr(sb_config, "reuse_session") and sb_config.reuse_session:
         # Close the shared browser session
         if sb_config.shared_driver:
