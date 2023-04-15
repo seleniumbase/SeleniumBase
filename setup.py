@@ -123,9 +123,9 @@ setup(
     python_requires=">=3.6",
     install_requires=[
         'pip>=21.3.1;python_version<"3.7"',
-        'pip>=23.0.1;python_version>="3.7"',
+        'pip>=23.1;python_version>="3.7"',
         'packaging>=21.3;python_version<"3.7"',
-        'packaging>=23.0;python_version>="3.7"',
+        'packaging>=23.1;python_version>="3.7"',
         'setuptools>=59.6.0;python_version<"3.7"',
         'setuptools>=67.6.1;python_version>="3.7"',
         'keyring>=23.4.1;python_version<"3.8"',
@@ -183,7 +183,7 @@ setup(
         "pluggy==1.0.0",
         "py==1.11.0",
         'pytest==7.0.1;python_version<"3.7"',
-        'pytest==7.3.0;python_version>="3.7"',
+        'pytest==7.3.1;python_version>="3.7"',
         'pytest-forked==1.4.0;python_version<"3.7"',
         'pytest-forked==1.6.0;python_version>="3.7"',
         "pytest-html==2.0.1",  # Newer ones had issues
@@ -202,7 +202,7 @@ setup(
         'soupsieve==2.4;python_version>="3.7"',
         "beautifulsoup4==4.12.2",
         'cryptography==36.0.2;python_version<"3.7"',
-        'cryptography==40.0.1;python_version>="3.7"',
+        'cryptography==40.0.2;python_version>="3.7"',
         'pygments==2.14.0;python_version<"3.7"',
         'pygments==2.15.0;python_version>="3.7"',
         'pyreadline3==3.4.1;platform_system=="Windows"',
@@ -223,7 +223,7 @@ setup(
         'markdown-it-py==2.2.0;python_version>="3.7"',  # For new "rich"
         'mdurl==0.1.2;python_version>="3.7"',  # For new "rich"
         'rich==12.6.0;python_version<"3.7"',
-        'rich==13.3.3;python_version>="3.7"',
+        'rich==13.3.4;python_version>="3.7"',
     ],
     extras_require={
         # pip install -e .[allure]

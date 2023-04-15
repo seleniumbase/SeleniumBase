@@ -2316,7 +2316,7 @@ def get_local_driver(
         )
         if not enable_sync:
             edge_options.add_argument("--disable-sync")
-        if guest_mode:
+        if guest_mode or IS_WINDOWS:
             edge_options.add_argument("--guest")
         if headless2:
             try:

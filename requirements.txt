@@ -1,7 +1,7 @@
 pip>=21.3.1;python_version<"3.7"
-pip>=23.0.1;python_version>="3.7"
+pip>=23.1;python_version>="3.7"
 packaging>=21.3;python_version<"3.7"
-packaging>=23.0;python_version>="3.7"
+packaging>=23.1;python_version>="3.7"
 setuptools>=59.6.0;python_version<"3.7"
 setuptools>=67.6.1;python_version>="3.7"
 keyring>=23.4.1;python_version<"3.8"
@@ -59,7 +59,7 @@ iniconfig==2.0.0;python_version>="3.7"
 pluggy==1.0.0
 py==1.11.0
 pytest==7.0.1;python_version<"3.7"
-pytest==7.3.0;python_version>="3.7"
+pytest==7.3.1;python_version>="3.7"
 pytest-forked==1.4.0;python_version<"3.7"
 pytest-forked==1.6.0;python_version>="3.7"
 pytest-html==2.0.1
@@ -78,7 +78,7 @@ soupsieve==2.3.2.post1;python_version<"3.7"
 soupsieve==2.4;python_version>="3.7"
 beautifulsoup4==4.12.2
 cryptography==36.0.2;python_version<"3.7"
-cryptography==40.0.1;python_version>="3.7"
+cryptography==40.0.2;python_version>="3.7"
 pygments==2.14.0;python_version<"3.7"
 pygments==2.15.0;python_version>="3.7"
 pyreadline3==3.4.1;platform_system=="Windows"
@@ -99,7 +99,7 @@ commonmark==0.9.1;python_version<"3.7"
 markdown-it-py==2.2.0;python_version>="3.7"
 mdurl==0.1.2;python_version>="3.7"
 rich==12.6.0;python_version<"3.7"
-rich==13.3.3;python_version>="3.7"
+rich==13.3.4;python_version>="3.7"
 
 # --- Testing Requirements --- #
 # ("pip install -r requirements.txt" also installs this, but "pip install -e ." won't.)
