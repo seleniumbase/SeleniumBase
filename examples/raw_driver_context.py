@@ -1,4 +1,4 @@
-"""This script can be run with pure "python". (pytest not needed)."""
+"""Can run with "python". (pytest not needed)."""
 from seleniumbase import js_utils
 from seleniumbase import page_actions
 from seleniumbase import DriverContext

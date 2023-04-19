@@ -1,5 +1,5 @@
-"""Calling tests with "python" instead of directly using "pytest".
-To run, use: "python raw_call.py".
+"""Can run with "python" instead of using "pytest" directly.
+Usage: "python raw_call.py".
 Two examples: pytest.main() and subprocess.call()."""
 import pytest
 import subprocess
