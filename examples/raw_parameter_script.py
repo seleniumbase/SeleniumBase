@@ -13,8 +13,8 @@
     with other plugins, such as ones for generating test reports,
     handling multithreading, and parametrized tests. Depending on your
     specific needs, you may need to call SeleniumBase commands without
-    using Pytest, and this example shows you how. """
-
+    using Pytest, and this example shows you how.
+"""
 pure_python = False
 try:
     # Running with Pytest / (Finds test methods to run using autodiscovery)

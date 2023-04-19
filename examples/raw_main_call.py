@@ -1,6 +1,6 @@
-"""Call a file with "python" instead of using "pytest" directly.
+"""Can use "python" instead of using "pytest".
 Added pytest args will be included in the run.
-To run, use: "python raw_file_call.py"."""
+Example usage: "python raw_file_call.py"."""
 from seleniumbase import BaseCase
 BaseCase.main(__name__, __file__)
 
