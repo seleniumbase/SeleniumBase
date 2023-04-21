@@ -113,6 +113,7 @@ that are available when using SeleniumBase.
 
 ```bash
 --browser=BROWSER  (The web browser to use. Default is "chrome")
+--edge / --firefox / --safari  (Shortcut for browser selection.)
 --headless  (Run tests headlessly. Default mode on Linux OS.)
 --demo  (Slow down and visually see test actions as they occur.)
 --slow  (Slow down the automation. Faster than using Demo Mode.)
@@ -137,8 +138,10 @@ that are available when using SeleniumBase.
       |  return / r: Run until method returns. j: Jump to line. |
       | where / w: Show stack spot. u: Up stack. d: Down stack. |
       | longlist / ll: See code. dir(): List namespace objects. |
+--help / -h  (Display list of all available pytest options.)
 --final-debug  (Enter Final Debug Mode after each test ends.)
---recorder  (Record browser actions to generate test scripts.)
+--recorder / --rec  (Save browser actions as Python scripts.)
+--rec-behave / --rec-gherkin  (Save actions as Gherkin code.)
 --save-screenshot  (Save a screenshot at the end of each test.)
 --archive-logs  (Archive old log files instead of deleting them.)
 --check-js  (Check for JavaScript errors after page loads.)

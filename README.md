@@ -518,6 +518,7 @@ pytest my_first_test.py --pdb
 --proxy-bypass-list=STRING # (";"-separated hosts to bypass, Eg "*.foo.com")
 --proxy-pac-url=URL  # (Connect to a proxy server using a PAC_URL.pac file.)
 --proxy-pac-url=USERNAME:PASSWORD@URL  # (Authenticated proxy with PAC URL.)
+--proxy-driver  # (If a driver download is needed, will use: --proxy=PROXY.)
 --multi-proxy  # (Allow multiple authenticated proxies when multi-threaded.)
 --agent=STRING  # (Modify the web browser's User-Agent string.)
 --mobile  # (Use the mobile device emulator while running tests.)

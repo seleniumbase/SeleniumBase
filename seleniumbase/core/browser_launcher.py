@@ -972,69 +972,6 @@ def _set_firefox_options(
     return options
 
 
-def display_proxy_warning(proxy_string):
-    message = (
-        '\n\nWARNING: Proxy String ["%s"] is NOT in the expected '
-        '"ip_address:port" or "server:port" format, '
-        "(OR the key does not exist in "
-        "seleniumbase.config.proxy_list.PROXY_LIST)." % proxy_string
-    )
-    if settings.RAISE_INVALID_PROXY_STRING_EXCEPTION:
-        raise Exception(message)
-    else:
-        message += " *** DEFAULTING to NOT USING a Proxy Server! ***"
-        warnings.simplefilter("always", Warning)  # See Warnings
-        warnings.warn(message, category=Warning, stacklevel=2)
-        warnings.simplefilter("default", Warning)  # Set Default
-
-
-def validate_proxy_string(proxy_string):
-    from seleniumbase.config import proxy_list
-    from seleniumbase.fixtures import page_utils
-
-    if proxy_string in proxy_list.PROXY_LIST.keys():
-        proxy_string = proxy_list.PROXY_LIST[proxy_string]
-        if not proxy_string:
-            return None
-    valid = False
-    val_ip = re.match(
-        r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+$", proxy_string
-    )
-    if not val_ip:
-        if proxy_string.startswith("http://"):
-            proxy_string = proxy_string.split("http://")[1]
-        elif proxy_string.startswith("https://"):
-            proxy_string = proxy_string.split("https://")[1]
-        elif "://" in proxy_string:
-            if not proxy_string.startswith("socks4://") and not (
-                proxy_string.startswith("socks5://")
-            ):
-                proxy_string = proxy_string.split("://")[1]
-        chunks = proxy_string.split(":")
-        if len(chunks) == 2:
-            if re.match(r"^\d+$", chunks[1]):
-                if page_utils.is_valid_url("http://" + proxy_string):
-                    valid = True
-        elif len(chunks) == 3:
-            if re.match(r"^\d+$", chunks[2]):
-                if page_utils.is_valid_url("http:" + ":".join(chunks[1:])):
-                    if chunks[0] == "http":
-                        valid = True
-                    elif chunks[0] == "https":
-                        valid = True
-                    elif chunks[0] == "socks4":
-                        valid = True
-                    elif chunks[0] == "socks5":
-                        valid = True
-    else:
-        proxy_string = val_ip.group()
-        valid = True
-    if not valid:
-        display_proxy_warning(proxy_string)
-        proxy_string = None
-    return proxy_string
-
-
 def get_driver(
     browser_name=None,
     headless=False,
@@ -1162,7 +1099,7 @@ def get_driver(
                     "that has authentication! (If using a proxy server "
                     "without auth, Chrome, Edge, or Firefox may be used.)"
                 )
-        proxy_string = validate_proxy_string(proxy_string)
+        proxy_string = shared_utils.validate_proxy_string(proxy_string)
         if proxy_string and proxy_user and proxy_pass:
             proxy_auth = True
     elif proxy_pac_url:

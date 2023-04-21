@@ -25,18 +25,21 @@ self.slow_click(selector, by="css selector", timeout=None)
 self.double_click(selector, by="css selector", timeout=None)
 
 self.context_click(selector, by="css selector", timeout=None)
-# Duplicates: self.right_click(selector, by="css selector", timeout=None)
+# Duplicates:
+# self.right_click(selector, by="css selector", timeout=None)
 
 self.click_chain(selectors_list, by="css selector", timeout=None, spacing=0)
 
 self.type(selector, text, by="css selector", timeout=None)
-# Duplicates: self.update_text(selector, text, by="css selector", timeout=None)
-#             self.input(selector, text, by="css selector", timeout=None)
-#             self.fill(selector, text, by="css selector", timeout=None)
-#             self.write(selector, text, by="css selector", timeout=None)
+# Duplicates:
+# self.update_text(selector, text, by="css selector", timeout=None)
+# self.input(selector, text, by="css selector", timeout=None)
+# self.fill(selector, text, by="css selector", timeout=None)
+# self.write(selector, text, by="css selector", timeout=None)
 
 self.send_keys(selector, text, by="css selector", timeout=None)
-# Duplicates: self.add_text(selector, text, by="css selector", timeout=None)
+# Duplicates:
+# self.add_text(selector, text, by="css selector", timeout=None)
 
 self.submit(selector, by="css selector")
 
@@ -44,8 +47,8 @@ self.clear(selector, by="css selector", timeout=None)
 
 self.focus(selector, by="css selector", timeout=None)
 
-self.refresh_page()
-# Duplicates: self.refresh(), self.reload(), self.reload_page()
+self.refresh()
+# Duplicates: self.refresh_page(), self.reload_page(), self.reload()
 
 self.get_current_url()
 
@@ -91,15 +94,18 @@ self.is_link_text_present(link_text)
 self.is_partial_link_text_present(link_text)
 
 self.get_link_attribute(link_text, attribute, hard_fail=True)
-# Duplicates: self.get_link_text_attribute(link_text, attribute, hard_fail=True)
+# Duplicates:
+# self.get_link_text_attribute(link_text, attribute, hard_fail=True)
 
 self.get_partial_link_text_attribute(link_text, attribute, hard_fail=True)
 
 self.click_link(link_text, timeout=None)
-# Duplicates: self.click_link_text(link_text, timeout=None)
+# Duplicates:
+# self.click_link_text(link_text, timeout=None)
 
 self.click_partial_link(partial_link_text, timeout=None)
-# Duplicates: self.click_partial_link_text(partial_link_text, timeout=None)
+# Duplicates:
+# self.click_partial_link_text(partial_link_text, timeout=None)
 
 self.get_text(selector, by="css selector", timeout=None)
 
@@ -111,7 +117,8 @@ self.set_attribute(
     selector, attribute, value, by="css selector", timeout=None, scroll=False)
 
 self.set_attributes(selector, attribute, value, by="css selector")
-# Duplicates: self.set_attribute_all(selector, attribute, value, by="css selector")
+# Duplicates:
+# self.set_attribute_all(selector, attribute, value, by="css selector")
 
 self.remove_attribute(selector, attribute, by="css selector", timeout=None)
 
@@ -144,21 +151,25 @@ self.double_click_with_offset(
     selector, x, y, by="css selector", mark=None, timeout=None, center=None)
 
 self.is_checked(selector, by="css selector", timeout=None)
-# Duplicates: self.is_selected(selector, by="css selector", timeout=None)
+# Duplicates:
+# self.is_selected(selector, by="css selector", timeout=None)
 
 self.check_if_unchecked(selector, by="css selector")
-# Duplicates: self.select_if_unselected(selector, by="css selector")
+# Duplicates:
+# self.select_if_unselected(selector, by="css selector")
 
 self.uncheck_if_checked(selector, by="css selector")
-# Duplicates: self.unselect_if_selected(selector, by="css selector")
+# Duplicates:
+# self.unselect_if_selected(selector, by="css selector")
 
 self.is_element_in_an_iframe(selector, by="css selector")
 
 self.switch_to_frame_of_element(selector, by="css selector")
 
 self.hover(selector, by="css selector", timeout=None)
-# Duplicates: self.hover_on_element(selector, by="css selector", timeout=None)
-#             self.hover_over_element(selector, by="css selector", timeout=None)
+# Duplicates:
+# self.hover_on_element(selector, by="css selector", timeout=None)
+# self.hover_over_element(selector, by="css selector", timeout=None)
 
 self.hover_and_click(
     hover_selector, click_selector,
@@ -170,9 +181,10 @@ self.hover_and_double_click(
     hover_by="css selector", click_by="css selector",
     timeout=None)
 
-self.drag_and_drop(drag_selector, drop_selector,
-                   drag_by="css selector", drop_by="css selector",
-                   timeout=None, jquery=False)
+self.drag_and_drop(
+    drag_selector, drop_selector,
+    drag_by="css selector", drop_by="css selector",
+    timeout=None, jquery=False)
 
 self.drag_and_drop_with_offset(
     selector, x, y, by="css selector", timeout=None)
@@ -409,7 +421,8 @@ self.get_link_status_code(link, allow_redirects=False, timeout=5, verify=False)
 self.assert_link_status_code_is_not_404(link)
 
 self.assert_no_404_errors(multithreaded=True, timeout=None)
-# Duplicates: self.assert_no_broken_links(multithreaded=True)
+# Duplicates:
+# self.assert_no_broken_links(multithreaded=True, timeout=None)
 
 self.print_unique_links_with_status_codes()
 
@@ -466,12 +479,10 @@ self.assert_not_in(first, second, msg=None)
 self.assert_raises(*args, **kwargs)
 
 self.wait_for_attribute(
-    selector, attribute, value=None,
-    by="css selector", timeout=None)
+    selector, attribute, value=None, by="css selector", timeout=None)
 
 self.assert_attribute(
-    selector, attribute, value=None,
-    by="css selector", timeout=None)
+    selector, attribute, value=None, by="css selector", timeout=None)
 
 self.assert_title(title)
 
@@ -498,12 +509,14 @@ self.get_chromedriver_version()
 self.get_chromium_driver_version()
 
 self.get_mfa_code(totp_key=None)
-# Duplicates: self.get_totp_code(totp_key=None)
-#             self.get_google_auth_password(totp_key=None)
-#             self.get_google_auth_code(totp_key=None)
+# Duplicates:
+# self.get_totp_code(totp_key=None)
+# self.get_google_auth_password(totp_key=None)
+# self.get_google_auth_code(totp_key=None)
 
 self.enter_mfa_code(selector, totp_key=None, by="css selector", timeout=None)
-# Duplicates: self.enter_totp_code(selector, totp_key=None, by="css selector", timeout=None)
+# Duplicates:
+# self.enter_totp_code(selector, totp_key=None, by="css selector", timeout=None)
 
 self.convert_css_to_xpath(css)
 
@@ -514,13 +527,16 @@ self.convert_to_css_selector(selector, by)
 self.set_value(selector, text, by="css selector", timeout=None, scroll=True)
 
 self.js_update_text(selector, text, by="css selector", timeout=None)
-# Duplicates: self.js_type(selector, text, by="css selector", timeout=None)
-#             self.set_text(selector, text, by="css selector", timeout=None)
+# Duplicates:
+# self.js_type(selector, text, by="css selector", timeout=None)
+# self.set_text(selector, text, by="css selector", timeout=None)
 
-self.set_text_content(selector, text, by="css selector", timeout=None, scroll=False)
+self.set_text_content(
+    selector, text, by="css selector", timeout=None, scroll=False)
 
 self.jquery_update_text(selector, text, by="css selector", timeout=None)
-# Duplicates: self.jquery_type(selector, text, by="css selector", timeout=None)
+# Duplicates:
+# self.jquery_type(selector, text, by="css selector", timeout=None)
 
 self.get_value(selector, by="css selector", timeout=None)
 
@@ -651,11 +667,13 @@ self.create_introjs_tour(name=None)
 
 self.set_introjs_colors(theme_color=None, hover_color=None)
 
-self.add_tour_step(message, selector=None, name=None,
-                   title=None, theme=None, alignment=None)
+self.add_tour_step(
+    message, selector=None, name=None,
+    title=None, theme=None, alignment=None)
 
 self.play_tour(name=None, interval=0)
-# Duplicates: self.start_tour(name=None, interval=0):
+# Duplicates:
+# self.start_tour(name=None, interval=0):
 
 self.export_tour(name=None, filename="my_tour.js", url=None)
 
@@ -685,7 +703,8 @@ self.post_success_message(message, duration=None, pause=True)
 
 self.post_error_message(message, duration=None, pause=True)
 
-self.set_messenger_theme(theme="default", location="default", max_messages="default")
+self.set_messenger_theme(
+    theme="default", location="default", max_messages="default")
 
 ############
 
@@ -700,7 +719,8 @@ self.generate_traffic_chain(pages, loops=1)
 ############
 
 self.get_element(selector, by="css selector", timeout=None)
-# Duplicates: self.wait_for_element_present(selector, by="css selector", timeout=None)
+# Duplicates:
+# self.wait_for_element_present(selector, by="css selector", timeout=None)
 
 self.wait_for_query_selector(selector, by="css selector", timeout=None)
 
@@ -711,27 +731,33 @@ self.assert_elements_present(*args, **kwargs)
 ############
 
 self.find_element(selector, by="css selector", timeout=None)
-# Duplicates: self.wait_for_element(selector, by="css selector", timeout=None)
-#             self.wait_for_element_visible(selector, by="css selector", timeout=None)
+# Duplicates:
+# self.wait_for_element(selector, by="css selector", timeout=None)
+# self.wait_for_element_visible(selector, by="css selector", timeout=None)
 
 self.assert_element(selector, by="css selector", timeout=None)
-# Duplicates: self.assert_element_visible(selector, by="css selector", timeout=None)
+# Duplicates:
+# self.assert_element_visible(selector, by="css selector", timeout=None)
 
 self.assert_elements(*args, **kwargs)
-# Duplicates: self.assert_elements_visible(*args, **kwargs)
+# Duplicates:
+# self.assert_elements_visible(*args, **kwargs)
 
 ############
 
 self.find_text(text, selector="html", by="css selector", timeout=None)
-# Duplicates: self.wait_for_text(text, selector="html", by="css selector", timeout=None)
-#             self.wait_for_text_visible(text, selector="html", by="css selector", timeout=None)
+# Duplicates:
+# self.wait_for_text(text, selector="html", by="css selector", timeout=None)
+# self.wait_for_text_visible(text, selector="html", by="css selector", timeout=None)
 
 self.find_exact_text(text, selector="html", by="css selector", timeout=None)
-# Duplicates: self.wait_for_exact_text(text, selector="html", by="css selector", timeout=None)
-#             self.wait_for_exact_text_visible(text, selector="html", by="css selector", timeout=None)
+# Duplicates:
+# self.wait_for_exact_text(text, selector="html", by="css selector", timeout=None)
+# self.wait_for_exact_text_visible(text, selector="html", by="css selector", timeout=None)
 
 self.assert_text(text, selector="html", by="css selector", timeout=None)
-# Duplicates: self.assert_text_visible(text, selector="html", by="css selector", timeout=None)
+# Duplicates:
+# self.assert_text_visible(text, selector="html", by="css selector", timeout=None)
 
 self.assert_exact_text(text, selector="html", by="css selector", timeout=None)
 
@@ -742,25 +768,29 @@ self.wait_for_link_text_present(link_text, timeout=None)
 self.wait_for_partial_link_text_present(link_text, timeout=None)
 
 self.find_link_text(link_text, timeout=None)
-# Duplicates: self.wait_for_link_text(link_text, timeout=None)
-#             self.wait_for_link_text_visible(link_text, timeout=None)
+# Duplicates:
+# self.wait_for_link_text(link_text, timeout=None)
+# self.wait_for_link_text_visible(link_text, timeout=None)
 
 self.assert_link_text(link_text, timeout=None)
 
 ############
 
 self.find_partial_link_text(partial_link_text, timeout=None)
-# Duplicates: self.wait_for_partial_link_text(partial_link_text, timeout=None)
+# Duplicates:
+# self.wait_for_partial_link_text(partial_link_text, timeout=None)
 
 self.assert_partial_link_text(partial_link_text, timeout=None)
 
 ############
 
 self.wait_for_element_absent(selector, by="css selector", timeout=None)
-# Duplicates: self.wait_for_element_not_present(selector, by="css selector")
+# Duplicates:
+# self.wait_for_element_not_present(selector, by="css selector", timeout=None)
 
 self.assert_element_absent(selector, by="css selector", timeout=None)
-# Duplicates: self.assert_element_not_present(selector, by="css selector")
+# Duplicates:
+# self.assert_element_not_present(selector, by="css selector", timeout=None)
 
 ############
 
@@ -793,13 +823,16 @@ self.assert_attribute_not_present(
 ############
 
 self.accept_alert(timeout=None)
-# Duplicates: self.wait_for_and_accept_alert(timeout=None)
+# Duplicates:
+# self.wait_for_and_accept_alert(timeout=None)
 
 self.dismiss_alert(timeout=None)
-# Duplicates: self.wait_for_and_dismiss_alert(timeout=None)
+# Duplicates:
+# self.wait_for_and_dismiss_alert(timeout=None)
 
 self.switch_to_alert(timeout=None)
-# Duplicates: self.wait_for_and_switch_to_alert(timeout=None)
+# Duplicates:
+# self.wait_for_and_switch_to_alert(timeout=None)
 
 ############
 
@@ -812,9 +845,11 @@ self.check_window(
 
 ############
 
-self.deferred_assert_element(selector, by="css selector", timeout=None, fs=False)
+self.deferred_assert_element(
+    selector, by="css selector", timeout=None, fs=False)
 # Duplicates:
-# self.delayed_assert_element(selector, by="css selector", timeout=None, fs=False)
+# self.delayed_assert_element(
+#     selector, by="css selector", timeout=None, fs=False)
 
 self.deferred_assert_element_present(
     selector, by="css selector", timeout=None, fs=False)
@@ -841,6 +876,7 @@ self.deferred_check_window(
 # self.delayed_check_window(
 #     name="default", level=0, baseline=False,
 #     check_domain=True, full_diff=False, fs=False)
+
 self.process_deferred_asserts(print_only=False)
 # Duplicates: self.process_delayed_asserts(print_only=False)
 
