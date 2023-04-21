@@ -40,6 +40,7 @@ import colorama
 import sys
 import time
 from seleniumbase.fixtures import constants
+from seleniumbase.fixtures import shared_utils
 
 colorama.init(autoreset=True)
 
@@ -968,6 +969,14 @@ def main():
             need_another_retry = False
             retry_msg_1 = "* Unable to download driver! Retrying in 3s..."
             retry_msg_2 = "** Unable to download driver! Retrying in 5s..."
+            if " --proxy=" in " ".join(sys.argv):
+                for arg in sys.argv:
+                    if arg.startswith("--proxy="):
+                        proxy_string = arg.split("--proxy=")[1]
+                        if "@" in proxy_string:
+                            proxy_string = proxy_string.split("@")[1]
+                        shared_utils.validate_proxy_string(proxy_string)
+                        break
             try:
                 sb_install.main()
             except Exception as e:

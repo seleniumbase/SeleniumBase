@@ -359,6 +359,9 @@ def SB(
     if recorder_mode and headless:
         headless = False
         headless2 = True
+    sb_config.proxy_driver = False
+    if "--proxy-driver" in sys_argv or "--proxy_driver" in sys_argv:
+        sb_config.proxy_driver = True
     if variables and type(variables) is str and len(variables) > 0:
         import ast
 

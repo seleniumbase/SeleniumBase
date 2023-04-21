@@ -45,6 +45,7 @@ def pytest_addoption(parser):
     --proxy-bypass-list=STRING (";"-separated hosts to bypass, Eg "*.foo.com")
     --proxy-pac-url=URL  (Connect to a proxy server using a PAC_URL.pac file.)
     --proxy-pac-url=USERNAME:PASSWORD@URL  (Authenticated proxy with PAC URL.)
+    --proxy-driver  (If a driver download is needed, will use: --proxy=PROXY.)
     --multi-proxy  (Allow multiple authenticated proxies when multi-threaded.)
     --agent=STRING  (Modify the web browser's User-Agent string.)
     --mobile  (Use the mobile device emulator while running tests.)
@@ -488,6 +489,15 @@ def pytest_addoption(parser):
                 Format: A URL string  OR
                         A username:password@URL string
                 Default: None.""",
+    )
+    parser.addoption(
+        "--proxy-driver",
+        "--proxy_driver",
+        action="store_true",
+        dest="proxy_driver",
+        default=False,
+        help="""If a driver download is needed for tests,
+                uses proxy settings set via --proxy=PROXY.""",
     )
     parser.addoption(
         "--multi-proxy",
@@ -1432,6 +1442,7 @@ def pytest_configure(config):
     sb_config.proxy_string = config.getoption("proxy_string")
     sb_config.proxy_bypass_list = config.getoption("proxy_bypass_list")
     sb_config.proxy_pac_url = config.getoption("proxy_pac_url")
+    sb_config.proxy_driver = config.getoption("proxy_driver")
     sb_config.multi_proxy = config.getoption("multi_proxy")
     sb_config.cap_file = config.getoption("cap_file")
     sb_config.cap_string = config.getoption("cap_string")

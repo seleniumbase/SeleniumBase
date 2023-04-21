@@ -29,6 +29,7 @@ class SeleniumBrowser(Plugin):
     --proxy-bypass-list=STRING (";"-separated hosts to bypass, Eg "*.foo.com")
     --proxy-pac-url=URL  (Connect to a proxy server using a PAC_URL.pac file.)
     --proxy-pac-url=USERNAME:PASSWORD@URL  (Authenticated proxy with PAC URL.)
+    --proxy-driver  (If a driver download is needed, will use: --proxy=PROXY.)
     --multi-proxy  (Allow multiple authenticated proxies when multi-threaded.)
     --agent=STRING  (Modify the web browser's User-Agent string.)
     --mobile  (Use the mobile device emulator while running tests.)
@@ -255,6 +256,15 @@ class SeleniumBrowser(Plugin):
                     Format: A URL string  OR
                             A username:password@URL string
                     Default: None.""",
+        )
+        parser.addoption(
+            "--proxy-driver",
+            "--proxy_driver",
+            action="store_true",
+            dest="proxy_driver",
+            default=False,
+            help="""If a driver download is needed for tests,
+                    uses proxy settings set via --proxy=PROXY.""",
         )
         parser.addoption(
             "--multi-proxy",
@@ -1207,6 +1217,7 @@ class SeleniumBrowser(Plugin):
         sb_config._SMALL_TIMEOUT = settings.SMALL_TIMEOUT
         sb_config._LARGE_TIMEOUT = settings.LARGE_TIMEOUT
         sb_config._context_of_runner = False  # Context Manager Compatibility
+        sb_config.proxy_driver = self.options.proxy_driver
         sb_config.multi_proxy = self.options.multi_proxy
         # The driver will be received later
         self.driver = None

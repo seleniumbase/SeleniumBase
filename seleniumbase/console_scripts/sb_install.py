@@ -36,6 +36,8 @@ import tarfile
 import urllib3
 import zipfile
 from seleniumbase.fixtures import constants
+from seleniumbase.fixtures import shared_utils
+from seleniumbase import config as sb_config
 from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
 
 urllib3.disable_warnings()
@@ -118,19 +120,66 @@ def requests_get(url):
 
 
 def requests_get_with_retry(url):
+    use_proxy = None
+    protocol = "http"
+    user_and_pass = None
+    if " --proxy=" in " ".join(sys.argv):
+        for arg in sys.argv:
+            if arg.startswith("--proxy="):
+                proxy_string = arg.split("--proxy=")[1]
+                if "@" in proxy_string:
+                    # Format => username:password@hostname:port
+                    try:
+                        user_and_pass = proxy_string.split("@")[0]
+                        proxy_string = proxy_string.split("@")[1]
+                    except Exception:
+                        raise Exception(
+                            "The format for using a proxy server with auth "
+                            'is: "username:password@hostname:port". If not '
+                            'using auth, the format is: "hostname:port".'
+                        )
+                if proxy_string.endswith(":443"):
+                    protocol = "https"
+                elif "socks4" in proxy_string:
+                    protocol = "socks4"
+                elif "socks5" in proxy_string:
+                    protocol = "socks5"
+                proxy_string = shared_utils.validate_proxy_string(proxy_string)
+                if user_and_pass:
+                    proxy_string = "%s@%s" % (user_and_pass, proxy_string)
+                use_proxy = True
+                break
     response = None
-    try:
-        response = requests.get(url)
-    except Exception:
-        import time
+    if use_proxy:
+        proxies = {protocol: proxy_string}
+        try:
+            response = requests.get(url, proxies=proxies)
+        except Exception:
+            import time
 
-        time.sleep(0.75)
-        response = requests.get(url)
-    return response
+            time.sleep(0.75)
+            response = requests.get(url, proxies=proxies)
+        return response
+    else:
+        try:
+            response = requests.get(url)
+        except Exception:
+            import time
+
+            time.sleep(0.75)
+            response = requests.get(url)
+        return response
 
 
 def main(override=None, intel_for_uc=None):
     if override:
+        found_proxy = None
+        if hasattr(sb_config, "proxy_driver") and sb_config.proxy_driver:
+            if " --proxy=" in " ".join(sys.argv):
+                for arg in sys.argv:
+                    if arg.startswith("--proxy="):
+                        found_proxy = arg
+                        break
         if override == "chromedriver":
             sys.argv = ["seleniumbase", "get", "chromedriver"]
         elif override.startswith("chromedriver "):
@@ -151,6 +200,8 @@ def main(override=None, intel_for_uc=None):
         elif override.startswith("iedriver "):
             extra = override.split("iedriver ")[1]
             sys.argv = ["seleniumbase", "get", "iedriver", extra]
+        if found_proxy:
+            sys.argv.append(found_proxy)
 
     num_args = len(sys.argv)
     if (
