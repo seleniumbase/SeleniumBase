@@ -9813,6 +9813,8 @@ class BaseCase(unittest.TestCase):
             exc_message = exception_info.msg
         elif hasattr(exception_info, "message"):
             exc_message = exception_info.message
+        elif hasattr(exception_info, "args") and len(exception_info.args) == 1:
+            exc_message = exception_info.args[0]
         else:
             exc_message = sys.exc_info()
         return exc_message

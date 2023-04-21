@@ -168,6 +168,10 @@ def format_exc(exception, message):
         exc = Exception
         return exc, message
     message = _format_message(message)
+    try:
+        exc.message = message
+    except Exception:
+        pass
     return exc, message
 
 
