@@ -14,8 +14,8 @@ Examples:
          sbase get chromedriver
          sbase get geckodriver
          sbase get edgedriver
-         sbase get chromedriver 109
-         sbase get chromedriver 109.0.5414.74
+         sbase get chromedriver 112
+         sbase get chromedriver 112.0.5615.49
          sbase get chromedriver latest
          sbase get chromedriver latest-1  # (Latest minus one)
          sbase get chromedriver -p
@@ -60,8 +60,8 @@ if "win32" in PLAT or "win64" in PLAT or "x64" in PLAT or "x86" in PLAT:
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 LOCAL_PATH = "/usr/local/bin/"  # On Mac and Linux systems
 DEFAULT_CHROMEDRIVER_VERSION = "72.0.3626.69"  # (If can't find LATEST_STABLE)
-DEFAULT_GECKODRIVER_VERSION = "v0.32.2"
-DEFAULT_EDGEDRIVER_VERSION = "109.0.1518.52"  # (If can't find LATEST_STABLE)
+DEFAULT_GECKODRIVER_VERSION = "v0.33.0"
+DEFAULT_EDGEDRIVER_VERSION = "112.0.1722.58"  # (If can't find LATEST_STABLE)
 DEFAULT_OPERADRIVER_VERSION = "v.96.0.4664.45"
 
 
@@ -86,8 +86,8 @@ def invalid_run_command():
     exp += "           sbase get chromedriver\n"
     exp += "           sbase get geckodriver\n"
     exp += "           sbase get edgedriver\n"
-    exp += "           sbase get chromedriver 109\n"
-    exp += "           sbase get chromedriver 109.0.5414.74\n"
+    exp += "           sbase get chromedriver 112\n"
+    exp += "           sbase get chromedriver 112.0.5615.49\n"
     exp += "           sbase get chromedriver latest\n"
     exp += "           sbase get chromedriver latest-1\n"
     exp += "           sbase get chromedriver -p\n"

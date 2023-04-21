@@ -12858,7 +12858,7 @@ class BaseCase(unittest.TestCase):
             shadow_root = None
             if (
                 selenium4_or_newer
-                and self.is_chromium()
+                and (self.is_chromium() or self.browser == "firefox")
                 and int(self.__get_major_browser_version()) >= 96
             ):
                 try:
@@ -12928,7 +12928,7 @@ class BaseCase(unittest.TestCase):
             try:
                 if (
                     selenium4_or_newer
-                    and self.is_chromium()
+                    and (self.is_chromium() or self.browser == "firefox")
                     and int(self.__get_major_browser_version()) >= 96
                 ):
                     if timeout == 0.1:
