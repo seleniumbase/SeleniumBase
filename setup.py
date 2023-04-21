@@ -127,7 +127,7 @@ setup(
         'packaging>=21.3;python_version<"3.7"',
         'packaging>=23.1;python_version>="3.7"',
         'setuptools>=59.6.0;python_version<"3.7"',
-        'setuptools>=67.7.0;python_version>="3.7"',
+        'setuptools>=67.7.1;python_version>="3.7"',
         'keyring>=23.4.1;python_version<"3.8"',
         'keyring>=23.13.1;python_version>="3.8"',
         'tomli>=1.2.3;python_version<"3.7"',
