@@ -19,11 +19,11 @@ If the necessary driver is not found in this location while running tests, Selen
 * You can also download specific versions of drivers. Examples:
 
 ```bash
-sbase get chromedriver 107
-sbase get chromedriver 107.0.5304.62
+sbase get chromedriver 112
+sbase get chromedriver 112.0.5615.49
 sbase get chromedriver latest
 sbase get chromedriver latest-1
-sbase get edgedriver 106.0.1370.42
+sbase get edgedriver 112.0.1722.58
 ```
 
 (NOTE: ``sbase`` is a shortcut for ``seleniumbase``)
@@ -72,8 +72,8 @@ chmod +x /usr/local/bin/chromedriver
 ```
 
 ```bash
-wget https://github.com/mozilla/geckodriver/releases/download/v0.32.0/geckodriver-v0.32.0-linux64.tar.gz
-tar xvfz geckodriver-v0.32.0-linux64.tar.gz
+wget https://github.com/mozilla/geckodriver/releases/download/v0.33.0/geckodriver-v0.33.0-linux64.tar.gz
+tar xvfz geckodriver-v0.33.0-linux64.tar.gz
 mv geckodriver /usr/local/bin/
 chmod +x /usr/local/bin/geckodriver
 ```
