@@ -123,7 +123,7 @@ setup(
     python_requires=">=3.6",
     install_requires=[
         'pip>=21.3.1;python_version<"3.7"',
-        'pip>=23.1;python_version>="3.7"',
+        'pip>=23.1.1;python_version>="3.7"',
         'packaging>=21.3;python_version<"3.7"',
         'packaging>=23.1;python_version>="3.7"',
         'setuptools>=59.6.0;python_version<"3.7"',
