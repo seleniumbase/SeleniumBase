@@ -61,6 +61,7 @@ from seleniumbase import config as sb_config
 from seleniumbase.__version__ import __version__
 from seleniumbase.common import decorators
 from seleniumbase.common.exceptions import (
+    NotConnectedException,
     NotUsingChromeException,
     NotUsingChromiumException,
     OutOfScopeException,
@@ -249,12 +250,29 @@ class BaseCase(unittest.TestCase):
                 or "ERR_CONNECTION_CLOSED" in e.msg
                 or "ERR_CONNECTION_RESET" in e.msg
                 or "ERR_NAME_NOT_RESOLVED" in e.msg
-                or "ERR_INTERNET_DISCONNECTED" in e.msg
             ):
                 shared_utils.check_if_time_limit_exceeded()
                 self.__check_browser()
                 time.sleep(0.8)
                 self.driver.get(url)
+            elif (
+                "ERR_INTERNET_DISCONNECTED" in e.msg
+                or "neterror?e=dnsNotFound" in e.msg
+            ):
+                shared_utils.check_if_time_limit_exceeded()
+                self.__check_browser()
+                time.sleep(1.05)
+                try:
+                    self.driver.get(url)
+                except Exception as e2:
+                    if (
+                        "ERR_INTERNET_DISCONNECTED" in e2.msg
+                        or "neterror?e=dnsNotFound" in e2.msg
+                    ):
+                        message = "Internet unreachable!"
+                        raise NotConnectedException(message)
+                    else:
+                        raise
             elif "Timed out receiving message from renderer" in e.msg:
                 page_load_timeout = None
                 if selenium4_or_newer:
