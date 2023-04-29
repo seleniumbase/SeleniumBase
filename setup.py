@@ -143,7 +143,7 @@ setup(
         'filelock>=3.4.1;python_version<"3.7"',
         'filelock>=3.12.0;python_version>="3.7"',
         'platformdirs>=2.4.0;python_version<"3.7"',
-        'platformdirs>=3.4.0;python_version>="3.7"',
+        'platformdirs>=3.5.0;python_version>="3.7"',
         'pyparsing>=3.0.7;python_version<"3.7"',
         'pyparsing>=3.0.9;python_version>="3.7"',
         'zipp==3.6.0;python_version<"3.7"',
@@ -223,7 +223,7 @@ setup(
         'markdown-it-py==2.2.0;python_version>="3.7"',  # For new "rich"
         'mdurl==0.1.2;python_version>="3.7"',  # For new "rich"
         'rich==12.6.0;python_version<"3.7"',
-        'rich==13.3.4;python_version>="3.7"',
+        'rich==13.3.5;python_version>="3.7"',
     ],
     extras_require={
         # pip install -e .[allure]
@@ -231,17 +231,17 @@ setup(
         # Serve: allure serve allure_results
         "allure": [
             'allure-pytest==2.9.45;python_version<"3.7"',
-            'allure-pytest==2.13.1;python_version>="3.7"',
+            'allure-pytest==2.13.2;python_version>="3.7"',
             'allure-python-commons==2.9.45;python_version<"3.7"',
-            'allure-python-commons==2.13.1;python_version>="3.7"',
+            'allure-python-commons==2.13.2;python_version>="3.7"',
             'allure-behave==2.9.45;python_version<"3.7"',
-            'allure-behave==2.13.1;python_version>="3.7"',
+            'allure-behave==2.13.2;python_version>="3.7"',
         ],
         # pip install -e .[coverage]
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage==6.2;python_version<"3.7"',
-            'coverage==7.2.3;python_version>="3.7"',
+            'coverage==7.2.4;python_version>="3.7"',
             "pytest-cov==4.0.0",
         ],
         # pip install -e .[flake8]
