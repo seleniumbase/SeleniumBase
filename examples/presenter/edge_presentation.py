@@ -448,7 +448,7 @@ class EdgePresentationClass(BaseCase):
             "<li>Auto-collect tests to run.</li>\n"
             "<li>Use markers for organizing tests.</li>\n"
             "<li>Generate test reports.</li>\n"
-            "<li>Provide test assetions.</li>\n"
+            "<li>Provide test assertions.</li>\n"
             "<li>Multithread your tests.</li>\n"
             "<li>Use a large number of existing plugins.</li>\n"
             "</ul>\n",
