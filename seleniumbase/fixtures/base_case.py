@@ -3766,6 +3766,13 @@ class BaseCase(unittest.TestCase):
             d_height = self.__device_height
         if d_p_r is None:
             d_p_r = self.__device_pixel_ratio
+        if is_mobile and not user_agent:
+            # Use the Pixel 4 user agent by default if not specified
+            user_agent = (
+                "Mozilla/5.0 (Linux; Android 11; Pixel 4 XL) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/89.0.4389.105 Mobile Safari/537.36"
+            )
         valid_browsers = constants.ValidBrowsers.valid_browsers
         if browser_name not in valid_browsers:
             raise Exception(
