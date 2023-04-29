@@ -791,8 +791,8 @@ class EdgePresentationClass(BaseCase):
             ),
         )
         self.add_slide(
-            "<h2><b>Live Demo Time!</b></h2><hr /><br />"
+            "<h3><b>Live Demo Time!</b></h3><hr />"
             "<h3>(Let's head over to GitHub...)</h3>",
-            image="https://seleniumbase.io/other/python_3d_logo.png",
+            image="https://seleniumbase.io/other/sbase_qr_code_s.png",
         )
         self.begin_presentation(filename="edge_presentation.html")
