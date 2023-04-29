@@ -3155,16 +3155,19 @@ class BaseCase(unittest.TestCase):
 
     def set_window_rect(self, x, y, width, height):
         self.__check_scope()
+        self.__check_browser()
         self.driver.set_window_rect(x, y, width, height)
         self.__demo_mode_pause_if_active()
 
     def set_window_size(self, width, height):
         self.__check_scope()
+        self.__check_browser()
         self.driver.set_window_size(width, height)
         self.__demo_mode_pause_if_active()
 
     def maximize_window(self):
         self.__check_scope()
+        self.__check_browser()
         self.driver.maximize_window()
         self.__demo_mode_pause_if_active()
 
@@ -3763,6 +3766,13 @@ class BaseCase(unittest.TestCase):
             d_height = self.__device_height
         if d_p_r is None:
             d_p_r = self.__device_pixel_ratio
+        if is_mobile and not user_agent:
+            # Use the Pixel 4 user agent by default if not specified
+            user_agent = (
+                "Mozilla/5.0 (Linux; Android 11; Pixel 4 XL) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/89.0.4389.105 Mobile Safari/537.36"
+            )
         valid_browsers = constants.ValidBrowsers.valid_browsers
         if browser_name not in valid_browsers:
             raise Exception(
@@ -9366,6 +9376,11 @@ class BaseCase(unittest.TestCase):
                 del self._drivers_browser_map[driver]
         # If the driver to quit was the active driver, switch drivers
         if driver == self.driver:
+            self.switch_to_default_driver()
+        try:
+            self.__check_browser()
+        except Exception:
+            self._default_driver = self._drivers_list[-1]
             self.switch_to_default_driver()
 
     ############

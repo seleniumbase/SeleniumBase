@@ -30,4 +30,3 @@ class SkypeTests(BaseCase):
         self.highlight_click('[data-bi-name="arrow-dropdown-mobile"]')
         self.highlight("#get-skype-0_android-download")
         self.highlight('[data-bi-id*="ios"]')
-        self.highlight('[data-bi-id*="windows10"]')

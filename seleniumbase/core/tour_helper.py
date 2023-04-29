@@ -263,7 +263,7 @@ def play_shepherd_tour(driver, tour_steps, msg_dur, name=None, interval=0):
         // Start the tour
         tour.start();
         $tour = tour;"""
-    instructions += """
+    extra = """
         document.body.addEventListener('keyup', function (event) {
         if (event.key === 'PageUp' || event.key === 'ArrowLeft') {
             Shepherd.activeTour.back(); }
@@ -278,6 +278,7 @@ def play_shepherd_tour(driver, tour_steps, msg_dur, name=None, interval=0):
             interval = 0.5
 
     if not is_shepherd_activated(driver):
+        instructions += extra
         activate_shepherd(driver)
 
     if len(tour_steps[name]) > 1:
@@ -509,7 +510,7 @@ def play_driverjs_tour(
         // Start the tour!
         tour.start();
         $tour = tour;"""
-    instructions += """
+    extra = """
         document.body.addEventListener('keyup', function (event) {
         if (event.key === 'PageUp') { $tour.movePrevious(); }
         if (event.key === 'PageDown') { $tour.moveNext(); }
@@ -522,6 +523,7 @@ def play_driverjs_tour(
             interval = 0.5
 
     if not is_driverjs_activated(driver):
+        instructions += extra
         activate_driverjs(driver)
 
     if len(tour_steps[name]) > 1:
@@ -641,7 +643,7 @@ def play_hopscotch_tour(
         // Start the tour!
         hopscotch.startTour(tour);
         $tour = hopscotch;"""
-    instructions += """
+    extra = """
         document.body.addEventListener('keyup', function (event) {
         if (event.key === 'PageUp' || event.key === 'ArrowLeft') {
             $tour.prevStep(); }
@@ -656,6 +658,7 @@ def play_hopscotch_tour(
             interval = 0.5
 
     if not is_hopscotch_activated(driver):
+        instructions += extra
         activate_hopscotch(driver)
 
     if len(tour_steps[name]) > 1:
@@ -790,7 +793,7 @@ def play_introjs_tour(
         // Start the tour
         startIntro();
         """
-    instructions += """
+    extra = """
         document.body.addEventListener('keyup', function (event) {
         if (event.key === 'PageUp') { $tour.previousStep(); }
         if (event.key === 'PageDown') { $tour.nextStep(); }
@@ -803,6 +806,7 @@ def play_introjs_tour(
             interval = 0.5
 
     if not is_introjs_activated(driver):
+        instructions += extra
         activate_introjs(driver)
 
     if len(tour_steps[name]) > 1:
