@@ -291,7 +291,7 @@ def create_tkinter_gui(tests, command_string, files, solo_tests):
             % (len(solo_tests))
         )
         tests = solo_tests
-    tk.Label(root, text=run_display, fg="blue").pack()
+    tk.Label(root, text=run_display, bg="yellow", fg="magenta").pack()
     text_area = ScrolledText(
         root, width=100, height=12, wrap="word", state=tk.DISABLED
     )
@@ -306,7 +306,8 @@ def create_tkinter_gui(tests, command_string, files, solo_tests):
             cb = tk.Checkbutton(
                 text_area,
                 text=(row),
-                bg="white",
+                bg="green",
+                fg="yellow",
                 anchor="w",
                 pady=0,
                 variable=ara[count],
@@ -315,7 +316,8 @@ def create_tkinter_gui(tests, command_string, files, solo_tests):
             cb = tk.Checkbutton(
                 text_area,
                 text=(row),
-                bg="white",
+                bg="green",
+                fg="yellow",
                 anchor="w",
                 pady=0,
                 borderwidth=0,
@@ -332,7 +334,7 @@ def create_tkinter_gui(tests, command_string, files, solo_tests):
     tk.Label(
         root,
         text='Additional "pytest" Options:  (Eg. "--incognito --slow")',
-        fg="blue",
+        bg="yellow", fg="blue",
     ).pack()
     entry = tk.Entry(root, textvariable=aopts)
     entry.pack()
@@ -363,6 +365,7 @@ def create_tkinter_gui(tests, command_string, files, solo_tests):
         root,
         text="Run Selected Tests",
         fg="green",
+        bg="gray",
         command=lambda: do_pytest_run(
             root,
             tests,

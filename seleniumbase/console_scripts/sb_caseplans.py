@@ -390,11 +390,8 @@ def create_tkinter_gui(tests, command_string):
             "(Boilerplate Case Plans will be generated as needed)"
         )
     run_display_2 = "(Tests with existing Case Plans are already checked)"
-    tk.Label(root, text=run_display, fg="blue").pack()
-    try:
-        tk.Label(root, text=run_display_2, fg="purple").pack()
-    except Exception:
-        tk.Label(root, text=run_display_2, fg="magenta").pack()
+    tk.Label(root, text=run_display, bg="yellow", fg="green").pack()
+    tk.Label(root, text=run_display_2, bg="yellow", fg="magenta").pack()
     text_area = ScrolledText(
         root, width=100, height=12, wrap="word", state=tk.DISABLED
     )
@@ -411,7 +408,8 @@ def create_tkinter_gui(tests, command_string):
             cb = tk.Checkbutton(
                 text_area,
                 text=(row),
-                bg="white",
+                bg="green",
+                fg="yellow",
                 anchor="w",
                 pady=0,
                 variable=ara[count],
@@ -420,7 +418,8 @@ def create_tkinter_gui(tests, command_string):
             cb = tk.Checkbutton(
                 text_area,
                 text=(row),
-                bg="white",
+                bg="green",
+                fg="yellow",
                 anchor="w",
                 pady=0,
                 borderwidth=0,
@@ -471,16 +470,14 @@ def create_tkinter_gui(tests, command_string):
     try:
         tk.Button(
             root,
-            text=(
-                "Generate Summary of existing Case Plans"),
+            text=("Generate Summary of existing Case Plans"),
             fg="teal",
             command=lambda: view_summary_of_existing_case_plans(root, tests),
         ).pack()
     except Exception:
         tk.Button(
             root,
-            text=(
-                "Generate Summary of existing Case Plans"),
+            text=("Generate Summary of existing Case Plans"),
             fg="green",
             command=lambda: view_summary_of_existing_case_plans(root, tests),
         ).pack()
