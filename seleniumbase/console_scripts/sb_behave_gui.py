@@ -256,7 +256,7 @@ def create_tkinter_gui(tests, command_string, t_count, f_count, s_tests):
     if t_count == 1:
         run_display = "Only ONE TEST was found and will be run:"
         tests = s_tests
-    tk.Label(root, text=run_display, fg="blue").pack()
+    tk.Label(root, text=run_display, bg="yellow", fg="magenta").pack()
     text_area = ScrolledText(
         root, width=100, height=12, wrap="word", state=tk.DISABLED
     )
@@ -271,7 +271,8 @@ def create_tkinter_gui(tests, command_string, t_count, f_count, s_tests):
             cb = tk.Checkbutton(
                 text_area,
                 text=(row),
-                bg="white",
+                bg="teal",
+                fg="yellow",
                 anchor="w",
                 pady=0,
                 variable=ara[count],
@@ -280,7 +281,8 @@ def create_tkinter_gui(tests, command_string, t_count, f_count, s_tests):
             cb = tk.Checkbutton(
                 text_area,
                 text=(row),
-                bg="white",
+                bg="teal",
+                fg="yellow",
                 anchor="w",
                 pady=0,
                 borderwidth=0,
@@ -297,7 +299,7 @@ def create_tkinter_gui(tests, command_string, t_count, f_count, s_tests):
     tk.Label(
         root,
         text='Additional "behave" Options:  (Eg. "-D incognito --junit")',
-        fg="blue",
+        bg="yellow", fg="blue",
     ).pack()
     entry = tk.Entry(root, textvariable=aopts)
     entry.pack()
@@ -326,6 +328,7 @@ def create_tkinter_gui(tests, command_string, t_count, f_count, s_tests):
         root,
         text="Run Selected Tests",
         fg="green",
+        bg="gray",
         command=lambda: do_behave_run(
             root,
             tests,

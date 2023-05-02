@@ -307,6 +307,7 @@ class BaseCase(unittest.TestCase):
                     pass  # Odd issue where the open did happen. Continue.
             else:
                 raise
+        unittest.has_exception = False
         if (
             self.undetectable
             or (
@@ -4119,6 +4120,7 @@ class BaseCase(unittest.TestCase):
             and settings.SKIP_JS_WAITS
         ):
             time.sleep(0.05)
+        unittest.has_exception = False
         return True
 
     def wait_for_angularjs(self, timeout=None, **kwargs):
@@ -6360,12 +6362,14 @@ class BaseCase(unittest.TestCase):
         )
         if type(page) is int:
             if text not in pdf_text:
+                unittest.has_exception = True
                 raise Exception(
                     "PDF [%s] is missing expected text [%s] on "
                     "page [%s]!" % (pdf, text, page)
                 )
         else:
             if text not in pdf_text:
+                unittest.has_exception = True
                 raise Exception(
                     "PDF [%s] is missing expected text [%s]!" % (pdf, text)
                 )
@@ -6740,40 +6744,52 @@ class BaseCase(unittest.TestCase):
     def assert_true(self, expr, msg=None):
         """Asserts that the expression is True.
         Will raise an exception if the statement if False."""
+        unittest.has_exception = True
         self.assertTrue(expr, msg=msg)
+        unittest.has_exception = False
 
     def assert_false(self, expr, msg=None):
         """Asserts that the expression is False.
         Will raise an exception if the statement if True."""
+        unittest.has_exception = True
         self.assertFalse(expr, msg=msg)
+        unittest.has_exception = False
 
     def assert_equal(self, first, second, msg=None):
         """Asserts that the two values are equal.
         Will raise an exception if the values are not equal."""
+        unittest.has_exception = True
         self.assertEqual(first, second, msg=msg)
+        unittest.has_exception = False
 
     def assert_not_equal(self, first, second, msg=None):
         """Asserts that the two values are not equal.
         Will raise an exception if the values are equal."""
+        unittest.has_exception = True
         self.assertNotEqual(first, second, msg=msg)
+        unittest.has_exception = False
 
     def assert_in(self, first, second, msg=None):
         """Asserts that the first string is in the second string.
         Will raise an exception if the first string is not in the second."""
+        unittest.has_exception = True
         self.assertIn(first, second, msg=msg)
+        unittest.has_exception = False
 
     def assert_not_in(self, first, second, msg=None):
         """Asserts that the first string is not in the second string.
         Will raise an exception if the first string is in the second string."""
+        unittest.has_exception = True
         self.assertNotIn(first, second, msg=msg)
+        unittest.has_exception = False
 
     def assert_raises(self, *args, **kwargs):
         """Asserts that the following block of code raises an exception.
         Will raise an exception if the block of code has no exception.
         Usage Example =>
-                # Verify that the expected exception is raised.
-                with self.assert_raises(Exception):
-                    raise Exception("Expected Exception!") """
+            # Verify that the expected exception is raised.
+            with self.assert_raises(Exception):
+                raise Exception("Expected Exception!") """
         return self.assertRaises(*args, **kwargs)
 
     def wait_for_attribute(
@@ -6884,9 +6900,11 @@ class BaseCase(unittest.TestCase):
                     self.wait_for_ready_state_complete()
                     time.sleep(2)
                     actual = self.get_page_title().strip()
+                    unittest.has_exception = True
                     self.assertEqual(
                         expected, actual, error % (expected, actual)
                     )
+                    unittest.has_exception = False
         if self.demo_mode and not self.recorder_mode:
             a_t = "ASSERT TITLE"
             if self._language != "English":
@@ -6931,9 +6949,11 @@ class BaseCase(unittest.TestCase):
                     self.wait_for_ready_state_complete()
                     time.sleep(2)
                     actual = self.get_page_title().strip()
+                    unittest.has_exception = True
                     self.assertIn(
                         expected, actual, error % (expected, actual)
                     )
+                    unittest.has_exception = False
         if self.demo_mode and not self.recorder_mode:
             a_t = "ASSERT TITLE CONTAINS"
             if self._language != "English":
@@ -6968,7 +6988,9 @@ class BaseCase(unittest.TestCase):
                 self.wait_for_ready_state_complete()
                 time.sleep(2)
                 actual = self.get_current_url().strip()
+                unittest.has_exception = True
                 self.assertEqual(expected, actual, error % (expected, actual))
+                unittest.has_exception = False
         if self.demo_mode and not self.recorder_mode:
             a_u = "ASSERT URL"
             if self._language != "English":
@@ -7006,7 +7028,9 @@ class BaseCase(unittest.TestCase):
                 self.wait_for_ready_state_complete()
                 time.sleep(2)
                 actual = self.get_current_url().strip()
+                unittest.has_exception = True
                 self.assertIn(expected, actual, error % (expected, actual))
+                unittest.has_exception = False
         if self.demo_mode and not self.recorder_mode:
             a_u = "ASSERT URL CONTAINS"
             if self._language != "English":
@@ -7103,6 +7127,7 @@ class BaseCase(unittest.TestCase):
             er_str = str(errors)
             er_str = er_str.replace("[{", "[\n{").replace("}, {", "},\n{")
             current_url = self.get_current_url()
+            unittest.has_exception = True
             raise Exception(
                 "JavaScript errors found on %s => %s" % (current_url, er_str)
             )
@@ -7655,6 +7680,12 @@ class BaseCase(unittest.TestCase):
                 settings.LARGE_TIMEOUT = sb_config._LARGE_TIMEOUT
                 sb_config._is_timeout_changed = False
                 self.__overrided_default_timeouts = False
+
+    def fail(self, msg=None):
+        """Fail immediately, with the given message."""
+        unittest.has_exception = True
+        super().fail(msg)
+        raise self.failureException(msg)
 
     def skip(self, reason=""):
         """Mark the test as Skipped."""
@@ -9806,6 +9837,7 @@ class BaseCase(unittest.TestCase):
 
     def __check_scope(self):
         if hasattr(self, "browser"):  # self.browser stores the type of browser
+            unittest.has_exception = False
             return  # All good: setUp() already initialized variables in "self"
         else:
             message = (
@@ -9821,6 +9853,7 @@ class BaseCase(unittest.TestCase):
                 "\n variables, which are initialized during the setUp() method"
                 "\n that runs automatically before all tests called by pytest."
             )
+            unittest.has_exception = True
             raise OutOfScopeException(message)
 
     ############
@@ -10076,6 +10109,7 @@ class BaseCase(unittest.TestCase):
             if print_only:
                 print(exception_output)
             else:
+                unittest.has_exception = True
                 raise Exception(exception_output.replace("\\n", "\n"))
 
     ############
@@ -13868,6 +13902,8 @@ class BaseCase(unittest.TestCase):
             # Some actions such as hover-clicking are different on mobile.
             self.mobile_emulator = False
 
+        unittest.has_exception = False
+
         # Configure the test time limit (if used).
         self.set_time_limit(self.time_limit)
 
@@ -14152,6 +14188,8 @@ class BaseCase(unittest.TestCase):
             has_exception = sys.exc_info()[1] is not None
         if self.__will_be_skipped and hasattr(self, "_using_sb_fixture"):
             has_exception = False
+        if python3_11_or_newer and unittest.has_exception:
+            has_exception = True
         return has_exception
 
     def __get_test_id(self):

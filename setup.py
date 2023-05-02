@@ -160,8 +160,8 @@ setup(
         'urllib3==1.26.15;python_version>="3.7"',
         'requests==2.27.1;python_version<"3.7"',
         'requests==2.29.0;python_version>="3.7"',
-        'requests-toolbelt==0.10.1',
-        "pynose==1.4.2",
+        'requests-toolbelt==1.0.0',
+        "pynose==1.4.3",
         'sniffio==1.3.0;python_version>="3.7"',
         'h11==0.14.0;python_version>="3.7"',
         'outcome==1.2.0;python_version>="3.7"',
@@ -241,7 +241,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage==6.2;python_version<"3.7"',
-            'coverage==7.2.4;python_version>="3.7"',
+            'coverage==7.2.5;python_version>="3.7"',
             "pytest-cov==4.0.0",
         ],
         # pip install -e .[flake8]

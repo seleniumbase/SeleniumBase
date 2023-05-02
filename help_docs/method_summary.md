@@ -546,6 +546,8 @@ self.set_default_timeout(timeout)
 
 self.reset_default_timeout()
 
+self.fail(msg=None)
+
 self.skip(reason="")
 
 ############
