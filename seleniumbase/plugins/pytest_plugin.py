@@ -15,6 +15,7 @@ if sys.platform in ["win32", "win64", "x64"]:
 python3_11_or_newer = False
 if sys.version_info >= (3, 11):
     python3_11_or_newer = True
+py311_patch2 = constants.PatchPy311.PATCH
 sys_argv = sys.argv
 pytest_plugins = ["pytester"]  # Adds the "testdir" fixture
 
@@ -1876,7 +1877,7 @@ def pytest_runtest_teardown(item):
     if (
         (
             sb_config._has_exception
-            or python3_11_or_newer
+            or (python3_11_or_newer and py311_patch2)
             or "--pdb" in sys_argv
         )
         and sb_config.list_fp
@@ -2209,7 +2210,7 @@ def pytest_runtest_makereport(item, call):
                 sb_config._extra_dash_entries.append(test_id)
         elif (
             sb_config._sbase_detected
-            and (python3_11_or_newer or "--pdb" in sys_argv)
+            and ((python3_11_or_newer and py311_patch2) or "--pdb" in sys_argv)
             and (report.outcome == "failed" or "AssertionError" in str(call))
             and not sb_config._has_exception
         ):

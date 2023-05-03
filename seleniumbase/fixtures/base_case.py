@@ -77,6 +77,7 @@ from seleniumbase.fixtures import js_utils
 from seleniumbase.fixtures import page_actions
 from seleniumbase.fixtures import page_utils
 from seleniumbase.fixtures import shared_utils
+from seleniumbase.fixtures import unittest_helper
 from seleniumbase.fixtures import xpath_to_css
 
 __all__ = ["BaseCase"]
@@ -91,6 +92,7 @@ if sys.platform in ["win32", "win64", "x64"]:
 python3_11_or_newer = False
 if sys.version_info >= (3, 11):
     python3_11_or_newer = True
+py311_patch2 = constants.PatchPy311.PATCH
 selenium4_or_newer = False
 if sys.version_info >= (3, 7):
     selenium4_or_newer = True
@@ -307,7 +309,6 @@ class BaseCase(unittest.TestCase):
                     pass  # Odd issue where the open did happen. Continue.
             else:
                 raise
-        unittest.has_exception = False
         if (
             self.undetectable
             or (
@@ -4120,7 +4121,6 @@ class BaseCase(unittest.TestCase):
             and settings.SKIP_JS_WAITS
         ):
             time.sleep(0.05)
-        unittest.has_exception = False
         return True
 
     def wait_for_angularjs(self, timeout=None, **kwargs):
@@ -6362,14 +6362,12 @@ class BaseCase(unittest.TestCase):
         )
         if type(page) is int:
             if text not in pdf_text:
-                unittest.has_exception = True
                 raise Exception(
                     "PDF [%s] is missing expected text [%s] on "
                     "page [%s]!" % (pdf, text, page)
                 )
         else:
             if text not in pdf_text:
-                unittest.has_exception = True
                 raise Exception(
                     "PDF [%s] is missing expected text [%s]!" % (pdf, text)
                 )
@@ -6495,7 +6493,19 @@ class BaseCase(unittest.TestCase):
                     from PIL import Image, ImageDraw
                 except Exception:
                     shared_utils.pip_install("Pillow")
-                    from PIL import Image, ImageDraw
+                    try:
+                        from PIL import Image, ImageDraw
+                    except Exception as e:
+                        if (
+                            sys.version_info >= (3, 12)
+                            and "symbol not found" in e.msg
+                        ):
+                            raise Exception(
+                                "PIL / Pillow is not supported on Python %s"
+                                % ".".join(str(s) for s in sys.version_info)
+                            )
+                        else:
+                            raise
             text_rows = overlay_text.split("\n")
             len_text_rows = len(text_rows)
             max_width = 0
@@ -6744,44 +6754,32 @@ class BaseCase(unittest.TestCase):
     def assert_true(self, expr, msg=None):
         """Asserts that the expression is True.
         Will raise an exception if the statement if False."""
-        unittest.has_exception = True
         self.assertTrue(expr, msg=msg)
-        unittest.has_exception = False
 
     def assert_false(self, expr, msg=None):
         """Asserts that the expression is False.
         Will raise an exception if the statement if True."""
-        unittest.has_exception = True
         self.assertFalse(expr, msg=msg)
-        unittest.has_exception = False
 
     def assert_equal(self, first, second, msg=None):
         """Asserts that the two values are equal.
         Will raise an exception if the values are not equal."""
-        unittest.has_exception = True
         self.assertEqual(first, second, msg=msg)
-        unittest.has_exception = False
 
     def assert_not_equal(self, first, second, msg=None):
         """Asserts that the two values are not equal.
         Will raise an exception if the values are equal."""
-        unittest.has_exception = True
         self.assertNotEqual(first, second, msg=msg)
-        unittest.has_exception = False
 
     def assert_in(self, first, second, msg=None):
         """Asserts that the first string is in the second string.
         Will raise an exception if the first string is not in the second."""
-        unittest.has_exception = True
         self.assertIn(first, second, msg=msg)
-        unittest.has_exception = False
 
     def assert_not_in(self, first, second, msg=None):
         """Asserts that the first string is not in the second string.
         Will raise an exception if the first string is in the second string."""
-        unittest.has_exception = True
         self.assertNotIn(first, second, msg=msg)
-        unittest.has_exception = False
 
     def assert_raises(self, *args, **kwargs):
         """Asserts that the following block of code raises an exception.
@@ -6900,11 +6898,9 @@ class BaseCase(unittest.TestCase):
                     self.wait_for_ready_state_complete()
                     time.sleep(2)
                     actual = self.get_page_title().strip()
-                    unittest.has_exception = True
                     self.assertEqual(
                         expected, actual, error % (expected, actual)
                     )
-                    unittest.has_exception = False
         if self.demo_mode and not self.recorder_mode:
             a_t = "ASSERT TITLE"
             if self._language != "English":
@@ -6949,11 +6945,9 @@ class BaseCase(unittest.TestCase):
                     self.wait_for_ready_state_complete()
                     time.sleep(2)
                     actual = self.get_page_title().strip()
-                    unittest.has_exception = True
                     self.assertIn(
                         expected, actual, error % (expected, actual)
                     )
-                    unittest.has_exception = False
         if self.demo_mode and not self.recorder_mode:
             a_t = "ASSERT TITLE CONTAINS"
             if self._language != "English":
@@ -6988,9 +6982,7 @@ class BaseCase(unittest.TestCase):
                 self.wait_for_ready_state_complete()
                 time.sleep(2)
                 actual = self.get_current_url().strip()
-                unittest.has_exception = True
                 self.assertEqual(expected, actual, error % (expected, actual))
-                unittest.has_exception = False
         if self.demo_mode and not self.recorder_mode:
             a_u = "ASSERT URL"
             if self._language != "English":
@@ -7028,9 +7020,7 @@ class BaseCase(unittest.TestCase):
                 self.wait_for_ready_state_complete()
                 time.sleep(2)
                 actual = self.get_current_url().strip()
-                unittest.has_exception = True
                 self.assertIn(expected, actual, error % (expected, actual))
-                unittest.has_exception = False
         if self.demo_mode and not self.recorder_mode:
             a_u = "ASSERT URL CONTAINS"
             if self._language != "English":
@@ -7127,7 +7117,6 @@ class BaseCase(unittest.TestCase):
             er_str = str(errors)
             er_str = er_str.replace("[{", "[\n{").replace("}, {", "},\n{")
             current_url = self.get_current_url()
-            unittest.has_exception = True
             raise Exception(
                 "JavaScript errors found on %s => %s" % (current_url, er_str)
             )
@@ -7683,9 +7672,7 @@ class BaseCase(unittest.TestCase):
 
     def fail(self, msg=None):
         """Fail immediately, with the given message."""
-        unittest.has_exception = True
         super().fail(msg)
-        raise self.failureException(msg)
 
     def skip(self, reason=""):
         """Mark the test as Skipped."""
@@ -9463,7 +9450,10 @@ class BaseCase(unittest.TestCase):
             raise VisualException(minified_exception)
 
     def _process_visual_baseline_logs(self):
-        if not (python3_11_or_newer or "--pdb" in sys.argv):
+        if not (
+            (python3_11_or_newer and py311_patch2)
+            or "--pdb" in sys.argv
+        ):
             return
         self.__process_visual_baseline_logs()
 
@@ -9837,7 +9827,6 @@ class BaseCase(unittest.TestCase):
 
     def __check_scope(self):
         if hasattr(self, "browser"):  # self.browser stores the type of browser
-            unittest.has_exception = False
             return  # All good: setUp() already initialized variables in "self"
         else:
             message = (
@@ -9853,7 +9842,6 @@ class BaseCase(unittest.TestCase):
                 "\n variables, which are initialized during the setUp() method"
                 "\n that runs automatically before all tests called by pytest."
             )
-            unittest.has_exception = True
             raise OutOfScopeException(message)
 
     ############
@@ -10109,7 +10097,6 @@ class BaseCase(unittest.TestCase):
             if print_only:
                 print(exception_output)
             else:
-                unittest.has_exception = True
                 raise Exception(exception_output.replace("\\n", "\n"))
 
     ############
@@ -13408,11 +13395,9 @@ class BaseCase(unittest.TestCase):
         """This method runs before every test begins.
         Be careful if a subclass of BaseCase overrides setUp().
         If so, add the following line to the subclass setUp() method:
-        super().setUp()
-        """
+        super().setUp() """
         if not hasattr(self, "_using_sb_fixture") and self.__called_setup:
-            # This test already called setUp()
-            return
+            return  # This test already called setUp()
         self.__called_setup = True
         self.__called_teardown = False
         self.masterqa_mode = masterqa_mode
@@ -13902,8 +13887,6 @@ class BaseCase(unittest.TestCase):
             # Some actions such as hover-clicking are different on mobile.
             self.mobile_emulator = False
 
-        unittest.has_exception = False
-
         # Configure the test time limit (if used).
         self.set_time_limit(self.time_limit)
 
@@ -14080,7 +14063,10 @@ class BaseCase(unittest.TestCase):
         self.testcase_manager.update_testcase_data(data_payload)
 
     def _add_pytest_html_extra(self):
-        if not (python3_11_or_newer or "--pdb" in sys.argv):
+        if not (
+            (python3_11_or_newer and py311_patch2)
+            or "--pdb" in sys.argv
+        ):
             return
         self.__add_pytest_html_extra()
 
@@ -14188,8 +14174,6 @@ class BaseCase(unittest.TestCase):
             has_exception = sys.exc_info()[1] is not None
         if self.__will_be_skipped and hasattr(self, "_using_sb_fixture"):
             has_exception = False
-        if python3_11_or_newer and unittest.has_exception:
-            has_exception = True
         return has_exception
 
     def __get_test_id(self):
@@ -14731,7 +14715,7 @@ class BaseCase(unittest.TestCase):
         if (
             self.__has_exception()
             or self.save_screenshot_after_test
-            or python3_11_or_newer
+            or (python3_11_or_newer and py311_patch2)
             or "--pdb" in sys.argv
         ):
             self.__set_last_page_screenshot()
@@ -14742,7 +14726,10 @@ class BaseCase(unittest.TestCase):
                     self.__add_pytest_html_extra()
 
     def _log_fail_data(self):
-        if not (python3_11_or_newer or "--pdb" in sys.argv):
+        if not (
+            (python3_11_or_newer and py311_patch2)
+            or "--pdb" in sys.argv
+        ):
             return
         test_id = self.__get_test_id()
         test_logpath = os.path.join(self.log_path, test_id)
@@ -14801,12 +14788,102 @@ class BaseCase(unittest.TestCase):
         else:
             return None
 
+    def _addSkip(self, result, test_case, reason):
+        """This method should NOT be called directly from tests.
+        (It will be called AUTOMATICALLY as needed.)"""
+        addSkip = getattr(result, 'addSkip', None)
+        if addSkip is not None:
+            addSkip(test_case, reason)
+        else:
+            import warnings
+            warnings.warn(
+                "TestResult has no addSkip method! Skips not reported!",
+                RuntimeWarning, 2
+            )
+            result.addSuccess(test_case)
+
+    def _callTestMethod(self, method):
+        """This method should NOT be called directly from tests.
+        (It will be called AUTOMATICALLY as needed.)"""
+        method()
+
+    def run(self, result=None):
+        """Overwrite the unittest run() method for Python 3.11 or newer.
+        This method should NOT be called directly from tests.
+        (It will be called AUTOMATICALLY as needed.)"""
+        if not python3_11_or_newer:
+            return super().run(result=result)
+        if result is None:
+            result = self.defaultTestResult()
+            startTestRun = getattr(result, 'startTestRun', None)
+            stopTestRun = getattr(result, 'stopTestRun', None)
+            if startTestRun is not None:
+                startTestRun()
+        else:
+            stopTestRun = None
+        result.startTest(self)
+        try:
+            testMethod = getattr(self, self._testMethodName)
+            if (
+                getattr(self.__class__, "__unittest_skip__", False)
+                or getattr(testMethod, "__unittest_skip__", False)
+            ):
+                skip_why = (
+                    getattr(self.__class__, '__unittest_skip_why__', '')
+                    or getattr(testMethod, '__unittest_skip_why__', '')
+                )
+                self._addSkip(result, self, skip_why)
+                return result
+            expecting_failure = (
+                getattr(self, "__unittest_expecting_failure__", False)
+                or getattr(testMethod, "__unittest_expecting_failure__", False)
+            )
+            outcome = unittest_helper._Outcome(result)
+            try:
+                self._outcome = outcome
+                with outcome.testPartExecutor(self):
+                    self._callSetUp()
+                if outcome.success:
+                    outcome.expecting_failure = expecting_failure
+                    with outcome.testPartExecutor(self, isTest=True):
+                        self._callTestMethod(testMethod)
+                    outcome.expecting_failure = False
+                    with outcome.testPartExecutor(self):
+                        self._callTearDown()
+                self.doCleanups()
+                for test, reason in outcome.skipped:
+                    self._addSkip(result, test, reason)
+                for test, exc_info in outcome.errors:
+                    if exc_info is not None:
+                        if issubclass(exc_info[0], self.failureException):
+                            result.addFailure(test, exc_info)
+                        else:
+                            result.addError(test, exc_info)
+                if outcome.success:
+                    if expecting_failure:
+                        if outcome.expectedFailure:
+                            self._addExpectedFailure(
+                                result, outcome.expectedFailure
+                            )
+                        else:
+                            self._addUnexpectedSuccess(result)
+                    else:
+                        result.addSuccess(self)
+                return result
+            finally:
+                outcome.errors.clear()
+                outcome.expectedFailure = None
+                self._outcome = None
+        finally:
+            result.stopTest(self)
+            if stopTestRun is not None:
+                stopTestRun()
+
     def tearDown(self):
         """This method runs after every test completes.
         Be careful if a subclass of BaseCase overrides setUp().
         If so, add the following line to the subclass's tearDown() method:
-        super().tearDown()
-        """
+        super().tearDown() """
         if not hasattr(self, "_using_sb_fixture") and self.__called_teardown:
             # This test already called tearDown()
             return
@@ -14900,7 +14977,10 @@ class BaseCase(unittest.TestCase):
                     self.__add_pytest_html_extra()
                     sb_config._has_logs = True
                 elif (
-                    (python3_11_or_newer or "--pdb" in sys.argv)
+                    (
+                        (python3_11_or_newer and py311_patch2)
+                        or "--pdb" in sys.argv
+                    )
                     and not has_exception
                 ):
                     # Handle a bug where exceptions aren't seen
