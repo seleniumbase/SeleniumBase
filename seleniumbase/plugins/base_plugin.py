@@ -13,6 +13,7 @@ from seleniumbase.fixtures import constants
 python3_11_or_newer = False
 if sys.version_info >= (3, 11):
     python3_11_or_newer = True
+py311_patch2 = constants.PatchPy311.PATCH = True
 
 
 class Base(Plugin):
@@ -276,7 +277,7 @@ class Base(Plugin):
                     test, self.test_count, self.duration
                 )
             )
-        if python3_11_or_newer:
+        if python3_11_or_newer and py311_patch2:
             # Handle a bug on Python 3.11 where exceptions aren't seen
             sb_config._browser_version = None
             try:

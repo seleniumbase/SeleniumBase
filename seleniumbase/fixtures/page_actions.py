@@ -23,7 +23,6 @@ By.PARTIAL_LINK_TEXT   # "partial link text"
 import codecs
 import os
 import time
-import unittest
 from selenium.common.exceptions import ElementNotInteractableException
 from selenium.common.exceptions import ElementNotVisibleException
 from selenium.common.exceptions import NoAlertPresentException
@@ -225,7 +224,6 @@ def hover_element(driver, element):
 
 
 def timeout_exception(exception, message):
-    unittest.has_exception = True
     exc, msg = shared_utils.format_exc(exception, message)
     raise exc(msg)
 

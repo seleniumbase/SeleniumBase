@@ -41,6 +41,13 @@ class ValidEnvs:
     ]
 
 
+class PatchPy311:
+    # Now that unittest is "patched/fixed" in Python 3.11 and up,
+    # this second patch might not be needed to fix error-handling.
+    # Enabling this might slow things slightly to fix some things.
+    PATCH = False
+
+
 class PageLoadStrategy:
     # Usage Example => "--pls=none"
     NORMAL = "normal"
