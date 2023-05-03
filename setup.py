@@ -161,7 +161,7 @@ setup(
         'requests==2.27.1;python_version<"3.7"',
         'requests==2.29.0;python_version>="3.7"',
         'requests-toolbelt==1.0.0',
-        "pynose==1.4.3",
+        "pynose==1.4.4",
         'sniffio==1.3.0;python_version>="3.7"',
         'h11==0.14.0;python_version>="3.7"',
         'outcome==1.2.0;python_version>="3.7"',
