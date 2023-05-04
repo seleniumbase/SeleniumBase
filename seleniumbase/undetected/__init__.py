@@ -277,6 +277,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                 ):
                     config["profile"]["exit_type"] = None
                 fs.seek(0, 0)
+                fs.truncate()
                 json.dump(config, fs)
                 logger.debug("Fixed exit_type flag.")
         except Exception:
