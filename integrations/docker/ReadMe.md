@@ -28,7 +28,7 @@ https://docs.docker.com/engine/installation/
 
 If running on an Apple M1 Mac, use this instead:
 
-    docker build --platform linux/amd64 seleniumbase .
+    docker build --platform linux/amd64 -t seleniumbase .
 
 #### 6. Run [the example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) with Chrome inside your Docker: (Once the test completes after a few seconds, you'll automatically exit the Docker shell)
 
