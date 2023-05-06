@@ -172,6 +172,7 @@ pytest my_first_test.py --settings-file=custom_settings.py
 --final-debug  # (Enter Debug Mode after each test ends. Don't use with CI!)
 --dashboard  # (Enable the SeleniumBase Dashboard. Saved at: dashboard.html)
 --dash-title=STRING  # (Set the title shown for the generated dashboard.)
+--enable-3d-apis  # (Enables WebGL and 3D APIs.)
 --swiftshader  # (Use Chrome's "--use-gl=swiftshader" feature.)
 --incognito  # (Enable Chrome's Incognito mode.)
 --guest  # (Enable Chrome's Guest mode.)

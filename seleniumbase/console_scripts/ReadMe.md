@@ -62,8 +62,8 @@ sbase install [DRIVER] [OPTIONS]
 sbase get chromedriver
 sbase get geckodriver
 sbase get edgedriver
-sbase get chromedriver 109
-sbase get chromedriver 109.0.5414.74
+sbase get chromedriver 112
+sbase get chromedriver 112.0.5615.49
 sbase get chromedriver latest
 sbase get chromedriver latest-1  # (Latest minus one)
 sbase get chromedriver -p
