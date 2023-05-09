@@ -14789,8 +14789,7 @@ class BaseCase(unittest.TestCase):
             return None
 
     def _addSkip(self, result, test_case, reason):
-        """This method should NOT be called directly from tests.
-        (It will be called AUTOMATICALLY as needed.)"""
+        """This method should NOT be called directly from tests."""
         addSkip = getattr(result, 'addSkip', None)
         if addSkip is not None:
             addSkip(test_case, reason)
@@ -14803,14 +14802,12 @@ class BaseCase(unittest.TestCase):
             result.addSuccess(test_case)
 
     def _callTestMethod(self, method):
-        """This method should NOT be called directly from tests.
-        (It will be called AUTOMATICALLY as needed.)"""
+        """This method should NOT be called directly from tests."""
         method()
 
     def run(self, result=None):
         """Overwrite the unittest run() method for Python 3.11 or newer.
-        This method should NOT be called directly from tests.
-        (It will be called AUTOMATICALLY as needed.)"""
+        This method should NOT be called directly from tests."""
         if not python3_11_or_newer:
             return super().run(result=result)
         if result is None:
