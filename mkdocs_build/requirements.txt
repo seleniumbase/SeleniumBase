@@ -3,7 +3,7 @@
 
 regex>=2023.5.5
 pkginfo>=1.9.6
-docutils==0.19
+docutils==0.20
 python-dateutil==2.8.2
 livereload==2.6.3
 joblib==1.2.0
