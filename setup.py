@@ -143,7 +143,7 @@ setup(
         'filelock>=3.4.1;python_version<"3.7"',
         'filelock>=3.12.0;python_version>="3.7"',
         'platformdirs>=2.4.0;python_version<"3.7"',
-        'platformdirs>=3.5.0;python_version>="3.7"',
+        'platformdirs>=3.5.1;python_version>="3.7"',
         'pyparsing>=3.0.7;python_version<"3.7"',
         'pyparsing>=3.0.9;python_version>="3.7"',
         'zipp==3.6.0;python_version<"3.7"',
