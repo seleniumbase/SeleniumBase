@@ -4,6 +4,9 @@ BaseCase.main(__name__, __file__)
 
 class UserAgentTests(BaseCase):
     def test_user_agent(self):
+        if self._multithreaded:
+            self.open_if_not_url("about:blank")
+            self.skip("Skipping test in multi-threaded mode.")
         self.open("https://my-user-agent.com/")
         zoom_in = "#ua_string{zoom: 1.8;-moz-transform: scale(1.8);}"
         self.add_css_style(zoom_in)

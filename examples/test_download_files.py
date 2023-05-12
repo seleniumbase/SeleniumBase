@@ -5,6 +5,9 @@ from seleniumbase import BaseCase
 
 class DownloadTests(BaseCase):
     def test_download_chromedriver_notes(self):
+        if self._multithreaded:
+            self.open_if_not_url("about:blank")
+            self.skip("Skipping test in multi-threaded mode.")
         self.open("https://chromedriver.chromium.org/downloads")
         notes_file = "notes.txt"
         notes_link = (

@@ -4,13 +4,7 @@ BaseCase.main(__name__, __file__)
 
 
 class TodoMVC(BaseCase):
-    @parameterized.expand(
-        [
-            ["mithril"],
-            ["react"],
-            ["vue"],
-        ]
-    )
+    @parameterized.expand([["jquery"], ["react"], ["vue"]])
     def test_todomvc(self, framework):
         self.open("https://todomvc.com/")
         self.clear_local_storage()
