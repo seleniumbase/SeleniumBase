@@ -13644,14 +13644,20 @@ class BaseCase(unittest.TestCase):
             # Pure Python run. Eg. SB() Manager
             self.__activate_virtual_display_as_needed()
 
-        # Verify that SeleniumBase is installed successfully
+        # Verify SeleniumBase is installed successfully, and used correctly
         if not hasattr(self, "browser"):
             raise Exception(
-                "SeleniumBase plugins DID NOT load! * Please REINSTALL!\n"
-                "*** Either install SeleniumBase in Dev Mode from a clone:\n"
+                "SeleniumBase plugins DID NOT load!\n"
+                'Either "seleniumbase" is not installed on your system,\n'
+                'or you called "setUp()" directly without initialization!\n'
+                "*** To install SeleniumBase in Develop Mode from a clone:\n"
                 '    >>> "pip install -e ."     (Run in DIR with setup.py)\n'
-                "*** Or install the latest SeleniumBase version from PyPI:\n"
-                '    >>> "pip install -U seleniumbase"    (Run in any DIR)'
+                "*** To install the latest SeleniumBase version from PyPI:\n"
+                '    >>> "pip install -U seleniumbase"    (Run in any DIR)\n'
+                'NOTE: "setUp()" can ONLY be called after vars are set.\n'
+                '    If using "pytest", then "pytest_plugin.py" sets them.\n'
+                '    The SeleniumBase "SB()" Manager can also set them.\n'
+                "See SeleniumBase/help_docs/syntax_formats.md for details!"
             )
 
         if not hasattr(sb_config, "_is_timeout_changed"):
