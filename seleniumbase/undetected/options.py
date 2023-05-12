@@ -75,6 +75,6 @@ class ChromeOptions(ChromiumOptions):
 
     @classmethod
     def from_options(cls, options):
-        o = cls()
-        o.__dict__.update(options.__dict__)
-        return o
+        _options = cls()
+        _options.__dict__.update(options.__dict__)
+        return _options

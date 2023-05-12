@@ -5,10 +5,14 @@ import re
 import subprocess
 import sys
 import time
-import selenium.webdriver.chrome.service
-import selenium.webdriver.chrome.webdriver
-import selenium.webdriver.common.service
-import selenium.webdriver.remote.command
+
+
+from selenium import webdriver
+from selenium.webdriver.common.utils import free_port
+from selenium.webdriver.remote.command import Command
+from selenium.webdriver.chrome.service import Service
+
+
 from .cdp import CDP
 from .cdp import PageElement
 from .dprocess import start_detached
@@ -32,7 +36,7 @@ logger.setLevel(logging.getLogger().getEffectiveLevel())
 sys_plat = sys.platform
 
 
-class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
+class Chrome(webdriver.Chrome):
     """Controls chromedriver to drive a browser.
     The driver gets downloaded automatically."""
     _instances = set()
@@ -41,7 +45,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
 
     def __init__(
         self,
-        options=None,
+        options: ChromeOptions = None,
         user_data_dir=None,
         driver_executable_path=None,
         browser_executable_path=None,
@@ -160,7 +164,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
             or (hasattr(sb_config, "multi_proxy") and sb_config.multi_proxy)
             or not special_port_free
         ):
-            debug_port = selenium.webdriver.common.service.utils.free_port()
+            debug_port = free_port()
         if hasattr(options, "_remote_debugging_port"):
             # The user chooses the port. Errors happen if the port is taken.
             debug_port = options._remote_debugging_port
@@ -269,16 +273,16 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                 encoding="utf-8",
                 mode="r+",
                 errors="ignore",
-            ) as fs:
-                config = json.load(fs)
+            ) as file_system:
+                config = json.load(file_system)
                 if (
                     "exit_type" not in config["profile"].keys()
                     or config["profile"]["exit_type"] is not None
                 ):
                     config["profile"]["exit_type"] = None
-                fs.seek(0, 0)
-                fs.truncate()
-                json.dump(config, fs)
+                file_system.seek(0, 0)
+                file_system.truncate()
+                json.dump(config, file_system)
                 logger.debug("Fixed exit_type flag.")
         except Exception:
             logger.debug("Did not find a bad exit_type flag.")
@@ -302,12 +306,12 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
             self.browser_pid = browser.pid
         service_ = None
         if patch_driver:
-            service_ = selenium.webdriver.chrome.service.Service(
+            service_ = Service(
                 executable_path=self.patcher.executable_path,
                 log_path=os.devnull,
             )
         else:
-            service_ = selenium.webdriver.chrome.service.Service(
+            service_ = Service(
                 executable_path=driver_executable_path,
                 log_path=os.devnull,
             )
@@ -405,7 +409,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
 
     def window_new(self, url=None):
         self.execute(
-            selenium.webdriver.remote.command.Command.NEW_WINDOW,
+            Command.NEW_WINDOW,
             {"type": "window"},
         )
         if url:
@@ -448,12 +452,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
     def start_session(self, capabilities=None, browser_profile=None):
         if not capabilities:
             capabilities = self.options.to_capabilities()
-        super(
-            selenium.webdriver.chrome.webdriver.WebDriver,
-            self,
-        ).start_session(
-            capabilities, browser_profile
-        )
+        super().start_session(capabilities, browser_profile)
 
     def quit(self):
         try:
@@ -498,7 +497,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                 time.sleep(0.1)
         # Dereference patcher, so patcher can start cleaning up as well.
         # This must come last, otherwise it will throw "in use" errors.
-        self.patcher = None
+        del self.patcher
 
     def __del__(self):
         try:

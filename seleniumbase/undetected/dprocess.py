@@ -10,12 +10,14 @@ DETACHED_PROCESS = 0x00000008
 REGISTERED = []
 
 
-def start_detached(executable, *args):
-    """Starts a fully independent subprocess with no parent.
+def start_detached(*args, executable):
+    """
+    Starts a fully independent subprocess with no parent.
     :param executable: executable
     :param args: arguments to the executable,
         eg: ["--param1_key=param1_val", "-vvv"]
-    :return: pid of the grandchild process """
+    :return: pid of the grandchild process
+    """
     import multiprocessing
 
     reader, writer = multiprocessing.Pipe(False)  # Create pipe
@@ -34,7 +36,7 @@ def start_detached(executable, *args):
     return pid
 
 
-def _start_detached(executable, *args, writer=None):
+def _start_detached(*args, executable, writer=None):
     # Configure Launch
     kwargs = {}
     import platform

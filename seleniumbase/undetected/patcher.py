@@ -8,6 +8,7 @@ import string
 import sys
 import time
 import zipfile
+import functools
 
 logger = logging.getLogger(__name__)
 IS_POSIX = sys.platform.startswith(("darwin", "cygwin", "linux"))
@@ -38,14 +39,20 @@ class Patcher(object):
         os.makedirs(downloads_folder)
     data_path = os.path.abspath(os.path.expanduser(downloads_folder))
 
+    @functools.cached_property
+    def gc_collection_timestamp(self):
+        return time.monotonic()
+
     def __init__(self, executable_path=None, force=False, version_main=0):
-        """Args:
-        executable_path: None = automatic
-            A full file path to the chromedriver executable
-        force: False
-            Terminate processes which are holding lock
-        version_main: 0 = auto
-            Specify main chrome version (rounded, ex: 82) """
+        """
+        Args:
+            executable_path: None = automatic
+                A full file path to the chromedriver executable
+            force: False
+                Terminate processes which are holding lock
+            version_main: 0 = auto
+                Specify main chrome version (rounded, ex: 82)
+        """
         self.force = force
         self.executable_path = None
         prefix = "undetected"
@@ -262,13 +269,11 @@ class Patcher(object):
         if self._custom_exe_path:
             # if the driver binary is specified by user
             # we assume it is important enough to not delete it
-            return
+            return None
         else:
             timeout = 3
-            t = time.monotonic()
             while True:
-                now = time.monotonic()
-                if now - t > timeout:
+                if time.monotonic() - self.gc_collection_timestamp > timeout:
                     logger.debug(
                         "could not unlink %s in time (%d seconds)"
                         % (self.executable_path, timeout)
@@ -281,8 +286,8 @@ class Patcher(object):
                         % self.executable_path
                     )
                     break
+                except FileNotFoundError:
+                    break
                 except (OSError, RuntimeError, PermissionError):
                     time.sleep(0.1)
                     continue
-                except FileNotFoundError:
-                    break
