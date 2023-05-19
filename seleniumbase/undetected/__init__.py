@@ -456,6 +456,12 @@ class Chrome(webdriver.Chrome):
 
     def quit(self):
         try:
+            if self.reactor and isinstance(self.reactor, Reactor):
+                logger.debug("Shutting down reactor")
+                self.reactor.terminate()
+        except Exception:
+            pass
+        try:
             logger.debug("Terminating the browser")
             os.kill(self.browser_pid, 15)
         except TimeoutError as e:
@@ -465,12 +471,6 @@ class Chrome(webdriver.Chrome):
         if hasattr(self, "service") and getattr(self.service, "process", None):
             logger.debug("Stopping webdriver service")
             self.service.stop()
-        try:
-            if self.reactor and isinstance(self.reactor, Reactor):
-                logger.debug("Shutting down reactor")
-                self.reactor.event.set()
-        except Exception:
-            pass
         if (
             hasattr(self, "keep_user_data_dir")
             and hasattr(self, "user_data_dir")
@@ -498,6 +498,7 @@ class Chrome(webdriver.Chrome):
         # Dereference patcher, so patcher can start cleaning up as well.
         # This must come last, otherwise it will throw "in use" errors.
         del self.patcher
+        del self.reactor
 
     def __del__(self):
         try:
