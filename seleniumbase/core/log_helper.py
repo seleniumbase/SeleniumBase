@@ -3,6 +3,7 @@ import os
 import shutil
 import sys
 import time
+import errno
 from seleniumbase import config as sb_config
 from seleniumbase.config import settings
 from seleniumbase.fixtures import constants
@@ -289,7 +290,16 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
             os.makedirs(test_logpath)
     except Exception:
         pass
-    log_file = codecs.open(basic_file_path, "w+", "utf-8")
+    try:
+        log_file = codecs.open(basic_file_path, "w+", "utf-8")
+    except OSError as os_error:
+        if os_error.errno == 36: # If file is too long for linux system shorten it to maximum allowed size
+            basic_file_path = f'{basic_file_path[:263]}.log'
+            log_file = codecs.open(basic_file_path, "w+", "utf-8")
+            pass
+        else:
+            raise
+
     log_file.writelines("\r\n".join(data_to_save))
     log_file.close()
 
@@ -376,8 +386,19 @@ def log_page_source(test_logpath, driver, source=None):
             os.makedirs(test_logpath)
     except Exception:
         pass
+
     html_file_path = os.path.join(test_logpath, html_file_name)
-    html_file = codecs.open(html_file_path, "w+", "utf-8")
+
+    try:
+        html_file = codecs.open(html_file_path, "w+", "utf-8")
+    except OSError as os_error:
+        if os_error.errno == 36: # If file is too long for linux system shorten it to maximum allowed size
+            html_file_path = f'{html_file_path[:262]}.html'
+            html_file = codecs.open(html_file_path, "w+", "utf-8")
+            pass
+        else:
+            raise
+
     html_file.write(page_source)
     html_file.close()
 
