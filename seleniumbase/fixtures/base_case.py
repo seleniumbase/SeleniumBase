@@ -2873,8 +2873,7 @@ class BaseCase(unittest.TestCase):
         """Selects an HTML <select> option by option text.
         @Params
         dropdown_selector - the <select> selector.
-        option - the text of the option.
-        """
+        option - the text of the option."""
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -2898,8 +2897,7 @@ class BaseCase(unittest.TestCase):
         """Selects an HTML <select> option by option index.
         @Params
         dropdown_selector - the <select> selector.
-        option - the index number of the option.
-        """
+        option - the index number of the option."""
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -2923,8 +2921,7 @@ class BaseCase(unittest.TestCase):
         """Selects an HTML <select> option by option value.
         @Params
         dropdown_selector - the <select> selector.
-        option - the value property of the option.
-        """
+        option - the value property of the option."""
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -2950,8 +2947,7 @@ class BaseCase(unittest.TestCase):
         dropdown_selector - The selector of the "select" element.
         attribute - Choose from "text", "index", "value", or None (elements).
         by - The "by" of the "select" selector to use. Default: "css selector".
-        timeout - Time to wait for "select". If None: settings.SMALL_TIMEOUT.
-        """
+        timeout - Wait time for "select". If None: settings.SMALL_TIMEOUT."""
         self.wait_for_ready_state_complete()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -3933,14 +3929,12 @@ class BaseCase(unittest.TestCase):
     def save_screenshot(
         self, name, folder=None, selector=None, by="css selector"
     ):
-        """
-        Saves a screenshot of the current page.
+        """Saves a screenshot of the current page.
         If no folder is specified, uses the folder where pytest was called.
         The screenshot will include the entire page unless a selector is given.
         If a provided selector is not found, then takes a full-page screenshot.
         If the folder provided doesn't exist, it will get created.
-        The screenshot will be in PNG format: (*.png)
-        """
+        The screenshot will be in PNG format: (*.png)"""
         self.wait_for_ready_state_complete()
         if selector and by:
             selector, by = self.__recalculate_selector(selector, by)
@@ -4012,8 +4006,7 @@ class BaseCase(unittest.TestCase):
         If the folder specified doesn't exist, it will get created.
         @Params
         name - The file name to save the current page's HTML to.
-        folder - The folder to save the file to. (Default = current folder)
-        """
+        folder - The folder to save the file to. (Default = current folder)"""
         self.wait_for_ready_state_complete()
         return page_actions.save_page_source(self.driver, name, folder)
 
@@ -4167,8 +4160,7 @@ class BaseCase(unittest.TestCase):
     def install_addon(self, xpi_file):
         """Installs a Firefox add-on instantly at run-time.
         @Params
-        xpi_file - A file archive in .xpi format.
-        """
+        xpi_file - A file archive in .xpi format."""
         self.wait_for_ready_state_complete()
         if self.browser != "firefox":
             raise Exception(
