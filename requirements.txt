@@ -106,7 +106,8 @@ rich==13.3.5;python_version>="3.7"
 
 coverage==6.2;python_version<"3.7"
 coverage==7.2.6;python_version>="3.7"
-pytest-cov==4.1.0
+pytest-cov==4.0.0;python_version<"3.7"
+pytest-cov==4.1.0;python_version>="3.7"
 flake8==5.0.4;python_version<"3.9"
 flake8==6.0.0;python_version>="3.9"
 mccabe==0.7.0
