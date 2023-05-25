@@ -127,7 +127,7 @@ setup(
         'packaging>=21.3;python_version<"3.7"',
         'packaging>=23.1;python_version>="3.7"',
         'setuptools>=59.6.0;python_version<"3.7"',
-        'setuptools>=67.7.2;python_version>="3.7"',
+        'setuptools>=67.8.0;python_version>="3.7"',
         'keyring>=23.4.1;python_version<"3.8"',
         'keyring>=23.13.1;python_version>="3.8"',
         'tomli>=1.2.3;python_version<"3.7"',
@@ -159,9 +159,9 @@ setup(
         'urllib3==1.26.12;python_version<"3.7"',
         'urllib3>=1.26.15,<2.1.0;python_version>="3.7"',
         'requests==2.27.1;python_version<"3.7"',
-        'requests>=2.29.0,<2.31.0;python_version>="3.7"',
+        'requests==2.31.0;python_version>="3.7"',
         'requests-toolbelt==1.0.0',
-        "pynose==1.4.4",
+        "pynose==1.4.5",
         'sniffio==1.3.0;python_version>="3.7"',
         'h11==0.14.0;python_version>="3.7"',
         'outcome==1.2.0;python_version>="3.7"',
@@ -193,7 +193,7 @@ setup(
         'pytest-rerunfailures==10.3;python_version<"3.7"',
         'pytest-rerunfailures==11.1.2;python_version>="3.7"',
         'pytest-xdist==2.5.0;python_version<"3.7"',
-        'pytest-xdist==3.2.1;python_version>="3.7"',
+        'pytest-xdist==3.3.1;python_version>="3.7"',
         'parameterized==0.8.1;python_version<"3.7"',
         'parameterized==0.9.0;python_version>="3.7"',
         "sbvirtualdisplay==1.2.0",
@@ -241,8 +241,8 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage==6.2;python_version<"3.7"',
-            'coverage==7.2.5;python_version>="3.7"',
-            "pytest-cov==4.0.0",
+            'coverage==7.2.6;python_version>="3.7"',
+            "pytest-cov==4.1.0",
         ],
         # pip install -e .[flake8]
         # Usage: flake8
