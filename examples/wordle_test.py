@@ -54,6 +54,7 @@ class WordleTests(BaseCase):
             self.open_if_not_url("about:blank")
             self.skip("Skip this test in headless mode!")
         self.open("https://www.nytimes.com/games/wordle/index.html")
+        self.click_if_visible('button:contains("Play")', timeout=2)
         self.click_if_visible('svg[data-testid="icon-close"]', timeout=2)
         self.remove_elements("div.place-ad")
         self.initialize_word_list()
