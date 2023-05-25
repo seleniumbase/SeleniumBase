@@ -54,15 +54,15 @@ class CDP:
         self._session = requests.Session()
         self._last_resp = None
         self._last_json = None
-        resp = self.get(self.endpoints.json)  # noqa
+        resp = self.get(self.endpoints.json)
         self.sessionId = resp[0]["id"]
         self.wsurl = resp[0]["webSocketDebuggerUrl"]
 
     def tab_activate(self, id=None):
         if not id:
             active_tab = self.tab_list()[0]
-            id = active_tab.id  # noqa
-            self.wsurl = active_tab.webSocketDebuggerUrl  # noqa
+            id = active_tab.id
+            self.wsurl = active_tab.webSocketDebuggerUrl
         return self.post(self.endpoints["activate"].format(id=id))
 
     def tab_list(self):
