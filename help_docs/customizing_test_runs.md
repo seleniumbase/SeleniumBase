@@ -20,7 +20,7 @@ pytest test_demo_site.py --demo
 pytest test_demo_site.py --headless
 
 # Run tests multi-threaded using [n] threads
-pytest test_suite.py -n=4
+pytest test_suite.py -n4
 
 # Reuse the browser session for all tests ("--rs")
 pytest test_suite.py --reuse-session
@@ -238,7 +238,13 @@ If you want to pass additional data from the command line to your tests, you can
 
 <h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> Running tests multithreaded:</h3>
 
-To run pytest tests using multiple processes, add ``-n=NUM`` or ``-n NUM`` on the command line, where NUM is the number of CPUs you want to use.
+To run ``pytest`` with multiple processes, add ``-n=NUM``, ``-n NUM``, or ``-nNUM`` on the command line, where ``NUM`` is the number of CPUs you want to use.
+
+```bash
+pytest -n=8
+pytest -n 8
+pytest -n8
+```
 
 <h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> Retrying failing tests automatically:</h3>
 
@@ -269,18 +275,18 @@ The code above will leave your browser window open in case there's a failure. (p
 <h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> Combinations of options:</h3>
 
 🎛️ There are times when you'll want to combine various command-line options for added effect.
-For instance, the multi-process option, ``-n=4``, can be customized by adding:
+For instance, the multi-process option, ``-n8``, can be customized by adding:
 ``--dist=loadscope`` or ``--dist=loadfile`` to it.
 Here's more info on that, as taken from [pytest-xdist](https://pypi.org/project/pytest-xdist/):
 
-* ``-n=4 --dist=loadscope``: Tests are grouped by module for test functions and by class for test methods. Groups are distributed to available workers as whole units. This guarantees that all tests in a group run in the same process. This can be useful if you have expensive module-level or class-level fixtures. Grouping by class takes priority over grouping by module.
+* ``-n8 --dist=loadscope``: Tests are grouped by module for test functions and by class for test methods. Groups are distributed to available workers as whole units. This guarantees that all tests in a group run in the same process. This can be useful if you have expensive module-level or class-level fixtures. Grouping by class takes priority over grouping by module.
 
-* ``-n=4 --dist=loadfile``: Tests are grouped by their containing file. Groups are distributed to available workers as whole units. This guarantees that all tests in a file run in the same worker.
+* ``-n8 --dist=loadfile``: Tests are grouped by their containing file. Groups are distributed to available workers as whole units. This guarantees that all tests in a file run in the same worker.
 
 🎛️ You might also want to combine multiple options at once. For example:
 
 ```bash
-pytest --headless --rs -n=4 -v --dashboard --html=report.html
+pytest --headless -n8 --dashboard --html=report.html -v --rs --crumbs
 ```
 
 The above not only runs tests in parallel processes, but it also tells tests in the same process to share the same browser session, runs the tests in headless mode, displays the full name of each test on a separate line, creates a realtime dashboard of the test results, and creates a full report after all tests complete.
