@@ -14217,13 +14217,18 @@ class BaseCase(unittest.TestCase):
         )
         if self._sb_test_identifier and len(str(self._sb_test_identifier)) > 6:
             test_id = self._sb_test_identifier
-            test_id = test_id.replace(".py::", ".").replace("::", ".")
-            test_id = test_id.replace("/", ".").replace(" ", "_")
         elif hasattr(self, "_using_sb_fixture") and self._using_sb_fixture:
             test_id = sb_config._latest_display_id
-            test_id = test_id.replace(".py::", ".").replace("::", ".")
-            test_id = test_id.replace("/", ".").replace(" ", "_")
-        return test_id
+        test_id = test_id.replace(".py::", ".").replace("::", ".")
+        test_id = test_id.replace("/", ".").replace(" ", "_")
+        # Linux filename length limit for `codecs.open(filename)` = 255
+        # 255 - len("latest_logs/") - len("/basic_test_info.txt") = 223
+        if len(test_id) <= 223:
+            return test_id
+        else:
+            # 223 - len("__TRUNCATED__") = 210
+            # 210 / 2 = 105
+            return test_id[:105] + "__TRUNCATED__" + test_id[-105:]
 
     def __get_test_id_2(self):
         """The id for SeleniumBase Dashboard entries."""
