@@ -6,7 +6,7 @@
 
 * <b>SeleniumBase</b> tests are run with <b>pytest</b>.
 * Chrome is the default browser if not specified.
-* Tests are structured using [20 unique syntax formats](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md).
+* Tests are structured using [23 unique syntax formats](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md).
 * Logs from test failures are saved to ``./latest_logs/``.
 * Tests can be run with [multiple command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md).
 * Examples can be found in: **[SeleniumBase/examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples)**.
