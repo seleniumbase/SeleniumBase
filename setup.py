@@ -188,7 +188,7 @@ setup(
         'pytest-forked==1.6.0;python_version>="3.7"',
         "pytest-html==2.0.1",  # Newer ones had issues
         'pytest-metadata==1.11.0;python_version<"3.7"',
-        'pytest-metadata==2.0.4;python_version>="3.7"',
+        'pytest-metadata==3.0.0;python_version>="3.7"',
         "pytest-ordering==0.6",
         'pytest-rerunfailures==10.3;python_version<"3.7"',
         'pytest-rerunfailures==11.1.2;python_version>="3.7"',
@@ -241,7 +241,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage==6.2;python_version<"3.7"',
-            'coverage==7.2.6;python_version>="3.7"',
+            'coverage==7.2.7;python_version>="3.7"',
             'pytest-cov==4.0.0;python_version<"3.7"',
             'pytest-cov==4.1.0;python_version>="3.7"',
         ],

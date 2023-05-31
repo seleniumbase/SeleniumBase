@@ -117,11 +117,12 @@ def is_valid_url(url):
     if (
         regex.match(url)
         or url.startswith("about:")
-        or url.startswith("data:")
+        or url.startswith("blob:")
         or url.startswith("chrome:")
+        or url.startswith("data:")
         or url.startswith("edge:")
-        or url.startswith("opera:")
         or url.startswith("file:")
+        or url.startswith("opera:")
     ):
         return True
     else:
