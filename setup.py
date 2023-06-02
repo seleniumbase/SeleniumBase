@@ -167,7 +167,7 @@ setup(
         'outcome==1.2.0;python_version>="3.7"',
         'trio==0.22.0;python_version>="3.7"',
         'trio-websocket==0.10.2;python_version>="3.7"',
-        'pyopenssl==23.1.1;python_version>="3.7"',
+        'pyopenssl==23.2.0;python_version>="3.7"',
         'wsproto==1.2.0;python_version>="3.7"',
         'selenium==3.141.0;python_version<"3.7"',
         'selenium==4.9.1;python_version>="3.7"',
@@ -202,7 +202,7 @@ setup(
         'soupsieve==2.4.1;python_version>="3.7"',
         "beautifulsoup4==4.12.2",
         'cryptography==36.0.2;python_version<"3.7"',
-        'cryptography==40.0.2;python_version>="3.7"',
+        'cryptography==41.0.1;python_version>="3.7"',
         'pygments==2.14.0;python_version<"3.7"',
         'pygments==2.15.1;python_version>="3.7"',
         'pyreadline3==3.4.1;platform_system=="Windows"',
@@ -223,7 +223,7 @@ setup(
         'markdown-it-py==2.2.0;python_version>="3.7"',  # For new "rich"
         'mdurl==0.1.2;python_version>="3.7"',  # For new "rich"
         'rich==12.6.0;python_version<"3.7"',
-        'rich==13.3.5;python_version>="3.7"',
+        'rich==13.4.1;python_version>="3.7"',
     ],
     extras_require={
         # pip install -e .[allure]
