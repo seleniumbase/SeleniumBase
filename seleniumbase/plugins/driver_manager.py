@@ -5,7 +5,7 @@ The SeleniumBase Driver as a Python Context Manager or a returnable object.
 The SeleniumBase Driver as a context manager:
 Usage --> ``with DriverContext() as driver:``
 Usage example -->
-    from seleniumbase import Driver
+    from seleniumbase import DriverContext
     with DriverContext() as driver:
         driver.get("https://google.com/ncr")
     # The browser exits automatically after the "with" block ends.
