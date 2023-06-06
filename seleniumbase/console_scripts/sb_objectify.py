@@ -2275,6 +2275,61 @@ def process_test_file(
             seleniumbase_lines.append(command)
             continue
 
+        # Handle self.wait_for_text_not_visible(TEXT, SELECTOR)
+        if not object_dict:
+            data = re.match(
+                r"""^(\s*)self\.wait_for_text_not_visible"""
+                r"""\(([\S\s]+),\s?(r?['"][\S\s]+['"])\)([\S\s]*)$""",
+                line,
+            )
+        else:
+            data = re.match(
+                r"""^(\s*)self\.wait_for_text_not_visible"""
+                r"""\(([\S\s]+),\s?([\S]+)\)([\S\s]*)$""",
+                line,
+            )
+        if data:
+            whitespace = data.group(1)
+            text = data.group(2)
+            selector = "%s" % data.group(3)
+            selector = remove_extra_slashes(selector)
+            page_selectors.append(selector)
+            comments = data.group(4)
+            command = """%sself.wait_for_text_not_visible(%s, %s)%s""" % (
+                whitespace,
+                text,
+                selector,
+                comments,
+            )
+            if selector_dict:
+                if add_comments:
+                    comments = "  # %s" % selector
+                selector = optimize_selector(selector)
+                if selector in selector_dict.keys():
+                    selector_object = selector_dict[selector]
+                    changed.append(selector_object.split(".")[0])
+                    command = "%sself.wait_for_text_not_visible(%s, %s)%s" % (
+                        whitespace,
+                        text,
+                        selector_object,
+                        comments,
+                    )
+            if object_dict:
+                if not add_comments:
+                    comments = ""
+                object_name = selector
+                if object_name in object_dict.keys():
+                    selector_object = object_dict[object_name]
+                    changed.append(object_name.split(".")[0])
+                    command = "%sself.wait_for_text_not_visible(%s, %s)%s" % (
+                        whitespace,
+                        text,
+                        selector_object,
+                        comments,
+                    )
+            seleniumbase_lines.append(command)
+            continue
+
         # Handle if/elif self.is_element_*(SELECTOR):  * = present/visible
         if not object_dict:
             data = re.match(

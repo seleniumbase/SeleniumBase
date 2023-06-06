@@ -417,8 +417,7 @@ def show_convert_usage():
     print("           Converts a Selenium IDE exported WebDriver unittest")
     print("           file into a SeleniumBase file. Adds _SB to the new")
     print("           file name while keeping the original file intact.")
-    print("           Works with Katalon Recorder scripts.")
-    print("           See: http://www.katalon.com/automation-recorder")
+    print("           (Works with Katalon Recorder Selenium scripts.)")
     print("")
 
 

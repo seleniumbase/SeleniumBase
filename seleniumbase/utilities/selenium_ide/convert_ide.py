@@ -1,13 +1,10 @@
-"""Converts a Selenium IDE recording that was exported as a Python WebDriver
-unittest file into SeleniumBase Python file.
-Works with Katalon Recorder scripts: http://www.katalon.com/automation-recorder
-
+"""Converts a Selenium IDE recording that was exported as a
+Python WebDriver unittest file into SeleniumBase Python file.
+Also works with exported Katalon Recorder Selenium scripts:
+    https://chrome.google.com/webstore/detail
+        /katalon-recorder-selenium/ljdobmomdgdljniojadhoplhkpialdid
 Usage:
         seleniumbase convert [PYTHON_WEBDRIVER_UNITTEST_FILE].py
-                (run from anywhere)
-    OR
-        python convert_ide.py [PYTHON_WEBDRIVER_UNITTEST_FILE].py
-                (when run from the "selenium_ide/" folder)
 Output:
         [NEW_FILE_SB].py  (adds "_SB" to the original file name)
                           (the original file is kept intact)"""
@@ -54,7 +51,8 @@ def main():
 
     seleniumbase_lines = []
     seleniumbase_lines.append("from seleniumbase import BaseCase")
-    seleniumbase_lines.append("")  # Flake8 is very specific on whitespace
+    seleniumbase_lines.append("BaseCase.main(__name__, __file__)")
+    seleniumbase_lines.append("")  # flake8 needs the whitespace
     seleniumbase_lines.append("")
 
     ide_base_url = ""
