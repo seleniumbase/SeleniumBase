@@ -636,7 +636,7 @@ def main():
     data = []
     data.append("class HomePage(object):")
     data.append("    dialog_box = '[role=\"dialog\"] div'")
-    data.append("    search_box = 'input[title=\"Search\"]'")
+    data.append("    search_box = '[title=\"Search\"]'")
     data.append("    search_button = 'input[value=\"Google Search\"]'")
     data.append(
         '    feeling_lucky_button = """input[value="I\'m Feeling Lucky"]"""'
