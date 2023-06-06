@@ -2255,7 +2255,7 @@ def get_local_driver(
             edge_options.add_argument("--disable-sync")
         if (
             (guest_mode or IS_WINDOWS or selenium4_or_newer)
-            and not recorder_ext and not disable_csp
+            and not recorder_ext and not disable_csp and not proxy_auth
         ):
             edge_options.add_argument("--guest")
         if headless2:
