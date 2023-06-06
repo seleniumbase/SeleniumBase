@@ -115,7 +115,7 @@ class EdgePresentationClass(BaseCase):
         self.play_tour()
         self.highlight('img[src*="microsoft-edge-version"]')
 
-        self.get_new_driver(browser="edge", disable_csp=True)
+        self.get_new_driver(browser="edge")
         self.maximize_window()
         self.open("edge://settings/help")
         zoom_in = (
@@ -144,19 +144,24 @@ class EdgePresentationClass(BaseCase):
         self.play_tour()
         self.highlight('[href*="microsoft-edge/tools/webdriver"]')
 
-        self.get_new_driver(browser="edge", disable_csp=True)
+        self.get_new_driver(browser="edge")
         self.maximize_window()
         self.open(
             "https://developer.microsoft.com/en-us/"
             "microsoft-edge/tools/webdriver/"
         )
         self.wait_for_element("#page-heading")
-        self.create_tour(theme="introjs")
-        self.add_tour_step("You need this", "#page-heading", alignment="right")
-        self.add_tour_step("If you can", "#downloads-channel", alignment="top")
-        self.add_tour_step("Available files", "#downloads", alignment="bottom")
-        self.add_tour_step("More info", "#installation", alignment="top")
-        self.play_tour()
+        self.scroll_to("#page-heading")
+        zoom_in = '#page-heading{zoom: 1.2;-moz-transform: scale(1.2);}'
+        self.add_css_style(zoom_in)
+        self.highlight("#page-heading", loops=8)
+        self.sleep(1.2)
+        self.highlight("#downloads-channel", loops=8)
+        self.sleep(1.2)
+        self.highlight("#downloads", loops=12)
+        self.sleep(1.8)
+        self.highlight("#installation", loops=12)
+        self.sleep(1.8)
         self.quit_extra_driver()
 
         self.switch_to_default_driver()
