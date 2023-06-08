@@ -170,7 +170,7 @@ setup(
         'pyopenssl==23.2.0;python_version>="3.7"',
         'wsproto==1.2.0;python_version>="3.7"',
         'selenium==3.141.0;python_version<"3.7"',
-        'selenium==4.9.1;python_version>="3.7"',
+        'selenium==4.10.0;python_version>="3.7"',
         'msedge-selenium-tools==3.141.3;python_version<"3.7"',
         'cssselect==1.1.0;python_version<"3.7"',
         'cssselect==1.2.0;python_version>="3.7"',

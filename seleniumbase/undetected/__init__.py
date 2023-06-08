@@ -304,11 +304,13 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         if patch_driver:
             service_ = selenium.webdriver.chrome.service.Service(
                 executable_path=self.patcher.executable_path,
+                port=port,
                 log_path=os.devnull,
             )
         else:
             service_ = selenium.webdriver.chrome.service.Service(
                 executable_path=driver_executable_path,
+                port=port,
                 log_path=os.devnull,
             )
         if hasattr(service_, "creationflags"):
@@ -316,7 +318,6 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         if hasattr(service_, "creation_flags"):
             setattr(service_, "creation_flags", creationflags)
         super().__init__(
-            port=port,
             options=options,
             service=service_,
         )
@@ -445,15 +446,13 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         except Exception as e:
             logger.debug(e)
 
-    def start_session(self, capabilities=None, browser_profile=None):
+    def start_session(self, capabilities=None):
         if not capabilities:
             capabilities = self.options.to_capabilities()
         super(
             selenium.webdriver.chrome.webdriver.WebDriver,
             self,
-        ).start_session(
-            capabilities, browser_profile
-        )
+        ).start_session(capabilities)
 
     def quit(self):
         try:

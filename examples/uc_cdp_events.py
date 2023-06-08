@@ -3,7 +3,7 @@ from seleniumbase import BaseCase
 
 if __name__ == "__main__":
     from pytest import main
-    main([__file__, "--uc", "--uc-cdp", "--guest", "-s"])
+    main([__file__, "--uc", "--uc-cdp", "-s"])
 
 
 class CDPTests(BaseCase):
