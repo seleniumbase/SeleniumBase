@@ -4,6 +4,7 @@ import time
 import warnings
 from contextlib import contextmanager
 from functools import wraps
+from seleniumbase.common.exceptions import TimeoutException
 
 
 @contextmanager
@@ -62,7 +63,7 @@ def print_runtime(description=None, limit=None):
             )
             if exception:
                 message = exception.msg + "\nAND " + message
-            raise Exception(message)
+            raise TimeoutException(message)
 
 
 @contextmanager
@@ -108,7 +109,7 @@ def runtime_limit(limit, description=None):
             )
             if exception:
                 message = exception.msg + "\nAND " + message
-            raise Exception(message)
+            raise TimeoutException(message)
 
 
 def retry_on_exception(tries=6, delay=1, backoff=2, max_delay=32):

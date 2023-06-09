@@ -124,42 +124,43 @@ def format_exc(exception, message):
     from selenium.common.exceptions import NoSuchWindowException
     from seleniumbase.common.exceptions import NoSuchFileException
     from seleniumbase.common.exceptions import TextNotVisibleException
+    from seleniumbase.common import exceptions
 
     if exception == Exception:
         exc = Exception
         return exc, message
     elif exception == ElementNotVisibleException:
-        exc = ElementNotVisibleException
+        exc = exceptions.ElementNotVisibleException
     elif exception == "ElementNotVisibleException":
-        exc = ElementNotVisibleException
+        exc = exceptions.ElementNotVisibleException
     elif exception == NoSuchElementException:
-        exc = NoSuchElementException
+        exc = exceptions.NoSuchElementException
     elif exception == "NoSuchElementException":
-        exc = NoSuchElementException
+        exc = exceptions.NoSuchElementException
     elif exception == TextNotVisibleException:
-        exc = TextNotVisibleException
+        exc = exceptions.TextNotVisibleException
     elif exception == "TextNotVisibleException":
-        exc = TextNotVisibleException
+        exc = exceptions.TextNotVisibleException
     elif exception == NoAlertPresentException:
-        exc = NoAlertPresentException
+        exc = exceptions.NoAlertPresentException
     elif exception == "NoAlertPresentException":
-        exc = NoAlertPresentException
+        exc = exceptions.NoAlertPresentException
     elif exception == NoSuchAttributeException:
-        exc = NoSuchAttributeException
+        exc = exceptions.NoSuchAttributeException
     elif exception == "NoSuchAttributeException":
-        exc = NoSuchAttributeException
+        exc = exceptions.NoSuchAttributeException
     elif exception == NoSuchFrameException:
-        exc = NoSuchFrameException
+        exc = exceptions.NoSuchFrameException
     elif exception == "NoSuchFrameException":
-        exc = NoSuchFrameException
+        exc = exceptions.NoSuchFrameException
     elif exception == NoSuchWindowException:
-        exc = NoSuchWindowException
+        exc = exceptions.NoSuchWindowException
     elif exception == "NoSuchWindowException":
-        exc = NoSuchWindowException
+        exc = exceptions.NoSuchWindowException
     elif exception == NoSuchFileException:
-        exc = NoSuchFileException
+        exc = exceptions.NoSuchFileException
     elif exception == "NoSuchFileException":
-        exc = NoSuchFileException
+        exc = exceptions.NoSuchFileException
     elif type(exception) is str:
         exc = Exception
         message = "%s: %s" % (exception, message)

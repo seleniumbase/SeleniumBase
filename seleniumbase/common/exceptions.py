@@ -6,6 +6,7 @@
     OutOfScopeException => Used by BaseCase methods when setUp() is skipped.
     TextNotVisibleException => Called when expected text fails to appear.
     TimeLimitExceededException => Called when exceeding "--time-limit=SECONDS".
+    TimeoutException => Called when some timeout limit has been exceeded.
     VisualException => Called when there's a Visual Diff Assertion Failure.
 """
 
@@ -38,5 +39,64 @@ class TimeLimitExceededException(Exception):
     pass
 
 
+class TimeoutException(Exception):
+    pass
+
+
 class VisualException(Exception):
     pass
+
+
+""" Selenium Exceptions (Simplified for SeleniumBase) """
+
+
+class WebDriverException(Exception):
+    """Base webdriver exception."""
+
+    def __init__(self, msg=None, screen=None, stacktrace=None):
+        super().__init__()
+        self.msg = msg
+        self.screen = screen
+        self.stacktrace = stacktrace
+
+    def __str__(self):
+        exception_msg = "Message: %s\n" % self.msg
+        if self.screen:
+            exception_msg += "Screenshot: available via screen\n"
+        if self.stacktrace:
+            stacktrace = "\n".join(self.stacktrace)
+            exception_msg += "Stacktrace:\n%s" % stacktrace
+        return exception_msg
+
+
+class InvalidSwitchToTargetException(WebDriverException):
+    """Thrown when frame or window target to be switched doesn't exist."""
+
+
+class NoSuchFrameException(InvalidSwitchToTargetException):
+    """Thrown when frame target to be switched doesn't exist."""
+
+
+class NoSuchWindowException(InvalidSwitchToTargetException):
+    """Thrown when window target to be switched doesn't exist."""
+
+
+class NoSuchElementException(WebDriverException):
+    """Thrown when element could not be found."""
+
+
+class NoSuchAttributeException(WebDriverException):
+    """Thrown when the attribute of element could not be found."""
+
+
+class InvalidElementStateException(WebDriverException):
+    """Thrown when a command could not be completed because the element is in
+    an invalid state."""
+
+
+class NoAlertPresentException(WebDriverException):
+    """Thrown when switching to no presented alert."""
+
+
+class ElementNotVisibleException(InvalidElementStateException):
+    """Thrown when an element is present in the DOM, but not visible."""

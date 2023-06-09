@@ -359,16 +359,25 @@ sbase mkfile new_test.py
 ``--ko`` / ``--Korean``     |    ``--pt`` / ``--Portuguese``
 ``--ru`` / ``--Russian``    |    ``--es`` / ``--Spanish``
 
+* Syntax Formats:
+
+``--bc`` / ``--basecase``  (BaseCase class inheritance)
+``--pf`` / ``--pytest-fixture``  (sb pytest fixture)
+``--cf`` / ``--class-fixture``  (class + sb pytest fixture)
+``--cm`` / ``--context-manager``  (SB context manager)
+``--dc`` / ``--driver-context``  (DriverContext manager)
+``--dm`` / ``--driver-manager``  (Driver manager)
+
 * Output:
 
-Creates a new SeleniumBase test file with boilerplate code.
+Creates a new SBase test file with boilerplate code.
 If the file already exists, an error is raised.
-By default, uses English mode and creates a
-boilerplate with the 5 most common SeleniumBase
-methods, which are "open", "type", "click",
-"assert_element", and "assert_text". If using the
-basic boilerplate option, only the "open" method
-is included.
+By default, uses English with BaseCase inheritance,
+and creates a boilerplate with common SeleniumBase
+methods: "open", "type", "click", "assert_element",
+and "assert_text". If using the basic boilerplate
+option, only the "open" method is included. Only the
+BaseCase format supports Languages or Recorder Mode.
 
 <h3>mkrec / record / codegen</h3>
 
