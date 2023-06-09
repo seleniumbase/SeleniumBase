@@ -19,15 +19,23 @@ Language Options:
     --ko / --Korean     |    --pt / --Portuguese
     --ru / --Russian    |    --es / --Spanish
 
+Syntax Formats:
+    --bc / --basecase  (BaseCase class inheritance)
+    --pf / --pytest-fixture  (sb pytest fixture)
+    --cf / --class-fixture  (class + sb pytest fixture)
+    --cm / --context-manager  (SB context manager)
+    --dc / --driver-context  (DriverContext manager)
+    --dm / --driver-manager  (Driver manager)
+
 Output:
     Creates a new SBase test file with boilerplate code.
     If the file already exists, an error is raised.
-    By default, uses English mode and creates a
-    boilerplate with the 5 most common SeleniumBase
-    methods, which are "open", "type", "click",
-    "assert_element", and "assert_text". If using the
-    basic boilerplate option, only the "open" method
-    is included.
+    By default, uses English with BaseCase inheritance,
+    and creates a boilerplate with common SeleniumBase
+    methods: "open", "type", "click", "assert_element",
+    and "assert_text". If using the basic boilerplate
+    option, only the "open" method is included. Only the
+    BaseCase format supports Languages or Recorder Mode.
 """
 import codecs
 import colorama
@@ -51,15 +59,22 @@ def invalid_run_command(msg=None):
     exp += "           --it / --Italian    |    --ja / --Japanese\n"
     exp += "           --ko / --Korean     |    --pt / --Portuguese\n"
     exp += "           --ru / --Russian    |    --es / --Spanish\n"
+    exp += "  Syntax Formats:\n"
+    exp += "           --bc / --basecase  (BaseCase class inheritance)\n"
+    exp += "           --pf / --pytest-fixture  (sb pytest fixture)\n"
+    exp += "           --cf / --class-fixture  (class + sb pytest fixture)\n"
+    exp += "           --cm / --context-manager  (SB context manager)\n"
+    exp += "           --dc / --driver-context  (DriverContext manager)\n"
+    exp += "           --dm / --driver-manager  (Driver manager)\n"
     exp += "  Output:\n"
     exp += "           Creates a new SBase test file with boilerplate code.\n"
     exp += "           If the file already exists, an error is raised.\n"
-    exp += "           By default, uses English mode and creates a\n"
-    exp += "           boilerplate with the 5 most common SeleniumBase\n"
-    exp += '           methods, which are "open", "type", "click",\n'
-    exp += '           "assert_element", and "assert_text". If using the\n'
-    exp += '           basic boilerplate option, only the "open" method\n'
-    exp += "           is included.\n"
+    exp += "           By default, uses English with BaseCase inheritance,\n"
+    exp += "           and creates a boilerplate with common SeleniumBase\n"
+    exp += '           methods: "open", "type", "click", "assert_element",\n'
+    exp += '           and "assert_text". If using the basic boilerplate\n'
+    exp += '           option, only the "open" method is included. Only the\n'
+    exp += "           BaseCase format supports Languages or Recorder Mode.\n"
     if not msg:
         raise Exception("INVALID RUN COMMAND!\n\n%s" % exp)
     elif msg == "help":
@@ -86,6 +101,7 @@ def main():
     recorder = False
     error_msg = None
     invalid_cmd = None
+    syntax = "BaseCase"
     language = "English"
 
     command_args = sys.argv[2:]
@@ -138,6 +154,18 @@ def main():
                 language = "Russian"
             elif option == "--es" or option == "--spanish":
                 language = "Spanish"
+            elif option == "--bc" or option == "--basecase":
+                syntax = "BaseCase"
+            elif option == "--pf" or option == "--pytest-fixture":
+                syntax = "PytestFixture"
+            elif option == "--cf" or option == "--class-fixture":
+                syntax = "ClassFixture"
+            elif option == "--cm" or option == "--context-manager":
+                syntax = "ContextManager"
+            elif option == "--dc" or option == "--driver-context":
+                syntax = "DriverContext"
+            elif option == "--dm" or option == "--driver-manager":
+                syntax = "DriverManager"
             else:
                 invalid_cmd = "\n===> INVALID OPTION: >> %s <<\n" % option
                 invalid_cmd = invalid_cmd.replace(">> ", ">>" + c5 + " ")
@@ -239,7 +267,70 @@ def main():
     data.append("")
 
     new_data = []
-    if language == "English":
+    if language == "English" and syntax == "BaseCase":
+        new_data = data
+    elif language == "English" and syntax == "PytestFixture":
+        data = []
+        data.append("def test_base(sb):")
+        data.append('    sb.open("data:text/html,<p>Hello<br><input>")')
+        if not basic:
+            data.append('    sb.type("input", "Goodbye")  # selector, text')
+            data.append('    sb.click("html body > p")  # selector')
+            data.append('    sb.assert_element("body")  # selector')
+            data.append('    sb.assert_text("Hello", "p")  # text, selector')
+        data.append("")
+        new_data = data
+    elif language == "English" and syntax == "ClassFixture":
+        data = []
+        data.append("class %s:" % class_name)
+        data.append("    def test_base(self, sb):")
+        data.append('        sb.open("data:text/html,<p>Hello<br><input>")')
+        if not basic:
+            data.append(
+                '        sb.type("input", "Goodbye")  # selector, text'
+            )
+            data.append('        sb.click("html body > p")  # selector')
+            data.append('        sb.assert_element("body")  # selector')
+            data.append(
+                '        sb.assert_text("Hello", "p")  # text, selector'
+            )
+        data.append("")
+        new_data = data
+    elif language == "English" and syntax == "ContextManager":
+        data = []
+        data.append("from seleniumbase import SB")
+        data.append("")
+        data.append('with SB(browser="chrome") as sb:')
+        data.append(
+            '    sb.open("data:text/html,<div>Hello<br><input></div>")'
+        )
+        if not basic:
+            data.append('    sb.type("input", "Goodbye")  # selector, text')
+            data.append('    sb.click("html body > div")  # selector')
+            data.append('    sb.assert_element("input")  # selector')
+            data.append('    sb.assert_text("Hello", "div")  # text, selector')
+            data.append('    sb.highlight("div")  # selector')
+            data.append("    sb.sleep(0.5)  # seconds")
+        data.append("")
+        new_data = data
+    elif language == "English" and syntax == "DriverContext":
+        data = []
+        data.append("from seleniumbase import DriverContext")
+        data.append("")
+        data.append('with DriverContext(browser="chrome") as driver:')
+        data.append('    driver.get("data:text/html,<p>Hello<br><input>")')
+        data.append("")
+        new_data = data
+    elif language == "English" and syntax == "DriverManager":
+        data = []
+        data.append("from seleniumbase import Driver")
+        data.append("")
+        data.append('driver = Driver(browser="chrome")')
+        data.append("try:")
+        data.append('    driver.get("data:text/html,<p>Hello<br><input>")')
+        data.append("finally:")
+        data.append("    driver.quit()")
+        data.append("")
         new_data = data
     else:
         from seleniumbase.translate.master_dict import MD
