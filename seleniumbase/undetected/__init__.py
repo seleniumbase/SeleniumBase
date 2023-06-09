@@ -317,10 +317,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
             setattr(service_, "creationflags", creationflags)
         if hasattr(service_, "creation_flags"):
             setattr(service_, "creation_flags", creationflags)
-        super().__init__(
-            options=options,
-            service=service_,
-        )
+        super().__init__(options=options, service=service_)
         self.reactor = None
         if enable_cdp_events:
             if logging.getLogger().getEffectiveLevel() == logging.DEBUG:
@@ -449,10 +446,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
     def start_session(self, capabilities=None):
         if not capabilities:
             capabilities = self.options.to_capabilities()
-        super(
-            selenium.webdriver.chrome.webdriver.WebDriver,
-            self,
-        ).start_session(capabilities)
+        super().start_session(capabilities)
 
     def quit(self):
         try:
