@@ -141,9 +141,9 @@ setup(
         "PyYAML>=6.0",
         "certifi>=2023.5.7",
         'filelock>=3.4.1;python_version<"3.7"',
-        'filelock>=3.12.0;python_version>="3.7"',
+        'filelock>=3.12.1;python_version>="3.7"',
         'platformdirs>=2.4.0;python_version<"3.7"',
-        'platformdirs>=3.5.1;python_version>="3.7"',
+        'platformdirs>=3.5.3;python_version>="3.7"',
         'pyparsing>=3.0.7;python_version<"3.7"',
         'pyparsing>=3.0.9;python_version>="3.7"',
         'zipp==3.6.0;python_version<"3.7"',
@@ -183,7 +183,7 @@ setup(
         "pluggy==1.0.0",
         "py==1.11.0",
         'pytest==7.0.1;python_version<"3.7"',
-        'pytest==7.3.1;python_version>="3.7"',
+        'pytest==7.3.2;python_version>="3.7"',
         'pytest-forked==1.4.0;python_version<"3.7"',
         'pytest-forked==1.6.0;python_version>="3.7"',
         "pytest-html==2.0.1",  # Newer ones had issues
@@ -218,7 +218,6 @@ setup(
         'pyotp==2.8.0;python_version>="3.7"',
         "cffi==1.15.1",
         'typing-extensions==4.1.1;python_version<"3.7"',
-        'typing-extensions==4.5.0;python_version>="3.7" and python_version<"3.9"',  # noqa: E501
         'commonmark==0.9.1;python_version<"3.7"',  # For old "rich"
         'markdown-it-py==2.2.0;python_version>="3.7"',  # For new "rich"
         'mdurl==0.1.2;python_version>="3.7"',  # For new "rich"
