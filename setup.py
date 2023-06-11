@@ -218,7 +218,6 @@ setup(
         'pyotp==2.8.0;python_version>="3.7"',
         "cffi==1.15.1",
         'typing-extensions==4.1.1;python_version<"3.7"',
-        'typing-extensions==4.5.0;python_version>="3.7" and python_version<"3.9"',  # noqa: E501
         'commonmark==0.9.1;python_version<"3.7"',  # For old "rich"
         'markdown-it-py==2.2.0;python_version>="3.7"',  # For new "rich"
         'mdurl==0.1.2;python_version>="3.7"',  # For new "rich"
