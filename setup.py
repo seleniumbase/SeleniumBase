@@ -141,7 +141,7 @@ setup(
         "PyYAML>=6.0",
         "certifi>=2023.5.7",
         'filelock>=3.4.1;python_version<"3.7"',
-        'filelock>=3.12.1;python_version>="3.7"',
+        'filelock>=3.12.2;python_version>="3.7"',
         'platformdirs>=2.4.0;python_version<"3.7"',
         'platformdirs>=3.5.3;python_version>="3.7"',
         'pyparsing>=3.0.7;python_version<"3.7"',
@@ -219,10 +219,10 @@ setup(
         "cffi==1.15.1",
         'typing-extensions==4.1.1;python_version<"3.7"',
         'commonmark==0.9.1;python_version<"3.7"',  # For old "rich"
-        'markdown-it-py==2.2.0;python_version>="3.7"',  # For new "rich"
+        'markdown-it-py==3.0.0;python_version>="3.8"',  # For new "rich"
         'mdurl==0.1.2;python_version>="3.7"',  # For new "rich"
         'rich==12.6.0;python_version<"3.7"',
-        'rich==13.4.1;python_version>="3.7"',
+        'rich==13.4.2;python_version>="3.7"',
     ],
     extras_require={
         # pip install -e .[allure]

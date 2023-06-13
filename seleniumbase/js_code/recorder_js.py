@@ -11,7 +11,7 @@ var cssPathById = function(el) {
         if (el.id) {
             elid = el.id;
             if (elid.includes(',') || elid.includes('.') ||
-                elid.includes('(') || elid.includes(')') || hasNumber(elid[0]))
+                elid.includes('(') || elid.includes(')') || hasDigit(elid[0]))
                 return cssPathByAttribute(el, 'id');
             selector += '#' + elid;
             path.unshift(selector);
@@ -87,8 +87,6 @@ var cssPathByClass = function(el) {
     return path.join(' > ');
 };
 var ssOccurrences = function(string, subString, allowOverlapping) {
-    string += '';
-    subString += '';
     if (subString.length <= 0)
         return (string.length + 1);
     var n = 0;
@@ -101,8 +99,11 @@ var ssOccurrences = function(string, subString, allowOverlapping) {
     }
     return n;
 };
-function hasNumber(str) {
+function hasDigit(str) {
     return /\d/.test(str);
+};
+function isGen(str) {
+    return /[_-]\d/.test(str);
 };
 function tagName(el) {
     return el.tagName.toLowerCase();
@@ -121,10 +122,9 @@ function turnIntoParentAsNeeded(el) {
 var getBestSelector = function(el) {
     if (!(el instanceof Element)) return;
     el = turnIntoParentAsNeeded(el);
-    child_sep = ' > ';
-    selector_by_id = cssPathById(el);
-    if (!selector_by_id.includes(child_sep)) return selector_by_id;
-    child_count_by_id = ssOccurrences(selector_by_id, child_sep);
+    sel_by_id = cssPathById(el);
+    if (!sel_by_id.includes(' > ') && !isGen(sel_by_id)) return sel_by_id;
+    child_count_by_id = ssOccurrences(sel_by_id, ' > ');
     selector_by_class = cssPathByClass(el);
     tag_name = tagName(el);
     non_id_attributes = [];
@@ -145,7 +145,6 @@ var getBestSelector = function(el) {
     non_id_attributes.push('data-cy');
     non_id_attributes.push('data-action');
     non_id_attributes.push('data-target');
-    non_id_attributes.push('data-content');
     non_id_attributes.push('data-tooltip');
     non_id_attributes.push('alt');
     non_id_attributes.push('title');
@@ -157,6 +156,7 @@ var getBestSelector = function(el) {
     non_id_attributes.push('ng-href');
     non_id_attributes.push('href');
     non_id_attributes.push('label');
+    non_id_attributes.push('data-content');
     non_id_attributes.push('class');
     non_id_attributes.push('for');
     non_id_attributes.push('placeholder');
@@ -175,15 +175,15 @@ var getBestSelector = function(el) {
         else selector_by_attr[i] = cssPathByAttribute(el, n_i_attr);
         all_by_attr[i] = document.querySelectorAll(selector_by_attr[i]);
         num_by_attr[i] = all_by_attr[i].length;
-        if (!selector_by_attr[i].includes(child_sep) &&
+        if (!selector_by_attr[i].includes(' > ') &&
             ((num_by_attr[i] == 1) || (el == all_by_attr[i][0])))
         {
             if (n_i_attr == 'aria-label' || n_i_attr == 'for')
-                if (hasNumber(selector_by_attr[i]))
+                if (hasDigit(selector_by_attr[i]))
                     continue;
             return selector_by_attr[i];
         }
-        child_count_by_attr[i] = ssOccurrences(selector_by_attr[i], child_sep);
+        child_count_by_attr[i] = ssOccurrences(selector_by_attr[i], ' > ');
     }
     basic_tags = [];
     basic_tags.push('h1');
@@ -201,23 +201,24 @@ var getBestSelector = function(el) {
     contains_tags = [];
     contains_tags.push('a');
     contains_tags.push('b');
-    contains_tags.push('i');
     contains_tags.push('h1');
     contains_tags.push('h2');
     contains_tags.push('h3');
     contains_tags.push('h4');
     contains_tags.push('h5');
+    contains_tags.push('code');
+    contains_tags.push('mark');
+    contains_tags.push('button');
+    contains_tags.push('label');
+    contains_tags.push('legend');
     contains_tags.push('li');
     contains_tags.push('td');
     contains_tags.push('th');
-    contains_tags.push('code');
-    contains_tags.push('mark');
-    contains_tags.push('label');
+    contains_tags.push('i');
     contains_tags.push('small');
-    contains_tags.push('button');
-    contains_tags.push('legend');
     contains_tags.push('strong');
     contains_tags.push('summary');
+    contains_tags.push('span');
     all_by_tag = [];
     text_content = '';
     if (el.textContent)
@@ -239,9 +240,9 @@ var getBestSelector = function(el) {
             }
         }
     }
-    best_selector = selector_by_id;
+    best_selector = sel_by_id;
     lowest_child_count = child_count_by_id;
-    child_count_by_class = ssOccurrences(selector_by_class, child_sep);
+    child_count_by_class = ssOccurrences(selector_by_class, ' > ');
     if (child_count_by_class < lowest_child_count) {
         best_selector = selector_by_class;
         lowest_child_count = child_count_by_class;
@@ -622,8 +623,7 @@ document.body.addEventListener('mouseup', function (event) {
             href = grand_el.href; origin = grand_el.origin;
         }
         document.recorded_actions.pop();
-        child_sep = ' > ';
-        child_count = ssOccurrences(selector, child_sep);
+        child_count = ssOccurrences(selector, ' > ');
         if ((tag_name === "a" && !el.hasAttribute('onclick') &&
              child_count > 0 && href.length > 0) ||
             (parent_tag_name === "a" && href.length > 0 &&

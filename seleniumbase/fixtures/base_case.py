@@ -4351,7 +4351,7 @@ class BaseCase(unittest.TestCase):
                     (
                         srt_actions[n - 1][0] == "click"
                         and int(srt_actions[n][3]) - int(srt_actions[n - 1][3])
-                        < 5
+                        < 16
                     )
                     or (
                         srt_actions[n - 1][0] == "js_cl"
@@ -4366,6 +4366,8 @@ class BaseCase(unittest.TestCase):
                 )
             ):
                 srt_actions[n][0] = "_skip"
+                if srt_actions[n - 1][0] == "click":
+                    srt_actions[n - 1][0] = "ch_cl"
         for n in range(len(srt_actions)):
             if (
                 n > 0
@@ -4376,7 +4378,7 @@ class BaseCase(unittest.TestCase):
                     or srt_actions[n][0] == "jq_cl"
                 )
                 and (
-                    int(srt_actions[n][3]) - int(srt_actions[n - 1][3]) < 5
+                    int(srt_actions[n][3]) - int(srt_actions[n - 1][3]) < 16
                 )
             ):
                 srt_actions[n - 1][0] = "_skip"
@@ -4809,6 +4811,9 @@ class BaseCase(unittest.TestCase):
                 and srt_actions[n][2] == srt_actions[n - 1][2]
             ):
                 srt_actions[n][0] = "_skip"
+        for n in range(len(srt_actions)):
+            if srt_actions[n][0] == "ch_cl":
+                srt_actions[n][0] = "js_cl"
 
         # Generate the script from processed actions
         sb_actions = recorder_helper.generate_sbase_code(srt_actions)
