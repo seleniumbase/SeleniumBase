@@ -219,7 +219,7 @@ setup(
         "cffi==1.15.1",
         'typing-extensions==4.1.1;python_version<"3.7"',
         'commonmark==0.9.1;python_version<"3.7"',  # For old "rich"
-        'markdown-it-py==3.0.0;python_version>="3.7"',  # For new "rich"
+        'markdown-it-py==3.0.0;python_version>="3.8"',  # For new "rich"
         'mdurl==0.1.2;python_version>="3.7"',  # For new "rich"
         'rich==12.6.0;python_version<"3.7"',
         'rich==13.4.2;python_version>="3.7"',
