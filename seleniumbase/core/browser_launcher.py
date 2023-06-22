@@ -606,7 +606,7 @@ def _set_chrome_options(
             pass
     if user_data_dir and not is_using_uc(undetectable, browser_name):
         abs_path = os.path.abspath(user_data_dir)
-        chrome_options.add_argument("user-data-dir=%s" % abs_path)
+        chrome_options.add_argument("--user-data-dir=%s" % abs_path)
     if extension_zip:
         # Can be a comma-separated list of .ZIP or .CRX files
         extension_zip_list = extension_zip.split(",")
@@ -2320,7 +2320,7 @@ def get_local_driver(
             )
         if user_data_dir and not is_using_uc(undetectable, browser_name):
             abs_path = os.path.abspath(user_data_dir)
-            edge_options.add_argument("user-data-dir=%s" % abs_path)
+            edge_options.add_argument("--user-data-dir=%s" % abs_path)
         if extension_zip:
             # Can be a comma-separated list of .ZIP or .CRX files
             extension_zip_list = extension_zip.split(",")

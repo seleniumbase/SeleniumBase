@@ -30,14 +30,14 @@ if sys.argv[-1] == "publish":
     confirm_text = ">>> Confirm release PUBLISH to PyPI? (yes/no): "
     reply = str(input_method(confirm_text)).lower().strip()
     if reply == "yes":
+        if sys.version_info < (3, 9):
+            print("\nERROR! Publishing to PyPI requires Python>=3.9")
+            sys.exit()
         print("\n*** Checking code health with flake8:\n")
-        if sys.version_info >= (3, 9):
-            os.system("python -m pip install 'flake8==6.0.0'")
-        else:
-            os.system("python -m pip install 'flake8==5.0.4'")
+        os.system("python -m pip install 'flake8==6.0.0'")
         flake8_status = os.system("flake8 --exclude=recordings,temp")
         if flake8_status != 0:
-            print("\nWARNING! Fix flake8 issues before publishing to PyPI!\n")
+            print("\nERROR! Fix flake8 issues before publishing to PyPI!\n")
             sys.exit()
         else:
             print("*** No flake8 issues detected. Continuing...")
@@ -48,6 +48,8 @@ if sys.argv[-1] == "publish":
         os.system("python -m pip install --upgrade 'build>=0.10.0'")
         print("\n*** Installing pkginfo: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'pkginfo>=1.9.6'")
+        print("\n*** Installing readme-renderer: *** (For PyPI uploads)\n")
+        os.system("python -m pip install --upgrade 'readme-renderer>=40.0'")
         print("\n*** Installing twine: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'twine>=4.0.2'")
         print("\n*** Installing tqdm: *** (Required for PyPI uploads)\n")
@@ -127,9 +129,9 @@ setup(
         'packaging>=21.3;python_version<"3.7"',
         'packaging>=23.1;python_version>="3.7"',
         'setuptools>=59.6.0;python_version<"3.7"',
-        'setuptools>=67.8.0;python_version>="3.7"',
+        'setuptools>=68.0.0;python_version>="3.7"',
         'keyring>=23.4.1;python_version<"3.8"',
-        'keyring>=23.13.1;python_version>="3.8"',
+        'keyring>=24.0.1;python_version>="3.8"',
         'tomli>=1.2.3;python_version<"3.7"',
         'tomli>=2.0.1;python_version>="3.7"',
         'tqdm>=4.64.1;python_version<"3.7"',
@@ -143,9 +145,10 @@ setup(
         'filelock>=3.4.1;python_version<"3.7"',
         'filelock>=3.12.2;python_version>="3.7"',
         'platformdirs>=2.4.0;python_version<"3.7"',
-        'platformdirs>=3.5.3;python_version>="3.7"',
+        'platformdirs>=3.7.0;python_version>="3.7"',
+        'parse>=1.19.1',
         'pyparsing>=3.0.7;python_version<"3.7"',
-        'pyparsing>=3.0.9;python_version>="3.7"',
+        'pyparsing>=3.1.0;python_version>="3.7"',
         'zipp==3.6.0;python_version<"3.7"',
         'zipp>=3.15.0;python_version>="3.7"',
         'more-itertools==8.14.0;python_version<"3.7"',
@@ -180,7 +183,8 @@ setup(
         "execnet==1.9.0",
         'iniconfig==1.1.1;python_version<"3.7"',
         'iniconfig==2.0.0;python_version>="3.7"',
-        "pluggy==1.0.0",
+        'pluggy==1.0.0;python_version<"3.7"',
+        'pluggy==1.2.0;python_version>="3.7"',
         "py==1.11.0",
         'pytest==7.0.1;python_version<"3.7"',
         'pytest==7.3.2;python_version>="3.7"',
@@ -206,8 +210,8 @@ setup(
         'pygments==2.14.0;python_version<"3.7"',
         'pygments==2.15.1;python_version>="3.7"',
         'pyreadline3==3.4.1;platform_system=="Windows"',
-        "tabcompleter==1.2.0",
-        "pdbp==1.4.0",
+        "tabcompleter==1.2.1",
+        "pdbp==1.4.1",
         'colorama==0.4.5;python_version<"3.7"',
         'colorama==0.4.6;python_version>="3.7"',
         'exceptiongroup==1.1.1;python_version>="3.7"',
