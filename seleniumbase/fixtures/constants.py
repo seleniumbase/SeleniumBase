@@ -9,15 +9,21 @@ class Environment:
     STAGING = "staging"
     DEVELOP = "develop"
     PRODUCTION = "production"
+    PERFORMANCE = "performance"
     OFFLINE = "offline"
     ONLINE = "online"
     MASTER = "master"
     REMOTE = "remote"
+    LEGACY = "legacy"
     LOCAL = "local"
     ALPHA = "alpha"
     BETA = "beta"
+    DEMO = "demo"
     MAIN = "main"
     TEST = "test"
+    GOV = "gov"
+    NEW = "new"
+    OLD = "old"
     UAT = "uat"
 
 
@@ -28,15 +34,21 @@ class ValidEnvs:
         "staging",
         "develop",
         "production",
+        "performance",
         "offline",
         "online",
         "master",
         "remote",
+        "legacy",
         "local",
         "alpha",
         "beta",
+        "demo",
         "main",
         "test",
+        "gov",
+        "new",
+        "old",
         "uat",
     ]
 
