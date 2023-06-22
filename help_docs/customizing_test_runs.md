@@ -287,7 +287,7 @@ There's more info on that here: [pytest-xdist](https://pypi.org/project/pytest-x
 <summary> ▶️ <code>-n8 --dist=loadgroup</code> (<b>click to expand</b>)</summary>
 <div>
 
-* Tests are grouped by the ``xdist_group`` mark. Groups are distributed to available workers as whole units. This guarantees that all tests with same ``xdist_group`` name run in the same worker.
+<ul><li>Tests are grouped by the <code>xdist_group</code> mark. Groups are distributed to available workers as whole units. This guarantees that all tests with the same <code>xdist_group</code> name run in the same worker.</li></ul>
 
 ```python
 @pytest.mark.xdist_group(name="group1")
@@ -300,7 +300,7 @@ class Test:
         pass
 ```
 
-> This makes ``test_1`` and ``Test::test_2`` run in the same worker. Tests without the ``xdist_group`` mark are distributed normally.
+<blockquote><p>This makes <code>test_1</code> and <code>Test::test_2</code> run in the same worker. Tests without the <code>xdist_group</code> mark are distributed normally.</p></blockquote>
 
 </div>
 </details>
