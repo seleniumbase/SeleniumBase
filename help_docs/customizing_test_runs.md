@@ -277,11 +277,33 @@ The code above will leave your browser window open in case there's a failure. (p
 🎛️ There are times when you'll want to combine various command-line options for added effect.
 For instance, the multi-process option, ``-n8``, can be customized by adding:
 ``--dist=loadscope`` or ``--dist=loadfile`` to it.
-Here's more info on that, as taken from [pytest-xdist](https://pypi.org/project/pytest-xdist/):
+There's more info on that here: [pytest-xdist](https://pypi.org/project/pytest-xdist/2.5.0/):
 
 * ``-n8 --dist=loadscope``: Tests are grouped by module for test functions and by class for test methods. Groups are distributed to available workers as whole units. This guarantees that all tests in a group run in the same process. This can be useful if you have expensive module-level or class-level fixtures. Grouping by class takes priority over grouping by module.
 
 * ``-n8 --dist=loadfile``: Tests are grouped by their containing file. Groups are distributed to available workers as whole units. This guarantees that all tests in a file run in the same worker.
+
+<details>
+<summary> ▶️ <code>-n8 --dist=loadgroup</code> (<b>click to expand</b>)</summary>
+<div>
+
+* Tests are grouped by the ``xdist_group`` mark. Groups are distributed to available workers as whole units. This guarantees that all tests with same ``xdist_group`` name run in the same worker.
+
+```python
+@pytest.mark.xdist_group(name="group1")
+def test_1():
+    pass
+
+class Test:
+    @pytest.mark.xdist_group("group1")
+    def test_2():
+        pass
+```
+
+> This makes ``test_1`` and ``Test::test_2`` run in the same worker. Tests without the ``xdist_group`` mark are distributed normally.
+
+</div>
+</details>
 
 🎛️ You might also want to combine multiple options at once. For example:
 

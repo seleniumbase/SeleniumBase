@@ -13,15 +13,18 @@ Dashboard: /Users/michael/github/SeleniumBase/examples/behave_bdd/dashboard.html
 Feature: SeleniumBase scenarios for the RealWorld App # features/realworld.feature:1
 
   Scenario: Verify RealWorld App (log in / sign out)  # features/realworld.feature:3
-    Given Open the RealWorld Login Page               # steps/real_world.py:4
-    When Login to the RealWorld App                   # steps/real_world.py:11
-    Then Assert exact text "Welcome!" in "h1"         # steps/real_world.py:89
-    When Highlight element "img#image1"               # steps/real_world.py:19
-    And Click element 'a:contains("This Page")'       # steps/real_world.py:29
-    Then Save a screenshot to the logs                # steps/real_world.py:49
-    When Click link "Sign out"                        # steps/real_world.py:39
-    Then Assert element 'a:contains("Sign in")'       # steps/real_world.py:55
-    And Assert text "You have been signed out!"       # steps/real_world.py:79
+    Given Open "seleniumbase.io/realworld/login"      # ../../sbase/steps.py:10
+    And Clear Session Storage                         # ../../sbase/steps.py:613
+    When Type "demo_user" into "#username"            # ../../sbase/steps.py:40
+    And Type "secret_pass" into "#password"           # ../../sbase/steps.py:40
+    And Do MFA "GAXG2MTEOR3DMMDG" into "#totpcode"    # ../../sbase/steps.py:309
+    Then Assert exact text "Welcome!" in "h1"         # ../../sbase/steps.py:157
+    And Highlight "img#image1"                        # ../../sbase/steps.py:171
+    And Click 'a:contains("This Page")'               # ../../sbase/steps.py:27
+    And Save screenshot to logs                       # ../../sbase/steps.py:226
+    When Click link "Sign out"                        # ../../sbase/steps.py:182
+    Then Assert element 'a:contains("Sign in")'       # ../../sbase/steps.py:120
+    And Assert text "You have been signed out!"       # ../../sbase/steps.py:145
    ✅ Scenario Passed!
 
 - Dashboard: /Users/michael/github/SeleniumBase/examples/behave_bdd/dashboard.html

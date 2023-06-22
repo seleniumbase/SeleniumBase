@@ -46,7 +46,7 @@ class TestMFALogin(BaseCase):
 👁️🔎 Here are some examples of running tests with ``pytest``:
 
 ```bash
-pytest --headless --rs --dashboard --html=report.html -v -n=4
+pytest --headless -n8 --dashboard --html=report.html -v --rs --crumbs
 pytest test_mfa_login.py
 pytest -m marker2
 pytest offline_examples/
