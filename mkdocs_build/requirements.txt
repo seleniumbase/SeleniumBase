@@ -3,6 +3,10 @@
 
 regex>=2023.6.3
 pkginfo>=1.9.6
+readme-renderer>=40.0
+pymdown-extensions>=10.0.1
+importlib-metadata>=6.7.0
+pipdeptree>=2.9.3
 docutils==0.20.1
 python-dateutil==2.8.2
 livereload==2.6.3
@@ -12,10 +16,6 @@ MarkupSafe==2.1.3
 Jinja2==3.1.2
 click==8.1.3
 ghp-import==2.1.0
-readme-renderer==37.3
-pymdown-extensions==10.0.1
-importlib-metadata==6.6.0
-pipdeptree==2.9.0
 bleach==6.0.0
 lunr==0.6.2
 nltk==3.8.1
@@ -27,7 +27,7 @@ cssselect2==0.7.0
 tinycss2==1.2.1
 defusedxml==0.7.1
 mkdocs==1.4.3
-mkdocs-material==9.1.15
+mkdocs-material==9.1.16
 mkdocs-exclude-search==0.6.5
 mkdocs-simple-hooks==0.1.5
 mkdocs-material-extensions==1.1.1
