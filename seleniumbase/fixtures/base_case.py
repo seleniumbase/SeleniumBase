@@ -7667,9 +7667,9 @@ class BaseCase(unittest.TestCase):
                 sb_config._is_timeout_changed = False
                 self.__overrided_default_timeouts = False
 
-    def fail(self, msg=None):
+    def fail(self, msg="fail() called!"):
         """Fail immediately, with the given message."""
-        super().fail(msg)
+        raise self.failureException(msg)
 
     def skip(self, reason=""):
         """Mark the test as Skipped."""

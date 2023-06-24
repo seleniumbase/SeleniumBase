@@ -64,6 +64,8 @@ class WordleTests(BaseCase):
         found_word = False
         for attempt in range(6):
             num_attempts += 1
+            if len(self.word_list) == 0:
+                self.fail("Today's word was not found in my dictionary!")
             word = random.choice(self.word_list)
             letters = []
             for letter in word:
