@@ -134,6 +134,16 @@ def do_recording(file_name, url, overwrite_enabled, use_chrome, window):
             "%s -m seleniumbase mkrec %s --url=%s --gui"
             % (sys.executable, file_name, url)
         )
+        if '"' not in url:
+            command = (
+                '%s -m seleniumbase mkrec %s --url="%s" --gui'
+                % (sys.executable, file_name, url)
+            )
+        elif "'" not in url:
+            command = (
+                "%s -m seleniumbase mkrec %s --url='%s' --gui"
+                % (sys.executable, file_name, url)
+            )
         if not use_chrome:
             command += " --edge"
         if (

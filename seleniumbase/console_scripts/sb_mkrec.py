@@ -188,6 +188,14 @@ def main():
         run_cmd = "%s -m pytest %s --rec -q -s --url=%s" % (
             sys.executable, file_name, start_page
         )
+        if '"' not in start_page:
+            run_cmd = '%s -m pytest %s --rec -q -s --url="%s"' % (
+                sys.executable, file_name, start_page
+            )
+        elif "'" not in start_page:
+            run_cmd = "%s -m pytest %s --rec -q -s --url='%s'" % (
+                sys.executable, file_name, start_page
+            )
     if use_edge:
         run_cmd += " --edge"
     if force_gui:
