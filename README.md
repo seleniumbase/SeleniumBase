@@ -210,7 +210,17 @@ Feature: SeleniumBase scenarios for the RealWorld App
 <a id="install_seleniumbase"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" /> Install SeleniumBase:</h2>
 
-**You can install ``seleniumbase`` from [GitHub](https://github.com/seleniumbase/SeleniumBase) or [PyPI](https://pypi.org/project/seleniumbase/):**
+**You can install ``seleniumbase`` from [PyPI](https://pypi.org/project/seleniumbase/) or [GitHub](https://github.com/seleniumbase/SeleniumBase):**
+
+🔵 **Installing ``seleniumbase`` from PyPI:**
+
+```bash
+pip install seleniumbase
+```
+
+* (Add ``--upgrade`` OR ``-U`` to upgrade SeleniumBase.)
+* (Add ``--force-reinstall`` to upgrade indirect packages.)
+* (Use ``pip3`` if multiple versions of Python are present.)
 
 🔵 **Installing ``seleniumbase`` from a GitHub clone:**
 
@@ -225,22 +235,6 @@ pip install -e .
 ```bash
 git pull
 pip install -e .
-```
-
-🔵 **Installing ``seleniumbase`` from PyPI:**
-
-```bash
-pip install seleniumbase
-```
-
-* (Add ``--upgrade`` OR ``-U`` to upgrade SeleniumBase.)
-* (Add ``--force-reinstall`` to upgrade indirect libraries.)
-* (Use ``pip3`` if multiple versions of Python are present.)
-
-**To upgrade an existing install from PyPI:**
-
-```bash
-pip install -U seleniumbase
 ```
 
 🔵 Type ``seleniumbase`` or ``sbase`` to verify that SeleniumBase was installed successfully:
@@ -291,9 +285,9 @@ COMMANDS:
 ```
 
 
-<h3><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" /> Downloading web drivers:</h3>
+<h3><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" /> Downloading webdrivers:</h3>
 
-✅ SeleniumBase automatically downloads web drivers as needed, such as ``chromedriver``, ``edgedriver``, and ``geckodriver``.
+✅ SeleniumBase automatically downloads webdrivers as needed, such as ``chromedriver``.
 
 ✅ To manually download a webdriver, see [Console Scripts](https://seleniumbase.io/seleniumbase/console_scripts/ReadMe/) OR [Webdriver Installation](https://seleniumbase.io/help_docs/webdriver_installation/).
 
