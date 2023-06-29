@@ -21,7 +21,7 @@ pip install brython
 python -m http.server
 ```
 
-You can always stop the server by using ``CTRL+C``.
+(You can stop the server by using <kbd>Ctrl+C</kbd>)
 
 ### 2. Navigate to [http://localhost:8000/](http://localhost:8000/)
 

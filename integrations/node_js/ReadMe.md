@@ -33,7 +33,7 @@ npm ci
 node server.js
 ```
 
-(You can always stop the server by using ``CTRL+C``.)
+(You can stop the server by using <kbd>Ctrl+C</kbd>)
 
 #### 5. Open the SeleniumBase Test Runner web app
 
