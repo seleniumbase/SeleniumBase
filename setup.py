@@ -211,7 +211,7 @@ setup(
         'pygments==2.15.1;python_version>="3.7"',
         'pyreadline3==3.4.1;platform_system=="Windows"',
         "tabcompleter==1.2.1",
-        "pdbp==1.4.1",
+        "pdbp==1.4.2",
         'colorama==0.4.5;python_version<"3.7"',
         'colorama==0.4.6;python_version>="3.7"',
         'exceptiongroup==1.1.1;python_version>="3.7"',
