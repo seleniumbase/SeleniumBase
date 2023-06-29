@@ -15,6 +15,7 @@ Example Test:
 
 # --------------------------------------------------------------
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 class MyTestClass(BaseCase):
     def test_anything(self):
         # Write your code here. Example:
