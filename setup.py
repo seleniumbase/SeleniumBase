@@ -278,19 +278,19 @@ setup(
         ],
         # pip install -e .[psutil]
         "psutil": [
-            "psutil==5.9.4",
+            "psutil==5.9.5",
         ],
         # pip install -e .[selenium-wire]
         "selenium-wire": [
             'selenium-wire==5.1.0;python_version>="3.7"',
             'Brotli==1.0.9;python_version>="3.7"',
-            'blinker==1.5;python_version>="3.7"',
+            'blinker==1.6.2;python_version>="3.7"',
             'h2==4.1.0;python_version>="3.7"',
             'hpack==4.0.0;python_version>="3.7"',
             'hyperframe==6.0.1;python_version>="3.7"',
             'kaitaistruct==0.10;python_version>="3.7"',
-            'pyasn1==0.4.8;python_version>="3.7"',
-            'zstandard==0.19.0;python_version>="3.7"',
+            'pyasn1==0.5.0;python_version>="3.7"',
+            'zstandard==0.21.0;python_version>="3.7"',
         ],
     },
     packages=[
