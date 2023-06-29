@@ -10,6 +10,7 @@ class Environment:
     DEVELOP = "develop"
     PRODUCTION = "production"
     PERFORMANCE = "performance"
+    FEDRAMP = "fedramp"
     OFFLINE = "offline"
     ONLINE = "online"
     MASTER = "master"
@@ -19,6 +20,7 @@ class Environment:
     ALPHA = "alpha"
     BETA = "beta"
     DEMO = "demo"
+    GDPR = "gdpr"
     MAIN = "main"
     TEST = "test"
     GOV = "gov"
@@ -35,6 +37,7 @@ class ValidEnvs:
         "develop",
         "production",
         "performance",
+        "fedramp",
         "offline",
         "online",
         "master",
@@ -44,6 +47,7 @@ class ValidEnvs:
         "alpha",
         "beta",
         "demo",
+        "gdpr",
         "main",
         "test",
         "gov",
