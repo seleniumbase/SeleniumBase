@@ -8061,7 +8061,7 @@ class BaseCase(unittest.TestCase):
         original_selector = selector
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_shadow_selector(selector):
-            return self.__wait_for_shadow_element_visible(selector, timeout)
+            return self.__get_shadow_element(selector, timeout)
         return page_actions.wait_for_element_visible(
             self.driver,
             selector,
@@ -8478,7 +8478,7 @@ class BaseCase(unittest.TestCase):
                 action = ["wf_el", selector, origin, time_stamp]
                 self.__extra_actions.append(action)
         if self.__is_shadow_selector(selector):
-            return self.__wait_for_shadow_element_visible(selector, timeout)
+            return self.__get_shadow_element(selector, timeout)
         return page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout
         )
@@ -12995,7 +12995,10 @@ class BaseCase(unittest.TestCase):
                                     By.CSS_SELECTOR, value=selector_part
                                 )
                                 is_present = True
-                                if must_be_visible:
+                                if (
+                                    selector_part == selectors[-1]
+                                    and must_be_visible
+                                ):
                                     if not element.is_displayed():
                                         raise Exception(
                                             "Shadow Root element not visible!"
@@ -13010,7 +13013,11 @@ class BaseCase(unittest.TestCase):
                                 By.CSS_SELECTOR, value=selector_part
                             )
                             is_present = True
-                            if must_be_visible and not element.is_displayed():
+                            if (
+                                selector_part == selectors[-1]
+                                and must_be_visible
+                                and not element.is_displayed()
+                            ):
                                 raise Exception(
                                     "Shadow Root element not visible!"
                                 )
