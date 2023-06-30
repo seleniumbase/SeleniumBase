@@ -6360,13 +6360,13 @@ class BaseCase(unittest.TestCase):
         )
         if type(page) is int:
             if text not in pdf_text:
-                raise Exception(
+                self.fail(
                     "PDF [%s] is missing expected text [%s] on "
                     "page [%s]!" % (pdf, text, page)
                 )
         else:
             if text not in pdf_text:
-                raise Exception(
+                self.fail(
                     "PDF [%s] is missing expected text [%s]!" % (pdf, text)
                 )
         return True
@@ -7115,7 +7115,7 @@ class BaseCase(unittest.TestCase):
             er_str = str(errors)
             er_str = er_str.replace("[{", "[\n{").replace("}, {", "},\n{")
             current_url = self.get_current_url()
-            raise Exception(
+            self.fail(
                 "JavaScript errors found on %s => %s" % (current_url, er_str)
             )
         if self.demo_mode:
@@ -7670,7 +7670,7 @@ class BaseCase(unittest.TestCase):
 
     def fail(self, msg="fail() called!"):
         """Fail immediately, with the given message."""
-        raise self.failureException(msg)
+        super().fail(msg)
 
     def skip(self, reason=""):
         """Mark the test as Skipped."""

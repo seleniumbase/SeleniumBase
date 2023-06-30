@@ -160,7 +160,8 @@ setup(
         'charset-normalizer==2.0.12;python_version<"3.7"',
         'charset-normalizer==3.1.0;python_version>="3.7"',
         'urllib3==1.26.12;python_version<"3.7"',
-        'urllib3>=1.26.16,<2.1.0;python_version>="3.7"',
+        'urllib3>=1.26.16,<2;python_version>="3.7" and python_version<"3.10"',  # noqa: E501
+        'urllib3>=1.26.16,<2.1.0;python_version>="3.10"',
         'requests==2.27.1;python_version<"3.7"',
         'requests==2.31.0;python_version>="3.7"',
         'requests-toolbelt==1.0.0',

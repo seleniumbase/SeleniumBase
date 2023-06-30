@@ -7,6 +7,7 @@ class DatabaseManager:
     def __init__(self, database_env="test", conf_creds=None):
         """Create a connection to the MySQL DB."""
         import fasteners
+        import sys
         import time
         from seleniumbase import config as sb_config
         from seleniumbase.config import settings
@@ -21,7 +22,10 @@ class DatabaseManager:
             try:
                 import pymysql
             except Exception:
-                shared_utils.pip_install("pymysql", version="1.0.2")
+                if sys.version_info < (3, 7):
+                    shared_utils.pip_install("pymysql", version="1.0.2")
+                else:
+                    shared_utils.pip_install("pymysql", version="1.1.0")
                 import pymysql
         db_server = settings.DB_HOST
         db_port = settings.DB_PORT
