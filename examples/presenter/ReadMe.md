@@ -110,10 +110,9 @@ All methods have the optional ``name`` argument, which is only needed if you're 
 
 ```python
 from seleniumbase import BaseCase
-
+BaseCase.main(__name__, __file__)
 
 class MyPresenterClass(BaseCase):
-
     def test_presenter(self):
         self.create_presentation(theme="serif")
         self.add_slide(
@@ -146,8 +145,7 @@ class MyPresenterClass(BaseCase):
             '<tr><td>O</td><td>Overview Mode Toggle</td></tr>\n'
             '<tr><td>esc</td><td>Exit Full Screen / Overview Mode</td></tr>\n'
             '<tr><td><b>.</b></td><td>Pause/Resume Toggle</td></tr>\n'
-            '<tr><td>space</td><td>Next Slide (alternative)</td></tr></table>'
-            )
+            '<tr><td>space</td><td>Next Slide (alternative)</td></tr></table>')
         self.add_slide(
             '<h3>Add <b>images</b> to slides:</h3>',
             image="https://seleniumbase.github.io/other/seagulls.jpg")

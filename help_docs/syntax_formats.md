@@ -73,6 +73,7 @@ There are situations where you may want to customize the <code>setUp</code> and 
 
 ```python
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 class BaseTestCase(BaseCase):
     def setUp(self):
@@ -150,6 +151,7 @@ With SeleniumBase, you can use Page Objects to break out code from tests, but re
 
 ```python
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 class LoginPage:
     def login_to_swag_labs(self, sb, username):
@@ -235,6 +237,7 @@ When you want to use SeleniumBase methods via <code>BaseCase</code>, but you wan
 ```python
 from selenium import webdriver
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 class OverrideDriverTest(BaseCase):
     def get_new_driver(self, *args, **kwargs):
@@ -267,6 +270,7 @@ The above format lets you customize [selenium-wire](https://github.com/wkeeling/
 ```python
 from seleniumbase import BaseCase
 from seleniumwire import webdriver  # Requires "pip install selenium-wire"
+BaseCase.main(__name__, __file__)
 
 
 class WireTestCase(BaseCase):

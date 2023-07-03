@@ -4,23 +4,41 @@
 
 <a id="how_seleniumbase_works"></a>
 
-👁️🔎 At the core, SeleniumBase works by extending [pytest](https://docs.pytest.org/en/latest/) as a direct plugin. SeleniumBase automatically spins up web browsers for tests (using [Selenium WebDriver](https://www.selenium.dev/documentation/webdriver/)), and then gives those tests access to the SeleniumBase libraries through the [BaseCase class](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py). Tests are also given access to [SeleniumBase command-line arguments](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md) and [SeleniumBase methods](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md), which provide additional functionality.
+👁️🔎 At the core, SeleniumBase works by extending [pytest](https://docs.pytest.org/en/latest/) as a direct plugin. SeleniumBase automatically spins up web browsers for tests (using [Selenium WebDriver](https://www.selenium.dev/documentation/webdriver/)), and then gives those tests access to the SeleniumBase libraries through the [BaseCase class](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py). Tests are also given access to [SeleniumBase command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md) and [SeleniumBase methods](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md), which provide additional functionality.
 
 👁️🔎 ``pytest`` uses a feature called test discovery to automatically find and run Python methods that start with ``test_`` when those methods are located in Python files that start with ``test_`` or end with ``_test.py``.
 
-👁️🔎 The most common way of using **SeleniumBase** is by inheriting ``BaseCase``:
+👁️🔎 The most common way of using **SeleniumBase** is by importing ``BaseCase``:
 
 ```python
 from seleniumbase import BaseCase
 ```
 
-Then have your test classes inherit ``BaseCase``:
+👁️🔎 This line activates ``pytest`` when a file is called directly with ``python``:
+
+```python
+BaseCase.main(__name__, __file__)
+```
+
+👁️🔎 Classes can inherit ``BaseCase`` to gain SeleniumBase functionality:
 
 ```python
 class MyTestClass(BaseCase):
 ```
 
-Here's what a full test might look like:
+👁️🔎 Test methods inside ``BaseCase`` classes become SeleniumBase tests: (These tests automatically launch a web browser before starting, and quit the web browser after ending. Default settings can be changed via command-line options.)
+
+```python
+    def test_abc(self):
+```
+
+👁️🔎 SeleniumBase APIs can be called from tests via ``self``:
+
+```python
+        self.open("https://example.com")
+```
+
+👁️🔎 Here's what a full test might look like:
 
 ```python
 from seleniumbase import BaseCase
@@ -46,14 +64,14 @@ class TestMFALogin(BaseCase):
 👁️🔎 Here are some examples of running tests with ``pytest``:
 
 ```bash
-pytest --headless -n8 --dashboard --html=report.html -v --rs --crumbs
 pytest test_mfa_login.py
+pytest --headless -n8 --dashboard --html=report.html -v --rs --crumbs
 pytest -m marker2
-pytest offline_examples/
 pytest -k agent
+pytest offline_examples/
 ```
 
-(See <a href="https://seleniumbase.io/help_docs/syntax_formats/">SyntaxFormats</a> for more ways of using <b>SeleniumBase</b>.)
+(See <a href="https://seleniumbase.io/help_docs/syntax_formats/">Syntax_Formats</a> for more ways of structuring <b>SeleniumBase</b> tests.)
 
 --------
 
@@ -66,7 +84,7 @@ pytest -k agent
 
 * **(1)**: Selenium's default ``pageLoadStrategy`` is ``normal``: This strategy causes Selenium to wait for the full page to load, with HTML content and sub-resources downloaded and parsed.
 
-* **(2)**: SeleniumBase includes methods such as ``wait_for_ready_state_complete()`` and ``wait_for_angularjs()``, which run inside other SeleniumBase methods to ensure that it's safe to proceed with the next command.
+* **(2)**: SeleniumBase includes methods such as ``wait_for_ready_state_complete()``, which run inside other SeleniumBase methods to ensure that it's safe to proceed with the next command.
 
 * **(3)**: SeleniumBase methods automatically wait for elements to be visible and interactable before interacting with those elements.
 
@@ -74,9 +92,9 @@ pytest -k agent
 
 * ``--pls=none`` --> Set ``pageLoadStrategy`` to ``"none"``: This strategy causes Selenium to return immediately after the initial HTML content is fully received by the browser.
 
-* ``--sjw`` --> Skip JS Waits, which include ``wait_for_ready_state_complete()`` and ``wait_for_angularjs()``.
+* ``--sjw`` --> Skip JS Waits, such as ``wait_for_ready_state_complete()``.
 
 --------
 
 <p><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/super_logo_sb.png" alt="SeleniumBase" title="SeleniumBase" width="300" /></a></p>
-<p><a href="https://www.python.org/downloads/" target="_blank"><img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=22AAEE&logo=python" title="Supported Python Versions" /></a></p>
+<p><a href="https://www.python.org/downloads/" target="_blank"><img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=22AAEE&logo=python&logoColor=FEDC54" title="Supported Python Versions" /></a></p>

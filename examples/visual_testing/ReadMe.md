@@ -73,9 +73,9 @@ Here's an example where clicking a button makes a hidden element visible:
 
 ```python
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 class VisualLayoutTest(BaseCase):
-
     def test_applitools_layout_change_failure(self):
         self.open('https://applitools.com/helloworld?diff1')
         print('\nCreating baseline in "visual_baseline" folder.')
@@ -107,9 +107,9 @@ Here's an example where a button is removed from a web page:
 
 ```python
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 class VisualLayoutTest(BaseCase):
-
     def test_python_home_layout_change_failure(self):
         self.open('https://python.org/')
         print('\nCreating baseline in "visual_baseline" folder.')
@@ -144,9 +144,9 @@ Here's another example, where a web site logo is resized:
 
 ```python
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 class VisualLayoutTest(BaseCase):
-
     def test_xkcd_layout_change_failure(self):
         self.open('https://xkcd.com/554/')
         print('\nCreating baseline in "visual_baseline" folder.')
