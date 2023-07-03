@@ -19,6 +19,7 @@ Here's the code for that pie chart presentation ([GitHub => seleniumbase/Seleniu
 
 ```python
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 class MyChartMakerClass(BaseCase):
     def test_chart_maker(self):
@@ -57,6 +58,7 @@ Here are screenshots from the examples:
 
 ```python
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 class MyChartMakerClass(BaseCase):
     def test_chart_maker(self):
@@ -87,9 +89,9 @@ Because that presentation above has an ``interval`` set to ``8``, it will automa
 
 ```python
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 class MyChartMakerClass(BaseCase):
-
     def test_chart_maker_presentation(self):
         self.create_presentation(theme="sky")
 

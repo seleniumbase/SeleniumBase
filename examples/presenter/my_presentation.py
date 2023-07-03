@@ -48,8 +48,9 @@ class MyPresenterClass(BaseCase):
         self.add_slide(
             "<h3>Add <b>code</b> to slides:</h3>",
             code=(
-                "from seleniumbase import BaseCase\n\n"
-                "class MyTestClass(BaseCase):\n\n"
+                "from seleniumbase import BaseCase\n"
+                "BaseCase.main(__name__, __file__)\n\n"
+                "class MyTestClass(BaseCase):\n"
                 "    def test_basics(self):\n"
                 '        self.open("https://xkcd.com/353/")\n'
                 '        self.assert_title("xkcd: Python")\n'
@@ -64,8 +65,9 @@ class MyPresenterClass(BaseCase):
         self.add_slide(
             "<h3>Highlight <b>code</b> in slides:</h3>",
             code=(
-                "from seleniumbase import BaseCase\n\n"
-                "<mark>class MyTestClass(BaseCase):</mark>\n\n"
+                "from seleniumbase import BaseCase\n"
+                "BaseCase.main(__name__, __file__)\n\n"
+                "<mark>class MyTestClass(BaseCase):</mark>\n"
                 "    def test_basics(self):\n"
                 '        self.open("https://xkcd.com/353/")\n'
                 '        self.assert_title("xkcd: Python")\n'
@@ -84,8 +86,9 @@ class MyPresenterClass(BaseCase):
         self.add_slide(
             "<h3>Getting started is <b>easy</b>:</h3>",
             code=(
-                "from seleniumbase import BaseCase\n\n"
-                "class MyPresenterClass(BaseCase):\n\n"
+                "from seleniumbase import BaseCase\n"
+                "BaseCase.main(__name__, __file__)\n\n"
+                "class MyPresenterClass(BaseCase):\n"
                 "    def test_presenter(self):\n"
                 '        self.create_presentation(theme="serif")\n'
                 '        self.add_slide("Welcome to Presenter!")\n'
