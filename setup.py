@@ -276,7 +276,8 @@ setup(
         # pip install -e .[pillow]
         "pillow": [
             'Pillow==8.4.0;python_version<"3.7"',
-            'Pillow==9.5.0;python_version>="3.7"',
+            'Pillow==9.5.0;python_version>="3.7" and python_version<"3.8"',
+            'Pillow==10.0.0;python_version>="3.8"',
         ],
         # pip install -e .[psutil]
         "psutil": [
