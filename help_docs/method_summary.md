@@ -896,9 +896,11 @@ self._print(TEXT)  # Calls Python's print() / Allows for translations
 ✅ Test Folder: [SeleniumBase/examples](https://github.com/seleniumbase/SeleniumBase/tree/master/examples)
 
 * [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py)
+* [test_demo_site.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py)
+* [test_coffee_cart.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_coffee_cart.py)
+* [coffee_cart_tests.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/coffee_cart_tests.py)
 * [parameterized_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/parameterized_test.py)
 * [test_deferred_asserts.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_deferred_asserts.py)
-* [test_demo_site.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py)
 * [test_error_page.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_error_page.py)
 * [test_login.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_login.py)
 * [test_markers.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_markers.py)
