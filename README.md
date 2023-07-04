@@ -9,7 +9,7 @@
 
 <h1>SeleniumBase</h1>
 
-<h3 align="center">Automate browsers, test websites, and detect bugs — with Python!</h3>
+<h3 align="center">Automate web browsers and regression testing — with Python.</h3>
 
 <h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.github.io/cdn/gif/swag_mobile_2.gif" alt="SeleniumBase" title="SeleniumBase" width="480" /></a></h3>
 
