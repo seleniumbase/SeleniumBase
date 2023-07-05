@@ -9,7 +9,7 @@
 
 <h1>SeleniumBase</h1>
 
-<h3 align="center">Python-powered web automation and testing, with advanced tools.</h3>
+<h3 align="center">Python-powered web automation and testing — with advanced tools.</h3>
 
 <h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.github.io/cdn/gif/coffee_pdbp.gif" alt="SeleniumBase" title="SeleniumBase" /></a></h3>
 
