@@ -128,6 +128,8 @@ class BaseCase(unittest.TestCase):
         self.__start_time_ms = int(time.time() * 1000.0)
         self.__requests_timeout = None
         self.__screenshot_count = 0
+        self.__logs_data_count = 0
+        self.__last_data_file = None
         self.__level_0_visual_f = False
         self.__will_be_skipped = False
         self.__passed_then_skipped = False
@@ -831,9 +833,9 @@ class BaseCase(unittest.TestCase):
         """This method clicks on a list of elements in succession.
         @Params
         selectors_list - The list of selectors to click on.
-        by - The type of selector to search by (Default: CSS_Selector).
+        by - The type of selector to search by (Default: "css selector").
         timeout - How long to wait for the selector to be visible.
-        spacing - The amount of time to wait between clicks (in seconds). """
+        spacing - The amount of time to wait between clicks (in seconds)."""
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -855,11 +857,11 @@ class BaseCase(unittest.TestCase):
         * Types in the new text.
         * Hits Enter/Submit (if the text ends in "\n").
         @Params
-        selector - the selector of the text field
-        text - the new text to type into the text field
-        by - the type of selector to search by (Default: CSS Selector)
-        timeout - how long to wait for the selector to be visible
-        retry - if True, use JS if the Selenium text update fails """
+        selector - The selector of the text field.
+        text - The new text to type into the text field.
+        by - The type of selector to search by. (Default: "css selector")
+        timeout - How long to wait for the selector to be visible.
+        retry - If True, use JS if the Selenium text update fails."""
         self.__check_scope()
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
@@ -1037,11 +1039,11 @@ class BaseCase(unittest.TestCase):
         * Types in the new text.
         * Hits Enter/Submit (if the text ends in "\n").
         @Params
-        selector - the selector of the text field
-        text - the new text to type into the text field
-        by - the type of selector to search by (Default: CSS Selector)
-        timeout - how long to wait for the selector to be visible
-        retry - if True, use JS if the Selenium text update fails
+        selector - The selector of the text field.
+        text - The new text to type into the text field.
+        by - The type of selector to search by. (Default: "css selector")
+        timeout - How long to wait for the selector to be visible.
+        retry - If True, use JS if the Selenium text update fails.
         DO NOT confuse self.type() with Python type()! They are different!
         """
         self.__check_scope()
@@ -1083,9 +1085,9 @@ class BaseCase(unittest.TestCase):
         In case websites trigger an autofill after clearing a field,
         add backspaces to make sure autofill doesn't undo the clear.
         @Params
-        selector - the selector of the text field
-        by - the type of selector to search by (Default: CSS Selector)
-        timeout - how long to wait for the selector to be visible """
+        selector - The selector of the text field.
+        by - The type of selector to search by. (Default: "css selector")
+        timeout - How long to wait for the selector to be visible."""
         self.__check_scope()
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
@@ -4002,6 +4004,49 @@ class BaseCase(unittest.TestCase):
         sb_config._has_logs = True
         return page_actions.save_screenshot(self.driver, name, test_logpath)
 
+    def save_data_to_logs(self, data, file_name=None):
+        """Saves data to the "latest_logs/" data folder of the current test.
+        If no file_name, file_name becomes: "data_1.txt", "data_2.txt", etc.
+        Useful variables for getting the "latest_logs/" or test data folders:
+            self.log_path OR self.log_abspath  (For the top-level folder)
+            self.data_path OR self.data_abspath  (Individual test folders)
+        If a file_name is given with no extension, adds ".txt" to the end."""
+        test_logpath = os.path.join(self.log_path, self.__get_test_id())
+        self.__create_log_path_as_needed(test_logpath)
+        if file_name:
+            file_name = str(file_name)
+        if not file_name or len(file_name) == 0:
+            self.__logs_data_count += 1
+            file_name = "data_%s.txt" % self.__logs_data_count
+        elif "." not in file_name:
+            file_name = "%s.txt" % file_name
+        self.__last_data_file = file_name
+        sb_config._has_logs = True
+        destination_folder = test_logpath
+        page_utils._save_data_as(data, destination_folder, file_name)
+
+    def append_data_to_logs(self, data, file_name=None):
+        """Saves data to the "latest_logs/" folder of the current test.
+        If no file_name, file_name becomes the last data file used in
+            save_data_to_logs() or append_data_to_logs().
+        If neither method was called before, creates "data_1.txt"."""
+        test_logpath = os.path.join(self.log_path, self.__get_test_id())
+        self.__create_log_path_as_needed(test_logpath)
+        if file_name:
+            file_name = str(file_name)
+        if (not file_name or len(file_name) == 0) and self.__last_data_file:
+            file_name = self.__last_data_file
+        elif not file_name or len(file_name) == 0:
+            if self.__logs_data_count == 0:
+                self.__logs_data_count += 1
+            file_name = "data_%s.txt" % self.__logs_data_count
+        elif "." not in file_name:
+            file_name = "%s.txt" % file_name
+        self.__last_data_file = file_name
+        sb_config._has_logs = True
+        destination_folder = test_logpath
+        page_utils._append_data_to_file(data, destination_folder, file_name)
+
     def save_page_source(self, name, folder=None):
         """Saves the page HTML to the current directory (or given subfolder).
         If the folder specified doesn't exist, it will get created.
@@ -6580,7 +6625,9 @@ class BaseCase(unittest.TestCase):
     def get_file_data(self, file_name, folder=None):
         """Gets the data from the file specified.
         If no folder is specified, the default one is used.
-        (The default folder = "./downloaded_files")
+        The default folder = "./downloaded_files"
+        For the "latest_logs/" test data folders, use:
+            self.data_path OR self.data_abspath
         Use "." as the folder for the current directory."""
         if not folder:
             folder = constants.Files.DOWNLOADS_FOLDER
@@ -8292,7 +8339,7 @@ class BaseCase(unittest.TestCase):
         Arguments:
             message: The message to display.
             selector: The selector of the Element to highlight.
-            by: The type of selector to search by. (Default: CSS Selector)"""
+            by: The type of selector to search by. (Default: "css selector")"""
         self.__check_scope()
         self.__highlight_with_assert_success(message, selector, by=by)
 
@@ -14389,6 +14436,7 @@ class BaseCase(unittest.TestCase):
                 has_exception
                 or self.save_screenshot_after_test
                 or self.__screenshot_count > 0
+                or self.__logs_data_count > 0
                 or self.__level_0_visual_f
                 or self.__will_be_skipped
             ):
