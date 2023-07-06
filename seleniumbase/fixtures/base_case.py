@@ -128,6 +128,8 @@ class BaseCase(unittest.TestCase):
         self.__start_time_ms = int(time.time() * 1000.0)
         self.__requests_timeout = None
         self.__screenshot_count = 0
+        self.__logs_data_count = 0
+        self.__last_data_file = None
         self.__level_0_visual_f = False
         self.__will_be_skipped = False
         self.__passed_then_skipped = False
@@ -4001,6 +4003,49 @@ class BaseCase(unittest.TestCase):
                         self.__extra_actions.append(action)
         sb_config._has_logs = True
         return page_actions.save_screenshot(self.driver, name, test_logpath)
+
+    def save_data_to_logs(self, data, file_name=None):
+        """Saves data to the "latest_logs/" data folder of the current test.
+        If no file_name, file_name becomes: "data_1.txt", "data_2.txt", etc.
+        Useful variables for getting the "latest_logs/" or test data folders:
+            self.log_path OR self.log_abspath  (For the top-level folder)
+            self.data_path OR self.data_abspath  (Individual test folders)
+        If a file_name is given with no extension, adds ".txt" to the end."""
+        test_logpath = os.path.join(self.log_path, self.__get_test_id())
+        self.__create_log_path_as_needed(test_logpath)
+        if file_name:
+            file_name = str(file_name)
+        if not file_name or len(file_name) == 0:
+            self.__logs_data_count += 1
+            file_name = "data_%s.txt" % self.__logs_data_count
+        elif "." not in file_name:
+            file_name = "%s.txt" % file_name
+        self.__last_data_file = file_name
+        sb_config._has_logs = True
+        destination_folder = test_logpath
+        page_utils._save_data_as(data, destination_folder, file_name)
+
+    def append_data_to_logs(self, data, file_name=None):
+        """Saves data to the "latest_logs/" folder of the current test.
+        If no file_name, file_name becomes the last data file used in
+            save_data_to_logs() or append_data_to_logs().
+        If neither method was called before, creates "data_1.txt"."""
+        test_logpath = os.path.join(self.log_path, self.__get_test_id())
+        self.__create_log_path_as_needed(test_logpath)
+        if file_name:
+            file_name = str(file_name)
+        if (not file_name or len(file_name) == 0) and self.__last_data_file:
+            file_name = self.__last_data_file
+        elif not file_name or len(file_name) == 0:
+            if self.__logs_data_count == 0:
+                self.__logs_data_count += 1
+            file_name = "data_%s.txt" % self.__logs_data_count
+        elif "." not in file_name:
+            file_name = "%s.txt" % file_name
+        self.__last_data_file = file_name
+        sb_config._has_logs = True
+        destination_folder = test_logpath
+        page_utils._append_data_to_file(data, destination_folder, file_name)
 
     def save_page_source(self, name, folder=None):
         """Saves the page HTML to the current directory (or given subfolder).
@@ -14389,6 +14434,7 @@ class BaseCase(unittest.TestCase):
                 has_exception
                 or self.save_screenshot_after_test
                 or self.__screenshot_count > 0
+                or self.__logs_data_count > 0
                 or self.__level_0_visual_f
                 or self.__will_be_skipped
             ):

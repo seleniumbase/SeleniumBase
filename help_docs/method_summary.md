@@ -311,6 +311,10 @@ self.save_screenshot(name, folder=None, selector=None, by="css selector")
 
 self.save_screenshot_to_logs(name=None, selector=None, by="css selector")
 
+self.save_data_to_logs(data, file_name=None)
+
+self.append_data_to_logs(data, file_name=None)
+
 self.save_page_source(name, folder=None)
 
 self.save_cookies(name="cookies.txt")
