@@ -833,9 +833,9 @@ class BaseCase(unittest.TestCase):
         """This method clicks on a list of elements in succession.
         @Params
         selectors_list - The list of selectors to click on.
-        by - The type of selector to search by (Default: CSS_Selector).
+        by - The type of selector to search by (Default: "css selector").
         timeout - How long to wait for the selector to be visible.
-        spacing - The amount of time to wait between clicks (in seconds). """
+        spacing - The amount of time to wait between clicks (in seconds)."""
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -857,11 +857,11 @@ class BaseCase(unittest.TestCase):
         * Types in the new text.
         * Hits Enter/Submit (if the text ends in "\n").
         @Params
-        selector - the selector of the text field
-        text - the new text to type into the text field
-        by - the type of selector to search by (Default: CSS Selector)
-        timeout - how long to wait for the selector to be visible
-        retry - if True, use JS if the Selenium text update fails """
+        selector - The selector of the text field.
+        text - The new text to type into the text field.
+        by - The type of selector to search by. (Default: "css selector")
+        timeout - How long to wait for the selector to be visible.
+        retry - If True, use JS if the Selenium text update fails."""
         self.__check_scope()
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
@@ -1039,11 +1039,11 @@ class BaseCase(unittest.TestCase):
         * Types in the new text.
         * Hits Enter/Submit (if the text ends in "\n").
         @Params
-        selector - the selector of the text field
-        text - the new text to type into the text field
-        by - the type of selector to search by (Default: CSS Selector)
-        timeout - how long to wait for the selector to be visible
-        retry - if True, use JS if the Selenium text update fails
+        selector - The selector of the text field.
+        text - The new text to type into the text field.
+        by - The type of selector to search by. (Default: "css selector")
+        timeout - How long to wait for the selector to be visible.
+        retry - If True, use JS if the Selenium text update fails.
         DO NOT confuse self.type() with Python type()! They are different!
         """
         self.__check_scope()
@@ -1085,9 +1085,9 @@ class BaseCase(unittest.TestCase):
         In case websites trigger an autofill after clearing a field,
         add backspaces to make sure autofill doesn't undo the clear.
         @Params
-        selector - the selector of the text field
-        by - the type of selector to search by (Default: CSS Selector)
-        timeout - how long to wait for the selector to be visible """
+        selector - The selector of the text field.
+        by - The type of selector to search by. (Default: "css selector")
+        timeout - How long to wait for the selector to be visible."""
         self.__check_scope()
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
@@ -6625,7 +6625,9 @@ class BaseCase(unittest.TestCase):
     def get_file_data(self, file_name, folder=None):
         """Gets the data from the file specified.
         If no folder is specified, the default one is used.
-        (The default folder = "./downloaded_files")
+        The default folder = "./downloaded_files"
+        For the "latest_logs/" test data folders, use:
+            self.data_path OR self.data_abspath
         Use "." as the folder for the current directory."""
         if not folder:
             folder = constants.Files.DOWNLOADS_FOLDER
@@ -8337,7 +8339,7 @@ class BaseCase(unittest.TestCase):
         Arguments:
             message: The message to display.
             selector: The selector of the Element to highlight.
-            by: The type of selector to search by. (Default: CSS Selector)"""
+            by: The type of selector to search by. (Default: "css selector")"""
         self.__check_scope()
         self.__highlight_with_assert_success(message, selector, by=by)
 
