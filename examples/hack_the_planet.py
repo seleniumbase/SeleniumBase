@@ -87,11 +87,8 @@ class HackTests(BaseCase):
         self.set_text_content("h1 span:nth-of-type(3)", "BELONG")
         self.set_text_content("h1 span:nth-of-type(4)", "TO")
         self.set_text_content("h1 span:nth-of-type(5)", "US")
-        self.type('input[name="q"]', aybabtu.lower())
-        self.click("h1", scroll=False)
-        self.highlight('a[href="/pricing"]', loops=5, scroll=False)
-        self.highlight('input[name="q"]', loops=5, scroll=False)
-        self.highlight("h1", loops=8, scroll=False)
+        self.highlight('a[href="/pricing"]', loops=6, scroll=False)
+        self.highlight("h1.h2-mktg", loops=7, scroll=False)
 
         self.open("https://dev.to/top/infinity")
         self.click_if_visible('button[aria-label="Close campaign banner"]')
