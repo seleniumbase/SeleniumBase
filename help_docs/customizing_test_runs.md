@@ -220,13 +220,13 @@ pytest test_suite.py
 
 <h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> Demo Mode:</h3>
 
-If any test is moving too fast for your eyes to see what's going on, you can run it in **Demo Mode** by adding ``--demo`` on the command line, which pauses the browser briefly between actions, highlights page elements being acted on, and lets you know what test assertions are happening in real time:
+🔵 If any test is moving too fast for your eyes to see what's going on, you can run it in **Demo Mode** by adding ``--demo`` on the command line, which pauses the browser briefly between actions, highlights page elements being acted on, and lets you know what test assertions are happening in real time:
 
 ```bash
 pytest my_first_test.py --demo
 ```
 
-You can override the default wait time by either updating [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) or by using ``--demo-sleep={NUM}`` when using Demo Mode. (NOTE: If you use ``--demo-sleep={NUM}`` without using ``--demo``, nothing will happen.)
+🔵 You can override the default wait time by either updating [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) or by using ``--demo-sleep=NUM`` when using Demo Mode. (NOTE: If you use ``--demo-sleep=NUM`` without using ``--demo``, nothing will happen.)
 
 ```bash
 pytest my_first_test.py --demo --demo-sleep=1.2
@@ -246,9 +246,9 @@ pytest -n 8
 pytest -n8
 ```
 
-<h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> Retrying failing tests automatically:</h3>
+<h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> How to retry failing tests automatically:</h3>
 
-You can use ``--reruns=NUM`` to retry failing tests that many times. Use ``--reruns-delay=SECONDS`` to wait that many seconds between retries. Example:
+<p>You can use <code>pytest --reruns=NUM</code> to retry failing tests that many times. Add <code>--reruns-delay=SECONDS</code> to wait that many seconds between retries. Example:</p>
 
 ```bash
 pytest --reruns=1 --reruns-delay=1
@@ -256,21 +256,27 @@ pytest --reruns=1 --reruns-delay=1
 
 <h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> Debugging tests:</h3>
 
-You can use the following calls in your scripts to help you debug issues:
+🔵 You can use the following calls in your scripts to help you debug issues:
 
 ```python
 import time; time.sleep(5)  # Makes the test wait and do nothing for 5 seconds.
-import pdb; pdb.set_trace()  # Enter debugging mode. n = next, c = continue, s = step.
-import pytest; pytest.set_trace()  # Enter debugging mode. n = next, c = continue, s = step.
+import pdb; pdb.set_trace()  # Debug Mode. n: next, c: continue, s: step, u: up, d: down.
+import pytest; pytest.set_trace()  # Debug Mode. n: next, c: continue, s: step, u: up, d: down.
 ```
 
-To pause an active test that throws an exception or error, add ``--pdb -s``:
+🔵 To pause an active test that throws an exception or error, (*and keep the browser window open while **Debug Mode** begins in the console*), add **``--pdb``** as a ``pytest`` option:
 
 ```bash
-pytest my_first_test.py --pdb -s
+pytest test_fail.py --pdb
 ```
 
-The code above will leave your browser window open in case there's a failure. (pdb commands: 'c', 's', 'n' => continue, step, next).
+🔵 To start tests in Debug Mode, add **``--trace``** as a ``pytest`` option:
+
+```bash
+pytest test_coffee_cart.py --trace
+```
+
+(**``pdb``** commands: ``n``, ``c``, ``s``, ``u``, ``d`` => ``next``, ``continue``, ``step``, ``up``, ``down``).
 
 <h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> Combinations of options:</h3>
 
