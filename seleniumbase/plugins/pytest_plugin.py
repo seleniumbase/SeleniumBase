@@ -1972,7 +1972,10 @@ def pytest_terminal_summary(terminalreporter):
 def _perform_pytest_unconfigure_():
     from seleniumbase.core import proxy_helper
 
-    if not sb_config.multi_proxy:
+    if (
+        (hasattr(sb_config, "multi_proxy") and not sb_config.multi_proxy)
+        or not hasattr(sb_config, "multi_proxy")
+    ):
         proxy_helper.remove_proxy_zip_if_present()
     if hasattr(sb_config, "reuse_session") and sb_config.reuse_session:
         # Close the shared browser session

@@ -9,7 +9,7 @@
 
 <h1>SeleniumBase</h1>
 
-<h3 align="center">Python-powered web automation and testing — with advanced tools.</h3>
+<h3 align="center">Automate & test web apps on any platform, with Python.</h3>
 
 <h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.github.io/cdn/gif/coffee_pdbp.gif" alt="SeleniumBase test with the pdbp debugger" title="SeleniumBase test with the pdbp debugger" /></a></h3>
 
@@ -57,7 +57,42 @@
 
 --------
 
+<blockquote>
+<p dir="auto"><strong>Jump to:</strong></p>
+<ul dir="auto">
+<li><a href="#multiple_examples"      ><strong>Multiple Examples</strong></a></li>
+<li><a href="#python_installation"    ><strong>Set up Python & Git</strong></a></li>
+<li><a href="#install_seleniumbase"   ><strong>Install SeleniumBase</strong></a></li>
+<li><a href="#basic_example_and_usage"><strong>Basic Example & Usage</strong></a></li>
+<li><a href="#common_methods"         ><strong>Common Test Methods</strong></a></li>
+<li><a href="#fun_facts"              ><strong>Fun Facts / Learn More</strong></a></li>
+<li><a href="#demo_mode_and_debugging"><strong>Demo Mode and Debugging</strong></a></li>
+<li><a href="#pytest_options"         ><strong>Useful pytest Options</strong></a></li>
+<li><a href="#new_pytest_options"     ><strong>SeleniumBase Options</strong></a></li>
+<li><a href="#directory_configuration"><strong>Directory Configuration</strong></a></li>
+<li><a href="#seleniumbase_dashboard" ><strong>SeleniumBase Dashboard</strong></a></li>
+<li><a href="#creating_visual_reports"><strong>Generating Test Reports</strong></a></li>
+</ul>
+</blockquote>
+
+--------
+
 <a id="multiple_examples"></a>
+<p align="left">Run <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py" target="_blank">test_demo_site.py</a> from <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples" target="_blank">examples/</a> (<code>--chrome</code> is the default browser):</p>
+
+```bash
+cd examples/
+pytest test_demo_site.py
+```
+
+<p align="left"><a href="https://seleniumbase.io/demo_page" target="_blank"><img src="https://seleniumbase.github.io/cdn/gif/demo_page_5.gif" width="480" alt="SeleniumBase Example" title="SeleniumBase Example" /></a></p>
+
+> Type text, click, select, toggle, drag-and-drop, etc. Even handle iframes.
+
+--------
+
+Looking for overpriced coffee? Try running this test:
+
 <p align="left"><b>Example:</b> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_coffee_cart.py" target="_blank">test_coffee_cart.py</a> from <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples" target="_blank">./examples/</a></p>
 
 ```bash
@@ -97,7 +132,7 @@ class CoffeeCartTest(BaseCase):
 <summary> ▶️ How is <b>SeleniumBase</b> different from raw Selenium? (<b>click to expand</b>)</summary>
 <div>
 
-<p>💡 SeleniumBase is a Python framework for browser automation and testing. SeleniumBase uses <a href="https://www.w3.org/TR/webdriver2/#endpoints" target="_blank">Selenium/WebDriver</a> APIs, and incorporates test-runners such as <code>pytest</code>, <code>nosetests</code>, and <code>behave</code> to provide organized structure, test discovery, test execution, test state (<i>eg. passed, failed, or skipped</i>), and command-line options for changing default settings (<i>such as choosing the browser to use</i>). With raw Selenium, you would need to set up your own options-parser for configuring tests from the command-line.</p>
+<p>💡 SeleniumBase is a Python framework for browser automation and testing. SeleniumBase uses <a href="https://www.w3.org/TR/webdriver2/#endpoints" target="_blank">Selenium/WebDriver</a> APIs, and incorporates test-runners such as <code>pytest</code>, <code>pynose</code>, and <code>behave</code> to provide organized structure, test discovery, test execution, test state (<i>eg. passed, failed, or skipped</i>), and command-line options for changing default settings (<i>such as choosing the browser to use</i>). With raw Selenium, you would need to set up your own options-parser for configuring tests from the command-line.</p>
 
 <p>💡 With raw Selenium, commands that use selectors need to specify the type of selector (eg. <code>"css selector", "button#myButton"</code>). With SeleniumBase, there's auto-detection between CSS Selectors and XPath, which means you don't need to specify the type of selector in your commands (<i>but optionally you could</i>).</p>
 
@@ -132,7 +167,7 @@ With raw Selenium, that requires more code:<br />
 <summary> ▶️ Learn about different ways of writing tests (<b>click to expand</b>)</summary>
 <div>
 
-<p align="left">📘📝 An example test with the <b>BaseCase</b> class. Runs with <b><a href="https://docs.pytest.org/en/latest/how-to/usage.html">pytest</a></b> or <b>nosetests</b>. (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">Learn more</a>)</p>
+<p align="left">📘📝 An example test with the <b>BaseCase</b> class. Runs with <b><a href="https://docs.pytest.org/en/latest/how-to/usage.html">pytest</a></b> or <b>pynose</b>. (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">Learn more</a>)</p>
 
 ```python
 from seleniumbase import BaseCase
@@ -205,6 +240,8 @@ Feature: SeleniumBase scenarios for the RealWorld App
 
 <a id="python_installation"></a>
 <h2><img src="https://seleniumbase.github.io/cdn/img/python_logo.png" title="SeleniumBase" width="42" /> Set up Python & Git:</h2>
+
+<a href="https://www.python.org/downloads/"><img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=FACE42" title="Supported Python Versions" /></a>
 
 🔵 Add <b><a href="https://www.python.org/downloads/">Python</a></b> and <b><a href="https://git-scm.com/">Git</a></b> to your System PATH.
 
@@ -311,6 +348,8 @@ pytest my_first_test.py
 
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py"><img src="https://seleniumbase.github.io/cdn/gif/swag_labs_4.gif" alt="SeleniumBase Test" title="SeleniumBase Test" width="480" /></a>
 
+> SeleniumBase easily handles login, shopping, and checkout.
+
 <p align="left"><b>Here's the code for <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py">my_first_test.py</a>:</b></p>
 
 ```python
@@ -402,12 +441,21 @@ self.assert_no_js_errors()  # Verify there are no JS errors.
 self.type("input", "dogs\n")
 ```
 
-SeleniumBase tests can be run with <code>pytest</code> or <code>nosetests</code>. (There's also a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md">behave BDD</a> format.)
+Most SeleniumBase scripts can be run with <code>pytest</code>, <code>pynose</code>, or pure <code>python</code>. Not all test runners can run all test formats. For example, tests that use the ``sb`` pytest fixture can only be run with ``pytest``. (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md">Syntax Formats</a>) There's also a <a href="https://behave.readthedocs.io/en/stable/gherkin.html" target="_blank">Gherkin</a> test format that runs with <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md">behave</a>.
 
 ```bash
-pytest my_first_test.py --chrome
+pytest test_sb_fixture.py
+pytest coffee_cart_tests.py --rs
+pytest test_suite.py --rs --html=report.html --dashboard
 
-nosetests test_suite.py --firefox
+pynose basic_test.py --mobile
+pynose test_suite.py --headless --report --show-report
+
+python raw_sb.py
+python raw_test_scripts.py
+
+behave realworld.feature
+behave calculator.feature -D rs -D dashboard
 ```
 
 <p>✅ <code>pytest</code> includes automatic test discovery. If you don't specify a specific file or folder to run, <code>pytest</code> will automatically search through all subdirectories for tests to run based on the following criteria:</p>
@@ -423,12 +471,12 @@ With a SeleniumBase [pytest.ini](https://github.com/seleniumbase/SeleniumBase/bl
 pytest --collect-only -q
 ```
 
-<p>✅ You can be more specific when calling <code>pytest</code> on a file:</p>
+<p>✅ You can be more specific when calling <code>pytest</code> or <code>pynose</code> on a file:</p>
 
 ```bash
 pytest [FILE_NAME.py]::[CLASS_NAME]::[METHOD_NAME]
 
-nosetests [FILE_NAME.py]:[CLASS_NAME].[METHOD_NAME]
+pynose [FILE_NAME.py]:[CLASS_NAME].[METHOD_NAME]
 ```
 
 <p>✅ No More Flaky Tests! SeleniumBase methods automatically wait for page elements to finish loading before interacting with them (<i>up to a timeout limit</i>). This means <b>you no longer need random <span><code>time.sleep()</code></span> statements</b> in your scripts.</p>
@@ -449,6 +497,7 @@ nosetests [FILE_NAME.py]:[CLASS_NAME].[METHOD_NAME]
 <a id="detailed_instructions"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" /> Detailed Instructions:</h2>
 
+<a id="demo_mode_and_debugging"></a>
 <a id="seleniumbase_demo_mode"></a>
 🔵 <b>Demo Mode</b> helps you see what a test is doing. If a test is moving too fast for your eyes, run it in <b>Demo Mode</b>, which pauses the browser briefly between actions, highlights page elements being acted on, and displays assertions:
 
@@ -605,10 +654,10 @@ Here's the command-line option to add to tests: (See [examples/custom_settings.p
 🔵 To pass additional data from the command-line to tests, add ``--data="ANY STRING"``.
 Inside your tests, you can use ``self.data`` to access that.
 
+<a id="directory_configuration"></a>
+<h3><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" /> Directory Configuration:</h3>
 
-<h3><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" /> Test Directory Configuration:</h3>
-
-🔵 When running tests with **pytest**, you'll want a copy of **[pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini)** in your root folders. When running tests with **nosetests**, you'll want a copy of **[setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/setup.cfg)** in your root folders. These files specify default configuration details for tests. Folders should also include a blank ``__init__.py`` file, which allows your tests to import files from that folder.
+🔵 When running tests with **pytest**, you'll want a copy of **[pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini)** in your root folders. When running tests with **pynose**, you'll want a copy of **[setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/setup.cfg)** in your root folders. These files specify default configuration details for tests. Folders should also include a blank ``__init__.py`` file, which allows your tests to import files from that folder.
 
 🔵 ``sbase mkdir DIR`` creates a folder with config files and sample tests:
 
@@ -658,7 +707,7 @@ ui_tests/
 └── setup.cfg
 ```
 
-Of those files, the ``pytest.ini`` config file is the most important, followed by a blank ``__init__.py`` file. There's also a ``setup.cfg`` file (only needed for nosetests). Finally, the ``requirements.txt`` file can be used to help you install seleniumbase into your environments (if it's not already installed).
+Of those files, the ``pytest.ini`` config file is the most important, followed by a blank ``__init__.py`` file. There's also a ``setup.cfg`` file (for pynose). Finally, the ``requirements.txt`` file can be used to help you install seleniumbase into your environments (if it's not already installed).
 
 --------
 
@@ -688,7 +737,8 @@ pytest test_fail.py
 
 --------
 
-<h3><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" /> The SeleniumBase Dashboard:</h3>
+<a id="seleniumbase_dashboard"></a>
+<h3><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" /> SeleniumBase Dashboard:</h3>
 
 🔵 The ``--dashboard`` option for pytest generates a SeleniumBase Dashboard located at ``dashboard.html``, which updates automatically as tests run and produce results. Example:
 
@@ -747,17 +797,17 @@ You can also use ``--junit-xml=report.xml`` to get an xml report instead. Jenkin
 pytest test_suite.py --junit-xml=report.xml
 ```
 
-<h4><b>Nosetest Reports:</b></h4>
+<h4><b>pynose Reports:</b></h4>
 
 The ``--report`` option gives you a fancy report after your test suite completes.
 
 ```bash
-nosetests test_suite.py --report
+pynose test_suite.py --report
 ```
 
-<img src="https://seleniumbase.github.io/cdn/img/nose_report.png" alt="Example Nosetest Report" title="Example Nosetest Report" width="320" />
+<img src="https://seleniumbase.github.io/cdn/img/nose_report.png" alt="Example pynose Report" title="Example pynose Report" width="320" />
 
-(NOTE: You can add ``--show-report`` to immediately display Nosetest reports after the test suite completes. Only use ``--show-report`` when running tests locally because it pauses the test run.)
+(NOTE: You can add ``--show-report`` to immediately display pynose reports after the test suite completes. Only use ``--show-report`` when running tests locally because it pauses the test run.)
 
 <h4><b>Behave Dashboard & Reports:</b></h4>
 
@@ -1209,6 +1259,7 @@ pytest --reruns=1 --reruns-delay=1
 <span><a href="https://www.youtube.com/playlist?list=PLp9uKicxkBc5UIlGi2BuE3aWC7JyXpD3m"><img src="https://seleniumbase.github.io/cdn/img/youtube.png" title="SeleniumBase Playlist on YouTube" alt="SeleniumBase Playlist on YouTube" width="54" /></a></span>
 <span><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.github.io/img/social/share_github.svg" title="SeleniumBase on GitHub" alt="SeleniumBase on GitHub" width="50" /></a></span>
 <span><a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://seleniumbase.github.io/img/social/share_gitter.svg" title="SeleniumBase on Gitter" alt="SeleniumBase on Gitter" width="38" /></a></span>
+<span><a href="https://twitter.com/seleniumbase" target="_blank"><img src="https://seleniumbase.io/img/social/share_twitter.svg" title="SeleniumBase on Twitter" alt="SeleniumBase on Twitter" width="50" /></a></span>
 </div></p>
 
 --------

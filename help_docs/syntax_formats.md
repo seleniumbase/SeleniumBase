@@ -44,7 +44,7 @@
 
 In this format, (which is used by most of the tests in the <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples">SeleniumBase examples folder</a>), <code>BaseCase</code> is imported at the top of a Python file, followed by a Python class inheriting <code>BaseCase</code>. Then, any test method defined in that class automatically gains access to SeleniumBase methods, including the <code>setUp()</code> and <code>tearDown()</code> methods that are automatically called for opening and closing web browsers at the start and end of tests.
 
-To run a test of this format, use **``pytest``** or ``nosetests``. Adding ``BaseCase.main(__name__, __file__)`` enables ``python`` to run ``pytest`` on your file indirectly. Here's an example:
+To run a test of this format, use **``pytest``** or ``pynose``. Adding ``BaseCase.main(__name__, __file__)`` enables ``python`` to run ``pytest`` on your file indirectly. Here's an example:
 
 ```python
 from seleniumbase import BaseCase
@@ -870,7 +870,7 @@ with DriverContext() as driver:
 <a id="sb_sf_23"></a>
 <h3><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 23. The driver manager (via direct import)</h3>
 
-Another way of running Selenium tests with pure ``python`` (as opposed to using ``pytest`` or ``nosetests``) is by using this format, which bypasses [BaseCase](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py) methods while still giving you a flexible driver with a manager. SeleniumBase includes helper files such as [page_actions.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/page_actions.py), which may help you get around some of the limitations of bypassing ``BaseCase``. Here's an example:
+Another way of running Selenium tests with pure ``python`` (as opposed to using ``pytest`` or ``pynose``) is by using this format, which bypasses [BaseCase](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py) methods while still giving you a flexible driver with a manager. SeleniumBase includes helper files such as [page_actions.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/page_actions.py), which may help you get around some of the limitations of bypassing ``BaseCase``. Here's an example:
 
 ```python
 """This script can be run with pure "python". (pytest not needed)."""

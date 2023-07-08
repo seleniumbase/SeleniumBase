@@ -90,17 +90,17 @@ pytest test_suite.py --junit-xml=report.xml
 
 --------
 
-<h3><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32" /> Nosetest Reports:</h3>
+<h3><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32" /> pynose Test Reports:</h3>
 
-The ``nosetests`` ``--report`` option gives you a fancy report after your tests complete.
+The ``pynose`` ``--report`` option gives you a fancy report after your tests complete.
 
 ```bash
-nosetests test_suite.py --report
+pynose test_suite.py --report
 ```
 
-<img src="https://seleniumbase.github.io/cdn/img/nose_report.png" alt="Example Nosetest Report" title="Example Nosetest Report" width="320" />
+<img src="https://seleniumbase.github.io/cdn/img/nose_report.png" alt="Example pynose Test Report" title="Example pynose Test Report" width="320" />
 
-(NOTE: You can add ``--show-report`` to immediately display Nosetest reports after the test suite completes. Only use ``--show-report`` when running tests locally because it pauses the test run.)
+(NOTE: You can add ``--show-report`` to immediately display pynose reports after the test suite completes. Only use ``--show-report`` when running tests locally because it pauses the test run.)
 
 --------
 
