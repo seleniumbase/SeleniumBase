@@ -193,28 +193,28 @@ sbase gui
 
 --------
 
-<b>SeleniumBase tests can also be run with ``nosetests``:</b>
+<b>SeleniumBase tests can also be run with ``pynose``:</b>
 
-Run an example test with nosetests:
+Run an example test with pynose:
 
 ```bash
-nosetests my_first_test.py
+pynose my_first_test.py
 ```
 
 --------
 
-Run an example test suite and generate a nosetest report:
+Run an example test suite and generate a pynose test report:
 
 ```bash
-nosetests test_suite.py --report --show-report
+pynose test_suite.py --report --show-report
 ```
 
 --------
 
-Run an example test using a nosetest configuration file:
+Run an example test using a pynose configuration file:
 
 ```bash
-nosetests my_first_test.py --config=example_config.cfg
+pynose my_first_test.py --config=example_config.cfg
 ```
 
 --------
