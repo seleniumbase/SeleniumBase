@@ -324,13 +324,13 @@ COMMANDS:
     Use "pytest" for running tests.
 ```
 
-🔵 **Downloading webdrivers:**
+<h3>🔵 Downloading webdrivers:</h3>
 
 ✅ SeleniumBase automatically downloads webdrivers as needed, such as ``chromedriver``.
 
 <div></div>
 <details>
-<summary> ▶️ Here's output from a download. (<b>click to expand</b>)</summary>
+<summary> ▶️ Here's output from a chromedriver download. (<b>click to expand</b>)</summary>
 
 ```bash
 *** chromedriver version for download = 114.0.5735.90 (Latest)
@@ -951,7 +951,7 @@ pytest [YOUR_TEST_FILE.py] --with-db-reporting --with-s3-logging
 <a id="detailed_method_specifications"></a>
 <h3><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" /> Detailed Method Specifications and Examples:</h3>
 
-<h4>🔵 Navigating to a web page: (and related commands)</h4>
+🔵 **Navigating to a web page: (and related commands)**
 
 ```python
 self.open("https://xkcd.com/378/")  # This method opens the specified page.
@@ -976,7 +976,7 @@ head_close_tag = source.find('</head>', head_open_tag)
 everything_inside_head = source[head_open_tag+len('<head>'):head_close_tag]
 ```
 
-🔵 Clicking:
+🔵 **Clicking:**
 
 To click an element on the page:
 
@@ -986,7 +986,7 @@ self.click("div#my_id")
 
 **ProTip™:** In most web browsers, you can right-click on a page and select ``Inspect Element`` to see the CSS selector details that you'll need to create your own scripts.
 
-🔵 Typing Text:
+🔵 **Typing Text:**
 
 <code>self.type(selector, text)</code>  # updates the text from the specified element with the specified value. An exception is raised if the element is missing or if the text field is not editable. Example:
 
@@ -996,19 +996,19 @@ self.type("input#id_value", "2012")
 
 You can also use <code>self.add_text()</code> or the <a href="https://www.selenium.dev/documentation/webdriver/" target="_blank">WebDriver</a> <code>.send_keys()</code> command, but those won't clear the text box first if there's already text inside.
 
-🔵 Getting the text from an element on a page:
+🔵 **Getting the text from an element on a page:**
 
 ```python
 text = self.get_text("header h2")
 ```
 
-🔵 Getting the attribute value from an element on a page:
+🔵 **Getting the attribute value from an element on a page:**
 
 ```python
 attribute = self.get_attribute("#comic img", "title")
 ```
 
-🔵 Asserting existence of an element on a page within some number of seconds:
+🔵 **Asserting existence of an element on a page within some number of seconds:**
 
 ```python
 self.wait_for_element_present("div.my_class", timeout=10)
@@ -1016,7 +1016,7 @@ self.wait_for_element_present("div.my_class", timeout=10)
 
 (NOTE: You can also use: ``self.assert_element_present(ELEMENT)``)
 
-🔵 Asserting visibility of an element on a page within some number of seconds:
+🔵 **Asserting visibility of an element on a page within some number of seconds:**
 
 ```python
 self.wait_for_element_visible("a.my_class", timeout=5)
@@ -1042,7 +1042,7 @@ You can also use ``*=`` to search for any partial value in a CSS selector as sho
 self.click('a[name*="partial_name"]')
 ```
 
-🔵 Asserting visibility of text inside an element on a page within some number of seconds:
+🔵 **Asserting visibility of text inside an element on a page within some number of seconds:**
 
 ```python
 self.assert_text("Make it so!", "div#trek div.picard div.quotes")
@@ -1051,7 +1051,7 @@ self.assert_text("Tea. Earl Grey. Hot.", "div#trek div.picard div.quotes", timeo
 
 (NOTE: ``self.find_text(TEXT, ELEMENT)`` and ``self.wait_for_text(TEXT, ELEMENT)`` also do this. For backwards compatibility, older method names were kept, but the default timeout may be different.)
 
-🔵 Asserting Anything:
+🔵 **Asserting Anything:**
 
 ```python
 self.assert_true(var1 == var2)
@@ -1061,7 +1061,7 @@ self.assert_false(var1 == var2)
 self.assert_equal(var1, var2)
 ```
 
-🔵 Useful Conditional Statements: (with creative examples)
+🔵 **Useful Conditional Statements: (with creative examples)**
 
 ❓ ``is_element_visible(selector):``  (visible on the page)
 
