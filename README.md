@@ -66,7 +66,7 @@
 <li><a href="#basic_example_and_usage"><strong>Basic Example & Usage</strong></a></li>
 <li><a href="#common_methods"         ><strong>Common Test Methods</strong></a></li>
 <li><a href="#fun_facts"              ><strong>Fun Facts / Learn More</strong></a></li>
-<li><a href="#demo_mode_and_debugging"><strong>Demo Mode and Debugging</strong></a></li>
+<li><a href="#demo_mode_and_debugging"><strong>Demo / Debug Modes</strong></a></li>
 <li><a href="#pytest_options"         ><strong>Useful pytest Options</strong></a></li>
 <li><a href="#new_pytest_options"     ><strong>SeleniumBase Options</strong></a></li>
 <li><a href="#directory_configuration"><strong>Directory Configuration</strong></a></li>
@@ -325,7 +325,7 @@ COMMANDS:
 ```
 
 
-<h3><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" /> Downloading webdrivers:</h3>
+<h3>🔵 Downloading webdrivers:</h3>
 
 ✅ SeleniumBase automatically downloads webdrivers as needed, such as ``chromedriver``.
 
@@ -333,7 +333,7 @@ COMMANDS:
 
 
 <a id="basic_example_and_usage"></a>
-<h3><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" /> Basic Example & Usage:</h3>
+<h2><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" /> Basic Example & Usage:</h2>
 
 🔵 If you've cloned SeleniumBase, you can run tests from the [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder.
 
@@ -388,7 +388,7 @@ class MyTestClass(BaseCase):
 
 
 <a id="common_methods"></a>
-<h3><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" /> Here are some common SeleniumBase methods that you might find in tests:</h3>
+<h3><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" /> Here are some common SeleniumBase methods:</h3>
 
 ```python
 self.open(url)  # Navigate the browser window to the URL.
@@ -498,7 +498,6 @@ pynose [FILE_NAME.py]:[CLASS_NAME].[METHOD_NAME]
 <h2><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" /> Detailed Instructions:</h2>
 
 <a id="demo_mode_and_debugging"></a>
-<a id="seleniumbase_demo_mode"></a>
 🔵 <b>Demo Mode</b> helps you see what a test is doing. If a test is moving too fast for your eyes, run it in <b>Demo Mode</b>, which pauses the browser briefly between actions, highlights page elements being acted on, and displays assertions:
 
 ```bash
@@ -509,17 +508,23 @@ pytest my_first_test.py --demo
 
 ```python
 import time; time.sleep(5)  # Makes the test wait and do nothing for 5 seconds.
-import pdb; pdb.set_trace()  # Enter debugging mode. n = next, c = continue, s = step.
-import pytest; pytest.set_trace()  # Enter debugging mode. n = next, c = continue, s = step.
+import pdb; pdb.set_trace()  # Debug Mode. n: next, c: continue, s: step, u: up, d: down.
+import pytest; pytest.set_trace()  # Debug Mode. n: next, c: continue, s: step, u: up, d: down.
 ```
 
 🔵 To pause an active test that throws an exception or error, (*and keep the browser window open while **Debug Mode** begins in the console*), add **``--pdb``** as a ``pytest`` option:
 
 ```bash
-pytest my_first_test.py --pdb
+pytest test_fail.py --pdb
 ```
 
-(**``pdb``** console commands: ``n``, ``c``, ``s`` => ``next``, ``continue``, ``step``).
+🔵 To start tests in Debug Mode, add **``--trace``** as a ``pytest`` option:
+
+```bash
+pytest test_coffee_cart.py --trace
+```
+
+(**``pdb``** commands: ``n``, ``c``, ``s``, ``u``, ``d`` => ``next``, ``continue``, ``step``, ``up``, ``down``).
 
 <a id="pytest_options"></a>
 🔵 Here are some useful command-line options that come with <code>pytest</code>:
@@ -655,7 +660,7 @@ Here's the command-line option to add to tests: (See [examples/custom_settings.p
 Inside your tests, you can use ``self.data`` to access that.
 
 <a id="directory_configuration"></a>
-<h3><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" /> Directory Configuration:</h3>
+<h2><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" /> Directory Configuration:</h2>
 
 🔵 When running tests with **pytest**, you'll want a copy of **[pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini)** in your root folders. When running tests with **pynose**, you'll want a copy of **[setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/setup.cfg)** in your root folders. These files specify default configuration details for tests. Folders should also include a blank ``__init__.py`` file, which allows your tests to import files from that folder.
 
@@ -738,7 +743,7 @@ pytest test_fail.py
 --------
 
 <a id="seleniumbase_dashboard"></a>
-<h3><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" /> SeleniumBase Dashboard:</h3>
+<h2><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" /> SeleniumBase Dashboard:</h2>
 
 🔵 The ``--dashboard`` option for pytest generates a SeleniumBase Dashboard located at ``dashboard.html``, which updates automatically as tests run and produce results. Example:
 
@@ -767,11 +772,11 @@ pytest test_suite.py --dashboard --rs --headless
 --------
 
 <a id="creating_visual_reports"></a>
-<h3><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" /> Generating Test Reports:</h3>
+<h2><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" /> Generating Test Reports:</h2>
 
-<h4><b>Pytest Reports:</b></h4>
+<h3>🔵 Pytest Reports:</h3>
 
-🔵 Using ``--html=report.html`` gives you a fancy report of the name specified after your test suite completes.
+✅ Using ``--html=report.html`` gives you a fancy report of the name specified after your test suite completes.
 
 ```bash
 pytest test_suite.py --html=report.html
@@ -779,9 +784,9 @@ pytest test_suite.py --html=report.html
 
 <img src="https://seleniumbase.github.io/cdn/img/html_report.png" alt="Example Pytest Report" title="Example Pytest Report" width="520" />
 
-🔵 When combining pytest html reports with SeleniumBase Dashboard usage, the pie chart from the Dashboard will get added to the html report. Additionally, if you set the html report URL to be the same as the Dashboard URL when also using the dashboard, (example: ``--dashboard --html=dashboard.html``), then the Dashboard will become an advanced html report when all the tests complete.
+✅ When combining pytest html reports with SeleniumBase Dashboard usage, the pie chart from the Dashboard will get added to the html report. Additionally, if you set the html report URL to be the same as the Dashboard URL when also using the dashboard, (example: ``--dashboard --html=dashboard.html``), then the Dashboard will become an advanced html report when all the tests complete.
 
-🔵 Here's an example of an upgraded html report:
+✅ Here's an example of an upgraded html report:
 
 ```bash
 pytest test_suite.py --dashboard --html=report.html
@@ -797,7 +802,7 @@ You can also use ``--junit-xml=report.xml`` to get an xml report instead. Jenkin
 pytest test_suite.py --junit-xml=report.xml
 ```
 
-<h4><b>pynose Reports:</b></h4>
+<h3>🔵 pynose Reports:</h3>
 
 The ``--report`` option gives you a fancy report after your test suite completes.
 
@@ -809,7 +814,7 @@ pynose test_suite.py --report
 
 (NOTE: You can add ``--show-report`` to immediately display pynose reports after the test suite completes. Only use ``--show-report`` when running tests locally because it pauses the test run.)
 
-<h4><b>Behave Dashboard & Reports:</b></h4>
+<h3>🔵 Behave Dashboard & Reports:</h4>
 
 (The [behave_bdd/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/behave_bdd) folder can be found in the [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder.)
 
@@ -825,7 +830,7 @@ You can also use ``--junit`` to get ``.xml`` reports for each Behave feature. Je
 behave behave_bdd/features/ --junit -D rs -D headless
 ```
 
-<h4><b>Allure Reports:</b></h4>
+<h3>🔵 Allure Reports:</h3>
 
 See: [https://docs.qameta.io/allure/](https://docs.qameta.io/allure/#_pytest)
 
@@ -841,6 +846,7 @@ Now your tests can create Allure results files, which can be processed by Allure
 pytest test_suite.py --alluredir=allure_results
 ```
 
+--------
 
 <h3><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" /> Using a Proxy Server:</h3>
 
@@ -923,7 +929,7 @@ pytest [YOUR_TEST_FILE.py] --with-db-reporting --with-s3-logging
 <a id="detailed_method_specifications"></a>
 <h3><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" /> Detailed Method Specifications and Examples:</h3>
 
-🔵 Navigating to a web page: (and related commands)
+<h4>🔵 Navigating to a web page: (and related commands)</h4>
 
 ```python
 self.open("https://xkcd.com/378/")  # This method opens the specified page.
@@ -1106,7 +1112,7 @@ if self.is_link_text_visible("Stop! Hammer time!"):
     self.click_link("Stop! Hammer time!")
 ```
 
-🔵 Switching Tabs:
+<h3>🔵 Switching Tabs:</h3>
 
 <p>If your test opens up a new tab/window, you can switch to it. (SeleniumBase automatically switches to new tabs that don't open to <code>about:blank</code> URLs.)</p>
 
@@ -1123,7 +1129,7 @@ self.switch_to_frame('ContentManagerTextBody_ifr')
 self.switch_to_default_content()  # Exit the iframe when you're done
 ```
 
-🔵 Executing Custom jQuery Scripts:
+<h3>🔵 Executing Custom jQuery Scripts:</h3>
 
 <p>jQuery is a powerful JavaScript library that allows you to perform advanced actions in a web browser.
 If the web page you're on already has jQuery loaded, you can start executing jQuery scripts immediately.
@@ -1167,7 +1173,11 @@ self.execute_script("return jQuery('textarea')[2].value")  # Returns the css "va
 
 </details>
 
-🔵 Some websites have a restrictive [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) to prevent users from loading jQuery and other external libraries onto their websites. If you need to use jQuery or another JS library on such a website, add ``--disable-csp`` on the command-line.
+<h3>🔵 Handling a restrictive CSP:</h3>
+
+🛑 Some websites have a restrictive [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) to prevent users from loading jQuery and other external libraries onto their websites. If you need to use jQuery or another JS library on such a website, add ``--disable-csp`` as a ``pytest`` command-line option.
+
+<h3>🔵 More JavaScript fun:</h3>
 
 <div></div>
 <details>
@@ -1186,7 +1196,7 @@ self.click("a.analytics")  # Clicks the generated button
 
 </details>
 
-🔵 Using deferred asserts:
+<h3>🔵 Using deferred asserts:</h3>
 
 <p>Let's say you want to verify multiple different elements on a web page in a single test, but you don't want the test to fail until you verified several elements at once so that you don't have to rerun the test to find more missing elements on the same page. That's where deferred asserts come in. Here's the example:</p>
 
@@ -1195,7 +1205,6 @@ from seleniumbase import BaseCase
 BaseCase.main(__name__, __file__)
 
 class MyTestClass(BaseCase):
-
     def test_deferred_asserts(self):
         self.open('https://xkcd.com/993/')
         self.wait_for_element('#comic')
@@ -1211,7 +1220,7 @@ class MyTestClass(BaseCase):
 <code>deferred_assert_element()</code> and <code>deferred_assert_text()</code> will save any exceptions that would be raised.
 To flush out all the failed deferred asserts into a single exception, make sure to call <code>self.process_deferred_asserts()</code> at the end of your test method. If your test hits multiple pages, you can call <code>self.process_deferred_asserts()</code> before navigating to a new page so that the screenshot from your log files matches the URL where the deferred asserts were made.
 
-🔵 Accessing Raw <a href="https://www.selenium.dev/documentation/webdriver/" target="_blank">WebDriver</a>:
+<h3>🔵 Accessing Raw <a href="https://www.selenium.dev/documentation/webdriver/" target="_blank">WebDriver</a>:</h3>
 
 <p>If you need access to any commands that come with standard <a href="https://www.selenium.dev/documentation/webdriver/" target="_blank">WebDriver</a>, you can call them directly like this:</p>
 
@@ -1223,7 +1232,7 @@ self.driver.find_elements("partial link text", "GitHub")
 
 (In general, you'll want to use the SeleniumBase versions of methods when available.)
 
-🔵 Retrying failing tests automatically:
+<h3>🔵 How to retry failing tests automatically:</h3>
 
 <p>You can use <code>--reruns=NUM</code> to retry failing tests that many times. Use <code>--reruns-delay=SECONDS</code> to wait that many seconds between retries. Example:</p>
 
