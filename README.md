@@ -217,7 +217,7 @@ with SB() as sb:  # By default, browser="chrome" if not set.
     sb.assert_exact_text("You have been signed out!", "#top_message")
 ```
 
-<p align="left">📕📝 An example test with <b>behave-BDD</b> <a href="https://behave.readthedocs.io/en/stable/gherkin.html" target="_blank">Gherkin</a> structure. Runs with <b><code>behave</code></b>. (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md">Learn more</a>)</p>
+<p align="left">📕📝 An example test with <b>behave-BDD</b> <a href="https://behave.readthedocs.io/en/stable/gherkin.html#features" target="_blank">Gherkin</a> structure. Runs with <b><code>behave</code></b>. (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md">Learn more</a>)</p>
 
 ```gherkin
 Feature: SeleniumBase scenarios for the RealWorld App
@@ -252,7 +252,7 @@ Feature: SeleniumBase scenarios for the RealWorld App
 
 **You can install ``seleniumbase`` from [PyPI](https://pypi.org/project/seleniumbase/) or [GitHub](https://github.com/seleniumbase/SeleniumBase):**
 
-🔵 **Installing ``seleniumbase`` from PyPI:**
+🔵 **How to install ``seleniumbase`` from PyPI:**
 
 ```bash
 pip install seleniumbase
@@ -262,7 +262,7 @@ pip install seleniumbase
 * (Add ``--force-reinstall`` to upgrade indirect packages.)
 * (Use ``pip3`` if multiple versions of Python are present.)
 
-🔵 **Installing ``seleniumbase`` from a GitHub clone:**
+🔵 **How to install ``seleniumbase`` from a GitHub clone:**
 
 ```bash
 git clone https://github.com/seleniumbase/SeleniumBase.git
@@ -270,14 +270,14 @@ cd SeleniumBase/
 pip install -e .
 ```
 
-**To upgrade an existing install from a GitHub clone:**
+🔵 **How to upgrade an existing install from a GitHub clone:**
 
 ```bash
 git pull
 pip install -e .
 ```
 
-🔵 Type ``seleniumbase`` or ``sbase`` to verify that SeleniumBase was installed successfully:
+🔵 **Type ``seleniumbase`` or ``sbase`` to verify that SeleniumBase was installed successfully:**
 
 ```bash
    ______     __           _                  ____                
@@ -324,10 +324,32 @@ COMMANDS:
     Use "pytest" for running tests.
 ```
 
-
-<h3>🔵 Downloading webdrivers:</h3>
+🔵 **Downloading webdrivers:**
 
 ✅ SeleniumBase automatically downloads webdrivers as needed, such as ``chromedriver``.
+
+<div></div>
+<details>
+<summary> ▶️ Here's output from a download. (<b>click to expand</b>)</summary>
+
+```bash
+*** chromedriver version for download = 114.0.5735.90 (Latest)
+
+Downloading chromedriver_mac_arm64.zip from:
+https://chromedriver.storage.googleapis.com/114.0.5735.90/chromedriver_mac_arm64.zip ...
+Download Complete!
+
+Extracting ['chromedriver'] from chromedriver_mac_arm64.zip ...
+Unzip Complete!
+
+The file [chromedriver] was saved to:
+/Users/michael/github/SeleniumBase/seleniumbase/drivers/chromedriver
+
+Making [chromedriver 114.0.5735.90] executable ...
+[chromedriver 114.0.5735.90] is now ready for use!
+```
+
+</details>
 
 ✅ To manually download a webdriver, see [Console Scripts](https://seleniumbase.io/seleniumbase/console_scripts/ReadMe/) OR [Webdriver Installation](https://seleniumbase.io/help_docs/webdriver_installation/).
 
@@ -441,7 +463,7 @@ self.assert_no_js_errors()  # Verify there are no JS errors.
 self.type("input", "dogs\n")
 ```
 
-Most SeleniumBase scripts can be run with <code>pytest</code>, <code>pynose</code>, or pure <code>python</code>. Not all test runners can run all test formats. For example, tests that use the ``sb`` pytest fixture can only be run with ``pytest``. (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md">Syntax Formats</a>) There's also a <a href="https://behave.readthedocs.io/en/stable/gherkin.html" target="_blank">Gherkin</a> test format that runs with <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md">behave</a>.
+Most SeleniumBase scripts can be run with <code>pytest</code>, <code>pynose</code>, or pure <code>python</code>. Not all test runners can run all test formats. For example, tests that use the ``sb`` pytest fixture can only be run with ``pytest``. (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md">Syntax Formats</a>) There's also a <a href="https://behave.readthedocs.io/en/stable/gherkin.html#features" target="_blank">Gherkin</a> test format that runs with <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md">behave</a>.
 
 ```bash
 pytest test_sb_fixture.py
@@ -1120,16 +1142,27 @@ if self.is_link_text_visible("Stop! Hammer time!"):
 self.switch_to_window(1)  # This switches to the new tab (0 is the first one)
 ```
 
-🔵 <b>ProTip™:</b> iframes follow the same principle as new windows - you need to specify the iframe if you want to take action on something in there
+<h3>🔵 How to handle iframes:</h3>
+
+🔵 <b>ProTip™:</b> iframes follow the same principle as new windows: You must first switch to the iframe if you want to perform actions in there:
 
 ```python
-self.switch_to_frame('ContentManagerTextBody_ifr')
-# Now you can act inside the iframe
-# .... Do something cool (here)
-self.switch_to_default_content()  # Exit the iframe when you're done
+self.switch_to_frame("iframe")
+# ... Now perform actions inside the iframe
+self.switch_to_parent_frame()  # Exit the current iframe
 ```
 
-<h3>🔵 Executing Custom jQuery Scripts:</h3>
+To exit from multiple iframes, use ``self.switch_to_default_content()``. If inside a single iframe, this has the same effect as ``self.switch_to_parent_frame()``.
+
+🔵 You can also use a context manager to act inside iframes:
+
+```python
+with self.frame_switch("iframe"):
+    # ... Now perform actions while inside the code block
+# You have left the iframe!
+```
+
+<h3>🔵 How to execute custom jQuery scripts:</h3>
 
 <p>jQuery is a powerful JavaScript library that allows you to perform advanced actions in a web browser.
 If the web page you're on already has jQuery loaded, you can start executing jQuery scripts immediately.
@@ -1173,7 +1206,7 @@ self.execute_script("return jQuery('textarea')[2].value")  # Returns the css "va
 
 </details>
 
-<h3>🔵 Handling a restrictive CSP:</h3>
+<h3>🔵 How to handle a restrictive CSP:</h3>
 
 🛑 Some websites have a restrictive [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) to prevent users from loading jQuery and other external libraries onto their websites. If you need to use jQuery or another JS library on such a website, add ``--disable-csp`` as a ``pytest`` command-line option.
 
@@ -1196,7 +1229,7 @@ self.click("a.analytics")  # Clicks the generated button
 
 </details>
 
-<h3>🔵 Using deferred asserts:</h3>
+<h3>🔵 How to use deferred asserts:</h3>
 
 <p>Let's say you want to verify multiple different elements on a web page in a single test, but you don't want the test to fail until you verified several elements at once so that you don't have to rerun the test to find more missing elements on the same page. That's where deferred asserts come in. Here's the example:</p>
 
@@ -1220,7 +1253,7 @@ class MyTestClass(BaseCase):
 <code>deferred_assert_element()</code> and <code>deferred_assert_text()</code> will save any exceptions that would be raised.
 To flush out all the failed deferred asserts into a single exception, make sure to call <code>self.process_deferred_asserts()</code> at the end of your test method. If your test hits multiple pages, you can call <code>self.process_deferred_asserts()</code> before navigating to a new page so that the screenshot from your log files matches the URL where the deferred asserts were made.
 
-<h3>🔵 Accessing Raw <a href="https://www.selenium.dev/documentation/webdriver/" target="_blank">WebDriver</a>:</h3>
+<h3>🔵 How to access raw <a href="https://www.selenium.dev/documentation/webdriver/" target="_blank">WebDriver</a>:</h3>
 
 <p>If you need access to any commands that come with standard <a href="https://www.selenium.dev/documentation/webdriver/" target="_blank">WebDriver</a>, you can call them directly like this:</p>
 
@@ -1234,7 +1267,7 @@ self.driver.find_elements("partial link text", "GitHub")
 
 <h3>🔵 How to retry failing tests automatically:</h3>
 
-<p>You can use <code>--reruns=NUM</code> to retry failing tests that many times. Use <code>--reruns-delay=SECONDS</code> to wait that many seconds between retries. Example:</p>
+<p>You can use <code>pytest --reruns=NUM</code> to retry failing tests that many times. Add <code>--reruns-delay=SECONDS</code> to wait that many seconds between retries. Example:</p>
 
 ```bash
 pytest --reruns=1 --reruns-delay=1
