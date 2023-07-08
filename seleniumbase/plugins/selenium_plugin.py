@@ -1225,7 +1225,10 @@ class SeleniumBrowser(Plugin):
 
     def finalize(self, result):
         """This runs after all tests have completed with nosetests."""
-        if not sb_config.multi_proxy:
+        if (
+            (hasattr(sb_config, "multi_proxy") and not sb_config.multi_proxy)
+            or not hasattr(sb_config, "multi_proxy")
+        ):
             proxy_helper.remove_proxy_zip_if_present()
 
     def afterTest(self, test):
