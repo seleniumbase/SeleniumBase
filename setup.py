@@ -280,6 +280,11 @@ setup(
         "pdfminer": [
             'pdfminer.six==20211012;python_version<"3.7"',
             'pdfminer.six==20221105;python_version>="3.7"',
+            'cryptography==36.0.2;python_version<"3.7"',
+            'cryptography==41.0.1;python_version>="3.7"',
+            "cffi==1.15.1",
+            "pycparser==2.21",
+
         ],
         # pip install -e .[pillow]
         "pillow": [
