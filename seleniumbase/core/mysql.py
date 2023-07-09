@@ -20,12 +20,13 @@ class DatabaseManager:
         )
         with pip_find_lock:
             try:
+                import cryptography  # noqa: F401
                 import pymysql
             except Exception:
                 if sys.version_info < (3, 7):
-                    shared_utils.pip_install("pymysql", version="1.0.2")
+                    shared_utils.pip_install("PyMySQL[rsa]", version="1.0.2")
                 else:
-                    shared_utils.pip_install("pymysql", version="1.1.0")
+                    shared_utils.pip_install("PyMySQL[rsa]", version="1.1.0")
                 import pymysql
         db_server = settings.DB_HOST
         db_port = settings.DB_PORT
