@@ -57,7 +57,7 @@ sortedcontainers==2.4.0
 fasteners==0.17.3;python_version<"3.7"
 fasteners==0.18;python_version>="3.7"
 execnet==1.9.0;python_version<"3.7"
-execnet==2.0.0;python_version>="3.7"
+execnet==2.0.2;python_version>="3.7"
 iniconfig==1.1.1;python_version<"3.7"
 iniconfig==2.0.0;python_version>="3.7"
 pluggy==1.0.0;python_version<"3.7"
