@@ -45,15 +45,23 @@ if sys.argv[-1] == "publish":
         os.system("rm -f dist/*.egg; rm -f dist/*.tar.gz; rm -f dist/*.whl")
         os.system("rm -rf build/bdist.*; rm -rf build/lib")
         print("\n*** Installing build: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'build>=0.10.0'")
+        os.system("python -m pip install --upgrade 'build'")
         print("\n*** Installing pkginfo: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'pkginfo>=1.9.6'")
+        os.system("python -m pip install --upgrade 'pkginfo'")
         print("\n*** Installing readme-renderer: *** (For PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'readme-renderer>=40.0'")
+        os.system("python -m pip install --upgrade 'readme-renderer'")
+        print("\n*** Installing jaraco.classes: *** (For PyPI uploads)\n")
+        os.system("python -m pip install --upgrade 'jaraco.classes'")
+        print("\n*** Installing more-itertools: *** (For PyPI uploads)\n")
+        os.system("python -m pip install --upgrade 'more-itertools'")
+        print("\n*** Installing zipp: *** (Required for PyPI uploads)\n")
+        os.system("python -m pip install --upgrade 'zipp'")
+        print("\n*** Installing importlib-metadata: *** (For PyPI uploads)\n")
+        os.system("python -m pip install --upgrade 'importlib-metadata'")
+        print("\n*** Installing keyring, requests-toolbelt: *** (For PyPI)\n")
+        os.system("python -m pip install --upgrade keyring requests-toolbelt")
         print("\n*** Installing twine: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'twine>=4.0.2'")
-        print("\n*** Installing tqdm: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade tqdm")
+        os.system("python -m pip install --upgrade 'twine'")
         print("\n*** Rebuilding distribution packages: ***\n")
         os.system("python -m build")  # Create new tar/wheel
         print("\n*** Publishing The Release to PyPI: ***\n")
@@ -130,17 +138,10 @@ setup(
         'packaging>=23.1;python_version>="3.7"',
         'setuptools>=59.6.0;python_version<"3.7"',
         'setuptools>=68.0.0;python_version>="3.7"',
-        'keyring>=23.4.1;python_version<"3.8"',
-        'keyring>=24.1.1;python_version>="3.8"',
-        'tomli>=1.2.3;python_version<"3.7"',
-        'tomli>=2.0.1;python_version>="3.7"',
-        'tqdm>=4.64.1;python_version<"3.7"',
-        'tqdm>=4.65.0;python_version>="3.7"',
         'wheel>=0.37.1;python_version<"3.7"',
         'wheel>=0.40.0;python_version>="3.7"',
         'attrs==22.1.0;python_version<"3.7"',
         'attrs>=23.1.0;python_version>="3.7"',
-        "PyYAML>=6.0",
         "certifi>=2023.5.7",
         'filelock>=3.4.1;python_version<"3.7"',
         'filelock>=3.12.2;python_version>="3.7"',
@@ -148,12 +149,6 @@ setup(
         'platformdirs>=3.8.1;python_version>="3.7"',
         'parse>=1.19.1',
         'parse-type>=0.6.2',
-        'pyparsing>=3.0.7;python_version<"3.7"',
-        'pyparsing>=3.1.0;python_version>="3.7"',
-        'zipp==3.6.0;python_version<"3.7"',
-        'zipp>=3.15.0;python_version>="3.7"',
-        'more-itertools==8.14.0;python_version<"3.7"',
-        'more-itertools>=9.1.0;python_version>="3.7"',
         "six==1.16.0",
         "idna==3.4",
         'chardet==4.0.0;python_version<"3.7"',
@@ -165,14 +160,12 @@ setup(
         'urllib3>=1.26.16,<2.1.0;python_version>="3.10"',
         'requests==2.27.1;python_version<"3.7"',
         'requests==2.31.0;python_version>="3.7"',
-        'requests-toolbelt==1.0.0',
         "pynose==1.4.6",
         'sniffio==1.3.0;python_version>="3.7"',
         'h11==0.14.0;python_version>="3.7"',
         'outcome==1.2.0;python_version>="3.7"',
         'trio==0.22.1;python_version>="3.7"',
         'trio-websocket==0.10.3;python_version>="3.7"',
-        'pyopenssl==23.2.0;python_version>="3.7"',
         'wsproto==1.2.0;python_version>="3.7"',
         'selenium==3.141.0;python_version<"3.7"',
         'selenium==4.10.0;python_version>="3.7"',
@@ -183,7 +176,7 @@ setup(
         'fasteners==0.17.3;python_version<"3.7"',
         'fasteners==0.18;python_version>="3.7"',
         'execnet==1.9.0;python_version<"3.7"',
-        'execnet==2.0.0;python_version>="3.7"',
+        'execnet==2.0.2;python_version>="3.7"',
         'iniconfig==1.1.1;python_version<"3.7"',
         'iniconfig==2.0.0;python_version>="3.7"',
         'pluggy==1.0.0;python_version<"3.7"',
@@ -207,8 +200,6 @@ setup(
         'soupsieve==2.3.2.post1;python_version<"3.7"',
         'soupsieve==2.4.1;python_version>="3.7"',
         "beautifulsoup4==4.12.2",
-        'cryptography==36.0.2;python_version<"3.7"',
-        'cryptography==41.0.1;python_version>="3.7"',
         'pygments==2.14.0;python_version<"3.7"',
         'pygments==2.15.1;python_version>="3.7"',
         'pyreadline3==3.4.1;platform_system=="Windows"',
@@ -219,10 +210,8 @@ setup(
         'exceptiongroup==1.1.2;python_version>="3.7"',
         'future-breakpoint==2.0.0;python_version<"3.7"',
         'importlib-metadata==4.2.0;python_version<"3.8"',
-        "pycparser==2.21",
         'pyotp==2.7.0;python_version<"3.7"',
         'pyotp==2.8.0;python_version>="3.7"',
-        "cffi==1.15.1",
         'typing-extensions==4.1.1;python_version<"3.7"',
         'commonmark==0.9.1;python_version<"3.7"',  # For old "rich"
         'markdown-it-py==3.0.0;python_version>="3.8"',  # For new "rich"
@@ -272,6 +261,11 @@ setup(
         "pdfminer": [
             'pdfminer.six==20211012;python_version<"3.7"',
             'pdfminer.six==20221105;python_version>="3.7"',
+            'cryptography==36.0.2;python_version<"3.7"',
+            'cryptography==41.0.1;python_version>="3.7"',
+            "cffi==1.15.1",
+            "pycparser==2.21",
+
         ],
         # pip install -e .[pillow]
         "pillow": [
