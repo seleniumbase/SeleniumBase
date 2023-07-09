@@ -62,8 +62,9 @@ class DatabaseManager:
             except Exception:
                 time.sleep(backoff)
                 count = count + 1
-        if retry_count == 3:
-            raise Exception("Unable to connect to Database after 3 retries.")
+                if retry_count == 3:
+                    print("Unable to connect to Database after 3 retries.")
+                    raise
 
     def query_fetch_all(self, query, values):
         """Execute db query, get all the values, and close the connection."""
