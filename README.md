@@ -553,7 +553,7 @@ pytest test_fail.py --pdb
 pytest test_coffee_cart.py --trace
 ```
 
-<a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.github.io/cdn/gif/coffee_pdbp.gif" alt="SeleniumBase test with the pdbp (Pdb+) debugger" title="SeleniumBase test with the pdbp (Pdb+) debugger" /></a>
+<a href="https://github.com/mdmintz/pdbp"><img src="https://seleniumbase.github.io/cdn/gif/coffee_pdbp.gif" alt="SeleniumBase test with the pdbp (Pdb+) debugger" title="SeleniumBase test with the pdbp (Pdb+) debugger" /></a>
 
 
 <a id="command_line_options"></a>
@@ -1221,7 +1221,7 @@ self.execute_script("return jQuery('textarea')[2].value")  # Returns the css "va
 
 <h3>🔵 How to handle a restrictive CSP:</h3>
 
-🛑 Some websites have a restrictive [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) to prevent users from loading jQuery and other external libraries onto their websites. If you need to use jQuery or another JS library on such a website, add ``--disable-csp`` as a ``pytest`` command-line option.
+❗ Some websites have a restrictive [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) to prevent users from loading jQuery and other external libraries onto their websites. If you need to use jQuery or another JS library on those websites, add ``--disable-csp`` as a ``pytest`` command-line option to load a Chromium extension that bypasses the CSP.
 
 <h3>🔵 More JavaScript fun:</h3>
 
@@ -1303,25 +1303,22 @@ pytest --reruns=1 --reruns-delay=1
 <div><a href="https://github.com/seleniumbase/SeleniumBase/issues?q=is%3Aissue+is%3Aclosed"><img src="https://img.shields.io/github/issues-closed-raw/seleniumbase/SeleniumBase.svg?color=22BB88" title="Closed Issues" /></a>   <a href="https://github.com/seleniumbase/SeleniumBase/pulls?q=is%3Apr+is%3Aclosed"><img src="https://img.shields.io/github/issues-pr-closed/seleniumbase/SeleniumBase.svg?logo=github&logoColor=white&color=22BB99" title="Closed Pull Requests" /></a></div>
 </p>
 
-<p>
-<div><b>If you like SeleniumBase, star us! ⭐</b></div>
-<div><a href="https://github.com/seleniumbase/SeleniumBase/stargazers"><img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=19A57B" title="Stargazers" /></a></div>
-</p>
-
 <p align="left"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/sb_logo_10t.png" alt="SeleniumBase" title="SeleniumBase" width="266" /></a></p>
+
+<p><div>
+<span><a href="https://www.youtube.com/playlist?list=PLp9uKicxkBc5UIlGi2BuE3aWC7JyXpD3m"><img src="https://seleniumbase.github.io/cdn/img/youtube.png" title="SeleniumBase Playlist on YouTube" alt="SeleniumBase Playlist on YouTube" width="68" /></a></span>
+<span><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.github.io/img/social/share_github.svg" title="SeleniumBase on GitHub" alt="SeleniumBase on GitHub" width="62" /></a></span>
+<span><a href="https://www.facebook.com/SeleniumBase"><img src="https://seleniumbase.io/img/social/share_facebook.svg" title="SeleniumBase on Facebook" alt="SeleniumBase on Facebook" width="64" /></a></span>
+<span><a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://seleniumbase.github.io/img/social/share_gitter.svg" title="SeleniumBase on Gitter" alt="SeleniumBase on Gitter" width="50" /></a></span>
+</div></p>
 
 <p><div><a href="https://github.com/mdmintz">https://github.com/mdmintz</a></div></p>
 
 <div><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/fancy_logo_14.png" title="SeleniumBase" width="220" /></a></div> <div><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" title="SeleniumBase" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://img.shields.io/gitter/room/seleniumbase/SeleniumBase.svg" alt="Gitter chat"/></a></div> <div><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://img.shields.io/badge/tested%20with-SeleniumBase-04C38E.svg" alt="Tested with SeleniumBase" /></a></div> <div><a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a></div>
-<p><a href="https://pepy.tech/project/seleniumbase" target="_blank"><img src="https://pepy.tech/badge/seleniumbase" alt="SeleniumBase PyPI downloads" /></a></p>
-
-<p><div>
-<span><a href="https://www.youtube.com/playlist?list=PLp9uKicxkBc5UIlGi2BuE3aWC7JyXpD3m"><img src="https://seleniumbase.github.io/cdn/img/youtube.png" title="SeleniumBase Playlist on YouTube" alt="SeleniumBase Playlist on YouTube" width="70" /></a></span>
-<span><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.github.io/img/social/share_github.svg" title="SeleniumBase on GitHub" alt="SeleniumBase on GitHub" width="64" /></a></span>
-<span><a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://seleniumbase.github.io/img/social/share_gitter.svg" title="SeleniumBase on Gitter" alt="SeleniumBase on Gitter" width="52" /></a></span>
-</div></p>
+<div><a href="https://pepy.tech/project/seleniumbase" target="_blank"><img src="https://pepy.tech/badge/seleniumbase" alt="SeleniumBase PyPI downloads" /></a></div>
+<div><a href="https://github.com/seleniumbase/SeleniumBase/stargazers"><img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=19A57B" title="Stargazers" /></a></div>
 
 --------
 
 <p><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/super_logo_sb.png" alt="SeleniumBase" title="SeleniumBase" width="300" /></a></p>
-<p><a href="https://www.python.org/downloads/" target="_blank"><img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=22AAEE&logo=python&logoColor=FEDC54" title="Supported Python Versions" /></a></p>
+<p><a href="https://pypi.org/project/seleniumbase/" target="_blank"><img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=22AAEE&logo=python&logoColor=FEDC54" title="Supported Python Versions" /></a></p>
