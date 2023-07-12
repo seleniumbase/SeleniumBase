@@ -1,5 +1,6 @@
 """ SeleniumBase Exceptions
     NoSuchFileException => Called when self.assert_downloaded_file(...) fails.
+    NoSuchOptionException => Called when select_option_by_*() lacks the option.
     NotConnectedException => Called when Internet is not reachable when needed.
     NotUsingChromeException => Used by Chrome-only methods if not using Chrome.
     NotUsingChromiumException => Used by Chromium-only methods if not Chromium.
@@ -12,6 +13,10 @@
 
 
 class NoSuchFileException(Exception):
+    pass
+
+
+class NoSuchOptionException(Exception):
     pass
 
 

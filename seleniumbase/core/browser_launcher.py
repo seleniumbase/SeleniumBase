@@ -168,6 +168,32 @@ def get_uc_driver_version():
     return uc_driver_version
 
 
+def has_cf(text):
+    if (
+        "<title>Just a moment...</title>" in text
+        or 'id="challenge-error-text"' in text
+        or 'action="/?__cf_chl_f_tk' in text
+        or 'id="challenge-form"' in text
+        or "window._cf_chl_opt" in text
+    ):
+        return True
+    return False
+
+
+def uc_open(driver, url):
+    if (
+        (url.startswith("http:") or url.startswith("https:"))
+        and has_cf(requests_get(url).text)
+    ):
+        driver.execute_script('window.open("%s","_blank");' % url)
+        time.sleep(2.75)
+        driver.execute_script("window.close();")
+        driver.switch_to.window(driver.window_handles[-1])
+    else:
+        driver.open(url)  # The original one
+    return None
+
+
 def edgedriver_on_path():
     return os.path.exists(LOCAL_EDGEDRIVER)
 
@@ -742,6 +768,9 @@ def _set_chrome_options(
         chrome_options.add_argument("--use-gl=swiftshader")
     elif not is_using_uc(undetectable, browser_name):
         chrome_options.add_argument("--disable-gpu")
+    if not IS_LINUX and is_using_uc(undetectable, browser_name):
+        chrome_options.add_argument("--disable-dev-shm-usage")
+        chrome_options.add_argument("--disable-application-cache")
     if IS_LINUX:
         chrome_options.add_argument("--disable-dev-shm-usage")
         if is_using_uc(undetectable, browser_name):
@@ -3008,6 +3037,7 @@ def get_local_driver(
                 or not IS_LINUX
                 or is_using_uc(undetectable, browser_name)
             ):
+                uc_activated = False
                 try:
                     if (
                         os.path.exists(LOCAL_CHROMEDRIVER)
@@ -3051,6 +3081,7 @@ def get_local_driver(
                                         version_main=uc_chrome_version,
                                         use_subprocess=True,  # Always!
                                     )
+                                    uc_activated = True
                                 except URLError as e:
                                     if cert in e.args[0] and IS_MAC:
                                         mac_certificate_error = True
@@ -3082,6 +3113,7 @@ def get_local_driver(
                                         version_main=uc_chrome_version,
                                         use_subprocess=True,  # Always!
                                     )
+                                    uc_activated = True
                             else:
                                 service = ChromeService(
                                     executable_path=LOCAL_CHROMEDRIVER,
@@ -3246,6 +3278,9 @@ def get_local_driver(
                                 service_args=["--disable-build-check"],
                                 options=chrome_options,
                             )
+                driver.open = driver.get  # Save copy of original
+                if uc_activated:
+                    driver.get = lambda url: uc_open(driver, url)
                 return driver
             else:  # Running headless on Linux (and not using --uc)
                 try:

@@ -2829,11 +2829,38 @@ class BaseCase(unittest.TestCase):
             except Exception:
                 self.wait_for_ready_state_complete()
             if option_by == "index":
-                Select(element).select_by_index(option)
+                try:
+                    Select(element).select_by_index(option)
+                except Exception:
+                    msg = (
+                        "Element {%s} has no selectable index option {%s}!"
+                        % (dropdown_selector, option)
+                    )
+                    page_actions.timeout_exception(
+                        "NoSuchOptionException", msg
+                    )
             elif option_by == "value":
-                Select(element).select_by_value(option)
+                try:
+                    Select(element).select_by_value(option)
+                except Exception:
+                    msg = (
+                        "Element {%s} has no selectable value option {%s}!"
+                        % (dropdown_selector, option)
+                    )
+                    page_actions.timeout_exception(
+                        "NoSuchOptionException", msg
+                    )
             else:
-                Select(element).select_by_visible_text(option)
+                try:
+                    Select(element).select_by_visible_text(option)
+                except Exception:
+                    msg = (
+                        "Element {%s} has no selectable text option {%s}!"
+                        % (dropdown_selector, option)
+                    )
+                    page_actions.timeout_exception(
+                        "NoSuchOptionException", msg
+                    )
             time.sleep(0.05)
             self.wait_for_ready_state_complete()
         latest_window_count = len(self.driver.window_handles)

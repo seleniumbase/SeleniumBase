@@ -99,7 +99,7 @@ def wait_for_angularjs(driver, timeout=settings.LARGE_TIMEOUT, **kwargs):
 
 def is_html_inspector_activated(driver):
     try:
-        driver.execute_script("HTMLInspector")  # Fails if not defined
+        driver.execute_script("HTMLInspector;")  # Fails if not defined
         return True
     except Exception:
         return False
@@ -107,7 +107,7 @@ def is_html_inspector_activated(driver):
 
 def is_jquery_activated(driver):
     try:
-        driver.execute_script("jQuery('html')")  # Fails if jq is not defined
+        driver.execute_script("jQuery('html');")  # Fails if jq is not defined
         return True
     except Exception:
         return False
@@ -121,7 +121,7 @@ def wait_for_jquery_active(driver, timeout=None):
     for x in range(timeout):
         # jQuery needs a small amount of time to activate.
         try:
-            driver.execute_script("jQuery('html')")
+            driver.execute_script("jQuery('html');")
             wait_for_ready_state_complete(driver)
             wait_for_angularjs(driver)
             return
@@ -590,7 +590,7 @@ def add_meta_tag(driver, http_equiv=None, content=None):
 
 def is_jquery_confirm_activated(driver):
     try:
-        driver.execute_script("jconfirm")  # Fails if jq_confirm is not defined
+        driver.execute_script("jconfirm;")  # Fails if jconfirm is not defined
         return True
     except Exception:
         return False
@@ -607,10 +607,13 @@ def activate_jquery_confirm(driver):
     add_css_link(driver, jq_confirm_css)
     add_js_link(driver, jq_confirm_js)
 
-    for x in range(25):
+    for x in range(28):
         # jQuery-Confirm needs a small amount of time to load & activate.
+        if x == 14:
+            add_css_link(driver, jq_confirm_css)
+            add_js_link(driver, jq_confirm_js)
         try:
-            driver.execute_script("jconfirm")
+            driver.execute_script("jconfirm;")
             wait_for_ready_state_complete(driver)
             wait_for_angularjs(driver)
             return
@@ -636,7 +639,7 @@ def activate_html_inspector(driver):
     for x in range(25):
         # HTML-Inspector needs a small amount of time to load & activate.
         try:
-            driver.execute_script("HTMLInspector")
+            driver.execute_script("HTMLInspector;")
             wait_for_ready_state_complete(driver)
             wait_for_angularjs(driver)
             return

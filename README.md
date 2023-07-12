@@ -167,7 +167,7 @@ With raw Selenium, that requires more code:<br />
 <summary> ▶️ Learn about different ways of writing tests (<b>click to expand</b>)</summary>
 <div>
 
-<p align="left">📘📝 An example test with the <b>BaseCase</b> class. Runs with <b><a href="https://docs.pytest.org/en/latest/how-to/usage.html">pytest</a></b> or <b>pynose</b>. (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">Learn more</a>)</p>
+<p align="left">📘📝 An example test with the <b>BaseCase</b> class. Runs with <b><a href="https://docs.pytest.org/en/latest/how-to/usage.html">pytest</a></b> or <b><a href="https://github.com/mdmintz/pynose">pynose</a></b>. (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">Learn more</a>)</p>
 
 ```python
 from seleniumbase import BaseCase
@@ -460,14 +460,14 @@ self.assert_no_js_errors()  # Verify there are no JS errors.
 <p>✅ SeleniumBase uses simple syntax for commands. Example:</p>
 
 ```python
-self.type("input", "dogs\n")
+self.type("input", "dogs\n")  # (The "\n" presses ENTER)
 ```
 
 Most SeleniumBase scripts can be run with <code>pytest</code>, <code>pynose</code>, or pure <code>python</code>. Not all test runners can run all test formats. For example, tests that use the ``sb`` pytest fixture can only be run with ``pytest``. (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md">Syntax Formats</a>) There's also a <a href="https://behave.readthedocs.io/en/stable/gherkin.html#features" target="_blank">Gherkin</a> test format that runs with <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md">behave</a>.
 
 ```bash
 pytest coffee_cart_tests.py --rs
-pytest test_sb_fixture.py
+pytest test_sb_fixture.py --demo
 pytest test_suite.py --rs --html=report.html --dashboard
 
 pynose basic_test.py --mobile
@@ -506,12 +506,14 @@ pynose [FILE_NAME.py]:[CLASS_NAME].[METHOD_NAME]
 
 ✅ SeleniumBase supports all major browsers and operating systems:
 <p><b>Browsers:</b> Chrome, Edge, Firefox, and Safari.</p>
-<p><b>Systems: </b>Linux/Ubuntu, macOS, and Windows.</p>
+<p><b>Systems:</b> Linux/Ubuntu, macOS, and Windows.</p>
 
 ✅ SeleniumBase works on all popular CI/CD platforms:
 <p><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/github/workflows/ReadMe.md"><img alt="GitHub Actions integration" src="https://img.shields.io/badge/GitHub_Actions-12B2C2.svg?logo=GitHubActions&logoColor=CFFFC2" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/jenkins/ReadMe.md"><img alt="Jenkins integration" src="https://img.shields.io/badge/Jenkins-32B242.svg?logo=jenkins&logoColor=white" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/azure_pipelines/ReadMe.md"><img alt="Azure integration" src="https://img.shields.io/badge/Azure-2288EE.svg?logo=AzurePipelines&logoColor=white" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/google_cloud/ReadMe.md"><img alt="Google Cloud integration" src="https://img.shields.io/badge/Google_Cloud-11CAE8.svg?logo=GoogleCloud&logoColor=EE0066" /></a> <a href="#utilizing_advanced_features"><img alt="AWS integration" src="https://img.shields.io/badge/AWS-4488DD.svg?logo=AmazonAWS&logoColor=FFFF44" /></a> <a href="https://en.wikipedia.org/wiki/Personal_computer" target="_blank"><img alt="Your Computer" src="https://img.shields.io/badge/💻_Your_Computer-44E6E6.svg" /></a></p>
 
-<p>✅ SeleniumBase includes an automated/manual hybrid solution called <b><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">MasterQA</a></b> to speed up manual testing with automation while the manual tester handles validation.</p>
+<p>✅ SeleniumBase includes an automated/manual hybrid solution called <b><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">MasterQA</a></b> to speed up manual testing with automation while manual testers handle validation.</p>
+
+<p>✅ SeleniumBase supports <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/offline_examples">running tests while offline</a> (<i>assuming webdrivers have previously been downloaded when online</i>).</p>
 
 <p>✅ For a full list of SeleniumBase features, <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md">Click Here</a>.</p>
 
@@ -681,9 +683,9 @@ pytest test_coffee_cart.py --trace
 ```bash
 cd examples/
 
-pytest test_suite.py --browser=chrome
+pytest test_suite.py --chrome
 
-pytest test_suite.py --browser=firefox
+pytest test_suite.py --firefox
 ```
 
 An easy way to override seleniumbase/config/settings.py is by using a custom settings file.
@@ -697,7 +699,7 @@ Inside your tests, you can use ``self.data`` to access that.
 <a id="directory_configuration"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" /> Directory Configuration:</h2>
 
-🔵 When running tests with **pytest**, you'll want a copy of **[pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini)** in your root folders. When running tests with **pynose**, you'll want a copy of **[setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/setup.cfg)** in your root folders. These files specify default configuration details for tests. Folders should also include a blank ``__init__.py`` file to allow your tests to import files from that folder.
+🔵 When running tests with **``pytest``**, you'll want a copy of **[pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini)** in your root folders. When running tests with **``pynose``**, you'll want a copy of **[setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/setup.cfg)** in your root folders. These files specify default configuration details for tests. Test folders should also include a blank **[__init__.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/offline_examples/__init__.py)** file to allow your test files to import other files from that folder.
 
 🔵 ``sbase mkdir DIR`` creates a folder with config files and sample tests:
 
