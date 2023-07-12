@@ -123,6 +123,7 @@ def format_exc(exception, message):
     from selenium.common.exceptions import NoSuchFrameException
     from selenium.common.exceptions import NoSuchWindowException
     from seleniumbase.common.exceptions import NoSuchFileException
+    from seleniumbase.common.exceptions import NoSuchOptionException
     from seleniumbase.common.exceptions import TextNotVisibleException
     from seleniumbase.common import exceptions
 
@@ -161,6 +162,10 @@ def format_exc(exception, message):
         exc = exceptions.NoSuchFileException
     elif exception == "NoSuchFileException":
         exc = exceptions.NoSuchFileException
+    elif exception == NoSuchOptionException:
+        exc = exceptions.NoSuchOptionException
+    elif exception == "NoSuchOptionException":
+        exc = exceptions.NoSuchOptionException
     elif type(exception) is str:
         exc = Exception
         message = "%s: %s" % (exception, message)
