@@ -607,8 +607,11 @@ def activate_jquery_confirm(driver):
     add_css_link(driver, jq_confirm_css)
     add_js_link(driver, jq_confirm_js)
 
-    for x in range(25):
+    for x in range(28):
         # jQuery-Confirm needs a small amount of time to load & activate.
+        if x == 14:
+            add_css_link(driver, jq_confirm_css)
+            add_js_link(driver, jq_confirm_js)
         try:
             driver.execute_script("jconfirm")
             wait_for_ready_state_complete(driver)
