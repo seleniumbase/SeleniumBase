@@ -572,7 +572,7 @@ class 테스트_클래스(셀레늄_테스트_케이스):
         self.JS_입력("#searchform input", "김치")
         self.클릭("#searchform button")
         self.텍스트_확인("김치", "#firstHeading")
-        self.요소_확인('img[alt="Various kimchi.jpg"]')
+        self.요소_확인('img[src*="Various_kimchi.jpg"]')
         self.링크_텍스트_확인("한국 요리")
         self.JS_입력("#searchform input", "비빔밥")
         self.클릭("#searchform button")

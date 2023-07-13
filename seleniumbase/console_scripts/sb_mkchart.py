@@ -183,8 +183,8 @@ def main():
         chart_options = '"circular", "barras", "columnas", "líneas", "área"'
 
     import_line = "from seleniumbase import BaseCase"
+    main_line = "BaseCase.main(__name__, __file__)"
     parent_class = "BaseCase"
-    class_line = "class MyTestClass(BaseCase):"
     if language != "English":
         from seleniumbase.translate.master_dict import MD_F
 
@@ -196,6 +196,7 @@ def main():
     add_slide = '"<p>Chart Demo</p>" + self.extract_chart()'
     data = []
     data.append("%s" % import_line)
+    data.append("%s" % main_line)
     data.append("")
     data.append("")
     data.append("%s" % class_line)
@@ -204,12 +205,12 @@ def main():
     data.append("")
     data.append("        # %s => %s" % (select_option, chart_options))
     data.append("        self.create_pie_chart(%s)" % chart_settings)
-    data.append('        self.add_data_point("%s A", 50)' % item)
-    data.append('        self.add_data_point("%s B", 40)' % item)
-    data.append('        self.add_data_point("%s C", 35)' % item)
-    data.append('        self.add_data_point("%s D", 30)' % item)
-    data.append('        self.add_data_point("%s E", 25)' % item)
-    data.append('        self.add_data_point("%s F", 20)' % item)
+    data.append('        self.add_data_point("%s A", 36)' % item)
+    data.append('        self.add_data_point("%s B", 33)' % item)
+    data.append('        self.add_data_point("%s C", 27)' % item)
+    data.append('        self.add_data_point("%s D", 21)' % item)
+    data.append('        self.add_data_point("%s E", 18)' % item)
+    data.append('        self.add_data_point("%s F", 15)' % item)
     data.append("        self.add_slide(%s)" % add_slide)
     data.append("")
     data.append('        self.begin_presentation(filename="%s")' % html_name)
@@ -243,6 +244,10 @@ def main():
                         # Example: self.assert_true("Name" in self.get_title())
                         line = new_line
                         continue
+            if main_line in line:
+                new_main = "%s.main(__name__, __file__)" % parent_class
+                new_line = line.replace(main_line, new_main)
+                found_swap = True
             if found_swap:
                 if new_line.endswith("  # noqa"):  # Remove flake8 skip
                     new_line = new_line[0 : -len("  # noqa")]
