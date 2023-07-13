@@ -231,15 +231,14 @@ def main():
         url = "data:text/html,<p>%s<br><input>" % hello
 
     import_line = "from seleniumbase import BaseCase"
+    main_line = "BaseCase.main(__name__, __file__)"
     parent_class = "BaseCase"
-    class_line = "class MyTestClass(BaseCase):"
     if language != "English":
         from seleniumbase.translate.master_dict import MD_F
 
         import_line = MD_F.get_import_line(language)
         parent_class = MD_F.get_lang_parent_class(language)
     class_line = "class %s(%s):" % (class_name, parent_class)
-    main_line = "BaseCase.main(__name__, __file__)"
 
     data = []
     data.append("%s" % import_line)

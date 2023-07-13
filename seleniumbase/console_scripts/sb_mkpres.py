@@ -194,8 +194,8 @@ def main():
         class_name = "MiClaseDePrueba"
 
     import_line = "from seleniumbase import BaseCase"
+    main_line = "BaseCase.main(__name__, __file__)"
     parent_class = "BaseCase"
-    class_line = "class MyTestClass(BaseCase):"
     if language != "English":
         from seleniumbase.translate.master_dict import MD_F
 
@@ -223,6 +223,7 @@ def main():
 
     data = []
     data.append("%s" % import_line)
+    data.append("%s" % main_line)
     data.append("")
     data.append("")
     data.append("%s" % class_line)
@@ -262,6 +263,10 @@ def main():
                         # Example: self.assert_true("Name" in self.get_title())
                         line = new_line
                         continue
+            if main_line in line:
+                new_main = "%s.main(__name__, __file__)" % parent_class
+                new_line = line.replace(main_line, new_main)
+                found_swap = True
             if found_swap:
                 if new_line.endswith("  # noqa"):  # Remove flake8 skip
                     new_line = new_line[0 : -len("  # noqa")]
