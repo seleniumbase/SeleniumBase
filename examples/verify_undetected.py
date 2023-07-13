@@ -28,4 +28,14 @@ class UndetectedTest(BaseCase):
             try:
                 self.verify_success()
             except Exception:
-                self.fail_me()
+                if self.is_element_visible('input[value*="Verify"]'):
+                    self.click('input[value*="Verify"]')
+                elif self.is_element_visible('iframe[title*="challenge"]'):
+                    self.switch_to_frame('iframe[title*="challenge"]')
+                    self.click("span.mark")
+                else:
+                    self.fail_me()
+                try:
+                    self.verify_success()
+                except Exception:
+                    self.fail_me()
