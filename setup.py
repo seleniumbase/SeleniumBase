@@ -164,7 +164,7 @@ setup(
         'sniffio==1.3.0;python_version>="3.7"',
         'h11==0.14.0;python_version>="3.7"',
         'outcome==1.2.0;python_version>="3.7"',
-        'trio==0.22.1;python_version>="3.7"',
+        'trio==0.22.2;python_version>="3.7"',
         'trio-websocket==0.10.3;python_version>="3.7"',
         'wsproto==1.2.0;python_version>="3.7"',
         'selenium==3.141.0;python_version<"3.7"',
