@@ -33,6 +33,7 @@
 * [Singapore Institute of Tech](https://www.singaporetech.edu.sg)
 * [Mississippi State University](https://www.msstate.edu/)
 * [The New York Public Libary](https://www.nypl.org/)
+* [Boehringer Ingelheim](https://www.boehringer-ingelheim.com/)
 * [Queen's University](https://www.queensu.ca/)
 * [L1NNA Laboratory](https://l1nna.com/)
 * [Canfield Scientific](https://www.canfieldsci.com/)
