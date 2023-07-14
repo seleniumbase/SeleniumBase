@@ -577,7 +577,7 @@ class 테스트_클래스(셀레늄_테스트_케이스):
         self.JS_입력("#searchform input", "비빔밥")
         self.클릭("#searchform button")
         self.텍스트_확인("비빔밥", "#firstHeading")
-        self.요소_확인('img[alt="Dolsot-bibimbap.jpg"]')
+        self.요소_확인('img[src*="Dolsot-bibimbap.jpg"]')
         self.링크_텍스트를_클릭합니다("돌솥비빔밥")
         self.텍스트_확인("돌솥비빔밥", "#firstHeading")
 ```
