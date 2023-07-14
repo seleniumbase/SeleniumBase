@@ -37,7 +37,7 @@ pytest my_first_test.py --browser=firefox
 
 --------
 
-Run an example test in Demo Mode: (highlight assertions)
+Run an example test in ``--demo`` mode: (highlight assertions)
 
 ```bash
 pytest test_swag_labs.py --demo
@@ -67,7 +67,7 @@ pytest wordle_test.py
 
 --------
 
-Run an example test in ``--headless`` Mode: (invisible browser)
+Run an example test in ``--headless`` mode: (invisible browser)
 
 ```bash
 pytest my_first_test.py --headless
@@ -143,11 +143,13 @@ pytest test_fail.py
 
 --------
 
-Run a failing test with Debug-mode enabled: (``pdb`` activates on failures)
+Run a failing test that activates ``pdb`` debug mode on failure:
 
 ```bash
 pytest test_fail.py --pdb -s
 ```
+
+> (**``pdb``** commands: ``n``, ``c``, ``s``, ``u``, ``d`` => ``next``, ``continue``, ``step``, ``up``, ``down``)
 
 --------
 
@@ -183,7 +185,7 @@ pytest upload_file_test.py
 
 --------
 
-Try the new SeleniumBase Commander! A GUI for ``pytest``:
+🎖️  **SeleniumBase Commander** is a GUI for ``pytest``:
 
 ```bash
 sbase gui
@@ -194,8 +196,6 @@ sbase gui
 --------
 
 <b>SeleniumBase tests can also be run with ``pynose``:</b>
-
-Run an example test with ``pynose``:
 
 ```bash
 pynose my_first_test.py
@@ -219,7 +219,7 @@ pynose my_first_test.py --config=example_config.cfg
 
 --------
 
-For more advanced run commands, such as using a proxy server, see [../help_docs/customizing_test_runs.md](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md)
+For more advanced **run commands**, such as using a proxy server, see [../help_docs/customizing_test_runs.md](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md)
 
 --------
 
@@ -229,7 +229,7 @@ If you just need to perform some quick website verification on various devices, 
 
 --------
 
-To make things easier, here's a simple GUI program that allows you to run a few example tests by pressing a button:
+To make things easier, here's a **simple GUI program** that allows you to run a few example tests by pressing a button:
 
 ```bash
 python gui_test_runner.py
@@ -237,17 +237,7 @@ python gui_test_runner.py
 
 <img src="https://seleniumbase.github.io/cdn/img/gui_test_runner.png" title="GUI Test Runner" width="320" />
 
-(The newer [SeleniumBase Commander](https://seleniumbase.io/help_docs/commander/) improves on that.)
-
---------
-
-🎖️ To launch the SeleniumBase Commander GUI for ``pytest``:
-
-```bash
-sbase gui
-```
-
-<img src="https://seleniumbase.github.io/cdn/img/sbase_commander_wide.png" title="SeleniumBase Commander" width="600">
+(The newer **[SeleniumBase Commander](https://seleniumbase.io/help_docs/commander/)** improves on that.)
 
 --------
 
