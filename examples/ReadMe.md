@@ -19,7 +19,7 @@
 
 --------
 
-Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py): (Default option: ``--browser=chrome``)
+Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py): (Default option: ``--chrome``)
 
 ```bash
 pytest test_demo_site.py
@@ -67,7 +67,7 @@ pytest wordle_test.py
 
 --------
 
-Run an example test in Headless Mode: (invisible browser)
+Run an example test in ``--headless`` Mode: (invisible browser)
 
 ```bash
 pytest my_first_test.py --headless
@@ -85,7 +85,7 @@ pytest test_swag_labs.py --mobile
 
 --------
 
-Run another [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_xkcd.py) in Demo Mode: (highlight assertions)
+Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_xkcd.py) in ``--demo`` mode: (highlight assertions)
 
 ```bash
 pytest test_xkcd.py --demo
@@ -103,10 +103,10 @@ pytest test_suite.py -v
 
 --------
 
-Run a test suite multi-threaded using [n] threads:
+Run a test suite using multiple parallel processes (``-n=NUM``):
 
 ```bash
-pytest test_suite.py -n=4
+pytest test_suite.py -n=8
 ```
 
 --------
@@ -127,7 +127,7 @@ pytest test_suite.py --dashboard
 
 --------
 
-Run a test suite and generate a pytest report:
+Run a test suite and generate a ``pytest`` report:
 
 ```bash
 pytest test_suite.py --html=report.html
@@ -151,7 +151,7 @@ pytest test_fail.py --pdb -s
 
 --------
 
-Run a test suite that demonstrates the use of pytest markers:
+Run a test suite that demonstrates the use of ``pytest`` markers:
 
 ```bash
 pytest -m marker_test_suite -v
@@ -162,7 +162,7 @@ pytest -m marker_test_suite -v
 Run a test suite that reuses the browser session between tests:
 
 ```bash
-pytest test_suite.py --reuse-session
+pytest test_suite.py --rs
 ```
 
 --------
@@ -183,7 +183,7 @@ pytest upload_file_test.py
 
 --------
 
-Try the new SeleniumBase Commander! A GUI for pytest:
+Try the new SeleniumBase Commander! A GUI for ``pytest``:
 
 ```bash
 sbase gui
@@ -195,7 +195,7 @@ sbase gui
 
 <b>SeleniumBase tests can also be run with ``pynose``:</b>
 
-Run an example test with pynose:
+Run an example test with ``pynose``:
 
 ```bash
 pynose my_first_test.py
@@ -203,7 +203,7 @@ pynose my_first_test.py
 
 --------
 
-Run an example test suite and generate a pynose test report:
+Run an example test suite and generate a ``pynose`` test report:
 
 ```bash
 pynose test_suite.py --report --show-report
@@ -211,7 +211,7 @@ pynose test_suite.py --report --show-report
 
 --------
 
-Run an example test using a pynose configuration file:
+Run an example test using a ``pynose`` configuration file:
 
 ```bash
 pynose my_first_test.py --config=example_config.cfg
@@ -241,7 +241,7 @@ python gui_test_runner.py
 
 --------
 
-🎖️ To launch the SeleniumBase Commander GUI for pytest:
+🎖️ To launch the SeleniumBase Commander GUI for ``pytest``:
 
 ```bash
 sbase gui
