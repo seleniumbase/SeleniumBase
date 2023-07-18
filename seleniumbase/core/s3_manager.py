@@ -24,19 +24,20 @@ class S3LoggingBucket(object):
         )
         with pip_find_lock:
             try:
-                from boto.s3.connection import S3Connection
+                import boto3
             except Exception:
-                shared_utils.pip_install("boto", version="2.49.0")
-                from boto.s3.connection import S3Connection
-        self.conn = S3Connection(selenium_access_key, selenium_secret_key)
-        self.bucket = self.conn.get_bucket(log_bucket)
+                shared_utils.pip_install("boto3")
+                import boto3
+        self.conn = boto3.Session(
+            aws_access_key_id=selenium_access_key,
+            aws_secret_access_key=selenium_secret_key,
+        )
+        self.bucket = log_bucket
         self.bucket_url = bucket_url
 
     def get_key(self, file_name):
-        """Create a new Key instance with the given name."""
-        from boto.s3.key import Key
-
-        return Key(bucket=self.bucket, name=file_name)
+        """Create a new S3 connection instance with the given name."""
+        return self.conn.resource("s3").Object(self.bucket, file_name)
 
     def get_bucket(self):
         """Return the bucket being used."""
@@ -53,18 +54,19 @@ class S3LoggingBucket(object):
             content_type = "image/jpeg"
         elif file_name.endswith(".png"):
             content_type = "image/png"
-        upload_key.set_contents_from_filename(
-            file_path, headers={"Content-Type": content_type}
+        upload_key.Bucket().upload_file(
+            file_path,
+            file_name,
+            ExtraArgs={"ACL": "public-read", "ContentType": content_type},
         )
-        upload_key.url = upload_key.generate_url(expires_in=3600).split("?")[0]
-        try:
-            upload_key.make_public()
-        except Exception:
-            pass
 
-    def upload_index_file(self, test_address, timestamp):
+    def upload_index_file(
+        self, test_address, timestamp, data_path, save_data_to_logs
+    ):
         """Create an index.html file with links to all the log files
         that were just uploaded."""
+        import os
+
         global already_uploaded_files
         already_uploaded_files = list(set(already_uploaded_files))
         already_uploaded_files.sort()
@@ -76,15 +78,19 @@ class S3LoggingBucket(object):
                 "<a href='" + self.bucket_url + ""
                 "%s'>%s</a>" % (completed_file, completed_file)
             )
-        index.set_contents_from_string(
-            "<br>".join(index_str), headers={"Content-Type": "text/html"}
+        index_page = str("<br>".join(index_str))
+        save_data_to_logs(index_page, "index.html")
+        file_path = os.path.join(data_path, "index.html")
+        index.Bucket().upload_file(
+            file_path,
+            file_name,
+            ExtraArgs={"ACL": "public-read", "ContentType": "text/html"},
         )
-        index.make_public()
         return "%s%s" % (self.bucket_url, file_name)
 
     def save_uploaded_file_names(self, files):
-        """Keep a record of all file names that have been uploaded. Upload log
-        files related to each test after its execution. Once done, use
-        already_uploaded_files to create an index file."""
+        """Keep a record of all file names that have been uploaded.
+        Upload log files related to each test after its execution.
+        Once done, use already_uploaded_files to create an index file."""
         global already_uploaded_files
         already_uploaded_files.extend(files)

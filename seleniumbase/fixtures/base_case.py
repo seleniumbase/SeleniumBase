@@ -15174,16 +15174,16 @@ class BaseCase(unittest.TestCase):
                     )
                     uploaded_files.append(logfile_name)
                 s3_bucket.save_uploaded_file_names(uploaded_files)
-                index_file = s3_bucket.upload_index_file(test_id, guid)
-                print("\n\n*** Log files uploaded: ***\n%s\n" % index_file)
+                index_file = s3_bucket.upload_index_file(
+                    test_id, guid, self.data_path, self.save_data_to_logs
+                )
+                print("\n*** Log files uploaded: ***\n%s\n" % index_file)
                 logging.info(
-                    "\n\n*** Log files uploaded: ***\n%s\n" % index_file
+                    "\n*** Log files uploaded: ***\n%s\n" % index_file
                 )
                 if self.with_db_reporting:
                     from seleniumbase.core.testcase_manager import (
                         TestcaseDataPayload,
-                    )
-                    from seleniumbase.core.testcase_manager import (
                         TestcaseManager,
                     )
 
