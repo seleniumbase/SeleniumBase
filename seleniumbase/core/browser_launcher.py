@@ -171,8 +171,8 @@ def uc_open(driver, url):
         and has_cf(requests_get(url).text)
     ):
         driver.execute_script('window.open("%s","_blank");' % url)
-        time.sleep(2.75)
-        driver.execute_script("window.close();")
+        driver.reconnect(2.65)
+        driver.close()
         driver.switch_to.window(driver.window_handles[-1])
     else:
         driver.open(url)  # The original one
@@ -807,6 +807,7 @@ def _set_chrome_options(
         )
     ):
         chrome_options.add_argument("--disable-popup-blocking")
+        chrome_options.add_argument("--homepage=chrome://new-tab-page/")
         # Skip remaining options that trigger anti-bot services
         return chrome_options
     chrome_options.add_argument("--test-type")
