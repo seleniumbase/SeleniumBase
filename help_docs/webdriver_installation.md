@@ -19,11 +19,11 @@ If the necessary driver is not found in this location while running tests, Selen
 * You can also download specific versions of drivers. Examples:
 
 ```bash
-sbase get chromedriver 112
-sbase get chromedriver 112.0.5615.49
+sbase get chromedriver 114
+sbase get chromedriver 114.0.5735.90
 sbase get chromedriver latest
 sbase get chromedriver latest-1
-sbase get edgedriver 112.0.1722.58
+sbase get edgedriver 114.0.1823.82
 ```
 
 (NOTE: ``sbase`` is a shortcut for ``seleniumbase``)
