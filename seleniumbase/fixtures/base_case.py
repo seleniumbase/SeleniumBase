@@ -7271,6 +7271,11 @@ class BaseCase(unittest.TestCase):
         """Return True if the url is a valid url."""
         return page_utils.is_valid_url(url)
 
+    def is_online(self):
+        """Return True if connected to the Internet."""
+        online = self.execute_script("return navigator.onLine;")
+        return online
+
     def is_chromium(self):
         """Return True if the browser is Chrome, Edge, or Opera."""
         self.__check_scope()

@@ -502,6 +502,8 @@ self.inspect_html()
 
 self.is_valid_url(url)
 
+self.is_online()
+
 self.is_chromium()
 
 self.get_chrome_version()
