@@ -14,4 +14,4 @@ class ErrorPageTests(BaseCase):
         self.highlight('img[alt*="404"]')
         self.highlight("img#octobi_wan_catnobi")
         self.highlight("img#speeder")
-        self.save_screenshot_after_test = True  # Automatic if test fails
+        self.save_screenshot_after_test = True

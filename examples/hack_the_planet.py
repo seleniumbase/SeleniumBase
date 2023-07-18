@@ -196,7 +196,7 @@ class HackTests(BaseCase):
         self.set_text_content('a[prettyslug="your-profile"]', "BASE")
         self.set_text_content('a[prettyslug="connect-tools"]', "ARE")
         self.set_text_content('a[prettyslug="administration"]', "BELONG")
-        self.set_text_content('a[prettyslug="tutorials"]', "TO US")
+        self.set_text_content('a[prettyslug*="tutorials"]', "TO US")
         self.set_text_content("h1.article_title", aybabtu)
         self.highlight("h1", loops=4, scroll=False)
         self.highlight("div#global_menu", loops=2, scroll=False)
@@ -205,7 +205,7 @@ class HackTests(BaseCase):
         self.highlight('a[prettyslug="your-profile"]', loops=2, scroll=False)
         self.highlight('a[prettyslug="connect-tools"]', loops=1, scroll=False)
         self.highlight('a[prettyslug="administration"]', loops=1, scroll=False)
-        self.highlight('a[prettyslug="tutorials"]', loops=2, scroll=False)
+        self.highlight('a[prettyslug*="tutorials"]', loops=2, scroll=False)
         self.highlight("h1.article_title", loops=5, scroll=False)
 
         self.open("https://kubernetes.io/")
