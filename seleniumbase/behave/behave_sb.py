@@ -82,8 +82,8 @@ behave -D agent="User Agent String" -D demo
 -D incognito  (Enable Chrome's Incognito mode.)
 -D guest  (Enable Chrome's Guest mode.)
 -D devtools  (Open Chrome's DevTools when the browser opens.)
--D reuse-session | -D rs  (Reuse browser session for all tests.)
--D reuse-class-session | -D rcs  (Reuse session for tests in class/feature)
+-D rs | -D reuse-session  (Reuse browser session for all tests.)
+-D rcs | -D reuse-class-session  (Reuse session for tests in class/feature)
 -D crumbs  (Delete all cookies between tests reusing a session.)
 -D disable-beforeunload  (Disable the "beforeunload" event on Chrome.)
 -D window-size=WIDTH,HEIGHT  (Set the browser's starting window size.)
@@ -95,24 +95,21 @@ behave -D agent="User Agent String" -D demo
 -D external-pdf  (Set Chromium "plugins.always_open_pdf_externally":True.)
 -D timeout-multiplier=MULTIPLIER  (Multiplies the default timeout values.)
 """
-
 import ast
 import colorama
 import os
 import re
 import sys
+from seleniumbase import config as sb_config
 from seleniumbase.config import settings
-from seleniumbase.core import log_helper
 from seleniumbase.core import download_helper
+from seleniumbase.core import log_helper
 from seleniumbase.core import proxy_helper
 from seleniumbase.core import session_helper
 from seleniumbase.fixtures import constants
-from seleniumbase import config as sb_config
+from seleniumbase.fixtures import shared_utils
 
 sb_config.__base_class = None
-is_windows = False
-if sys.platform in ["win32", "win64", "x64"]:
-    is_windows = True
 
 
 def set_base_class(base_class):
@@ -817,10 +814,10 @@ def get_configured_sb(context):
             '\n  (Your browser choice was: "%s")\n' % sb.browser
         )
     # The Xvfb virtual display server is for Linux OS Only.
-    if sb.xvfb and "linux" not in sys.platform:
+    if sb.xvfb and not shared_utils.is_linux():
         sb.xvfb = False
     if (
-        "linux" in sys.platform
+        shared_utils.is_linux()
         and not sb.headed
         and not sb.headless
         and not sb.headless2
@@ -931,7 +928,6 @@ def get_configured_sb(context):
     log_helper.log_folder_setup(sb.log_path, sb.archive_logs)
     download_helper.reset_downloads_folder()
     proxy_helper.remove_proxy_zip_if_present()
-
     return sb
 
 
@@ -1007,7 +1003,7 @@ def dashboard_pre_processing():
     filename = None
     feature_name = None
     scenario_name = None
-    if is_windows:
+    if shared_utils.is_windows():
         output = output.decode("latin1")
     else:
         output = output.decode("utf-8")
@@ -1116,7 +1112,7 @@ def behave_dashboard_prepare():
         stars = "*" * star_len
         c1 = ""
         cr = ""
-        if "linux" not in sys.platform:
+        if not shared_utils.is_linux():
             colorama.init(autoreset=True)
             c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
             cr = colorama.Style.RESET_ALL
@@ -1124,9 +1120,6 @@ def behave_dashboard_prepare():
 
 
 def _perform_behave_unconfigure_():
-    from seleniumbase.core import log_helper
-    from seleniumbase.core import proxy_helper
-
     if hasattr(sb_config, "multi_proxy") and not sb_config.multi_proxy:
         proxy_helper.remove_proxy_zip_if_present()
     if hasattr(sb_config, "reuse_session") and sb_config.reuse_session:
@@ -1134,7 +1127,7 @@ def _perform_behave_unconfigure_():
         if sb_config.shared_driver:
             try:
                 if (
-                    not is_windows
+                    not shared_utils.is_windows()
                     or sb_config.browser == "ie"
                     or sb_config.shared_driver.service.process
                 ):
@@ -1210,7 +1203,7 @@ def do_final_driver_cleanup_as_needed():
     try:
         if hasattr(sb_config, "last_driver") and sb_config.last_driver:
             if (
-                not is_windows
+                not shared_utils.is_windows()
                 or sb_config.browser == "ie"
                 or sb_config.last_driver.service.process
             ):
@@ -1232,7 +1225,7 @@ def _perform_behave_terminal_summary_():
     equals = "=" * (equals_len + 2)
     c2 = ""
     cr = ""
-    if "linux" not in sys.platform:
+    if not shared_utils.is_linux():
         colorama.init(autoreset=True)
         c2 = colorama.Fore.MAGENTA + colorama.Back.LIGHTYELLOW_EX
         cr = colorama.Style.RESET_ALL

@@ -329,11 +329,11 @@ def SB(
             record_sleep = True
         else:
             record_sleep = False
-    if "linux" not in sys.platform:
+    if not shared_utils.is_linux():
         # The Xvfb virtual display server is for Linux OS Only!
         xvfb = False
     if (
-        "linux" in sys.platform
+        shared_utils.is_linux()
         and not headed
         and not headless
         and not headless2

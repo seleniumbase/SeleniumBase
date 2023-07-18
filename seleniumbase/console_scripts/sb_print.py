@@ -154,6 +154,8 @@ def main():
             w = 6
         if num_lines >= 1000:
             w = 7
+        if num_lines >= 10000:
+            w = 8
 
     if is_python_file:
         new_sb_lines = []

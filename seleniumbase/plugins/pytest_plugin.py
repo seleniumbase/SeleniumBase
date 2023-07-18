@@ -8,10 +8,8 @@ from seleniumbase import config as sb_config
 from seleniumbase.config import settings
 from seleniumbase.core import log_helper
 from seleniumbase.fixtures import constants
+from seleniumbase.fixtures import shared_utils
 
-is_windows = False
-if sys.platform in ["win32", "win64", "x64"]:
-    is_windows = True
 python3_11_or_newer = False
 if sys.version_info >= (3, 11):
     python3_11_or_newer = True
@@ -99,8 +97,8 @@ def pytest_addoption(parser):
     --incognito  (Enable Chrome's Incognito mode.)
     --guest  (Enable Chrome's Guest mode.)
     --devtools  (Open Chrome's DevTools when the browser opens.)
-    --reuse-session | --rs  (Reuse browser session for all tests.)
-    --reuse-class-session | --rcs  (Reuse session for tests in class.)
+    --rs | --reuse-session  (Reuse browser session for all tests.)
+    --rcs | --reuse-class-session  (Reuse session for tests in class.)
     --crumbs  (Delete all cookies between tests reusing a session.)
     --disable-beforeunload  (Disable the "beforeunload" event on Chrome.)
     --window-size=WIDTH,HEIGHT  (Set the browser's starting window size.)
@@ -1854,7 +1852,10 @@ def pytest_runtest_teardown(item):
                         and self.driver
                         and "--pdb" not in sys_argv
                     ):
-                        if not is_windows or self.driver.service.process:
+                        if not (
+                            shared_utils.is_windows()
+                            or self.driver.service.process
+                        ):
                             self.driver.quit()
                 except Exception:
                     pass
@@ -1864,7 +1865,7 @@ def pytest_runtest_teardown(item):
             ):
                 try:
                     if (
-                        not is_windows
+                        not shared_utils.is_windows()
                         or sb_config._sb_pdb_driver.service.process
                     ):
                         sb_config._sb_pdb_driver.quit()
@@ -1982,7 +1983,7 @@ def _perform_pytest_unconfigure_():
         if sb_config.shared_driver:
             try:
                 if (
-                    not is_windows
+                    not shared_utils.is_windows()
                     or sb_config.browser == "ie"
                     or sb_config.shared_driver.service.process
                 ):

@@ -20,6 +20,7 @@ import subprocess
 import sys
 from seleniumbase import config as sb_config
 from seleniumbase.fixtures import page_utils
+from seleniumbase.fixtures import shared_utils
 
 sb_config.rec_subprocess_p = None
 sb_config.rec_subprocess_used = False
@@ -179,7 +180,7 @@ def do_playback(file_name, use_chrome, window, demo_mode=False):
         )
         return
     command = "%s -m pytest %s -q -s" % (sys.executable, file_name)
-    if "linux" in sys.platform:
+    if shared_utils.is_linux():
         command += " --gui"
     if not use_chrome:
         command += " --edge"
@@ -319,7 +320,7 @@ def end_program():
 
 def main():
     use_colors = True
-    if "linux" in sys.platform:
+    if shared_utils.is_linux():
         use_colors = False
     c0, c1, c2, c3, c4, cr = set_colors(use_colors)
     message = ""

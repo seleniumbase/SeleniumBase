@@ -40,7 +40,6 @@ import colorama
 import sys
 import time
 from seleniumbase.fixtures import constants
-from seleniumbase.fixtures import shared_utils
 
 colorama.init(autoreset=True)
 
@@ -144,8 +143,8 @@ def show_install_usage():
     print("           sbase get chromedriver")
     print("           sbase get geckodriver")
     print("           sbase get edgedriver")
-    print("           sbase get chromedriver 112")
-    print("           sbase get chromedriver 112.0.5615.49")
+    print("           sbase get chromedriver 114")
+    print("           sbase get chromedriver 114.0.5735.90")
     print("           sbase get chromedriver latest")
     print("           sbase get chromedriver latest-1")
     print("           sbase get chromedriver -p")
@@ -976,12 +975,14 @@ def main():
             retry_msg_1 = "* Unable to download driver! Retrying in 3s..."
             retry_msg_2 = "** Unable to download driver! Retrying in 5s..."
             if " --proxy=" in " ".join(sys.argv):
+                from seleniumbase.core import proxy_helper
+
                 for arg in sys.argv:
                     if arg.startswith("--proxy="):
                         proxy_string = arg.split("--proxy=")[1]
                         if "@" in proxy_string:
                             proxy_string = proxy_string.split("@")[1]
-                        shared_utils.validate_proxy_string(proxy_string)
+                        proxy_helper.validate_proxy_string(proxy_string)
                         break
             try:
                 sb_install.main()

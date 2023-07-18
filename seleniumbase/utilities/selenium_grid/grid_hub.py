@@ -3,6 +3,7 @@ import os
 import subprocess
 import sys
 from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
+from seleniumbase.fixtures import shared_utils
 
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 # Make sure that the SeleniumBase DRIVER_DIR is at the top of the System PATH
@@ -85,7 +86,7 @@ def main():
 
     download_selenium_server.main(force_download=False)  # Only runs if needed
 
-    if "linux" in sys.platform or "darwin" in sys.platform:
+    if shared_utils.is_linux() or shared_utils.is_mac():
         if grid_hub_command == "start":
             subprocess.check_call(
                 dir_path + "/grid-hub start %s" % timeout, shell=True

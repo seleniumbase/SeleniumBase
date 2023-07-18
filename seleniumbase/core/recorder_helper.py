@@ -1,4 +1,4 @@
-"""Generating SeleniumBase Python code from the Recorder."""
+"""Generating SeleniumBase Python code from the Recorder"""
 
 
 def generate_sbase_code(srt_actions):

@@ -1,7 +1,4 @@
-"""
-This module contains useful Javascript utility methods for base_case.py
-These helper methods SHOULD NOT be called directly from tests.
-"""
+"""This module contains useful Javascript utility methods for BaseCase."""
 import re
 import requests
 import time
@@ -13,16 +10,14 @@ from seleniumbase.fixtures import constants
 
 
 def wait_for_ready_state_complete(driver, timeout=settings.LARGE_TIMEOUT):
-    """
-    The DOM (Document Object Model) has a property called "readyState".
+    """The DOM (Document Object Model) has a property called "readyState".
     When the value of this becomes "complete", page resources are considered
       fully loaded (although AJAX and other loads might still be happening).
     This method will wait until document.readyState == "complete".
     This may be redundant, as methods already wait for page elements to load.
     If the timeout is exceeded, the test will still continue
       because readyState == "interactive" may be good enough.
-    (Previously, tests would fail immediately if exceeding the timeout.)
-    """
+    (Previously, tests would fail immediately if exceeding the timeout.)"""
     if hasattr(settings, "SKIP_JS_WAITS") and settings.SKIP_JS_WAITS:
         return
     if sb_config.time_limit and not sb_config.recorder_mode:
@@ -157,8 +152,8 @@ def raise_unable_to_load_jquery_exception(driver):
 
 
 def activate_jquery(driver):
-    """If "jQuery is not defined" on a website, use this method to activate it.
-    This method is needed because jQuery is not always defined on web sites."""
+    # If "jQuery is not defined" on a website, use this method to activate it.
+    # This method is needed because jQuery is not always defined on web sites.
     try:
         # Let's first find out if jQuery is already defined.
         driver.execute_script("jQuery('html');")
@@ -191,8 +186,7 @@ def are_quotes_escaped(string):
 
 
 def escape_quotes_if_needed(string):
-    """
-    re.escape() works differently in Python 3.7.0 than earlier versions:
+    """re.escape() works differently in Python 3.7.0 than earlier versions:
 
     Python 3.6.5:
     >>> import re
@@ -215,10 +209,8 @@ def escape_quotes_if_needed(string):
 
 
 def is_in_frame(driver):
-    """
-    Returns True if the driver has switched to a frame.
-    Returns False if the driver was on default content.
-    """
+    # Returns True if the driver has switched to a frame.
+    # Returns False if the driver was on default content.
     in_basic_frame = driver.execute_script(
         """
         var frame = window.frameElement;

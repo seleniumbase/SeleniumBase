@@ -1,4 +1,4 @@
-"""The plugin for recording test results in the Testcase Database."""
+"""DB Reporting Plugin for SeleniumBase tests that use pynose / nosetests"""
 import time
 import uuid
 from nose.plugins import Plugin
@@ -76,7 +76,7 @@ class DBReporting(Plugin):
         self.testcase_manager.insert_execution_data(exec_payload)
 
     def startTest(self, test):
-        """At the start of the test, set the testcase details."""
+        """At the start of the test, set testcase details."""
         from seleniumbase.core.application_manager import ApplicationManager
         from seleniumbase.core.testcase_manager import TestcaseDataPayload
 

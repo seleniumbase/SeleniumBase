@@ -1,4 +1,4 @@
-"""SeleniumBase constants are stored in this file."""
+"""SeleniumBase constants"""
 from seleniumbase.core import encoded_images
 
 

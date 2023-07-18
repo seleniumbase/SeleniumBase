@@ -27,13 +27,10 @@ if sys.version_info <= (3, 7):
         "\n* SBase Case Plans Generator requires Python 3.7 or newer!"
         "\n** You are currently using Python %s" % current_version
     )
+from seleniumbase.fixtures import shared_utils
 import tkinter as tk  # noqa: E402
 from tkinter import messagebox  # noqa: E402
 from tkinter.scrolledtext import ScrolledText  # noqa: E402
-
-is_windows = False
-if sys.platform in ["win32", "win64", "x64"]:
-    is_windows = True
 
 
 def set_colors(use_colors):
@@ -404,7 +401,7 @@ def create_tkinter_gui(tests, command_string):
         row += " " * 200
         ara[count] = tk.IntVar()
         cb = None
-        if not is_windows:
+        if not shared_utils.is_windows():
             cb = tk.Checkbutton(
                 text_area,
                 text=(row),

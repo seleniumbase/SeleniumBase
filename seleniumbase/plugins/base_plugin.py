@@ -1,4 +1,4 @@
-"""The Nosetest plugin for setting base configuration and logging."""
+"""Base Plugin for SeleniumBase tests that run with pynose / nosetests"""
 import ast
 import sys
 import time

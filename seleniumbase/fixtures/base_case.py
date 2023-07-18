@@ -87,9 +87,7 @@ logging.getLogger("requests").setLevel(logging.ERROR)
 logging.getLogger("urllib3").setLevel(logging.ERROR)
 urllib3.disable_warnings()
 LOGGER.setLevel(logging.WARNING)
-is_windows = False
-if sys.platform in ["win32", "win64", "x64"]:
-    is_windows = True
+is_windows = shared_utils.is_windows()
 python3_11_or_newer = False
 if sys.version_info >= (3, 11):
     python3_11_or_newer = True
@@ -13676,11 +13674,9 @@ class BaseCase(unittest.TestCase):
                 )
                 from seleniumbase.core.testcase_manager import (
                     ExecutionQueryPayload,
-                )
-                from seleniumbase.core.testcase_manager import (
                     TestcaseDataPayload,
+                    TestcaseManager,
                 )
-                from seleniumbase.core.testcase_manager import TestcaseManager
 
                 self.execution_guid = str(uuid.uuid4())
                 self.testcase_guid = None

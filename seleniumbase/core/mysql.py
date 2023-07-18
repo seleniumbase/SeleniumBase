@@ -1,4 +1,4 @@
-"""Wrapper for MySQL DB functions."""
+"""Wrapper for MySQL DB functions"""
 
 
 class DatabaseManager:

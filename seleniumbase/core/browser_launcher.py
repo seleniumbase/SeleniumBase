@@ -1,7 +1,6 @@
 import fasteners
 import logging
 import os
-import platform
 import re
 import shutil
 import subprocess
@@ -16,17 +15,17 @@ from selenium.webdriver.common.service import utils as service_utils
 from selenium.webdriver.edge.service import Service as EdgeService
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.safari.service import Service as SafariService
+from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
+from seleniumbase import extensions  # browser extensions storage folder
 from seleniumbase.config import settings
 from seleniumbase.core import download_helper
 from seleniumbase.core import proxy_helper
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import shared_utils
-from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
-from seleniumbase import extensions  # browser extensions storage folder
 
 urllib3.disable_warnings()
 selenium4_or_newer = False
-if sys.version_info[0] == 3 and sys.version_info[1] >= 7:
+if sys.version_info >= (3, 7):
     selenium4_or_newer = True
     from selenium.webdriver.common.options import ArgOptions
 
@@ -52,16 +51,6 @@ PROXY_ZIP_PATH = proxy_helper.PROXY_ZIP_PATH
 PROXY_ZIP_LOCK = proxy_helper.PROXY_ZIP_LOCK
 PROXY_DIR_PATH = proxy_helper.PROXY_DIR_PATH
 PROXY_DIR_LOCK = proxy_helper.PROXY_DIR_LOCK
-PLATFORM = sys.platform
-IS_ARM_MAC = False
-if (
-    "darwin" in PLATFORM
-    and (
-        "arm" in platform.processor().lower()
-        or "arm64" in platform.version().lower()
-    )
-):
-    IS_ARM_MAC = True
 LOCAL_CHROMEDRIVER = None
 LOCAL_GECKODRIVER = None
 LOCAL_EDGEDRIVER = None
@@ -69,21 +58,17 @@ LOCAL_IEDRIVER = None
 LOCAL_HEADLESS_IEDRIVER = None
 LOCAL_OPERADRIVER = None
 LOCAL_UC_DRIVER = None
-IS_WINDOWS = False
-IS_LINUX = False
-IS_MAC = False
-if "darwin" in PLATFORM or "linux" in PLATFORM:
+IS_ARM_MAC = shared_utils.is_arm_mac()
+IS_MAC = shared_utils.is_mac()
+IS_LINUX = shared_utils.is_linux()
+IS_WINDOWS = shared_utils.is_windows()
+if IS_MAC or IS_LINUX:
     LOCAL_CHROMEDRIVER = DRIVER_DIR + "/chromedriver"
     LOCAL_GECKODRIVER = DRIVER_DIR + "/geckodriver"
     LOCAL_EDGEDRIVER = DRIVER_DIR + "/msedgedriver"
     LOCAL_OPERADRIVER = DRIVER_DIR + "/operadriver"
     LOCAL_UC_DRIVER = DRIVER_DIR + "/uc_driver"
-    if "darwin" in PLATFORM:
-        IS_MAC = True
-    elif "linux" in PLATFORM:
-        IS_LINUX = True
-elif "win32" in PLATFORM or "win64" in PLATFORM or "x64" in PLATFORM:
-    IS_WINDOWS = True
+elif IS_WINDOWS:
     LOCAL_EDGEDRIVER = DRIVER_DIR + "/msedgedriver.exe"
     LOCAL_IEDRIVER = DRIVER_DIR + "/IEDriverServer.exe"
     LOCAL_HEADLESS_IEDRIVER = DRIVER_DIR + "/headless_ie_selenium.exe"
@@ -1128,7 +1113,7 @@ def get_driver(
                     "that has authentication! (If using a proxy server "
                     "without auth, Chrome, Edge, or Firefox may be used.)"
                 )
-        proxy_string = shared_utils.validate_proxy_string(proxy_string)
+        proxy_string = proxy_helper.validate_proxy_string(proxy_string)
         if proxy_string and proxy_user and proxy_pass:
             proxy_auth = True
     elif proxy_pac_url:

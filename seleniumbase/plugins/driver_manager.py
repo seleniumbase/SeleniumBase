@@ -111,6 +111,7 @@ def Driver(
     pls=None,  # Shortcut / Duplicate of "page_load_strategy".
 ):
     from seleniumbase.fixtures import constants
+    from seleniumbase.fixtures import shared_utils
 
     sys_argv = sys.argv
     browser_changes = 0
@@ -251,7 +252,7 @@ def Driver(
         recorder_mode = True
         recorder_ext = True
     if (
-        "linux" in sys.platform
+        shared_utils.is_linux()
         and not headed
         and not headless
         and not headless2

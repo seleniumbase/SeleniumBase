@@ -23,12 +23,9 @@ if sys.version_info <= (3, 7):
         "\n* SBase Commander requires Python 3.7 or newer!"
         "\n** You are currently using Python %s" % current_version
     )
+from seleniumbase.fixtures import shared_utils
 import tkinter as tk  # noqa: E402
 from tkinter.scrolledtext import ScrolledText  # noqa: E402
-
-is_windows = False
-if sys.platform in ["win32", "win64", "x64"]:
-    is_windows = True
 
 
 def set_colors(use_colors):
@@ -127,7 +124,7 @@ def do_behave_run(
 
     if headless:
         full_run_command += " -D headless"
-    elif "linux" in sys.platform:
+    elif shared_utils.is_linux():
         full_run_command += " -D gui"
 
     if save_screenshots:
@@ -188,7 +185,7 @@ def create_tkinter_gui(tests, command_string, t_count, f_count, s_tests):
         "Use Edge Browser  (-D edge)",
         "Use Firefox Browser  (-D firefox)",
     ]
-    if "darwin" in sys.platform:
+    if shared_utils.is_mac():
         options_list.append("Use Safari Browser  (-D safari)")
     brx = tk.StringVar(root)
     brx.set(options_list[0])
@@ -267,7 +264,7 @@ def create_tkinter_gui(tests, command_string, t_count, f_count, s_tests):
         row += " " * 200
         ara[count] = tk.IntVar()
         cb = None
-        if not is_windows:
+        if not shared_utils.is_windows():
             cb = tk.Checkbutton(
                 text_area,
                 text=(row),
@@ -362,7 +359,7 @@ def create_tkinter_gui(tests, command_string, t_count, f_count, s_tests):
 
 def main():
     use_colors = True
-    if "linux" in sys.platform:
+    if shared_utils.is_linux():
         use_colors = False
     c0, c1, c2, c3, c4, c5, c6, cr = set_colors(use_colors)
     command_args = sys.argv[2:]
@@ -414,7 +411,7 @@ def main():
     f_count = 0
     s_count = 0
     t_count = 0
-    if is_windows:
+    if shared_utils.is_windows():
         output = output.decode("latin1")
     else:
         output = output.decode("utf-8")

@@ -1,4 +1,4 @@
-"""The plugin for capturing & storing the page source on errors & failures."""
+"""PageSource Plugin for SeleniumBase tests that run with pynose / nosetests"""
 import os
 import codecs
 from nose.plugins import Plugin
@@ -7,7 +7,7 @@ from seleniumbase.core import log_helper
 
 
 class PageSource(Plugin):
-    """Capture the page source when a test fails or raises an error."""
+    """Capture the page source after a test fails."""
     name = "page_source"  # Usage: --with-page_source
     logfile_name = settings.PAGE_SOURCE_NAME
 
@@ -24,7 +24,6 @@ class PageSource(Plugin):
         try:
             page_source = test.driver.page_source
         except Exception:
-            # Since we can't get the page source from here, skip saving it
             return
         test_logpath = self.options.log_path + "/" + test.id()
         if not os.path.exists(test_logpath):
@@ -41,7 +40,6 @@ class PageSource(Plugin):
         try:
             page_source = test.driver.page_source
         except Exception:
-            # Since we can't get the page source from here, don't save it.
             return
         test_logpath = self.options.log_path + "/" + test.id()
         if not os.path.exists(test_logpath):
