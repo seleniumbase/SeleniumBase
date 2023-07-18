@@ -14030,7 +14030,17 @@ class BaseCase(unittest.TestCase):
                         ignore_test_time_limit=True,
                     )
                 try:
-                    self.__last_page_screenshot = element.screenshot_as_base64
+                    if (
+                        hasattr(settings, "SCREENSHOT_WITH_BACKGROUND")
+                        and settings.SCREENSHOT_WITH_BACKGROUND
+                    ):
+                        self.__last_page_screenshot = (
+                            self.driver.get_screenshot_as_base64()
+                        )
+                    else:
+                        self.__last_page_screenshot = (
+                            element.screenshot_as_base64
+                        )
                 except Exception:
                     try:
                         self.__last_page_screenshot = (

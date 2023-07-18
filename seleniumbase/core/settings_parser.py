@@ -75,6 +75,8 @@ def set_settings(settings_file):
             settings.ARCHIVE_EXISTING_LOGS = override_settings[key]
         elif key == "ARCHIVE_EXISTING_DOWNLOADS":
             settings.ARCHIVE_EXISTING_DOWNLOADS = override_settings[key]
+        elif key == "SCREENSHOT_WITH_BACKGROUND":
+            settings.SCREENSHOT_WITH_BACKGROUND = override_settings[key]
         elif key == "SCREENSHOT_NAME":
             settings.SCREENSHOT_NAME = override_settings[key]
         elif key == "BASIC_INFO_NAME":
