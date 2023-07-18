@@ -65,6 +65,7 @@ from seleniumbase.common.exceptions import (
     NotConnectedException,
     NotUsingChromeException,
     NotUsingChromiumException,
+    ProxyConnectionException,
     OutOfScopeException,
     VisualException,
 )
@@ -261,6 +262,7 @@ class BaseCase(unittest.TestCase):
             elif (
                 "ERR_INTERNET_DISCONNECTED" in e.msg
                 or "neterror?e=dnsNotFound" in e.msg
+                or "ERR_PROXY_CONNECTION_FAILED" in e.msg
             ):
                 shared_utils.check_if_time_limit_exceeded()
                 self.__check_browser()
@@ -272,8 +274,13 @@ class BaseCase(unittest.TestCase):
                         "ERR_INTERNET_DISCONNECTED" in e2.msg
                         or "neterror?e=dnsNotFound" in e2.msg
                     ):
-                        message = "Internet unreachable!"
+                        message = "ERR_INTERNET_DISCONNECTED: "
+                        message += "Internet unreachable!"
                         raise NotConnectedException(message)
+                    elif "ERR_PROXY_CONNECTION_FAILED" in e2.msg:
+                        message = "ERR_PROXY_CONNECTION_FAILED: "
+                        message += "Internet unreachable and/or invalid proxy!"
+                        raise ProxyConnectionException(message)
                     else:
                         raise
             elif "Timed out receiving message from renderer" in e.msg:

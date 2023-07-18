@@ -5,6 +5,7 @@
     NotUsingChromeException => Used by Chrome-only methods if not using Chrome.
     NotUsingChromiumException => Used by Chromium-only methods if not Chromium.
     OutOfScopeException => Used by BaseCase methods when setUp() is skipped.
+    ProxyConnectionException => Called when the proxy connection failed.
     TextNotVisibleException => Called when expected text fails to appear.
     TimeLimitExceededException => Called when exceeding "--time-limit=SECONDS".
     TimeoutException => Called when some timeout limit has been exceeded.
@@ -33,6 +34,10 @@ class NotUsingChromiumException(Exception):
 
 
 class OutOfScopeException(Exception):
+    pass
+
+
+class ProxyConnectionException(Exception):
     pass
 
 
