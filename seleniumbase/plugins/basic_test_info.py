@@ -1,4 +1,4 @@
-"""The plugin for saving basic test info for Selenium tests."""
+"""Test Info Plugin for SeleniumBase tests that run with pynose / nosetests"""
 import os
 import codecs
 import time

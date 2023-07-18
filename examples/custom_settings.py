@@ -19,9 +19,21 @@ PAGE_LOAD_TIMEOUT = 120
 # Selenium default = "normal"
 PAGE_LOAD_STRATEGY = "normal"
 
-# If False, only logs from the most recent test run will be saved.
+# If True, existing logs from past test runs will be saved and take up space.
+# If False, only the logs from the most recent test run will be saved locally.
+# You can also archive existing logs on the command line with: "--archive_logs"
 ARCHIVE_EXISTING_LOGS = False
+
+# If True, existing downloads from past runs will be saved and take up space.
+# If False, only the downloads from the most recent run will be saved locally.
 ARCHIVE_EXISTING_DOWNLOADS = False
+
+# If True, the last page screenshot will include the <body> and background.
+# If False, the last page screenshot will only include the <body> section.
+# Depending on the screen size, including a background could make the <body>
+# appear very small in the screenshot, which may require manually zooming in
+# on the <body> to see page details if you decide to include the background.
+SCREENSHOT_WITH_BACKGROUND = False
 
 # If True, switch to new tabs automatically if a click opens a new one.
 # (Only happens if the initial tab is still on same URL as before.)

@@ -1,4 +1,4 @@
-"""This module contains useful utility methods."""
+"""This module contains useful utility methods"""
 import codecs
 import fasteners
 import os

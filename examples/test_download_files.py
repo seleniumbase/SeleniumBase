@@ -1,6 +1,7 @@
 """Use SeleniumBase to download files and verify."""
 import math
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 
 class DownloadTests(BaseCase):

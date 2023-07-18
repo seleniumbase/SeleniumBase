@@ -6,8 +6,7 @@ class ConvertibleToCssTranslator(GenericTranslator):
     """An implementation of :py:class:`cssselect.GenericTranslator` with
     XPath output that more readily converts back to CSS selectors.
     The simplified examples in https://devhints.io/xpath were used as a
-    reference here.
-    """
+    reference here."""
 
     def css_to_xpath(self, css, prefix="//"):
         return super().css_to_xpath(css, prefix)

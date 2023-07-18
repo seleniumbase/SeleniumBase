@@ -26,7 +26,6 @@ __all__ = (
     "CDP",
     "find_chrome_executable",
 )
-
 logger = logging.getLogger("uc")
 logger.setLevel(logging.getLogger().getEffectiveLevel())
 sys_plat = sys.platform
@@ -182,22 +181,14 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                 try:
                     language = m[1]
                 except IndexError:
-                    logger.debug("will set the language to en-US,en;q=0.9")
                     language = "en-US,en;q=0.9"
             if "user-data-dir" in arg:
                 m = re.search("(?:--)?user-data-dir(?:[ =])?(.*)", arg)
                 try:
                     user_data_dir = m[1]
-                    logger.debug(
-                        "user-data-dir found in user argument %s => %s"
-                        % (arg, m[1])
-                    )
                     keep_user_data_dir = True
                 except IndexError:
-                    logger.debug(
-                        "No user data dir extracted from supplied argument %s"
-                        % arg
-                    )
+                    pass
         if not user_data_dir:
             if hasattr(options, "user_data_dir") and getattr(
                 options, "user_data_dir", None
@@ -206,21 +197,14 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                     "--user-data-dir=%s" % options.user_data_dir
                 )
                 keep_user_data_dir = True
-                logger.debug(
-                    "user_data_dir property found in options object: %s"
-                    % user_data_dir
-                )
             else:
                 import tempfile
 
                 user_data_dir = os.path.normpath(tempfile.mkdtemp())
                 keep_user_data_dir = False
                 arg = "--user-data-dir=%s" % user_data_dir
+                # Create a temporary folder for the user-data profile.
                 options.add_argument(arg)
-                logger.debug(
-                    "Created a temporary folder for the user-data profile.\n"
-                    "Also added it to the Chrome startup arguments: %s" % arg
-                )
         if not language:
             try:
                 import locale
@@ -279,9 +263,8 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                 fs.seek(0, 0)
                 fs.truncate()
                 json.dump(config, fs)
-                logger.debug("Fixed exit_type flag.")
         except Exception:
-            logger.debug("Did not find a bad exit_type flag.")
+            pass
         creationflags = 0
         if "win32" in sys_plat or "win64" in sys_plat or "x64" in sys_plat:
             creationflags = subprocess.CREATE_NO_WINDOW
@@ -338,10 +321,6 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
             original = super().__getattribute__(item)
             if inspect.ismethod(original) and not inspect.isclass(original):
                 def newfunc(*args, **kwargs):
-                    logger.debug(
-                        "calling %s with args %s and kwargs %s\n"
-                        % (original.__qualname__, args, kwargs)
-                    )
                     return original(*args, **kwargs)
                 return newfunc
             return original
@@ -412,7 +391,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         return None
 
     def tab_new(self, url):
-        """This opens a url in a new tab."""
+        """Open url in a new tab."""
         if not hasattr(self, "cdp"):
             self.cdp = CDP(self.options)
         self.cdp.tab_new(str(url))
@@ -428,20 +407,21 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         """This can be useful when sites use heavy detection methods:
         - Stops the chromedriver service that runs in the background.
         - Starts the chromedriver service that runs in the background.
-        - Recreates the session. """
-        try:
-            self.service.stop()
-        except Exception as e:
-            logger.debug(e)
-        time.sleep(timeout)
-        try:
-            self.service.start()
-        except Exception as e:
-            logger.debug(e)
+        - Recreates the session."""
+        if hasattr(self, "service"):
+            try:
+                self.service.stop()
+            except Exception:
+                pass
+            time.sleep(timeout)
+            try:
+                self.service.start()
+            except Exception:
+                pass
         try:
             self.start_session()
-        except Exception as e:
-            logger.debug(e)
+        except Exception:
+            pass
 
     def start_session(self, capabilities=None):
         if not capabilities:

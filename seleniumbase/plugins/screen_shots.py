@@ -1,11 +1,11 @@
-"""The screenshot plugin for selenium tests that run with nosetests."""
+"""Screenshot Plugin for SeleniumBase tests that run with pynose / nosetests"""
 import os
 from nose.plugins import Plugin
 from seleniumbase.config import settings
 
 
 class ScreenShots(Plugin):
-    """This plugin takes a screenshot when a test fails or raises an error."""
+    """This plugin takes a screenshot when a test fails."""
     name = "screen_shots"
     logfile_name = settings.SCREENSHOT_NAME
 

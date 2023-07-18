@@ -1,7 +1,5 @@
-"""
-This module contains methods for opening jquery-confirm boxes.
-These helper methods SHOULD NOT be called directly from tests.
-"""
+"""This module contains methods for opening jquery-confirm boxes.
+These helper methods SHOULD NOT be called directly from tests."""
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import js_utils
 

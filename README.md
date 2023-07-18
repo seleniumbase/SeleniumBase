@@ -136,7 +136,7 @@ class CoffeeCartTest(BaseCase):
 
 <p>💡 With raw Selenium, commands that use selectors need to specify the type of selector (eg. <code>"css selector", "button#myButton"</code>). With SeleniumBase, there's auto-detection between CSS Selectors and XPath, which means you don't need to specify the type of selector in your commands (<i>but optionally you could</i>).</p>
 
-<p>💡 SeleniumBase methods often perform multiple actions in a single method call. For example, <code>self.type(selector,text)</code> does the following:<br />1. Waits for the element to be visible.<br />2. Waits for the element to be interactive.<br />3. Clears the text field.<br />4. Types in the new text.<br />5. Presses Enter/Submit if the text ends in "\n".<br />With raw Selenium, those actions require multiple method calls.</p>
+<p>💡 SeleniumBase methods often perform multiple actions in a single method call. For example, <code>self.type(selector,text)</code> does the following:<br />1. Waits for the element to be visible.<br />2. Waits for the element to be interactive.<br />3. Clears the text field.<br />4. Types in the new text.<br />5. Presses Enter/Submit if the text ends in <code>"\n"</code>.<br />With raw Selenium, those actions require multiple method calls.</p>
 
 <p>💡 SeleniumBase uses default timeout values when not set:<br />
 ✅<code>self.click("button")</code><br />
@@ -659,8 +659,8 @@ pytest test_coffee_cart.py --trace
 --incognito  # (Enable Chrome's Incognito mode.)
 --guest  # (Enable Chrome's Guest mode.)
 --devtools  # (Open Chrome's DevTools when the browser opens.)
---reuse-session | --rs  # (Reuse browser session for all tests.)
---reuse-class-session | --rcs  # (Reuse session for tests in class.)
+--rs | --reuse-session  # (Reuse browser session for all tests.)
+--rcs | --reuse-class-session  # (Reuse session for tests in class.)
 --crumbs  # (Delete all cookies between tests reusing a session.)
 --disable-beforeunload  # (Disable the "beforeunload" event on Chrome.)
 --window-size=WIDTH,HEIGHT  # (Set the browser's starting window size.)

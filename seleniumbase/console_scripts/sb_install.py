@@ -14,8 +14,8 @@ Examples:
          sbase get chromedriver
          sbase get geckodriver
          sbase get edgedriver
-         sbase get chromedriver 112
-         sbase get chromedriver 112.0.5615.49
+         sbase get chromedriver 114
+         sbase get chromedriver 114.0.5735.90
          sbase get chromedriver latest
          sbase get chromedriver latest-1  # (Latest minus one)
          sbase get chromedriver -p
@@ -32,6 +32,7 @@ import platform
 import requests
 import shutil
 import sys
+import time
 import tarfile
 import urllib3
 import zipfile
@@ -42,26 +43,18 @@ from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
 
 urllib3.disable_warnings()
 selenium4_or_newer = False
-if sys.version_info[0] == 3 and sys.version_info[1] >= 7:
+if sys.version_info >= (3, 7):
     selenium4_or_newer = True
-IS_ARM_MAC = False
-if (
-    sys.platform.endswith("darwin")
-    and (
-        "arm" in platform.processor().lower()
-        or "arm64" in platform.version().lower()
-    )
-):
-    IS_ARM_MAC = True
-PLAT = sys.platform
-IS_WINDOWS = False
-if "win32" in PLAT or "win64" in PLAT or "x64" in PLAT or "x86" in PLAT:
-    IS_WINDOWS = True
+ARCH = platform.architecture()[0]
+IS_ARM_MAC = shared_utils.is_arm_mac()
+IS_MAC = shared_utils.is_mac()
+IS_LINUX = shared_utils.is_linux()
+IS_WINDOWS = shared_utils.is_windows()
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 LOCAL_PATH = "/usr/local/bin/"  # On Mac and Linux systems
 DEFAULT_CHROMEDRIVER_VERSION = "72.0.3626.69"  # (If can't find LATEST_STABLE)
 DEFAULT_GECKODRIVER_VERSION = "v0.33.0"
-DEFAULT_EDGEDRIVER_VERSION = "112.0.1722.58"  # (If can't find LATEST_STABLE)
+DEFAULT_EDGEDRIVER_VERSION = "114.0.1823.82"  # (If can't find LATEST_STABLE)
 DEFAULT_OPERADRIVER_VERSION = "v.96.0.4664.45"
 
 
@@ -86,8 +79,8 @@ def invalid_run_command():
     exp += "           sbase get chromedriver\n"
     exp += "           sbase get geckodriver\n"
     exp += "           sbase get edgedriver\n"
-    exp += "           sbase get chromedriver 112\n"
-    exp += "           sbase get chromedriver 112.0.5615.49\n"
+    exp += "           sbase get chromedriver 114\n"
+    exp += "           sbase get chromedriver 114.0.5735.90\n"
     exp += "           sbase get chromedriver latest\n"
     exp += "           sbase get chromedriver latest-1\n"
     exp += "           sbase get chromedriver -p\n"
@@ -124,6 +117,8 @@ def requests_get_with_retry(url):
     protocol = "http"
     user_and_pass = None
     if " --proxy=" in " ".join(sys.argv):
+        from seleniumbase.core import proxy_helper
+
         for arg in sys.argv:
             if arg.startswith("--proxy="):
                 proxy_string = arg.split("--proxy=")[1]
@@ -144,7 +139,7 @@ def requests_get_with_retry(url):
                     protocol = "socks4"
                 elif "socks5" in proxy_string:
                     protocol = "socks5"
-                proxy_string = shared_utils.validate_proxy_string(proxy_string)
+                proxy_string = proxy_helper.validate_proxy_string(proxy_string)
                 if user_and_pass:
                     proxy_string = "%s@%s" % (user_and_pass, proxy_string)
                 use_proxy = True
@@ -155,8 +150,6 @@ def requests_get_with_retry(url):
         try:
             response = requests.get(url, proxies=proxies)
         except Exception:
-            import time
-
             time.sleep(0.75)
             response = requests.get(url, proxies=proxies)
         return response
@@ -164,8 +157,6 @@ def requests_get_with_retry(url):
         try:
             response = requests.get(url)
         except Exception:
-            import time
-
             time.sleep(0.75)
             response = requests.get(url)
         return response
@@ -220,7 +211,6 @@ def main(override=None, intel_for_uc=None):
     headless_ie_exists = False
     headless_ie_file_name = None
     downloads_folder = DRIVER_DIR
-    sys_plat = sys.platform
     expected_contents = None
     platform_code = None
     inner_folder = None
@@ -236,7 +226,7 @@ def main(override=None, intel_for_uc=None):
     c4 = colorama.Fore.LIGHTRED_EX + colorama.Back.LIGHTWHITE_EX
     c5 = colorama.Fore.RED + colorama.Back.LIGHTWHITE_EX
     cr = colorama.Style.RESET_ALL
-    if "linux" in sys_plat:
+    if IS_LINUX:
         c1 = ""
         c2 = ""
         c3 = ""
@@ -292,7 +282,7 @@ def main(override=None, intel_for_uc=None):
                 copy_to_path = True
             else:
                 invalid_run_command()
-        if "darwin" in sys_plat:
+        if IS_MAC:
             if IS_ARM_MAC and not intel_for_uc:
                 if use_version == "latest" or use_version == "latest-1":
                     use_version = requests_get(last).text
@@ -306,7 +296,7 @@ def main(override=None, intel_for_uc=None):
                 file_name = "chromedriver_mac_arm64.zip"
             else:
                 file_name = "chromedriver_mac64.zip"
-        elif "linux" in sys_plat:
+        elif IS_LINUX:
             file_name = "chromedriver_linux64.zip"
         elif IS_WINDOWS:
             file_name = "chromedriver_win32.zip"  # Works for win32 / win_x64
@@ -394,11 +384,10 @@ def main(override=None, intel_for_uc=None):
                 copy_to_path = True
             else:
                 invalid_run_command()
-        if "darwin" in sys_plat:
+        if IS_MAC:
             file_name = "geckodriver-%s-macos.tar.gz" % use_version
-        elif "linux" in sys_plat:
-            arch = platform.architecture()[0]
-            if "64" in arch:
+        elif IS_LINUX:
+            if "64" in ARCH:
                 file_name = "geckodriver-%s-linux64.tar.gz" % use_version
             else:
                 file_name = "geckodriver-%s-linux32.tar.gz" % use_version
@@ -484,19 +473,19 @@ def main(override=None, intel_for_uc=None):
             else:
                 use_version = DEFAULT_EDGEDRIVER_VERSION
         suffix = None
-        if "win64" in sys_plat or "x64" in sys_plat:
+        if IS_WINDOWS and "64" in ARCH:
             file_name = "edgedriver_win64.zip"
             suffix = "WINDOWS"
-        elif "win32" in sys_plat or "x86" in sys_plat:
+        elif IS_WINDOWS:
             file_name = "edgedriver_win32.zip"
             suffix = "WINDOWS"
-        elif "darwin" in sys_plat:
+        elif IS_MAC:
             if IS_ARM_MAC and int(use_version.split(".")[0]) > 104:
                 file_name = "edgedriver_mac64_m1.zip"
             else:
                 file_name = "edgedriver_mac64.zip"
             suffix = "MACOS"
-        elif "linux" in sys_plat:
+        elif IS_LINUX:
             file_name = "edgedriver_linux64.zip"
             suffix = "LINUX"
         else:
@@ -526,10 +515,10 @@ def main(override=None, intel_for_uc=None):
         major_version = "3.14"
         full_version = "3.14.0"
         use_version = full_version
-        if "win32" in sys_plat:
-            file_name = "IEDriverServer_Win32_%s.zip" % full_version
-        elif "win64" in sys_plat or "x64" in sys_plat:
+        if IS_WINDOWS and "64" in ARCH:
             file_name = "IEDriverServer_x64_%s.zip" % full_version
+        elif IS_WINDOWS:
+            file_name = "IEDriverServer_Win32_%s.zip" % full_version
         else:
             raise Exception(
                 "Sorry! IEDriver is only for "
@@ -568,7 +557,7 @@ def main(override=None, intel_for_uc=None):
                 copy_to_path = True
             else:
                 invalid_run_command()
-        if "darwin" in sys_plat:
+        if IS_MAC:
             file_name = "operadriver_mac64.zip"
             platform_code = "mac64"
             inner_folder = "operadriver_%s/" % platform_code
@@ -577,7 +566,7 @@ def main(override=None, intel_for_uc=None):
                 "operadriver_mac64/operadriver",
                 "operadriver_mac64/sha512_sum",
             ]
-        elif "linux" in sys_plat:
+        elif IS_LINUX:
             file_name = "operadriver_linux64.zip"
             platform_code = "linux64"
             inner_folder = "operadriver_%s/" % platform_code
@@ -586,16 +575,7 @@ def main(override=None, intel_for_uc=None):
                 "operadriver_linux64/operadriver",
                 "operadriver_linux64/sha512_sum",
             ]
-        elif "win32" in sys_plat:
-            file_name = "operadriver_win32.zip"
-            platform_code = "win32"
-            inner_folder = "operadriver_%s/" % platform_code
-            expected_contents = [
-                "operadriver_win32/",
-                "operadriver_win32/operadriver.exe",
-                "operadriver_win32/sha512_sum",
-            ]
-        elif "win64" in sys_plat or "x64" in sys_plat:
+        elif IS_WINDOWS and "64" in ARCH:
             file_name = "operadriver_win64.zip"
             platform_code = "win64"
             inner_folder = "operadriver_%s/" % platform_code
@@ -603,6 +583,15 @@ def main(override=None, intel_for_uc=None):
                 "operadriver_win64/",
                 "operadriver_win64/operadriver.exe",
                 "operadriver_win64/sha512_sum",
+            ]
+        elif IS_WINDOWS:
+            file_name = "operadriver_win32.zip"
+            platform_code = "win32"
+            inner_folder = "operadriver_%s/" % platform_code
+            expected_contents = [
+                "operadriver_win32/",
+                "operadriver_win32/operadriver.exe",
+                "operadriver_win32/sha512_sum",
             ]
         else:
             raise Exception(
@@ -743,7 +732,7 @@ def main(override=None, intel_for_uc=None):
                 new_file = os.path.join(downloads_folder, str(f_name))
                 if (
                     intel_for_uc
-                    and "darwin" in sys_plat
+                    and IS_MAC
                     and new_file.endswith("drivers/chromedriver")
                 ):
                     new_file = new_file.replace(
@@ -806,7 +795,7 @@ def main(override=None, intel_for_uc=None):
                     print("Also copied to: %s%s%s" % (c3, path_file, cr))
             print("")
         elif name == "edgedriver" or name == "msedgedriver":
-            if "darwin" in sys_plat or "linux" in sys_plat:
+            if IS_MAC or IS_LINUX:
                 # Mac / Linux
                 expected_contents = [
                     "Driver_Notes/",
@@ -840,7 +829,7 @@ def main(override=None, intel_for_uc=None):
                 # Remove existing version if exists
                 str_name = str(f_name)
                 new_file = os.path.join(downloads_folder, str_name)
-                if "darwin" in sys_plat or "linux" in sys_plat:
+                if IS_MAC or IS_LINUX:
                     # Mac / Linux
                     if str_name == "msedgedriver":
                         driver_file = str_name

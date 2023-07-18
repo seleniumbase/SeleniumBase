@@ -65,6 +65,7 @@ from seleniumbase.common.exceptions import (
     NotConnectedException,
     NotUsingChromeException,
     NotUsingChromiumException,
+    ProxyConnectionException,
     OutOfScopeException,
     VisualException,
 )
@@ -87,9 +88,7 @@ logging.getLogger("requests").setLevel(logging.ERROR)
 logging.getLogger("urllib3").setLevel(logging.ERROR)
 urllib3.disable_warnings()
 LOGGER.setLevel(logging.WARNING)
-is_windows = False
-if sys.platform in ["win32", "win64", "x64"]:
-    is_windows = True
+is_windows = shared_utils.is_windows()
 python3_11_or_newer = False
 if sys.version_info >= (3, 11):
     python3_11_or_newer = True
@@ -263,6 +262,7 @@ class BaseCase(unittest.TestCase):
             elif (
                 "ERR_INTERNET_DISCONNECTED" in e.msg
                 or "neterror?e=dnsNotFound" in e.msg
+                or "ERR_PROXY_CONNECTION_FAILED" in e.msg
             ):
                 shared_utils.check_if_time_limit_exceeded()
                 self.__check_browser()
@@ -274,8 +274,13 @@ class BaseCase(unittest.TestCase):
                         "ERR_INTERNET_DISCONNECTED" in e2.msg
                         or "neterror?e=dnsNotFound" in e2.msg
                     ):
-                        message = "Internet unreachable!"
+                        message = "ERR_INTERNET_DISCONNECTED: "
+                        message += "Internet unreachable!"
                         raise NotConnectedException(message)
+                    elif "ERR_PROXY_CONNECTION_FAILED" in e2.msg:
+                        message = "ERR_PROXY_CONNECTION_FAILED: "
+                        message += "Internet unreachable and/or invalid proxy!"
+                        raise ProxyConnectionException(message)
                     else:
                         raise
             elif "Timed out receiving message from renderer" in e.msg:
@@ -7266,6 +7271,11 @@ class BaseCase(unittest.TestCase):
         """Return True if the url is a valid url."""
         return page_utils.is_valid_url(url)
 
+    def is_online(self):
+        """Return True if connected to the Internet."""
+        online = self.execute_script("return navigator.onLine;")
+        return online
+
     def is_chromium(self):
         """Return True if the browser is Chrome, Edge, or Opera."""
         self.__check_scope()
@@ -13676,11 +13686,9 @@ class BaseCase(unittest.TestCase):
                 )
                 from seleniumbase.core.testcase_manager import (
                     ExecutionQueryPayload,
-                )
-                from seleniumbase.core.testcase_manager import (
                     TestcaseDataPayload,
+                    TestcaseManager,
                 )
-                from seleniumbase.core.testcase_manager import TestcaseManager
 
                 self.execution_guid = str(uuid.uuid4())
                 self.testcase_guid = None
@@ -14027,7 +14035,17 @@ class BaseCase(unittest.TestCase):
                         ignore_test_time_limit=True,
                     )
                 try:
-                    self.__last_page_screenshot = element.screenshot_as_base64
+                    if (
+                        hasattr(settings, "SCREENSHOT_WITH_BACKGROUND")
+                        and settings.SCREENSHOT_WITH_BACKGROUND
+                    ):
+                        self.__last_page_screenshot = (
+                            self.driver.get_screenshot_as_base64()
+                        )
+                    else:
+                        self.__last_page_screenshot = (
+                            element.screenshot_as_base64
+                        )
                 except Exception:
                     try:
                         self.__last_page_screenshot = (
@@ -15178,16 +15196,16 @@ class BaseCase(unittest.TestCase):
                     )
                     uploaded_files.append(logfile_name)
                 s3_bucket.save_uploaded_file_names(uploaded_files)
-                index_file = s3_bucket.upload_index_file(test_id, guid)
-                print("\n\n*** Log files uploaded: ***\n%s\n" % index_file)
+                index_file = s3_bucket.upload_index_file(
+                    test_id, guid, self.data_path, self.save_data_to_logs
+                )
+                print("\n*** Log files uploaded: ***\n%s\n" % index_file)
                 logging.info(
-                    "\n\n*** Log files uploaded: ***\n%s\n" % index_file
+                    "\n*** Log files uploaded: ***\n%s\n" % index_file
                 )
                 if self.with_db_reporting:
                     from seleniumbase.core.testcase_manager import (
                         TestcaseDataPayload,
-                    )
-                    from seleniumbase.core.testcase_manager import (
                         TestcaseManager,
                     )
 

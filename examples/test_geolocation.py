@@ -36,5 +36,6 @@ class TestGeolocation(BaseCase):
         self.open("https://www.openstreetmap.org/")
         self.click("span.geolocate")
         self.assert_url_contains("48.87645/2.26340")
+        self.save_screenshot_to_logs()
         if not (self.headless or self.headless2 or self.xvfb):
             self.sleep(2.5)

@@ -49,12 +49,11 @@ PATTERN = {
 
 
 def os_name():
-    pl = sys.platform
-    if pl == "linux" or pl == "linux2":
+    if "linux" in sys.platform:
         return OSType.LINUX
-    elif pl == "darwin":
+    elif "darwin" in sys.platform:
         return OSType.MAC
-    elif pl == "win32":
+    elif "win32" in sys.platform:
         return OSType.WIN
     else:
         raise Exception("Could not determine the OS type!")

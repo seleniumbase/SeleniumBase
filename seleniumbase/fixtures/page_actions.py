@@ -1,12 +1,10 @@
-"""
-This module contains a set of methods that can be used for page loads and
-for waiting for elements to appear on a page.
+"""This module contains useful methods for waiting on elements to load.
 
-These methods improve on and expand existing WebDriver commands.
+These methods improve and expand on existing WebDriver commands.
 Improvements include making WebDriver commands more robust and more reliable
 by giving page elements enough time to load before taking action on them.
 
-The default option for searching for elements is by CSS Selector.
+The default option for searching for elements is by "css selector".
 This can be changed by overriding the "By" parameter from this import:
 > from selenium.webdriver.common.by import By
 Options are:
@@ -19,7 +17,6 @@ By.XPATH               # "xpath"
 By.TAG_NAME            # "tag name"
 By.PARTIAL_LINK_TEXT   # "partial link text"
 """
-
 import codecs
 import os
 import time

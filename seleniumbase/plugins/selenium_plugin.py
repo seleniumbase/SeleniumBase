@@ -1,14 +1,11 @@
-"""The Nosetest plugin for setting Selenium test configuration."""
+"""Selenium Plugin for SeleniumBase tests that run with pynose / nosetests"""
 import sys
 from nose.plugins import Plugin
 from seleniumbase import config as sb_config
 from seleniumbase.config import settings
 from seleniumbase.core import proxy_helper
 from seleniumbase.fixtures import constants
-
-is_windows = False
-if sys.platform in ["win32", "win64", "x64"]:
-    is_windows = True
+from seleniumbase.fixtures import shared_utils
 
 
 class SeleniumBrowser(Plugin):
@@ -1150,7 +1147,7 @@ class SeleniumBrowser(Plugin):
             if str(self.options.port) == "443":
                 test.test.protocol = "https"
         if (
-            "linux" in sys.platform
+            shared_utils.is_linux()
             and not self.options.headed
             and not self.options.headless
             and not self.options.headless2
@@ -1198,7 +1195,7 @@ class SeleniumBrowser(Plugin):
         sb_config.headless_active = False
         self.headless_active = False
         if (
-            "linux" in sys.platform
+            shared_utils.is_linux()
             and (not self.options.headed or self.options.xvfb)
         ):
             width = settings.HEADLESS_START_WIDTH
@@ -1235,7 +1232,7 @@ class SeleniumBrowser(Plugin):
         try:
             # If the browser window is still open, close it now.
             if (
-                not is_windows
+                not shared_utils.is_windows()
                 or test.test.browser == "ie"
                 or self.driver.service.process
             ):

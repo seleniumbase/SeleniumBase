@@ -6,6 +6,7 @@ from seleniumbase import DriverContext  # noqa
 from seleniumbase import encryption  # noqa
 from seleniumbase import get_driver  # noqa
 from seleniumbase import js_utils  # noqa
+from seleniumbase import shared_utils  # noqa
 from seleniumbase import MasterQA  # noqa
 from seleniumbase import page_actions  # noqa
 from seleniumbase import page_utils  # noqa
