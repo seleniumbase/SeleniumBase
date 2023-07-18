@@ -1,5 +1,5 @@
 pip>=21.3.1;python_version<"3.7"
-pip>=23.1.2;python_version>="3.7"
+pip>=23.2;python_version>="3.7"
 packaging>=21.3;python_version<"3.7"
 packaging>=23.1;python_version>="3.7"
 setuptools>=59.6.0;python_version<"3.7"
@@ -12,7 +12,7 @@ certifi>=2023.5.7
 filelock>=3.4.1;python_version<"3.7"
 filelock>=3.12.2;python_version>="3.7"
 platformdirs>=2.4.0;python_version<"3.7"
-platformdirs>=3.8.1;python_version>="3.7"
+platformdirs>=3.9.1;python_version>="3.7"
 parse>=1.19.1
 parse-type>=0.6.2
 six==1.16.0
@@ -70,7 +70,7 @@ pygments==2.14.0;python_version<"3.7"
 pygments==2.15.1;python_version>="3.7"
 pyreadline3==3.4.1;platform_system=="Windows"
 tabcompleter==1.2.1
-pdbp==1.4.2
+pdbp==1.4.3
 colorama==0.4.5;python_version<"3.7"
 colorama==0.4.6;python_version>="3.7"
 exceptiongroup==1.1.2;python_version>="3.7"
