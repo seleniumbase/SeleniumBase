@@ -47,7 +47,7 @@ With a complete test automation framework built, most of the hard work is alread
 
 <p>💡 With raw Selenium, commands that use selectors need to specify the type of selector (eg. <code>"css selector", "button#myButton"</code>). With SeleniumBase, there's auto-detection between CSS Selectors and XPath, which means you don't need to specify the type of selector in your commands (<i>but optionally you could</i>).</p>
 
-<p>💡 SeleniumBase methods often perform multiple actions in a single method call. For example, <code>self.type(selector,text)</code> does the following:<br />1. Waits for the element to be visible.<br />2. Waits for the element to be interactive.<br />3. Clears the text field.<br />4. Types in the new text.<br />5. Presses Enter/Submit if the text ends in "\n".<br />With raw Selenium, those actions require multiple method calls.</p>
+<p>💡 SeleniumBase methods often perform multiple actions in a single method call. For example, <code>self.type(selector,text)</code> does the following:<br />1. Waits for the element to be visible.<br />2. Waits for the element to be interactive.<br />3. Clears the text field.<br />4. Types in the new text.<br />5. Presses Enter/Submit if the text ends in <code>"\n"</code>.<br />With raw Selenium, those actions require multiple method calls.</p>
 
 <p>💡 SeleniumBase uses default timeout values when not set, which means that methods automatically wait for elements to appear (<i>up to the timeout limit</i>) before failing:<br />✅<code>self.click("button")</code><br />With raw Selenium, methods would fail instantly (<i>by default</i>) if an element needed more time to load:<br />❌<code>self.driver.find_element(by="css selector", value="button").click()</code><br />(Reliable code is better than unreliable code.)</p>
 
@@ -64,4 +64,4 @@ With a complete test automation framework built, most of the hard work is alread
 
 --------
 
-[<img src="https://seleniumbase.io/cdn/img/fancy_logo_14.png" title="SeleniumBase" width="290">](https://github.com/seleniumbase/SeleniumBase)
+[<img src="https://seleniumbase.github.io/cdn/img/fancy_logo_14.png" title="SeleniumBase" width="290">](https://github.com/seleniumbase/SeleniumBase)

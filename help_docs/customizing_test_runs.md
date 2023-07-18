@@ -73,6 +73,9 @@ pytest test_swag_labs.py --mobile
 # Run mobile tests specifying CSS Width, CSS Height, and Pixel-Ratio
 pytest test_swag_labs.py --mobile --metrics="360,640,2"
 
+# Run a test with an option to evade bot-detection services
+pytest verify_undetected.py --uc
+
 # Run tests while changing SeleniumBase default settings
 pytest my_first_test.py --settings-file=custom_settings.py
 ```
@@ -177,8 +180,8 @@ pytest my_first_test.py --settings-file=custom_settings.py
 --incognito  # (Enable Chrome's Incognito mode.)
 --guest  # (Enable Chrome's Guest mode.)
 --devtools  # (Open Chrome's DevTools when the browser opens.)
---reuse-session | --rs  # (Reuse browser session for all tests.)
---reuse-class-session | --rcs  # (Reuse session for tests in class.)
+--rs | --reuse-session  # (Reuse browser session for all tests.)
+--rcs | --reuse-class-session  # (Reuse session for tests in class.)
 --crumbs  # (Delete all cookies between tests reusing a session.)
 --disable-beforeunload  # (Disable the "beforeunload" event on Chrome.)
 --window-size=WIDTH,HEIGHT  # (Set the browser's starting window size.)
