@@ -351,8 +351,6 @@ Making [chromedriver 114.0.5735.90] executable ...
 
 </details>
 
-✅ To manually download a webdriver, see [Console Scripts](https://seleniumbase.io/seleniumbase/console_scripts/ReadMe/) OR [Webdriver Installation](https://seleniumbase.io/help_docs/webdriver_installation/).
-
 
 <a id="basic_example_and_usage"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" /> Basic Example / Usage:</h2>
