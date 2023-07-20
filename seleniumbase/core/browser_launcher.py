@@ -153,6 +153,18 @@ def get_uc_driver_version():
     return uc_driver_version
 
 
+def find_driver_version_to_use(use_version):
+    # Because https://chromedriver.chromium.org/downloads stops at 114
+    final_chromedriver = "114"
+    if (
+        use_version
+        and use_version.isdigit()
+        and int(use_version) > int(final_chromedriver)
+    ):
+        use_version = final_chromedriver
+    return use_version
+
+
 def has_cf(text):
     if (
         "<title>Just a moment...</title>" in text
@@ -2832,7 +2844,7 @@ def get_local_driver(
             elif headless:
                 if "--headless" not in chrome_options.arguments:
                     chrome_options.add_argument("--headless")
-            disable_build_check = False
+            disable_build_check = True  # True is NEW for Chrome 115 changes!
             uc_driver_version = None
             if is_using_uc(undetectable, browser_name):
                 uc_driver_version = get_uc_driver_version()
@@ -2840,6 +2852,7 @@ def get_local_driver(
                     from seleniumbase import config as sb_config
 
                     sb_config.multi_proxy = True
+            use_version = find_driver_version_to_use(use_version)
             if (
                 LOCAL_CHROMEDRIVER
                 and os.path.exists(LOCAL_CHROMEDRIVER)
@@ -2994,6 +3007,7 @@ def get_local_driver(
                 )
                 with uc_lock:  # Avoid multithreaded issues
                     uc_driver_version = get_uc_driver_version()
+                    use_version = find_driver_version_to_use(use_version)
                     if (
                         (
                             uc_driver_version != use_version
@@ -3168,6 +3182,7 @@ def get_local_driver(
                             and int(major_chrome_version) >= 86
                         ):
                             mcv = major_chrome_version
+                            mcv = find_driver_version_to_use(mcv)
                     headless = True
                     headless_options = _set_chrome_options(
                         browser_name,

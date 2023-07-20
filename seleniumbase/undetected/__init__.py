@@ -287,12 +287,14 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         if patch_driver:
             service_ = selenium.webdriver.chrome.service.Service(
                 executable_path=self.patcher.executable_path,
+                service_args=["--disable-build-check"],
                 port=port,
                 log_path=os.devnull,
             )
         else:
             service_ = selenium.webdriver.chrome.service.Service(
                 executable_path=driver_executable_path,
+                service_args=["--disable-build-check"],
                 port=port,
                 log_path=os.devnull,
             )
