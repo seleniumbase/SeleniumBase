@@ -256,6 +256,8 @@ def main(override=None, intel_for_uc=None):
                 ).split(".")[0]
                 if int(major_chrome_version) < 72:
                     major_chrome_version = None
+                elif int(major_chrome_version) > 114:
+                    major_chrome_version = "114"
             except Exception:
                 major_chrome_version = None
             if major_chrome_version and major_chrome_version.isnumeric():
