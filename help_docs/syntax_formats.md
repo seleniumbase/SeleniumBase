@@ -2,9 +2,9 @@
 
 <a id="syntax_formats"></a>
 
-## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) The 23 Syntax Formats
+## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="40">](https://github.com/seleniumbase/SeleniumBase/) The 23 Syntax Formats / Design Patterns
 
-<h3>SeleniumBase supports multiple design patterns for structuring tests:</h3>
+<h3>SeleniumBase supports multiple ways of structuring tests:</h3>
 
 <blockquote>
 <p dir="auto"></p>
@@ -849,9 +849,9 @@ with DriverContext() as driver:
 
 with DriverContext(browser="chrome", incognito=True) as driver:
     driver.get("https://seleniumbase.io/apps/calculator")
-    page_actions.wait_for_element(driver, "4", by="id").click()
-    page_actions.wait_for_element(driver, "2", by="id").click()
-    page_actions.wait_for_text(driver, "42", "output", by="id")
+    page_actions.wait_for_element(driver, '[id="4"]').click()
+    page_actions.wait_for_element(driver, '[id="2"]').click()
+    page_actions.wait_for_text(driver, "42", "#output")
     js_utils.highlight_with_js(driver, "#output", loops=6)
 
 with DriverContext() as driver:
@@ -880,9 +880,9 @@ from seleniumbase import page_actions
 driver = Driver(browser="chrome", headless=False)
 try:
     driver.get("https://seleniumbase.io/apps/calculator")
-    page_actions.wait_for_element(driver, "4", by="id").click()
-    page_actions.wait_for_element(driver, "2", by="id").click()
-    page_actions.wait_for_text(driver, "42", "output", by="id")
+    page_actions.wait_for_element(driver, '[id="4"]').click()
+    page_actions.wait_for_element(driver, '[id="2"]').click()
+    page_actions.wait_for_text(driver, "42", "#output")
     js_utils.highlight_with_js(driver, "#output", loops=6)
 finally:
     driver.quit()
