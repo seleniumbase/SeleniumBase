@@ -74,7 +74,6 @@ plugins:
         - SECURITY.md
         - examples/case_summary.md
         - help_docs/chinese.md
-        - help_docs/mysql_installation.md
         - integrations/katalon/ReadMe.md
         - help_docs/verify_webdriver.md
         - help_docs/webdriver_installation.md
