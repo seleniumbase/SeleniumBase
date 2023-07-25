@@ -28,9 +28,9 @@ class HackTests(BaseCase):
         zoom_in = "#ca-history a{zoom: 1.8;-moz-transform: scale(1.8);}"
         self.add_css_style(zoom_in)
         self.highlight("#ca-history a", loops=5, scroll=False)
-        zoom_in = "div.thumbinner{zoom: 1.6;-moz-transform: scale(1.6);}"
+        zoom_in = "img[src*=Ayb]{zoom: 1.6;-moz-transform: scale(1.6);}"
         self.add_css_style(zoom_in)
-        self.highlight("div.thumbinner", loops=10, scroll=False)
+        self.highlight("img[src*=Ayb]", loops=10, scroll=False)
 
         if not self.headless:
             self.open("https://www.apple.com/store")
