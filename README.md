@@ -60,7 +60,7 @@
 <p align="left"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/sb_logo_p3.png" alt="SeleniumBase" title="SeleniumBase" width="232" /></a></p>
 
 <blockquote>
-<p dir="auto"><strong>Jump to:</strong></p>
+<p dir="auto"><strong>Explore the README:</strong></p>
 <ul dir="auto">
 <li><a href="#install_seleniumbase"   ><strong>Get Started / Installation</strong></a></li>
 <li><a href="#basic_example_and_usage"><strong>Basic Example / Usage</strong></a></li>
