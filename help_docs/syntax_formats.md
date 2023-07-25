@@ -40,7 +40,7 @@
 <a id="sb_sf_01"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 1. BaseCase direct class inheritance</h2>
 
-In this format, (which is used by most of the tests in the <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples">SeleniumBase examples folder</a>), <code>BaseCase</code> is imported at the top of a Python file, followed by a Python class inheriting <code>BaseCase</code>. Then, any test method defined in that class automatically gains access to SeleniumBase methods, including the <code>setUp()</code> and <code>tearDown()</code> methods that are automatically called for opening and closing web browsers at the start and end of tests.
+In this format, (which is used by most of the tests in the <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples">SeleniumBase examples folder</a>), <code translate="no">BaseCase</code> is imported at the top of a Python file, followed by a Python class inheriting <code translate="no">BaseCase</code>. Then, any test method defined in that class automatically gains access to SeleniumBase methods, including the <code translate="no">setUp()</code> and <code translate="no">tearDown()</code> methods that are automatically called for opening and closing web browsers at the start and end of tests.
 
 To run a test of this format, use **``pytest``** or ``pynose``. Adding ``BaseCase.main(__name__, __file__)`` enables ``python`` to run ``pytest`` on your file indirectly. Here's an example:
 
@@ -67,7 +67,7 @@ Using ``BaseCase`` inheritance is a great starting point for anyone learning Sel
 <a id="sb_sf_02"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 2. BaseCase subclass inheritance</h2>
 
-There are situations where you may want to customize the <code>setUp</code> and <code>tearDown</code> of your tests. Maybe you want to have all your tests login to a specific web site first, or maybe you want to have your tests report results through an API call depending on whether a test passed or failed. <b>This can be done by creating a subclass of <code>BaseCase</code> and then carefully creating custom <code>setUp()</code> and <code>tearDown()</code> methods that don't overwrite the critical functionality of the default SeleniumBase <code>setUp()</code> and <code>tearDown()</code> methods.</b> Afterwards, your test classes will inherit the subclass of <code>BaseCase</code> with the added functionality, rather than directly inheriting <code>BaseCase</code> itself. Here's an example of that:
+There are situations where you may want to customize the <code translate="no">setUp</code> and <code translate="no">tearDown</code> of your tests. Maybe you want to have all your tests login to a specific web site first, or maybe you want to have your tests report results through an API call depending on whether a test passed or failed. <b>This can be done by creating a subclass of <code translate="no">BaseCase</code> and then carefully creating custom <code translate="no">setUp()</code> and <code translate="no">tearDown()</code> methods that don't overwrite the critical functionality of the default SeleniumBase <code translate="no">setUp()</code> and <code translate="no">tearDown()</code> methods.</b> Afterwards, your test classes will inherit the subclass of <code translate="no">BaseCase</code> with the added functionality, rather than directly inheriting <code translate="no">BaseCase</code> itself. Here's an example of that:
 
 ```python
 from seleniumbase import BaseCase
@@ -114,7 +114,7 @@ class MyTests(BaseTestCase):
 <a id="sb_sf_03"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 3. The "sb" pytest fixture (no class)</h2>
 
-The pytest framework comes with a unique system called fixtures, which replaces import statements at the top of Python files by importing libraries directly into test definitions. More than just being an import, a pytest fixture can also automatically call predefined <code>setUp()</code> and <code>tearDown()</code> methods at the beginning and end of test methods. To work, <code>sb</code> is added as an argument to each test method definition that needs SeleniumBase functionality. This means you no longer need import statements in your Python files to use SeleniumBase. <b>If using other pytest fixtures in your tests, you may need to use the SeleniumBase fixture (instead of <code>BaseCase</code> class inheritance) for compatibility reasons.</b> Here's an example of the <code>sb</code> fixture in a test that does not use Python classes:
+The pytest framework comes with a unique system called fixtures, which replaces import statements at the top of Python files by importing libraries directly into test definitions. More than just being an import, a pytest fixture can also automatically call predefined <code translate="no">setUp()</code> and <code translate="no">tearDown()</code> methods at the beginning and end of test methods. To work, <code translate="no">sb</code> is added as an argument to each test method definition that needs SeleniumBase functionality. This means you no longer need import statements in your Python files to use SeleniumBase. <b>If using other pytest fixtures in your tests, you may need to use the SeleniumBase fixture (instead of <code translate="no">BaseCase</code> class inheritance) for compatibility reasons.</b> Here's an example of the <code translate="no">sb</code> fixture in a test that does not use Python classes:
 
 ```python
 def test_sb_fixture_with_no_class(sb):
@@ -129,7 +129,7 @@ def test_sb_fixture_with_no_class(sb):
 <a id="sb_sf_04"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 4. The "sb" pytest fixture (in class)</h2>
 
-The <code>sb</code> pytest fixture can also be used inside of a class. There is a slight change to the syntax because that means test methods must also include <code>self</code> in their argument definitions when test methods are defined. (The <code>self</code> argument represents the class object, and is used in every test method that lives inside of a class.) Once again, no import statements are needed in your Python files for this to work. Here's an example of using the <code>sb</code> fixture in a test method that lives inside of a Python class:
+The <code translate="no">sb</code> pytest fixture can also be used inside of a class. There is a slight change to the syntax because that means test methods must also include <code translate="no">self</code> in their argument definitions when test methods are defined. (The <code translate="no">self</code> argument represents the class object, and is used in every test method that lives inside of a class.) Once again, no import statements are needed in your Python files for this to work. Here's an example of using the <code translate="no">sb</code> fixture in a test method that lives inside of a Python class:
 
 ```python
 class Test_SB_Fixture:
@@ -145,7 +145,7 @@ class Test_SB_Fixture:
 <a id="sb_sf_05"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 5. Page Object Model with BaseCase</h2>
 
-With SeleniumBase, you can use Page Objects to break out code from tests, but remember, the <code>self</code> variable (from test methods that inherit <code>BaseCase</code>) contains the driver and all other framework-specific variable definitions. Therefore, that <code>self</code> must be passed as an arg into any outside class method in order to call SeleniumBase methods from there. In the example below, the <code>self</code> variable from the test method is passed into the <code>sb</code> arg of the Page Object class method because the <code>self</code> arg of the Page Object class method is already being used for its own class. Every Python class method definition must include the <code>self</code> as the first arg.
+With SeleniumBase, you can use Page Objects to break out code from tests, but remember, the <code translate="no">self</code> variable (from test methods that inherit <code translate="no">BaseCase</code>) contains the driver and all other framework-specific variable definitions. Therefore, that <code translate="no">self</code> must be passed as an arg into any outside class method in order to call SeleniumBase methods from there. In the example below, the <code translate="no">self</code> variable from the test method is passed into the <code translate="no">sb</code> arg of the Page Object class method because the <code translate="no">self</code> arg of the Page Object class method is already being used for its own class. Every Python class method definition must include the <code translate="no">self</code> as the first arg.
 
 ```python
 from seleniumbase import BaseCase
@@ -170,7 +170,7 @@ class MyTests(BaseCase):
 <a id="sb_sf_06"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 6. Page Object Model with the "sb" fixture</h2>
 
-This is similar to the classic Page Object Model with <code>BaseCase</code> inheritance, except that this time we pass the <code>sb</code> pytest fixture from the test into the <code>sb</code> arg of the page object class method, (instead of passing <code>self</code>). Now that you're using <code>sb</code> as a pytest fixture, you no longer need to import <code>BaseCase</code> anywhere in your code. See the example below:
+This is similar to the classic Page Object Model with <code translate="no">BaseCase</code> inheritance, except that this time we pass the <code translate="no">sb</code> pytest fixture from the test into the <code translate="no">sb</code> arg of the page object class method, (instead of passing <code translate="no">self</code>). Now that you're using <code translate="no">sb</code> as a pytest fixture, you no longer need to import <code translate="no">BaseCase</code> anywhere in your code. See the example below:
 
 ```python
 class LoginPage:
@@ -192,7 +192,7 @@ class MyTests:
 <a id="sb_sf_07"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 7. Using "request" to get "sb" (no class)</h2>
 
-The pytest <code>request</code> fixture can be used to retrieve other pytest fixtures from within tests, such as the <code>sb</code> fixture. This allows you to have more control over when fixtures get initialized because the fixture no longer needs to be loaded at the very beginning of test methods. This is done by calling <code>request.getfixturevalue('sb')</code> from the test. Here's an example of using the pytest <code>request</code> fixture to load the <code>sb</code> fixture in a test method that does not use Python classes:
+The pytest <code translate="no">request</code> fixture can be used to retrieve other pytest fixtures from within tests, such as the <code translate="no">sb</code> fixture. This allows you to have more control over when fixtures get initialized because the fixture no longer needs to be loaded at the very beginning of test methods. This is done by calling <code translate="no">request.getfixturevalue('sb')</code> from the test. Here's an example of using the pytest <code translate="no">request</code> fixture to load the <code translate="no">sb</code> fixture in a test method that does not use Python classes:
 
 ```python
 def test_request_sb_fixture(request):
@@ -210,7 +210,7 @@ def test_request_sb_fixture(request):
 <a id="sb_sf_08"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 8. Using "request" to get "sb" (in class)</h2>
 
-The pytest <code>request</code> fixture can also be used to get the <code>sb</code> fixture from inside a Python class. Here's an example of that:
+The pytest <code translate="no">request</code> fixture can also be used to get the <code translate="no">sb</code> fixture from inside a Python class. Here's an example of that:
 
 ```python
 class Test_Request_Fixture:
@@ -230,7 +230,7 @@ class Test_Request_Fixture:
 <a id="sb_sf_09"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 9. Overriding the driver via BaseCase</h2>
 
-When you want to use SeleniumBase methods via <code>BaseCase</code>, but you want total freedom to control how you spin up your web browsers, this is the format you want. Although SeleniumBase gives you plenty of command-line options to change how your browsers are launched, this format gives you more control when the existing options aren't enough. Here's an example of that:
+When you want to use SeleniumBase methods via <code translate="no">BaseCase</code>, but you want total freedom to control how you spin up your web browsers, this is the format you want. Although SeleniumBase gives you plenty of command-line options to change how your browsers are launched, this format gives you more control when the existing options aren't enough. Here's an example of that:
 
 ```python
 from selenium import webdriver
@@ -398,7 +398,7 @@ class TestWire:
 <a id="sb_sf_11"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 11. BaseCase with Chinese translations</h2>
 
-This format is similar to the English version with <code>BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Chinese. Here's an example of that:
+This format is similar to the English version with <code translate="no">BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Chinese. Here's an example of that:
 
 ```python
 from seleniumbase.translate.chinese import 硒测试用例
@@ -430,7 +430,7 @@ class 我的测试类(硒测试用例):
 <a id="sb_sf_12"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 12. BaseCase with Dutch translations</h2>
 
-This format is similar to the English version with <code>BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Dutch. Here's an example of that:
+This format is similar to the English version with <code translate="no">BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Dutch. Here's an example of that:
 
 ```python
 from seleniumbase.translate.dutch import Testgeval
@@ -461,7 +461,7 @@ class MijnTestklasse(Testgeval):
 <a id="sb_sf_13"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 13. BaseCase with French translations</h2>
 
-This format is similar to the English version with <code>BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into French. Here's an example of that:
+This format is similar to the English version with <code translate="no">BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into French. Here's an example of that:
 
 ```python
 from seleniumbase.translate.french import CasDeBase
@@ -492,7 +492,7 @@ class MaClasseDeTest(CasDeBase):
 <a id="sb_sf_14"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 14. BaseCase with Italian translations</h2>
 
-This format is similar to the English version with <code>BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Italian. Here's an example of that:
+This format is similar to the English version with <code translate="no">BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Italian. Here's an example of that:
 
 ```python
 from seleniumbase.translate.italian import CasoDiProva
@@ -523,7 +523,7 @@ class MiaClasseDiTest(CasoDiProva):
 <a id="sb_sf_15"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 15. BaseCase with Japanese translations</h2>
 
-This format is similar to the English version with <code>BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Japanese. Here's an example of that:
+This format is similar to the English version with <code translate="no">BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Japanese. Here's an example of that:
 
 ```python
 from seleniumbase.translate.japanese import セレニウムテストケース
@@ -555,7 +555,7 @@ class 私のテストクラス(セレニウムテストケース):
 <a id="sb_sf_16"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 16. BaseCase with Korean translations</h2>
 
-This format is similar to the English version with <code>BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Korean. Here's an example of that:
+This format is similar to the English version with <code translate="no">BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Korean. Here's an example of that:
 
 ```python
 from seleniumbase.translate.korean import 셀레늄_테스트_케이스
@@ -585,7 +585,7 @@ class 테스트_클래스(셀레늄_테스트_케이스):
 <a id="sb_sf_17"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 17. BaseCase with Portuguese translations</h2>
 
-This format is similar to the English version with <code>BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Portuguese. Here's an example of that:
+This format is similar to the English version with <code translate="no">BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Portuguese. Here's an example of that:
 
 ```python
 from seleniumbase.translate.portuguese import CasoDeTeste
@@ -619,7 +619,7 @@ class MinhaClasseDeTeste(CasoDeTeste):
 <a id="sb_sf_18"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 18. BaseCase with Russian translations</h2>
 
-This format is similar to the English version with <code>BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Russian. Here's an example of that:
+This format is similar to the English version with <code translate="no">BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Russian. Here's an example of that:
 
 ```python
 from seleniumbase.translate.russian import ТестНаСелен
@@ -650,7 +650,7 @@ class МойТестовыйКласс(ТестНаСелен):
 <a id="sb_sf_19"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 19. BaseCase with Spanish translations</h2>
 
-This format is similar to the English version with <code>BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Spanish. Here's an example of that:
+This format is similar to the English version with <code translate="no">BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Spanish. Here's an example of that:
 
 ```python
 from seleniumbase.translate.spanish import CasoDePrueba
@@ -783,7 +783,7 @@ def login_to_swag_labs(context, user):
 <a id="sb_sf_21"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 21. SeleniumBase SB (Python context manager)</h2>
 
-This format provides a pure Python way of using SeleniumBase without a test runner. Options can be passed via method instantiation or from the command-line. When setting the <code>test</code> option to <code>True</code> (or calling <code>python --test</code>), then standard test logging will occur, such as screenshots and reports for failing tests. All the usual SeleniumBase options are available, such as customizing the browser settings, etc. Here are some examples:
+This format provides a pure Python way of using SeleniumBase without a test runner. Options can be passed via method instantiation or from the command-line. When setting the <code translate="no">test</code> option to <code translate="no">True</code> (or calling <code translate="no">python --test</code>), then standard test logging will occur, such as screenshots and reports for failing tests. All the usual SeleniumBase options are available, such as customizing the browser settings, etc. Here are some examples:
 
 ```python
 from seleniumbase import SB
@@ -803,7 +803,7 @@ with SB() as sb:  # By default, browser="chrome" if not set.
 
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_sb.py">examples/raw_sb.py</a> for the test.)
 
-Here's another example, which uses <code>test</code> mode:
+Here's another example, which uses <code translate="no">test</code> mode:
 
 ```python
 from seleniumbase import SB
@@ -834,7 +834,7 @@ with SB(test=True, rtf=True, demo=True) as sb:
 <a id="sb_sf_22"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 22. The driver manager (via context manager)</h2>
 
-This pure Python format gives you a raw <code>webdriver</code> instance in a <code>with</code> block. The SeleniumBase Driver Manager will automatically make sure that your driver is compatible with your browser version. It gives you full access to customize driver options via method args or via the command-line. The driver will automatically call <code>quit()</code> after the code leaves the <code>with</code> block. Here are some examples:
+This pure Python format gives you a raw <code translate="no">webdriver</code> instance in a <code translate="no">with</code> block. The SeleniumBase Driver Manager will automatically make sure that your driver is compatible with your browser version. It gives you full access to customize driver options via method args or via the command-line. The driver will automatically call <code translate="no">quit()</code> after the code leaves the <code translate="no">with</code> block. Here are some examples:
 
 ```python
 """This script can be run with pure "python". (pytest not needed)."""

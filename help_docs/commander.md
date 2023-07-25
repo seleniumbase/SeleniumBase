@@ -2,7 +2,7 @@
 
 ## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) SeleniumBase Commander 🎖️
 
-🎖️ <b>SeleniumBase Commander</b> lets you run <code>pytest</code> scripts from a Desktop GUI.<br>
+🎖️ <b translate="no">SeleniumBase Commander</b> lets you run <code translate="no">pytest</code> scripts from a Desktop GUI.<br>
 
 🎖️ To launch it, call ``sbase commander`` or ``sbase gui``:
 
@@ -13,7 +13,7 @@ sbase gui
 
 <img src="https://seleniumbase.github.io/cdn/img/sbase_commander_wide.png" title="SeleniumBase Commander" width="600">
 
-🎖️ <b>SeleniumBase Commander</b> loads the same tests that are found by:
+🎖️ <b translate="no">SeleniumBase Commander</b> loads the same tests that are found by:
 
 ```bash
 pytest --co -q
@@ -36,7 +36,7 @@ sbase gui test_suite.py
 sbase gui offline_examples/
 ```
 
-🎖️ Once launched, you can further customize which tests to run and what settings to use. There are various controls for changing settings, modes, and other pytest command line options that are specific to SeleniumBase. You can also set additional options that don't have a visible toggle. When you're ready to run the selected tests with the specified options, click on the <code>Run Selected Tests</code> button.
+🎖️ Once launched, you can further customize which tests to run and what settings to use. There are various controls for changing settings, modes, and other pytest command line options that are specific to SeleniumBase. You can also set additional options that don't have a visible toggle. When you're ready to run the selected tests with the specified options, click on the <code translate="no">Run Selected Tests</code> button.
 
 --------
 

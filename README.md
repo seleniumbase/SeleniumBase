@@ -78,7 +78,7 @@
 
 <a id="multiple_examples"></a>
 
-<p align="left"><b>Example:</b> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py" target="_blank">test_demo_site.py</a> from <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples" target="_blank">./examples/</a> (Uses <code>--chrome</code> by default)</p>
+<p align="left"><b>Example:</b> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py" target="_blank">test_demo_site.py</a> from <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples" target="_blank">./examples/</a> (Uses <code translate="no">--chrome</code> by default)</p>
 
 ```bash
 cd examples/
@@ -98,7 +98,7 @@ cd examples/
 pytest test_coffee_cart.py --demo
 ```
 
-<p>(<code>--demo</code> mode slows down tests and highlights actions)</p>
+<p>(<code translate="no">--demo</code> mode slows down tests and highlights actions)</p>
 
 <p align="left"><a href="https://seleniumbase.io/coffee/" target="_blank"><img src="https://seleniumbase.github.io/cdn/gif/coffee_cart.gif" width="480" alt="SeleniumBase Coffee Cart Test" title="SeleniumBase Coffee Cart Test" /></a></p>
 
@@ -132,29 +132,29 @@ class CoffeeCartTest(BaseCase):
 <summary> ▶️ How is <b>SeleniumBase</b> different from raw Selenium? (<b>click to expand</b>)</summary>
 <div>
 
-<p>💡 SeleniumBase is a Python framework for browser automation and testing. SeleniumBase uses <a href="https://www.w3.org/TR/webdriver2/#endpoints" target="_blank">Selenium/WebDriver</a> APIs, and incorporates test-runners such as <code>pytest</code>, <code>pynose</code>, and <code>behave</code> to provide organized structure, test discovery, test execution, test state (<i>eg. passed, failed, or skipped</i>), and command-line options for changing default settings (<i>such as choosing the browser to use</i>). With raw Selenium, you would need to set up your own options-parser for configuring tests from the command-line.</p>
+<p>💡 SeleniumBase is a Python framework for browser automation and testing. SeleniumBase uses <a href="https://www.w3.org/TR/webdriver2/#endpoints" target="_blank">Selenium/WebDriver</a> APIs, and incorporates test-runners such as <code translate="no">pytest</code>, <code translate="no">pynose</code>, and <code translate="no">behave</code> to provide organized structure, test discovery, test execution, test state (<i>eg. passed, failed, or skipped</i>), and command-line options for changing default settings (<i>such as choosing the browser to use</i>). With raw Selenium, you would need to set up your own options-parser for configuring tests from the command-line.</p>
 
-<p>💡 With raw Selenium, commands that use selectors need to specify the type of selector (eg. <code>"css selector", "button#myButton"</code>). With SeleniumBase, there's auto-detection between CSS Selectors and XPath, which means you don't need to specify the type of selector in your commands (<i>but optionally you could</i>).</p>
+<p>💡 With raw Selenium, commands that use selectors need to specify the type of selector (eg. <code translate="no">"css selector", "button#myButton"</code>). With SeleniumBase, there's auto-detection between CSS Selectors and XPath, which means you don't need to specify the type of selector in your commands (<i>but optionally you could</i>).</p>
 
-<p>💡 SeleniumBase methods often perform multiple actions in a single method call. For example, <code>self.type(selector,text)</code> does the following:<br />1. Waits for the element to be visible.<br />2. Waits for the element to be interactive.<br />3. Clears the text field.<br />4. Types in the new text.<br />5. Presses Enter/Submit if the text ends in <code>"\n"</code>.<br />With raw Selenium, those actions require multiple method calls.</p>
+<p>💡 SeleniumBase methods often perform multiple actions in a single method call. For example, <code translate="no">self.type(selector,text)</code> does the following:<br />1. Waits for the element to be visible.<br />2. Waits for the element to be interactive.<br />3. Clears the text field.<br />4. Types in the new text.<br />5. Presses Enter/Submit if the text ends in <code translate="no">"\n"</code>.<br />With raw Selenium, those actions require multiple method calls.</p>
 
 <p>💡 SeleniumBase uses default timeout values when not set:<br />
-✅<code>self.click("button")</code><br />
+✅<code translate="no">self.click("button")</code><br />
 With raw Selenium, methods would fail instantly (<i>by default</i>) if an element needed more time to load:<br />
-❌<code>self.driver.find_element(by="css selector", value="button").click()</code><br />
+❌<code translate="no">self.driver.find_element(by="css selector", value="button").click()</code><br />
 (Reliable code is better than unreliable code.)</p>
 
 <p>💡 SeleniumBase lets you change the explicit timeout values of methods:<br />
-✅<code>self.click("button",timeout=10)</code><br />
+✅<code translate="no">self.click("button",timeout=10)</code><br />
 With raw Selenium, that requires more code:<br />
-❌<code>WebDriverWait(driver,10).until(EC.element_to_be_clickable("css selector", "button")).click()</code><br />
+❌<code translate="no">WebDriverWait(driver,10).until(EC.element_to_be_clickable("css selector", "button")).click()</code><br />
 (Simple code is better than complex code.)</p>
 
 <p>💡 SeleniumBase gives you clean error output when a test fails. With raw Selenium, error messages can get very messy.</p>
 
-<p>💡 SeleniumBase gives you the option to generate a dashboard and reports for tests. It also saves screenshots from failing tests to the <code>./latest_logs/</code> folder. Raw <a href="https://www.selenium.dev/documentation/webdriver/" target="_blank">Selenium</a> does not have these options out-of-the-box.</p>
+<p>💡 SeleniumBase gives you the option to generate a dashboard and reports for tests. It also saves screenshots from failing tests to the <code translate="no">./latest_logs/</code> folder. Raw <a href="https://www.selenium.dev/documentation/webdriver/" target="_blank">Selenium</a> does not have these options out-of-the-box.</p>
 
-<p>💡 SeleniumBase includes desktop GUI apps for running tests, such as <b>SeleniumBase Commander</b> for <code>pytest</code> and <b>SeleniumBase Behave GUI for <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md"><code>behave</code></a>.</b></p>
+<p>💡 SeleniumBase includes desktop GUI apps for running tests, such as <b>SeleniumBase Commander</b> for <code translate="no">pytest</code> and <b>SeleniumBase Behave GUI for <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md"><code translate="no">behave</code></a>.</b></p>
 
 <p>💡 SeleniumBase has its own Recorder / Test Generator that can create tests from manual browser actions. SeleniumBase also includes other useful tools and console scripts for getting things done quickly. (<i>See the documentation for more details!</i>)</p>
 
@@ -185,7 +185,7 @@ class TestMFALogin(BaseCase):
         self.save_screenshot_to_logs()
 ```
 
-<p align="left">📗📝 An example test with the <b><code>sb</code></b> <code>pytest</code> fixture. Runs with <b><a href="https://docs.pytest.org/en/latest/how-to/usage.html">pytest</a></b>.</p>
+<p align="left">📗📝 An example test with the <b><code translate="no">sb</code></b> <code translate="no">pytest</code> fixture. Runs with <b><a href="https://docs.pytest.org/en/latest/how-to/usage.html">pytest</a></b>.</p>
 
 ```python
 def test_mfa_login(sb):
@@ -199,7 +199,7 @@ def test_mfa_login(sb):
     sb.save_screenshot_to_logs()
 ```
 
-<p align="left">📙📝 An example test with the <b><code>SB</code></b> Context Manager. Runs with pure <b><code>python</code></b>.</p>
+<p align="left">📙📝 An example test with the <b><code translate="no">SB</code></b> Context Manager. Runs with pure <b><code translate="no">python</code></b>.</p>
 
 ```python
 from seleniumbase import SB
@@ -217,7 +217,7 @@ with SB() as sb:  # By default, browser="chrome" if not set.
     sb.assert_exact_text("You have been signed out!", "#top_message")
 ```
 
-<p align="left">📕📝 An example test with <b>behave-BDD</b> <a href="https://behave.readthedocs.io/en/stable/gherkin.html#features" target="_blank">Gherkin</a> structure. Runs with <b><code>behave</code></b>. (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md">Learn more</a>)</p>
+<p align="left">📕📝 An example test with <b>behave-BDD</b> <a href="https://behave.readthedocs.io/en/stable/gherkin.html#features" target="_blank">Gherkin</a> structure. Runs with <b><code translate="no">behave</code></b>. (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md">Learn more</a>)</p>
 
 ```gherkin
 Feature: SeleniumBase scenarios for the RealWorld App
@@ -461,7 +461,7 @@ self.assert_no_js_errors()  # Verify there are no JS errors.
 self.type("input", "dogs\n")  # (The "\n" presses ENTER)
 ```
 
-Most SeleniumBase scripts can be run with <code>pytest</code>, <code>pynose</code>, or pure <code>python</code>. Not all test runners can run all test formats. For example, tests that use the ``sb`` pytest fixture can only be run with ``pytest``. (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md">Syntax Formats</a>) There's also a <a href="https://behave.readthedocs.io/en/stable/gherkin.html#features" target="_blank">Gherkin</a> test format that runs with <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md">behave</a>.
+Most SeleniumBase scripts can be run with <code translate="no">pytest</code>, <code translate="no">pynose</code>, or pure <code translate="no">python</code>. Not all test runners can run all test formats. For example, tests that use the ``sb`` pytest fixture can only be run with ``pytest``. (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md">Syntax Formats</a>) There's also a <a href="https://behave.readthedocs.io/en/stable/gherkin.html#features" target="_blank">Gherkin</a> test format that runs with <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md">behave</a>.
 
 ```bash
 pytest coffee_cart_tests.py --rs
@@ -478,20 +478,20 @@ behave realworld.feature
 behave calculator.feature -D rs -D dashboard
 ```
 
-<p>✅ <code>pytest</code> includes automatic test discovery. If you don't specify a specific file or folder to run, <code>pytest</code> will automatically search through all subdirectories for tests to run based on the following criteria:</p>
+<p>✅ <code translate="no">pytest</code> includes automatic test discovery. If you don't specify a specific file or folder to run, <code translate="no">pytest</code> will automatically search through all subdirectories for tests to run based on the following criteria:</p>
 
 * Python files that start with ``test_`` or end with ``_test.py``.
 * Python methods that start with ``test_``.
 
 With a SeleniumBase [pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/pytest.ini) file present, you can modify default discovery settings. The Python class name can be anything because ``seleniumbase.BaseCase`` inherits ``unittest.TestCase`` to trigger autodiscovery.
 
-<p>✅ You can do a pre-flight check to see which tests would get discovered by <code>pytest</code> before the real flight:</p>
+<p>✅ You can do a pre-flight check to see which tests would get discovered by <code translate="no">pytest</code> before the real flight:</p>
 
 ```bash
 pytest --collect-only -q
 ```
 
-<p>✅ You can be more specific when calling <code>pytest</code> or <code>pynose</code> on a file:</p>
+<p>✅ You can be more specific when calling <code translate="no">pytest</code> or <code translate="no">pynose</code> on a file:</p>
 
 ```bash
 pytest [FILE_NAME.py]::[CLASS_NAME]::[METHOD_NAME]
@@ -499,7 +499,7 @@ pytest [FILE_NAME.py]::[CLASS_NAME]::[METHOD_NAME]
 pynose [FILE_NAME.py]:[CLASS_NAME].[METHOD_NAME]
 ```
 
-<p>✅ No More Flaky Tests! SeleniumBase methods automatically wait for page elements to finish loading before interacting with them (<i>up to a timeout limit</i>). This means <b>you no longer need random <span><code>time.sleep()</code></span> statements</b> in your scripts.</p>
+<p>✅ No More Flaky Tests! SeleniumBase methods automatically wait for page elements to finish loading before interacting with them (<i>up to a timeout limit</i>). This means <b>you no longer need random <span><code translate="no">time.sleep()</code></span> statements</b> in your scripts.</p>
 <img src="https://img.shields.io/badge/Flaky%20Tests%3F-%20NO%21-11BBDD.svg" alt="NO MORE FLAKY TESTS!" />
 
 ✅ SeleniumBase supports all major browsers and operating systems:
@@ -560,7 +560,7 @@ pytest test_coffee_cart.py --trace
 <h2>🔵 Command-line Options:</h2>
 
 <a id="pytest_options"></a>
-✅ Here are some useful command-line options that come with <code>pytest</code>:
+✅ Here are some useful command-line options that come with <code translate="no">pytest</code>:
 
 ```bash
 -v  # Verbose mode. Prints the full name of each test and shows more details.
@@ -577,7 +577,7 @@ pytest test_coffee_cart.py --trace
 ```
 
 <a id="new_pytest_options"></a>
-✅ SeleniumBase provides additional <code>pytest</code> command-line options for tests:
+✅ SeleniumBase provides additional <code translate="no">pytest</code> command-line options for tests:
 
 ```bash
 --browser=BROWSER  # (The web browser to use. Default: "chrome".)
@@ -923,7 +923,7 @@ pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1
 
 <h3><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" /> Handling Pop-Up / Pop Up Alerts:</h3>
 
-🔵 <code>self.accept_alert()</code> automatically waits for and accepts alert pop-ups. <code>self.dismiss_alert()</code> automatically waits for and dismisses alert pop-ups. On occasion, some methods like <code>self.click(SELECTOR)</code> might dismiss a pop-up on its own because they call JavaScript to make sure that the <code>readyState</code> of the page is <code>complete</code> before advancing. If you're trying to accept a pop-up that got dismissed this way, use this workaround: Call <code>self.find_element(SELECTOR).click()</code> instead, (which will let the pop-up remain on the screen), and then use <code>self.accept_alert()</code> to accept the pop-up (<a href="https://github.com/seleniumbase/SeleniumBase/issues/600#issuecomment-647270426">more on that here</a>). If pop-ups are intermittent, wrap code in a try/except block.
+🔵 <code translate="no">self.accept_alert()</code> automatically waits for and accepts alert pop-ups. <code translate="no">self.dismiss_alert()</code> automatically waits for and dismisses alert pop-ups. On occasion, some methods like <code translate="no">self.click(SELECTOR)</code> might dismiss a pop-up on its own because they call JavaScript to make sure that the <code translate="no">readyState</code> of the page is <code translate="no">complete</code> before advancing. If you're trying to accept a pop-up that got dismissed this way, use this workaround: Call <code translate="no">self.find_element(SELECTOR).click()</code> instead, (which will let the pop-up remain on the screen), and then use <code translate="no">self.accept_alert()</code> to accept the pop-up (<a href="https://github.com/seleniumbase/SeleniumBase/issues/600#issuecomment-647270426">more on that here</a>). If pop-ups are intermittent, wrap code in a try/except block.
 
 
 <h3><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" /> Building Guided Tours for Websites:</h3>
@@ -949,7 +949,7 @@ pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1
 
 <li>If you're using the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mysql_installation.md">SeleniumBase MySQL feature</a> to save results from tests running on a server machine, you can install <a href="https://dev.mysql.com/downloads/tools/workbench/">MySQL Workbench</a> to help you read & write from your DB more easily.</li>
 
-<li>If you're using AWS, you can set up an <a href="https://aws.amazon.com/s3/" target="_blank">Amazon S3</a> account for saving log files and screenshots from your tests. To activate this feature, modify <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py">settings.py</a> with connection details in the S3 section, and add <code>--with-s3-logging</code> on the command-line when running your tests.</li>
+<li>If you're using AWS, you can set up an <a href="https://aws.amazon.com/s3/" target="_blank">Amazon S3</a> account for saving log files and screenshots from your tests. To activate this feature, modify <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py">settings.py</a> with connection details in the S3 section, and add <code translate="no">--with-s3-logging</code> on the command-line when running your tests.</li>
 </ul>
 
 Here's an example of running tests with some additional features enabled:
@@ -980,7 +980,7 @@ self.get_current_url()  # This method returns the current page URL.
 self.get_page_source()  # This method returns the current page source.
 ```
 
-<b>ProTip™:</b> You can use the <code>self.get_page_source()</code> method with Python's <code>find()</code> command to parse through HTML to find something specific. (For more advanced parsing, see the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_parse_soup.py">BeautifulSoup example</a>.)
+<b>ProTip™:</b> You can use the <code translate="no">self.get_page_source()</code> method with Python's <code translate="no">find()</code> command to parse through HTML to find something specific. (For more advanced parsing, see the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_parse_soup.py">BeautifulSoup example</a>.)
 
 ```python
 source = self.get_page_source()
@@ -1001,13 +1001,13 @@ self.click("div#my_id")
 
 🔵 **Typing Text:**
 
-<code>self.type(selector, text)</code>  # updates the text from the specified element with the specified value. An exception is raised if the element is missing or if the text field is not editable. Example:
+<code translate="no">self.type(selector, text)</code>  # updates the text from the specified element with the specified value. An exception is raised if the element is missing or if the text field is not editable. Example:
 
 ```python
 self.type("input#id_value", "2012")
 ```
 
-You can also use <code>self.add_text()</code> or the <a href="https://www.selenium.dev/documentation/webdriver/" target="_blank">WebDriver</a> <code>.send_keys()</code> command, but those won't clear the text box first if there's already text inside.
+You can also use <code translate="no">self.add_text()</code> or the <a href="https://www.selenium.dev/documentation/webdriver/" target="_blank">WebDriver</a> <code translate="no">.send_keys()</code> command, but those won't clear the text box first if there's already text inside.
 
 🔵 **Getting the text from an element on a page:**
 
@@ -1109,7 +1109,7 @@ if self.is_text_visible("You Shall Not Pass!", "h1"):
 
 <div></div>
 <details>
-<summary> ▶️ Click for a longer example of <code>is_text_visible():</code></summary>
+<summary> ▶️ Click for a longer example of <code translate="no">is_text_visible():</code></summary>
 
 ```python
 def get_mirror_universe_captain_picard_superbowl_ad(superbowl_year):
@@ -1149,7 +1149,7 @@ if self.is_link_text_visible("Stop! Hammer time!"):
 
 <h3>🔵 Switching Tabs:</h3>
 
-<p>If your test opens up a new tab/window, you can switch to it. (SeleniumBase automatically switches to new tabs that don't open to <code>about:blank</code> URLs.)</p>
+<p>If your test opens up a new tab/window, you can switch to it. (SeleniumBase automatically switches to new tabs that don't open to <code translate="no">about:blank</code> URLs.)</p>
 
 ```python
 self.switch_to_window(1)  # This switches to the new tab (0 is the first one)
@@ -1238,7 +1238,7 @@ self.execute_script('''document.body.innerHTML = \"%s\"''' % referral_link)
 self.click("a.analytics")  # Clicks the generated button
 ```
 
-(Due to popular demand, this traffic generation example has been included in SeleniumBase with the <code>self.generate_referral(start_page, end_page)</code> and the <code>self.generate_traffic(start_page, end_page, loops)</code> methods.)
+(Due to popular demand, this traffic generation example has been included in SeleniumBase with the <code translate="no">self.generate_referral(start_page, end_page)</code> and the <code translate="no">self.generate_traffic(start_page, end_page, loops)</code> methods.)
 
 </details>
 
@@ -1263,8 +1263,8 @@ class MyTestClass(BaseCase):
         self.process_deferred_asserts()
 ```
 
-<code>deferred_assert_element()</code> and <code>deferred_assert_text()</code> will save any exceptions that would be raised.
-To flush out all the failed deferred asserts into a single exception, make sure to call <code>self.process_deferred_asserts()</code> at the end of your test method. If your test hits multiple pages, you can call <code>self.process_deferred_asserts()</code> before navigating to a new page so that the screenshot from your log files matches the URL where the deferred asserts were made.
+<code translate="no">deferred_assert_element()</code> and <code translate="no">deferred_assert_text()</code> will save any exceptions that would be raised.
+To flush out all the failed deferred asserts into a single exception, make sure to call <code translate="no">self.process_deferred_asserts()</code> at the end of your test method. If your test hits multiple pages, you can call <code translate="no">self.process_deferred_asserts()</code> before navigating to a new page so that the screenshot from your log files matches the URL where the deferred asserts were made.
 
 <h3>🔵 How to access raw <a href="https://www.selenium.dev/documentation/webdriver/" target="_blank">WebDriver</a>:</h3>
 
@@ -1280,13 +1280,13 @@ self.driver.find_elements("partial link text", "GitHub")
 
 <h3>🔵 How to retry failing tests automatically:</h3>
 
-<p>You can use <code>pytest --reruns=NUM</code> to retry failing tests that many times. Add <code>--reruns-delay=SECONDS</code> to wait that many seconds between retries. Example:</p>
+<p>You can use <code translate="no">pytest --reruns=NUM</code> to retry failing tests that many times. Add <code translate="no">--reruns-delay=SECONDS</code> to wait that many seconds between retries. Example:</p>
 
 ```bash
 pytest --reruns=1 --reruns-delay=1
 ```
 
-<p>You can use the <code>@retry_on_exception()</code> decorator to retry failing methods. (First import: <code>from seleniumbase import decorators</code>). To learn more about SeleniumBase decorators, <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/common">click here</a>.</p>
+<p>You can use the <code translate="no">@retry_on_exception()</code> decorator to retry failing methods. (First import: <code translate="no">from seleniumbase import decorators</code>). To learn more about SeleniumBase decorators, <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/common">click here</a>.</p>
 
 --------
 

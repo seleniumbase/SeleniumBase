@@ -251,7 +251,7 @@ pytest -n8
 
 <h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> How to retry failing tests automatically:</h3>
 
-<p>You can use <code>pytest --reruns=NUM</code> to retry failing tests that many times. Add <code>--reruns-delay=SECONDS</code> to wait that many seconds between retries. Example:</p>
+<p>You can use <code translate="no">pytest --reruns=NUM</code> to retry failing tests that many times. Add <code translate="no">--reruns-delay=SECONDS</code> to wait that many seconds between retries. Example:</p>
 
 ```bash
 pytest --reruns=1 --reruns-delay=1
@@ -293,10 +293,10 @@ There's more info on that here: [pytest-xdist](https://pypi.org/project/pytest-x
 * ``-n8 --dist=loadfile``: Tests are grouped by their containing file. Groups are distributed to available workers as whole units. This guarantees that all tests in a file run in the same worker.
 
 <details>
-<summary> ▶️ <code>-n8 --dist=loadgroup</code> (<b>click to expand</b>)</summary>
+<summary> ▶️ <code translate="no">-n8 --dist=loadgroup</code> (<b>click to expand</b>)</summary>
 <div>
 
-<ul><li>Tests are grouped by the <code>xdist_group</code> mark. Groups are distributed to available workers as whole units. This guarantees that all tests with the same <code>xdist_group</code> name run in the same worker.</li></ul>
+<ul><li>Tests are grouped by the <code translate="no">xdist_group</code> mark. Groups are distributed to available workers as whole units. This guarantees that all tests with the same <code translate="no">xdist_group</code> name run in the same worker.</li></ul>
 
 ```python
 @pytest.mark.xdist_group(name="group1")
@@ -309,7 +309,7 @@ class Test:
         pass
 ```
 
-<blockquote><p>This makes <code>test_1</code> and <code>Test::test_2</code> run in the same worker. Tests without the <code>xdist_group</code> mark are distributed normally.</p></blockquote>
+<blockquote><p>This makes <code translate="no">test_1</code> and <code translate="no">Test::test_2</code> run in the same worker. Tests without the <code translate="no">xdist_group</code> mark are distributed normally.</p></blockquote>
 
 </div>
 </details>

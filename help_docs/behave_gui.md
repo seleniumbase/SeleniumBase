@@ -2,7 +2,7 @@
 
 ## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) SeleniumBase Behave GUI / Commander 🐝🎖️
 
-🐝🎖️ The <b>SeleniumBase Behave GUI</b> lets you run <code>behave</code> scripts from a Desktop GUI.<br>
+🐝🎖️ The <b translate="no">SeleniumBase Behave GUI</b> lets you run <code translate="no">behave</code> scripts from a Desktop GUI.<br>
 
 🐝🎖️ To launch it, call ``sbase behave-gui`` or ``sbase gui-behave``:
 
@@ -13,7 +13,7 @@
 
 <img src="https://seleniumbase.github.io/cdn/img/sbase_behave_gui_wide_5.png" title="SeleniumBase Behave GUI" width="600">
 
-🐝🎖️ <b>SeleniumBase Behave GUI</b> loads the same tests that are found by:
+🐝🎖️ <b translate="no">SeleniumBase Behave GUI</b> loads the same tests that are found by:
 
 ```bash
 behave -d
@@ -34,7 +34,7 @@ sbase behave-gui features/  # tests located in the "features/" folder
 sbase behave-gui features/calculator.feature  # tests in that feature
 ```
 
-🐝🎖️ Once launched, you can further customize which tests to run and what settings to use. There are various controls for changing settings, modes, and other "behave" command line options that are specific to SeleniumBase. You can also set additional options that don't have a visible toggle. When you're ready to run the selected tests with the specified options, click on the <code>Run Selected Tests</code> button.
+🐝🎖️ Once launched, you can further customize which tests to run and what settings to use. There are various controls for changing settings, modes, and other "behave" command line options that are specific to SeleniumBase. You can also set additional options that don't have a visible toggle. When you're ready to run the selected tests with the specified options, click on the <code translate="no">Run Selected Tests</code> button.
 
 🐝⚪ With the Dashboard enabled, you'll get one of these:
 
