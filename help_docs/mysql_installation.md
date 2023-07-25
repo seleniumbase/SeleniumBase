@@ -45,10 +45,10 @@ sudo mysql -h 127.0.0.1 -u root test_db < seleniumbase/core/create_db_tables.sql
 sudo service mysql restart
 ```
 
-To change the password:
+To change the password from `root` to `test`:
 
 ```bash
-mysqladmin -u root -p'OLD_PASSWORD' password NEW_PASSWORD
+mysqladmin -u root -p'root' password 'test'
 sudo service mysql restart
 ```
 
