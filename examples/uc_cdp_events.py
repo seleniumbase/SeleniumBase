@@ -17,7 +17,7 @@ class CDPTests(BaseCase):
 
     def verify_success(self):
         self.assert_text("OH YEAH, you passed!", "h1", timeout=6.25)
-        self.sleep(2)
+        self.sleep(1)
 
     def fail_me(self):
         self.fail('Selenium was detected! Try using: "pytest --uc"')
@@ -27,14 +27,12 @@ class CDPTests(BaseCase):
             self.get_new_driver(
                 undetectable=True, uc_cdp_events=True, incognito=True
             )
-        self.add_cdp_listener()
         self.open("https://nowsecure.nl/#relax")
         try:
             self.verify_success()
         except Exception:
             self.clear_all_cookies()
-            self.get_new_driver(devtools=True)
-            self.add_cdp_listener()
+            self.get_new_driver(undetectable=True, uc_cdp_events=True)
             self.open("https://nowsecure.nl/#relax")
             try:
                 self.verify_success()
@@ -50,3 +48,6 @@ class CDPTests(BaseCase):
                     self.verify_success()
                 except Exception:
                     self.fail_me()
+        self.add_cdp_listener()
+        self.refresh()
+        self.sleep(1)
