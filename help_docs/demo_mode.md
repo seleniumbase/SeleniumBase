@@ -4,9 +4,9 @@
 
 <p align="left"><img src="https://seleniumbase.github.io/cdn/gif/xkcd_vid.gif" width="400" alt="SeleniumBase Example" title="SeleniumBase Example" /></p>
 
-<p align="left">🔵 <b>Demo Mode</b> helps you see what a test is doing.</p>
+<p align="left">🔵 <b translate="no">Demo Mode</b> helps you see what a test is doing.</p>
 
-<p align="left">🏇💨 👀 If a test runs too fast for your eyes, use <b>Demo Mode</b> to slow it down, highlight actions, and display assertions. Example usage:</p>
+<p align="left">🏇💨 👀 If a test runs too fast for your eyes, use <b translate="no">Demo Mode</b> to slow it down, highlight actions, and display assertions. Example usage:</p>
 
 ```bash
 pytest my_first_test.py --demo
@@ -25,7 +25,7 @@ pytest test_swag_labs.py --demo
 
 --------
 
-<p>Here's an example that only uses the <code>highlight()</code> method for highlighting browser actions:</p>
+<p>Here's an example that only uses the <code translate="no">highlight()</code> method for highlighting browser actions:</p>
 
 
 <p align="left">(<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_error_page.py" target="_blank">test_error_page.py</a> from <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples" target="_blank">examples/</a>)</p>
@@ -38,6 +38,6 @@ pytest test_error_page.py
 
 --------
 
-Here's an example of a mobile test in <b>Demo Mode</b>:
+Here's an example of a mobile test in <b translate="no">Demo Mode</b>:
 
 <p align="left"><img src="https://seleniumbase.github.io/cdn/gif/skype_mobile_test_2.gif" width="450" alt="SeleniumBase Example" title="SeleniumBase Example" /></p>
