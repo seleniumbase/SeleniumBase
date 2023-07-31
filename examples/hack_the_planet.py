@@ -179,8 +179,8 @@ class HackTests(BaseCase):
         self.highlight("#ctitle", loops=7, scroll=False)
 
         self.open("https://www.nintendo.com/whatsnew/")
-        self.set_text_content("#main h2", aybabtu)
-        self.highlight("#main h2", loops=10, scroll=False)
+        self.set_text_content("main section h1", aybabtu)
+        self.highlight("main section h1", loops=10, scroll=False)
 
         if not self.headless:
             self.open("https://support.gog.com/hc/en-us?product=gog")

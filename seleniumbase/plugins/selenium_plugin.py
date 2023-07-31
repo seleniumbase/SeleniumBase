@@ -74,6 +74,7 @@ class SeleniumBrowser(Plugin):
     --swiftshader  (Use Chrome's "--use-gl=swiftshader" feature.)
     --incognito  (Enable Chrome's Incognito mode.)
     --guest  (Enable Chrome's Guest mode.)
+    --dark  (Enable Chrome's Dark mode.)
     --devtools  (Open Chrome's DevTools when the browser opens.)
     --disable-beforeunload  (Disable the "beforeunload" event on Chrome.)
     --window-size=WIDTH,HEIGHT  (Set the browser's starting window size.)
@@ -801,6 +802,15 @@ class SeleniumBrowser(Plugin):
             help="""Using this enables Chrome's Guest mode.""",
         )
         parser.addoption(
+            "--dark",
+            "--dark_mode",
+            "--dark-mode",
+            action="store_true",
+            dest="dark_mode",
+            default=False,
+            help="""Using this enables Chrome's Dark mode.""",
+        )
+        parser.addoption(
             "--devtools",
             "--open_devtools",
             "--open-devtools",
@@ -1125,6 +1135,7 @@ class SeleniumBrowser(Plugin):
         test.test.swiftshader = self.options.swiftshader
         test.test.incognito = self.options.incognito
         test.test.guest_mode = self.options.guest_mode
+        test.test.dark_mode = self.options.dark_mode
         test.test.devtools = self.options.devtools
         test.test._disable_beforeunload = self.options._disable_beforeunload
         test.test.window_size = self.options.window_size

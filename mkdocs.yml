@@ -153,17 +153,18 @@ nav:
     - 🔘 W3Schools radio buttons: https://seleniumbase.io/w3schools/radio_buttons
   - Additional Help Docs:
     - 📑 Table of Contents: help_docs/ReadMe.md
+    - 🖼️ How to handle iframes: help_docs/handling_iframes.md
     - 🔐 Decorators / Security: seleniumbase/common/ReadMe.md
-    - 🐳 Docker Start Guide: integrations/docker/ReadMe.md
     - 🗂️ Case Plans (examples): examples/case_summary.md
     - 🧭 Using Safari Driver: help_docs/using_safari_driver.md
+    - 🐳 Docker Start Guide: integrations/docker/ReadMe.md
     - 👤 Shadow DOM Support: help_docs/shadow_dom.md
     - 👥 macOS Hidden Files: help_docs/hidden_files_info.md
     - 🗄️ MySQL Instructions: help_docs/mysql_installation.md
     - 📃 Desired Capabilities: help_docs/desired_capabilities.md
     - 📜 Useful grep commands: help_docs/useful_grep_commands.md
-    - ⚙️ WebDriver Installation: help_docs/webdriver_installation.md
-    - ✔️ Verifying WebDriver: help_docs/verify_webdriver.md
+    - ⚙️ Downloading drivers: help_docs/webdriver_installation.md
+    - ✔️ Verifying drivers: help_docs/verify_webdriver.md
   - Behave-BDD Integration:
     - 🐝 Behave-BDD ReadMe: examples/behave_bdd/ReadMe.md
     - 🐝 Behave-BDD GUI App: help_docs/behave_gui.md

@@ -183,10 +183,10 @@ def uc_special_open_if_cf(driver, url):
         and has_cf(requests_get(url).text)
     ):
         with driver:
-            time.sleep(0.25)
             driver.execute_script('window.open("%s","_blank");' % url)
-            driver.close()
-            driver.switch_to.window(driver.window_handles[-1])
+        driver.reconnect(0.555)
+        driver.close()
+        driver.switch_to.window(driver.window_handles[-1])
     else:
         driver.open(url)  # The original one
     return None
@@ -195,8 +195,8 @@ def uc_special_open_if_cf(driver, url):
 def uc_open(driver, url):
     if (url.startswith("http:") or url.startswith("https:")):
         with driver:
-            time.sleep(0.25)
             driver.open(url)
+            time.sleep(0.25)
     else:
         driver.open(url)  # The original one
     return None
@@ -205,10 +205,10 @@ def uc_open(driver, url):
 def uc_open_with_tab(driver, url):
     if (url.startswith("http:") or url.startswith("https:")):
         with driver:
-            time.sleep(0.25)
             driver.execute_script('window.open("%s","_blank");' % url)
             driver.close()
             driver.switch_to.window(driver.window_handles[-1])
+            time.sleep(0.25)
     else:
         driver.open(url)  # The original one
     return None
@@ -510,6 +510,7 @@ def _set_chrome_options(
     headless2,
     incognito,
     guest_mode,
+    dark_mode,
     devtools,
     remote_debug,
     enable_3d_apis,
@@ -662,6 +663,8 @@ def _set_chrome_options(
             chrome_options.add_argument("--guest")
         else:
             pass
+    if dark_mode:
+        chrome_options.add_argument("--enable-features=WebContentsForceDark")
     if user_data_dir and not is_using_uc(undetectable, browser_name):
         abs_path = os.path.abspath(user_data_dir)
         chrome_options.add_argument("--user-data-dir=%s" % abs_path)
@@ -839,10 +842,6 @@ def _set_chrome_options(
     chrome_options.add_argument("--disable-prompt-on-repost")
     chrome_options.add_argument("--dns-prefetch-disable")
     chrome_options.add_argument("--disable-translate")
-    chrome_options.add_argument(
-        '--disable-features=OptimizationHints,OptimizationHintsFetching,'
-        'OptimizationGuideModelDownloading,OptimizationTargetPrediction'
-    )
     if binary_location:
         chrome_options.binary_location = binary_location
     if not enable_3d_apis and not is_using_uc(undetectable, browser_name):
@@ -870,6 +869,10 @@ def _set_chrome_options(
     chrome_options.add_argument("--disable-notifications")
     chrome_options.add_argument(
         "--disable-autofill-keyboard-accessory-view[8]"
+    )
+    chrome_options.add_argument(
+        '--disable-features=OptimizationHintsFetching,'
+        'OptimizationTargetPrediction'
     )
     chrome_options.add_argument("--homepage=about:blank")
     chrome_options.add_argument("--dom-automation")
@@ -1067,6 +1070,7 @@ def get_driver(
     headless2=False,
     incognito=False,
     guest_mode=False,
+    dark_mode=False,
     devtools=False,
     remote_debug=False,
     enable_3d_apis=False,
@@ -1273,6 +1277,7 @@ def get_driver(
             headless2,
             incognito,
             guest_mode,
+            dark_mode,
             devtools,
             remote_debug,
             enable_3d_apis,
@@ -1324,6 +1329,7 @@ def get_driver(
             headless2,
             incognito,
             guest_mode,
+            dark_mode,
             devtools,
             remote_debug,
             enable_3d_apis,
@@ -1379,6 +1385,7 @@ def get_remote_driver(
     headless2,
     incognito,
     guest_mode,
+    dark_mode,
     devtools,
     remote_debug,
     enable_3d_apis,
@@ -1499,6 +1506,7 @@ def get_remote_driver(
             headless2,
             incognito,
             guest_mode,
+            dark_mode,
             devtools,
             remote_debug,
             enable_3d_apis,
@@ -1688,6 +1696,7 @@ def get_remote_driver(
             headless2,
             incognito,
             guest_mode,
+            dark_mode,
             devtools,
             remote_debug,
             enable_3d_apis,
@@ -1809,6 +1818,7 @@ def get_remote_driver(
             headless2,
             incognito,
             guest_mode,
+            dark_mode,
             devtools,
             remote_debug,
             enable_3d_apis,
@@ -1928,6 +1938,7 @@ def get_local_driver(
     headless2,
     incognito,
     guest_mode,
+    dark_mode,
     devtools,
     remote_debug,
     enable_3d_apis,
@@ -2329,6 +2340,8 @@ def get_local_driver(
             and not recorder_ext and not disable_csp and not proxy_auth
         ):
             edge_options.add_argument("--guest")
+        if dark_mode:
+            edge_options.add_argument("--enable-features=WebContentsForceDark")
         if headless2:
             try:
                 if use_version == "latest" or int(use_version) >= 109:
@@ -2408,6 +2421,10 @@ def get_local_driver(
         edge_options.add_argument("--disable-single-click-autofill")
         edge_options.add_argument(
             "--disable-autofill-keyboard-accessory-view[8]"
+        )
+        edge_options.add_argument(
+            '--disable-features=OptimizationHintsFetching,'
+            'OptimizationTargetPrediction'
         )
         edge_options.add_argument("--disable-browser-side-navigation")
         edge_options.add_argument("--disable-translate")
@@ -2728,6 +2745,7 @@ def get_local_driver(
                 headless2,
                 incognito,
                 guest_mode,
+                dark_mode,
                 devtools,
                 remote_debug,
                 enable_3d_apis,
@@ -2783,6 +2801,7 @@ def get_local_driver(
                 headless2,
                 incognito,
                 guest_mode,
+                dark_mode,
                 devtools,
                 remote_debug,
                 enable_3d_apis,
@@ -3259,6 +3278,7 @@ def get_local_driver(
                         headless2,
                         incognito,
                         guest_mode,
+                        dark_mode,
                         devtools,
                         remote_debug,
                         enable_3d_apis,

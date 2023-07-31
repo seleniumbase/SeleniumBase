@@ -52,6 +52,7 @@ if pure_python:
     sb.user_agent = None
     sb.incognito = False
     sb.guest_mode = False
+    sb.dark_mode = False
     sb.devtools = False
     sb.mobile_emulator = False
     sb.device_metrics = None
