@@ -2177,6 +2177,7 @@ def get_local_driver(
         if major_edge_version:
             use_version = major_edge_version
         driver_version = None
+        edgedriver_upgrade_needed = False
         if os.path.exists(LOCAL_EDGEDRIVER):
             try:
                 output = subprocess.check_output(
@@ -2191,6 +2192,11 @@ def get_local_driver(
                     output = output.split(" ")[1].split(".")[0]
                 elif output.split(" ")[0] == "Microsoft":
                     # Microsoft Edge WebDriver VERSION
+                    if (
+                        "WebDriver 115.0" in output
+                        and "115.0.1901.183" not in output
+                    ):
+                        edgedriver_upgrade_needed = True
                     output = output.split(" ")[3].split(".")[0]
                 else:
                     output = 0
@@ -2198,7 +2204,6 @@ def get_local_driver(
                     driver_version = output
             except Exception:
                 pass
-        edgedriver_upgrade_needed = False
         local_edgedriver_exists = False
         if LOCAL_EDGEDRIVER and os.path.exists(LOCAL_EDGEDRIVER):
             local_edgedriver_exists = True
@@ -2477,7 +2482,9 @@ def get_local_driver(
         if selenium4_or_newer:
             try:
                 service = EdgeService(
-                    executable_path=LOCAL_EDGEDRIVER, log_path=os.devnull
+                    executable_path=LOCAL_EDGEDRIVER,
+                    log_path=os.devnull,
+                    service_args=["--disable-build-check"],
                 )
                 driver = Edge(service=service, options=edge_options)
             except Exception as e:
@@ -2503,6 +2510,7 @@ def get_local_driver(
                     service = EdgeService(
                         executable_path=LOCAL_EDGEDRIVER,
                         log_path=os.devnull,
+                        service_args=["--disable-build-check"],
                     )
                     # https://stackoverflow.com/a/56638103/7058266
                     sys_argv = sys.argv
@@ -2576,6 +2584,7 @@ def get_local_driver(
                     service = EdgeService(
                         executable_path=LOCAL_EDGEDRIVER,
                         log_path=os.devnull,
+                        service_args=["--disable-build-check"],
                     )
                     # https://stackoverflow.com/a/56638103/7058266
                     sys_argv = sys.argv

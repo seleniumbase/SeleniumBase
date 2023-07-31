@@ -500,6 +500,12 @@ def main(override=None, intel_for_uc=None):
             url_request = requests_get_with_retry(use_version)
             if url_request.ok:
                 use_version = url_request.text.split("\r")[0].split("\n")[0]
+                if (
+                    int(use_version.split(".")[0]) == 115
+                    and use_version.startswith("115.0")
+                    and use_version != "115.0.1901.183"
+                ):
+                    use_version = "115.0.1901.183"
         download_url = "https://msedgedriver.azureedge.net/%s/%s" % (
             use_version,
             file_name,
