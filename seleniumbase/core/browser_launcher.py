@@ -153,7 +153,7 @@ def get_uc_driver_version():
     return uc_driver_version
 
 
-def find_driver_version_to_use(use_version):
+def find_chromedriver_version_to_use(use_version):
     # Because https://chromedriver.chromium.org/downloads stops at 114
     final_chromedriver = "114"
     if (
@@ -2861,7 +2861,7 @@ def get_local_driver(
                     from seleniumbase import config as sb_config
 
                     sb_config.multi_proxy = True
-            use_version = find_driver_version_to_use(use_version)
+            use_version = find_chromedriver_version_to_use(use_version)
             if (
                 LOCAL_CHROMEDRIVER
                 and os.path.exists(LOCAL_CHROMEDRIVER)
@@ -3016,7 +3016,7 @@ def get_local_driver(
                 )
                 with uc_lock:  # Avoid multithreaded issues
                     uc_driver_version = get_uc_driver_version()
-                    use_version = find_driver_version_to_use(use_version)
+                    use_version = find_chromedriver_version_to_use(use_version)
                     if (
                         (
                             uc_driver_version != use_version
@@ -3191,7 +3191,7 @@ def get_local_driver(
                             and int(major_chrome_version) >= 86
                         ):
                             mcv = major_chrome_version
-                            mcv = find_driver_version_to_use(mcv)
+                            mcv = find_chromedriver_version_to_use(mcv)
                     headless = True
                     headless_options = _set_chrome_options(
                         browser_name,
