@@ -150,15 +150,23 @@ def requests_get_with_retry(url):
         try:
             response = requests.get(url, proxies=proxies)
         except Exception:
-            time.sleep(0.75)
-            response = requests.get(url, proxies=proxies)
+            time.sleep(1.1)
+            try:
+                response = requests.get(url, proxies=proxies)
+            except Exception:
+                time.sleep(1.2)
+                response = requests.get(url, proxies=proxies)
         return response
     else:
         try:
             response = requests.get(url)
         except Exception:
-            time.sleep(0.75)
-            response = requests.get(url)
+            time.sleep(1.1)
+            try:
+                response = requests.get(url)
+            except Exception:
+                time.sleep(1.2)
+                response = requests.get(url)
         return response
 
 
