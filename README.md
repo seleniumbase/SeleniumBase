@@ -57,7 +57,7 @@
 
 --------
 
-<p align="left"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/sb_logo_p3.png" alt="SeleniumBase" title="SeleniumBase" width="232" /></a></p>
+<p align="left"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/super_logo_sb2.png" alt="SeleniumBase" title="SeleniumBase" width="232" /></a></p>
 
 <blockquote>
 <p dir="auto"><strong>Explore the README:</strong></p>
@@ -439,6 +439,7 @@ self.sleep(seconds)  # Do nothing for the given amount of time.
 self.save_screenshot(name)  # Save a screenshot in .png format.
 self.assert_element(selector)  # Verify the element is visible.
 self.assert_text(text, selector)  # Verify text in the element.
+self.assert_exact_text(text, selector)  # Verify text is exact.
 self.assert_title(title)  # Verify the title of the web page.
 self.assert_downloaded_file(file)  # Verify file was downloaded.
 self.assert_no_404_errors()  # Verify there are no broken links.
@@ -485,10 +486,10 @@ behave calculator.feature -D rs -D dashboard
 
 With a SeleniumBase [pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/pytest.ini) file present, you can modify default discovery settings. The Python class name can be anything because ``seleniumbase.BaseCase`` inherits ``unittest.TestCase`` to trigger autodiscovery.
 
-<p>✅ You can do a pre-flight check to see which tests would get discovered by <code translate="no">pytest</code> before the real flight:</p>
+<p>✅ You can do a pre-flight check to see which tests would get discovered by <code translate="no">pytest</code> before the actual run:</p>
 
 ```bash
-pytest --collect-only -q
+pytest --co -q
 ```
 
 <p>✅ You can be more specific when calling <code translate="no">pytest</code> or <code translate="no">pynose</code> on a file:</p>
@@ -567,7 +568,8 @@ pytest test_coffee_cart.py --trace
 -q  # Quiet mode. Print fewer details in the console output when running tests.
 -x  # Stop running the tests after the first failure is reached.
 --html=report.html  # Creates a detailed pytest-html report after tests finish.
---collect-only | --co  # Show what tests would get run. (Without running them)
+--co | --collect-only  # Show what tests would get run. (Without running them)
+--co -q  # (Both options together!) - Do a dry run with full test names shown.
 -n=NUM  # Multithread the tests using that many threads. (Speed up test runs!)
 -s  # See print statements. (Should be on by default with pytest.ini present.)
 --junit-xml=report.xml  # Creates a junit-xml report after tests finish.
@@ -656,6 +658,7 @@ pytest test_coffee_cart.py --trace
 --swiftshader  # (Use Chrome's "--use-gl=swiftshader" feature.)
 --incognito  # (Enable Chrome's Incognito mode.)
 --guest  # (Enable Chrome's Guest mode.)
+--dark  # (Enable Chrome's Dark mode.)
 --devtools  # (Open Chrome's DevTools when the browser opens.)
 --rs | --reuse-session  # (Reuse browser session for all tests.)
 --rcs | --reuse-class-session  # (Reuse session for tests in class.)
@@ -1157,7 +1160,7 @@ self.switch_to_window(1)  # This switches to the new tab (0 is the first one)
 
 <h3>🔵 How to handle iframes:</h3>
 
-🔵 <b>ProTip™:</b> iframes follow the same principle as new windows: You must first switch to the iframe if you want to perform actions in there:
+🔵 <b>iframes</b> follow the same principle as new windows: You must first switch to the iframe if you want to perform actions in there:
 
 ```python
 self.switch_to_frame("iframe")
@@ -1165,14 +1168,31 @@ self.switch_to_frame("iframe")
 self.switch_to_parent_frame()  # Exit the current iframe
 ```
 
-To exit from multiple iframes, use ``self.switch_to_default_content()``. If inside a single iframe, this has the same effect as ``self.switch_to_parent_frame()``.
+To exit from multiple iframes, use ``self.switch_to_default_content()``. (If inside a single iframe, this has the same effect as ``self.switch_to_parent_frame()``.)
+
+```python
+self.switch_to_frame('iframe[name="frame1"]')
+self.switch_to_frame('iframe[name="frame2"]')
+# ... Now perform actions inside the inner iframe
+self.switch_to_default_content()  # Back to the main page
+```
 
 🔵 You can also use a context manager to act inside iframes:
 
 ```python
 with self.frame_switch("iframe"):
     # ... Now perform actions while inside the code block
-# You have left the iframe!
+# You have left the iframe
+```
+
+This also works with nested iframes:
+
+```python
+with self.frame_switch('iframe[name="frame1"]'):
+    with self.frame_switch('iframe[name="frame2"]'):
+        # ... Now perform actions while inside the code block
+    # You are now back inside the first iframe
+# You have left all the iframes
 ```
 
 <h3>🔵 How to execute custom jQuery scripts:</h3>

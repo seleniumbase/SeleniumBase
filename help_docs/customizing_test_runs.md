@@ -11,7 +11,7 @@
 pytest my_first_test.py
 
 # Run a test in Firefox
-pytest test_swag_labs.py --browser=firefox
+pytest test_swag_labs.py --firefox
 
 # Run a test in Demo Mode (highlight assertions)
 pytest test_demo_site.py --demo
@@ -22,11 +22,11 @@ pytest test_demo_site.py --headless
 # Run tests multi-threaded using [n] threads
 pytest test_suite.py -n4
 
-# Reuse the browser session for all tests ("--rs")
-pytest test_suite.py --reuse-session
+# Reuse the browser session for all tests ("--reuse-session")
+pytest test_suite.py --rs
 
 # Reuse the browser session, but erase cookies between tests
-pytest test_suite.py --reuse-session --crumbs
+pytest test_suite.py --rs --crumbs
 
 # Create a real-time dashboard for test results
 pytest test_suite.py --dashboard
@@ -91,7 +91,8 @@ pytest my_first_test.py --settings-file=custom_settings.py
 -q  # Quiet mode. Print fewer details in the console output when running tests.
 -x  # Stop running the tests after the first failure is reached.
 --html=report.html  # Creates a detailed pytest-html report after tests finish.
---collect-only | --co  # Show what tests would get run. (Without running them)
+--co | --collect-only  # Show what tests would get run. (Without running them)
+--co -q  # (Both options together!) - Do a dry run with full test names shown.
 -n=NUM  # Multithread the tests using that many threads. (Speed up test runs!)
 -s  # See print statements. (Should be on by default with pytest.ini present.)
 --junit-xml=report.xml  # Creates a junit-xml report after tests finish.
@@ -179,6 +180,7 @@ pytest my_first_test.py --settings-file=custom_settings.py
 --swiftshader  # (Use Chrome's "--use-gl=swiftshader" feature.)
 --incognito  # (Enable Chrome's Incognito mode.)
 --guest  # (Enable Chrome's Guest mode.)
+--dark  # (Enable Chrome's Dark mode.)
 --devtools  # (Open Chrome's DevTools when the browser opens.)
 --rs | --reuse-session  # (Reuse browser session for all tests.)
 --rcs | --reuse-class-session  # (Reuse session for tests in class.)

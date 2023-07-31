@@ -69,6 +69,7 @@
 <div><a href="https://seleniumbase.io/examples/tour_examples/ReadMe/"><b>Tour Examples</b></a></div>
 <div><a href="https://seleniumbase.io/examples/presenter/ReadMe/"><b>Presentation Maker</b></a></div>
 <div><a href="https://seleniumbase.io/examples/chart_maker/ReadMe/"><b>Chart Maker</b></a></div>
+<div><a href="https://seleniumbase.io/help_docs/handling_iframes/"><b>Handling iframes</b></a></div>
 <div><a href="https://seleniumbase.io/help_docs/mysql_installation/"><b>MySQL Installation Overview</b></a></div>
 <div><a href="https://seleniumbase.io/seleniumbase/utilities/selenium_grid/ReadMe/"><b>Using the Selenium Grid</b></a></div>
 <div><a href="https://seleniumbase.io/help_docs/desired_capabilities/"><b>Browser Desired Capabilities</b></a></div>
@@ -135,7 +136,8 @@
 <div><a href="https://seleniumbase.dev/examples/tour_examples/"><b>Tour Examples</b></a></div>
 <div><a href="https://seleniumbase.dev/examples/presenter/"><b>Presentation Maker</b></a></div>
 <div><a href="https://seleniumbase.dev/examples/chart_maker/ReadMe/"><b>Chart Maker</b></a></div>
-<div><a href="https://seleniumbase.dev/help_docs/mysql_installation"><b>MySQL Installation Overview</b></a></div>
+<div><a href="https://seleniumbase.dev/help_docs/mysql_installation"><b>Handling iframes</b></a></div>
+<div><a href="https://seleniumbase.dev/help_docs/handling_iframes"><b>MySQL Installation Overview</b></a></div>
 <div><a href="https://seleniumbase.dev/seleniumbase/utilities/selenium_grid/"><b>Using the Selenium Grid</b></a></div>
 <div><a href="https://seleniumbase.dev/help_docs/desired_capabilities"><b>Browser Desired Capabilities</b></a></div>
 <div><a href="https://seleniumbase.dev/help_docs/using_safari_driver"><b>Safari Driver Detailed Info</b></a></div>
