@@ -71,6 +71,7 @@ def format_exc(exception, message):
     from selenium.common.exceptions import NoSuchElementException
     from selenium.common.exceptions import NoSuchFrameException
     from selenium.common.exceptions import NoSuchWindowException
+    from seleniumbase.common.exceptions import LinkTextNotFoundException
     from seleniumbase.common.exceptions import NoSuchFileException
     from seleniumbase.common.exceptions import NoSuchOptionException
     from seleniumbase.common.exceptions import TextNotVisibleException
@@ -83,6 +84,10 @@ def format_exc(exception, message):
         exc = exceptions.ElementNotVisibleException
     elif exception == "ElementNotVisibleException":
         exc = exceptions.ElementNotVisibleException
+    elif exception == LinkTextNotFoundException:
+        exc = exceptions.LinkTextNotFoundException
+    elif exception == "LinkTextNotFoundException":
+        exc = exceptions.LinkTextNotFoundException
     elif exception == NoSuchElementException:
         exc = exceptions.NoSuchElementException
     elif exception == "NoSuchElementException":

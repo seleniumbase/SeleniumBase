@@ -1342,6 +1342,18 @@ class BaseCase(unittest.TestCase):
             self.driver, text, selector, by, self.browser
         )
 
+    def is_non_empty_text_visible(self, selector="html", by="css selector"):
+        """Returns whether the element has any non-empty text visible.
+        Whitespace-only text is considered empty text."""
+        self.wait_for_ready_state_complete()
+        time.sleep(0.01)
+        selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_shadow_selector(selector):
+            return self.__is_shadow_non_empty_text_visible(selector)
+        return page_actions.is_non_empty_text_visible(
+            self.driver, selector, by=by
+        )
+
     def is_attribute_present(
         self, selector, attribute, value=None, by="css selector"
     ):
@@ -1450,9 +1462,8 @@ class BaseCase(unittest.TestCase):
                 else:
                     return None
         if hard_fail:
-            raise Exception(
-                "Partial Link text {%s} was not found!" % link_text
-            )
+            msg = "Partial Link text {%s} was not found!" % link_text
+            page_actions.timeout_exception("LinkTextNotFoundException", msg)
         else:
             return None
 
@@ -4826,6 +4837,7 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("astnv")
         ext_actions.append("aetnv")
         ext_actions.append("as_et")
+        ext_actions.append("asnet")
         ext_actions.append("wf_el")
         ext_actions.append("sw_fr")
         ext_actions.append("sw_dc")
@@ -4852,6 +4864,7 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("da_ep")
         ext_actions.append("da_te")
         ext_actions.append("da_et")
+        ext_actions.append("danet")
         ext_actions.append("pr_da")
         for n in range(len(srt_actions)):
             if srt_actions[n][0] in ext_actions:
@@ -8200,6 +8213,15 @@ class BaseCase(unittest.TestCase):
             original_selector=original_selector,
         )
 
+    def assert_link(self, link_text, timeout=None):
+        """Same as self.assert_link_text()"""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        self.assert_link_text(link_text, timeout=timeout)
+
     def assert_element_not_present(
         self, selector, by="css selector", timeout=None
     ):
@@ -8832,6 +8854,27 @@ class BaseCase(unittest.TestCase):
             self.driver, text, selector, by, timeout, self.browser
         )
 
+    def wait_for_non_empty_text_visible(
+        self, selector="html", by="css selector", timeout=None
+    ):
+        """Searches for any text in the element of the given selector.
+        Returns the element if it has visible text within the timeout.
+        Raises an exception if the element has no text within the timeout.
+        Whitespace-only text is considered empty text."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_shadow_selector(selector):
+            return self.__wait_for_non_empty_shadow_text_visible(
+                selector, timeout
+            )
+        return page_actions.wait_for_non_empty_text_visible(
+            self.driver, selector, by=by, timeout=timeout
+        )
+
     def wait_for_text(
         self, text, selector="html", by="css selector", timeout=None
     ):
@@ -8858,6 +8901,19 @@ class BaseCase(unittest.TestCase):
             text, selector, by=by, timeout=timeout
         )
 
+    def wait_for_non_empty_text(
+        self, selector="html", by="css selector", timeout=None
+    ):
+        """The shorter version of wait_for_non_empty_text_visible()"""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        return self.wait_for_non_empty_text_visible(
+            selector, by=by, timeout=timeout
+        )
+
     def find_text(
         self, text, selector="html", by="css selector", timeout=None
     ):
@@ -8882,6 +8938,19 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         return self.wait_for_exact_text_visible(
             text, selector, by=by, timeout=timeout
+        )
+
+    def find_non_empty_text(
+        self, selector="html", by="css selector", timeout=None
+    ):
+        """Same as wait_for_non_empty_text_visible() - returns the element"""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        return self.wait_for_non_empty_text_visible(
+            selector, by=by, timeout=timeout
         )
 
     def assert_text_visible(
@@ -8988,6 +9057,48 @@ class BaseCase(unittest.TestCase):
                 self.__extra_actions.append(action)
         return True
 
+    def assert_non_empty_text(
+        self, selector="html", by="css selector", timeout=None
+    ):
+        """Assert that the element has any non-empty text visible.
+        Raises an exception if the element has no text within the timeout.
+        Whitespace-only text is considered empty text."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        original_selector = selector
+        selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_shadow_selector(selector):
+            self.__assert_non_empty_shadow_text_visible(selector, timeout)
+            return True
+        self.wait_for_non_empty_text_visible(selector, by=by, timeout=timeout)
+        if self.demo_mode:
+            a_t = "ASSERT NON-EMPTY TEXT"
+            i_n = "in"
+            if self._language != "English":
+                from seleniumbase.fixtures.words import SD
+
+                a_t = SD.translate_assert_non_empty_text(self._language)
+                i_n = SD.translate_in(self._language)
+            messenger_post = "<b>%s</b> %s %s: %s" % (
+                a_t,
+                i_n,
+                by.upper(),
+                selector,
+            )
+            self.__highlight_with_assert_success(messenger_post, selector, by)
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                if by == By.XPATH:
+                    selector = original_selector
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                action = ["asnet", selector, origin, time_stamp]
+                self.__extra_actions.append(action)
+        return True
+
     ############
 
     def wait_for_link_text_present(self, link_text, timeout=None):
@@ -9009,11 +9120,11 @@ class BaseCase(unittest.TestCase):
                 if now_ms >= stop_ms:
                     break
                 time.sleep(0.2)
-        message = "Link text {%s} was not present after %s seconds!" % (
+        message = "Link text {%s} was not found after %s seconds!" % (
             link_text,
             timeout,
         )
-        page_actions.timeout_exception("NoSuchElementException", message)
+        page_actions.timeout_exception("LinkTextNotFoundException", message)
 
     def wait_for_partial_link_text_present(self, link_text, timeout=None):
         self.__check_scope()
@@ -9035,10 +9146,10 @@ class BaseCase(unittest.TestCase):
                     break
                 time.sleep(0.2)
         message = (
-            "Partial Link text {%s} was not present after %s seconds!"
+            "Partial Link text {%s} was not found after %s seconds!"
             "" % (link_text, timeout)
         )
-        page_actions.timeout_exception("NoSuchElementException", message)
+        page_actions.timeout_exception("LinkTextNotFoundException", message)
 
     def wait_for_link_text_visible(self, link_text, timeout=None):
         self.__check_scope()
@@ -10121,6 +10232,49 @@ class BaseCase(unittest.TestCase):
             self.__add_deferred_assert_failure(fs=fs)
             return False
 
+    def deferred_assert_non_empty_text(
+        self,
+        selector="html",
+        by="css selector",
+        timeout=None,
+        fs=False,
+    ):
+        """A non-terminating assertion for non-empty element text.
+        Failures will be saved until the process_deferred_asserts()
+        method is called from inside a test, likely at the end of it.
+        If "fs" is set to True, a failure screenshot is saved to the
+        "latest_logs/" folder for that assertion failure. Otherwise,
+        only the last page screenshot is taken for all failures when
+        calling the process_deferred_asserts() method."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.MINI_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.MINI_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        self.__deferred_assert_count += 1
+        try:
+            url = self.get_current_url()
+            if url == self.__last_url_of_deferred_assert:
+                timeout = 0.6  # Was already on page (full wait not needed)
+            else:
+                self.__last_url_of_deferred_assert = url
+        except Exception:
+            pass
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                action = ["danet", selector, origin, time_stamp]
+                self.__extra_actions.append(action)
+        try:
+            self.wait_for_non_empty_text_visible(
+                selector, by=by, timeout=timeout
+            )
+            return True
+        except Exception:
+            self.__add_deferred_assert_failure(fs=fs)
+            return False
+
     def deferred_check_window(
         self,
         name="default",
@@ -10215,6 +10369,18 @@ class BaseCase(unittest.TestCase):
         """Same as self.deferred_assert_exact_text()"""
         return self.deferred_assert_exact_text(
             text=text, selector=selector, by=by, timeout=timeout, fs=fs
+        )
+
+    def delayed_assert_non_empty_text(
+        self,
+        selector="html",
+        by="css selector",
+        timeout=None,
+        fs=False,
+    ):
+        """Same as self.deferred_assert_non_empty_text()"""
+        return self.deferred_assert_non_empty_text(
+            selector=selector, by=by, timeout=timeout, fs=fs
         )
 
     def delayed_check_window(
@@ -13223,7 +13389,7 @@ class BaseCase(unittest.TestCase):
                 text,
                 selector,
             )
-            page_actions.timeout_exception("ElementNotVisibleException", msg)
+            page_actions.timeout_exception("TextNotVisibleException", msg)
         return True
 
     def __wait_for_exact_shadow_text_visible(self, text, selector, timeout):
@@ -13242,7 +13408,7 @@ class BaseCase(unittest.TestCase):
                         "" % (text, selector)
                     )
                     page_actions.timeout_exception(
-                        "ElementNotVisibleException", msg
+                        "TextNotVisibleException", msg
                     )
                 return True
             except Exception:
@@ -13257,7 +13423,32 @@ class BaseCase(unittest.TestCase):
                 "Expected exact text {%s} in element {%s} was not visible!"
                 % (text, selector)
             )
-            page_actions.timeout_exception("ElementNotVisibleException", msg)
+            page_actions.timeout_exception("TextNotVisibleException", msg)
+        return True
+
+    def __wait_for_non_empty_shadow_text_visible(self, selector, timeout):
+        start_ms = time.time() * 1000.0
+        stop_ms = start_ms + (settings.SMALL_TIMEOUT * 1000.0)
+        for x in range(int(settings.SMALL_TIMEOUT * 10)):
+            try:
+                actual_text = self.__get_shadow_text(selector, timeout=1)
+                actual_text = actual_text.strip()
+                if len(actual_text) == 0:
+                    msg = "Element {%s} has no visible text!" % (selector)
+                    page_actions.timeout_exception(
+                        "TextNotVisibleException", msg
+                    )
+                return True
+            except Exception:
+                now_ms = time.time() * 1000.0
+                if now_ms >= stop_ms:
+                    break
+                time.sleep(0.1)
+        actual_text = self.__get_shadow_text(selector, timeout=1)
+        actual_text = actual_text.strip()
+        if len(actual_text) == 0:
+            msg = "Element {%s} has no visible text!" % (selector)
+            page_actions.timeout_exception("TextNotVisibleException", msg)
         return True
 
     def __assert_shadow_text_visible(self, text, selector, timeout):
@@ -13300,6 +13491,31 @@ class BaseCase(unittest.TestCase):
             messenger_post = "<b>%s</b>: {%s} %s %s: %s" % (
                 a_t,
                 text,
+                i_n,
+                by.upper(),
+                selector,
+            )
+            try:
+                js_utils.activate_jquery(self.driver)
+                js_utils.post_messenger_success_message(
+                    self.driver, messenger_post, self.message_duration
+                )
+            except Exception:
+                pass
+
+    def __assert_non_empty_shadow_text_visible(self, selector, timeout, strip):
+        self.__wait_for_non_empty_shadow_text_visible(selector, timeout, strip)
+        if self.demo_mode:
+            a_t = "ASSERT NON-EMPTY TEXT"
+            i_n = "in"
+            by = By.CSS_SELECTOR
+            if self._language != "English":
+                from seleniumbase.fixtures.words import SD
+
+                a_t = SD.translate_assert_non_empty_text(self._language)
+                i_n = SD.translate_in(self._language)
+            messenger_post = "<b>%s</b> %s %s: %s" % (
+                a_t,
                 i_n,
                 by.upper(),
                 selector,
@@ -13368,6 +13584,18 @@ class BaseCase(unittest.TestCase):
                 element.is_displayed()
                 and text.strip() == element.text.strip()
             )
+        except Exception:
+            return False
+
+    def __is_shadow_non_empty_text_visible(self, selector):
+        try:
+            element = self.__get_shadow_element(selector, timeout=0.1)
+            if self.browser == "safari":
+                return (
+                    element.is_displayed()
+                    and len(element.get_attribute("innerText").strip() > 0)
+                )
+            return element.is_displayed() and len(element.text.strip()) > 0
         except Exception:
             return False
 

@@ -435,18 +435,46 @@ def generate_gherkin(srt_actions):
                     sb_actions.append('%s "%s"' % (method, action[1][0]))
                 else:
                     sb_actions.append("%s '%s'" % (method, action[1][0]))
+        elif action[0] == "asnet":
+            method = "Assert non-empty text in"
+            if '"' not in action[1]:
+                sb_actions.append('%s "%s"' % (method, action[1]))
+            elif "'" not in action[1]:
+                sb_actions.append("%s '%s'" % (method, action[1]))
+            else:
+                sb_actions.append(
+                    "%s '%s'" % (method, action[1].replace("'", "\\'"))
+                )
         elif action[0] == "da_el":
             method = "Deferred assert element"
             if '"' not in action[1]:
                 sb_actions.append('%s "%s"' % (method, action[1]))
-            else:
+            elif "'" not in action[1]:
                 sb_actions.append("%s '%s'" % (method, action[1]))
+            else:
+                sb_actions.append(
+                    "%s '%s'" % (method, action[1].replace("'", "\\'"))
+                )
         elif action[0] == "da_ep":
             method = "Deferred assert element present"
             if '"' not in action[1]:
                 sb_actions.append('%s "%s"' % (method, action[1]))
-            else:
+            elif "'" not in action[1]:
                 sb_actions.append("%s '%s'" % (method, action[1]))
+            else:
+                sb_actions.append(
+                    "%s '%s'" % (method, action[1].replace("'", "\\'"))
+                )
+        elif action[0] == "danet":
+            method = "Deferred assert non-empty text in"
+            if '"' not in action[1]:
+                sb_actions.append('%s "%s"' % (method, action[1]))
+            elif "'" not in action[1]:
+                sb_actions.append("%s '%s'" % (method, action[1]))
+            else:
+                sb_actions.append(
+                    "%s '%s'" % (method, action[1].replace("'", "\\'"))
+                )
         elif action[0] == "s_scr":
             method = "Save screenshot as"
             if '"' not in action[1]:

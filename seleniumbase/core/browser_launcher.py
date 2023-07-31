@@ -153,7 +153,7 @@ def get_uc_driver_version():
     return uc_driver_version
 
 
-def find_driver_version_to_use(use_version):
+def find_chromedriver_version_to_use(use_version):
     # Because https://chromedriver.chromium.org/downloads stops at 114
     final_chromedriver = "114"
     if (
@@ -177,11 +177,46 @@ def has_cf(text):
     return False
 
 
-def uc_open(driver, url):
+def uc_special_open_if_cf(driver, url):
     if (
         (url.startswith("http:") or url.startswith("https:"))
         and has_cf(requests_get(url).text)
     ):
+        with driver:
+            time.sleep(0.25)
+            driver.execute_script('window.open("%s","_blank");' % url)
+            driver.close()
+            driver.switch_to.window(driver.window_handles[-1])
+    else:
+        driver.open(url)  # The original one
+    return None
+
+
+def uc_open(driver, url):
+    if (url.startswith("http:") or url.startswith("https:")):
+        with driver:
+            time.sleep(0.25)
+            driver.open(url)
+    else:
+        driver.open(url)  # The original one
+    return None
+
+
+def uc_open_with_tab(driver, url):
+    if (url.startswith("http:") or url.startswith("https:")):
+        with driver:
+            time.sleep(0.25)
+            driver.execute_script('window.open("%s","_blank");' % url)
+            driver.close()
+            driver.switch_to.window(driver.window_handles[-1])
+    else:
+        driver.open(url)  # The original one
+    return None
+
+
+def uc_open_with_reconnect(driver, url):
+    """Open a url, then reconnect with UC before switching to the window."""
+    if (url.startswith("http:") or url.startswith("https:")):
         driver.execute_script('window.open("%s","_blank");' % url)
         driver.reconnect(2.65)
         driver.close()
@@ -804,6 +839,10 @@ def _set_chrome_options(
     chrome_options.add_argument("--disable-prompt-on-repost")
     chrome_options.add_argument("--dns-prefetch-disable")
     chrome_options.add_argument("--disable-translate")
+    chrome_options.add_argument(
+        '--disable-features=OptimizationHints,OptimizationHintsFetching,'
+        'OptimizationGuideModelDownloading,OptimizationTargetPrediction'
+    )
     if binary_location:
         chrome_options.binary_location = binary_location
     if not enable_3d_apis and not is_using_uc(undetectable, browser_name):
@@ -2177,6 +2216,7 @@ def get_local_driver(
         if major_edge_version:
             use_version = major_edge_version
         driver_version = None
+        edgedriver_upgrade_needed = False
         if os.path.exists(LOCAL_EDGEDRIVER):
             try:
                 output = subprocess.check_output(
@@ -2191,6 +2231,11 @@ def get_local_driver(
                     output = output.split(" ")[1].split(".")[0]
                 elif output.split(" ")[0] == "Microsoft":
                     # Microsoft Edge WebDriver VERSION
+                    if (
+                        "WebDriver 115.0" in output
+                        and "115.0.1901.183" not in output
+                    ):
+                        edgedriver_upgrade_needed = True
                     output = output.split(" ")[3].split(".")[0]
                 else:
                     output = 0
@@ -2198,7 +2243,6 @@ def get_local_driver(
                     driver_version = output
             except Exception:
                 pass
-        edgedriver_upgrade_needed = False
         local_edgedriver_exists = False
         if LOCAL_EDGEDRIVER and os.path.exists(LOCAL_EDGEDRIVER):
             local_edgedriver_exists = True
@@ -2477,7 +2521,9 @@ def get_local_driver(
         if selenium4_or_newer:
             try:
                 service = EdgeService(
-                    executable_path=LOCAL_EDGEDRIVER, log_path=os.devnull
+                    executable_path=LOCAL_EDGEDRIVER,
+                    log_path=os.devnull,
+                    service_args=["--disable-build-check"],
                 )
                 driver = Edge(service=service, options=edge_options)
             except Exception as e:
@@ -2503,6 +2549,7 @@ def get_local_driver(
                     service = EdgeService(
                         executable_path=LOCAL_EDGEDRIVER,
                         log_path=os.devnull,
+                        service_args=["--disable-build-check"],
                     )
                     # https://stackoverflow.com/a/56638103/7058266
                     sys_argv = sys.argv
@@ -2576,6 +2623,7 @@ def get_local_driver(
                     service = EdgeService(
                         executable_path=LOCAL_EDGEDRIVER,
                         log_path=os.devnull,
+                        service_args=["--disable-build-check"],
                     )
                     # https://stackoverflow.com/a/56638103/7058266
                     sys_argv = sys.argv
@@ -2852,7 +2900,7 @@ def get_local_driver(
                     from seleniumbase import config as sb_config
 
                     sb_config.multi_proxy = True
-            use_version = find_driver_version_to_use(use_version)
+            use_version = find_chromedriver_version_to_use(use_version)
             if (
                 LOCAL_CHROMEDRIVER
                 and os.path.exists(LOCAL_CHROMEDRIVER)
@@ -3007,7 +3055,7 @@ def get_local_driver(
                 )
                 with uc_lock:  # Avoid multithreaded issues
                     uc_driver_version = get_uc_driver_version()
-                    use_version = find_driver_version_to_use(use_version)
+                    use_version = find_chromedriver_version_to_use(use_version)
                     if (
                         (
                             uc_driver_version != use_version
@@ -3182,7 +3230,7 @@ def get_local_driver(
                             and int(major_chrome_version) >= 86
                         ):
                             mcv = major_chrome_version
-                            mcv = find_driver_version_to_use(mcv)
+                            mcv = find_chromedriver_version_to_use(mcv)
                     headless = True
                     headless_options = _set_chrome_options(
                         browser_name,
@@ -3281,7 +3329,14 @@ def get_local_driver(
                             )
                 driver.open = driver.get  # Save copy of original
                 if uc_activated:
-                    driver.get = lambda url: uc_open(driver, url)
+                    driver.get = lambda url: uc_special_open_if_cf(driver, url)
+                    driver.uc_open = lambda url: uc_open(driver, url)
+                    driver.uc_open_with_tab = (
+                        lambda url: uc_open_with_tab(driver, url)
+                    )
+                    driver.uc_open_with_reconnect = (
+                        lambda url: uc_open_with_reconnect(driver, url)
+                    )
                 return driver
             else:  # Running headless on Linux (and not using --uc)
                 try:

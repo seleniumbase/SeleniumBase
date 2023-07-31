@@ -133,20 +133,20 @@ setup(
     python_requires=">=3.6",
     install_requires=[
         'pip>=21.3.1;python_version<"3.7"',
-        'pip>=23.2;python_version>="3.7"',
+        'pip>=23.2.1;python_version>="3.7"',
         'packaging>=21.3;python_version<"3.7"',
         'packaging>=23.1;python_version>="3.7"',
         'setuptools>=59.6.0;python_version<"3.7"',
         'setuptools>=68.0.0;python_version>="3.7"',
         'wheel>=0.37.1;python_version<"3.7"',
-        'wheel>=0.40.0;python_version>="3.7"',
+        'wheel>=0.41.0;python_version>="3.7"',
         'attrs==22.1.0;python_version<"3.7"',
         'attrs>=23.1.0;python_version>="3.7"',
-        "certifi>=2023.5.7",
+        "certifi>=2023.7.22",
         'filelock>=3.4.1;python_version<"3.7"',
         'filelock>=3.12.2;python_version>="3.7"',
         'platformdirs>=2.4.0;python_version<"3.7"',
-        'platformdirs>=3.9.1;python_version>="3.7"',
+        'platformdirs>=3.10.0;python_version>="3.7"',
         'parse>=1.19.1',
         'parse-type>=0.6.2',
         "six==1.16.0",
@@ -160,7 +160,7 @@ setup(
         'urllib3>=1.26.16,<2.1.0;python_version>="3.10"',
         'requests==2.27.1;python_version<"3.7"',
         'requests==2.31.0;python_version>="3.7"',
-        "pynose==1.4.6",
+        "pynose==1.4.7",
         'sniffio==1.3.0;python_version>="3.7"',
         'h11==0.14.0;python_version>="3.7"',
         'outcome==1.2.0;python_version>="3.7"',
@@ -211,13 +211,13 @@ setup(
         'future-breakpoint==2.0.0;python_version<"3.7"',
         'importlib-metadata==4.2.0;python_version<"3.8"',
         'pyotp==2.7.0;python_version<"3.7"',
-        'pyotp==2.8.0;python_version>="3.7"',
+        'pyotp==2.9.0;python_version>="3.7"',
         'typing-extensions==4.1.1;python_version<"3.7"',
         'commonmark==0.9.1;python_version<"3.7"',  # For old "rich"
         'markdown-it-py==3.0.0;python_version>="3.8"',  # For new "rich"
         'mdurl==0.1.2;python_version>="3.7"',  # For new "rich"
         'rich==12.6.0;python_version<"3.7"',
-        'rich==13.4.2;python_version>="3.7"',
+        'rich==13.5.0;python_version>="3.7"',
     ],
     extras_require={
         # pip install -e .[allure]
@@ -243,12 +243,12 @@ setup(
         # Usage: flake8
         "flake8": [
             'flake8==5.0.4;python_version<"3.9"',
-            'flake8==6.0.0;python_version>="3.9"',
+            'flake8==6.1.0;python_version>="3.9"',
             "mccabe==0.7.0",
             'pyflakes==2.5.0;python_version<"3.9"',
-            'pyflakes==3.0.1;python_version>="3.9"',
+            'pyflakes==3.1.0;python_version>="3.9"',
             'pycodestyle==2.9.1;python_version<"3.9"',
-            'pycodestyle==2.10.0;python_version>="3.9"',
+            'pycodestyle==2.11.0;python_version>="3.9"',
         ],
         # pip install -e .[ipdb]
         # (Not needed for debugging anymore. SeleniumBase now includes "pdbp".)

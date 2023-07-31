@@ -77,6 +77,10 @@ class CasoDiProva(BaseCase):
         # assert_link_text(link_text)
         return self.assert_link_text(*args, **kwargs)
 
+    def verificare_testo_non_vuoto(self, *args, **kwargs):
+        # assert_non_empty_text(selector)
+        return self.assert_non_empty_text(*args, **kwargs)
+
     def verificare_testo_non_visto(self, *args, **kwargs):
         # assert_text_not_visible(text, selector)
         return self.assert_text_not_visible(*args, **kwargs)

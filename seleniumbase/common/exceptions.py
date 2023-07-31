@@ -1,4 +1,5 @@
 """ SeleniumBase Exceptions
+    LinkTextNotFoundException => Called when expected link text is not visible.
     NoSuchFileException => Called when self.assert_downloaded_file(...) fails.
     NoSuchOptionException => Called when select_option_by_*() lacks the option.
     NotConnectedException => Called when Internet is not reachable when needed.
@@ -6,11 +7,15 @@
     NotUsingChromiumException => Used by Chromium-only methods if not Chromium.
     OutOfScopeException => Used by BaseCase methods when setUp() is skipped.
     ProxyConnectionException => Called when the proxy connection failed.
-    TextNotVisibleException => Called when expected text fails to appear.
+    TextNotVisibleException => Called when the expected text is not visible.
     TimeLimitExceededException => Called when exceeding "--time-limit=SECONDS".
     TimeoutException => Called when some timeout limit has been exceeded.
     VisualException => Called when there's a Visual Diff Assertion Failure.
 """
+
+
+class LinkTextNotFoundException(Exception):
+    pass
 
 
 class NoSuchFileException(Exception):

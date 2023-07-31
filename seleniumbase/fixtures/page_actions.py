@@ -28,6 +28,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoSuchWindowException
 from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.common.action_chains import ActionChains
+from seleniumbase.common.exceptions import LinkTextNotFoundException
 from seleniumbase.common.exceptions import TextNotVisibleException
 from seleniumbase.config import settings
 from seleniumbase.fixtures import shared_utils
@@ -193,6 +194,38 @@ def is_attribute_present(
                 return False
         else:
             return True
+    except Exception:
+        return False
+
+
+def is_non_empty_text_visible(driver, selector, by="css selector"):
+    """
+    Returns whether the element has any text visible for the given selector.
+    @Params
+    driver - the webdriver object (required)
+    selector - the locator for identifying the page element (required)
+    by - the type of selector being used (Default: "css selector")
+    @Returns
+    Boolean (is any text visible in the element with the selector)
+    """
+    browser = None  # Only used for covering a Safari edge case
+    try:
+        if "safari:platformVersion" in driver.capabilities:
+            browser = "safari"
+    except Exception:
+        pass
+    try:
+        element = driver.find_element(by=by, value=selector)
+        element_text = element.text
+        if browser == "safari":
+            if element.tag_name.lower() in ["input", "textarea"]:
+                element_text = element.get_attribute("value")
+            else:
+                element_text = element.get_attribute("innerText")
+        elif element.tag_name.lower() in ["input", "textarea"]:
+            element_text = element.get_property("value")
+        element_text = element_text.strip()
+        return element.is_displayed() and len(element_text) > 0
     except Exception:
         return False
 
@@ -468,12 +501,12 @@ def wait_for_element_visible(
         )
         timeout_exception(ElementNotVisibleException, message)
     elif not element and by == "link text":
-        message = "Link text {%s} was not visible after %s second%s!" % (
+        message = "Link text {%s} was not found after %s second%s!" % (
             selector,
             timeout,
             plural,
         )
-        timeout_exception(ElementNotVisibleException, message)
+        timeout_exception(LinkTextNotFoundException, message)
     else:
         return element
 
@@ -870,12 +903,12 @@ def wait_for_element_clickable(
         )
         timeout_exception(ElementNotInteractableException, message)
     elif not element and by == "link text" and not is_visible:
-        message = "Link text {%s} was not visible after %s second%s!" % (
+        message = "Link text {%s} was not found after %s second%s!" % (
             selector,
             timeout,
             plural,
         )
-        timeout_exception(ElementNotVisibleException, message)
+        timeout_exception(LinkTextNotFoundException, message)
     elif not element and by == "link text" and is_visible:
         message = "Link text {%s} was not clickable after %s second%s!" % (
             selector,
@@ -1074,6 +1107,86 @@ def wait_for_exact_text_not_visible(
         )
     )
     timeout_exception(Exception, message)
+
+
+def wait_for_non_empty_text_visible(
+    driver, selector, by="css selector", timeout=settings.LARGE_TIMEOUT,
+):
+    """
+    Searches for any text in the element of the given selector.
+    Returns the element if it has visible text within the timeout.
+    Raises an exception if the element has no text within the timeout.
+    Whitespace-only text is considered empty text.
+    @Params
+    driver - the webdriver object (required)
+    text - the text that is being searched for in the element (required)
+    selector - the locator for identifying the page element (required)
+    by - the type of selector being used (Default: "css selector")
+    timeout - the time to wait for elements in seconds
+    @Returns
+    The web element object that has text
+    """
+    start_ms = time.time() * 1000.0
+    stop_ms = start_ms + (timeout * 1000.0)
+    element = None
+    visible = None
+    browser = None  # Only used for covering a Safari edge case
+    try:
+        if "safari:platformVersion" in driver.capabilities:
+            browser = "safari"
+    except Exception:
+        pass
+    for x in range(int(timeout * 10)):
+        shared_utils.check_if_time_limit_exceeded()
+        try:
+            element = None
+            visible = False
+            element = driver.find_element(by=by, value=selector)
+            if element.is_displayed():
+                visible = True
+            element_text = element.text
+            if browser == "safari":
+                if element.tag_name.lower() in ["input", "textarea"]:
+                    element_text = element.get_attribute("value")
+                else:
+                    element_text = element.get_attribute("innerText")
+            elif element.tag_name.lower() in ["input", "textarea"]:
+                element_text = element.get_property("value")
+            element_text = element_text.strip()
+            if element.is_displayed() and len(element_text) > 0:
+                return element
+        except Exception:
+            element = None
+        now_ms = time.time() * 1000.0
+        if now_ms >= stop_ms:
+            break
+        time.sleep(0.1)
+    plural = "s"
+    if timeout == 1:
+        plural = ""
+    if not element:
+        # The element does not exist in the HTML
+        message = "Element {%s} was not present after %s second%s!" % (
+            selector,
+            timeout,
+            plural,
+        )
+        timeout_exception(NoSuchElementException, message)
+    elif not visible:
+        # The element exists in the HTML, but is not visible
+        message = "Element {%s} was not visible after %s second%s!" % (
+            selector,
+            timeout,
+            plural,
+        )
+        timeout_exception(ElementNotVisibleException, message)
+    else:
+        # The element exists in the HTML, but has no visible text
+        message = (
+            "Element {%s} has no visible text after %s second%s!"
+            "" % (selector, timeout, plural)
+        )
+        timeout_exception(TextNotVisibleException, message)
 
 
 def wait_for_attribute_not_present(
@@ -1420,4 +1533,18 @@ def wait_for_text(
         by=by,
         timeout=timeout,
         browser=browser,
+    )
+
+
+def wait_for_non_empty_text(
+    driver,
+    selector,
+    by="css selector",
+    timeout=settings.LARGE_TIMEOUT,
+):
+    return wait_for_non_empty_text_visible(
+        driver=driver,
+        selector=selector,
+        by=by,
+        timeout=timeout,
     )

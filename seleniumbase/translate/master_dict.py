@@ -460,6 +460,18 @@ class MD:
     md["assert_link_text"][8] = "подтвердить_ссылку"
     md["assert_link_text"][9] = "verificar_texto_del_enlace"
 
+    md["assert_non_empty_text"] = ["*"] * num_langs
+    md["assert_non_empty_text"][0] = "assert_non_empty_text"
+    md["assert_non_empty_text"][1] = "断言非空文本"
+    md["assert_non_empty_text"][2] = "controleren_niet_lege_tekst"
+    md["assert_non_empty_text"][3] = "vérifier_texte_non_vide"
+    md["assert_non_empty_text"][4] = "verificare_testo_non_vuoto"
+    md["assert_non_empty_text"][5] = "空ではないテキストを確認する"
+    md["assert_non_empty_text"][6] = "비어_있지_않은_텍스트_확인하는"
+    md["assert_non_empty_text"][7] = "verificar_texto_não_vazio"
+    md["assert_non_empty_text"][8] = "подтвердить_непустой_текст"
+    md["assert_non_empty_text"][9] = "verificar_texto_no_vacío"
+
     md["assert_text_not_visible"] = ["*"] * num_langs
     md["assert_text_not_visible"][0] = "assert_text_not_visible"
     md["assert_text_not_visible"][1] = "断言文本不可见"
@@ -2417,6 +2429,19 @@ class MD:
     md["assert_text_visible"][7] = "verificar_texto"
     md["assert_text_visible"][8] = "подтвердить_текст"
     md["assert_text_visible"][9] = "verificar_texto"
+
+    # "assert_link" -> duplicate of "assert_link_text"
+    md["assert_link"] = ["*"] * num_langs
+    md["assert_link"][0] = "assert_link"
+    md["assert_link"][1] = "断言链接文本"
+    md["assert_link"][2] = "controleren_linktekst"
+    md["assert_link"][3] = "vérifier_texte_du_lien"
+    md["assert_link"][4] = "verificare_testo_del_collegamento"
+    md["assert_link"][5] = "リンクテキストを確認する"
+    md["assert_link"][6] = "링크_텍스트_확인"
+    md["assert_link"][7] = "verificar_texto_do_link"
+    md["assert_link"][8] = "подтвердить_ссылку"
+    md["assert_link"][9] = "verificar_texto_del_enlace"
 
     # "assert_no_broken_links" -> duplicate of "assert_no_404_errors"
     md["assert_no_broken_links"] = ["*"] * num_langs

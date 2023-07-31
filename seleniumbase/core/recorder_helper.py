@@ -463,18 +463,46 @@ def generate_sbase_code(srt_actions):
                     sb_actions.append(
                         "self.%s('%s')" % (method, action[1][0])
                     )
+        elif action[0] == "asnet":
+            method = "assert_non_empty_text"
+            if '"' not in action[1]:
+                sb_actions.append('self.%s("%s")' % (method, action[1]))
+            elif "'" not in action[1]:
+                sb_actions.append("self.%s('%s')" % (method, action[1]))
+            else:
+                sb_actions.append(
+                    'self.%s("""%s""")' % (method, action[1])
+                )
         elif action[0] == "da_el":
             method = "deferred_assert_element"
             if '"' not in action[1]:
                 sb_actions.append('self.%s("%s")' % (method, action[1]))
-            else:
+            elif "'" not in action[1]:
                 sb_actions.append("self.%s('%s')" % (method, action[1]))
+            else:
+                sb_actions.append(
+                    'self.%s("""%s""")' % (method, action[1])
+                )
         elif action[0] == "da_ep":
             method = "deferred_assert_element_present"
             if '"' not in action[1]:
                 sb_actions.append('self.%s("%s")' % (method, action[1]))
-            else:
+            elif "'" not in action[1]:
                 sb_actions.append("self.%s('%s')" % (method, action[1]))
+            else:
+                sb_actions.append(
+                    'self.%s("""%s""")' % (method, action[1])
+                )
+        elif action[0] == "danet":
+            method = "deferred_assert_non_empty_text"
+            if '"' not in action[1]:
+                sb_actions.append('self.%s("%s")' % (method, action[1]))
+            elif "'" not in action[1]:
+                sb_actions.append("self.%s('%s')" % (method, action[1]))
+            else:
+                sb_actions.append(
+                    'self.%s("""%s""")' % (method, action[1])
+                )
         elif action[0] == "s_scr":
             method = "save_screenshot"
             if '"' not in action[1]:

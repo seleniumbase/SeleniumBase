@@ -83,6 +83,8 @@ self.is_text_visible(text, selector="html", by="css selector")
 
 self.is_exact_text_visible(text, selector="html", by="css selector")
 
+self.is_non_empty_text_visible(selector="html", by="css selector")
+
 self.is_attribute_present(selector, attribute, value=None, by="css selector")
 
 self.is_link_text_visible(link_text)
@@ -109,12 +111,9 @@ self.click_partial_link(partial_link_text, timeout=None)
 
 self.get_text(selector, by="css selector", timeout=None)
 
-self.get_attribute(
-    selector, attribute, by="css selector",
-    timeout=None, hard_fail=True)
+self.get_attribute(selector, attribute, by="css selector", timeout=None, hard_fail=True)
 
-self.set_attribute(
-    selector, attribute, value, by="css selector", timeout=None, scroll=False)
+self.set_attribute(selector, attribute, value, by="css selector", timeout=None, scroll=False)
 
 self.set_attributes(selector, attribute, value, by="css selector")
 # Duplicates:
@@ -190,23 +189,16 @@ self.drag_and_drop_with_offset(
     selector, x, y, by="css selector", timeout=None)
 
 self.select_option_by_text(
-    dropdown_selector, option,
-    dropdown_by="css selector",
-    timeout=None)
+    dropdown_selector, option, dropdown_by="css selector", timeout=None)
 
 self.select_option_by_index(
-    dropdown_selector, option,
-    dropdown_by="css selector",
-    timeout=None)
+    dropdown_selector, option, dropdown_by="css selector", timeout=None)
 
 self.select_option_by_value(
-    dropdown_selector, option,
-    dropdown_by="css selector",
-    timeout=None)
+    dropdown_selector, option, dropdown_by="css selector", timeout=None)
 
 self.get_select_options(
-    dropdown_selector, attribute="text",
-    by="css selector", timeout=None)
+    dropdown_selector, attribute="text", by="css selector", timeout=None)
 
 self.load_html_string(html_string, new_page=True)
 
@@ -269,22 +261,28 @@ self.get_new_driver(
     proxy=None,
     proxy_bypass_list=None,
     proxy_pac_url=None,
+    multi_proxy=None,
     agent=None,
     switch_to=True,
     cap_file=None,
     cap_string=None,
     recorder_ext=None,
+    disable_js=None,
     disable_csp=None,
     enable_ws=None,
     enable_sync=None,
     use_auto_ext=None,
     undetectable=None,
+    uc_cdp_events=None,
+    uc_subprocess=None,
     no_sandbox=None,
     disable_gpu=None,
+    headless2=None,
     incognito=None,
     guest_mode=None,
     devtools=None,
     remote_debug=None,
+    enable_3d_apis=None,
     swiftshader=None,
     ad_block_on=None,
     block_images=None,
@@ -295,7 +293,9 @@ self.get_new_driver(
     user_data_dir=None,
     extension_zip=None,
     extension_dir=None,
+    binary_location=None,
     page_load_strategy=None,
+    use_wire=None,
     external_pdf=None,
     is_mobile=None,
     d_width=None,
@@ -442,8 +442,7 @@ self.create_folder(folder)
 
 self.choose_file(selector, file_path, by="css selector", timeout=None)
 
-self.save_element_as_image_file(
-    selector, file_name, folder=None, overlay_text="")
+self.save_element_as_image_file(selector, file_name, folder=None, overlay_text="")
 
 self.download_file(file_url, destination_folder=None)
 
@@ -482,11 +481,9 @@ self.assert_not_in(first, second, msg=None)
 
 self.assert_raises(*args, **kwargs)
 
-self.wait_for_attribute(
-    selector, attribute, value=None, by="css selector", timeout=None)
+self.wait_for_attribute(selector, attribute, value=None, by="css selector", timeout=None)
 
-self.assert_attribute(
-    selector, attribute, value=None, by="css selector", timeout=None)
+self.assert_attribute(selector, attribute, value=None, by="css selector", timeout=None)
 
 self.assert_title(title)
 
@@ -537,8 +534,7 @@ self.js_update_text(selector, text, by="css selector", timeout=None)
 # self.js_type(selector, text, by="css selector", timeout=None)
 # self.set_text(selector, text, by="css selector", timeout=None)
 
-self.set_text_content(
-    selector, text, by="css selector", timeout=None, scroll=False)
+self.set_text_content(selector, text, by="css selector", timeout=None, scroll=False)
 
 self.jquery_update_text(selector, text, by="css selector", timeout=None)
 # Duplicates:
@@ -676,8 +672,7 @@ self.create_introjs_tour(name=None)
 self.set_introjs_colors(theme_color=None, hover_color=None)
 
 self.add_tour_step(
-    message, selector=None, name=None,
-    title=None, theme=None, alignment=None)
+    message, selector=None, name=None, title=None, theme=None, alignment=None)
 
 self.play_tour(name=None, interval=0)
 # Duplicates:
@@ -763,6 +758,11 @@ self.find_exact_text(text, selector="html", by="css selector", timeout=None)
 # self.wait_for_exact_text(text, selector="html", by="css selector", timeout=None)
 # self.wait_for_exact_text_visible(text, selector="html", by="css selector", timeout=None)
 
+self.find_non_empty_text(selector="html", by="css selector", timeout=None)
+# Duplicates:
+# self.wait_for_non_empty_text(selector="html", by="css selector", timeout=None)
+# self.wait_for_non_empty_text_visible(selector="html", by="css selector", timeout=None)
+
 self.assert_text(text, selector="html", by="css selector", timeout=None)
 # Duplicates:
 # self.assert_text_visible(text, selector="html", by="css selector", timeout=None)
@@ -781,6 +781,8 @@ self.find_link_text(link_text, timeout=None)
 # self.wait_for_link_text_visible(link_text, timeout=None)
 
 self.assert_link_text(link_text, timeout=None)
+# Duplicates:
+# self.assert_link(link_text, timeout=None)
 
 ############
 
@@ -819,6 +821,8 @@ self.wait_for_exact_text_not_visible(text, selector="html", by="css selector", t
 self.assert_text_not_visible(text, selector="html", by="css selector", timeout=None)
 
 self.assert_exact_text_not_visible(text, selector="html", by="css selector", timeout=None)
+
+self.assert_non_empty_text(selector="html", by="css selector", timeout=None)
 
 ############
 
@@ -877,9 +881,14 @@ self.deferred_assert_exact_text(
 # self.delayed_assert_exact_text(
 #     text, selector="html", by="css selector", timeout=None, fs=False)
 
+self.deferred_assert_non_empty_text(
+    selector="html", by="css selector", timeout=None, fs=False)
+# Duplicates:
+# self.delayed_assert_non_empty_text(
+#     selector="html", by="css selector", timeout=None, fs=False)
+
 self.deferred_check_window(
-    name="default", level=0, baseline=False,
-    check_domain=True, full_diff=False, fs=False)
+    name="default", level=0, baseline=False, check_domain=True, full_diff=False, fs=False)
 # Duplicates:
 # self.delayed_check_window(
 #     name="default", level=0, baseline=False,
