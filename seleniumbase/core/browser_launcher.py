@@ -842,10 +842,6 @@ def _set_chrome_options(
     chrome_options.add_argument("--disable-prompt-on-repost")
     chrome_options.add_argument("--dns-prefetch-disable")
     chrome_options.add_argument("--disable-translate")
-    chrome_options.add_argument(
-        '--disable-features=OptimizationHints,OptimizationHintsFetching,'
-        'OptimizationGuideModelDownloading,OptimizationTargetPrediction'
-    )
     if binary_location:
         chrome_options.binary_location = binary_location
     if not enable_3d_apis and not is_using_uc(undetectable, browser_name):
@@ -873,6 +869,10 @@ def _set_chrome_options(
     chrome_options.add_argument("--disable-notifications")
     chrome_options.add_argument(
         "--disable-autofill-keyboard-accessory-view[8]"
+    )
+    chrome_options.add_argument(
+        '--disable-features=OptimizationHintsFetching,'
+        'OptimizationTargetPrediction'
     )
     chrome_options.add_argument("--homepage=about:blank")
     chrome_options.add_argument("--dom-automation")
@@ -2421,6 +2421,10 @@ def get_local_driver(
         edge_options.add_argument("--disable-single-click-autofill")
         edge_options.add_argument(
             "--disable-autofill-keyboard-accessory-view[8]"
+        )
+        edge_options.add_argument(
+            '--disable-features=OptimizationHintsFetching,'
+            'OptimizationTargetPrediction'
         )
         edge_options.add_argument("--disable-browser-side-navigation")
         edge_options.add_argument("--disable-translate")
