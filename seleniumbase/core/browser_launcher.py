@@ -183,10 +183,10 @@ def uc_special_open_if_cf(driver, url):
         and has_cf(requests_get(url).text)
     ):
         with driver:
-            time.sleep(0.25)
             driver.execute_script('window.open("%s","_blank");' % url)
-            driver.close()
-            driver.switch_to.window(driver.window_handles[-1])
+        driver.reconnect(0.555)
+        driver.close()
+        driver.switch_to.window(driver.window_handles[-1])
     else:
         driver.open(url)  # The original one
     return None
@@ -195,8 +195,8 @@ def uc_special_open_if_cf(driver, url):
 def uc_open(driver, url):
     if (url.startswith("http:") or url.startswith("https:")):
         with driver:
-            time.sleep(0.25)
             driver.open(url)
+            time.sleep(0.25)
     else:
         driver.open(url)  # The original one
     return None
@@ -205,10 +205,10 @@ def uc_open(driver, url):
 def uc_open_with_tab(driver, url):
     if (url.startswith("http:") or url.startswith("https:")):
         with driver:
-            time.sleep(0.25)
             driver.execute_script('window.open("%s","_blank");' % url)
             driver.close()
             driver.switch_to.window(driver.window_handles[-1])
+            time.sleep(0.25)
     else:
         driver.open(url)  # The original one
     return None
