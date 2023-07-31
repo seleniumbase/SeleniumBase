@@ -3,7 +3,7 @@ from seleniumbase import BaseCase
 
 if __name__ == "__main__":
     from pytest import main
-    main([__file__, "--uc", "--uc-cdp", "-s"])
+    main([__file__, "--uc", "--uc-cdp", "--incognito", "-s"])
 
 
 class CDPTests(BaseCase):
@@ -23,8 +23,10 @@ class CDPTests(BaseCase):
         self.fail('Selenium was detected! Try using: "pytest --uc"')
 
     def test_display_cdp_events(self):
-        if not (self.undetectable and self.uc_cdp_events):
-            self.get_new_driver(undetectable=True, uc_cdp_events=True)
+        if not (self.undetectable and self.uc_cdp_events and self.incognito):
+            self.get_new_driver(
+                undetectable=True, uc_cdp_events=True, incognito=True
+            )
         self.open("https://nowsecure.nl/#relax")
         try:
             self.verify_success()
