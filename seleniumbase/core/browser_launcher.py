@@ -510,6 +510,7 @@ def _set_chrome_options(
     headless2,
     incognito,
     guest_mode,
+    dark_mode,
     devtools,
     remote_debug,
     enable_3d_apis,
@@ -662,6 +663,8 @@ def _set_chrome_options(
             chrome_options.add_argument("--guest")
         else:
             pass
+    if dark_mode:
+        chrome_options.add_argument("--enable-features=WebContentsForceDark")
     if user_data_dir and not is_using_uc(undetectable, browser_name):
         abs_path = os.path.abspath(user_data_dir)
         chrome_options.add_argument("--user-data-dir=%s" % abs_path)
@@ -1067,6 +1070,7 @@ def get_driver(
     headless2=False,
     incognito=False,
     guest_mode=False,
+    dark_mode=False,
     devtools=False,
     remote_debug=False,
     enable_3d_apis=False,
@@ -1273,6 +1277,7 @@ def get_driver(
             headless2,
             incognito,
             guest_mode,
+            dark_mode,
             devtools,
             remote_debug,
             enable_3d_apis,
@@ -1324,6 +1329,7 @@ def get_driver(
             headless2,
             incognito,
             guest_mode,
+            dark_mode,
             devtools,
             remote_debug,
             enable_3d_apis,
@@ -1379,6 +1385,7 @@ def get_remote_driver(
     headless2,
     incognito,
     guest_mode,
+    dark_mode,
     devtools,
     remote_debug,
     enable_3d_apis,
@@ -1499,6 +1506,7 @@ def get_remote_driver(
             headless2,
             incognito,
             guest_mode,
+            dark_mode,
             devtools,
             remote_debug,
             enable_3d_apis,
@@ -1688,6 +1696,7 @@ def get_remote_driver(
             headless2,
             incognito,
             guest_mode,
+            dark_mode,
             devtools,
             remote_debug,
             enable_3d_apis,
@@ -1809,6 +1818,7 @@ def get_remote_driver(
             headless2,
             incognito,
             guest_mode,
+            dark_mode,
             devtools,
             remote_debug,
             enable_3d_apis,
@@ -1928,6 +1938,7 @@ def get_local_driver(
     headless2,
     incognito,
     guest_mode,
+    dark_mode,
     devtools,
     remote_debug,
     enable_3d_apis,
@@ -2329,6 +2340,8 @@ def get_local_driver(
             and not recorder_ext and not disable_csp and not proxy_auth
         ):
             edge_options.add_argument("--guest")
+        if dark_mode:
+            edge_options.add_argument("--enable-features=WebContentsForceDark")
         if headless2:
             try:
                 if use_version == "latest" or int(use_version) >= 109:
@@ -2728,6 +2741,7 @@ def get_local_driver(
                 headless2,
                 incognito,
                 guest_mode,
+                dark_mode,
                 devtools,
                 remote_debug,
                 enable_3d_apis,
@@ -2783,6 +2797,7 @@ def get_local_driver(
                 headless2,
                 incognito,
                 guest_mode,
+                dark_mode,
                 devtools,
                 remote_debug,
                 enable_3d_apis,
@@ -3259,6 +3274,7 @@ def get_local_driver(
                         headless2,
                         incognito,
                         guest_mode,
+                        dark_mode,
                         devtools,
                         remote_debug,
                         enable_3d_apis,

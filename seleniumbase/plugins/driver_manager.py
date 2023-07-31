@@ -81,6 +81,7 @@ def Driver(
     disable_gpu=None,  # (DEPRECATED) - GPU is disabled if no "swiftshader".
     incognito=None,  # Enable Chromium's Incognito mode.
     guest_mode=None,  # Enable Chromium's Guest mode.
+    dark_mode=None,  # Enable Chromium's Dark mode.
     devtools=None,  # Open Chromium's DevTools when the browser opens.
     remote_debug=None,  # Enable Chrome's Debugger on "http://localhost:9222".
     enable_3d_apis=None,  # Enable WebGL and 3D APIs.
@@ -226,6 +227,11 @@ def Driver(
             guest_mode = True
         else:
             guest_mode = False
+    if dark_mode is None:
+        if "--dark" in sys_argv:
+            dark_mode = True
+        else:
+            dark_mode = False
     if devtools is None:
         if "--devtools" in sys_argv:
             devtools = True
@@ -423,6 +429,7 @@ def Driver(
         headless2=headless2,
         incognito=incognito,
         guest_mode=guest_mode,
+        dark_mode=dark_mode,
         devtools=devtools,
         remote_debug=remote_debug,
         enable_3d_apis=enable_3d_apis,

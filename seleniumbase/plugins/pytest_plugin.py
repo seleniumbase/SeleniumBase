@@ -96,6 +96,7 @@ def pytest_addoption(parser):
     --swiftshader  (Use Chrome's "--use-gl=swiftshader" feature.)
     --incognito  (Enable Chrome's Incognito mode.)
     --guest  (Enable Chrome's Guest mode.)
+    --dark  (Enable Chrome's Dark mode.)
     --devtools  (Open Chrome's DevTools when the browser opens.)
     --rs | --reuse-session  (Reuse browser session for all tests.)
     --rcs | --reuse-class-session  (Reuse session for tests in class.)
@@ -1083,6 +1084,15 @@ def pytest_addoption(parser):
         help="""Using this enables Chrome's Guest mode.""",
     )
     parser.addoption(
+        "--dark",
+        "--dark_mode",
+        "--dark-mode",
+        action="store_true",
+        dest="dark_mode",
+        default=False,
+        help="""Using this enables Chrome's Dark mode.""",
+    )
+    parser.addoption(
         "--devtools",
         "--open_devtools",
         "--open-devtools",
@@ -1523,6 +1533,7 @@ def pytest_configure(config):
     sb_config.swiftshader = config.getoption("swiftshader")
     sb_config.incognito = config.getoption("incognito")
     sb_config.guest_mode = config.getoption("guest_mode")
+    sb_config.dark_mode = config.getoption("dark_mode")
     sb_config.devtools = config.getoption("devtools")
     sb_config.reuse_session = config.getoption("reuse_session")
     sb_config.reuse_class_session = config.getoption("reuse_class_session")

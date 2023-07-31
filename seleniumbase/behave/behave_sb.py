@@ -81,6 +81,7 @@ behave -D agent="User Agent String" -D demo
 -D swiftshader  (Use Chrome's SwiftShader Graphics Library.)
 -D incognito  (Enable Chrome's Incognito mode.)
 -D guest  (Enable Chrome's Guest mode.)
+-D dark  (Enable Chrome's Dark mode.)
 -D devtools  (Open Chrome's DevTools when the browser opens.)
 -D rs | -D reuse-session  (Reuse browser session for all tests.)
 -D rcs | -D reuse-class-session  (Reuse session for tests in class/feature)
@@ -156,6 +157,7 @@ def get_configured_sb(context):
     sb.user_agent = None
     sb.incognito = False
     sb.guest_mode = False
+    sb.dark_mode = False
     sb.devtools = False
     sb.mobile_emulator = False
     sb.device_metrics = None
@@ -416,6 +418,10 @@ def get_configured_sb(context):
         # Handle: -D guest / guest-mode / guest_mode
         if low_key in ["guest", "guest-mode", "guest_mode"]:
             sb.guest_mode = True
+            continue
+        # Handle: -D dark / dark-mode / dark_mode
+        if low_key in ["dark", "dark-mode", "dark_mode"]:
+            sb.dark_mode = True
             continue
         # Handle: -D devtools / open-devtools / open_devtools
         if low_key in ["devtools", "open-devtools", "open_devtools"]:

@@ -3601,6 +3601,7 @@ class BaseCase(unittest.TestCase):
         headless2=None,
         incognito=None,
         guest_mode=None,
+        dark_mode=None,
         devtools=None,
         remote_debug=None,
         enable_3d_apis=None,
@@ -3654,7 +3655,8 @@ class BaseCase(unittest.TestCase):
         disable_gpu - the option to enable Chrome's "Disable GPU" feature
         headless2 - the option to use the newer headless mode (Chromium)
         incognito - the option to enable Chrome's Incognito mode (Chrome)
-        guest - the option to enable Chrome's Guest mode (Chrome)
+        guest_mode - the option to enable Chrome's Guest mode (Chrome)
+        dark_mode - the option to enable Chrome's Dark mode (Chrome)
         devtools - the option to open Chrome's DevTools on start (Chrome)
         remote_debug - the option to enable Chrome's Remote Debugger
         enable_3d_apis - the option to enable WebGL and 3D APIs (Chrome)
@@ -3763,6 +3765,8 @@ class BaseCase(unittest.TestCase):
             incognito = self.incognito
         if guest_mode is None:
             guest_mode = self.guest_mode
+        if dark_mode is None:
+            dark_mode = self.dark_mode
         if devtools is None:
             devtools = self.devtools
         if remote_debug is None:
@@ -3855,6 +3859,7 @@ class BaseCase(unittest.TestCase):
             headless2=headless2,
             incognito=incognito,
             guest_mode=guest_mode,
+            dark_mode=dark_mode,
             devtools=devtools,
             remote_debug=remote_debug,
             enable_3d_apis=enable_3d_apis,
@@ -13846,6 +13851,7 @@ class BaseCase(unittest.TestCase):
             self.headless2 = sb_config.headless2
             self.incognito = sb_config.incognito
             self.guest_mode = sb_config.guest_mode
+            self.dark_mode = sb_config.dark_mode
             self.devtools = sb_config.devtools
             self.remote_debug = sb_config.remote_debug
             self._multithreaded = sb_config._multithreaded
@@ -14169,6 +14175,7 @@ class BaseCase(unittest.TestCase):
                 headless2=self.headless2,
                 incognito=self.incognito,
                 guest_mode=self.guest_mode,
+                dark_mode=self.dark_mode,
                 devtools=self.devtools,
                 remote_debug=self.remote_debug,
                 enable_3d_apis=self.enable_3d_apis,

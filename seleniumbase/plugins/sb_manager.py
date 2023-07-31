@@ -50,6 +50,7 @@ def SB(
     uc_subprocess=None,  # Use undetected-chromedriver as a subprocess.
     incognito=None,  # Enable Chromium's Incognito mode.
     guest_mode=None,  # Enable Chromium's Guest mode.
+    dark_mode=None,  # Enable Chromium's Dark mode.
     devtools=None,  # Open Chromium's DevTools when the browser opens.
     remote_debug=None,  # Enable Chrome's Debugger on "http://localhost:9222".
     enable_3d_apis=None,  # Enable WebGL and 3D APIs.
@@ -290,6 +291,11 @@ def SB(
             guest_mode = True
         else:
             guest_mode = False
+    if dark_mode is None:
+        if "--dark" in sys_argv:
+            dark_mode = True
+        else:
+            dark_mode = False
     if devtools is None:
         if "--devtools" in sys_argv:
             devtools = True
@@ -605,6 +611,7 @@ def SB(
     sb_config.user_agent = user_agent
     sb_config.incognito = incognito
     sb_config.guest_mode = guest_mode
+    sb_config.dark_mode = dark_mode
     sb_config.devtools = devtools
     sb_config.mobile_emulator = is_mobile
     sb_config.device_metrics = device_metrics
@@ -703,6 +710,7 @@ def SB(
     sb.user_agent = sb_config.user_agent
     sb.incognito = sb_config.incognito
     sb.guest_mode = sb_config.guest_mode
+    sb.dark_mode = sb_config.dark_mode
     sb.devtools = sb_config.devtools
     sb.binary_location = sb_config.binary_location
     sb.mobile_emulator = sb_config.mobile_emulator
