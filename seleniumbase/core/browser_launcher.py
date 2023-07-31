@@ -177,11 +177,46 @@ def has_cf(text):
     return False
 
 
-def uc_open(driver, url):
+def uc_special_open_if_cf(driver, url):
     if (
         (url.startswith("http:") or url.startswith("https:"))
         and has_cf(requests_get(url).text)
     ):
+        with driver:
+            time.sleep(0.25)
+            driver.execute_script('window.open("%s","_blank");' % url)
+            driver.close()
+            driver.switch_to.window(driver.window_handles[-1])
+    else:
+        driver.open(url)  # The original one
+    return None
+
+
+def uc_open(driver, url):
+    if (url.startswith("http:") or url.startswith("https:")):
+        with driver:
+            time.sleep(0.25)
+            driver.open(url)
+    else:
+        driver.open(url)  # The original one
+    return None
+
+
+def uc_open_with_tab(driver, url):
+    if (url.startswith("http:") or url.startswith("https:")):
+        with driver:
+            time.sleep(0.25)
+            driver.execute_script('window.open("%s","_blank");' % url)
+            driver.close()
+            driver.switch_to.window(driver.window_handles[-1])
+    else:
+        driver.open(url)  # The original one
+    return None
+
+
+def uc_open_with_reconnect(driver, url):
+    """Open a url, then reconnect with UC before switching to the window."""
+    if (url.startswith("http:") or url.startswith("https:")):
         driver.execute_script('window.open("%s","_blank");' % url)
         driver.reconnect(2.65)
         driver.close()
@@ -3290,7 +3325,14 @@ def get_local_driver(
                             )
                 driver.open = driver.get  # Save copy of original
                 if uc_activated:
-                    driver.get = lambda url: uc_open(driver, url)
+                    driver.get = lambda url: uc_special_open_if_cf(driver, url)
+                    driver.uc_open = lambda url: uc_open(driver, url)
+                    driver.uc_open_with_tab = (
+                        lambda url: uc_open_with_tab(driver, url)
+                    )
+                    driver.uc_open_with_reconnect = (
+                        lambda url: uc_open_with_reconnect(driver, url)
+                    )
                 return driver
             else:  # Running headless on Linux (and not using --uc)
                 try:
