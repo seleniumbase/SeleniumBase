@@ -77,6 +77,10 @@ class 셀레늄_테스트_케이스(BaseCase):
         # assert_link_text(link_text)
         return self.assert_link_text(*args, **kwargs)
 
+    def 비어_있지_않은_텍스트_확인하는(self, *args, **kwargs):
+        # assert_non_empty_text(selector)
+        return self.assert_non_empty_text(*args, **kwargs)
+
     def 텍스트_보이지_않는지_확인(self, *args, **kwargs):
         # assert_text_not_visible(text, selector)
         return self.assert_text_not_visible(*args, **kwargs)

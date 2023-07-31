@@ -77,6 +77,10 @@ class CasoDeTeste(BaseCase):
         # assert_link_text(link_text)
         return self.assert_link_text(*args, **kwargs)
 
+    def verificar_texto_não_vazio(self, *args, **kwargs):
+        # assert_non_empty_text(selector)
+        return self.assert_non_empty_text(*args, **kwargs)
+
     def verificar_texto_não_visível(self, *args, **kwargs):
         # assert_text_not_visible(text, selector)
         return self.assert_text_not_visible(*args, **kwargs)

@@ -38,7 +38,7 @@ class SD:
         words["French"] = "VÉRIFIER TEXTE"
         words["Italian"] = "VERIFICARE TESTO"
         words["Japanese"] = "テキストを確認する"
-        words["Korean"] = "텍스트 확인"
+        words["Korean"] = "텍스트 확인하는"
         words["Portuguese"] = "VERIFICAR TEXTO"
         words["Russian"] = "ПОДТВЕРДИТЬ ТЕКСТ"
         words["Spanish"] = "VERIFICAR TEXTO"
@@ -70,6 +70,20 @@ class SD:
         words["Portuguese"] = "VERIFICAR TEXTO DO LINK"
         words["Russian"] = "ПОДТВЕРДИТЬ ССЫЛКУ"
         words["Spanish"] = "VERIFICAR TEXTO DEL ENLACE"
+        return words[language]
+
+    def translate_assert_non_empty_text(language):
+        words = {}
+        words["English"] = "ASSERT NON-EMPTY TEXT"
+        words["Chinese"] = "断言非空文本"
+        words["Dutch"] = "CONTROLEREN NIET-LEGE TEKST"
+        words["French"] = "VÉRIFIER TEXTE NON VIDE"
+        words["Italian"] = "VERIFICARE TESTO NON VUOTO"
+        words["Japanese"] = "空ではないテキストを確認する"
+        words["Korean"] = "비어 있지 않은 텍스트 확인하는"
+        words["Portuguese"] = "VERIFICAR TEXTO NÃO VAZIO"
+        words["Russian"] = "ПОДТВЕРДИТЬ НЕПУСТОЙ ТЕКСТ"
+        words["Spanish"] = "VERIFICAR TEXTO NO VACÍO"
         return words[language]
 
     def translate_assert_attribute(language):
