@@ -168,6 +168,19 @@ def assert_exact_text(context, text, selector):
     sb.assert_exact_text(text, selector)
 
 
+@step("Assert non-empty text in '{selector}'")
+@step('Assert non-empty text in "{selector}"')
+@step("Assert text in '{selector}' is not empty")
+@step('Assert text in "{selector}" is not empty')
+@step("Text in '{selector}' should be non-empty")
+@step('Text in "{selector}" should be non-empty')
+@step("Text in '{selector}' should not be empty")
+@step('Text in "{selector}" should not be empty')
+def assert_non_empty_text(context, selector):
+    sb = context.sb
+    sb.assert_non_empty_text(selector)
+
+
 @step("Highlight '{selector}'")
 @step('Highlight "{selector}"')
 @step("Highlight element '{selector}'")
@@ -490,6 +503,49 @@ def wait_for_text_in_element(context, text, selector):
     sb = context.sb
     text = normalize_text(text)
     sb.wait_for_text(text, selector)
+
+
+@step("Wait for exact text '{text}' in '{selector}'")
+@step('Wait for exact text "{text}" in "{selector}"')
+@step("Wait for exact text '{text}' in \"{selector}\"")
+@step('Wait for exact text "{text}" in \'{selector}\'')
+@step("Wait for '{selector}' to have exact text '{text}'")
+@step('Wait for "{selector}" to have exact text "{text}"')
+@step('Wait for "{selector}" to have exact text \'{text}\'')
+@step("Wait for '{selector}' to have exact text \"{text}\"")
+@step("User waits for exact text '{text}' in '{selector}'")
+@step('User waits for exact text "{text}" in "{selector}"')
+@step("User waits for exact text '{text}' in \"{selector}\"")
+@step('User waits for exact text "{text}" in \'{selector}\'')
+@step("User waits for '{selector}' to have exact text '{text}'")
+@step('User waits for "{selector}" to have exact text "{text}"')
+@step('User waits for "{selector}" to have exact text \'{text}\'')
+@step("User waits for '{selector}' to have exact text \"{text}\"")
+def wait_for_exact_text_in_element(context, text, selector):
+    sb = context.sb
+    text = normalize_text(text)
+    sb.wait_for_exact_text(text, selector)
+
+
+@step("Wait for non-empty text in '{selector}'")
+@step('Wait for non-empty text in "{selector}"')
+@step("Wait for '{selector}' to have non-empty text")
+@step('Wait for "{selector}" to have non-empty text')
+@step("User waits for non-empty text in '{selector}'")
+@step('User waits for non-empty text in "{selector}"')
+@step("User waits for '{selector}' to have non-empty text")
+@step('User waits for "{selector}" to have non-empty text')
+@step("Wait for '{selector}' to not have text")
+@step('Wait for "{selector}" to not have text')
+@step("Wait for text in '{selector}' to not be empty")
+@step('Wait for text in "{selector}" to not be empty')
+@step("User waits for '{selector}' to not have text")
+@step('User waits for "{selector}" to not have text')
+@step("User waits for text in '{selector}' to not be empty")
+@step('User waits for text in "{selector}" to not be empty')
+def wait_for_non_empty_text_in_element(context, selector):
+    sb = context.sb
+    sb.wait_for_non_empty_text(selector)
 
 
 @step("Wait for text '{text}'")
@@ -839,10 +895,19 @@ def deferred_assert_text(context, text):
 
 @step("Deferred assert exact text '{text}' in '{selector}'")
 @step('Deferred assert exact text "{text}" in "{selector}"')
+@step("Deferred assert exact text '{text}' in \"{selector}\"")
+@step('Deferred assert exact text "{text}" in \'{selector}\'')
 def deferred_assert_exact_text(context, text, selector):
     sb = context.sb
     text = normalize_text(text)
     sb.deferred_assert_exact_text(text, selector)
+
+
+@step("Deferred assert non-empty text in '{selector}'")
+@step('Deferred assert non-empty text in "{selector}"')
+def deferred_assert_non_empty_text(context, selector):
+    sb = context.sb
+    sb.deferred_assert_non_empty_text(selector)
 
 
 @step("Process deferred asserts")
