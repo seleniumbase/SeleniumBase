@@ -839,6 +839,10 @@ def _set_chrome_options(
     chrome_options.add_argument("--disable-prompt-on-repost")
     chrome_options.add_argument("--dns-prefetch-disable")
     chrome_options.add_argument("--disable-translate")
+    chrome_options.add_argument(
+        '--disable-features=OptimizationHints,OptimizationHintsFetching,'
+        'OptimizationGuideModelDownloading,OptimizationTargetPrediction'
+    )
     if binary_location:
         chrome_options.binary_location = binary_location
     if not enable_3d_apis and not is_using_uc(undetectable, browser_name):
