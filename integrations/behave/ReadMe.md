@@ -14,15 +14,15 @@ Feature: SeleniumBase scenarios for the RealWorld App # features/realworld.featu
 
   Scenario: Verify RealWorld App (log in / sign out)  # features/realworld.feature:3
     Given Open "seleniumbase.io/realworld/login"      # ../../sbase/steps.py:10
-    And Clear Session Storage                         # ../../sbase/steps.py:613
+    And Clear Session Storage                         # ../../sbase/steps.py:669
     When Type "demo_user" into "#username"            # ../../sbase/steps.py:40
     And Type "secret_pass" into "#password"           # ../../sbase/steps.py:40
-    And Do MFA "GAXG2MTEOR3DMMDG" into "#totpcode"    # ../../sbase/steps.py:309
+    And Do MFA "GAXG2MTEOR3DMMDG" into "#totpcode"    # ../../sbase/steps.py:322
     Then Assert exact text "Welcome!" in "h1"         # ../../sbase/steps.py:157
-    And Highlight "img#image1"                        # ../../sbase/steps.py:171
+    And Highlight "img#image1"                        # ../../sbase/steps.py:184
     And Click 'a:contains("This Page")'               # ../../sbase/steps.py:27
-    And Save screenshot to logs                       # ../../sbase/steps.py:226
-    When Click link "Sign out"                        # ../../sbase/steps.py:182
+    And Save screenshot to logs                       # ../../sbase/steps.py:239
+    When Click link "Sign out"                        # ../../sbase/steps.py:195
     Then Assert element 'a:contains("Sign in")'       # ../../sbase/steps.py:120
     And Assert text "You have been signed out!"       # ../../sbase/steps.py:145
    ✅ Scenario Passed!
