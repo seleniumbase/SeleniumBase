@@ -781,6 +781,8 @@ self.find_link_text(link_text, timeout=None)
 # self.wait_for_link_text_visible(link_text, timeout=None)
 
 self.assert_link_text(link_text, timeout=None)
+# Duplicates:
+# self.assert_link(link_text, timeout=None)
 
 ############
 

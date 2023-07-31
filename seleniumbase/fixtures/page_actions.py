@@ -28,6 +28,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoSuchWindowException
 from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.common.action_chains import ActionChains
+from seleniumbase.common.exceptions import LinkTextNotFoundException
 from seleniumbase.common.exceptions import TextNotVisibleException
 from seleniumbase.config import settings
 from seleniumbase.fixtures import shared_utils
@@ -468,12 +469,12 @@ def wait_for_element_visible(
         )
         timeout_exception(ElementNotVisibleException, message)
     elif not element and by == "link text":
-        message = "Link text {%s} was not visible after %s second%s!" % (
+        message = "Link text {%s} was not found after %s second%s!" % (
             selector,
             timeout,
             plural,
         )
-        timeout_exception(ElementNotVisibleException, message)
+        timeout_exception(LinkTextNotFoundException, message)
     else:
         return element
 
@@ -870,12 +871,12 @@ def wait_for_element_clickable(
         )
         timeout_exception(ElementNotInteractableException, message)
     elif not element and by == "link text" and not is_visible:
-        message = "Link text {%s} was not visible after %s second%s!" % (
+        message = "Link text {%s} was not found after %s second%s!" % (
             selector,
             timeout,
             plural,
         )
-        timeout_exception(ElementNotVisibleException, message)
+        timeout_exception(LinkTextNotFoundException, message)
     elif not element and by == "link text" and is_visible:
         message = "Link text {%s} was not clickable after %s second%s!" % (
             selector,

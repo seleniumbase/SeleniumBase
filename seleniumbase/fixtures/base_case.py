@@ -1450,9 +1450,8 @@ class BaseCase(unittest.TestCase):
                 else:
                     return None
         if hard_fail:
-            raise Exception(
-                "Partial Link text {%s} was not found!" % link_text
-            )
+            msg = "Partial Link text {%s} was not found!" % link_text
+            page_actions.timeout_exception("LinkTextNotFoundException", msg)
         else:
             return None
 
@@ -8200,6 +8199,15 @@ class BaseCase(unittest.TestCase):
             original_selector=original_selector,
         )
 
+    def assert_link(self, link_text, timeout=None):
+        """Same as self.assert_link_text()"""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        self.assert_link_text(link_text, timeout=timeout)
+
     def assert_element_not_present(
         self, selector, by="css selector", timeout=None
     ):
@@ -9009,11 +9017,11 @@ class BaseCase(unittest.TestCase):
                 if now_ms >= stop_ms:
                     break
                 time.sleep(0.2)
-        message = "Link text {%s} was not present after %s seconds!" % (
+        message = "Link text {%s} was not found after %s seconds!" % (
             link_text,
             timeout,
         )
-        page_actions.timeout_exception("NoSuchElementException", message)
+        page_actions.timeout_exception("LinkTextNotFoundException", message)
 
     def wait_for_partial_link_text_present(self, link_text, timeout=None):
         self.__check_scope()
@@ -9035,10 +9043,10 @@ class BaseCase(unittest.TestCase):
                     break
                 time.sleep(0.2)
         message = (
-            "Partial Link text {%s} was not present after %s seconds!"
+            "Partial Link text {%s} was not found after %s seconds!"
             "" % (link_text, timeout)
         )
-        page_actions.timeout_exception("NoSuchElementException", message)
+        page_actions.timeout_exception("LinkTextNotFoundException", message)
 
     def wait_for_link_text_visible(self, link_text, timeout=None):
         self.__check_scope()
@@ -13223,7 +13231,7 @@ class BaseCase(unittest.TestCase):
                 text,
                 selector,
             )
-            page_actions.timeout_exception("ElementNotVisibleException", msg)
+            page_actions.timeout_exception("TextNotVisibleException", msg)
         return True
 
     def __wait_for_exact_shadow_text_visible(self, text, selector, timeout):
@@ -13242,7 +13250,7 @@ class BaseCase(unittest.TestCase):
                         "" % (text, selector)
                     )
                     page_actions.timeout_exception(
-                        "ElementNotVisibleException", msg
+                        "TextNotVisibleException", msg
                     )
                 return True
             except Exception:
