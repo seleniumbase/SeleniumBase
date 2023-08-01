@@ -183,10 +183,11 @@ def uc_special_open_if_cf(driver, url):
         and has_cf(requests_get(url).text)
     ):
         with driver:
+            time.sleep(0.25)
             driver.execute_script('window.open("%s","_blank");' % url)
-        driver.reconnect(0.555)
-        driver.close()
-        driver.switch_to.window(driver.window_handles[-1])
+            driver.close()
+            driver.switch_to.window(driver.window_handles[-1])
+            time.sleep(0.11)
     else:
         driver.open(url)  # The original one
     return None
@@ -195,8 +196,9 @@ def uc_special_open_if_cf(driver, url):
 def uc_open(driver, url):
     if (url.startswith("http:") or url.startswith("https:")):
         with driver:
-            driver.open(url)
             time.sleep(0.25)
+            driver.open(url)
+            time.sleep(0.11)
     else:
         driver.open(url)  # The original one
     return None
@@ -205,10 +207,11 @@ def uc_open(driver, url):
 def uc_open_with_tab(driver, url):
     if (url.startswith("http:") or url.startswith("https:")):
         with driver:
+            time.sleep(0.25)
             driver.execute_script('window.open("%s","_blank");' % url)
             driver.close()
             driver.switch_to.window(driver.window_handles[-1])
-            time.sleep(0.25)
+            time.sleep(0.11)
     else:
         driver.open(url)  # The original one
     return None
@@ -849,6 +852,10 @@ def _set_chrome_options(
     if headless or headless2 or is_using_uc(undetectable, browser_name):
         chrome_options.add_argument("--disable-renderer-backgrounding")
     chrome_options.add_argument("--disable-backgrounding-occluded-windows")
+    chrome_options.add_argument(
+        '--disable-features=OptimizationHintsFetching,'
+        'OptimizationTargetPrediction'
+    )
     if (
         is_using_uc(undetectable, browser_name)
         and (
@@ -869,10 +876,6 @@ def _set_chrome_options(
     chrome_options.add_argument("--disable-notifications")
     chrome_options.add_argument(
         "--disable-autofill-keyboard-accessory-view[8]"
-    )
-    chrome_options.add_argument(
-        '--disable-features=OptimizationHintsFetching,'
-        'OptimizationTargetPrediction'
     )
     chrome_options.add_argument("--homepage=about:blank")
     chrome_options.add_argument("--dom-automation")
@@ -2033,7 +2036,7 @@ def get_local_driver(
             if selenium4_or_newer:
                 service = FirefoxService(
                     executable_path=LOCAL_GECKODRIVER,
-                    log_path=os.devnull,
+                    log_output=os.devnull,
                 )
                 try:
                     return webdriver.Firefox(
@@ -2079,7 +2082,7 @@ def get_local_driver(
                 )
         else:
             if selenium4_or_newer:
-                service = FirefoxService(log_path=os.devnull)
+                service = FirefoxService(log_output=os.devnull)
                 try:
                     return webdriver.Firefox(
                         service=service,
@@ -2539,7 +2542,7 @@ def get_local_driver(
             try:
                 service = EdgeService(
                     executable_path=LOCAL_EDGEDRIVER,
-                    log_path=os.devnull,
+                    log_output=os.devnull,
                     service_args=["--disable-build-check"],
                 )
                 driver = Edge(service=service, options=edge_options)
@@ -2565,7 +2568,7 @@ def get_local_driver(
                 elif "DevToolsActivePort file doesn't exist" in e.msg:
                     service = EdgeService(
                         executable_path=LOCAL_EDGEDRIVER,
-                        log_path=os.devnull,
+                        log_output=os.devnull,
                         service_args=["--disable-build-check"],
                     )
                     # https://stackoverflow.com/a/56638103/7058266
@@ -2603,7 +2606,7 @@ def get_local_driver(
                         pass
                 service = EdgeService(
                     executable_path=LOCAL_EDGEDRIVER,
-                    log_path=os.devnull,
+                    log_output=os.devnull,
                     service_args=["--disable-build-check"],
                 )
                 driver = Edge(service=service, options=edge_options)
@@ -2639,7 +2642,7 @@ def get_local_driver(
                 elif "DevToolsActivePort file doesn't exist" in e.msg:
                     service = EdgeService(
                         executable_path=LOCAL_EDGEDRIVER,
-                        log_path=os.devnull,
+                        log_output=os.devnull,
                         service_args=["--disable-build-check"],
                     )
                     # https://stackoverflow.com/a/56638103/7058266
@@ -3184,7 +3187,7 @@ def get_local_driver(
                             else:
                                 service = ChromeService(
                                     executable_path=LOCAL_CHROMEDRIVER,
-                                    log_path=os.devnull,
+                                    log_output=os.devnull,
                                     service_args=service_args,
                                 )
                                 driver = webdriver.Chrome(
@@ -3201,7 +3204,7 @@ def get_local_driver(
                     else:
                         if selenium4_or_newer:
                             service = ChromeService(
-                                log_path=os.devnull,
+                                log_output=os.devnull,
                                 service_args=service_args,
                             )
                             driver = webdriver.Chrome(
@@ -3225,7 +3228,7 @@ def get_local_driver(
                     elif "Missing or invalid capabilities" in e.msg:
                         if selenium4_or_newer:
                             chrome_options.add_experimental_option("w3c", True)
-                            service = ChromeService(log_path=os.devnull)
+                            service = ChromeService(log_output=os.devnull)
                             with warnings.catch_warnings():
                                 warnings.simplefilter(
                                     "ignore", category=DeprecationWarning
@@ -3372,7 +3375,7 @@ def get_local_driver(
                     elif "Missing or invalid capabilities" in e.msg:
                         if selenium4_or_newer:
                             chrome_options.add_experimental_option("w3c", True)
-                            service = ChromeService(log_path=os.devnull)
+                            service = ChromeService(log_output=os.devnull)
                             with warnings.catch_warnings():
                                 warnings.simplefilter(
                                     "ignore", category=DeprecationWarning

@@ -45,7 +45,7 @@ class CoffeeCartTests(BaseCase):
             else:
                 self.click("div.promo button.no")
         checkout_button = 'button[data-test="checkout"]'
-        if promo:
+        if promo and not self.browser == "safari":
             self.hover(checkout_button)
             if not self.is_element_visible("ul.cart-preview"):
                 self.highlight(checkout_button)

@@ -18,7 +18,7 @@ parse-type>=0.6.2
 six==1.16.0
 idna==3.4
 chardet==4.0.0;python_version<"3.7"
-chardet==5.1.0;python_version>="3.7"
+chardet==5.2.0;python_version>="3.7"
 charset-normalizer==2.0.12;python_version<"3.7"
 charset-normalizer==3.2.0;python_version>="3.7"
 urllib3==1.26.12;python_version<"3.7"
@@ -34,7 +34,7 @@ trio==0.22.2;python_version>="3.7"
 trio-websocket==0.10.3;python_version>="3.7"
 wsproto==1.2.0;python_version>="3.7"
 selenium==3.141.0;python_version<"3.7"
-selenium==4.10.0;python_version>="3.7"
+selenium==4.11.2;python_version>="3.7"
 msedge-selenium-tools==3.141.3;python_version<"3.7"
 cssselect==1.1.0;python_version<"3.7"
 cssselect==1.2.0;python_version>="3.7"
@@ -83,7 +83,7 @@ commonmark==0.9.1;python_version<"3.7"
 markdown-it-py==3.0.0;python_version>="3.8"
 mdurl==0.1.2;python_version>="3.7"
 rich==12.6.0;python_version<"3.7"
-rich==13.5.1;python_version>="3.7"
+rich==13.5.2;python_version>="3.7"
 
 # --- Testing Requirements --- #
 # ("pip install -r requirements.txt" also installs this, but "pip install -e ." won't.)
