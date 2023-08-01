@@ -152,7 +152,7 @@ setup(
         "six==1.16.0",
         "idna==3.4",
         'chardet==4.0.0;python_version<"3.7"',
-        'chardet==5.1.0;python_version>="3.7"',
+        'chardet==5.2.0;python_version>="3.7"',
         'charset-normalizer==2.0.12;python_version<"3.7"',
         'charset-normalizer==3.2.0;python_version>="3.7"',
         'urllib3==1.26.12;python_version<"3.7"',
@@ -217,7 +217,7 @@ setup(
         'markdown-it-py==3.0.0;python_version>="3.8"',  # For new "rich"
         'mdurl==0.1.2;python_version>="3.7"',  # For new "rich"
         'rich==12.6.0;python_version<"3.7"',
-        'rich==13.5.1;python_version>="3.7"',
+        'rich==13.5.2;python_version>="3.7"',
     ],
     extras_require={
         # pip install -e .[allure]
