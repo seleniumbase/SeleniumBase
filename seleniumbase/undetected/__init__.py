@@ -289,14 +289,14 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                 executable_path=self.patcher.executable_path,
                 service_args=["--disable-build-check"],
                 port=port,
-                log_path=os.devnull,
+                log_output=os.devnull,
             )
         else:
             service_ = selenium.webdriver.chrome.service.Service(
                 executable_path=driver_executable_path,
                 service_args=["--disable-build-check"],
                 port=port,
-                log_path=os.devnull,
+                log_output=os.devnull,
             )
         if hasattr(service_, "creationflags"):
             setattr(service_, "creationflags", creationflags)

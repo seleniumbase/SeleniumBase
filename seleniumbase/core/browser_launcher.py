@@ -2036,7 +2036,7 @@ def get_local_driver(
             if selenium4_or_newer:
                 service = FirefoxService(
                     executable_path=LOCAL_GECKODRIVER,
-                    log_path=os.devnull,
+                    log_output=os.devnull,
                 )
                 try:
                     return webdriver.Firefox(
@@ -2082,7 +2082,7 @@ def get_local_driver(
                 )
         else:
             if selenium4_or_newer:
-                service = FirefoxService(log_path=os.devnull)
+                service = FirefoxService(log_output=os.devnull)
                 try:
                     return webdriver.Firefox(
                         service=service,
@@ -2542,7 +2542,7 @@ def get_local_driver(
             try:
                 service = EdgeService(
                     executable_path=LOCAL_EDGEDRIVER,
-                    log_path=os.devnull,
+                    log_output=os.devnull,
                     service_args=["--disable-build-check"],
                 )
                 driver = Edge(service=service, options=edge_options)
@@ -2568,7 +2568,7 @@ def get_local_driver(
                 elif "DevToolsActivePort file doesn't exist" in e.msg:
                     service = EdgeService(
                         executable_path=LOCAL_EDGEDRIVER,
-                        log_path=os.devnull,
+                        log_output=os.devnull,
                         service_args=["--disable-build-check"],
                     )
                     # https://stackoverflow.com/a/56638103/7058266
@@ -2606,7 +2606,7 @@ def get_local_driver(
                         pass
                 service = EdgeService(
                     executable_path=LOCAL_EDGEDRIVER,
-                    log_path=os.devnull,
+                    log_output=os.devnull,
                     service_args=["--disable-build-check"],
                 )
                 driver = Edge(service=service, options=edge_options)
@@ -2642,7 +2642,7 @@ def get_local_driver(
                 elif "DevToolsActivePort file doesn't exist" in e.msg:
                     service = EdgeService(
                         executable_path=LOCAL_EDGEDRIVER,
-                        log_path=os.devnull,
+                        log_output=os.devnull,
                         service_args=["--disable-build-check"],
                     )
                     # https://stackoverflow.com/a/56638103/7058266
@@ -3187,7 +3187,7 @@ def get_local_driver(
                             else:
                                 service = ChromeService(
                                     executable_path=LOCAL_CHROMEDRIVER,
-                                    log_path=os.devnull,
+                                    log_output=os.devnull,
                                     service_args=service_args,
                                 )
                                 driver = webdriver.Chrome(
@@ -3204,7 +3204,7 @@ def get_local_driver(
                     else:
                         if selenium4_or_newer:
                             service = ChromeService(
-                                log_path=os.devnull,
+                                log_output=os.devnull,
                                 service_args=service_args,
                             )
                             driver = webdriver.Chrome(
@@ -3228,7 +3228,7 @@ def get_local_driver(
                     elif "Missing or invalid capabilities" in e.msg:
                         if selenium4_or_newer:
                             chrome_options.add_experimental_option("w3c", True)
-                            service = ChromeService(log_path=os.devnull)
+                            service = ChromeService(log_output=os.devnull)
                             with warnings.catch_warnings():
                                 warnings.simplefilter(
                                     "ignore", category=DeprecationWarning
@@ -3375,7 +3375,7 @@ def get_local_driver(
                     elif "Missing or invalid capabilities" in e.msg:
                         if selenium4_or_newer:
                             chrome_options.add_experimental_option("w3c", True)
-                            service = ChromeService(log_path=os.devnull)
+                            service = ChromeService(log_output=os.devnull)
                             with warnings.catch_warnings():
                                 warnings.simplefilter(
                                     "ignore", category=DeprecationWarning
