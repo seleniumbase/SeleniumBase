@@ -209,6 +209,11 @@ class Patcher(object):
                 file_bin,
             )
             file_bin = re.sub(
+                b"window\\.cdc_[a-zA-Z0-9]{22}_(Array|Promise|Symbol)",
+                b"window\\.ccd_adoQpoasnaf67pfcZLmcfl_(Array|Promise|Symbol)",
+                file_bin,
+            )
+            file_bin = re.sub(
                 b"'\\$cdc_[a-zA-Z0-9]{22}_';",
                 gen_call_function_js_cache_name,
                 file_bin,
