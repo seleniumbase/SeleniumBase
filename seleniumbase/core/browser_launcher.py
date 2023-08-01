@@ -852,6 +852,10 @@ def _set_chrome_options(
     if headless or headless2 or is_using_uc(undetectable, browser_name):
         chrome_options.add_argument("--disable-renderer-backgrounding")
     chrome_options.add_argument("--disable-backgrounding-occluded-windows")
+    chrome_options.add_argument(
+        '--disable-features=OptimizationHintsFetching,'
+        'OptimizationTargetPrediction'
+    )
     if (
         is_using_uc(undetectable, browser_name)
         and (
@@ -872,10 +876,6 @@ def _set_chrome_options(
     chrome_options.add_argument("--disable-notifications")
     chrome_options.add_argument(
         "--disable-autofill-keyboard-accessory-view[8]"
-    )
-    chrome_options.add_argument(
-        '--disable-features=OptimizationHintsFetching,'
-        'OptimizationTargetPrediction'
     )
     chrome_options.add_argument("--homepage=about:blank")
     chrome_options.add_argument("--dom-automation")
