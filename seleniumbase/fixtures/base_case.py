@@ -412,6 +412,8 @@ class BaseCase(unittest.TestCase):
                 and (self.browser == "ie" or self.browser == "safari")
             ):
                 self.__jquery_click(selector, by=by)
+            elif self.browser == "safari":
+                self.execute_script("arguments[0].click();", element)
             else:
                 href = None
                 new_tab = False
@@ -458,6 +460,8 @@ class BaseCase(unittest.TestCase):
                 pass
             if self.browser == "safari" and by == By.LINK_TEXT:
                 self.__jquery_click(selector, by=by)
+            elif self.browser == "safari":
+                self.execute_script("arguments[0].click();", element)
             else:
                 self.__element_click(element)
         except ENI_Exception as e:
@@ -2076,7 +2080,10 @@ class BaseCase(unittest.TestCase):
             try:
                 if element.is_displayed():
                     self.__scroll_to_element(element)
-                    element.click()
+                    if self.browser == "safari":
+                        self.execute_script("arguments[0].click();", element)
+                    else:
+                        element.click()
                     click_count += 1
                     self.wait_for_ready_state_complete()
             except ECI_Exception:
@@ -2087,7 +2094,12 @@ class BaseCase(unittest.TestCase):
                 try:
                     if element.is_displayed():
                         self.__scroll_to_element(element)
-                        element.click()
+                        if self.browser == "safari":
+                            self.execute_script(
+                                "arguments[0].click();", element
+                            )
+                        else:
+                            element.click()
                         click_count += 1
                         self.wait_for_ready_state_complete()
                 except (Stale_Exception, ENI_Exception):
