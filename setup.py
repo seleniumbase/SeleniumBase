@@ -168,7 +168,7 @@ setup(
         'trio-websocket==0.10.3;python_version>="3.7"',
         'wsproto==1.2.0;python_version>="3.7"',
         'selenium==3.141.0;python_version<"3.7"',
-        'selenium==4.10.0;python_version>="3.7"',
+        'selenium==4.11.2;python_version>="3.7"',
         'msedge-selenium-tools==3.141.3;python_version<"3.7"',
         'cssselect==1.1.0;python_version<"3.7"',
         'cssselect==1.2.0;python_version>="3.7"',
