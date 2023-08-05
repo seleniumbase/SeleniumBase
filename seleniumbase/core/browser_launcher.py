@@ -2702,13 +2702,16 @@ def get_local_driver(
                 )
             return driver
     elif browser_name == constants.Browser.SAFARI:
-        from selenium.webdriver.safari.options import Options as SafariOptions
-
         arg_join = " ".join(sys.argv)
         if ("-n" in sys.argv) or (" -n=" in arg_join) or (arg_join == "-c"):
             # Skip if multithreaded
             raise Exception("Can't run Safari tests in multithreaded mode!")
         warnings.simplefilter("ignore", category=DeprecationWarning)
+        if not selenium4_or_newer:
+            return webdriver.safari.webdriver.WebDriver()
+
+        from selenium.webdriver.safari.options import Options as SafariOptions
+
         service = SafariService(quiet=False)
         options = SafariOptions()
         if (
@@ -3270,7 +3273,10 @@ def get_local_driver(
                     elif "Missing or invalid capabilities" in e.msg:
                         if selenium4_or_newer:
                             chrome_options.add_experimental_option("w3c", True)
-                            service = ChromeService(log_output=os.devnull)
+                            service = ChromeService(
+                                log_output=os.devnull,
+                                service_args=service_args,
+                            )
                             with warnings.catch_warnings():
                                 warnings.simplefilter(
                                     "ignore", category=DeprecationWarning
@@ -3369,6 +3375,7 @@ def get_local_driver(
                         if selenium4_or_newer:
                             service = ChromeService(
                                 executable_path=LOCAL_CHROMEDRIVER,
+                                log_output=os.devnull,
                                 service_args=["--disable-build-check"],
                             )
                             driver = webdriver.Chrome(
@@ -3384,6 +3391,7 @@ def get_local_driver(
                     else:
                         if selenium4_or_newer:
                             service = ChromeService(
+                                log_output=os.devnull,
                                 service_args=["--disable-build-check"],
                             )
                             driver = webdriver.Chrome(
@@ -3420,7 +3428,10 @@ def get_local_driver(
                     elif "Missing or invalid capabilities" in e.msg:
                         if selenium4_or_newer:
                             chrome_options.add_experimental_option("w3c", True)
-                            service = ChromeService(log_output=os.devnull)
+                            service = ChromeService(
+                                log_output=os.devnull,
+                                service_args=["--disable-build-check"],
+                            )
                             with warnings.catch_warnings():
                                 warnings.simplefilter(
                                     "ignore", category=DeprecationWarning
@@ -3467,6 +3478,7 @@ def get_local_driver(
                         try:
                             if selenium4_or_newer:
                                 service = ChromeService(
+                                    log_output=os.devnull,
                                     service_args=["--disable-build-check"],
                                 )
                                 return webdriver.Chrome(
@@ -3488,11 +3500,20 @@ def get_local_driver(
                     )
                     if "--headless" in chrome_options.arguments:
                         chrome_options.arguments.remove("--headless")
-                    return webdriver.Chrome(options=chrome_options)
+                    service = ChromeService(
+                        log_output=os.devnull,
+                        service_args=["--disable-build-check"]
+                    )
+                    return webdriver.Chrome(
+                        service=service, options=chrome_options
+                    )
         except Exception:
             try:
                 # Try again if Chrome didn't launch
-                return webdriver.Chrome(options=chrome_options)
+                service = ChromeService(service_args=["--disable-build-check"])
+                return webdriver.Chrome(
+                    service=service, options=chrome_options
+                )
             except Exception:
                 pass
             if headless:
@@ -3505,7 +3526,11 @@ def get_local_driver(
                         "\nWarning: Could not make chromedriver"
                         " executable: %s" % e
                     )
-            return webdriver.Chrome()
+            service = ChromeService(
+                log_output=os.devnull,
+                service_args=["--disable-build-check"]
+            )
+            return webdriver.Chrome(service=service)
     else:
         raise Exception(
             "%s is not a valid browser option for this system!" % browser_name
