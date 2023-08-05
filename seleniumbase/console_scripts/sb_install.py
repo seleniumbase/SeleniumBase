@@ -264,8 +264,6 @@ def main(override=None, intel_for_uc=None):
                 ).split(".")[0]
                 if int(major_chrome_version) < 72:
                     major_chrome_version = None
-                elif int(major_chrome_version) > 114:
-                    major_chrome_version = "114"
             except Exception:
                 major_chrome_version = None
             if major_chrome_version and major_chrome_version.isnumeric():
@@ -317,6 +315,7 @@ def main(override=None, intel_for_uc=None):
                 "Cannot determine which version of chromedriver to download!"
             )
         found_chromedriver = False
+        cft = False
         if get_latest or get_latest_minus_one:
             url_request = requests_get(last)
             if url_request.ok:
@@ -329,17 +328,59 @@ def main(override=None, intel_for_uc=None):
             url_req = requests_get(last)
             if url_req.ok:
                 latest_version = url_req.text
-            last = last + "_" + use_version
-            url_request = requests_get(last)
-            if url_request.ok:
-                found_chromedriver = True
-                use_version = url_request.text
-                if use_version == latest_version:
-                    get_latest = True
+            if int(use_version) < 115:
+                last = last + "_" + use_version
+                url_request = requests_get(last)
+                if url_request.ok:
+                    found_chromedriver = True
+                    use_version = url_request.text
+                    if use_version == latest_version:
+                        get_latest = True
+            else:
+                cft = True
+                cft_latest_vpm_url = (
+                    "https://googlechromelabs.github.io/"
+                    "chrome-for-testing/latest-versions-per-milestone.json"
+                )
+                url_request = requests_get(cft_latest_vpm_url)
+                if url_request.ok:
+                    use_ver = use_version
+                    fver = url_request.json()["milestones"][use_ver]["version"]
+                    found_chromedriver = True
+                    use_version = str(fver)
+                    if use_version == latest_version:
+                        get_latest = True
         download_url = (
             "https://chromedriver.storage.googleapis.com/"
             "%s/%s" % (use_version, file_name)
         )
+        plat_arch = ""
+        if cft:
+            if IS_MAC:
+                if (
+                    IS_ARM_MAC
+                    and not intel_for_uc
+                ):
+                    platform_code = "mac-arm64"
+                    file_name = "chromedriver-mac-arm64.zip"
+                else:
+                    platform_code = "mac-x64"
+                    file_name = "chromedriver-mac-x64.zip"
+            elif IS_LINUX:
+                platform_code = "linux64"
+                file_name = "chromedriver-linux64.zip"
+            elif IS_WINDOWS:
+                if "64" in ARCH:
+                    platform_code = "win64"
+                    file_name = "chromedriver-win64.zip"
+                else:
+                    platform_code = "win32"
+                    file_name = "chromedriver-win32.zip"
+            plat_arch = file_name.split(".zip")[0]
+            download_url = (
+                "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/"
+                "%s/%s/%s" % (use_version, platform_code, file_name)
+            )
         url_request = None
         if not found_chromedriver:
             url_req = requests_get(last)
@@ -351,7 +392,7 @@ def main(override=None, intel_for_uc=None):
         if found_chromedriver or url_request.ok:
             p_version = use_version
             p_version = c3 + use_version + cr
-            if get_latest:
+            if get_latest or cft:
                 p_version = p_version + " " + c2 + "(Latest)" + cr
             else:
                 n_l_s = "Not Latest"
@@ -736,24 +777,26 @@ def main(override=None, intel_for_uc=None):
         ):
             for f_name in contents:
                 if (
-                    name == "chromedriver"
+                    (name == "chromedriver" or name == "uc_driver")
                     and (
-                        f_name == "chromedriver"
-                        or f_name == "chromedriver.exe"
+                        f_name.split("/")[-1] == "chromedriver"
+                        or f_name.split("/")[-1] == "chromedriver.exe"
                     )
                 ):
-                    driver_name = f_name
+                    driver_name = f_name.split("/")[-1]
                     driver_contents = [driver_name]
                 # Remove existing version if exists
                 new_file = os.path.join(downloads_folder, str(f_name))
-                if (
-                    intel_for_uc
-                    and IS_MAC
-                    and new_file.endswith("drivers/chromedriver")
-                ):
-                    new_file = new_file.replace(
-                        "drivers/chromedriver", "drivers/uc_driver"
-                    )
+                if intel_for_uc and IS_MAC:
+                    if new_file.endswith("drivers/chromedriver"):
+                        new_file = new_file.replace(
+                            "drivers/chromedriver", "drivers/uc_driver"
+                        )
+                    elif "drivers/%s/chromedriver" % plat_arch in new_file:
+                        new_file = new_file.replace(
+                            "drivers/%s/chromedriver" % plat_arch,
+                            "drivers/%s/uc_driver" % plat_arch
+                        )
                 if "Driver" in new_file or "driver" in new_file:
                     if os.path.exists(new_file):
                         os.remove(new_file)  # Technically the old file now
@@ -767,18 +810,26 @@ def main(override=None, intel_for_uc=None):
                     os.remove(new_file)
                 zipinfos = zip_ref.infolist()
                 for zipinfo in zipinfos:
-                    if zipinfo.filename == "chromedriver":
+                    if zipinfo.filename.split("/")[-1] == "chromedriver":
                         zipinfo.filename = "uc_driver"
                         zip_ref.extract(zipinfo, downloads_folder)
                 contents = zip_ref.namelist()
                 if driver_contents:
                     contents = driver_contents
-            elif name == "chromedriver":
+            elif name == "chromedriver" or name == "uc_driver":
                 zipinfos = zip_ref.infolist()
                 for zipinfo in zipinfos:
+                    if zipinfo.filename.split("/")[-1] == "chromedriver":
+                        zipinfo.filename = "chromedriver"
+                    elif zipinfo.filename.split("/")[-1] == (
+                        "chromedriver.exe"
+                    ):
+                        zipinfo.filename = "chromedriver.exe"
                     if (
-                        zipinfo.filename == "chromedriver"
-                        or zipinfo.filename == "chromedriver.exe"
+                        zipinfo.filename.split("/")[-1] == "chromedriver"
+                        or zipinfo.filename.split("/")[-1] == (
+                            "chromedriver.exe"
+                        )
                     ):
                         zip_ref.extract(zipinfo, downloads_folder)
                 contents = zip_ref.namelist()
