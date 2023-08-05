@@ -253,21 +253,23 @@ setup(
         # pip install -e .[ipdb]
         # (Not needed for debugging anymore. SeleniumBase now includes "pdbp".)
         "ipdb": [
-            "ipdb==0.13.11",
+            "ipdb==0.13.13",
             'ipython==7.16.3;python_version<"3.7"',
             'ipython==7.34.0;python_version>="3.7"',
         ],
         # pip install -e .[pdfminer]
+        # (An optional library for parsing PDF files.)
         "pdfminer": [
             'pdfminer.six==20211012;python_version<"3.7"',
             'pdfminer.six==20221105;python_version>="3.7"',
             'cryptography==36.0.2;python_version<"3.7"',
-            'cryptography==41.0.2;python_version>="3.7"',
+            'cryptography==41.0.3;python_version>="3.7"',
             "cffi==1.15.1",
             "pycparser==2.21",
 
         ],
         # pip install -e .[pillow]
+        # (An optional library for image-processing.)
         "pillow": [
             'Pillow==8.4.0;python_version<"3.7"',
             'Pillow==9.5.0;python_version>="3.7" and python_version<"3.8"',
