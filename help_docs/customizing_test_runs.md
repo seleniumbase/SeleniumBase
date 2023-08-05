@@ -139,6 +139,7 @@ pytest my_first_test.py --settings-file=custom_settings.py
 --extension-zip=ZIP  # (Load a Chrome Extension .zip|.crx, comma-separated.)
 --extension-dir=DIR  # (Load a Chrome Extension directory, comma-separated.)
 --binary-location=PATH  # (Set path of the Chromium browser binary to use.)
+--driver-version=VER  # (Set the chromedriver or uc_driver version to use.)
 --sjw  # (Skip JS Waits for readyState to be "complete" or Angular to load.)
 --pls=PLS  # (Set pageLoadStrategy on Chrome: "normal", "eager", or "none".)
 --headless  # (Run tests in headless mode. The default arg on Linux OS.)

@@ -21,8 +21,6 @@ If the necessary driver is not found in this location while running tests, Selen
 ```bash
 sbase get chromedriver 114
 sbase get chromedriver 114.0.5735.90
-sbase get chromedriver latest
-sbase get chromedriver latest-1
 sbase get edgedriver 115.0.1901.183
 ```
 
