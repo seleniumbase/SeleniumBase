@@ -40,7 +40,7 @@ COMMANDS:
       download server  (Get Selenium Grid JAR file)
       grid-hub         [start|stop] [OPTIONS]
       grid-node        [start|stop] --hub=[HOST/IP]
- * (EXAMPLE: "sbase get chromedriver latest") *
+ * (EXAMPLE: "sbase get chromedriver") *
 
     Type "sbase help [COMMAND]" for specific command info.
     For info on all commands, type: "seleniumbase --help".
@@ -64,19 +64,14 @@ sbase get geckodriver
 sbase get edgedriver
 sbase get chromedriver 114
 sbase get chromedriver 114.0.5735.90
-sbase get chromedriver latest
-sbase get chromedriver latest-1  # (Latest minus one)
 sbase get chromedriver -p
-sbase get chromedriver latest -p
 ```
 
 (Drivers:  ``chromedriver``, ``geckodriver``, ``edgedriver``,
            ``iedriver``, ``operadriver``, ``uc_driver``)
 
-(Options:  ``latest`` or a specific driver version.
-           For chromedriver, you can also specify the major
-           version int, or ``latest-1`` for latest minus 1.
-           If none specified, installs the default version.
+(Options:  A specific driver version or major version integer.
+           If not set, the driver version matches the browser.
            ``-p`` / ``--path``: Also copy to "/usr/local/bin".)
 
 * Output:
