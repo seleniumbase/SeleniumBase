@@ -41,7 +41,7 @@ class DriverContext():
                 hasattr(self, "driver")
                 and hasattr(self.driver, "quit")
                 and (
-                    sys.platform not in ["win32", "win64", "x64"]
+                    "win32" not in sys.platform
                     or self.driver.service.process
                 )
             ):
