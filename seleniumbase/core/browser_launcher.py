@@ -3164,6 +3164,13 @@ def get_local_driver(
                                 cdp_events = uc_cdp_events
                                 cert = "unable to get local issuer certificate"
                                 mac_certificate_error = False
+                                if (
+                                    use_version.isnumeric()
+                                    and int(use_version) <= 74
+                                ):
+                                    chrome_options.add_experimental_option(
+                                        "w3c", True
+                                    )
                                 try:
                                     uc_path = None
                                     if os.path.exists(LOCAL_UC_DRIVER):
@@ -3213,6 +3220,13 @@ def get_local_driver(
                                     )
                                     uc_activated = True
                             else:
+                                if (
+                                    use_version.isnumeric()
+                                    and int(use_version) <= 74
+                                ):
+                                    chrome_options.add_experimental_option(
+                                        "w3c", True
+                                    )
                                 service = ChromeService(
                                     executable_path=LOCAL_CHROMEDRIVER,
                                     log_output=os.devnull,
