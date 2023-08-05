@@ -153,15 +153,25 @@ def get_uc_driver_version():
     return uc_driver_version
 
 
-def find_chromedriver_version_to_use(use_version):
-    # Because https://chromedriver.chromium.org/downloads stops at 114
-    final_chromedriver = "114"
+def find_chromedriver_version_to_use(use_version, driver_version):
+    # Note: https://chromedriver.chromium.org/downloads stops at 114.
+    # Future drivers are part of the Chrome-for-Testing collection.
     if (
-        use_version
-        and use_version.isdigit()
-        and int(use_version) > int(final_chromedriver)
+        driver_version
+        and str(driver_version).split(".")[0].isdigit()
+        and int(str(driver_version).split(".")[0]) >= 72
     ):
-        use_version = final_chromedriver
+        use_version = str(driver_version)
+    return use_version
+
+
+def find_edgedriver_version_to_use(use_version, driver_version):
+    if (
+        driver_version
+        and str(driver_version).split(".")[0].isdigit()
+        and int(str(driver_version).split(".")[0]) >= 80
+    ):
+        use_version = str(driver_version)
     return use_version
 
 
@@ -281,12 +291,12 @@ def get_valid_binary_names_for_browser(browser):
 def _repair_chromedriver(chrome_options, headless_options, mcv=None):
     if mcv:
         subprocess.check_call(
-            "sbase install chromedriver %s" % mcv, shell=True
+            "sbase get chromedriver %s" % mcv, shell=True
         )
         return
     driver = None
     subprocess.check_call(
-        "sbase install chromedriver 72.0.3626.69", shell=True
+        "sbase get chromedriver 72.0.3626.69", shell=True
     )
     try:
         if selenium4_or_newer:
@@ -302,7 +312,7 @@ def _repair_chromedriver(chrome_options, headless_options, mcv=None):
             )
     except Exception:
         subprocess.check_call(
-            "sbase install chromedriver latest-1", shell=True
+            "sbase get chromedriver latest-1", shell=True
         )
         return
     chrome_version = None
@@ -321,7 +331,7 @@ def _repair_chromedriver(chrome_options, headless_options, mcv=None):
         and int(major_chrome_ver) >= 73
     ):
         subprocess.check_call(
-            "sbase install chromedriver %s" % major_chrome_ver, shell=True
+            "sbase get chromedriver %s" % major_chrome_ver, shell=True
         )
     return
 
@@ -332,7 +342,7 @@ def _repair_edgedriver(edge_version):
         "\nAttempting to install a matching version of msedgedriver:"
     )
     subprocess.check_call(
-        "sbase install edgedriver %s" % edge_version, shell=True
+        "sbase get edgedriver %s" % edge_version, shell=True
     )
     return
 
@@ -526,6 +536,7 @@ def _set_chrome_options(
     extension_zip,
     extension_dir,
     binary_location,
+    driver_version,
     page_load_strategy,
     use_wire,
     external_pdf,
@@ -1088,6 +1099,7 @@ def get_driver(
     extension_zip=None,
     extension_dir=None,
     binary_location=None,
+    driver_version=None,
     page_load_strategy=None,
     use_wire=False,
     external_pdf=False,
@@ -1295,6 +1307,7 @@ def get_driver(
             extension_zip,
             extension_dir,
             binary_location,
+            driver_version,
             page_load_strategy,
             use_wire,
             external_pdf,
@@ -1347,6 +1360,7 @@ def get_driver(
             extension_zip,
             extension_dir,
             binary_location,
+            driver_version,
             page_load_strategy,
             use_wire,
             external_pdf,
@@ -1403,6 +1417,7 @@ def get_remote_driver(
     extension_zip,
     extension_dir,
     binary_location,
+    driver_version,
     page_load_strategy,
     use_wire,
     external_pdf,
@@ -1522,6 +1537,7 @@ def get_remote_driver(
             extension_zip,
             extension_dir,
             binary_location,
+            driver_version,
             page_load_strategy,
             use_wire,
             external_pdf,
@@ -1712,6 +1728,7 @@ def get_remote_driver(
             extension_zip,
             extension_dir,
             binary_location,
+            driver_version,
             page_load_strategy,
             use_wire,
             external_pdf,
@@ -1834,6 +1851,7 @@ def get_remote_driver(
             extension_zip,
             extension_dir,
             binary_location,
+            driver_version,
             page_load_strategy,
             use_wire,
             external_pdf,
@@ -1956,6 +1974,7 @@ def get_local_driver(
     extension_zip,
     extension_dir,
     binary_location,
+    driver_version,
     page_load_strategy,
     use_wire,
     external_pdf,
@@ -2229,7 +2248,10 @@ def get_local_driver(
             major_edge_version = None
         if major_edge_version:
             use_version = major_edge_version
-        driver_version = None
+        use_version = find_edgedriver_version_to_use(
+            use_version, driver_version
+        )
+        edge_driver_version = None
         edgedriver_upgrade_needed = False
         if os.path.exists(LOCAL_EDGEDRIVER):
             try:
@@ -2254,7 +2276,7 @@ def get_local_driver(
                 else:
                     output = 0
                 if int(output) >= 2:
-                    driver_version = output
+                    edge_driver_version = output
             except Exception:
                 pass
         local_edgedriver_exists = False
@@ -2262,8 +2284,8 @@ def get_local_driver(
             local_edgedriver_exists = True
             if (
                 use_version != "latest"
-                and driver_version
-                and use_version != driver_version
+                and edge_driver_version
+                and use_version != edge_driver_version
             ):
                 edgedriver_upgrade_needed = True
             else:
@@ -2680,13 +2702,16 @@ def get_local_driver(
                 )
             return driver
     elif browser_name == constants.Browser.SAFARI:
-        from selenium.webdriver.safari.options import Options as SafariOptions
-
         arg_join = " ".join(sys.argv)
         if ("-n" in sys.argv) or (" -n=" in arg_join) or (arg_join == "-c"):
             # Skip if multithreaded
             raise Exception("Can't run Safari tests in multithreaded mode!")
         warnings.simplefilter("ignore", category=DeprecationWarning)
+        if not selenium4_or_newer:
+            return webdriver.safari.webdriver.WebDriver()
+
+        from selenium.webdriver.safari.options import Options as SafariOptions
+
         service = SafariService(quiet=False)
         options = SafariOptions()
         if (
@@ -2761,6 +2786,7 @@ def get_local_driver(
                 extension_zip,
                 extension_dir,
                 binary_location,
+                driver_version,
                 page_load_strategy,
                 use_wire,
                 external_pdf,
@@ -2817,6 +2843,7 @@ def get_local_driver(
                 extension_zip,
                 extension_dir,
                 binary_location,
+                driver_version,
                 page_load_strategy,
                 use_wire,
                 external_pdf,
@@ -2860,7 +2887,7 @@ def get_local_driver(
                     major_chrome_version = None
             if major_chrome_version:
                 use_version = major_chrome_version
-            driver_version = None
+            ch_driver_version = None
             path_chromedriver = chromedriver_on_path()
             if os.path.exists(LOCAL_CHROMEDRIVER):
                 try:
@@ -2873,7 +2900,7 @@ def get_local_driver(
                         output = output.decode("utf-8")
                     output = output.split(" ")[1].split(".")[0]
                     if int(output) >= 2:
-                        driver_version = output
+                        ch_driver_version = output
                 except Exception:
                     pass
             elif path_chromedriver:
@@ -2887,7 +2914,7 @@ def get_local_driver(
                         output = output.decode("utf-8")
                     output = output.split(" ")[1].split(".")[0]
                     if int(output) >= 2:
-                        driver_version = output
+                        ch_driver_version = output
                 except Exception:
                     pass
             if headless2:
@@ -2922,12 +2949,14 @@ def get_local_driver(
                     from seleniumbase import config as sb_config
 
                     sb_config.multi_proxy = True
-            use_version = find_chromedriver_version_to_use(use_version)
+            use_version = find_chromedriver_version_to_use(
+                use_version, driver_version
+            )
             if (
                 LOCAL_CHROMEDRIVER
                 and os.path.exists(LOCAL_CHROMEDRIVER)
                 and (
-                    use_version == driver_version
+                    use_version == ch_driver_version
                     or use_version == "latest"
                 )
                 and (
@@ -2951,11 +2980,11 @@ def get_local_driver(
                 not path_chromedriver
                 or (
                     use_version != "latest"
-                    and driver_version
-                    and use_version != driver_version
+                    and ch_driver_version
+                    and use_version != ch_driver_version
                     and (
                         selenium4_or_newer
-                        or driver_version != "72"
+                        or ch_driver_version != "72"
                     )
                 )
                 or (
@@ -3000,9 +3029,9 @@ def get_local_driver(
                             if (
                                 not path_chromedriver
                                 or (
-                                    driver_version
+                                    ch_driver_version
                                     and (
-                                        int(driver_version)
+                                        int(ch_driver_version)
                                         < int(d_latest_major)
                                     )
                                 )
@@ -3056,9 +3085,9 @@ def get_local_driver(
                                     if (
                                         not path_chromedriver
                                         or (
-                                            driver_version
+                                            ch_driver_version
                                             and (
-                                                int(driver_version)
+                                                int(ch_driver_version)
                                                 < int(d_latest_major)
                                             )
                                         )
@@ -3077,7 +3106,9 @@ def get_local_driver(
                 )
                 with uc_lock:  # Avoid multithreaded issues
                     uc_driver_version = get_uc_driver_version()
-                    use_version = find_chromedriver_version_to_use(use_version)
+                    use_version = find_chromedriver_version_to_use(
+                        use_version, driver_version
+                    )
                     if (
                         (
                             uc_driver_version != use_version
@@ -3136,6 +3167,13 @@ def get_local_driver(
                                 cdp_events = uc_cdp_events
                                 cert = "unable to get local issuer certificate"
                                 mac_certificate_error = False
+                                if (
+                                    use_version.isnumeric()
+                                    and int(use_version) <= 74
+                                ):
+                                    chrome_options.add_experimental_option(
+                                        "w3c", True
+                                    )
                                 try:
                                     uc_path = None
                                     if os.path.exists(LOCAL_UC_DRIVER):
@@ -3185,6 +3223,13 @@ def get_local_driver(
                                     )
                                     uc_activated = True
                             else:
+                                if (
+                                    use_version.isnumeric()
+                                    and int(use_version) <= 74
+                                ):
+                                    chrome_options.add_experimental_option(
+                                        "w3c", True
+                                    )
                                 service = ChromeService(
                                     executable_path=LOCAL_CHROMEDRIVER,
                                     log_output=os.devnull,
@@ -3228,7 +3273,10 @@ def get_local_driver(
                     elif "Missing or invalid capabilities" in e.msg:
                         if selenium4_or_newer:
                             chrome_options.add_experimental_option("w3c", True)
-                            service = ChromeService(log_output=os.devnull)
+                            service = ChromeService(
+                                log_output=os.devnull,
+                                service_args=service_args,
+                            )
                             with warnings.catch_warnings():
                                 warnings.simplefilter(
                                     "ignore", category=DeprecationWarning
@@ -3252,7 +3300,9 @@ def get_local_driver(
                             and int(major_chrome_version) >= 86
                         ):
                             mcv = major_chrome_version
-                            mcv = find_chromedriver_version_to_use(mcv)
+                            mcv = find_chromedriver_version_to_use(
+                                mcv, driver_version
+                            )
                     headless = True
                     headless_options = _set_chrome_options(
                         browser_name,
@@ -3294,6 +3344,7 @@ def get_local_driver(
                         extension_zip,
                         extension_dir,
                         binary_location,
+                        driver_version,
                         page_load_strategy,
                         use_wire,
                         external_pdf,
@@ -3324,6 +3375,7 @@ def get_local_driver(
                         if selenium4_or_newer:
                             service = ChromeService(
                                 executable_path=LOCAL_CHROMEDRIVER,
+                                log_output=os.devnull,
                                 service_args=["--disable-build-check"],
                             )
                             driver = webdriver.Chrome(
@@ -3339,6 +3391,7 @@ def get_local_driver(
                     else:
                         if selenium4_or_newer:
                             service = ChromeService(
+                                log_output=os.devnull,
                                 service_args=["--disable-build-check"],
                             )
                             driver = webdriver.Chrome(
@@ -3375,7 +3428,10 @@ def get_local_driver(
                     elif "Missing or invalid capabilities" in e.msg:
                         if selenium4_or_newer:
                             chrome_options.add_experimental_option("w3c", True)
-                            service = ChromeService(log_output=os.devnull)
+                            service = ChromeService(
+                                log_output=os.devnull,
+                                service_args=["--disable-build-check"],
+                            )
                             with warnings.catch_warnings():
                                 warnings.simplefilter(
                                     "ignore", category=DeprecationWarning
@@ -3422,6 +3478,7 @@ def get_local_driver(
                         try:
                             if selenium4_or_newer:
                                 service = ChromeService(
+                                    log_output=os.devnull,
                                     service_args=["--disable-build-check"],
                                 )
                                 return webdriver.Chrome(
@@ -3443,11 +3500,20 @@ def get_local_driver(
                     )
                     if "--headless" in chrome_options.arguments:
                         chrome_options.arguments.remove("--headless")
-                    return webdriver.Chrome(options=chrome_options)
+                    service = ChromeService(
+                        log_output=os.devnull,
+                        service_args=["--disable-build-check"]
+                    )
+                    return webdriver.Chrome(
+                        service=service, options=chrome_options
+                    )
         except Exception:
             try:
                 # Try again if Chrome didn't launch
-                return webdriver.Chrome(options=chrome_options)
+                service = ChromeService(service_args=["--disable-build-check"])
+                return webdriver.Chrome(
+                    service=service, options=chrome_options
+                )
             except Exception:
                 pass
             if headless:
@@ -3460,7 +3526,11 @@ def get_local_driver(
                         "\nWarning: Could not make chromedriver"
                         " executable: %s" % e
                     )
-            return webdriver.Chrome()
+            service = ChromeService(
+                log_output=os.devnull,
+                service_args=["--disable-build-check"]
+            )
+            return webdriver.Chrome(service=service)
     else:
         raise Exception(
             "%s is not a valid browser option for this system!" % browser_name

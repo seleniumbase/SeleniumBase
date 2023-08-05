@@ -7,8 +7,8 @@ Usage:
 Options:
          VERSION         Specify the version.
                          Tries to detect the needed version.
-                         Use "latest" for the latest version.
-                         Use "latest-1" for one less than that.
+                         If using chromedriver or edgedriver,
+                         you can use the major version integer.
          -p OR --path    Also copy the driver to /usr/local/bin
 Examples:
          sbase get chromedriver
@@ -16,10 +16,7 @@ Examples:
          sbase get edgedriver
          sbase get chromedriver 114
          sbase get chromedriver 114.0.5735.90
-         sbase get chromedriver latest
-         sbase get chromedriver latest-1  # (Latest minus one)
          sbase get chromedriver -p
-         sbase get chromedriver latest -p
 Output:
          Downloads the webdriver to seleniumbase/drivers/
          (chromedriver is required for Chrome automation)
@@ -42,9 +39,6 @@ from seleniumbase import config as sb_config
 from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
 
 urllib3.disable_warnings()
-selenium4_or_newer = False
-if sys.version_info >= (3, 7):
-    selenium4_or_newer = True
 ARCH = platform.architecture()[0]
 IS_ARM_MAC = shared_utils.is_arm_mac()
 IS_MAC = shared_utils.is_mac()
@@ -70,9 +64,7 @@ def invalid_run_command():
     exp += "  Options:\n"
     exp += "           VERSION        Specify the version.\n"
     exp += "                          Tries to detect the needed version.\n"
-    exp += '                          Use "latest" for the latest version.\n'
-    exp += '                          Use "latest-1" for one less than that.\n'
-    exp += "                          For chromedriver or edgedriver,\n"
+    exp += "                          If using chromedriver or edgedriver,\n"
     exp += "                          you can use the major version integer.\n"
     exp += "           -p OR --path   Also copy the driver to /usr/local/bin\n"
     exp += "  Examples:\n"
@@ -81,10 +73,7 @@ def invalid_run_command():
     exp += "           sbase get edgedriver\n"
     exp += "           sbase get chromedriver 114\n"
     exp += "           sbase get chromedriver 114.0.5735.90\n"
-    exp += "           sbase get chromedriver latest\n"
-    exp += "           sbase get chromedriver latest-1\n"
     exp += "           sbase get chromedriver -p\n"
-    exp += "           sbase get chromedriver latest -p\n"
     exp += "  Output:\n"
     exp += "          Downloads the webdriver to seleniumbase/drivers/\n"
     exp += "          (chromedriver is required for Chrome automation)\n"
@@ -247,8 +236,7 @@ def main(override=None, intel_for_uc=None):
         use_version = DEFAULT_CHROMEDRIVER_VERSION
 
         if (
-            selenium4_or_newer
-            and not override
+            not override
             and (
                 num_args == 3
                 or (num_args == 4 and "-p" in sys.argv[3].lower())
@@ -264,8 +252,6 @@ def main(override=None, intel_for_uc=None):
                 ).split(".")[0]
                 if int(major_chrome_version) < 72:
                     major_chrome_version = None
-                elif int(major_chrome_version) > 114:
-                    major_chrome_version = "114"
             except Exception:
                 major_chrome_version = None
             if major_chrome_version and major_chrome_version.isnumeric():
@@ -317,6 +303,7 @@ def main(override=None, intel_for_uc=None):
                 "Cannot determine which version of chromedriver to download!"
             )
         found_chromedriver = False
+        cft = False
         if get_latest or get_latest_minus_one:
             url_request = requests_get(last)
             if url_request.ok:
@@ -329,17 +316,59 @@ def main(override=None, intel_for_uc=None):
             url_req = requests_get(last)
             if url_req.ok:
                 latest_version = url_req.text
-            last = last + "_" + use_version
-            url_request = requests_get(last)
-            if url_request.ok:
-                found_chromedriver = True
-                use_version = url_request.text
-                if use_version == latest_version:
-                    get_latest = True
+            if int(use_version) < 115:
+                last = last + "_" + use_version
+                url_request = requests_get(last)
+                if url_request.ok:
+                    found_chromedriver = True
+                    use_version = url_request.text
+                    if use_version == latest_version:
+                        get_latest = True
+            else:
+                cft = True
+                cft_latest_vpm_url = (
+                    "https://googlechromelabs.github.io/"
+                    "chrome-for-testing/latest-versions-per-milestone.json"
+                )
+                url_request = requests_get(cft_latest_vpm_url)
+                if url_request.ok:
+                    use_ver = use_version
+                    fver = url_request.json()["milestones"][use_ver]["version"]
+                    found_chromedriver = True
+                    use_version = str(fver)
+                    if use_version == latest_version:
+                        get_latest = True
         download_url = (
             "https://chromedriver.storage.googleapis.com/"
             "%s/%s" % (use_version, file_name)
         )
+        plat_arch = ""
+        if cft:
+            if IS_MAC:
+                if (
+                    IS_ARM_MAC
+                    and not intel_for_uc
+                ):
+                    platform_code = "mac-arm64"
+                    file_name = "chromedriver-mac-arm64.zip"
+                else:
+                    platform_code = "mac-x64"
+                    file_name = "chromedriver-mac-x64.zip"
+            elif IS_LINUX:
+                platform_code = "linux64"
+                file_name = "chromedriver-linux64.zip"
+            elif IS_WINDOWS:
+                if "64" in ARCH:
+                    platform_code = "win64"
+                    file_name = "chromedriver-win64.zip"
+                else:
+                    platform_code = "win32"
+                    file_name = "chromedriver-win32.zip"
+            plat_arch = file_name.split(".zip")[0]
+            download_url = (
+                "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/"
+                "%s/%s/%s" % (use_version, platform_code, file_name)
+            )
         url_request = None
         if not found_chromedriver:
             url_req = requests_get(last)
@@ -351,7 +380,7 @@ def main(override=None, intel_for_uc=None):
         if found_chromedriver or url_request.ok:
             p_version = use_version
             p_version = c3 + use_version + cr
-            if get_latest:
+            if get_latest or cft:
                 p_version = p_version + " " + c2 + "(Latest)" + cr
             else:
                 n_l_s = "Not Latest"
@@ -369,7 +398,7 @@ def main(override=None, intel_for_uc=None):
         else:
             raise Exception("Could not find chromedriver to download!\n")
         if not get_latest:
-            pass  # Previously recommended: "sbase get chromedriver latest"
+            pass
     elif name == "geckodriver" or name == "firefoxdriver":
         use_version = DEFAULT_GECKODRIVER_VERSION
         found_geckodriver = False
@@ -432,8 +461,7 @@ def main(override=None, intel_for_uc=None):
         )
 
         if (
-            selenium4_or_newer
-            and not override
+            not override
             and (
                 num_args == 3
                 or (num_args == 4 and "-p" in sys.argv[3].lower())
@@ -736,24 +764,26 @@ def main(override=None, intel_for_uc=None):
         ):
             for f_name in contents:
                 if (
-                    name == "chromedriver"
+                    (name == "chromedriver" or name == "uc_driver")
                     and (
-                        f_name == "chromedriver"
-                        or f_name == "chromedriver.exe"
+                        f_name.split("/")[-1] == "chromedriver"
+                        or f_name.split("/")[-1] == "chromedriver.exe"
                     )
                 ):
-                    driver_name = f_name
+                    driver_name = f_name.split("/")[-1]
                     driver_contents = [driver_name]
                 # Remove existing version if exists
                 new_file = os.path.join(downloads_folder, str(f_name))
-                if (
-                    intel_for_uc
-                    and IS_MAC
-                    and new_file.endswith("drivers/chromedriver")
-                ):
-                    new_file = new_file.replace(
-                        "drivers/chromedriver", "drivers/uc_driver"
-                    )
+                if intel_for_uc and IS_MAC:
+                    if new_file.endswith("drivers/chromedriver"):
+                        new_file = new_file.replace(
+                            "drivers/chromedriver", "drivers/uc_driver"
+                        )
+                    elif "drivers/%s/chromedriver" % plat_arch in new_file:
+                        new_file = new_file.replace(
+                            "drivers/%s/chromedriver" % plat_arch,
+                            "drivers/%s/uc_driver" % plat_arch
+                        )
                 if "Driver" in new_file or "driver" in new_file:
                     if os.path.exists(new_file):
                         os.remove(new_file)  # Technically the old file now
@@ -767,18 +797,26 @@ def main(override=None, intel_for_uc=None):
                     os.remove(new_file)
                 zipinfos = zip_ref.infolist()
                 for zipinfo in zipinfos:
-                    if zipinfo.filename == "chromedriver":
+                    if zipinfo.filename.split("/")[-1] == "chromedriver":
                         zipinfo.filename = "uc_driver"
                         zip_ref.extract(zipinfo, downloads_folder)
                 contents = zip_ref.namelist()
                 if driver_contents:
                     contents = driver_contents
-            elif name == "chromedriver":
+            elif name == "chromedriver" or name == "uc_driver":
                 zipinfos = zip_ref.infolist()
                 for zipinfo in zipinfos:
+                    if zipinfo.filename.split("/")[-1] == "chromedriver":
+                        zipinfo.filename = "chromedriver"
+                    elif zipinfo.filename.split("/")[-1] == (
+                        "chromedriver.exe"
+                    ):
+                        zipinfo.filename = "chromedriver.exe"
                     if (
-                        zipinfo.filename == "chromedriver"
-                        or zipinfo.filename == "chromedriver.exe"
+                        zipinfo.filename.split("/")[-1] == "chromedriver"
+                        or zipinfo.filename.split("/")[-1] == (
+                            "chromedriver.exe"
+                        )
                     ):
                         zip_ref.extract(zipinfo, downloads_folder)
                 contents = zip_ref.namelist()

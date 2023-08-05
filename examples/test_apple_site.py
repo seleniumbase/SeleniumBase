@@ -4,7 +4,7 @@ BaseCase.main(__name__, __file__)
 
 class AppleTests(BaseCase):
     def test_apple_developer_site_webdriver_instructions(self):
-        if not (self.headless or self.headless2 or self.xvfb):
+        if self.headed:
             self.demo_mode = True
             self.demo_sleep = 0.5
             self.message_duration = 2.0

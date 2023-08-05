@@ -3628,6 +3628,7 @@ class BaseCase(unittest.TestCase):
         extension_zip=None,
         extension_dir=None,
         binary_location=None,
+        driver_version=None,
         page_load_strategy=None,
         use_wire=None,
         external_pdf=None,
@@ -3683,6 +3684,7 @@ class BaseCase(unittest.TestCase):
         extension_zip - A Chrome Extension ZIP file to use (Chrome-only)
         extension_dir - A Chrome Extension folder to use (Chrome-only)
         binary_location - the path of the browser binary to use (Chromium)
+        driver_version - the chromedriver or uc_driver version to force
         page_load_strategy - the option to change pageLoadStrategy (Chrome)
         use_wire - Use selenium-wire webdriver instead of the selenium one
         external_pdf - "plugins.always_open_pdf_externally": True. (Chrome)
@@ -3807,6 +3809,8 @@ class BaseCase(unittest.TestCase):
             extension_dir = self.extension_dir
         if binary_location is None:
             binary_location = self.binary_location
+        if driver_version is None:
+            driver_version = self.driver_version
         if page_load_strategy is None:
             page_load_strategy = self.page_load_strategy
         if use_wire is None:
@@ -3886,6 +3890,7 @@ class BaseCase(unittest.TestCase):
             extension_zip=extension_zip,
             extension_dir=extension_dir,
             binary_location=binary_location,
+            driver_version=driver_version,
             page_load_strategy=page_load_strategy,
             use_wire=use_wire,
             external_pdf=external_pdf,
@@ -4832,6 +4837,7 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("js_cl")
         ext_actions.append("js_ca")
         ext_actions.append("js_ty")
+        ext_actions.append("s_val")
         ext_actions.append("jq_cl")
         ext_actions.append("jq_ca")
         ext_actions.append("jq_ty")
@@ -4922,6 +4928,11 @@ class BaseCase(unittest.TestCase):
         for n in range(len(srt_actions)):
             if srt_actions[n][0] == "ch_cl":
                 srt_actions[n][0] = "js_cl"
+        for n in range(len(srt_actions)):
+            if srt_actions[n][0] == "s_val":
+                srt_actions[n][0] = "set_v"
+                srt_actions[n][2] = srt_actions[n][1][1]
+                srt_actions[n][1] = srt_actions[n][1][0]
 
         # Generate the script from processed actions
         sb_actions = recorder_helper.generate_sbase_code(srt_actions)
@@ -7491,19 +7502,23 @@ class BaseCase(unittest.TestCase):
         css_selector = re.escape(css_selector)  # Add "\\" to special chars
         css_selector = self.__escape_quotes_if_needed(css_selector)
         the_type = None
-        if self.recorder_mode and self.__current_url_is_recordable():
-            if self.get_session_storage_item("pause_recorder") == "no":
-                time_stamp = self.execute_script("return Date.now();")
-                origin = self.get_origin()
-                sel_tex = [pre_escape_css_selector, text]
-                action = ["js_ty", sel_tex, origin, time_stamp]
-                self.__extra_actions.append(action)
         if ":contains\\(" not in css_selector:
             get_type_script = (
                 """return document.querySelector('%s').getAttribute('type');"""
                 % css_selector
             )
             the_type = self.execute_script(get_type_script)  # Used later
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                sel_tex = [pre_escape_css_selector, text]
+                if the_type == "range" and ":contains\\(" not in css_selector:
+                    action = ["s_val", sel_tex, origin, time_stamp]
+                else:
+                    action = ["js_ty", sel_tex, origin, time_stamp]
+                self.__extra_actions.append(action)
+        if ":contains\\(" not in css_selector:
             script = """document.querySelector('%s').value='%s';""" % (
                 css_selector,
                 value,
@@ -13882,6 +13897,7 @@ class BaseCase(unittest.TestCase):
             self.extension_zip = sb_config.extension_zip
             self.extension_dir = sb_config.extension_dir
             self.binary_location = sb_config.binary_location
+            self.driver_version = sb_config.driver_version
             self.page_load_strategy = sb_config.page_load_strategy
             self.use_wire = sb_config.use_wire
             self.external_pdf = sb_config.external_pdf
@@ -14202,6 +14218,7 @@ class BaseCase(unittest.TestCase):
                 extension_zip=self.extension_zip,
                 extension_dir=self.extension_dir,
                 binary_location=self.binary_location,
+                driver_version=self.driver_version,
                 page_load_strategy=self.page_load_strategy,
                 use_wire=self.use_wire,
                 external_pdf=self.external_pdf,

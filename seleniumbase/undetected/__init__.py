@@ -28,7 +28,6 @@ __all__ = (
 )
 logger = logging.getLogger("uc")
 logger.setLevel(logging.getLogger().getEffectiveLevel())
-sys_plat = sys.platform
 
 
 class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
@@ -266,7 +265,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         except Exception:
             pass
         creationflags = 0
-        if "win32" in sys_plat or "win64" in sys_plat or "x64" in sys_plat:
+        if "win32" in sys.platform:
             creationflags = subprocess.CREATE_NO_WINDOW
         self.options = options
         if not use_subprocess:
@@ -477,7 +476,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
 
     def __del__(self):
         try:
-            if "win32" in sys_plat:
+            if "win32" in sys.platform:
                 self.stop_client()
                 self.command_executor.close()
             else:
@@ -516,7 +515,7 @@ def find_chrome_executable():
                 "chromium-browser",
             ):
                 candidates.add(os.sep.join((item, subitem)))
-        if "darwin" in sys_plat:
+        if "darwin" in sys.platform:
             gc = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
             candidates.update(
                 [

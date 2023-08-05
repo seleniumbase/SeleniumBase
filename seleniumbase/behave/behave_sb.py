@@ -40,6 +40,7 @@ behave -D agent="User Agent String" -D demo
 -D extension-zip=ZIP  (Load a Chrome Extension .zip|.crx, comma-separated.)
 -D extension-dir=DIR  (Load a Chrome Extension directory, comma-separated.)
 -D binary-location=PATH  (Set path of the Chromium browser binary to use.)
+-D driver-version=VER  (Set the chromedriver or uc_driver version to use.)
 -D sjw  (Skip JS Waits for readyState to be "complete" or Angular to load.)
 -D pls=PLS  (Set pageLoadStrategy on Chrome: "normal", "eager", or "none".)
 -D headless  (Run tests in headless mode. The default arg on Linux OS.)
@@ -164,6 +165,7 @@ def get_configured_sb(context):
     sb.extension_zip = None
     sb.extension_dir = None
     sb.binary_location = None
+    sb.driver_version = None
     sb.page_load_strategy = None
     sb.database_env = "test"
     sb.log_path = "latest_logs" + os.sep
@@ -458,6 +460,13 @@ def get_configured_sb(context):
             if binary_location == "true":
                 binary_location = sb.binary_location  # revert to default
             sb.binary_location = binary_location
+            continue
+        # Handle: -D driver-version=VER / driver_version=VER
+        if low_key in ["driver-version", "driver_version"]:
+            driver_version = userdata[key]
+            if driver_version == "true":
+                driver_version = sb.driver_version  # revert to default
+            sb.driver_version = driver_version
             continue
         # Handle: -D pls=PLS / page-load-strategy=PLS / page_load_strategy=PLS
         if low_key in ["pls", "page-load-strategy", "page_load_strategy"]:

@@ -617,6 +617,7 @@ pytest test_coffee_cart.py --trace
 --extension-zip=ZIP  # (Load a Chrome Extension .zip|.crx, comma-separated.)
 --extension-dir=DIR  # (Load a Chrome Extension directory, comma-separated.)
 --binary-location=PATH  # (Set path of the Chromium browser binary to use.)
+--driver-version=VER  # (Set the chromedriver or uc_driver version to use.)
 --sjw  # (Skip JS Waits for readyState to be "complete" or Angular to load.)
 --pls=PLS  # (Set pageLoadStrategy on Chrome: "normal", "eager", or "none".)
 --headless  # (Run tests in headless mode. The default arg on Linux OS.)
@@ -1329,7 +1330,7 @@ pytest --reruns=1 --reruns-delay=1
 <span><a href="https://www.youtube.com/playlist?list=PLp9uKicxkBc5UIlGi2BuE3aWC7JyXpD3m"><img src="https://seleniumbase.github.io/cdn/img/youtube.png" title="SeleniumBase Playlist on YouTube" alt="SeleniumBase Playlist on YouTube" width="68" /></a></span>
 <span><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.github.io/img/social/share_github.svg" title="SeleniumBase on GitHub" alt="SeleniumBase on GitHub" width="62" /></a></span>
 <span><a href="https://www.facebook.com/SeleniumBase"><img src="https://seleniumbase.io/img/social/share_facebook.svg" title="SeleniumBase on Facebook" alt="SeleniumBase on Facebook" width="64" /></a></span>
-<span><a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://seleniumbase.github.io/img/social/share_gitter.svg" title="SeleniumBase on Gitter" alt="SeleniumBase on Gitter" width="50" /></a></span>
+<span><a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://seleniumbase.github.io/img/social/share_gitter.svg" title="SeleniumBase on Gitter" alt="SeleniumBase on Gitter" width="52" /></a></span>
 </div></p>
 
 <p><div><a href="https://github.com/mdmintz">https://github.com/mdmintz</a></div></p>

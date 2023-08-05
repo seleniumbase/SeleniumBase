@@ -77,9 +77,10 @@ if pure_python:
     sb._crumbs = False
     sb._final_debug = False
     sb.use_wire = False
-    sb.visual_baseline = False
+    sb.enable_3d_apis = False
     sb.window_size = None
     sb.maximize_option = False
+    sb.visual_baseline = False
     sb._disable_beforeunload = False
     sb.save_screenshot_after_test = False
     sb.no_screenshot_after_test = False
@@ -104,7 +105,7 @@ if pure_python:
     sb._dash_initialized = False
     sb.message_duration = None
     sb.binary_location = None
-    sb.enable_3d_apis = False
+    sb.driver_version = None
     sb.block_images = False
     sb.do_not_track = False
     sb.external_pdf = False

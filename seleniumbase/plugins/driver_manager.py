@@ -4,11 +4,17 @@ The SeleniumBase Driver as a Python Context Manager or a returnable object.
 
 The SeleniumBase Driver as a context manager:
 Usage --> ``with DriverContext() as driver:``
-Usage example -->
-    from seleniumbase import DriverContext
-    with DriverContext() as driver:
-        driver.get("https://google.com/ncr")
-    # The browser exits automatically after the "with" block ends.
+
+Example -->
+
+```
+from seleniumbase import DriverContext
+
+with DriverContext() as driver:
+    driver.get("https://google.com/ncr")
+```
+
+# (The browser exits automatically after the "with" block ends.)
 
 ###########################################################################
 # Above: The driver as a context manager. (Used with a "with" statement.) #
@@ -18,10 +24,15 @@ Usage example -->
 
 The SeleniumBase Driver as a returnable object:
 Usage --> ``driver = Driver()``
-Usage example -->
-    from seleniumbase import Driver
-    driver = Driver()
-    driver.get("https://google.com/ncr")
+
+Example -->
+
+```
+from seleniumbase import Driver
+
+driver = Driver()
+driver.get("https://google.com/ncr")
+```
 
 ###########################################################################
 """
@@ -41,7 +52,7 @@ class DriverContext():
                 hasattr(self, "driver")
                 and hasattr(self.driver, "quit")
                 and (
-                    sys.platform not in ["win32", "win64", "x64"]
+                    "win32" not in sys.platform
                     or self.driver.service.process
                 )
             ):
@@ -96,6 +107,7 @@ def Driver(
     extension_zip=None,  # Load a Chrome Extension .zip|.crx, comma-separated.)
     extension_dir=None,  # Load a Chrome Extension directory, comma-separated.)
     binary_location=None,  # Set path of the Chromium browser binary to use.
+    driver_version=None,  # Set the chromedriver or uc_driver version to use.
     page_load_strategy=None,  # Set Chrome PLS to "normal", "eager", or "none".
     use_wire=None,  # Use selenium-wire's webdriver over selenium webdriver.
     external_pdf=None,  # Set Chrome "plugins.always_open_pdf_externally":True.
@@ -395,6 +407,16 @@ def Driver(
             ad_block_on = True
         else:
             ad_block_on = False
+    if driver_version is None:
+        arg_join = " ".join(sys_argv)
+        if "--driver-version=" in arg_join:
+            driver_version = (
+                arg_join.split("--driver-version=")[1].split(" ")[0]
+            )
+        elif "--driver_version=" in arg_join:
+            driver_version = (
+                arg_join.split("--driver_version=")[1].split(" ")[0]
+            )
     browser_name = browser
 
     # Launch a web browser
@@ -444,6 +466,7 @@ def Driver(
         extension_zip=extension_zip,
         extension_dir=extension_dir,
         binary_location=binary_location,
+        driver_version=driver_version,
         page_load_strategy=page_load_strategy,
         use_wire=use_wire,
         external_pdf=external_pdf,

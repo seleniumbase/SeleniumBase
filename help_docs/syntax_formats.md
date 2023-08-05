@@ -106,7 +106,7 @@ class MyTests(BaseTestCase):
         self.example_method()
         self.type("input", "Name")
         self.click("form button")
-        ...
+        # ...
 ```
 
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/boilerplates/base_test_case.py">examples/boilerplates/base_test_case.py</a> for more info.)
@@ -119,7 +119,7 @@ The pytest framework comes with a unique system called fixtures, which replaces 
 ```python
 def test_sb_fixture_with_no_class(sb):
     sb.open("https://google.com/ncr")
-    sb.type('input[title="Search"]', 'SeleniumBase\n')
+    sb.type('[title="Search"]', 'SeleniumBase\n')
     sb.click('a[href*="github.com/seleniumbase/SeleniumBase"]')
     sb.click('a[title="seleniumbase"]')
 ```
@@ -135,7 +135,7 @@ The <code translate="no">sb</code> pytest fixture can also be used inside of a c
 class Test_SB_Fixture:
     def test_sb_fixture_inside_class(self, sb):
         sb.open("https://google.com/ncr")
-        sb.type('input[title="Search"]', 'SeleniumBase\n')
+        sb.type('[title="Search"]', 'SeleniumBase\n')
         sb.click('a[href*="github.com/seleniumbase/SeleniumBase"]')
         sb.click('a[title="examples"]')
 ```

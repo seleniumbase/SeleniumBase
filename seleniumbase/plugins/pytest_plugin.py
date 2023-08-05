@@ -55,6 +55,7 @@ def pytest_addoption(parser):
     --extension-zip=ZIP  (Load a Chrome Extension .zip|.crx, comma-separated.)
     --extension-dir=DIR  (Load a Chrome Extension directory, comma-separated.)
     --binary-location=PATH  (Set path of the Chromium browser binary to use.)
+    --driver-version=VER  (Set the chromedriver or uc_driver version to use.)
     --sjw  (Skip JS Waits for readyState to be "complete" or Angular to load.)
     --pls=PLS  (Set pageLoadStrategy on Chrome: "normal", "eager", or "none".)
     --headless  (Run tests in headless mode. The default arg on Linux OS.)
@@ -633,6 +634,17 @@ def pytest_addoption(parser):
         default=None,
         help="""Sets the path of the Chromium browser binary to use.
                 Uses the default location if not os.path.exists(PATH)""",
+    )
+    parser.addoption(
+        "--driver_version",
+        "--driver-version",
+        action="store",
+        dest="driver_version",
+        default=None,
+        help="""Setting this overrides the default driver version,
+                which is set to match the detected browser version.
+                Major version only. Example: "--driver-version=114"
+                (Only chromedriver and uc_driver are affected.)""",
     )
     parser.addoption(
         "--pls",
@@ -1451,6 +1463,7 @@ def pytest_configure(config):
     sb_config.extension_zip = config.getoption("extension_zip")
     sb_config.extension_dir = config.getoption("extension_dir")
     sb_config.binary_location = config.getoption("binary_location")
+    sb_config.driver_version = config.getoption("driver_version")
     sb_config.page_load_strategy = config.getoption("page_load_strategy")
     sb_config.with_testing_base = config.getoption("with_testing_base")
     sb_config.with_db_reporting = config.getoption("with_db_reporting")
