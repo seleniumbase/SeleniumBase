@@ -92,3 +92,8 @@ class TestUpgradeChromedriver:
         # Print the final installed versions of chromedriver and Chrome
         testdir = self.print_versions_of_chromedriver_and_chrome(testdir)
         testdir.inline_run("--headless", "-s")
+
+
+if __name__ == "__main__":
+    from pytest import main
+    main([__file__])

@@ -19,7 +19,7 @@ class UserAgentTests(BaseCase):
         else:
             # User-agent was overridden using: --agent=STRING
             print("\n\nUser-Agent override: %s" % user_agent_detected)
-        if not (self.headless or self.headless2 or self.xvfb):
+        if self.headed:
             self.sleep(2.75)
 
         # Now change the user-agent using "execute_cdp_cmd()"
@@ -46,7 +46,7 @@ class UserAgentTests(BaseCase):
             self.highlight("#ua_string")
             user_agent_detected = self.get_text("#ua_string")
             print("\nUser-Agent override: %s" % user_agent_detected)
-            if not (self.headless or self.headless2 or self.xvfb):
+            if self.headed:
                 self.sleep(2.75)
         finally:
             # Reset the user-agent back to the original

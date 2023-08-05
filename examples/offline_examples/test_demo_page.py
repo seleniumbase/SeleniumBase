@@ -48,7 +48,7 @@ class OfflineTests(BaseCase):
 
         # Verify that a slider control updates a progress bar
         self.assert_element('progress[value="50"]')
-        self.press_right_arrow("#myslider", times=5)
+        self.set_value("input#mySlider", "100")
         self.assert_element('progress[value="100"]')
 
         # Verify that a "select" option updates a meter bar
@@ -56,13 +56,13 @@ class OfflineTests(BaseCase):
         self.select_option_by_text("#mySelect", "Set to 75%")
         self.assert_element('meter[value="0.75"]')
 
-        # Assert an element located inside an iFrame
+        # Assert an element located inside an iframe
         self.assert_false(self.is_element_visible("img"))
         self.switch_to_frame("#myFrame1")
         self.assert_true(self.is_element_visible("img"))
         self.switch_to_default_content()
 
-        # Assert text located inside an iFrame
+        # Assert text located inside an iframe
         self.assert_false(self.is_text_visible("iFrame Text"))
         self.switch_to_frame("#myFrame2")
         self.assert_true(self.is_text_visible("iFrame Text"))
@@ -89,7 +89,7 @@ class OfflineTests(BaseCase):
         self.assert_true(self.is_selected("#checkBox3"))
         self.assert_true(self.is_selected("#checkBox4"))
 
-        # Verify that clicking an iFrame checkbox selects it
+        # Verify that clicking an iframe checkbox selects it
         self.assert_false(self.is_element_visible(".fBox"))
         self.switch_to_frame("#myFrame3")
         self.assert_true(self.is_element_visible(".fBox"))
