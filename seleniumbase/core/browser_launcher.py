@@ -153,15 +153,25 @@ def get_uc_driver_version():
     return uc_driver_version
 
 
-def find_chromedriver_version_to_use(use_version):
-    # Because https://chromedriver.chromium.org/downloads stops at 114
-    final_chromedriver = "114"
+def find_chromedriver_version_to_use(use_version, driver_version):
+    # Note: https://chromedriver.chromium.org/downloads stops at 114.
+    # Future drivers are part of the Chrome-for-Testing collection.
     if (
-        use_version
-        and use_version.isdigit()
-        and int(use_version) > int(final_chromedriver)
+        driver_version
+        and str(driver_version).split(".")[0].isdigit()
+        and int(str(driver_version).split(".")[0]) >= 72
     ):
-        use_version = final_chromedriver
+        use_version = str(driver_version)
+    return use_version
+
+
+def find_edgedriver_version_to_use(use_version, driver_version):
+    if (
+        driver_version
+        and str(driver_version).split(".")[0].isdigit()
+        and int(str(driver_version).split(".")[0]) >= 80
+    ):
+        use_version = str(driver_version)
     return use_version
 
 
@@ -526,6 +536,7 @@ def _set_chrome_options(
     extension_zip,
     extension_dir,
     binary_location,
+    driver_version,
     page_load_strategy,
     use_wire,
     external_pdf,
@@ -1088,6 +1099,7 @@ def get_driver(
     extension_zip=None,
     extension_dir=None,
     binary_location=None,
+    driver_version=None,
     page_load_strategy=None,
     use_wire=False,
     external_pdf=False,
@@ -1295,6 +1307,7 @@ def get_driver(
             extension_zip,
             extension_dir,
             binary_location,
+            driver_version,
             page_load_strategy,
             use_wire,
             external_pdf,
@@ -1347,6 +1360,7 @@ def get_driver(
             extension_zip,
             extension_dir,
             binary_location,
+            driver_version,
             page_load_strategy,
             use_wire,
             external_pdf,
@@ -1403,6 +1417,7 @@ def get_remote_driver(
     extension_zip,
     extension_dir,
     binary_location,
+    driver_version,
     page_load_strategy,
     use_wire,
     external_pdf,
@@ -1522,6 +1537,7 @@ def get_remote_driver(
             extension_zip,
             extension_dir,
             binary_location,
+            driver_version,
             page_load_strategy,
             use_wire,
             external_pdf,
@@ -1712,6 +1728,7 @@ def get_remote_driver(
             extension_zip,
             extension_dir,
             binary_location,
+            driver_version,
             page_load_strategy,
             use_wire,
             external_pdf,
@@ -1834,6 +1851,7 @@ def get_remote_driver(
             extension_zip,
             extension_dir,
             binary_location,
+            driver_version,
             page_load_strategy,
             use_wire,
             external_pdf,
@@ -1956,6 +1974,7 @@ def get_local_driver(
     extension_zip,
     extension_dir,
     binary_location,
+    driver_version,
     page_load_strategy,
     use_wire,
     external_pdf,
@@ -2229,7 +2248,10 @@ def get_local_driver(
             major_edge_version = None
         if major_edge_version:
             use_version = major_edge_version
-        driver_version = None
+        use_version = find_edgedriver_version_to_use(
+            use_version, driver_version
+        )
+        edge_driver_version = None
         edgedriver_upgrade_needed = False
         if os.path.exists(LOCAL_EDGEDRIVER):
             try:
@@ -2254,7 +2276,7 @@ def get_local_driver(
                 else:
                     output = 0
                 if int(output) >= 2:
-                    driver_version = output
+                    edge_driver_version = output
             except Exception:
                 pass
         local_edgedriver_exists = False
@@ -2262,8 +2284,8 @@ def get_local_driver(
             local_edgedriver_exists = True
             if (
                 use_version != "latest"
-                and driver_version
-                and use_version != driver_version
+                and edge_driver_version
+                and use_version != edge_driver_version
             ):
                 edgedriver_upgrade_needed = True
             else:
@@ -2761,6 +2783,7 @@ def get_local_driver(
                 extension_zip,
                 extension_dir,
                 binary_location,
+                driver_version,
                 page_load_strategy,
                 use_wire,
                 external_pdf,
@@ -2817,6 +2840,7 @@ def get_local_driver(
                 extension_zip,
                 extension_dir,
                 binary_location,
+                driver_version,
                 page_load_strategy,
                 use_wire,
                 external_pdf,
@@ -2860,7 +2884,7 @@ def get_local_driver(
                     major_chrome_version = None
             if major_chrome_version:
                 use_version = major_chrome_version
-            driver_version = None
+            ch_driver_version = None
             path_chromedriver = chromedriver_on_path()
             if os.path.exists(LOCAL_CHROMEDRIVER):
                 try:
@@ -2873,7 +2897,7 @@ def get_local_driver(
                         output = output.decode("utf-8")
                     output = output.split(" ")[1].split(".")[0]
                     if int(output) >= 2:
-                        driver_version = output
+                        ch_driver_version = output
                 except Exception:
                     pass
             elif path_chromedriver:
@@ -2887,7 +2911,7 @@ def get_local_driver(
                         output = output.decode("utf-8")
                     output = output.split(" ")[1].split(".")[0]
                     if int(output) >= 2:
-                        driver_version = output
+                        ch_driver_version = output
                 except Exception:
                     pass
             if headless2:
@@ -2922,12 +2946,14 @@ def get_local_driver(
                     from seleniumbase import config as sb_config
 
                     sb_config.multi_proxy = True
-            use_version = find_chromedriver_version_to_use(use_version)
+            use_version = find_chromedriver_version_to_use(
+                use_version, driver_version
+            )
             if (
                 LOCAL_CHROMEDRIVER
                 and os.path.exists(LOCAL_CHROMEDRIVER)
                 and (
-                    use_version == driver_version
+                    use_version == ch_driver_version
                     or use_version == "latest"
                 )
                 and (
@@ -2951,11 +2977,11 @@ def get_local_driver(
                 not path_chromedriver
                 or (
                     use_version != "latest"
-                    and driver_version
-                    and use_version != driver_version
+                    and ch_driver_version
+                    and use_version != ch_driver_version
                     and (
                         selenium4_or_newer
-                        or driver_version != "72"
+                        or ch_driver_version != "72"
                     )
                 )
                 or (
@@ -3000,9 +3026,9 @@ def get_local_driver(
                             if (
                                 not path_chromedriver
                                 or (
-                                    driver_version
+                                    ch_driver_version
                                     and (
-                                        int(driver_version)
+                                        int(ch_driver_version)
                                         < int(d_latest_major)
                                     )
                                 )
@@ -3056,9 +3082,9 @@ def get_local_driver(
                                     if (
                                         not path_chromedriver
                                         or (
-                                            driver_version
+                                            ch_driver_version
                                             and (
-                                                int(driver_version)
+                                                int(ch_driver_version)
                                                 < int(d_latest_major)
                                             )
                                         )
@@ -3077,7 +3103,9 @@ def get_local_driver(
                 )
                 with uc_lock:  # Avoid multithreaded issues
                     uc_driver_version = get_uc_driver_version()
-                    use_version = find_chromedriver_version_to_use(use_version)
+                    use_version = find_chromedriver_version_to_use(
+                        use_version, driver_version
+                    )
                     if (
                         (
                             uc_driver_version != use_version
@@ -3252,7 +3280,9 @@ def get_local_driver(
                             and int(major_chrome_version) >= 86
                         ):
                             mcv = major_chrome_version
-                            mcv = find_chromedriver_version_to_use(mcv)
+                            mcv = find_chromedriver_version_to_use(
+                                mcv, driver_version
+                            )
                     headless = True
                     headless_options = _set_chrome_options(
                         browser_name,
@@ -3294,6 +3324,7 @@ def get_local_driver(
                         extension_zip,
                         extension_dir,
                         binary_location,
+                        driver_version,
                         page_load_strategy,
                         use_wire,
                         external_pdf,

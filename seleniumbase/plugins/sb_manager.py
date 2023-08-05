@@ -65,7 +65,7 @@ def SB(
     extension_zip=None,  # Load a Chrome Extension .zip|.crx, comma-separated.
     extension_dir=None,  # Load a Chrome Extension directory, comma-separated.
     binary_location=None,  # Set path of the Chromium browser binary to use.
-    page_load_strategy=None,  # Set Chrome PLS to "normal", "eager", or "none".
+    driver_version=None,  # Set the chromedriver or uc_driver version to use.
     skip_js_waits=None,  # Skip JS Waits (readyState=="complete" and Angular).
     use_wire=None,  # Use selenium-wire's webdriver over selenium webdriver.
     external_pdf=None,  # Set Chrome "plugins.always_open_pdf_externally":True.
@@ -98,6 +98,7 @@ def SB(
     sjw=None,  # Shortcut / Duplicate of "skip_js_waits".
     save_screenshot=None,  # Save a screenshot at the end of each test.
     no_screenshot=None,  # No screenshots saved unless tests directly ask it.
+    page_load_strategy=None,  # Set Chrome PLS to "normal", "eager", or "none".
     timeout_multiplier=None,  # Multiplies the default timeout values.
     js_checking_on=None,  # Check for JavaScript errors after page loads.
     slow=None,  # Slow down the automation. Faster than using Demo Mode.
@@ -566,6 +567,16 @@ def SB(
             ad_block_on = True
         else:
             ad_block_on = False
+    if driver_version is None:
+        arg_join = " ".join(sys_argv)
+        if "--driver-version=" in arg_join:
+            driver_version = (
+                arg_join.split("--driver-version=")[1].split(" ")[0]
+            )
+        elif "--driver_version=" in arg_join:
+            driver_version = (
+                arg_join.split("--driver_version=")[1].split(" ")[0]
+            )
     if highlights is not None:
         try:
             highlights = int(highlights)
@@ -642,6 +653,7 @@ def SB(
     sb_config.save_screenshot = save_screenshot
     sb_config.no_screenshot = no_screenshot
     sb_config.binary_location = binary_location
+    sb_config.driver_version = driver_version
     sb_config.page_load_strategy = page_load_strategy
     sb_config.timeout_multiplier = timeout_multiplier
     sb_config.pytest_html_report = None
@@ -713,6 +725,7 @@ def SB(
     sb.dark_mode = sb_config.dark_mode
     sb.devtools = sb_config.devtools
     sb.binary_location = sb_config.binary_location
+    sb.driver_version = sb_config.driver_version
     sb.mobile_emulator = sb_config.mobile_emulator
     sb.device_metrics = sb_config.device_metrics
     sb.extension_zip = sb_config.extension_zip

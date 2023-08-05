@@ -96,6 +96,7 @@ def Driver(
     extension_zip=None,  # Load a Chrome Extension .zip|.crx, comma-separated.)
     extension_dir=None,  # Load a Chrome Extension directory, comma-separated.)
     binary_location=None,  # Set path of the Chromium browser binary to use.
+    driver_version=None,  # Set the chromedriver or uc_driver version to use.
     page_load_strategy=None,  # Set Chrome PLS to "normal", "eager", or "none".
     use_wire=None,  # Use selenium-wire's webdriver over selenium webdriver.
     external_pdf=None,  # Set Chrome "plugins.always_open_pdf_externally":True.
@@ -395,6 +396,16 @@ def Driver(
             ad_block_on = True
         else:
             ad_block_on = False
+    if driver_version is None:
+        arg_join = " ".join(sys_argv)
+        if "--driver-version=" in arg_join:
+            driver_version = (
+                arg_join.split("--driver-version=")[1].split(" ")[0]
+            )
+        elif "--driver_version=" in arg_join:
+            driver_version = (
+                arg_join.split("--driver_version=")[1].split(" ")[0]
+            )
     browser_name = browser
 
     # Launch a web browser
@@ -444,6 +455,7 @@ def Driver(
         extension_zip=extension_zip,
         extension_dir=extension_dir,
         binary_location=binary_location,
+        driver_version=driver_version,
         page_load_strategy=page_load_strategy,
         use_wire=use_wire,
         external_pdf=external_pdf,

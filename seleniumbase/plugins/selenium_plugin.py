@@ -37,6 +37,7 @@ class SeleniumBrowser(Plugin):
     --extension-zip=ZIP  (Load a Chrome Extension .zip|.crx, comma-separated.)
     --extension-dir=DIR  (Load a Chrome Extension directory, comma-separated.)
     --binary-location=PATH  (Set path of the Chromium browser binary to use.)
+    --driver-version=VER  (Set the chromedriver or uc_driver version to use.)
     --sjw  (Skip JS Waits for readyState to be "complete" or Angular to load.)
     --pls=PLS  (Set pageLoadStrategy on Chrome: "normal", "eager", or "none".)
     --headless  (Run tests in headless mode. The default arg on Linux OS.)
@@ -380,6 +381,17 @@ class SeleniumBrowser(Plugin):
             default=None,
             help="""Sets the path of the Chromium browser binary to use.
                     Uses the default location if not os.path.exists(PATH)""",
+        )
+        parser.addoption(
+            "--driver_version",
+            "--driver-version",
+            action="store",
+            dest="driver_version",
+            default=None,
+            help="""Setting this overrides the default driver version,
+                    which is set to match the detected browser version.
+                    Major version only. Example: "--driver-version=114"
+                    (Only chromedriver and uc_driver are affected.)""",
         )
         parser.addoption(
             "--pls",
@@ -1076,6 +1088,7 @@ class SeleniumBrowser(Plugin):
         test.test.extension_zip = self.options.extension_zip
         test.test.extension_dir = self.options.extension_dir
         test.test.binary_location = self.options.binary_location
+        test.test.driver_version = self.options.driver_version
         test.test.page_load_strategy = self.options.page_load_strategy
         test.test.chromium_arg = self.options.chromium_arg
         test.test.firefox_arg = self.options.firefox_arg
