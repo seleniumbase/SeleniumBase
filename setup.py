@@ -139,7 +139,7 @@ setup(
         'setuptools>=59.6.0;python_version<"3.7"',
         'setuptools>=68.0.0;python_version>="3.7"',
         'wheel>=0.37.1;python_version<"3.7"',
-        'wheel>=0.41.0;python_version>="3.7"',
+        'wheel>=0.41.1;python_version>="3.7"',
         'attrs==22.1.0;python_version<"3.7"',
         'attrs>=23.1.0;python_version>="3.7"',
         "certifi>=2023.7.22",
