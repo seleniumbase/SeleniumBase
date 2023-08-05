@@ -10,7 +10,7 @@ var cssPathById = function(el) {
         var selector = el.nodeName.toLowerCase();
         if (el.id) {
             elid = el.id;
-            if (elid.includes(',') || elid.includes('.') ||
+            if (elid.includes(',') || elid.includes('.') || /\s/.test(elid) ||
                 elid.includes('(') || elid.includes(')') || hasDigit(elid[0]))
                 return cssPathByAttribute(el, 'id');
             selector += '#' + elid;

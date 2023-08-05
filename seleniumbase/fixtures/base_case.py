@@ -4837,6 +4837,7 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("js_cl")
         ext_actions.append("js_ca")
         ext_actions.append("js_ty")
+        ext_actions.append("s_val")
         ext_actions.append("jq_cl")
         ext_actions.append("jq_ca")
         ext_actions.append("jq_ty")
@@ -4927,6 +4928,11 @@ class BaseCase(unittest.TestCase):
         for n in range(len(srt_actions)):
             if srt_actions[n][0] == "ch_cl":
                 srt_actions[n][0] = "js_cl"
+        for n in range(len(srt_actions)):
+            if srt_actions[n][0] == "s_val":
+                srt_actions[n][0] = "set_v"
+                srt_actions[n][2] = srt_actions[n][1][1]
+                srt_actions[n][1] = srt_actions[n][1][0]
 
         # Generate the script from processed actions
         sb_actions = recorder_helper.generate_sbase_code(srt_actions)
@@ -7496,19 +7502,23 @@ class BaseCase(unittest.TestCase):
         css_selector = re.escape(css_selector)  # Add "\\" to special chars
         css_selector = self.__escape_quotes_if_needed(css_selector)
         the_type = None
-        if self.recorder_mode and self.__current_url_is_recordable():
-            if self.get_session_storage_item("pause_recorder") == "no":
-                time_stamp = self.execute_script("return Date.now();")
-                origin = self.get_origin()
-                sel_tex = [pre_escape_css_selector, text]
-                action = ["js_ty", sel_tex, origin, time_stamp]
-                self.__extra_actions.append(action)
         if ":contains\\(" not in css_selector:
             get_type_script = (
                 """return document.querySelector('%s').getAttribute('type');"""
                 % css_selector
             )
             the_type = self.execute_script(get_type_script)  # Used later
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                sel_tex = [pre_escape_css_selector, text]
+                if the_type == "range" and ":contains\\(" not in css_selector:
+                    action = ["s_val", sel_tex, origin, time_stamp]
+                else:
+                    action = ["js_ty", sel_tex, origin, time_stamp]
+                self.__extra_actions.append(action)
+        if ":contains\\(" not in css_selector:
             script = """document.querySelector('%s').value='%s';""" % (
                 css_selector,
                 value,
