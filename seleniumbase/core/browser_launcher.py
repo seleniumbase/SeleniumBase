@@ -291,12 +291,12 @@ def get_valid_binary_names_for_browser(browser):
 def _repair_chromedriver(chrome_options, headless_options, mcv=None):
     if mcv:
         subprocess.check_call(
-            "sbase install chromedriver %s" % mcv, shell=True
+            "sbase get chromedriver %s" % mcv, shell=True
         )
         return
     driver = None
     subprocess.check_call(
-        "sbase install chromedriver 72.0.3626.69", shell=True
+        "sbase get chromedriver 72.0.3626.69", shell=True
     )
     try:
         if selenium4_or_newer:
@@ -312,7 +312,7 @@ def _repair_chromedriver(chrome_options, headless_options, mcv=None):
             )
     except Exception:
         subprocess.check_call(
-            "sbase install chromedriver latest-1", shell=True
+            "sbase get chromedriver latest-1", shell=True
         )
         return
     chrome_version = None
@@ -331,7 +331,7 @@ def _repair_chromedriver(chrome_options, headless_options, mcv=None):
         and int(major_chrome_ver) >= 73
     ):
         subprocess.check_call(
-            "sbase install chromedriver %s" % major_chrome_ver, shell=True
+            "sbase get chromedriver %s" % major_chrome_ver, shell=True
         )
     return
 
@@ -342,7 +342,7 @@ def _repair_edgedriver(edge_version):
         "\nAttempting to install a matching version of msedgedriver:"
     )
     subprocess.check_call(
-        "sbase install edgedriver %s" % edge_version, shell=True
+        "sbase get edgedriver %s" % edge_version, shell=True
     )
     return
 

@@ -105,7 +105,7 @@ def show_basic_usage():
     sc += "      download server  (Get Selenium Grid JAR file)\n"
     sc += "      grid-hub         [start|stop] [OPTIONS]\n"
     sc += "      grid-node        [start|stop] --hub=[HOST/IP]\n"
-    sc += ' * (EXAMPLE: "sbase get chromedriver latest") *\n'
+    sc += ' * (EXAMPLE: "sbase get chromedriver") *\n'
     sc += ""
     if "linux" not in sys.platform:
         c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
@@ -133,9 +133,7 @@ def show_install_usage():
     print("  Options:")
     print("           VERSION         Specify the version to download.")
     print("                           Tries to detect the needed version.")
-    print('                           Use "latest" for the latest version.')
-    print('                           Use "latest-1" for one less than that.')
-    print("                           For chromedriver or edgedriver,")
+    print("                           If using chromedriver or edgedriver,")
     print("                           you can use the major version integer.")
     print()
     print("           -p OR --path    Also copy the driver to /usr/local/bin")
@@ -145,10 +143,7 @@ def show_install_usage():
     print("           sbase get edgedriver")
     print("           sbase get chromedriver 114")
     print("           sbase get chromedriver 114.0.5735.90")
-    print("           sbase get chromedriver latest")
-    print("           sbase get chromedriver latest-1")
     print("           sbase get chromedriver -p")
-    print("           sbase get chromedriver latest -p")
     print("  Output:")
     print("           Downloads the webdriver to seleniumbase/drivers/")
     print("           (chromedriver is required for Chrome automation)")

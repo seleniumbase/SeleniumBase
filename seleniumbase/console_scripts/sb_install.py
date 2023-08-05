@@ -7,8 +7,8 @@ Usage:
 Options:
          VERSION         Specify the version.
                          Tries to detect the needed version.
-                         Use "latest" for the latest version.
-                         Use "latest-1" for one less than that.
+                         If using chromedriver or edgedriver,
+                         you can use the major version integer.
          -p OR --path    Also copy the driver to /usr/local/bin
 Examples:
          sbase get chromedriver
@@ -16,10 +16,7 @@ Examples:
          sbase get edgedriver
          sbase get chromedriver 114
          sbase get chromedriver 114.0.5735.90
-         sbase get chromedriver latest
-         sbase get chromedriver latest-1  # (Latest minus one)
          sbase get chromedriver -p
-         sbase get chromedriver latest -p
 Output:
          Downloads the webdriver to seleniumbase/drivers/
          (chromedriver is required for Chrome automation)
@@ -42,9 +39,6 @@ from seleniumbase import config as sb_config
 from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
 
 urllib3.disable_warnings()
-selenium4_or_newer = False
-if sys.version_info >= (3, 7):
-    selenium4_or_newer = True
 ARCH = platform.architecture()[0]
 IS_ARM_MAC = shared_utils.is_arm_mac()
 IS_MAC = shared_utils.is_mac()
@@ -70,9 +64,7 @@ def invalid_run_command():
     exp += "  Options:\n"
     exp += "           VERSION        Specify the version.\n"
     exp += "                          Tries to detect the needed version.\n"
-    exp += '                          Use "latest" for the latest version.\n'
-    exp += '                          Use "latest-1" for one less than that.\n'
-    exp += "                          For chromedriver or edgedriver,\n"
+    exp += "                          If using chromedriver or edgedriver,\n"
     exp += "                          you can use the major version integer.\n"
     exp += "           -p OR --path   Also copy the driver to /usr/local/bin\n"
     exp += "  Examples:\n"
@@ -81,10 +73,7 @@ def invalid_run_command():
     exp += "           sbase get edgedriver\n"
     exp += "           sbase get chromedriver 114\n"
     exp += "           sbase get chromedriver 114.0.5735.90\n"
-    exp += "           sbase get chromedriver latest\n"
-    exp += "           sbase get chromedriver latest-1\n"
     exp += "           sbase get chromedriver -p\n"
-    exp += "           sbase get chromedriver latest -p\n"
     exp += "  Output:\n"
     exp += "          Downloads the webdriver to seleniumbase/drivers/\n"
     exp += "          (chromedriver is required for Chrome automation)\n"
@@ -247,8 +236,7 @@ def main(override=None, intel_for_uc=None):
         use_version = DEFAULT_CHROMEDRIVER_VERSION
 
         if (
-            selenium4_or_newer
-            and not override
+            not override
             and (
                 num_args == 3
                 or (num_args == 4 and "-p" in sys.argv[3].lower())
@@ -410,7 +398,7 @@ def main(override=None, intel_for_uc=None):
         else:
             raise Exception("Could not find chromedriver to download!\n")
         if not get_latest:
-            pass  # Previously recommended: "sbase get chromedriver latest"
+            pass
     elif name == "geckodriver" or name == "firefoxdriver":
         use_version = DEFAULT_GECKODRIVER_VERSION
         found_geckodriver = False
@@ -473,8 +461,7 @@ def main(override=None, intel_for_uc=None):
         )
 
         if (
-            selenium4_or_newer
-            and not override
+            not override
             and (
                 num_args == 3
                 or (num_args == 4 and "-p" in sys.argv[3].lower())
