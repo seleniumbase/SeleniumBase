@@ -11,10 +11,10 @@ pipdeptree>=2.12.0
 bleach>=6.0.0
 docutils>=0.20.1
 python-dateutil>=2.8.2
-tqdm>=4.65.2
+tqdm>=4.66.0
 nltk>=3.8.1
+joblib>=1.3.2
 livereload==2.6.3
-joblib==1.3.1
 Markdown==3.4.4
 MarkupSafe==2.1.3
 Jinja2==3.1.2
