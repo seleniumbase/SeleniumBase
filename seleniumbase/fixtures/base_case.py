@@ -5687,13 +5687,22 @@ class BaseCase(unittest.TestCase):
         self.click(xpath, by="xpath")
 
     def js_click(
-        self, selector, by="css selector", all_matches=False, scroll=True
+        self,
+        selector,
+        by="css selector",
+        all_matches=False,
+        timeout=None,
+        scroll=True,
     ):
         """Clicks an element using JavaScript.
         Can be used to click hidden / invisible elements.
         If "all_matches" is False, only the first match is clicked.
         If "scroll" is False, won't scroll unless running in Demo Mode."""
         self.wait_for_ready_state_complete()
+        if not timeout or timeout is True:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by, xp_ok=False)
         if by == By.LINK_TEXT:
             message = (
@@ -5706,7 +5715,7 @@ class BaseCase(unittest.TestCase):
             self.click(selector, by=by)
             return
         element = self.wait_for_element_present(
-            selector, by=by, timeout=settings.SMALL_TIMEOUT
+            selector, by=by, timeout=timeout
         )
         if not page_actions.is_element_clickable(self.driver, selector, by):
             self.wait_for_ready_state_complete()
@@ -5818,9 +5827,7 @@ class BaseCase(unittest.TestCase):
             self.js_click(selector, by=by)
         elif timeout > 0:
             try:
-                self.wait_for_element_present(
-                    selector, by=by, timeout=timeout
-                )
+                self.wait_for_element_present(selector, by=by, timeout=timeout)
             except Exception:
                 pass
             if self.is_element_present(selector, by=by):
@@ -5836,27 +5843,29 @@ class BaseCase(unittest.TestCase):
             self.js_click(selector, by=by)
         elif timeout > 0:
             try:
-                self.wait_for_element_visible(
-                    selector, by=by, timeout=timeout
-                )
+                self.wait_for_element_visible(selector, by=by, timeout=timeout)
             except Exception:
                 pass
             if self.is_element_visible(selector, by=by):
                 self.js_click(selector, by=by)
 
-    def js_click_all(self, selector, by="css selector"):
+    def js_click_all(self, selector, by="css selector", timeout=None):
         """Clicks all matching elements using pure JS. (No jQuery)"""
-        self.js_click(selector, by="css selector", all_matches=True)
+        self.js_click(
+            selector, by="css selector", all_matches=True, timeout=timeout
+        )
 
-    def jquery_click(self, selector, by="css selector"):
+    def jquery_click(self, selector, by="css selector", timeout=None):
         """Clicks an element using jQuery. (Different from using pure JS.)
         Can be used to click hidden / invisible elements."""
         self.__check_scope()
+        if not timeout or timeout is True:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
         original_selector = selector
         selector, by = self.__recalculate_selector(selector, by, xp_ok=False)
-        self.wait_for_element_present(
-            selector, by=by, timeout=settings.SMALL_TIMEOUT
-        )
+        self.wait_for_element_present(selector, by=by, timeout=timeout)
         if self.is_element_visible(selector, by=by):
             self.__demo_mode_highlight_if_active(selector, by)
         selector = self.convert_to_css_selector(selector, by=by)
@@ -5887,14 +5896,16 @@ class BaseCase(unittest.TestCase):
         self.safe_execute_script(click_script)
         self.__demo_mode_pause_if_active()
 
-    def jquery_click_all(self, selector, by="css selector"):
+    def jquery_click_all(self, selector, by="css selector", timeout=None):
         """Clicks all matching elements using jQuery."""
         self.__check_scope()
+        if not timeout or timeout is True:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
         original_selector = selector
         selector, by = self.__recalculate_selector(selector, by, xp_ok=False)
-        self.wait_for_element_present(
-            selector, by=by, timeout=settings.SMALL_TIMEOUT
-        )
+        self.wait_for_element_present(selector, by=by, timeout=timeout)
         if self.is_element_visible(selector, by=by):
             self.__demo_mode_highlight_if_active(selector, by)
         css_selector = self.convert_to_css_selector(selector, by=by)

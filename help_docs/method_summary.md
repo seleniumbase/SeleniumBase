@@ -383,17 +383,17 @@ self.scroll_to_bottom()
 
 self.click_xpath(xpath)
 
-self.js_click(selector, by="css selector", all_matches=False, scroll=True)
+self.js_click(selector, by="css selector", all_matches=False, timeout=None, scroll=True)
 
 self.js_click_if_present(selector, by="css selector", timeout=0)
 
 self.js_click_if_visible(selector, by="css selector", timeout=0)
 
-self.js_click_all(selector, by="css selector")
+self.js_click_all(selector, by="css selector", timeout=None)
 
-self.jquery_click(selector, by="css selector")
+self.jquery_click(selector, by="css selector", timeout=None)
 
-self.jquery_click_all(selector, by="css selector")
+self.jquery_click_all(selector, by="css selector", timeout=None)
 
 self.hide_element(selector, by="css selector")
 
