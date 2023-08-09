@@ -178,7 +178,11 @@ class Patcher(object):
     def is_binary_patched(self, executable_path=None):
         executable_path = executable_path or self.executable_path
         with io.open(executable_path, "rb") as fh:
-            if b"window.cdc_adoQpoasnfa76pfcZLmcfl_" in fh.read():
+            if re.search(
+                b"window.cdc_adoQpoasnfa76pfcZLmcfl_"
+                b"(Array|Promise|Symbol|Object|Proxy)",
+                fh.read()
+            ):
                 return False
         return True
 
@@ -198,19 +202,16 @@ class Patcher(object):
         with io.open(self.executable_path, "r+b") as fh:
             file_bin = fh.read()
             file_bin = re.sub(
-                b"window\\.cdc_[a-zA-Z0-9]{22}_(Array|Promise|Symbol)"
-                b" = window\\.(Array|Promise|Symbol);",
+                b"window\\.cdc_[a-zA-Z0-9]{22}_"
+                b"(Array|Promise|Symbol|Object|Proxy)"
+                b" = window\\.(Array|Promise|Symbol|Object|Proxy);",
                 gen_js_whitespaces,
                 file_bin,
             )
             file_bin = re.sub(
-                b"window\\.cdc_[a-zA-Z0-9]{22}_(Array|Promise|Symbol) \\|\\|",
+                b"window\\.cdc_[a-zA-Z0-9]{22}_"
+                b"(Array|Promise|Symbol|Object|Proxy) \\|\\|",
                 gen_js_whitespaces,
-                file_bin,
-            )
-            file_bin = re.sub(
-                b"window\\.cdc_[a-zA-Z0-9]{22}_(Array|Promise|Symbol)",
-                b"window\\.ccd_adoQpoasnaf67pfcZLmcfl_(Array|Promise|Symbol)",
                 file_bin,
             )
             file_bin = re.sub(
