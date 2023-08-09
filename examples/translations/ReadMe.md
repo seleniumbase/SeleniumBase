@@ -19,6 +19,7 @@ class 我的测试类(硒测试用例):
         self.输入文本('input[name="search"]', "舞龍")
         self.单击('button:contains("搜索")')
         self.断言文本("舞龍", "#firstHeading")
+        self.断言元素('img[src*="Chinese_draak.jpg"]')
 ```
 
 Here's another example:
@@ -36,6 +37,9 @@ class 私のテストクラス(セレニウムテストケース):
         self.クリックして("#searchform button")
         self.テキストを確認する("アニメ", "#firstHeading")
         self.JS入力('input[name="search"]', "寿司")
+        self.クリックして("#searchform button")
+        self.テキストを確認する("寿司", "#firstHeading")
+        self.要素を確認する('img[alt="握り寿司"]')
 ```
 
 <a id="translation_api"></a>
