@@ -96,16 +96,35 @@ def make_driver_executable_if_not(driver_path):
         make_executable(driver_path)
 
 
-def requests_get(url):
+def requests_get(url, proxy_string=None):
     import requests
 
+    protocol = "http"
+    if proxy_string:
+        if proxy_string.endswith(":443"):
+            protocol = "https"
+        elif "socks4" in proxy_string:
+            protocol = "socks4"
+        elif "socks5" in proxy_string:
+            protocol = "socks5"
     response = None
-    try:
-        response = requests.get(url)
-    except Exception:
-        # Prevent SSLCertVerificationError / CERTIFICATE_VERIFY_FAILED
-        url = url.replace("https://", "http://")
-        response = requests.get(url)
+    if proxy_string:
+        proxies = {protocol: proxy_string}
+        try:
+            response = requests.get(url, proxies=proxies)
+        except Exception:
+            # Prevent SSLCertVerificationError / CERTIFICATE_VERIFY_FAILED
+            url = url.replace("https://", "http://")
+            time.sleep(0.04)
+            response = requests.get(url, proxies=proxies)
+    else:
+        try:
+            response = requests.get(url)
+        except Exception:
+            # Prevent SSLCertVerificationError / CERTIFICATE_VERIFY_FAILED
+            url = url.replace("https://", "http://")
+            time.sleep(0.04)
+            response = requests.get(url)
     return response
 
 
@@ -178,6 +197,7 @@ def find_edgedriver_version_to_use(use_version, driver_version):
 def has_cf(text):
     if (
         "<title>Just a moment...</title>" in text
+        or "<title>403 Forbidden</title>" in text
         or 'id="challenge-error-text"' in text
         or 'action="/?__cf_chl_f_tk' in text
         or 'id="challenge-form"' in text
@@ -187,10 +207,10 @@ def has_cf(text):
     return False
 
 
-def uc_special_open_if_cf(driver, url):
+def uc_special_open_if_cf(driver, url, proxy_string=None):
     if (
         (url.startswith("http:") or url.startswith("https:"))
-        and has_cf(requests_get(url).text)
+        and has_cf(requests_get(url, proxy_string).text)
     ):
         with driver:
             time.sleep(0.25)
@@ -3405,7 +3425,9 @@ def get_local_driver(
                             )
                 driver.open = driver.get  # Save copy of original
                 if uc_activated:
-                    driver.get = lambda url: uc_special_open_if_cf(driver, url)
+                    driver.get = lambda url: uc_special_open_if_cf(
+                        driver, url, proxy_string
+                    )
                     driver.uc_open = lambda url: uc_open(driver, url)
                     driver.uc_open_with_tab = (
                         lambda url: uc_open_with_tab(driver, url)
