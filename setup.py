@@ -204,7 +204,7 @@ setup(
         'pygments==2.16.1;python_version>="3.7"',
         'pyreadline3==3.4.1;platform_system=="Windows"',
         "tabcompleter==1.2.1",
-        "pdbp==1.4.5",
+        "pdbp==1.4.6",
         'colorama==0.4.5;python_version<"3.7"',
         'colorama==0.4.6;python_version>="3.7"',
         'exceptiongroup==1.1.2;python_version>="3.7"',
@@ -235,7 +235,8 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage==6.2;python_version<"3.7"',
-            'coverage==7.2.7;python_version>="3.7"',
+            'coverage==7.2.7;python_version>="3.7" and python_version<"3.8"',
+            'coverage==7.3.0;python_version>="3.8"',
             'pytest-cov==4.0.0;python_version<"3.7"',
             'pytest-cov==4.1.0;python_version>="3.7"',
         ],

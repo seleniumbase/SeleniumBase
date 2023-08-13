@@ -158,7 +158,7 @@ def get_uc_driver_version():
     if os.path.exists(LOCAL_UC_DRIVER):
         try:
             output = subprocess.check_output(
-                "%s --version" % LOCAL_UC_DRIVER, shell=True
+                '"%s" --version' % LOCAL_UC_DRIVER, shell=True
             )
             if IS_WINDOWS:
                 output = output.decode("latin1")
@@ -209,15 +209,30 @@ def has_cf(text):
 
 def uc_special_open_if_cf(driver, url, proxy_string=None):
     if (
-        (url.startswith("http:") or url.startswith("https:"))
-        and has_cf(requests_get(url, proxy_string).text)
+        url.startswith("http:") or url.startswith("https:")
     ):
-        with driver:
-            time.sleep(0.25)
-            driver.execute_script('window.open("%s","_blank");' % url)
-            driver.close()
-            driver.switch_to.window(driver.window_handles[-1])
-            time.sleep(0.11)
+        special = False
+        try:
+            req_get = requests_get(url, proxy_string)
+            status_str = str(req_get.status_code)
+            if (
+                status_str.startswith("3")
+                or status_str.startswith("4")
+                or status_str.startswith("5")
+                or has_cf(req_get.text)
+            ):
+                special = True
+        except Exception:
+            pass
+        if special:
+            with driver:
+                time.sleep(0.2)
+                driver.execute_script('window.open("%s","_blank");' % url)
+                driver.close()
+                driver.switch_to.window(driver.window_handles[-1])
+                time.sleep(0.2)
+        else:
+            driver.open(url)  # The original one
     else:
         driver.open(url)  # The original one
     return None
@@ -226,9 +241,9 @@ def uc_special_open_if_cf(driver, url, proxy_string=None):
 def uc_open(driver, url):
     if (url.startswith("http:") or url.startswith("https:")):
         with driver:
-            time.sleep(0.25)
+            time.sleep(0.2)
             driver.open(url)
-            time.sleep(0.11)
+            time.sleep(0.2)
     else:
         driver.open(url)  # The original one
     return None
@@ -237,11 +252,11 @@ def uc_open(driver, url):
 def uc_open_with_tab(driver, url):
     if (url.startswith("http:") or url.startswith("https:")):
         with driver:
-            time.sleep(0.25)
+            time.sleep(0.2)
             driver.execute_script('window.open("%s","_blank");' % url)
             driver.close()
             driver.switch_to.window(driver.window_handles[-1])
-            time.sleep(0.11)
+            time.sleep(0.2)
     else:
         driver.open(url)  # The original one
     return None
@@ -2276,7 +2291,7 @@ def get_local_driver(
         if os.path.exists(LOCAL_EDGEDRIVER):
             try:
                 output = subprocess.check_output(
-                    "%s --version" % LOCAL_EDGEDRIVER, shell=True
+                    '"%s" --version' % LOCAL_EDGEDRIVER, shell=True
                 )
                 if IS_WINDOWS:
                     output = output.decode("latin1")
@@ -2912,7 +2927,7 @@ def get_local_driver(
             if os.path.exists(LOCAL_CHROMEDRIVER):
                 try:
                     output = subprocess.check_output(
-                        "%s --version" % LOCAL_CHROMEDRIVER, shell=True
+                        '"%s" --version' % LOCAL_CHROMEDRIVER, shell=True
                     )
                     if IS_WINDOWS:
                         output = output.decode("latin1")
@@ -2926,7 +2941,7 @@ def get_local_driver(
             elif path_chromedriver:
                 try:
                     output = subprocess.check_output(
-                        "%s --version" % path_chromedriver, shell=True
+                        '"%s" --version' % path_chromedriver, shell=True
                     )
                     if IS_WINDOWS:
                         output = output.decode("latin1")
