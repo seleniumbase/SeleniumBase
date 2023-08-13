@@ -235,7 +235,8 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage==6.2;python_version<"3.7"',
-            'coverage==7.2.7;python_version>="3.7"',
+            'coverage==7.2.7;python_version>="3.7" and python_version<"3.8"',
+            'coverage==7.3.0;python_version>="3.8"',
             'pytest-cov==4.0.0;python_version<"3.7"',
             'pytest-cov==4.1.0;python_version>="3.7"',
         ],
