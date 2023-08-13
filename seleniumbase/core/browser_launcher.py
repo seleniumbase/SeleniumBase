@@ -158,7 +158,7 @@ def get_uc_driver_version():
     if os.path.exists(LOCAL_UC_DRIVER):
         try:
             output = subprocess.check_output(
-                "%s --version" % LOCAL_UC_DRIVER, shell=True
+                '"%s" --version' % LOCAL_UC_DRIVER, shell=True
             )
             if IS_WINDOWS:
                 output = output.decode("latin1")
@@ -2276,7 +2276,7 @@ def get_local_driver(
         if os.path.exists(LOCAL_EDGEDRIVER):
             try:
                 output = subprocess.check_output(
-                    "%s --version" % LOCAL_EDGEDRIVER, shell=True
+                    '"%s" --version' % LOCAL_EDGEDRIVER, shell=True
                 )
                 if IS_WINDOWS:
                     output = output.decode("latin1")
@@ -2912,7 +2912,7 @@ def get_local_driver(
             if os.path.exists(LOCAL_CHROMEDRIVER):
                 try:
                     output = subprocess.check_output(
-                        "%s --version" % LOCAL_CHROMEDRIVER, shell=True
+                        '"%s" --version' % LOCAL_CHROMEDRIVER, shell=True
                     )
                     if IS_WINDOWS:
                         output = output.decode("latin1")
@@ -2926,7 +2926,7 @@ def get_local_driver(
             elif path_chromedriver:
                 try:
                     output = subprocess.check_output(
-                        "%s --version" % path_chromedriver, shell=True
+                        '"%s" --version' % path_chromedriver, shell=True
                     )
                     if IS_WINDOWS:
                         output = output.decode("latin1")
