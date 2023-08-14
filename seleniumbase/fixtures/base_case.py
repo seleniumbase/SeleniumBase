@@ -8,7 +8,7 @@ r"""----------------------------------------------------------------->
 --------------------------------------------------------------------->
 
 The BaseCase class is the main gateway for using The SeleniumBase Framework.
-It inherits Python's unittest.TestCase class and runs with pytest or nosetests.
+It inherits Python's unittest.TestCase class and runs with pytest or pynose.
 All tests using BaseCase automatically launch WebDriver browsers for tests.
 
 Example Test:
@@ -13764,7 +13764,7 @@ class BaseCase(unittest.TestCase):
             # This raises an exception if the test is not coming from pytest
             self.is_pytest = sb_config.is_pytest
         except Exception:
-            # Not using pytest (could be nosetests, behave, or raw Python)
+            # Not using pytest (could be pynose, behave, or raw python)
             self.is_pytest = False
         if self.is_pytest:
             # pytest-specific code
@@ -13997,7 +13997,7 @@ class BaseCase(unittest.TestCase):
             self.__initialize_variables()
             self.__activate_virtual_display_as_needed()
         elif hasattr(self, "is_nosetest") and self.is_nosetest:
-            pass  # Setup performed in plugins for nosetests
+            pass  # Setup performed in plugins for pynose
         else:
             # Pure Python run. Eg. SB() Manager
             self.__activate_virtual_display_as_needed()
@@ -14181,7 +14181,7 @@ class BaseCase(unittest.TestCase):
                     if self.recorder_ext:
                         self.__js_start_time = int(time.time() * 1000.0)
         else:
-            # Launch WebDriver for both Pytest and Nosetests
+            # Launch WebDriver for both pytest and pynose
             self.driver = self.get_new_driver(
                 browser=self.browser,
                 headless=self.headless,
@@ -15487,7 +15487,7 @@ class BaseCase(unittest.TestCase):
                     data_payload.logURL = index_file
                     self.testcase_manager.update_testcase_log_url(data_payload)
         else:
-            # (Nosetests / Behave / Pure Python)
+            # (Pynose / Behave / Pure Python)
             if hasattr(self, "is_behave") and self.is_behave:
                 import colorama
 
@@ -15562,9 +15562,9 @@ class BaseCase(unittest.TestCase):
                 and sb_config._do_sb_post_mortem
             ):
                 self.__activate_sb_mgr_post_mortem_debug_mode()
-            # (Nosetests / Behave / Pure Python) Close all open browser windows
+            # (Pynose / Behave / Pure Python) Close all open browser windows
             self.__quit_all_drivers()
-        # Resume tearDown() for all test runners, (Pytest / Nosetests / Behave)
+        # Resume tearDown() for all test runners, (Pytest / Pynose / Behave)
         if hasattr(self, "_xvfb_display") and self._xvfb_display:
             try:
                 if hasattr(self._xvfb_display, "stop"):
