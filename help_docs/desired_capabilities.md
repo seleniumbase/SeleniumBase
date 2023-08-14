@@ -2,16 +2,12 @@
 
 ## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Using Desired Capabilities
 
-You can specify browser capabilities when running SeleniumBase tests on a remote Selenium Grid server such as <a href="https://www.browserstack.com/automate/capabilities" target="_blank">BrowserStack</a>, <a href="https://www.lambdatest.com/capabilities-generator/" target="_blank">LambdaTest</a>, or <a href="https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/" target="_blank">Sauce Labs</a>.
+You can specify browser capabilities when running SeleniumBase tests on a remote Selenium Grid server such as <a href="https://www.browserstack.com/automate/capabilities" target="_blank">BrowserStack</a> or <a href="https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/" target="_blank">Sauce Labs</a>.
 
 Sample run commands may look like this when run from the [SeleniumBase/examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder: (The browser is now specified in the capabilities file.)
 
 ```bash
 pytest test_demo_site.py --browser=remote --server=USERNAME:KEY@hub.browserstack.com --port=80 --cap_file=capabilities/sample_cap_file_BS.py
-```
-
-```bash
-pytest test_demo_site.py --browser=remote --server=USERNAME:KEY@https://@hub.lambdatest.com --port=80 --protocol=https --cap_file=capabilities/sample_cap_file_LT.py
 ```
 
 ```bash
@@ -34,20 +30,6 @@ desired_cap = {
 }
 ```
 
-Here's an example desired capabilities file for LambdaTest:
-
-```python
-capabilities = {
-    "build" : "your build name",
-    "name" : "your test name",
-    "platform" : "Windows 11",
-    "browserName" : "Chrome",
-    "version" : "101.0",
-    "timezone" : "UTC+05:30",
-    "geoLocation" : "IN",
-}
-```
-
 Here's an example desired capabilities file for Sauce Labs:
 
 ```python
@@ -65,7 +47,6 @@ capabilities = {
 
 <ul>
     <li><a href="https://www.browserstack.com/automate/capabilities" target="_blank">BrowserStack desired capabilities</a></li>
-    <li><a href="https://www.lambdatest.com/capabilities-generator/" target="_blank">LambdaTest desired capabilities</a></li>
     <li><a href="https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/" target="_blank">Sauce Labs desired capabilities</a></li>
 </ul>
 

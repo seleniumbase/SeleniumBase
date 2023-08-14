@@ -272,8 +272,7 @@ def pytest_addoption(parser):
         dest="cap_file",
         default=None,
         help="""The file that stores browser desired capabilities
-                for BrowserStack, LambdaTest, Sauce Labs,
-                and other remote web drivers to use.""",
+                for BrowserStack, Sauce Labs, or other grids.""",
     )
     parser.addoption(
         "--cap_string",
@@ -281,8 +280,7 @@ def pytest_addoption(parser):
         dest="cap_string",
         default=None,
         help="""The string that stores browser desired capabilities
-                for BrowserStack, LambdaTest, Sauce Labs,
-                and other remote web drivers to use.
+                for BrowserStack, Sauce Labs, or other grids.
                 Enclose cap-string in single quotes.
                 Enclose parameter keys in double quotes.
                 Example: --cap-string='{"name":"test1","v":"42"}'""",
