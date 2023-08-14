@@ -6,6 +6,7 @@ import pytest
 def sb(request):
     from selenium import webdriver
     from seleniumbase import BaseCase
+    from seleniumbase import config as sb_config
 
     class BaseClass(BaseCase):
         def get_new_driver(self, *args, **kwargs):
@@ -29,12 +30,28 @@ def sb(request):
             self.save_teardown_screenshot()
             super().tearDown()
 
-    sb = BaseClass("base_method")
-    sb.setUpClass()
-    sb.setUp()
-    yield sb
-    sb.tearDown()
-    sb.tearDownClass()
+    if request.cls:
+        request.cls.sb = BaseClass("base_method")
+        request.cls.sb.setUp()
+        request.cls.sb._needs_tearDown = True
+        request.cls.sb._using_sb_fixture = True
+        request.cls.sb._using_sb_fixture_class = True
+        sb_config._sb_node[request.node.nodeid] = request.cls.sb
+        yield request.cls.sb
+        if request.cls.sb._needs_tearDown:
+            request.cls.sb.tearDown()
+            request.cls.sb._needs_tearDown = False
+    else:
+        sb = BaseClass("base_method")
+        sb.setUp()
+        sb._needs_tearDown = True
+        sb._using_sb_fixture = True
+        sb._using_sb_fixture_no_class = True
+        sb_config._sb_node[request.node.nodeid] = sb
+        yield sb
+        if sb._needs_tearDown:
+            sb.tearDown()
+            sb._needs_tearDown = False
 
 
 def test_override_fixture_no_class(sb):
