@@ -102,7 +102,9 @@ pytest test_coffee_cart.py --demo
 
 <p align="left"><a href="https://seleniumbase.io/coffee/" target="_blank"><img src="https://seleniumbase.github.io/cdn/gif/coffee_cart.gif" width="480" alt="SeleniumBase Coffee Cart Test" title="SeleniumBase Coffee Cart Test" /></a></p>
 
-* Here's a preview of that test:
+> SeleniumBase automation can easily order coffee!
+
+<p align="left"><b>Here's the code for <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_coffee_cart.py">test_coffee_cart.py</a>:</b></p>
 
 ```python
 from seleniumbase import BaseCase
