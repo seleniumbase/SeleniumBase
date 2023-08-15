@@ -143,7 +143,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
 
         special_port_free = False  # If the port isn't free, don't use 9222
         try:
-            res = requests.get("http://127.0.0.1:9222")
+            res = requests.get("http://127.0.0.1:9222", timeout=1)
             if res.status_code != 200:
                 raise Exception("The port is free! It will be used!")
         except Exception:
