@@ -17,7 +17,7 @@ class WordleTests(BaseCase):
 
     def initialize_word_list(self):
         txt_file = "https://seleniumbase.github.io/cdn/txt/wordle_words.txt"
-        word_string = requests.get(txt_file).text
+        word_string = requests.get(txt_file, timeout=3).text
         self.word_list = ast.literal_eval(word_string)
 
     def modify_word_list(self, word, letter_status):
