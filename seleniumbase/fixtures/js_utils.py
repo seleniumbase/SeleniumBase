@@ -531,7 +531,7 @@ def add_css_style(driver, css_style):
 def add_js_code_from_link(driver, js_link):
     if js_link.startswith("//"):
         js_link = "http:" + js_link
-    js_code = requests.get(js_link).text
+    js_code = requests.get(js_link, timeout=5).text
     add_js_code_script = (
         """var body_tag=document.getElementsByTagName('body').item(0);"""
         """var script_tag=document.createElement("script");"""

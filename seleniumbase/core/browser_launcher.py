@@ -111,20 +111,20 @@ def requests_get(url, proxy_string=None):
     if proxy_string:
         proxies = {protocol: proxy_string}
         try:
-            response = requests.get(url, proxies=proxies)
+            response = requests.get(url, proxies=proxies, timeout=3)
         except Exception:
             # Prevent SSLCertVerificationError / CERTIFICATE_VERIFY_FAILED
             url = url.replace("https://", "http://")
             time.sleep(0.04)
-            response = requests.get(url, proxies=proxies)
+            response = requests.get(url, proxies=proxies, timeout=4)
     else:
         try:
-            response = requests.get(url)
+            response = requests.get(url, timeout=3)
         except Exception:
             # Prevent SSLCertVerificationError / CERTIFICATE_VERIFY_FAILED
             url = url.replace("https://", "http://")
             time.sleep(0.04)
-            response = requests.get(url)
+            response = requests.get(url, timeout=4)
     return response
 
 
