@@ -90,24 +90,13 @@ def make_executable(file_path):
     os.chmod(file_path, mode)
 
 
-def requests_get(url):
-    response = None
-    try:
-        response = requests.get(url)
-    except Exception:
-        # Prevent SSLCertVerificationError / CERTIFICATE_VERIFY_FAILED
-        url = url.replace("https://", "http://")
-        response = requests.get(url)
-    return response
-
-
-def requests_get_with_retry(url):
+def get_proxy_info():
     use_proxy = None
     protocol = "http"
+    proxy_string = None
     user_and_pass = None
     if " --proxy=" in " ".join(sys.argv):
         from seleniumbase.core import proxy_helper
-
         for arg in sys.argv:
             if arg.startswith("--proxy="):
                 proxy_string = arg.split("--proxy=")[1]
@@ -133,30 +122,41 @@ def requests_get_with_retry(url):
                     proxy_string = "%s@%s" % (user_and_pass, proxy_string)
                 use_proxy = True
                 break
+    return (use_proxy, protocol, proxy_string)
+
+
+def requests_get(url):
+    use_proxy, protocol, proxy_string = get_proxy_info()
+    proxies = None
     response = None
     if use_proxy:
         proxies = {protocol: proxy_string}
+    try:
+        response = requests.get(url, proxies=proxies, timeout=3)
+    except Exception:
+        # Prevent SSLCertVerificationError / CERTIFICATE_VERIFY_FAILED
+        url = url.replace("https://", "http://")
+        time.sleep(0.04)
+        response = requests.get(url, proxies=proxies, timeout=4)
+    return response
+
+
+def requests_get_with_retry(url):
+    use_proxy, protocol, proxy_string = get_proxy_info()
+    proxies = None
+    response = None
+    if use_proxy:
+        proxies = {protocol: proxy_string}
+    try:
+        response = requests.get(url, proxies=proxies, timeout=3)
+    except Exception:
+        time.sleep(1)
         try:
-            response = requests.get(url, proxies=proxies)
+            response = requests.get(url, proxies=proxies, timeout=4)
         except Exception:
-            time.sleep(1.1)
-            try:
-                response = requests.get(url, proxies=proxies)
-            except Exception:
-                time.sleep(1.2)
-                response = requests.get(url, proxies=proxies)
-        return response
-    else:
-        try:
-            response = requests.get(url)
-        except Exception:
-            time.sleep(1.1)
-            try:
-                response = requests.get(url)
-            except Exception:
-                time.sleep(1.2)
-                response = requests.get(url)
-        return response
+            time.sleep(1)
+            response = requests.get(url, proxies=proxies, timeout=4)
+    return response
 
 
 def main(override=None, intel_for_uc=None):
