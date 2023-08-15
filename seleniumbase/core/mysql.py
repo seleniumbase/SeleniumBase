@@ -19,6 +19,18 @@ class DatabaseManager:
             constants.PipInstall.FINDLOCK
         )
         with pip_find_lock:
+            if sys.version_info >= (3, 7) and sys.version_info < (3, 9):
+                # Fix bug in newer cryptography for Python 3.7 and 3.8:
+                # "pyo3_runtime.PanicException: Python API call failed"
+                # (Match the version needed for pdfminer.six functions)
+                try:
+                    import cryptography
+                    if cryptography.__version__ != "39.0.2":
+                        shared_utils.pip_install(
+                            "cryptography", version="39.0.2"
+                        )
+                except Exception:
+                    shared_utils.pip_install("cryptography", version="39.0.2")
             try:
                 import cryptography  # noqa: F401
                 import pymysql
