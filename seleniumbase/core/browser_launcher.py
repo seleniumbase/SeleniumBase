@@ -100,6 +100,7 @@ def requests_get(url, proxy_string=None):
     import requests
 
     protocol = "http"
+    proxies = None
     if proxy_string:
         if proxy_string.endswith(":443"):
             protocol = "https"
@@ -107,24 +108,15 @@ def requests_get(url, proxy_string=None):
             protocol = "socks4"
         elif "socks5" in proxy_string:
             protocol = "socks5"
-    response = None
-    if proxy_string:
         proxies = {protocol: proxy_string}
-        try:
-            response = requests.get(url, proxies=proxies, timeout=3)
-        except Exception:
-            # Prevent SSLCertVerificationError / CERTIFICATE_VERIFY_FAILED
-            url = url.replace("https://", "http://")
-            time.sleep(0.04)
-            response = requests.get(url, proxies=proxies, timeout=4)
-    else:
-        try:
-            response = requests.get(url, timeout=3)
-        except Exception:
-            # Prevent SSLCertVerificationError / CERTIFICATE_VERIFY_FAILED
-            url = url.replace("https://", "http://")
-            time.sleep(0.04)
-            response = requests.get(url, timeout=4)
+    response = None
+    try:
+        response = requests.get(url, proxies=proxies, timeout=1.25)
+    except Exception:
+        # Prevent SSLCertVerificationError / CERTIFICATE_VERIFY_FAILED
+        url = url.replace("https://", "http://")
+        time.sleep(0.04)
+        response = requests.get(url, proxies=proxies, timeout=2.75)
     return response
 
 

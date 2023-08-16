@@ -132,12 +132,12 @@ def requests_get(url):
     if use_proxy:
         proxies = {protocol: proxy_string}
     try:
-        response = requests.get(url, proxies=proxies, timeout=3)
+        response = requests.get(url, proxies=proxies, timeout=1.25)
     except Exception:
         # Prevent SSLCertVerificationError / CERTIFICATE_VERIFY_FAILED
         url = url.replace("https://", "http://")
         time.sleep(0.04)
-        response = requests.get(url, proxies=proxies, timeout=4)
+        response = requests.get(url, proxies=proxies, timeout=2.75)
     return response
 
 
@@ -148,14 +148,14 @@ def requests_get_with_retry(url):
     if use_proxy:
         proxies = {protocol: proxy_string}
     try:
-        response = requests.get(url, proxies=proxies, timeout=3)
+        response = requests.get(url, proxies=proxies, timeout=1.35)
     except Exception:
         time.sleep(1)
         try:
-            response = requests.get(url, proxies=proxies, timeout=4)
+            response = requests.get(url, proxies=proxies, timeout=2.45)
         except Exception:
             time.sleep(1)
-            response = requests.get(url, proxies=proxies, timeout=4)
+            response = requests.get(url, proxies=proxies, timeout=3.55)
     return response
 
 
