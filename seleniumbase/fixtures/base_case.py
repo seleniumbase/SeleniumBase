@@ -20,9 +20,11 @@ class MyTestClass(BaseCase):
     def test_anything(self):
         # Write your code here. Example:
         self.open("https://github.com/")
-        self.type("input.header-search-input", "SeleniumBase\n")
+        self.click('span[data-target*="inputButtonText"]')
+        self.type("input#query-builder-test", "SeleniumBase\n")
         self.click('a[href="/seleniumbase/SeleniumBase"]')
         self.assert_element("div.repository-content")
+        self.assert_text("SeleniumBase", "strong a")
 # --------------------------------------------------------------
 
 SeleniumBase methods expand and improve on existing WebDriver commands.
