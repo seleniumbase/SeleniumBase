@@ -115,6 +115,7 @@ def SB(
     interval=None,  # SECONDS (Autoplay interval for SB Slides & Tour steps.)
     time_limit=None,  # SECONDS (Safely fail tests that exceed the time limit.)
 ):
+    import os
     import sys
     import time
     import traceback
@@ -809,7 +810,6 @@ def SB(
     terminal_width = shared_utils.get_terminal_width()
     if test:
         import colorama
-        import os
 
         colorama.init(autoreset=True)
         c1 = colorama.Fore.GREEN
@@ -834,7 +834,8 @@ def SB(
         from seleniumbase.core import download_helper
         from seleniumbase.core import proxy_helper
 
-        log_helper.log_folder_setup(sb_config.log_path)
+        log_helper.log_folder_setup("latest_logs/")
+        log_helper.clear_empty_logs()
         download_helper.reset_downloads_folder()
         if not sb_config.multi_proxy:
             proxy_helper.remove_proxy_zip_if_present()

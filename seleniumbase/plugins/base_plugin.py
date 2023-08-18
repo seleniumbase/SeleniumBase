@@ -244,6 +244,7 @@ class Base(Plugin):
         log_helper.archive_logs_if_set(
             self.options.log_path, self.options.archive_logs
         )
+        log_helper.clear_empty_logs()
         if self.report_on:
             if not self.import_error:
                 report_helper.add_bad_page_log_file(self.page_results_list)

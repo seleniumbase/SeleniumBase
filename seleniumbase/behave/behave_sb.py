@@ -940,7 +940,7 @@ def get_configured_sb(context):
     if sb_config.dash_title:
         constants.Dashboard.TITLE = sb_config.dash_title.replace("_", " ")
 
-    log_helper.log_folder_setup(sb.log_path, sb.archive_logs)
+    log_helper.log_folder_setup("latest_logs/", sb.archive_logs)
     download_helper.reset_downloads_folder()
     proxy_helper.remove_proxy_zip_if_present()
     return sb
@@ -1152,10 +1152,9 @@ def _perform_behave_unconfigure_():
             except Exception:
                 pass
         sb_config.shared_driver = None
-    if hasattr(sb_config, "log_path"):
-        log_helper.archive_logs_if_set(
-            sb_config.log_path, sb_config.archive_logs
-        )
+    if hasattr(sb_config, "archive_logs"):
+        log_helper.archive_logs_if_set("latest_logs/", sb_config.archive_logs)
+    log_helper.clear_empty_logs()
     # Dashboard post-processing: Disable time-based refresh and stamp complete
     if not hasattr(sb_config, "dashboard") or not sb_config.dashboard:
         # Done with "behave_unconfigure" unless using the Dashboard
