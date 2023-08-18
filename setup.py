@@ -138,7 +138,7 @@ setup(
         'packaging>=23.1;python_version>="3.7"',
         'setuptools>=59.6.0;python_version<"3.7"',
         'setuptools>=68.0.0;python_version>="3.7" and python_version<"3.8"',
-        'setuptools>=68.1.0;python_version>="3.8"',
+        'setuptools>=68.1.2;python_version>="3.8"',
         'wheel>=0.37.1;python_version<"3.7"',
         'wheel>=0.41.1;python_version>="3.7"',
         'attrs==22.1.0;python_version<"3.7"',
