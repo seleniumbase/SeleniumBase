@@ -1708,7 +1708,7 @@ def pytest_configure(config):
         from seleniumbase.core import download_helper
         from seleniumbase.core import proxy_helper
 
-        log_helper.log_folder_setup(sb_config.log_path, sb_config.archive_logs)
+        log_helper.log_folder_setup("latest_logs/", sb_config.archive_logs)
         download_helper.reset_downloads_folder()
         proxy_helper.remove_proxy_zip_if_present()
 
@@ -1810,7 +1810,7 @@ def pytest_collection_finish(session):
         from seleniumbase.core import download_helper
         from seleniumbase.core import proxy_helper
 
-        log_helper.log_folder_setup(sb_config.log_path, sb_config.archive_logs)
+        log_helper.log_folder_setup("latest_logs/", sb_config.archive_logs)
         download_helper.reset_downloads_folder()
         proxy_helper.remove_proxy_zip_if_present()
     if sb_config.dashboard and len(session.items) > 0:
@@ -2016,9 +2016,8 @@ def _perform_pytest_unconfigure_():
                 pass
         sb_config.shared_driver = None
     if hasattr(sb_config, "log_path") and sb_config.item_count > 0:
-        log_helper.archive_logs_if_set(
-            sb_config.log_path, sb_config.archive_logs
-        )
+        log_helper.archive_logs_if_set("latest_logs/", sb_config.archive_logs)
+    log_helper.clear_empty_logs()
     # Dashboard post-processing: Disable time-based refresh and stamp complete
     if not hasattr(sb_config, "dashboard") or not sb_config.dashboard:
         # Done with "pytest_unconfigure" unless using the Dashboard

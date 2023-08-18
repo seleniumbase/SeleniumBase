@@ -395,7 +395,7 @@ class BaseCase(unittest.TestCase):
             self.__shadow_click(selector, timeout)
             return
         if self.__needs_minimum_wait() or self.browser == "safari":
-            time.sleep(0.022)
+            time.sleep(0.03)
         element = page_actions.wait_for_element_visible(
             self.driver,
             selector,
@@ -628,20 +628,20 @@ class BaseCase(unittest.TestCase):
                 except Exception:
                     pass
                 if self.__needs_minimum_wait() or self.browser == "safari":
-                    time.sleep(0.026)
+                    time.sleep(0.03)
                 try:
                     if self.driver.current_url != pre_action_url:
                         self.__ad_block_as_needed()
                         self.__disable_beforeunload_as_needed()
                         if self.__needs_minimum_wait():
-                            time.sleep(0.026)
+                            time.sleep(0.03)
                 except Exception:
                     try:
                         self.wait_for_ready_state_complete()
                     except Exception:
                         pass
                     if self.__needs_minimum_wait():
-                        time.sleep(0.026)
+                        time.sleep(0.03)
             else:
                 time.sleep(0.08)
         if self.demo_mode:
@@ -12595,7 +12595,7 @@ class BaseCase(unittest.TestCase):
             self.__scroll_to_element(element, selector, by)
         self.wait_for_ready_state_complete()
         if self.__needs_minimum_wait():
-            time.sleep(0.025)
+            time.sleep(0.03)
         if self.demo_mode and mark is None:
             mark = True
         if mark:

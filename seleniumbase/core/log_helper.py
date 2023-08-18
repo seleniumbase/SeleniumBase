@@ -563,3 +563,18 @@ def log_folder_setup(log_path, archive_logs=False):
                     pass
                 else:
                     shutil.rmtree(archived_logs)  # (Archive test run later)
+
+
+def clear_empty_logs():
+    latest_logs_dir = os.path.join(os.getcwd(), "latest_logs") + os.sep
+    archived_folder = os.path.join(os.getcwd(), "archived_logs") + os.sep
+    if os.path.exists(latest_logs_dir) and not os.listdir(latest_logs_dir):
+        try:
+            os.rmdir(latest_logs_dir)
+        except OSError:
+            pass
+    if os.path.exists(archived_folder) and not os.listdir(archived_folder):
+        try:
+            os.rmdir(archived_folder)
+        except OSError:
+            pass

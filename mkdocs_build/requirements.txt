@@ -4,7 +4,7 @@
 regex>=2023.8.8
 pkginfo>=1.9.6
 PyYAML>=6.0.1
-readme-renderer>=40.0
+readme-renderer>=41.0
 pymdown-extensions>=10.1
 importlib-metadata>=6.8.0
 pipdeptree>=2.13.0
@@ -18,9 +18,9 @@ livereload==2.6.3
 Markdown==3.4.4
 MarkupSafe==2.1.3
 Jinja2==3.1.2
-click==8.1.6
+click==8.1.7
 ghp-import==2.1.0
-lunr==0.6.2
+lunr==0.7.0.post1
 tornado==6.3.3
 watchdog==3.0.0
 cairocffi==1.6.1
