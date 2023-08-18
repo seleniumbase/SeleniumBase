@@ -256,10 +256,10 @@ def _download_file_to(file_url, destination_folder, new_file_name=None):
 
 
 def _save_data_as(data, destination_folder, file_name):
-    download_file_lock = fasteners.InterProcessLock(
-        constants.MultiBrowser.DOWNLOAD_FILE_LOCK
+    file_io_lock = fasteners.InterProcessLock(
+        constants.MultiBrowser.FILE_IO_LOCK
     )
-    with download_file_lock:
+    with file_io_lock:
         out_file = codecs.open(
             os.path.join(destination_folder, file_name), "w+", encoding="utf-8"
         )
@@ -268,10 +268,10 @@ def _save_data_as(data, destination_folder, file_name):
 
 
 def _append_data_to_file(data, destination_folder, file_name):
-    download_file_lock = fasteners.InterProcessLock(
-        constants.MultiBrowser.DOWNLOAD_FILE_LOCK
+    file_io_lock = fasteners.InterProcessLock(
+        constants.MultiBrowser.FILE_IO_LOCK
     )
-    with download_file_lock:
+    with file_io_lock:
         existing_data = ""
         if os.path.exists(os.path.join(destination_folder, file_name)):
             with open(os.path.join(destination_folder, file_name), "r") as f:
@@ -286,10 +286,10 @@ def _append_data_to_file(data, destination_folder, file_name):
 
 
 def _get_file_data(folder, file_name):
-    download_file_lock = fasteners.InterProcessLock(
-        constants.MultiBrowser.DOWNLOAD_FILE_LOCK
+    file_io_lock = fasteners.InterProcessLock(
+        constants.MultiBrowser.FILE_IO_LOCK
     )
-    with download_file_lock:
+    with file_io_lock:
         if not os.path.exists(os.path.join(folder, file_name)):
             raise Exception("File not found!")
         with open(os.path.join(folder, file_name), "r") as f:

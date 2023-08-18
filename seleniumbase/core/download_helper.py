@@ -24,11 +24,22 @@ def get_downloads_folder():
 def reset_downloads_folder():
     """Clears the downloads folder.
     If settings.ARCHIVE_EXISTING_DOWNLOADS is set to True, archives it."""
+    archived_downloads_folder = os.path.join(os.getcwd(), ARCHIVE_DIR) + os.sep
     if os.path.exists(downloads_path) and not os.listdir(downloads_path) == []:
-        archived_downloads_folder = os.path.join(
-            downloads_path, "..", ARCHIVE_DIR
-        )
         reset_downloads_folder_assistant(archived_downloads_folder)
+    if os.path.exists(downloads_path) and os.listdir(downloads_path) == []:
+        try:
+            os.rmdir(downloads_path)
+        except OSError:
+            pass
+    if (
+        os.path.exists(archived_downloads_folder)
+        and os.listdir(archived_downloads_folder) == []
+    ):
+        try:
+            os.rmdir(archived_downloads_folder)
+        except OSError:
+            pass
 
 
 def reset_downloads_folder_assistant(archived_downloads_folder):
