@@ -360,23 +360,25 @@ class ValidBrowsers:
 
 class ValidBinaries:
     valid_chrome_binaries_on_linux = [
-        "google-chrome",
         "google-chrome-stable",
+        "google-chrome",
         "chrome",
         "chromium",
+        "chromium-browser",
         "google-chrome-beta",
         "google-chrome-dev",
-        "chromium-browser",
+        "google-chrome-unstable",
     ]
     valid_edge_binaries_on_linux = [
-        "microsoft-edge",
         "microsoft-edge-stable",
+        "microsoft-edge",
         "microsoft-edge-beta",
         "microsoft-edge-dev",
     ]
     valid_chrome_binaries_on_macos = [
         "Google Chrome",
         "Chromium",
+        "Google Chrome for Testing",
     ]
     valid_edge_binaries_on_macos = [
         "Microsoft Edge",

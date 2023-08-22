@@ -106,6 +106,68 @@ def windows_browser_apps_to_cmd(*apps):
     return '%s -NoProfile "%s"' % (powershell, script)
 
 
+def get_binary_location(browser_type):
+    cmd_mapping = {
+        ChromeType.GOOGLE: {
+            OSType.LINUX: linux_browser_apps_to_cmd(
+                "google-chrome-stable",
+                "google-chrome",
+                "chrome",
+                "chromium",
+                "chromium-browser",
+                "google-chrome-beta",
+                "google-chrome-dev",
+                "google-chrome-unstable",
+            ),
+            OSType.MAC: r"/Applications/Google Chrome.app"
+                        r"/Contents/MacOS/Google Chrome",
+            OSType.WIN: windows_browser_apps_to_cmd(
+                r'(Get-Item -Path "$env:PROGRAMFILES\Google\Chrome'
+                r'\Application\chrome.exe")',
+                r'(Get-Item -Path "$env:PROGRAMFILES (x86)\Google\Chrome'
+                r'\Application\chrome.exe")',
+                r'(Get-Item -Path "$env:LOCALAPPDATA\Google\Chrome'
+                r'\Application\chrome.exe")',
+            ),
+        },
+        ChromeType.MSEDGE: {
+            OSType.LINUX: linux_browser_apps_to_cmd(
+                "microsoft-edge-stable",
+                "microsoft-edge",
+                "microsoft-edge-beta",
+                "microsoft-edge-dev",
+            ),
+            OSType.MAC: r"/Applications/Microsoft Edge.app"
+                        r"/Contents/MacOS/Microsoft Edge",
+            OSType.WIN: windows_browser_apps_to_cmd(
+                # stable edge
+                r'(Get-Item -Path "$env:PROGRAMFILES\Microsoft\Edge'
+                r'\Application\msedge.exe")',
+                r'(Get-Item -Path "$env:PROGRAMFILES (x86)\Microsoft'
+                r'\Edge\Application\msedge.exe")',
+                # beta edge
+                r'(Get-Item -Path "$env:LOCALAPPDATA\Microsoft\Edge Beta'
+                r'\Application\msedge.exe")',
+                r'(Get-Item -Path "$env:PROGRAMFILES\Microsoft\Edge Beta'
+                r'\Application\msedge.exe")',
+                r'(Get-Item -Path "$env:PROGRAMFILES (x86)\Microsoft\Edge Beta'
+                r'\Application\msedge.exe")',
+                # dev edge
+                r'(Get-Item -Path "$env:LOCALAPPDATA\Microsoft\Edge Dev'
+                r'\Application\msedge.exe")',
+                r'(Get-Item -Path "$env:PROGRAMFILES\Microsoft\Edge Dev'
+                r'\Application\msedge.exe")',
+                r'(Get-Item -Path "$env:PROGRAMFILES (x86)\Microsoft\Edge Dev'
+                r'\Application\msedge.exe")',
+                # canary edge
+                r'(Get-Item -Path "$env:LOCALAPPDATA\Microsoft\Edge SxS'
+                r'\Application\msedge.exe")',
+            ),
+        },
+    }
+    return cmd_mapping[browser_type][os_name()]
+
+
 def get_browser_version_from_binary(binary_location):
     try:
         if binary_location.count(r"\ ") != binary_location.count(" "):
@@ -118,18 +180,19 @@ def get_browser_version_from_binary(binary_location):
         return None
 
 
-def get_browser_version_from_os(browser_type=None):
+def get_browser_version_from_os(browser_type):
     """Return installed browser version."""
     cmd_mapping = {
         ChromeType.GOOGLE: {
             OSType.LINUX: linux_browser_apps_to_cmd(
-                "google-chrome",
                 "google-chrome-stable",
+                "google-chrome",
                 "chrome",
                 "chromium",
+                "chromium-browser",
                 "google-chrome-beta",
                 "google-chrome-dev",
-                "chromium-browser",
+                "google-chrome-unstable",
             ),
             OSType.MAC: r"/Applications/Google\ Chrome.app"
                         r"/Contents/MacOS/Google\ Chrome --version",
@@ -149,8 +212,8 @@ def get_browser_version_from_os(browser_type=None):
         },
         ChromeType.MSEDGE: {
             OSType.LINUX: linux_browser_apps_to_cmd(
-                "microsoft-edge",
                 "microsoft-edge-stable",
+                "microsoft-edge",
                 "microsoft-edge-beta",
                 "microsoft-edge-dev",
             ),

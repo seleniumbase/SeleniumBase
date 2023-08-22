@@ -18,6 +18,7 @@ from selenium.webdriver.safari.service import Service as SafariService
 from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
 from seleniumbase import extensions  # browser extensions storage folder
 from seleniumbase.config import settings
+from seleniumbase.core import detect_b_ver
 from seleniumbase.core import download_helper
 from seleniumbase.core import proxy_helper
 from seleniumbase.fixtures import constants
@@ -190,8 +191,10 @@ def has_cf(text):
     if (
         "<title>Just a moment...</title>" in text
         or "<title>403 Forbidden</title>" in text
+        or "Permission Denied</title>" in text
         or 'id="challenge-error-text"' in text
         or 'action="/?__cf_chl_f_tk' in text
+        or 'src="chromedriver.js"' in text
         or 'id="challenge-form"' in text
         or "window._cf_chl_opt" in text
     ):
@@ -312,7 +315,7 @@ def get_valid_binary_names_for_browser(browser):
         else:
             raise Exception("Could not determine OS, or unsupported!")
     else:
-        raise Exception("Invalid combination for os browser binaries!")
+        raise Exception("Invalid combination for OS browser binaries!")
 
 
 def _repair_chromedriver(chrome_options, headless_options, mcv=None):
@@ -870,7 +873,12 @@ def _set_chrome_options(
                     )
                 except Exception:
                     pass
-            if len(chromium_arg_item) >= 3:
+            if "set-binary" in chromium_arg_item and not binary_location:
+                br_app = "google-chrome"
+                binary_loc = detect_b_ver.get_binary_location(br_app)
+                if os.path.exists(binary_loc):
+                    binary_location = binary_loc
+            elif len(chromium_arg_item) >= 3:
                 chrome_options.add_argument(chromium_arg_item)
     if devtools and not headless:
         chrome_options.add_argument("--auto-open-devtools-for-tabs")
@@ -1166,6 +1174,8 @@ def get_driver(
                 "that includes the driver filename at the end of it!"
                 "\n(Will use default settings...)\n" % binary_location
             )
+            # Example of a valid binary location path - MacOS:
+            # "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
             binary_location = None
         else:
             binary_name = binary_location.split("/")[-1].split("\\")[-1]
@@ -2251,8 +2261,6 @@ def get_local_driver(
         use_version = "latest"
         major_edge_version = None
         try:
-            from seleniumbase.core import detect_b_ver
-
             if binary_location:
                 try:
                     major_edge_version = (
@@ -2480,8 +2488,6 @@ def get_local_driver(
         )
         edge_options.add_argument("--disable-browser-side-navigation")
         edge_options.add_argument("--disable-translate")
-        if binary_location:
-            edge_options.binary_location = binary_location
         if not enable_ws:
             edge_options.add_argument("--disable-web-security")
         edge_options.add_argument("--homepage=about:blank")
@@ -2585,8 +2591,15 @@ def get_local_driver(
                         chromium_arg_item = "-" + chromium_arg_item
                     else:
                         chromium_arg_item = "--" + chromium_arg_item
-                if len(chromium_arg_item) >= 3:
+                if "set-binary" in chromium_arg_item and not binary_location:
+                    br_app = "edge"
+                    binary_loc = detect_b_ver.get_binary_location(br_app)
+                    if os.path.exists(binary_loc):
+                        binary_location = binary_loc
+                elif len(chromium_arg_item) >= 3:
                     edge_options.add_argument(chromium_arg_item)
+        if binary_location:
+            edge_options.binary_location = binary_location
         if selenium4_or_newer:
             try:
                 service = EdgeService(
@@ -2884,8 +2897,6 @@ def get_local_driver(
             major_chrome_version = None
             if selenium4_or_newer:
                 try:
-                    from seleniumbase.core import detect_b_ver
-
                     if binary_location:
                         try:
                             major_chrome_version = (
