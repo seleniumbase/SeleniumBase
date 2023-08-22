@@ -72,8 +72,21 @@ class PageLoadStrategy:
 
 
 class Files:
+    # This is a special downloads folder for files downloaded by tests.
+    # The "downloaded_files" folder is DELETED when starting new tests.
+    # Add "--archive-downloads" to save a copy in "archived_files".
+    # (These folder names should NOT be changed.)
     DOWNLOADS_FOLDER = "downloaded_files"
     ARCHIVED_DOWNLOADS_FOLDER = "archived_files"
+
+
+class Logs:
+    # This is where log files from the latest run get saved.
+    # The "latest_logs" folder is DELETED when starting new tests.
+    # Add "--archive-logs" to save a copy of logs in "archived_logs".
+    # (These folder names should NOT be changed.)
+    LATEST = "latest_logs"
+    SAVED = "archived_logs"
 
 
 class Presentations:
@@ -347,23 +360,25 @@ class ValidBrowsers:
 
 class ValidBinaries:
     valid_chrome_binaries_on_linux = [
-        "google-chrome",
         "google-chrome-stable",
+        "google-chrome",
         "chrome",
         "chromium",
+        "chromium-browser",
         "google-chrome-beta",
         "google-chrome-dev",
-        "chromium-browser",
+        "google-chrome-unstable",
     ]
     valid_edge_binaries_on_linux = [
-        "microsoft-edge",
         "microsoft-edge-stable",
+        "microsoft-edge",
         "microsoft-edge-beta",
         "microsoft-edge-dev",
     ]
     valid_chrome_binaries_on_macos = [
         "Google Chrome",
         "Chromium",
+        "Google Chrome for Testing",
     ]
     valid_edge_binaries_on_macos = [
         "Microsoft Edge",

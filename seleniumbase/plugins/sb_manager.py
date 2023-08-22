@@ -636,7 +636,7 @@ def SB(
     sb_config.extension_zip = extension_zip
     sb_config.extension_dir = extension_dir
     sb_config.database_env = "test"
-    sb_config.log_path = "latest_logs"
+    sb_config.log_path = constants.Logs.LATEST
     sb_config.archive_logs = archive_logs
     sb_config.disable_csp = disable_csp
     sb_config.disable_ws = disable_ws
@@ -834,7 +834,7 @@ def SB(
         from seleniumbase.core import download_helper
         from seleniumbase.core import proxy_helper
 
-        log_helper.log_folder_setup("latest_logs/")
+        log_helper.log_folder_setup(constants.Logs.LATEST + "/")
         log_helper.clear_empty_logs()
         download_helper.reset_downloads_folder()
         if not sb_config.multi_proxy:

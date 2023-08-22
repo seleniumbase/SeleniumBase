@@ -132,7 +132,7 @@ class Base(Plugin):
             "--log_path",
             "--log-path",
             dest="log_path",
-            default="latest_logs/",
+            default=constants.Logs.LATEST + "/",
             help="""(DEPRECATED) - This field is NOT EDITABLE anymore.
                     Log files are saved to the "latest_logs/" folder.""",
         )
@@ -193,7 +193,7 @@ class Base(Plugin):
         self.page_results_list = []
         self.test_count = 0
         self.import_error = False
-        log_path = "latest_logs/"
+        log_path = constants.Logs.LATEST + "/"
         archive_logs = options.archive_logs
         log_helper.log_folder_setup(log_path, archive_logs)
         download_helper.reset_downloads_folder()

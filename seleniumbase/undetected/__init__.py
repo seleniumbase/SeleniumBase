@@ -506,13 +506,14 @@ def find_chrome_executable():
     if IS_POSIX:
         for item in os.environ.get("PATH").split(os.pathsep):
             for subitem in (
-                "google-chrome",
                 "google-chrome-stable",
+                "google-chrome",
                 "chrome",
                 "chromium",
+                "chromium-browser",
                 "google-chrome-beta",
                 "google-chrome-dev",
-                "chromium-browser",
+                "google-chrome-unstable",
             ):
                 candidates.add(os.sep.join((item, subitem)))
         if "darwin" in sys.platform:
