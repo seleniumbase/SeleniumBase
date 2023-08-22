@@ -3120,6 +3120,7 @@ class BaseCase(unittest.TestCase):
             self.execute_script('''%s = \"%s\"''' % (inner_body, html_body))
         elif found_body and found_head:
             self.execute_script('''%s = \"%s\"''' % (inner_head, html_head))
+            time.sleep(0.02)
             self.execute_script('''%s = \"%s\"''' % (inner_body, html_body))
         else:
             raise Exception("Logic Error!")
