@@ -11,8 +11,6 @@ from seleniumbase.fixtures import constants
 # The "downloads_folder" is cleaned out at the start of each pytest run,
 #     but there is an option to save existing files in "archived_files".
 DOWNLOADS_DIR = constants.Files.DOWNLOADS_FOLDER
-ARCHIVE_DIR = constants.Files.ARCHIVED_DOWNLOADS_FOLDER
-
 abs_path = os.path.abspath(".")
 downloads_path = os.path.join(abs_path, DOWNLOADS_DIR)
 
@@ -24,7 +22,19 @@ def get_downloads_folder():
 def reset_downloads_folder():
     """Clears the downloads folder.
     If settings.ARCHIVE_EXISTING_DOWNLOADS is set to True, archives it."""
-    archived_downloads_folder = os.path.join(os.getcwd(), ARCHIVE_DIR) + os.sep
+    downloads_dir = constants.Files.DOWNLOADS_FOLDER
+    archive_dir = constants.Files.ARCHIVED_DOWNLOADS_FOLDER
+    if downloads_dir.endswith("/"):
+        downloads_dir = downloads_dir[:-1]
+    if downloads_dir.startswith("/"):
+        downloads_dir = downloads_dir[1:]
+    if archive_dir.endswith("/"):
+        archive_dir = archive_dir[:-1]
+    if archive_dir.startswith("/"):
+        archive_dir = archive_dir[1:]
+    if len(downloads_dir) < 10 or len(archive_dir) < 10:
+        return  # Prevent accidental deletions if constants are renamed
+    archived_downloads_folder = os.path.join(os.getcwd(), archive_dir) + os.sep
     if os.path.exists(downloads_path) and not os.listdir(downloads_path) == []:
         reset_downloads_folder_assistant(archived_downloads_folder)
     if os.path.exists(downloads_path) and os.listdir(downloads_path) == []:

@@ -13776,8 +13776,9 @@ class BaseCase(unittest.TestCase):
             return  # This test already called setUp()
         self.__called_setup = True
         self.__called_teardown = False
-        self.masterqa_mode = masterqa_mode
         self.is_pytest = None
+        self.log_path = constants.Logs.LATEST
+        self.masterqa_mode = masterqa_mode
         try:
             # This raises an exception if the test is not coming from pytest
             self.is_pytest = sb_config.is_pytest
@@ -15007,7 +15008,7 @@ class BaseCase(unittest.TestCase):
                 else:
                     status += " All tests were skipped!"
             else:
-                latest_logs_dir = "latest_logs/"
+                latest_logs_dir = constants.Logs.LATEST + "/"
                 log_msg = "See latest logs for details"
                 if num_failed == 1:
                     status += (

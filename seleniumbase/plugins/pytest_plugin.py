@@ -323,7 +323,7 @@ def pytest_addoption(parser):
         "--log_path",
         "--log-path",
         dest="log_path",
-        default="latest_logs/",
+        default=constants.Logs.LATEST + "/",
         help="""(DEPRECATED) - This value is NOT EDITABLE anymore.
                 Log files are saved to the "latest_logs/" folder.""",
     )
@@ -1487,7 +1487,7 @@ def pytest_configure(config):
     sb_config.settings_file = config.getoption("settings_file")
     sb_config.user_data_dir = config.getoption("user_data_dir")
     sb_config.database_env = config.getoption("database_env")
-    sb_config.log_path = "latest_logs/"  # (No longer editable!)
+    sb_config.log_path = constants.Logs.LATEST + "/"
     sb_config.archive_logs = config.getoption("archive_logs")
     if config.getoption("archive_downloads"):
         settings.ARCHIVE_EXISTING_DOWNLOADS = True
@@ -1708,7 +1708,9 @@ def pytest_configure(config):
         from seleniumbase.core import download_helper
         from seleniumbase.core import proxy_helper
 
-        log_helper.log_folder_setup("latest_logs/", sb_config.archive_logs)
+        log_helper.log_folder_setup(
+            constants.Logs.LATEST + "/", sb_config.archive_logs
+        )
         download_helper.reset_downloads_folder()
         proxy_helper.remove_proxy_zip_if_present()
 
@@ -1810,7 +1812,9 @@ def pytest_collection_finish(session):
         from seleniumbase.core import download_helper
         from seleniumbase.core import proxy_helper
 
-        log_helper.log_folder_setup("latest_logs/", sb_config.archive_logs)
+        log_helper.log_folder_setup(
+            constants.Logs.LATEST + "/", sb_config.archive_logs
+        )
         download_helper.reset_downloads_folder()
         proxy_helper.remove_proxy_zip_if_present()
     if sb_config.dashboard and len(session.items) > 0:
@@ -1958,7 +1962,7 @@ def pytest_terminal_summary(terminalreporter):
         return
     if not sb_config._multithreaded and not sb_config._sbase_detected:
         return
-    latest_logs_dir = os.path.join(os.getcwd(), "latest_logs") + os.sep
+    latest_logs_dir = os.path.join(os.getcwd(), constants.Logs.LATEST) + os.sep
     if (
         "failed" in terminalreporter.stats.keys()
         and os.path.exists(latest_logs_dir)
@@ -2016,7 +2020,9 @@ def _perform_pytest_unconfigure_():
                 pass
         sb_config.shared_driver = None
     if hasattr(sb_config, "log_path") and sb_config.item_count > 0:
-        log_helper.archive_logs_if_set("latest_logs/", sb_config.archive_logs)
+        log_helper.archive_logs_if_set(
+            constants.Logs.LATEST + "/", sb_config.archive_logs
+        )
     log_helper.clear_empty_logs()
     # Dashboard post-processing: Disable time-based refresh and stamp complete
     if not hasattr(sb_config, "dashboard") or not sb_config.dashboard:

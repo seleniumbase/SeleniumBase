@@ -517,8 +517,8 @@ def archive_logs_if_set(log_path, archive_logs=False):
     else:
         if settings.ARCHIVE_EXISTING_LOGS or archive_logs:
             if len(os.listdir(log_path)) > 0:
-                archived_folder = "%s/../archived_logs/" % log_path
-                archived_folder = os.path.realpath(archived_folder) + "/"
+                saved_folder = "%s/../%s/" % (log_path, constants.Logs.SAVED)
+                archived_folder = os.path.realpath(saved_folder) + "/"
                 log_path = os.path.realpath(log_path) + "/"
                 if not os.path.exists(archived_folder):
                     try:
@@ -531,17 +531,25 @@ def archive_logs_if_set(log_path, archive_logs=False):
 
 
 def log_folder_setup(log_path, archive_logs=False):
-    """Handle Logging"""
+    """Clean up logs to prepare for another run"""
     if log_path.endswith("/"):
         log_path = log_path[:-1]
+    if log_path.startswith("/"):
+        log_path = log_path[1:]
+    if constants.Logs.SAVED.endswith("/"):
+        constants.Logs.SAVED = constants.Logs.SAVED[:-1]
+    if constants.Logs.SAVED.startswith("/"):
+        constants.Logs.SAVED = constants.Logs.SAVED[1:]
+    if len(log_path) < 10 or len(constants.Logs.SAVED) < 10:
+        return  # Prevent accidental deletions if constants are renamed
     if not os.path.exists(log_path):
         try:
             os.makedirs(log_path)
         except Exception:
             pass  # Should only be reachable during multi-threaded runs
     else:
-        archived_folder = "%s/../archived_logs/" % log_path
-        archived_folder = os.path.realpath(archived_folder) + "/"
+        saved_folder = "%s/../%s/" % (log_path, constants.Logs.SAVED)
+        archived_folder = os.path.realpath(saved_folder) + "/"
         if not os.path.exists(archived_folder):
             try:
                 os.makedirs(archived_folder)
@@ -566,8 +574,8 @@ def log_folder_setup(log_path, archive_logs=False):
 
 
 def clear_empty_logs():
-    latest_logs_dir = os.path.join(os.getcwd(), "latest_logs") + os.sep
-    archived_folder = os.path.join(os.getcwd(), "archived_logs") + os.sep
+    latest_logs_dir = os.path.join(os.getcwd(), constants.Logs.LATEST) + os.sep
+    archived_folder = os.path.join(os.getcwd(), constants.Logs.SAVED) + os.sep
     if os.path.exists(latest_logs_dir) and not os.listdir(latest_logs_dir):
         try:
             os.rmdir(latest_logs_dir)
