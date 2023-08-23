@@ -855,6 +855,11 @@ def _set_chrome_options(
         if is_using_uc(undetectable, browser_name):
             chrome_options.add_argument("--disable-application-cache")
             chrome_options.add_argument("--disable-setuid-sandbox")
+    if is_using_uc(undetectable, browser_name) and not binary_location:
+        br_app = "google-chrome"
+        binary_loc = detect_b_ver.get_binary_location(br_app, True)
+        if os.path.exists(binary_loc):
+            binary_location = binary_loc
     if chromium_arg:
         # Can be a comma-separated list of Chromium args
         chromium_arg_list = chromium_arg.split(",")
@@ -875,7 +880,9 @@ def _set_chrome_options(
                     pass
             if "set-binary" in chromium_arg_item and not binary_location:
                 br_app = "google-chrome"
-                binary_loc = detect_b_ver.get_binary_location(br_app)
+                binary_loc = detect_b_ver.get_binary_location(
+                    br_app, is_using_uc(undetectable, browser_name)
+                )
                 if os.path.exists(binary_loc):
                     binary_location = binary_loc
             elif len(chromium_arg_item) >= 3:
@@ -2897,11 +2904,11 @@ def get_local_driver(
             major_chrome_version = None
             if selenium4_or_newer:
                 try:
-                    if binary_location:
+                    if chrome_options.binary_location:
                         try:
                             major_chrome_version = (
                                 detect_b_ver.get_browser_version_from_binary(
-                                    binary_location
+                                    chrome_options.binary_location,
                                 )
                             ).split(".")[0]
                             if len(major_chrome_version) < 2:

@@ -502,15 +502,21 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
 
 
 def find_chrome_executable():
+    from seleniumbase.core import detect_b_ver
+
+    binary_location = detect_b_ver.get_binary_location("google-chrome", True)
+    if os.path.exists(binary_location) and os.access(binary_location, os.X_OK):
+        return os.path.normpath(binary_location)
+
     candidates = set()
     if IS_POSIX:
         for item in os.environ.get("PATH").split(os.pathsep):
             for subitem in (
-                "google-chrome-stable",
-                "google-chrome",
-                "chrome",
                 "chromium",
+                "google-chrome",
                 "chromium-browser",
+                "chrome",
+                "google-chrome-stable",
                 "google-chrome-beta",
                 "google-chrome-dev",
                 "google-chrome-unstable",
@@ -542,3 +548,4 @@ def find_chrome_executable():
     for candidate in candidates:
         if os.path.exists(candidate) and os.access(candidate, os.X_OK):
             return os.path.normpath(candidate)
+    return None  # Browser not found!

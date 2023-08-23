@@ -96,6 +96,105 @@ def linux_browser_apps_to_cmd(*apps):
     )
 
 
+def chrome_on_linux_path(prefer_chromium=False):
+    if os_name() != "linux":
+        return ""
+    primary_chrome = "google-chrome"
+    secondary_chrome = "chromium"
+    if prefer_chromium:
+        primary_chrome = "chromium"
+        secondary_chrome = "google-chrome"
+    paths = os.environ["PATH"].split(os.pathsep)
+    binaries = []
+    binaries.append(primary_chrome)
+    binaries.append(secondary_chrome)
+    binaries.append("chromium-browser")
+    binaries.append("chrome")
+    binaries.append("google-chrome-stable")
+    binaries.append("google-chrome-beta")
+    binaries.append("google-chrome-dev")
+    binaries.append("google-chrome-unstable")
+    for binary in binaries:
+        for path in paths:
+            full_path = os.path.join(path, binary)
+            if os.path.exists(full_path) and os.access(full_path, os.X_OK):
+                return full_path
+    return "/usr/bin/google-chrome"
+
+
+def edge_on_linux_path():
+    if os_name() != "linux":
+        return ""
+    paths = os.environ["PATH"].split(os.pathsep)
+    binaries = []
+    binaries.append("microsoft-edge")
+    binaries.append("microsoft-edge-stable")
+    binaries.append("microsoft-edge-beta")
+    binaries.append("microsoft-edge-dev")
+    for binary in binaries:
+        for path in paths:
+            full_path = os.path.join(path, binary)
+            if os.path.exists(full_path) and os.access(full_path, os.X_OK):
+                return full_path
+    return "/usr/bin/microsoft-edge"
+
+
+def chrome_on_windows_path():
+    if os_name() != "win32":
+        return ""
+    candidates = []
+    for item in map(
+        os.environ.get,
+        (
+            "PROGRAMFILES",
+            "PROGRAMFILES(X86)",
+            "LOCALAPPDATA",
+            "PROGRAMW6432",
+        ),
+    ):
+        for subitem in (
+            "Google/Chrome/Application",
+            "Google/Chrome Beta/Application",
+            "Google/Chrome Canary/Application",
+        ):
+            try:
+                candidates.append(os.sep.join((item, subitem, "chrome.exe")))
+            except TypeError:
+                pass
+    for candidate in candidates:
+        if os.path.exists(candidate) and os.access(candidate, os.X_OK):
+            return os.path.normpath(candidate)
+    return ""
+
+
+def edge_on_windows_path():
+    if os_name() != "win32":
+        return ""
+    candidates = []
+    for item in map(
+        os.environ.get,
+        (
+            "PROGRAMFILES",
+            "PROGRAMFILES(X86)",
+            "LOCALAPPDATA",
+            "PROGRAMW6432",
+        ),
+    ):
+        for subitem in (
+            "Microsoft/Edge/Application",
+            "Microsoft/Edge Beta/Application",
+            "Microsoft/Edge Canary/Application",
+        ):
+            try:
+                candidates.append(os.sep.join((item, subitem, "msedge.exe")))
+            except TypeError:
+                pass
+    for candidate in candidates:
+        if os.path.exists(candidate) and os.access(candidate, os.X_OK):
+            return os.path.normpath(candidate)
+    return ""
+
+
 def windows_browser_apps_to_cmd(*apps):
     """Create analogue of browser --version command for windows."""
     powershell = determine_powershell()
@@ -106,63 +205,21 @@ def windows_browser_apps_to_cmd(*apps):
     return '%s -NoProfile "%s"' % (powershell, script)
 
 
-def get_binary_location(browser_type):
+def get_binary_location(browser_type, prefer_chromium=False):
+    """Return the full path of the browser binary.
+    If going for better results in UC Mode, use: prefer_chromium=True"""
     cmd_mapping = {
         ChromeType.GOOGLE: {
-            OSType.LINUX: linux_browser_apps_to_cmd(
-                "google-chrome-stable",
-                "google-chrome",
-                "chrome",
-                "chromium",
-                "chromium-browser",
-                "google-chrome-beta",
-                "google-chrome-dev",
-                "google-chrome-unstable",
-            ),
+            OSType.LINUX: chrome_on_linux_path(prefer_chromium),
             OSType.MAC: r"/Applications/Google Chrome.app"
                         r"/Contents/MacOS/Google Chrome",
-            OSType.WIN: windows_browser_apps_to_cmd(
-                r'(Get-Item -Path "$env:PROGRAMFILES\Google\Chrome'
-                r'\Application\chrome.exe")',
-                r'(Get-Item -Path "$env:PROGRAMFILES (x86)\Google\Chrome'
-                r'\Application\chrome.exe")',
-                r'(Get-Item -Path "$env:LOCALAPPDATA\Google\Chrome'
-                r'\Application\chrome.exe")',
-            ),
+            OSType.WIN: chrome_on_windows_path(),
         },
         ChromeType.MSEDGE: {
-            OSType.LINUX: linux_browser_apps_to_cmd(
-                "microsoft-edge-stable",
-                "microsoft-edge",
-                "microsoft-edge-beta",
-                "microsoft-edge-dev",
-            ),
+            OSType.LINUX: edge_on_linux_path(),
             OSType.MAC: r"/Applications/Microsoft Edge.app"
                         r"/Contents/MacOS/Microsoft Edge",
-            OSType.WIN: windows_browser_apps_to_cmd(
-                # stable edge
-                r'(Get-Item -Path "$env:PROGRAMFILES\Microsoft\Edge'
-                r'\Application\msedge.exe")',
-                r'(Get-Item -Path "$env:PROGRAMFILES (x86)\Microsoft'
-                r'\Edge\Application\msedge.exe")',
-                # beta edge
-                r'(Get-Item -Path "$env:LOCALAPPDATA\Microsoft\Edge Beta'
-                r'\Application\msedge.exe")',
-                r'(Get-Item -Path "$env:PROGRAMFILES\Microsoft\Edge Beta'
-                r'\Application\msedge.exe")',
-                r'(Get-Item -Path "$env:PROGRAMFILES (x86)\Microsoft\Edge Beta'
-                r'\Application\msedge.exe")',
-                # dev edge
-                r'(Get-Item -Path "$env:LOCALAPPDATA\Microsoft\Edge Dev'
-                r'\Application\msedge.exe")',
-                r'(Get-Item -Path "$env:PROGRAMFILES\Microsoft\Edge Dev'
-                r'\Application\msedge.exe")',
-                r'(Get-Item -Path "$env:PROGRAMFILES (x86)\Microsoft\Edge Dev'
-                r'\Application\msedge.exe")',
-                # canary edge
-                r'(Get-Item -Path "$env:LOCALAPPDATA\Microsoft\Edge SxS'
-                r'\Application\msedge.exe")',
-            ),
+            OSType.WIN: edge_on_windows_path(),
         },
     }
     return cmd_mapping[browser_type][os_name()]
@@ -185,11 +242,11 @@ def get_browser_version_from_os(browser_type):
     cmd_mapping = {
         ChromeType.GOOGLE: {
             OSType.LINUX: linux_browser_apps_to_cmd(
-                "google-chrome-stable",
                 "google-chrome",
-                "chrome",
                 "chromium",
                 "chromium-browser",
+                "chrome",
+                "google-chrome-stable",
                 "google-chrome-beta",
                 "google-chrome-dev",
                 "google-chrome-unstable",
@@ -212,8 +269,8 @@ def get_browser_version_from_os(browser_type):
         },
         ChromeType.MSEDGE: {
             OSType.LINUX: linux_browser_apps_to_cmd(
-                "microsoft-edge-stable",
                 "microsoft-edge",
+                "microsoft-edge-stable",
                 "microsoft-edge-beta",
                 "microsoft-edge-dev",
             ),
