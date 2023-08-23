@@ -360,18 +360,18 @@ class ValidBrowsers:
 
 class ValidBinaries:
     valid_chrome_binaries_on_linux = [
-        "google-chrome-stable",
         "google-chrome",
-        "chrome",
         "chromium",
         "chromium-browser",
+        "chrome",
+        "google-chrome-stable",
         "google-chrome-beta",
         "google-chrome-dev",
         "google-chrome-unstable",
     ]
     valid_edge_binaries_on_linux = [
-        "microsoft-edge-stable",
         "microsoft-edge",
+        "microsoft-edge-stable",
         "microsoft-edge-beta",
         "microsoft-edge-dev",
     ]
