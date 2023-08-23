@@ -361,10 +361,10 @@ class ValidBrowsers:
 class ValidBinaries:
     valid_chrome_binaries_on_linux = [
         "google-chrome",
+        "google-chrome-stable",
+        "chrome",
         "chromium",
         "chromium-browser",
-        "chrome",
-        "google-chrome-stable",
         "google-chrome-beta",
         "google-chrome-dev",
         "google-chrome-unstable",

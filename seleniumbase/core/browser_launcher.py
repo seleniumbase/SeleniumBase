@@ -855,11 +855,11 @@ def _set_chrome_options(
         if is_using_uc(undetectable, browser_name):
             chrome_options.add_argument("--disable-application-cache")
             chrome_options.add_argument("--disable-setuid-sandbox")
-    if is_using_uc(undetectable, browser_name) and not binary_location:
-        br_app = "google-chrome"
-        binary_loc = detect_b_ver.get_binary_location(br_app, True)
-        if os.path.exists(binary_loc):
-            binary_location = binary_loc
+            if not binary_location:
+                br_app = "google-chrome"
+                binary_loc = detect_b_ver.get_binary_location(br_app, True)
+                if os.path.exists(binary_loc):
+                    binary_location = binary_loc
     if chromium_arg:
         # Can be a comma-separated list of Chromium args
         chromium_arg_list = chromium_arg.split(",")

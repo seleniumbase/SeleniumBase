@@ -99,18 +99,22 @@ def linux_browser_apps_to_cmd(*apps):
 def chrome_on_linux_path(prefer_chromium=False):
     if os_name() != "linux":
         return ""
-    primary_chrome = "google-chrome"
-    secondary_chrome = "chromium"
     if prefer_chromium:
-        primary_chrome = "chromium"
-        secondary_chrome = "google-chrome"
+        paths = ["/bin/chromium", "/bin/chromium-browser"]
+        for path in paths:
+            if os.path.exists(path) and os.access(path, os.X_OK):
+                return path
+    paths = ["/bin/google-chrome", "/bin/google-chrome-stable"]
+    for path in paths:
+        if os.path.exists(path) and os.access(path, os.X_OK):
+            return path
     paths = os.environ["PATH"].split(os.pathsep)
     binaries = []
-    binaries.append(primary_chrome)
-    binaries.append(secondary_chrome)
-    binaries.append("chromium-browser")
-    binaries.append("chrome")
+    binaries.append("google-chrome")
     binaries.append("google-chrome-stable")
+    binaries.append("chrome")
+    binaries.append("chromium")
+    binaries.append("chromium-browser")
     binaries.append("google-chrome-beta")
     binaries.append("google-chrome-dev")
     binaries.append("google-chrome-unstable")
@@ -243,10 +247,10 @@ def get_browser_version_from_os(browser_type):
         ChromeType.GOOGLE: {
             OSType.LINUX: linux_browser_apps_to_cmd(
                 "google-chrome",
+                "google-chrome-stable",
+                "chrome",
                 "chromium",
                 "chromium-browser",
-                "chrome",
-                "google-chrome-stable",
                 "google-chrome-beta",
                 "google-chrome-dev",
                 "google-chrome-unstable",
