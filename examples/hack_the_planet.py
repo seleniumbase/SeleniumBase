@@ -282,14 +282,14 @@ class HackTests(BaseCase):
         self.highlight("h1", loops=10, scroll=False)
 
         self.open("https://wordpress.com/")
-        self.set_text_content("p.no-widows", aybabtu)
-        zoom_out = "h1{zoom: 0.8;-moz-transform: scale(0.8);}"
+        zoom_out = "h1.is-page-header{zoom: 0.8;-moz-transform: scale(0.8);}"
         self.add_css_style(zoom_out)
-        self.set_text_content("h1.no-widows", aybabtu)
-        self.set_text_content("a#lpc-button", "Automate with SeleniumBase")
-        self.highlight("h1.no-widows", loops=6, scroll=False)
-        self.highlight("p.no-widows", loops=4, scroll=False)
-        self.highlight("a#lpc-button", loops=4, scroll=False)
+        zoom_in = "div.lp-is-cta-blue{zoom: 1.4;-moz-transform: scale(1.4);}"
+        self.add_css_style(zoom_in)
+        self.set_text_content("h1.is-page-header", aybabtu)
+        self.set_text_content("main div.lp-is-cta-blue", "Use SeleniumBase!")
+        self.highlight("h1.is-page-header", loops=6, scroll=False)
+        self.highlight("main div.lp-is-cta-blue", loops=4, scroll=False)
 
         self.open("https://seleniumbase.com/")
         self.set_text_content("h1", aybabtu)
