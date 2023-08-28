@@ -64,6 +64,8 @@ sbase get geckodriver
 sbase get edgedriver
 sbase get chromedriver 114
 sbase get chromedriver 114.0.5735.90
+sbase get chromedriver stable
+sbase get chromedriver beta
 sbase get chromedriver -p
 ```
 
