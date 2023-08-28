@@ -8,13 +8,13 @@ import sys
 import time
 import urllib3
 import warnings
-import zipfile
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.common.service import utils as service_utils
 from selenium.webdriver.edge.service import Service as EdgeService
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.safari.service import Service as SafariService
+from seleniumbase import decorators
 from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
 from seleniumbase import extensions  # browser extensions storage folder
 from seleniumbase.config import settings
@@ -82,6 +82,18 @@ else:
     pass  # SeleniumBase will use web drivers from the System PATH by default
 
 
+def log_d(message):
+    """If setting sb_config.settings.HIDE_DRIVER_DOWNLOADS to True,
+    output from driver downloads are logged instead of printed."""
+    if (
+        hasattr(settings, "HIDE_DRIVER_DOWNLOADS")
+        and settings.HIDE_DRIVER_DOWNLOADS
+    ):
+        logging.debug(message)
+    else:
+        print(message)
+
+
 def make_executable(file_path):
     # Set permissions to: "If you can read it, you can execute it."
     mode = os.stat(file_path).st_mode
@@ -97,6 +109,7 @@ def make_driver_executable_if_not(driver_path):
         make_executable(driver_path)
 
 
+@decorators.rate_limited(4)
 def requests_get(url, proxy_string=None):
     import requests
 
@@ -122,12 +135,8 @@ def requests_get(url, proxy_string=None):
 
 
 def get_latest_chromedriver_version():
-    last = "https://chromedriver.storage.googleapis.com/LATEST_RELEASE"
-    url_request = requests_get(last)
-    if url_request.ok:
-        return url_request.text
-    else:
-        return None
+    from seleniumbase.console_scripts import sb_install
+    return sb_install.get_latest_stable_chromedriver_version()
 
 
 def chromedriver_on_path():
@@ -174,6 +183,27 @@ def find_chromedriver_version_to_use(use_version, driver_version):
         and int(str(driver_version).split(".")[0]) >= 72
     ):
         use_version = str(driver_version)
+    elif driver_version and not str(driver_version).split(".")[0].isdigit():
+        from seleniumbase.console_scripts import sb_install
+        driver_version = driver_version.lower()
+        if driver_version == "stable" or driver_version == "latest":
+            use_version = sb_install.get_latest_stable_chromedriver_version()
+        elif driver_version == "beta":
+            use_version = sb_install.get_latest_beta_chromedriver_version()
+        elif driver_version == "dev":
+            use_version = sb_install.get_latest_dev_chromedriver_version()
+        elif driver_version == "canary":
+            use_version = sb_install.get_latest_canary_chromedriver_version()
+        elif driver_version == "previous" or driver_version == "latest-1":
+            use_version = sb_install.get_latest_stable_chromedriver_version()
+            use_version = str(int(use_version.split(".")[0]) - 1)
+        elif driver_version == "mlatest":
+            if use_version.split(".")[0].isdigit():
+                major = use_version.split(".")[0]
+                if int(major) >= 115:
+                    use_version = (
+                        sb_install.get_cft_latest_version_from_milestone(major)
+                    )
     return use_version
 
 
@@ -217,6 +247,8 @@ def uc_special_open_if_cf(driver, url, proxy_string=None):
                 or has_cf(req_get.text)
             ):
                 special = True
+                if status_str == "403":
+                    time.sleep(0.06)  # Forbidden / Blocked! (Wait first!)
         except Exception:
             pass
         if special:
@@ -367,7 +399,7 @@ def _repair_chromedriver(chrome_options, headless_options, mcv=None):
 
 
 def _repair_edgedriver(edge_version):
-    print(
+    log_d(
         "\nWarning: msedgedriver version doesn't match Edge version!"
         "\nAttempting to install a matching version of msedgedriver:"
     )
@@ -483,6 +515,7 @@ def _unzip_to_new_folder(zip_file, folder):
     proxy_dir_lock = fasteners.InterProcessLock(PROXY_DIR_LOCK)
     with proxy_dir_lock:
         if not os.path.exists(folder):
+            import zipfile
             zip_ref = zipfile.ZipFile(zip_file, "r")
             os.makedirs(folder)
             zip_ref.extractall(folder)
@@ -1170,13 +1203,13 @@ def get_driver(
         )
     ):
         if not os.path.exists(binary_location):
-            print(
+            log_d(
                 "\nWarning: The Chromium binary specified (%s) was NOT found!"
                 "\n(Will use default settings...)\n" % binary_location
             )
             binary_location = None
         elif binary_location.endswith("/") or binary_location.endswith("\\"):
-            print(
+            log_d(
                 "\nWarning: The Chromium binary path must be a full path "
                 "that includes the driver filename at the end of it!"
                 "\n(Will use default settings...)\n" % binary_location
@@ -1188,7 +1221,7 @@ def get_driver(
             binary_name = binary_location.split("/")[-1].split("\\")[-1]
             valid_names = get_valid_binary_names_for_browser(browser_name)
             if binary_name not in valid_names:
-                print(
+                log_d(
                     "\nWarning: The Chromium binary specified is NOT valid!"
                     '\nExpecting "%s" to be found in %s for the browser / OS!'
                     "\n(Will use default settings...)\n"
@@ -2070,16 +2103,15 @@ def get_local_driver(
                 )
         elif not geckodriver_on_path():
             from seleniumbase.console_scripts import sb_install
-
             args = " ".join(sys.argv)
             if not ("-n" in sys.argv or " -n=" in args or args == "-c"):
                 # (Not multithreaded)
                 sys_args = sys.argv  # Save a copy of current sys args
-                print("\nWarning: geckodriver not found. Getting it now:")
+                log_d("\nWarning: geckodriver not found. Getting it now:")
                 try:
                     sb_install.main(override="geckodriver")
                 except Exception as e:
-                    print("\nWarning: Could not install geckodriver: %s" % e)
+                    log_d("\nWarning: Could not install geckodriver: %s" % e)
                 sys.argv = sys_args  # Put back the original sys args
             else:
                 geckodriver_fixing_lock = fasteners.InterProcessLock(
@@ -2088,7 +2120,7 @@ def get_local_driver(
                 with geckodriver_fixing_lock:
                     if not geckodriver_on_path():
                         sys_args = sys.argv  # Save a copy of sys args
-                        print(
+                        log_d(
                             "\nWarning: geckodriver not found. "
                             "Getting it now:"
                         )
@@ -2211,12 +2243,11 @@ def get_local_driver(
                 )
         elif not iedriver_on_path():
             from seleniumbase.console_scripts import sb_install
-
             args = " ".join(sys.argv)
             if not ("-n" in sys.argv or " -n=" in args or args == "-c"):
                 # (Not multithreaded)
                 sys_args = sys.argv  # Save a copy of current sys args
-                print("\nWarning: IEDriver not found. Getting it now:")
+                log_d("\nWarning: IEDriver not found. Getting it now:")
                 sb_install.main(override="iedriver")
                 sys.argv = sys_args  # Put back the original sys args
         if LOCAL_HEADLESS_IEDRIVER and os.path.exists(LOCAL_HEADLESS_IEDRIVER):
@@ -2229,12 +2260,11 @@ def get_local_driver(
                 )
         elif not headless_iedriver_on_path():
             from seleniumbase.console_scripts import sb_install
-
             args = " ".join(sys.argv)
             if not ("-n" in sys.argv or " -n=" in args or args == "-c"):
                 # (Not multithreaded)
                 sys_args = sys.argv  # Save a copy of current sys args
-                print("\nWarning: HeadlessIEDriver not found. Getting it now:")
+                log_d("\nWarning: HeadlessIEDriver not found. Getting it now:")
                 sb_install.main(override="iedriver")
                 sys.argv = sys_args  # Put back the original sys args
         if not headless:
@@ -2340,7 +2370,6 @@ def get_local_driver(
                     )
         if not local_edgedriver_exists or edgedriver_upgrade_needed:
             from seleniumbase.console_scripts import sb_install
-
             args = " ".join(sys.argv)
             if not ("-n" in sys.argv or " -n=" in args or args == "-c"):
                 # (Not multithreaded)
@@ -2348,7 +2377,7 @@ def get_local_driver(
                 if edgedriver_upgrade_needed:
                     msg = "Microsoft Edge Driver update needed."
                 sys_args = sys.argv  # Save a copy of current sys args
-                print("\n%s Getting it now:" % msg)
+                log_d("\n%s Getting it now:" % msg)
                 sb_install.main(override="edgedriver %s" % use_version)
                 sys.argv = sys_args  # Put back the original sys args
             else:
@@ -2360,7 +2389,7 @@ def get_local_driver(
                     if edgedriver_upgrade_needed:
                         msg = "Microsoft Edge Driver update needed."
                     sys_args = sys.argv  # Save a copy of current sys args
-                    print("\n%s Getting it now:" % msg)
+                    log_d("\n%s Getting it now:" % msg)
                     sb_install.main(override="edgedriver %s" % use_version)
                     sys.argv = sys_args  # Put back the original sys args
 
@@ -2902,34 +2931,36 @@ def get_local_driver(
             )
             use_version = "latest"
             major_chrome_version = None
-            if selenium4_or_newer:
-                try:
-                    if chrome_options.binary_location:
-                        try:
-                            major_chrome_version = (
-                                detect_b_ver.get_browser_version_from_binary(
-                                    chrome_options.binary_location,
-                                )
-                            ).split(".")[0]
-                            if len(major_chrome_version) < 2:
-                                major_chrome_version = None
-                        except Exception:
-                            major_chrome_version = None
-                    if not major_chrome_version:
-                        br_app = "google-chrome"
+            full_ch_version = None
+            full_ch_driver_version = None
+            try:
+                if chrome_options.binary_location:
+                    try:
                         major_chrome_version = (
-                            detect_b_ver.get_browser_version_from_os(br_app)
+                            detect_b_ver.get_browser_version_from_binary(
+                                chrome_options.binary_location,
+                            )
                         ).split(".")[0]
-                    if int(major_chrome_version) < 67:
+                        if len(major_chrome_version) < 2:
+                            major_chrome_version = None
+                    except Exception:
                         major_chrome_version = None
-                    elif (
-                        int(major_chrome_version) >= 67
-                        and int(major_chrome_version) <= 72
-                    ):
-                        # chromedrivers 2.41 - 2.46 could be swapped with 72
-                        major_chrome_version = "72"
-                except Exception:
+                if not major_chrome_version:
+                    br_app = "google-chrome"
+                    full_ch_version = (
+                        detect_b_ver.get_browser_version_from_os(br_app)
+                    )
+                    major_chrome_version = full_ch_version.split(".")[0]
+                if int(major_chrome_version) < 67:
                     major_chrome_version = None
+                elif (
+                    int(major_chrome_version) >= 67
+                    and int(major_chrome_version) <= 72
+                ):
+                    # chromedrivers 2.41 - 2.46 could be swapped with 72
+                    major_chrome_version = "72"
+            except Exception:
+                major_chrome_version = None
             if major_chrome_version:
                 use_version = major_chrome_version
             ch_driver_version = None
@@ -2943,12 +2974,20 @@ def get_local_driver(
                         output = output.decode("latin1")
                     else:
                         output = output.decode("utf-8")
-                    output = output.split(" ")[1].split(".")[0]
+                    full_ch_driver_version = output.split(" ")[1]
+                    output = full_ch_driver_version.split(".")[0]
                     if int(output) >= 2:
                         ch_driver_version = output
                 except Exception:
                     pass
             elif path_chromedriver:
+                try:
+                    make_driver_executable_if_not(path_chromedriver)
+                except Exception as e:
+                    logging.debug(
+                        "\nWarning: Could not make chromedriver"
+                        " executable: %s" % e
+                    )
                 try:
                     output = subprocess.check_output(
                         '"%s" --version' % path_chromedriver, shell=True
@@ -2957,7 +2996,8 @@ def get_local_driver(
                         output = output.decode("latin1")
                     else:
                         output = output.decode("utf-8")
-                    output = output.split(" ")[1].split(".")[0]
+                    full_ch_driver_version = output.split(" ")[1]
+                    output = full_ch_driver_version.split(".")[0]
                     if int(output) >= 2:
                         ch_driver_version = output
                 except Exception:
@@ -2997,23 +3037,7 @@ def get_local_driver(
             use_version = find_chromedriver_version_to_use(
                 use_version, driver_version
             )
-            if (
-                LOCAL_CHROMEDRIVER
-                and os.path.exists(LOCAL_CHROMEDRIVER)
-                and (
-                    use_version == ch_driver_version
-                    or use_version == "latest"
-                )
-                and (
-                    not is_using_uc(undetectable, browser_name)
-                    or not IS_ARM_MAC
-                )
-                or (
-                    is_using_uc(undetectable, browser_name)
-                    and IS_ARM_MAC
-                    and uc_driver_version == use_version
-                )
-            ):
+            if LOCAL_CHROMEDRIVER and os.path.exists(LOCAL_CHROMEDRIVER):
                 try:
                     make_driver_executable_if_not(LOCAL_CHROMEDRIVER)
                 except Exception as e:
@@ -3021,31 +3045,73 @@ def get_local_driver(
                         "\nWarning: Could not make chromedriver"
                         " executable: %s" % e
                     )
+            use_uc = is_using_uc(undetectable, browser_name)
+            make_uc_driver_from_chromedriver = False
+            local_ch_exists = (
+                LOCAL_CHROMEDRIVER and os.path.exists(LOCAL_CHROMEDRIVER)
+            )
+            """If no LOCAL_CHROMEDRIVER, but path_chromedriver, and the
+            browser version nearly matches the driver version, then use
+            the path_chromedriver instead of downloading a new driver.
+            Eg. 116.0.* for both is close, but not 116.0.* and 116.1.*"""
+            browser_driver_close_match = False
+            if (
+                path_chromedriver
+                and full_ch_version
+                and full_ch_driver_version
+            ):
+                full_ch_v_p = full_ch_version.split(".")[0:2]
+                full_ch_driver_v_p = full_ch_driver_version.split(".")[0:2]
+                if full_ch_v_p == full_ch_driver_v_p:
+                    browser_driver_close_match = True
+            # If not ARM MAC and need to use uc_driver (and it's missing),
+            # and already have chromedriver with the correct version,
+            # then copy chromedriver to uc_driver (and it'll get patched).
+            if (
+                not IS_ARM_MAC
+                and use_uc
+                and (
+                    (
+                        (local_ch_exists or path_chromedriver)
+                        and use_version == ch_driver_version
+                        and (
+                            not os.path.exists(LOCAL_UC_DRIVER)
+                            or uc_driver_version != use_version
+                        )
+                    )
+                    or (
+                        local_ch_exists
+                        and use_version == "latest"
+                        and not os.path.exists(LOCAL_UC_DRIVER)
+                    )
+                )
+            ):
+                make_uc_driver_from_chromedriver = True
             elif (
-                not path_chromedriver
+                (use_uc and not os.path.exists(LOCAL_UC_DRIVER))
+                or (not use_uc and not path_chromedriver)
                 or (
-                    use_version != "latest"
-                    and ch_driver_version
-                    and use_version != ch_driver_version
+                    not use_uc
+                    and use_version != "latest"  # Browser version detected
+                    and (ch_driver_version or not local_ch_exists)
                     and (
-                        selenium4_or_newer
-                        or ch_driver_version != "72"
+                        use_version.split(".")[0] != ch_driver_version
+                        or (
+                            not local_ch_exists
+                            and use_version.isnumeric()
+                            and int(use_version) >= 115
+                            and not browser_driver_close_match
+                        )
                     )
                 )
                 or (
-                    is_using_uc(undetectable, browser_name)
-                    and not os.path.exists(LOCAL_UC_DRIVER)
-                )
-                or (
-                    is_using_uc(undetectable, browser_name)
-                    and IS_ARM_MAC
-                    and use_version != "latest"
+                    use_uc
+                    and use_version != "latest"  # Browser version detected
                     and uc_driver_version != use_version
                 )
             ):
                 # chromedriver download needed in the seleniumbase/drivers dir
                 from seleniumbase.console_scripts import sb_install
-
                 args = " ".join(sys.argv)
                 if not ("-n" in sys.argv or " -n=" in args or args == "-c"):
                     # (Not multithreaded)
@@ -3053,14 +3119,22 @@ def get_local_driver(
                     msg = "chromedriver update needed. Getting it now:"
                     if not path_chromedriver:
                         msg = "chromedriver not found. Getting it now:"
-                    print("\nWarning: %s" % msg)
+                    if use_uc and not os.path.exists(LOCAL_UC_DRIVER):
+                        msg = "uc_driver not found. Getting it now:"
+                    if use_uc and os.path.exists(LOCAL_UC_DRIVER):
+                        msg = "uc_driver update needed. Getting it now:"
+                    log_d("\nWarning: %s" % msg)
+                    force_uc = False
                     intel_for_uc = False
-                    if IS_ARM_MAC and is_using_uc(undetectable, browser_name):
+                    if use_uc:
+                        force_uc = True
+                    if IS_ARM_MAC and use_uc:
                         intel_for_uc = True  # Use Intel's driver for UC Mode
                     try:
                         sb_install.main(
                             override="chromedriver %s" % use_version,
                             intel_for_uc=intel_for_uc,
+                            force_uc=force_uc,
                         )
                     except Exception:
                         d_latest = get_latest_chromedriver_version()
@@ -3092,28 +3166,60 @@ def get_local_driver(
                         msg = "chromedriver update needed. Getting it now:"
                         if not path_chromedriver:
                             msg = "chromedriver not found. Getting it now:"
+                        if use_uc and not os.path.exists(LOCAL_UC_DRIVER):
+                            msg = "uc_driver not found. Getting it now:"
+                        if use_uc and os.path.exists(LOCAL_UC_DRIVER):
+                            msg = "uc_driver update needed. Getting it now:"
+                        force_uc = False
                         intel_for_uc = False
-                        if (
-                            IS_ARM_MAC
-                            and is_using_uc(undetectable, browser_name)
-                        ):
+                        if use_uc:
+                            force_uc = True
+                        if IS_ARM_MAC and use_uc:
                             intel_for_uc = True  # Use Intel driver for UC Mode
+                        if os.path.exists(LOCAL_CHROMEDRIVER):
+                            try:
+                                output = subprocess.check_output(
+                                    '"%s" --version' % LOCAL_CHROMEDRIVER,
+                                    shell=True,
+                                )
+                                if IS_WINDOWS:
+                                    output = output.decode("latin1")
+                                else:
+                                    output = output.decode("utf-8")
+                                full_ch_driver_version = output.split(" ")[1]
+                                output = full_ch_driver_version.split(".")[0]
+                                if int(output) >= 2:
+                                    ch_driver_version = output
+                            except Exception:
+                                pass
                         if (
                             (
-                                not is_using_uc(undetectable, browser_name)
+                                not use_uc
                                 and not os.path.exists(LOCAL_CHROMEDRIVER)
                             )
+                            or (use_uc and not os.path.exists(LOCAL_UC_DRIVER))
                             or (
-                                is_using_uc(undetectable, browser_name)
-                                and not os.path.exists(LOCAL_UC_DRIVER)
+                                not use_uc
+                                and (
+                                    use_version.split(".")[0]
+                                    != ch_driver_version
+                                )
+                            )
+                            or (
+                                use_uc
+                                and (
+                                    use_version.split(".")[0]
+                                    != get_uc_driver_version()
+                                )
                             )
                         ):
-                            print("\nWarning: %s" % msg)
+                            log_d("\nWarning: %s" % msg)
                             sys_args = sys.argv  # Save a copy of sys args
                             try:
                                 sb_install.main(
                                     override="chromedriver %s" % use_version,
                                     intel_for_uc=intel_for_uc,
+                                    force_uc=force_uc,
                                 )
                             except Exception:
                                 d_latest = get_latest_chromedriver_version()
@@ -3150,20 +3256,8 @@ def get_local_driver(
                     constants.MultiBrowser.DRIVER_FIXING_LOCK
                 )
                 with uc_lock:  # Avoid multithreaded issues
-                    uc_driver_version = get_uc_driver_version()
-                    use_version = find_chromedriver_version_to_use(
-                        use_version, driver_version
-                    )
-                    if (
-                        (
-                            uc_driver_version != use_version
-                            and use_version != "latest"
-                        )
-                        or not os.path.exists(LOCAL_UC_DRIVER)
-                    ):
-                        if IS_ARM_MAC and os.path.exists(LOCAL_UC_DRIVER):
-                            pass  # Already taken care of in sb_install
-                        elif os.path.exists(LOCAL_CHROMEDRIVER):
+                    if make_uc_driver_from_chromedriver:
+                        if os.path.exists(LOCAL_CHROMEDRIVER):
                             shutil.copyfile(
                                 LOCAL_CHROMEDRIVER, LOCAL_UC_DRIVER
                             )

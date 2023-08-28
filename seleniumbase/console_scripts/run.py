@@ -39,6 +39,7 @@ sbase grid-node start --hub=127.0.0.1
 import colorama
 import sys
 import time
+from seleniumbase.config import settings
 from seleniumbase.fixtures import constants
 
 colorama.init(autoreset=True)
@@ -143,6 +144,8 @@ def show_install_usage():
     print("           sbase get edgedriver")
     print("           sbase get chromedriver 114")
     print("           sbase get chromedriver 114.0.5735.90")
+    print("           sbase get chromedriver stable")
+    print("           sbase get chromedriver beta")
     print("           sbase get chromedriver -p")
     print("  Output:")
     print("           Downloads the webdriver to seleniumbase/drivers/")
@@ -984,6 +987,7 @@ def main():
                         proxy_helper.validate_proxy_string(proxy_string)
                         break
             try:
+                settings.HIDE_DRIVER_DOWNLOADS = False
                 sb_install.main()
             except Exception as e:
                 invalid_run_cmd = constants.Warnings.INVALID_RUN_COMMAND

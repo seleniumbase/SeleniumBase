@@ -121,6 +121,8 @@ def set_settings(settings_file):
             settings.HEADLESS_START_WIDTH = override_settings[key]
         elif key == "HEADLESS_START_HEIGHT":
             settings.HEADLESS_START_HEIGHT = override_settings[key]
+        elif key == "HIDE_DRIVER_DOWNLOADS":
+            settings.HIDE_DRIVER_DOWNLOADS = override_settings[key]
         elif key == "MASTERQA_DEFAULT_VALIDATION_MESSAGE":
             settings.MASTERQA_DEFAULT_VALIDATION_MESSAGE = override_settings[
                 key

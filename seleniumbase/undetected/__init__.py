@@ -13,8 +13,6 @@ from .cdp import CDP
 from .cdp import PageElement
 from .dprocess import start_detached
 from .options import ChromeOptions
-from .patcher import IS_POSIX
-from .patcher import Patcher
 from .reactor import Reactor
 from .webelement import WebElement
 
@@ -26,6 +24,7 @@ __all__ = (
     "CDP",
     "find_chrome_executable",
 )
+IS_POSIX = sys.platform.startswith(("darwin", "cygwin", "linux"))
 logger = logging.getLogger("uc")
 logger.setLevel(logging.getLogger().getEffectiveLevel())
 
@@ -114,14 +113,14 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         """
         self.debug = debug
         self.patcher = None
+        import fasteners
+        from seleniumbase.fixtures import constants
         if patch_driver:
-            import fasteners
-            from seleniumbase.fixtures import constants
-
             uc_lock = fasteners.InterProcessLock(
                 constants.MultiBrowser.DRIVER_FIXING_LOCK
             )
             with uc_lock:
+                from .patcher import Patcher
                 self.patcher = Patcher(
                     executable_path=driver_executable_path,
                     force=patcher_force_close,
@@ -268,50 +267,54 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         if "win32" in sys.platform:
             creationflags = subprocess.CREATE_NO_WINDOW
         self.options = options
-        if not use_subprocess:
-            self.browser_pid = start_detached(
-                options.binary_location, *options.arguments
-            )
-        else:
-            browser = subprocess.Popen(
-                [options.binary_location, *options.arguments],
-                stdin=subprocess.PIPE,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                close_fds=IS_POSIX,
-                creationflags=creationflags,
-            )
-            self.browser_pid = browser.pid
-        service_ = None
-        if patch_driver:
-            service_ = selenium.webdriver.chrome.service.Service(
-                executable_path=self.patcher.executable_path,
-                service_args=["--disable-build-check"],
-                port=port,
-                log_output=os.devnull,
-            )
-        else:
-            service_ = selenium.webdriver.chrome.service.Service(
-                executable_path=driver_executable_path,
-                service_args=["--disable-build-check"],
-                port=port,
-                log_output=os.devnull,
-            )
-        if hasattr(service_, "creationflags"):
-            setattr(service_, "creationflags", creationflags)
-        if hasattr(service_, "creation_flags"):
-            setattr(service_, "creation_flags", creationflags)
-        super().__init__(options=options, service=service_)
-        self.reactor = None
-        if enable_cdp_events:
-            if logging.getLogger().getEffectiveLevel() == logging.DEBUG:
-                logging.getLogger(
-                    "selenium.webdriver.remote.remote_connection"
-                ).setLevel(20)
-            reactor = Reactor(self)
-            reactor.start()
-            self.reactor = reactor
-        self._web_element_cls = WebElement
+        uc_lock = fasteners.InterProcessLock(
+            constants.MultiBrowser.DRIVER_FIXING_LOCK
+        )
+        with uc_lock:
+            if not use_subprocess:
+                self.browser_pid = start_detached(
+                    options.binary_location, *options.arguments
+                )
+            else:
+                browser = subprocess.Popen(
+                    [options.binary_location, *options.arguments],
+                    stdin=subprocess.PIPE,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    close_fds=IS_POSIX,
+                    creationflags=creationflags,
+                )
+                self.browser_pid = browser.pid
+            service_ = None
+            if patch_driver:
+                service_ = selenium.webdriver.chrome.service.Service(
+                    executable_path=self.patcher.executable_path,
+                    service_args=["--disable-build-check"],
+                    port=port,
+                    log_output=os.devnull,
+                )
+            else:
+                service_ = selenium.webdriver.chrome.service.Service(
+                    executable_path=driver_executable_path,
+                    service_args=["--disable-build-check"],
+                    port=port,
+                    log_output=os.devnull,
+                )
+            if hasattr(service_, "creationflags"):
+                setattr(service_, "creationflags", creationflags)
+            if hasattr(service_, "creation_flags"):
+                setattr(service_, "creation_flags", creationflags)
+            super().__init__(options=options, service=service_)
+            self.reactor = None
+            if enable_cdp_events:
+                if logging.getLogger().getEffectiveLevel() == logging.DEBUG:
+                    logging.getLogger(
+                        "selenium.webdriver.remote.remote_connection"
+                    ).setLevel(20)
+                reactor = Reactor(self)
+                reactor.start()
+                self.reactor = reactor
+            self._web_element_cls = WebElement
 
     def __getattribute__(self, item):
         if not super().__getattribute__("debug"):
