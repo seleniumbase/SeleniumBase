@@ -118,6 +118,12 @@ CHROME_START_HEIGHT = 840
 HEADLESS_START_WIDTH = 1440
 HEADLESS_START_HEIGHT = 1880
 
+# If True, hides messages related to downloading drivers.
+# If False, you'll see details about downloading drivers.
+# (This only affects driver downloads coming from tests.)
+# (If calling "sbase get chromedriver", then won't hide.)
+HIDE_DRIVER_DOWNLOADS = False
+
 # #####>>>>>----- MasterQA SETTINGS -----<<<<<#####
 # ##### (Used when importing MasterQA as the parent class)
 

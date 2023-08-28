@@ -72,6 +72,12 @@ CHROME_START_HEIGHT = 840
 HEADLESS_START_WIDTH = 1440
 HEADLESS_START_HEIGHT = 1880
 
+# If True, hides messages related to downloading drivers.
+# If False, you'll see details about downloading drivers.
+# (This only affects driver downloads coming from tests.)
+# (Eg. Using "sbase get chromedriver" won't hide output.)
+HIDE_DRIVER_DOWNLOADS = False
+
 # Changing the default behavior of MasterQA Mode.
 MASTERQA_DEFAULT_VALIDATION_MESSAGE = "Does the page look good?"
 MASTERQA_WAIT_TIME_BEFORE_VERIFY = 0.5

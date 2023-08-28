@@ -35,7 +35,10 @@ class Patcher(object):
         # downloads_folder = "~/Library/Application Support/undetected_drivers"
     downloads_folder = download_helper.get_downloads_folder()
     if not os.path.exists(downloads_folder):
-        os.makedirs(downloads_folder)
+        try:
+            os.makedirs(downloads_folder, exist_ok=True)
+        except Exception:
+            pass  # Only possible during multithreaded tests
     data_path = os.path.abspath(os.path.expanduser(downloads_folder))
 
     def __init__(self, executable_path=None, force=False, version_main=0):
@@ -50,7 +53,10 @@ class Patcher(object):
         self.executable_path = None
         prefix = "undetected"
         if not os.path.exists(self.data_path):
-            os.makedirs(self.data_path, exist_ok=True)
+            try:
+                os.makedirs(self.data_path, exist_ok=True)
+            except Exception:
+                pass
         if not executable_path:
             self.executable_path = os.path.join(
                 self.data_path, "_".join([prefix, self.exe_name])
@@ -137,7 +143,10 @@ class Patcher(object):
             os.unlink(self.zip_path)
         except (FileNotFoundError, OSError):
             pass
-        os.makedirs(self.zip_path, mode=0o755, exist_ok=True)
+        try:
+            os.makedirs(self.zip_path, mode=0o755, exist_ok=True)
+        except Exception:
+            pass
         with zipfile.ZipFile(fp, mode="r") as zf:
             zf.extract(self.exe_name, self.zip_path)
         try:
