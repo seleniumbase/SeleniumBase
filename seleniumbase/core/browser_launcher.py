@@ -457,9 +457,9 @@ def _add_chrome_proxy_extension(
     """Implementation of https://stackoverflow.com/a/35293284 for
     https://stackoverflow.com/questions/12848327/
     (Run Selenium on a proxy server that requires authentication.)"""
-    arg_join = " ".join(sys.argv)
+    args = " ".join(sys.argv)
     if (
-        not ("-n" in sys.argv or " -n=" in arg_join or arg_join == "-c")
+        not ("-n" in sys.argv or " -n=" in args or args == "-c")
         and not multi_proxy
     ):
         # Single-threaded
@@ -870,10 +870,9 @@ def _set_chrome_options(
         # To access the Debugger, go to: chrome://inspect/#devices
         # while a Chromium driver is running.
         # Info: https://chromedevtools.github.io/devtools-protocol/
-        sys_argv = sys.argv
-        arg_join = " ".join(sys_argv)
+        args = " ".join(sys.argv)
         debug_port = 9222
-        if ("-n" in sys.argv) or (" -n=" in arg_join) or ("-c" in sys.argv):
+        if ("-n" in sys.argv or " -n=" in args or args == "-c"):
             debug_port = service_utils.free_port()
         chrome_options.add_argument("--remote-debugging-port=%s" % debug_port)
     if swiftshader:
@@ -2605,8 +2604,7 @@ def get_local_driver(
             # To access the Debugger, go to: edge://inspect/#devices
             # while a Chromium driver is running.
             # Info: https://chromedevtools.github.io/devtools-protocol/
-            sys_argv = sys.argv
-            arg_join = " ".join(sys_argv)
+            args = " ".join(sys.argv)
             free_port = 9222
             if ("-n" in sys.argv or " -n=" in args or args == "-c"):
                 free_port = service_utils.free_port()
@@ -2670,8 +2668,7 @@ def get_local_driver(
                         service_args=["--disable-build-check"],
                     )
                     # https://stackoverflow.com/a/56638103/7058266
-                    sys_argv = sys.argv
-                    arg_join = " ".join(sys_argv)
+                    args = " ".join(sys.argv)
                     free_port = 9222
                     if ("-n" in sys.argv or " -n=" in args or args == "-c"):
                         free_port = service_utils.free_port()
@@ -2744,8 +2741,7 @@ def get_local_driver(
                         service_args=["--disable-build-check"],
                     )
                     # https://stackoverflow.com/a/56638103/7058266
-                    sys_argv = sys.argv
-                    arg_join = " ".join(sys_argv)
+                    args = " ".join(sys.argv)
                     free_port = 9222
                     if ("-n" in sys.argv or " -n=" in args or args == "-c"):
                         free_port = service_utils.free_port()
@@ -2778,8 +2774,8 @@ def get_local_driver(
                 )
             return driver
     elif browser_name == constants.Browser.SAFARI:
-        arg_join = " ".join(sys.argv)
-        if ("-n" in sys.argv) or (" -n=" in arg_join) or (arg_join == "-c"):
+        args = " ".join(sys.argv)
+        if ("-n" in sys.argv or " -n=" in args or args == "-c"):
             # Skip if multithreaded
             raise Exception("Can't run Safari tests in multithreaded mode!")
         warnings.simplefilter("ignore", category=DeprecationWarning)
