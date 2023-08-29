@@ -335,20 +335,20 @@ COMMANDS:
 <summary> ▶️ Here's output from a chromedriver download. (<b>click to expand</b>)</summary>
 
 ```bash
-*** chromedriver version for download = 114.0.5735.90 (Latest)
+*** chromedriver to download = 116.0.5845.96 (Latest Stable) 
 
-Downloading chromedriver_mac_arm64.zip from:
-https://chromedriver.storage.googleapis.com/114.0.5735.90/chromedriver_mac_arm64.zip ...
+Downloading chromedriver-mac-arm64.zip from:
+https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/116.0.5845.96/mac-arm64/chromedriver-mac-arm64.zip ...
 Download Complete!
 
-Extracting ['chromedriver'] from chromedriver_mac_arm64.zip ...
+Extracting ['chromedriver'] from chromedriver-mac-arm64.zip ...
 Unzip Complete!
 
 The file [chromedriver] was saved to:
 /Users/michael/github/SeleniumBase/seleniumbase/drivers/chromedriver
 
-Making [chromedriver 114.0.5735.90] executable ...
-[chromedriver 114.0.5735.90] is now ready for use!
+Making [chromedriver 116.0.5845.96] executable ...
+[chromedriver 116.0.5845.96] is now ready for use!
 ```
 
 </details>
