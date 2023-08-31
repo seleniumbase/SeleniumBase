@@ -349,8 +349,9 @@ sbase mkfile new_test.py
 
 * Options:
 
-``-b`` / ``--basic``  (Basic boilerplate / single-line test)
-``-r`` / ``--rec``  (adds Pdb+ breakpoint for Recorder Mode)
+`-b` / `--basic`  (Basic boilerplate / single-line test)
+`-r` / `--rec`  (adds Pdb+ breakpoint for Recorder Mode)
+``--url=URL``  (makes the test start on a specific page)
 
 * Language Options:
 
@@ -362,12 +363,12 @@ sbase mkfile new_test.py
 
 * Syntax Formats:
 
-``--bc`` / ``--basecase``  (BaseCase class inheritance)
-``--pf`` / ``--pytest-fixture``  (sb pytest fixture)
+``--bc`` / ``--basecase``      (BaseCase class inheritance)
+``--pf`` / ``--pytest-fixture``         (sb pytest fixture)
 ``--cf`` / ``--class-fixture``  (class + sb pytest fixture)
-``--cm`` / ``--context-manager``  (SB context manager)
-``--dc`` / ``--driver-context``  (DriverContext manager)
-``--dm`` / ``--driver-manager``  (Driver manager)
+``--cm`` / ``--context-manager``       (SB context manager)
+``--dc`` / ``--driver-context``     (DriverContext manager)
+``--dm`` / ``--driver-manager``            (Driver manager)
 
 * Output:
 

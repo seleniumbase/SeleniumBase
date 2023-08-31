@@ -11,6 +11,7 @@ Example:
 Options:
     -b / --basic  (Basic boilerplate / single-line test)
     -r / --rec  (adds Pdb+ breakpoint for Recorder Mode)
+    --url=URL  (makes the test start on a specific page)
 
 Language Options:
     --en / --English    |    --zh / --Chinese
@@ -20,12 +21,12 @@ Language Options:
     --ru / --Russian    |    --es / --Spanish
 
 Syntax Formats:
-    --bc / --basecase  (BaseCase class inheritance)
-    --pf / --pytest-fixture  (sb pytest fixture)
-    --cf / --class-fixture  (class + sb pytest fixture)
-    --cm / --context-manager  (SB context manager)
-    --dc / --driver-context  (DriverContext manager)
-    --dm / --driver-manager  (Driver manager)
+    --bc / --basecase       (BaseCase class inheritance)
+    --pf / --pytest-fixture          (sb pytest fixture)
+    --cf / --class-fixture   (class + sb pytest fixture)
+    --cm / --context-manager        (SB context manager)
+    --dc / --driver-context      (DriverContext manager)
+    --dm / --driver-manager             (Driver manager)
 
 Output:
     Creates a new SBase test file with boilerplate code.
@@ -53,6 +54,7 @@ def invalid_run_command(msg=None):
     exp += "  Options:\n"
     exp += "           -b / --basic  (Basic boilerplate / single-line test)\n"
     exp += "           -r / --rec  (adds Pdb+ breakpoint for Recorder Mode)\n"
+    exp += "           --url=URL  (makes the test start on a specific page)\n"
     exp += "  Language Options:\n"
     exp += "           --en / --English    |    --zh / --Chinese\n"
     exp += "           --nl / --Dutch      |    --fr / --French\n"
@@ -60,12 +62,12 @@ def invalid_run_command(msg=None):
     exp += "           --ko / --Korean     |    --pt / --Portuguese\n"
     exp += "           --ru / --Russian    |    --es / --Spanish\n"
     exp += "  Syntax Formats:\n"
-    exp += "           --bc / --basecase  (BaseCase class inheritance)\n"
-    exp += "           --pf / --pytest-fixture  (sb pytest fixture)\n"
-    exp += "           --cf / --class-fixture  (class + sb pytest fixture)\n"
-    exp += "           --cm / --context-manager  (SB context manager)\n"
-    exp += "           --dc / --driver-context  (DriverContext manager)\n"
-    exp += "           --dm / --driver-manager  (Driver manager)\n"
+    exp += "           --bc / --basecase       (BaseCase class inheritance)\n"
+    exp += "           --pf / --pytest-fixture          (sb pytest fixture)\n"
+    exp += "           --cf / --class-fixture   (class + sb pytest fixture)\n"
+    exp += "           --cm / --context-manager        (SB context manager)\n"
+    exp += "           --dc / --driver-context      (DriverContext manager)\n"
+    exp += "           --dm / --driver-manager             (Driver manager)\n"
     exp += "  Output:\n"
     exp += "           Creates a new SBase test file with boilerplate code.\n"
     exp += "           If the file already exists, an error is raised.\n"
@@ -100,6 +102,7 @@ def main():
     help_me = False
     recorder = False
     error_msg = None
+    start_page = None
     invalid_cmd = None
     syntax = "BaseCase"
     language = "English"
@@ -128,6 +131,15 @@ def main():
             option = option.lower()
             if option == "-h" or option == "--help":
                 help_me = True
+            elif option.startswith("--url=") and len(option) > 6:
+                from seleniumbase.fixtures import page_utils
+                start_page = option.split("--url=")[1]
+                if not page_utils.is_valid_url(start_page):
+                    if page_utils.is_valid_url("https://" + start_page):
+                        start_page = "https://" + start_page
+                    else:
+                        raise Exception("Invalid URL: %s" % start_page)
+                basic = True
             elif option == "-b" or option == "--basic":
                 basic = True
             elif option == "-r" or option == "--rec":
@@ -223,7 +235,9 @@ def main():
         goodbye = "Adiós"
         class_name = "MiClaseDePrueba"
     url = ""
-    if basic:
+    if start_page:
+        url = start_page
+    elif basic:
         url = "about:blank"
     elif language not in ["English", "Dutch", "French", "Italian"]:
         url = "data:text/html,<meta charset='utf-8'><p>%s<br><input>" % hello
