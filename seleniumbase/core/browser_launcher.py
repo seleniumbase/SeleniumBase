@@ -247,7 +247,7 @@ def uc_special_open_if_cf(driver, url, proxy_string=None):
                 or has_cf(req_get.text)
             ):
                 special = True
-                if status_str == "403":
+                if status_str == "403" or status_str == "429":
                     time.sleep(0.06)  # Forbidden / Blocked! (Wait first!)
         except Exception:
             pass
@@ -259,9 +259,9 @@ def uc_special_open_if_cf(driver, url, proxy_string=None):
                 driver.switch_to.window(driver.window_handles[-1])
                 time.sleep(0.02)
         else:
-            driver.open(url)  # The original one
+            driver.default_get(url)  # The original one
     else:
-        driver.open(url)  # The original one
+        driver.default_get(url)  # The original one
     return None
 
 
@@ -269,10 +269,10 @@ def uc_open(driver, url):
     if (url.startswith("http:") or url.startswith("https:")):
         with driver:
             time.sleep(0.18)
-            driver.open(url)
+            driver.default_get(url)
             time.sleep(0.02)
     else:
-        driver.open(url)  # The original one
+        driver.default_get(url)  # The original one
     return None
 
 
@@ -285,7 +285,7 @@ def uc_open_with_tab(driver, url):
             driver.switch_to.window(driver.window_handles[-1])
             time.sleep(0.02)
     else:
-        driver.open(url)  # The original one
+        driver.default_get(url)  # The original one
     return None
 
 
@@ -297,7 +297,7 @@ def uc_open_with_reconnect(driver, url):
         driver.close()
         driver.switch_to.window(driver.window_handles[-1])
     else:
-        driver.open(url)  # The original one
+        driver.default_get(url)  # The original one
     return None
 
 
@@ -3538,7 +3538,7 @@ def get_local_driver(
                                 service_args=["--disable-build-check"],
                                 options=chrome_options,
                             )
-                driver.open = driver.get  # Save copy of original
+                driver.default_get = driver.get  # Save copy of original
                 if uc_activated:
                     driver.get = lambda url: uc_special_open_if_cf(
                         driver, url, proxy_string
@@ -3550,6 +3550,7 @@ def get_local_driver(
                     driver.uc_open_with_reconnect = (
                         lambda url: uc_open_with_reconnect(driver, url)
                     )
+                driver.open = driver.get  # Shortcut
                 return driver
             else:  # Running headless on Linux (and not using --uc)
                 try:
