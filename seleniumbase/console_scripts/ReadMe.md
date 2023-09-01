@@ -70,7 +70,7 @@ sbase get chromedriver -p
 ```
 
 (Drivers:  ``chromedriver``, ``geckodriver``, ``edgedriver``,
-           ``iedriver``, ``operadriver``, ``uc_driver``)
+           ``iedriver``, ``uc_driver``)
 
 (Options:  A specific driver version or major version integer.
            If not set, the driver version matches the browser.

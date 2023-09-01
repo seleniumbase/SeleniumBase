@@ -122,7 +122,6 @@ def is_valid_url(url):
         or url.startswith("data:")
         or url.startswith("edge:")
         or url.startswith("file:")
-        or url.startswith("opera:")
     ):
         return True
     else:

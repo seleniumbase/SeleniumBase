@@ -103,9 +103,6 @@ def get_driver_name_and_version(driver, browser):
     elif driver.capabilities["browserName"].lower() == "msedge":
         cap_dict = driver.capabilities["msedge"]
         return ("msedgedriver", cap_dict["msedgedriverVersion"].split(" ")[0])
-    elif driver.capabilities["browserName"].lower() == "opera":
-        cap_dict = driver.capabilities["opera"]
-        return ("operadriver", cap_dict["operadriverVersion"].split(" ")[0])
     elif driver.capabilities["browserName"].lower() == "firefox":
         return ("geckodriver", driver.capabilities["moz:geckodriverVersion"])
     elif browser == "safari":

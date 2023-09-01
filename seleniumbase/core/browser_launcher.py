@@ -10,6 +10,7 @@ import urllib3
 import warnings
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.common.options import ArgOptions
 from selenium.webdriver.common.service import utils as service_utils
 from selenium.webdriver.edge.service import Service as EdgeService
 from selenium.webdriver.firefox.service import Service as FirefoxService
@@ -25,11 +26,6 @@ from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import shared_utils
 
 urllib3.disable_warnings()
-selenium4_or_newer = False
-if sys.version_info >= (3, 7):
-    selenium4_or_newer = True
-    from selenium.webdriver.common.options import ArgOptions
-
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 # Make sure that the SeleniumBase DRIVER_DIR is at the top of the System PATH
 # (Changes to the System PATH with os.environ only last during the test run)
@@ -57,7 +53,6 @@ LOCAL_GECKODRIVER = None
 LOCAL_EDGEDRIVER = None
 LOCAL_IEDRIVER = None
 LOCAL_HEADLESS_IEDRIVER = None
-LOCAL_OPERADRIVER = None
 LOCAL_UC_DRIVER = None
 IS_ARM_MAC = shared_utils.is_arm_mac()
 IS_MAC = shared_utils.is_mac()
@@ -67,7 +62,6 @@ if IS_MAC or IS_LINUX:
     LOCAL_CHROMEDRIVER = DRIVER_DIR + "/chromedriver"
     LOCAL_GECKODRIVER = DRIVER_DIR + "/geckodriver"
     LOCAL_EDGEDRIVER = DRIVER_DIR + "/msedgedriver"
-    LOCAL_OPERADRIVER = DRIVER_DIR + "/operadriver"
     LOCAL_UC_DRIVER = DRIVER_DIR + "/uc_driver"
 elif IS_WINDOWS:
     LOCAL_EDGEDRIVER = DRIVER_DIR + "/msedgedriver.exe"
@@ -75,7 +69,6 @@ elif IS_WINDOWS:
     LOCAL_HEADLESS_IEDRIVER = DRIVER_DIR + "/headless_ie_selenium.exe"
     LOCAL_CHROMEDRIVER = DRIVER_DIR + "/chromedriver.exe"
     LOCAL_GECKODRIVER = DRIVER_DIR + "/geckodriver.exe"
-    LOCAL_OPERADRIVER = DRIVER_DIR + "/operadriver.exe"
     LOCAL_UC_DRIVER = DRIVER_DIR + "/uc_driver.exe"
 else:
     # Cannot determine system
@@ -361,17 +354,11 @@ def _repair_chromedriver(chrome_options, headless_options, mcv=None):
         "sbase get chromedriver 72.0.3626.69", shell=True
     )
     try:
-        if selenium4_or_newer:
-            service = ChromeService(executable_path=LOCAL_CHROMEDRIVER)
-            driver = webdriver.Chrome(
-                service=service,
-                options=headless_options,
-            )
-        else:
-            driver = webdriver.Chrome(
-                executable_path=LOCAL_CHROMEDRIVER,
-                options=headless_options,
-            )
+        service = ChromeService(executable_path=LOCAL_CHROMEDRIVER)
+        driver = webdriver.Chrome(
+            service=service,
+            options=headless_options,
+        )
     except Exception:
         subprocess.check_call(
             "sbase get chromedriver latest-1", shell=True
@@ -502,11 +489,7 @@ def _add_chrome_proxy_extension(
 
 
 def is_using_uc(undetectable, browser_name):
-    if (
-        selenium4_or_newer
-        and undetectable
-        and browser_name == constants.Browser.GOOGLE_CHROME
-    ):
+    if undetectable and browser_name == constants.Browser.GOOGLE_CHROME:
         return True
     return False
 
@@ -614,8 +597,6 @@ def _set_chrome_options(
         from seleniumbase import undetected
 
         chrome_options = undetected.ChromeOptions()
-    elif browser_name == constants.Browser.OPERA:
-        chrome_options = webdriver.opera.options.Options()
     elif browser_name == constants.Browser.EDGE:
         chrome_options = webdriver.edge.options.Options()
 
@@ -647,8 +628,6 @@ def _set_chrome_options(
     if external_pdf:
         prefs["plugins.always_open_pdf_externally"] = True
     chrome_options.add_experimental_option("prefs", prefs)
-    if not selenium4_or_newer:
-        chrome_options.add_experimental_option("w3c", True)
     if enable_sync:
         chrome_options.add_experimental_option(
             "excludeSwitches",
@@ -660,32 +639,6 @@ def _set_chrome_options(
             "excludeSwitches",
             ["enable-automation", "enable-logging", "enable-blink-features"],
         )
-    if browser_name == constants.Browser.OPERA:
-        # Disable the Blink features
-        if enable_sync:
-            chrome_options.add_experimental_option(
-                "excludeSwitches",
-                (
-                    [
-                        "enable-automation",
-                        "enable-logging",
-                        "disable-sync",
-                        "enable-blink-features",
-                    ]
-                ),
-            )
-            chrome_options.add_argument("--enable-sync")
-        else:
-            chrome_options.add_experimental_option(
-                "excludeSwitches",
-                (
-                    [
-                        "enable-automation",
-                        "enable-logging",
-                        "enable-blink-features",
-                    ]
-                ),
-            )
     if mobile_emulator:
         emulator_settings = {}
         device_metrics = {}
@@ -756,15 +709,13 @@ def _set_chrome_options(
         abs_path = os.path.abspath(extension_dir)
         chrome_options = add_chrome_ext_dir(chrome_options, abs_path)
     if (
-        selenium4_or_newer
-        and page_load_strategy
+        page_load_strategy
         and page_load_strategy.lower() in ["eager", "none"]
     ):
         # Only change it if not "normal", which is the default.
         chrome_options.page_load_strategy = page_load_strategy.lower()
     elif (
-        selenium4_or_newer
-        and not page_load_strategy
+        not page_load_strategy
         and hasattr(settings, "PAGE_LOAD_STRATEGY")
         and settings.PAGE_LOAD_STRATEGY
         and settings.PAGE_LOAD_STRATEGY.lower() in ["eager", "none"]
@@ -851,21 +802,16 @@ def _set_chrome_options(
                 multi_proxy,
             )
         chrome_options.add_argument("--proxy-pac-url=%s" % proxy_pac_url)
-    if browser_name != constants.Browser.OPERA:
-        # Opera Chromium doesn't support these switches
-        if (
-            not is_using_uc(undetectable, browser_name)
-            or not enable_ws
-            or proxy_string
-        ):
-            chrome_options.add_argument("--ignore-certificate-errors")
-        if not enable_ws:
-            chrome_options.add_argument("--disable-web-security")
-        if IS_LINUX or not is_using_uc(undetectable, browser_name):
-            chrome_options.add_argument("--no-sandbox")
-    else:
-        # Opera Chromium only!
-        chrome_options.add_argument("--allow-elevated-browser")
+    if (
+        not is_using_uc(undetectable, browser_name)
+        or not enable_ws
+        or proxy_string
+    ):
+        chrome_options.add_argument("--ignore-certificate-errors")
+    if not enable_ws:
+        chrome_options.add_argument("--disable-web-security")
+    if IS_LINUX or not is_using_uc(undetectable, browser_name):
+        chrome_options.add_argument("--no-sandbox")
     if remote_debug:
         # To access the Debugger, go to: chrome://inspect/#devices
         # while a Chromium driver is running.
@@ -1503,7 +1449,7 @@ def get_remote_driver(
     device_height,
     device_pixel_ratio,
 ):
-    if use_wire and selenium4_or_newer:
+    if use_wire:
         pip_find_lock = fasteners.InterProcessLock(
             constants.PipInstall.FINDLOCK
         )
@@ -1623,11 +1569,7 @@ def get_remote_driver(
             device_height,
             device_pixel_ratio,
         )
-        capabilities = None
-        if selenium4_or_newer:
-            capabilities = webdriver.ChromeOptions().to_capabilities()
-        else:
-            capabilities = chrome_options.to_capabilities()
+        capabilities = webdriver.ChromeOptions().to_capabilities()
         # Set custom desired capabilities
         selenoid = False
         selenoid_options = None
@@ -1648,34 +1590,27 @@ def get_remote_driver(
                 platform_name = desired_caps[key]
             elif re.match("[a-zA-Z0-9]*:[a-zA-Z0-9]*", key):
                 extension_capabilities[key] = desired_caps[key]
-        if selenium4_or_newer:
-            chrome_options.set_capability("cloud:options", capabilities)
-            if selenoid:
-                snops = selenoid_options
-                chrome_options.set_capability("selenoid:options", snops)
-            if screen_resolution:
-                scres = screen_resolution
-                chrome_options.set_capability("screenResolution", scres)
-            if browser_version:
-                br_vers = browser_version
-                chrome_options.set_capability("browserVersion", br_vers)
-            if platform_name:
-                plat_name = platform_name
-                chrome_options.set_capability("platformName", plat_name)
-            if extension_capabilities:
-                for key in extension_capabilities:
-                    ext_caps = extension_capabilities
-                    chrome_options.set_capability(key, ext_caps[key])
-            return webdriver.Remote(
-                command_executor=address,
-                options=chrome_options,
-            )
-        else:
-            warnings.simplefilter("ignore", category=DeprecationWarning)
-            return webdriver.Remote(
-                command_executor=address,
-                desired_capabilities=capabilities,
-            )
+        chrome_options.set_capability("cloud:options", capabilities)
+        if selenoid:
+            snops = selenoid_options
+            chrome_options.set_capability("selenoid:options", snops)
+        if screen_resolution:
+            scres = screen_resolution
+            chrome_options.set_capability("screenResolution", scres)
+        if browser_version:
+            br_vers = browser_version
+            chrome_options.set_capability("browserVersion", br_vers)
+        if platform_name:
+            plat_name = platform_name
+            chrome_options.set_capability("platformName", plat_name)
+        if extension_capabilities:
+            for key in extension_capabilities:
+                ext_caps = extension_capabilities
+                chrome_options.set_capability(key, ext_caps[key])
+        return webdriver.Remote(
+            command_executor=address,
+            options=chrome_options,
+        )
     elif browser_name == constants.Browser.FIREFOX:
         firefox_options = _set_firefox_options(
             downloads_path,
@@ -1690,11 +1625,7 @@ def get_remote_driver(
             firefox_arg,
             firefox_pref,
         )
-        capabilities = None
-        if selenium4_or_newer:
-            capabilities = webdriver.FirefoxOptions().to_capabilities()
-        else:
-            capabilities = firefox_options.to_capabilities()
+        capabilities = webdriver.FirefoxOptions().to_capabilities()
         capabilities["marionette"] = True
         if IS_LINUX and headless:
             capabilities["moz:firefoxOptions"] = {"args": ["-headless"]}
@@ -1718,51 +1649,35 @@ def get_remote_driver(
                 platform_name = desired_caps[key]
             elif re.match("[a-zA-Z0-9]*:[a-zA-Z0-9]*", key):
                 extension_capabilities[key] = desired_caps[key]
-        if selenium4_or_newer:
-            firefox_options.set_capability("cloud:options", capabilities)
-            if selenoid:
-                snops = selenoid_options
-                firefox_options.set_capability("selenoid:options", snops)
-            if screen_resolution:
-                scres = screen_resolution
-                firefox_options.set_capability("screenResolution", scres)
-            if browser_version:
-                br_vers = browser_version
-                firefox_options.set_capability("browserVersion", br_vers)
-            if platform_name:
-                plat_name = platform_name
-                firefox_options.set_capability("platformName", plat_name)
-            if extension_capabilities:
-                for key in extension_capabilities:
-                    ext_caps = extension_capabilities
-                    firefox_options.set_capability(key, ext_caps[key])
-            return webdriver.Remote(
-                command_executor=address,
-                options=firefox_options,
-            )
-        else:
-            warnings.simplefilter("ignore", category=DeprecationWarning)
-            return webdriver.Remote(
-                command_executor=address,
-                desired_capabilities=capabilities,
-            )
+        firefox_options.set_capability("cloud:options", capabilities)
+        if selenoid:
+            snops = selenoid_options
+            firefox_options.set_capability("selenoid:options", snops)
+        if screen_resolution:
+            scres = screen_resolution
+            firefox_options.set_capability("screenResolution", scres)
+        if browser_version:
+            br_vers = browser_version
+            firefox_options.set_capability("browserVersion", br_vers)
+        if platform_name:
+            plat_name = platform_name
+            firefox_options.set_capability("platformName", plat_name)
+        if extension_capabilities:
+            for key in extension_capabilities:
+                ext_caps = extension_capabilities
+                firefox_options.set_capability(key, ext_caps[key])
+        return webdriver.Remote(
+            command_executor=address,
+            options=firefox_options,
+        )
     elif browser_name == constants.Browser.INTERNET_EXPLORER:
         capabilities = webdriver.DesiredCapabilities.INTERNETEXPLORER
-        if selenium4_or_newer:
-            remote_options = ArgOptions()
-            remote_options.set_capability("cloud:options", desired_caps)
-            return webdriver.Remote(
-                command_executor=address,
-                options=remote_options,
-            )
-        else:
-            warnings.simplefilter("ignore", category=DeprecationWarning)
-            for key in desired_caps.keys():
-                capabilities[key] = desired_caps[key]
-            return webdriver.Remote(
-                command_executor=address,
-                desired_capabilities=capabilities,
-            )
+        remote_options = ArgOptions()
+        remote_options.set_capability("cloud:options", desired_caps)
+        return webdriver.Remote(
+            command_executor=address,
+            options=remote_options,
+        )
     elif browser_name == constants.Browser.EDGE:
         edge_options = _set_chrome_options(
             browser_name,
@@ -1814,11 +1729,7 @@ def get_remote_driver(
             device_height,
             device_pixel_ratio,
         )
-        capabilities = None
-        if selenium4_or_newer:
-            capabilities = webdriver.EdgeOptions().to_capabilities()
-        else:
-            capabilities = chrome_options.to_capabilities()
+        capabilities = webdriver.EdgeOptions().to_capabilities()
         # Set custom desired capabilities
         selenoid = False
         selenoid_options = None
@@ -1839,173 +1750,43 @@ def get_remote_driver(
                 platform_name = desired_caps[key]
             elif re.match("[a-zA-Z0-9]*:[a-zA-Z0-9]*", key):
                 extension_capabilities[key] = desired_caps[key]
-        if selenium4_or_newer:
-            edge_options.set_capability("cloud:options", capabilities)
-            if selenoid:
-                snops = selenoid_options
-                edge_options.set_capability("selenoid:options", snops)
-            if screen_resolution:
-                scres = screen_resolution
-                edge_options.set_capability("screenResolution", scres)
-            if browser_version:
-                br_vers = browser_version
-                edge_options.set_capability("browserVersion", br_vers)
-            if platform_name:
-                plat_name = platform_name
-                edge_options.set_capability("platformName", plat_name)
-            if extension_capabilities:
-                for key in extension_capabilities:
-                    ext_caps = extension_capabilities
-                    edge_options.set_capability(key, ext_caps[key])
-            return webdriver.Remote(
-                command_executor=address,
-                options=edge_options,
-            )
-        else:
-            warnings.simplefilter("ignore", category=DeprecationWarning)
-            for key in desired_caps.keys():
-                capabilities[key] = desired_caps[key]
-            return webdriver.Remote(
-                command_executor=address,
-                desired_capabilities=capabilities,
-            )
+        edge_options.set_capability("cloud:options", capabilities)
+        if selenoid:
+            snops = selenoid_options
+            edge_options.set_capability("selenoid:options", snops)
+        if screen_resolution:
+            scres = screen_resolution
+            edge_options.set_capability("screenResolution", scres)
+        if browser_version:
+            br_vers = browser_version
+            edge_options.set_capability("browserVersion", br_vers)
+        if platform_name:
+            plat_name = platform_name
+            edge_options.set_capability("platformName", plat_name)
+        if extension_capabilities:
+            for key in extension_capabilities:
+                ext_caps = extension_capabilities
+                edge_options.set_capability(key, ext_caps[key])
+        return webdriver.Remote(
+            command_executor=address,
+            options=edge_options,
+        )
     elif browser_name == constants.Browser.SAFARI:
         capabilities = webdriver.DesiredCapabilities.SAFARI
-        if selenium4_or_newer:
-            remote_options = ArgOptions()
-            remote_options.set_capability("cloud:options", desired_caps)
-            return webdriver.Remote(
-                command_executor=address,
-                options=remote_options,
-            )
-        else:
-            warnings.simplefilter("ignore", category=DeprecationWarning)
-            for key in desired_caps.keys():
-                capabilities[key] = desired_caps[key]
-            return webdriver.Remote(
-                command_executor=address,
-                desired_capabilities=capabilities,
-            )
-    elif browser_name == constants.Browser.OPERA:
-        opera_options = _set_chrome_options(
-            browser_name,
-            downloads_path,
-            headless,
-            locale_code,
-            proxy_string,
-            proxy_auth,
-            proxy_user,
-            proxy_pass,
-            proxy_bypass_list,
-            proxy_pac_url,
-            multi_proxy,
-            user_agent,
-            recorder_ext,
-            disable_js,
-            disable_csp,
-            enable_ws,
-            enable_sync,
-            use_auto_ext,
-            undetectable,
-            uc_cdp_events,
-            uc_subprocess,
-            no_sandbox,
-            disable_gpu,
-            headless2,
-            incognito,
-            guest_mode,
-            dark_mode,
-            devtools,
-            remote_debug,
-            enable_3d_apis,
-            swiftshader,
-            ad_block_on,
-            block_images,
-            do_not_track,
-            chromium_arg,
-            user_data_dir,
-            extension_zip,
-            extension_dir,
-            binary_location,
-            driver_version,
-            page_load_strategy,
-            use_wire,
-            external_pdf,
-            servername,
-            mobile_emulator,
-            device_width,
-            device_height,
-            device_pixel_ratio,
+        remote_options = ArgOptions()
+        remote_options.set_capability("cloud:options", desired_caps)
+        return webdriver.Remote(
+            command_executor=address,
+            options=remote_options,
         )
-        capabilities = None
-        if selenium4_or_newer:
-            capabilities = webdriver.DesiredCapabilities.OPERA
-        else:
-            opera_options = webdriver.opera.options.Options()
-            capabilities = opera_options.to_capabilities()
-        # Set custom desired capabilities
-        selenoid = False
-        selenoid_options = None
-        screen_resolution = None
-        browser_version = None
-        platform_name = None
-        extension_capabilities = {}
-        for key in desired_caps.keys():
-            capabilities[key] = desired_caps[key]
-            if key == "selenoid:options":
-                selenoid = True
-                selenoid_options = desired_caps[key]
-            elif key == "screenResolution":
-                screen_resolution = desired_caps[key]
-            elif key == "version" or key == "browserVersion":
-                browser_version = desired_caps[key]
-            elif key == "platform" or key == "platformName":
-                platform_name = desired_caps[key]
-            elif re.match("[a-zA-Z0-9]*:[a-zA-Z0-9]*", key):
-                extension_capabilities[key] = desired_caps[key]
-        if selenium4_or_newer:
-            opera_options.set_capability("cloud:options", capabilities)
-            if selenoid:
-                snops = selenoid_options
-                opera_options.set_capability("selenoid:options", snops)
-            if screen_resolution:
-                scres = screen_resolution
-                opera_options.set_capability("screenResolution", scres)
-            if browser_version:
-                br_vers = browser_version
-                opera_options.set_capability("browserVersion", br_vers)
-            if platform_name:
-                plat_name = platform_name
-                opera_options.set_capability("platformName", plat_name)
-            if extension_capabilities:
-                for key in extension_capabilities:
-                    ext_caps = extension_capabilities
-                    opera_options.set_capability(key, ext_caps[key])
-            return webdriver.Remote(
-                command_executor=address,
-                options=opera_options,
-            )
-        else:
-            warnings.simplefilter("ignore", category=DeprecationWarning)
-            return webdriver.Remote(
-                command_executor=address,
-                desired_capabilities=capabilities,
-            )
     elif browser_name == constants.Browser.REMOTE:
-        if selenium4_or_newer:
-            remote_options = ArgOptions()
-            for cap_name, cap_value in desired_caps.items():
-                remote_options.set_capability(cap_name, cap_value)
-            return webdriver.Remote(
-                command_executor=address,
-                options=remote_options,
-            )
-        else:
-            warnings.simplefilter("ignore", category=DeprecationWarning)
-            return webdriver.Remote(
-                command_executor=address,
-                desired_capabilities=desired_caps,
-            )
+        remote_options = ArgOptions()
+        for cap_name, cap_value in desired_caps.items():
+            remote_options.set_capability(cap_name, cap_value)
+        return webdriver.Remote(
+            command_executor=address,
+            options=remote_options,
+        )
 
 
 def get_local_driver(
@@ -2063,7 +1844,7 @@ def get_local_driver(
     Can also be used to spin up additional browsers for the same test."""
     downloads_path = DOWNLOADS_FOLDER
     b_path = binary_location
-    if use_wire and selenium4_or_newer:
+    if use_wire:
         driver_fixing_lock = fasteners.InterProcessLock(
             constants.MultiBrowser.DRIVER_FIXING_LOCK
         )
@@ -2127,101 +1908,88 @@ def get_local_driver(
                         sys.argv = sys_args  # Put back original sys args
         # Launch Firefox
         if os.path.exists(LOCAL_GECKODRIVER):
-            if selenium4_or_newer:
-                service = FirefoxService(
-                    executable_path=LOCAL_GECKODRIVER,
-                    log_output=os.devnull,
+            service = FirefoxService(
+                executable_path=LOCAL_GECKODRIVER,
+                log_output=os.devnull,
+            )
+            try:
+                return webdriver.Firefox(
+                    service=service,
+                    options=firefox_options,
                 )
-                try:
+            except BaseException as e:
+                if (
+                    "geckodriver unexpectedly exited" in str(e)
+                    or "Process unexpectedly closed" in str(e)
+                    or "Failed to read marionette port" in str(e)
+                    or "A connection attempt failed" in str(e)
+                    or hasattr(e, "msg") and (
+                        "geckodriver unexpectedly exited" in e.msg
+                        or "Process unexpectedly closed" in e.msg
+                        or "Failed to read marionette port" in e.msg
+                        or "A connection attempt failed" in e.msg
+                    )
+                ):
+                    time.sleep(0.1)
+                    if (
+                        IS_LINUX
+                        and headless
+                        and (
+                            "unexpected" in str(e)
+                            or (
+                                hasattr(e, "msg") and "unexpected" in e.msg
+                            )
+                        )
+                    ):
+                        firefox_options.add_argument("-headless")
                     return webdriver.Firefox(
                         service=service,
                         options=firefox_options,
                     )
-                except BaseException as e:
-                    if (
-                        "geckodriver unexpectedly exited" in str(e)
-                        or "Process unexpectedly closed" in str(e)
-                        or "Failed to read marionette port" in str(e)
-                        or "A connection attempt failed" in str(e)
-                        or hasattr(e, "msg") and (
-                            "geckodriver unexpectedly exited" in e.msg
-                            or "Process unexpectedly closed" in e.msg
-                            or "Failed to read marionette port" in e.msg
-                            or "A connection attempt failed" in e.msg
-                        )
-                    ):
-                        time.sleep(0.1)
-                        if (
-                            IS_LINUX
-                            and headless
-                            and (
-                                "unexpected" in str(e)
-                                or (
-                                    hasattr(e, "msg") and "unexpected" in e.msg
-                                )
-                            )
-                        ):
-                            firefox_options.add_argument("-headless")
-                        return webdriver.Firefox(
-                            service=service,
-                            options=firefox_options,
-                        )
-                    else:
-                        raise  # Not an obvious fix.
-            else:
-                return webdriver.Firefox(
-                    executable_path=LOCAL_GECKODRIVER,
-                    service_log_path=os.devnull,
-                    options=firefox_options,
-                )
+                else:
+                    raise  # Not an obvious fix.
         else:
-            if selenium4_or_newer:
-                service = FirefoxService(log_output=os.devnull)
-                try:
+            service = FirefoxService(log_output=os.devnull)
+            try:
+                return webdriver.Firefox(
+                    service=service,
+                    options=firefox_options,
+                )
+            except BaseException as e:
+                if (
+                    "geckodriver unexpectedly exited" in str(e)
+                    or "Process unexpectedly closed" in str(e)
+                    or "Failed to read marionette port" in str(e)
+                    or "A connection attempt failed" in str(e)
+                    or hasattr(e, "msg") and (
+                        "geckodriver unexpectedly exited" in e.msg
+                        or "Process unexpectedly closed" in e.msg
+                        or "Failed to read marionette port" in e.msg
+                        or "A connection attempt failed" in e.msg
+                    )
+                ):
+                    time.sleep(0.1)
+                    if (
+                        IS_LINUX
+                        and headless
+                        and (
+                            "unexpected" in str(e)
+                            or (
+                                hasattr(e, "msg") and "unexpected" in e.msg
+                            )
+                        )
+                    ):
+                        firefox_options.add_argument("-headless")
                     return webdriver.Firefox(
                         service=service,
                         options=firefox_options,
                     )
-                except BaseException as e:
-                    if (
-                        "geckodriver unexpectedly exited" in str(e)
-                        or "Process unexpectedly closed" in str(e)
-                        or "Failed to read marionette port" in str(e)
-                        or "A connection attempt failed" in str(e)
-                        or hasattr(e, "msg") and (
-                            "geckodriver unexpectedly exited" in e.msg
-                            or "Process unexpectedly closed" in e.msg
-                            or "Failed to read marionette port" in e.msg
-                            or "A connection attempt failed" in e.msg
-                        )
-                    ):
-                        time.sleep(0.1)
-                        if (
-                            IS_LINUX
-                            and headless
-                            and (
-                                "unexpected" in str(e)
-                                or (
-                                    hasattr(e, "msg") and "unexpected" in e.msg
-                                )
-                            )
-                        ):
-                            firefox_options.add_argument("-headless")
-                        return webdriver.Firefox(
-                            service=service,
-                            options=firefox_options,
-                        )
-                    else:
-                        raise  # Not an obvious fix.
-            else:
-                return webdriver.Firefox(
-                    service_log_path=os.devnull,
-                    options=firefox_options,
-                )
+                else:
+                    raise  # Not an obvious fix.
     elif browser_name == constants.Browser.INTERNET_EXPLORER:
         if not IS_WINDOWS:
             raise Exception(
-                "IE Browser is for Windows-based operating systems only!"
+                "IE Browser is for Windows-based systems only!"
             )
         from selenium.webdriver.ie.options import Options
 
@@ -2393,12 +2161,8 @@ def get_local_driver(
                     sys.argv = sys_args  # Put back the original sys args
 
         # For Microsoft Edge (Chromium) version 80 or higher
-        if selenium4_or_newer:
-            Edge = webdriver.edge.webdriver.WebDriver
-            EdgeOptions = webdriver.edge.webdriver.Options
-        else:
-            from msedge.selenium_tools import Edge, EdgeOptions
-
+        Edge = webdriver.edge.webdriver.WebDriver
+        EdgeOptions = webdriver.edge.webdriver.Options
         if LOCAL_EDGEDRIVER and os.path.exists(LOCAL_EDGEDRIVER):
             try:
                 make_driver_executable_if_not(LOCAL_EDGEDRIVER)
@@ -2420,8 +2184,6 @@ def get_local_driver(
         if external_pdf:
             prefs["plugins.always_open_pdf_externally"] = True
         edge_options.add_experimental_option("prefs", prefs)
-        if not selenium4_or_newer:
-            edge_options.add_experimental_option("w3c", True)
         edge_options.add_argument(
             "--disable-blink-features=AutomationControlled"
         )
@@ -2431,8 +2193,7 @@ def get_local_driver(
         if not enable_sync:
             edge_options.add_argument("--disable-sync")
         if (
-            (guest_mode or IS_WINDOWS or selenium4_or_newer)
-            and not recorder_ext and not disable_csp and not proxy_auth
+            not recorder_ext and not disable_csp and not proxy_auth
         ):
             edge_options.add_argument("--guest")
         if dark_mode:
@@ -2536,15 +2297,13 @@ def get_local_driver(
             edge_options.add_argument("--disable-renderer-backgrounding")
         edge_options.add_argument("--disable-backgrounding-occluded-windows")
         if (
-            selenium4_or_newer
-            and page_load_strategy
+            page_load_strategy
             and page_load_strategy.lower() in ["eager", "none"]
         ):
             # Only change it if not "normal", which is the default.
             edge_options.page_load_strategy = page_load_strategy.lower()
         elif (
-            selenium4_or_newer
-            and not page_load_strategy
+            not page_load_strategy
             and hasattr(settings, "PAGE_LOAD_STRATEGY")
             and settings.PAGE_LOAD_STRATEGY
             and settings.PAGE_LOAD_STRATEGY.lower() in ["eager", "none"]
@@ -2634,168 +2393,94 @@ def get_local_driver(
                     edge_options.add_argument(chromium_arg_item)
         if binary_location:
             edge_options.binary_location = binary_location
-        if selenium4_or_newer:
-            try:
+        try:
+            service = EdgeService(
+                executable_path=LOCAL_EDGEDRIVER,
+                log_output=os.devnull,
+                service_args=["--disable-build-check"],
+            )
+            driver = Edge(service=service, options=edge_options)
+        except Exception as e:
+            if not hasattr(e, "msg"):
+                raise
+            auto_upgrade_edgedriver = False
+            edge_version = None
+            if (
+                "This version of MSEdgeDriver only supports" in e.msg
+                or "This version of Microsoft Edge WebDriver" in e.msg
+            ):
+                if "Current browser version is " in e.msg:
+                    auto_upgrade_edgedriver = True
+                    edge_version = e.msg.split(
+                        "Current browser version is "
+                    )[1].split(" ")[0]
+                elif "only supports MSEdge version " in e.msg:
+                    auto_upgrade_edgedriver = True
+                    edge_version = e.msg.split(
+                        "only supports MSEdge version "
+                    )[1].split(" ")[0]
+            elif "DevToolsActivePort file doesn't exist" in e.msg:
                 service = EdgeService(
                     executable_path=LOCAL_EDGEDRIVER,
                     log_output=os.devnull,
                     service_args=["--disable-build-check"],
                 )
-                driver = Edge(service=service, options=edge_options)
-            except Exception as e:
-                if not hasattr(e, "msg"):
-                    raise
-                auto_upgrade_edgedriver = False
-                edge_version = None
-                if (
-                    "This version of MSEdgeDriver only supports" in e.msg
-                    or "This version of Microsoft Edge WebDriver" in e.msg
-                ):
-                    if "Current browser version is " in e.msg:
-                        auto_upgrade_edgedriver = True
-                        edge_version = e.msg.split(
-                            "Current browser version is "
-                        )[1].split(" ")[0]
-                    elif "only supports MSEdge version " in e.msg:
-                        auto_upgrade_edgedriver = True
-                        edge_version = e.msg.split(
-                            "only supports MSEdge version "
-                        )[1].split(" ")[0]
-                elif "DevToolsActivePort file doesn't exist" in e.msg:
-                    service = EdgeService(
-                        executable_path=LOCAL_EDGEDRIVER,
-                        log_output=os.devnull,
-                        service_args=["--disable-build-check"],
-                    )
-                    # https://stackoverflow.com/a/56638103/7058266
-                    args = " ".join(sys.argv)
-                    free_port = 9222
-                    if ("-n" in sys.argv or " -n=" in args or args == "-c"):
-                        free_port = service_utils.free_port()
-                    edge_options.add_argument(
-                        "--remote-debugging-port=%s" % free_port
-                    )
-                    return Edge(service=service, options=edge_options)
-                if not auto_upgrade_edgedriver:
-                    raise  # Not an obvious fix.
-                else:
-                    pass  # Try upgrading EdgeDriver to match Edge.
+                # https://stackoverflow.com/a/56638103/7058266
                 args = " ".join(sys.argv)
-                if "-n" in sys.argv or " -n=" in args or args == "-c":
-                    edgedriver_fixing_lock = fasteners.InterProcessLock(
-                        constants.MultiBrowser.DRIVER_FIXING_LOCK
-                    )
-                    with edgedriver_fixing_lock:
-                        try:
-                            if not _was_driver_repaired():
-                                _repair_edgedriver(edge_version)
-                                _mark_driver_repaired()
-                        except Exception:
-                            pass
-                else:
+                free_port = 9222
+                if ("-n" in sys.argv or " -n=" in args or args == "-c"):
+                    free_port = service_utils.free_port()
+                edge_options.add_argument(
+                    "--remote-debugging-port=%s" % free_port
+                )
+                return Edge(service=service, options=edge_options)
+            if not auto_upgrade_edgedriver:
+                raise  # Not an obvious fix.
+            else:
+                pass  # Try upgrading EdgeDriver to match Edge.
+            args = " ".join(sys.argv)
+            if "-n" in sys.argv or " -n=" in args or args == "-c":
+                edgedriver_fixing_lock = fasteners.InterProcessLock(
+                    constants.MultiBrowser.DRIVER_FIXING_LOCK
+                )
+                with edgedriver_fixing_lock:
                     try:
                         if not _was_driver_repaired():
                             _repair_edgedriver(edge_version)
-                        _mark_driver_repaired()
+                            _mark_driver_repaired()
                     except Exception:
                         pass
-                service = EdgeService(
-                    executable_path=LOCAL_EDGEDRIVER,
-                    log_output=os.devnull,
-                    service_args=["--disable-build-check"],
-                )
-                driver = Edge(service=service, options=edge_options)
-            return driver
-        else:
-            capabilities = edge_options.to_capabilities()
-            capabilities["platform"] = ""
-            try:
-                driver = Edge(
-                    executable_path=LOCAL_EDGEDRIVER,
-                    service_log_path=os.devnull,
-                    capabilities=capabilities,
-                )
-            except Exception as e:
-                if not hasattr(e, "msg"):
-                    raise
-                auto_upgrade_edgedriver = False
-                edge_version = None
-                if (
-                    "This version of MSEdgeDriver only supports" in e.msg
-                    or "This version of Microsoft Edge WebDriver" in e.msg
-                ):
-                    if "Current browser version is " in e.msg:
-                        auto_upgrade_edgedriver = True
-                        edge_version = e.msg.split(
-                            "Current browser version is "
-                        )[1].split(" ")[0]
-                    elif "only supports MSEdge version " in e.msg:
-                        auto_upgrade_edgedriver = True
-                        edge_version = e.msg.split(
-                            "only supports MSEdge version "
-                        )[1].split(" ")[0]
-                elif "DevToolsActivePort file doesn't exist" in e.msg:
-                    service = EdgeService(
-                        executable_path=LOCAL_EDGEDRIVER,
-                        log_output=os.devnull,
-                        service_args=["--disable-build-check"],
-                    )
-                    # https://stackoverflow.com/a/56638103/7058266
-                    args = " ".join(sys.argv)
-                    free_port = 9222
-                    if ("-n" in sys.argv or " -n=" in args or args == "-c"):
-                        free_port = service_utils.free_port()
-                    edge_options.add_argument(
-                        "--remote-debugging-port=%s" % free_port
-                    )
-                    return Edge(service=service, options=edge_options)
-                if not auto_upgrade_edgedriver:
-                    raise  # Not an obvious fix.
-                else:
-                    pass  # Try upgrading EdgeDriver to match Edge.
-                args = " ".join(sys.argv)
-                if "-n" in sys.argv or " -n=" in args or args == "-c":
-                    edgedriver_fixing_lock = fasteners.InterProcessLock(
-                        constants.MultiBrowser.DRIVER_FIXING_LOCK
-                    )
-                    with edgedriver_fixing_lock:
-                        if not _was_driver_repaired():
-                            _repair_edgedriver(edge_version)
-                            _mark_driver_repaired()
-                else:
+            else:
+                try:
                     if not _was_driver_repaired():
                         _repair_edgedriver(edge_version)
                     _mark_driver_repaired()
-                driver = Edge(
-                    executable_path=LOCAL_EDGEDRIVER,
-                    service_log_path=os.devnull,
-                    service_args=["--disable-build-check"],
-                    capabilities=capabilities,
-                )
-            return driver
+                except Exception:
+                    pass
+            service = EdgeService(
+                executable_path=LOCAL_EDGEDRIVER,
+                log_output=os.devnull,
+                service_args=["--disable-build-check"],
+            )
+            driver = Edge(service=service, options=edge_options)
+        return driver
     elif browser_name == constants.Browser.SAFARI:
         args = " ".join(sys.argv)
         if ("-n" in sys.argv or " -n=" in args or args == "-c"):
             # Skip if multithreaded
             raise Exception("Can't run Safari tests in multithreaded mode!")
         warnings.simplefilter("ignore", category=DeprecationWarning)
-        if not selenium4_or_newer:
-            return webdriver.safari.webdriver.WebDriver()
-
         from selenium.webdriver.safari.options import Options as SafariOptions
-
         service = SafariService(quiet=False)
         options = SafariOptions()
         if (
-            selenium4_or_newer
-            and page_load_strategy
+            page_load_strategy
             and page_load_strategy.lower() in ["eager", "none"]
         ):
             # Only change it if not "normal", which is the default.
             options.page_load_strategy = page_load_strategy.lower()
         elif (
-            selenium4_or_newer
-            and not page_load_strategy
+            not page_load_strategy
             and hasattr(settings, "PAGE_LOAD_STRATEGY")
             and settings.PAGE_LOAD_STRATEGY
             and settings.PAGE_LOAD_STRATEGY.lower() in ["eager", "none"]
@@ -2805,74 +2490,6 @@ def get_local_driver(
         return webdriver.safari.webdriver.WebDriver(
             service=service, options=options
         )
-    elif browser_name == constants.Browser.OPERA:
-        try:
-            if LOCAL_OPERADRIVER and os.path.exists(LOCAL_OPERADRIVER):
-                try:
-                    make_driver_executable_if_not(LOCAL_OPERADRIVER)
-                except Exception as e:
-                    logging.debug(
-                        "\nWarning: Could not make operadriver"
-                        " executable: %s" % e
-                    )
-            # Opera Chromium doesn't support headless mode.
-            # https://github.com/operasoftware/operachromiumdriver/issues/62
-            headless = False
-            opera_options = _set_chrome_options(
-                browser_name,
-                downloads_path,
-                headless,
-                locale_code,
-                proxy_string,
-                proxy_auth,
-                proxy_user,
-                proxy_pass,
-                proxy_bypass_list,
-                proxy_pac_url,
-                multi_proxy,
-                user_agent,
-                recorder_ext,
-                disable_js,
-                disable_csp,
-                enable_ws,
-                enable_sync,
-                use_auto_ext,
-                undetectable,
-                uc_cdp_events,
-                uc_subprocess,
-                no_sandbox,
-                disable_gpu,
-                headless2,
-                incognito,
-                guest_mode,
-                dark_mode,
-                devtools,
-                remote_debug,
-                enable_3d_apis,
-                swiftshader,
-                ad_block_on,
-                block_images,
-                do_not_track,
-                chromium_arg,
-                user_data_dir,
-                extension_zip,
-                extension_dir,
-                binary_location,
-                driver_version,
-                page_load_strategy,
-                use_wire,
-                external_pdf,
-                servername,
-                mobile_emulator,
-                device_width,
-                device_height,
-                device_pixel_ratio,
-            )
-            warnings.simplefilter("ignore", category=DeprecationWarning)
-            return webdriver.Opera(options=opera_options)
-        except Exception:
-            # Opera support was dropped! Downgrade to Python 3.6 to use it!
-            return webdriver.Opera()
     elif browser_name == constants.Browser.GOOGLE_CHROME:
         try:
             chrome_options = _set_chrome_options(
@@ -3279,111 +2896,93 @@ def get_local_driver(
                         os.path.exists(LOCAL_CHROMEDRIVER)
                         or is_using_uc(undetectable, browser_name)
                     ):
-                        if selenium4_or_newer:
-                            if headless and not IS_LINUX:
-                                undetectable = False  # No support for headless
-                            if is_using_uc(undetectable, browser_name):
-                                from seleniumbase import undetected
-                                from urllib.error import URLError
+                        if headless and not IS_LINUX:
+                            undetectable = False  # No support for headless
+                        if is_using_uc(undetectable, browser_name):
+                            from seleniumbase import undetected
+                            from urllib.error import URLError
 
-                                if IS_LINUX:
-                                    if "--headless" in (
-                                        chrome_options.arguments
-                                    ):
-                                        chrome_options.arguments.remove(
-                                            "--headless"
-                                        )
-                                uc_chrome_version = None
-                                if (
-                                    use_version.isnumeric()
-                                    and int(use_version) >= 72
+                            if IS_LINUX:
+                                if "--headless" in (
+                                    chrome_options.arguments
                                 ):
-                                    uc_chrome_version = int(use_version)
-                                cdp_events = uc_cdp_events
-                                cert = "unable to get local issuer certificate"
-                                mac_certificate_error = False
-                                if (
-                                    use_version.isnumeric()
-                                    and int(use_version) <= 74
-                                ):
-                                    chrome_options.add_experimental_option(
-                                        "w3c", True
+                                    chrome_options.arguments.remove(
+                                        "--headless"
                                     )
-                                try:
-                                    uc_path = None
-                                    if os.path.exists(LOCAL_UC_DRIVER):
-                                        uc_path = LOCAL_UC_DRIVER
-                                        uc_path = os.path.realpath(uc_path)
-                                    driver = undetected.Chrome(
-                                        options=chrome_options,
-                                        user_data_dir=user_data_dir,
-                                        driver_executable_path=uc_path,
-                                        browser_executable_path=b_path,
-                                        enable_cdp_events=cdp_events,
-                                        headless=False,  # Xvfb needed!
-                                        version_main=uc_chrome_version,
-                                        use_subprocess=True,  # Always!
-                                    )
-                                    uc_activated = True
-                                except URLError as e:
-                                    if cert in e.args[0] and IS_MAC:
-                                        mac_certificate_error = True
-                                    else:
-                                        raise
-                                if mac_certificate_error:
-                                    cf_lock_path = (
-                                        constants.MultiBrowser.CERT_FIXING_LOCK
-                                    )
-                                    cf_lock = fasteners.InterProcessLock(
-                                        constants.MultiBrowser.CERT_FIXING_LOCK
-                                    )
-                                    if not os.path.exists(cf_lock_path):
-                                        # Avoid multithreaded issues
-                                        with cf_lock:
-                                            # Install Python Certificates (MAC)
-                                            os.system(
-                                                r"bash /Applications/Python*/"
-                                                r"Install\ "
-                                                r"Certificates.command"
-                                            )
-                                    driver = undetected.Chrome(
-                                        options=chrome_options,
-                                        user_data_dir=user_data_dir,
-                                        driver_executable_path=uc_path,
-                                        browser_executable_path=b_path,
-                                        enable_cdp_events=cdp_events,
-                                        headless=False,  # Xvfb needed!
-                                        version_main=uc_chrome_version,
-                                        use_subprocess=True,  # Always!
-                                    )
-                                    uc_activated = True
-                            else:
-                                if (
-                                    use_version.isnumeric()
-                                    and int(use_version) <= 74
-                                ):
-                                    chrome_options.add_experimental_option(
-                                        "w3c", True
-                                    )
-                                service = ChromeService(
-                                    executable_path=LOCAL_CHROMEDRIVER,
-                                    log_output=os.devnull,
-                                    service_args=service_args,
+                            uc_chrome_version = None
+                            if (
+                                use_version.isnumeric()
+                                and int(use_version) >= 72
+                            ):
+                                uc_chrome_version = int(use_version)
+                            cdp_events = uc_cdp_events
+                            cert = "unable to get local issuer certificate"
+                            mac_certificate_error = False
+                            if (
+                                use_version.isnumeric()
+                                and int(use_version) <= 74
+                            ):
+                                chrome_options.add_experimental_option(
+                                    "w3c", True
                                 )
-                                driver = webdriver.Chrome(
-                                    service=service,
+                            try:
+                                uc_path = None
+                                if os.path.exists(LOCAL_UC_DRIVER):
+                                    uc_path = LOCAL_UC_DRIVER
+                                    uc_path = os.path.realpath(uc_path)
+                                driver = undetected.Chrome(
                                     options=chrome_options,
+                                    user_data_dir=user_data_dir,
+                                    driver_executable_path=uc_path,
+                                    browser_executable_path=b_path,
+                                    enable_cdp_events=cdp_events,
+                                    headless=False,  # Xvfb needed!
+                                    version_main=uc_chrome_version,
+                                    use_subprocess=True,  # Always!
                                 )
+                                uc_activated = True
+                            except URLError as e:
+                                if cert in e.args[0] and IS_MAC:
+                                    mac_certificate_error = True
+                                else:
+                                    raise
+                            if mac_certificate_error:
+                                cf_lock_path = (
+                                    constants.MultiBrowser.CERT_FIXING_LOCK
+                                )
+                                cf_lock = fasteners.InterProcessLock(
+                                    constants.MultiBrowser.CERT_FIXING_LOCK
+                                )
+                                if not os.path.exists(cf_lock_path):
+                                    # Avoid multithreaded issues
+                                    with cf_lock:
+                                        # Install Python Certificates (MAC)
+                                        os.system(
+                                            r"bash /Applications/Python*/"
+                                            r"Install\ "
+                                            r"Certificates.command"
+                                        )
+                                driver = undetected.Chrome(
+                                    options=chrome_options,
+                                    user_data_dir=user_data_dir,
+                                    driver_executable_path=uc_path,
+                                    browser_executable_path=b_path,
+                                    enable_cdp_events=cdp_events,
+                                    headless=False,  # Xvfb needed!
+                                    version_main=uc_chrome_version,
+                                    use_subprocess=True,  # Always!
+                                )
+                                uc_activated = True
                         else:
-                            driver = webdriver.Chrome(
-                                executable_path=LOCAL_CHROMEDRIVER,
-                                service_log_path=os.devnull,
-                                service_args=service_args,
-                                options=chrome_options,
-                            )
-                    else:
-                        if selenium4_or_newer:
+                            if (
+                                use_version.isnumeric()
+                                and int(use_version) <= 74
+                            ):
+                                chrome_options.add_experimental_option(
+                                    "w3c", True
+                                )
                             service = ChromeService(
+                                executable_path=LOCAL_CHROMEDRIVER,
                                 log_output=os.devnull,
                                 service_args=service_args,
                             )
@@ -3391,12 +2990,15 @@ def get_local_driver(
                                 service=service,
                                 options=chrome_options,
                             )
-                        else:
-                            driver = webdriver.Chrome(
-                                service_log_path=os.devnull,
-                                service_args=service_args,
-                                options=chrome_options,
-                            )
+                    else:
+                        service = ChromeService(
+                            log_output=os.devnull,
+                            service_args=service_args,
+                        )
+                        driver = webdriver.Chrome(
+                            service=service,
+                            options=chrome_options,
+                        )
                 except Exception as e:
                     if not hasattr(e, "msg"):
                         raise
@@ -3406,21 +3008,18 @@ def get_local_driver(
                     elif "Chrome version must be between" in e.msg:
                         auto_upgrade_chromedriver = True
                     elif "Missing or invalid capabilities" in e.msg:
-                        if selenium4_or_newer:
-                            chrome_options.add_experimental_option("w3c", True)
-                            service = ChromeService(
-                                log_output=os.devnull,
-                                service_args=service_args,
+                        chrome_options.add_experimental_option("w3c", True)
+                        service = ChromeService(
+                            log_output=os.devnull,
+                            service_args=service_args,
+                        )
+                        with warnings.catch_warnings():
+                            warnings.simplefilter(
+                                "ignore", category=DeprecationWarning
                             )
-                            with warnings.catch_warnings():
-                                warnings.simplefilter(
-                                    "ignore", category=DeprecationWarning
-                                )
-                                return webdriver.Chrome(
-                                    service=service, options=chrome_options
-                                )
-                        else:
-                            raise
+                            return webdriver.Chrome(
+                                service=service, options=chrome_options
+                            )
                     if not auto_upgrade_chromedriver:
                         raise  # Not an obvious fix.
                     else:
@@ -3507,37 +3106,24 @@ def get_local_driver(
                             )
                         _mark_driver_repaired()
                     if os.path.exists(LOCAL_CHROMEDRIVER):
-                        if selenium4_or_newer:
-                            service = ChromeService(
-                                executable_path=LOCAL_CHROMEDRIVER,
-                                log_output=os.devnull,
-                                service_args=["--disable-build-check"],
-                            )
-                            driver = webdriver.Chrome(
-                                service=service,
-                                options=chrome_options,
-                            )
-                        else:
-                            driver = webdriver.Chrome(
-                                executable_path=LOCAL_CHROMEDRIVER,
-                                service_args=["--disable-build-check"],
-                                options=chrome_options,
-                            )
+                        service = ChromeService(
+                            executable_path=LOCAL_CHROMEDRIVER,
+                            log_output=os.devnull,
+                            service_args=["--disable-build-check"],
+                        )
+                        driver = webdriver.Chrome(
+                            service=service,
+                            options=chrome_options,
+                        )
                     else:
-                        if selenium4_or_newer:
-                            service = ChromeService(
-                                log_output=os.devnull,
-                                service_args=["--disable-build-check"],
-                            )
-                            driver = webdriver.Chrome(
-                                service=service,
-                                options=chrome_options,
-                            )
-                        else:
-                            driver = webdriver.Chrome(
-                                service_args=["--disable-build-check"],
-                                options=chrome_options,
-                            )
+                        service = ChromeService(
+                            log_output=os.devnull,
+                            service_args=["--disable-build-check"],
+                        )
+                        driver = webdriver.Chrome(
+                            service=service,
+                            options=chrome_options,
+                        )
                 driver.default_get = driver.get  # Save copy of original
                 if uc_activated:
                     driver.get = lambda url: uc_special_open_if_cf(
@@ -3564,21 +3150,18 @@ def get_local_driver(
                     elif "Chrome version must be between" in e.msg:
                         auto_upgrade_chromedriver = True
                     elif "Missing or invalid capabilities" in e.msg:
-                        if selenium4_or_newer:
-                            chrome_options.add_experimental_option("w3c", True)
-                            service = ChromeService(
-                                log_output=os.devnull,
-                                service_args=["--disable-build-check"],
+                        chrome_options.add_experimental_option("w3c", True)
+                        service = ChromeService(
+                            log_output=os.devnull,
+                            service_args=["--disable-build-check"],
+                        )
+                        with warnings.catch_warnings():
+                            warnings.simplefilter(
+                                "ignore", category=DeprecationWarning
                             )
-                            with warnings.catch_warnings():
-                                warnings.simplefilter(
-                                    "ignore", category=DeprecationWarning
-                                )
-                                return webdriver.Chrome(
-                                    service=service, options=chrome_options
-                                )
-                        else:
-                            raise
+                            return webdriver.Chrome(
+                                service=service, options=chrome_options
+                            )
                     mcv = None  # Major Chrome Version
                     if "Current browser version is " in e.msg:
                         line = e.msg.split("Current browser version is ")[1]
@@ -3614,20 +3197,14 @@ def get_local_driver(
                                     pass
                             _mark_driver_repaired()
                         try:
-                            if selenium4_or_newer:
-                                service = ChromeService(
-                                    log_output=os.devnull,
-                                    service_args=["--disable-build-check"],
-                                )
-                                return webdriver.Chrome(
-                                    service=service,
-                                    options=chrome_options,
-                                )
-                            else:
-                                return webdriver.Chrome(
-                                    service_args=["--disable-build-check"],
-                                    options=chrome_options,
-                                )
+                            service = ChromeService(
+                                log_output=os.devnull,
+                                service_args=["--disable-build-check"],
+                            )
+                            return webdriver.Chrome(
+                                service=service,
+                                options=chrome_options,
+                            )
                         except Exception:
                             pass
                     # Use the virtual display on Linux during headless errors

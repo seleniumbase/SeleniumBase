@@ -130,7 +130,7 @@ def show_install_usage():
     print("           OR:    sbase install [DRIVER_NAME] [OPTIONS]")
     print("           OR:        sbase get [DRIVER_NAME] [OPTIONS]")
     print("                 (Drivers: chromedriver, geckodriver, edgedriver")
-    print("                           iedriver, operadriver, uc_driver)")
+    print("                           iedriver, uc_driver)")
     print("  Options:")
     print("           VERSION         Specify the version to download.")
     print("                           Tries to detect the needed version.")
