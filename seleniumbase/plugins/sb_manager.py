@@ -201,10 +201,6 @@ def SB(
         browser_changes += 1
         browser_set = "firefox"
         browser_list.append("--browser=firefox")
-    if "--browser=opera" in sys_argv or "--browser opera" in sys_argv:
-        browser_changes += 1
-        browser_set = "opera"
-        browser_list.append("--browser=opera")
     if "--browser=safari" in sys_argv or "--browser safari" in sys_argv:
         browser_changes += 1
         browser_set = "safari"
@@ -238,11 +234,6 @@ def SB(
         browser_text = "ie"
         sb_config._browser_shortcut = "ie"
         browser_list.append("--ie")
-    if "--opera" in sys_argv and not browser_set == "opera":
-        browser_changes += 1
-        browser_text = "opera"
-        sb_config._browser_shortcut = "opera"
-        browser_list.append("--opera")
     if "--safari" in sys_argv and not browser_set == "safari":
         browser_changes += 1
         browser_text = "safari"

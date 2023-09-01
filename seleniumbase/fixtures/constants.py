@@ -352,7 +352,6 @@ class ValidBrowsers:
         "edge",
         "firefox",
         "ie",
-        "opera",
         "safari",
         "remote",
     ]
@@ -397,7 +396,6 @@ class Browser:
     EDGE = "edge"
     FIREFOX = "firefox"
     INTERNET_EXPLORER = "ie"
-    OPERA = "opera"
     SAFARI = "safari"
     REMOTE = "remote"
 
@@ -406,7 +404,6 @@ class Browser:
         "edge": None,
         "firefox": None,
         "ie": None,
-        "opera": None,
         "safari": None,
         "remote": None,
     }
@@ -416,7 +413,6 @@ class Browser:
         "edge": None,
         "firefox": None,
         "ie": None,
-        "opera": None,
         "safari": None,
         "remote": None,
     }

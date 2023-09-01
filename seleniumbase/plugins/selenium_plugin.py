@@ -129,13 +129,6 @@ class SeleniumBrowser(Plugin):
             help="""Shortcut for --browser=ie""",
         )
         parser.addoption(
-            "--opera",
-            action="store_true",
-            dest="use_opera",
-            default=False,
-            help="""Shortcut for --browser=opera""",
-        )
-        parser.addoption(
             "--safari",
             action="store_true",
             dest="use_safari",
@@ -958,10 +951,6 @@ class SeleniumBrowser(Plugin):
             browser_changes += 1
             browser_set = "firefox"
             browser_list.append("--browser=firefox")
-        if "--browser=opera" in sys_argv or "--browser opera" in sys_argv:
-            browser_changes += 1
-            browser_set = "opera"
-            browser_list.append("--browser=opera")
         if "--browser=safari" in sys_argv or "--browser safari" in sys_argv:
             browser_changes += 1
             browser_set = "safari"
@@ -995,11 +984,6 @@ class SeleniumBrowser(Plugin):
             browser_text = "ie"
             sb_config._browser_shortcut = "ie"
             browser_list.append("--ie")
-        if "--opera" in sys_argv and not browser_set == "opera":
-            browser_changes += 1
-            browser_text = "opera"
-            sb_config._browser_shortcut = "opera"
-            browser_list.append("--opera")
         if "--safari" in sys_argv and not browser_set == "safari":
             browser_changes += 1
             browser_text = "safari"

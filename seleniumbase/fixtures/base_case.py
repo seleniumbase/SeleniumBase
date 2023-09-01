@@ -95,9 +95,6 @@ python3_11_or_newer = False
 if sys.version_info >= (3, 11):
     python3_11_or_newer = True
 py311_patch2 = constants.PatchPy311.PATCH
-selenium4_or_newer = False
-if sys.version_info >= (3, 7):
-    selenium4_or_newer = True
 
 
 class BaseCase(unittest.TestCase):
@@ -226,7 +223,7 @@ class BaseCase(unittest.TestCase):
         if not self.__looks_like_a_page_url(url):
             # url should start with one of the following:
             # "http:", "https:", "://", "data:", "file:",
-            # "about:", "chrome:", "opera:", or "edge:".
+            # "about:", "chrome:", or "edge:".
             if page_utils.is_valid_url("https://" + url):
                 url = "https://" + url
             else:
@@ -286,14 +283,7 @@ class BaseCase(unittest.TestCase):
                     else:
                         raise
             elif "Timed out receiving message from renderer" in e.msg:
-                page_load_timeout = None
-                if selenium4_or_newer:
-                    page_load_timeout = self.driver.timeouts.page_load
-                else:
-                    if hasattr(settings, "PAGE_LOAD_TIMEOUT"):
-                        page_load_timeout = settings.PAGE_LOAD_TIMEOUT
-                    else:
-                        page_load_timeout = 120
+                page_load_timeout = self.driver.timeouts.page_load
                 logging.info(
                     "The page load timed out after %s seconds! Will retry..."
                     % page_load_timeout
@@ -3556,18 +3546,13 @@ class BaseCase(unittest.TestCase):
     def open_new_window(self, switch_to=True):
         """Opens a new browser tab/window and switches to it by default."""
         self.wait_for_ready_state_complete()
-        if selenium4_or_newer and switch_to:
+        if switch_to:
             self.driver.switch_to.new_window("tab")
         else:
             self.driver.execute_script("window.open('');")
         time.sleep(0.01)
         if self.browser == "safari":
             self.wait_for_ready_state_complete()
-        if switch_to and not selenium4_or_newer:
-            self.switch_to_newest_window()
-            time.sleep(0.01)
-            if self.browser == "safari":
-                self.wait_for_ready_state_complete()
 
     def switch_to_window(self, window, timeout=None):
         """Switches control of the browser to the specified window.
@@ -3942,18 +3927,6 @@ class BaseCase(unittest.TestCase):
                     except Exception:
                         pass  # Keep existing browser resolution
                 elif self.browser == "safari":
-                    if self.maximize_option:
-                        try:
-                            self.driver.maximize_window()
-                            self.wait_for_ready_state_complete()
-                        except Exception:
-                            pass  # Keep existing browser resolution
-                    else:
-                        try:
-                            self.driver.set_window_rect(10, 20, width, height)
-                        except Exception:
-                            pass
-                elif self.browser == "opera":
                     if self.maximize_option:
                         try:
                             self.driver.maximize_window()
@@ -7345,11 +7318,11 @@ class BaseCase(unittest.TestCase):
         return online
 
     def is_chromium(self):
-        """Return True if the browser is Chrome, Edge, or Opera."""
+        """Return True if the browser is Chrome or Edge."""
         self.__check_scope()
         chromium = False
         browser_name = self.driver.capabilities["browserName"]
-        if browser_name.lower() in ("chrome", "edge", "msedge", "opera"):
+        if browser_name.lower() in ("chrome", "edge", "msedge"):
             chromium = True
         return chromium
 
@@ -12635,23 +12608,12 @@ class BaseCase(unittest.TestCase):
         if self.__needs_minimum_wait():
             time.sleep(0.05)
         try:
-            if selenium4_or_newer and not center:
+            if not center:
                 element_rect = element.rect
                 left_offset = element_rect["width"] / 2
                 top_offset = element_rect["height"] / 2
                 x = -left_offset + (math.ceil(float(x)) or 0)
                 y = -top_offset + (math.ceil(float(y)) or 0)
-            elif selenium4_or_newer and center:
-                pass
-            elif not selenium4_or_newer and not center:
-                pass
-            else:
-                # not selenium4_or_newer and center:
-                element_rect = element.rect
-                left_offset = element_rect["width"] / 2
-                top_offset = element_rect["height"] / 2
-                x = left_offset + x
-                y = top_offset + y
             action_chains = ActionChains(self.driver)
             action_chains.move_to_element_with_offset(element, x, y)
             if not double:
@@ -12931,7 +12893,6 @@ class BaseCase(unittest.TestCase):
             or url.startswith("data:")
             or url.startswith("edge:")
             or url.startswith("file:")
-            or url.startswith("opera:")
             or url.startswith("view-source:")
         ):
             return True
@@ -13219,8 +13180,7 @@ class BaseCase(unittest.TestCase):
         for selector_part in selectors[1:]:
             shadow_root = None
             if (
-                selenium4_or_newer
-                and (self.is_chromium() or self.browser == "firefox")
+                (self.is_chromium() or self.browser == "firefox")
                 and int(self.__get_major_browser_version()) >= 96
             ):
                 try:
@@ -13289,8 +13249,7 @@ class BaseCase(unittest.TestCase):
             selector_chain += selector_part
             try:
                 if (
-                    selenium4_or_newer
-                    and (self.is_chromium() or self.browser == "firefox")
+                    (self.is_chromium() or self.browser == "firefox")
                     and int(self.__get_major_browser_version()) >= 96
                 ):
                     if timeout == 0.1:
@@ -14123,7 +14082,7 @@ class BaseCase(unittest.TestCase):
                     "Chrome/89.0.4389.105 Mobile Safari/537.36"
                 )
 
-        if self.browser in ["firefox", "ie", "safari", "opera"]:
+        if self.browser in ["firefox", "ie", "safari"]:
             # The Recorder Mode browser extension is only for Chrome/Edge.
             if self.recorder_mode:
                 message = (
@@ -14255,9 +14214,7 @@ class BaseCase(unittest.TestCase):
                 d_height=self.__device_height,
                 d_p_r=self.__device_pixel_ratio,
             )
-            if selenium4_or_newer and self.driver.timeouts.implicit_wait > 0:
-                self.driver.implicitly_wait(0)
-            elif not selenium4_or_newer:
+            if self.driver.timeouts.implicit_wait > 0:
                 self.driver.implicitly_wait(0)
             self._default_driver = self.driver
             if self._reuse_session:
@@ -14268,7 +14225,7 @@ class BaseCase(unittest.TestCase):
                 self._drivers_list.append(self.driver)
                 self._drivers_browser_map[self.driver] = self.browser
 
-        if self.browser in ["firefox", "ie", "safari", "opera"]:
+        if self.browser in ["firefox", "ie", "safari"]:
             # Only Chrome and Edge browsers have the mobile emulator.
             # Some actions such as hover-clicking are different on mobile.
             self.mobile_emulator = False
@@ -15173,11 +15130,6 @@ class BaseCase(unittest.TestCase):
             cap_dict = driver.capabilities["msedge"]
             return (
                 "msedgedriver", cap_dict["msedgedriverVersion"].split(" ")[0]
-            )
-        elif driver.capabilities["browserName"].lower() == "opera":
-            cap_dict = driver.capabilities["opera"]
-            return (
-                "operadriver", cap_dict["operadriverVersion"].split(" ")[0]
             )
         elif driver.capabilities["browserName"].lower() == "firefox":
             return (

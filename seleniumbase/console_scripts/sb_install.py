@@ -3,7 +3,7 @@ Downloads the specified webdriver to "seleniumbase/drivers/"
 
 Usage:
          sbase get {chromedriver|geckodriver|edgedriver|
-                    iedriver|operadriver} [OPTIONS]
+                    iedriver|uc_driver} [OPTIONS]
 Options:
          VERSION         Specify the version.
                          Tries to detect the needed version.
@@ -16,6 +16,8 @@ Examples:
          sbase get edgedriver
          sbase get chromedriver 114
          sbase get chromedriver 114.0.5735.90
+         sbase get chromedriver stable
+         sbase get chromedriver beta
          sbase get chromedriver -p
 Output:
          Downloads the webdriver to seleniumbase/drivers/
@@ -50,7 +52,6 @@ LOCAL_PATH = "/usr/local/bin/"  # On Mac and Linux systems
 DEFAULT_CHROMEDRIVER_VERSION = "114.0.5735.90"  # (If can't find LATEST_STABLE)
 DEFAULT_GECKODRIVER_VERSION = "v0.33.0"
 DEFAULT_EDGEDRIVER_VERSION = "115.0.1901.183"  # (If can't find LATEST_STABLE)
-DEFAULT_OPERADRIVER_VERSION = "v.96.0.4664.45"
 
 
 def invalid_run_command():
@@ -61,7 +62,7 @@ def invalid_run_command():
     exp += "           OR  seleniumbase get [DRIVER] [OPTIONS]\n"
     exp += "           OR         sbase get [DRIVER] [OPTIONS]\n"
     exp += "                (Drivers: chromedriver, geckodriver, edgedriver,\n"
-    exp += "                          iedriver, operadriver, uc_driver)\n"
+    exp += "                          iedriver, uc_driver)\n"
     exp += "  Options:\n"
     exp += "           VERSION        Specify the version.\n"
     exp += "                          Tries to detect the needed version.\n"
@@ -287,7 +288,6 @@ def main(override=None, intel_for_uc=None, force_uc=None):
     downloads_folder = DRIVER_DIR
     expected_contents = None
     platform_code = None
-    inner_folder = None
     copy_to_path = False
     latest_version = ""
     use_version = ""
@@ -717,7 +717,7 @@ def main(override=None, intel_for_uc=None, force_uc=None):
         else:
             raise Exception(
                 "Sorry! IEDriver is only for "
-                "Windows-based operating systems!"
+                "Windows-based systems!"
             )
         download_url = (
             "https://selenium-release.storage.googleapis.com/"
@@ -736,71 +736,6 @@ def main(override=None, intel_for_uc=None, force_uc=None):
             msg = c2 + "HeadlessIEDriver to download" + cr
             p_version = c3 + headless_ie_version + cr
             log_d("\n*** %s = %s" % (msg, p_version))
-    elif name == "operadriver" or name == "operachromiumdriver":
-        name = "operadriver"
-        use_version = DEFAULT_OPERADRIVER_VERSION
-        get_latest = False
-        if num_args == 4 or num_args == 5:
-            if "-p" not in sys.argv[3].lower():
-                use_version = sys.argv[3]
-                if use_version.lower() == "latest":
-                    use_version = DEFAULT_OPERADRIVER_VERSION
-            else:
-                copy_to_path = True
-        if num_args == 5:
-            if "-p" in sys.argv[4].lower():
-                copy_to_path = True
-            else:
-                invalid_run_command()
-        if IS_MAC:
-            file_name = "operadriver_mac64.zip"
-            platform_code = "mac64"
-            inner_folder = "operadriver_%s/" % platform_code
-            expected_contents = [
-                "operadriver_mac64/",
-                "operadriver_mac64/operadriver",
-                "operadriver_mac64/sha512_sum",
-            ]
-        elif IS_LINUX:
-            file_name = "operadriver_linux64.zip"
-            platform_code = "linux64"
-            inner_folder = "operadriver_%s/" % platform_code
-            expected_contents = [
-                "operadriver_linux64/",
-                "operadriver_linux64/operadriver",
-                "operadriver_linux64/sha512_sum",
-            ]
-        elif IS_WINDOWS and "64" in ARCH:
-            file_name = "operadriver_win64.zip"
-            platform_code = "win64"
-            inner_folder = "operadriver_%s/" % platform_code
-            expected_contents = [
-                "operadriver_win64/",
-                "operadriver_win64/operadriver.exe",
-                "operadriver_win64/sha512_sum",
-            ]
-        elif IS_WINDOWS:
-            file_name = "operadriver_win32.zip"
-            platform_code = "win32"
-            inner_folder = "operadriver_%s/" % platform_code
-            expected_contents = [
-                "operadriver_win32/",
-                "operadriver_win32/operadriver.exe",
-                "operadriver_win32/sha512_sum",
-            ]
-        else:
-            raise Exception(
-                "Cannot determine which version of Operadriver to download!"
-            )
-
-        download_url = (
-            "https://github.com/operasoftware/operachromiumdriver/"
-            "releases/download/"
-            "%s/%s" % (use_version, file_name)
-        )
-        msg = c2 + "operadriver to download" + cr
-        p_version = c3 + use_version + cr
-        log_d("\n*** %s = %s" % (msg, p_version))
     else:
         invalid_run_command()
 
@@ -1094,60 +1029,6 @@ def main(override=None, intel_for_uc=None, force_uc=None):
                 shutil.copyfile(new_file, path_file)
                 make_executable(path_file)
                 log_d("Also copied to: %s%s%s" % (c3, path_file, cr))
-            log_d("")
-        elif name == "operadriver":
-            if len(contents) > 3:
-                raise Exception("Unexpected content in OperaDriver Zip file!")
-            # Zip file is valid. Proceed.
-            driver_path = None
-            driver_file = None
-            for f_name in contents:
-                # Remove existing version if exists
-                str_name = str(f_name).split(inner_folder)[1]
-                new_file = os.path.join(downloads_folder, str_name)
-                if str_name == "operadriver" or str_name == "operadriver.exe":
-                    driver_file = str_name
-                    driver_path = new_file
-                    if os.path.exists(new_file):
-                        os.remove(new_file)
-            if not driver_file or not driver_path:
-                raise Exception("Operadriver missing from Zip file!")
-            log_d("Extracting %s from %s ..." % (contents, file_name))
-            zip_ref.extractall(downloads_folder)
-            zip_ref.close()
-            os.remove(zip_file_path)
-            log_d("%sUnzip Complete!%s\n" % (c2, cr))
-            inner_driver = os.path.join(
-                downloads_folder, inner_folder, driver_file
-            )
-            inner_sha = os.path.join(
-                downloads_folder, inner_folder, "sha512_sum"
-            )
-            shutil.copyfile(inner_driver, driver_path)
-            pr_driver_path = c3 + driver_path + cr
-            log_d(
-                "The file [%s] was saved to:\n%s\n"
-                % (driver_file, pr_driver_path)
-            )
-            log_d("Making [%s %s] executable ..." % (driver_file, use_version))
-            make_executable(driver_path)
-            log_d(
-                "%s[%s %s] is now ready for use!%s"
-                % (c1, driver_file, use_version, cr)
-            )
-            if copy_to_path and os.path.exists(LOCAL_PATH):
-                path_file = LOCAL_PATH + driver_file
-                shutil.copyfile(driver_path, path_file)
-                make_executable(path_file)
-                log_d("Also copied to: %s%s%s" % (c3, path_file, cr))
-            # Clean up extra files
-            if os.path.exists(inner_driver):
-                os.remove(inner_driver)
-            if os.path.exists(inner_sha):
-                os.remove(inner_sha)
-            if os.path.exists(os.path.join(downloads_folder, inner_folder)):
-                # Only works if the directory is empty
-                os.rmdir(os.path.join(downloads_folder, inner_folder))
             log_d("")
         elif len(contents) == 0:
             raise Exception("Zip file %s is empty!" % zip_file_path)
