@@ -35,11 +35,9 @@ class CDPTests(BaseCase):
             try:
                 self.verify_success()
             except Exception:
-                if self.is_element_visible('input[value*="Verify"]'):
-                    self.click('input[value*="Verify"]')
-                elif self.is_element_visible('iframe[title*="challenge"]'):
-                    self.switch_to_frame('iframe[title*="challenge"]')
-                    self.click("span.mark")
+                if self.is_element_visible('iframe[src*="challenge"]'):
+                    with self.frame_switch('iframe[src*="challenge"]'):
+                        self.click("area")
                 else:
                     self.fail_me()
                 try:
