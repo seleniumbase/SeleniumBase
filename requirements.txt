@@ -24,8 +24,7 @@ outcome==1.2.0
 trio==0.22.2
 trio-websocket==0.10.3
 wsproto==1.2.0
-selenium==4.11.2;python_version<"3.8"
-selenium==4.12.0;python_version>="3.8"
+selenium==4.11.2
 cssselect==1.2.0
 sortedcontainers==2.4.0
 fasteners==0.18
