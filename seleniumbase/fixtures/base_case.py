@@ -2508,6 +2508,7 @@ class BaseCase(unittest.TestCase):
         hover_by="css selector",
         click_by="css selector",
         timeout=None,
+        js_click=False,
     ):
         """When you want to hover over an element or dropdown menu,
         and then click an element that appears after that."""
@@ -2578,6 +2579,7 @@ class BaseCase(unittest.TestCase):
                 hover_by,
                 click_by,
                 timeout,
+                js_click,
             )
         latest_window_count = len(self.driver.window_handles)
         if (
@@ -2607,6 +2609,23 @@ class BaseCase(unittest.TestCase):
         elif self.slow_mode:
             self.__slow_mode_pause_if_active()
         return element
+
+    def hover_and_js_click(
+        self,
+        hover_selector,
+        click_selector,
+        hover_by="css selector",
+        click_by="css selector",
+        timeout=None,
+    ):
+        self.hover_and_click(
+            hover_selector=hover_selector,
+            click_selector=click_selector,
+            hover_by=hover_by,
+            click_by=click_by,
+            timeout=timeout,
+            js_click=True,
+        )
 
     def hover_and_double_click(
         self,

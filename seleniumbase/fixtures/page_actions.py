@@ -270,6 +270,7 @@ def hover_and_click(
     hover_by="css selector",
     click_by="css selector",
     timeout=settings.SMALL_TIMEOUT,
+    js_click=False,
 ):
     """
     Fires the hover event for a specified element by a given selector, then
@@ -281,6 +282,7 @@ def hover_and_click(
     hover_by - the hover selector type to search by (Default: "css selector")
     click_by - the click selector type to search by (Default: "css selector")
     timeout - number of seconds to wait for click element to appear after hover
+    js_click - the option to use js_click() instead of click() on the last part
     """
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
@@ -290,7 +292,10 @@ def hover_and_click(
         try:
             hover.perform()
             element = driver.find_element(by=click_by, value=click_selector)
-            element.click()
+            if js_click:
+                driver.execute_script("arguments[0].click();", element)
+            else:
+                element.click()
             return element
         except Exception:
             now_ms = time.time() * 1000.0

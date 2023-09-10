@@ -173,6 +173,11 @@ self.hover(selector, by="css selector", timeout=None)
 self.hover_and_click(
     hover_selector, click_selector,
     hover_by="css selector", click_by="css selector",
+    timeout=None, js_click=False)
+
+self.hover_and_js_click(
+    hover_selector, click_selector,
+    hover_by="css selector", click_by="css selector",
     timeout=None)
 
 self.hover_and_double_click(
