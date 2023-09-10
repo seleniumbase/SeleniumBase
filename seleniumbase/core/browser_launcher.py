@@ -2458,7 +2458,10 @@ def get_local_driver(
                         chromium_arg_item = "-" + chromium_arg_item
                     else:
                         chromium_arg_item = "--" + chromium_arg_item
-                if "set-binary" in chromium_arg_item and not binary_location:
+                if (
+                    (IS_LINUX or "set-binary" in chromium_arg_item)
+                    and not binary_location
+                ):
                     br_app = "edge"
                     binary_loc = detect_b_ver.get_binary_location(br_app)
                     if os.path.exists(binary_loc):
