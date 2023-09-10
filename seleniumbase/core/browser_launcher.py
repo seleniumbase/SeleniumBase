@@ -2448,6 +2448,7 @@ def get_local_driver(
             edge_options.add_argument("--disable-gpu")
         if IS_LINUX:
             edge_options.add_argument("--disable-dev-shm-usage")
+        set_binary = False
         if chromium_arg:
             # Can be a comma-separated list of Chromium args
             chromium_arg_list = chromium_arg.split(",")
@@ -2458,16 +2459,15 @@ def get_local_driver(
                         chromium_arg_item = "-" + chromium_arg_item
                     else:
                         chromium_arg_item = "--" + chromium_arg_item
-                if (
-                    (IS_LINUX or "set-binary" in chromium_arg_item)
-                    and not binary_location
-                ):
-                    br_app = "edge"
-                    binary_loc = detect_b_ver.get_binary_location(br_app)
-                    if os.path.exists(binary_loc):
-                        binary_location = binary_loc
+                if "set-binary" in chromium_arg_item:
+                    set_binary = True
                 elif len(chromium_arg_item) >= 3:
                     edge_options.add_argument(chromium_arg_item)
+        if (set_binary or IS_LINUX) and not binary_location:
+            br_app = "edge"
+            binary_loc = detect_b_ver.get_binary_location(br_app)
+            if os.path.exists(binary_loc):
+                binary_location = binary_loc
         if binary_location:
             edge_options.binary_location = binary_location
         try:
