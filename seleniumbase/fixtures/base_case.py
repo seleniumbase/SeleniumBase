@@ -6129,6 +6129,9 @@ class BaseCase(unittest.TestCase):
         self.__check_scope()
         return page_utils.get_domain_url(url)
 
+    def get_active_element_css(self):
+        return js_utils.get_active_element_css(self.driver)
+
     def get_beautiful_soup(self, source=None):
         """BeautifulSoup is a toolkit for dissecting an HTML document
         and extracting what you need. It's great for screen-scraping!

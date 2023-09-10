@@ -418,6 +418,8 @@ self.disable_beforeunload()
 
 self.get_domain_url(url)
 
+self.get_active_element_css()
+
 self.get_beautiful_soup(source=None)
 
 self.get_unique_links()
