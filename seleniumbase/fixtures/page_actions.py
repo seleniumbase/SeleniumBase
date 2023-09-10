@@ -107,13 +107,15 @@ def is_element_enabled(driver, selector, by="css selector"):
         return False
 
 
-def is_text_visible(driver, text, selector, by="css selector", browser=None):
+def is_text_visible(
+    driver, text, selector="html", by="css selector", browser=None
+):
     """
     Returns whether the text substring is visible in the given selector.
     @Params
     driver - the webdriver object (required)
     text - the text string to search for (required)
-    selector - the locator for identifying the page element (required)
+    selector - the locator for identifying the page element
     by - the type of selector being used (Default: "css selector")
     @Returns
     Boolean (is text visible)
@@ -1640,7 +1642,7 @@ def assert_text(
 ):
     browser = driver.capabilities["browserName"].lower()
     wait_for_text_visible(
-        driver, text, selector, by=by, timeout=timeout, browser=browser
+        driver, text.strip(), selector, by=by, timeout=timeout, browser=browser
     )
 
 
@@ -1649,7 +1651,7 @@ def assert_exact_text(
 ):
     browser = driver.capabilities["browserName"].lower()
     wait_for_exact_text_visible(
-        driver, text, selector, by=by, timeout=timeout, browser=browser
+        driver, text.strip(), selector, by=by, timeout=timeout, browser=browser
     )
 
 
