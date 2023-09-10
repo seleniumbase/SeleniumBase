@@ -12851,53 +12851,12 @@ class BaseCase(unittest.TestCase):
     def __recalculate_selector(self, selector, by, xp_ok=True):
         """Use autodetection to return the correct selector with "by" updated.
         If "xp_ok" is False, don't call convert_css_to_xpath(), which is
-        used to make the ":contains()" selector valid outside of JS calls."""
-        _type = type(selector)  # First make sure the selector is a string
-        not_string = False
-        if _type is not str:
-            not_string = True
-        if not_string:
-            msg = "Expecting a selector of type: \"<class 'str'>\" (string)!"
-            raise Exception('Invalid selector type: "%s"\n%s' % (_type, msg))
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
-        if page_utils.is_link_text_selector(selector):
-            selector = page_utils.get_link_text_from_selector(selector)
-            by = By.LINK_TEXT
-        if page_utils.is_partial_link_text_selector(selector):
-            selector = page_utils.get_partial_link_text_from_selector(selector)
-            by = By.PARTIAL_LINK_TEXT
-        if page_utils.is_name_selector(selector):
-            name = page_utils.get_name_from_selector(selector)
-            selector = '[name="%s"]' % name
-            by = By.CSS_SELECTOR
-        if xp_ok:
-            if ":contains(" in selector and by == By.CSS_SELECTOR:
-                selector = self.convert_css_to_xpath(selector)
-                by = By.XPATH
-        return (selector, by)
+        used to make the ":contains()" selector valid outside of JS calls.
+        Returns a (selector, by) tuple."""
+        return page_utils.recalculate_selector(selector, by, xp_ok=xp_ok)
 
     def __looks_like_a_page_url(self, url):
-        """Returns True if the url parameter looks like a URL. This method
-        is slightly more lenient than page_utils.is_valid_url(url) due to
-        possible typos when calling self.get(url), which will try to
-        navigate to the page if a URL is detected, but will instead call
-        self.get_element(URL_AS_A_SELECTOR) if the input in not a URL."""
-        if (
-            url.startswith("http:")
-            or url.startswith("https:")
-            or url.startswith("://")
-            or url.startswith("about:")
-            or url.startswith("blob:")
-            or url.startswith("chrome:")
-            or url.startswith("data:")
-            or url.startswith("edge:")
-            or url.startswith("file:")
-            or url.startswith("view-source:")
-        ):
-            return True
-        else:
-            return False
+        return page_utils.looks_like_a_page_url(url)
 
     def __make_css_match_first_element_only(self, selector):
         # Only get the first match
@@ -13452,7 +13411,7 @@ class BaseCase(unittest.TestCase):
                 actual_text = self.__get_shadow_text(selector, timeout=1)
                 actual_text = actual_text.strip()
                 if len(actual_text) == 0:
-                    msg = "Element {%s} has no visible text!" % (selector)
+                    msg = "Element {%s} has no visible text!" % selector
                     page_actions.timeout_exception(
                         "TextNotVisibleException", msg
                     )
@@ -13465,7 +13424,7 @@ class BaseCase(unittest.TestCase):
         actual_text = self.__get_shadow_text(selector, timeout=1)
         actual_text = actual_text.strip()
         if len(actual_text) == 0:
-            msg = "Element {%s} has no visible text!" % (selector)
+            msg = "Element {%s} has no visible text!" % selector
             page_actions.timeout_exception("TextNotVisibleException", msg)
         return True
 
