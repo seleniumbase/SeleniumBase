@@ -4,7 +4,9 @@ import fasteners
 import os
 import re
 import requests
+from selenium.webdriver.common.by import By
 from seleniumbase.fixtures import constants
+from seleniumbase.fixtures import css_to_xpath
 
 
 def get_domain_url(url):
@@ -21,6 +23,19 @@ def get_domain_url(url):
     base_url = simple_url.split("/")[0]
     domain_url = url_header + "://" + base_url
     return domain_url
+
+
+def is_valid_by(by):
+    return by in [
+        "css selector", "class name", "id", "name",
+        "link text", "xpath", "tag name", "partial link text",
+    ]
+
+
+def swap_selector_and_by_if_reversed(selector, by):
+    if not is_valid_by(by) and is_valid_by(selector):
+        selector, by = by, selector
+    return (selector, by)
 
 
 def is_xpath_selector(selector):
@@ -64,6 +79,65 @@ def is_name_selector(selector):
     if selector.startswith("name=") or selector.startswith("&"):
         return True
     return False
+
+
+def recalculate_selector(selector, by, xp_ok=True):
+    """Use autodetection to return the correct selector with "by" updated.
+    If "xp_ok" is False, don't call convert_css_to_xpath(), which is
+    used to make the ":contains()" selector valid outside of JS calls.
+    Returns a (selector, by) tuple."""
+    _type = type(selector)
+    if _type is not str:
+        msg = "Expecting a selector of type: \"<class 'str'>\" (string)!"
+        raise Exception('Invalid selector type: "%s"\n%s' % (_type, msg))
+    _by_type = type(by)
+    if _by_type is not str:
+        msg = "Expecting a `by` of type: \"<class 'str'>\" (string)!"
+        raise Exception('Invalid `by` type: "%s"\n%s' % (_by_type, msg))
+    if not is_valid_by(by) and is_valid_by(selector):
+        selector, by = swap_selector_and_by_if_reversed(selector, by)
+    if is_xpath_selector(selector):
+        by = By.XPATH
+    if is_link_text_selector(selector):
+        selector = get_link_text_from_selector(selector)
+        by = By.LINK_TEXT
+    if is_partial_link_text_selector(selector):
+        selector = get_partial_link_text_from_selector(selector)
+        by = By.PARTIAL_LINK_TEXT
+    if is_name_selector(selector):
+        name = get_name_from_selector(selector)
+        selector = '[name="%s"]' % name
+        by = By.CSS_SELECTOR
+    if xp_ok:
+        if ":contains(" in selector and by == By.CSS_SELECTOR:
+            selector = css_to_xpath.convert_css_to_xpath(selector)
+            by = By.XPATH
+    if by == "":
+        by = By.CSS_SELECTOR
+    return (selector, by)
+
+
+def looks_like_a_page_url(url):
+    """Returns True if the url parameter looks like a URL. This method
+    is slightly more lenient than page_utils.is_valid_url(url) due to
+    possible typos when calling self.get(url), which will try to
+    navigate to the page if a URL is detected, but will instead call
+    self.get_element(URL_AS_A_SELECTOR) if the input is not a URL."""
+    if (
+        url.startswith("http:")
+        or url.startswith("https:")
+        or url.startswith("://")
+        or url.startswith("about:")
+        or url.startswith("blob:")
+        or url.startswith("chrome:")
+        or url.startswith("data:")
+        or url.startswith("edge:")
+        or url.startswith("file:")
+        or url.startswith("view-source:")
+    ):
+        return True
+    else:
+        return False
 
 
 def get_link_text_from_selector(selector):

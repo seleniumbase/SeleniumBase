@@ -173,6 +173,11 @@ self.hover(selector, by="css selector", timeout=None)
 self.hover_and_click(
     hover_selector, click_selector,
     hover_by="css selector", click_by="css selector",
+    timeout=None, js_click=False)
+
+self.hover_and_js_click(
+    hover_selector, click_selector,
+    hover_by="css selector", click_by="css selector",
     timeout=None)
 
 self.hover_and_double_click(
@@ -417,6 +422,8 @@ self.show_file_choosers()
 self.disable_beforeunload()
 
 self.get_domain_url(url)
+
+self.get_active_element_css()
 
 self.get_beautiful_soup(source=None)
 

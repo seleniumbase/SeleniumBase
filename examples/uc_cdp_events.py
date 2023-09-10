@@ -25,13 +25,13 @@ class CDPTests(BaseCase):
     def test_display_cdp_events(self):
         if not (self.undetectable and self.uc_cdp_events):
             self.get_new_driver(undetectable=True, uc_cdp_events=True)
-        self.open("https://nowsecure.nl/#relax")
+        self.driver.get("https://nowsecure.nl/#relax")
         try:
             self.verify_success()
         except Exception:
             self.clear_all_cookies()
             self.get_new_driver(undetectable=True, uc_cdp_events=True)
-            self.open("https://nowsecure.nl/#relax")
+            self.driver.get("https://nowsecure.nl/#relax")
             try:
                 self.verify_success()
             except Exception:

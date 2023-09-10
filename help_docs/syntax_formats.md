@@ -2,9 +2,9 @@
 
 <a id="syntax_formats"></a>
 
-## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="40">](https://github.com/seleniumbase/SeleniumBase/) The 23 Syntax Formats / Design Patterns
+<h2><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="40"> The 23 Syntax Formats / Design Patterns</h2>
 
-<h3>SeleniumBase supports multiple ways of structuring tests:</h3>
+<h3>🔡 SeleniumBase supports multiple ways of structuring tests:</h3>
 
 <blockquote>
 <p dir="auto"></p>
@@ -873,30 +873,26 @@ with SB(test=True, rtf=True, demo=True) as sb:
 This pure Python format gives you a raw <code translate="no">webdriver</code> instance in a <code translate="no">with</code> block. The SeleniumBase Driver Manager will automatically make sure that your driver is compatible with your browser version. It gives you full access to customize driver options via method args or via the command-line. The driver will automatically call <code translate="no">quit()</code> after the code leaves the <code translate="no">with</code> block. Here are some examples:
 
 ```python
-"""This script can be run with pure "python". (pytest not needed)."""
-from seleniumbase import js_utils
-from seleniumbase import page_actions
+"""Can run with "python". (pytest not needed)."""
 from seleniumbase import DriverContext
 
-# Driver Context Manager - (By default, browser="chrome". Lots of options)
 with DriverContext() as driver:
     driver.get("https://seleniumbase.github.io/")
-    js_utils.highlight_with_js(driver, 'img[alt="SeleniumBase"]', loops=6)
+    driver.highlight('img[alt="SeleniumBase"]', loops=6)
 
 with DriverContext(browser="chrome", incognito=True) as driver:
     driver.get("https://seleniumbase.io/apps/calculator")
-    page_actions.wait_for_element(driver, '[id="4"]').click()
-    page_actions.wait_for_element(driver, '[id="2"]').click()
-    page_actions.wait_for_text(driver, "42", "#output")
-    js_utils.highlight_with_js(driver, "#output", loops=6)
+    driver.click('[id="4"]')
+    driver.click('[id="2"]')
+    driver.assert_text("42", "#output")
+    driver.highlight("#output", loops=6)
 
 with DriverContext() as driver:
     driver.get("https://seleniumbase.github.io/demo_page")
-    js_utils.highlight_with_js(driver, "h2", loops=5)
-    by_css = "css selector"
-    driver.find_element(by_css, "#myTextInput").send_keys("Automation")
-    driver.find_element(by_css, "#checkBox1").click()
-    js_utils.highlight_with_js(driver, "img", loops=5)
+    driver.highlight("h2")
+    driver.type("#myTextInput", "Automation")
+    driver.click("#checkBox1")
+    driver.highlight("img", loops=6)
 ```
 
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_driver_context.py">examples/raw_driver_context.py</a> for an example.)
@@ -907,31 +903,48 @@ with DriverContext() as driver:
 Another way of running Selenium tests with pure ``python`` (as opposed to using ``pytest`` or ``pynose``) is by using this format, which bypasses [BaseCase](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py) methods while still giving you a flexible driver with a manager. SeleniumBase includes helper files such as [page_actions.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/page_actions.py), which may help you get around some of the limitations of bypassing ``BaseCase``. Here's an example:
 
 ```python
-"""This script can be run with pure "python". (pytest not needed)."""
+"""Driver() test. Runs with "python". (pytest not needed)."""
 from seleniumbase import Driver
-from seleniumbase import js_utils
-from seleniumbase import page_actions
 
-# Example with options. (Also accepts command-line options.)
 driver = Driver(browser="chrome", headless=False)
 try:
     driver.get("https://seleniumbase.io/apps/calculator")
-    page_actions.wait_for_element(driver, '[id="4"]').click()
-    page_actions.wait_for_element(driver, '[id="2"]').click()
-    page_actions.wait_for_text(driver, "42", "#output")
-    js_utils.highlight_with_js(driver, "#output", loops=6)
+    driver.click('[id="4"]')
+    driver.click('[id="2"]')
+    driver.assert_text("42", "#output")
+    driver.highlight("#output", loops=6)
 finally:
     driver.quit()
 
-# Example 2 using default args or command-line options
 driver = Driver()
 try:
     driver.get("https://seleniumbase.github.io/demo_page")
-    js_utils.highlight_with_js(driver, "h2", loops=5)
-    by_css = "css selector"
-    driver.find_element(by_css, "#myTextInput").send_keys("Automation")
-    driver.find_element(by_css, "#checkBox1").click()
-    js_utils.highlight_with_js(driver, "img", loops=5)
+    driver.highlight("h2")
+    driver.type("#myTextInput", "Automation")
+    driver.click("#checkBox1")
+    driver.highlight("img", loops=6)
+finally:
+    driver.quit()
+"""Driver() test. Runs with "python". (pytest not needed)."""
+from seleniumbase import Driver
+
+driver = Driver(browser="chrome", headless=False)
+try:
+    driver.get("https://seleniumbase.io/apps/calculator")
+    driver.click('[id="4"]')
+    driver.click('[id="2"]')
+    driver.assert_text("42", "#output")
+    driver.highlight("#output", loops=6)
+finally:
+    driver.quit()
+
+driver = Driver()
+try:
+    driver.get("https://seleniumbase.github.io/demo_page")
+    driver.highlight("h2")
+    driver.type("#myTextInput", "Automation")
+    driver.click("#checkBox1")
+    driver.highlight("img", loops=6)
 finally:
     driver.quit()
 ```

@@ -31,6 +31,7 @@ def create_proxy_ext(proxy_string, proxy_user, proxy_pass, zip_it=True):
             """    rules: {\n"""
             """      singleProxy: {\n"""
             """        scheme: "http",\n"""
+            """        bypassList: [],\n"""
             """        host: "%s",\n"""
             """        port: parseInt("%s")\n"""
             """      },\n"""

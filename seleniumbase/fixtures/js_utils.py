@@ -7,6 +7,7 @@ from selenium.common.exceptions import WebDriverException
 from seleniumbase import config as sb_config
 from seleniumbase.config import settings
 from seleniumbase.fixtures import constants
+from seleniumbase.fixtures import css_to_xpath
 
 
 def wait_for_ready_state_complete(driver, timeout=settings.LARGE_TIMEOUT):
@@ -311,6 +312,41 @@ def wait_for_css_query_selector(
     )
 
 
+def is_valid_by(by):
+    return by in [
+        "css selector", "class name", "id", "name",
+        "link text", "xpath", "tag name", "partial link text",
+    ]
+
+
+def swap_selector_and_by_if_reversed(selector, by):
+    if not is_valid_by(by) and is_valid_by(selector):
+        selector, by = by, selector
+    return (selector, by)
+
+
+def highlight(driver, selector, by="css selector", loops=4):
+    """For driver.highlight() / driver.page.highlight()"""
+    swap_selector_and_by_if_reversed(selector, by)
+    if ":contains(" in selector:
+        by = "xpath"
+        selector = css_to_xpath.convert_css_to_xpath(selector)
+    element = None
+    try:
+        element = driver.find_element(by, selector)
+    except Exception:
+        time.sleep(1)
+        element = driver.find_element(by, selector)
+    o_bs = ""  # original_box_shadow
+    style = element.get_attribute("style")
+    if style and "box-shadow: " in style:
+        box_start = style.find("box-shadow: ")
+        box_end = style.find(";", box_start) + 1
+        original_box_shadow = style[box_start:box_end]
+        o_bs = original_box_shadow
+    highlight_element_with_js(driver, element, loops=loops, o_bs=o_bs)
+
+
 def highlight_with_js(driver, selector, loops=4, o_bs=""):
     try:
         # This closes any pop-up alerts
@@ -407,6 +443,82 @@ def highlight_with_js(driver, selector, loops=4, o_bs=""):
     )
     try:
         driver.execute_script(script)
+    except Exception:
+        return
+
+
+def highlight_element_with_js(driver, element, loops=4, o_bs=""):
+    try:
+        # This closes any pop-up alerts
+        driver.execute_script("")
+    except Exception:
+        pass
+    script = (
+        """arguments[0].style.boxShadow =
+        '0px 0px 6px 6px rgba(128, 128, 128, 0.5)';"""
+    )
+    try:
+        driver.execute_script(script, element)
+    except Exception:
+        return
+    for n in range(loops):
+        script = (
+            """arguments[0].style.boxShadow =
+            '0px 0px 6px 6px rgba(255, 0, 0, 1)';"""
+        )
+        try:
+            driver.execute_script(script, element)
+        except Exception:
+            return
+        time.sleep(0.0181)
+        script = (
+            """arguments[0].style.boxShadow =
+            '0px 0px 6px 6px rgba(128, 0, 128, 1)';"""
+        )
+        try:
+            driver.execute_script(script, element)
+        except Exception:
+            return
+        time.sleep(0.0181)
+        script = (
+            """arguments[0].style.boxShadow =
+            '0px 0px 6px 6px rgba(0, 0, 255, 1)';"""
+        )
+        try:
+            driver.execute_script(script, element)
+        except Exception:
+            return
+        time.sleep(0.0181)
+        script = (
+            """arguments[0].style.boxShadow =
+            '0px 0px 6px 6px rgba(0, 255, 0, 1)';"""
+        )
+        try:
+            driver.execute_script(script, element)
+        except Exception:
+            return
+        time.sleep(0.0181)
+        script = (
+            """arguments[0].style.boxShadow =
+            '0px 0px 6px 6px rgba(128, 128, 0, 1)';"""
+        )
+        try:
+            driver.execute_script(script, element)
+        except Exception:
+            return
+        time.sleep(0.0181)
+        script = (
+            """arguments[0].style.boxShadow =
+            '0px 0px 6px 6px rgba(128, 0, 128, 1)';"""
+        )
+        try:
+            driver.execute_script(script, element)
+        except Exception:
+            return
+        time.sleep(0.0181)
+    script = """arguments[0].style.boxShadow = '%s';""" % (o_bs)
+    try:
+        driver.execute_script(script, element)
     except Exception:
         return
 
@@ -892,19 +1004,80 @@ def highlight_with_js_2(driver, message, selector, o_bs, msg_dur):
     except Exception:
         return
     time.sleep(0.0181)
-
     try:
         activate_jquery(driver)
         post_messenger_success_message(driver, message, msg_dur)
     except Exception:
         pass
-
     script = """document.querySelector('%s').style.boxShadow = '%s';""" % (
         selector,
         o_bs,
     )
     try:
         driver.execute_script(script)
+    except Exception:
+        return
+
+
+def highlight_element_with_js_2(driver, message, element, o_bs, msg_dur):
+    try:
+        # This closes any pop-up alerts
+        driver.execute_script("")
+    except Exception:
+        pass
+    script = (
+        """arguments[0].style.boxShadow =
+        '0px 0px 6px 6px rgba(128, 128, 128, 0.5)';"""
+    )
+    try:
+        driver.execute_script(script, element)
+    except Exception:
+        return
+    time.sleep(0.0181)
+    script = (
+        """arguments[0].style.boxShadow =
+        '0px 0px 6px 6px rgba(205, 30, 0, 1)';"""
+    )
+    try:
+        driver.execute_script(script, element)
+    except Exception:
+        return
+    time.sleep(0.0181)
+    script = (
+        """arguments[0].style.boxShadow =
+        '0px 0px 6px 6px rgba(128, 0, 128, 1)';"""
+    )
+    try:
+        driver.execute_script(script, element)
+    except Exception:
+        return
+    time.sleep(0.0181)
+    script = (
+        """arguments[0].style.boxShadow =
+        '0px 0px 6px 6px rgba(50, 50, 128, 1)';"""
+    )
+    try:
+        driver.execute_script(script, element)
+    except Exception:
+        return
+    time.sleep(0.0181)
+    script = (
+        """arguments[0].style.boxShadow =
+        '0px 0px 6px 6px rgba(50, 205, 50, 1)';"""
+    )
+    try:
+        driver.execute_script(script, element)
+    except Exception:
+        return
+    time.sleep(0.0181)
+    try:
+        activate_jquery(driver)
+        post_messenger_success_message(driver, message, msg_dur)
+    except Exception:
+        pass
+    script = """arguments[0].style.boxShadow = '%s';""" % (o_bs)
+    try:
+        driver.execute_script(script, element)
     except Exception:
         return
 
@@ -996,6 +1169,19 @@ def get_active_element_css(driver):
     from seleniumbase.js_code import active_css_js
 
     return driver.execute_script(active_css_js.get_active_element_css)
+
+
+def get_locale_code(driver):
+    script = "return navigator.language || navigator.languages[0];"
+    return driver.execute_script(script)
+
+
+def get_origin(driver):
+    return driver.execute_script("return window.location.origin;")
+
+
+def get_user_agent(driver):
+    return driver.execute_script("return navigator.userAgent;")
 
 
 def get_scroll_distance_to_element(driver, element):

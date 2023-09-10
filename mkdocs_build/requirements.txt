@@ -3,7 +3,7 @@
 
 regex>=2023.8.8
 PyYAML>=6.0.1
-pymdown-extensions>=10.2.1
+pymdown-extensions>=10.3
 pipdeptree>=2.13.0
 python-dateutil>=2.8.2
 Markdown==3.4.4
@@ -20,7 +20,7 @@ paginate==0.5.6
 pyquery==2.0.0
 readtime==3.0.0
 mkdocs==1.5.2
-mkdocs-material==9.2.6
+mkdocs-material==9.2.8
 mkdocs-exclude-search==0.6.5
 mkdocs-simple-hooks==0.1.5
 mkdocs-material-extensions==1.1.1

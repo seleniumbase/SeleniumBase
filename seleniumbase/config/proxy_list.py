@@ -15,11 +15,11 @@ Format of PROXY_LIST server entries:
 Example proxies in PROXY_LIST below are not guaranteed to be active or secure.
 If you don't already have a proxy server to connect to,
 you can try finding one from one of following sites:
+* https://www.sslproxies.org/
 * https://bit.ly/36GtZa1
 * https://www.us-proxy.org/
 * https://hidemy.name/en/proxy-list/
 * http://free-proxy.cz/en/proxylist/country/all/https/ping/all
-* https://github.com/mertguvencli/http-proxy-list
 """
 
 PROXY_LIST = {

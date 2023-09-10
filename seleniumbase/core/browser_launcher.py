@@ -6,6 +6,7 @@ import shutil
 import subprocess
 import sys
 import time
+import types
 import urllib3
 import warnings
 from selenium import webdriver
@@ -22,6 +23,7 @@ from seleniumbase.config import settings
 from seleniumbase.core import detect_b_ver
 from seleniumbase.core import download_helper
 from seleniumbase.core import proxy_helper
+from seleniumbase.core import sb_driver
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import shared_utils
 
@@ -100,6 +102,66 @@ def make_driver_executable_if_not(driver_path):
     if "4" in permissions or "6" in permissions:
         # We want at least a '5' or '7' to make sure it's executable
         make_executable(driver_path)
+
+
+def extend_driver(driver):
+    # Extend the driver with new methods
+    DM = sb_driver.DriverMethods(driver)
+    page = types.SimpleNamespace()
+    page.open = DM.open_url
+    page.click = DM.click
+    page.send_keys = DM.send_keys
+    page.type = DM.update_text
+    page.assert_element = DM.assert_element_visible
+    page.assert_element_present = DM.assert_element_present
+    page.assert_element_not_visible = DM.assert_element_not_visible
+    page.assert_text = DM.assert_text
+    page.assert_exact_text = DM.assert_exact_text
+    page.wait_for_element = DM.wait_for_element
+    page.wait_for_text = DM.wait_for_text
+    page.wait_for_exact_text = DM.wait_for_exact_text
+    page.wait_for_and_accept_alert = DM.wait_for_and_accept_alert
+    page.wait_for_and_dismiss_alert = DM.wait_for_and_dismiss_alert
+    page.is_element_present = DM.is_element_present
+    page.is_element_visible = DM.is_element_visible
+    page.is_text_visible = DM.is_text_visible
+    page.is_exact_text_visible = DM.is_exact_text_visible
+    page.get_text = DM.get_text
+    driver.page = page
+    js = types.SimpleNamespace()
+    js.js_click = DM.js_click
+    js.get_active_element_css = DM.get_active_element_css
+    js.get_locale_code = DM.get_locale_code
+    js.get_origin = DM.get_origin
+    js.get_user_agent = DM.get_user_agent
+    js.highlight = DM.highlight
+    driver.js = js
+    driver.open = DM.open_url
+    driver.click = DM.click
+    driver.send_keys = DM.send_keys
+    driver.type = DM.update_text
+    driver.assert_element = DM.assert_element_visible
+    driver.assert_element_present = DM.assert_element_present
+    driver.assert_element_not_visible = DM.assert_element_not_visible
+    driver.assert_text = DM.assert_text
+    driver.assert_exact_text = DM.assert_exact_text
+    driver.wait_for_element = DM.wait_for_element
+    driver.wait_for_text = DM.wait_for_text
+    driver.wait_for_exact_text = DM.wait_for_exact_text
+    driver.wait_for_and_accept_alert = DM.wait_for_and_accept_alert
+    driver.wait_for_and_dismiss_alert = DM.wait_for_and_dismiss_alert
+    driver.is_element_present = DM.is_element_present
+    driver.is_element_visible = DM.is_element_visible
+    driver.is_text_visible = DM.is_text_visible
+    driver.is_exact_text_visible = DM.is_exact_text_visible
+    driver.get_text = DM.get_text
+    driver.js_click = DM.js_click
+    driver.get_active_element_css = DM.get_active_element_css
+    driver.get_locale_code = DM.get_locale_code
+    driver.get_origin = DM.get_origin
+    driver.get_user_agent = DM.get_user_agent
+    driver.highlight = DM.highlight
+    return driver
 
 
 @decorators.rate_limited(4)
@@ -1607,10 +1669,11 @@ def get_remote_driver(
             for key in extension_capabilities:
                 ext_caps = extension_capabilities
                 chrome_options.set_capability(key, ext_caps[key])
-        return webdriver.Remote(
+        driver = webdriver.Remote(
             command_executor=address,
             options=chrome_options,
         )
+        return extend_driver(driver)
     elif browser_name == constants.Browser.FIREFOX:
         firefox_options = _set_firefox_options(
             downloads_path,
@@ -1666,18 +1729,20 @@ def get_remote_driver(
             for key in extension_capabilities:
                 ext_caps = extension_capabilities
                 firefox_options.set_capability(key, ext_caps[key])
-        return webdriver.Remote(
+        driver = webdriver.Remote(
             command_executor=address,
             options=firefox_options,
         )
+        return extend_driver(driver)
     elif browser_name == constants.Browser.INTERNET_EXPLORER:
         capabilities = webdriver.DesiredCapabilities.INTERNETEXPLORER
         remote_options = ArgOptions()
         remote_options.set_capability("cloud:options", desired_caps)
-        return webdriver.Remote(
+        driver = webdriver.Remote(
             command_executor=address,
             options=remote_options,
         )
+        return extend_driver(driver)
     elif browser_name == constants.Browser.EDGE:
         edge_options = _set_chrome_options(
             browser_name,
@@ -1767,26 +1832,29 @@ def get_remote_driver(
             for key in extension_capabilities:
                 ext_caps = extension_capabilities
                 edge_options.set_capability(key, ext_caps[key])
-        return webdriver.Remote(
+        driver = webdriver.Remote(
             command_executor=address,
             options=edge_options,
         )
+        return extend_driver(driver)
     elif browser_name == constants.Browser.SAFARI:
         capabilities = webdriver.DesiredCapabilities.SAFARI
         remote_options = ArgOptions()
         remote_options.set_capability("cloud:options", desired_caps)
-        return webdriver.Remote(
+        driver = webdriver.Remote(
             command_executor=address,
             options=remote_options,
         )
+        return extend_driver(driver)
     elif browser_name == constants.Browser.REMOTE:
         remote_options = ArgOptions()
         for cap_name, cap_value in desired_caps.items():
             remote_options.set_capability(cap_name, cap_value)
-        return webdriver.Remote(
+        driver = webdriver.Remote(
             command_executor=address,
             options=remote_options,
         )
+        return extend_driver(driver)
 
 
 def get_local_driver(
@@ -1913,10 +1981,11 @@ def get_local_driver(
                 log_output=os.devnull,
             )
             try:
-                return webdriver.Firefox(
+                driver = webdriver.Firefox(
                     service=service,
                     options=firefox_options,
                 )
+                return extend_driver(driver)
             except BaseException as e:
                 if (
                     "geckodriver unexpectedly exited" in str(e)
@@ -1942,19 +2011,21 @@ def get_local_driver(
                         )
                     ):
                         firefox_options.add_argument("-headless")
-                    return webdriver.Firefox(
+                    driver = webdriver.Firefox(
                         service=service,
                         options=firefox_options,
                     )
+                    return extend_driver(driver)
                 else:
                     raise  # Not an obvious fix.
         else:
             service = FirefoxService(log_output=os.devnull)
             try:
-                return webdriver.Firefox(
+                driver = webdriver.Firefox(
                     service=service,
                     options=firefox_options,
                 )
+                return extend_driver(driver)
             except BaseException as e:
                 if (
                     "geckodriver unexpectedly exited" in str(e)
@@ -1980,10 +2051,11 @@ def get_local_driver(
                         )
                     ):
                         firefox_options.add_argument("-headless")
-                    return webdriver.Firefox(
+                    driver = webdriver.Firefox(
                         service=service,
                         options=firefox_options,
                     )
+                    return extend_driver(driver)
                 else:
                     raise  # Not an obvious fix.
     elif browser_name == constants.Browser.INTERNET_EXPLORER:
@@ -2036,13 +2108,15 @@ def get_local_driver(
                 sys.argv = sys_args  # Put back the original sys args
         if not headless:
             warnings.simplefilter("ignore", category=DeprecationWarning)
-            return webdriver.Ie(capabilities=ie_capabilities)
+            driver = webdriver.Ie(capabilities=ie_capabilities)
+            return extend_driver(driver)
         else:
             warnings.simplefilter("ignore", category=DeprecationWarning)
-            return webdriver.Ie(
+            driver = webdriver.Ie(
                 executable_path=LOCAL_HEADLESS_IEDRIVER,
                 capabilities=ie_capabilities,
             )
+            return extend_driver(driver)
     elif browser_name == constants.Browser.EDGE:
         prefs = {
             "download.default_directory": downloads_path,
@@ -2384,7 +2458,10 @@ def get_local_driver(
                         chromium_arg_item = "-" + chromium_arg_item
                     else:
                         chromium_arg_item = "--" + chromium_arg_item
-                if "set-binary" in chromium_arg_item and not binary_location:
+                if (
+                    (IS_LINUX or "set-binary" in chromium_arg_item)
+                    and not binary_location
+                ):
                     br_app = "edge"
                     binary_loc = detect_b_ver.get_binary_location(br_app)
                     if os.path.exists(binary_loc):
@@ -2433,7 +2510,8 @@ def get_local_driver(
                 edge_options.add_argument(
                     "--remote-debugging-port=%s" % free_port
                 )
-                return Edge(service=service, options=edge_options)
+                driver = Edge(service=service, options=edge_options)
+                return extend_driver(driver)
             if not auto_upgrade_edgedriver:
                 raise  # Not an obvious fix.
             else:
@@ -2463,7 +2541,7 @@ def get_local_driver(
                 service_args=["--disable-build-check"],
             )
             driver = Edge(service=service, options=edge_options)
-        return driver
+        return extend_driver(driver)
     elif browser_name == constants.Browser.SAFARI:
         args = " ".join(sys.argv)
         if ("-n" in sys.argv or " -n=" in args or args == "-c"):
@@ -2487,9 +2565,10 @@ def get_local_driver(
         ):
             # Only change it if not "normal", which is the default.
             options.page_load_strategy = settings.PAGE_LOAD_STRATEGY.lower()
-        return webdriver.safari.webdriver.WebDriver(
+        driver = webdriver.safari.webdriver.WebDriver(
             service=service, options=options
         )
+        return extend_driver(driver)
     elif browser_name == constants.Browser.GOOGLE_CHROME:
         try:
             chrome_options = _set_chrome_options(
@@ -3017,9 +3096,10 @@ def get_local_driver(
                             warnings.simplefilter(
                                 "ignore", category=DeprecationWarning
                             )
-                            return webdriver.Chrome(
+                            driver = webdriver.Chrome(
                                 service=service, options=chrome_options
                             )
+                            return extend_driver(driver)
                     if not auto_upgrade_chromedriver:
                         raise  # Not an obvious fix.
                     else:
@@ -3136,11 +3216,11 @@ def get_local_driver(
                     driver.uc_open_with_reconnect = (
                         lambda url: uc_open_with_reconnect(driver, url)
                     )
-                driver.open = driver.get  # Shortcut
-                return driver
+                return extend_driver(driver)
             else:  # Running headless on Linux (and not using --uc)
                 try:
-                    return webdriver.Chrome(options=chrome_options)
+                    driver = webdriver.Chrome(options=chrome_options)
+                    return extend_driver(driver)
                 except Exception as e:
                     if not hasattr(e, "msg"):
                         raise
@@ -3159,9 +3239,10 @@ def get_local_driver(
                             warnings.simplefilter(
                                 "ignore", category=DeprecationWarning
                             )
-                            return webdriver.Chrome(
+                            driver = webdriver.Chrome(
                                 service=service, options=chrome_options
                             )
+                            return extend_driver(driver)
                     mcv = None  # Major Chrome Version
                     if "Current browser version is " in e.msg:
                         line = e.msg.split("Current browser version is ")[1]
@@ -3201,10 +3282,11 @@ def get_local_driver(
                                 log_output=os.devnull,
                                 service_args=["--disable-build-check"],
                             )
-                            return webdriver.Chrome(
+                            driver = webdriver.Chrome(
                                 service=service,
                                 options=chrome_options,
                             )
+                            return extend_driver(driver)
                         except Exception:
                             pass
                     # Use the virtual display on Linux during headless errors
@@ -3219,16 +3301,18 @@ def get_local_driver(
                         log_output=os.devnull,
                         service_args=["--disable-build-check"]
                     )
-                    return webdriver.Chrome(
+                    driver = webdriver.Chrome(
                         service=service, options=chrome_options
                     )
+                    return extend_driver(driver)
         except Exception:
             try:
                 # Try again if Chrome didn't launch
                 service = ChromeService(service_args=["--disable-build-check"])
-                return webdriver.Chrome(
+                driver = webdriver.Chrome(
                     service=service, options=chrome_options
                 )
+                return extend_driver(driver)
             except Exception:
                 pass
             if headless:
@@ -3245,7 +3329,8 @@ def get_local_driver(
                 log_output=os.devnull,
                 service_args=["--disable-build-check"]
             )
-            return webdriver.Chrome(service=service)
+            driver = webdriver.Chrome(service=service)
+            return extend_driver(driver)
     else:
         raise Exception(
             "%s is not a valid browser option for this system!" % browser_name

@@ -20,13 +20,13 @@ class UndetectedTest(BaseCase):
     def test_browser_is_undetected(self):
         if not (self.undetectable):
             self.get_new_driver(undetectable=True)
-        self.open("https://nowsecure.nl/#relax")
+        self.driver.get("https://nowsecure.nl/#relax")
         try:
             self.verify_success()
         except Exception:
             self.clear_all_cookies()
             self.get_new_driver(undetectable=True)
-            self.open("https://nowsecure.nl/#relax")
+            self.driver.get("https://nowsecure.nl/#relax")
             try:
                 self.verify_success()
             except Exception:
