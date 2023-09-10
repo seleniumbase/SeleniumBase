@@ -719,9 +719,12 @@ class BaseCase(unittest.TestCase):
                 self.execute_script(double_click_script)
             else:
                 double_click_script = (
-                    """jQuery('%s').dblclick();""" % css_selector
+                    """var targetElement1 = arguments[0];
+                    var clickEvent1 = document.createEvent('MouseEvents');
+                    clickEvent1.initEvent('dblclick', true, true);
+                    targetElement1.dispatchEvent(clickEvent1);"""
                 )
-                self.safe_execute_script(double_click_script)
+                self.execute_script(double_click_script, element)
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
         else:
@@ -797,9 +800,12 @@ class BaseCase(unittest.TestCase):
                 self.execute_script(right_click_script)
             else:
                 right_click_script = (
-                    """jQuery('%s').contextmenu();""" % css_selector
+                    """var targetElement1 = arguments[0];
+                    var clickEvent1 = document.createEvent('MouseEvents');
+                    clickEvent1.initEvent('contextmenu', true, true);
+                    targetElement1.dispatchEvent(clickEvent1);"""
                 )
-                self.safe_execute_script(right_click_script)
+                self.execute_script(right_click_script, element)
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
         else:
@@ -1971,25 +1977,28 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
         self.wait_for_ready_state_complete()
-        page_actions.wait_for_element_present(
+        element = page_actions.wait_for_element_present(
             self.driver, selector, by, timeout
         )
         try:
             selector = self.convert_to_css_selector(selector, by=by)
         except Exception:
-            # Don't run action if can't convert to CSS_Selector for JavaScript
-            raise Exception(
-                "Exception: Could not convert {%s}(by=%s) to CSS_SELECTOR!"
-                % (selector, by)
+            # If can't convert to CSS_Selector for JS, use element directly
+            script = (
+                """var $elm = arguments[0];
+                $val = window.getComputedStyle($elm).getPropertyValue('%s');
+                return $val;""" % property
             )
+            value = self.execute_script(script, element)
+            if value is not None:
+                return value
+            else:
+                return ""
         selector = re.escape(selector)
         selector = self.__escape_quotes_if_needed(selector)
         script = """var $elm = document.querySelector('%s');
                   $val = window.getComputedStyle($elm).getPropertyValue('%s');
-                  return $val;""" % (
-            selector,
-            property,
-        )
+                  return $val;""" % (selector, property)
         value = self.execute_script(script)
         if value is not None:
             return value
@@ -5350,13 +5359,15 @@ class BaseCase(unittest.TestCase):
               Other element would receive the click: ... }"""
         self.__check_scope()
         selector, by = self.__recalculate_selector(selector, by)
-        self.wait_for_element_visible(
+        element = self.wait_for_element_visible(
             selector, by=by, timeout=settings.SMALL_TIMEOUT
         )
         try:
             selector = self.convert_to_css_selector(selector, by=by)
         except Exception:
-            # Don't run action if can't convert to CSS_Selector for JavaScript
+            # If can't convert to CSS_Selector for JS, use element directly
+            script = ("""arguments[0].style.zIndex = '999999';""")
+            self.execute_script(script, element)
             return
         selector = re.escape(selector)
         selector = self.__escape_quotes_if_needed(selector)
@@ -5425,11 +5436,12 @@ class BaseCase(unittest.TestCase):
                     selector, by=by, timeout=settings.SMALL_TIMEOUT
                 )
                 self.__slow_scroll_to_element(element)
+        use_element_directly = False
         try:
             selector = self.convert_to_css_selector(selector, by=by)
         except Exception:
-            # Don't highlight if can't convert to CSS_SELECTOR
-            return
+            # If can't convert to CSS_Selector for JS, use element directly
+            use_element_directly = True
         if self.highlights:
             loops = self.highlights
         if self.browser == "ie":
@@ -5455,7 +5467,9 @@ class BaseCase(unittest.TestCase):
                 box_end = style.find(";", box_start) + 1
                 original_box_shadow = style[box_start:box_end]
                 o_bs = original_box_shadow
-        if ":contains" not in selector and ":first" not in selector:
+        if use_element_directly:
+            self.__highlight_element_with_js(element, loops, o_bs)
+        elif ":contains" not in selector and ":first" not in selector:
             selector = re.escape(selector)
             selector = self.__escape_quotes_if_needed(selector)
             self.__highlight_with_js(selector, loops, o_bs)
@@ -5765,9 +5779,8 @@ class BaseCase(unittest.TestCase):
             if ":contains\\(" not in css_selector:
                 self.__js_click(selector, by=by)
             else:
-                click_script = """jQuery('%s')[0].click();""" % css_selector
                 try:
-                    self.safe_execute_script(click_script)
+                    self.__js_click_element(element)
                 except Exception:
                     self.wait_for_ready_state_complete()
                     element = self.wait_for_element_present(
@@ -5777,7 +5790,7 @@ class BaseCase(unittest.TestCase):
                     if self.is_element_clickable(selector):
                         self.__element_click(element)
                     else:
-                        self.safe_execute_script(click_script)
+                        self.__js_click_element(element)
         else:
             if ":contains\\(" not in css_selector:
                 self.__js_click_all(selector, by=by)
@@ -5929,14 +5942,23 @@ class BaseCase(unittest.TestCase):
     def hide_element(self, selector, by="css selector"):
         """Hide the first element on the page that matches the selector."""
         self.__check_scope()
+        element = None
         try:
             self.wait_for_element_visible("body", timeout=1.5)
-            self.wait_for_element_present(selector, by=by, timeout=0.5)
+            element = self.wait_for_element_present(
+                selector, by=by, timeout=0.5
+            )
         except Exception:
             pass
         selector, by = self.__recalculate_selector(selector, by)
         css_selector = self.convert_to_css_selector(selector, by=by)
-        if ":contains(" in css_selector:
+        if ":contains(" in css_selector and element:
+            script = (
+                'const e = arguments[0];'
+                'e.style.display="none";e.style.visibility="hidden";'
+            )
+            self.execute_script(script, element)
+        elif ":contains(" in css_selector and not element:
             selector = self.__make_css_match_first_element_only(css_selector)
             script = """jQuery('%s').hide();""" % selector
             self.safe_execute_script(script)
@@ -5946,7 +5968,8 @@ class BaseCase(unittest.TestCase):
             script = (
                 'const e = document.querySelector("%s");'
                 'e.style.display="none";e.style.visibility="hidden";'
-                % css_selector)
+                % css_selector
+            )
             self.execute_script(script)
 
     def hide_elements(self, selector, by="css selector"):
@@ -5977,14 +6000,21 @@ class BaseCase(unittest.TestCase):
     def show_element(self, selector, by="css selector"):
         """Show the first element on the page that matches the selector."""
         self.__check_scope()
+        element = None
         try:
             self.wait_for_element_visible("body", timeout=1.5)
-            self.wait_for_element_present(selector, by=by, timeout=1)
+            element = self.wait_for_element_present(selector, by=by, timeout=1)
         except Exception:
             pass
         selector, by = self.__recalculate_selector(selector, by)
         css_selector = self.convert_to_css_selector(selector, by=by)
-        if ":contains(" in css_selector:
+        if ":contains(" in css_selector and element:
+            script = (
+                'const e = arguments[0];'
+                'e.style.display="";e.style.visibility="visible";'
+            )
+            self.execute_script(script, element)
+        elif ":contains(" in css_selector and not element:
             selector = self.__make_css_match_first_element_only(css_selector)
             script = """jQuery('%s').show(0);""" % selector
             self.safe_execute_script(script)
@@ -6026,14 +6056,23 @@ class BaseCase(unittest.TestCase):
     def remove_element(self, selector, by="css selector"):
         """Remove the first element on the page that matches the selector."""
         self.__check_scope()
+        element = None
         try:
             self.wait_for_element_visible("body", timeout=1.5)
-            self.wait_for_element_present(selector, by=by, timeout=0.5)
+            element = self.wait_for_element_present(
+                selector, by=by, timeout=0.5
+            )
         except Exception:
             pass
         selector, by = self.__recalculate_selector(selector, by)
         css_selector = self.convert_to_css_selector(selector, by=by)
-        if ":contains(" in css_selector:
+        if ":contains(" in css_selector and element:
+            script = (
+                'const e = arguments[0];'
+                'e.parentElement.removeChild(e);'
+            )
+            self.execute_script(script, element)
+        elif ":contains(" in css_selector and not element:
             selector = self.__make_css_match_first_element_only(css_selector)
             script = """jQuery('%s').remove();""" % selector
             self.safe_execute_script(script)
@@ -7547,8 +7586,11 @@ class BaseCase(unittest.TestCase):
             )
             self.execute_script(script)
         else:
-            script = """jQuery('%s')[0].value='%s';""" % (css_selector, value)
-            self.safe_execute_script(script)
+            element = self.wait_for_element_present(
+                original_selector, by=by, timeout=timeout
+            )
+            script = """arguments[0].value='%s';""" % value
+            self.execute_script(script, element)
         if text.endswith("\n"):
             element = self.wait_for_element_present(
                 original_selector, by=by, timeout=timeout
@@ -7566,6 +7608,19 @@ class BaseCase(unittest.TestCase):
                         """m_elm.dispatchEvent(m_evt);""" % css_selector
                     )
                     self.execute_script(mouse_move_script)
+                except Exception:
+                    pass
+            elif the_type == "range" and ":contains\\(" in css_selector:
+                try:
+                    element = self.wait_for_element_present(
+                        original_selector, by=by, timeout=1
+                    )
+                    mouse_move_script = (
+                        """m_elm = arguments[0];"""
+                        """m_evt = new Event('mousemove');"""
+                        """m_elm.dispatchEvent(m_evt);"""
+                    )
+                    self.execute_script(mouse_move_script, element)
                 except Exception:
                     pass
         self.__demo_mode_pause_if_active()
@@ -7664,11 +7719,8 @@ class BaseCase(unittest.TestCase):
             )
             self.execute_script(script)
         else:
-            script = """jQuery('%s')[0].textContent='%s';""" % (
-                css_selector,
-                value,
-            )
-            self.safe_execute_script(script)
+            script = """arguments[0].textContent='%s';""" % value
+            self.execute_script(script, element)
         self.__demo_mode_pause_if_active()
 
     def jquery_update_text(
@@ -7759,8 +7811,9 @@ class BaseCase(unittest.TestCase):
             )
             value = self.execute_script(script)
         else:
-            script = """return jQuery('%s')[0].value;""" % css_selector
-            value = self.safe_execute_script(script)
+            element = self.wait_for_element_present(selector, by=by, timeout=1)
+            script = """return arguments[0].value;"""
+            value = self.execute_script(script, element)
         return value
 
     def set_time_limit(self, time_limit):
@@ -12536,6 +12589,40 @@ class BaseCase(unittest.TestCase):
             )
             self.execute_script(script)
 
+    def __js_click_element(self, element):
+        """Clicks an element using pure JS. Does not use jQuery."""
+        is_visible = element.is_displayed()
+        current_url = self.get_current_url()
+        script = (
+            """var simulateClick = function (elem) {
+                   var evt = new MouseEvent('click', {
+                       bubbles: true,
+                       cancelable: true,
+                       view: window
+                   });
+                   var canceled = !elem.dispatchEvent(evt);
+               };
+               var someLink = arguments[0];
+               simulateClick(someLink);"""
+        )
+        if hasattr(self, "recorder_mode") and self.recorder_mode:
+            self.save_recorded_actions()
+        try:
+            self.execute_script(script, element)
+        except Exception:
+            # If element was visible but no longer, or on a different page now,
+            # assume that the click actually worked and continue with the test.
+            if (
+                (is_visible and not element.is_displayed())
+                or current_url != self.get_current_url()
+            ):
+                return  # The click worked, but threw an Exception. Keep going.
+            # It appears the first click didn't work. Make another attempt.
+            self.wait_for_ready_state_complete()
+            # If the regular mouse-simulated click fails, do a basic JS click
+            script = ("""arguments[0].click();""")
+            self.execute_script(script, element)
+
     def __js_click_all(self, selector, by="css selector"):
         """Clicks all matching elements using pure JS. (No jQuery)"""
         selector, by = self.__recalculate_selector(selector, by)
@@ -12977,6 +13064,10 @@ class BaseCase(unittest.TestCase):
         self.wait_for_ready_state_complete()
         js_utils.highlight_with_js(self.driver, selector, loops, o_bs)
 
+    def __highlight_element_with_js(self, element, loops, o_bs):
+        self.wait_for_ready_state_complete()
+        js_utils.highlight_element_with_js(self.driver, element, loops, o_bs)
+
     def __highlight_with_jquery(self, selector, loops, o_bs):
         self.wait_for_ready_state_complete()
         js_utils.highlight_with_jquery(self.driver, selector, loops, o_bs)
@@ -12992,6 +13083,19 @@ class BaseCase(unittest.TestCase):
             duration = 0.75
         js_utils.highlight_with_js_2(
             self.driver, message, selector, o_bs, duration
+        )
+
+    def __highlight_element_with_js_2(self, message, element, o_bs):
+        duration = self.message_duration
+        if not duration:
+            duration = settings.DEFAULT_MESSAGE_DURATION
+        if (
+            (self.headless or self.headless2 or self.xvfb)
+            and float(duration) > 0.75
+        ):
+            duration = 0.75
+        js_utils.highlight_element_with_js_2(
+            self.driver, message, element, o_bs, duration
         )
 
     def __highlight_with_jquery_2(self, message, selector, o_bs):
@@ -13032,11 +13136,12 @@ class BaseCase(unittest.TestCase):
                 selector, by=by, timeout=settings.SMALL_TIMEOUT
             )
             self.__slow_scroll_to_element(element)
+        use_element_directly = False
         try:
             selector = self.convert_to_css_selector(selector, by=by)
         except Exception:
-            # Don't highlight if can't convert to CSS_SELECTOR
-            return
+            # If can't convert to CSS_Selector for JS, use element directly
+            use_element_directly = True
 
         o_bs = ""  # original_box_shadow
         try:
@@ -13055,7 +13160,9 @@ class BaseCase(unittest.TestCase):
                 original_box_shadow = style[box_start:box_end]
                 o_bs = original_box_shadow
 
-        if ":contains" not in selector and ":first" not in selector:
+        if use_element_directly:
+            self.__highlight_element_with_js_2(message, element, o_bs)
+        elif ":contains" not in selector and ":first" not in selector:
             selector = re.escape(selector)
             selector = self.__escape_quotes_if_needed(selector)
             self.__highlight_with_js_2(message, selector, o_bs)
