@@ -20,7 +20,7 @@ paginate==0.5.6
 pyquery==2.0.0
 readtime==3.0.0
 mkdocs==1.5.2
-mkdocs-material==9.2.8
+mkdocs-material==9.3.0
 mkdocs-exclude-search==0.6.5
 mkdocs-simple-hooks==0.1.5
 mkdocs-material-extensions==1.1.1
