@@ -2268,6 +2268,8 @@ def get_local_driver(
             prefs["enable_do_not_track"] = True
         if external_pdf:
             prefs["plugins.always_open_pdf_externally"] = True
+        pdce = "user_experience_metrics.personalization_data_consent_enabled"
+        prefs[pdce] = True  # Remove "Personalize your web experience" prompt
         edge_options.add_experimental_option("prefs", prefs)
         edge_options.add_argument(
             "--disable-blink-features=AutomationControlled"
