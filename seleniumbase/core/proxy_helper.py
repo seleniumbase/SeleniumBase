@@ -14,7 +14,9 @@ PROXY_DIR_PATH = os.path.join(DOWNLOADS_DIR, "proxy_ext_dir")
 PROXY_DIR_LOCK = os.path.join(DOWNLOADS_DIR, "proxy_dir.lock")
 
 
-def create_proxy_ext(proxy_string, proxy_user, proxy_pass, zip_it=True):
+def create_proxy_ext(
+    proxy_string, proxy_user, proxy_pass, bypass_list=None, zip_it=True
+):
     """Implementation of https://stackoverflow.com/a/35293284 for
     https://stackoverflow.com/questions/12848327/
     (Run Selenium on a proxy server that requires authentication.)
@@ -22,6 +24,8 @@ def create_proxy_ext(proxy_string, proxy_user, proxy_pass, zip_it=True):
     CHROMIUM-ONLY! *** Only Chrome and Edge browsers are supported. ***
     """
     background_js = None
+    if not bypass_list:
+        bypass_list = ""
     if proxy_string:
         proxy_host = proxy_string.split(":")[0]
         proxy_port = proxy_string.split(":")[1]
@@ -31,10 +35,10 @@ def create_proxy_ext(proxy_string, proxy_user, proxy_pass, zip_it=True):
             """    rules: {\n"""
             """      singleProxy: {\n"""
             """        scheme: "http",\n"""
-            """        bypassList: [],\n"""
             """        host: "%s",\n"""
             """        port: parseInt("%s")\n"""
             """      },\n"""
+            """    bypassList: ["%s"]\n"""
             """    }\n"""
             """  };\n"""
             """chrome.proxy.settings.set("""
@@ -52,14 +56,17 @@ def create_proxy_ext(proxy_string, proxy_user, proxy_pass, zip_it=True):
             """        callbackFn,\n"""
             """        {urls: ["<all_urls>"]},\n"""
             """        ['blocking']\n"""
-            """);""" % (proxy_host, proxy_port, proxy_user, proxy_pass)
+            """);""" % (
+                proxy_host, proxy_port, bypass_list, proxy_user, proxy_pass
+            )
         )
     else:
         background_js = (
             """var config = {\n"""
             """    mode: "fixed_servers",\n"""
             """    rules: {\n"""
-            """    }\n"""
+            """    },\n"""
+            """    bypassList: ["%s"]\n"""
             """  };\n"""
             """chrome.proxy.settings.set("""
             """{value: config, scope: "regular"}, function() {"""
@@ -76,7 +83,7 @@ def create_proxy_ext(proxy_string, proxy_user, proxy_pass, zip_it=True):
             """        callbackFn,\n"""
             """        {urls: ["<all_urls>"]},\n"""
             """        ['blocking']\n"""
-            """);""" % (proxy_user, proxy_pass)
+            """);""" % (bypass_list, proxy_user, proxy_pass)
         )
     manifest_json = (
         """{\n"""

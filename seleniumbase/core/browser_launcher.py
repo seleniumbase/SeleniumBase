@@ -501,6 +501,7 @@ def _add_chrome_proxy_extension(
     proxy_string,
     proxy_user,
     proxy_pass,
+    proxy_bypass_list=None,
     zip_it=True,
     multi_proxy=False,
 ):
@@ -508,18 +509,21 @@ def _add_chrome_proxy_extension(
     https://stackoverflow.com/questions/12848327/
     (Run Selenium on a proxy server that requires authentication.)"""
     args = " ".join(sys.argv)
+    bypass_list = proxy_bypass_list
     if (
         not ("-n" in sys.argv or " -n=" in args or args == "-c")
         and not multi_proxy
     ):
         # Single-threaded
         if zip_it:
-            proxy_helper.create_proxy_ext(proxy_string, proxy_user, proxy_pass)
+            proxy_helper.create_proxy_ext(
+                proxy_string, proxy_user, proxy_pass, bypass_list
+            )
             proxy_zip = proxy_helper.PROXY_ZIP_PATH
             chrome_options.add_extension(proxy_zip)
         else:
             proxy_helper.create_proxy_ext(
-                proxy_string, proxy_user, proxy_pass, zip_it=False
+                proxy_string, proxy_user, proxy_pass, bypass_list, zip_it=False
             )
             proxy_dir_path = proxy_helper.PROXY_DIR_PATH
             chrome_options = add_chrome_ext_dir(chrome_options, proxy_dir_path)
@@ -532,7 +536,7 @@ def _add_chrome_proxy_extension(
                     _set_proxy_filenames()
                 if not os.path.exists(proxy_helper.PROXY_ZIP_PATH):
                     proxy_helper.create_proxy_ext(
-                        proxy_string, proxy_user, proxy_pass
+                        proxy_string, proxy_user, proxy_pass, bypass_list
                     )
                 proxy_zip = proxy_helper.PROXY_ZIP_PATH
                 chrome_options.add_extension(proxy_zip)
@@ -543,7 +547,11 @@ def _add_chrome_proxy_extension(
                     _set_proxy_filenames()
                 if not os.path.exists(proxy_helper.PROXY_DIR_PATH):
                     proxy_helper.create_proxy_ext(
-                        proxy_string, proxy_user, proxy_pass, False
+                        proxy_string,
+                        proxy_user,
+                        proxy_pass,
+                        bypass_list,
+                        False,
                     )
                 chrome_options = add_chrome_ext_dir(
                     chrome_options, proxy_helper.PROXY_DIR_PATH
@@ -843,6 +851,7 @@ def _set_chrome_options(
                 proxy_string,
                 proxy_user,
                 proxy_pass,
+                proxy_bypass_list,
                 zip_it,
                 multi_proxy,
             )
@@ -861,6 +870,7 @@ def _set_chrome_options(
                 None,
                 proxy_user,
                 proxy_pass,
+                proxy_bypass_list,
                 zip_it,
                 multi_proxy,
             )
@@ -2258,6 +2268,8 @@ def get_local_driver(
             prefs["enable_do_not_track"] = True
         if external_pdf:
             prefs["plugins.always_open_pdf_externally"] = True
+        pdce = "user_experience_metrics.personalization_data_consent_enabled"
+        prefs[pdce] = True  # Remove "Personalize your web experience" prompt
         edge_options.add_experimental_option("prefs", prefs)
         edge_options.add_argument(
             "--disable-blink-features=AutomationControlled"
@@ -2402,6 +2414,7 @@ def get_local_driver(
                     proxy_string,
                     proxy_user,
                     proxy_pass,
+                    proxy_bypass_list,
                     zip_it=True,
                     multi_proxy=multi_proxy,
                 )
@@ -2417,6 +2430,7 @@ def get_local_driver(
                     None,
                     proxy_user,
                     proxy_pass,
+                    proxy_bypass_list,
                     zip_it=True,
                     multi_proxy=multi_proxy,
                 )
