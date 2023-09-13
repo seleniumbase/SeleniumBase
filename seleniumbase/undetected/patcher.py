@@ -122,7 +122,7 @@ class Patcher(object):
         if self.version_main:
             path += "_%s" % self.version_main
         path = path.upper()
-        logger.debug("getting release number from %s" % path)
+        logger.debug("Getting release number from %s" % path)
         return urlopen(self.url_repo + path).read().decode()
 
     def fetch_package(self):
@@ -133,12 +133,12 @@ class Patcher(object):
         u = "%s/%s/%s" % (
             self.url_repo, self.version_full, self.zip_name
         )
-        logger.debug("downloading from %s" % u)
+        logger.debug("Downloading from %s" % u)
         return urlretrieve(u)[0]
 
     def unzip_package(self, fp):
         """ :return: path to unpacked executable """
-        logger.debug("unzipping %s" % fp)
+        logger.debug("Unzipping %s" % fp)
         try:
             os.unlink(self.zip_path)
         except (FileNotFoundError, OSError):
@@ -285,14 +285,14 @@ class Patcher(object):
                 now = time.monotonic()
                 if now - t > timeout:
                     logger.debug(
-                        "could not unlink %s in time (%d seconds)"
+                        "Could not unlink %s in time (%d seconds)"
                         % (self.executable_path, timeout)
                     )
                     break
                 try:
                     os.unlink(self.executable_path)
                     logger.debug(
-                        "successfully unlinked %s"
+                        "Successfully unlinked %s"
                         % self.executable_path
                     )
                     break

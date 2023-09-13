@@ -666,11 +666,9 @@ def _set_chrome_options(
     chrome_options = webdriver.ChromeOptions()
     if is_using_uc(undetectable, browser_name):
         from seleniumbase import undetected
-
         chrome_options = undetected.ChromeOptions()
     elif browser_name == constants.Browser.EDGE:
         chrome_options = webdriver.edge.options.Options()
-
     prefs = {}
     prefs["download.default_directory"] = downloads_path
     prefs["local_discovery.notifications_enabled"] = False
@@ -2485,12 +2483,12 @@ def get_local_driver(
                 binary_location = binary_loc
         if binary_location:
             edge_options.binary_location = binary_location
+        service = EdgeService(
+            executable_path=LOCAL_EDGEDRIVER,
+            log_output=os.devnull,
+            service_args=["--disable-build-check"],
+        )
         try:
-            service = EdgeService(
-                executable_path=LOCAL_EDGEDRIVER,
-                log_output=os.devnull,
-                service_args=["--disable-build-check"],
-            )
             driver = Edge(service=service, options=edge_options)
         except Exception as e:
             if not hasattr(e, "msg"):
@@ -2512,11 +2510,6 @@ def get_local_driver(
                         "only supports MSEdge version "
                     )[1].split(" ")[0]
             elif "DevToolsActivePort file doesn't exist" in e.msg:
-                service = EdgeService(
-                    executable_path=LOCAL_EDGEDRIVER,
-                    log_output=os.devnull,
-                    service_args=["--disable-build-check"],
-                )
                 # https://stackoverflow.com/a/56638103/7058266
                 args = " ".join(sys.argv)
                 free_port = 9222
@@ -2550,11 +2543,6 @@ def get_local_driver(
                     _mark_driver_repaired()
                 except Exception:
                     pass
-            service = EdgeService(
-                executable_path=LOCAL_EDGEDRIVER,
-                log_output=os.devnull,
-                service_args=["--disable-build-check"],
-            )
             driver = Edge(service=service, options=edge_options)
         return extend_driver(driver)
     elif browser_name == constants.Browser.SAFARI:
@@ -3019,6 +3007,99 @@ def get_local_driver(
                                 chrome_options.add_experimental_option(
                                     "w3c", True
                                 )
+                            try:
+                                if (
+                                    uc_chrome_version
+                                    and uc_chrome_version >= 117
+                                    and (headless or headless2)
+                                    and not user_agent
+                                ):
+                                    headless_options = _set_chrome_options(
+                                        browser_name,
+                                        downloads_path,
+                                        True,  # headless
+                                        locale_code,
+                                        proxy_string,
+                                        proxy_auth,
+                                        proxy_user,
+                                        proxy_pass,
+                                        proxy_bypass_list,
+                                        proxy_pac_url,
+                                        multi_proxy,
+                                        user_agent,
+                                        recorder_ext,
+                                        disable_js,
+                                        disable_csp,
+                                        enable_ws,
+                                        enable_sync,
+                                        use_auto_ext,
+                                        False,  # Undetectable
+                                        uc_cdp_events,
+                                        uc_subprocess,
+                                        no_sandbox,
+                                        disable_gpu,
+                                        False,  # headless2
+                                        incognito,
+                                        guest_mode,
+                                        dark_mode,
+                                        devtools,
+                                        remote_debug,
+                                        enable_3d_apis,
+                                        swiftshader,
+                                        ad_block_on,
+                                        block_images,
+                                        do_not_track,
+                                        chromium_arg,
+                                        user_data_dir,
+                                        extension_zip,
+                                        extension_dir,
+                                        binary_location,
+                                        driver_version,
+                                        page_load_strategy,
+                                        use_wire,
+                                        external_pdf,
+                                        servername,
+                                        mobile_emulator,
+                                        device_width,
+                                        device_height,
+                                        device_pixel_ratio,
+                                    )
+                                    if not path_chromedriver:
+                                        sb_install.main(
+                                            override="chromedriver %s"
+                                            % use_version,
+                                            intel_for_uc=False,
+                                            force_uc=False,
+                                        )
+                                    d_b_c = "--disable-build-check"
+                                    if os.path.exists(LOCAL_CHROMEDRIVER):
+                                        service = ChromeService(
+                                            executable_path=LOCAL_CHROMEDRIVER,
+                                            log_output=os.devnull,
+                                            service_args=[d_b_c],
+                                        )
+                                        driver = webdriver.Chrome(
+                                            service=service,
+                                            options=headless_options,
+                                        )
+                                    else:
+                                        service = ChromeService(
+                                            log_output=os.devnull,
+                                            service_args=[d_b_c],
+                                        )
+                                        driver = webdriver.Chrome(
+                                            service=service,
+                                            options=headless_options,
+                                        )
+                                    user_agent = driver.execute_script(
+                                        "return navigator.userAgent;"
+                                    ).replace("Headless", "")
+                                    chrome_options.add_argument(
+                                        "--user-agent=%s" % user_agent
+                                    )
+                                    driver.quit()
+                            except Exception:
+                                pass
                             try:
                                 uc_path = None
                                 if os.path.exists(LOCAL_UC_DRIVER):

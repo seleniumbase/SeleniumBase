@@ -1,12 +1,12 @@
 pip>=23.2.1
 packaging>=23.1
 setuptools>=68.0.0;python_version<"3.8"
-setuptools>=68.2.0;python_version>="3.8"
+setuptools>=68.2.2;python_version>="3.8"
 wheel>=0.41.2
 attrs>=23.1.0
 certifi>=2023.7.22
 filelock>=3.12.2;python_version<"3.8"
-filelock>=3.12.3;python_version>="3.8"
+filelock>=3.12.4;python_version>="3.8"
 platformdirs>=3.10.0
 parse>=1.19.1
 parse-type>=0.6.2
