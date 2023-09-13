@@ -132,7 +132,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         try:
             if hasattr(options, "_session") and options._session is not None:
                 # Prevent reuse of options
-                raise RuntimeError("you cannot reuse the ChromeOptions object")
+                raise RuntimeError("You cannot reuse the ChromeOptions object")
         except AttributeError:
             pass
         options._session = self
@@ -434,7 +434,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
 
     def quit(self):
         try:
-            logger.debug("Terminating the browser")
+            logger.debug("Terminating the UC browser")
             os.kill(self.browser_pid, 15)
         except TimeoutError as e:
             logger.debug(e, exc_info=True)
@@ -445,7 +445,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
             self.service.stop()
         try:
             if self.reactor and isinstance(self.reactor, Reactor):
-                logger.debug("Shutting down reactor")
+                logger.debug("Shutting down Reactor")
                 self.reactor.event.set()
         except Exception:
             pass
@@ -464,7 +464,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                 except (RuntimeError, OSError, PermissionError) as e:
                     logger.debug(
                         "When removing the temp profile, a %s occured: "
-                        "%s\nretrying..."
+                        "%s\nRetrying..."
                         % (e.__class__.__name__, e)
                     )
                 else:
@@ -473,7 +473,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                     )
                     break
                 time.sleep(0.1)
-        # Dereference patcher, so patcher can start cleaning up as well.
+        # Dereference Patcher so that it can start cleaning up as well.
         # This must come last, otherwise it will throw "in use" errors.
         self.patcher = None
 
