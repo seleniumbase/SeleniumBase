@@ -81,4 +81,4 @@ class Reactor(threading.Thread):
                 if "invalid session id" in str(e):
                     pass
                 else:
-                    logging.debug("exception ignored :", e)
+                    logger.debug("exception ignored : %s", e)
