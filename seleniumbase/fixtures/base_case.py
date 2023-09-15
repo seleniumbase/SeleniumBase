@@ -6828,6 +6828,19 @@ class BaseCase(unittest.TestCase):
             self.get_path_of_downloaded_file(file, browser=browser)
         )
 
+    def is_downloaded_file_regex_present(self, regex, browser=False):
+        """Returns True if the filename regex exists in the [Downloads Folder].
+        Uses Python regex via the "re" library for string-matching on the name.
+        @Params
+        regex - The filename regex of the downloaded file.
+        browser - If True, uses the path set by click-initiated downloads.
+                  If False, uses the self.download_file(file_url) path.
+                  Those paths are often the same. (browser-dependent)
+                  (Default: False)."""
+        df = self.get_downloads_folder()
+        matches = [fn for fn in os.listdir(df) if re.match(regex, fn)]
+        return len(matches) >= 1
+
     def delete_downloaded_file_if_present(self, file, browser=False):
         """Deletes the file from the [Downloads Folder] if the file exists.
         For browser click-initiated downloads, SeleniumBase will override
@@ -6922,6 +6935,60 @@ class BaseCase(unittest.TestCase):
                 self.__extra_actions.append(action)
         if self.demo_mode:
             messenger_post = "<b>ASSERT DOWNLOADED FILE</b>: [%s]" % file
+            try:
+                js_utils.activate_jquery(self.driver)
+                js_utils.post_messenger_success_message(
+                    self.driver, messenger_post, self.message_duration
+                )
+            except Exception:
+                pass
+
+    def assert_downloaded_file_regex(self, regex, timeout=None, browser=False):
+        """Assert the filename regex exists in SeleniumBase's Downloads Folder.
+        Uses Python regex via the "re" library for string-matching on the name.
+        @Params
+        regex - The filename regex of the downloaded file.
+        timeout - The time (seconds) to wait for the download to complete.
+        browser - If True, uses the path set by click-initiated downloads.
+                  If False, uses the self.download_file(file_url) path.
+                  Those paths are often the same. (browser-dependent)
+                  (Default: False)."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        start_ms = time.time() * 1000.0
+        stop_ms = start_ms + (timeout * 1000.0)
+        found = False
+        df = self.get_downloads_folder()
+        for x in range(int(timeout)):
+            shared_utils.check_if_time_limit_exceeded()
+            try:
+                matches = [fn for fn in os.listdir(df) if re.match(regex, fn)]
+                self.assertTrue(
+                    len(matches) >= 1,
+                    "Regex [%s] was not found in the downloads folder [%s]!"
+                    % (regex, self.get_downloads_folder()),
+                )
+                found = True
+                break
+            except Exception:
+                now_ms = time.time() * 1000.0
+                if now_ms >= stop_ms:
+                    break
+                time.sleep(1)
+        if not found:
+            message = (
+                "Regex {%s} was not found in the downloads folder {%s} "
+                "after %s seconds! (Or the download didn't complete!)"
+                % (regex, self.get_downloads_folder(), timeout)
+            )
+            page_actions.timeout_exception("NoSuchFileException", message)
+        if self.demo_mode:
+            messenger_post = (
+                "<b>ASSERT DOWNLOADED FILE REGEX</b>: [%s]" % regex
+            )
             try:
                 js_utils.activate_jquery(self.driver)
                 js_utils.post_messenger_success_message(
