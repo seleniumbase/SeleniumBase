@@ -1,9 +1,6 @@
 from pprint import pformat
 from seleniumbase import BaseCase
-
-if __name__ == "__main__":
-    from pytest import main
-    main([__file__, "--uc", "--uc-cdp", "-s"])
+BaseCase.main(__name__, __file__, "--uc", "--uc-cdp", "-s")
 
 
 class CDPTests(BaseCase):

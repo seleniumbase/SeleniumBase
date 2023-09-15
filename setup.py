@@ -238,7 +238,7 @@ setup(
         # (An optional library for image-processing.)
         "pillow": [
             'Pillow==9.5.0;python_version<"3.8"',
-            'Pillow==10.0.0;python_version>="3.8"',
+            'Pillow==10.0.1;python_version>="3.8"',
         ],
         # pip install -e .[psutil]
         "psutil": [
