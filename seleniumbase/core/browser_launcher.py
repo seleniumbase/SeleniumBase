@@ -16,6 +16,7 @@ from selenium.webdriver.common.service import utils as service_utils
 from selenium.webdriver.edge.service import Service as EdgeService
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.safari.service import Service as SafariService
+from seleniumbase import config as sb_config
 from seleniumbase import decorators
 from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
 from seleniumbase import extensions  # browser extensions storage folder
@@ -1564,11 +1565,9 @@ def get_remote_driver(
     extra_caps = {}
     if cap_file:
         from seleniumbase.core import capabilities_parser
-
         desired_caps = capabilities_parser.get_desired_capabilities(cap_file)
     if cap_string:
         import json
-
         try:
             extra_caps = json.loads(str(cap_string))
         except Exception as e:
@@ -2073,7 +2072,6 @@ def get_local_driver(
                 "IE Browser is for Windows-based systems only!"
             )
         from selenium.webdriver.ie.options import Options
-
         ie_options = Options()
         ie_options.ignore_protected_mode_settings = True
         ie_options.ignore_zoom_level = True
@@ -2726,8 +2724,6 @@ def get_local_driver(
             if is_using_uc(undetectable, browser_name):
                 uc_driver_version = get_uc_driver_version()
                 if multi_proxy:
-                    from seleniumbase import config as sb_config
-
                     sb_config.multi_proxy = True
             use_version = find_chromedriver_version_to_use(
                 use_version, driver_version
@@ -2983,7 +2979,6 @@ def get_local_driver(
                         if is_using_uc(undetectable, browser_name):
                             from seleniumbase import undetected
                             from urllib.error import URLError
-
                             if IS_LINUX:
                                 if "--headless" in (
                                     chrome_options.arguments
@@ -3007,52 +3002,70 @@ def get_local_driver(
                                 chrome_options.add_experimental_option(
                                     "w3c", True
                                 )
+                            if (
+                                (not user_agent or "Headless" in user_agent)
+                                and uc_chrome_version
+                                and uc_chrome_version >= 117
+                                and (headless or headless2)
+                                and hasattr(sb_config, "uc_agent_cache")
+                            ):
+                                user_agent = sb_config.uc_agent_cache
+                                chrome_options.add_argument(
+                                    "--user-agent=%s" % user_agent
+                                )
                             try:
                                 if (
-                                    uc_chrome_version
+                                    (
+                                        not user_agent
+                                        or "Headless" in user_agent
+                                    )
+                                    and uc_chrome_version
                                     and uc_chrome_version >= 117
                                     and (headless or headless2)
-                                    and not user_agent
                                 ):
+                                    from seleniumbase.console_scripts import (
+                                        sb_install
+                                    )
+                                    sb_config.uc_user_agent_cache = True
                                     headless_options = _set_chrome_options(
                                         browser_name,
                                         downloads_path,
                                         True,  # headless
                                         locale_code,
-                                        proxy_string,
-                                        proxy_auth,
-                                        proxy_user,
-                                        proxy_pass,
-                                        proxy_bypass_list,
-                                        proxy_pac_url,
-                                        multi_proxy,
-                                        user_agent,
-                                        recorder_ext,
+                                        None,  # proxy_string
+                                        None,  # proxy_auth
+                                        None,  # proxy_user
+                                        None,  # proxy_pass
+                                        None,  # proxy_bypass_list
+                                        None,  # proxy_pac_url
+                                        None,  # multi_proxy
+                                        None,  # user_agent
+                                        None,  # recorder_ext
                                         disable_js,
                                         disable_csp,
                                         enable_ws,
                                         enable_sync,
                                         use_auto_ext,
-                                        False,  # Undetectable
-                                        uc_cdp_events,
-                                        uc_subprocess,
+                                        False,  # undetectable
+                                        False,  # uc_cdp_events
+                                        False,  # uc_subprocess
                                         no_sandbox,
                                         disable_gpu,
                                         False,  # headless2
                                         incognito,
                                         guest_mode,
                                         dark_mode,
-                                        devtools,
+                                        None,  # devtools
                                         remote_debug,
                                         enable_3d_apis,
                                         swiftshader,
-                                        ad_block_on,
+                                        None,  # ad_block_on
                                         block_images,
                                         do_not_track,
-                                        chromium_arg,
-                                        user_data_dir,
-                                        extension_zip,
-                                        extension_dir,
+                                        None,  # chromium_arg
+                                        None,  # user_data_dir
+                                        None,  # extension_zip
+                                        None,  # extension_dir
                                         binary_location,
                                         driver_version,
                                         page_load_strategy,
@@ -3064,7 +3077,17 @@ def get_local_driver(
                                         device_height,
                                         device_pixel_ratio,
                                     )
-                                    if not path_chromedriver:
+                                    if (
+                                        not path_chromedriver
+                                        or (
+                                            ch_driver_version
+                                            and use_version
+                                            and (
+                                                int(ch_driver_version)
+                                                < int(use_version)
+                                            )
+                                        )
+                                    ):
                                         sb_install.main(
                                             override="chromedriver %s"
                                             % use_version,
@@ -3091,12 +3114,16 @@ def get_local_driver(
                                             service=service,
                                             options=headless_options,
                                         )
-                                    user_agent = driver.execute_script(
-                                        "return navigator.userAgent;"
-                                    ).replace("Headless", "")
-                                    chrome_options.add_argument(
-                                        "--user-agent=%s" % user_agent
-                                    )
+                                    try:
+                                        user_agent = driver.execute_script(
+                                            "return navigator.userAgent;"
+                                        ).replace("Headless", "")
+                                        chrome_options.add_argument(
+                                            "--user-agent=%s" % user_agent
+                                        )
+                                        sb_config.uc_agent_cache = user_agent
+                                    except Exception:
+                                        pass
                                     driver.quit()
                             except Exception:
                                 pass
@@ -3213,46 +3240,45 @@ def get_local_driver(
                             mcv = find_chromedriver_version_to_use(
                                 mcv, driver_version
                             )
-                    headless = True
                     headless_options = _set_chrome_options(
                         browser_name,
                         downloads_path,
-                        headless,
+                        True,  # headless
                         locale_code,
-                        proxy_string,
-                        proxy_auth,
-                        proxy_user,
-                        proxy_pass,
-                        proxy_bypass_list,
-                        proxy_pac_url,
-                        multi_proxy,
-                        user_agent,
-                        recorder_ext,
+                        None,  # proxy_string
+                        None,  # proxy_auth
+                        None,  # proxy_user
+                        None,  # proxy_pass
+                        None,  # proxy_bypass_list
+                        None,  # proxy_pac_url
+                        None,  # multi_proxy
+                        None,  # user_agent
+                        None,  # recorder_ext
                         disable_js,
                         disable_csp,
                         enable_ws,
                         enable_sync,
                         use_auto_ext,
-                        undetectable,
-                        uc_cdp_events,
-                        uc_subprocess,
+                        False,  # undetectable
+                        False,  # uc_cdp_events
+                        False,  # uc_subprocess
                         no_sandbox,
                         disable_gpu,
-                        headless2,
+                        False,  # headless2
                         incognito,
                         guest_mode,
                         dark_mode,
-                        devtools,
+                        None,  # devtools
                         remote_debug,
                         enable_3d_apis,
                         swiftshader,
-                        ad_block_on,
+                        None,  # ad_block_on
                         block_images,
                         do_not_track,
-                        chromium_arg,
-                        user_data_dir,
-                        extension_zip,
-                        extension_dir,
+                        None,  # chromium_arg
+                        None,  # user_data_dir
+                        None,  # extension_zip
+                        None,  # extension_dir
                         binary_location,
                         driver_version,
                         page_load_strategy,
