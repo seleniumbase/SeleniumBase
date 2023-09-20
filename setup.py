@@ -229,7 +229,7 @@ setup(
         "pdfminer": [
             'pdfminer.six==20221105',
             'cryptography==39.0.2;python_version<"3.9"',
-            'cryptography==41.0.3;python_version>="3.9"',
+            'cryptography==41.0.4;python_version>="3.9"',
             "cffi==1.15.1",
             "pycparser==2.21",
 
