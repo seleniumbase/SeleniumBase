@@ -160,7 +160,7 @@ setup(
         'selenium==4.11.2',
         'cssselect==1.2.0',
         "sortedcontainers==2.4.0",
-        'fasteners==0.18',
+        'fasteners==0.19',
         'execnet==2.0.2',
         'iniconfig==2.0.0',
         'pluggy==1.2.0;python_version<"3.8"',
@@ -189,7 +189,7 @@ setup(
         'markdown-it-py==2.2.0;python_version<"3.8"',
         'markdown-it-py==3.0.0;python_version>="3.8"',
         'mdurl==0.1.2',
-        'rich==13.5.2',
+        'rich==13.5.3',
     ],
     extras_require={
         # pip install -e .[allure]
