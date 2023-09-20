@@ -107,7 +107,10 @@ def make_driver_executable_if_not(driver_path):
 
 def extend_driver(driver):
     # Extend the driver with new methods
+    driver.default_find_element = driver.find_element
     DM = sb_driver.DriverMethods(driver)
+    driver.find_element = DM.find_element
+    driver.locator = DM.locator
     page = types.SimpleNamespace()
     page.open = DM.open_url
     page.click = DM.click
