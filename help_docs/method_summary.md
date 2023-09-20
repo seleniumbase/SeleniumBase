@@ -914,6 +914,8 @@ self.process_deferred_asserts(print_only=False)
 
 self.fail(msg=None)  # Inherited from "unittest"
 
+self._check_browser()  # Fails test cleanly if the active window is closed
+
 self._print(TEXT)  # Calls Python's print() / Allows for translations
 ```
 
