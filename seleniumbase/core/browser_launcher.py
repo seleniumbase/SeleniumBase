@@ -2171,9 +2171,6 @@ def get_local_driver(
             major_edge_version = None
         if major_edge_version:
             use_version = major_edge_version
-        use_version = find_edgedriver_version_to_use(
-            use_version, driver_version
-        )
         edge_driver_version = None
         edgedriver_upgrade_needed = False
         if os.path.exists(LOCAL_EDGEDRIVER):
@@ -2200,8 +2197,13 @@ def get_local_driver(
                     output = 0
                 if int(output) >= 2:
                     edge_driver_version = output
+                    if driver_version == "keep":
+                        driver_version = edge_driver_version
             except Exception:
                 pass
+        use_version = find_edgedriver_version_to_use(
+            use_version, driver_version
+        )
         local_edgedriver_exists = False
         if LOCAL_EDGEDRIVER and os.path.exists(LOCAL_EDGEDRIVER):
             local_edgedriver_exists = True
@@ -2674,6 +2676,8 @@ def get_local_driver(
                     output = full_ch_driver_version.split(".")[0]
                     if int(output) >= 2:
                         ch_driver_version = output
+                        if driver_version == "keep":
+                            driver_version = ch_driver_version
                 except Exception:
                     pass
             elif path_chromedriver:
@@ -2696,8 +2700,21 @@ def get_local_driver(
                     output = full_ch_driver_version.split(".")[0]
                     if int(output) >= 2:
                         ch_driver_version = output
+                        if driver_version == "keep":
+                            use_version = ch_driver_version
                 except Exception:
                     pass
+            disable_build_check = True
+            uc_driver_version = None
+            if is_using_uc(undetectable, browser_name):
+                uc_driver_version = get_uc_driver_version()
+                if multi_proxy:
+                    sb_config.multi_proxy = True
+                if uc_driver_version and driver_version == "keep":
+                    driver_version = uc_driver_version
+            use_version = find_chromedriver_version_to_use(
+                use_version, driver_version
+            )
             if headless2:
                 try:
                     if use_version == "latest" or int(use_version) >= 109:
@@ -2722,15 +2739,6 @@ def get_local_driver(
             elif headless:
                 if "--headless" not in chrome_options.arguments:
                     chrome_options.add_argument("--headless")
-            disable_build_check = True  # True is NEW for Chrome 115 changes!
-            uc_driver_version = None
-            if is_using_uc(undetectable, browser_name):
-                uc_driver_version = get_uc_driver_version()
-                if multi_proxy:
-                    sb_config.multi_proxy = True
-            use_version = find_chromedriver_version_to_use(
-                use_version, driver_version
-            )
             if LOCAL_CHROMEDRIVER and os.path.exists(LOCAL_CHROMEDRIVER):
                 try:
                     make_driver_executable_if_not(LOCAL_CHROMEDRIVER)
