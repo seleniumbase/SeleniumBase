@@ -1,11 +1,33 @@
 """Add new methods to extend the driver"""
 from seleniumbase.fixtures import js_utils
 from seleniumbase.fixtures import page_actions
+from seleniumbase.fixtures import page_utils
 
 
 class DriverMethods():
     def __init__(self, driver):
         self.driver = driver
+
+    def find_element(self, by, value=None):
+        if not value:
+            value = by
+            by = "css selector"
+        else:
+            value, by = page_utils.swap_selector_and_by_if_reversed(value, by)
+        return self.driver.default_find_element(by=by, value=value)
+
+    def locator(self, selector, by=None):
+        if not by:
+            by = "css selector"
+        else:
+            selector, by = page_utils.swap_selector_and_by_if_reversed(
+                selector, by
+            )
+        try:
+            return self.driver.default_find_element(by=by, value=selector)
+        except Exception:
+            pass
+        raise Exception('No such Element: {%s} (by="%s")!' % (selector, by))
 
     def open_url(self, *args, **kwargs):
         page_actions.open_url(self.driver, *args, **kwargs)
