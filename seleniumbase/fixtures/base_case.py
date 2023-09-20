@@ -5783,14 +5783,32 @@ class BaseCase(unittest.TestCase):
                     self.__js_click_element(element)
                 except Exception:
                     self.wait_for_ready_state_complete()
+                    time.sleep(0.05)
                     element = self.wait_for_element_present(
                         selector, by, timeout=settings.SMALL_TIMEOUT
                     )
-                    time.sleep(0.05)
-                    if self.is_element_clickable(selector):
-                        self.__element_click(element)
+                    if (
+                        self.is_element_visible(selector)
+                        and self.is_element_clickable(selector)
+                    ):
+                        try:
+                            self.__element_click(element)
+                        except Exception:
+                            try:
+                                self.__js_click_element(element)
+                            except Exception:
+                                element = self.wait_for_element_present(
+                                    selector, by, timeout=settings.MINI_TIMEOUT
+                                )
+                                self.__js_click_element(element)
                     else:
-                        self.__js_click_element(element)
+                        try:
+                            self.__js_click_element(element)
+                        except Exception:
+                            element = self.wait_for_element_present(
+                                selector, by, timeout=settings.MINI_TIMEOUT
+                            )
+                            self.__js_click_element(element)
         else:
             if ":contains\\(" not in css_selector:
                 self.__js_click_all(selector, by=by)
