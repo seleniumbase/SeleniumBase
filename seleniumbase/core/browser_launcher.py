@@ -108,14 +108,18 @@ def make_driver_executable_if_not(driver_path):
 def extend_driver(driver):
     # Extend the driver with new methods
     driver.default_find_element = driver.find_element
+    driver.default_find_elements = driver.find_elements
     DM = sb_driver.DriverMethods(driver)
     driver.find_element = DM.find_element
+    driver.find_elements = DM.find_elements
     driver.locator = DM.locator
     page = types.SimpleNamespace()
     page.open = DM.open_url
     page.click = DM.click
     page.send_keys = DM.send_keys
+    page.press_keys = DM.press_keys
     page.type = DM.update_text
+    page.submit = DM.submit
     page.assert_element = DM.assert_element_visible
     page.assert_element_present = DM.assert_element_present
     page.assert_element_not_visible = DM.assert_element_not_visible
@@ -131,6 +135,9 @@ def extend_driver(driver):
     page.is_text_visible = DM.is_text_visible
     page.is_exact_text_visible = DM.is_exact_text_visible
     page.get_text = DM.get_text
+    page.find_element = DM.find_element
+    page.find_elements = DM.find_elements
+    page.locator = DM.locator
     driver.page = page
     js = types.SimpleNamespace()
     js.js_click = DM.js_click
@@ -142,8 +149,11 @@ def extend_driver(driver):
     driver.js = js
     driver.open = DM.open_url
     driver.click = DM.click
+    driver.click_link = DM.click_link
     driver.send_keys = DM.send_keys
+    driver.press_keys = DM.press_keys
     driver.type = DM.update_text
+    driver.submit = DM.submit
     driver.assert_element = DM.assert_element_visible
     driver.assert_element_present = DM.assert_element_present
     driver.assert_element_not_visible = DM.assert_element_not_visible

@@ -28,6 +28,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoSuchWindowException
 from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.keys import Keys
 from seleniumbase.common.exceptions import LinkTextNotFoundException
 from seleniumbase.common.exceptions import TextNotVisibleException
 from seleniumbase.config import settings
@@ -1525,6 +1526,13 @@ def click(driver, selector, by="css selector", timeout=settings.SMALL_TIMEOUT):
     element.click()
 
 
+def click_link(driver, link_text, timeout=settings.SMALL_TIMEOUT):
+    element = wait_for_element_clickable(
+        driver, link_text, by="link text", timeout=timeout
+    )
+    element.click()
+
+
 def js_click(
     driver, selector, by="css selector", timeout=settings.SMALL_TIMEOUT
 ):
@@ -1564,6 +1572,22 @@ def send_keys(
         element.submit()
 
 
+def press_keys(
+    driver, selector, text, by="css selector", timeout=settings.LARGE_TIMEOUT
+):
+    selector, by = page_utils.recalculate_selector(selector, by)
+    element = wait_for_element_clickable(
+        driver, selector, by=by, timeout=timeout
+    )
+    if not text.endswith("\n"):
+        for key in text:
+            element.send_keys(key)
+    else:
+        for key in text[:-1]:
+            element.send_keys(key)
+        element.send_keys(Keys.RETURN)
+
+
 def update_text(
     driver, selector, text, by="css selector", timeout=settings.LARGE_TIMEOUT
 ):
@@ -1577,6 +1601,14 @@ def update_text(
     else:
         element.send_keys(text[:-1])
         element.submit()
+
+
+def submit(driver, selector, by="css selector"):
+    selector, by = page_utils.recalculate_selector(selector, by)
+    element = wait_for_element_clickable(
+        driver, selector, by=by, timeout=settings.SMALL_TIMEOUT
+    )
+    element.submit()
 
 
 def assert_element_visible(
