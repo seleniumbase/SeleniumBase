@@ -6822,12 +6822,39 @@ class BaseCase(unittest.TestCase):
             return download_helper.get_downloads_folder()
         return os.path.join(os.path.expanduser("~"), "downloads")
 
+    def get_downloaded_files(self, regex=None, browser=False):
+        """Returns a list of files in the [Downloads Folder].
+        Depending on settings, that dir may have other files.
+        If regex is provided, uses that to filter results."""
+        df = self.get_downloads_folder()
+        if browser:
+            df = self.get_browser_downloads_folder()
+        if not os.path.exists(df):
+            return []
+        elif regex:
+            return [fn for fn in os.listdir(df) if re.match(regex, fn)]
+        else:
+            return os.listdir(df)
+
     def get_path_of_downloaded_file(self, file, browser=False):
-        """Returns the OS path of the downloaded file."""
+        """Returns the full OS path of the downloaded file."""
+        self.__check_scope()
         if browser:
             return os.path.join(self.get_browser_downloads_folder(), file)
         else:
             return os.path.join(self.get_downloads_folder(), file)
+
+    def get_data_from_downloaded_file(self, file, timeout=None, browser=False):
+        """Returns the contents of the downloaded file specified."""
+        self.assert_downloaded_file(file, timeout=timeout, browser=browser)
+        fpath = self.get_path_of_downloaded_file(file, browser=browser)
+        file_io_lock = fasteners.InterProcessLock(
+            constants.MultiBrowser.FILE_IO_LOCK
+        )
+        with file_io_lock:
+            with open(fpath, "r") as f:
+                data = f.read().strip()
+        return data
 
     def is_downloaded_file_present(self, file, browser=False):
         """Returns True if the file exists in the pre-set [Downloads Folder].
@@ -6840,8 +6867,7 @@ class BaseCase(unittest.TestCase):
         file - The filename of the downloaded file.
         browser - If True, uses the path set by click-initiated downloads.
                   If False, uses the self.download_file(file_url) path.
-                  Those paths are often the same. (browser-dependent)
-                  (Default: False)."""
+                  Those paths are usually the same. (browser-dependent)."""
         return os.path.exists(
             self.get_path_of_downloaded_file(file, browser=browser)
         )
@@ -6853,9 +6879,10 @@ class BaseCase(unittest.TestCase):
         regex - The filename regex of the downloaded file.
         browser - If True, uses the path set by click-initiated downloads.
                   If False, uses the self.download_file(file_url) path.
-                  Those paths are often the same. (browser-dependent)
-                  (Default: False)."""
+                  Those paths are usually the same. (browser-dependent)."""
         df = self.get_downloads_folder()
+        if browser:
+            df = self.get_browser_downloads_folder()
         matches = [fn for fn in os.listdir(df) if re.match(regex, fn)]
         return len(matches) >= 1
 
@@ -6870,8 +6897,7 @@ class BaseCase(unittest.TestCase):
         file - The filename to be deleted from the [Downloads Folder].
         browser - If True, uses the path set by click-initiated downloads.
                   If False, uses the self.download_file(file_url) path.
-                  Those paths are usually the same. (browser-dependent)
-                  (Default: False)."""
+                  Those paths are usually the same. (browser-dependent)."""
         if self.is_downloaded_file_present(file, browser=browser):
             file_path = self.get_path_of_downloaded_file(file, browser=browser)
             try:
@@ -6891,8 +6917,7 @@ class BaseCase(unittest.TestCase):
         file - The filename to be deleted from the [Downloads Folder].
         browser - If True, uses the path set by click-initiated downloads.
                   If False, uses the self.download_file(file_url) path.
-                  Those paths are usually the same. (browser-dependent)
-                  (Default: False)."""
+                  Those paths are usually the same. (browser-dependent)."""
         if self.is_downloaded_file_present(file, browser=browser):
             file_path = self.get_path_of_downloaded_file(file, browser=browser)
             try:
@@ -6912,9 +6937,11 @@ class BaseCase(unittest.TestCase):
         timeout - The time (seconds) to wait for the download to complete.
         browser - If True, uses the path set by click-initiated downloads.
                   If False, uses the self.download_file(file_url) path.
-                  Those paths are often the same. (browser-dependent)
-                  (Default: False)."""
+                  Those paths are usually the same. (browser-dependent)."""
         self.__check_scope()
+        df = self.get_downloads_folder()
+        if browser:
+            df = self.get_browser_downloads_folder()
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
@@ -6929,7 +6956,7 @@ class BaseCase(unittest.TestCase):
                 self.assertTrue(
                     os.path.exists(downloaded_file_path),
                     "File [%s] was not found in the downloads folder [%s]!"
-                    % (file, self.get_downloads_folder()),
+                    % (file, df),
                 )
                 found = True
                 break
@@ -6942,7 +6969,7 @@ class BaseCase(unittest.TestCase):
             message = (
                 "File {%s} was not found in the downloads folder {%s} "
                 "after %s seconds! (Or the download didn't complete!)"
-                % (file, self.get_downloads_folder(), timeout)
+                % (file, df, timeout)
             )
             page_actions.timeout_exception("NoSuchFileException", message)
         if self.recorder_mode and self.__current_url_is_recordable():
@@ -6969,8 +6996,7 @@ class BaseCase(unittest.TestCase):
         timeout - The time (seconds) to wait for the download to complete.
         browser - If True, uses the path set by click-initiated downloads.
                   If False, uses the self.download_file(file_url) path.
-                  Those paths are often the same. (browser-dependent)
-                  (Default: False)."""
+                  Those paths are usually the same. (browser-dependent)."""
         self.__check_scope()
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
@@ -6980,6 +7006,8 @@ class BaseCase(unittest.TestCase):
         stop_ms = start_ms + (timeout * 1000.0)
         found = False
         df = self.get_downloads_folder()
+        if browser:
+            df = self.get_browser_downloads_folder()
         for x in range(int(timeout)):
             shared_utils.check_if_time_limit_exceeded()
             try:
@@ -6987,7 +7015,7 @@ class BaseCase(unittest.TestCase):
                 self.assertTrue(
                     len(matches) >= 1,
                     "Regex [%s] was not found in the downloads folder [%s]!"
-                    % (regex, self.get_downloads_folder()),
+                    % (regex, df),
                 )
                 found = True
                 break
@@ -7000,7 +7028,7 @@ class BaseCase(unittest.TestCase):
             message = (
                 "Regex {%s} was not found in the downloads folder {%s} "
                 "after %s seconds! (Or the download didn't complete!)"
-                % (regex, self.get_downloads_folder(), timeout)
+                % (regex, df, timeout)
             )
             page_actions.timeout_exception("NoSuchFileException", message)
         if self.demo_mode:
@@ -7014,6 +7042,21 @@ class BaseCase(unittest.TestCase):
                 )
             except Exception:
                 pass
+
+    def assert_data_in_downloaded_file(
+        self, data, file, timeout=None, browser=False
+    ):
+        """Assert that the expected data exists in the downloaded file."""
+        self.assert_downloaded_file(file, timeout=timeout, browser=browser)
+        expected = data.strip()
+        actual = self.get_data_from_downloaded_file(file, browser=browser)
+        if expected not in actual:
+            message = (
+                "Expected data [%s] is not in downloaded file [%s]!"
+                % (expected, file)
+            )
+            raise Exception(message)
+        return True
 
     def assert_true(self, expr, msg=None):
         """Asserts that the expression is True.
