@@ -5825,18 +5825,26 @@ class BaseCase(unittest.TestCase):
             self.__extra_actions.append(action)
         if not all_matches:
             if ":contains\\(" not in css_selector:
-                self.__js_click(selector, by=by)
+                try:
+                    self.__js_click(selector, by=by)
+                except Exception:
+                    current_url = self.driver.current_url
+                    if current_url == pre_action_url:
+                        self.__js_click_element(element)
             else:
                 try:
                     self.__js_click_element(element)
                 except Exception:
                     self.wait_for_ready_state_complete()
                     time.sleep(0.05)
-                    element = self.wait_for_element_present(
-                        selector, by, timeout=settings.SMALL_TIMEOUT
-                    )
+                    current_url = self.driver.current_url
+                    if current_url == pre_action_url:
+                        element = self.wait_for_element_present(
+                            selector, by, timeout=settings.SMALL_TIMEOUT
+                        )
                     if (
-                        self.is_element_visible(selector)
+                        current_url == pre_action_url
+                        and self.is_element_visible(selector)
                         and self.is_element_clickable(selector)
                     ):
                         try:
@@ -5849,14 +5857,16 @@ class BaseCase(unittest.TestCase):
                                     selector, by, timeout=settings.MINI_TIMEOUT
                                 )
                                 self.__js_click_element(element)
-                    else:
+                    elif current_url == pre_action_url:
                         try:
                             self.__js_click_element(element)
                         except Exception:
-                            element = self.wait_for_element_present(
-                                selector, by, timeout=settings.MINI_TIMEOUT
-                            )
-                            self.__js_click_element(element)
+                            current_url = self.driver.current_url
+                            if current_url == pre_action_url:
+                                element = self.wait_for_element_present(
+                                    selector, by, timeout=settings.MINI_TIMEOUT
+                                )
+                                self.__js_click_element(element)
         else:
             if ":contains\\(" not in css_selector:
                 self.__js_click_all(selector, by=by)
@@ -6863,6 +6873,7 @@ class BaseCase(unittest.TestCase):
         elif (
             self.driver.capabilities["browserName"].lower() == "chrome"
             and int(self.get_chromedriver_version().split(".")[0]) >= 110
+            and int(self.get_chromedriver_version().split(".")[0]) <= 112
             and self.headless
         ):
             return os.path.abspath(".")
