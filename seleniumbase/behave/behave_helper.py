@@ -119,6 +119,24 @@ def generate_gherkin(srt_actions):
                 sb_actions.append(
                     "jQuery type '%s' in '%s'" % (text, action[1])
                 )
+        elif action[0] == "pkeys":
+            text = action[2].replace("\n", "\\n")
+            if '"' not in text and '"' not in action[1]:
+                sb_actions.append(
+                    'Press keys "%s" in "%s"' % (text, action[1])
+                )
+            elif '"' in text and '"' not in action[1]:
+                sb_actions.append(
+                    'Press keys \'%s\' in "%s"' % (text, action[1])
+                )
+            elif '"' not in text and '"' in action[1]:
+                sb_actions.append(
+                    'Press keys "%s" in \'%s\'' % (text, action[1])
+                )
+            elif '"' in text and '"' in action[1]:
+                sb_actions.append(
+                    "Press keys '%s' in '%s'" % (text, action[1])
+                )
         elif action[0] == "hover":
             if '"' not in action[1]:
                 sb_actions.append('Hover "%s"' % action[1])

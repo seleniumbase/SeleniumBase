@@ -41,6 +41,8 @@ self.send_keys(selector, text, by="css selector", timeout=None)
 # Duplicates:
 # self.add_text(selector, text, by="css selector", timeout=None)
 
+self.press_keys(selector, text, by="css selector", timeout=None)
+
 self.submit(selector, by="css selector")
 
 self.clear(selector, by="css selector", timeout=None)

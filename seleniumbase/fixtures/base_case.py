@@ -1072,11 +1072,54 @@ class BaseCase(unittest.TestCase):
         selector, by = self.__recalculate_selector(selector, by)
         self.add_text(selector, text, by=by, timeout=timeout)
 
+    def press_keys(self, selector, text, by="css selector", timeout=None):
+        """Use send_keys() to press one key at a time."""
+        self.wait_for_ready_state_complete()
+        element = self.wait_for_element_clickable(
+            selector, by=by, timeout=timeout
+        )
+        if self.demo_mode:
+            selector, by = self.__recalculate_selector(selector, by)
+            css_selector = self.convert_to_css_selector(selector, by=by)
+            self.__demo_mode_highlight_if_active(css_selector, By.CSS_SELECTOR)
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                css_selector = self.convert_to_css_selector(selector, by=by)
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                sel_tex = [css_selector, text]
+                action = ["pkeys", sel_tex, origin, time_stamp]
+                self.__extra_actions.append(action)
+        press_enter = False
+        if text.endswith("\n"):
+            text = text[:-1]
+            press_enter = True
+        for key in text:
+            element.send_keys(key)
+        if press_enter:
+            element.send_keys(Keys.RETURN)
+            if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
+                if not self.undetectable:
+                    self.wait_for_ready_state_complete()
+                else:
+                    time.sleep(0.15)
+        if self.demo_mode:
+            if press_enter:
+                self.__demo_mode_pause_if_active()
+            else:
+                self.__demo_mode_pause_if_active(tiny=True)
+        elif self.slow_mode:
+            self.__slow_mode_pause_if_active()
+        elif self.__needs_minimum_wait():
+            time.sleep(0.05)
+            if self.undetectable:
+                time.sleep(0.02)
+
     def submit(self, selector, by="css selector"):
         """Alternative to self.driver.find_element_by_*(SELECTOR).submit()"""
         self.__check_scope()
         selector, by = self.__recalculate_selector(selector, by)
-        element = self.wait_for_element_visible(
+        element = self.wait_for_element_clickable(
             selector, by=by, timeout=settings.SMALL_TIMEOUT
         )
         element.submit()
@@ -4842,6 +4885,7 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("jq_cl")
         ext_actions.append("jq_ca")
         ext_actions.append("jq_ty")
+        ext_actions.append("pkeys")
         ext_actions.append("r_clk")
         ext_actions.append("as_el")
         ext_actions.append("as_ep")
@@ -4908,6 +4952,9 @@ class BaseCase(unittest.TestCase):
                 if srt_actions[n][0] == "jq_ty":
                     srt_actions[n][2] = srt_actions[n][1][1]
                     srt_actions[n][1] = srt_actions[n][1][0]
+                if srt_actions[n][0] == "pkeys":
+                    srt_actions[n][2] = srt_actions[n][1][1]
+                    srt_actions[n][1] = srt_actions[n][1][0]
                 if srt_actions[n][0] == "e_mfa":
                     srt_actions[n][2] = srt_actions[n][1][1]
                     srt_actions[n][1] = srt_actions[n][1][0]
@@ -4922,6 +4969,7 @@ class BaseCase(unittest.TestCase):
                 and (
                     srt_actions[n - 1][0] == "js_ty"
                     or srt_actions[n - 1][0] == "jq_ty"
+                    or srt_actions[n - 1][0] == "pkeys"
                 )
                 and srt_actions[n][2] == srt_actions[n - 1][2]
             ):
