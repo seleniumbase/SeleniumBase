@@ -225,7 +225,7 @@ def chromedriver_on_path():
     return None
 
 
-def get_uc_driver_version():
+def get_uc_driver_version(full=False):
     uc_driver_version = None
     if os.path.exists(LOCAL_UC_DRIVER):
         try:
@@ -236,9 +236,13 @@ def get_uc_driver_version():
                 output = output.decode("latin1")
             else:
                 output = output.decode("utf-8")
+            full_version = output.split(" ")[1]
             output = output.split(" ")[1].split(".")[0]
             if int(output) >= 72:
-                uc_driver_version = output
+                if full:
+                    uc_driver_version = full_version
+                else:
+                    uc_driver_version = output
         except Exception:
             pass
     return uc_driver_version
@@ -2158,6 +2162,9 @@ def get_local_driver(
         }
         use_version = "latest"
         major_edge_version = None
+        saved_mev = None
+        use_br_version_for_edge = False
+        use_exact_version_for_edge = False
         try:
             if binary_location:
                 try:
@@ -2165,7 +2172,9 @@ def get_local_driver(
                         detect_b_ver.get_browser_version_from_binary(
                             binary_location
                         )
-                    ).split(".")[0]
+                    )
+                    saved_mev = major_edge_version
+                    major_edge_version = saved_mev.split(".")[0]
                     if len(major_edge_version) < 2:
                         major_edge_version = None
                 except Exception:
@@ -2174,11 +2183,25 @@ def get_local_driver(
                 br_app = "edge"
                 major_edge_version = (
                     detect_b_ver.get_browser_version_from_os(br_app)
-                ).split(".")[0]
+                )
+                saved_mev = major_edge_version
+                major_edge_version = major_edge_version.split(".")[0]
             if int(major_edge_version) < 80:
                 major_edge_version = None
+            elif int(major_edge_version) >= 115:
+                if (
+                    driver_version == "browser"
+                    and saved_mev
+                    and len(saved_mev.split(".")) == 4
+                ):
+                    driver_version = saved_mev
+                    use_br_version_for_edge = True
         except Exception:
             major_edge_version = None
+        if driver_version and "." in driver_version:
+            use_exact_version_for_edge = True
+        if use_br_version_for_edge:
+            major_edge_version = saved_mev
         if major_edge_version:
             use_version = major_edge_version
         edge_driver_version = None
@@ -2194,19 +2217,20 @@ def get_local_driver(
                     output = output.decode("utf-8")
                 if output.split(" ")[0] == "MSEdgeDriver":
                     # MSEdgeDriver VERSION
-                    output = output.split(" ")[1].split(".")[0]
+                    output = output.split(" ")[1]
+                    if use_exact_version_for_edge:
+                        edge_driver_version = output.split(" ")[0]
+                    output = output.split(".")[0]
                 elif output.split(" ")[0] == "Microsoft":
-                    # Microsoft Edge WebDriver VERSION
-                    if (
-                        "WebDriver 115.0" in output
-                        and "115.0.1901.183" not in output
-                    ):
-                        edgedriver_upgrade_needed = True
-                    output = output.split(" ")[3].split(".")[0]
+                    output = output.split(" ")[3]
+                    if use_exact_version_for_edge:
+                        edge_driver_version = output.split(" ")[0]
+                    output = output.split(".")[0]
                 else:
                     output = 0
                 if int(output) >= 2:
-                    edge_driver_version = output
+                    if not use_exact_version_for_edge:
+                        edge_driver_version = output
                     if driver_version == "keep":
                         driver_version = edge_driver_version
             except Exception:
@@ -2639,8 +2663,10 @@ def get_local_driver(
             )
             use_version = "latest"
             major_chrome_version = None
+            saved_mcv = None
             full_ch_version = None
             full_ch_driver_version = None
+            use_br_version_for_uc = False
             try:
                 if chrome_options.binary_location:
                     try:
@@ -2648,7 +2674,9 @@ def get_local_driver(
                             detect_b_ver.get_browser_version_from_binary(
                                 chrome_options.binary_location,
                             )
-                        ).split(".")[0]
+                        )
+                        saved_mcv = major_chrome_version
+                        major_chrome_version = saved_mcv.split(".")[0]
                         if len(major_chrome_version) < 2:
                             major_chrome_version = None
                     except Exception:
@@ -2658,6 +2686,7 @@ def get_local_driver(
                     full_ch_version = (
                         detect_b_ver.get_browser_version_from_os(br_app)
                     )
+                    saved_mcv = full_ch_version
                     major_chrome_version = full_ch_version.split(".")[0]
                 if int(major_chrome_version) < 67:
                     major_chrome_version = None
@@ -2667,6 +2696,15 @@ def get_local_driver(
                 ):
                     # chromedrivers 2.41 - 2.46 could be swapped with 72
                     major_chrome_version = "72"
+                elif int(major_chrome_version) >= 115:
+                    if (
+                        driver_version == "browser"
+                        and saved_mcv
+                        and len(saved_mcv.split(".")) == 4
+                    ):
+                        driver_version = saved_mcv
+                        if is_using_uc(undetectable, browser_name):
+                            use_br_version_for_uc = True
             except Exception:
                 major_chrome_version = None
             if major_chrome_version:
@@ -2717,7 +2755,11 @@ def get_local_driver(
             disable_build_check = True
             uc_driver_version = None
             if is_using_uc(undetectable, browser_name):
-                uc_driver_version = get_uc_driver_version()
+                if use_br_version_for_uc:
+                    uc_driver_version = get_uc_driver_version(full=True)
+                    full_ch_driver_version = uc_driver_version
+                else:
+                    uc_driver_version = get_uc_driver_version()
                 if multi_proxy:
                     sb_config.multi_proxy = True
                 if uc_driver_version and driver_version == "keep":
@@ -2774,7 +2816,10 @@ def get_local_driver(
             ):
                 full_ch_v_p = full_ch_version.split(".")[0:2]
                 full_ch_driver_v_p = full_ch_driver_version.split(".")[0:2]
-                if full_ch_v_p == full_ch_driver_v_p:
+                if (
+                    full_ch_v_p == full_ch_driver_v_p
+                    or driver_version == "keep"
+                ):
                     browser_driver_close_match = True
             # If not ARM MAC and need to use uc_driver (and it's missing),
             # and already have chromedriver with the correct version,
@@ -2820,6 +2865,12 @@ def get_local_driver(
                     use_uc
                     and use_version != "latest"  # Browser version detected
                     and uc_driver_version != use_version
+                )
+                or (
+                    full_ch_driver_version  # Also used for the uc_driver
+                    and driver_version
+                    and len(str(driver_version).split(".")) == 4
+                    and full_ch_driver_version != driver_version
                 )
             ):
                 # chromedriver download needed in the seleniumbase/drivers dir
