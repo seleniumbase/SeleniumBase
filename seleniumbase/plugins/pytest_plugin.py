@@ -1552,6 +1552,7 @@ def pytest_configure(config):
     sb_config._SMALL_TIMEOUT = settings.SMALL_TIMEOUT
     sb_config._LARGE_TIMEOUT = settings.LARGE_TIMEOUT
     sb_config.pytest_html_report = config.getoption("htmlpath")  # --html=FILE
+    sb_config._sb_class = None  # (Used with the sb fixture for "--rcs")
     sb_config._sb_node = {}  # sb node dictionary (Used with the sb fixture)
     # Dashboard-specific variables
     sb_config._results = {}  # SBase Dashboard test results
@@ -2178,6 +2179,7 @@ def sb(request):
     Usage example: "def test_one(sb):"
     You may need to use this for tests that use other pytest fixtures."""
     from seleniumbase import BaseCase
+    from seleniumbase.core import session_helper
 
     class BaseClass(BaseCase):
         def setUp(self):
@@ -2191,6 +2193,11 @@ def sb(request):
             pass
 
     if request.cls:
+        if sb_config.reuse_class_session:
+            the_class = str(request.cls).split(".")[-1].split("'")[0]
+            if the_class != sb_config._sb_class:
+                session_helper.end_reused_class_session_as_needed()
+                sb_config._sb_class = the_class
         request.cls.sb = BaseClass("base_method")
         request.cls.sb.setUp()
         request.cls.sb._needs_tearDown = True
