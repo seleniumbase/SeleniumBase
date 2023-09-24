@@ -284,12 +284,12 @@ class HackTests(BaseCase):
         self.open("https://wordpress.com/")
         zoom_out = "h1.is-page-header{zoom: 0.8;-moz-transform: scale(0.8);}"
         self.add_css_style(zoom_out)
-        zoom_in = "div.lp-is-cta-blue{zoom: 1.4;-moz-transform: scale(1.4);}"
+        zoom_in = "a.wp-element-button{zoom: 1.4;-moz-transform: scale(1.4);}"
         self.add_css_style(zoom_in)
         self.set_text_content("h1.is-page-header", aybabtu)
-        self.set_text_content("main div.lp-is-cta-blue", "Use SeleniumBase!")
+        self.set_text_content("a.wp-element-button", "Use SeleniumBase!")
         self.highlight("h1.is-page-header", loops=6, scroll=False)
-        self.highlight("main div.lp-is-cta-blue", loops=4, scroll=False)
+        self.highlight("a.wp-element-button", loops=4, scroll=False)
 
         self.open("https://seleniumbase.com/")
         self.set_text_content("h1", aybabtu)

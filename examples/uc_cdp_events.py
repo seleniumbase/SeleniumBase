@@ -34,7 +34,7 @@ class CDPTests(BaseCase):
             except Exception:
                 if self.is_element_visible('iframe[src*="challenge"]'):
                     with self.frame_switch('iframe[src*="challenge"]'):
-                        self.click("area")
+                        self.click("span.mark")
                 else:
                     self.fail_me()
                 try:
