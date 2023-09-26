@@ -1072,11 +1072,54 @@ class BaseCase(unittest.TestCase):
         selector, by = self.__recalculate_selector(selector, by)
         self.add_text(selector, text, by=by, timeout=timeout)
 
+    def press_keys(self, selector, text, by="css selector", timeout=None):
+        """Use send_keys() to press one key at a time."""
+        self.wait_for_ready_state_complete()
+        element = self.wait_for_element_clickable(
+            selector, by=by, timeout=timeout
+        )
+        if self.demo_mode:
+            selector, by = self.__recalculate_selector(selector, by)
+            css_selector = self.convert_to_css_selector(selector, by=by)
+            self.__demo_mode_highlight_if_active(css_selector, By.CSS_SELECTOR)
+        if self.recorder_mode and self.__current_url_is_recordable():
+            if self.get_session_storage_item("pause_recorder") == "no":
+                css_selector = self.convert_to_css_selector(selector, by=by)
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                sel_tex = [css_selector, text]
+                action = ["pkeys", sel_tex, origin, time_stamp]
+                self.__extra_actions.append(action)
+        press_enter = False
+        if text.endswith("\n"):
+            text = text[:-1]
+            press_enter = True
+        for key in text:
+            element.send_keys(key)
+        if press_enter:
+            element.send_keys(Keys.RETURN)
+            if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
+                if not self.undetectable:
+                    self.wait_for_ready_state_complete()
+                else:
+                    time.sleep(0.15)
+        if self.demo_mode:
+            if press_enter:
+                self.__demo_mode_pause_if_active()
+            else:
+                self.__demo_mode_pause_if_active(tiny=True)
+        elif self.slow_mode:
+            self.__slow_mode_pause_if_active()
+        elif self.__needs_minimum_wait():
+            time.sleep(0.05)
+            if self.undetectable:
+                time.sleep(0.02)
+
     def submit(self, selector, by="css selector"):
         """Alternative to self.driver.find_element_by_*(SELECTOR).submit()"""
         self.__check_scope()
         selector, by = self.__recalculate_selector(selector, by)
-        element = self.wait_for_element_visible(
+        element = self.wait_for_element_clickable(
             selector, by=by, timeout=settings.SMALL_TIMEOUT
         )
         element.submit()
@@ -4842,6 +4885,7 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("jq_cl")
         ext_actions.append("jq_ca")
         ext_actions.append("jq_ty")
+        ext_actions.append("pkeys")
         ext_actions.append("r_clk")
         ext_actions.append("as_el")
         ext_actions.append("as_ep")
@@ -4908,6 +4952,9 @@ class BaseCase(unittest.TestCase):
                 if srt_actions[n][0] == "jq_ty":
                     srt_actions[n][2] = srt_actions[n][1][1]
                     srt_actions[n][1] = srt_actions[n][1][0]
+                if srt_actions[n][0] == "pkeys":
+                    srt_actions[n][2] = srt_actions[n][1][1]
+                    srt_actions[n][1] = srt_actions[n][1][0]
                 if srt_actions[n][0] == "e_mfa":
                     srt_actions[n][2] = srt_actions[n][1][1]
                     srt_actions[n][1] = srt_actions[n][1][0]
@@ -4922,6 +4969,7 @@ class BaseCase(unittest.TestCase):
                 and (
                     srt_actions[n - 1][0] == "js_ty"
                     or srt_actions[n - 1][0] == "jq_ty"
+                    or srt_actions[n - 1][0] == "pkeys"
                 )
                 and srt_actions[n][2] == srt_actions[n - 1][2]
             ):
@@ -5777,18 +5825,26 @@ class BaseCase(unittest.TestCase):
             self.__extra_actions.append(action)
         if not all_matches:
             if ":contains\\(" not in css_selector:
-                self.__js_click(selector, by=by)
+                try:
+                    self.__js_click(selector, by=by)
+                except Exception:
+                    current_url = self.driver.current_url
+                    if current_url == pre_action_url:
+                        self.__js_click_element(element)
             else:
                 try:
                     self.__js_click_element(element)
                 except Exception:
                     self.wait_for_ready_state_complete()
                     time.sleep(0.05)
-                    element = self.wait_for_element_present(
-                        selector, by, timeout=settings.SMALL_TIMEOUT
-                    )
+                    current_url = self.driver.current_url
+                    if current_url == pre_action_url:
+                        element = self.wait_for_element_present(
+                            selector, by, timeout=settings.SMALL_TIMEOUT
+                        )
                     if (
-                        self.is_element_visible(selector)
+                        current_url == pre_action_url
+                        and self.is_element_visible(selector)
                         and self.is_element_clickable(selector)
                     ):
                         try:
@@ -5801,14 +5857,16 @@ class BaseCase(unittest.TestCase):
                                     selector, by, timeout=settings.MINI_TIMEOUT
                                 )
                                 self.__js_click_element(element)
-                    else:
+                    elif current_url == pre_action_url:
                         try:
                             self.__js_click_element(element)
                         except Exception:
-                            element = self.wait_for_element_present(
-                                selector, by, timeout=settings.MINI_TIMEOUT
-                            )
-                            self.__js_click_element(element)
+                            current_url = self.driver.current_url
+                            if current_url == pre_action_url:
+                                element = self.wait_for_element_present(
+                                    selector, by, timeout=settings.MINI_TIMEOUT
+                                )
+                                self.__js_click_element(element)
         else:
             if ":contains\\(" not in css_selector:
                 self.__js_click_all(selector, by=by)
@@ -6815,6 +6873,7 @@ class BaseCase(unittest.TestCase):
         elif (
             self.driver.capabilities["browserName"].lower() == "chrome"
             and int(self.get_chromedriver_version().split(".")[0]) >= 110
+            and int(self.get_chromedriver_version().split(".")[0]) <= 112
             and self.headless
         ):
             return os.path.abspath(".")
@@ -6822,12 +6881,39 @@ class BaseCase(unittest.TestCase):
             return download_helper.get_downloads_folder()
         return os.path.join(os.path.expanduser("~"), "downloads")
 
+    def get_downloaded_files(self, regex=None, browser=False):
+        """Returns a list of files in the [Downloads Folder].
+        Depending on settings, that dir may have other files.
+        If regex is provided, uses that to filter results."""
+        df = self.get_downloads_folder()
+        if browser:
+            df = self.get_browser_downloads_folder()
+        if not os.path.exists(df):
+            return []
+        elif regex:
+            return [fn for fn in os.listdir(df) if re.match(regex, fn)]
+        else:
+            return os.listdir(df)
+
     def get_path_of_downloaded_file(self, file, browser=False):
-        """Returns the OS path of the downloaded file."""
+        """Returns the full OS path of the downloaded file."""
+        self.__check_scope()
         if browser:
             return os.path.join(self.get_browser_downloads_folder(), file)
         else:
             return os.path.join(self.get_downloads_folder(), file)
+
+    def get_data_from_downloaded_file(self, file, timeout=None, browser=False):
+        """Returns the contents of the downloaded file specified."""
+        self.assert_downloaded_file(file, timeout=timeout, browser=browser)
+        fpath = self.get_path_of_downloaded_file(file, browser=browser)
+        file_io_lock = fasteners.InterProcessLock(
+            constants.MultiBrowser.FILE_IO_LOCK
+        )
+        with file_io_lock:
+            with open(fpath, "r") as f:
+                data = f.read().strip()
+        return data
 
     def is_downloaded_file_present(self, file, browser=False):
         """Returns True if the file exists in the pre-set [Downloads Folder].
@@ -6840,8 +6926,7 @@ class BaseCase(unittest.TestCase):
         file - The filename of the downloaded file.
         browser - If True, uses the path set by click-initiated downloads.
                   If False, uses the self.download_file(file_url) path.
-                  Those paths are often the same. (browser-dependent)
-                  (Default: False)."""
+                  Those paths are usually the same. (browser-dependent)."""
         return os.path.exists(
             self.get_path_of_downloaded_file(file, browser=browser)
         )
@@ -6853,9 +6938,10 @@ class BaseCase(unittest.TestCase):
         regex - The filename regex of the downloaded file.
         browser - If True, uses the path set by click-initiated downloads.
                   If False, uses the self.download_file(file_url) path.
-                  Those paths are often the same. (browser-dependent)
-                  (Default: False)."""
+                  Those paths are usually the same. (browser-dependent)."""
         df = self.get_downloads_folder()
+        if browser:
+            df = self.get_browser_downloads_folder()
         matches = [fn for fn in os.listdir(df) if re.match(regex, fn)]
         return len(matches) >= 1
 
@@ -6870,8 +6956,7 @@ class BaseCase(unittest.TestCase):
         file - The filename to be deleted from the [Downloads Folder].
         browser - If True, uses the path set by click-initiated downloads.
                   If False, uses the self.download_file(file_url) path.
-                  Those paths are usually the same. (browser-dependent)
-                  (Default: False)."""
+                  Those paths are usually the same. (browser-dependent)."""
         if self.is_downloaded_file_present(file, browser=browser):
             file_path = self.get_path_of_downloaded_file(file, browser=browser)
             try:
@@ -6891,8 +6976,7 @@ class BaseCase(unittest.TestCase):
         file - The filename to be deleted from the [Downloads Folder].
         browser - If True, uses the path set by click-initiated downloads.
                   If False, uses the self.download_file(file_url) path.
-                  Those paths are usually the same. (browser-dependent)
-                  (Default: False)."""
+                  Those paths are usually the same. (browser-dependent)."""
         if self.is_downloaded_file_present(file, browser=browser):
             file_path = self.get_path_of_downloaded_file(file, browser=browser)
             try:
@@ -6912,9 +6996,11 @@ class BaseCase(unittest.TestCase):
         timeout - The time (seconds) to wait for the download to complete.
         browser - If True, uses the path set by click-initiated downloads.
                   If False, uses the self.download_file(file_url) path.
-                  Those paths are often the same. (browser-dependent)
-                  (Default: False)."""
+                  Those paths are usually the same. (browser-dependent)."""
         self.__check_scope()
+        df = self.get_downloads_folder()
+        if browser:
+            df = self.get_browser_downloads_folder()
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
@@ -6929,7 +7015,7 @@ class BaseCase(unittest.TestCase):
                 self.assertTrue(
                     os.path.exists(downloaded_file_path),
                     "File [%s] was not found in the downloads folder [%s]!"
-                    % (file, self.get_downloads_folder()),
+                    % (file, df),
                 )
                 found = True
                 break
@@ -6942,7 +7028,7 @@ class BaseCase(unittest.TestCase):
             message = (
                 "File {%s} was not found in the downloads folder {%s} "
                 "after %s seconds! (Or the download didn't complete!)"
-                % (file, self.get_downloads_folder(), timeout)
+                % (file, df, timeout)
             )
             page_actions.timeout_exception("NoSuchFileException", message)
         if self.recorder_mode and self.__current_url_is_recordable():
@@ -6969,8 +7055,7 @@ class BaseCase(unittest.TestCase):
         timeout - The time (seconds) to wait for the download to complete.
         browser - If True, uses the path set by click-initiated downloads.
                   If False, uses the self.download_file(file_url) path.
-                  Those paths are often the same. (browser-dependent)
-                  (Default: False)."""
+                  Those paths are usually the same. (browser-dependent)."""
         self.__check_scope()
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
@@ -6980,6 +7065,8 @@ class BaseCase(unittest.TestCase):
         stop_ms = start_ms + (timeout * 1000.0)
         found = False
         df = self.get_downloads_folder()
+        if browser:
+            df = self.get_browser_downloads_folder()
         for x in range(int(timeout)):
             shared_utils.check_if_time_limit_exceeded()
             try:
@@ -6987,7 +7074,7 @@ class BaseCase(unittest.TestCase):
                 self.assertTrue(
                     len(matches) >= 1,
                     "Regex [%s] was not found in the downloads folder [%s]!"
-                    % (regex, self.get_downloads_folder()),
+                    % (regex, df),
                 )
                 found = True
                 break
@@ -7000,7 +7087,7 @@ class BaseCase(unittest.TestCase):
             message = (
                 "Regex {%s} was not found in the downloads folder {%s} "
                 "after %s seconds! (Or the download didn't complete!)"
-                % (regex, self.get_downloads_folder(), timeout)
+                % (regex, df, timeout)
             )
             page_actions.timeout_exception("NoSuchFileException", message)
         if self.demo_mode:
@@ -7014,6 +7101,21 @@ class BaseCase(unittest.TestCase):
                 )
             except Exception:
                 pass
+
+    def assert_data_in_downloaded_file(
+        self, data, file, timeout=None, browser=False
+    ):
+        """Assert that the expected data exists in the downloaded file."""
+        self.assert_downloaded_file(file, timeout=timeout, browser=browser)
+        expected = data.strip()
+        actual = self.get_data_from_downloaded_file(file, browser=browser)
+        if expected not in actual:
+            message = (
+                "Expected data [%s] is not in downloaded file [%s]!"
+                % (expected, file)
+            )
+            raise Exception(message)
+        return True
 
     def assert_true(self, expr, msg=None):
         """Asserts that the expression is True.

@@ -302,6 +302,7 @@ def sb(request):
     from selenium import webdriver
     from seleniumbase import BaseCase
     from seleniumbase import config as sb_config
+    from seleniumbase.core import session_helper
 
     class BaseClass(BaseCase):
         def get_new_driver(self, *args, **kwargs):
@@ -326,6 +327,11 @@ def sb(request):
             super().tearDown()
 
     if request.cls:
+        if sb_config.reuse_class_session:
+            the_class = str(request.cls).split(".")[-1].split("'")[0]
+            if the_class != sb_config._sb_class:
+                session_helper.end_reused_class_session_as_needed()
+                sb_config._sb_class = the_class
         request.cls.sb = BaseClass("base_method")
         request.cls.sb.setUp()
         request.cls.sb._needs_tearDown = True
@@ -877,18 +883,18 @@ This pure Python format gives you a raw <code translate="no">webdriver</code> in
 from seleniumbase import DriverContext
 
 with DriverContext() as driver:
-    driver.get("https://seleniumbase.github.io/")
+    driver.open("seleniumbase.github.io/")
     driver.highlight('img[alt="SeleniumBase"]', loops=6)
 
 with DriverContext(browser="chrome", incognito=True) as driver:
-    driver.get("https://seleniumbase.io/apps/calculator")
+    driver.open("seleniumbase.io/apps/calculator")
     driver.click('[id="4"]')
     driver.click('[id="2"]')
     driver.assert_text("42", "#output")
     driver.highlight("#output", loops=6)
 
 with DriverContext() as driver:
-    driver.get("https://seleniumbase.github.io/demo_page")
+    driver.open("seleniumbase.github.io/demo_page")
     driver.highlight("h2")
     driver.type("#myTextInput", "Automation")
     driver.click("#checkBox1")
@@ -908,7 +914,7 @@ from seleniumbase import Driver
 
 driver = Driver(browser="chrome", headless=False)
 try:
-    driver.get("https://seleniumbase.io/apps/calculator")
+    driver.open("seleniumbase.io/apps/calculator")
     driver.click('[id="4"]')
     driver.click('[id="2"]')
     driver.assert_text("42", "#output")
@@ -918,7 +924,7 @@ finally:
 
 driver = Driver()
 try:
-    driver.get("https://seleniumbase.github.io/demo_page")
+    driver.open("seleniumbase.github.io/demo_page")
     driver.highlight("h2")
     driver.type("#myTextInput", "Automation")
     driver.click("#checkBox1")

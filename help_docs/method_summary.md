@@ -41,6 +41,8 @@ self.send_keys(selector, text, by="css selector", timeout=None)
 # Duplicates:
 # self.add_text(selector, text, by="css selector", timeout=None)
 
+self.press_keys(selector, text, by="css selector", timeout=None)
+
 self.submit(selector, by="css selector")
 
 self.clear(selector, by="css selector", timeout=None)
@@ -467,7 +469,11 @@ self.get_downloads_folder()
 
 self.get_browser_downloads_folder()
 
+self.get_downloaded_files(regex=None, browser=False)
+
 self.get_path_of_downloaded_file(file, browser=False)
+
+self.get_data_from_downloaded_file(file, timeout=None, browser=False)
 
 self.is_downloaded_file_present(file, browser=False)
 
@@ -479,6 +485,8 @@ self.delete_downloaded_file_if_present(file, browser=False)
 self.assert_downloaded_file(file, timeout=None, browser=False)
 
 self.assert_downloaded_file_regex(regex, timeout=None, browser=False)
+
+self.assert_data_in_downloaded_file(data, file, timeout=None, browser=False)
 
 self.assert_true(expr, msg=None)
 

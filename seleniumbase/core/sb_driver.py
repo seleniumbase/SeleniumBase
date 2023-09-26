@@ -8,13 +8,25 @@ class DriverMethods():
     def __init__(self, driver):
         self.driver = driver
 
-    def find_element(self, by, value=None):
+    def find_element(self, by=None, value=None):
         if not value:
             value = by
+            by = "css selector"
+        elif not by:
             by = "css selector"
         else:
             value, by = page_utils.swap_selector_and_by_if_reversed(value, by)
         return self.driver.default_find_element(by=by, value=value)
+
+    def find_elements(self, by=None, value=None):
+        if not value:
+            value = by
+            by = "css selector"
+        elif not by:
+            by = "css selector"
+        else:
+            value, by = page_utils.swap_selector_and_by_if_reversed(value, by)
+        return self.driver.default_find_elements(by=by, value=value)
 
     def locator(self, selector, by=None):
         if not by:
@@ -35,11 +47,20 @@ class DriverMethods():
     def click(self, *args, **kwargs):
         page_actions.click(self.driver, *args, **kwargs)
 
+    def click_link(self, *args, **kwargs):
+        page_actions.click_link(self.driver, *args, **kwargs)
+
     def send_keys(self, *args, **kwargs):
         page_actions.send_keys(self.driver, *args, **kwargs)
 
+    def press_keys(self, *args, **kwargs):
+        page_actions.press_keys(self.driver, *args, **kwargs)
+
     def update_text(self, *args, **kwargs):
         page_actions.update_text(self.driver, *args, **kwargs)
+
+    def submit(self, *args, **kwargs):
+        page_actions.submit(self.driver, *args, **kwargs)
 
     def assert_element_visible(self, *args, **kwargs):
         page_actions.assert_element_visible(self.driver, *args, **kwargs)

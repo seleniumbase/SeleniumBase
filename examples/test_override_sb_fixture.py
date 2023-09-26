@@ -7,6 +7,7 @@ def sb(request):
     from selenium import webdriver
     from seleniumbase import BaseCase
     from seleniumbase import config as sb_config
+    from seleniumbase.core import session_helper
 
     class BaseClass(BaseCase):
         def get_new_driver(self, *args, **kwargs):
@@ -31,6 +32,11 @@ def sb(request):
             super().tearDown()
 
     if request.cls:
+        if sb_config.reuse_class_session:
+            the_class = str(request.cls).split(".")[-1].split("'")[0]
+            if the_class != sb_config._sb_class:
+                session_helper.end_reused_class_session_as_needed()
+                sb_config._sb_class = the_class
         request.cls.sb = BaseClass("base_method")
         request.cls.sb.setUp()
         request.cls.sb._needs_tearDown = True

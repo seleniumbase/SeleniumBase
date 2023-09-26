@@ -96,12 +96,15 @@ def generate_sbase_code(srt_actions):
             action[0] == "input"
             or action[0] == "js_ty"
             or action[0] == "jq_ty"
+            or action[0] == "pkeys"
         ):
             method = "type"
             if action[0] == "js_ty":
                 method = "js_type"
             elif action[0] == "jq_ty":
                 method = "jquery_type"
+            elif action[0] == "pkeys":
+                method = "press_keys"
             text = action[2].replace("\n", "\\n")
             if '"' not in action[1] and '"' not in text:
                 sb_actions.append(

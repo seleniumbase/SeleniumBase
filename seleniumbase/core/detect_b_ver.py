@@ -235,6 +235,10 @@ def get_browser_version_from_binary(binary_location):
             binary_location = binary_location.replace(" ", r"\ ")
         cmd_mapping = binary_location + " --version"
         pattern = r"\d+\.\d+\.\d+"
+        quad_pattern = r"\d+\.\d+\.\d+\.\d+"
+        quad_version = read_version_from_cmd(cmd_mapping, quad_pattern)
+        if quad_version and len(str(quad_version)) >= 9:  # Eg. 115.0.0.0
+            return quad_version
         version = read_version_from_cmd(cmd_mapping, pattern)
         return version
     except Exception:
@@ -332,6 +336,10 @@ def get_browser_version_from_os(browser_type):
     try:
         cmd_mapping = cmd_mapping[browser_type][os_name()]
         pattern = PATTERN[browser_type]
+        quad_pattern = r"\d+\.\d+\.\d+\.\d+"
+        quad_version = read_version_from_cmd(cmd_mapping, quad_pattern)
+        if quad_version and len(str(quad_version)) >= 9:  # Eg. 115.0.0.0
+            return quad_version
         version = read_version_from_cmd(cmd_mapping, pattern)
         return version
     except Exception:

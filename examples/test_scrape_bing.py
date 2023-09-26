@@ -4,7 +4,7 @@ BaseCase.main(__name__, __file__)
 
 class ScrapeBingTests(BaseCase):
     def test_scrape_bing(self):
-        self.open(r"https://www.bing.com/search?q=SeleniumBase%20GitHub")
+        self.open("www.bing.com/search?q=SeleniumBase+GitHub&qs=n&form=QBRE")
         self.wait_for_element("main h2 a")
         soup = self.get_beautiful_soup()
         titles = [item.text for item in soup.select("main h2 a")]
