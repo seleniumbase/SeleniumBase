@@ -1,8 +1,7 @@
 Feature: SeleniumBase scenarios for the Simple App
 
-  Scenario: Verify Simple App (log in / sign out)
+  Scenario: Verify the Simple App (Login / Logout)
     Given Open "seleniumbase.io/simple/login"
-    And Clear Session Storage
     And Type "demo_user" into "#username"
     And Type "secret_pass" into "#password"
     And Click 'a:contains("Sign in")'
