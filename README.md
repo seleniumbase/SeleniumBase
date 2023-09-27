@@ -156,7 +156,7 @@ With raw Selenium, that requires more code:<br />
 
 <p>💡 SeleniumBase gives you the option to generate a dashboard and reports for tests. It also saves screenshots from failing tests to the <code translate="no">./latest_logs/</code> folder. Raw <a href="https://www.selenium.dev/documentation/webdriver/" target="_blank">Selenium</a> does not have these options out-of-the-box.</p>
 
-<p>💡 SeleniumBase includes desktop GUI apps for running tests, such as <b>SeleniumBase Commander</b> for <code translate="no">pytest</code> and <b>SeleniumBase Behave GUI for <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md"><code translate="no">behave</code></a>.</b></p>
+<p>💡 SeleniumBase includes desktop GUI apps for running tests, such as <b translate="no">SeleniumBase Commander</b> for <code translate="no">pytest</code> and <b><span translate="no">SeleniumBase Behave GUI</span> for <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md"><code translate="no">behave</code></a>.</b></p>
 
 <p>💡 SeleniumBase has its own Recorder / Test Generator that can create tests from manual browser actions. SeleniumBase also includes other useful tools and console scripts for getting things done quickly. (<i>See the documentation for more details!</i>)</p>
 
@@ -165,78 +165,112 @@ With raw Selenium, that requires more code:<br />
 
 --------
 
-<details>
-<summary> ▶️ Learn about different ways of writing tests (<b>click to expand</b>)</summary>
-<div>
+<p>📚 <b>Learn about different ways of writing tests:</b></p>
 
-<p align="left">📘📝 An example test with the <b>BaseCase</b> class. Runs with <b><a href="https://docs.pytest.org/en/latest/how-to/usage.html">pytest</a></b> or <b><a href="https://github.com/mdmintz/pynose">pynose</a></b>. (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">Learn more</a>)</p>
+<p align="left">📘📝 An <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_simple_login.py">example test</a> using <code translate="no"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py">BaseCase</a></code> class inheritance. Runs with <b><a href="https://docs.pytest.org/en/latest/how-to/usage.html">pytest</a></b> or <b><a href="https://github.com/mdmintz/pynose">pynose</a></b>.  (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">Learn more</a>). (Use <code translate="no">self.driver</code> to access Selenium's raw <code translate="no">driver</code>.)</p>
 
 ```python
 from seleniumbase import BaseCase
 BaseCase.main(__name__, __file__)
 
-class TestMFALogin(BaseCase):
-    def test_mfa_login(self):
-        self.open("https://seleniumbase.io/realworld/login")
+class TestSimpleLogin(BaseCase):
+    def test_simple_login(self):
+        self.open("seleniumbase.io/simple/login")
         self.type("#username", "demo_user")
         self.type("#password", "secret_pass")
-        self.enter_mfa_code("#totpcode", "GAXG2MTEOR3DMMDG")  # 6-digit
+        self.click('a:contains("Sign in")')
         self.assert_exact_text("Welcome!", "h1")
         self.assert_element("img#image1")
-        self.click('a:contains("This Page")')
-        self.save_screenshot_to_logs()
+        self.highlight("#image1")
+        self.click_link("Sign out")
+        self.assert_text("signed out", "#top_message")
 ```
 
-<p align="left">📗📝 An example test with the <b><code translate="no">sb</code></b> <code translate="no">pytest</code> fixture. Runs with <b><a href="https://docs.pytest.org/en/latest/how-to/usage.html">pytest</a></b>.</p>
+<p align="left">📗📝 An <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/sb_fixture_tests.py">example test</a> using the <b><code translate="no">sb</code></b> <code translate="no">pytest</code> fixture. Runs with <b><a href="https://docs.pytest.org/en/latest/how-to/usage.html">pytest</a></b>. (Use <code translate="no">sb.driver</code> to access Selenium's raw <code translate="no">driver</code>.)</p>
 
 ```python
-def test_mfa_login(sb):
-    sb.open("https://seleniumbase.io/realworld/login")
+def test_sb_fixture_with_no_class(sb):
+    sb.open("seleniumbase.io/simple/login")
     sb.type("#username", "demo_user")
     sb.type("#password", "secret_pass")
-    sb.enter_mfa_code("#totpcode", "GAXG2MTEOR3DMMDG")  # 6-digit
+    sb.click('a:contains("Sign in")')
     sb.assert_exact_text("Welcome!", "h1")
     sb.assert_element("img#image1")
-    sb.click('a:contains("This Page")')
-    sb.save_screenshot_to_logs()
+    sb.highlight("#image1")
+    sb.click_link("Sign out")
+    sb.assert_text("signed out", "#top_message")
 ```
 
-<p align="left">📙📝 An example test with the <b><code translate="no">SB</code></b> Context Manager. Runs with pure <b><code translate="no">python</code></b>.</p>
+<p align="left">📙📝 An <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_login_sb.py">example test</a> using the <b><code translate="no">SB</code></b> Context Manager. Runs with pure <b><code translate="no">python</code></b>. (Use <code translate="no">sb.driver</code> to access Selenium's raw <code translate="no">driver</code>.)</p>
 
 ```python
 from seleniumbase import SB
 
-with SB() as sb:  # By default, browser="chrome" if not set.
-    sb.open("https://seleniumbase.io/realworld/login")
+with SB() as sb:
+    sb.open("seleniumbase.io/simple/login")
     sb.type("#username", "demo_user")
     sb.type("#password", "secret_pass")
-    sb.enter_mfa_code("#totpcode", "GAXG2MTEOR3DMMDG")  # 6-digit
-    sb.assert_text("Welcome!", "h1")
-    sb.highlight("img#image1")  # A fancier assert_element() call
-    sb.click('a:contains("This Page")')  # Use :contains() on any tag
-    sb.click_link("Sign out")  # Link must be "a" tag. Not "button".
-    sb.assert_element('a:contains("Sign in")')
-    sb.assert_exact_text("You have been signed out!", "#top_message")
+    sb.click('a:contains("Sign in")')
+    sb.assert_exact_text("Welcome!", "h1")
+    sb.assert_element("img#image1")
+    sb.highlight("#image1")
+    sb.click_link("Sign out")
+    sb.assert_text("signed out", "#top_message")
 ```
 
-<p align="left">📕📝 An example test with <b>behave-BDD</b> <a href="https://behave.readthedocs.io/en/stable/gherkin.html#features" target="_blank">Gherkin</a> structure. Runs with <b><code translate="no">behave</code></b>. (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md">Learn more</a>)</p>
+<p align="left">📔📝 An <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_login_context.py">example test</a> using the <b><code translate="no">DriverContext</code></b> Manager. Runs with pure <b><code translate="no">python</code></b>. (The <code translate="no">driver</code> is an improved version of Selenium's raw <code translate="no">driver</code>, with more methods.)</p>
+
+```python
+from seleniumbase import DriverContext
+
+with DriverContext() as driver:
+    driver.open("seleniumbase.io/simple/login")
+    driver.type("#username", "demo_user")
+    driver.type("#password", "secret_pass")
+    driver.click('a:contains("Sign in")')
+    driver.assert_exact_text("Welcome!", "h1")
+    driver.assert_element("img#image1")
+    driver.highlight("#image1")
+    driver.click_link("Sign out")
+    driver.assert_text("signed out", "#top_message")
+```
+
+<p align="left">📔📝 An <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_login_driver.py">example test</a> using the <b><code translate="no">Driver</code></b> Manager. Runs with pure <b><code translate="no">python</code></b>. (The <code>driver</code> is an improved version of Selenium's raw <code translate="no">driver</code>, with more methods.)</p>
+
+```python
+from seleniumbase import Driver
+
+driver = Driver()
+try:
+    driver.open("seleniumbase.io/simple/login")
+    driver.type("#username", "demo_user")
+    driver.type("#password", "secret_pass")
+    driver.click('a:contains("Sign in")')
+    driver.assert_exact_text("Welcome!", "h1")
+    driver.assert_element("img#image1")
+    driver.highlight("#image1")
+    driver.click_link("Sign out")
+    driver.assert_text("signed out", "#top_message")
+finally:
+    driver.quit()
+```
+
+<p align="left">📕📝 An <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/features/login_app.feature"> example test</a> using <b translate="no">behave-BDD</b> <a href="https://behave.readthedocs.io/en/stable/gherkin.html#features" target="_blank">Gherkin</a> syntax. Runs with <b><code translate="no">behave</code></b>. (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md">Learn more</a>)</p>
 
 ```gherkin
-Feature: SeleniumBase scenarios for the RealWorld App
+Feature: SeleniumBase scenarios for the Simple App
 
-  Scenario: Verify RealWorld App
-    Given Open "seleniumbase.io/realworld/login"
-    When Type "demo_user" into "#username"
+  Scenario: Verify the Simple App (Login / Logout)
+    Given Open "seleniumbase.io/simple/login"
+    And Type "demo_user" into "#username"
     And Type "secret_pass" into "#password"
-    And Do MFA "GAXG2MTEOR3DMMDG" into "#totpcode"
-    Then Assert exact text "Welcome!" in "h1"
+    And Click 'a:contains("Sign in")'
+    And Assert exact text "Welcome!" in "h1"
     And Assert element "img#image1"
-    And Click 'a:contains("This Page")'
-    And Save screenshot to logs
+    And Highlight "#image1"
+    And Click link "Sign out"
+    And Assert text "signed out" in "#top_message"
 ```
-
-</div>
-</details>
 
 --------
 
@@ -332,7 +366,7 @@ COMMANDS:
 
 <div></div>
 <details>
-<summary> ▶️ Here's output from a chromedriver download. (<b>click to expand</b>)</summary>
+<summary> ▶️ Here's sample output from a chromedriver download. (<b>click to expand</b>)</summary>
 
 ```bash
 *** chromedriver to download = 116.0.5845.96 (Latest Stable) 
@@ -865,7 +899,7 @@ behave behave_bdd/features/ -D dashboard -D headless
 
 <img src="https://seleniumbase.github.io/cdn/img/sb_behave_dashboard.png" title="SeleniumBase" width="500">
 
-You can also use ``--junit`` to get ``.xml`` reports for each Behave feature. Jenkins can use these files to display better reporting for your tests.
+You can also use ``--junit`` to get ``.xml`` reports for each <code translate="no">behave</code> feature. Jenkins can use these files to display better reporting for your tests.
 
 ```bash
 behave behave_bdd/features/ --junit -D rs -D headless
