@@ -135,7 +135,7 @@
 <div><a href="https://seleniumbase.dev/help_docs/js_package_manager"><b>JS Package Manager</b></a></div>
 <div><a href="https://seleniumbase.dev/examples/tour_examples/"><b>Tour Examples</b></a></div>
 <div><a href="https://seleniumbase.dev/examples/presenter/"><b>Presentation Maker</b></a></div>
-<div><a href="https://seleniumbase.dev/examples/chart_maker/ReadMe/"><b>Chart Maker</b></a></div>
+<div><a href="https://seleniumbase.dev/examples/chart_maker/"><b>Chart Maker</b></a></div>
 <div><a href="https://seleniumbase.dev/help_docs/mysql_installation"><b>Handling iframes</b></a></div>
 <div><a href="https://seleniumbase.dev/help_docs/handling_iframes"><b>MySQL Installation Overview</b></a></div>
 <div><a href="https://seleniumbase.dev/seleniumbase/utilities/selenium_grid/"><b>Using the Selenium Grid</b></a></div>

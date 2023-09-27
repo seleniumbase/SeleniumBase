@@ -626,11 +626,10 @@ sbase convert [WEBDRIVER_UNITTEST_FILE.py]
 
 * Output:
 
-Converts a Selenium IDE exported WebDriver unittest file
-into a SeleniumBase file. Adds ``_SB`` to the new
-file name while keeping the original file intact.
-Works with Katalon Recorder scripts.
-See [This ReadMe](https://seleniumbase.io/seleniumbase/utilities/selenium_ide/ReadMe/) for details.
+Converts a Selenium IDE exported WebDriver unittest
+file into a SeleniumBase file. Adds ``_SB`` to the
+new filename while keeping the original file intact.
+Works on both Selenium IDE & Katalon Recorder scripts.
 
 <h3>encrypt / obfuscate</h3>
 
