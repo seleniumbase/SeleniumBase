@@ -1,7 +1,7 @@
 # mkdocs dependencies for generating the seleniumbase.io website
 # Minimum Python version: 3.8 (for generating docs only)
 
-regex>=2022.10.31
+regex>=2023.8.8
 PyYAML>=6.0.1
 pymdown-extensions>=10.3
 pipdeptree>=2.13.0
@@ -20,7 +20,7 @@ paginate==0.5.6
 pyquery==2.0.0
 readtime==3.0.0
 mkdocs==1.5.3
-mkdocs-material==9.4.1
+mkdocs-material==9.4.2
 mkdocs-exclude-search==0.6.5
 mkdocs-simple-hooks==0.1.5
 mkdocs-material-extensions==1.2
