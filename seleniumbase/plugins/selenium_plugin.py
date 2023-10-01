@@ -9,7 +9,7 @@ from seleniumbase.fixtures import shared_utils
 
 
 class SeleniumBrowser(Plugin):
-    """This plugin adds the following command-line options to nosetests:
+    """This plugin adds the following command-line options to pynose:
     --browser=BROWSER  (The web browser to use. Default: "chrome".)
     --chrome  (Shortcut for "--browser=chrome". Default.)
     --edge  (Shortcut for "--browser=edge".)
@@ -70,7 +70,6 @@ class SeleniumBrowser(Plugin):
     --uc | --undetected  (Use undetected-chromedriver to evade bot-detection.)
     --uc-cdp-events  (Capture CDP events when running in "--undetected" mode.)
     --remote-debug  (Sync to Chrome Remote Debugger chrome://inspect/#devices)
-    --final-debug  (Enter Debug Mode after each test ends. Don't use with CI!)
     --enable-3d-apis  (Enables WebGL and 3D APIs.)
     --swiftshader  (Use Chrome's "--use-gl=swiftshader" feature.)
     --incognito  (Enable Chrome's Incognito mode.)
@@ -758,19 +757,6 @@ class SeleniumBrowser(Plugin):
                     Info: chromedevtools.github.io/devtools-protocol/""",
         )
         parser.addoption(
-            "--final-debug",
-            "--final-trace",
-            "--fdebug",
-            "--ftrace",
-            action="store_true",
-            dest="final_debug",
-            default=False,
-            help="""Enter Debug Mode at the end of each test.
-                    To enter Debug Mode only on failures, use "--pdb".
-                    If using both "--final-debug" and "--pdb" together,
-                    then Debug Mode will activate twice on failures.""",
-        )
-        parser.addoption(
             "--enable_3d_apis",
             "--enable-3d-apis",
             action="store_true",
@@ -1125,7 +1111,6 @@ class SeleniumBrowser(Plugin):
         test.test.no_sandbox = self.options.no_sandbox
         test.test.disable_gpu = self.options.disable_gpu
         test.test.remote_debug = self.options.remote_debug
-        test.test._final_debug = self.options.final_debug
         test.test.enable_3d_apis = self.options.enable_3d_apis
         test.test.swiftshader = self.options.swiftshader
         test.test.incognito = self.options.incognito

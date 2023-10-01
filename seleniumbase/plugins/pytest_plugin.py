@@ -90,7 +90,7 @@ def pytest_addoption(parser):
     --uc | --undetected  (Use undetected-chromedriver to evade bot-detection.)
     --uc-cdp-events  (Capture CDP events when running in "--undetected" mode.)
     --remote-debug  (Sync to Chrome Remote Debugger chrome://inspect/#devices)
-    --final-debug  (Enter Debug Mode after each test ends. Don't use with CI!)
+    --ftrace | --final-trace  (Debug Mode after each test. Don't use with CI!)
     --dashboard  (Enable the SeleniumBase Dashboard. Saved at: dashboard.html)
     --dash-title=STRING  (Set the title shown for the generated dashboard.)
     --enable-3d-apis  (Enables WebGL and 3D APIs.)
