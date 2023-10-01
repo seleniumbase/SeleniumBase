@@ -4671,6 +4671,12 @@ class BaseCase(unittest.TestCase):
                 srt_actions[n][1] = srt_actions[n - 1][1]
         for n in range(len(srt_actions)):
             if (
+                srt_actions[n][0] == "dbclk"
+                and srt_actions[n][1] == ""
+            ):
+                srt_actions[n][0] = "_skip"
+        for n in range(len(srt_actions)):
+            if (
                 srt_actions[n][0] == "cho_f"
                 and n > 0
                 and srt_actions[n - 1][0] == "chfil"
