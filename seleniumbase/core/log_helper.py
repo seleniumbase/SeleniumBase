@@ -27,7 +27,7 @@ def log_screenshot(test_logpath, driver, screenshot=None, get=False):
         return
     try:
         if not screenshot:
-            element = driver.find_element_by_tag_name("body")
+            element = driver.find_element("tag name", "body")
             screenshot = element.screenshot_as_base64
         if screenshot != screenshot_warning:
             with open(screenshot_path, "wb") as file:
