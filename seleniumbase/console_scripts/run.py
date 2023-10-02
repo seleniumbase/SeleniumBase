@@ -813,7 +813,7 @@ def show_options():
     op += "      | where / w: Show stack spot. u: Up stack. d: Down stack. |\n"
     op += "      | longlist / ll: See code. dir(): List namespace objects. |\n"
     op += "--help / -h  (Display list of all available pytest options.)\n"
-    op += "--final-debug  (Enter Final Debug Mode after each test ends.)\n"
+    op += "--ftrace / --final-trace  (Enter Debug Mode after any test.)\n"
     op += "--recorder / --rec  (Save browser actions as Python scripts.)\n"
     op += "--rec-behave / --rec-gherkin  (Save actions as Gherkin code.)\n"
     op += "--rec-print  (Display recorded scripts when they are created.)\n"

@@ -17,7 +17,7 @@ py311_patch2 = constants.PatchPy311.PATCH = True
 
 
 class Base(Plugin):
-    """This plugin adds the following command-line options to nosetests:
+    """This plugin adds the following command-line options to pynose:
     --env=ENV  (Set the test env. Access with "self.env" in tests.)
     --account=STR  (Set account. Access with "self.account" in tests.)
     --data=STRING  (Extra test data. Access with "self.data" in tests.)
@@ -26,6 +26,7 @@ class Base(Plugin):
     --var3=STRING  (Extra test data. Access with "self.var3" in tests.)
     --variables=DICT  (Extra test data. Access with "self.variables".)
     --settings-file=FILE  (Override default SeleniumBase settings.)
+    --ftrace | --final-trace  (Enter Debug Mode after any test ends.)
     --archive-logs  (Archive old log files instead of deleting them.)
     --archive-downloads  (Archive old downloads instead of deleting.)
     --report  (Create a fancy nosetests report after tests complete.)
@@ -127,6 +128,19 @@ class Base(Plugin):
             default=None,
             help="""The file that stores key/value pairs for overriding
                     values in the SeleniumBase settings.py file.""",
+        )
+        parser.addoption(
+            "--final-debug",
+            "--final-trace",
+            "--fdebug",
+            "--ftrace",
+            action="store_true",
+            dest="final_debug",
+            default=False,
+            help="""Enter Debug Mode at the end of each test.
+                    To enter Debug Mode only on failures, use "--pdb".
+                    If using both "--final-debug" and "--pdb" together,
+                    then Debug Mode will activate twice on failures.""",
         )
         parser.addoption(
             "--log_path",
@@ -232,6 +246,7 @@ class Base(Plugin):
         test.test.var3 = self.options.var3
         test.test.variables = variables  # Already verified is a dictionary
         test.test.settings_file = self.options.settings_file
+        test.test._final_debug = self.options.final_debug
         test.test.log_path = self.options.log_path
         if self.options.archive_downloads:
             settings.ARCHIVE_EXISTING_DOWNLOADS = True

@@ -1,5 +1,5 @@
 pip>=23.2.1
-packaging>=23.1
+packaging>=23.2
 setuptools>=68.0.0;python_version<"3.8"
 setuptools>=68.2.2;python_version>="3.8"
 wheel>=0.41.2
@@ -13,7 +13,7 @@ parse-type>=0.6.2
 six==1.16.0
 idna==3.4
 chardet==5.2.0
-charset-normalizer==3.2.0
+charset-normalizer==3.3.0
 urllib3>=1.26.16,<2;python_version<"3.10"
 urllib3>=1.26.16,<2.1.0;python_version>="3.10"
 requests==2.31.0
@@ -22,8 +22,7 @@ sniffio==1.3.0
 h11==0.14.0
 outcome==1.2.0
 trio==0.22.2
-trio-websocket==0.10.4;python_version<"3.8"
-trio-websocket==0.11.1;python_version>="3.8"
+trio-websocket==0.11.1
 wsproto==1.2.0
 selenium==4.11.2;python_version<"3.8"
 selenium==4.13.0;python_version>="3.8"
@@ -53,12 +52,11 @@ tabcompleter==1.3.0
 pdbp==1.5.0
 colorama==0.4.6
 exceptiongroup==1.1.3
-importlib-metadata==4.2.0;python_version<"3.8"
 pyotp==2.9.0
 markdown-it-py==2.2.0;python_version<"3.8"
 markdown-it-py==3.0.0;python_version>="3.8"
 mdurl==0.1.2
-rich==13.5.3
+rich==13.6.0
 
 # --- Testing Requirements --- #
 # ("pip install -r requirements.txt" also installs this, but "pip install -e ." won't.)

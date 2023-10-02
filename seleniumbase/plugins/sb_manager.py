@@ -444,6 +444,19 @@ def SB(
         uc_subprocess = True
     else:
         uc_subprocess = False
+    if uc_cdp_events or uc_cdp:
+        undetectable = True
+        uc_cdp_events = True
+    elif (
+        "--uc-cdp-events" in sys_argv
+        or "--uc_cdp_events" in sys_argv
+        or "--uc-cdp" in sys_argv
+        or "--uc_cdp" in sys_argv
+    ):
+        undetectable = True
+        uc_cdp_events = True
+    else:
+        uc_cdp_events = False
     if undetectable and is_mobile:
         is_mobile = False
         user_agent = None

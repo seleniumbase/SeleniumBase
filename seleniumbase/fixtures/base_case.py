@@ -4671,6 +4671,12 @@ class BaseCase(unittest.TestCase):
                 srt_actions[n][1] = srt_actions[n - 1][1]
         for n in range(len(srt_actions)):
             if (
+                srt_actions[n][0] == "dbclk"
+                and srt_actions[n][1] == ""
+            ):
+                srt_actions[n][0] = "_skip"
+        for n in range(len(srt_actions)):
+            if (
                 srt_actions[n][0] == "cho_f"
                 and n > 0
                 and srt_actions[n - 1][0] == "chfil"
@@ -8898,12 +8904,11 @@ class BaseCase(unittest.TestCase):
     def get_element(self, selector, by="css selector", timeout=None):
         """Same as wait_for_element_present() - returns the element.
         The element does not need be visible (it may be hidden)."""
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        selector, by = self.__recalculate_selector(selector, by)
+        return self.wait_for_element_present(selector, by=by, timeout=timeout)
+
+    def locator(self, selector, by="css selector", timeout=None):
+        """Same as wait_for_element_present() - returns the element.
+        The element does not need be visible (it may be hidden)."""
         return self.wait_for_element_present(selector, by=by, timeout=timeout)
 
     def wait_for_query_selector(
@@ -9000,11 +9005,6 @@ class BaseCase(unittest.TestCase):
 
     def find_element(self, selector, by="css selector", timeout=None):
         """Same as wait_for_element_visible() - returns the element"""
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
         return self.wait_for_element_visible(selector, by=by, timeout=timeout)
 
     def assert_element(self, selector, by="css selector", timeout=None):
