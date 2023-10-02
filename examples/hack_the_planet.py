@@ -59,8 +59,10 @@ class HackTests(BaseCase):
 
         self.open("https://google.com/ncr")
         self.hide_elements("iframe")
-        self.set_text_content('a[href*="about.google"]', ayb)
-        self.set_text_content('a[href*="store.google"]', abtu)
+        if self.is_element_visible('a[href*="about.google"]'):
+            self.set_text_content('a[href*="about.google"]', ayb)
+            if self.is_element_visible('a[href*="store.google"]'):
+                self.set_text_content('a[href*="store.google"]', abtu)
         self.set_text_content('a[href*="mail.google.com"]', ayb)
         self.set_text_content('a[href*="google.com/img"]', abtu)
         self.set_attributes('[value="Google Search"]', "value", ayb)
@@ -74,8 +76,10 @@ class HackTests(BaseCase):
         )
         self.add_css_style(zoom_in)
         self.hide_elements("iframe")
-        self.highlight('a[href*="about.google"]', loops=3)
-        self.highlight('a[href*="store.google"]', loops=3)
+        if self.is_element_visible('a[href*="about.google"]'):
+            self.highlight('a[href*="about.google"]', loops=3)
+            if self.is_element_visible('a[href*="store.google"]'):
+                self.highlight('a[href*="store.google"]', loops=3)
         self.highlight('a[href*="mail.google.com"]', loops=3)
         self.highlight('a[href*="google.com/img"]', loops=3)
         self.highlight('form[role="search"]', loops=8)
