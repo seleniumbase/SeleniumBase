@@ -41,25 +41,39 @@ With a complete test automation framework built, most of the hard work is alread
 ### 🔵 How is SeleniumBase different from raw Selenium?
 
 <div>
-<p>💡 SeleniumBase is a Python test framework for the <a href="https://www.w3.org/TR/webdriver2/#endpoints" target="_blank">Selenium/WebDriver</a> browser automation library. This framework incorporates test-runners such as <code>pytest</code>, <code>nosetests</code>, and <code>behave</code> to provide organized structure, test discovery, test execution, test state (<i>eg. passed, failed, or skipped</i>), and command-line options for changing default settings (<i>such as choosing the browser to use</i>). With raw Selenium, you would need to set up your own options-parser for configuring tests from the command-line.</p>
 
-<p>💡 With raw Selenium, you have to manually download drivers (<i>eg. chromedriver</i>) before running tests. With SeleniumBase's driver manager, that's done automatically for you if the required driver isn't already on your PATH. There are also console scripts available for more control (eg. <code>sbase get chromedriver latest</code> to download the latest version of chromedriver to a local SeleniumBase directory).</p>
+<p>💡 SeleniumBase is a Python framework for browser automation and testing. SeleniumBase uses <a href="https://www.w3.org/TR/webdriver2/#endpoints" target="_blank">Selenium/WebDriver</a> APIs and incorporates test-runners such as <code translate="no">pytest</code>, <code translate="no">pynose</code>, and <code translate="no">behave</code> to provide organized structure, test discovery, test execution, test state (<i>eg. passed, failed, or skipped</i>), and command-line options for changing default settings (<i>eg. browser selection</i>). With raw Selenium, you would need to set up your own options-parser for configuring tests from the command-line.</p>
 
-<p>💡 With raw Selenium, commands that use selectors need to specify the type of selector (eg. <code>"css selector", "button#myButton"</code>). With SeleniumBase, there's auto-detection between CSS Selectors and XPath, which means you don't need to specify the type of selector in your commands (<i>but optionally you could</i>).</p>
+<p>💡 SeleniumBase's driver manager gives you more control over automatic driver downloads. (Use <code translate="no">--driver-version=VER</code> with your <code translate="no">pytest</code> run command to specify the version.) By default, SeleniumBase will download a driver version that matches your major browser version if not set.</p>
 
-<p>💡 SeleniumBase methods often perform multiple actions in a single method call. For example, <code>self.type(selector,text)</code> does the following:<br />1. Waits for the element to be visible.<br />2. Waits for the element to be interactive.<br />3. Clears the text field.<br />4. Types in the new text.<br />5. Presses Enter/Submit if the text ends in <code>"\n"</code>.<br />With raw Selenium, those actions require multiple method calls.</p>
+<p>💡 SeleniumBase automatically detects between CSS Selectors and XPath, which means you don't need to specify the type of selector in your commands (<i>but optionally you could</i>).</p>
 
-<p>💡 SeleniumBase uses default timeout values when not set, which means that methods automatically wait for elements to appear (<i>up to the timeout limit</i>) before failing:<br />✅<code>self.click("button")</code><br />With raw Selenium, methods would fail instantly (<i>by default</i>) if an element needed more time to load:<br />❌<code>self.driver.find_element(by="css selector", value="button").click()</code><br />(Reliable code is better than unreliable code.)</p>
+<p>💡 SeleniumBase methods often perform multiple actions in a single method call. For example, <code translate="no">self.type(selector, text)</code> does the following:<br />1. Waits for the element to be visible.<br />2. Waits for the element to be interactive.<br />3. Clears the text field.<br />4. Types in the new text.<br />5. Presses Enter/Submit if the text ends in <code translate="no">"\n"</code>.<br />With raw Selenium, those actions require multiple method calls.</p>
 
-<p>💡 SeleniumBase lets you change the explicit timeout values of methods:<br />✅<code>self.click("button",timeout=10)</code><br />With raw Selenium, that requires more code:<br />❌<code>WebDriverWait(driver,10).until(EC.element_to_be_clickable("css selector", "button")).click()</code><br />(Simple code is better than complex code.)</p>
+<p>💡 SeleniumBase uses default timeout values when not set:<br />
+✅ <code translate="no">self.click("button")</code><br />
+With raw Selenium, methods would fail instantly (<i>by default</i>) if an element needed more time to load:<br />
+❌ <code translate="no">self.driver.find_element(by="css selector", value="button").click()</code><br />
+(Reliable code is better than unreliable code.)</p>
+
+<p>💡 SeleniumBase lets you change the explicit timeout values of methods:<br />
+✅ <code translate="no">self.click("button", timeout=10)</code><br />
+With raw Selenium, that requires more code:<br />
+❌ <code translate="no">WebDriverWait(driver, 10).until(EC.element_to_be_clickable("css selector", "button")).click()</code><br />
+(Simple code is better than complex code.)</p>
 
 <p>💡 SeleniumBase gives you clean error output when a test fails. With raw Selenium, error messages can get very messy.</p>
 
-<p>💡 SeleniumBase gives you the option to generate a dashboard and reports for tests. It also saves screenshots from failing tests to the <code>./latest_logs/</code> folder. Raw Selenium does not have these options out-of-the-box.</p>
+<p>💡 SeleniumBase gives you the option to generate a dashboard and reports for tests. It also saves screenshots from failing tests to the <code translate="no">./latest_logs/</code> folder. Raw <a href="https://www.selenium.dev/documentation/webdriver/" translate="no" target="_blank">Selenium</a> does not have these options out-of-the-box.</p>
 
-<p>💡 SeleniumBase includes desktop GUI apps for running tests, such as <b>SeleniumBase Commander</b> for <code>pytest</code>, and <b>SeleniumBase Behave GUI.</b></p>
+<p>💡 SeleniumBase includes desktop GUI apps for running tests, such as <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/commander.md" translate="no">SeleniumBase Commander</a> for <code translate="no">pytest</code> and <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md" translate="no">SeleniumBase Behave GUI</a> for <code translate="no">behave</code>.</p>
 
-<p>💡 SeleniumBase has its own Recorder & Test Generator that can create tests from manual browser actions. SeleniumBase also has many other useful tools and console scripts for getting things done quickly. (<i>See the documentation for more details!</i>)</p>
+<p>💡 SeleniumBase has its own <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md">Recorder / Test Generator</a> for creating tests from manual browser actions.</p>
+
+<p>💡 SeleniumBase comes with <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/case_plans.md">test case management software, ("CasePlans")</a>, for organizing tests and step descriptions.</p>
+
+<p>💡 SeleniumBase includes tools for <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/ReadMe.md">building data apps, ("ChartMaker")</a>, which can generate JavaScript from Python.</p>
+
 </div>
 
 --------

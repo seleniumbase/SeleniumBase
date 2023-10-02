@@ -174,7 +174,7 @@ pytest my_first_test.py --settings-file=custom_settings.py
 --uc | --undetected  # (Use undetected-chromedriver to evade bot-detection.)
 --uc-cdp-events  # (Capture CDP events when running in "--undetected" mode.)
 --remote-debug  # (Sync to Chrome Remote Debugger chrome://inspect/#devices)
---final-debug  # (Enter Debug Mode after each test ends. Don't use with CI!)
+--ftrace | --final-trace  # (Debug Mode after each test. Don't use with CI!)
 --dashboard  # (Enable the SeleniumBase Dashboard. Saved at: dashboard.html)
 --dash-title=STRING  # (Set the title shown for the generated dashboard.)
 --enable-3d-apis  # (Enables WebGL and 3D APIs.)
@@ -408,6 +408,32 @@ pytest --locale=CODE  # Example: --locale=ru
 ```
 
 Visit <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/locale_codes.md"><b>🗾 Locales</b></a> for a full list of codes.
+
+--------
+
+<h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> Changing the default driver version:</h3>
+
+🔵 By default, SeleniumBase will make sure that the major driver version matches the major browser version for Chromium tests. (Eg. If Chrome `117.X` is installed and you have chromedriver `117.X`, then nothing happens, but if you had chromedriver `116.X` instead, then SeleniumBase would download chromedriver `117.X` to match the browser version.)
+
+🎛️ To change this default behavior, you can use:
+
+```bash
+pytest --driver-version=VER
+```
+
+The `VER` in `--driver-version=VER` can be:
+* A major driver version. Eg. `117`. (milestone)
+* An exact driver version. Eg. `117.0.5938.92`.
+* ``"browser"`` (exact match on browser version)
+* ``"keep"`` (keep using the driver you already have)
+* ``"latest"`` / ``"stable"`` (latest stable version)
+* ``"previous"`` / ``"latest-1"`` (latest minus one)
+* ``"beta"`` (latest beta version)
+* ``"dev"`` (latest dev version)
+* ``"canary"`` (latest canary version)
+* ``"mlatest"`` (latest version for the milestone)
+
+Note that different options could lead to the same result. (Eg. If you have the latest version of a browser for a milestone, then ``"browser"`` and ``"mlatest"`` should give you the same driver if the latest driver version for that milestone matches the browser version.)
 
 --------
 
