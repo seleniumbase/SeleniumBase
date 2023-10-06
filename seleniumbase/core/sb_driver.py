@@ -41,6 +41,12 @@ class DriverMethods():
             pass
         raise Exception('No such Element: {%s} (by="%s")!' % (selector, by))
 
+    def get_page_source(self):
+        return self.driver.page_source
+
+    def get_title(self):
+        return self.driver.title
+
     def open_url(self, *args, **kwargs):
         page_actions.open_url(self.driver, *args, **kwargs)
 
@@ -49,6 +55,12 @@ class DriverMethods():
 
     def click_link(self, *args, **kwargs):
         page_actions.click_link(self.driver, *args, **kwargs)
+
+    def click_if_visible(self, *args, **kwargs):
+        page_actions.click_if_visible(self.driver, *args, **kwargs)
+
+    def click_active_element(self, *args, **kwargs):
+        page_actions.click_active_element(self.driver, *args, **kwargs)
 
     def send_keys(self, *args, **kwargs):
         page_actions.send_keys(self.driver, *args, **kwargs)
@@ -114,6 +126,9 @@ class DriverMethods():
     def js_click(self, *args, **kwargs):
         return page_actions.js_click(self.driver, *args, **kwargs)
 
+    def is_attribute_present(self, *args, **kwargs):
+        return page_actions.has_attribute(self.driver, *args, **kwargs)
+
     def get_active_element_css(self, *args, **kwargs):
         return js_utils.get_active_element_css(self.driver, *args, **kwargs)
 
@@ -128,3 +143,26 @@ class DriverMethods():
 
     def highlight(self, *args, **kwargs):
         js_utils.highlight(self.driver, *args, **kwargs)
+
+    def set_wire_proxy(self, string):
+        """Set a proxy server for selenium-wire mode ("--wire")
+        Examples:  (ONLY avilable if using selenium-wire mode!)
+        driver.set_wire_proxy("SERVER:PORT")
+        driver.set_wire_proxy("socks5://SERVER:PORT")
+        driver.set_wire_proxy("USERNAME:PASSWORD@SERVER:PORT")
+        """
+        the_http = "http"
+        the_https = "https"
+        if string.startswith("socks4://"):
+            the_http = "socks4"
+            the_https = "socks4"
+        elif string.startswith("socks5://"):
+            the_http = "socks5"
+            the_https = "socks5"
+        string = string.split("//")[-1]
+        if hasattr(self.driver, "proxy"):
+            self.driver.proxy = {
+                "http": "%s://%s" % (the_http, string),
+                "https": "%s://%s" % (the_https, string),
+                "no_proxy": "localhost,127.0.0.1",
+            }

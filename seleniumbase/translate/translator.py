@@ -267,7 +267,13 @@ def process_test_file(code_lines, new_lang):
 
 
 def main():
-    colorama.init(autoreset=True)
+    if (
+        "win32" in sys.platform
+        and hasattr(colorama, "just_fix_windows_console")
+    ):
+        colorama.just_fix_windows_console()
+    else:
+        colorama.init(autoreset=True)
     c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     c3 = colorama.Fore.RED + colorama.Back.LIGHTGREEN_EX

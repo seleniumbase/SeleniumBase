@@ -54,7 +54,13 @@ def main():
     c7 = ""
     cr = ""
     if "linux" not in sys.platform:
-        colorama.init(autoreset=True)
+        if (
+            "win32" in sys.platform
+            and hasattr(colorama, "just_fix_windows_console")
+        ):
+            colorama.just_fix_windows_console()
+        else:
+            colorama.init(autoreset=True)
         c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
         c5 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
         c7 = colorama.Fore.BLACK + colorama.Back.MAGENTA

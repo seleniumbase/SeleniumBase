@@ -180,6 +180,6 @@ nav:
 extra:
   analytics:
     provider: google
-    # property: G-P5KFWRNLRN
-    property: UA-167313767-1
-# google_analytics: ['UA-167313767-1', 'seleniumbase.io']
+    property: G-P5KFWRNLRN
+    # property: UA-167313767-1
+# google_analytics: ['G-P5KFWRNLRN', 'seleniumbase.io']

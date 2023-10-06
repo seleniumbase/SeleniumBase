@@ -3844,7 +3844,7 @@ class BaseCase(unittest.TestCase):
         if enable_3d_apis is None:
             enable_3d_apis = self.enable_3d_apis
         if swiftshader is None:
-            swiftshader = self.swiftshader
+            swiftshader = self._swiftshader
         if ad_block_on is None:
             ad_block_on = self.ad_block_on
         if block_images is None:
@@ -14153,7 +14153,7 @@ class BaseCase(unittest.TestCase):
                     constants.Dashboard.LOCKFILE
                 )
             self.enable_3d_apis = sb_config.enable_3d_apis
-            self.swiftshader = sb_config.swiftshader
+            self._swiftshader = sb_config.swiftshader
             self.user_data_dir = sb_config.user_data_dir
             self.extension_zip = sb_config.extension_zip
             self.extension_dir = sb_config.extension_dir
@@ -14281,6 +14281,10 @@ class BaseCase(unittest.TestCase):
             if sb_config._SMALL_TIMEOUT and sb_config._LARGE_TIMEOUT:
                 settings.SMALL_TIMEOUT = sb_config._SMALL_TIMEOUT
                 settings.LARGE_TIMEOUT = sb_config._LARGE_TIMEOUT
+
+        if not hasattr(self, "_swiftshader"):
+            # Not swiftshader: options.add_argument("--disable-gpu")
+            self._swiftshader = False
 
         if not hasattr(sb_config, "_recorded_actions"):
             # Only filled when Recorder Mode is enabled
@@ -14468,7 +14472,7 @@ class BaseCase(unittest.TestCase):
                 devtools=self.devtools,
                 remote_debug=self.remote_debug,
                 enable_3d_apis=self.enable_3d_apis,
-                swiftshader=self.swiftshader,
+                swiftshader=self._swiftshader,
                 ad_block_on=self.ad_block_on,
                 block_images=self.block_images,
                 do_not_track=self.do_not_track,
@@ -15736,7 +15740,6 @@ class BaseCase(unittest.TestCase):
             # (Pynose / Behave / Pure Python)
             if hasattr(self, "is_behave") and self.is_behave:
                 import colorama
-
                 if sb_config.behave_scenario.status.name == "failed":
                     has_exception = True
                     sb_config._has_exception = True
@@ -15744,7 +15747,8 @@ class BaseCase(unittest.TestCase):
                     if is_windows:
                         c1 = colorama.Fore.RED + colorama.Back.LIGHTRED_EX
                         cr = colorama.Style.RESET_ALL
-                        colorama.init(autoreset=True)
+                        if hasattr(colorama, "just_fix_windows_console"):
+                            colorama.just_fix_windows_console()
                         msg = msg.replace("❌", c1 + "><" + cr)
                     print(msg)
                 else:
@@ -15752,7 +15756,8 @@ class BaseCase(unittest.TestCase):
                     if is_windows:
                         c2 = colorama.Fore.GREEN + colorama.Back.LIGHTGREEN_EX
                         cr = colorama.Style.RESET_ALL
-                        colorama.init(autoreset=True)
+                        if hasattr(colorama, "just_fix_windows_console"):
+                            colorama.just_fix_windows_console()
                         msg = msg.replace("✅", c2 + "<>" + cr)
                     print(msg)
                 if self.dashboard:

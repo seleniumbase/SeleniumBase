@@ -140,7 +140,7 @@ setup(
         "certifi>=2023.7.22",
         'filelock>=3.12.2;python_version<"3.8"',
         'filelock>=3.12.4;python_version>="3.8"',
-        'platformdirs>=3.10.0',
+        'platformdirs>=3.11.0',
         'parse>=1.19.1',
         'parse-type>=0.6.2',
         "six==1.16.0",
@@ -204,7 +204,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage==7.2.7;python_version<"3.8"',
-            'coverage==7.3.1;python_version>="3.8"',
+            'coverage==7.3.2;python_version>="3.8"',
             'pytest-cov==4.1.0',
         ],
         # pip install -e .[flake8]

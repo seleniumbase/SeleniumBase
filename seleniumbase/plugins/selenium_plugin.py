@@ -71,7 +71,7 @@ class SeleniumBrowser(Plugin):
     --uc-cdp-events  (Capture CDP events when running in "--undetected" mode.)
     --remote-debug  (Sync to Chrome Remote Debugger chrome://inspect/#devices)
     --enable-3d-apis  (Enables WebGL and 3D APIs.)
-    --swiftshader  (Use Chrome's "--use-gl=swiftshader" feature.)
+    --swiftshader  (Chrome "--use-gl=angle" / "--use-angle=swiftshader-webgl")
     --incognito  (Enable Chrome's Incognito mode.)
     --guest  (Enable Chrome's Guest mode.)
     --dark  (Enable Chrome's Dark mode.)
@@ -1112,7 +1112,7 @@ class SeleniumBrowser(Plugin):
         test.test.disable_gpu = self.options.disable_gpu
         test.test.remote_debug = self.options.remote_debug
         test.test.enable_3d_apis = self.options.enable_3d_apis
-        test.test.swiftshader = self.options.swiftshader
+        test.test._swiftshader = self.options.swiftshader
         test.test.incognito = self.options.incognito
         test.test.guest_mode = self.options.guest_mode
         test.test.dark_mode = self.options.dark_mode

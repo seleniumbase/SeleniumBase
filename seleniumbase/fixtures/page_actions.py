@@ -1533,6 +1533,27 @@ def click_link(driver, link_text, timeout=settings.SMALL_TIMEOUT):
     element.click()
 
 
+def click_if_visible(
+    driver, selector, by="css selector", timeout=0
+):
+    selector, by = page_utils.recalculate_selector(selector, by)
+    if is_element_visible(driver, selector, by=by):
+        click(driver, selector, by=by, timeout=1)
+    elif timeout > 0:
+        try:
+            wait_for_element_visible(
+                driver, selector, by=by, timeout=timeout
+            )
+        except Exception:
+            pass
+        if is_element_visible(driver, selector, by=by):
+            click(driver, selector, by=by, timeout=1)
+
+
+def click_active_element(driver):
+    driver.execute_script("document.activeElement.click();")
+
+
 def js_click(
     driver, selector, by="css selector", timeout=settings.SMALL_TIMEOUT
 ):
@@ -1609,6 +1630,15 @@ def submit(driver, selector, by="css selector"):
         driver, selector, by=by, timeout=settings.SMALL_TIMEOUT
     )
     element.submit()
+
+
+def has_attribute(
+    driver, selector, attribute, value=None, by="css selector"
+):
+    selector, by = page_utils.recalculate_selector(selector, by)
+    return is_attribute_present(
+        driver, selector, attribute, value=value, by=by
+    )
 
 
 def assert_element_visible(
