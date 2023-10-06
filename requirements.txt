@@ -7,7 +7,7 @@ attrs>=23.1.0
 certifi>=2023.7.22
 filelock>=3.12.2;python_version<"3.8"
 filelock>=3.12.4;python_version>="3.8"
-platformdirs>=3.10.0
+platformdirs>=3.11.0
 parse>=1.19.1
 parse-type>=0.6.2
 six==1.16.0
@@ -63,7 +63,7 @@ rich==13.6.0
 
 coverage==6.2;python_version<"3.7"
 coverage==7.2.7;python_version>="3.7" and python_version<"3.8"
-coverage==7.3.1;python_version>="3.8"
+coverage==7.3.2;python_version>="3.8"
 pytest-cov==4.0.0;python_version<"3.7"
 pytest-cov==4.1.0;python_version>="3.7"
 flake8==5.0.4;python_version<"3.9"
