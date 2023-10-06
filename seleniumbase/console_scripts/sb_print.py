@@ -61,7 +61,13 @@ def get_width(line):
 
 
 def main():
-    colorama.init(autoreset=True)
+    if (
+        "win32" in sys.platform
+        and hasattr(colorama, "just_fix_windows_console")
+    ):
+        colorama.just_fix_windows_console()
+    else:
+        colorama.init(autoreset=True)
     c5 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
     c7 = colorama.Fore.BLACK + colorama.Back.MAGENTA
     cr = colorama.Style.RESET_ALL

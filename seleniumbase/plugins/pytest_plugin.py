@@ -10,6 +10,7 @@ from seleniumbase.core import log_helper
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import shared_utils
 
+is_windows = shared_utils.is_windows()
 python3_11_or_newer = False
 if sys.version_info >= (3, 11):
     python3_11_or_newer = True
@@ -119,7 +120,10 @@ def pytest_addoption(parser):
     cr = ""
     if "linux" not in sys.platform:
         # This will be seen when typing "pytest --help" on the command line.
-        colorama.init(autoreset=True)
+        if is_windows and hasattr(colorama, "just_fix_windows_console"):
+            colorama.just_fix_windows_console()
+        else:
+            colorama.init(autoreset=True)
         c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
         c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
         c3 = colorama.Fore.MAGENTA + colorama.Back.LIGHTYELLOW_EX
@@ -1817,7 +1821,10 @@ def pytest_collection_finish(session):
         c1 = ""
         cr = ""
         if "linux" not in sys.platform:
-            colorama.init(autoreset=True)
+            if is_windows and hasattr(colorama, "just_fix_windows_console"):
+                colorama.just_fix_windows_console()
+            else:
+                colorama.init(autoreset=True)
             c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
             cr = colorama.Style.RESET_ALL
         if sb_config._multithreaded:
@@ -1861,10 +1868,7 @@ def pytest_runtest_teardown(item):
                         and self.driver
                         and "--pdb" not in sys_argv
                     ):
-                        if not (
-                            shared_utils.is_windows()
-                            or self.driver.service.process
-                        ):
+                        if not (is_windows or self.driver.service.process):
                             self.driver.quit()
                 except Exception:
                     pass
@@ -1874,7 +1878,7 @@ def pytest_runtest_teardown(item):
             ):
                 try:
                     if (
-                        not shared_utils.is_windows()
+                        not is_windows
                         or sb_config._sb_pdb_driver.service.process
                     ):
                         sb_config._sb_pdb_driver.quit()
@@ -1992,7 +1996,7 @@ def _perform_pytest_unconfigure_():
         if sb_config.shared_driver:
             try:
                 if (
-                    not shared_utils.is_windows()
+                    not is_windows
                     or sb_config.browser == "ie"
                     or sb_config.shared_driver.service.process
                 ):

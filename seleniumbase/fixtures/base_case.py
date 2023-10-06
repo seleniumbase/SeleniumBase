@@ -15736,7 +15736,6 @@ class BaseCase(unittest.TestCase):
             # (Pynose / Behave / Pure Python)
             if hasattr(self, "is_behave") and self.is_behave:
                 import colorama
-
                 if sb_config.behave_scenario.status.name == "failed":
                     has_exception = True
                     sb_config._has_exception = True
@@ -15744,7 +15743,8 @@ class BaseCase(unittest.TestCase):
                     if is_windows:
                         c1 = colorama.Fore.RED + colorama.Back.LIGHTRED_EX
                         cr = colorama.Style.RESET_ALL
-                        colorama.init(autoreset=True)
+                        if hasattr(colorama, "just_fix_windows_console"):
+                            colorama.just_fix_windows_console()
                         msg = msg.replace("❌", c1 + "><" + cr)
                     print(msg)
                 else:
@@ -15752,7 +15752,8 @@ class BaseCase(unittest.TestCase):
                     if is_windows:
                         c2 = colorama.Fore.GREEN + colorama.Back.LIGHTGREEN_EX
                         cr = colorama.Style.RESET_ALL
-                        colorama.init(autoreset=True)
+                        if hasattr(colorama, "just_fix_windows_console"):
+                            colorama.just_fix_windows_console()
                         msg = msg.replace("✅", c2 + "<>" + cr)
                     print(msg)
                 if self.dashboard:

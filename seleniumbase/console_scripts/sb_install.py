@@ -293,7 +293,10 @@ def main(override=None, intel_for_uc=None, force_uc=None):
     use_version = ""
     new_file = ""
     f_name = ""
-    colorama.init(autoreset=True)
+    if IS_WINDOWS and hasattr(colorama, "just_fix_windows_console"):
+        colorama.just_fix_windows_console()
+    else:
+        colorama.init(autoreset=True)
     c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX

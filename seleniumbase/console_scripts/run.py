@@ -41,8 +41,12 @@ import sys
 import time
 from seleniumbase.config import settings
 from seleniumbase.fixtures import constants
+from seleniumbase.fixtures import shared_utils
 
-colorama.init(autoreset=True)
+if shared_utils.is_windows() and hasattr(colorama, "just_fix_windows_console"):
+    colorama.just_fix_windows_console()
+else:
+    colorama.init(autoreset=True)
 
 
 def show_usage():
@@ -1330,7 +1334,6 @@ def main():
         show_detailed_help()
     else:
         show_usage()
-        colorama.init(autoreset=True)
         c5 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
         c7 = colorama.Fore.BLACK + colorama.Back.MAGENTA
         cr = colorama.Style.RESET_ALL
