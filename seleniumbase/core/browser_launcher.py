@@ -911,7 +911,8 @@ def _set_chrome_options(
             debug_port = service_utils.free_port()
         chrome_options.add_argument("--remote-debugging-port=%s" % debug_port)
     if swiftshader:
-        chrome_options.add_argument("--use-gl=swiftshader")
+        chrome_options.add_argument("--use-gl=angle")
+        chrome_options.add_argument("--use-angle=swiftshader-webgl")
     elif not is_using_uc(undetectable, browser_name):
         chrome_options.add_argument("--disable-gpu")
     if not IS_LINUX and is_using_uc(undetectable, browser_name):
@@ -2493,7 +2494,8 @@ def get_local_driver(
                 free_port = service_utils.free_port()
             edge_options.add_argument("--remote-debugging-port=%s" % free_port)
         if swiftshader:
-            edge_options.add_argument("--use-gl=swiftshader")
+            edge_options.add_argument("--use-gl=angle")
+            edge_options.add_argument("--use-angle=swiftshader-webgl")
         else:
             edge_options.add_argument("--disable-gpu")
         if IS_LINUX:

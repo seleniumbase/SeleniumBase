@@ -95,7 +95,7 @@ def pytest_addoption(parser):
     --dashboard  (Enable the SeleniumBase Dashboard. Saved at: dashboard.html)
     --dash-title=STRING  (Set the title shown for the generated dashboard.)
     --enable-3d-apis  (Enables WebGL and 3D APIs.)
-    --swiftshader  (Use Chrome's "--use-gl=swiftshader" feature.)
+    --swiftshader  (Chrome "--use-gl=angle" / "--use-angle=swiftshader-webgl")
     --incognito  (Enable Chrome's Incognito mode.)
     --guest  (Enable Chrome's Guest mode.)
     --dark  (Enable Chrome's Dark mode.)

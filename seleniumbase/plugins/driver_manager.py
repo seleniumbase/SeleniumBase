@@ -89,14 +89,14 @@ def Driver(
     uc_cdp_events=None,  # Capture CDP events in undetected-chromedriver mode.
     uc_subprocess=None,  # Use undetected-chromedriver as a subprocess.
     no_sandbox=None,  # (DEPRECATED) - "--no-sandbox" is always used now.
-    disable_gpu=None,  # (DEPRECATED) - GPU is disabled if no "swiftshader".
+    disable_gpu=None,  # (DEPRECATED) - GPU is disabled if not "swiftshader".
     incognito=None,  # Enable Chromium's Incognito mode.
     guest_mode=None,  # Enable Chromium's Guest mode.
     dark_mode=None,  # Enable Chromium's Dark mode.
     devtools=None,  # Open Chromium's DevTools when the browser opens.
     remote_debug=None,  # Enable Chrome's Debugger on "http://localhost:9222".
     enable_3d_apis=None,  # Enable WebGL and 3D APIs.
-    swiftshader=None,  # Use Chrome's "--use-gl=swiftshader" feature.
+    swiftshader=None,  # Chrome: --use-gl=angle / --use-angle=swiftshader-webgl
     ad_block_on=None,  # Block some types of display ads from loading.
     block_images=None,  # Block images from loading during tests.
     do_not_track=None,  # Tell websites that you don't want to be tracked.

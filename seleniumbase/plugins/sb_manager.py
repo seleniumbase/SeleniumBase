@@ -60,7 +60,7 @@ def SB(
     devtools=None,  # Open Chromium's DevTools when the browser opens.
     remote_debug=None,  # Enable Chrome's Debugger on "http://localhost:9222".
     enable_3d_apis=None,  # Enable WebGL and 3D APIs.
-    swiftshader=None,  # Use Chrome's "--use-gl=swiftshader" feature.
+    swiftshader=None,  # Chrome: --use-gl=angle / --use-angle=swiftshader-webgl
     ad_block_on=None,  # Block some types of display ads from loading.
     block_images=None,  # Block images from loading during tests.
     do_not_track=None,  # Tell websites that you don't want to be tracked.
@@ -800,7 +800,7 @@ def SB(
     sb.proxy_pac_url = sb_config.proxy_pac_url
     sb.multi_proxy = sb_config.multi_proxy
     sb.enable_3d_apis = sb_config.enable_3d_apis
-    sb.swiftshader = sb_config.swiftshader
+    sb._swiftshader = sb_config.swiftshader
     sb.ad_block_on = sb_config.ad_block_on
     sb.highlights = sb_config.highlights
     sb.interval = sb_config.interval
