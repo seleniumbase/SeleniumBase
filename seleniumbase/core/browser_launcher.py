@@ -116,6 +116,9 @@ def extend_driver(driver):
     page = types.SimpleNamespace()
     page.open = DM.open_url
     page.click = DM.click
+    page.click_link = DM.click_link
+    page.click_if_visible = DM.click_if_visible
+    page.click_active_element = DM.click_active_element
     page.send_keys = DM.send_keys
     page.press_keys = DM.press_keys
     page.type = DM.update_text
@@ -134,10 +137,13 @@ def extend_driver(driver):
     page.is_element_visible = DM.is_element_visible
     page.is_text_visible = DM.is_text_visible
     page.is_exact_text_visible = DM.is_exact_text_visible
+    page.is_attribute_present = DM.is_attribute_present
     page.get_text = DM.get_text
     page.find_element = DM.find_element
     page.find_elements = DM.find_elements
     page.locator = DM.locator
+    page.get_page_source = DM.get_page_source
+    page.get_title = DM.get_title
     driver.page = page
     js = types.SimpleNamespace()
     js.js_click = DM.js_click
@@ -150,6 +156,8 @@ def extend_driver(driver):
     driver.open = DM.open_url
     driver.click = DM.click
     driver.click_link = DM.click_link
+    driver.click_if_visible = DM.click_if_visible
+    driver.click_active_element = DM.click_active_element
     driver.send_keys = DM.send_keys
     driver.press_keys = DM.press_keys
     driver.type = DM.update_text
@@ -168,6 +176,7 @@ def extend_driver(driver):
     driver.is_element_visible = DM.is_element_visible
     driver.is_text_visible = DM.is_text_visible
     driver.is_exact_text_visible = DM.is_exact_text_visible
+    driver.is_attribute_present = DM.is_attribute_present
     driver.get_text = DM.get_text
     driver.js_click = DM.js_click
     driver.get_active_element_css = DM.get_active_element_css
@@ -176,6 +185,10 @@ def extend_driver(driver):
     driver.get_user_agent = DM.get_user_agent
     driver.highlight = DM.highlight
     driver.sleep = time.sleep
+    driver.get_page_source = DM.get_page_source
+    driver.get_title = DM.get_title
+    if hasattr(driver, "proxy"):
+        driver.set_wire_proxy = DM.set_wire_proxy
     return driver
 
 
