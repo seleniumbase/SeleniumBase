@@ -1,6 +1,7 @@
 """This test is only for Chrome!
 (Verify that your chromedriver is compatible with your version of Chrome.)"""
 import colorama
+import sys
 from seleniumbase import BaseCase
 BaseCase.main(__name__, __file__)
 
@@ -15,7 +16,13 @@ class ChromedriverTests(BaseCase):
         major_chrome_version = chrome_version.split(".")[0]
         chromedriver_version = self.get_chromedriver_version()
         major_chromedriver_version = chromedriver_version.split(".")[0]
-        colorama.init(autoreset=True)
+        if (
+            "win32" in sys.platform
+            and hasattr(colorama, "just_fix_windows_console")
+        ):
+            colorama.just_fix_windows_console()
+        else:
+            colorama.init(autoreset=True)
         c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
         c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
         c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
