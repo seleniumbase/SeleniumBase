@@ -873,6 +873,13 @@ def SB(
     finally:
         if sb._has_failure and "--pdb" in sys_argv:
             sb_config._do_sb_post_mortem = True
+        elif (
+            "--final-debug" in sys_argv
+            or "--final-trace" in sys_argv
+            or "--fdebug" in sys_argv
+            or "--ftrace" in sys_argv
+        ):
+            sb_config._do_sb_final_trace = True
         try:
             sb.tearDown()
         except Exception as t_e:

@@ -15304,11 +15304,11 @@ class BaseCase(unittest.TestCase):
         # Post Mortem Debug Mode ("python --pdb")
 
     def __activate_debug_mode_in_teardown(self):
-        """Activate Debug Mode in tearDown() when using "--final-debug"."""
+        """Activate Final Trace / Debug Mode"""
         import pdb
 
         pdb.set_trace()
-        # Final Debug Mode ("--final-debug")
+        # Final Trace ("--ftrace")
 
     def has_exception(self):
         """(This method should ONLY be used in custom tearDown() methods.)
@@ -15803,6 +15803,11 @@ class BaseCase(unittest.TestCase):
                 and sb_config._do_sb_post_mortem
             ):
                 self.__activate_sb_mgr_post_mortem_debug_mode()
+            elif (
+                hasattr(sb_config, "_do_sb_final_trace")
+                and sb_config._do_sb_final_trace
+            ):
+                self.__activate_debug_mode_in_teardown()
             # (Pynose / Behave / Pure Python) Close all open browser windows
             self.__quit_all_drivers()
         # Resume tearDown() for all test runners, (Pytest / Pynose / Behave)
