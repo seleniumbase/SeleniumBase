@@ -910,7 +910,7 @@ def post_messenger_success_message(driver, message, msg_dur=None):
         theme = "future"
         location = "bottom_right"
         if hasattr(sb_config, "mobile_emulator") and sb_config.mobile_emulator:
-            location = "top_center"
+            location = "top_right"
         set_messenger_theme(driver, theme=theme, location=location)
         post_message(driver, message, msg_dur, style="success")
         time.sleep(msg_dur + 0.07)

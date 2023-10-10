@@ -158,7 +158,7 @@ setup(
         'trio-websocket==0.11.1',
         'wsproto==1.2.0',
         'selenium==4.11.2;python_version<"3.8"',
-        'selenium==4.13.0;python_version>="3.8"',
+        'selenium==4.14.0;python_version>="3.8"',
         'cssselect==1.2.0',
         "sortedcontainers==2.4.0",
         'fasteners==0.19',

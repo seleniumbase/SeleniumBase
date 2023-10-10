@@ -346,6 +346,19 @@ class SeleniumWire:
     VER = "5.1.0"
 
 
+class Mobile:
+    # Default values for mobile settings
+    WIDTH = 390
+    HEIGHT = 715
+    RATIO = 3
+    AGENT = (
+        "Mozilla/5.0 (Linux; Android 13; Pixel 7 XL "
+        "Build/SP2A.220505.006.A1; wv) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 "
+        "Chrome/110.0.5028.105 Mobile Safari/537.36"
+    )
+
+
 class ValidBrowsers:
     valid_browsers = [
         "chrome",

@@ -308,6 +308,8 @@ def SB(
             is_mobile = True
         else:
             is_mobile = False
+    if is_mobile:
+        sb_config.mobile_emulator = True
     proxy_string = proxy
     user_agent = agent
     recorder_mode = False
@@ -370,7 +372,6 @@ def SB(
         sb_config.proxy_driver = True
     if variables and type(variables) is str and len(variables) > 0:
         import ast
-
         bad_input = False
         if (
             not variables.startswith("{")
@@ -458,9 +459,6 @@ def SB(
         uc_cdp_events = True
     else:
         uc_cdp_events = False
-    if undetectable and is_mobile:
-        is_mobile = False
-        user_agent = None
     if use_auto_ext is None:
         if "--use-auto-ext" in sys_argv:
             use_auto_ext = True
@@ -875,6 +873,13 @@ def SB(
     finally:
         if sb._has_failure and "--pdb" in sys_argv:
             sb_config._do_sb_post_mortem = True
+        elif (
+            "--final-debug" in sys_argv
+            or "--final-trace" in sys_argv
+            or "--fdebug" in sys_argv
+            or "--ftrace" in sys_argv
+        ):
+            sb_config._do_sb_final_trace = True
         try:
             sb.tearDown()
         except Exception as t_e:
