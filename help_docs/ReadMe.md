@@ -81,11 +81,13 @@
 
 <h3>Demo Pages / Web Examples</h3>
 
+<div><a href="https://seleniumbase.io/coffee/"><b>Coffee Cart (Test Page)</b></a></div>
 <div><a href="https://seleniumbase.io/demo_page"><b>Demo Page (Test Page)</b></a></div>
+<div><a href="https://seleniumbase.io/simple/login"><b>Simple App (Test Page)</b></a></div>
 <div><a href="https://seleniumbase.io/realworld/login"><b>MFA Login (Test Page)</b></a></div>
 <div><a href="https://seleniumbase.io/tinymce/"><b>TinyMCE (Test Page)</b></a></div>
 <div><a href="https://seleniumbase.io/error_page/"><b>Error Page (Test Page)</b></a></div>
-<div><a href="https://seleniumbase.io/other/drag_and_drop"><b>Drag-&-Drop (Test Page)</b></a></div>
+<div><a href="https://seleniumbase.io/other/drag_and_drop"><b>Drag & Drop (Test Page)</b></a></div>
 <div><a href="https://seleniumbase.io/devices/"><b>Device Farm (Virtual)</b></a></div>
 <div><a href="https://seleniumbase.io/w3schools/"><b>HTML Playground Page</b></a></div>
 <div><a href="https://seleniumbase.io/w3schools/sbase"><b>SeleniumBase in iframe</b></a></div>
