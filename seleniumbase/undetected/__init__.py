@@ -2,6 +2,7 @@
 import logging
 import os
 import re
+import requests
 import subprocess
 import sys
 import time
@@ -138,8 +139,6 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         options._session = self
         debug_host = "127.0.0.1"
         debug_port = 9222
-        import requests
-
         special_port_free = False  # If the port isn't free, don't use 9222
         try:
             res = requests.get("http://127.0.0.1:9222", timeout=1)
@@ -151,7 +150,6 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         sys_argv = sys.argv
         arg_join = " ".join(sys_argv)
         from seleniumbase import config as sb_config
-
         if (
             (("-n" in sys.argv) or (" -n=" in arg_join) or ("-c" in sys.argv))
             or (hasattr(sb_config, "multi_proxy") and sb_config.multi_proxy)
@@ -197,7 +195,6 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                 keep_user_data_dir = True
             else:
                 import tempfile
-
                 user_data_dir = os.path.normpath(tempfile.mkdtemp())
                 keep_user_data_dir = False
                 arg = "--user-data-dir=%s" % user_data_dir
@@ -206,7 +203,6 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         if not language:
             try:
                 import locale
-
                 language = locale.getlocale()[0].replace("_", "-")
             except Exception:
                 pass
@@ -241,7 +237,6 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
             options.handle_prefs(user_data_dir)
         try:
             import json
-
             with open(
                 os.path.join(
                     os.path.abspath(user_data_dir),
@@ -286,19 +281,22 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                 )
                 self.browser_pid = browser.pid
             service_ = None
+            log_output = subprocess.PIPE
+            if sys.version_info < (3, 8):
+                log_output = os.devnull
             if patch_driver:
                 service_ = selenium.webdriver.chrome.service.Service(
                     executable_path=self.patcher.executable_path,
                     service_args=["--disable-build-check"],
                     port=port,
-                    log_output=os.devnull,
+                    log_output=log_output,
                 )
             else:
                 service_ = selenium.webdriver.chrome.service.Service(
                     executable_path=driver_executable_path,
                     service_args=["--disable-build-check"],
                     port=port,
-                    log_output=os.devnull,
+                    log_output=log_output,
                 )
             if hasattr(service_, "creationflags"):
                 setattr(service_, "creationflags", creationflags)
@@ -321,7 +319,6 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
             return super().__getattribute__(item)
         else:
             import inspect
-
             original = super().__getattribute__(item)
             if inspect.ismethod(original) and not inspect.isclass(original):
                 def newfunc(*args, **kwargs):
@@ -455,7 +452,6 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
             and not self.keep_user_data_dir
         ):
             import shutil
-
             for _ in range(5):
                 try:
                     shutil.rmtree(self.user_data_dir, ignore_errors=False)
@@ -506,7 +502,6 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
 
 def find_chrome_executable():
     from seleniumbase.core import detect_b_ver
-
     binary_location = detect_b_ver.get_binary_location("google-chrome", True)
     if os.path.exists(binary_location) and os.access(binary_location, os.X_OK):
         return os.path.normpath(binary_location)
