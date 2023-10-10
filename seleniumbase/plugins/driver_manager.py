@@ -341,9 +341,6 @@ def Driver(
         uc_cdp_events = True
     else:
         uc_cdp_events = False
-    if undetectable and is_mobile:
-        is_mobile = False
-        user_agent = None
     if use_auto_ext is None:
         if "--use-auto-ext" in sys_argv:
             use_auto_ext = True

@@ -554,7 +554,7 @@ def pytest_addoption(parser):
         help="""Designates the three device metrics of the mobile
                 emulator: CSS Width, CSS Height, and Pixel-Ratio.
                 Format: A comma-separated string with the 3 values.
-                Example: "375,734,3"
+                Examples: "375,734,5" or "411,731,3" or "390,715,3"
                 Default: None. (Will use default values if None)""",
     )
     parser.addoption(
@@ -1398,10 +1398,6 @@ def pytest_addoption(parser):
             "\n  SeleniumBase doesn't support mixing --uc with --wire mode!"
             "\n  If you need both, override get_new_driver() from BaseCase:"
             "\n  https://seleniumbase.io/help_docs/syntax_formats/#sb_sf_09\n"
-        )
-    if undetectable and "--mobile" in sys_argv:
-        raise Exception(
-            "\n  SeleniumBase doesn't support mixing --uc with --mobile\n"
         )
 
 

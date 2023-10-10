@@ -319,7 +319,15 @@ def has_cf(text):
     return False
 
 
-def uc_special_open_if_cf(driver, url, proxy_string=None):
+def uc_special_open_if_cf(
+    driver,
+    url,
+    proxy_string=None,
+    mobile_emulator=None,
+    device_width=None,
+    device_height=None,
+    device_pixel_ratio=None,
+):
     if (
         url.startswith("http:") or url.startswith("https:")
     ):
@@ -345,6 +353,36 @@ def uc_special_open_if_cf(driver, url, proxy_string=None):
                 driver.close()
                 driver.switch_to.window(driver.window_handles[-1])
                 time.sleep(0.02)
+                if mobile_emulator:
+                    uc_metrics = {}
+                    if (
+                        type(device_width) is int
+                        and type(device_height) is int
+                        and type(device_pixel_ratio) is int
+                    ):
+                        uc_metrics["width"] = device_width
+                        uc_metrics["height"] = device_height
+                        uc_metrics["pixelRatio"] = device_pixel_ratio
+                    else:
+                        uc_metrics["width"] = constants.Mobile.WIDTH
+                        uc_metrics["height"] = constants.Mobile.HEIGHT
+                        uc_metrics["pixelRatio"] = constants.Mobile.RATIO
+                    set_device_metrics_override = dict(
+                        {
+                            "width": uc_metrics["width"],
+                            "height": uc_metrics["height"],
+                            "deviceScaleFactor": uc_metrics["pixelRatio"],
+                            "mobile": True
+                        }
+                    )
+                    try:
+                        driver.execute_cdp_cmd(
+                            'Emulation.setDeviceMetricsOverride',
+                            set_device_metrics_override
+                        )
+                    except Exception:
+                        pass
+                    time.sleep(0.03)
         else:
             driver.default_get(url)  # The original one
     else:
@@ -739,7 +777,7 @@ def _set_chrome_options(
             "excludeSwitches",
             ["enable-automation", "enable-logging", "enable-blink-features"],
         )
-    if mobile_emulator:
+    if mobile_emulator and not is_using_uc(undetectable, browser_name):
         emulator_settings = {}
         device_metrics = {}
         if (
@@ -751,9 +789,9 @@ def _set_chrome_options(
             device_metrics["height"] = device_height
             device_metrics["pixelRatio"] = device_pixel_ratio
         else:
-            device_metrics["width"] = 360
-            device_metrics["height"] = 640
-            device_metrics["pixelRatio"] = 2
+            device_metrics["width"] = constants.Mobile.WIDTH
+            device_metrics["height"] = constants.Mobile.HEIGHT
+            device_metrics["pixelRatio"] = constants.Mobile.RATIO
         emulator_settings["deviceMetrics"] = device_metrics
         if user_agent:
             emulator_settings["userAgent"] = user_agent
@@ -1279,8 +1317,8 @@ def get_driver(
     if (uc_cdp_events or uc_subprocess) and not undetectable:
         undetectable = True
     if is_using_uc(undetectable, browser_name) and mobile_emulator:
-        mobile_emulator = False
-        user_agent = None
+        if not user_agent:
+            user_agent = constants.Mobile.AGENT
     if page_load_strategy and page_load_strategy.lower() == "none":
         settings.PAGE_LOAD_STRATEGY = "none"
     proxy_auth = False
@@ -2359,7 +2397,7 @@ def get_local_driver(
         elif headless:
             if "--headless" not in edge_options.arguments:
                 edge_options.add_argument("--headless")
-        if mobile_emulator:
+        if mobile_emulator and not is_using_uc(undetectable, browser_name):
             emulator_settings = {}
             device_metrics = {}
             if (
@@ -2371,9 +2409,9 @@ def get_local_driver(
                 device_metrics["height"] = device_height
                 device_metrics["pixelRatio"] = device_pixel_ratio
             else:
-                device_metrics["width"] = 360
-                device_metrics["height"] = 640
-                device_metrics["pixelRatio"] = 2
+                device_metrics["width"] = constants.Mobile.WIDTH
+                device_metrics["height"] = constants.Mobile.HEIGHT
+                device_metrics["pixelRatio"] = constants.Mobile.RATIO
             emulator_settings["deviceMetrics"] = device_metrics
             if user_agent:
                 emulator_settings["userAgent"] = user_agent
@@ -3416,7 +3454,13 @@ def get_local_driver(
                 driver.default_get = driver.get  # Save copy of original
                 if uc_activated:
                     driver.get = lambda url: uc_special_open_if_cf(
-                        driver, url, proxy_string
+                        driver,
+                        url,
+                        proxy_string,
+                        mobile_emulator,
+                        device_width,
+                        device_height,
+                        device_pixel_ratio,
                     )
                     driver.uc_open = lambda url: uc_open(driver, url)
                     driver.uc_open_with_tab = (
@@ -3425,6 +3469,35 @@ def get_local_driver(
                     driver.uc_open_with_reconnect = (
                         lambda url: uc_open_with_reconnect(driver, url)
                     )
+                    if mobile_emulator:
+                        uc_metrics = {}
+                        if (
+                            type(device_width) is int
+                            and type(device_height) is int
+                            and type(device_pixel_ratio) is int
+                        ):
+                            uc_metrics["width"] = device_width
+                            uc_metrics["height"] = device_height
+                            uc_metrics["pixelRatio"] = device_pixel_ratio
+                        else:
+                            uc_metrics["width"] = constants.Mobile.WIDTH
+                            uc_metrics["height"] = constants.Mobile.HEIGHT
+                            uc_metrics["pixelRatio"] = constants.Mobile.RATIO
+                        set_device_metrics_override = dict(
+                            {
+                                "width": uc_metrics["width"],
+                                "height": uc_metrics["height"],
+                                "deviceScaleFactor": uc_metrics["pixelRatio"],
+                                "mobile": True
+                            }
+                        )
+                        try:
+                            driver.execute_cdp_cmd(
+                                'Emulation.setDeviceMetricsOverride',
+                                set_device_metrics_override
+                            )
+                        except Exception:
+                            pass
                 return extend_driver(driver)
             else:  # Running headless on Linux (and not using --uc)
                 try:

@@ -296,7 +296,7 @@ class SeleniumBrowser(Plugin):
             help="""Designates the three device metrics of the mobile
                     emulator: CSS Width, CSS Height, and Pixel-Ratio.
                     Format: A comma-separated string with the 3 values.
-                    Example: "375,734,3"
+                    Examples: "375,734,5" or "411,731,3" or "390,715,3"
                     Default: None. (Will use default values if None)""",
         )
         parser.addoption(
@@ -1163,16 +1163,6 @@ class SeleniumBrowser(Plugin):
             )
             self.options.use_wire = False
             test.test.use_wire = False
-        if self.options.mobile_emulator and self.options.undetectable:
-            print(
-                "\n"
-                "SeleniumBase doesn't support mixing --uc with --mobile.\n"
-                "(Only UC Mode without Mobile will be used for this run)\n"
-            )
-            self.options.mobile_emulator = False
-            test.test.mobile_emulator = False
-            self.options.user_agent = None
-            test.test.user_agent = None
         # Recorder Mode can still optimize scripts in --headless2 mode.
         if self.options.recorder_mode and self.options.headless:
             self.options.headless = False
@@ -1205,6 +1195,7 @@ class SeleniumBrowser(Plugin):
         sb_config._SMALL_TIMEOUT = settings.SMALL_TIMEOUT
         sb_config._LARGE_TIMEOUT = settings.LARGE_TIMEOUT
         sb_config._context_of_runner = False  # Context Manager Compatibility
+        sb_config.mobile_emulator = self.options.mobile_emulator
         sb_config.proxy_driver = self.options.proxy_driver
         sb_config.multi_proxy = self.options.multi_proxy
         # The driver will be received later
