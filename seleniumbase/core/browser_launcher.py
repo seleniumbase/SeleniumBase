@@ -347,13 +347,12 @@ def uc_special_open_if_cf(
         except Exception:
             pass
         if special:
+            time.sleep(0.05)
             with driver:
-                time.sleep(0.18)
                 driver.execute_script('window.open("%s","_blank");' % url)
                 driver.close()
-                driver.switch_to.window(driver.window_handles[-1])
-                time.sleep(0.02)
                 if mobile_emulator:
+                    driver.switch_to.window(driver.window_handles[-1])
                     uc_metrics = {}
                     if (
                         type(device_width) is int
@@ -382,7 +381,8 @@ def uc_special_open_if_cf(
                         )
                     except Exception:
                         pass
-                    time.sleep(0.03)
+            if not mobile_emulator:
+                driver.switch_to.window(driver.window_handles[-1])
         else:
             driver.default_get(url)  # The original one
     else:
@@ -392,10 +392,9 @@ def uc_special_open_if_cf(
 
 def uc_open(driver, url):
     if (url.startswith("http:") or url.startswith("https:")):
+        time.sleep(0.05)
         with driver:
-            time.sleep(0.18)
             driver.default_get(url)
-            time.sleep(0.02)
     else:
         driver.default_get(url)  # The original one
     return None
@@ -403,12 +402,11 @@ def uc_open(driver, url):
 
 def uc_open_with_tab(driver, url):
     if (url.startswith("http:") or url.startswith("https:")):
+        time.sleep(0.05)
         with driver:
-            time.sleep(0.18)
             driver.execute_script('window.open("%s","_blank");' % url)
             driver.close()
-            driver.switch_to.window(driver.window_handles[-1])
-            time.sleep(0.02)
+        driver.switch_to.window(driver.window_handles[-1])
     else:
         driver.default_get(url)  # The original one
     return None
@@ -2822,7 +2820,10 @@ def get_local_driver(
             )
             if headless2:
                 try:
-                    if use_version == "latest" or int(use_version) >= 109:
+                    if (
+                        use_version == "latest"
+                        or int(str(use_version).split(".")[0]) >= 109
+                    ):
                         chrome_options.add_argument("--headless=new")
                     else:
                         chrome_options.add_argument("--headless=chrome")
@@ -2830,17 +2831,18 @@ def get_local_driver(
                     chrome_options.add_argument("--headless=new")
             elif headless and undetectable:
                 try:
-                    if int(use_version) >= 109:
+                    int_use_version = int(str(use_version).split(".")[0])
+                    if int_use_version >= 109:
                         chrome_options.add_argument("--headless=new")
                     elif (
-                        int(use_version) >= 96
-                        and int(use_version) <= 108
+                        int_use_version >= 96
+                        and int_use_version <= 108
                     ):
                         chrome_options.add_argument("--headless=chrome")
                     else:
                         pass  # Will need Xvfb on Linux
                 except Exception:
-                    pass
+                    pass  # Will need Xvfb on Linux
             elif headless:
                 if "--headless" not in chrome_options.arguments:
                     chrome_options.add_argument("--headless")
@@ -3117,6 +3119,13 @@ def get_local_driver(
                                 and int(use_version) >= 72
                             ):
                                 uc_chrome_version = int(use_version)
+                            elif (
+                                str(use_version).split(".")[0].isnumeric()
+                                and int(str(use_version).split(".")[0]) >= 72
+                            ):
+                                uc_chrome_version = (
+                                    int(str(use_version).split(".")[0])
+                                )
                             cdp_events = uc_cdp_events
                             cert = "unable to get local issuer certificate"
                             mac_certificate_error = False
@@ -3209,7 +3218,9 @@ def get_local_driver(
                                             and use_version
                                             and (
                                                 int(ch_driver_version)
-                                                < int(use_version)
+                                                < int(str(
+                                                    use_version).split(".")[0]
+                                                )
                                             )
                                         )
                                     ):
