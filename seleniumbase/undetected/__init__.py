@@ -217,7 +217,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
             options.binary_location = (
                 browser_executable_path or find_chrome_executable()
             )
-        self._delay = 2
+        self._delay = 2.05
         self.user_data_dir = user_data_dir
         self.keep_user_data_dir = keep_user_data_dir
         if suppress_welcome:

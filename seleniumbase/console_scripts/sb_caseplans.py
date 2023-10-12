@@ -43,7 +43,7 @@ def set_colors(use_colors):
     cr = ""
     if use_colors:
         if (
-            "win32" in sys.platform
+            shared_utils.is_windows()
             and hasattr(colorama, "just_fix_windows_console")
         ):
             colorama.just_fix_windows_console()
@@ -380,7 +380,10 @@ def view_summary_of_existing_case_plans(root, tests):
 def create_tkinter_gui(tests, command_string):
     root = tk.Tk()
     root.title("SeleniumBase Case Plans Generator")
-    root.minsize(820, 652)
+    if shared_utils.is_windows():
+        root.minsize(820, 618)
+    else:
+        root.minsize(820, 652)
     tk.Label(root, text="").pack()
     run_display = (
         "Select from %s tests found:  "
@@ -407,26 +410,26 @@ def create_tkinter_gui(tests, command_string):
         row += " " * 200
         ara[count] = tk.IntVar()
         cb = None
-        if not shared_utils.is_windows():
+        if shared_utils.is_windows():
             cb = tk.Checkbutton(
                 text_area,
                 text=(row),
-                bg="green",
-                fg="yellow",
+                bg="white",
+                fg="black",
                 anchor="w",
                 pady=0,
+                borderwidth=1,
+                highlightthickness=1,
                 variable=ara[count],
             )
         else:
             cb = tk.Checkbutton(
                 text_area,
                 text=(row),
-                bg="green",
-                fg="yellow",
+                bg="white",
+                fg="black",
                 anchor="w",
                 pady=0,
-                borderwidth=0,
-                highlightthickness=0,
                 variable=ara[count],
             )
         parts = row.strip().split("/")
@@ -501,7 +504,7 @@ def create_tkinter_gui(tests, command_string):
 
 def main():
     use_colors = True
-    if "linux" in sys.platform:
+    if shared_utils.is_linux():
         use_colors = False
     c0, c1, c2, c3, c4, c5, cr = set_colors(use_colors)
     command_args = sys.argv[2:]
@@ -527,7 +530,7 @@ def main():
     print(message)
 
     proc = subprocess.Popen(
-        '%s -m pytest --collect-only -q --rootdir="./" %s'
+        '"%s" -m pytest --collect-only -q --rootdir="./" %s'
         % (sys.executable, command_string),
         stdout=subprocess.PIPE,
         shell=True,
@@ -539,7 +542,11 @@ def main():
         print(error_msg)
         return
     tests = []
-    for row in output.decode("utf-8").split("\n"):
+    if shared_utils.is_windows():
+        output = output.decode("latin1")
+    else:
+        output = output.decode("utf-8")
+    for row in output.replace("\r", "").split("\n"):
         if ("::") in row:
             tests.append(row)
     if not tests:
