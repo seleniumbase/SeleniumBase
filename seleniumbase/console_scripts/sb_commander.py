@@ -43,7 +43,7 @@ def set_colors(use_colors):
     cr = ""
     if use_colors:
         if (
-            "win32" in sys.platform
+            shared_utils.is_windows()
             and hasattr(colorama, "just_fix_windows_console")
         ):
             colorama.just_fix_windows_console()
@@ -96,7 +96,7 @@ def do_pytest_run(
         if selected_tests[selected_test].get():
             total_selected_tests += 1
 
-    full_run_command = "%s -m pytest" % sys.executable
+    full_run_command = '"%s" -m pytest' % sys.executable
     if total_selected_tests == 0 or total_tests == total_selected_tests:
         if command_string:
             full_run_command += " "
@@ -186,7 +186,10 @@ def do_pytest_run(
 def create_tkinter_gui(tests, command_string, files, solo_tests):
     root = tk.Tk()
     root.title("SeleniumBase Commander | GUI for pytest")
-    root.minsize(820, 658)
+    if shared_utils.is_windows():
+        root.minsize(820, 696)
+    else:
+        root.minsize(820, 702)
     tk.Label(root, text="").pack()
 
     options_list = [
@@ -305,26 +308,26 @@ def create_tkinter_gui(tests, command_string, files, solo_tests):
         row += " " * 200
         ara[count] = tk.IntVar()
         cb = None
-        if not shared_utils.is_windows():
+        if shared_utils.is_windows():
             cb = tk.Checkbutton(
                 text_area,
                 text=(row),
-                bg="green",
-                fg="yellow",
+                bg="white",
+                fg="black",
                 anchor="w",
                 pady=0,
+                borderwidth=1,
+                highlightthickness=1,
                 variable=ara[count],
             )
         else:
             cb = tk.Checkbutton(
                 text_area,
                 text=(row),
-                bg="green",
-                fg="yellow",
+                bg="white",
+                fg="black",
                 anchor="w",
                 pady=0,
-                borderwidth=0,
-                highlightthickness=0,
                 variable=ara[count],
             )
         text_area.window_create("end", window=cb)
@@ -368,7 +371,6 @@ def create_tkinter_gui(tests, command_string, files, solo_tests):
         root,
         text="Run Selected Tests",
         fg="green",
-        bg="gray",
         command=lambda: do_pytest_run(
             root,
             tests,
@@ -430,7 +432,7 @@ def main():
     print(message)
 
     proc = subprocess.Popen(
-        '%s -m pytest --collect-only -q --rootdir="./" %s'
+        '"%s" -m pytest --collect-only -q --rootdir="./" %s'
         % (sys.executable, command_string),
         stdout=subprocess.PIPE,
         shell=True,
@@ -442,7 +444,11 @@ def main():
         print(error_msg)
         return
     tests = []
-    for row in output.decode("utf-8").split("\n"):
+    if shared_utils.is_windows():
+        output = output.decode("latin1")
+    else:
+        output = output.decode("utf-8")
+    for row in output.replace("\r", "").split("\n"):
         if ("::") in row:
             tests.append(row)
     if not tests:
