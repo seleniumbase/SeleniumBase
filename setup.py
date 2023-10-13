@@ -216,7 +216,7 @@ setup(
             'pyflakes==2.5.0;python_version<"3.9"',
             'pyflakes==3.1.0;python_version>="3.9"',
             'pycodestyle==2.9.1;python_version<"3.9"',
-            'pycodestyle==2.11.0;python_version>="3.9"',
+            'pycodestyle==2.11.1;python_version>="3.9"',
         ],
         # pip install -e .[ipdb]
         # (Not needed for debugging anymore. SeleniumBase now includes "pdbp".)

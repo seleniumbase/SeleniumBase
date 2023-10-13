@@ -198,13 +198,23 @@ class BaseCase(unittest.TestCase):
         Now, if they accidentally type "python", the tests will still run.
         Eg. "python my_test.py" instead of "pytest my_test.py"."""
         if name == "__main__":  # Test called with "python"
+            import subprocess
             from pytest import main as pytest_main
             all_args = []
             for arg in args:
                 all_args.append(arg)
             for arg in sys.argv[1:]:
                 all_args.append(arg)
-            pytest_main([file, "-s", *all_args])
+            multi = False
+            for arg in all_args:
+                if arg.startswith("-n") or arg.startswith("--numprocesses"):
+                    multi = True
+            if multi:
+                subprocess.call(
+                    [sys.executable, "-m", "pytest", file, "-s", *all_args]
+                )
+            else:
+                pytest_main([file, "-s", *all_args])
 
     def open(self, url):
         """Navigates the current browser window to the specified page."""

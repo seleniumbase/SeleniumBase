@@ -184,6 +184,7 @@ def extend_driver(driver):
     driver.get_origin = DM.get_origin
     driver.get_user_agent = DM.get_user_agent
     driver.highlight = DM.highlight
+    driver.highlight_click = DM.highlight_click
     driver.sleep = time.sleep
     driver.get_page_source = DM.get_page_source
     driver.get_title = DM.get_title
@@ -412,12 +413,14 @@ def uc_open_with_tab(driver, url):
     return None
 
 
-def uc_open_with_reconnect(driver, url):
-    """Open a url, then reconnect with UC before switching to the window."""
+def uc_open_with_reconnect(driver, url, reconnect_time=None):
+    """Open a url, disconnect chromedriver, wait, and reconnect."""
+    if not reconnect_time:
+        reconnect_time = constants.UC.RECONNECT_TIME
     if (url.startswith("http:") or url.startswith("https:")):
         driver.execute_script('window.open("%s","_blank");' % url)
-        driver.reconnect(2.65)
         driver.close()
+        driver.reconnect(reconnect_time)
         driver.switch_to.window(driver.window_handles[-1])
     else:
         driver.default_get(url)  # The original one
@@ -1314,9 +1317,9 @@ def get_driver(
                 binary_location = None
     if (uc_cdp_events or uc_subprocess) and not undetectable:
         undetectable = True
-    if is_using_uc(undetectable, browser_name) and mobile_emulator:
-        if not user_agent:
-            user_agent = constants.Mobile.AGENT
+    if mobile_emulator and not user_agent:
+        # Use a Pixel user agent by default if not specified
+        user_agent = constants.Mobile.AGENT
     if page_load_strategy and page_load_strategy.lower() == "none":
         settings.PAGE_LOAD_STRATEGY = "none"
     proxy_auth = False
@@ -3478,7 +3481,9 @@ def get_local_driver(
                         lambda url: uc_open_with_tab(driver, url)
                     )
                     driver.uc_open_with_reconnect = (
-                        lambda url: uc_open_with_reconnect(driver, url)
+                        lambda *args, **kwargs: uc_open_with_reconnect(
+                            driver, *args, **kwargs
+                        )
                     )
                     if mobile_emulator:
                         uc_metrics = {}

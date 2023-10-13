@@ -312,10 +312,9 @@ class HackTests(BaseCase):
         self.set_text_content('a[href*="jira/enterprise"]', abtu)
         self.set_text_content('a[href="/software/jira/features"]', "")
         self.set_text_content("h1", aybabtu)
-        self.highlight("ul.imkt-navbar__link-list", loops=2, scroll=False)
-        self.highlight('a[href*="jira/pricing"]', loops=3, scroll=False)
-        self.highlight('a[href*="jira/enterprise"]', loops=3, scroll=False)
-        self.highlight("h1", loops=6, scroll=False)
+        self.highlight('a[href*="jira/pricing"]', loops=5, scroll=False)
+        self.highlight('a[href*="jira/enterprise"]', loops=6, scroll=False)
+        self.highlight("h1", loops=8, scroll=False)
 
         self.open("https://status.iboss.com/ibcloud/app/cloudStatus.html")
         self.wait_for_element_clickable('div[translate*="cloudStatus"]')

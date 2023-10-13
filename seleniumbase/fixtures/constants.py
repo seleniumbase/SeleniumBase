@@ -359,6 +359,10 @@ class Mobile:
     )
 
 
+class UC:
+    RECONNECT_TIME = 2.15  # Seconds
+
+
 class ValidBrowsers:
     valid_browsers = [
         "chrome",
