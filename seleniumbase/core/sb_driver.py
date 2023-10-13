@@ -142,7 +142,21 @@ class DriverMethods():
         return js_utils.get_user_agent(self.driver, *args, **kwargs)
 
     def highlight(self, *args, **kwargs):
+        w_args = kwargs
+        if "loops" in w_args:
+            w_args.pop("loops")
+        element = page_actions.wait_for_element(self.driver, *args, **w_args)
+        browser = self.driver.capabilities["browserName"].lower()
+        js_utils.slow_scroll_to_element(self.driver, element, browser)
+        if "timeout" in kwargs:
+            kwargs.pop("timeout")
         js_utils.highlight(self.driver, *args, **kwargs)
+
+    def highlight_click(self, *args, **kwargs):
+        self.highlight(*args, **kwargs)
+        if "loops" in kwargs:
+            kwargs.pop("loops")
+        page_actions.click(self.driver, *args, **kwargs)
 
     def set_wire_proxy(self, string):
         """Set a proxy server for selenium-wire mode ("--wire")

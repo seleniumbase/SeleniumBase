@@ -184,6 +184,7 @@ def extend_driver(driver):
     driver.get_origin = DM.get_origin
     driver.get_user_agent = DM.get_user_agent
     driver.highlight = DM.highlight
+    driver.highlight_click = DM.highlight_click
     driver.sleep = time.sleep
     driver.get_page_source = DM.get_page_source
     driver.get_title = DM.get_title
