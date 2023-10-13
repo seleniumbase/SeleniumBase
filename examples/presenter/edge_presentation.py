@@ -586,7 +586,7 @@ class EdgePresentationClass(BaseCase):
         self.assert_text("Skype for Mobile", "h2")
         self.highlight("h2")
         self.highlight("#get-skype-0")
-        self.highlight_click('[data-bi-name="arrow-dropdown-mobile"]')
+        self.highlight_click("span[data-dropdown-icon]")
         self.highlight("#get-skype-0_android-download")
         self.highlight('[data-bi-id*="ios"]')
         self.quit_extra_driver()
