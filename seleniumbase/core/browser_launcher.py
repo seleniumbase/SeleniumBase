@@ -1314,9 +1314,9 @@ def get_driver(
                 binary_location = None
     if (uc_cdp_events or uc_subprocess) and not undetectable:
         undetectable = True
-    if is_using_uc(undetectable, browser_name) and mobile_emulator:
-        if not user_agent:
-            user_agent = constants.Mobile.AGENT
+    if mobile_emulator and not user_agent:
+        # Use a Pixel user agent by default if not specified
+        user_agent = constants.Mobile.AGENT
     if page_load_strategy and page_load_strategy.lower() == "none":
         settings.PAGE_LOAD_STRATEGY = "none"
     proxy_auth = False
