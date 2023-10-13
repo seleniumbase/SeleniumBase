@@ -217,7 +217,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
             options.binary_location = (
                 browser_executable_path or find_chrome_executable()
             )
-        self._delay = 2.05
+        self._delay = constants.UC.RECONNECT_TIME
         self.user_data_dir = user_data_dir
         self.keep_user_data_dir = keep_user_data_dir
         if suppress_welcome:
@@ -491,10 +491,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        self.service.stop()
-        time.sleep(self._delay)
-        self.service.start()
-        self.start_session()
+        self.reconnect(timeout=self._delay)
 
     def __hash__(self):
         return hash(self.options.debugger_address)

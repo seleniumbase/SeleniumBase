@@ -413,12 +413,14 @@ def uc_open_with_tab(driver, url):
     return None
 
 
-def uc_open_with_reconnect(driver, url):
-    """Open a url, then reconnect with UC before switching to the window."""
+def uc_open_with_reconnect(driver, url, reconnect_time=None):
+    """Open a url, disconnect chromedriver, wait, and reconnect."""
+    if not reconnect_time:
+        reconnect_time = constants.UC.RECONNECT_TIME
     if (url.startswith("http:") or url.startswith("https:")):
         driver.execute_script('window.open("%s","_blank");' % url)
-        driver.reconnect(2.65)
         driver.close()
+        driver.reconnect(reconnect_time)
         driver.switch_to.window(driver.window_handles[-1])
     else:
         driver.default_get(url)  # The original one
@@ -3479,7 +3481,9 @@ def get_local_driver(
                         lambda url: uc_open_with_tab(driver, url)
                     )
                     driver.uc_open_with_reconnect = (
-                        lambda url: uc_open_with_reconnect(driver, url)
+                        lambda *args, **kwargs: uc_open_with_reconnect(
+                            driver, *args, **kwargs
+                        )
                     )
                     if mobile_emulator:
                         uc_metrics = {}
