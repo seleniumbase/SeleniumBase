@@ -1,6 +1,7 @@
 """Flaky Raw Selenium Example - (ONLY Selenium / NO SeleniumBase)"""
 import sys
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from unittest import TestCase
 
@@ -20,7 +21,8 @@ class FlakyMessyRawSelenium(TestCase):
             "profile.password_manager_enabled": False,
         }
         options.add_experimental_option("prefs", prefs)
-        self.driver = webdriver.Chrome(options=options)
+        service = Service(service_args=["--disable-build-check"])
+        self.driver = webdriver.Chrome(options=options, service=service)
 
     def tearDown(self):
         if self.driver:
