@@ -1,6 +1,6 @@
 <!-- SeleniumBase Docs -->
 
-## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Mobile Testing
+## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Mobile Mode / Mobile Testing
 
 Use ``--mobile`` to run SeleniumBase tests using Chrome's mobile device emulator with default values for Device Metrics and User-Agent.
 
@@ -57,6 +57,30 @@ pytest test_swag_labs.py --mobile --metrics="360,640,2"
 
 # Run mobile tests specifying the user agent
 pytest test_swag_labs.py --mobile --agent="Mozilla/5.0 (Linux; Android 9; Pixel 3 XL)"
+```
+
+--------
+
+For some [SeleniumBase Syntax Formats](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md), you can also use `mobile=True` to run tests in Mobile Mode:
+
+```python
+from seleniumbase import Driver
+
+driver = Driver(mobile=True)
+try:
+    driver.open("https://www.skype.com/en/get-skype/")
+    driver.assert_element('[aria-label="Microsoft"]')
+    driver.assert_text("Download Skype", "h1")
+    driver.highlight("div.appBannerContent")
+    driver.highlight("h1")
+    driver.assert_text("Skype for Mobile", "h2")
+    driver.highlight("h2")
+    driver.highlight("#get-skype-0")
+    driver.highlight_click("span[data-dropdown-icon]")
+    driver.highlight("#get-skype-0_android-download")
+    driver.highlight('[data-bi-id*="ios"]')
+finally:
+    driver.quit()
 ```
 
 --------
