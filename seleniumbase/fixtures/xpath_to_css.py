@@ -2,7 +2,7 @@
 import re
 
 _sub_regexes = {
-    "tag": r"([a-zA-Z][a-zA-Z0-9]{0,10}|\*)",
+    "tag": r"([a-zA-Z][-a-zA-Z0-9]{0,31}|\*)",
     "attribute": r"[.a-zA-Z_:][-\w:.]*(\(\))?)",
     "value": r"\s*[\w/:][-/\w\s,:;.\S]*",
 }
