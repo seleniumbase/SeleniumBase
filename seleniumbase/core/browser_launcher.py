@@ -425,6 +425,13 @@ def uc_open_with_reconnect(driver, url, reconnect_time=None):
     return None
 
 
+def uc_click(
+    driver, selector, by="css selector", timeout=settings.SMALL_TIMEOUT
+):
+    element = driver.wait_for_element(selector, by=by, timeout=timeout)
+    element.uc_click()
+
+
 def edgedriver_on_path():
     return os.path.exists(LOCAL_EDGEDRIVER)
 
@@ -3482,6 +3489,9 @@ def get_local_driver(
                         lambda *args, **kwargs: uc_open_with_reconnect(
                             driver, *args, **kwargs
                         )
+                    )
+                    driver.uc_click = lambda *args, **kwargs: uc_click(
+                        driver, *args, **kwargs
                     )
                     if mobile_emulator:
                         uc_metrics = {}
