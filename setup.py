@@ -239,11 +239,11 @@ setup(
         # (An optional library for image-processing.)
         "pillow": [
             'Pillow==9.5.0;python_version<"3.8"',
-            'Pillow==10.0.1;python_version>="3.8"',
+            'Pillow==10.1.0;python_version>="3.8"',
         ],
         # pip install -e .[psutil]
         "psutil": [
-            "psutil==5.9.5",
+            "psutil==5.9.6",
         ],
         # pip install -e .[selenium-wire]
         "selenium-wire": [
