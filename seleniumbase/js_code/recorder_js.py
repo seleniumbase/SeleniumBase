@@ -151,6 +151,7 @@ var getBestSelector = function(el) {
     non_id_attributes.push('heading');
     non_id_attributes.push('translate');
     non_id_attributes.push('aria-label');
+    non_id_attributes.push('aria-describedby');
     non_id_attributes.push('rel');
     non_id_attributes.push('ng-model');
     non_id_attributes.push('ng-href');
@@ -318,7 +319,7 @@ var reset_recorder_state = function() {
     document.recorded_actions = [];
     sessionStorage.setItem('pause_recorder', 'no');
     sessionStorage.setItem('recorder_mode', '1');
-    sessionStorage.setItem('recorder_title', document.title)
+    sessionStorage.setItem('recorder_title', document.title);
     const d_now = Date.now();
     document.recorder_last_mouseup = d_now;
     w_orig = window.location.origin;
