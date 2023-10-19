@@ -635,11 +635,9 @@ self.add_slide(
     content=None, image=None, code=None, iframe=None,
     content2=None, notes=None, transition=None, name=None)
 
-self.save_presentation(
-    name=None, filename=None, show_notes=False, interval=0)
+self.save_presentation(name=None, filename=None, show_notes=False, interval=0)
 
-self.begin_presentation(
-    name=None, filename=None, show_notes=False, interval=0)
+self.begin_presentation(name=None, filename=None, show_notes=False, interval=0)
 
 ############
 
@@ -692,8 +690,7 @@ self.create_introjs_tour(name=None)
 
 self.set_introjs_colors(theme_color=None, hover_color=None)
 
-self.add_tour_step(
-    message, selector=None, name=None, title=None, theme=None, alignment=None)
+self.add_tour_step(message, selector=None, name=None, title=None, theme=None, alignment=None)
 
 self.play_tour(name=None, interval=0)
 # Duplicates:
@@ -727,8 +724,7 @@ self.post_success_message(message, duration=None, pause=True)
 
 self.post_error_message(message, duration=None, pause=True)
 
-self.set_messenger_theme(
-    theme="default", location="default", max_messages="default")
+self.set_messenger_theme(theme="default", location="default", max_messages="default")
 
 ############
 
@@ -874,25 +870,21 @@ self.quit_extra_driver(driver=None)
 
 ############
 
-self.check_window(
-    name="default", level=0, baseline=False, check_domain=True, full_diff=False)
+self.check_window(name="default", level=0, baseline=False, check_domain=True, full_diff=False)
 
 ############
 
-self.deferred_assert_element(
-    selector, by="css selector", timeout=None, fs=False)
+self.deferred_assert_element(selector, by="css selector", timeout=None, fs=False)
 # Duplicates:
 # self.delayed_assert_element(
 #     selector, by="css selector", timeout=None, fs=False)
 
-self.deferred_assert_element_present(
-    selector, by="css selector", timeout=None, fs=False)
+self.deferred_assert_element_present(selector, by="css selector", timeout=None, fs=False)
 # Duplicates:
 # self.delayed_assert_element_present(
 #     selector, by="css selector", timeout=None, fs=False)
 
-self.deferred_assert_text(
-    text, selector="html", by="css selector", timeout=None, fs=False)
+self.deferred_assert_text(text, selector="html", by="css selector", timeout=None, fs=False)
 # Duplicates:
 # self.delayed_assert_text(
 #     text, selector="html", by="css selector", timeout=None, fs=False)
