@@ -329,9 +329,7 @@ def uc_special_open_if_cf(
     device_height=None,
     device_pixel_ratio=None,
 ):
-    if (
-        url.startswith("http:") or url.startswith("https:")
-    ):
+    if url.startswith("http:") or url.startswith("https:"):
         special = False
         try:
             req_get = requests_get(url, proxy_string)
@@ -425,6 +423,13 @@ def uc_open_with_reconnect(driver, url, reconnect_time=None):
     else:
         driver.default_get(url)  # The original one
     return None
+
+
+def uc_click(
+    driver, selector, by="css selector", timeout=settings.SMALL_TIMEOUT
+):
+    element = driver.wait_for_element(selector, by=by, timeout=timeout)
+    element.uc_click()
 
 
 def edgedriver_on_path():
@@ -3484,6 +3489,9 @@ def get_local_driver(
                         lambda *args, **kwargs: uc_open_with_reconnect(
                             driver, *args, **kwargs
                         )
+                    )
+                    driver.uc_click = lambda *args, **kwargs: uc_click(
+                        driver, *args, **kwargs
                     )
                     if mobile_emulator:
                         uc_metrics = {}

@@ -22,6 +22,7 @@ class ProxyTests(BaseCase):
             # This page takes too long to load otherwise
             self.get_new_driver(page_load_strategy="none")
         self.open("https://ipinfo.io/")
+        self.wait_for_non_empty_text("form input", timeout=20)
         ip_address = self.get_text('#ip-string span[class*="primary"] span')
         print("\n\nMy IP Address = %s\n" % ip_address)
         print("Displaying Host Info:")

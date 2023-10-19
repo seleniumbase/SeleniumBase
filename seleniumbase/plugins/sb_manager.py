@@ -129,6 +129,7 @@ def SB(
     sb_config._do_sb_post_mortem = False
     is_windows = shared_utils.is_windows()
     sys_argv = sys.argv
+    arg_join = " ".join(sys_argv)
     archive_logs = False
     existing_runner = False
     do_log_folder_setup = False  # The first "test=True" run does it
@@ -311,6 +312,16 @@ def SB(
     if is_mobile:
         sb_config.mobile_emulator = True
     proxy_string = proxy
+    if proxy_string is None and "--proxy" in arg_join:
+        if "--proxy=" in arg_join:
+            proxy_string = arg_join.split("--proxy=")[1].split(" ")[0]
+        elif "--proxy " in arg_join:
+            proxy_string = arg_join.split("--proxy ")[1].split(" ")[0]
+        if proxy_string:
+            if proxy_string.startswith('"') and proxy_string.endswith('"'):
+                proxy_string = proxy_string[1:-1]
+            elif proxy_string.startswith("'") and proxy_string.endswith("'"):
+                proxy_string = proxy_string[1:-1]
     user_agent = agent
     recorder_mode = False
     if recorder_ext:
@@ -578,7 +589,6 @@ def SB(
         else:
             ad_block_on = False
     if driver_version is None:
-        arg_join = " ".join(sys_argv)
         if "--driver-version=" in arg_join:
             driver_version = (
                 arg_join.split("--driver-version=")[1].split(" ")[0]

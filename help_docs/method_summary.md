@@ -635,11 +635,9 @@ self.add_slide(
     content=None, image=None, code=None, iframe=None,
     content2=None, notes=None, transition=None, name=None)
 
-self.save_presentation(
-    name=None, filename=None, show_notes=False, interval=0)
+self.save_presentation(name=None, filename=None, show_notes=False, interval=0)
 
-self.begin_presentation(
-    name=None, filename=None, show_notes=False, interval=0)
+self.begin_presentation(name=None, filename=None, show_notes=False, interval=0)
 
 ############
 
@@ -692,8 +690,7 @@ self.create_introjs_tour(name=None)
 
 self.set_introjs_colors(theme_color=None, hover_color=None)
 
-self.add_tour_step(
-    message, selector=None, name=None, title=None, theme=None, alignment=None)
+self.add_tour_step(message, selector=None, name=None, title=None, theme=None, alignment=None)
 
 self.play_tour(name=None, interval=0)
 # Duplicates:
@@ -727,8 +724,7 @@ self.post_success_message(message, duration=None, pause=True)
 
 self.post_error_message(message, duration=None, pause=True)
 
-self.set_messenger_theme(
-    theme="default", location="default", max_messages="default")
+self.set_messenger_theme(theme="default", location="default", max_messages="default")
 
 ############
 
@@ -874,25 +870,21 @@ self.quit_extra_driver(driver=None)
 
 ############
 
-self.check_window(
-    name="default", level=0, baseline=False, check_domain=True, full_diff=False)
+self.check_window(name="default", level=0, baseline=False, check_domain=True, full_diff=False)
 
 ############
 
-self.deferred_assert_element(
-    selector, by="css selector", timeout=None, fs=False)
+self.deferred_assert_element(selector, by="css selector", timeout=None, fs=False)
 # Duplicates:
 # self.delayed_assert_element(
 #     selector, by="css selector", timeout=None, fs=False)
 
-self.deferred_assert_element_present(
-    selector, by="css selector", timeout=None, fs=False)
+self.deferred_assert_element_present(selector, by="css selector", timeout=None, fs=False)
 # Duplicates:
 # self.delayed_assert_element_present(
 #     selector, by="css selector", timeout=None, fs=False)
 
-self.deferred_assert_text(
-    text, selector="html", by="css selector", timeout=None, fs=False)
+self.deferred_assert_text(text, selector="html", by="css selector", timeout=None, fs=False)
 # Duplicates:
 # self.delayed_assert_text(
 #     text, selector="html", by="css selector", timeout=None, fs=False)
@@ -926,6 +918,96 @@ self.fail(msg=None)  # Inherited from "unittest"
 self._check_browser()  # Fails test cleanly if the active window is closed
 
 self._print(TEXT)  # Calls Python's print() / Allows for translations
+
+############
+
+# "driver"-specific methods added by SeleniumBase
+
+driver.default_get(url)  # Because driver.get(url) works differently in UC Mode
+
+driver.open(url)  # Like driver.get(), but allows partial URLs without protocol
+
+driver.click(selector)
+
+driver.click_link(link_text)
+
+driver.click_if_visible(selector)
+
+driver.click_active_element()
+
+driver.send_keys(selector, text)
+
+driver.press_keys(selector, text)
+
+driver.type(selector, text)
+
+driver.submit(selector)
+
+driver.assert_element(selector)
+
+driver.assert_element_present(selector)
+
+driver.assert_element_not_visible(selector)
+
+driver.assert_text(text, selector)
+
+driver.assert_exact_text(text, selector)
+
+driver.wait_for_element(selector)
+
+driver.wait_for_text(text, selector)
+
+driver.wait_for_exact_text(text, selector)
+
+driver.wait_for_and_accept_alert()
+
+driver.wait_for_and_dismiss_alert()
+
+driver.is_element_present(selector)
+
+driver.is_element_visible(selector)
+
+driver.is_text_visible(text, selector)
+
+driver.is_exact_text_visible(text, selector)
+
+driver.is_attribute_present(selector, attribute)
+
+driver.get_text(selector)
+
+driver.js_click(selector)
+
+driver.get_active_element_css()
+
+driver.get_locale_code()
+
+driver.get_origin()
+
+driver.get_user_agent()
+
+driver.highlight(selector)
+
+driver.highlight_click(selector)
+
+driver.sleep(seconds)
+
+driver.get_page_source()
+
+driver.get_title()
+
+############
+
+# "driver"-specific methods added by SeleniumBase for UC Mode: "--uc" / uc=True
+
+driver.uc_open(url)
+
+driver.uc_open_with_tab(url)
+
+driver.uc_open_with_reconnect(url, reconnect_time=None)
+
+driver.uc_click(selector)
+
+############
 ```
 
 --------

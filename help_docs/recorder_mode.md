@@ -9,7 +9,9 @@
 
 <img src="https://seleniumbase.github.io/cdn/img/sb_recorder_notification.png" title="SeleniumBase" width="380">
 
-⏺️ To make a new recording with Recorder Mode, use ``sbase mkrec``, ``sbase codegen``, or ``sbase record``):
+ℹ️ Recorder Mode can be activated from the command-line interface, or from the Recorder Desktop App.
+
+⏺️ To make a new recording from the command-line interface, use ``sbase mkrec``, ``sbase codegen``, or ``sbase record``):
 
 ```bash
 sbase mkrec TEST_NAME.py --url=URL
@@ -46,20 +48,20 @@ pytest new_test.py --rec -q -s --url=wikipedia.org
 *** RECORDING COPIED to: new_test.py
 ```
 
-🔴 You can also activate Recorder Mode from the Desktop App:
+🔴 You can also activate Recorder Mode from the Recorder Desktop App:
 
 ```bash
 sbase recorder
 * Starting the SeleniumBase Recorder Desktop App...
 ```
 
-<img src="https://seleniumbase.github.io/cdn/img/recorder_desktop.png" title="SeleniumBase" width="340">
+<img src="https://seleniumbase.github.io/cdn/img/recorder_desktop_2.png" title="SeleniumBase" width="340">
 
 ⏺️ While a recording is in progress, you can press the ``[ESC]`` key to pause the Recorder. To resume the recording, you can hit the ``[~`]`` key, which is located directly below the ``[ESC]`` key on most keyboards.
 
 ⏺️ From within Recorder Mode there are two additional modes: "Assert Element Mode" and "Assert Text Mode". To switch into "Assert Element Mode", press the ``[^]-key (SHIFT+6)``: The border will become purple, and you'll be able to click on elements to assert from your test. To switch into "Assert Text Mode", press the ``[&]-key (SHIFT+7)``: The border will become teal, and you'll be able to click on elements for asserting text from your test.
 
-While using either of the two special Assertion Modes, certain actions such as clicking on links won't have any effect. This lets you make assertions on elements without navigating away from the page, etc. To add an assertion for buttons without triggering default "click" behavior, mouse-down on the button and then mouse-up somewhere else. (This prevents a detected click while still recording the assert.) To return back to the original Recorder Mode, press any key other than ``[SHIFT]`` or ``[BACKSPACE]`` (Eg: Press ``[CONTROL]``, etc.). Press ``[ESC]`` once to leave the Assertion Modes, but it'll stop the Recorder if you press it again.
+⏺️ While using either of the two special Assertion Modes, certain actions such as clicking on links won't have any effect. This lets you make assertions on elements without navigating away from the page, etc. To add an assertion for buttons without triggering default "click" behavior, mouse-down on the button and then mouse-up somewhere else. (This prevents a detected click while still recording the assert.) To return back to the original Recorder Mode, press any key other than ``[SHIFT]`` or ``[BACKSPACE]`` (Eg: Press ``[CONTROL]``, etc.). Press ``[ESC]`` once to leave the Assertion Modes, but it'll stop the Recorder if you press it again.
 
 ⏺️ For extra flexibility, the ``sbase mkrec`` command can be split into four separate commands:
 

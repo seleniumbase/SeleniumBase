@@ -131,7 +131,7 @@ setup(
     ],
     python_requires=">=3.7",
     install_requires=[
-        'pip>=23.2.1',
+        'pip>=23.3',
         'packaging>=23.2',
         'setuptools>=68.0.0;python_version<"3.8"',
         'setuptools>=68.2.2;python_version>="3.8"',
@@ -147,13 +147,13 @@ setup(
         "idna==3.4",
         'chardet==5.2.0',
         'charset-normalizer==3.3.0',
-        'urllib3>=1.26.16,<2;python_version<"3.10"',
-        'urllib3>=1.26.16,<2.1.0;python_version>="3.10"',
+        'urllib3>=1.26.18,<2;python_version<"3.10"',
+        'urllib3>=1.26.18,<2.1.0;python_version>="3.10"',
         'requests==2.31.0',
         "pynose==1.4.8",
         'sniffio==1.3.0',
         'h11==0.14.0',
-        'outcome==1.2.0',
+        'outcome==1.3.0',
         'trio==0.22.2',
         'trio-websocket==0.11.1',
         'wsproto==1.2.0',
@@ -239,11 +239,11 @@ setup(
         # (An optional library for image-processing.)
         "pillow": [
             'Pillow==9.5.0;python_version<"3.8"',
-            'Pillow==10.0.1;python_version>="3.8"',
+            'Pillow==10.1.0;python_version>="3.8"',
         ],
         # pip install -e .[psutil]
         "psutil": [
-            "psutil==5.9.5",
+            "psutil==5.9.6",
         ],
         # pip install -e .[selenium-wire]
         "selenium-wire": [

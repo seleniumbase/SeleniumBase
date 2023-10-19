@@ -1754,8 +1754,8 @@ class BaseCase(unittest.TestCase):
     def get_text(self, selector, by="css selector", timeout=None):
         self.__check_scope()
         if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_shadow_selector(selector):
@@ -1803,8 +1803,8 @@ class BaseCase(unittest.TestCase):
         get raised if hard_fail is True (otherwise None is returned)."""
         self.__check_scope()
         if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
         self.wait_for_ready_state_complete()
@@ -1849,8 +1849,8 @@ class BaseCase(unittest.TestCase):
         Only the first matching selector from querySelector() is used."""
         self.__check_scope()
         if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
         original_attribute = attribute
@@ -1931,8 +1931,8 @@ class BaseCase(unittest.TestCase):
         Only the first matching selector from querySelector() is used."""
         self.__check_scope()
         if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
         if self.is_element_visible(selector, by=by):
@@ -1984,8 +1984,8 @@ class BaseCase(unittest.TestCase):
             html_text = self.get_property(SELECTOR, "textContent") """
         self.__check_scope()
         if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
         self.wait_for_ready_state_complete()
@@ -2025,8 +2025,8 @@ class BaseCase(unittest.TestCase):
             self.assertTrue(float(opacity) > 0, "Element not visible!") """
         self.__check_scope()
         if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
         self.wait_for_ready_state_complete()
@@ -2062,8 +2062,8 @@ class BaseCase(unittest.TestCase):
         """Extracts the URL from an image element on the page."""
         self.__check_scope()
         if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         return self.get_attribute(
             selector, attribute="src", by=by, timeout=timeout
