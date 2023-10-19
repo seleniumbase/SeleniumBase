@@ -329,9 +329,7 @@ def uc_special_open_if_cf(
     device_height=None,
     device_pixel_ratio=None,
 ):
-    if (
-        url.startswith("http:") or url.startswith("https:")
-    ):
+    if url.startswith("http:") or url.startswith("https:"):
         special = False
         try:
             req_get = requests_get(url, proxy_string)

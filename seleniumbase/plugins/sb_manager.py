@@ -129,6 +129,7 @@ def SB(
     sb_config._do_sb_post_mortem = False
     is_windows = shared_utils.is_windows()
     sys_argv = sys.argv
+    arg_join = " ".join(sys_argv)
     archive_logs = False
     existing_runner = False
     do_log_folder_setup = False  # The first "test=True" run does it
@@ -578,7 +579,6 @@ def SB(
         else:
             ad_block_on = False
     if driver_version is None:
-        arg_join = " ".join(sys_argv)
         if "--driver-version=" in arg_join:
             driver_version = (
                 arg_join.split("--driver-version=")[1].split(" ")[0]

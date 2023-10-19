@@ -127,6 +127,7 @@ def Driver(
     from seleniumbase.fixtures import shared_utils
 
     sys_argv = sys.argv
+    arg_join = " ".join(sys_argv)
     browser_changes = 0
     browser_set = None
     browser_text = None
@@ -410,7 +411,6 @@ def Driver(
         else:
             ad_block_on = False
     if driver_version is None:
-        arg_join = " ".join(sys_argv)
         if "--driver-version=" in arg_join:
             driver_version = (
                 arg_join.split("--driver-version=")[1].split(" ")[0]
