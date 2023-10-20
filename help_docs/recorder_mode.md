@@ -9,9 +9,9 @@
 
 <img src="https://seleniumbase.github.io/cdn/img/sb_recorder_notification.png" title="SeleniumBase" width="380">
 
-ℹ️ Recorder Mode can be activated from the command-line interface, or from the Recorder Desktop App.
+⏺️ Recorder Mode can be activated from the command-line interface or the Recorder Desktop App.
 
-⏺️ To make a new recording from the command-line interface, use ``sbase mkrec``, ``sbase codegen``, or ``sbase record``):
+⏺️ To make a new recording from the command-line interface, use ``sbase mkrec``, ``sbase codegen``, or ``sbase record``:
 
 ```bash
 sbase mkrec TEST_NAME.py --url=URL
