@@ -1030,14 +1030,16 @@ def _set_chrome_options(
     if headless or headless2 or is_using_uc(undetectable, browser_name):
         chrome_options.add_argument("--disable-renderer-backgrounding")
     chrome_options.add_argument("--disable-backgrounding-occluded-windows")
+    chrome_options.add_argument("--ash-no-nudges")
+    chrome_options.add_argument("--deny-permission-prompts")
     if user_data_dir:
         chrome_options.add_argument(
-            "--disable-features=OptimizationHintsFetching,"
+            "--disable-features=OptimizationHintsFetching,Translate,"
             "OptimizationTargetPrediction,PrivacySandboxSettings4"
         )
     else:
         chrome_options.add_argument(
-            "--disable-features=OptimizationHintsFetching,"
+            "--disable-features=OptimizationHintsFetching,Translate,"
             "OptimizationTargetPrediction"
         )
     if (
@@ -2464,14 +2466,16 @@ def get_local_driver(
         edge_options.add_argument(
             "--disable-autofill-keyboard-accessory-view[8]"
         )
+        edge_options.add_argument("--ash-no-nudges")
+        edge_options.add_argument("--deny-permission-prompts")
         if user_data_dir:
             edge_options.add_argument(
-                "--disable-features=OptimizationHintsFetching,"
+                "--disable-features=OptimizationHintsFetching,Translate,"
                 "OptimizationTargetPrediction,PrivacySandboxSettings4"
             )
         else:
             edge_options.add_argument(
-                "--disable-features=OptimizationHintsFetching,"
+                "--disable-features=OptimizationHintsFetching,Translate,"
                 "OptimizationTargetPrediction"
             )
         edge_options.add_argument("--disable-browser-side-navigation")
