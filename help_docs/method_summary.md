@@ -1006,8 +1006,6 @@ driver.uc_open_with_tab(url)
 driver.uc_open_with_reconnect(url, reconnect_time=None)
 
 driver.uc_click(selector)
-
-############
 ```
 
 --------
