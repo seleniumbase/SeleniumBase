@@ -25,17 +25,22 @@ class EdgePresentationClass(BaseCase):
         self.open("data:,")
         self.open("https://www.bostoncodecamp.com/CC34/Schedule/SessionGrid")
         self.highlight("h2", loops=8)
-        self.highlight('div[data-sessionid="467776"]', loops=10)
-        self.create_tour(theme="driverjs")
-        self.add_tour_step("<h2>Here we are</h2>", '[data-sessionid="467776"]')
-        self.play_tour()
-        self.click('a[onclick*="467776"]')
-        self.create_tour(theme="hopscotch")
-        self.add_tour_step(
-            "<h2>What to expect</h2>", "div.sz-modal-session", alignment="left"
-        )
-        self.play_tour()
-        self.sleep(0.25)
+        if self.is_element_visible('[data-sessionid="467776"]'):
+            self.highlight('div[data-sessionid="467776"]', loops=10)
+            self.create_tour(theme="driverjs")
+            self.add_tour_step(
+                "<h2>Here we are</h2>", '[data-sessionid="467776"]'
+            )
+            self.play_tour()
+            self.click('a[onclick*="467776"]')
+            self.create_tour(theme="hopscotch")
+            self.add_tour_step(
+                "<h2>What to expect</h2>",
+                "div.sz-modal-session",
+                alignment="left",
+            )
+            self.play_tour()
+            self.sleep(0.25)
         self.open("data:,")
         self.create_presentation(theme="sky", transition="fade")
         self.add_slide(
@@ -708,11 +713,11 @@ class EdgePresentationClass(BaseCase):
             '<span class="str">'
             '  (Slow down the automation. Faster than Demo Mode.)'
             '</span>\n'
-            '<span class="kwd">--reuse-session / --rs</span>'
+            '<span class="kwd">--rs / --reuse-session</span>'
             '<span class="str">'
             '  (Reuse browser session for tests.)'
             '</span>\n'
-            '<span class="kwd">--reuse-class-session / --rcs</span>'
+            '<span class="kwd">--rcs / --reuse-class-session</span>'
             '<span class="str">'
             '  (RS, but for class tests.)'
             '</span>\n'
@@ -756,7 +761,7 @@ class EdgePresentationClass(BaseCase):
             '<span class="str">'
             '  (Create a detailed pytest-html report.)'
             '</span>\n'
-            '<span class="kwd">--collect-only / --co</span>'
+            '<span class="kwd">--co / --collect-only</span>'
             '<span class="str">'
             '  (Only show discovered tests. No run.)'
             '</span>\n'
