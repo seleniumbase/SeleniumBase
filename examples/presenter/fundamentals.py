@@ -1,4 +1,5 @@
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 
 class MyTestClass(BaseCase):
@@ -23,14 +24,14 @@ class MyTestClass(BaseCase):
             "<li><b>Conference organizers</b> (made today possible)</li><br />"
             "<li><b>My wife</b> (a major supporter of my work)</li><br />"
             "<li><b>iboss</b> (my employer)</li>\n"
-            "</ul>\n",
+            "</ul>",
         )
         self.add_slide(
             "<p><b>About me:</b></p>\n"
             "<ul>\n"
             "<li>I created the <b>SeleniumBase</b> framework.</li>\n"
             "<li>I lead the Automation Team at <b>iboss</b>.</li>\n"
-            "</ul>\n",
+            "</ul>",
             image="https://seleniumbase.io/other/iboss_booth.png",
         )
         self.add_slide(
@@ -51,7 +52,7 @@ class MyTestClass(BaseCase):
             "<br />\n"
             "<li>How SeleniumBase makes Python Web Automation easier.</li>"
             "<br />\n"
-            "</ul>\n",
+            "</ul>",
         )
         self.add_slide(
             "<h3>The Format:</h3>"
@@ -60,7 +61,7 @@ class MyTestClass(BaseCase):
             "<li>Slides.</li>\n"
             "<li>ReadMe files.</li>\n"
             "<li>LOTS of live demos!!!</li>\n"
-            "</ul>\n",
+            "</ul>",
             image="https://seleniumbase.io/other/presentation_parts.png",
         )
         self.add_slide(
@@ -81,96 +82,16 @@ class MyTestClass(BaseCase):
             "<h3>What are some building blocks?</h3>\n"
             "<hr /><br />\n",
             code=(
-                "<mark>from selenium import webdriver</mark>\n\n"
-                "driver = webdriver.Chrome()\n\n"
-                'driver.get("http://selenium.dev")\n\n'
-                "element = driver.find_element"
+                "<mk-0>from selenium import webdriver</mk-0>\n\n"
+                "<mk-1>driver = webdriver.Edge()</mk-1>\n\n"
+                '<mk-2>driver.get("http://selenium.dev")</mk-2>\n\n'
+                "<mk-3>element = driver.find_element"
                 '("css selector", "#docsearch span")\n\n'
-                "element.click()\n\n"
-                "elem_2 = driver.find_element"
+                "element.click()</mk-3>\n\n"
+                "<mk-4>elem_2 = driver.find_element"
                 '("css selector", "#docsearch-input")\n\n'
-                'elem_2.send_keys("Python")\n\n'
-                "driver.quit()\n\n"
-            ),
-        )
-        self.add_slide(
-            "<h3>What are some building blocks?</h3>\n"
-            "<hr /><br />\n",
-            code=(
-                "from selenium import webdriver\n\n"
-                "<mark>driver = webdriver.Chrome()</mark>\n\n"
-                'driver.get("http://selenium.dev")\n\n'
-                "element = driver.find_element"
-                '("css selector", "#docsearch span")\n\n'
-                "element.click()\n\n"
-                "elem_2 = driver.find_element"
-                '("css selector", "#docsearch-input")\n\n'
-                'elem_2.send_keys("Python")\n\n'
-                "driver.quit()\n\n"
-            ),
-        )
-        self.add_slide(
-            "<h3>What are some building blocks?</h3>\n"
-            "<hr /><br />\n",
-            code=(
-                "from selenium import webdriver\n\n"
-                "driver = webdriver.Chrome()\n\n"
-                '<mark>driver.get("http://selenium.dev")</mark>\n\n'
-                "element = driver.find_element"
-                '("css selector", "#docsearch span")\n\n'
-                "element.click()\n\n"
-                "elem_2 = driver.find_element"
-                '("css selector", "#docsearch-input")\n\n'
-                'elem_2.send_keys("Python")\n\n'
-                "driver.quit()\n\n"
-            ),
-        )
-        self.add_slide(
-            "<h3>What are some building blocks?</h3>\n"
-            "<hr /><br />\n",
-            code=(
-                "from selenium import webdriver\n\n"
-                "driver = webdriver.Chrome()\n\n"
-                'driver.get("http://selenium.dev")\n\n'
-                "<mark>element = driver.find_element"
-                '("css selector", "#docsearch span")\n\n'
-                "element.click()</mark>\n\n"
-                "elem_2 = driver.find_element"
-                '("css selector", "#docsearch-input")\n\n'
-                'elem_2.send_keys("Python")\n\n'
-                "driver.quit()\n\n"
-            ),
-        )
-        self.add_slide(
-            "<h3>What are some building blocks?</h3>\n"
-            "<hr /><br />\n",
-            code=(
-                "from selenium import webdriver\n\n"
-                "driver = webdriver.Chrome()\n\n"
-                'driver.get("http://selenium.dev")\n\n'
-                "element = driver.find_element"
-                '("css selector", "#docsearch span")\n\n'
-                "element.click()\n\n"
-                "<mark>elem_2 = driver.find_element"
-                '("css selector", "#docsearch-input")\n\n'
-                'elem_2.send_keys("Python")</mark>\n\n'
-                "driver.quit()\n\n"
-            ),
-        )
-        self.add_slide(
-            "<h3>What are some building blocks?</h3>\n"
-            "<hr /><br />\n",
-            code=(
-                "from selenium import webdriver\n\n"
-                "driver = webdriver.Chrome()\n\n"
-                'driver.get("http://selenium.dev")\n\n'
-                "element = driver.find_element"
-                '("css selector", "#docsearch span")\n\n'
-                "element.click()\n\n"
-                "elem_2 = driver.find_element"
-                '("css selector", "#docsearch-input")\n\n'
-                'elem_2.send_keys("Python")\n\n'
-                "<mark>driver.quit()</mark>\n\n"
+                'elem_2.send_keys("Python")</mk-4>\n\n'
+                "<mk-5>driver.quit()</mk-5>\n\n"
             ),
         )
         self.add_slide(
@@ -219,55 +140,38 @@ class MyTestClass(BaseCase):
         )
         self.add_slide(
             "<h4>What are some disadvantages of using <b>raw</b> Selenium "
-            "without additional libraries or frameworks?</h4><hr />"
+            "without extra libraries or frameworks?</h4><hr />"
             "<h4><br />\n"
             "The command statements can get a bit too long:</h4>\n"
-            "<p><code><mark>"
+            "<p><code><mk-0>"
             "driver.find_element(By.CSS_SELECTOR, CSS_SELECTOR).click()"
-            "</code></mark></p><br />"
+            "</code></mk-0></p><br />"
             "<h4>This is better:</h4>"
-            "<p><code>self.click(CSS_SELECTOR)</code><p><br />",
-        )
-        self.add_slide(
-            "<h4>What are some disadvantages of using <b>raw</b> Selenium "
-            "without additional libraries or frameworks?</h4><hr />"
-            "<h4><br />\n"
-            "The command statements can get a bit too long:</h4>\n"
-            "<p><code>"
-            "driver.find_element(By.CSS_SELECTOR, CSS_SELECTOR).click()"
-            "</code></p><br />"
-            "<h4>This is better:</h4>"
-            "<p><code><mark>self.click(CSS_SELECTOR)</mark></code><p><br />",
+            "<p><code><mk-1>self.click(CSS_SELECTOR)</mk-1></code><p><br />",
         )
         self.add_slide(
             "<h4>What are some disadvantages of using <b>raw</b> Selenium "
             "without additional libraries or frameworks?</h4><hr />"
             "<h4><mark><br />\n"
             "No HTML reports, dashboards, results, screenshots..."
-            "</mark><br /><br />"
-            "A test framework can provide those!"
-            "<br />",
+            "</mark><br /><br />A test framework can provide those!<br />",
         )
         self.add_slide(
-            "<h5>Raw Selenium disadvantages, continued...</h5><hr />"
-            "<h4>\n"
-            "No HTML reports, dashboards, results, screenshots..."
-            "<br />"
-            "<mark>A test framework can provide those!</mark>",
+            "<h5>Raw Selenium disadvantages, continued...<hr />\n"
+            "No HTML reports, dashboards, results, screenshots...<div />"
+            "<mark>A test framework can provide those!</mark></h5>",
             image="https://seleniumbase.io/cdn/img/dash_report.png",
         )
         self.add_slide(
             "<h4>Raw Selenium disadvantages, continued...</h4><hr />\n"
             "<br />\n"
             "<p><mark>It takes multiple lines of code to do simple tasks:"
-            "</mark></p>\n"
-            "<pre>\n"
+            "</mark></p>\n<pre>\n"
             'element = driver.find_element("css selector", "#password")\n'
             "element.clear()\n"
             'element.send_keys("secret_sauce")\n'
             'element.submit()\n'
-            "</pre>\n"
-            "<br />\n"
+            "</pre>\n<br />\n"
             "<p>But with a framework, do all that in ONE line:</p>\n"
             '<pre>self.type("#password", "secret_sauce\\n")</pre>'
         )
@@ -280,8 +184,7 @@ class MyTestClass(BaseCase):
             "element.clear()\n"
             'element.send_keys("secret_sauce")\n'
             'element.submit()\n'
-            "</pre>\n"
-            "<br />\n"
+            "</pre>\n<br />\n"
             "<p><mark>But with a framework, do all that in ONE line:"
             "</mark></p>\n"
             '<pre>self.type("#password", "secret_sauce\\n")</pre>'
@@ -299,7 +202,7 @@ class MyTestClass(BaseCase):
             "<li>Advanced tools (Eg. test recorders)</li>\n"
             "<li>Easy to read error messages. Eg. "
             '<pre>Element "h2" was not visible after 10s!</pre></li>'
-            "</ul>\n",
+            "</ul>",
         )
         self.add_slide(
             "<h3>What about test runners?</h3><hr />\n"
@@ -316,7 +219,7 @@ class MyTestClass(BaseCase):
             "<li>Provide test assertions.</li>\n"
             "<li>Multithread your tests.</li>\n"
             "<li>Use a large number of existing plugins.</li>\n"
-            "</ul>\n",
+            "</ul>",
         )
         self.add_slide(
             "<h4>What about complete frameworks?</h4><hr />\n"
@@ -339,7 +242,7 @@ class MyTestClass(BaseCase):
             "<li>Advanced tools (Eg. test recorders)</li>\n"
             "<li>Easy to read error messages. Eg. "
             '<pre>Element "h2" was not visible after 10s!</pre></li>'
-            "</ul>\n",
+            "</ul>",
         )
         self.add_slide(
             "<h3>How do you get SeleniumBase?</h3>\n"
