@@ -36,7 +36,6 @@ cd examples/presenter
 pytest core_presentation.py
 ```
 
-
 <h3><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="24" /> Creating a new presentation:</h3>
 
 ```python
@@ -58,7 +57,6 @@ self.create_presentation(name=None, theme="serif", transition="default")
 If creating multiple presentations at the same time, you can pass the ``name`` parameter to distinguish between different presentations.
 Notes are disabled by default. You can enable notes by specifying:
 ``show_notes=True``
-
 
 <h3><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="24" /> Adding a slide to a presentation:</h3>
 
@@ -242,6 +240,45 @@ Presentations automatically get saved when calling:
 ```python
 self.begin_presentation(show_notes=True)
 ```
+
+<h3><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="24" /> Special abilities:</h3>
+
+If you want to highlight multiple lines at different times in the same slide with the `<mark>` / `</mark>` tags, you can use the new `<mk-0>`-`</mk-0>`, `<mk-1>`-`</mk-1>` tags, which will generate multiple HTML slides from one Python slide.
+
+Example:
+
+```python
+self.add_slide(
+    code=(
+        <p><mk-0>Highlight this on the 1st generated slide</mk-0></p>
+        <p><mk-1>Highlight this on the 2nd generated slide</mk-1></p>
+        <p><mk-2>Highlight this on the 3rd generated slide</mk-2></p>
+        <p><mk-3>Highlight this on the 4th generated slide</mk-3></p>
+    )
+)
+```
+
+Those should automatically get converted to `<mark>` ... `</mark>` on their turn:
+
+Eg. First generated slide:
+
+```html
+<p><mark>Highlight this on the first generated slide</mark></p>
+<p>Highlight this on the second generated slide</p>
+<p>Highlight this on the third generated slide</p>
+<p>Highlight this on the fourth generated slide></p>
+```
+
+Eg. Second generated slide:
+
+```html
+<p>Highlight this on the first generated slide</p>
+<p><mark>Highlight this on the second generated slide</mark></p>
+<p>Highlight this on the third generated slide</p>
+<p>Highlight this on the fourth generated slide></p>
+```
+
+Etc...
 
 --------
 

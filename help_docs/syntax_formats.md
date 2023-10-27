@@ -118,10 +118,10 @@ The pytest framework comes with a unique system called fixtures, which replaces 
 
 ```python
 def test_sb_fixture_with_no_class(sb):
-    sb.open("https://google.com/ncr")
-    sb.type('[title="Search"]', 'SeleniumBase\n')
-    sb.click('a[href*="github.com/seleniumbase/SeleniumBase"]')
-    sb.click('a[title="seleniumbase"]')
+    sb.open("seleniumbase.io/help_docs/install/")
+    sb.type('input[aria-label="Search"]', "GUI Commander")
+    sb.click('mark:contains("Commander")')
+    sb.assert_title_contains("GUI / Commander")
 ```
 
 (See the top of <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_sb_fixture.py">examples/test_sb_fixture.py</a> for the test.)
@@ -134,10 +134,10 @@ The <code translate="no">sb</code> pytest fixture can also be used inside of a c
 ```python
 class Test_SB_Fixture:
     def test_sb_fixture_inside_class(self, sb):
-        sb.open("https://google.com/ncr")
-        sb.type('[title="Search"]', 'SeleniumBase\n')
-        sb.click('a[href*="github.com/seleniumbase/SeleniumBase"]')
-        sb.click('a[title="examples"]')
+        sb.open("seleniumbase.io/help_docs/install/")
+        sb.type('input[aria-label="Search"]', "GUI Commander")
+        sb.click('mark:contains("Commander")')
+        sb.assert_title_contains("GUI / Commander")
 ```
 
 (See the bottom of <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_sb_fixture.py">examples/test_sb_fixture.py</a> for the test.)

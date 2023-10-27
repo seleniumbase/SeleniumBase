@@ -10,6 +10,7 @@ import types
 import urllib3
 import warnings
 from selenium import webdriver
+from selenium.common.exceptions import ElementClickInterceptedException
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.common.options import ArgOptions
 from selenium.webdriver.common.service import utils as service_utils
@@ -429,7 +430,10 @@ def uc_click(
     driver, selector, by="css selector", timeout=settings.SMALL_TIMEOUT
 ):
     element = driver.wait_for_element(selector, by=by, timeout=timeout)
-    element.uc_click()
+    try:
+        element.uc_click()
+    except ElementClickInterceptedException:
+        driver.js_click(selector, by=by, timeout=timeout)
 
 
 def edgedriver_on_path():

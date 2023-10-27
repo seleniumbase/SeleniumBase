@@ -6,6 +6,7 @@
 
 * [MIT](https://web.mit.edu/)
 * [Sony](https://www.sony.com/)
+* [Tesla](https://www.tesla.com/)
 * [iboss](https://www.iboss.com/)
 * [Apple](https://www.apple.com/)
 * [Akamai](https://www.akamai.com/)

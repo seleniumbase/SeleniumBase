@@ -8,7 +8,6 @@ Drivers can be manually downloaded to the ``seleniumbase/drivers`` folder with c
 
 ```bash
 sbase get chromedriver
-sbase get chromedriver latest
 sbase get geckodriver
 sbase get edgedriver
 ```

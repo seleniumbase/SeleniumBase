@@ -360,7 +360,7 @@ class Mobile:
 
 
 class UC:
-    RECONNECT_TIME = 2.15  # Seconds
+    RECONNECT_TIME = 2.27  # Seconds
 
 
 class ValidBrowsers:

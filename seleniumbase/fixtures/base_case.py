@@ -406,7 +406,11 @@ class BaseCase(unittest.TestCase):
         self.__demo_mode_highlight_if_active(original_selector, original_by)
         if scroll and not self.demo_mode and not self.slow_mode:
             self.__scroll_to_element(element, selector, by)
-        pre_action_url = self.driver.current_url
+        pre_action_url = None
+        try:
+            pre_action_url = self.driver.current_url
+        except Exception:
+            pass
         pre_window_count = len(self.driver.window_handles)
         try:
             if (
@@ -707,7 +711,11 @@ class BaseCase(unittest.TestCase):
             timeout=timeout,
             original_selector=original_selector,
         )
-        pre_action_url = self.driver.current_url
+        pre_action_url = None
+        try:
+            pre_action_url = self.driver.current_url
+        except Exception:
+            pass
         try:
             if self.browser == "safari":
                 # Jump to the "except" block where the other script should work
@@ -788,7 +796,11 @@ class BaseCase(unittest.TestCase):
             timeout=timeout,
             original_selector=original_selector,
         )
-        pre_action_url = self.driver.current_url
+        pre_action_url = None
+        try:
+            pre_action_url = self.driver.current_url
+        except Exception:
+            pass
         try:
             if self.browser == "safari":
                 # Jump to the "except" block where the other script should work
@@ -913,7 +925,12 @@ class BaseCase(unittest.TestCase):
         except Exception:
             pass  # Clearing the text field first might not be necessary
         self.__demo_mode_pause_if_active(tiny=True)
-        pre_action_url = self.driver.current_url
+        pre_action_url = None
+        if self.demo_mode:
+            try:
+                pre_action_url = self.driver.current_url
+            except Exception:
+                pass
         text = self.__get_type_checked_text(text)
         try:
             if not text.endswith("\n"):
@@ -1011,7 +1028,12 @@ class BaseCase(unittest.TestCase):
         self.__demo_mode_highlight_if_active(selector, by)
         if not self.demo_mode and not self.slow_mode:
             self.__scroll_to_element(element, selector, by)
-        pre_action_url = self.driver.current_url
+        pre_action_url = None
+        if self.demo_mode:
+            try:
+                pre_action_url = self.driver.current_url
+            except Exception:
+                pass
         text = self.__get_type_checked_text(text)
         try:
             if not text.endswith("\n"):
@@ -1266,11 +1288,18 @@ class BaseCase(unittest.TestCase):
         self.__check_scope()
         if hasattr(self, "recorder_mode") and self.recorder_mode:
             self.save_recorded_actions()
-        pre_action_url = self.driver.current_url
+        pre_action_url = None
+        try:
+            pre_action_url = self.driver.current_url
+        except Exception:
+            pass
         self.__last_page_load_url = None
         self.driver.back()
-        if pre_action_url == self.driver.current_url:
-            self.driver.back()  # Again because the page was redirected
+        try:
+            if pre_action_url == self.driver.current_url:
+                self.driver.back()  # Again because the page was redirected
+        except Exception:
+            pass
         if self.recorder_mode:
             time_stamp = self.execute_script("return Date.now();")
             origin = self.get_origin()
@@ -1529,8 +1558,6 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        pre_action_url = self.driver.current_url
-        pre_window_count = len(self.driver.window_handles)
         link_text = self.__get_type_checked_text(link_text)
         if self.browser == "safari":
             if self.demo_mode:
@@ -1558,7 +1585,12 @@ class BaseCase(unittest.TestCase):
             return
         if not self.is_link_text_present(link_text):
             self.wait_for_link_text_present(link_text, timeout=timeout)
-        pre_action_url = self.driver.current_url
+        pre_action_url = None
+        try:
+            pre_action_url = self.driver.current_url
+        except Exception:
+            pass
+        pre_window_count = len(self.driver.window_handles)
         try:
             element = self.wait_for_link_text_visible(link_text, timeout=0.2)
             self.__demo_mode_highlight_if_active(link_text, by="link text")
@@ -1654,7 +1686,11 @@ class BaseCase(unittest.TestCase):
             self.wait_for_partial_link_text_present(
                 partial_link_text, timeout=timeout
             )
-        pre_action_url = self.driver.current_url
+        pre_action_url = None
+        try:
+            pre_action_url = self.driver.current_url
+        except Exception:
+            pass
         pre_window_count = len(self.driver.window_handles)
         try:
             element = self.wait_for_partial_link_text(
@@ -2125,7 +2161,11 @@ class BaseCase(unittest.TestCase):
         except Exception:
             pass
         elements = self.find_elements(selector, by=by)
-        pre_action_url = self.driver.current_url
+        pre_action_url = None
+        try:
+            pre_action_url = self.driver.current_url
+        except Exception:
+            pass
         pre_window_count = len(self.driver.window_handles)
         click_count = 0
         for element in elements:
@@ -2207,7 +2247,11 @@ class BaseCase(unittest.TestCase):
         if number < 0:
             number = 0
         element = elements[number]
-        pre_action_url = self.driver.current_url
+        pre_action_url = None
+        try:
+            pre_action_url = self.driver.current_url
+        except Exception:
+            pass
         pre_window_count = len(self.driver.window_handles)
         try:
             self.__scroll_to_element(element)
@@ -2261,7 +2305,11 @@ class BaseCase(unittest.TestCase):
 
     def click_active_element(self):
         self.wait_for_ready_state_complete()
-        pre_action_url = self.driver.current_url
+        pre_action_url = None
+        try:
+            pre_action_url = self.driver.current_url
+        except Exception:
+            pass
         pre_window_count = len(self.driver.window_handles)
         if self.recorder_mode:
             selector = js_utils.get_active_element_css(self.driver)
@@ -2593,7 +2641,11 @@ class BaseCase(unittest.TestCase):
         )
         self.__demo_mode_highlight_if_active(original_selector, original_by)
         self.scroll_to(hover_selector, by=hover_by)
-        pre_action_url = self.driver.current_url
+        pre_action_url = None
+        try:
+            pre_action_url = self.driver.current_url
+        except Exception:
+            pass
         pre_window_count = len(self.driver.window_handles)
         if self.recorder_mode and self.__current_url_is_recordable():
             if self.get_session_storage_item("pause_recorder") == "no":
@@ -2719,7 +2771,11 @@ class BaseCase(unittest.TestCase):
         )
         self.__demo_mode_highlight_if_active(original_selector, original_by)
         self.scroll_to(hover_selector, by=hover_by)
-        pre_action_url = self.driver.current_url
+        pre_action_url = None
+        try:
+            pre_action_url = self.driver.current_url
+        except Exception:
+            pass
         pre_window_count = len(self.driver.window_handles)
         outdated_driver = False
         element = None
@@ -2906,7 +2962,11 @@ class BaseCase(unittest.TestCase):
             self.__demo_mode_highlight_if_active(
                 dropdown_selector, dropdown_by
             )
-        pre_action_url = self.driver.current_url
+        pre_action_url = None
+        try:
+            pre_action_url = self.driver.current_url
+        except Exception:
+            pass
         pre_window_count = len(self.driver.window_handles)
         try:
             if option_by == "index":
@@ -5802,7 +5862,11 @@ class BaseCase(unittest.TestCase):
         css_selector = self.__escape_quotes_if_needed(css_selector)
         time_stamp = 0
         action = ["", "", "", time_stamp]
-        pre_action_url = self.driver.current_url
+        pre_action_url = None
+        try:
+            pre_action_url = self.driver.current_url
+        except Exception:
+            pass
         pre_window_count = len(self.driver.window_handles)
         if self.recorder_mode and not self.__dont_record_js_click:
             time_stamp = self.execute_script("return Date.now();")
@@ -6684,7 +6748,12 @@ class BaseCase(unittest.TestCase):
                         self.__demo_mode_highlight_if_active(selector, by)
                         if not self.demo_mode and not self.slow_mode:
                             self.__scroll_to_element(element, selector, by)
-        pre_action_url = self.driver.current_url
+        pre_action_url = None
+        if self.demo_mode:
+            try:
+                pre_action_url = self.driver.current_url
+            except Exception:
+                pass
         if self.recorder_mode and self.__current_url_is_recordable():
             if self.get_session_storage_item("pause_recorder") == "no":
                 time_stamp = self.execute_script("return Date.now();")
@@ -10892,7 +10961,31 @@ class BaseCase(unittest.TestCase):
             html += "%s%s" % (add_line, content2)
         html += '\n<aside class="notes">%s</aside>' % notes
         html += "\n</section>\n"
-        self._presentation_slides[name].append(html)
+        if "<mk-0>" not in html and "<mk-1>" not in html:
+            self._presentation_slides[name].append(html)
+        else:
+            # Generate multiple slides with <mark> and </mark>
+            replacements = False
+            for num in range(32):
+                if "<mk-%s>" % num in html and "</mk-%s>" % num in html:
+                    replacements = True
+                    new_html = html
+                    new_html = new_html.replace("<mk-%s>" % num, "<mark>")
+                    new_html = new_html.replace("</mk-%s>" % num, "</mark>")
+                    for num2 in range(32):
+                        if num2 == num:
+                            continue
+                        if "<mk-%s>" % num2 not in new_html and num2 >= 2:
+                            break
+                        new_html = new_html.replace("<mk-%s>" % num2, "")
+                        new_html = new_html.replace("</mk-%s>" % num2, "")
+                    self._presentation_slides[name].append(new_html)
+                else:
+                    if num >= 2:
+                        break
+            if not replacements:
+                # A <mark> is missing a closing tag. Do one.
+                self._presentation_slides[name].append(html)
 
     def save_presentation(
         self, name=None, filename=None, show_notes=False, interval=0
