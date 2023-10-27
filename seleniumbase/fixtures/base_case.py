@@ -10892,7 +10892,31 @@ class BaseCase(unittest.TestCase):
             html += "%s%s" % (add_line, content2)
         html += '\n<aside class="notes">%s</aside>' % notes
         html += "\n</section>\n"
-        self._presentation_slides[name].append(html)
+        if "<mk-0>" not in html and "<mk-1>" not in html:
+            self._presentation_slides[name].append(html)
+        else:
+            # Generate multiple slides with <mark> and </mark>
+            replacements = False
+            for num in range(32):
+                if "<mk-%s>" % num in html and "</mk-%s>" % num in html:
+                    replacements = True
+                    new_html = html
+                    new_html = new_html.replace("<mk-%s>" % num, "<mark>")
+                    new_html = new_html.replace("</mk-%s>" % num, "</mark>")
+                    for num2 in range(32):
+                        if num2 == num:
+                            continue
+                        if "<mk-%s>" % num2 not in new_html and num2 >= 2:
+                            break
+                        new_html = new_html.replace("<mk-%s>" % num2, "")
+                        new_html = new_html.replace("</mk-%s>" % num2, "")
+                    self._presentation_slides[name].append(new_html)
+                else:
+                    if num >= 2:
+                        break
+            if not replacements:
+                # A <mark> is missing a closing tag. Do one.
+                self._presentation_slides[name].append(html)
 
     def save_presentation(
         self, name=None, filename=None, show_notes=False, interval=0
