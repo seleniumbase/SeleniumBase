@@ -23,5 +23,9 @@ class EdgeTests(BaseCase):
         self.assert_text("Microsoft Edge", 'img[srcset*="logo"] + div')
         self.highlight('img[srcset*="logo"] + div span:nth-of-type(1)')
         self.highlight('img[srcset*="logo"] + div span:nth-of-type(2)')
-        self.highlight('span[aria-live="assertive"]')
+        if self.is_element_visible('span[aria-live="assertive"]'):
+            self.highlight('span[aria-live="assertive"]', loops=8)
+        elif self.is_element_visible('a[href*="fwlink"]'):
+            self.highlight('a[href*="fwlink"]', loops=8)
         self.highlight('a[href*="chromium"]')
+        self.highlight('a[href*="credits"]')
