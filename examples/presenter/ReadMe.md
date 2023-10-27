@@ -36,7 +36,6 @@ cd examples/presenter
 pytest core_presentation.py
 ```
 
-
 <h3><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="24" /> Creating a new presentation:</h3>
 
 ```python
@@ -58,7 +57,6 @@ self.create_presentation(name=None, theme="serif", transition="default")
 If creating multiple presentations at the same time, you can pass the ``name`` parameter to distinguish between different presentations.
 Notes are disabled by default. You can enable notes by specifying:
 ``show_notes=True``
-
 
 <h3><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="24" /> Adding a slide to a presentation:</h3>
 

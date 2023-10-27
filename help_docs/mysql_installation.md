@@ -87,7 +87,7 @@ Update your [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/mast
 
 ### Have SeleniumBase tests write to your MySQL DB:
 
-Add the ``--with-db_reporting`` argument on the command line when you want tests to write to your MySQL database. Example:
+Add the ``--with-db_reporting`` argument on the command-line when you want tests to write to your MySQL database. Example:
 
 ```bash
 pytest --with-db_reporting

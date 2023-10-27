@@ -8,4 +8,4 @@ You can find the official Apple documentation regarding "Testing with WebDriver 
 
 Run ``safaridriver --enable`` once in a terminal to enable Safari's WebDriver. (If you’re upgrading from a previous macOS release, you may need to prefix the command with ``sudo``.)
 
-Now you can use ``--browser=safari`` to run your **SeleniumBase** tests on Safari.
+Now you can use ``--safari`` to run your **SeleniumBase** tests on Safari.
