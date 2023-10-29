@@ -776,6 +776,11 @@ def _set_chrome_options(
         prefs["enable_do_not_track"] = True
     if external_pdf:
         prefs["plugins.always_open_pdf_externally"] = True
+    if proxy_string or proxy_pac_url:
+        # Implementation of https://stackoverflow.com/q/65705775/7058266
+        prefs["webrtc.ip_handling_policy"] = "disable_non_proxied_udp"
+        prefs["webrtc.multiple_routes_enabled"] = False
+        prefs["webrtc.nonproxied_udp_enabled"] = False
     chrome_options.add_experimental_option("prefs", prefs)
     if enable_sync:
         chrome_options.add_experimental_option(
