@@ -10,6 +10,10 @@ class TodoMVC(BaseCase):
         self.clear_local_storage()
         self.click('a[href="examples/%s"]' % framework)
         self.assert_element("section.todoapp")
+        self.assert_text("todos", "header h1")
+        self.wait_for_ready_state_complete()
+        title = self.get_title()
+        self.assert_in(framework, title.lower())
         new_todo_input = "input.new-todo"
         todo_count_span = "span.todo-count"
         self.type(new_todo_input, "Learn Python\n")

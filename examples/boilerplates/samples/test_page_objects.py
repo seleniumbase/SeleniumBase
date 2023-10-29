@@ -6,11 +6,17 @@ BaseCase.main(__name__, __file__)
 class GooglePage:
     def go_to_google(self, sb):
         sb.open("https://google.com/ncr")
-        sb.sleep(0.1)
-        sb.hide_elements('iframe')  # Hide "Sign in" pop-up
-        sb.sleep(0.2)
+
+    def assert_google_title(self, sb):
+        sb.assert_title_contains("Google")
+
+    def hide_sign_in_pop_up(self, sb):
+        sb.sleep(0.25)
+        sb.hide_elements('iframe')
+        sb.sleep(0.15)
 
     def do_search(self, sb, search_term):
+        sb.sleep(0.05)
         sb.click('[title="Search"]')
         sb.type('[title="Search"]', search_term + "\n")
 
@@ -30,6 +36,8 @@ class MyTests(BaseCase):
         search_term = "SeleniumBase.io Docs"
         expected_text = "SeleniumBase"
         GooglePage().go_to_google(self)
+        GooglePage().assert_google_title(self)
+        GooglePage().hide_sign_in_pop_up(self)
         GooglePage().do_search(self, search_term)
         self.assert_text(expected_text, "#search")
         GooglePage().click_search_result(self, expected_text)
