@@ -1,5 +1,5 @@
 # Desired capabilities example file for Sauce Labs
-# Generate from https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/
+# Generate from https://saucelabs.com/products/platform-configurator
 capabilities = {
     "browserName": "chrome",
     "browserVersion": "latest",

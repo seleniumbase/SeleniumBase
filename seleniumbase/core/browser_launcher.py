@@ -584,8 +584,8 @@ def _add_chrome_proxy_extension(
     zip_it=True,
     multi_proxy=False,
 ):
-    """Implementation of https://stackoverflow.com/a/35293284 for
-    https://stackoverflow.com/questions/12848327/
+    """Implementation of https://stackoverflow.com/a/35293284/7058266
+    for https://stackoverflow.com/q/12848327/7058266
     (Run Selenium on a proxy server that requires authentication.)"""
     args = " ".join(sys.argv)
     bypass_list = proxy_bypass_list
@@ -714,6 +714,7 @@ def _set_chrome_options(
     undetectable,
     uc_cdp_events,
     uc_subprocess,
+    log_cdp_events,
     no_sandbox,
     disable_gpu,
     headless2,
@@ -775,6 +776,11 @@ def _set_chrome_options(
         prefs["enable_do_not_track"] = True
     if external_pdf:
         prefs["plugins.always_open_pdf_externally"] = True
+    if proxy_string or proxy_pac_url:
+        # Implementation of https://stackoverflow.com/q/65705775/7058266
+        prefs["webrtc.ip_handling_policy"] = "disable_non_proxied_udp"
+        prefs["webrtc.multiple_routes_enabled"] = False
+        prefs["webrtc.nonproxied_udp_enabled"] = False
     chrome_options.add_experimental_option("prefs", prefs)
     if enable_sync:
         chrome_options.add_experimental_option(
@@ -786,6 +792,10 @@ def _set_chrome_options(
         chrome_options.add_experimental_option(
             "excludeSwitches",
             ["enable-automation", "enable-logging", "enable-blink-features"],
+        )
+    if log_cdp_events:
+        chrome_options.set_capability(
+            "goog:loggingPrefs", {"performance": "ALL", "browser": "ALL"}
         )
     if mobile_emulator and not is_using_uc(undetectable, browser_name):
         emulator_settings = {}
@@ -1258,6 +1268,7 @@ def get_driver(
     undetectable=False,
     uc_cdp_events=False,
     uc_subprocess=False,
+    log_cdp_events=False,
     no_sandbox=False,
     disable_gpu=False,
     headless2=False,
@@ -1468,6 +1479,7 @@ def get_driver(
             undetectable,
             uc_cdp_events,
             uc_subprocess,
+            log_cdp_events,
             no_sandbox,
             disable_gpu,
             headless2,
@@ -1521,6 +1533,7 @@ def get_driver(
             undetectable,
             uc_cdp_events,
             uc_subprocess,
+            log_cdp_events,
             no_sandbox,
             disable_gpu,
             headless2,
@@ -1578,6 +1591,7 @@ def get_remote_driver(
     undetectable,
     uc_cdp_events,
     uc_subprocess,
+    log_cdp_events,
     no_sandbox,
     disable_gpu,
     headless2,
@@ -1698,6 +1712,7 @@ def get_remote_driver(
             undetectable,
             uc_cdp_events,
             uc_subprocess,
+            log_cdp_events,
             no_sandbox,
             disable_gpu,
             headless2,
@@ -1861,6 +1876,7 @@ def get_remote_driver(
             undetectable,
             uc_cdp_events,
             uc_subprocess,
+            log_cdp_events,
             no_sandbox,
             disable_gpu,
             headless2,
@@ -1974,6 +1990,7 @@ def get_local_driver(
     undetectable,
     uc_cdp_events,
     uc_subprocess,
+    log_cdp_events,
     no_sandbox,
     disable_gpu,
     headless2,
@@ -2382,6 +2399,10 @@ def get_local_driver(
         edge_options.add_experimental_option(
             "excludeSwitches", ["enable-automation", "enable-logging"]
         )
+        if log_cdp_events:
+            edge_options.set_capability(
+                "ms:loggingPrefs", {"performance": "ALL", "browser": "ALL"}
+            )
         if not enable_sync:
             edge_options.add_argument("--disable-sync")
         if (
@@ -2712,6 +2733,7 @@ def get_local_driver(
                 undetectable,
                 uc_cdp_events,
                 uc_subprocess,
+                log_cdp_events,
                 no_sandbox,
                 disable_gpu,
                 headless2,

@@ -252,11 +252,18 @@ def _get_unique_links(page_url, soup):
                 link = prefix + link
             elif link.startswith("/"):
                 link = full_base_url + link
+            elif link == "./":
+                link = page_url
             elif link.startswith("./"):
                 f_b_url = full_base_url
                 if len(simple_url.split("/")) > 1:
                     f_b_url = full_base_url + "/" + simple_url.split("/")[1]
                 link = f_b_url + link[1:]
+            elif link.startswith("../"):
+                if page_url.endswith("/"):
+                    link = page_url + link
+                else:
+                    link = page_url + "/" + link
             elif link.startswith("#"):
                 link = full_base_url + link
             elif "//" not in link:

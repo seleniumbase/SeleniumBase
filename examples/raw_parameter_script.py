@@ -71,6 +71,7 @@ if pure_python:
     sb.no_sandbox = False
     sb.disable_js = False
     sb.disable_gpu = False
+    sb.log_cdp_events = False
     sb._multithreaded = False
     sb._reuse_session = False
     sb._crumbs = False

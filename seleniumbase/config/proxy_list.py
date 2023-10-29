@@ -25,7 +25,7 @@ you can try finding one from one of following sites:
 PROXY_LIST = {
     "example1": "37.19.220.129:8443",  # (Example) - set your own proxy here
     "example2": "socks4://104.236.32.53:8915",  # (Example)
-    "example3": "socks5://142.44.212.57:30439",  # (Example)
+    "example3": "socks5://142.44.212.57:49006",  # (Example)
     "proxy1": None,
     "proxy2": None,
     "proxy3": None,

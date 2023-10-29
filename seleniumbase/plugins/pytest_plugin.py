@@ -90,6 +90,7 @@ def pytest_addoption(parser):
     --enable-sync  (Enable "Chrome Sync" on websites.)
     --uc | --undetected  (Use undetected-chromedriver to evade bot-detection.)
     --uc-cdp-events  (Capture CDP events when running in "--undetected" mode.)
+    --log-cdp  ("goog:loggingPrefs", {"performance": "ALL", "browser": "ALL"})
     --remote-debug  (Sync to Chrome Remote Debugger chrome://inspect/#devices)
     --ftrace | --final-trace  (Debug Mode after each test. Don't use with CI!)
     --dashboard  (Enable the SeleniumBase Dashboard. Saved at: dashboard.html)
@@ -1013,6 +1014,17 @@ def pytest_addoption(parser):
                 (GPU is disabled by default if swiftshader off.)""",
     )
     parser.addoption(
+        "--log_cdp",
+        "--log-cdp",
+        "--log_cdp_events",
+        "--log-cdp-events",
+        action="store_true",
+        dest="log_cdp_events",
+        default=None,
+        help="""Capture CDP events. Then you can print them.
+                Eg. print(driver.get_log("performance"))""",
+    )
+    parser.addoption(
         "--remote_debug",
         "--remote-debug",
         "--remote-debugger",
@@ -1520,6 +1532,7 @@ def pytest_configure(config):
         sb_config.undetectable = True
     sb_config.no_sandbox = config.getoption("no_sandbox")
     sb_config.disable_gpu = config.getoption("disable_gpu")
+    sb_config.log_cdp_events = config.getoption("log_cdp_events")
     sb_config.remote_debug = config.getoption("remote_debug")
     sb_config.final_debug = config.getoption("final_debug")
     sb_config.dashboard = config.getoption("dashboard")

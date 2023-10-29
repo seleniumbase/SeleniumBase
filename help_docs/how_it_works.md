@@ -4,17 +4,17 @@
 
 <a id="how_seleniumbase_works"></a>
 
-👁️🔎 At the core, SeleniumBase works by extending [pytest](https://docs.pytest.org/en/latest/) as a direct plugin. SeleniumBase automatically spins up web browsers for tests (using [Selenium WebDriver](https://www.selenium.dev/documentation/webdriver/)), and then gives those tests access to the SeleniumBase libraries through the [BaseCase class](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py). Tests are also given access to [SeleniumBase command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md) and [SeleniumBase methods](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md), which provide additional functionality.
+👁️🔎 The primary [SeleniumBase syntax format](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md) works by extending [pytest](https://docs.pytest.org/en/latest/) as a direct plugin. SeleniumBase automatically spins up web browsers for tests (using [Selenium WebDriver](https://www.selenium.dev/documentation/webdriver/)), and then gives those tests access to the SeleniumBase libraries through the [BaseCase class](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py). Tests are also given access to [SeleniumBase command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md) and [SeleniumBase methods](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md), which provide additional functionality.
 
 👁️🔎 ``pytest`` uses a feature called test discovery to automatically find and run Python methods that start with ``test_`` when those methods are located in Python files that start with ``test_`` or end with ``_test.py``.
 
-👁️🔎 The most common way of using **SeleniumBase** is by importing ``BaseCase``:
+👁️🔎 The primary [SeleniumBase syntax format](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md) starts by importing ``BaseCase``:
 
 ```python
 from seleniumbase import BaseCase
 ```
 
-👁️🔎 This line activates ``pytest`` when a file is called directly with ``python``:
+👁️🔎 This next line activates ``pytest`` when a file is called directly with ``python`` by accident:
 
 ```python
 BaseCase.main(__name__, __file__)
@@ -29,12 +29,16 @@ class MyTestClass(BaseCase):
 👁️🔎 Test methods inside ``BaseCase`` classes become SeleniumBase tests: (These tests automatically launch a web browser before starting, and quit the web browser after ending. Default settings can be changed via command-line options.)
 
 ```python
+class MyTestClass(BaseCase):
     def test_abc(self):
+        # ...
 ```
 
-👁️🔎 SeleniumBase APIs can be called from tests via ``self``:
+👁️🔎 [SeleniumBase APIs](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md) can be called from tests via ``self``:
 
 ```python
+class MyTestClass(BaseCase):
+    def test_abc(self):
         self.open("https://example.com")
 ```
 
@@ -44,22 +48,20 @@ class MyTestClass(BaseCase):
 from seleniumbase import BaseCase
 BaseCase.main(__name__, __file__)
 
-class TestMFALogin(BaseCase):
-    def test_mfa_login(self):
-        self.open("https://seleniumbase.io/realworld/login")
+class TestSimpleLogin(BaseCase):
+    def test_simple_login(self):
+        self.open("https://seleniumbase.io/simple/login")
         self.type("#username", "demo_user")
         self.type("#password", "secret_pass")
-        self.enter_mfa_code("#totpcode", "GAXG2MTEOR3DMMDG")  # 6-digit
-        self.assert_text("Welcome!", "h1")
-        self.highlight("img#image1")  # A fancier assert_element() call
-        self.click('a:contains("This Page")')  # Use :contains() on any tag
-        self.save_screenshot_to_logs()  # ("./latest_logs" folder for test)
-        self.click_link("Sign out")  # Link must be "a" tag. Not "button".
-        self.assert_element('a:contains("Sign in")')
-        self.assert_exact_text("You have been signed out!", "#top_message")
+        self.click('a:contains("Sign in")')
+        self.assert_exact_text("Welcome!", "h1")
+        self.assert_element("img#image1")
+        self.highlight("#image1")
+        self.click_link("Sign out")
+        self.assert_text("signed out", "#top_message")
 ```
 
-(See the example, [test_mfa_login.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_mfa_login.py), for reference.)
+(See the example, [test_simple_login.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_simple_login.py), for reference.)
 
 👁️🔎 Here are some examples of running tests with ``pytest``:
 
@@ -71,7 +73,29 @@ pytest -k agent
 pytest offline_examples/
 ```
 
-(See <a href="https://seleniumbase.io/help_docs/syntax_formats/">Syntax_Formats</a> for more ways of structuring <b>SeleniumBase</b> tests.)
+👁️🔎 Here's a [SeleniumBase syntax format](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md) that uses the raw `driver`. Unlike the format mentioned earlier, it can be run with `python` instead of `pytest`. The `driver` includes original `driver` methods and new ones added by SeleniumBase:
+
+```python
+from seleniumbase import Driver
+
+driver = Driver()
+try:
+    driver.get("https://seleniumbase.io/simple/login")
+    driver.type("#username", "demo_user")
+    driver.type("#password", "secret_pass")
+    driver.click('a:contains("Sign in")')
+    driver.assert_exact_text("Welcome!", "h1")
+    driver.assert_element("img#image1")
+    driver.highlight("#image1")
+    driver.click_link("Sign out")
+    driver.assert_text("signed out", "#top_message")
+finally:
+    driver.quit()
+```
+
+(See the example, [raw_login_driver.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_login_driver.py), for reference.)
+
+👁️🔎 Note that regular SeleniumBase formats (ones that use `BaseCase`, the `SB` context manager, or the `sb` `pytest` fixture) have more methods than the improved `driver` format. The regular formats also have more features. Some features, (such as the [SeleniumBase dashboard](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md)), require a `pytest` format.
 
 --------
 

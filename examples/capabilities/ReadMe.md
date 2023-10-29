@@ -2,7 +2,7 @@
 
 <h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> Using Desired Capabilities</h3>
 
-You can specify browser capabilities when running SeleniumBase tests on a remote Selenium Grid server such as <a href="https://www.browserstack.com/automate/capabilities" target="_blank">BrowserStack</a>, <a href="https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/" target="_blank">Sauce Labs</a>, or another.
+You can specify browser capabilities when running SeleniumBase tests on a remote Selenium Grid server such as <a href="https://www.browserstack.com/automate/capabilities" target="_blank">BrowserStack</a>, <a href="https://saucelabs.com/products/platform-configurator" target="_blank">Sauce Labs</a>, or another.
 
 Sample run commands may look like this when run from the [SeleniumBase/examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder: (The browser is now specified in the capabilities file.)
 
@@ -47,7 +47,7 @@ capabilities = {
 
 <ul>
     <li><a href="https://www.browserstack.com/automate/capabilities" target="_blank">BrowserStack desired capabilities</a></li>
-    <li><a href="https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/" target="_blank">Sauce Labs desired capabilities</a></li>
+    <li><a href="https://saucelabs.com/products/platform-configurator" target="_blank">Sauce Labs desired capabilities</a></li>
 </ul>
 
 <div><b>Parsing desired capabilities:</b></div>
