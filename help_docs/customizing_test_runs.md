@@ -173,6 +173,7 @@ pytest my_first_test.py --settings-file=custom_settings.py
 --enable-sync  # (Enable "Chrome Sync" on websites.)
 --uc | --undetected  # (Use undetected-chromedriver to evade bot-detection.)
 --uc-cdp-events  # (Capture CDP events when running in "--undetected" mode.)
+--log-cdp  # ("goog:loggingPrefs", {"performance": "ALL", "browser": "ALL"})
 --remote-debug  # (Sync to Chrome Remote Debugger chrome://inspect/#devices)
 --ftrace | --final-trace  # (Debug Mode after each test. Don't use with CI!)
 --dashboard  # (Enable the SeleniumBase Dashboard. Saved at: dashboard.html)
