@@ -395,7 +395,7 @@ class BaseCase(unittest.TestCase):
             self.__shadow_click(selector, timeout)
             return
         if self.__needs_minimum_wait() or self.browser == "safari":
-            time.sleep(0.03)
+            time.sleep(0.04)
         element = page_actions.wait_for_element_visible(
             self.driver,
             selector,
@@ -632,13 +632,13 @@ class BaseCase(unittest.TestCase):
                 except Exception:
                     pass
                 if self.__needs_minimum_wait() or self.browser == "safari":
-                    time.sleep(0.03)
+                    time.sleep(0.04)
                 try:
                     if self.driver.current_url != pre_action_url:
                         self.__ad_block_as_needed()
                         self.__disable_beforeunload_as_needed()
                         if self.__needs_minimum_wait():
-                            time.sleep(0.03)
+                            time.sleep(0.04)
                 except Exception:
                     try:
                         self.wait_for_ready_state_complete()
@@ -951,6 +951,10 @@ class BaseCase(unittest.TestCase):
                         raise
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
+                    if self.__needs_minimum_wait():
+                        time.sleep(0.03)
+                        if self.undetectable:
+                            time.sleep(0.025)
         except Exception:
             self.wait_for_ready_state_complete()
             time.sleep(0.14)
@@ -975,9 +979,9 @@ class BaseCase(unittest.TestCase):
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
                     if self.__needs_minimum_wait():
-                        time.sleep(0.01)
+                        time.sleep(0.03)
                         if self.undetectable:
-                            time.sleep(0.015)
+                            time.sleep(0.025)
         if (
             retry
             and element.get_attribute("value") != text
@@ -6735,11 +6739,13 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
         abs_path = os.path.abspath(file_path)
+        if self.__needs_minimum_wait():
+            time.sleep(0.02)
         element = self.wait_for_element_present(
             selector, by=by, timeout=timeout
         )
         if self.__needs_minimum_wait():
-            time.sleep(0.08)  # Force a minimum wait, even if skipping waits.
+            time.sleep(0.08)
         if self.is_element_visible(selector, by=by):
             self.__demo_mode_highlight_if_active(selector, by)
             if not self.demo_mode and not self.slow_mode:
@@ -12951,7 +12957,7 @@ class BaseCase(unittest.TestCase):
 
         self.wait_for_ready_state_complete()
         if self.__needs_minimum_wait():
-            time.sleep(0.14)  # Force a minimum wait, even if skipping waits.
+            time.sleep(0.14)
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:

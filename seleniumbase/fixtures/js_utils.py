@@ -111,7 +111,7 @@ def is_jquery_activated(driver):
 
 def wait_for_jquery_active(driver, timeout=None):
     if not timeout:
-        timeout = 22
+        timeout = 2
     else:
         timeout = int(timeout * 10.0)
     for x in range(timeout):
@@ -778,7 +778,7 @@ def activate_messenger(driver):
 
     if not is_jquery_activated(driver):
         add_js_link(driver, jquery_js)
-        wait_for_jquery_active(driver, timeout=1)
+        wait_for_jquery_active(driver, timeout=1.1)
     add_css_link(driver, messenger_css)
     add_css_link(driver, msgr_theme_flat_css)
     add_css_link(driver, msgr_theme_future_css)
@@ -894,11 +894,11 @@ def post_message(driver, message, msg_dur=None, style="info"):
         try:
             driver.execute_script(messenger_script)
         except Exception:
-            time.sleep(0.2)
+            time.sleep(0.17)
             activate_messenger(driver)
-            time.sleep(0.2)
+            time.sleep(0.17)
             set_messenger_theme(driver)
-            time.sleep(0.3)
+            time.sleep(0.27)
             driver.execute_script(messenger_script)
 
 
