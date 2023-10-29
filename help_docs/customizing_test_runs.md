@@ -452,7 +452,7 @@ pytest --settings-file=custom_settings.py
 
 <h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> Running tests on a remote Selenium Grid:</h3>
 
-🌐 SeleniumBase lets you run tests on remote Selenium Grids such as [BrowserStack](https://www.browserstack.com/automate#)'s Selenium Grid, [Sauce Labs](https://saucelabs.com/products/open-source-frameworks/selenium)'s Selenium Grid, other Grids, and even your own Grid:
+🌐 SeleniumBase lets you run tests on remote Selenium Grids such as [BrowserStack](https://www.browserstack.com/automate#)'s Selenium Grid, [Sauce Labs](https://saucelabs.com/products/platform-configurator)'s Selenium Grid, other Grids, and even your own Grid:
 
 🌐 For setting browser desired capabilities while running Selenium remotely, see the ReadMe located here: https://github.com/seleniumbase/SeleniumBase/tree/master/examples/capabilities
 

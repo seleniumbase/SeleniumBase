@@ -584,8 +584,8 @@ def _add_chrome_proxy_extension(
     zip_it=True,
     multi_proxy=False,
 ):
-    """Implementation of https://stackoverflow.com/a/35293284 for
-    https://stackoverflow.com/questions/12848327/
+    """Implementation of https://stackoverflow.com/a/35293284/7058266
+    for https://stackoverflow.com/q/12848327/7058266
     (Run Selenium on a proxy server that requires authentication.)"""
     args = " ".join(sys.argv)
     bypass_list = proxy_bypass_list
