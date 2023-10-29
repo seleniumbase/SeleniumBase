@@ -75,6 +75,7 @@ behave -D agent="User Agent String" -D demo
 -D enable-sync  (Enable "Chrome Sync".)
 -D uc | -D undetected  (Use undetected-chromedriver to evade bot-detection)
 -D uc-cdp-events  (Capture CDP events when running in "-D undetected" mode)
+-D log-cdp  ("goog:loggingPrefs", {"performance": "ALL", "browser": "ALL"})
 -D remote-debug  (Sync to Chrome Remote Debugger chrome://inspect/#devices)
 -D dashboard  (Enable the SeleniumBase Dashboard. Saved at: dashboard.html)
 -D dash-title=STRING  (Set the title shown for the generated dashboard.)
@@ -181,6 +182,7 @@ def get_configured_sb(context):
     sb.undetectable = False
     sb.uc_cdp_events = False
     sb.uc_subprocess = False
+    sb.log_cdp_events = False
     sb.no_sandbox = False
     sb.disable_gpu = False
     sb._multithreaded = False
@@ -548,6 +550,10 @@ def get_configured_sb(context):
         if low_key in ["uc-subprocess", "uc_subprocess", "uc-sub"]:
             sb.uc_subprocess = True
             sb.undetectable = True
+            continue
+        # Handle: -D log-cdp-events / log_cdp_events / log-cdp
+        if low_key in ["log-cdp-events", "log_cdp_events", "log-cdp"]:
+            sb.log_cdp_events = True
             continue
         # Handle: -D no-sandbox / no_sandbox
         if low_key in ["no-sandbox", "no_sandbox"]:

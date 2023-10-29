@@ -282,6 +282,7 @@ self.get_new_driver(
     undetectable=None,
     uc_cdp_events=None,
     uc_subprocess=None,
+    log_cdp_events=None,
     no_sandbox=None,
     disable_gpu=None,
     headless2=None,

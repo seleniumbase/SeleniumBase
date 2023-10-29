@@ -54,6 +54,7 @@ def SB(
     undetectable=None,  # Use undetected-chromedriver to evade bot-detection.
     uc_cdp_events=None,  # Capture CDP events in undetected-chromedriver mode.
     uc_subprocess=None,  # Use undetected-chromedriver as a subprocess.
+    log_cdp_events=None,  # capture {"performance": "ALL", "browser": "ALL"})
     incognito=None,  # Enable Chromium's Incognito mode.
     guest_mode=None,  # Enable Chromium's Guest mode.
     dark_mode=None,  # Enable Chromium's Dark mode.
@@ -99,6 +100,7 @@ def SB(
     undetected=None,  # Shortcut / Duplicate of "undetectable".
     uc_cdp=None,  # Shortcut / Duplicate of "uc_cdp_events".
     uc_sub=None,  # Shortcut / Duplicate of "uc_subprocess".
+    log_cdp=None,  # Shortcut / Duplicate of "log_cdp_events".
     wire=None,  # Shortcut / Duplicate of "use_wire".
     pls=None,  # Shortcut / Duplicate of "page_load_strategy".
     sjw=None,  # Shortcut / Duplicate of "skip_js_waits".
@@ -470,6 +472,20 @@ def SB(
         uc_cdp_events = True
     else:
         uc_cdp_events = False
+    if log_cdp_events is None and log_cdp is None:
+        if (
+            "--log-cdp-events" in sys_argv
+            or "--log_cdp_events" in sys_argv
+            or "--log-cdp" in sys_argv
+            or "--log_cdp" in sys_argv
+        ):
+            log_cdp_events = True
+        else:
+            log_cdp_events = False
+    elif log_cdp_events or log_cdp:
+        log_cdp_events = True
+    else:
+        log_cdp_events = False
     if use_auto_ext is None:
         if "--use-auto-ext" in sys_argv:
             use_auto_ext = True
@@ -659,6 +675,7 @@ def SB(
     sb_config.undetectable = undetectable
     sb_config.uc_cdp_events = uc_cdp_events
     sb_config.uc_subprocess = uc_subprocess
+    sb_config.log_cdp_events = log_cdp_events
     sb_config.no_sandbox = None
     sb_config.disable_gpu = None
     sb_config.disable_js = disable_js
@@ -761,6 +778,7 @@ def SB(
     sb.undetectable = sb_config.undetectable
     sb.uc_cdp_events = sb_config.uc_cdp_events
     sb.uc_subprocess = sb_config.uc_subprocess
+    sb.log_cdp_events = sb_config.log_cdp_events
     sb.no_sandbox = sb_config.no_sandbox
     sb.disable_gpu = sb_config.disable_gpu
     sb.disable_js = sb_config.disable_js

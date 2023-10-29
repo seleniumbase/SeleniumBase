@@ -714,6 +714,7 @@ def _set_chrome_options(
     undetectable,
     uc_cdp_events,
     uc_subprocess,
+    log_cdp_events,
     no_sandbox,
     disable_gpu,
     headless2,
@@ -786,6 +787,10 @@ def _set_chrome_options(
         chrome_options.add_experimental_option(
             "excludeSwitches",
             ["enable-automation", "enable-logging", "enable-blink-features"],
+        )
+    if log_cdp_events:
+        chrome_options.set_capability(
+            "goog:loggingPrefs", {"performance": "ALL", "browser": "ALL"}
         )
     if mobile_emulator and not is_using_uc(undetectable, browser_name):
         emulator_settings = {}
@@ -1258,6 +1263,7 @@ def get_driver(
     undetectable=False,
     uc_cdp_events=False,
     uc_subprocess=False,
+    log_cdp_events=False,
     no_sandbox=False,
     disable_gpu=False,
     headless2=False,
@@ -1468,6 +1474,7 @@ def get_driver(
             undetectable,
             uc_cdp_events,
             uc_subprocess,
+            log_cdp_events,
             no_sandbox,
             disable_gpu,
             headless2,
@@ -1521,6 +1528,7 @@ def get_driver(
             undetectable,
             uc_cdp_events,
             uc_subprocess,
+            log_cdp_events,
             no_sandbox,
             disable_gpu,
             headless2,
@@ -1578,6 +1586,7 @@ def get_remote_driver(
     undetectable,
     uc_cdp_events,
     uc_subprocess,
+    log_cdp_events,
     no_sandbox,
     disable_gpu,
     headless2,
@@ -1698,6 +1707,7 @@ def get_remote_driver(
             undetectable,
             uc_cdp_events,
             uc_subprocess,
+            log_cdp_events,
             no_sandbox,
             disable_gpu,
             headless2,
@@ -1861,6 +1871,7 @@ def get_remote_driver(
             undetectable,
             uc_cdp_events,
             uc_subprocess,
+            log_cdp_events,
             no_sandbox,
             disable_gpu,
             headless2,
@@ -1974,6 +1985,7 @@ def get_local_driver(
     undetectable,
     uc_cdp_events,
     uc_subprocess,
+    log_cdp_events,
     no_sandbox,
     disable_gpu,
     headless2,
@@ -2382,6 +2394,10 @@ def get_local_driver(
         edge_options.add_experimental_option(
             "excludeSwitches", ["enable-automation", "enable-logging"]
         )
+        if log_cdp_events:
+            edge_options.set_capability(
+                "ms:loggingPrefs", {"performance": "ALL", "browser": "ALL"}
+            )
         if not enable_sync:
             edge_options.add_argument("--disable-sync")
         if (
@@ -2712,6 +2728,7 @@ def get_local_driver(
                 undetectable,
                 uc_cdp_events,
                 uc_subprocess,
+                log_cdp_events,
                 no_sandbox,
                 disable_gpu,
                 headless2,

@@ -88,6 +88,7 @@ def Driver(
     undetectable=None,  # Use undetected-chromedriver to evade bot-detection.
     uc_cdp_events=None,  # Capture CDP events in undetected-chromedriver mode.
     uc_subprocess=None,  # Use undetected-chromedriver as a subprocess.
+    log_cdp_events=None,  # capture {"performance": "ALL", "browser": "ALL"})
     no_sandbox=None,  # (DEPRECATED) - "--no-sandbox" is always used now.
     disable_gpu=None,  # (DEPRECATED) - GPU is disabled if not "swiftshader".
     incognito=None,  # Enable Chromium's Incognito mode.
@@ -120,6 +121,7 @@ def Driver(
     undetected=None,  # Shortcut / Duplicate of "undetectable".
     uc_cdp=None,  # Shortcut / Duplicate of "uc_cdp_events".
     uc_sub=None,  # Shortcut / Duplicate of "uc_subprocess".
+    log_cdp=None,  # Shortcut / Duplicate of "log_cdp_events".
     wire=None,  # Shortcut / Duplicate of "use_wire".
     pls=None,  # Shortcut / Duplicate of "page_load_strategy".
 ):
@@ -352,6 +354,20 @@ def Driver(
         uc_cdp_events = True
     else:
         uc_cdp_events = False
+    if log_cdp_events is None and log_cdp is None:
+        if (
+            "--log-cdp-events" in sys_argv
+            or "--log_cdp_events" in sys_argv
+            or "--log-cdp" in sys_argv
+            or "--log_cdp" in sys_argv
+        ):
+            log_cdp_events = True
+        else:
+            log_cdp_events = False
+    elif log_cdp_events or log_cdp:
+        log_cdp_events = True
+    else:
+        log_cdp_events = False
     if use_auto_ext is None:
         if "--use-auto-ext" in sys_argv:
             use_auto_ext = True
@@ -458,6 +474,7 @@ def Driver(
         undetectable=undetectable,
         uc_cdp_events=uc_cdp_events,
         uc_subprocess=uc_subprocess,
+        log_cdp_events=log_cdp_events,
         no_sandbox=no_sandbox,
         disable_gpu=disable_gpu,
         headless2=headless2,

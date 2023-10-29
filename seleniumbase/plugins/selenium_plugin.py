@@ -69,6 +69,7 @@ class SeleniumBrowser(Plugin):
     --enable-sync  (Enable "Chrome Sync" on websites.)
     --uc | --undetected  (Use undetected-chromedriver to evade bot-detection.)
     --uc-cdp-events  (Capture CDP events when running in "--undetected" mode.)
+    --log-cdp  ("goog:loggingPrefs", {"performance": "ALL", "browser": "ALL"})
     --remote-debug  (Sync to Chrome Remote Debugger chrome://inspect/#devices)
     --enable-3d-apis  (Enables WebGL and 3D APIs.)
     --swiftshader  (Chrome "--use-gl=angle" / "--use-angle=swiftshader-webgl")
@@ -730,7 +731,8 @@ class SeleniumBrowser(Plugin):
             action="store_true",
             dest="no_sandbox",
             default=False,
-            help="""Using this enables the "No Sandbox" feature.
+            help="""(DEPRECATED) - "--no-sandbox" is always used now.
+                    Using this enables the "No Sandbox" feature.
                     (This setting is now always enabled by default.)""",
         )
         parser.addoption(
@@ -739,8 +741,20 @@ class SeleniumBrowser(Plugin):
             action="store_true",
             dest="disable_gpu",
             default=False,
-            help="""Using this enables the "Disable GPU" feature.
-                    (This setting is now always enabled by default.)""",
+            help="""(DEPRECATED) - GPU is disabled if no swiftshader.
+                    Using this enables the "Disable GPU" feature.
+                    (GPU is disabled by default if swiftshader off.)""",
+        )
+        parser.addoption(
+            "--log_cdp",
+            "--log-cdp",
+            "--log_cdp_events",
+            "--log-cdp-events",
+            action="store_true",
+            dest="log_cdp_events",
+            default=None,
+            help="""Capture CDP events. Then you can print them.
+                    Eg. print(driver.get_log("performance"))""",
         )
         parser.addoption(
             "--remote_debug",
@@ -1103,6 +1117,7 @@ class SeleniumBrowser(Plugin):
         test.test.use_auto_ext = self.options.use_auto_ext
         test.test.undetectable = self.options.undetectable
         test.test.uc_cdp_events = self.options.uc_cdp_events
+        test.test.log_cdp_events = self.options.log_cdp_events
         if test.test.uc_cdp_events and not test.test.undetectable:
             test.test.undetectable = True
         test.test.uc_subprocess = self.options.uc_subprocess

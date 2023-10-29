@@ -3737,6 +3737,7 @@ class BaseCase(unittest.TestCase):
         undetectable=None,
         uc_cdp_events=None,
         uc_subprocess=None,
+        log_cdp_events=None,
         no_sandbox=None,
         disable_gpu=None,
         headless2=None,
@@ -3793,6 +3794,7 @@ class BaseCase(unittest.TestCase):
         undetectable - the option to use an undetectable chromedriver
         uc_cdp_events - capture CDP events in "undetectable" mode (Chrome)
         uc_subprocess - use the undetectable chromedriver as a subprocess
+        log_cdp_events - capture {"performance": "ALL", "browser": "ALL"})
         no_sandbox - the option to enable the "No-Sandbox" feature (Chrome)
         disable_gpu - the option to enable Chrome's "Disable GPU" feature
         headless2 - the option to use the newer headless mode (Chromium)
@@ -3895,6 +3897,8 @@ class BaseCase(unittest.TestCase):
             uc_cdp_events = self.uc_cdp_events
         if uc_subprocess is None:
             uc_subprocess = self.uc_subprocess
+        if log_cdp_events is None:
+            log_cdp_events = self.log_cdp_events
         if no_sandbox is None:
             no_sandbox = self.no_sandbox
         if disable_gpu is None:
@@ -3992,6 +3996,7 @@ class BaseCase(unittest.TestCase):
             undetectable=undetectable,
             uc_cdp_events=uc_cdp_events,
             uc_subprocess=uc_subprocess,
+            log_cdp_events=log_cdp_events,
             no_sandbox=no_sandbox,
             disable_gpu=disable_gpu,
             headless2=headless2,
@@ -14233,6 +14238,7 @@ class BaseCase(unittest.TestCase):
             self.undetectable = sb_config.undetectable
             self.uc_cdp_events = sb_config.uc_cdp_events
             self.uc_subprocess = sb_config.uc_subprocess
+            self.log_cdp_events = sb_config.log_cdp_events
             self.no_sandbox = sb_config.no_sandbox
             self.disable_gpu = sb_config.disable_gpu
             self.headless2 = sb_config.headless2
@@ -14556,6 +14562,7 @@ class BaseCase(unittest.TestCase):
                 undetectable=self.undetectable,
                 uc_cdp_events=self.uc_cdp_events,
                 uc_subprocess=self.uc_subprocess,
+                log_cdp_events=self.log_cdp_events,
                 no_sandbox=self.no_sandbox,
                 disable_gpu=self.disable_gpu,
                 headless2=self.headless2,
