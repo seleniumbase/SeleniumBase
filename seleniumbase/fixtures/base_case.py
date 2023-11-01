@@ -221,9 +221,7 @@ class BaseCase(unittest.TestCase):
         self.__check_scope()
         self._check_browser()
         if self.__needs_minimum_wait():
-            time.sleep(0.03)
-            if self.undetectable:
-                time.sleep(0.02)
+            time.sleep(0.04)
         pre_action_url = None
         try:
             pre_action_url = self.driver.current_url
@@ -320,22 +318,15 @@ class BaseCase(unittest.TestCase):
             else:
                 raise
         if (
-            self.undetectable
-            or (
-                self.driver.current_url == pre_action_url
-                and pre_action_url != url
-            )
+            self.driver.current_url == pre_action_url
+            and pre_action_url != url
         ):
             time.sleep(0.1)  # Make sure load happens
         if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
             if not self.undetectable:
                 self.wait_for_ready_state_complete()
-            else:
-                time.sleep(0.15)
         if self.__needs_minimum_wait():
-            time.sleep(0.07)  # Force a minimum wait, even if skipping waits.
-            if self.undetectable:
-                time.sleep(0.02)
+            time.sleep(0.08)  # Force a minimum wait, even if skipping waits.
         if self.undetectable:
             self.__uc_frame_layer = 0
         if self.demo_mode:
@@ -395,7 +386,7 @@ class BaseCase(unittest.TestCase):
             self.__shadow_click(selector, timeout)
             return
         if self.__needs_minimum_wait() or self.browser == "safari":
-            time.sleep(0.04)
+            time.sleep(0.05)
         element = page_actions.wait_for_element_visible(
             self.driver,
             selector,
@@ -632,20 +623,20 @@ class BaseCase(unittest.TestCase):
                 except Exception:
                     pass
                 if self.__needs_minimum_wait() or self.browser == "safari":
-                    time.sleep(0.04)
+                    time.sleep(0.05)
                 try:
                     if self.driver.current_url != pre_action_url:
                         self.__ad_block_as_needed()
                         self.__disable_beforeunload_as_needed()
                         if self.__needs_minimum_wait():
-                            time.sleep(0.04)
+                            time.sleep(0.05)
                 except Exception:
                     try:
                         self.wait_for_ready_state_complete()
                     except Exception:
                         pass
                     if self.__needs_minimum_wait():
-                        time.sleep(0.03)
+                        time.sleep(0.04)
             else:
                 time.sleep(0.08)
         if self.demo_mode:
@@ -907,7 +898,7 @@ class BaseCase(unittest.TestCase):
         if not self.demo_mode and not self.slow_mode:
             self.__scroll_to_element(element, selector, by)
             if self.__needs_minimum_wait():
-                time.sleep(0.01)
+                time.sleep(0.02)
         try:
             element.clear()  # May need https://stackoverflow.com/a/50691625
             backspaces = Keys.BACK_SPACE * 42  # Is the answer to everything
@@ -952,9 +943,7 @@ class BaseCase(unittest.TestCase):
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
                     if self.__needs_minimum_wait():
-                        time.sleep(0.03)
-                        if self.undetectable:
-                            time.sleep(0.025)
+                        time.sleep(0.04)
         except Exception:
             self.wait_for_ready_state_complete()
             time.sleep(0.14)
