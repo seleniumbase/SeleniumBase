@@ -16,6 +16,7 @@ class TodoMVC(BaseCase):
         self.assert_in(framework, title.lower())
         new_todo_input = "input.new-todo"
         todo_count_span = "span.todo-count"
+        self.wait_for_ready_state_complete()
         self.type(new_todo_input, "Learn Python\n")
         self.type(new_todo_input, "Learn JavaScript\n")
         self.type(new_todo_input, "Learn SeleniumBase\n")

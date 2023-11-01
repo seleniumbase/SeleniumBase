@@ -11,9 +11,9 @@ class GooglePage:
         sb.assert_title_contains("Google")
 
     def hide_sign_in_pop_up(self, sb):
-        sb.sleep(0.25)
+        sb.wait_for_element('iframe[role="presentation"]')
         sb.hide_elements('iframe')
-        sb.sleep(0.15)
+        sb.sleep(0.05)
 
     def do_search(self, sb, search_term):
         sb.sleep(0.05)
