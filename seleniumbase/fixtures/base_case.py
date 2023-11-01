@@ -471,6 +471,8 @@ class BaseCase(unittest.TestCase):
                         self.js_click(selector, by=by)
                     else:
                         self.jquery_click(selector, by=by)
+                    if self.__needs_minimum_wait():
+                        time.sleep(0.04)
                     return
             except Exception:
                 pass
@@ -623,13 +625,13 @@ class BaseCase(unittest.TestCase):
                 except Exception:
                     pass
                 if self.__needs_minimum_wait() or self.browser == "safari":
-                    time.sleep(0.05)
+                    time.sleep(0.04)
                 try:
                     if self.driver.current_url != pre_action_url:
                         self.__ad_block_as_needed()
                         self.__disable_beforeunload_as_needed()
                         if self.__needs_minimum_wait():
-                            time.sleep(0.05)
+                            time.sleep(0.06)
                 except Exception:
                     try:
                         self.wait_for_ready_state_complete()
@@ -4327,12 +4329,13 @@ class BaseCase(unittest.TestCase):
         self.__ad_block_as_needed()
         self.__disable_beforeunload_as_needed()
         if (
-            self.undetectable
-            and self.page_load_strategy == "none"
+            self.page_load_strategy == "none"
             and hasattr(settings, "SKIP_JS_WAITS")
             and settings.SKIP_JS_WAITS
         ):
-            time.sleep(0.05)
+            time.sleep(0.01)
+            if self.undetectable:
+                time.sleep(0.035)
         return True
 
     def wait_for_angularjs(self, timeout=None, **kwargs):
