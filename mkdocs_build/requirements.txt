@@ -6,7 +6,7 @@ PyYAML>=6.0.1
 pymdown-extensions>=10.3.1
 pipdeptree>=2.13.0
 python-dateutil>=2.8.2
-Markdown==3.5
+Markdown==3.5.1
 markdown2==2.4.10
 MarkupSafe==2.1.3
 Jinja2==3.1.2
