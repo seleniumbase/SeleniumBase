@@ -756,6 +756,16 @@ def _set_chrome_options(
     prefs["download.prompt_for_download"] = False
     prefs["download.directory_upgrade"] = True
     prefs["safebrowsing.enabled"] = False
+    prefs["omnibox-max-zero-suggest-matches"] = 0
+    prefs["omnibox-use-existing-autocomplete-client"] = 0
+    prefs["omnibox-trending-zero-prefix-suggestions-on-ntp"] = 0
+    prefs["omnibox-local-history-zero-suggest-beyond-ntp"] = 0
+    prefs["omnibox-on-focus-suggestions-contextual-web"] = 0
+    prefs["omnibox-on-focus-suggestions-srp"] = 0
+    prefs["omnibox-zero-suggest-prefetching"] = 0
+    prefs["omnibox-zero-suggest-prefetching-on-srp"] = 0
+    prefs["omnibox-zero-suggest-prefetching-on-web"] = 0
+    prefs["omnibox-zero-suggest-in-memory-caching"] = 0
     prefs["default_content_setting_values.notifications"] = 0
     prefs["content_settings.exceptions.automatic_downloads.*.setting"] = 1
     prefs["safebrowsing.disable_download_protection"] = True
@@ -2236,6 +2246,16 @@ def get_local_driver(
             "download.prompt_for_download": False,
             "download.directory_upgrade": True,
             "safebrowsing.enabled": False,
+            "omnibox-max-zero-suggest-matches": 0,
+            "omnibox-use-existing-autocomplete-client": 0,
+            "omnibox-trending-zero-prefix-suggestions-on-ntp": 0,
+            "omnibox-local-history-zero-suggest-beyond-ntp": 0,
+            "omnibox-on-focus-suggestions-contextual-web": 0,
+            "omnibox-on-focus-suggestions-srp": 0,
+            "omnibox-zero-suggest-prefetching": 0,
+            "omnibox-zero-suggest-prefetching-on-srp": 0,
+            "omnibox-zero-suggest-prefetching-on-web": 0,
+            "omnibox-zero-suggest-in-memory-caching": 0,
             "safebrowsing.disable_download_protection": True,
             "default_content_setting_values.notifications": 0,
             "default_content_settings.popups": 0,
@@ -3233,6 +3253,7 @@ def get_local_driver(
                                         False,  # undetectable
                                         False,  # uc_cdp_events
                                         False,  # uc_subprocess
+                                        False,  # log_cdp_events
                                         no_sandbox,
                                         disable_gpu,
                                         False,  # headless2
@@ -3448,6 +3469,7 @@ def get_local_driver(
                         False,  # undetectable
                         False,  # uc_cdp_events
                         False,  # uc_subprocess
+                        False,  # log_cdp_events
                         no_sandbox,
                         disable_gpu,
                         False,  # headless2

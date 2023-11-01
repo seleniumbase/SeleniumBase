@@ -29,6 +29,7 @@ class CoffeeCartTests(BaseCase):
     @parameterized.expand([[False], [True]])
     def test_coffee_promo_with_preview(self, accept_promo):
         self.open("https://seleniumbase.io/coffee/")
+        self.assert_title("Coffee Cart")
         self.click('div[data-test="Espresso"]')
         self.click('div[data-test="Americano"]')
         self.click('div[data-test="Cafe_Latte"]')
