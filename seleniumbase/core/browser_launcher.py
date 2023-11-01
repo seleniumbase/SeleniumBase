@@ -3233,6 +3233,7 @@ def get_local_driver(
                                         False,  # undetectable
                                         False,  # uc_cdp_events
                                         False,  # uc_subprocess
+                                        False,  # log_cdp_events
                                         no_sandbox,
                                         disable_gpu,
                                         False,  # headless2
@@ -3448,6 +3449,7 @@ def get_local_driver(
                         False,  # undetectable
                         False,  # uc_cdp_events
                         False,  # uc_subprocess
+                        False,  # log_cdp_events
                         no_sandbox,
                         disable_gpu,
                         False,  # headless2
