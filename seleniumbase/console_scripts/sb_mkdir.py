@@ -624,9 +624,15 @@ def main():
     data.append("class GoogleTests(BaseCase):")
     data.append("    def test_google_dot_com(self):")
     data.append('        self.open("https://google.com/ncr")')
-    data.append("        self.sleep(0.4)")
+    data.append('        self.assert_title_contains("Google")')
+    data.append("        self.sleep(0.05)")
     data.append("        self.save_screenshot_to_logs()")
-    data.append("        self.sleep(0.2)")
+    data.append(
+        "        self.wait_for_element('iframe[role=\"presentation\"]')"
+    )
+    data.append("        self.hide_elements('iframe')")
+    data.append("        self.sleep(0.05)")
+    data.append("        self.save_screenshot_to_logs()")
     data.append('        self.type(HomePage.search_box, "github.com")')
     data.append("        self.assert_element(HomePage.search_button)")
     data.append("        self.assert_element(HomePage.feeling_lucky_button)")
