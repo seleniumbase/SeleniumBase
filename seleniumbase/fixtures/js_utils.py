@@ -863,14 +863,15 @@ def set_messenger_theme(
     try:
         driver.execute_script(msg_style)
     except Exception:
-        time.sleep(0.05)
+        time.sleep(0.03)
         activate_messenger(driver)
-        time.sleep(0.05)
+        time.sleep(0.15)
         try:
             driver.execute_script(msg_style)
+            time.sleep(0.02)
         except Exception:
             pass
-    time.sleep(0.1)
+    time.sleep(0.05)
 
 
 def post_message(driver, message, msg_dur=None, style="info"):
