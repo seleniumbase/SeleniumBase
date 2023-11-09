@@ -5508,29 +5508,50 @@ class BaseCase(unittest.TestCase):
         self.execute_script(script)
 
     def highlight_click(
-        self, selector, by="css selector", loops=3, scroll=True
+        self, selector, by="css selector", loops=3, scroll=True, timeout=None,
     ):
         """Highlights the element and then clicks it."""
         self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        self.wait_for_element_visible(selector, by=by, timeout=timeout)
         if not self.demo_mode:
             self.__highlight(selector, by=by, loops=loops, scroll=scroll)
         self.click(selector, by=by)
 
     def highlight_update_text(
-        self, selector, text, by="css selector", loops=3, scroll=True
+        self,
+        selector,
+        text,
+        by="css selector",
+        loops=3,
+        scroll=True,
+        timeout=None,
     ):
         """Highlights the element and then types text into the field."""
         self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        self.wait_for_element_visible(selector, by=by, timeout=timeout)
         if not self.demo_mode:
             self.__highlight(selector, by=by, loops=loops, scroll=scroll)
         self.update_text(selector, text, by=by)
 
     def highlight_type(
-        self, selector, text, by="css selector", loops=3, scroll=True
+        self,
+        selector,
+        text,
+        by="css selector",
+        loops=3,
+        scroll=True,
+        timeout=None,
     ):
         """Same as self.highlight_update_text()
         As above, highlights the element and then types text into the field."""
         self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        self.wait_for_element_visible(selector, by=by, timeout=timeout)
         if not self.demo_mode:
             self.__highlight(selector, by=by, loops=loops, scroll=scroll)
         self.update_text(selector, text, by=by)
@@ -5613,15 +5634,26 @@ class BaseCase(unittest.TestCase):
                 pass  # JQuery probably couldn't load. Skip highlighting.
         time.sleep(0.065)
 
-    def highlight(self, selector, by="css selector", loops=None, scroll=True):
+    def highlight(
+        self,
+        selector,
+        by="css selector",
+        loops=None,
+        scroll=True,
+        timeout=None,
+    ):
         """This method uses fancy JavaScript to highlight an element.
         @Params
         selector - the selector of the element to find
         by - the type of selector to search by (Default: CSS)
         loops - # of times to repeat the highlight animation
                 (Default: 4. Each loop lasts for about 0.2s)
-        scroll - the option to scroll to the element first (Default: True) """
+        scroll - the option to scroll to the element first (Default: True)
+        timeout - the time to wait for the element to appear """
         self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        self.wait_for_element_visible(selector, by=by, timeout=timeout)
         self.__highlight(selector=selector, by=by, loops=loops, scroll=scroll)
         if self.recorder_mode and self.__current_url_is_recordable():
             if self.get_session_storage_item("pause_recorder") == "no":
