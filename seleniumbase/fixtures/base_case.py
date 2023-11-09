@@ -315,6 +315,10 @@ class BaseCase(unittest.TestCase):
                     self.driver.get(url)
                 else:
                     pass  # Odd issue where the open did happen. Continue.
+            elif "invalid session id" in e.msg:
+                logging.debug("Invalid session id. Will open new browser.")
+                self.driver = self.get_new_driver()
+                self.driver.get(url)
             else:
                 raise
         if (
@@ -625,22 +629,22 @@ class BaseCase(unittest.TestCase):
                 except Exception:
                     pass
                 if self.__needs_minimum_wait() or self.browser == "safari":
-                    time.sleep(0.04)
+                    time.sleep(0.045)
                 try:
                     if self.driver.current_url != pre_action_url:
                         self.__ad_block_as_needed()
                         self.__disable_beforeunload_as_needed()
                         if self.__needs_minimum_wait():
-                            time.sleep(0.06)
+                            time.sleep(0.075)
                 except Exception:
                     try:
                         self.wait_for_ready_state_complete()
                     except Exception:
                         pass
                     if self.__needs_minimum_wait():
-                        time.sleep(0.04)
+                        time.sleep(0.05)
             else:
-                time.sleep(0.08)
+                time.sleep(0.085)
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 if not js_utils.is_jquery_activated(self.driver):
@@ -900,7 +904,7 @@ class BaseCase(unittest.TestCase):
         if not self.demo_mode and not self.slow_mode:
             self.__scroll_to_element(element, selector, by)
             if self.__needs_minimum_wait():
-                time.sleep(0.02)
+                time.sleep(0.04)
         try:
             element.clear()  # May need https://stackoverflow.com/a/50691625
             backspaces = Keys.BACK_SPACE * 42  # Is the answer to everything
@@ -1580,6 +1584,9 @@ class BaseCase(unittest.TestCase):
             return
         if not self.is_link_text_present(link_text):
             self.wait_for_link_text_present(link_text, timeout=timeout)
+        if not self.demo_mode and not self.slow_mode:
+            if self.__needs_minimum_wait():
+                time.sleep(0.04)
         pre_action_url = None
         try:
             pre_action_url = self.driver.current_url
@@ -1668,6 +1675,8 @@ class BaseCase(unittest.TestCase):
                 self.__demo_mode_pause_if_active(tiny=True)
         elif self.slow_mode:
             self.__slow_mode_pause_if_active()
+        elif self.__needs_minimum_wait():
+            time.sleep(0.04)
 
     def click_partial_link_text(self, partial_link_text, timeout=None):
         """This method clicks the partial link text on a page."""
@@ -5499,29 +5508,50 @@ class BaseCase(unittest.TestCase):
         self.execute_script(script)
 
     def highlight_click(
-        self, selector, by="css selector", loops=3, scroll=True
+        self, selector, by="css selector", loops=3, scroll=True, timeout=None,
     ):
         """Highlights the element and then clicks it."""
         self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        self.wait_for_element_visible(selector, by=by, timeout=timeout)
         if not self.demo_mode:
             self.__highlight(selector, by=by, loops=loops, scroll=scroll)
         self.click(selector, by=by)
 
     def highlight_update_text(
-        self, selector, text, by="css selector", loops=3, scroll=True
+        self,
+        selector,
+        text,
+        by="css selector",
+        loops=3,
+        scroll=True,
+        timeout=None,
     ):
         """Highlights the element and then types text into the field."""
         self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        self.wait_for_element_visible(selector, by=by, timeout=timeout)
         if not self.demo_mode:
             self.__highlight(selector, by=by, loops=loops, scroll=scroll)
         self.update_text(selector, text, by=by)
 
     def highlight_type(
-        self, selector, text, by="css selector", loops=3, scroll=True
+        self,
+        selector,
+        text,
+        by="css selector",
+        loops=3,
+        scroll=True,
+        timeout=None,
     ):
         """Same as self.highlight_update_text()
         As above, highlights the element and then types text into the field."""
         self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        self.wait_for_element_visible(selector, by=by, timeout=timeout)
         if not self.demo_mode:
             self.__highlight(selector, by=by, loops=loops, scroll=scroll)
         self.update_text(selector, text, by=by)
@@ -5604,15 +5634,26 @@ class BaseCase(unittest.TestCase):
                 pass  # JQuery probably couldn't load. Skip highlighting.
         time.sleep(0.065)
 
-    def highlight(self, selector, by="css selector", loops=None, scroll=True):
+    def highlight(
+        self,
+        selector,
+        by="css selector",
+        loops=None,
+        scroll=True,
+        timeout=None,
+    ):
         """This method uses fancy JavaScript to highlight an element.
         @Params
         selector - the selector of the element to find
         by - the type of selector to search by (Default: CSS)
         loops - # of times to repeat the highlight animation
                 (Default: 4. Each loop lasts for about 0.2s)
-        scroll - the option to scroll to the element first (Default: True) """
+        scroll - the option to scroll to the element first (Default: True)
+        timeout - the time to wait for the element to appear """
         self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        self.wait_for_element_visible(selector, by=by, timeout=timeout)
         self.__highlight(selector=selector, by=by, loops=loops, scroll=scroll)
         if self.recorder_mode and self.__current_url_is_recordable():
             if self.get_session_storage_item("pause_recorder") == "no":
@@ -7827,6 +7868,11 @@ class BaseCase(unittest.TestCase):
         self.__demo_mode_highlight_if_active(original_selector, by)
         if scroll and not self.demo_mode and not self.slow_mode:
             self.scroll_to(original_selector, by=by, timeout=timeout)
+            if self.__needs_minimum_wait():
+                time.sleep(0.04)
+        if not scroll and not self.demo_mode and not self.slow_mode:
+            if self.__needs_minimum_wait():
+                time.sleep(0.06)
         text = self.__get_type_checked_text(text)
         value = re.escape(text)
         value = self.__escape_quotes_if_needed(value)
@@ -7895,6 +7941,9 @@ class BaseCase(unittest.TestCase):
                 except Exception:
                     pass
         self.__demo_mode_pause_if_active()
+        if not self.demo_mode and not self.slow_mode:
+            if self.__needs_minimum_wait():
+                time.sleep(0.04)
 
     def js_update_text(self, selector, text, by="css selector", timeout=None):
         """JavaScript + send_keys are used to update a text field.

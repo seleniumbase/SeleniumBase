@@ -330,18 +330,23 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         return object.__dir__(self)
 
     def _get_cdc_props(self):
-        return self.execute_script(
-            """
-            let objectToInspect = window,
-                result = [];
-            while(objectToInspect !== null)
-            { result = result.concat(
-                Object.getOwnPropertyNames(objectToInspect)
-              );
-              objectToInspect = Object.getPrototypeOf(objectToInspect); }
-            return result.filter(i => i.match(/^[a-z]{3}_[a-z]{22}_.*/i))
-            """
-        )
+        cdc_props = []
+        try:
+            cdc_props = self.execute_script(
+                """
+                let objectToInspect = window,
+                    result = [];
+                while(objectToInspect !== null)
+                { result = result.concat(
+                    Object.getOwnPropertyNames(objectToInspect)
+                  );
+                  objectToInspect = Object.getPrototypeOf(objectToInspect); }
+                return result.filter(i => i.match(/^[a-z]{3}_[a-z]{22}_.*/i))
+                """
+            )
+        except Exception:
+            pass
+        return cdc_props
 
     def _hook_remove_cdc_props(self, cdc_props):
         if len(cdc_props) < 1:

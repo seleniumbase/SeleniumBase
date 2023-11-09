@@ -450,6 +450,8 @@ class 我的测试类(硒测试用例):
         self.开启("https://zh.wikipedia.org/wiki/")
         self.断言标题("维基百科，自由的百科全书")
         self.断言元素('a[title="Wikipedia:关于"]')
+        self.断言元素('span:contains("创建账号")')
+        self.断言元素('span:contains("登录")')
         self.断言文本("新闻动态", "span#新闻动态")
         self.输入文本('input[name="search"]', "舞龍")
         self.单击('button:contains("搜索")')
@@ -972,6 +974,8 @@ finally:
 (From <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_login_driver.py">examples/raw_login_driver.py</a>)
 
 The ``Driver()`` manager format can be used as a drop-in replacement for virtually every Python/selenium framework, as it uses the raw ``driver`` instance for handling commands. The ``Driver()`` method simplifies the work of managing drivers with optimal settings, and it can be configured with multiple args. The ``Driver()`` also accepts command-line options (such as ``python --headless``) so that you don't need to modify your tests directly to use different settings. These command-line options only take effect if the associated method args remain unset (or set to ``None``) for the specified options.
+
+When using the ``Driver()`` format, you may need to activate a Virtual Display on your own if you want to run headed tests in a headless Linux environment. (See https://github.com/mdmintz/sbVirtualDisplay for details.) One such example of this is using an authenticated proxy, which is configured via a Chrome extension that is generated at runtime. (Note that regular headless mode in Chrome doesn't support extensions.)
 
 --------
 

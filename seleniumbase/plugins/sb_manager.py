@@ -54,7 +54,7 @@ def SB(
     undetectable=None,  # Use undetected-chromedriver to evade bot-detection.
     uc_cdp_events=None,  # Capture CDP events in undetected-chromedriver mode.
     uc_subprocess=None,  # Use undetected-chromedriver as a subprocess.
-    log_cdp_events=None,  # capture {"performance": "ALL", "browser": "ALL"})
+    log_cdp_events=None,  # Capture {"performance": "ALL", "browser": "ALL"}
     incognito=None,  # Enable Chromium's Incognito mode.
     guest_mode=None,  # Enable Chromium's Guest mode.
     dark_mode=None,  # Enable Chromium's Dark mode.

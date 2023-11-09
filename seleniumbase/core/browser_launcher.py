@@ -308,14 +308,18 @@ def find_edgedriver_version_to_use(use_version, driver_version):
 
 def has_cf(text):
     if (
-        "<title>Just a moment...</title>" in text
-        or "<title>403 Forbidden</title>" in text
+        "<title>403 Forbidden</title>" in text
         or "Permission Denied</title>" in text
         or 'id="challenge-error-text"' in text
+        or "<title>Just a moment..." in text
         or 'action="/?__cf_chl_f_tk' in text
         or 'src="chromedriver.js"' in text
+        or 'class="g-recaptcha"' in text
+        or 'content="Pixelscan"' in text
         or 'id="challenge-form"' in text
         or "window._cf_chl_opt" in text
+        or "/recaptcha/api.js" in text
+        or "/turnstile/" in text
     ):
         return True
     return False
@@ -427,11 +431,24 @@ def uc_open_with_reconnect(driver, url, reconnect_time=None):
 
 
 def uc_click(
-    driver, selector, by="css selector", timeout=settings.SMALL_TIMEOUT
+    driver,
+    selector,
+    by="css selector",
+    timeout=settings.SMALL_TIMEOUT,
+    reconnect_time=None,
 ):
+    try:
+        rct = float(by)  # Add shortcut: driver.uc_click(selector, RCT)
+        if not reconnect_time:
+            reconnect_time = rct
+        by = "css selector"
+    except Exception:
+        pass
     element = driver.wait_for_element(selector, by=by, timeout=timeout)
     try:
-        element.uc_click()
+        element.uc_click(
+            driver, selector, by=by, reconnect_time=reconnect_time
+        )
     except ElementClickInterceptedException:
         driver.js_click(selector, by=by, timeout=timeout)
 
@@ -2876,7 +2893,7 @@ def get_local_driver(
             disable_build_check = True
             uc_driver_version = None
             if is_using_uc(undetectable, browser_name):
-                if use_br_version_for_uc:
+                if use_br_version_for_uc or driver_version == "mlatest":
                     uc_driver_version = get_uc_driver_version(full=True)
                     full_ch_driver_version = uc_driver_version
                 else:

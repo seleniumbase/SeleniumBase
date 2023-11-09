@@ -10,6 +10,7 @@ class Environment:
     DEVELOP = "develop"
     PRODUCTION = "production"
     PERFORMANCE = "performance"
+    REPLICA = "replica"
     FEDRAMP = "fedramp"
     OFFLINE = "offline"
     ONLINE = "online"
@@ -37,6 +38,7 @@ class ValidEnvs:
         "develop",
         "production",
         "performance",
+        "replica",
         "fedramp",
         "offline",
         "online",

@@ -1,10 +1,18 @@
 """google.com example test that uses page objects"""
 from seleniumbase import BaseCase
-from .google_objects import HomePage, ResultsPage
+try:
+    from .google_objects import HomePage, ResultsPage
+except Exception:
+    from google_objects import HomePage, ResultsPage
+    BaseCase.main(__name__, __file__)
 
 
 class GoogleTests(BaseCase):
     def test_google_dot_com(self):
+        if self.headless and self._multithreaded:
+            self.open_if_not_url("about:blank")
+            print("Skipping test in headless multi-threaded mode.")
+            self.skip("Skipping test in headless multi-threaded mode.")
         self.open("https://google.com/ncr")
         self.assert_title_contains("Google")
         self.sleep(0.05)

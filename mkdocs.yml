@@ -152,6 +152,11 @@ nav:
     - ↔️ W3Schools drag & drop: https://seleniumbase.io/w3schools/drag_drop
     - ☑️ W3Schools checkboxes: https://seleniumbase.io/w3schools/checkboxes
     - 🔘 W3Schools radio buttons: https://seleniumbase.io/w3schools/radio_buttons
+  - Pages with CAPTCHAs:
+    - 🔑 CF Turnstile Test: https://seleniumbase.io/apps/turnstile
+    - 🔑 CF Turnstile on Form: https://seleniumbase.io/apps/form_turnstile
+    - 🔐 reCAPTCHA v2 Test: https://seleniumbase.io/apps/recaptcha
+    - 🔐 reCAPTCHA v2 on Form: https://seleniumbase.io/apps/form_recaptcha
   - Additional Help Docs:
     - 📑 Table of Contents: help_docs/ReadMe.md
     - 🖼️ How to handle iframes: help_docs/handling_iframes.md
