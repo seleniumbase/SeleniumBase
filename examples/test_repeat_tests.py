@@ -5,6 +5,7 @@
 import pytest
 from parameterized import parameterized
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__, "-n6")
 
 url = "data:text/html,<h2>Hello</h2><p><input />&nbsp;<button>OK!</button></p>"
 
