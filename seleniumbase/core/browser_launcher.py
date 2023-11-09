@@ -308,14 +308,18 @@ def find_edgedriver_version_to_use(use_version, driver_version):
 
 def has_cf(text):
     if (
-        "<title>Just a moment...</title>" in text
-        or "<title>403 Forbidden</title>" in text
+        "<title>403 Forbidden</title>" in text
         or "Permission Denied</title>" in text
         or 'id="challenge-error-text"' in text
+        or "<title>Just a moment..." in text
         or 'action="/?__cf_chl_f_tk' in text
         or 'src="chromedriver.js"' in text
+        or 'class="g-recaptcha"' in text
+        or 'content="Pixelscan"' in text
         or 'id="challenge-form"' in text
         or "window._cf_chl_opt" in text
+        or "/recaptcha/api.js" in text
+        or "/turnstile/" in text
     ):
         return True
     return False
