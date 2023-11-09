@@ -431,11 +431,24 @@ def uc_open_with_reconnect(driver, url, reconnect_time=None):
 
 
 def uc_click(
-    driver, selector, by="css selector", timeout=settings.SMALL_TIMEOUT
+    driver,
+    selector,
+    by="css selector",
+    timeout=settings.SMALL_TIMEOUT,
+    reconnect_time=None,
 ):
+    try:
+        rct = float(by)  # Add shortcut: driver.uc_click(selector, RCT)
+        if not reconnect_time:
+            reconnect_time = rct
+        by = "css selector"
+    except Exception:
+        pass
     element = driver.wait_for_element(selector, by=by, timeout=timeout)
     try:
-        element.uc_click()
+        element.uc_click(
+            driver, selector, by=by, reconnect_time=reconnect_time
+        )
     except ElementClickInterceptedException:
         driver.js_click(selector, by=by, timeout=timeout)
 
