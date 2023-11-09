@@ -315,6 +315,10 @@ class BaseCase(unittest.TestCase):
                     self.driver.get(url)
                 else:
                     pass  # Odd issue where the open did happen. Continue.
+            elif "invalid session id" in e.msg:
+                logging.debug("Invalid session id. Will open new browser.")
+                self.driver = self.get_new_driver()
+                self.driver.get(url)
             else:
                 raise
         if (
