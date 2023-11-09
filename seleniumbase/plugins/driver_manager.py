@@ -88,7 +88,7 @@ def Driver(
     undetectable=None,  # Use undetected-chromedriver to evade bot-detection.
     uc_cdp_events=None,  # Capture CDP events in undetected-chromedriver mode.
     uc_subprocess=None,  # Use undetected-chromedriver as a subprocess.
-    log_cdp_events=None,  # capture {"performance": "ALL", "browser": "ALL"})
+    log_cdp_events=None,  # Capture {"performance": "ALL", "browser": "ALL"}
     no_sandbox=None,  # (DEPRECATED) - "--no-sandbox" is always used now.
     disable_gpu=None,  # (DEPRECATED) - GPU is disabled if not "swiftshader".
     incognito=None,  # Enable Chromium's Incognito mode.
@@ -105,8 +105,8 @@ def Driver(
     firefox_arg=None,  # "ARG=N,ARG2" (Set Firefox args, comma-separated.)
     firefox_pref=None,  # SET (Set Firefox PREFERENCE:VALUE set, ","-separated)
     user_data_dir=None,  # Set the Chrome user data directory to use.
-    extension_zip=None,  # Load a Chrome Extension .zip|.crx, comma-separated.)
-    extension_dir=None,  # Load a Chrome Extension directory, comma-separated.)
+    extension_zip=None,  # Load a Chrome Extension .zip|.crx, comma-separated.
+    extension_dir=None,  # Load a Chrome Extension directory, comma-separated.
     binary_location=None,  # Set path of the Chromium browser binary to use.
     driver_version=None,  # Set the chromedriver or uc_driver version to use.
     page_load_strategy=None,  # Set Chrome PLS to "normal", "eager", or "none".
