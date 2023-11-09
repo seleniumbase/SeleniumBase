@@ -51,6 +51,7 @@ class Base(Plugin):
                 constants.Environment.DEVELOP,
                 constants.Environment.PRODUCTION,
                 constants.Environment.PERFORMANCE,
+                constants.Environment.REPLICA,
                 constants.Environment.FEDRAMP,
                 constants.Environment.OFFLINE,
                 constants.Environment.ONLINE,
