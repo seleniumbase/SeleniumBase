@@ -17,6 +17,8 @@ class 我的测试类(硒测试用例):
         self.开启("https://zh.wikipedia.org/wiki/")
         self.断言标题("维基百科，自由的百科全书")
         self.断言元素('a[title="Wikipedia:关于"]')
+        self.断言元素('span:contains("创建账号")')
+        self.断言元素('span:contains("登录")')
         self.断言文本("新闻动态", "span#新闻动态")
         self.输入文本('input[name="search"]', "舞龍")
         self.单击('button:contains("搜索")')

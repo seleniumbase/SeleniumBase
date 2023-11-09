@@ -1026,6 +1026,7 @@ driver.uc_click(selector)
 * [test_login.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_login.py)
 * [test_markers.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_markers.py)
 * [test_swag_labs.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py)
+* [test_simple_login.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_simple_login.py)
 * [test_suite.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_suite.py)
 * [test_tinymce.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_tinymce.py)
 * And many more...
