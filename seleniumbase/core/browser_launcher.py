@@ -2876,7 +2876,7 @@ def get_local_driver(
             disable_build_check = True
             uc_driver_version = None
             if is_using_uc(undetectable, browser_name):
-                if use_br_version_for_uc:
+                if use_br_version_for_uc or driver_version == "mlatest":
                     uc_driver_version = get_uc_driver_version(full=True)
                     full_ch_driver_version = uc_driver_version
                 else:
