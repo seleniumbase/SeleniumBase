@@ -321,11 +321,23 @@ class BaseCase(unittest.TestCase):
                 self.driver.get(url)
             else:
                 raise
-        if (
-            self.driver.current_url == pre_action_url
-            and pre_action_url != url
-        ):
-            time.sleep(0.1)  # Make sure load happens
+        try:
+            if (
+                self.driver.current_url == pre_action_url
+                and pre_action_url != url
+            ):
+                time.sleep(0.1)  # Make sure load happens
+        except Exception:
+            time.sleep(0.1)  # First see if waiting helps
+            try:
+                self._check_browser()
+                if not self.driver.current_url:
+                    raise Exception("No current URL!")
+            except Exception:
+                # Spin up a new driver with the URL
+                self.driver = self.get_new_driver()
+                self.driver.get(url)
+                self._check_browser()
         if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
             if not self.undetectable:
                 self.wait_for_ready_state_complete()
