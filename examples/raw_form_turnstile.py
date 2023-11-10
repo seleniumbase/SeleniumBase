@@ -1,6 +1,12 @@
 from seleniumbase import SB
 
 
+def open_the_form_turnstile_page(sb):
+    sb.driver.uc_open_with_reconnect(
+        "https://seleniumbase.io/apps/form_turnstile", reconnect_time=2.27,
+    )
+
+
 def click_turnstile_and_verify(sb):
     sb.driver.reconnect(0.1)
     iframe = sb.driver.find_element("iframe")
@@ -11,17 +17,11 @@ def click_turnstile_and_verify(sb):
 
 
 with SB(uc=True, test=True) as sb:
-    sb.driver.uc_open_with_reconnect(
-        "https://seleniumbase.io/apps/form_turnstile",
-        reconnect_time=2.33,
-    )
+    open_the_form_turnstile_page(sb)
     try:
         click_turnstile_and_verify(sb)
     except Exception:
-        sb.driver.uc_open_with_reconnect(
-            "https://seleniumbase.io/apps/form_turnstile",
-            reconnect_time=2.33,
-        )
+        open_the_form_turnstile_page(sb)
         click_turnstile_and_verify(sb)
     sb.press_keys("#name", "SeleniumBase")
     sb.press_keys("#email", "test@test.test")
