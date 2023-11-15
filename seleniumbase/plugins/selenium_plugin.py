@@ -529,8 +529,8 @@ class SeleniumBrowser(Plugin):
             dest="message_duration",
             default=None,
             help="""Setting this overrides the default time that
-                    messenger notifications remain visible when reaching
-                    assert statements during Demo Mode.""",
+                    messenger notifications remain visible when
+                    reaching assert statements during Demo Mode.""",
         )
         parser.addoption(
             "--check_js",
