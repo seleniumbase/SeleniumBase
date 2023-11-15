@@ -63,6 +63,7 @@ def SB(
     enable_3d_apis=None,  # Enable WebGL and 3D APIs.
     swiftshader=None,  # Chrome: --use-gl=angle / --use-angle=swiftshader-webgl
     ad_block_on=None,  # Block some types of display ads from loading.
+    host_resolver_rules=None,  # Set host-resolver-rules, comma-separated.
     block_images=None,  # Block images from loading during tests.
     do_not_track=None,  # Tell websites that you don't want to be tracked.
     chromium_arg=None,  # "ARG=N,ARG2" (Set Chromium args, ","-separated.)
@@ -604,6 +605,15 @@ def SB(
             ad_block_on = True
         else:
             ad_block_on = False
+    if host_resolver_rules is None:
+        if '--host-resolver-rules="' in arg_join:
+            host_resolver_rules = (
+                arg_join.split('--host-resolver-rules="')[1].split('"')[0]
+            )
+        elif '--host_resolver_rules="' in arg_join:
+            host_resolver_rules = (
+                arg_join.split("--host_resolver_rules=")[1].split('"')[0]
+            )
     if driver_version is None:
         if "--driver-version=" in arg_join:
             driver_version = (
@@ -710,6 +720,7 @@ def SB(
     sb_config.dashboard = False
     sb_config._dashboard_initialized = False
     sb_config.message_duration = message_duration
+    sb_config.host_resolver_rules = host_resolver_rules
     sb_config.block_images = block_images
     sb_config.do_not_track = do_not_track
     sb_config.use_wire = use_wire
@@ -811,6 +822,7 @@ def SB(
     sb.dashboard = sb_config.dashboard
     sb._dash_initialized = sb_config._dashboard_initialized
     sb.message_duration = sb_config.message_duration
+    sb.host_resolver_rules = sb_config.host_resolver_rules
     sb.block_images = sb_config.block_images
     sb.do_not_track = sb_config.do_not_track
     sb.use_wire = sb_config.use_wire

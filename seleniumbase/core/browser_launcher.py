@@ -756,6 +756,7 @@ def _set_chrome_options(
     enable_3d_apis,
     swiftshader,
     ad_block_on,
+    host_resolver_rules,
     block_images,
     do_not_track,
     chromium_arg,
@@ -836,6 +837,10 @@ def _set_chrome_options(
     if log_cdp_events:
         chrome_options.set_capability(
             "goog:loggingPrefs", {"performance": "ALL", "browser": "ALL"}
+        )
+    if host_resolver_rules:
+        chrome_options.add_argument(
+            "--host-resolver-rules=%s" % host_resolver_rules
         )
     if mobile_emulator and not is_using_uc(undetectable, browser_name):
         emulator_settings = {}
@@ -1320,6 +1325,7 @@ def get_driver(
     enable_3d_apis=False,
     swiftshader=False,
     ad_block_on=False,
+    host_resolver_rules=None,
     block_images=False,
     do_not_track=False,
     chromium_arg=None,
@@ -1531,6 +1537,7 @@ def get_driver(
             enable_3d_apis,
             swiftshader,
             ad_block_on,
+            host_resolver_rules,
             block_images,
             do_not_track,
             chromium_arg,
@@ -1585,6 +1592,7 @@ def get_driver(
             enable_3d_apis,
             swiftshader,
             ad_block_on,
+            host_resolver_rules,
             block_images,
             do_not_track,
             chromium_arg,
@@ -1643,6 +1651,7 @@ def get_remote_driver(
     enable_3d_apis,
     swiftshader,
     ad_block_on,
+    host_resolver_rules,
     block_images,
     do_not_track,
     chromium_arg,
@@ -1764,6 +1773,7 @@ def get_remote_driver(
             enable_3d_apis,
             swiftshader,
             ad_block_on,
+            host_resolver_rules,
             block_images,
             do_not_track,
             chromium_arg,
@@ -1928,6 +1938,7 @@ def get_remote_driver(
             enable_3d_apis,
             swiftshader,
             ad_block_on,
+            host_resolver_rules,
             block_images,
             do_not_track,
             chromium_arg,
@@ -2042,6 +2053,7 @@ def get_local_driver(
     enable_3d_apis,
     swiftshader,
     ad_block_on,
+    host_resolver_rules,
     block_images,
     do_not_track,
     chromium_arg,
@@ -2453,6 +2465,10 @@ def get_local_driver(
             edge_options.set_capability(
                 "ms:loggingPrefs", {"performance": "ALL", "browser": "ALL"}
             )
+        if host_resolver_rules:
+            edge_options.add_argument(
+                "--host-resolver-rules=%s" % host_resolver_rules
+            )
         if not enable_sync:
             edge_options.add_argument("--disable-sync")
         if (
@@ -2795,6 +2811,7 @@ def get_local_driver(
                 enable_3d_apis,
                 swiftshader,
                 ad_block_on,
+                host_resolver_rules,
                 block_images,
                 do_not_track,
                 chromium_arg,
@@ -3295,6 +3312,7 @@ def get_local_driver(
                                         enable_3d_apis,
                                         swiftshader,
                                         None,  # ad_block_on
+                                        None,  # host_resolver_rules
                                         block_images,
                                         do_not_track,
                                         None,  # chromium_arg
@@ -3511,6 +3529,7 @@ def get_local_driver(
                         enable_3d_apis,
                         swiftshader,
                         None,  # ad_block_on
+                        None,  # host_resolver_rules
                         block_images,
                         do_not_track,
                         None,  # chromium_arg
