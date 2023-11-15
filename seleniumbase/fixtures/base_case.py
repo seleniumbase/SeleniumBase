@@ -15563,8 +15563,10 @@ class BaseCase(unittest.TestCase):
             return "(Unknown Version)"
         if "version" in driver_capabilities:
             browser_version = driver_capabilities["version"]
-        else:
+        elif "browserVersion" in drivere_capabilities:
             browser_version = driver_capabilities["browserVersion"]
+        else:
+            browser_version = "(Unknown Version)"
         return browser_version
 
     def _get_driver_name_and_version(self):
