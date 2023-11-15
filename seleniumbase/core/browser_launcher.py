@@ -453,6 +453,17 @@ def uc_click(
         driver.js_click(selector, by=by, timeout=timeout)
 
 
+def uc_switch_to_frame(driver, frame):
+    from selenium.webdriver.remote.webelement import WebElement
+    if isinstance(frame, WebElement):
+        driver.reconnect(0.15)
+        driver.switch_to.frame(frame)
+    else:
+        iframe = driver.locator(frame)
+        driver.reconnect(0.15)
+        driver.switch_to.frame(iframe)
+
+
 def edgedriver_on_path():
     return os.path.exists(LOCAL_EDGEDRIVER)
 
@@ -3573,6 +3584,11 @@ def get_local_driver(
                     )
                     driver.uc_click = lambda *args, **kwargs: uc_click(
                         driver, *args, **kwargs
+                    )
+                    driver.uc_switch_to_frame = (
+                        lambda *args, **kwargs: uc_switch_to_frame(
+                            driver, *args, **kwargs
+                        )
                     )
                     if mobile_emulator:
                         uc_metrics = {}
