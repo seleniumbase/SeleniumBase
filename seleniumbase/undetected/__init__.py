@@ -367,6 +367,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         cdc_props = self._get_cdc_props()
         if len(cdc_props) > 0:
             self._hook_remove_cdc_props(cdc_props)
+            time.sleep(0.05)
 
     def get(self, url):
         self.remove_cdc_props_as_needed()
@@ -438,6 +439,10 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         try:
             logger.debug("Terminating the UC browser")
             os.kill(self.browser_pid, 15)
+            # Not sure if this is really needed:
+            os.waitpid(self.browser_pid, 0)
+        except (AttributeError, ChildProcessError, RuntimeError, OSError):
+            pass
         except TimeoutError as e:
             logger.debug(e, exc_info=True)
         except Exception:
