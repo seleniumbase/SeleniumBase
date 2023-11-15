@@ -993,9 +993,15 @@ driver.highlight_click(selector)
 
 driver.sleep(seconds)
 
+driver.locator(selector)
+
+driver.get_attribute(selector, attribute)
+
 driver.get_page_source()
 
 driver.get_title()
+
+driver.switch_to_frame(frame)
 
 ############
 
@@ -1007,7 +1013,13 @@ driver.uc_open_with_tab(url)
 
 driver.uc_open_with_reconnect(url, reconnect_time=None)
 
-driver.uc_click(selector)
+driver.reconnect(timeout)
+
+driver.uc_click(
+    selector, by="css selector",
+    timeout=settings.SMALL_TIMEOUT, reconnect_time=None)
+
+driver.uc_switch_to_frame(frame)
 ```
 
 --------

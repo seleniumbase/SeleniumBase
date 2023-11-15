@@ -157,6 +157,7 @@ nav:
     - 🔑 CF Turnstile on Form: https://seleniumbase.io/apps/form_turnstile
     - 🔐 reCAPTCHA v2 Test: https://seleniumbase.io/apps/recaptcha
     - 🔐 reCAPTCHA v2 on Form: https://seleniumbase.io/apps/form_recaptcha
+    - 🔐 reCAPTCHA, invisible: https://seleniumbase.io/apps/invisible_recaptcha
   - Additional Help Docs:
     - 📑 Table of Contents: help_docs/ReadMe.md
     - 🖼️ How to handle iframes: help_docs/handling_iframes.md

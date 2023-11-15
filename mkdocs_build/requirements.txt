@@ -3,7 +3,7 @@
 
 regex>=2023.10.3
 PyYAML>=6.0.1
-pymdown-extensions>=10.3.1
+pymdown-extensions>=10.4
 pipdeptree>=2.13.1
 python-dateutil>=2.8.2
 Markdown==3.5.1
