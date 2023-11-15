@@ -1,4 +1,5 @@
 """Add new methods to extend the driver"""
+from selenium.webdriver.remote.webelement import WebElement
 from seleniumbase.fixtures import js_utils
 from seleniumbase.fixtures import page_actions
 from seleniumbase.fixtures import page_utils
@@ -40,6 +41,10 @@ class DriverMethods():
         except Exception:
             pass
         raise Exception('No such Element: {%s} (by="%s")!' % (selector, by))
+
+    def get_attribute(self, selector, attribute, by="css selector"):
+        element = self.locator(selector, by=by)
+        return element.get_attribute(attribute)
 
     def get_page_source(self):
         return self.driver.page_source
@@ -157,6 +162,13 @@ class DriverMethods():
         if "loops" in kwargs:
             kwargs.pop("loops")
         page_actions.click(self.driver, *args, **kwargs)
+
+    def switch_to_frame(self, frame):
+        if isinstance(frame, WebElement):
+            self.driver.switch_to.frame(frame)
+        else:
+            iframe = self.locator(frame)
+            self.driver.switch_to.frame(iframe)
 
     def set_wire_proxy(self, string):
         """Set a proxy server for selenium-wire mode ("--wire")

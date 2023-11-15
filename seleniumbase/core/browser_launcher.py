@@ -187,8 +187,10 @@ def extend_driver(driver):
     driver.highlight = DM.highlight
     driver.highlight_click = DM.highlight_click
     driver.sleep = time.sleep
+    driver.get_attribute = DM.get_attribute
     driver.get_page_source = DM.get_page_source
     driver.get_title = DM.get_title
+    driver.switch_to_frame = DM.switch_to_frame
     if hasattr(driver, "proxy"):
         driver.set_wire_proxy = DM.set_wire_proxy
     return driver
