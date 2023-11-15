@@ -14651,8 +14651,14 @@ class BaseCase(unittest.TestCase):
                 d_height=self.__device_height,
                 d_p_r=self.__device_pixel_ratio,
             )
-            if self.driver.timeouts.implicit_wait > 0:
-                self.driver.implicitly_wait(0)
+            try:
+                if self.driver.timeouts.implicit_wait > 0:
+                    self.driver.implicitly_wait(0)
+            except Exception:
+                try:
+                    self.driver.implicitly_wait(0)
+                except Exception:
+                    pass
             self._default_driver = self.driver
             if self._reuse_session:
                 sb_config.shared_driver = self.driver
@@ -14671,10 +14677,13 @@ class BaseCase(unittest.TestCase):
         self.set_time_limit(self.time_limit)
 
         # Configure the page load timeout
-        if hasattr(settings, "PAGE_LOAD_TIMEOUT"):
-            self.driver.set_page_load_timeout(settings.PAGE_LOAD_TIMEOUT)
-        else:
-            self.driver.set_page_load_timeout(120)  # Selenium uses 300
+        try:
+            if hasattr(settings, "PAGE_LOAD_TIMEOUT"):
+                self.driver.set_page_load_timeout(settings.PAGE_LOAD_TIMEOUT)
+            else:
+                self.driver.set_page_load_timeout(120)  # Selenium uses 300
+        except Exception:
+            pass
 
         # Set the start time for the test (in ms).
         # Although the pytest clock starts before setUp() begins,
