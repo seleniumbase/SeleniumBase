@@ -55,6 +55,7 @@ class SeleniumBrowser(Plugin):
     --message-duration=SECONDS  (The time length for Messenger alerts.)
     --check-js  (Check for JavaScript errors after page loads.)
     --ad-block  (Block some types of display ads from loading.)
+    --host-resolver-rules=RULES  (Set host-resolver-rules, comma-separated.)
     --block-images  (Block images from loading during tests.)
     --do-not-track  (Indicate to websites that you don't want to be tracked.)
     --verify-delay=SECONDS  (The delay before MasterQA verification checks.)
@@ -529,8 +530,8 @@ class SeleniumBrowser(Plugin):
             dest="message_duration",
             default=None,
             help="""Setting this overrides the default time that
-                    messenger notifications remain visible when reaching
-                    assert statements during Demo Mode.""",
+                    messenger notifications remain visible when
+                    reaching assert statements during Demo Mode.""",
         )
         parser.addoption(
             "--check_js",
@@ -552,6 +553,25 @@ class SeleniumBrowser(Plugin):
             default=False,
             help="""Using this makes WebDriver block display ads
                     that are defined in ad_block_list.AD_BLOCK_LIST.""",
+        )
+        parser.addoption(
+            "--host_resolver_rules",
+            "--host-resolver-rules",
+            action="store",
+            dest="host_resolver_rules",
+            default=None,
+            help="""Use this option to set "host-resolver-rules".
+                    This lets you re-map traffic from any domain.
+                    Eg. "MAP www.google-analytics.com 0.0.0.0".
+                    Eg. "MAP * ~NOTFOUND , EXCLUDE myproxy".
+                    Eg. "MAP * 0.0.0.0 , EXCLUDE 127.0.0.1".
+                    Eg. "MAP *.google.com myproxy".
+                    Find more examples on these pages:
+                    (https://www.electronjs.org/docs/
+                     latest/api/command-line-switches)
+                    (https://www.chromium.org/developers/
+                     design-documents/network-stack/socks-proxy/)
+                    Use comma-separation for multiple host rules.""",
         )
         parser.addoption(
             "--block_images",
@@ -1090,6 +1110,7 @@ class SeleniumBrowser(Plugin):
         test.test.message_duration = self.options.message_duration
         test.test.js_checking_on = self.options.js_checking_on
         test.test.ad_block_on = self.options.ad_block_on
+        test.test.host_resolver_rules = self.options.host_resolver_rules
         test.test.block_images = self.options.block_images
         test.test.do_not_track = self.options.do_not_track
         test.test.verify_delay = self.options.verify_delay  # MasterQA

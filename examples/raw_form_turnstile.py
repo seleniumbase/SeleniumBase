@@ -8,9 +8,7 @@ def open_the_form_turnstile_page(sb):
 
 
 def click_turnstile_and_verify(sb):
-    iframe = sb.driver.find_element("iframe")
-    sb.driver.reconnect(0.1)  # Another way to reconnect
-    sb.driver.switch_to.frame(iframe)
+    sb.driver.uc_switch_to_frame("iframe")
     sb.driver.uc_click("span.mark")
     sb.highlight("img#captcha-success", timeout=3.33)
 

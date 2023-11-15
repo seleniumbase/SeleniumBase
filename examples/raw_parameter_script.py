@@ -84,6 +84,7 @@ if pure_python:
     sb._disable_beforeunload = False
     sb.save_screenshot_after_test = False
     sb.no_screenshot_after_test = False
+    sb.host_resolver_rules = None
     sb.page_load_strategy = None
     sb.timeout_multiplier = None
     sb.pytest_html_report = None

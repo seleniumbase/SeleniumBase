@@ -99,6 +99,7 @@ def Driver(
     enable_3d_apis=None,  # Enable WebGL and 3D APIs.
     swiftshader=None,  # Chrome: --use-gl=angle / --use-angle=swiftshader-webgl
     ad_block_on=None,  # Block some types of display ads from loading.
+    host_resolver_rules=None,  # Set host-resolver-rules, comma-separated.
     block_images=None,  # Block images from loading during tests.
     do_not_track=None,  # Tell websites that you don't want to be tracked.
     chromium_arg=None,  # "ARG=N,ARG2" (Set Chromium args, ","-separated.)
@@ -436,6 +437,15 @@ def Driver(
             ad_block_on = True
         else:
             ad_block_on = False
+    if host_resolver_rules is None:
+        if '--host-resolver-rules="' in arg_join:
+            host_resolver_rules = (
+                arg_join.split('--host-resolver-rules="')[1].split('"')[0]
+            )
+        elif '--host_resolver_rules="' in arg_join:
+            host_resolver_rules = (
+                arg_join.split("--host_resolver_rules=")[1].split('"')[0]
+            )
     if driver_version is None:
         if "--driver-version=" in arg_join:
             driver_version = (
@@ -486,6 +496,7 @@ def Driver(
         enable_3d_apis=enable_3d_apis,
         swiftshader=swiftshader,
         ad_block_on=ad_block_on,
+        host_resolver_rules=host_resolver_rules,
         block_images=block_images,
         do_not_track=do_not_track,
         chromium_arg=chromium_arg,

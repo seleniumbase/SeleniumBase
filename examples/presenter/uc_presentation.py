@@ -29,13 +29,13 @@ class UCPresentationClass(BaseCase):
 
         self.get_new_driver(undetectable=True)
         try:
-            self.driver.get("https://nowsecure.nl/#relax")
+            self.driver.uc_open_with_tab("https://nowsecure.nl/#relax")
             try:
                 self.assert_text("OH YEAH, you passed!", "h1", timeout=4)
                 self.post_message("Selenium wasn't detected!", duration=4)
             except Exception:
                 self.clear_all_cookies()
-                self.driver.get("https://nowsecure.nl/#relax")
+                self.driver.uc_open_with_tab("https://nowsecure.nl/#relax")
                 self.assert_text("OH YEAH, you passed!", "h1", timeout=4)
                 self.post_message("Selenium wasn't detected!", duration=4)
         finally:
@@ -355,10 +355,10 @@ class UCPresentationClass(BaseCase):
 
         try:
             with SB(uc=True) as sb:
-                sb.driver.get("https://nowsecure.nl/#relax")
+                sb.driver.uc_open_with_tab("https://nowsecure.nl/#relax")
                 sb.sleep(1)
                 if not sb.is_text_visible("OH YEAH, you passed", "h1"):
-                    sb.driver.get("https://nowsecure.nl/#relax")
+                    sb.driver.uc_open_with_tab("https://nowsecure.nl/#relax")
                     sb.sleep(1)
                 sb.activate_demo_mode()
                 sb.assert_text("OH YEAH, you passed!", "h1", timeout=3)

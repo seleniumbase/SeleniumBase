@@ -159,6 +159,7 @@ pytest my_first_test.py --settings-file=custom_settings.py
 --message-duration=SECONDS  # (The time length for Messenger alerts.)
 --check-js  # (Check for JavaScript errors after page loads.)
 --ad-block  # (Block some types of display ads from loading.)
+--host-resolver-rules=RULES  # (Set host-resolver-rules, comma-separated.)
 --block-images  # (Block images from loading during tests.)
 --do-not-track  # (Indicate to websites that you don't want to be tracked.)
 --verify-delay=SECONDS  # (The delay before MasterQA verification checks.)

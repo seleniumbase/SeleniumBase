@@ -187,8 +187,10 @@ def extend_driver(driver):
     driver.highlight = DM.highlight
     driver.highlight_click = DM.highlight_click
     driver.sleep = time.sleep
+    driver.get_attribute = DM.get_attribute
     driver.get_page_source = DM.get_page_source
     driver.get_title = DM.get_title
+    driver.switch_to_frame = DM.switch_to_frame
     if hasattr(driver, "proxy"):
         driver.set_wire_proxy = DM.set_wire_proxy
     return driver
@@ -451,6 +453,17 @@ def uc_click(
         )
     except ElementClickInterceptedException:
         driver.js_click(selector, by=by, timeout=timeout)
+
+
+def uc_switch_to_frame(driver, frame):
+    from selenium.webdriver.remote.webelement import WebElement
+    if isinstance(frame, WebElement):
+        driver.reconnect(0.15)
+        driver.switch_to.frame(frame)
+    else:
+        iframe = driver.locator(frame)
+        driver.reconnect(0.15)
+        driver.switch_to.frame(iframe)
 
 
 def edgedriver_on_path():
@@ -743,6 +756,7 @@ def _set_chrome_options(
     enable_3d_apis,
     swiftshader,
     ad_block_on,
+    host_resolver_rules,
     block_images,
     do_not_track,
     chromium_arg,
@@ -823,6 +837,10 @@ def _set_chrome_options(
     if log_cdp_events:
         chrome_options.set_capability(
             "goog:loggingPrefs", {"performance": "ALL", "browser": "ALL"}
+        )
+    if host_resolver_rules:
+        chrome_options.add_argument(
+            "--host-resolver-rules=%s" % host_resolver_rules
         )
     if mobile_emulator and not is_using_uc(undetectable, browser_name):
         emulator_settings = {}
@@ -1307,6 +1325,7 @@ def get_driver(
     enable_3d_apis=False,
     swiftshader=False,
     ad_block_on=False,
+    host_resolver_rules=None,
     block_images=False,
     do_not_track=False,
     chromium_arg=None,
@@ -1518,6 +1537,7 @@ def get_driver(
             enable_3d_apis,
             swiftshader,
             ad_block_on,
+            host_resolver_rules,
             block_images,
             do_not_track,
             chromium_arg,
@@ -1572,6 +1592,7 @@ def get_driver(
             enable_3d_apis,
             swiftshader,
             ad_block_on,
+            host_resolver_rules,
             block_images,
             do_not_track,
             chromium_arg,
@@ -1630,6 +1651,7 @@ def get_remote_driver(
     enable_3d_apis,
     swiftshader,
     ad_block_on,
+    host_resolver_rules,
     block_images,
     do_not_track,
     chromium_arg,
@@ -1751,6 +1773,7 @@ def get_remote_driver(
             enable_3d_apis,
             swiftshader,
             ad_block_on,
+            host_resolver_rules,
             block_images,
             do_not_track,
             chromium_arg,
@@ -1915,6 +1938,7 @@ def get_remote_driver(
             enable_3d_apis,
             swiftshader,
             ad_block_on,
+            host_resolver_rules,
             block_images,
             do_not_track,
             chromium_arg,
@@ -2029,6 +2053,7 @@ def get_local_driver(
     enable_3d_apis,
     swiftshader,
     ad_block_on,
+    host_resolver_rules,
     block_images,
     do_not_track,
     chromium_arg,
@@ -2440,6 +2465,10 @@ def get_local_driver(
             edge_options.set_capability(
                 "ms:loggingPrefs", {"performance": "ALL", "browser": "ALL"}
             )
+        if host_resolver_rules:
+            edge_options.add_argument(
+                "--host-resolver-rules=%s" % host_resolver_rules
+            )
         if not enable_sync:
             edge_options.add_argument("--disable-sync")
         if (
@@ -2782,6 +2811,7 @@ def get_local_driver(
                 enable_3d_apis,
                 swiftshader,
                 ad_block_on,
+                host_resolver_rules,
                 block_images,
                 do_not_track,
                 chromium_arg,
@@ -3282,6 +3312,7 @@ def get_local_driver(
                                         enable_3d_apis,
                                         swiftshader,
                                         None,  # ad_block_on
+                                        None,  # host_resolver_rules
                                         block_images,
                                         do_not_track,
                                         None,  # chromium_arg
@@ -3498,6 +3529,7 @@ def get_local_driver(
                         enable_3d_apis,
                         swiftshader,
                         None,  # ad_block_on
+                        None,  # host_resolver_rules
                         block_images,
                         do_not_track,
                         None,  # chromium_arg
@@ -3573,6 +3605,11 @@ def get_local_driver(
                     )
                     driver.uc_click = lambda *args, **kwargs: uc_click(
                         driver, *args, **kwargs
+                    )
+                    driver.uc_switch_to_frame = (
+                        lambda *args, **kwargs: uc_switch_to_frame(
+                            driver, *args, **kwargs
+                        )
                     )
                     if mobile_emulator:
                         uc_metrics = {}

@@ -42,7 +42,7 @@ class EdgePresentationClass(BaseCase):
             self.play_tour()
             self.sleep(0.25)
         self.open("data:,")
-        self.create_presentation(theme="sky", transition="fade")
+        self.create_presentation(theme="beige", transition="fade")
         self.add_slide(
             "<p><b>About the presenter:</b></p>\n"
             "<ul>\n"
@@ -153,24 +153,40 @@ class EdgePresentationClass(BaseCase):
         self.play_tour()
         self.highlight('[href*="microsoft-edge/tools/webdriver"]')
 
-        self.get_new_driver(browser="edge")
+        self.get_new_driver(browser="edge", disable_csp=True)
         self.maximize_window()
         self.open(
             "https://developer.microsoft.com/en-us/"
             "microsoft-edge/tools/webdriver/"
         )
-        self.wait_for_element("#page-heading")
-        self.scroll_to("#page-heading")
-        zoom_in = '#page-heading{zoom: 1.2;-moz-transform: scale(1.2);}'
+        self.wait_for_element("div.common-heading")
+        self.scroll_to("div.common-heading")
+        zoom_in = 'div.h1{zoom: 1.02;-moz-transform: scale(1.02);}'
         self.add_css_style(zoom_in)
-        self.highlight("#page-heading", loops=8)
-        self.sleep(1.2)
-        self.highlight("#downloads-channel", loops=8)
-        self.sleep(1.2)
-        self.highlight("#downloads", loops=12)
-        self.sleep(1.8)
-        self.highlight("#installation", loops=12)
-        self.sleep(1.8)
+        self.highlight("div.common-heading", loops=8)
+        self.create_tour(theme="driverjs")
+        self.add_tour_step(
+            "", "div.common-heading", alignment="left"
+        )
+        self.play_tour()
+        self.highlight('div[data-fetch-key="block-web-driver:0"]', loops=12)
+        self.create_tour(theme="driverjs")
+        self.add_tour_step(
+            "", 'div[data-fetch-key="block-web-driver:0"]', alignment="top"
+        )
+        self.play_tour()
+        self.highlight('div[data-fetch-key="block-web-driver:1"]', loops=12)
+        self.create_tour(theme="driverjs")
+        self.add_tour_step(
+            "", 'div[data-fetch-key="block-web-driver:1"]', alignment="top"
+        )
+        self.play_tour()
+        self.highlight('section[data-section-id="installation"]', loops=12)
+        self.create_tour(theme="driverjs")
+        self.add_tour_step(
+            "", "div.block-heading--sixtyforty", alignment="left"
+        )
+        self.play_tour()
         self.quit_extra_driver()
 
         self.switch_to_default_driver()

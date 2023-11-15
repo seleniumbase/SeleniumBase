@@ -3765,6 +3765,7 @@ class BaseCase(unittest.TestCase):
         enable_3d_apis=None,
         swiftshader=None,
         ad_block_on=None,
+        host_resolver_rules=None,
         block_images=None,
         do_not_track=None,
         chromium_arg=None,
@@ -3822,6 +3823,7 @@ class BaseCase(unittest.TestCase):
         enable_3d_apis - the option to enable WebGL and 3D APIs (Chrome)
         swiftshader - the option to use Chrome's swiftshader (Chrome-only)
         ad_block_on - the option to block ads from loading (Chromium-only)
+        host_resolver_rules - Configure host-resolver-rules (Chromium-only)
         block_images - the option to block images from loading (Chrome)
         do_not_track - indicate that websites should not track you (Chrome)
         chromium_arg - the option to add a Chromium arg to Chrome/Edge
@@ -3937,6 +3939,8 @@ class BaseCase(unittest.TestCase):
             swiftshader = self._swiftshader
         if ad_block_on is None:
             ad_block_on = self.ad_block_on
+        if host_resolver_rules is None:
+            host_resolver_rules = self.host_resolver_rules
         if block_images is None:
             block_images = self.block_images
         if do_not_track is None:
@@ -4024,6 +4028,7 @@ class BaseCase(unittest.TestCase):
             enable_3d_apis=enable_3d_apis,
             swiftshader=swiftshader,
             ad_block_on=ad_block_on,
+            host_resolver_rules=host_resolver_rules,
             block_images=block_images,
             do_not_track=do_not_track,
             chromium_arg=chromium_arg,
@@ -14266,6 +14271,7 @@ class BaseCase(unittest.TestCase):
             self.message_duration = sb_config.message_duration
             self.js_checking_on = sb_config.js_checking_on
             self.ad_block_on = sb_config.ad_block_on
+            self.host_resolver_rules = sb_config.host_resolver_rules
             self.block_images = sb_config.block_images
             self.do_not_track = sb_config.do_not_track
             self.chromium_arg = sb_config.chromium_arg
@@ -14633,6 +14639,7 @@ class BaseCase(unittest.TestCase):
                 enable_3d_apis=self.enable_3d_apis,
                 swiftshader=self._swiftshader,
                 ad_block_on=self.ad_block_on,
+                host_resolver_rules=self.host_resolver_rules,
                 block_images=self.block_images,
                 do_not_track=self.do_not_track,
                 chromium_arg=self.chromium_arg,
@@ -14651,8 +14658,14 @@ class BaseCase(unittest.TestCase):
                 d_height=self.__device_height,
                 d_p_r=self.__device_pixel_ratio,
             )
-            if self.driver.timeouts.implicit_wait > 0:
-                self.driver.implicitly_wait(0)
+            try:
+                if self.driver.timeouts.implicit_wait > 0:
+                    self.driver.implicitly_wait(0)
+            except Exception:
+                try:
+                    self.driver.implicitly_wait(0)
+                except Exception:
+                    pass
             self._default_driver = self.driver
             if self._reuse_session:
                 sb_config.shared_driver = self.driver
@@ -14671,10 +14684,13 @@ class BaseCase(unittest.TestCase):
         self.set_time_limit(self.time_limit)
 
         # Configure the page load timeout
-        if hasattr(settings, "PAGE_LOAD_TIMEOUT"):
-            self.driver.set_page_load_timeout(settings.PAGE_LOAD_TIMEOUT)
-        else:
-            self.driver.set_page_load_timeout(120)  # Selenium uses 300
+        try:
+            if hasattr(settings, "PAGE_LOAD_TIMEOUT"):
+                self.driver.set_page_load_timeout(settings.PAGE_LOAD_TIMEOUT)
+            else:
+                self.driver.set_page_load_timeout(120)  # Selenium uses 300
+        except Exception:
+            pass
 
         # Set the start time for the test (in ms).
         # Although the pytest clock starts before setUp() begins,

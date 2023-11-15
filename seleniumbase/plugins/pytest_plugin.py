@@ -76,6 +76,7 @@ def pytest_addoption(parser):
     --message-duration=SECONDS  (The time length for Messenger alerts.)
     --check-js  (Check for JavaScript errors after page loads.)
     --ad-block  (Block some types of display ads from loading.)
+    --host-resolver-rules=RULES  (Set host-resolver-rules, comma-separated.)
     --block-images  (Block images from loading during tests.)
     --do-not-track  (Indicate to websites that you don't want to be tracked.)
     --verify-delay=SECONDS  (The delay before MasterQA verification checks.)
@@ -798,8 +799,8 @@ def pytest_addoption(parser):
         dest="message_duration",
         default=None,
         help="""Setting this overrides the default time that
-                messenger notifications remain visible when reaching
-                assert statements during Demo Mode.""",
+                messenger notifications remain visible when
+                reaching assert statements during Demo Mode.""",
     )
     parser.addoption(
         "--check_js",
@@ -821,6 +822,25 @@ def pytest_addoption(parser):
         default=False,
         help="""Using this makes WebDriver block display ads
                 that are defined in ad_block_list.AD_BLOCK_LIST.""",
+    )
+    parser.addoption(
+        "--host_resolver_rules",
+        "--host-resolver-rules",
+        action="store",
+        dest="host_resolver_rules",
+        default=None,
+        help="""Use this option to set "host-resolver-rules".
+                This lets you re-map traffic from any domain.
+                Eg. "MAP www.google-analytics.com 0.0.0.0".
+                Eg. "MAP * ~NOTFOUND , EXCLUDE myproxy".
+                Eg. "MAP * 0.0.0.0 , EXCLUDE 127.0.0.1".
+                Eg. "MAP *.google.com myproxy".
+                Find more examples on these pages:
+                (https://www.electronjs.org/docs/
+                 latest/api/command-line-switches)
+                (https://www.chromium.org/developers/
+                 design-documents/network-stack/socks-proxy/)
+                Use comma-separation for multiple host rules.""",
     )
     parser.addoption(
         "--block_images",
@@ -1499,6 +1519,7 @@ def pytest_configure(config):
     sb_config.message_duration = config.getoption("message_duration")
     sb_config.js_checking_on = config.getoption("js_checking_on")
     sb_config.ad_block_on = config.getoption("ad_block_on")
+    sb_config.host_resolver_rules = config.getoption("host_resolver_rules")
     sb_config.block_images = config.getoption("block_images")
     sb_config.do_not_track = config.getoption("do_not_track")
     sb_config.verify_delay = config.getoption("verify_delay")

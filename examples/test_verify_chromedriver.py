@@ -28,3 +28,8 @@ class ChromedriverTests(BaseCase):
                 print("\nWarning -> " + message)
         elif int(major_chromedriver_version) != int(major_chrome_version):
             raise Exception(message)
+        else:
+            print(
+                "\n* Chrome version: {%s}\n* Driver version: {%s}"
+                % (chromedriver_version, chrome_version)
+            )

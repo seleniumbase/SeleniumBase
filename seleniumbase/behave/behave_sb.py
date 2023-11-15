@@ -230,6 +230,7 @@ def get_configured_sb(context):
     sb.proxy_bypass_list = None
     sb.proxy_pac_url = None
     sb.multi_proxy = False
+    sb.host_resolver_rules = None
     sb.enable_3d_apis = False
     sb.swiftshader = False
     sb.ad_block_on = False
@@ -771,6 +772,13 @@ def get_configured_sb(context):
         # Handle: -D multi-proxy / multi_proxy
         if low_key in ["multi-proxy", "multi_proxy"]:
             sb.multi_proxy = True
+            continue
+        # Handle: -D host-resolver-rules=RULES / host_resolver_rules=RULES
+        if low_key in ["host-resolver-rules", "host_resolver_rules"]:
+            host_resolver_rules = userdata[key]
+            if host_resolver_rules == "true":
+                host_resolver_rules = sb.host_resolver_rules
+            sb.host_resolver_rules = host_resolver_rules
             continue
         # Handle: -D enable-3d-apis / enable_3d_apis
         if low_key in ["enable-3d-apis", "enable_3d_apis"]:
