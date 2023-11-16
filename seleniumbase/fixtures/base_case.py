@@ -7749,8 +7749,10 @@ class BaseCase(unittest.TestCase):
         driver_capabilities = self.driver.capabilities
         if "version" in driver_capabilities:
             chrome_version = driver_capabilities["version"]
-        else:
+        elif "browserVersion" in driver_capabilities:
             chrome_version = driver_capabilities["browserVersion"]
+        else:
+            chrome_version = "(Unknown Version)"
         return chrome_version
 
     def get_chromium_version(self):
@@ -15563,8 +15565,10 @@ class BaseCase(unittest.TestCase):
             return "(Unknown Version)"
         if "version" in driver_capabilities:
             browser_version = driver_capabilities["version"]
-        else:
+        elif "browserVersion" in driver_capabilities:
             browser_version = driver_capabilities["browserVersion"]
+        else:
+            browser_version = "(Unknown Version)"
         return browser_version
 
     def _get_driver_name_and_version(self):
