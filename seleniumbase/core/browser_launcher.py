@@ -1094,12 +1094,13 @@ def _set_chrome_options(
     if user_data_dir:
         chrome_options.add_argument(
             "--disable-features=OptimizationHintsFetching,Translate,"
-            "OptimizationTargetPrediction,PrivacySandboxSettings4"
+            "OptimizationTargetPrediction,PrivacySandboxSettings4,"
+            "DownloadBubble,DownloadBubbleV2"
         )
     else:
         chrome_options.add_argument(
             "--disable-features=OptimizationHintsFetching,Translate,"
-            "OptimizationTargetPrediction"
+            "OptimizationTargetPrediction,DownloadBubble,DownloadBubbleV2"
         )
     if (
         is_using_uc(undetectable, browser_name)
