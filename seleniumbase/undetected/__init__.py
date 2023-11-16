@@ -439,8 +439,10 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         try:
             logger.debug("Terminating the UC browser")
             os.kill(self.browser_pid, 15)
-            # Not sure if this is really needed:
-            os.waitpid(self.browser_pid, 0)
+            if IS_POSIX:
+                os.waitpid(self.browser_pid, 0)
+            else:
+                time.sleep(0.05)
         except (AttributeError, ChildProcessError, RuntimeError, OSError):
             pass
         except TimeoutError as e:
