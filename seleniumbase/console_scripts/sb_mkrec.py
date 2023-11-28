@@ -99,6 +99,10 @@ def main():
     force_gui = False
     rec_behave = False
 
+    sys_executable = sys.executable
+    if " " in sys_executable:
+        sys_executable = "python"
+
     if "linux" in sys.platform:
         use_colors = False
     c0, c1, c2, c5, c7, cr = set_colors(use_colors)
@@ -189,18 +193,18 @@ def main():
     print(success)
     run_cmd = None
     if not start_page:
-        run_cmd = "%s -m pytest %s --rec -q -s" % (sys.executable, file_name)
+        run_cmd = "%s -m pytest %s --rec -q -s" % (sys_executable, file_name)
     else:
         run_cmd = "%s -m pytest %s --rec -q -s --url=%s" % (
-            sys.executable, file_name, start_page
+            sys_executable, file_name, start_page
         )
         if '"' not in start_page:
             run_cmd = '%s -m pytest %s --rec -q -s --url="%s"' % (
-                sys.executable, file_name, start_page
+                sys_executable, file_name, start_page
             )
         elif "'" not in start_page:
             run_cmd = "%s -m pytest %s --rec -q -s --url='%s'" % (
-                sys.executable, file_name, start_page
+                sys_executable, file_name, start_page
             )
     if use_edge:
         run_cmd += " --edge"
@@ -217,7 +221,7 @@ def main():
     recorded_filename = file_name[:-3] + "_rec.py"
     recordings_dir = os.path.join(dir_name, "recordings")
     recorded_file = os.path.join(recordings_dir, recorded_filename)
-    prefix = "%s -m " % sys.executable
+    prefix = "%s -m " % sys_executable
     if " " not in recorded_file:
         os.system("%sseleniumbase print %s -n" % (prefix, recorded_file))
     elif '"' not in recorded_file:

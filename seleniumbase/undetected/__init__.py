@@ -214,9 +214,16 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                 language = "en-US"
         options.add_argument("--lang=%s" % language)
         if not options.binary_location:
-            options.binary_location = (
+            binary_location = (
                 browser_executable_path or find_chrome_executable()
             )
+            if binary_location:
+                options.binary_location = binary_location
+            else:
+                # Improve the default error message in this situation.
+                # Setting options.binary_location to None results in:
+                #    "TypeError: Binary Location Must be a String"
+                raise Exception("Chrome not found! Install it first!")
         self._delay = constants.UC.RECONNECT_TIME
         self.user_data_dir = user_data_dir
         self.keep_user_data_dir = keep_user_data_dir

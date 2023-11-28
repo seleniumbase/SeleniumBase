@@ -2874,6 +2874,22 @@ def get_local_driver(
                         driver_version = saved_mcv
                         if is_using_uc(undetectable, browser_name):
                             use_br_version_for_uc = True
+                    if (
+                        (headless or headless2)
+                        and IS_WINDOWS
+                        and major_chrome_version
+                        and int(major_chrome_version) >= 117
+                        and not is_using_uc(undetectable, browser_name)
+                        and not (remote_debug or devtools or use_wire)
+                        and not (proxy_string or multi_proxy or proxy_pac_url)
+                        and (not chromium_arg or "debug" not in chromium_arg)
+                        and (not servername or servername == "localhost")
+                    ):
+                        # Hide the "DevTools listening on ..." message.
+                        # https://bugs.chromium.org
+                        # /p/chromedriver/issues/detail?id=4403#c35
+                        # (Only when the remote debugging port is not needed.)
+                        chrome_options.add_argument("--remote-debugging-pipe")
             except Exception:
                 major_chrome_version = None
             if major_chrome_version:
