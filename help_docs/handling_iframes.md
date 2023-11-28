@@ -55,7 +55,7 @@ To back out of all nested calls of that, use:
 self.set_content_to_default()
 ```
 
-🖼️ See [examples/iframe_tests.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/iframe_tests.py) for tests that use all available iframe commands.
+🖼️ See [SeleniumBase/examples/iframe_tests.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/iframe_tests.py) for tests that use all available iframe commands.
 
 --------
 
