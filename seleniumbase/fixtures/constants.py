@@ -386,6 +386,10 @@ class ValidBinaries:
         "google-chrome-beta",
         "google-chrome-dev",
         "google-chrome-unstable",
+        "brave-browser",
+        "brave-browser-stable",
+        "opera",
+        "opera-stable",
     ]
     valid_edge_binaries_on_linux = [
         "microsoft-edge",
@@ -397,6 +401,8 @@ class ValidBinaries:
         "Google Chrome",
         "Chromium",
         "Google Chrome for Testing",
+        "Brave Browser",
+        "Opera",
     ]
     valid_edge_binaries_on_macos = [
         "Microsoft Edge",
@@ -404,6 +410,8 @@ class ValidBinaries:
     valid_chrome_binaries_on_windows = [
         "chrome.exe",
         "chromium.exe",
+        "brave.exe",
+        "opera.exe",
     ]
     valid_edge_binaries_on_windows = [
         "msedge.exe",
