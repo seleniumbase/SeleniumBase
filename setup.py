@@ -249,14 +249,14 @@ setup(
         # pip install -e .[selenium-wire]
         "selenium-wire": [
             'selenium-wire==5.1.0',
-            'Brotli==1.0.9',
-            'blinker==1.6.2',
+            'Brotli==1.1.0',
+            'blinker==1.7.0',
             'h2==4.1.0',
             'hpack==4.0.0',
             'hyperframe==6.0.1',
             'kaitaistruct==0.10',
-            'pyasn1==0.5.0',
-            'zstandard==0.21.0',
+            'pyasn1==0.5.1',
+            'zstandard==0.22.0',
         ],
     },
     packages=[
