@@ -7007,13 +7007,13 @@ class BaseCase(unittest.TestCase):
             # Can't change the system [Downloads Folder] on Safari or IE
             return os.path.join(os.path.expanduser("~"), "downloads")
         elif (
-            self.driver.capabilities["browserName"].lower() == "chrome"
+            "chrome" in self.driver.capabilities
             and int(self.get_chromedriver_version().split(".")[0]) < 73
             and self.headless
         ):
             return os.path.join(os.path.expanduser("~"), "downloads")
         elif (
-            self.driver.capabilities["browserName"].lower() == "chrome"
+            "chrome" in self.driver.capabilities
             and int(self.get_chromedriver_version().split(".")[0]) >= 110
             and int(self.get_chromedriver_version().split(".")[0]) <= 112
             and self.headless
@@ -7711,17 +7711,19 @@ class BaseCase(unittest.TestCase):
         """Return True if the browser is Chrome or Edge."""
         self.__check_scope()
         chromium = False
-        browser_name = self.driver.capabilities["browserName"]
-        if browser_name.lower() in ("chrome", "edge", "msedge"):
+        if (
+            "chrome" in self.driver.capabilities
+            or "msedge" in self.driver.capabilities
+        ):
             chromium = True
         return chromium
 
     def __fail_if_not_using_chrome(self, method):
         chrome = False
-        browser_name = self.driver.capabilities["browserName"]
-        if browser_name.lower() == "chrome":
+        if "chrome" in self.driver.capabilities:
             chrome = True
         if not chrome:
+            browser_name = self.driver.capabilities["browserName"]
             message = (
                 'Error: "%s" should only be called by tests '
                 'running with "--browser=chrome" / "--chrome"! '
@@ -7732,8 +7734,8 @@ class BaseCase(unittest.TestCase):
             raise NotUsingChromeException(message)
 
     def __fail_if_not_using_chromium(self, method):
-        browser_name = self.driver.capabilities["browserName"]
         if not self.is_chromium():
+            browser_name = self.driver.capabilities["browserName"]
             message = (
                 'Error: "%s" should only be called by tests '
                 'running with a Chromium browser! (Chrome or Edge) '
@@ -15578,12 +15580,12 @@ class BaseCase(unittest.TestCase):
             else:
                 return None
         driver = self.driver
-        if driver.capabilities["browserName"].lower() == "chrome":
+        if "chrome" in self.driver.capabilities:
             cap_dict = driver.capabilities["chrome"]
             return (
                 "chromedriver", cap_dict["chromedriverVersion"].split(" ")[0]
             )
-        elif driver.capabilities["browserName"].lower() == "msedge":
+        elif "msedge" in self.driver.capabilities:
             cap_dict = driver.capabilities["msedge"]
             return (
                 "msedgedriver", cap_dict["msedgedriverVersion"].split(" ")[0]
