@@ -17,5 +17,5 @@ class GitHubTests(BaseCase):
         self.assert_element("div.repository-content")
         self.assert_text("SeleniumBase", "strong a")
         self.click('a[title="seleniumbase"]')
-        self.slow_click('a[aria-describedby="item-type-fixtures"]')
-        self.assert_element('a[aria-describedby="item-type-base_case.py"]')
+        self.slow_click('td[class*="large"] a[title="fixtures"]')
+        self.assert_element('td[class*="large"] a[title="base_case.py"]')

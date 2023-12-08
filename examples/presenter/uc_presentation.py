@@ -29,13 +29,17 @@ class UCPresentationClass(BaseCase):
 
         self.get_new_driver(undetectable=True)
         try:
-            self.driver.uc_open_with_tab("https://nowsecure.nl/#relax")
+            self.driver.uc_open_with_reconnect(
+                "https://nowsecure.nl/#relax", reconnect_time=3
+            )
             try:
                 self.assert_text("OH YEAH, you passed!", "h1", timeout=4)
                 self.post_message("Selenium wasn't detected!", duration=4)
             except Exception:
                 self.clear_all_cookies()
-                self.driver.uc_open_with_tab("https://nowsecure.nl/#relax")
+                self.driver.uc_open_with_reconnect(
+                    "https://nowsecure.nl/#relax", reconnect_time=3
+                )
                 self.assert_text("OH YEAH, you passed!", "h1", timeout=4)
                 self.post_message("Selenium wasn't detected!", duration=4)
         finally:
@@ -51,8 +55,7 @@ class UCPresentationClass(BaseCase):
                 "</mk-1></p>"
             )
             self.begin_presentation(filename="uc_presentation.html")
-            subprocess.Popen("pytest multi_uc.py --uc -q -n3", shell=True)
-            self.sleep(6)
+            subprocess.Popen("pytest multi_uc.py --uc -n3", shell=True).wait()
             self.create_presentation(theme="serif", transition="fade")
             self.add_slide(
                 "<p>Not just an army of bots, but an army of bots<br />"

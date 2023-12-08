@@ -63,7 +63,7 @@ class ShadowDomTests(BaseCase):
         )
         remove_button = (
             "downloads-manager::shadow #downloadsList"
-            " downloads-item::shadow #remove"
+            " downloads-item::shadow #remove-old"
         )
         no_downloads_area = "downloads-manager::shadow #no-downloads"
 
