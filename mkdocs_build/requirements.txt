@@ -7,7 +7,7 @@ pymdown-extensions>=10.5
 pipdeptree>=2.13.1
 python-dateutil>=2.8.2
 Markdown==3.5.1
-markdown2==2.4.10
+markdown2==2.4.11
 MarkupSafe==2.1.3
 Jinja2==3.1.2
 click==8.1.7
@@ -20,7 +20,7 @@ paginate==0.5.6
 pyquery==2.0.0
 readtime==3.0.0
 mkdocs==1.5.3
-mkdocs-material==9.4.14
-mkdocs-exclude-search==0.6.5
+mkdocs-material==9.5.0
+mkdocs-exclude-search==0.6.6
 mkdocs-simple-hooks==0.1.5
 mkdocs-material-extensions==1.3.1

@@ -27,7 +27,11 @@ def create_proxy_ext(
     if not bypass_list:
         bypass_list = ""
     if proxy_string:
-        proxy_host = proxy_string.split(":")[0]
+        proxy_protocol = ""
+        if proxy_string.count("://") == 1:
+            proxy_protocol = proxy_string.split("://")[0] + "://"
+            proxy_string = proxy_string.split("://")[1]
+        proxy_host = proxy_protocol + proxy_string.split(":")[0]
         proxy_port = proxy_string.split(":")[1]
         background_js = (
             """var config = {\n"""

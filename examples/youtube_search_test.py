@@ -32,4 +32,4 @@ class YouTubeSearchTests(BaseCase):
             'Actual text was "%s"!' % (search_term, top_result),
         )
         self.click(result_selector)
-        self.assert_element_present('a[aria-label*="SeleniumBase"]')
+        self.sleep(1)

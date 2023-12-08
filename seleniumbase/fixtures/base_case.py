@@ -199,22 +199,17 @@ class BaseCase(unittest.TestCase):
         Eg. "python my_test.py" instead of "pytest my_test.py"."""
         if name == "__main__":  # Test called with "python"
             import subprocess
-            from pytest import main as pytest_main
             all_args = []
             for arg in args:
                 all_args.append(arg)
             for arg in sys.argv[1:]:
                 all_args.append(arg)
-            multi = False
-            for arg in all_args:
-                if arg.startswith("-n") or arg.startswith("--numprocesses"):
-                    multi = True
-            if multi:
-                subprocess.call(
-                    [sys.executable, "-m", "pytest", file, "-s", *all_args]
-                )
-            else:
-                pytest_main([file, "-s", *all_args])
+            # See: https://stackoverflow.com/a/54666289/7058266
+            # from pytest import main as pytest_main
+            # pytest_main([file, "-s", *all_args])
+            subprocess.call(
+                [sys.executable, "-m", "pytest", file, "-s", *all_args]
+            )
 
     def open(self, url):
         """Navigates the current browser window to the specified page."""
@@ -7007,13 +7002,13 @@ class BaseCase(unittest.TestCase):
             # Can't change the system [Downloads Folder] on Safari or IE
             return os.path.join(os.path.expanduser("~"), "downloads")
         elif (
-            self.driver.capabilities["browserName"].lower() == "chrome"
+            "chrome" in self.driver.capabilities
             and int(self.get_chromedriver_version().split(".")[0]) < 73
             and self.headless
         ):
             return os.path.join(os.path.expanduser("~"), "downloads")
         elif (
-            self.driver.capabilities["browserName"].lower() == "chrome"
+            "chrome" in self.driver.capabilities
             and int(self.get_chromedriver_version().split(".")[0]) >= 110
             and int(self.get_chromedriver_version().split(".")[0]) <= 112
             and self.headless
@@ -7711,17 +7706,19 @@ class BaseCase(unittest.TestCase):
         """Return True if the browser is Chrome or Edge."""
         self.__check_scope()
         chromium = False
-        browser_name = self.driver.capabilities["browserName"]
-        if browser_name.lower() in ("chrome", "edge", "msedge"):
+        if (
+            "chrome" in self.driver.capabilities
+            or "msedge" in self.driver.capabilities
+        ):
             chromium = True
         return chromium
 
     def __fail_if_not_using_chrome(self, method):
         chrome = False
-        browser_name = self.driver.capabilities["browserName"]
-        if browser_name.lower() == "chrome":
+        if "chrome" in self.driver.capabilities:
             chrome = True
         if not chrome:
+            browser_name = self.driver.capabilities["browserName"]
             message = (
                 'Error: "%s" should only be called by tests '
                 'running with "--browser=chrome" / "--chrome"! '
@@ -7732,8 +7729,8 @@ class BaseCase(unittest.TestCase):
             raise NotUsingChromeException(message)
 
     def __fail_if_not_using_chromium(self, method):
-        browser_name = self.driver.capabilities["browserName"]
         if not self.is_chromium():
+            browser_name = self.driver.capabilities["browserName"]
             message = (
                 'Error: "%s" should only be called by tests '
                 'running with a Chromium browser! (Chrome or Edge) '
@@ -13584,15 +13581,6 @@ class BaseCase(unittest.TestCase):
 
     ############
 
-    @decorators.deprecated("The Driver Manager prevents old drivers.")
-    def is_chromedriver_too_old(self):
-        """Before chromedriver 73, there was no version check, which
-        means it's possible to run a new Chrome with old drivers."""
-        self.__fail_if_not_using_chrome("is_chromedriver_too_old()")
-        if int(self.get_chromedriver_version().split(".")[0]) < 73:
-            return True  # chromedriver is too old! Please upgrade!
-        return False
-
     @decorators.deprecated("You should use re.escape() instead.")
     def jq_format(self, code):
         # DEPRECATED - re.escape() already performs this action.
@@ -15578,12 +15566,12 @@ class BaseCase(unittest.TestCase):
             else:
                 return None
         driver = self.driver
-        if driver.capabilities["browserName"].lower() == "chrome":
+        if "chrome" in self.driver.capabilities:
             cap_dict = driver.capabilities["chrome"]
             return (
                 "chromedriver", cap_dict["chromedriverVersion"].split(" ")[0]
             )
-        elif driver.capabilities["browserName"].lower() == "msedge":
+        elif "msedge" in self.driver.capabilities:
             cap_dict = driver.capabilities["msedge"]
             return (
                 "msedgedriver", cap_dict["msedgedriverVersion"].split(" ")[0]

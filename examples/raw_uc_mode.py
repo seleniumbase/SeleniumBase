@@ -1,7 +1,7 @@
 """SB Manager using UC Mode for evading bot-detection."""
 from seleniumbase import SB
 
-with SB(uc=True) as sb:
+with SB(uc=True, test=True) as sb:
     sb.driver.uc_open_with_tab("https://nowsecure.nl/#relax")
     sb.sleep(1.2)
     if not sb.is_text_visible("OH YEAH, you passed!", "h1"):
