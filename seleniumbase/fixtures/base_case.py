@@ -251,7 +251,15 @@ class BaseCase(unittest.TestCase):
         try:
             self.driver.get(url)
         except Exception as e:
-            if (
+            if not hasattr(e, "msg") and hasattr(self.driver, "default_get"):
+                try:
+                    self._check_browser()
+                    time.sleep(0.4)
+                except Exception:
+                    logging.debug("Browser crashed! Will open new browser!")
+                    self.driver = self.get_new_driver()
+                self.driver.default_get(url)
+            elif (
                 "ERR_CONNECTION_TIMED_OUT" in e.msg
                 or "ERR_CONNECTION_CLOSED" in e.msg
                 or "ERR_CONNECTION_RESET" in e.msg
@@ -1018,7 +1026,7 @@ class BaseCase(unittest.TestCase):
             # Use after "\t" or Keys.TAB to cycle through elements first.
             self.click_active_element()
             return
-        element = self.wait_for_element_visible(
+        element = self.wait_for_element_present(
             selector, by=by, timeout=timeout
         )
         if (
@@ -1113,7 +1121,7 @@ class BaseCase(unittest.TestCase):
     def press_keys(self, selector, text, by="css selector", timeout=None):
         """Use send_keys() to press one key at a time."""
         self.wait_for_ready_state_complete()
-        element = self.wait_for_element_clickable(
+        element = self.wait_for_element_present(
             selector, by=by, timeout=timeout
         )
         if self.demo_mode:
