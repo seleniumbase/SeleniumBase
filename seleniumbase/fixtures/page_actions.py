@@ -1583,7 +1583,7 @@ def send_keys(
     driver, selector, text, by="css selector", timeout=settings.LARGE_TIMEOUT
 ):
     selector, by = page_utils.recalculate_selector(selector, by)
-    element = wait_for_element_clickable(
+    element = wait_for_element_present(
         driver, selector, by=by, timeout=timeout
     )
     if not text.endswith("\n"):
@@ -1597,7 +1597,7 @@ def press_keys(
     driver, selector, text, by="css selector", timeout=settings.LARGE_TIMEOUT
 ):
     selector, by = page_utils.recalculate_selector(selector, by)
-    element = wait_for_element_clickable(
+    element = wait_for_element_present(
         driver, selector, by=by, timeout=timeout
     )
     if not text.endswith("\n"):
