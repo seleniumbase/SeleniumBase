@@ -131,7 +131,7 @@ setup(
     ],
     python_requires=">=3.7",
     install_requires=[
-        'pip>=23.3.1',
+        'pip>=23.3.2',
         'packaging>=23.2',
         'setuptools>=68.0.0;python_version<"3.8"',
         'setuptools>=69.0.2;python_version>="3.8"',
@@ -156,7 +156,7 @@ setup(
         'h11==0.14.0',
         'outcome==1.3.0.post0',
         'trio==0.22.2;python_version<"3.8"',
-        'trio==0.23.1;python_version>="3.8"',
+        'trio==0.23.2;python_version>="3.8"',
         'trio-websocket==0.11.1',
         'wsproto==1.2.0',
         'selenium==4.11.2;python_version<"3.8"',
@@ -206,7 +206,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage==7.2.7;python_version<"3.8"',
-            'coverage==7.3.2;python_version>="3.8"',
+            'coverage==7.3.3;python_version>="3.8"',
             'pytest-cov==4.1.0',
         ],
         # pip install -e .[flake8]
