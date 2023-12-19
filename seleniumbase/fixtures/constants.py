@@ -390,12 +390,14 @@ class ValidBinaries:
         "brave-browser-stable",
         "opera",
         "opera-stable",
+        "chrome.exe",  # WSL (Windows Subsystem for Linux)
     ]
     valid_edge_binaries_on_linux = [
         "microsoft-edge",
         "microsoft-edge-stable",
         "microsoft-edge-beta",
         "microsoft-edge-dev",
+        "msedge.exe",  # WSL (Windows Subsystem for Linux)
     ]
     valid_chrome_binaries_on_macos = [
         "Google Chrome",
