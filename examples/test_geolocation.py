@@ -7,8 +7,12 @@ class TestGeolocation(BaseCase):
         self.save_teardown_screenshot()  # If test fails, or if "--screenshot"
         if self.is_chromium() and not self._multithreaded:
             # Reset Permissions and GeolocationOverride
-            self.execute_cdp_cmd("Browser.resetPermissions", {})
-            self.execute_cdp_cmd("Emulation.setGeolocationOverride", {})
+            try:
+                self.open("about:blank")
+                self.execute_cdp_cmd("Emulation.setGeolocationOverride", {})
+                self.execute_cdp_cmd("Browser.resetPermissions", {})
+            except Exception:
+                pass
         super().tearDown()
 
     def test_geolocation(self):

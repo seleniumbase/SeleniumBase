@@ -9,8 +9,7 @@ class GitHubTests(BaseCase):
             message = "Unsupported mode for this test."
             print("\n  " + message)
             self.skip(message)
-        self.open("https://github.com/search?q=SeleniumBase")
-        self.slow_click('a[href="/seleniumbase/SeleniumBase"]')
+        self.open("https://github.com/seleniumbase/SeleniumBase")
         self.click_if_visible('[data-action="click:signup-prompt#dismiss"]')
         self.highlight("div.Layout-main")
         self.highlight("div.Layout-sidebar")

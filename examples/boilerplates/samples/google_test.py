@@ -17,7 +17,8 @@ class GoogleTests(BaseCase):
         self.assert_title_contains("Google")
         self.sleep(0.05)
         self.save_screenshot_to_logs()  # ("./latest_logs" folder)
-        self.wait_for_element('iframe[role="presentation"]')
+        if not self.is_element_visible("iframe"):
+            self.sleep(1.5)  # A slow pop-up might appear
         self.hide_elements('iframe')  # Hide "Sign in" pop-up
         self.sleep(0.05)
         self.save_screenshot_to_logs()
