@@ -386,6 +386,7 @@ class ValidBinaries:
         "google-chrome-beta",
         "google-chrome-dev",
         "google-chrome-unstable",
+        "brave",
         "brave-browser",
         "brave-browser-stable",
         "opera",
