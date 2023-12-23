@@ -134,7 +134,7 @@ setup(
         'pip>=23.3.2',
         'packaging>=23.2',
         'setuptools>=68.0.0;python_version<"3.8"',
-        'setuptools>=69.0.2;python_version>="3.8"',
+        'setuptools>=69.0.3;python_version>="3.8"',
         'wheel>=0.42.0',
         'attrs>=23.1.0',
         "certifi>=2023.11.17",
