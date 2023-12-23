@@ -427,7 +427,12 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                 self.service.stop()
             except Exception:
                 pass
-            time.sleep(timeout)
+            if isinstance(timeout, str):
+                if timeout.lower() == "breakpoint":
+                    breakpoint()  # To continue:
+                    pass  # Type "c" & press ENTER!
+            else:
+                time.sleep(timeout)
             try:
                 self.service.start()
             except Exception:
