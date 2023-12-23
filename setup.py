@@ -206,7 +206,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage==7.2.7;python_version<"3.8"',
-            'coverage==7.3.3;python_version>="3.8"',
+            'coverage==7.3.4;python_version>="3.8"',
             'pytest-cov==4.1.0',
         ],
         # pip install -e .[flake8]
