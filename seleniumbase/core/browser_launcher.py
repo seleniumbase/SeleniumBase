@@ -1270,7 +1270,10 @@ def _set_firefox_options(
                 f_pref = firefox_pref_item.split(":")[0]
                 f_pref_value = firefox_pref_item.split(":")[1]
                 needs_conversion = True
-            else:  # More than one ":" in the set. (Too many!)
+            elif firefox_pref_item.count("://") == 1:
+                f_pref = firefox_pref_item.split(":")[0]
+                f_pref_value = ":".join(firefox_pref_item.split(":")[1:])
+            else:  # More than one ":" in the set without a URL.
                 raise Exception(
                     'Incorrect formatting for Firefox "pref:value" set!'
                 )
