@@ -388,6 +388,7 @@ class ValidBinaries:
         "google-chrome-unstable",
         "brave-browser",
         "brave-browser-stable",
+        "brave",
         "opera",
         "opera-stable",
         "chrome.exe",  # WSL (Windows Subsystem for Linux)
