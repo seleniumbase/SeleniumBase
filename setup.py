@@ -136,7 +136,7 @@ setup(
         'setuptools>=68.0.0;python_version<"3.8"',
         'setuptools>=69.0.3;python_version>="3.8"',
         'wheel>=0.42.0',
-        'attrs>=23.1.0',
+        'attrs>=23.2.0',
         "certifi>=2023.11.17",
         'filelock>=3.12.2;python_version<"3.8"',
         'filelock>=3.13.1;python_version>="3.8"',
@@ -144,6 +144,7 @@ setup(
         'platformdirs>=4.1.0;python_version>="3.8"',
         'parse>=1.20.0',
         'parse-type>=0.6.2',
+        'pyyaml>=6.0.1',
         "six==1.16.0",
         "idna==3.6",
         'chardet==5.2.0',
@@ -169,7 +170,7 @@ setup(
         'pluggy==1.2.0;python_version<"3.8"',
         'pluggy==1.3.0;python_version>="3.8"',
         "py==1.11.0",
-        'pytest==7.4.3',
+        'pytest==7.4.4',
         "pytest-html==2.0.1",  # Newer ones had issues
         'pytest-metadata==3.0.0',
         "pytest-ordering==0.6",
@@ -206,7 +207,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage==7.2.7;python_version<"3.8"',
-            'coverage==7.3.4;python_version>="3.8"',
+            'coverage==7.4.0;python_version>="3.8"',
             'pytest-cov==4.1.0',
         ],
         # pip install -e .[flake8]
@@ -229,7 +230,8 @@ setup(
         # pip install -e .[pdfminer]
         # (An optional library for parsing PDF files.)
         "pdfminer": [
-            'pdfminer.six==20221105',
+            'pdfminer.six==20221105;python_version<"3.8"',
+            'pdfminer.six==20231228;python_version>="3.8"',
             'cryptography==39.0.2;python_version<"3.9"',
             'cryptography==41.0.7;python_version>="3.9"',
             'cffi==1.15.1;python_version<"3.8"',
@@ -246,6 +248,10 @@ setup(
         # pip install -e .[psutil]
         "psutil": [
             "psutil==5.9.6",
+        ],
+        # pip install -e .[selenium-stealth]
+        "selenium-stealth": [
+            'selenium-stealth==1.0.6',
         ],
         # pip install -e .[selenium-wire]
         "selenium-wire": [

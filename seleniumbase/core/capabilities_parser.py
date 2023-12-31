@@ -1,6 +1,7 @@
 import re
 import ast
 import json
+import yaml  # Requires pyyaml
 
 
 def _analyze_ast(contents):
@@ -183,17 +184,19 @@ def _read_file(file):
 def _parse_py_file(cap_file):
     all_code = _read_file(cap_file)
     capabilities = _analyze_ast(all_code)
-
     if not capabilities:
         capabilities = _analyze_manual(all_code)
-
     return capabilities
 
 
 def _parse_json_file(cap_file):
     all_code = _read_file(cap_file)
-
     return json.loads(all_code)
+
+
+def _parse_yaml_file(cap_file):
+    all_code = _read_file(cap_file)
+    return yaml.safe_load(all_code)
 
 
 def get_desired_capabilities(cap_file):
@@ -201,10 +204,13 @@ def get_desired_capabilities(cap_file):
         capabilities = _parse_py_file(cap_file)
     elif cap_file.endswith(".json"):
         capabilities = _parse_json_file(cap_file)
+    elif (cap_file.endswith(".yml") or cap_file.endswith(".yaml")):
+        capabilities = _parse_yaml_file(cap_file)
     else:
-        raise Exception("\n\n`%s` is not a Python or JSON file!\n" % cap_file)
-
+        raise Exception(
+            '\n\n`%s` must end in ".py", ".json", ".yml", or ".yaml"!\n'
+            % cap_file
+        )
     if len(capabilities.keys()) == 0:
         raise Exception("Unable to parse desired capabilities file!")
-
     return capabilities

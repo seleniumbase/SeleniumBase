@@ -6650,7 +6650,12 @@ class BaseCase(unittest.TestCase):
                 try:
                     from pdfminer.high_level import extract_text
                 except Exception:
-                    shared_utils.pip_install("pdfminer.six")
+                    if not sys.version_info >= (3, 8):
+                        shared_utils.pip_install(
+                            "pdfminer.six", version="20221105"
+                        )
+                    else:
+                        shared_utils.pip_install("pdfminer.six")
                     from pdfminer.high_level import extract_text
         if not password:
             password = ""
