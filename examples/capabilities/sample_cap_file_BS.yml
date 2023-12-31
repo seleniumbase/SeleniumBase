@@ -1,0 +1,12 @@
+# Desired capabilities example YML file for BrowserStack:
+# https://www.browserstack.com/docs/automate/capabilities
+platforms:
+  - browserName: safari
+    osVersion: 17
+    deviceName: iPhone 15 Pro Max
+buildIdentifier: ${BUILD_NUMBER}
+parallelsPerPlatform: 1
+projectName: My Project
+browserstackLocal: true
+debug: true
+networkLogs: true
