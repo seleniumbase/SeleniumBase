@@ -114,6 +114,7 @@ pytest my_first_test.py --demo
 
 ```python
 from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 class MyTestClass(BaseCase):
     def test_swag_labs(self):
@@ -121,20 +122,21 @@ class MyTestClass(BaseCase):
         self.type("#user-name", "standard_user")
         self.type("#password", "secret_sauce\n")
         self.assert_element("div.inventory_list")
-        self.assert_text("PRODUCTS", "span.title")
+        self.assert_exact_text("Products", "span.title")
         self.click('button[name*="backpack"]')
         self.click("#shopping_cart_container a")
-        self.assert_text("YOUR CART", "span.title")
+        self.assert_exact_text("Your Cart", "span.title")
         self.assert_text("Backpack", "div.cart_item")
         self.click("button#checkout")
         self.type("#first-name", "SeleniumBase")
         self.type("#last-name", "Automation")
         self.type("#postal-code", "77123")
         self.click("input#continue")
-        self.assert_text("CHECKOUT: OVERVIEW")
+        self.assert_text("Checkout: Overview")
         self.assert_text("Backpack", "div.cart_item")
+        self.assert_text("29.99", "div.inventory_item_price")
         self.click("button#finish")
-        self.assert_exact_text("THANK YOU FOR YOUR ORDER", "h2")
+        self.assert_exact_text("Thank you for your order!", "h2")
         self.assert_element('img[alt="Pony Express"]')
         self.js_click("a#logout_sidebar_link")
         self.assert_element("div#login_button_container")
@@ -173,23 +175,28 @@ self.save_screenshot(FILE_NAME)  # 保存当前页面的截图
 
 ```python
 from seleniumbase.translate.chinese import 硒测试用例
+硒测试用例.main(__name__, __file__)
 
 class 我的测试类(硒测试用例):
     def test_例子1(self):
         self.开启("https://zh.wikipedia.org/wiki/")
         self.断言标题("维基百科，自由的百科全书")
-        self.断言元素('a[title="首页"]')
+        self.断言元素('a[title="Wikipedia:关于"]')
+        self.断言元素('span:contains("创建账号")')
+        self.断言元素('span:contains("登录")')
         self.断言文本("新闻动态", "span#新闻动态")
-        self.输入文本("#searchInput", "舞龍")
-        self.单击("#searchButton")
+        self.输入文本('input[name="search"]', "舞龍")
+        self.单击('button:contains("搜索")')
         self.断言文本("舞龍", "#firstHeading")
         self.断言元素('img[src*="Chinese_draak.jpg"]')
-        self.输入文本("#searchInput", "麻婆豆腐")
-        self.单击("#searchButton")
+        self.回去()
+        self.输入文本('input[name="search"]', "麻婆豆腐")
+        self.单击('button:contains("搜索")')
         self.断言文本("麻婆豆腐", "#firstHeading")
-        self.断言元素('div.thumb div:contains("一家中餐館的麻婆豆腐")')
-        self.输入文本("#searchInput", "精武英雄")
-        self.单击("#searchButton")
+        self.断言元素('figure:contains("一家中餐館的麻婆豆腐")')
+        self.回去()
+        self.输入文本('input[name="search"]', "精武英雄")
+        self.单击('button:contains("搜索")')
         self.断言元素('img[src*="Fist_of_legend.jpg"]')
         self.断言文本("李连杰", 'li a[title="李连杰"]')
 ```
