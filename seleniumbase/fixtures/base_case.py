@@ -6918,13 +6918,14 @@ class BaseCase(unittest.TestCase):
             image = Image.open(image_file_path)
             draw = ImageDraw.Draw(image)
             draw.rectangle(
-                (0, 0, (max_width * 6) + 6, 16 * len_text_rows),
+                (0, 0, int(max_width * 8.32) + 10, 23 * len_text_rows + 2),
                 fill=(236, 236, 28),
             )
             draw.text(
                 (4, 2),  # Coordinates
                 overlay_text,  # Text
-                (8, 38, 176),  # Color
+                fill=(8, 38, 176),  # Color
+                font_size=18,  # Font Size
             )
             image.save(image_file_path, "PNG", quality=100, optimize=True)
 
