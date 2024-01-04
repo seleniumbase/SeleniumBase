@@ -11,9 +11,9 @@ class ShadowRootTest(BaseCase):
             message = "Skipping test in Recorder Mode."
             print(message)
             self.skip(message)
-        elif self.browser == "safari":
+        elif not self.is_chromium():
             self.open_if_not_url("about:blank")
-            message = "Skipping test for using Safari."
+            message = "This test is only for Chromium browsers!"
             print(message)
             self.skip(message)
         self.open("https://seleniumbase.io/other/shadow_dom")
