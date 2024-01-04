@@ -1816,6 +1816,9 @@ def get_remote_driver(
                 platform_name = desired_caps[key]
             elif re.match("[a-zA-Z0-9]*:[a-zA-Z0-9]*", key):
                 extension_capabilities[key] = desired_caps[key]
+        cap_str = str(desired_caps).lower()
+        if "browserstack" in cap_str or "bstack" in cap_str:
+            chrome_options.set_capability("bstack:options", desired_caps)
         chrome_options.set_capability("cloud:options", capabilities)
         if selenoid:
             snops = selenoid_options
@@ -1876,6 +1879,9 @@ def get_remote_driver(
                 platform_name = desired_caps[key]
             elif re.match("[a-zA-Z0-9]*:[a-zA-Z0-9]*", key):
                 extension_capabilities[key] = desired_caps[key]
+        cap_str = str(desired_caps).lower()
+        if "browserstack" in cap_str or "bstack" in cap_str:
+            firefox_options.set_capability("bstack:options", desired_caps)
         firefox_options.set_capability("cloud:options", capabilities)
         if selenoid:
             snops = selenoid_options
@@ -2016,6 +2022,9 @@ def get_remote_driver(
         remote_options = ArgOptions()
         for cap_name, cap_value in desired_caps.items():
             remote_options.set_capability(cap_name, cap_value)
+        cap_str = str(desired_caps).lower()
+        if "browserstack" in cap_str or "bstack" in cap_str:
+            remote_options.set_capability("bstack:options", desired_caps)
         driver = webdriver.Remote(
             command_executor=address,
             options=remote_options,
