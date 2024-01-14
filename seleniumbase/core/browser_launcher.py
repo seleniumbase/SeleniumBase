@@ -1044,6 +1044,7 @@ def _set_chrome_options(
                 binary_loc = detect_b_ver.get_binary_location(br_app, True)
                 if os.path.exists(binary_loc):
                     binary_location = binary_loc
+    disabled_features = []
     if chromium_arg:
         # Can be a comma-separated list of Chromium args
         chromium_arg_list = chromium_arg.split(",")
@@ -1070,6 +1071,8 @@ def _set_chrome_options(
                 if os.path.exists(binary_loc):
                     binary_location = binary_loc
             elif len(chromium_arg_item) >= 3:
+                if 'disable-features' in chromium_arg_item:
+                    disabled_features.append(chromium_arg_item.split('=')[-1])
                 chrome_options.add_argument(chromium_arg_item)
     if devtools and not headless:
         chrome_options.add_argument("--auto-open-devtools-for-tabs")
@@ -1092,16 +1095,20 @@ def _set_chrome_options(
     chrome_options.add_argument("--ash-no-nudges")
     chrome_options.add_argument("--deny-permission-prompts")
     if user_data_dir:
-        chrome_options.add_argument(
-            "--disable-features=OptimizationHintsFetching,Translate,"
-            "OptimizationTargetPrediction,PrivacySandboxSettings4,"
-            "DownloadBubble,DownloadBubbleV2"
-        )
+        disabled_features.extend(["OptimizationHintsFetching",
+                                  "Translate",
+                                  "OptimizationTargetPrediction",
+                                  "PrivacySandboxSettings4",
+                                  "DownloadBubble",
+                                  "DownloadBubbleV2"])
     else:
-        chrome_options.add_argument(
-            "--disable-features=OptimizationHintsFetching,Translate,"
-            "OptimizationTargetPrediction,DownloadBubble,DownloadBubbleV2"
-        )
+        disabled_features.extend(["OptimizationHintsFetching",
+                                  "Translate",
+                                  "OptimizationTargetPrediction",
+                                  "DownloadBubble",
+                                  "DownloadBubbleV2"])
+    disabled_features_str=','.join(disabled_features)
+    chrome_options.add_argument("--disable-features=%s" % disabled_features_str)
     if (
         is_using_uc(undetectable, browser_name)
         and (
