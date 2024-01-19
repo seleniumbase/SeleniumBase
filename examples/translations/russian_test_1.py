@@ -7,7 +7,7 @@ class МойТестовыйКласс(ТестНаСелен):
     def test_пример_1(self):
         self.открыть("https://ru.wikipedia.org/wiki/")
         self.подтвердить_элемент('[title="Русский язык"]')
-        self.подтвердить_текст("Википедия", "h2.main-wikimedia-header")
+        self.подтвердить_текст("Википедия", "div.main-wikimedia-header")
         self.введите("#searchInput", "МГУ")
         self.нажмите("#searchButton")
         self.подтвердить_текст("университет", "#firstHeading")
