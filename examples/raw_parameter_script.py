@@ -81,6 +81,7 @@ if pure_python:
     sb.window_size = None
     sb.maximize_option = False
     sb.visual_baseline = False
+    sb.disable_features = None
     sb._disable_beforeunload = False
     sb.save_screenshot_after_test = False
     sb.no_screenshot_after_test = False
