@@ -36,6 +36,7 @@ class SeleniumBrowser(Plugin):
     --firefox-pref=SET  (Set a Firefox preference:value set, comma-separated.)
     --extension-zip=ZIP  (Load a Chrome Extension .zip|.crx, comma-separated.)
     --extension-dir=DIR  (Load a Chrome Extension directory, comma-separated.)
+    --disable-features="F1,F2" (Disable features, comma-separated, no spaces.)
     --binary-location=PATH  (Set path of the Chromium browser binary to use.)
     --driver-version=VER  (Set the chromedriver or uc_driver version to use.)
     --sjw  (Skip JS Waits for readyState to be "complete" or Angular to load.)
@@ -363,6 +364,16 @@ class SeleniumBrowser(Plugin):
             help="""Designates the Chrome Extension folder to load.
                     Format: A directory containing the Chrome extension.
                     (Can also be a comma-separated list of directories.)
+                    Default: None.""",
+        )
+        parser.addoption(
+            "--disable_features",
+            "--disable-features",
+            action="store",
+            dest="disable_features",
+            default=None,
+            help="""Disable Chromium features from Chrome/Edge browsers.
+                    Format: A comma-separated list of Chromium features.
                     Default: None.""",
         )
         parser.addoption(
@@ -1089,6 +1100,7 @@ class SeleniumBrowser(Plugin):
         test.test.user_data_dir = self.options.user_data_dir
         test.test.extension_zip = self.options.extension_zip
         test.test.extension_dir = self.options.extension_dir
+        test.test.disable_features = self.options.disable_features
         test.test.binary_location = self.options.binary_location
         test.test.driver_version = self.options.driver_version
         test.test.page_load_strategy = self.options.page_load_strategy

@@ -763,6 +763,7 @@ def _set_chrome_options(
     user_data_dir,
     extension_zip,
     extension_dir,
+    disable_features,
     binary_location,
     driver_version,
     page_load_strategy,
@@ -1044,6 +1045,7 @@ def _set_chrome_options(
                 binary_loc = detect_b_ver.get_binary_location(br_app, True)
                 if os.path.exists(binary_loc):
                     binary_location = binary_loc
+    extra_disabled_features = []
     if chromium_arg:
         # Can be a comma-separated list of Chromium args
         chromium_arg_list = chromium_arg.split(",")
@@ -1069,8 +1071,13 @@ def _set_chrome_options(
                 )
                 if os.path.exists(binary_loc):
                     binary_location = binary_loc
+            elif "disable-features=" in chromium_arg_item:
+                d_f = chromium_arg_item.split("disable-features=")[-1]
+                extra_disabled_features.append(d_f)
             elif len(chromium_arg_item) >= 3:
                 chrome_options.add_argument(chromium_arg_item)
+    if disable_features:
+        extra_disabled_features.extend(disable_features.split(","))
     if devtools and not headless:
         chrome_options.add_argument("--auto-open-devtools-for-tabs")
     if user_agent:
@@ -1089,19 +1096,36 @@ def _set_chrome_options(
     if headless or headless2 or is_using_uc(undetectable, browser_name):
         chrome_options.add_argument("--disable-renderer-backgrounding")
     chrome_options.add_argument("--disable-backgrounding-occluded-windows")
+    chrome_options.add_argument("--disable-client-side-phishing-detection")
+    chrome_options.add_argument("--disable-oopr-debug-crash-dump")
+    chrome_options.add_argument("--disable-top-sites")
     chrome_options.add_argument("--ash-no-nudges")
+    chrome_options.add_argument("--no-crash-upload")
     chrome_options.add_argument("--deny-permission-prompts")
+    included_disabled_features = []
     if user_data_dir:
-        chrome_options.add_argument(
-            "--disable-features=OptimizationHintsFetching,Translate,"
-            "OptimizationTargetPrediction,PrivacySandboxSettings4,"
-            "DownloadBubble,DownloadBubbleV2"
-        )
+        included_disabled_features.append("OptimizationHintsFetching")
+        included_disabled_features.append("Translate")
+        included_disabled_features.append("OptimizationTargetPrediction")
+        included_disabled_features.append("PrivacySandboxSettings4")
+        included_disabled_features.append("DownloadBubble")
+        included_disabled_features.append("DownloadBubbleV2")
+        for item in extra_disabled_features:
+            if item not in included_disabled_features:
+                included_disabled_features.append(item)
+        d_f_string = ",".join(included_disabled_features)
+        chrome_options.add_argument("--disable-features=%s" % d_f_string)
     else:
-        chrome_options.add_argument(
-            "--disable-features=OptimizationHintsFetching,Translate,"
-            "OptimizationTargetPrediction,DownloadBubble,DownloadBubbleV2"
-        )
+        included_disabled_features.append("OptimizationHintsFetching")
+        included_disabled_features.append("Translate")
+        included_disabled_features.append("OptimizationTargetPrediction")
+        included_disabled_features.append("DownloadBubble")
+        included_disabled_features.append("DownloadBubbleV2")
+        for item in extra_disabled_features:
+            if item not in included_disabled_features:
+                included_disabled_features.append(item)
+        d_f_string = ",".join(included_disabled_features)
+        chrome_options.add_argument("--disable-features=%s" % d_f_string)
     if (
         is_using_uc(undetectable, browser_name)
         and (
@@ -1338,6 +1362,7 @@ def get_driver(
     user_data_dir=None,
     extension_zip=None,
     extension_dir=None,
+    disable_features=None,
     binary_location=None,
     driver_version=None,
     page_load_strategy=None,
@@ -1550,6 +1575,7 @@ def get_driver(
             user_data_dir,
             extension_zip,
             extension_dir,
+            disable_features,
             binary_location,
             driver_version,
             page_load_strategy,
@@ -1605,6 +1631,7 @@ def get_driver(
             user_data_dir,
             extension_zip,
             extension_dir,
+            disable_features,
             binary_location,
             driver_version,
             page_load_strategy,
@@ -1664,6 +1691,7 @@ def get_remote_driver(
     user_data_dir,
     extension_zip,
     extension_dir,
+    disable_features,
     binary_location,
     driver_version,
     page_load_strategy,
@@ -1784,6 +1812,7 @@ def get_remote_driver(
             user_data_dir,
             extension_zip,
             extension_dir,
+            disable_features,
             binary_location,
             driver_version,
             page_load_strategy,
@@ -1955,6 +1984,7 @@ def get_remote_driver(
             user_data_dir,
             extension_zip,
             extension_dir,
+            disable_features,
             binary_location,
             driver_version,
             page_load_strategy,
@@ -2075,6 +2105,7 @@ def get_local_driver(
     user_data_dir,
     extension_zip,
     extension_dir,
+    disable_features,
     binary_location,
     driver_version,
     page_load_strategy,
@@ -2570,18 +2601,6 @@ def get_local_driver(
         edge_options.add_argument(
             "--disable-autofill-keyboard-accessory-view[8]"
         )
-        edge_options.add_argument("--ash-no-nudges")
-        edge_options.add_argument("--deny-permission-prompts")
-        if user_data_dir:
-            edge_options.add_argument(
-                "--disable-features=OptimizationHintsFetching,Translate,"
-                "OptimizationTargetPrediction,PrivacySandboxSettings4"
-            )
-        else:
-            edge_options.add_argument(
-                "--disable-features=OptimizationHintsFetching,Translate,"
-                "OptimizationTargetPrediction"
-            )
         edge_options.add_argument("--disable-browser-side-navigation")
         edge_options.add_argument("--disable-translate")
         if not enable_ws:
@@ -2596,6 +2615,12 @@ def get_local_driver(
         if headless or headless2 or is_using_uc(undetectable, browser_name):
             edge_options.add_argument("--disable-renderer-backgrounding")
         edge_options.add_argument("--disable-backgrounding-occluded-windows")
+        edge_options.add_argument("--disable-client-side-phishing-detection")
+        edge_options.add_argument("--disable-oopr-debug-crash-dump")
+        edge_options.add_argument("--disable-top-sites")
+        edge_options.add_argument("--ash-no-nudges")
+        edge_options.add_argument("--no-crash-upload")
+        edge_options.add_argument("--deny-permission-prompts")
         if (
             page_load_strategy
             and page_load_strategy.lower() in ["eager", "none"]
@@ -2677,6 +2702,7 @@ def get_local_driver(
             edge_options.add_argument("--disable-gpu")
         if IS_LINUX:
             edge_options.add_argument("--disable-dev-shm-usage")
+        extra_disabled_features = []
         set_binary = False
         if chromium_arg:
             # Can be a comma-separated list of Chromium args
@@ -2690,8 +2716,33 @@ def get_local_driver(
                         chromium_arg_item = "--" + chromium_arg_item
                 if "set-binary" in chromium_arg_item:
                     set_binary = True
+                elif "disable-features=" in chromium_arg_item:
+                    d_f = chromium_arg_item.split("disable-features=")[-1]
+                    extra_disabled_features.append(d_f)
                 elif len(chromium_arg_item) >= 3:
                     edge_options.add_argument(chromium_arg_item)
+        if disable_features:
+            extra_disabled_features.extend(disable_features.split(","))
+        included_disabled_features = []
+        if user_data_dir:
+            included_disabled_features.append("OptimizationHintsFetching")
+            included_disabled_features.append("Translate")
+            included_disabled_features.append("OptimizationTargetPrediction")
+            included_disabled_features.append("PrivacySandboxSettings4")
+            for item in extra_disabled_features:
+                if item not in included_disabled_features:
+                    included_disabled_features.append(item)
+            d_f_string = ",".join(included_disabled_features)
+            edge_options.add_argument("--disable-features=%s" % d_f_string)
+        else:
+            included_disabled_features.append("OptimizationHintsFetching")
+            included_disabled_features.append("Translate")
+            included_disabled_features.append("OptimizationTargetPrediction")
+            for item in extra_disabled_features:
+                if item not in included_disabled_features:
+                    included_disabled_features.append(item)
+            d_f_string = ",".join(included_disabled_features)
+            edge_options.add_argument("--disable-features=%s" % d_f_string)
         if (set_binary or IS_LINUX) and not binary_location:
             br_app = "edge"
             binary_loc = detect_b_ver.get_binary_location(br_app)
@@ -2831,6 +2882,7 @@ def get_local_driver(
                 user_data_dir,
                 extension_zip,
                 extension_dir,
+                disable_features,
                 binary_location,
                 driver_version,
                 page_load_strategy,
@@ -3348,6 +3400,7 @@ def get_local_driver(
                                         None,  # user_data_dir
                                         None,  # extension_zip
                                         None,  # extension_dir
+                                        None,  # disable_features
                                         binary_location,
                                         driver_version,
                                         page_load_strategy,
@@ -3565,6 +3618,7 @@ def get_local_driver(
                         None,  # user_data_dir
                         None,  # extension_zip
                         None,  # extension_dir
+                        None,  # disable_features
                         binary_location,
                         driver_version,
                         page_load_strategy,

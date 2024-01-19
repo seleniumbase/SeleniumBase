@@ -108,6 +108,7 @@ def Driver(
     user_data_dir=None,  # Set the Chrome user data directory to use.
     extension_zip=None,  # Load a Chrome Extension .zip|.crx, comma-separated.
     extension_dir=None,  # Load a Chrome Extension directory, comma-separated.
+    disable_features=None,  # "F1,F2" (Disable Chrome features, ","-separated.)
     binary_location=None,  # Set path of the Chromium browser binary to use.
     driver_version=None,  # Set the chromedriver or uc_driver version to use.
     page_load_strategy=None,  # Set Chrome PLS to "normal", "eager", or "none".
@@ -264,6 +265,30 @@ def Driver(
                 proxy_string = proxy_string[1:-1]
             elif proxy_string.startswith("'") and proxy_string.endswith("'"):
                 proxy_string = proxy_string[1:-1]
+    c_a = chromium_arg
+    if c_a is None and "--chromium-arg" in arg_join:
+        if "--chromium-arg=" in arg_join:
+            c_a = arg_join.split("--chromium-arg=")[1].split(" ")[0]
+        elif "--chromium-arg " in arg_join:
+            c_a = arg_join.split("--chromium-arg ")[1].split(" ")[0]
+        if c_a:
+            if c_a.startswith('"') and c_a.endswith('"'):
+                c_a = c_a[1:-1]
+            elif c_a.startswith("'") and c_a.endswith("'"):
+                c_a = c_a[1:-1]
+    chromium_arg = c_a
+    d_f = disable_features
+    if d_f is None and "--disable-features" in arg_join:
+        if "--disable-features=" in arg_join:
+            d_f = arg_join.split("--disable-features=")[1].split(" ")[0]
+        elif "--disable-features " in arg_join:
+            d_f = arg_join.split("--disable-features ")[1].split(" ")[0]
+        if d_f:
+            if d_f.startswith('"') and d_f.endswith('"'):
+                d_f = d_f[1:-1]
+            elif c_a.startswith("'") and d_f.endswith("'"):
+                d_f = d_f[1:-1]
+    disable_features = d_f
     user_agent = agent
     recorder_mode = False
     if recorder_ext:
@@ -505,6 +530,7 @@ def Driver(
         user_data_dir=user_data_dir,
         extension_zip=extension_zip,
         extension_dir=extension_dir,
+        disable_features=disable_features,
         binary_location=binary_location,
         driver_version=driver_version,
         page_load_strategy=page_load_strategy,

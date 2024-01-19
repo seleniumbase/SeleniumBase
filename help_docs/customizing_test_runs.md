@@ -138,6 +138,7 @@ pytest my_first_test.py --settings-file=custom_settings.py
 --firefox-pref=SET  # (Set a Firefox preference:value set, comma-separated.)
 --extension-zip=ZIP  # (Load a Chrome Extension .zip|.crx, comma-separated.)
 --extension-dir=DIR  # (Load a Chrome Extension directory, comma-separated.)
+--disable-features="F1,F2"  # (Disable features, comma-separated, no spaces.)
 --binary-location=PATH  # (Set path of the Chromium browser binary to use.)
 --driver-version=VER  # (Set the chromedriver or uc_driver version to use.)
 --sjw  # (Skip JS Waits for readyState to be "complete" or Angular to load.)

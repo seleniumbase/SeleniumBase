@@ -3777,6 +3777,7 @@ class BaseCase(unittest.TestCase):
         user_data_dir=None,
         extension_zip=None,
         extension_dir=None,
+        disable_features=None,
         binary_location=None,
         driver_version=None,
         page_load_strategy=None,
@@ -3835,6 +3836,7 @@ class BaseCase(unittest.TestCase):
         user_data_dir - Chrome's User Data Directory to use (Chrome-only)
         extension_zip - A Chrome Extension ZIP file to use (Chrome-only)
         extension_dir - A Chrome Extension folder to use (Chrome-only)
+        disable_features - the option to disable features on Chrome/Edge
         binary_location - the path of the browser binary to use (Chromium)
         driver_version - the chromedriver or uc_driver version to force
         page_load_strategy - the option to change pageLoadStrategy (Chrome)
@@ -3960,6 +3962,8 @@ class BaseCase(unittest.TestCase):
             extension_zip = self.extension_zip
         if extension_dir is None:
             extension_dir = self.extension_dir
+        if disable_features is None:
+            disable_features = self.disable_features
         if binary_location is None:
             binary_location = self.binary_location
         if driver_version is None:
@@ -4040,6 +4044,7 @@ class BaseCase(unittest.TestCase):
             user_data_dir=user_data_dir,
             extension_zip=extension_zip,
             extension_dir=extension_dir,
+            disable_features=disable_features,
             binary_location=binary_location,
             driver_version=driver_version,
             page_load_strategy=page_load_strategy,
@@ -14331,6 +14336,7 @@ class BaseCase(unittest.TestCase):
             self.user_data_dir = sb_config.user_data_dir
             self.extension_zip = sb_config.extension_zip
             self.extension_dir = sb_config.extension_dir
+            self.disable_features = sb_config.disable_features
             self.binary_location = sb_config.binary_location
             self.driver_version = sb_config.driver_version
             self.page_load_strategy = sb_config.page_load_strategy
@@ -14652,6 +14658,7 @@ class BaseCase(unittest.TestCase):
                 user_data_dir=self.user_data_dir,
                 extension_zip=self.extension_zip,
                 extension_dir=self.extension_dir,
+                disable_features=self.disable_features,
                 binary_location=self.binary_location,
                 driver_version=self.driver_version,
                 page_load_strategy=self.page_load_strategy,

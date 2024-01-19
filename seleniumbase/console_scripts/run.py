@@ -75,10 +75,11 @@ def show_basic_usage():
     seleniumbase_logo = logo_helper.get_seleniumbase_logo()
     print(seleniumbase_logo)
     print("")
-    time.sleep(0.25)  # Enough time to see the logo
+    time.sleep(0.28)  # Enough time to see the logo
     show_package_location()
     show_version_info()
     print("")
+    time.sleep(0.72)  # Enough time to see the version
     sc = ""
     sc += ' * USAGE: "seleniumbase [COMMAND] [PARAMETERS]"\n'
     sc += ' *    OR:        "sbase [COMMAND] [PARAMETERS]"\n'
