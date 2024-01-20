@@ -1314,22 +1314,24 @@ self.click("a.analytics")  # Clicks the generated button
 
 <h3>🔵 How to use deferred asserts:</h3>
 
-<p>Let's say you want to verify multiple different elements on a web page in a single test, but you don't want the test to fail until you verified several elements at once so that you don't have to rerun the test to find more missing elements on the same page. That's where deferred asserts come in. Here's the example:</p>
+<p>Let's say you want to verify multiple different elements on a web page in a single test, but you don't want the test to fail until you verified several elements at once so that you don't have to rerun the test to find more missing elements on the same page. That's where deferred asserts come in. Here's an example:</p>
 
 ```python
 from seleniumbase import BaseCase
 BaseCase.main(__name__, __file__)
 
-class MyTestClass(BaseCase):
+class DeferredAssertTests(BaseCase):
     def test_deferred_asserts(self):
-        self.open('https://xkcd.com/993/')
-        self.wait_for_element('#comic')
+        self.open("https://xkcd.com/993/")
+        self.wait_for_element("#comic")
         self.deferred_assert_element('img[alt="Brand Identity"]')
         self.deferred_assert_element('img[alt="Rocket Ship"]')  # Will Fail
-        self.deferred_assert_element('#comicmap')
-        self.deferred_assert_text('Fake Item', '#middleContainer')  # Will Fail
-        self.deferred_assert_text('Random', '#middleContainer')
+        self.deferred_assert_element("#comicmap")
+        self.deferred_assert_text("Fake Item", "ul.comicNav")  # Will Fail
+        self.deferred_assert_text("Random", "ul.comicNav")
         self.deferred_assert_element('a[name="Super Fake !!!"]')  # Will Fail
+        self.deferred_assert_exact_text("Brand Identity", "#ctitle")
+        self.deferred_assert_exact_text("Fake Food", "#comic")  # Will Fail
         self.process_deferred_asserts()
 ```
 
