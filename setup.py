@@ -34,7 +34,7 @@ if sys.argv[-1] == "publish":
             print("\nERROR! Publishing to PyPI requires Python>=3.9")
             sys.exit()
         print("\n*** Checking code health with flake8:\n")
-        os.system("python -m pip install 'flake8==6.1.0'")
+        os.system("python -m pip install 'flake8==7.0.0'")
         flake8_status = os.system("flake8 --exclude=recordings,temp")
         if flake8_status != 0:
             print("\nERROR! Fix flake8 issues before publishing to PyPI!\n")
@@ -161,14 +161,14 @@ setup(
         'trio-websocket==0.11.1',
         'wsproto==1.2.0',
         'selenium==4.11.2;python_version<"3.8"',
-        'selenium==4.16.0;python_version>="3.8"',
+        'selenium==4.17.2;python_version>="3.8"',
         'cssselect==1.2.0',
         "sortedcontainers==2.4.0",
         'fasteners==0.19',
         'execnet==2.0.2',
         'iniconfig==2.0.0',
         'pluggy==1.2.0;python_version<"3.8"',
-        'pluggy==1.3.0;python_version>="3.8"',
+        'pluggy==1.4.0;python_version>="3.8"',
         "py==1.11.0",
         'pytest==7.4.4',
         "pytest-html==2.0.1",  # Newer ones had issues
@@ -233,7 +233,7 @@ setup(
             'pdfminer.six==20221105;python_version<"3.8"',
             'pdfminer.six==20231228;python_version>="3.8"',
             'cryptography==39.0.2;python_version<"3.9"',
-            'cryptography==41.0.7;python_version>="3.9"',
+            'cryptography==42.0.0;python_version>="3.9"',
             'cffi==1.15.1;python_version<"3.8"',
             'cffi==1.16.0;python_version>="3.8"',
             "pycparser==2.21",
@@ -247,7 +247,7 @@ setup(
         ],
         # pip install -e .[psutil]
         "psutil": [
-            "psutil==5.9.6",
+            "psutil==5.9.8",
         ],
         # pip install -e .[selenium-stealth]
         "selenium-stealth": [
