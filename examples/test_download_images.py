@@ -6,6 +6,9 @@ BaseCase.main(__name__, __file__)
 
 class DownloadImages(BaseCase):
     def test_download_images_directly(self):
+        if self._multithreaded:
+            self.open_if_not_url("about:blank")
+            self.skip("Skipping test in multi-threaded mode.")
         self.open("seleniumbase.io/examples/chart_maker/ReadMe")
         img_elements_with_src = self.find_elements("img[src]")
         unique_src_values = []
@@ -27,7 +30,6 @@ class DownloadImages(BaseCase):
     def test_download_images_via_screenshot(self):
         if self.recorder_mode:
             self.open("about:blank")
-            print("Skipping test in Recorder Mode.")
             self.skip("Skipping test in Recorder Mode.")
         self.open("seleniumbase.io/error_page/")
         img_elements_with_src = self.find_elements("img[src]")
