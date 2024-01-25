@@ -9,6 +9,7 @@ filelock>=3.12.2;python_version<"3.8"
 filelock>=3.13.1;python_version>="3.8"
 platformdirs>=4.0.0;python_version<"3.8"
 platformdirs>=4.1.0;python_version>="3.8"
+typing-extensions>=4.9.0;python_version>="3.8"
 parse>=1.20.0
 parse-type>=0.6.2
 pyyaml>=6.0.1
