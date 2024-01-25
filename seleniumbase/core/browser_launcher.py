@@ -1030,7 +1030,10 @@ def _set_chrome_options(
     if swiftshader:
         chrome_options.add_argument("--use-gl=angle")
         chrome_options.add_argument("--use-angle=swiftshader-webgl")
-    elif not is_using_uc(undetectable, browser_name):
+    elif (
+        not is_using_uc(undetectable, browser_name)
+        and not enable_3d_apis
+    ):
         chrome_options.add_argument("--disable-gpu")
     if not IS_LINUX and is_using_uc(undetectable, browser_name):
         chrome_options.add_argument("--disable-dev-shm-usage")
@@ -2698,7 +2701,10 @@ def get_local_driver(
         if swiftshader:
             edge_options.add_argument("--use-gl=angle")
             edge_options.add_argument("--use-angle=swiftshader-webgl")
-        else:
+        elif (
+            not is_using_uc(undetectable, browser_name)
+            and not enable_3d_apis
+        ):
             edge_options.add_argument("--disable-gpu")
         if IS_LINUX:
             edge_options.add_argument("--disable-dev-shm-usage")
