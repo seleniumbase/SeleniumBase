@@ -23,7 +23,7 @@ concurrency:
 jobs:
   # Build job
   build:
-    if: github.repository == "seleniumbase/SeleniumBase"
+    if: github.repository == 'seleniumbase/SeleniumBase'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -43,7 +43,7 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    if: github.repository == "seleniumbase/SeleniumBase"
+    if: github.repository == 'seleniumbase/SeleniumBase'
     runs-on: ubuntu-latest
     needs: build
     steps:
