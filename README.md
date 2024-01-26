@@ -920,7 +920,7 @@ behave behave_bdd/features/ --junit -D rs -D headless
 
 <h3>🔵 Allure Reports:</h3>
 
-See: [https://docs.qameta.io/allure/](https://docs.qameta.io/allure/#_pytest)
+See: [https://allurereport.org/docs/pytest/](https://allurereport.org/docs/pytest/)
 
 SeleniumBase no longer includes ``allure-pytest`` as part of installed dependencies. If you want to use it, install it first:
 
