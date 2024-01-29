@@ -3,7 +3,7 @@ from seleniumbase import SB
 
 def open_the_form_turnstile_page(sb):
     sb.driver.uc_open_with_reconnect(
-        "https://seleniumbase.io/apps/form_turnstile", reconnect_time=2.27,
+        "https://seleniumbase.io/apps/form_turnstile", reconnect_time=2.5,
     )
 
 
