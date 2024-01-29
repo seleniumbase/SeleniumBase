@@ -143,7 +143,7 @@ setup(
         'platformdirs>=4.0.0;python_version<"3.8"',
         'platformdirs>=4.1.0;python_version>="3.8"',
         'typing-extensions>=4.9.0;python_version>="3.8"',
-        'parse>=1.20.0',
+        'parse>=1.20.1',
         'parse-type>=0.6.2',
         'pyyaml>=6.0.1',
         "six==1.16.0",
@@ -171,7 +171,8 @@ setup(
         'pluggy==1.2.0;python_version<"3.8"',
         'pluggy==1.4.0;python_version>="3.8"',
         "py==1.11.0",
-        'pytest==7.4.4',
+        'pytest==7.4.4;python_version<"3.8"',
+        'pytest==8.0.0;python_version>="3.8"',
         "pytest-html==2.0.1",  # Newer ones had issues
         'pytest-metadata==3.0.0',
         "pytest-ordering==0.6",
@@ -208,7 +209,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage==7.2.7;python_version<"3.8"',
-            'coverage==7.4.0;python_version>="3.8"',
+            'coverage==7.4.1;python_version>="3.8"',
             'pytest-cov==4.1.0',
         ],
         # pip install -e .[flake8]
