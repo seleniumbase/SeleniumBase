@@ -35,7 +35,7 @@
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/commander.md">🎖️ GUI</a> |
 <a href="https://seleniumbase.io/demo_page">📰 TestPage</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/case_plans.md">🗂️ CasePlans</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/html_inspector.md">🕵️ Inspector</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md">👤 UC Mode</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">🧬 Hybrid</a> |
 <a href="https://seleniumbase.io/devices/?url=seleniumbase.com">💻 Farm</a>
 <br />
