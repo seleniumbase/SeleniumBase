@@ -343,6 +343,11 @@ class Tether:
     )
 
 
+class ProxyPy:
+    # The version installed if proxy.py is not installed
+    VER = "2.4.3"
+
+
 class SeleniumWire:
     # The version installed if selenium-wire is not installed
     VER = "5.1.0"
