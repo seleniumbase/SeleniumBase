@@ -19,21 +19,31 @@
 
 --------
 
-Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py): (Default option: ``--chrome``)
+Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py): (Default option: ``--chrome``)
+
+```bash
+pytest my_first_test.py
+```
+
+<img src="https://seleniumbase.github.io/cdn/gif/fast_swag.gif" title="SeleniumBase Demo Page" /><br />
+
+--------
+
+Here's one way of changing the browser to Firefox:
+
+```bash
+pytest my_first_test.py --firefox
+```
+
+--------
+
+Another [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py) for a web page that has lots of different HTML items:
 
 ```bash
 pytest test_demo_site.py
 ```
 
 <img src="https://seleniumbase.github.io/cdn/gif/demo_page_4.gif" title="SeleniumBase Demo Page" /><br />
-
---------
-
-Run an example test in Firefox:
-
-```bash
-pytest my_first_test.py --browser=firefox
-```
 
 --------
 
