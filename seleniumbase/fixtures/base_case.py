@@ -11771,19 +11771,31 @@ class BaseCase(unittest.TestCase):
             raise Exception('Expecting a numeric value for "value"!')
         if not color:
             color = ""
+        else:
+            color = color.replace("'", "\\'")
         label = label.replace("'", "\\'")
-        color = color.replace("'", "\\'")
-        data_point = """
-            {
-            name: '%s',
-            y: %s,
-            color: '%s'
-            },
-            """ % (
-            label,
-            value,
-            color,
-        )
+        if color:
+            data_point = """
+                {
+                name: '%s',
+                y: %s,
+                color: '%s'
+                },
+                """ % (
+                label,
+                value,
+                color,
+            )
+        else:
+            data_point = """
+                {
+                name: '%s',
+                y: %s,
+                },
+                """ % (
+                label,
+                value,
+            )
         data_point = textwrap.dedent(data_point)
         self._chart_data[chart_name].append(data_point)
         if self._chart_first_series[chart_name]:
