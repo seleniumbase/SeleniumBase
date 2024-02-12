@@ -62,13 +62,13 @@ class MyTestClass(BaseCase):
 #    If you don't specify a "timeout", a default timeout is used.
 #    Default timeouts are configured in seleniumbase/config/settings.py
 #
-# 3. SeleniumBase methods often perform multiple actions. For example,
-#    self.type(SELECTOR, TEXT) will do the following:
-#    * Wait for the element to be visible
-#    * Wait for the element to be interactive
-#    * Clear the text field
-#    * Type in the new text
-#    * Press Enter/Return if the text ends in "\n": {element.submit()}
+# 3. SeleniumBase methods often perform multiple actions.
+#    Example: self.type(SELECTOR, TEXT) does the following:
+#    * Waits for the element to be visible
+#    * Waits for the element to be interactive
+#    * Clears the text field
+#    * Types in the new text
+#    * Presses Enter/Return if the text ends in "\n": element.submit()
 #
 # 4. There are duplicate method names that exist for the same method:
 #    (This makes it easier to switch over from other test frameworks.)
@@ -116,6 +116,12 @@ class MyTestClass(BaseCase):
 #        text = self.get_text("h2").strip()
 #        self.assert_true("xkcd.com".strip() == text)
 #    ]
+#    Is also the same as:
+#    [
+#        element = self.find_element("h2")
+#        text = element.text.strip()
+#        self.assert_true("xkcd.com".strip() == text)
+#    ]
 #
 #    Example 3:
 #    [
@@ -129,7 +135,7 @@ class MyTestClass(BaseCase):
 #
 # 6. self.assert_exact_text(TEXT) ignores leading and trailing
 #    whitespace in the TEXT assertion.
-#    So, self.assert_exact_text("Some Text") will find [" Some Text "].
+#    So, self.assert_exact_text("Some Text") accepts [" Some Text "].
 #
 # 7. self.js_click(SELECTOR) can be used to click on hidden elements.
 #
