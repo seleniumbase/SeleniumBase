@@ -32,6 +32,8 @@ sbase objectify my_first_test.py
 sbase revert-objects my_first_test.py
 sbase encrypt
 sbase decrypt
+sbase proxy
+sbase proxy --hostname=127.0.0.1 --port=8899
 sbase download server
 sbase grid-hub start
 sbase grid-node start --hub=127.0.0.1
@@ -79,7 +81,7 @@ def show_basic_usage():
     show_package_location()
     show_version_info()
     print("")
-    time.sleep(0.72)  # Enough time to see the version
+    time.sleep(0.62)  # Enough time to see the version
     sc = ""
     sc += ' * USAGE: "seleniumbase [COMMAND] [PARAMETERS]"\n'
     sc += ' *    OR:        "sbase [COMMAND] [PARAMETERS]"\n'
@@ -108,6 +110,7 @@ def show_basic_usage():
     sc += "      revert-objects   [SB_FILE.py] [OPTIONS]\n"
     sc += "      encrypt / obfuscate\n"
     sc += "      decrypt / unobfuscate\n"
+    sc += "      proxy            (Start a basic proxy server)\n"
     sc += "      download server  (Get Selenium Grid JAR file)\n"
     sc += "      grid-hub         [start|stop] [OPTIONS]\n"
     sc += "      grid-node        [start|stop] --hub=[HOST/IP]\n"
@@ -1210,6 +1213,24 @@ def main():
         show_options()
     elif command == "behave-options" or command == "--behave-options":
         show_behave_options()
+    elif command == "proxy" or command == "--proxy":
+        import fasteners
+        import os
+        import warnings
+
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", category=UserWarning)
+            pip_find_lock = fasteners.InterProcessLock(
+                constants.PipInstall.FINDLOCK
+            )
+            with pip_find_lock:
+                try:
+                    from proxy import proxy  # noqa: F401
+                except Exception:
+                    shared_utils.pip_install(
+                        "proxy.py", version=constants.ProxyPy.VER
+                    )
+            os.system("proxy %s" % " ".join(sys.argv[2:]))
     elif command == "help" or command == "--help":
         if len(command_args) >= 1:
             if command_args[0] == "get":

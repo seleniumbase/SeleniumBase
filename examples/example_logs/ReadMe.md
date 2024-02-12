@@ -45,7 +45,7 @@ python -m http.server 1948
 🔵 Here's a full example of what the SeleniumBase Dashboard may look like:
 
 ```bash
-pytest test_suite.py --dashboard --rs --headless
+pytest test_suite.py test_image_saving.py --dashboard --rs --headless
 ```
 
 <img src="https://seleniumbase.github.io/cdn/img/dashboard_2.png" alt="The SeleniumBase Dashboard" title="The SeleniumBase Dashboard" width="480" />

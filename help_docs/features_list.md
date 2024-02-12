@@ -1,7 +1,7 @@
 <!-- SeleniumBase Docs -->
 
-<!-- YouTube View --><a href="https://www.youtube.com/watch?v=EablmOazy-k"><img src="http://img.youtube.com/vi/EablmOazy-k/0.jpg" title="SeleniumBase on YouTube" width="285" /></a>
-<!-- GitHub Only --><p>(<b><a href="https://www.youtube.com/watch?v=EablmOazy-k">Watch the new tutorial on YouTube</a></b>)</p>
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=EablmOazy-k"><img src="http://img.youtube.com/vi/EablmOazy-k/0.jpg" title="SeleniumBase on YouTube" width="365" /></a>
+<!-- GitHub Only --><p>(<b><a href="https://www.youtube.com/watch?v=EablmOazy-k">Watch the SeleniumBase tutorial from Selenium-Conf-2023 on YouTube</a></b>)</p>
 
 <a id="feature_list"></a>
 
@@ -25,7 +25,7 @@
 * Can run tests with proxy+auth via PAC URL. (``--proxy-pac-url=USER:PASS@URL.pac``)
 * Can run tests with a customized browser user agent. (``--agent=USER_AGENT_STRING``)
 * Can set a Chromium User Data Directory/Profile to load. (``--user-data-dir=DIR``)
-* Can avoid detection by sites that try to block Selenium. (``--undetected``/``--uc``)
+* Can [avoid detection](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md) by sites that try to block Selenium. (``--undetected``/``--uc``)
 * Can integrate with [selenium-wire](https://github.com/wkeeling/selenium-wire) for inspecting browser requests. (``--wire``)
 * Can load Chrome Extension ZIP files. (``--extension-zip=ZIP``)
 * Can load Chrome Extension folders. (``--extension-dir=DIR``)
@@ -50,11 +50,11 @@
 
 --------
 
-<!-- YouTube View --><a href="https://www.youtube.com/watch?v=yEQeAU_mrg0"><img src="http://img.youtube.com/vi/yEQeAU_mrg0/0.jpg" title="SeleniumBase on YouTube" width="285" /></a>
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=yEQeAU_mrg0"><img src="http://img.youtube.com/vi/yEQeAU_mrg0/0.jpg" title="SeleniumBase on YouTube" width="365" /></a>
 <!-- GitHub Only --><p>(<b><a href="https://www.youtube.com/watch?v=yEQeAU_mrg0">Have fun with test automation!</a></b>)</p>
 
-(<b><a href="https://www.youtube.com/watch?v=Sjzq9kU5kOw">Watch the old tutorial on YouTube</a></b>)
+(<b><a href="https://www.youtube.com/watch?v=Sjzq9kU5kOw">Watch the original tutorial on YouTube</a></b>)
 
-<p align="left"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/sb_logo_10.png" alt="SeleniumBase" title="SeleniumBase" width="200"></a></p>
+<p align="left"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/sb_logo_10.png" alt="SeleniumBase" title="SeleniumBase" width="240"></a></p>
 
-[<img src="https://seleniumbase.github.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="200">](https://seleniumbase.io/)
+[<img src="https://seleniumbase.github.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="240">](https://seleniumbase.io/)

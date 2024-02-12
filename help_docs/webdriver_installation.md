@@ -66,18 +66,18 @@ brew upgrade geckodriver
 
 **Linux shortcuts**:
 
-If you still need the web drivers, here are some scripts to help you get ``chromedriver`` and ``geckodriver`` on a Linux machine:
+If you still need drivers, these scripts download ``chromedriver`` and ``geckodriver`` to a Linux machine:
 
 ```bash
-wget https://chromedriver.storage.googleapis.com/72.0.3626.69/chromedriver_linux64.zip
+wget https://chromedriver.storage.googleapis.com/114.0.5735.90/chromedriver_linux64.zip
 unzip chromedriver_linux64.zip
 mv chromedriver /usr/local/bin/
 chmod +x /usr/local/bin/chromedriver
 ```
 
 ```bash
-wget https://github.com/mozilla/geckodriver/releases/download/v0.33.0/geckodriver-v0.33.0-linux64.tar.gz
-tar xvfz geckodriver-v0.33.0-linux64.tar.gz
+wget https://github.com/mozilla/geckodriver/releases/download/v0.34.0/geckodriver-v0.34.0-linux64.tar.gz
+tar xvfz geckodriver-v0.34.0-linux64.tar.gz
 mv geckodriver /usr/local/bin/
 chmod +x /usr/local/bin/geckodriver
 ```

@@ -38,6 +38,7 @@ class HackTests(BaseCase):
             self.set_text_content('#shelf-1 a[href*="mac"]', "ALL")
             self.set_text_content('#shelf-1 a[href*="iphone"]', "YOUR")
             self.set_text_content('#shelf-1 a[href*="ipad"]', "BASE")
+            self.remove_element('#shelf-1 [role="listitem"]:nth-child(5)')
             self.set_text_content('#shelf-1 a[href*="watch"]', "ARE")
             self.set_text_content('#shelf-1 a[href*="airpods"]', "BELONG")
             self.set_text_content('#shelf-1 a[href*="airtag"]', "TO")

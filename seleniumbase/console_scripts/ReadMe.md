@@ -37,6 +37,7 @@ COMMANDS:
       revert-objects   [SB_FILE.py] [OPTIONS]
       encrypt / obfuscate
       decrypt / unobfuscate
+      proxy            (Start a basic proxy server)
       download server  (Get Selenium Grid JAR file)
       grid-hub         [start|stop] [OPTIONS]
       grid-node        [start|stop] --hub=[HOST/IP]
@@ -652,6 +653,25 @@ Runs the password encryption/obfuscation tool.
 
 Runs the password decryption/unobfuscation tool.
 (Where you can enter an encrypted password to decrypt.)
+
+<h3>proxy</h3>
+
+* Usage:
+
+```bash
+sbase proxy [OPTIONS]
+```
+
+* Options:
+
+``--hostname=HOSTNAME``  (Set ``hostname``) (Default: ``127.0.0.1``)
+``--port=PORT``          (Set ``port``)     (Default: ``8899``)
+``--help`` / ``-h``      (Display list of all available ``proxy`` options.)
+
+* Output:
+
+Launch a basic proxy server on the current machine.
+(Uses ``127.0.0.1:8899`` as the default address.)
 
 <h3>download</h3>
 

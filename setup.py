@@ -92,7 +92,19 @@ setup(
     author_email="mdmintz@gmail.com",
     maintainer="Michael Mintz",
     license="MIT",
-    keywords="pytest automation selenium browser testing webdriver sbase",
+    keywords=[
+        "pytest",
+        "selenium",
+        "framework",
+        "automation",
+        "browser",
+        "testing",
+        "webdriver",
+        "seleniumbase",
+        "sbase",
+        "crawling",
+        "scraping",
+    ],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Console",
@@ -124,6 +136,8 @@ setup(
         "Topic :: Software Development :: Quality Assurance",
         "Topic :: Software Development :: Code Generators",
         "Topic :: Software Development :: Libraries",
+        "Topic :: Software Development :: Libraries :: Application Frameworks",
+        "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: Software Development :: Testing",
         "Topic :: Software Development :: Testing :: Acceptance",
         "Topic :: Software Development :: Testing :: Traffic Generation",
@@ -131,17 +145,17 @@ setup(
     ],
     python_requires=">=3.7",
     install_requires=[
-        'pip>=23.3.2',
+        'pip>=24.0',
         'packaging>=23.2',
         'setuptools>=68.0.0;python_version<"3.8"',
-        'setuptools>=69.0.3;python_version>="3.8"',
+        'setuptools>=69.1.0;python_version>="3.8"',
         'wheel>=0.42.0',
         'attrs>=23.2.0',
-        "certifi>=2023.11.17",
+        "certifi>=2024.2.2",
         'filelock>=3.12.2;python_version<"3.8"',
         'filelock>=3.13.1;python_version>="3.8"',
         'platformdirs>=4.0.0;python_version<"3.8"',
-        'platformdirs>=4.1.0;python_version>="3.8"',
+        'platformdirs>=4.2.0;python_version>="3.8"',
         'typing-extensions>=4.9.0;python_version>="3.8"',
         'parse>=1.20.1',
         'parse-type>=0.6.2',
@@ -151,7 +165,7 @@ setup(
         'chardet==5.2.0',
         'charset-normalizer==3.3.2',
         'urllib3>=1.26.18,<2;python_version<"3.10"',
-        'urllib3>=1.26.18,<2.2.0;python_version>="3.10"',
+        'urllib3>=1.26.18,<2.3.0;python_version>="3.10"',
         'requests==2.31.0',
         "pynose==1.4.8",
         'sniffio==1.3.0',
@@ -174,7 +188,8 @@ setup(
         'pytest==7.4.4;python_version<"3.8"',
         'pytest==8.0.0;python_version>="3.8"',
         "pytest-html==2.0.1",  # Newer ones had issues
-        'pytest-metadata==3.0.0',
+        'pytest-metadata==3.0.0;python_version<"3.8"',
+        'pytest-metadata==3.1.0;python_version>="3.8"',
         "pytest-ordering==0.6",
         'pytest-rerunfailures==13.0',
         'pytest-xdist==3.5.0',
@@ -235,7 +250,7 @@ setup(
             'pdfminer.six==20221105;python_version<"3.8"',
             'pdfminer.six==20231228;python_version>="3.8"',
             'cryptography==39.0.2;python_version<"3.9"',
-            'cryptography==42.0.1;python_version>="3.9"',
+            'cryptography==42.0.2;python_version>="3.9"',
             'cffi==1.15.1;python_version<"3.8"',
             'cffi==1.16.0;python_version>="3.8"',
             "pycparser==2.21",
@@ -246,6 +261,12 @@ setup(
         "pillow": [
             'Pillow==9.5.0;python_version<"3.8"',
             'Pillow==10.2.0;python_version>="3.8"',
+        ],
+        # pip install -e .[proxy]
+        # Usage: proxy
+        # (That starts a proxy server on "127.0.0.1:8899".)
+        "proxy": [
+            "proxy.py==2.4.3",
         ],
         # pip install -e .[psutil]
         "psutil": [
