@@ -2,11 +2,24 @@
 
 ## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Demo Mode 🎦
 
-<p align="left"><img src="https://seleniumbase.github.io/cdn/gif/xkcd_vid.gif" width="400" alt="SeleniumBase Example" title="SeleniumBase Example" /></p>
+<p align="left"><img src="https://seleniumbase.github.io/cdn/gif/xkcd_vid.gif" width="480" alt="SeleniumBase Example" title="SeleniumBase Example" /></p>
 
 <p align="left">🔵 <b translate="no">Demo Mode</b> helps you see what a test is doing.</p>
 
 <p align="left">🏇💨 👀 If a test runs too fast for your eyes, use <b translate="no">Demo Mode</b> to slow it down, highlight actions, and display assertions. Example usage:</p>
+
+```bash
+cd examples/
+pytest test_coffee_cart.py --demo
+```
+
+<p align="left"><a href="https://seleniumbase.io/coffee/" target="_blank"><img src="https://seleniumbase.github.io/cdn/gif/coffee_cart.gif" width="480" alt="SeleniumBase Coffee Cart Test" title="SeleniumBase Coffee Cart Test" /></a></p>
+
+> <p>(<code translate="no">--demo</code> mode slows down tests and highlights actions)</p>
+
+--------
+
+Another example:
 
 ```bash
 pytest my_first_test.py --demo
