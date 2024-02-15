@@ -951,6 +951,10 @@ class BaseCase(unittest.TestCase):
                     self.wait_for_ready_state_complete()
             else:
                 element.send_keys(text[:-1])
+                if self.slow_mode or self.demo_mode:
+                    self.__demo_mode_pause_if_active(tiny=True)
+                else:
+                    time.sleep(0.0135)
                 try:
                     element.send_keys(Keys.RETURN)
                 except WebDriverException as e:
@@ -976,6 +980,10 @@ class BaseCase(unittest.TestCase):
                 element.send_keys(text)
             else:
                 element.send_keys(text[:-1])
+                if self.slow_mode or self.demo_mode:
+                    self.__demo_mode_pause_if_active(tiny=True)
+                else:
+                    time.sleep(0.0135)
                 try:
                     element.send_keys(Keys.RETURN)
                 except WebDriverException as e:
@@ -1054,6 +1062,10 @@ class BaseCase(unittest.TestCase):
                 element.send_keys(text)
             else:
                 element.send_keys(text[:-1])
+                if self.slow_mode or self.demo_mode:
+                    self.__demo_mode_pause_if_active(tiny=True)
+                else:
+                    time.sleep(0.0135)
                 element.send_keys(Keys.RETURN)
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
@@ -1067,6 +1079,10 @@ class BaseCase(unittest.TestCase):
                 element.send_keys(text)
             else:
                 element.send_keys(text[:-1])
+                if self.slow_mode or self.demo_mode:
+                    self.__demo_mode_pause_if_active(tiny=True)
+                else:
+                    time.sleep(0.0135)
                 element.send_keys(Keys.RETURN)
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
@@ -1143,6 +1159,10 @@ class BaseCase(unittest.TestCase):
         for key in text:
             element.send_keys(key)
         if press_enter:
+            if self.slow_mode or self.demo_mode:
+                self.__demo_mode_pause_if_active(tiny=True)
+            else:
+                time.sleep(0.0135)
             element.send_keys(Keys.RETURN)
             if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                 if not self.undetectable:
