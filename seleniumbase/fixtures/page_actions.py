@@ -1412,7 +1412,7 @@ def switch_to_frame(driver, frame, timeout=settings.SMALL_TIMEOUT):
             driver.switch_to.frame(frame)
             return True
         except Exception:
-            if type(frame) is str:
+            if isinstance(frame, str):
                 by = None
                 if page_utils.is_xpath_selector(frame):
                     by = "xpath"

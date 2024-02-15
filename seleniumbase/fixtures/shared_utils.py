@@ -120,7 +120,7 @@ def format_exc(exception, message):
         exc = exceptions.NoSuchOptionException
     elif exception == "NoSuchOptionException":
         exc = exceptions.NoSuchOptionException
-    elif type(exception) is str:
+    elif isinstance(exception, str):
         exc = Exception
         message = "%s: %s" % (exception, message)
         return exc, message
