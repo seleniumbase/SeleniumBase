@@ -179,9 +179,8 @@ var getBestSelector = function(el) {
         if (!selector_by_attr[i].includes(' > ') &&
             ((num_by_attr[i] == 1) || (el == all_by_attr[i][0])))
         {
-            if (n_i_attr == 'aria-label' || n_i_attr == 'for')
-                if (hasDigit(selector_by_attr[i]))
-                    continue;
+            if (n_i_attr.startsWith('aria') || n_i_attr == 'for')
+                if (hasDigit(selector_by_attr[i])) continue;
             return selector_by_attr[i];
         }
         child_count_by_attr[i] = ssOccurrences(selector_by_attr[i], ' > ');
