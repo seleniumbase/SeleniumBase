@@ -1,4 +1,4 @@
-<img src="https://seleniumbase.github.io/cdn/img/sb_word_cloud.png" alt="SeleniumBase" title="SeleniumBase" width="400" />
+<img src="https://seleniumbase.github.io/cdn/img/sb_word_cloud.png" alt="SeleniumBase" title="SeleniumBase" width="330" />
 
 <h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> Framework Folders</h2>
 
