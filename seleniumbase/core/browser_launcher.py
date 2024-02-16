@@ -361,9 +361,9 @@ def uc_special_open_if_cf(
                     driver.switch_to.window(driver.window_handles[-1])
                     uc_metrics = {}
                     if (
-                        type(device_width) is int
-                        and type(device_height) is int
-                        and type(device_pixel_ratio) is int
+                        isinstance(device_width, int)
+                        and isinstance(device_height, int)
+                        and isinstance(device_pixel_ratio, int)
                     ):
                         uc_metrics["width"] = device_width
                         uc_metrics["height"] = device_height
@@ -847,9 +847,9 @@ def _set_chrome_options(
         emulator_settings = {}
         device_metrics = {}
         if (
-            type(device_width) is int
-            and type(device_height) is int
-            and type(device_pixel_ratio) is int
+            isinstance(device_width, int)
+            and isinstance(device_height, int)
+            and isinstance(device_pixel_ratio, int)
         ):
             device_metrics["width"] = device_width
             device_metrics["height"] = device_height
@@ -1389,7 +1389,7 @@ def get_driver(
         headless = True
     if (
         binary_location
-        and type(binary_location) is str
+        and isinstance(binary_location, str)
         and (
             browser_name == constants.Browser.GOOGLE_CHROME
             or browser_name == constants.Browser.EDGE
@@ -2553,9 +2553,9 @@ def get_local_driver(
             emulator_settings = {}
             device_metrics = {}
             if (
-                type(device_width) is int
-                and type(device_height) is int
-                and type(device_pixel_ratio) is int
+                isinstance(device_width, int)
+                and isinstance(device_height, int)
+                and isinstance(device_pixel_ratio, int)
             ):
                 device_metrics["width"] = device_width
                 device_metrics["height"] = device_height
@@ -3703,9 +3703,9 @@ def get_local_driver(
                     if mobile_emulator:
                         uc_metrics = {}
                         if (
-                            type(device_width) is int
-                            and type(device_height) is int
-                            and type(device_pixel_ratio) is int
+                            isinstance(device_width, int)
+                            and isinstance(device_height, int)
+                            and isinstance(device_pixel_ratio, int)
                         ):
                             uc_metrics["width"] = device_width
                             uc_metrics["height"] = device_height

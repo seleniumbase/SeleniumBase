@@ -70,9 +70,9 @@ With raw Selenium, that requires more code:<br />
 
 <p>💡 SeleniumBase has its own <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md">Recorder / Test Generator</a> for creating tests from manual browser actions.</p>
 
-<p>💡 SeleniumBase comes with <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/case_plans.md">test case management software, ("CasePlans")</a>, for organizing tests and step descriptions.</p>
+<p>💡 SeleniumBase comes with <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/case_plans.md">test case management software, ("Case Plans")</a>, for organizing tests and step descriptions.</p>
 
-<p>💡 SeleniumBase includes tools for <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/ReadMe.md">building data apps, ("ChartMaker")</a>, which can generate JavaScript from Python.</p>
+<p>💡 SeleniumBase includes tools for <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/ReadMe.md">building data apps, ("Chart Maker")</a>, which can generate JavaScript from Python.</p>
 
 </div>
 

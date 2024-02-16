@@ -409,6 +409,8 @@ class ValidBinaries:
         "Google Chrome",
         "Chromium",
         "Google Chrome for Testing",
+        "Google Chrome Beta",
+        "Google Chrome Dev",
         "Brave Browser",
         "Opera",
     ]

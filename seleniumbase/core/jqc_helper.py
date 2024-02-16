@@ -118,9 +118,7 @@ def jquery_confirm_text_dialog(driver, message, button=None, options=None):
     if not message:
         message = ""
     if button:
-        if not type(button) is list and not type(button) is tuple:
-            raise Exception('"button" should be a (text, color) tuple!')
-        if len(button) != 2:
+        if not isinstance(button, (list, tuple)) or len(button) != 2:
             raise Exception('"button" should be a (text, color) tuple!')
     else:
         button = ("Submit", "blue")

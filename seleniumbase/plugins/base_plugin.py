@@ -219,14 +219,14 @@ class Base(Plugin):
     def beforeTest(self, test):
         sb_config._context_of_runner = False  # Context Manager Compatibility
         variables = self.options.variables
-        if variables and type(variables) is str and len(variables) > 0:
+        if variables and isinstance(variables, str) and len(variables) > 0:
             bad_input = False
             if not variables.startswith("{") or not variables.endswith("}"):
                 bad_input = True
             else:
                 try:
                     variables = ast.literal_eval(variables)
-                    if not type(variables) is dict:
+                    if not isinstance(variables, dict):
                         bad_input = True
                 except Exception:
                     bad_input = True

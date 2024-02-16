@@ -63,7 +63,7 @@
 pytest my_first_test.py
 ```
 
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py"><img src="https://seleniumbase.github.io/cdn/gif/fast_swag.gif" alt="SeleniumBase Test" title="SeleniumBase Test" width="480" /></a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py"><img src="https://seleniumbase.github.io/cdn/gif/fast_swag_2.gif" alt="SeleniumBase Test" title="SeleniumBase Test" width="480" /></a>
 
 > ``pytest`` uses ``--chrome`` by default unless set differently.
 
@@ -361,10 +361,10 @@ COMMANDS:
 <summary> ▶️ Here's sample output from a chromedriver download. (<b>click to expand</b>)</summary>
 
 ```bash
-*** chromedriver to download = 116.0.5845.96 (Latest Stable) 
+*** chromedriver to download = 121.0.6167.85 (Latest Stable) 
 
 Downloading chromedriver-mac-arm64.zip from:
-https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/116.0.5845.96/mac-arm64/chromedriver-mac-arm64.zip ...
+https://storage.googleapis.com/chrome-for-testing-public/121.0.6167.85/mac-arm64/chromedriver-mac-arm64.zip ...
 Download Complete!
 
 Extracting ['chromedriver'] from chromedriver-mac-arm64.zip ...
@@ -373,8 +373,8 @@ Unzip Complete!
 The file [chromedriver] was saved to:
 /Users/michael/github/SeleniumBase/seleniumbase/drivers/chromedriver
 
-Making [chromedriver 116.0.5845.96] executable ...
-[chromedriver 116.0.5845.96] is now ready for use!
+Making [chromedriver 121.0.6167.85] executable ...
+[chromedriver 121.0.6167.85] is now ready for use!
 ```
 
 </details>
@@ -392,7 +392,7 @@ cd examples/
 pytest my_first_test.py
 ```
 
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py"><img src="https://seleniumbase.github.io/cdn/gif/fast_swag.gif" alt="SeleniumBase Test" title="SeleniumBase Test" width="480" /></a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py"><img src="https://seleniumbase.github.io/cdn/gif/fast_swag_2.gif" alt="SeleniumBase Test" title="SeleniumBase Test" width="480" /></a>
 
 <p align="left"><b>Here's the code for <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py">my_first_test.py</a>:</b></p>
 

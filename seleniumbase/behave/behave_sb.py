@@ -367,7 +367,7 @@ def get_configured_sb(context):
         # Handle: -D variables="{'KEY':'VALUE','KEY2':'VALUE2'}"
         if low_key == "variables":
             variables = userdata[key]
-            if variables and type(variables) is str and len(variables) > 0:
+            if variables and isinstance(variables, str) and len(variables) > 0:
                 bad_input = False
                 if (
                     not variables.startswith("{")
@@ -377,7 +377,7 @@ def get_configured_sb(context):
                 else:
                     try:
                         variables = ast.literal_eval(variables)
-                        if not type(variables) is dict:
+                        if not isinstance(variables, dict):
                             bad_input = True
                     except Exception:
                         bad_input = True

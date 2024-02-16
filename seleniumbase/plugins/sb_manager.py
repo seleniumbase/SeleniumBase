@@ -409,7 +409,7 @@ def SB(
     sb_config.proxy_driver = False
     if "--proxy-driver" in sys_argv or "--proxy_driver" in sys_argv:
         sb_config.proxy_driver = True
-    if variables and type(variables) is str and len(variables) > 0:
+    if variables and isinstance(variables, str) and len(variables) > 0:
         import ast
         bad_input = False
         if (
@@ -420,7 +420,7 @@ def SB(
         else:
             try:
                 variables = ast.literal_eval(variables)
-                if not type(variables) is dict:
+                if not isinstance(variables, dict):
                     bad_input = True
             except Exception:
                 bad_input = True
