@@ -495,15 +495,9 @@ def main(override=None, intel_for_uc=None, force_uc=None):
                     file_name = "chromedriver-win32.zip"
             plat_arch = file_name.split(".zip")[0]
             download_url = (
-                "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/"
+                "https://storage.googleapis.com/chrome-for-testing-public/"
                 "%s/%s/%s" % (use_version, platform_code, file_name)
             )
-            major_ch_ver = use_version.split(".")[0]
-            if major_ch_ver.isnumeric() and int(major_ch_ver) >= 121:
-                download_url = (
-                    "https://storage.googleapis.com/chrome-for-testing-public/"
-                    "%s/%s/%s" % (use_version, platform_code, file_name)
-                )
         url_request = None
         if not found_chromedriver:
             url_req = requests_get(last)
