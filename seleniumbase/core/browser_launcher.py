@@ -3460,7 +3460,21 @@ def get_local_driver(
                                     try:
                                         user_agent = driver.execute_script(
                                             "return navigator.userAgent;"
-                                        ).replace("Headless", "")
+                                        )
+                                        if (
+                                            major_chrome_version
+                                            and full_ch_version
+                                            and full_ch_version.count(".") == 3
+                                            and full_ch_version in user_agent
+                                        ):
+                                            mcv = major_chrome_version
+                                            user_agent = user_agent.replace(
+                                                "Chrome/%s" % full_ch_version,
+                                                "Chrome/%s.0.0.0" % mcv
+                                            )
+                                        user_agent = user_agent.replace(
+                                            "Headless", ""
+                                        )
                                         chrome_options.add_argument(
                                             "--user-agent=%s" % user_agent
                                         )
