@@ -168,7 +168,7 @@ setup(
         'urllib3>=1.26.18,<2;python_version<"3.10"',
         'urllib3>=1.26.18,<2.3.0;python_version>="3.10"',
         'requests==2.31.0',
-        "pynose==1.4.8",
+        "pynose==1.5.0",
         'sniffio==1.3.0',
         'h11==0.14.0',
         'outcome==1.3.0.post0',
@@ -177,7 +177,7 @@ setup(
         'trio-websocket==0.11.1',
         'wsproto==1.2.0',
         'selenium==4.11.2;python_version<"3.8"',
-        'selenium==4.17.2;python_version>="3.8"',
+        'selenium==4.18.1;python_version>="3.8"',
         'cssselect==1.2.0',
         "sortedcontainers==2.4.0",
         'fasteners==0.19',
@@ -225,7 +225,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage==7.2.7;python_version<"3.8"',
-            'coverage==7.4.1;python_version>="3.8"',
+            'coverage==7.4.2;python_version>="3.8"',
             'pytest-cov==4.1.0',
         ],
         # pip install -e .[flake8]
@@ -251,7 +251,7 @@ setup(
             'pdfminer.six==20221105;python_version<"3.8"',
             'pdfminer.six==20231228;python_version>="3.8"',
             'cryptography==39.0.2;python_version<"3.9"',
-            'cryptography==42.0.3;python_version>="3.9"',
+            'cryptography==42.0.4;python_version>="3.9"',
             'cffi==1.15.1;python_version<"3.8"',
             'cffi==1.16.0;python_version>="3.8"',
             "pycparser==2.21",

@@ -1,8 +1,8 @@
-"""Can run with "python". (pytest not needed)."""
+"""DriverContext() example. (Runs with "python")."""
 from seleniumbase import DriverContext
 
 with DriverContext() as driver:
-    driver.open("seleniumbase.github.io/")
+    driver.open("seleniumbase.io/")
     driver.highlight('img[alt="SeleniumBase"]', loops=6)
 
 with DriverContext(browser="chrome", incognito=True) as driver:
@@ -13,7 +13,7 @@ with DriverContext(browser="chrome", incognito=True) as driver:
     driver.highlight("#output", loops=6)
 
 with DriverContext() as driver:
-    driver.open("seleniumbase.github.io/demo_page")
+    driver.open("seleniumbase.io/demo_page")
     driver.highlight("h2")
     driver.type("#myTextInput", "Automation")
     driver.click("#checkBox1")

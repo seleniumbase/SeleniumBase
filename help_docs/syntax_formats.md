@@ -832,17 +832,16 @@ This format provides a pure Python way of using SeleniumBase without a test runn
 ```python
 from seleniumbase import SB
 
-with SB() as sb:  # By default, browser="chrome" if not set.
-    sb.open("https://seleniumbase.github.io/realworld/login")
+with SB() as sb:
+    sb.open("seleniumbase.io/simple/login")
     sb.type("#username", "demo_user")
     sb.type("#password", "secret_pass")
-    sb.enter_mfa_code("#totpcode", "GAXG2MTEOR3DMMDG")  # 6-digit
-    sb.assert_text("Welcome!", "h1")
-    sb.highlight("img#image1")  # A fancier assert_element() call
-    sb.click('a:contains("This Page")')  # Use :contains() on any tag
-    sb.click_link("Sign out")  # Link must be "a" tag. Not "button".
-    sb.assert_element('a:contains("Sign in")')
-    sb.assert_exact_text("You have been signed out!", "#top_message")
+    sb.click('a:contains("Sign in")')
+    sb.assert_exact_text("Welcome!", "h1")
+    sb.assert_element("img#image1")
+    sb.highlight("#image1")
+    sb.click_link("Sign out")
+    sb.assert_text("signed out", "#top_message")
 ```
 
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_sb.py">examples/raw_sb.py</a> for the test.)
@@ -881,11 +880,11 @@ with SB(test=True, rtf=True, demo=True) as sb:
 This pure Python format gives you a raw <code translate="no">webdriver</code> instance in a <code translate="no">with</code> block. The SeleniumBase Driver Manager will automatically make sure that your driver is compatible with your browser version. It gives you full access to customize driver options via method args or via the command-line. The driver will automatically call <code translate="no">quit()</code> after the code leaves the <code translate="no">with</code> block. Here are some examples:
 
 ```python
-"""Can run with "python". (pytest not needed)."""
+"""DriverContext() example. (Runs with "python")."""
 from seleniumbase import DriverContext
 
 with DriverContext() as driver:
-    driver.open("seleniumbase.github.io/")
+    driver.open("seleniumbase.io/")
     driver.highlight('img[alt="SeleniumBase"]', loops=6)
 
 with DriverContext(browser="chrome", incognito=True) as driver:
@@ -896,7 +895,7 @@ with DriverContext(browser="chrome", incognito=True) as driver:
     driver.highlight("#output", loops=6)
 
 with DriverContext() as driver:
-    driver.open("seleniumbase.github.io/demo_page")
+    driver.open("seleniumbase.io/demo_page")
     driver.highlight("h2")
     driver.type("#myTextInput", "Automation")
     driver.click("#checkBox1")
@@ -911,8 +910,18 @@ with DriverContext() as driver:
 Another way of running Selenium tests with pure ``python`` (as opposed to using ``pytest`` or ``pynose``) is by using this format, which bypasses [BaseCase](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py) methods while still giving you a flexible driver with a manager. SeleniumBase includes helper files such as [page_actions.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/page_actions.py), which may help you get around some of the limitations of bypassing ``BaseCase``. Here's an example:
 
 ```python
-"""Driver() test. Runs with "python". (pytest not needed)."""
+"""Driver() example. (Runs with "python")."""
 from seleniumbase import Driver
+
+driver = Driver()
+try:
+    driver.open("seleniumbase.io/demo_page")
+    driver.highlight("h2")
+    driver.type("#myTextInput", "Automation")
+    driver.click("#checkBox1")
+    driver.highlight("img", loops=6)
+finally:
+    driver.quit()
 
 driver = Driver(browser="chrome", headless=False)
 try:
@@ -923,19 +932,9 @@ try:
     driver.highlight("#output", loops=6)
 finally:
     driver.quit()
-
-driver = Driver()
-try:
-    driver.open("seleniumbase.github.io/demo_page")
-    driver.highlight("h2")
-    driver.type("#myTextInput", "Automation")
-    driver.click("#checkBox1")
-    driver.highlight("img", loops=6)
-finally:
-    driver.quit()
 ```
 
-(From <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_browser_launcher.py">examples/raw_browser_launcher.py</a>)
+(From <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_driver_manager.py">examples/raw_driver_manager.py</a>)
 
 Here's how the [selenium-wire](https://github.com/wkeeling/selenium-wire) integration may look when using the ``Driver()`` format:
 
@@ -947,6 +946,22 @@ try:
     driver.get("https://wikipedia.org")
     for request in driver.requests:
         print(request.url)
+finally:
+    driver.quit()
+```
+
+Here's another `selenium-wire` example with the `Driver()` format:
+
+```python
+from seleniumbase import Driver
+
+def intercept_response(request, response):
+    print(request.headers)
+
+driver = Driver(wire=True)
+try:
+    driver.response_interceptor = intercept_response
+    driver.get("https://wikipedia.org")
 finally:
     driver.quit()
 ```

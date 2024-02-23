@@ -1,4 +1,4 @@
-"""Context Manager Test. Runs with "python". (pytest not needed)."""
+"""SB() context manager example. (Runs with "python")."""
 from seleniumbase import SB
 
 with SB() as sb:  # By default, browser="chrome" if not set.

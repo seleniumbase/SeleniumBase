@@ -2162,9 +2162,9 @@ class BaseCase(unittest.TestCase):
         selector, by = self.__recalculate_selector(selector, by)
         self.wait_for_ready_state_complete()
         time.sleep(0.05)
-        v_elems = page_actions.find_visible_elements(self.driver, selector, by)
-        if limit and limit > 0 and len(v_elems) > limit:
-            v_elems = v_elems[:limit]
+        v_elems = page_actions.find_visible_elements(
+            self.driver, selector, by, limit
+        )
         return v_elems
 
     def click_visible_elements(

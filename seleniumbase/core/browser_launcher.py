@@ -3833,8 +3833,10 @@ def get_local_driver(
                     )
                     return extend_driver(driver)
         except Exception:
+            if is_using_uc(undetectable, browser_name):
+                raise
+            # Try again if Chrome didn't launch
             try:
-                # Try again if Chrome didn't launch
                 service = ChromeService(service_args=["--disable-build-check"])
                 driver = webdriver.Chrome(
                     service=service, options=chrome_options
@@ -3842,8 +3844,18 @@ def get_local_driver(
                 return extend_driver(driver)
             except Exception:
                 pass
-            if headless:
+            if user_data_dir:
+                print("\nUnable to set user_data_dir while starting Chrome!\n")
                 raise
+            elif mobile_emulator:
+                print("\nFailed to start Chrome's mobile device emulator!\n")
+                raise
+            elif extension_zip or extension_dir:
+                print("\nUnable to load extension while starting Chrome!\n")
+                raise
+            elif headless or headless2 or IS_LINUX or proxy_string or use_wire:
+                raise
+            # Try running without any options (bare bones Chrome launch)
             if LOCAL_CHROMEDRIVER and os.path.exists(LOCAL_CHROMEDRIVER):
                 try:
                     make_driver_executable_if_not(LOCAL_CHROMEDRIVER)

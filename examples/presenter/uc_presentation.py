@@ -30,17 +30,16 @@ class UCPresentationClass(BaseCase):
         self.get_new_driver(undetectable=True)
         try:
             self.driver.uc_open_with_reconnect(
-                "https://nowsecure.nl/#relax", reconnect_time=3
+                "https://top.gg/", reconnect_time=4
             )
             try:
-                self.assert_text("OH YEAH, you passed!", "h1", timeout=4)
+                self.assert_text("Discord Bots", "h1", timeout=3)
                 self.post_message("Selenium wasn't detected!", duration=4)
             except Exception:
-                self.clear_all_cookies()
                 self.driver.uc_open_with_reconnect(
-                    "https://nowsecure.nl/#relax", reconnect_time=3
+                    "https://top.gg/", reconnect_time=5
                 )
-                self.assert_text("OH YEAH, you passed!", "h1", timeout=4)
+                self.assert_text("Discord Bots", "h1", timeout=2)
                 self.post_message("Selenium wasn't detected!", duration=4)
         finally:
             self.quit_extra_driver()
