@@ -149,7 +149,7 @@ setup(
         'pip>=24.0',
         'packaging>=23.2',
         'setuptools>=68.0.0;python_version<"3.8"',
-        'setuptools>=69.1.0;python_version>="3.8"',
+        'setuptools>=69.1.1;python_version>="3.8"',
         'wheel>=0.42.0',
         'attrs>=23.2.0',
         "certifi>=2024.2.2",
@@ -157,7 +157,7 @@ setup(
         'filelock>=3.13.1;python_version>="3.8"',
         'platformdirs>=4.0.0;python_version<"3.8"',
         'platformdirs>=4.2.0;python_version>="3.8"',
-        'typing-extensions>=4.9.0;python_version>="3.8"',
+        'typing-extensions>=4.10.0;python_version>="3.8"',
         'parse>=1.20.1',
         'parse-type>=0.6.2',
         'pyyaml>=6.0.1',
@@ -169,7 +169,7 @@ setup(
         'urllib3>=1.26.18,<2.3.0;python_version>="3.10"',
         'requests==2.31.0',
         "pynose==1.5.0",
-        'sniffio==1.3.0',
+        'sniffio==1.3.1',
         'h11==0.14.0',
         'outcome==1.3.0.post0',
         'trio==0.22.2;python_version<"3.8"',
@@ -187,7 +187,7 @@ setup(
         'pluggy==1.4.0;python_version>="3.8"',
         "py==1.11.0",
         'pytest==7.4.4;python_version<"3.8"',
-        'pytest==8.0.1;python_version>="3.8"',
+        'pytest==8.0.2;python_version>="3.8"',
         "pytest-html==2.0.1",  # Newer ones had issues
         'pytest-metadata==3.0.0;python_version<"3.8"',
         'pytest-metadata==3.1.1;python_version>="3.8"',
@@ -225,7 +225,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage==7.2.7;python_version<"3.8"',
-            'coverage==7.4.2;python_version>="3.8"',
+            'coverage==7.4.3;python_version>="3.8"',
             'pytest-cov==4.1.0',
         ],
         # pip install -e .[flake8]
@@ -251,7 +251,7 @@ setup(
             'pdfminer.six==20221105;python_version<"3.8"',
             'pdfminer.six==20231228;python_version>="3.8"',
             'cryptography==39.0.2;python_version<"3.9"',
-            'cryptography==42.0.4;python_version>="3.9"',
+            'cryptography==42.0.5;python_version>="3.9"',
             'cffi==1.15.1;python_version<"3.8"',
             'cffi==1.16.0;python_version>="3.8"',
             "pycparser==2.21",

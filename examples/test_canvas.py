@@ -37,7 +37,7 @@ class CanvasTests(BaseCase):
         self.open("https://seleniumbase.io/canvas/")
         if self.undetectable:
             self.open_if_not_url("about:blank")
-            print("Skip this test in undetectable mode.")
+            print("\n  Skip this test in undetectable mode.")
             self.skip("Skip this test in undetectable mode.")
         self.assert_title_contains("Canvas")
         self.highlight("canvas")

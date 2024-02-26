@@ -11,7 +11,7 @@ class GoogleTests(BaseCase):
     def test_google_dot_com(self):
         if self.headless and self._multithreaded:
             self.open_if_not_url("about:blank")
-            print("Skipping test in headless multi-threaded mode.")
+            print("\n  Skipping test in headless multi-threaded mode.")
             self.skip("Skipping test in headless multi-threaded mode.")
         self.open("https://google.com/ncr")
         self.assert_title_contains("Google")

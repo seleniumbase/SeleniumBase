@@ -8,20 +8,14 @@ class AppleTests(BaseCase):
             self.demo_mode = True
             self.demo_sleep = 0.5
             self.message_duration = 2.0
+            if self.is_chromium() and not self.disable_csp:
+                self.get_new_driver(browser=self.browser, disable_csp=True)
         if self.headless:
-            if self._multithreaded:
+            if self._multithreaded or self.undetectable or self.recorder_mode:
                 self.open_if_not_url("about:blank")
-                print("Skipping test in headless multi-threaded mode.")
-                self.skip("Skipping test in headless multi-threaded mode.")
-            elif self.undetectable:
-                self.open_if_not_url("about:blank")
-                print("Skipping test in headless undetectable mode.")
-                self.skip("Skipping test in headless undetectable mode.")
-            elif self.recorder_mode:
-                self.open_if_not_url("about:blank")
-                print("Skipping test in headless Recorder Mode.")
-                self.skip("Skipping test in headless Recorder Mode.")
-            elif self.browser == "chrome" or self.browser == "edge":
+                print("\n  Unsupported mode for this test.")
+                self.skip("Unsupported mode for this test.")
+            elif self.is_chromium():
                 self.get_new_driver(browser=self.browser, headless2=True)
         self.open("https://developer.apple.com/search/")
         title = "Testing with WebDriver in Safari"

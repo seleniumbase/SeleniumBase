@@ -6,9 +6,8 @@ class GitHubTests(BaseCase):
     def test_github(self):
         if self.headless or self.page_load_strategy == "none":
             self.open_if_not_url("about:blank")
-            message = "Unsupported mode for this test."
-            print("\n  " + message)
-            self.skip(message)
+            print("\n  Unsupported mode for this test.")
+            self.skip("Unsupported mode for this test.")
         self.open("https://github.com/seleniumbase/SeleniumBase")
         self.click_if_visible('[data-action="click:signup-prompt#dismiss"]')
         self.highlight("div.Layout-main")

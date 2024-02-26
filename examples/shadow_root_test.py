@@ -6,16 +6,10 @@ BaseCase.main(__name__, __file__)
 
 class ShadowRootTest(BaseCase):
     def test_shadow_root(self):
-        if self.recorder_mode:
+        if self.recorder_mode or not self.is_chromium():
             self.open_if_not_url("about:blank")
-            message = "Skipping test in Recorder Mode."
-            print(message)
-            self.skip(message)
-        elif not self.is_chromium():
-            self.open_if_not_url("about:blank")
-            message = "This test is only for Chromium browsers!"
-            print(message)
-            self.skip(message)
+            print("\n  Unsupported mode for this test.")
+            self.skip("Unsupported mode for this test.")
         self.open("https://seleniumbase.io/other/shadow_dom")
         print("")
         self.click("button.tab_1")

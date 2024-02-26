@@ -13,12 +13,18 @@ def sb(request):
         def get_new_driver(self, *args, **kwargs):
             """This method overrides get_new_driver() from BaseCase."""
             options = webdriver.ChromeOptions()
+            options.add_argument("--disable-notifications")
             if self.headless:
                 options.add_argument("--headless=new")
                 options.add_argument("--disable-gpu")
             options.add_experimental_option(
-                "excludeSwitches", ["enable-automation"],
+                "excludeSwitches", ["enable-automation", "enable-logging"],
             )
+            prefs = {
+                "credentials_enable_service": False,
+                "profile.password_manager_enabled": False,
+            }
+            options.add_experimental_option("prefs", prefs)
             return webdriver.Chrome(options=options)
 
         def setUp(self):
@@ -63,9 +69,19 @@ def sb(request):
 def test_override_fixture_no_class(sb):
     sb.open("https://seleniumbase.io/demo_page")
     sb.type("#myTextInput", "This is Automated")
+    sb.set_value("input#mySlider", "100")
+    sb.select_option_by_text("#mySelect", "Set to 100%")
+    sb.click("#checkBox1")
+    sb.drag_and_drop("img#logo", "div#drop2")
+    sb.click('button:contains("Click Me")')
 
 
 class TestOverride:
     def test_override_fixture_inside_class(self, sb):
         sb.open("https://seleniumbase.io/demo_page")
         sb.type("#myTextInput", "This is Automated")
+        sb.set_value("input#mySlider", "100")
+        sb.select_option_by_text("#mySelect", "Set to 100%")
+        sb.click("#checkBox1")
+        sb.drag_and_drop("img#logo", "div#drop2")
+        sb.click('button:contains("Click Me")')
