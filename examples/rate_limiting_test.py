@@ -10,14 +10,10 @@ class RateLimitingTests(BaseCase):
         print(item)
 
     def test_rate_limited_printing(self):
-        if self._multithreaded:
+        if self._multithreaded or self.recorder_mode:
             self.open_if_not_url("about:blank")
-            print("Skipping test in multi-threaded mode.")
-            self.skip("Skipping test in multi-threaded mode.")
-        if self.recorder_mode:
-            self.open_if_not_url("about:blank")
-            print("Skipping test in Recorder Mode.")
-            self.skip("Skipping test in Recorder Mode.")
+            print("\n  Unsupported mode for this test.")
+            self.skip("Unsupported mode for this test.")
         message = "Running rate-limited print() on the command line"
         self.open("data:text/html,<p>%s</p>" % message)
         print("\n%s:" % message)

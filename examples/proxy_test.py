@@ -5,18 +5,10 @@ BaseCase.main(__name__, __file__)
 
 class ProxyTests(BaseCase):
     def test_proxy(self):
-        if self.headless:
+        if self.headless or self.recorder_mode or self.browser == "safari":
             self.open_if_not_url("about:blank")
-            print("Skipping test in Headless Mode.")
-            self.skip("Skipping test in Headless Mode.")
-        elif self.recorder_mode:
-            self.open_if_not_url("about:blank")
-            print("Skipping test in Recorder Mode.")
-            self.skip("Skipping test in Recorder Mode.")
-        elif self.browser == "safari":
-            self.open_if_not_url("about:blank")
-            print("Skipping test for using Safari.")
-            self.skip("Skipping test for using Safari.")
+            print("\n  Unsupported mode for this test.")
+            self.skip("Unsupported mode for this test.")
         settings.SKIP_JS_WAITS = True
         if not self.page_load_strategy == "none" and not self.undetectable:
             # This page takes too long to load otherwise

@@ -19,18 +19,10 @@ class ShadowDomTests(BaseCase):
         return tar_file
 
     def test_shadow_dom(self):
-        if self.browser != "chrome":
-            self.open("about:blank")
-            print("\n  This test is for Google Chrome only!")
-            self.skip("This test is for Google Chrome only!")
-        if self.headless:
-            self.open("about:blank")
-            print("\n  This test doesn't run in headless mode!")
-            self.skip("This test doesn't run in headless mode!")
-        if self.recorder_mode:
-            self.open("about:blank")
-            print("Skipping test in Recorder Mode.")
-            self.skip("Skipping test in Recorder Mode.")
+        if not self.browser == "chrome" or self.headless or self.recorder_mode:
+            self.open_if_not_url("about:blank")
+            print("\n  Unsupported mode for this test.")
+            self.skip("Unsupported mode for this test.")
 
         # Download Python package files from PyPI
         file_name_1 = self.download_tar_file_from_pypi("sbase")

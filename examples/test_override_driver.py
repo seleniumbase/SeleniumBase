@@ -7,7 +7,6 @@ class OverrideDriverTest(BaseCase):
     def get_new_driver(self, *args, **kwargs):
         """This method overrides get_new_driver() from BaseCase."""
         options = webdriver.ChromeOptions()
-        options.add_argument("--disable-3d-apis")
         options.add_argument("--disable-notifications")
         if self.headless:
             options.add_argument("--headless=new")
@@ -24,4 +23,9 @@ class OverrideDriverTest(BaseCase):
 
     def test_driver_override(self):
         self.open("https://seleniumbase.io/demo_page")
-        self.assert_text("Demo Page", "h1")
+        self.type("#myTextInput", "This is Automated")
+        self.set_value("input#mySlider", "100")
+        self.select_option_by_text("#mySelect", "Set to 100%")
+        self.click("#checkBox1")
+        self.drag_and_drop("img#logo", "div#drop2")
+        self.click('button:contains("Click Me")')

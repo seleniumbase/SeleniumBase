@@ -5,23 +5,19 @@ BaseCase.main(__name__, __file__)
 class YouTubeSearchTests(BaseCase):
     def test_youtube_autocomplete_results(self):
         """Verify YouTube autocomplete search results."""
-        if self.headless:
+        if self.headless or self.browser == "safari":
             self.open_if_not_url("about:blank")
-            message = "This test is skipped in headless mode."
-            print(message)
-            self.skip(message)
-        elif self.browser == "safari":
-            self.open_if_not_url("about:blank")
-            message = "This test is skipped when using Safari."
-            print(message)
-            self.skip(message)
+            print("\n  Unsupported mode for this test.")
+            self.skip("Unsupported mode for this test.")
         self.open("https://www.youtube.com/c/MichaelMintz")
         search_term = "seleniumbase"
         search_selector = "input#search"
         result_selector = 'li[role="presentation"]'
         self.click_if_visible('button[aria-label="Close"]')
         self.double_click(search_selector)
+        self.sleep(0.15)
         self.type(search_selector, search_term)
+        self.sleep(0.15)
         # First verify that an autocomplete result exists
         self.assert_element(result_selector)
         top_result = self.get_text(result_selector)

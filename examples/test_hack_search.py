@@ -10,8 +10,8 @@ class HackingTests(BaseCase):
     def test_hack_search(self):
         if self.headless:
             self.open_if_not_url("about:blank")
-            print("\n  This test is not for Headless Mode.")
-            self.skip('Do not use "--headless" with this test.')
+            print("\n  Skipping test in headless mode.")
+            self.skip('Skipping test in headless mode.')
         self.open("https://google.com/ncr")
         self.hide_elements("iframe")
         self.assert_element('[title="Search"]')
