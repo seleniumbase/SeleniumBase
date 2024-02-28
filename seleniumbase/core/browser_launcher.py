@@ -397,6 +397,10 @@ def uc_special_open_if_cf(
 
 
 def uc_open(driver, url):
+    if url.startswith("//"):
+        url = "https:" + url
+    elif ":" not in url:
+        url = "https://" + url
     if (url.startswith("http:") or url.startswith("https:")):
         time.sleep(0.05)
         with driver:
@@ -407,6 +411,10 @@ def uc_open(driver, url):
 
 
 def uc_open_with_tab(driver, url):
+    if url.startswith("//"):
+        url = "https:" + url
+    elif ":" not in url:
+        url = "https://" + url
     if (url.startswith("http:") or url.startswith("https:")):
         time.sleep(0.05)
         with driver:
@@ -422,6 +430,10 @@ def uc_open_with_reconnect(driver, url, reconnect_time=None):
     """Open a url, disconnect chromedriver, wait, and reconnect."""
     if not reconnect_time:
         reconnect_time = constants.UC.RECONNECT_TIME
+    if url.startswith("//"):
+        url = "https:" + url
+    elif ":" not in url:
+        url = "https://" + url
     if (url.startswith("http:") or url.startswith("https:")):
         driver.execute_script('window.open("%s","_blank");' % url)
         driver.close()
