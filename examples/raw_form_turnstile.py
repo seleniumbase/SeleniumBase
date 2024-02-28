@@ -3,11 +3,12 @@ from seleniumbase import SB
 
 def open_the_form_turnstile_page(sb):
     sb.driver.uc_open_with_reconnect(
-        "https://seleniumbase.io/apps/form_turnstile", reconnect_time=2.5,
+        "https://seleniumbase.io/apps/form_turnstile", reconnect_time=2.7,
     )
 
 
 def click_turnstile_and_verify(sb):
+    sb.scroll_to_bottom()
     sb.driver.uc_switch_to_frame("iframe")
     sb.driver.uc_click("span.mark")
     sb.highlight("img#captcha-success", timeout=3.33)
