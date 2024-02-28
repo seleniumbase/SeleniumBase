@@ -14,7 +14,7 @@ class WebElement(selenium.webdriver.remote.webelement.WebElement):
         else:
             super().click()
         if not reconnect_time:
-            self._parent.reconnect(0.1)
+            self._parent.reconnect(0.42)
         else:
             self._parent.reconnect(reconnect_time)
 
