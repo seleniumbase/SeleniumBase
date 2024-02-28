@@ -25,7 +25,7 @@
 from seleniumbase import Driver
 
 driver = Driver(uc=True)
-driver.uc_open_with_reconnect("https://nowsecure.nl/#relax", 5)
+driver.uc_open_with_reconnect("https://top.gg/", 6)
 driver.quit()
 ```
 
@@ -35,30 +35,22 @@ driver.quit()
 from seleniumbase import SB
 
 with SB(uc=True) as sb:
-    sb.driver.uc_open_with_reconnect("https://nowsecure.nl/#relax", 5)
+    sb.driver.uc_open_with_reconnect("https://top.gg/", 6)
 ```
 
-👤 Here's a longer example, which includes retries and a captcha-click failsafe for bypassing detection:
+👤 Here's a longer example, which includes a retry if the CAPTCHA isn't bypassed on the first attempt:
 
 ```python
 from seleniumbase import SB
 
 with SB(uc=True, test=True) as sb:
-    sb.driver.uc_open_with_tab("https://nowsecure.nl/#relax")
-    sb.sleep(1.2)
-    if not sb.is_text_visible("OH YEAH, you passed!", "h1"):
-        sb.get_new_driver(undetectable=True)
-        sb.driver.uc_open_with_reconnect(
-            "https://nowsecure.nl/#relax", reconnect_time=3
-        )
-        sb.sleep(1.2)
-    if not sb.is_text_visible("OH YEAH, you passed!", "h1"):
-        if sb.is_element_visible('iframe[src*="challenge"]'):
-            with sb.frame_switch('iframe[src*="challenge"]'):
-                sb.click("span.mark")
-                sb.sleep(2)
-    sb.activate_demo_mode()
-    sb.assert_text("OH YEAH, you passed!", "h1", timeout=3)
+    sb.driver.uc_open_with_reconnect("https://top.gg/", 5)
+    if not sb.is_text_visible("Discord Bots", "h1"):
+        sb.driver.uc_open_with_reconnect("https://top.gg/", 5)
+    sb.assert_text("Discord Bots", "h1", timeout=3)
+    sb.highlight("h1", loops=3)
+    sb.set_messenger_theme(location="top_center")
+    sb.post_message("Selenium wasn't detected!", duration=3)
 ```
 
 👤 Here's an example where clicking the checkbox is required, even for humans: (Commonly seen with forms that are CAPTCHA-protected.)
@@ -111,7 +103,7 @@ driver.uc_click(
     selector, by="css selector",
     timeout=settings.SMALL_TIMEOUT, reconnect_time=None)
 
-driver.uc_switch_to_frame(frame)
+driver.uc_switch_to_frame(frame, reconnect_time=None)
 ```
 
 (Note that the `reconnect_time` is used to specify how long the driver should be disconnected from Chrome to prevent detection before reconnecting again.)
