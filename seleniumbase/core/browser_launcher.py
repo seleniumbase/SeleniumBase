@@ -467,14 +467,20 @@ def uc_click(
         driver.js_click(selector, by=by, timeout=timeout)
 
 
-def uc_switch_to_frame(driver, frame):
+def uc_switch_to_frame(driver, frame, reconnect_time=None):
     from selenium.webdriver.remote.webelement import WebElement
     if isinstance(frame, WebElement):
-        driver.reconnect(0.15)
+        if not reconnect_time:
+            driver.reconnect(0.15)
+        else:
+            driver.reconnect(reconnect_time)
         driver.switch_to.frame(frame)
     else:
         iframe = driver.locator(frame)
-        driver.reconnect(0.15)
+        if not reconnect_time:
+            driver.reconnect(0.15)
+        else:
+            driver.reconnect(reconnect_time)
         driver.switch_to.frame(iframe)
 
 
