@@ -381,12 +381,9 @@ def main():
         '        self.assert_text("Typing Text!", \'[name="preText2"]\')'
     )
     data.append('        self.assert_text("Automation Practice", "h3")')
-    data.append("        try:")
-    data.append("            self.hover_and_click(")
-    data.append('                "#myDropdown", "#dropOption2", timeout=1)')
-    data.append("        except Exception:")
-    data.append("            # Someone moved the mouse while the test ran")
-    data.append('            self.js_click("#dropOption2")')
+    data.append(
+        '        self.hover_and_js_click("#myDropdown", "#dropOption2")'
+    )
     data.append('        self.assert_text("Link Two Selected", "h3")')
     data.append('        self.assert_text("This Text is Green", "#pText")')
     data.append('        self.click("#myButton")')
