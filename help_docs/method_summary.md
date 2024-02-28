@@ -1019,7 +1019,7 @@ driver.uc_click(
     selector, by="css selector",
     timeout=settings.SMALL_TIMEOUT, reconnect_time=None)
 
-driver.uc_switch_to_frame(frame)
+driver.uc_switch_to_frame(frame, reconnect_time=None)
 ```
 
 --------
