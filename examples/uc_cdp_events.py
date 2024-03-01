@@ -12,15 +12,18 @@ class CDPTests(BaseCase):
             lambda data: pprint(data)
         )
 
-    def verify_success(self):
-        self.assert_text("OH YEAH, you passed!", "h1", timeout=6.25)
-        self.sleep(1)
+    def click_turnstile_and_verify(sb):
+        sb.driver.uc_switch_to_frame("iframe")
+        sb.driver.uc_click("span.mark")
+        sb.assert_element("img#captcha-success", timeout=3.33)
+        sb.highlight("img#captcha-success", loops=8)
 
     def test_display_cdp_events(self):
         if not (self.undetectable and self.uc_cdp_events):
             self.get_new_driver(undetectable=True, uc_cdp_events=True)
-        self.driver.uc_open_with_tab("https://nowsecure.nl/#relax")
-        self.verify_success()
+        self.driver.uc_open("https://seleniumbase.io/apps/turnstile")
         self.add_cdp_listener()
-        self.refresh()
+        self.click_turnstile_and_verify()
         self.sleep(1)
+        self.refresh()
+        self.sleep(0.5)
