@@ -609,6 +609,7 @@ def main():
                 all_code = all_code.replace("</b>", "**")
         if "<code>`" not in all_code and "`<code>" not in all_code:
             if "</code>`" not in all_code and "`</code>" not in all_code:
+                all_code = all_code.replace('<code translate="no">', "``")
                 all_code = all_code.replace("<code>", "``")
                 all_code = all_code.replace("</code>", "``")
         # Display ALL <h> tags as an <h1> because the font size is fixed

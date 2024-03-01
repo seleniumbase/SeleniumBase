@@ -158,6 +158,8 @@ var getBestSelector = function(el) {
     non_id_attributes.push('href');
     non_id_attributes.push('label');
     non_id_attributes.push('data-content');
+    non_id_attributes.push('data-tip');
+    non_id_attributes.push('data-for');
     non_id_attributes.push('class');
     non_id_attributes.push('for');
     non_id_attributes.push('placeholder');

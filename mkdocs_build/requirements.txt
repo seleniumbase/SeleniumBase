@@ -20,7 +20,7 @@ lxml==5.1.0
 pyquery==2.0.0
 readtime==3.0.0
 mkdocs==1.5.3
-mkdocs-material==9.5.11
+mkdocs-material==9.5.12
 mkdocs-exclude-search==0.6.6
 mkdocs-simple-hooks==0.1.5
 mkdocs-material-extensions==1.3.1
