@@ -117,8 +117,8 @@ driver.default_get(url)  # Faster, but Selenium can be detected
 👤 Here are some examples of using those special UC Mode methods: (Use `self.driver` for `BaseCase` formats. Use `sb.driver` for `SB()` formats):
 
 ```python
-driver.uc_open_with_reconnect("https://nowsecure.nl/#relax", reconnect_time=5)
-driver.uc_open_with_reconnect("https://nowsecure.nl/#relax", 5)
+driver.uc_open_with_reconnect("https://top.gg/", reconnect_time=5)
+driver.uc_open_with_reconnect("https://top.gg/", 5)
 
 driver.reconnect(5)
 driver.reconnect(timeout=5)
@@ -127,8 +127,8 @@ driver.reconnect(timeout=5)
 👤 You can also set the `reconnect_time` / `timeout` to `"breakpoint"` as a valid option. This allows the user to perform manual actions (until typing `c` and pressing ENTER to continue from the breakpoint):
 
 ```python
-driver.uc_open_with_reconnect("https://nowsecure.nl/#relax", reconnect_time="breakpoint")
-driver.uc_open_with_reconnect("https://nowsecure.nl/#relax", "breakpoint")
+driver.uc_open_with_reconnect("https://top.gg/", reconnect_time="breakpoint")
+driver.uc_open_with_reconnect("https://top.gg/", "breakpoint")
 
 driver.reconnect(timeout="breakpoint")
 driver.reconnect("breakpoint")
