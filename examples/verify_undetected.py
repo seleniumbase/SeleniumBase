@@ -7,13 +7,13 @@ BaseCase.main(__name__, __file__, "--uc", "-s")
 
 class UndetectedTest(BaseCase):
     def test_browser_is_undetected(self):
+        url = "https://gitlab.com/users/sign_in"
         if not self.undetectable:
             self.get_new_driver(undetectable=True)
-        self.driver.uc_open_with_reconnect("https://top.gg/", 5)
-        if not self.is_text_visible("Discord Bots", "h1"):
+        self.driver.uc_open_with_reconnect(url, 3)
+        if not self.is_text_visible("Username", '[for="user_login"]'):
             self.get_new_driver(undetectable=True)
-            self.driver.uc_open_with_reconnect("https://top.gg/", 5)
-        self.assert_text("Discord Bots", "h1", timeout=3)
-        self.set_messenger_theme(location="top_center")
-        self.post_message("Selenium wasn't detected!", duration=2.8)
+            self.driver.uc_open_with_reconnect(url, 4)
+        self.assert_text("Username", '[for="user_login"]', timeout=3)
+        self.post_message("SeleniumBase wasn't detected", duration=4)
         self._print("\n Success! Website did not detect Selenium! ")

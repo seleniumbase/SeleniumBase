@@ -127,11 +127,39 @@ def Driver(
     wire=None,  # Shortcut / Duplicate of "use_wire".
     pls=None,  # Shortcut / Duplicate of "page_load_strategy".
 ):
+    from seleniumbase import config as sb_config
     from seleniumbase.fixtures import constants
     from seleniumbase.fixtures import shared_utils
 
     sys_argv = sys.argv
     arg_join = " ".join(sys_argv)
+    existing_runner = False
+    collect_only = ("--co" in sys_argv or "--collect-only" in sys_argv)
+    all_scripts = (hasattr(sb_config, "all_scripts") and sb_config.all_scripts)
+    if (
+        (hasattr(sb_config, "is_behave") and sb_config.is_behave)
+        or (hasattr(sb_config, "is_pytest") and sb_config.is_pytest)
+        or (hasattr(sb_config, "is_nosetest") and sb_config.is_nosetest)
+    ):
+        existing_runner = True
+    if (
+        existing_runner
+        and not hasattr(sb_config, "_context_of_runner")
+    ):
+        if hasattr(sb_config, "is_pytest") and sb_config.is_pytest:
+            import pytest
+            msg = "Skipping `Driver()` script. (Use `python`, not `pytest`)"
+            if not collect_only and not all_scripts:
+                print("\n  *** %s" % msg)
+            if collect_only or not all_scripts:
+                pytest.skip(allow_module_level=True)
+        elif hasattr(sb_config, "is_nosetest") and sb_config.is_nosetest:
+            raise Exception(
+                "\n  A Driver() script was triggered by nosetest collection!"
+                '\n  (Prevent that by using: ``if __name__ == "__main__":``)'
+            )
+    elif existing_runner:
+        sb_config._context_of_runner = True
     browser_changes = 0
     browser_set = None
     browser_text = None

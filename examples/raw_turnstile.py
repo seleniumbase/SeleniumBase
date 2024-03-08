@@ -21,4 +21,4 @@ with SB(uc=True, test=True) as sb:
         open_the_turnstile_page(sb)
         click_turnstile_and_verify(sb)
     sb.set_messenger_theme(location="top_left")
-    sb.post_message("Selenium wasn't detected!", duration=3)
+    sb.post_message("SeleniumBase wasn't detected", duration=3)

@@ -136,6 +136,8 @@ def SB(
     arg_join = " ".join(sys_argv)
     archive_logs = False
     existing_runner = False
+    collect_only = ("--co" in sys_argv or "--collect-only" in sys_argv)
+    all_scripts = (hasattr(sb_config, "all_scripts") and sb_config.all_scripts)
     do_log_folder_setup = False  # The first "test=True" run does it
     if (
         (hasattr(sb_config, "is_behave") and sb_config.is_behave)
@@ -146,21 +148,21 @@ def SB(
         test = False  # Already using a test runner. Skip extra test steps.
     elif test is None and "--test" in sys_argv:
         test = True
-    if (
-        existing_runner
-        and not hasattr(sb_config, "_context_of_runner")
-    ):
-        sb_config._context_of_runner = True
+    if existing_runner and not hasattr(sb_config, "_context_of_runner"):
         if hasattr(sb_config, "is_pytest") and sb_config.is_pytest:
-            print(
-                "\n  SB Manager script was triggered by pytest collection!"
-                '\n  (Prevent that by using: `if __name__ == "__main__":`)'
-            )
+            import pytest
+            msg = "Skipping `SB()` script. (Use `python`, not `pytest`)"
+            if not collect_only and not all_scripts:
+                print("\n  *** %s" % msg)
+            if collect_only or not all_scripts:
+                pytest.skip(allow_module_level=True)
         elif hasattr(sb_config, "is_nosetest") and sb_config.is_nosetest:
             raise Exception(
                 "\n  SB Manager script was triggered by nosetest collection!"
                 '\n  (Prevent that by using: ``if __name__ == "__main__":``)'
             )
+    elif existing_runner:
+        sb_config._context_of_runner = True
     if (
         not existing_runner
         and not hasattr(sb_config, "_has_older_context")
@@ -959,8 +961,6 @@ def SB(
         sb_config = sb_config_backup
         if test:
             sb_config._has_older_context = True
-        if existing_runner:
-            sb_config._context_of_runner = True
         if test_name:
             result = "passed"
             if test and not test_passed:

@@ -147,7 +147,7 @@ class DriverMethods():
         return js_utils.get_user_agent(self.driver, *args, **kwargs)
 
     def highlight(self, *args, **kwargs):
-        w_args = kwargs
+        w_args = kwargs.copy()
         if "loops" in w_args:
             w_args.pop("loops")
         element = page_actions.wait_for_element(self.driver, *args, **w_args)

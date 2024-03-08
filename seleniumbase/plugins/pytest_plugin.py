@@ -760,6 +760,16 @@ def pytest_addoption(parser):
                 pytest runs from nosetest runs. (Automatic)""",
     )
     parser.addoption(
+        "--all-scripts",
+        "--all_scripts",
+        action="store_true",
+        dest="all_scripts",
+        default=False,
+        help="""Use this to run `SB()`, `DriverContext()` and
+                `Driver()` scripts that are discovered during
+                the pytest collection phase.""",
+    )
+    parser.addoption(
         "--time_limit",
         "--time-limit",
         "--timelimit",
@@ -1525,6 +1535,7 @@ def pytest_configure(config):
         settings.ARCHIVE_EXISTING_DOWNLOADS = True
     if config.getoption("skip_js_waits"):
         settings.SKIP_JS_WAITS = True
+    sb_config.all_scripts = config.getoption("all_scripts")
     sb_config._time_limit = config.getoption("time_limit")
     sb_config.time_limit = config.getoption("time_limit")
     sb_config.slow_mode = config.getoption("slow_mode")
