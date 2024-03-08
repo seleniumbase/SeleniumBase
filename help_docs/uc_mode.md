@@ -25,7 +25,7 @@
 from seleniumbase import Driver
 
 driver = Driver(uc=True)
-driver.uc_open_with_reconnect("https://top.gg/", 6)
+driver.uc_open_with_reconnect("https://gitlab.com/users/sign_in", 3)
 driver.quit()
 ```
 
@@ -35,7 +35,7 @@ driver.quit()
 from seleniumbase import SB
 
 with SB(uc=True) as sb:
-    sb.driver.uc_open_with_reconnect("https://top.gg/", 6)
+    sb.driver.uc_open_with_reconnect("https://gitlab.com/users/sign_in", 3)
 ```
 
 👤 Here's a longer example, which includes a retry if the CAPTCHA isn't bypassed on the first attempt:
@@ -44,13 +44,13 @@ with SB(uc=True) as sb:
 from seleniumbase import SB
 
 with SB(uc=True, test=True) as sb:
-    sb.driver.uc_open_with_reconnect("https://top.gg/", 5)
-    if not sb.is_text_visible("Discord Bots", "h1"):
-        sb.driver.uc_open_with_reconnect("https://top.gg/", 5)
-    sb.assert_text("Discord Bots", "h1", timeout=3)
-    sb.highlight("h1", loops=3)
-    sb.set_messenger_theme(location="top_center")
-    sb.post_message("Selenium wasn't detected!", duration=3)
+    url = "https://gitlab.com/users/sign_in"
+    sb.driver.uc_open_with_reconnect(url, 3)
+    if not sb.is_text_visible("Username", '[for="user_login"]'):
+        sb.driver.uc_open_with_reconnect(url, 4)
+    sb.assert_text("Username", '[for="user_login"]', timeout=3)
+    sb.highlight('label[for="user_login"]', loops=3)
+    sb.post_message("SeleniumBase wasn't detected", duration=4)
 ```
 
 👤 Here's an example where clicking the checkbox is required, even for humans: (Commonly seen with forms that are CAPTCHA-protected.)
@@ -76,7 +76,7 @@ with SB(uc=True, test=True) as sb:
         open_the_turnstile_page(sb)
         click_turnstile_and_verify(sb)
     sb.set_messenger_theme(location="top_left")
-    sb.post_message("Selenium wasn't detected!", duration=3)
+    sb.post_message("SeleniumBase wasn't detected", duration=3)
 ```
 
 ### 👤 Here are some examples that use UC Mode:
@@ -117,8 +117,9 @@ driver.default_get(url)  # Faster, but Selenium can be detected
 👤 Here are some examples of using those special UC Mode methods: (Use `self.driver` for `BaseCase` formats. Use `sb.driver` for `SB()` formats):
 
 ```python
-driver.uc_open_with_reconnect("https://top.gg/", reconnect_time=5)
-driver.uc_open_with_reconnect("https://top.gg/", 5)
+url = "https://gitlab.com/users/sign_in"
+driver.uc_open_with_reconnect(url, reconnect_time=3)
+driver.uc_open_with_reconnect(url, 3)
 
 driver.reconnect(5)
 driver.reconnect(timeout=5)
@@ -127,8 +128,9 @@ driver.reconnect(timeout=5)
 👤 You can also set the `reconnect_time` / `timeout` to `"breakpoint"` as a valid option. This allows the user to perform manual actions (until typing `c` and pressing ENTER to continue from the breakpoint):
 
 ```python
-driver.uc_open_with_reconnect("https://top.gg/", reconnect_time="breakpoint")
-driver.uc_open_with_reconnect("https://top.gg/", "breakpoint")
+url = "https://gitlab.com/users/sign_in"
+driver.uc_open_with_reconnect(url, reconnect_time="breakpoint")
+driver.uc_open_with_reconnect(url, "breakpoint")
 
 driver.reconnect(timeout="breakpoint")
 driver.reconnect("breakpoint")
@@ -150,3 +152,37 @@ with SB(uc=True) as sb:
 ```
 
 (If you remain undetected while loading the page and performing manual actions, then you know you can create a working script once you swap the breakpoint with a time, and add special methods like `uc_click` as needed.)
+
+👤 <b>Multithreaded UC Mode:</b>
+
+If you're using `pytest` for multithreaded UC Mode (which requires using one of the `pytest` [syntax formats](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md)), then all you have to do is set the number of threads when your script runs. (`-n NUM`) Eg:
+
+```bash
+pytest --uc -n 4
+```
+
+(Then `pytest-xdist` is automatically used to spin up and process the threads.)
+
+If you don't want to use `pytest` for multithreading, then you'll need to do a little more work. That involves using a different multithreading library, (eg. `concurrent.futures`), and making sure that thread-locking is done correctly for processes that share resources. To handle that thread-locking, include `sys.argv.append("-n")` in your SeleniumBase file.
+
+Here's a sample script that uses `concurrent.futures` for spinning up multiple processes:
+
+```python
+import sys
+from concurrent.futures import ThreadPoolExecutor
+from seleniumbase import Driver
+sys.argv.append("-n")  # Tell SeleniumBase to do thread-locking as needed
+
+def launch_driver(url):
+    driver = Driver(uc=True)
+    try:
+        driver.get(url=url)
+        driver.sleep(2)
+    finally:
+        driver.quit()
+
+urls = ['https://seleniumbase.io/demo_page' for i in range(3)]
+with ThreadPoolExecutor(max_workers=len(urls)) as executor:
+    for url in urls:
+        executor.submit(launch_driver, url)
+```
