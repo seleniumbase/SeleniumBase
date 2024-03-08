@@ -9,5 +9,4 @@ with SB(uc=True, test=True) as sb:
     sb.activate_demo_mode()  # See asserts as they happen
     sb.assert_element("svg#success-icon")
     sb.assert_text("Success!", "span#success-text")
-    sb.highlight("div#success", loops=8)
-    sb.sleep(1)
+    sb.highlight("div#success", loops=10)
