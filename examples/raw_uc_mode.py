@@ -2,10 +2,10 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True) as sb:
-    sb.driver.uc_open_with_reconnect("https://top.gg/", 5)
-    if not sb.is_text_visible("Discord Bots", "h1"):
-        sb.driver.uc_open_with_reconnect("https://top.gg/", 5)
-    sb.assert_text("Discord Bots", "h1", timeout=3)
-    sb.highlight("h1", loops=3)
-    sb.set_messenger_theme(location="top_center")
-    sb.post_message("Selenium wasn't detected!", duration=3)
+    url = "https://gitlab.com/users/sign_in"
+    sb.driver.uc_open_with_reconnect(url, 3)
+    if not sb.is_text_visible("Username", '[for="user_login"]'):
+        sb.driver.uc_open_with_reconnect(url, 4)
+    sb.assert_text("Username", '[for="user_login"]', timeout=3)
+    sb.highlight('label[for="user_login"]', loops=3)
+    sb.post_message("SeleniumBase wasn't detected", duration=4)
