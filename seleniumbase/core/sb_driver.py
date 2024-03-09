@@ -97,6 +97,15 @@ class DriverMethods():
     def wait_for_element(self, *args, **kwargs):
         return page_actions.wait_for_element(self.driver, *args, **kwargs)
 
+    def wait_for_element_visible(self, *args, **kwargs):
+        return page_actions.wait_for_element(self.driver, *args, **kwargs)
+
+    def wait_for_element_present(self, *args, **kwargs):
+        return page_actions.wait_for_selector(self.driver, *args, **kwargs)
+
+    def wait_for_selector(self, *args, **kwargs):
+        return page_actions.wait_for_selector(self.driver, *args, **kwargs)
+
     def wait_for_text(self, *args, **kwargs):
         return page_actions.wait_for_text(self.driver, *args, **kwargs)
 
@@ -147,6 +156,8 @@ class DriverMethods():
         return js_utils.get_user_agent(self.driver, *args, **kwargs)
 
     def highlight(self, *args, **kwargs):
+        if "scroll" in kwargs:
+            kwargs.pop("scroll")
         w_args = kwargs.copy()
         if "loops" in w_args:
             w_args.pop("loops")
@@ -161,7 +172,15 @@ class DriverMethods():
         self.highlight(*args, **kwargs)
         if "loops" in kwargs:
             kwargs.pop("loops")
+        if "scroll" in kwargs:
+            kwargs.pop("scroll")
         page_actions.click(self.driver, *args, **kwargs)
+
+    def highlight_if_visible(
+        self, selector, by="css selector", loops=4, scroll=True
+    ):
+        if self.is_element_visible(selector, by=by):
+            self.highlight(selector, by=by, loops=loops, scroll=scroll)
 
     def switch_to_frame(self, frame):
         if isinstance(frame, WebElement):

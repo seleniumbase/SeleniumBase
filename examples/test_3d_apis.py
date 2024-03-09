@@ -1,5 +1,5 @@
 from seleniumbase import BaseCase
-BaseCase.main(__name__, __file__)
+BaseCase.main(__name__, __file__, "--enable-3d-apis")
 
 
 class ThreeJSTests(BaseCase):

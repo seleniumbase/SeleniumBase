@@ -1752,6 +1752,27 @@ def wait_for_element(
     )
 
 
+def wait_for_selector(
+    driver,
+    selector,
+    by="css selector",
+    timeout=settings.LARGE_TIMEOUT,
+):
+    original_selector = None
+    if page_utils.is_valid_by(by):
+        original_selector = selector
+    elif page_utils.is_valid_by(selector):
+        original_selector = by
+    selector, by = page_utils.recalculate_selector(selector, by)
+    return wait_for_element_present(
+        driver=driver,
+        selector=selector,
+        by=by,
+        timeout=timeout,
+        original_selector=original_selector,
+    )
+
+
 def wait_for_text(
     driver,
     text,

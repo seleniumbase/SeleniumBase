@@ -5601,6 +5601,14 @@ class BaseCase(unittest.TestCase):
             self.__highlight(selector, by=by, loops=loops, scroll=scroll)
         self.update_text(selector, text, by=by)
 
+    def highlight_if_visible(
+        self, selector, by="css selector", loops=4, scroll=True,
+    ):
+        """Highlights the element if the element is visible."""
+        self.__check_scope()
+        if self.is_element_visible(selector, by=by):
+            self.__highlight(selector, by=by, loops=loops, scroll=scroll)
+
     def __highlight(
         self, selector, by="css selector", loops=None, scroll=True
     ):
@@ -9085,6 +9093,11 @@ class BaseCase(unittest.TestCase):
         return self.wait_for_element_present(selector, by=by, timeout=timeout)
 
     def locator(self, selector, by="css selector", timeout=None):
+        """Same as wait_for_element_present() - returns the element.
+        The element does not need be visible (it may be hidden)."""
+        return self.wait_for_element_present(selector, by=by, timeout=timeout)
+
+    def wait_for_selector(self, selector, by="css selector", timeout=None):
         """Same as wait_for_element_present() - returns the element.
         The element does not need be visible (it may be hidden)."""
         return self.wait_for_element_present(selector, by=by, timeout=timeout)

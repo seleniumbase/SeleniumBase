@@ -370,6 +370,8 @@ self.highlight_type(selector, text, by="css selector", loops=3, scroll=True, tim
 # self.highlight_update_text(
 #     selector, text, by="css selector", loops=3, scroll=True, timeout=None)
 
+self.highlight_if_visible(selector, by="css selector", loops=4, scroll=True)
+
 self.highlight(selector, by="css selector", loops=4, scroll=True, timeout=None)
 
 self.press_up_arrow(selector="html", times=1, by="css selector")
@@ -742,6 +744,7 @@ self.generate_traffic_chain(pages, loops=1)
 
 self.get_element(selector, by="css selector", timeout=None)
 # Duplicates:
+# self.wait_for_selector(selector, by="css selector", timeout=None)
 # self.locator(selector, by="css selector", timeout=None)
 # self.wait_for_element_present(selector, by="css selector", timeout=None)
 
@@ -957,6 +960,12 @@ driver.assert_exact_text(text, selector)
 
 driver.wait_for_element(selector)
 
+driver.wait_for_element_visible(selector)
+
+driver.wait_for_element_present(selector)
+
+driver.wait_for_selector(selector)
+
 driver.wait_for_text(text, selector)
 
 driver.wait_for_exact_text(text, selector)
@@ -991,6 +1000,8 @@ driver.highlight(selector)
 
 driver.highlight_click(selector)
 
+driver.highlight_if_visible(selector)
+
 driver.sleep(seconds)
 
 driver.locator(selector)
@@ -1014,6 +1025,10 @@ driver.uc_open_with_tab(url)
 driver.uc_open_with_reconnect(url, reconnect_time=None)
 
 driver.reconnect(timeout)
+
+driver.disconnect()
+
+driver.connect()
 
 driver.uc_click(
     selector, by="css selector",
