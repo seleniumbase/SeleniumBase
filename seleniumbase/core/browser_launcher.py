@@ -169,6 +169,9 @@ def extend_driver(driver):
     driver.assert_text = DM.assert_text
     driver.assert_exact_text = DM.assert_exact_text
     driver.wait_for_element = DM.wait_for_element
+    driver.wait_for_element_visible = DM.wait_for_element_visible
+    driver.wait_for_element_present = DM.wait_for_element_present
+    driver.wait_for_selector = DM.wait_for_selector
     driver.wait_for_text = DM.wait_for_text
     driver.wait_for_exact_text = DM.wait_for_exact_text
     driver.wait_for_and_accept_alert = DM.wait_for_and_accept_alert
@@ -186,6 +189,7 @@ def extend_driver(driver):
     driver.get_user_agent = DM.get_user_agent
     driver.highlight = DM.highlight
     driver.highlight_click = DM.highlight_click
+    driver.highlight_if_visible = DM.highlight_if_visible
     driver.sleep = time.sleep
     driver.get_attribute = DM.get_attribute
     driver.get_page_source = DM.get_page_source
@@ -458,27 +462,34 @@ def uc_click(
         by = "css selector"
     except Exception:
         pass
-    element = driver.wait_for_element(selector, by=by, timeout=timeout)
+    element = driver.wait_for_selector(selector, by=by, timeout=timeout)
+    if not element.tag_name == "span":  # Element must be "visible"
+        element = driver.wait_for_element(selector, by=by, timeout=timeout)
     try:
         element.uc_click(
             driver, selector, by=by, reconnect_time=reconnect_time
         )
     except ElementClickInterceptedException:
+        time.sleep(0.16)
         driver.js_click(selector, by=by, timeout=timeout)
+        if not reconnect_time:
+            driver.reconnect(0.1)
+        else:
+            driver.reconnect(reconnect_time)
 
 
 def uc_switch_to_frame(driver, frame, reconnect_time=None):
     from selenium.webdriver.remote.webelement import WebElement
     if isinstance(frame, WebElement):
         if not reconnect_time:
-            driver.reconnect(0.15)
+            driver.reconnect(0.1)
         else:
             driver.reconnect(reconnect_time)
         driver.switch_to.frame(frame)
     else:
         iframe = driver.locator(frame)
         if not reconnect_time:
-            driver.reconnect(0.15)
+            driver.reconnect(0.1)
         else:
             driver.reconnect(reconnect_time)
         driver.switch_to.frame(iframe)

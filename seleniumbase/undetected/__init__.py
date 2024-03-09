@@ -442,6 +442,28 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         except Exception:
             pass
 
+    def disconnect(self):
+        """Stops the chromedriver service that runs in the background.
+        To use driver methods again, you MUST call driver.connect()"""
+        if hasattr(self, "service"):
+            try:
+                self.service.stop()
+            except Exception:
+                pass
+
+    def connect(self):
+        """Starts the chromedriver service that runs in the background
+        and recreates the session."""
+        if hasattr(self, "service"):
+            try:
+                self.service.start()
+            except Exception:
+                pass
+        try:
+            self.start_session()
+        except Exception:
+            pass
+
     def start_session(self, capabilities=None):
         if not capabilities:
             capabilities = self.options.to_capabilities()
