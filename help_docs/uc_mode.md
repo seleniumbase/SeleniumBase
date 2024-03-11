@@ -1,6 +1,15 @@
 <!-- SeleniumBase Docs -->
 
 ## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) UC Mode 👤
+### Important Note for macOS Users with Apple Silicon (M1/M2) CPUs
+
+If you're using a macOS machine with an Apple Silicon CPU (such as M1 or M2 chips) and encountering issues with UC Mode saying "bad CPU type", it's because the downloaded chromedriver that SeleniumBase patches is intended for Intel processors. To solve this, you need to install Rosetta, which allows you to run applications compiled for Intel processors on Apple Silicon.
+
+Run the following command in your terminal to install Rosetta:
+
+```bash
+softwareupdate --install-rosetta
+```
 
 👤 SeleniumBase <b>UC Mode</b> (Undetected-Chromedriver Mode) allows bots to appear human, which lets them evade detection from anti-bot services that try to block them or trigger CAPTCHAs on various websites.
 

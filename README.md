@@ -279,6 +279,12 @@ Feature: SeleniumBase scenarios for the Simple App
 <h2><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" /> Install SeleniumBase:</h2>
 
 **You can install ``seleniumbase`` from [PyPI](https://pypi.org/project/seleniumbase/) or [GitHub](https://github.com/seleniumbase/SeleniumBase):**
+<h3>Special Instructions for macOS Users with Apple Silicon (M1/M2) CPUs</h3>
+If you're using a macOS machine with an Apple Silicon CPU (such as M1 or M2 chips) and you plan to use SeleniumBase's UC Mode, you might encounter an issue where the browser driver downloaded for UC Mode does not match your CPU architecture. This is because the driver meant for Intel CPUs is downloaded by default, which will not work directly on Apple Silicon CPUs.
+
+To resolve this issue, you need to install Rosetta, which allows applications compiled for Intel processors to run on Apple Silicon.
+
+Run the following command in your terminal to install Rosetta:
 
 🔵 **How to install ``seleniumbase`` from PyPI:**
 
