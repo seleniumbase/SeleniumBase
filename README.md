@@ -55,7 +55,7 @@
 
 --------
 
-📚 Learn from [**over 100 examples** in the **SeleniumBase/examples/**](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder.
+📚 Learn from [**over 200 examples** in the **SeleniumBase/examples/**](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder.
 
 <p align="left">📗 Here's <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py">my_first_test.py</a>, which covers login, shopping, and checkout:</p>
 
