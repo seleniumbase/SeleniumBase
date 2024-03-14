@@ -159,6 +159,7 @@ class BaseCase(unittest.TestCase):
         self._language = "English"
         self._presentation_slides = {}
         self._presentation_transition = {}
+        self._output_file_saves = True  # For Presenter / ChartMaker
         self._rec_overrides_switch = True  # Recorder-Mode uses set_c vs switch
         self._sb_test_identifier = None
         self._html_report_extra = []  # (Used by pytest_plugin.py)
@@ -11187,7 +11188,8 @@ class BaseCase(unittest.TestCase):
         out_file = codecs.open(file_path, "w+", encoding="utf-8")
         out_file.writelines(the_html)
         out_file.close()
-        print("\n>>> [%s] was saved!\n" % file_path)
+        if self._output_file_saves:
+            print("\n>>> [%s] was saved!\n" % file_path)
         return file_path
 
     def begin_presentation(
@@ -11885,7 +11887,8 @@ class BaseCase(unittest.TestCase):
         out_file = codecs.open(file_path, "w+", encoding="utf-8")
         out_file.writelines(the_html)
         out_file.close()
-        print("\n>>> [%s] was saved!" % file_path)
+        if self._output_file_saves:
+            print("\n>>> [%s] was saved!" % file_path)
         return file_path
 
     def display_chart(self, chart_name=None, filename=None, interval=0):
