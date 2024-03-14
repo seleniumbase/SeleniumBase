@@ -7,6 +7,8 @@ import re
 import subprocess
 import sys
 
+from seleniumbase.fixtures import shared_utils
+
 
 class File(object):
     def __init__(self, stream):
@@ -233,7 +235,10 @@ def get_browser_version_from_binary(binary_location):
     try:
         if binary_location.count(r"\ ") != binary_location.count(" "):
             binary_location = binary_location.replace(" ", r"\ ")
-        cmd_mapping = binary_location + " --version"
+        if shared_utils.is_windows():
+            binary_location = f'powershell -command "&{{(Get-Item {binary_location}).VersionInfo.ProductVersion}}"'
+        else:
+            cmd_mapping = binary_location + " --version"
         pattern = r"\d+\.\d+\.\d+"
         quad_pattern = r"\d+\.\d+\.\d+\.\d+"
         quad_version = read_version_from_cmd(cmd_mapping, quad_pattern)
