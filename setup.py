@@ -147,10 +147,11 @@ setup(
     python_requires=">=3.7",
     install_requires=[
         'pip>=24.0',
-        'packaging>=23.2',
+        'packaging>=24.0',
         'setuptools>=68.0.0;python_version<"3.8"',
-        'setuptools>=69.1.1;python_version>="3.8"',
-        'wheel>=0.42.0',
+        'setuptools>=69.2.0;python_version>="3.8"',
+        'wheel>=0.42.0;python_version<"3.8"',
+        'wheel>=0.43.0;python_version>="3.8"',
         'attrs>=23.2.0',
         "certifi>=2024.2.2",
         'filelock>=3.12.2;python_version<"3.8"',
@@ -192,7 +193,8 @@ setup(
         'pytest-metadata==3.0.0;python_version<"3.8"',
         'pytest-metadata==3.1.1;python_version>="3.8"',
         "pytest-ordering==0.6",
-        'pytest-rerunfailures==13.0',
+        'pytest-rerunfailures==13.0;python_version<"3.8"',
+        'pytest-rerunfailures==14.0;python_version>="3.8"',
         'pytest-xdist==3.5.0',
         'parameterized==0.9.0',
         "sbvirtualdisplay==1.3.0",
@@ -217,9 +219,9 @@ setup(
         # Usage: pytest --alluredir=allure_results
         # Serve: allure serve allure_results
         "allure": [
-            'allure-pytest==2.13.2',
-            'allure-python-commons==2.13.2',
-            'allure-behave==2.13.2',
+            'allure-pytest==2.13.3',
+            'allure-python-commons==2.13.3',
+            'allure-behave==2.13.3',
         ],
         # pip install -e .[coverage]
         # Usage: coverage run -m pytest; coverage html; coverage report

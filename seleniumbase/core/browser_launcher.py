@@ -2304,6 +2304,7 @@ def get_local_driver(
                 "IE Browser is for Windows-based systems only!"
             )
         from selenium.webdriver.ie.options import Options
+        from selenium.webdriver.ie.service import Service
         ie_options = Options()
         ie_options.ignore_protected_mode_settings = True
         ie_options.ignore_zoom_level = True
@@ -2311,7 +2312,6 @@ def get_local_driver(
         ie_options.native_events = True
         ie_options.full_page_screenshot = True
         ie_options.persistent_hover = True
-        ie_capabilities = ie_options.to_capabilities()
         if LOCAL_IEDRIVER and os.path.exists(LOCAL_IEDRIVER):
             try:
                 make_driver_executable_if_not(LOCAL_IEDRIVER)
@@ -2345,16 +2345,18 @@ def get_local_driver(
                 log_d("\nWarning: HeadlessIEDriver not found. Getting it now:")
                 sb_install.main(override="iedriver")
                 sys.argv = sys_args  # Put back the original sys args
+        d_b_c = "--disable-build-check"
         if not headless:
             warnings.simplefilter("ignore", category=DeprecationWarning)
-            driver = webdriver.Ie(capabilities=ie_capabilities)
+            service = Service(service_args=[d_b_c])
+            driver = webdriver.Ie(service=service, options=ie_options)
             return extend_driver(driver)
         else:
             warnings.simplefilter("ignore", category=DeprecationWarning)
-            driver = webdriver.Ie(
-                executable_path=LOCAL_HEADLESS_IEDRIVER,
-                capabilities=ie_capabilities,
+            service = Service(
+                executable_path=LOCAL_IEDRIVER, service_args=[d_b_c],
             )
+            driver = webdriver.Ie(service=service, options=ie_options)
             return extend_driver(driver)
     elif browser_name == constants.Browser.EDGE:
         prefs = {
