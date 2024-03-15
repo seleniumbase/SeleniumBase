@@ -108,9 +108,7 @@ def is_element_enabled(driver, selector, by="css selector"):
         return False
 
 
-def is_text_visible(
-    driver, text, selector="html", by="css selector", browser=None
-):
+def is_text_visible(driver, text, selector="html", by="css selector"):
     """
     Returns whether the text substring is visible in the given selector.
     @Params
@@ -126,7 +124,7 @@ def is_text_visible(
     try:
         element = driver.find_element(by=by, value=selector)
         element_text = element.text
-        if browser == "safari":
+        if shared_utils.is_safari(driver):
             if element.tag_name.lower() in ["input", "textarea"]:
                 element_text = element.get_attribute("value")
             else:
@@ -138,13 +136,7 @@ def is_text_visible(
         return False
 
 
-def is_exact_text_visible(
-    driver,
-    text,
-    selector,
-    by="css selector",
-    browser=None
-):
+def is_exact_text_visible(driver, text, selector, by="css selector"):
     """
     Returns whether the exact text is visible in the given selector.
     (Ignores leading and trailing whitespace)
@@ -161,7 +153,7 @@ def is_exact_text_visible(
     try:
         element = driver.find_element(by=by, value=selector)
         element_text = element.text
-        if browser == "safari":
+        if shared_utils.is_safari(driver):
             if element.tag_name.lower() in ["input", "textarea"]:
                 element_text = element.get_attribute("value")
             else:
@@ -216,16 +208,10 @@ def is_non_empty_text_visible(driver, selector, by="css selector"):
     @Returns
     Boolean (is any text visible in the element with the selector)
     """
-    browser = None  # Only used for covering a Safari edge case
-    try:
-        if "safari:platformVersion" in driver.capabilities:
-            browser = "safari"
-    except Exception:
-        pass
     try:
         element = driver.find_element(by=by, value=selector)
         element_text = element.text
-        if browser == "safari":
+        if shared_utils.is_safari(driver):
             if element.tag_name.lower() in ["input", "textarea"]:
                 element_text = element.get_attribute("value")
             else:
@@ -530,7 +516,6 @@ def wait_for_text_visible(
     selector,
     by="css selector",
     timeout=settings.LARGE_TIMEOUT,
-    browser=None,
 ):
     """
     Searches for the specified element by the given selector. Returns the
@@ -564,7 +549,7 @@ def wait_for_text_visible(
             is_present = True
             if (
                 element.tag_name.lower() in ["input", "textarea"]
-                and browser != "safari"
+                and not shared_utils.is_safari(driver)
             ):
                 if (
                     element.is_displayed()
@@ -576,7 +561,7 @@ def wait_for_text_visible(
                         full_text = element.get_property("value").strip()
                     element = None
                     raise Exception()
-            elif browser == "safari":
+            elif shared_utils.is_safari(driver):
                 text_attr = "innerText"
                 if element.tag_name.lower() in ["input", "textarea"]:
                     text_attr = "value"
@@ -641,7 +626,6 @@ def wait_for_exact_text_visible(
     selector,
     by="css selector",
     timeout=settings.LARGE_TIMEOUT,
-    browser=None,
 ):
     """
     Searches for the specified element by the given selector. Returns the
@@ -684,7 +668,7 @@ def wait_for_exact_text_visible(
                         actual_text = element.get_property("value").strip()
                     element = None
                     raise Exception()
-            elif browser == "safari":
+            elif shared_utils.is_safari(driver):
                 text_attr = "innerText"
                 if element.tag_name.lower() in ["input", "textarea"]:
                     text_attr = "value"
@@ -1036,7 +1020,6 @@ def wait_for_text_not_visible(
     selector,
     by="css selector",
     timeout=settings.LARGE_TIMEOUT,
-    browser=None,
 ):
     """
     Searches for the text in the element of the given selector on the page.
@@ -1056,7 +1039,7 @@ def wait_for_text_not_visible(
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
         shared_utils.check_if_time_limit_exceeded()
-        if not is_text_visible(driver, text, selector, by=by, browser=browser):
+        if not is_text_visible(driver, text, selector, by=by):
             return True
         now_ms = time.time() * 1000.0
         if now_ms >= stop_ms:
@@ -1080,7 +1063,6 @@ def wait_for_exact_text_not_visible(
     selector,
     by="css selector",
     timeout=settings.LARGE_TIMEOUT,
-    browser=None,
 ):
     """
     Searches for the text in the element of the given selector on the page.
@@ -1100,9 +1082,7 @@ def wait_for_exact_text_not_visible(
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
         shared_utils.check_if_time_limit_exceeded()
-        if not is_exact_text_visible(
-            driver, text, selector, by=by, browser=browser
-        ):
+        if not is_exact_text_visible(driver, text, selector, by=by):
             return True
         now_ms = time.time() * 1000.0
         if now_ms >= stop_ms:
@@ -1143,12 +1123,6 @@ def wait_for_non_empty_text_visible(
     stop_ms = start_ms + (timeout * 1000.0)
     element = None
     visible = None
-    browser = None  # Only used for covering a Safari edge case
-    try:
-        if "safari:platformVersion" in driver.capabilities:
-            browser = "safari"
-    except Exception:
-        pass
     for x in range(int(timeout * 10)):
         shared_utils.check_if_time_limit_exceeded()
         try:
@@ -1158,7 +1132,7 @@ def wait_for_non_empty_text_visible(
             if element.is_displayed():
                 visible = True
             element_text = element.text
-            if browser == "safari":
+            if shared_utils.is_safari(driver):
                 if element.tag_name.lower() in ["input", "textarea"]:
                     element_text = element.get_attribute("value")
                 else:
@@ -1468,11 +1442,7 @@ def switch_to_window(driver, window, timeout=settings.SMALL_TIMEOUT):
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     if isinstance(window, int):
-        caps = driver.capabilities
-        if (
-            caps["browserName"].lower() == "safari"
-            and "safari:platformVersion" in caps
-        ):
+        if shared_utils.is_safari(driver):
             # Reversed window_handles on Safari
             window = len(driver.window_handles) - 1 - window
             if window < 0:
@@ -1716,18 +1686,16 @@ def assert_text(
     by="css selector",
     timeout=settings.SMALL_TIMEOUT,
 ):
-    browser = driver.capabilities["browserName"].lower()
     wait_for_text_visible(
-        driver, text.strip(), selector, by=by, timeout=timeout, browser=browser
+        driver, text.strip(), selector, by=by, timeout=timeout
     )
 
 
 def assert_exact_text(
     driver, text, selector, by="css selector", timeout=settings.SMALL_TIMEOUT
 ):
-    browser = driver.capabilities["browserName"].lower()
     wait_for_exact_text_visible(
-        driver, text.strip(), selector, by=by, timeout=timeout, browser=browser
+        driver, text.strip(), selector, by=by, timeout=timeout
     )
 
 
@@ -1780,19 +1748,12 @@ def wait_for_text(
     by="css selector",
     timeout=settings.LARGE_TIMEOUT,
 ):
-    browser = None  # Only used for covering a Safari edge case
-    try:
-        if "safari:platformVersion" in driver.capabilities:
-            browser = "safari"
-    except Exception:
-        pass
     return wait_for_text_visible(
         driver=driver,
         text=text,
         selector=selector,
         by=by,
         timeout=timeout,
-        browser=browser,
     )
 
 
@@ -1803,19 +1764,12 @@ def wait_for_exact_text(
     by="css selector",
     timeout=settings.LARGE_TIMEOUT,
 ):
-    browser = None  # Only used for covering a Safari edge case
-    try:
-        if "safari:platformVersion" in driver.capabilities:
-            browser = "safari"
-    except Exception:
-        pass
     return wait_for_exact_text_visible(
         driver=driver,
         text=text,
         selector=selector,
         by=by,
         timeout=timeout,
-        browser=browser,
     )
 
 
@@ -1839,12 +1793,6 @@ def get_text(
     by="css selector",
     timeout=settings.LARGE_TIMEOUT
 ):
-    browser = None  # Only used for covering a Safari edge case
-    try:
-        if "safari:platformVersion" in driver.capabilities:
-            browser = "safari"
-    except Exception:
-        pass
     element = wait_for_element(
         driver=driver,
         selector=selector,
@@ -1852,7 +1800,7 @@ def get_text(
         timeout=timeout,
     )
     element_text = element.text
-    if browser == "safari":
+    if shared_utils.is_safari(driver):
         if element.tag_name.lower() in ["input", "textarea"]:
             element_text = element.get_attribute("value")
         else:

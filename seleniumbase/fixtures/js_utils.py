@@ -1236,8 +1236,8 @@ def scroll_to_element(driver, element):
         return False
 
 
-def slow_scroll_to_element(driver, element, browser):
-    if browser == "ie":
+def slow_scroll_to_element(driver, element, *args, **kwargs):
+    if driver.capabilities["browserName"] == "internet explorer":
         # IE breaks on slow-scrolling. Do a fast scroll instead.
         scroll_to_element(driver, element)
         return
