@@ -99,7 +99,7 @@ def linux_browser_apps_to_cmd(*apps):
 
 
 def chrome_on_linux_path(prefer_chromium=False):
-    if os_name() != "linux":
+    if os_name() != OSType.LINUX:
         return ""
     if prefer_chromium:
         paths = ["/bin/chromium", "/bin/chromium-browser"]
@@ -129,7 +129,7 @@ def chrome_on_linux_path(prefer_chromium=False):
 
 
 def edge_on_linux_path():
-    if os_name() != "linux":
+    if os_name() != OSType.LINUX:
         return ""
     paths = os.environ["PATH"].split(os.pathsep)
     binaries = []
@@ -146,7 +146,7 @@ def edge_on_linux_path():
 
 
 def chrome_on_windows_path():
-    if os_name() != "win32":
+    if os_name() != OSType.WIN:
         return ""
     candidates = []
     for item in map(
@@ -174,7 +174,7 @@ def chrome_on_windows_path():
 
 
 def edge_on_windows_path():
-    if os_name() != "win32":
+    if os_name() != OSType.WIN:
         return ""
     candidates = []
     for item in map(

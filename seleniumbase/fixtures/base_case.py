@@ -1447,9 +1447,7 @@ class BaseCase(unittest.TestCase):
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_shadow_selector(selector):
             return self.__is_shadow_text_visible(text, selector)
-        return page_actions.is_text_visible(
-            self.driver, text, selector, by, self.browser
-        )
+        return page_actions.is_text_visible(self.driver, text, selector, by)
 
     def is_exact_text_visible(self, text, selector="html", by="css selector"):
         self.wait_for_ready_state_complete()
@@ -1458,7 +1456,7 @@ class BaseCase(unittest.TestCase):
         if self.__is_shadow_selector(selector):
             return self.__is_shadow_exact_text_visible(text, selector)
         return page_actions.is_exact_text_visible(
-            self.driver, text, selector, by, self.browser
+            self.driver, text, selector, by
         )
 
     def is_non_empty_text_visible(self, selector="html", by="css selector"):
@@ -4099,7 +4097,7 @@ class BaseCase(unittest.TestCase):
             else:
                 width = settings.CHROME_START_WIDTH
                 height = settings.CHROME_START_HEIGHT
-                if self.browser == "chrome" or self.browser == "edge":
+                if self.is_chromium():
                     try:
                         if self.maximize_option:
                             self.driver.maximize_window()
@@ -7668,7 +7666,7 @@ class BaseCase(unittest.TestCase):
                 "JavaScript errors found on %s => %s" % (current_url, er_str)
             )
         if self.demo_mode:
-            if self.browser == "chrome" or self.browser == "edge":
+            if self.is_chromium():
                 a_t = "ASSERT NO JS ERRORS"
                 if self._language != "English":
                     from seleniumbase.fixtures.words import SD
@@ -7787,11 +7785,8 @@ class BaseCase(unittest.TestCase):
     def get_chrome_version(self):
         self.__check_scope()
         self.__fail_if_not_using_chrome("get_chrome_version()")
-        driver_capabilities = self.driver.capabilities
-        if "version" in driver_capabilities:
-            chrome_version = driver_capabilities["version"]
-        elif "browserVersion" in driver_capabilities:
-            chrome_version = driver_capabilities["browserVersion"]
+        if "browserVersion" in self.driver.capabilities:
+            chrome_version = self.driver.capabilities["browserVersion"]
         else:
             chrome_version = "(Unknown Version)"
         return chrome_version
@@ -9331,7 +9326,7 @@ class BaseCase(unittest.TestCase):
         if self.__is_shadow_selector(selector):
             return self.__wait_for_shadow_text_visible(text, selector, timeout)
         return page_actions.wait_for_text_visible(
-            self.driver, text, selector, by, timeout, self.browser
+            self.driver, text, selector, by, timeout
         )
 
     def wait_for_exact_text_visible(
@@ -9348,7 +9343,7 @@ class BaseCase(unittest.TestCase):
                 text, selector, timeout
             )
         return page_actions.wait_for_exact_text_visible(
-            self.driver, text, selector, by, timeout, self.browser
+            self.driver, text, selector, by, timeout
         )
 
     def wait_for_non_empty_text_visible(
@@ -9842,7 +9837,7 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
         return page_actions.wait_for_text_not_visible(
-            self.driver, text, selector, by, timeout, self.browser
+            self.driver, text, selector, by, timeout
         )
 
     def wait_for_exact_text_not_visible(
@@ -9855,7 +9850,7 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
         return page_actions.wait_for_exact_text_not_visible(
-            self.driver, text, selector, by, timeout, self.browser
+            self.driver, text, selector, by, timeout
         )
 
     def assert_text_not_visible(
@@ -13136,11 +13131,7 @@ class BaseCase(unittest.TestCase):
         except InvalidArgumentException:
             if not self.browser == "chrome":
                 raise
-            driver_capabilities = self.driver.capabilities
-            if "version" in driver_capabilities:
-                chrome_version = driver_capabilities["version"]
-            else:
-                chrome_version = driver_capabilities["browserVersion"]
+            chrome_version = self.driver.capabilities["browserVersion"]
             major_chrome_version = chrome_version.split(".")[0]
             chrome_dict = self.driver.capabilities["chrome"]
             chromedriver_version = chrome_dict["chromedriverVersion"]
@@ -13218,14 +13209,7 @@ class BaseCase(unittest.TestCase):
         self.safe_execute_script(click_script)
 
     def __get_major_browser_version(self):
-        try:
-            version = self.driver.__dict__["caps"]["browserVersion"]
-        except Exception:
-            try:
-                version = self.driver.__dict__["caps"]["version"]
-            except Exception:
-                version = str(self.driver.__dict__["capabilities"]["version"])
-            self.driver.__dict__["caps"]["browserVersion"] = version
+        version = self.driver.__dict__["caps"]["browserVersion"]
         major_browser_version = version.split(".")[0]
         return major_browser_version
 
@@ -13453,7 +13437,7 @@ class BaseCase(unittest.TestCase):
 
     def __slow_scroll_to_element(self, element):
         try:
-            js_utils.slow_scroll_to_element(self.driver, element, self.browser)
+            js_utils.slow_scroll_to_element(self.driver, element)
         except Exception:
             # Scroll to the element instantly if the slow scroll fails
             js_utils.scroll_to_element(self.driver, element)
@@ -15598,9 +15582,7 @@ class BaseCase(unittest.TestCase):
             return sb_config._browser_version
         else:
             return "(Unknown Version)"
-        if "version" in driver_capabilities:
-            browser_version = driver_capabilities["version"]
-        elif "browserVersion" in driver_capabilities:
+        if "browserVersion" in driver_capabilities:
             browser_version = driver_capabilities["browserVersion"]
         else:
             browser_version = "(Unknown Version)"
@@ -15613,12 +15595,12 @@ class BaseCase(unittest.TestCase):
             else:
                 return None
         driver = self.driver
-        if "chrome" in self.driver.capabilities:
+        if "chrome" in driver.capabilities:
             cap_dict = driver.capabilities["chrome"]
             return (
                 "chromedriver", cap_dict["chromedriverVersion"].split(" ")[0]
             )
-        elif "msedge" in self.driver.capabilities:
+        elif "msedge" in driver.capabilities:
             cap_dict = driver.capabilities["msedge"]
             return (
                 "msedgedriver", cap_dict["msedgedriverVersion"].split(" ")[0]
@@ -15627,9 +15609,9 @@ class BaseCase(unittest.TestCase):
             return (
                 "geckodriver", driver.capabilities["moz:geckodriverVersion"]
             )
-        elif self.browser == "safari":
+        elif driver.capabilities["browserName"].lower() == "safari":
             return ("safaridriver", self._get_browser_version())
-        elif self.browser == "ie":
+        elif driver.capabilities["browserName"].lower() == "internet explorer":
             return ("iedriver", self._get_browser_version())
         else:
             return None

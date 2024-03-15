@@ -2306,6 +2306,8 @@ def get_local_driver(
         from selenium.webdriver.ie.options import Options
         from selenium.webdriver.ie.service import Service
         ie_options = Options()
+        ie_options.add_argument("--guest")
+        ie_options.attach_to_edge_chrome = True
         ie_options.ignore_protected_mode_settings = True
         ie_options.ignore_zoom_level = True
         ie_options.require_window_focus = False
@@ -2346,15 +2348,19 @@ def get_local_driver(
                 sb_install.main(override="iedriver")
                 sys.argv = sys_args  # Put back the original sys args
         d_b_c = "--disable-build-check"
+        logger = logging.getLogger("selenium")
+        logger.setLevel("INFO")
         if not headless:
             warnings.simplefilter("ignore", category=DeprecationWarning)
-            service = Service(service_args=[d_b_c])
+            service = Service(service_args=[d_b_c], log_output=os.devnull)
             driver = webdriver.Ie(service=service, options=ie_options)
             return extend_driver(driver)
         else:
             warnings.simplefilter("ignore", category=DeprecationWarning)
             service = Service(
-                executable_path=LOCAL_IEDRIVER, service_args=[d_b_c],
+                executable_path=LOCAL_IEDRIVER,
+                service_args=[d_b_c],
+                log_output=os.devnull,
             )
             driver = webdriver.Ie(service=service, options=ie_options)
             return extend_driver(driver)
