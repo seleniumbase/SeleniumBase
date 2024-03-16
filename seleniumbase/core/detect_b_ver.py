@@ -7,8 +7,6 @@ import re
 import subprocess
 import sys
 
-from seleniumbase.fixtures import shared_utils
-
 
 class File(object):
     def __init__(self, stream):
