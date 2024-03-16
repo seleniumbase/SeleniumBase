@@ -234,7 +234,6 @@ def get_browser_version_from_binary(binary_location):
         path = binary_location
         if binary_location.count(r"\ ") != binary_location.count(" "):
             binary_location = binary_location.replace(" ", r"\ ")
-        cmd_mapping = binary_location + " --version"
         pattern = r"\d+\.\d+\.\d+"
         quad_pattern = r"\d+\.\d+\.\d+\.\d+"
         if os_name() == OSType.WIN and os.path.exists(path):
@@ -243,6 +242,17 @@ def get_browser_version_from_binary(binary_location):
                 '''powershell -command "&{(Get-Item '%s')'''
                 '''.VersionInfo.ProductVersion}"''' % path
             )
+            try:
+                quad_version = read_version_from_cmd(cmd_mapping, quad_pattern)
+                if quad_version and len(str(quad_version)) >= 9:  # Eg. 115.0.0.0
+                    return quad_version
+                version = read_version_from_cmd(cmd_mapping, pattern)
+                if version:
+                    return version
+            except Exception:
+                ''' Powershell is not available, use --version instead '''
+                pass
+        cmd_mapping = binary_location + " --version"
         quad_version = read_version_from_cmd(cmd_mapping, quad_pattern)
         if quad_version and len(str(quad_version)) >= 9:  # Eg. 115.0.0.0
             return quad_version
