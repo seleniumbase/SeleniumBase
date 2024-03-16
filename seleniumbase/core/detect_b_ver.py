@@ -236,27 +236,19 @@ def get_browser_version_from_binary(binary_location):
         path = binary_location
         if binary_location.count(r"\ ") != binary_location.count(" "):
             binary_location = binary_location.replace(" ", r"\ ")
-        if shared_utils.is_windows():
-            binary_location = f'powershell -command "&{{(Get-Item {binary_location}).VersionInfo.ProductVersion}}"'
-        else:
-            cmd_mapping = binary_location + " --version"
+        cmd_mapping = binary_location + " --version"
         pattern = r"\d+\.\d+\.\d+"
         quad_pattern = r"\d+\.\d+\.\d+\.\d+"
-        quad_version = read_version_from_cmd(cmd_mapping, quad_pattern)
-        if quad_version and len(str(quad_version)) >= 9:  # Eg. 115.0.0.0
-            return quad_version
-        version = read_version_from_cmd(cmd_mapping, pattern)
-        if not version and os_name() == OSType.WIN and os.path.exists(path):
+        if os_name() == OSType.WIN and os.path.exists(path):
             path = path.replace(r"\ ", r" ").replace("\\", "\\\\")
             cmd_mapping = (
                 '''powershell -command "&{(Get-Item '%s')'''
                 '''.VersionInfo.ProductVersion}"''' % path
             )
-            quad_version = read_version_from_cmd(cmd_mapping, quad_pattern)
-            if quad_version and len(str(quad_version)) >= 9:
-                return quad_version
-            version = read_version_from_cmd(cmd_mapping, pattern)
-        return version
+        quad_version = read_version_from_cmd(cmd_mapping, quad_pattern)
+        if quad_version and len(str(quad_version)) >= 9:  # Eg. 115.0.0.0
+            return quad_version
+        return read_version_from_cmd(cmd_mapping, pattern)
     except Exception:
         return None
 
