@@ -1310,14 +1310,12 @@ class BaseCase(unittest.TestCase):
         return self.get_page_title()
 
     def get_user_agent(self):
-        user_agent = self.execute_script("return navigator.userAgent;")
-        return user_agent
+        return self.execute_script("return navigator.userAgent;")
 
     def get_locale_code(self):
-        locale_code = self.execute_script(
+        return self.execute_script(
             "return navigator.language || navigator.languages[0];"
         )
-        return locale_code
 
     def go_back(self):
         self.__check_scope()
@@ -2161,10 +2159,9 @@ class BaseCase(unittest.TestCase):
         selector, by = self.__recalculate_selector(selector, by)
         self.wait_for_ready_state_complete()
         time.sleep(0.05)
-        v_elems = page_actions.find_visible_elements(
+        return page_actions.find_visible_elements(
             self.driver, selector, by, limit
         )
-        return v_elems
 
     def click_visible_elements(
         self, selector, by="css selector", limit=0, timeout=None
@@ -6450,8 +6447,7 @@ class BaseCase(unittest.TestCase):
             except Exception:
                 pass
             source = self.get_page_source()
-        soup = BeautifulSoup(source, "html.parser")
-        return soup
+        return BeautifulSoup(source, "html.parser")
 
     def get_unique_links(self):
         """Get all unique links in the html of the page source.
@@ -6473,8 +6469,7 @@ class BaseCase(unittest.TestCase):
                 time.sleep(0.123)
         soup = self.get_beautiful_soup(self.get_page_source())
         page_url = self.get_current_url()
-        links = page_utils._get_unique_links(page_url, soup)
-        return links
+        return page_utils._get_unique_links(page_url, soup)
 
     def get_link_status_code(
         self,
@@ -6493,13 +6488,12 @@ class BaseCase(unittest.TestCase):
             timeout = self.__requests_timeout
         if timeout < 1:
             timeout = 1
-        status_code = page_utils._get_link_status_code(
+        return page_utils._get_link_status_code(
             link,
             allow_redirects=allow_redirects,
             timeout=timeout,
             verify=verify,
         )
-        return status_code
 
     def assert_link_status_code_is_not_404(self, link):
         status_code = str(self.get_link_status_code(link))
@@ -6735,8 +6729,7 @@ class BaseCase(unittest.TestCase):
         pdf_text = self.__fix_unicode_conversion(pdf_text)
         if wrap:
             pdf_text = pdf_text.replace(" \n", " ")
-        pdf_text = pdf_text.strip()  # Remove leading and trailing whitespace
-        return pdf_text
+        return pdf_text.strip()
 
     def assert_pdf_text(
         self,
@@ -7741,8 +7734,7 @@ class BaseCase(unittest.TestCase):
 
     def is_online(self):
         """Return True if connected to the Internet."""
-        online = self.execute_script("return navigator.onLine;")
-        return online
+        return self.execute_script("return navigator.onLine;")
 
     def is_chromium(self):
         """Return True if the browser is Chrome or Edge."""
@@ -13210,8 +13202,7 @@ class BaseCase(unittest.TestCase):
 
     def __get_major_browser_version(self):
         version = self.driver.__dict__["caps"]["browserVersion"]
-        major_browser_version = version.split(".")[0]
-        return major_browser_version
+        return version.split(".")[0]
 
     def __get_href_from_link_text(self, link_text, hard_fail=True):
         href = self.get_link_attribute(link_text, "href", hard_fail)
