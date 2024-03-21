@@ -1,26 +1,7 @@
 from seleniumbase import SB
 
-
-def open_the_form_turnstile_page(sb):
-    sb.driver.uc_open_with_reconnect(
-        "https://seleniumbase.io/apps/form_turnstile", reconnect_time=2.7,
-    )
-
-
-def click_turnstile_and_verify(sb):
-    sb.scroll_to_bottom()
-    sb.driver.uc_switch_to_frame("iframe")
-    sb.driver.uc_click("span.mark")
-    sb.highlight("img#captcha-success", timeout=3.33)
-
-
 with SB(uc=True, test=True) as sb:
-    open_the_form_turnstile_page(sb)
-    try:
-        click_turnstile_and_verify(sb)
-    except Exception:
-        open_the_form_turnstile_page(sb)
-        click_turnstile_and_verify(sb)
+    sb.driver.uc_open_with_reconnect("seleniumbase.io/apps/form_turnstile", 3)
     sb.press_keys("#name", "SeleniumBase")
     sb.press_keys("#email", "test@test.test")
     sb.press_keys("#phone", "1-555-555-5555")
@@ -30,6 +11,9 @@ with SB(uc=True, test=True) as sb:
     sb.click('span:contains("9:00 PM")')
     sb.highlight_click('input[value="AR"] + span')
     sb.click('input[value="cc"] + span')
+    sb.switch_to_frame("iframe")
+    sb.driver.uc_click("span.mark")
+    sb.highlight("img#captcha-success", timeout=3)
     sb.highlight_click('button:contains("Request & Pay")')
     sb.highlight("img#submit-success")
     sb.highlight('button:contains("Success!")')

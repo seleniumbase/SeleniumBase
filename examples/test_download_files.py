@@ -43,6 +43,7 @@ class DownloadTests(BaseCase):
         if (
             self.browser == "safari"
             or self.browser == "ie"
+            or self.browser == "edge"
             or (self.is_chromium() and self.guest_mode)
             or (self.is_chromium() and (self.headless or self.headless2))
         ):
