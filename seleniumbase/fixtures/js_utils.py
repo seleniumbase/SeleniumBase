@@ -4,10 +4,12 @@ import requests
 import time
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import WebDriverException
+from selenium.webdriver.common.by import By
 from seleniumbase import config as sb_config
 from seleniumbase.config import settings
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import css_to_xpath
+from seleniumbase.fixtures import xpath_to_css
 
 
 def wait_for_ready_state_complete(driver, timeout=settings.LARGE_TIMEOUT):
@@ -91,6 +93,37 @@ def wait_for_angularjs(driver, timeout=settings.LARGE_TIMEOUT, **kwargs):
         execute_async_script(driver, script, timeout=timeout)
     except Exception:
         time.sleep(0.05)
+
+
+def convert_to_css_selector(selector, by=By.CSS_SELECTOR):
+    if by == By.CSS_SELECTOR:
+        return selector
+    elif by == By.ID:
+        return "#%s" % selector
+    elif by == By.CLASS_NAME:
+        return ".%s" % selector
+    elif by == By.NAME:
+        return '[name="%s"]' % selector
+    elif by == By.TAG_NAME:
+        return selector
+    elif (
+        by == By.XPATH
+        or (
+            selector.startswith("/")
+            or selector.startswith("./")
+            or selector.startswith("(")
+        )
+    ):
+        return xpath_to_css.convert_xpath_to_css(selector)
+    elif by == By.LINK_TEXT:
+        return 'a:contains("%s")' % selector
+    elif by == By.PARTIAL_LINK_TEXT:
+        return 'a:contains("%s")' % selector
+    else:
+        raise Exception(
+            "Exception: Could not convert {%s}(by=%s) to CSS_SELECTOR!"
+            % (selector, by)
+        )
 
 
 def is_html_inspector_activated(driver):
@@ -323,6 +356,12 @@ def swap_selector_and_by_if_reversed(selector, by):
     if not is_valid_by(by) and is_valid_by(selector):
         selector, by = by, selector
     return (selector, by)
+
+
+def call_me_later(driver, script, ms):
+    """Call script after ms passed."""
+    call = "function() {%s}" % script
+    driver.execute_script("window.setTimeout(%s, %s);" % (call, ms))
 
 
 def highlight(driver, selector, by="css selector", loops=4):
