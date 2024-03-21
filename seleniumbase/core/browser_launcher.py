@@ -463,11 +463,16 @@ def uc_click(
     except Exception:
         pass
     element = driver.wait_for_selector(selector, by=by, timeout=timeout)
-    if not element.tag_name == "span":  # Element must be "visible"
+    tag_name = element.tag_name
+    if not tag_name == "span":  # Element must be "visible"
         element = driver.wait_for_element(selector, by=by, timeout=timeout)
     try:
         element.uc_click(
-            driver, selector, by=by, reconnect_time=reconnect_time
+            driver,
+            selector,
+            by=by,
+            reconnect_time=reconnect_time,
+            tag_name=tag_name,
         )
     except ElementClickInterceptedException:
         time.sleep(0.16)
@@ -812,11 +817,12 @@ def _set_chrome_options(
         chrome_options = webdriver.edge.options.Options()
     prefs = {}
     prefs["download.default_directory"] = downloads_path
-    prefs["local_discovery.notifications_enabled"] = False
-    prefs["credentials_enable_service"] = False
-    prefs["download.prompt_for_download"] = False
     prefs["download.directory_upgrade"] = True
+    prefs["download.prompt_for_download"] = False
+    prefs["credentials_enable_service"] = False
+    prefs["local_discovery.notifications_enabled"] = False
     prefs["safebrowsing.enabled"] = False
+    prefs["safebrowsing.disable_download_protection"] = True
     prefs["omnibox-max-zero-suggest-matches"] = 0
     prefs["omnibox-use-existing-autocomplete-client"] = 0
     prefs["omnibox-trending-zero-prefix-suggestions-on-ntp"] = 0
@@ -827,9 +833,8 @@ def _set_chrome_options(
     prefs["omnibox-zero-suggest-prefetching-on-srp"] = 0
     prefs["omnibox-zero-suggest-prefetching-on-web"] = 0
     prefs["omnibox-zero-suggest-in-memory-caching"] = 0
-    prefs["default_content_setting_values.notifications"] = 0
     prefs["content_settings.exceptions.automatic_downloads.*.setting"] = 1
-    prefs["safebrowsing.disable_download_protection"] = True
+    prefs["default_content_setting_values.notifications"] = 0
     prefs["default_content_settings.popups"] = 0
     prefs["managed_default_content_settings.popups"] = 0
     prefs["profile.password_manager_enabled"] = False
@@ -1142,6 +1147,7 @@ def _set_chrome_options(
         included_disabled_features.append("PrivacySandboxSettings4")
         included_disabled_features.append("DownloadBubble")
         included_disabled_features.append("DownloadBubbleV2")
+        included_disabled_features.append("InsecureDownloadWarnings")
         for item in extra_disabled_features:
             if item not in included_disabled_features:
                 included_disabled_features.append(item)
@@ -1153,6 +1159,7 @@ def _set_chrome_options(
         included_disabled_features.append("OptimizationTargetPrediction")
         included_disabled_features.append("DownloadBubble")
         included_disabled_features.append("DownloadBubbleV2")
+        included_disabled_features.append("InsecureDownloadWarnings")
         for item in extra_disabled_features:
             if item not in included_disabled_features:
                 included_disabled_features.append(item)
@@ -2367,10 +2374,11 @@ def get_local_driver(
     elif browser_name == constants.Browser.EDGE:
         prefs = {
             "download.default_directory": downloads_path,
-            "local_discovery.notifications_enabled": False,
-            "credentials_enable_service": False,
-            "download.prompt_for_download": False,
             "download.directory_upgrade": True,
+            "download.prompt_for_download": False,
+            "credentials_enable_service": False,
+            "local_discovery.notifications_enabled": False,
+            "safebrowsing.disable_download_protection": True,
             "safebrowsing.enabled": False,
             "omnibox-max-zero-suggest-matches": 0,
             "omnibox-use-existing-autocomplete-client": 0,
@@ -2382,11 +2390,10 @@ def get_local_driver(
             "omnibox-zero-suggest-prefetching-on-srp": 0,
             "omnibox-zero-suggest-prefetching-on-web": 0,
             "omnibox-zero-suggest-in-memory-caching": 0,
-            "safebrowsing.disable_download_protection": True,
+            "content_settings.exceptions.automatic_downloads.*.setting": 1,
             "default_content_setting_values.notifications": 0,
             "default_content_settings.popups": 0,
             "managed_default_content_settings.popups": 0,
-            "content_settings.exceptions.automatic_downloads.*.setting": 1,
             "profile.password_manager_enabled": False,
             "profile.default_content_setting_values.notifications": 2,
             "profile.default_content_settings.popups": 0,
@@ -2772,6 +2779,7 @@ def get_local_driver(
             included_disabled_features.append("Translate")
             included_disabled_features.append("OptimizationTargetPrediction")
             included_disabled_features.append("PrivacySandboxSettings4")
+            included_disabled_features.append("InsecureDownloadWarnings")
             for item in extra_disabled_features:
                 if item not in included_disabled_features:
                     included_disabled_features.append(item)
@@ -2781,6 +2789,7 @@ def get_local_driver(
             included_disabled_features.append("OptimizationHintsFetching")
             included_disabled_features.append("Translate")
             included_disabled_features.append("OptimizationTargetPrediction")
+            included_disabled_features.append("InsecureDownloadWarnings")
             for item in extra_disabled_features:
                 if item not in included_disabled_features:
                     included_disabled_features.append(item)

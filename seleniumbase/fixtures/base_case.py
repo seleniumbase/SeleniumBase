@@ -7876,27 +7876,7 @@ class BaseCase(unittest.TestCase):
         jQuery commands require a CSS_SELECTOR for finding elements.
         This method should only be used for jQuery/JavaScript actions.
         Pure JavaScript doesn't support using a:contains("LINK_TEXT")."""
-        if by == By.CSS_SELECTOR:
-            return selector
-        elif by == By.ID:
-            return "#%s" % selector
-        elif by == By.CLASS_NAME:
-            return ".%s" % selector
-        elif by == By.NAME:
-            return '[name="%s"]' % selector
-        elif by == By.TAG_NAME:
-            return selector
-        elif by == By.XPATH:
-            return self.convert_xpath_to_css(selector)
-        elif by == By.LINK_TEXT:
-            return 'a:contains("%s")' % selector
-        elif by == By.PARTIAL_LINK_TEXT:
-            return 'a:contains("%s")' % selector
-        else:
-            raise Exception(
-                "Exception: Could not convert {%s}(by=%s) to CSS_SELECTOR!"
-                % (selector, by)
-            )
+        return js_utils.convert_to_css_selector(selector, by)
 
     def set_value(
         self, selector, text, by="css selector", timeout=None, scroll=True
