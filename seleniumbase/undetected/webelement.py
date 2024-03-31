@@ -12,7 +12,10 @@ class WebElement(selenium.webdriver.remote.webelement.WebElement):
         tag_name=None,
     ):
         if driver and selector and by:
-            if tag_name == "span" and ":contains" not in selector:
+            delayed_click = False
+            if tag_name == "span" or tag_name == "button" or tag_name == "div":
+                delayed_click = True
+            if delayed_click and ":contains" not in selector:
                 selector = js_utils.convert_to_css_selector(selector, by)
                 script = 'document.querySelector("%s").click();' % selector
                 js_utils.call_me_later(driver, script, 111)
