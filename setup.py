@@ -155,7 +155,7 @@ setup(
         'attrs>=23.2.0',
         "certifi>=2024.2.2",
         'filelock>=3.12.2;python_version<"3.8"',
-        'filelock>=3.13.1;python_version>="3.8"',
+        'filelock>=3.13.3;python_version>="3.8"',
         'platformdirs>=4.0.0;python_version<"3.8"',
         'platformdirs>=4.2.0;python_version>="3.8"',
         'typing-extensions>=4.10.0;python_version>="3.8"',
@@ -169,7 +169,7 @@ setup(
         'urllib3>=1.26.18,<2;python_version<"3.10"',
         'urllib3>=1.26.18,<2.3.0;python_version>="3.10"',
         'requests==2.31.0',
-        "pynose==1.5.0",
+        "pynose==1.5.1",
         'sniffio==1.3.1',
         'h11==0.14.0',
         'outcome==1.3.0.post0',
@@ -178,7 +178,7 @@ setup(
         'trio-websocket==0.11.1',
         'wsproto==1.2.0',
         'selenium==4.11.2;python_version<"3.8"',
-        'selenium==4.18.1;python_version>="3.8"',
+        'selenium==4.19.0;python_version>="3.8"',
         'cssselect==1.2.0',
         "sortedcontainers==2.4.0",
         'fasteners==0.19',
@@ -219,16 +219,17 @@ setup(
         # Usage: pytest --alluredir=allure_results
         # Serve: allure serve allure_results
         "allure": [
-            'allure-pytest==2.13.3',
-            'allure-python-commons==2.13.3',
-            'allure-behave==2.13.3',
+            'allure-pytest==2.13.4',
+            'allure-python-commons==2.13.4',
+            'allure-behave==2.13.4',
         ],
         # pip install -e .[coverage]
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage==7.2.7;python_version<"3.8"',
             'coverage==7.4.4;python_version>="3.8"',
-            'pytest-cov==4.1.0',
+            'pytest-cov==4.1.0;python_version<"3.8"',
+            'pytest-cov==5.0.0;python_version>="3.8"',
         ],
         # pip install -e .[flake8]
         # Usage: flake8
@@ -256,14 +257,19 @@ setup(
             'cryptography==42.0.5;python_version>="3.9"',
             'cffi==1.15.1;python_version<"3.8"',
             'cffi==1.16.0;python_version>="3.8"',
-            "pycparser==2.21",
-
+            "pycparser==2.22",
         ],
         # pip install -e .[pillow]
         # (An optional library for image-processing.)
         "pillow": [
             'Pillow==9.5.0;python_version<"3.8"',
             'Pillow==10.2.0;python_version>="3.8"',
+        ],
+        # pip install -e .[pip-system-certs]
+        # (If you see [SSL: CERTIFICATE_VERIFY_FAILED], then get this.)
+        # (May help those with corporate self-signed certs on Windows.)
+        "pip-system-certs": [
+            'pip-system-certs==4.0;platform_system=="Windows"',
         ],
         # pip install -e .[proxy]
         # Usage: proxy

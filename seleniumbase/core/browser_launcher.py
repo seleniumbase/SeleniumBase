@@ -27,6 +27,7 @@ from seleniumbase.core import download_helper
 from seleniumbase.core import proxy_helper
 from seleniumbase.core import sb_driver
 from seleniumbase.fixtures import constants
+from seleniumbase.fixtures import js_utils
 from seleniumbase.fixtures import shared_utils
 
 urllib3.disable_warnings()
@@ -406,9 +407,9 @@ def uc_open(driver, url):
     elif ":" not in url:
         url = "https://" + url
     if (url.startswith("http:") or url.startswith("https:")):
-        time.sleep(0.05)
         with driver:
-            driver.default_get(url)
+            script = 'window.location.href = "%s";' % url
+            js_utils.call_me_later(driver, script, 33)
     else:
         driver.default_get(url)  # The original one
     return None
@@ -420,7 +421,6 @@ def uc_open_with_tab(driver, url):
     elif ":" not in url:
         url = "https://" + url
     if (url.startswith("http:") or url.startswith("https:")):
-        time.sleep(0.05)
         with driver:
             driver.execute_script('window.open("%s","_blank");' % url)
             driver.close()
@@ -439,7 +439,9 @@ def uc_open_with_reconnect(driver, url, reconnect_time=None):
     elif ":" not in url:
         url = "https://" + url
     if (url.startswith("http:") or url.startswith("https:")):
-        driver.execute_script('window.open("%s","_blank");' % url)
+        script = 'window.open("%s","_blank");' % url
+        js_utils.call_me_later(driver, script, 3)
+        time.sleep(0.007)
         driver.close()
         driver.reconnect(reconnect_time)
         driver.switch_to.window(driver.window_handles[-1])
@@ -3878,7 +3880,7 @@ def get_local_driver(
                         service=service, options=chrome_options
                     )
                     return extend_driver(driver)
-        except Exception:
+        except Exception as original_exception:
             if is_using_uc(undetectable, browser_name):
                 raise
             # Try again if Chrome didn't launch
@@ -3914,8 +3916,11 @@ def get_local_driver(
                 log_output=os.devnull,
                 service_args=["--disable-build-check"]
             )
-            driver = webdriver.Chrome(service=service)
-            return extend_driver(driver)
+            try:
+                driver = webdriver.Chrome(service=service)
+                return extend_driver(driver)
+            except Exception:
+                raise original_exception
     else:
         raise Exception(
             "%s is not a valid browser option for this system!" % browser_name

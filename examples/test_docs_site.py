@@ -16,5 +16,7 @@ class DocsSiteTests(BaseCase):
         self.assert_text("Recorder Mode", "h1")
         self.js_click('a[href$="/method_summary/"]')
         self.assert_text("API Reference", "h1")
+        self.js_click('a[href$="/uc_mode/"]')
+        self.assert_text("UC Mode", "h1")
         self.click('img[alt="logo"]')
         self.assert_text("SeleniumBase", "h1")
