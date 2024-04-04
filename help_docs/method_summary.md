@@ -336,6 +336,16 @@ self.delete_all_cookies()
 
 self.delete_saved_cookies(name="cookies.txt")
 
+self.get_saved_cookies(name="cookies.txt")
+
+self.get_cookie(name)
+
+self.get_cookies()
+
+self.add_cookie(cookie_dict)
+
+self.add_cookies(cookies)
+
 self.wait_for_ready_state_complete(timeout=None)
 
 self.wait_for_angularjs(timeout=None)
@@ -596,6 +606,7 @@ self.get_local_storage_item(key)
 self.remove_local_storage_item(key)
 
 self.clear_local_storage()
+# Duplicates: delete_local_storage()
 
 self.get_local_storage_keys()
 
@@ -608,6 +619,7 @@ self.get_session_storage_item(key)
 self.remove_session_storage_item(key)
 
 self.clear_session_storage()
+# Duplicates: delete_session_storage()
 
 self.get_session_storage_keys()
 

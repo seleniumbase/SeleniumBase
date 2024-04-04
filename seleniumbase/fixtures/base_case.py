@@ -4308,25 +4308,8 @@ class BaseCase(unittest.TestCase):
 
     def load_cookies(self, name="cookies.txt"):
         """Loads the page cookies from the "saved_cookies" folder."""
+        cookies = self.get_saved_cookies(name)
         self.wait_for_ready_state_complete()
-        if name.endswith("/"):
-            raise Exception("Invalid filename for Cookies!")
-        if "/" in name:
-            name = name.split("/")[-1]
-        if "\\" in name:
-            name = name.split("\\")[-1]
-        if len(name) < 1:
-            raise Exception("Filename for Cookies is too short!")
-        if not name.endswith(".txt"):
-            name = name + ".txt"
-        folder = constants.SavedCookies.STORAGE_FOLDER
-        abs_path = os.path.abspath(".")
-        file_path = os.path.join(abs_path, folder)
-        cookies_file_path = os.path.join(file_path, name)
-        json_cookies = None
-        with open(cookies_file_path, "r") as f:
-            json_cookies = f.read().strip()
-        cookies = json.loads(json_cookies)
         for cookie in cookies:
             if "expiry" in cookie:
                 del cookie["expiry"]
@@ -4362,6 +4345,46 @@ class BaseCase(unittest.TestCase):
         if os.path.exists(cookies_file_path):
             if cookies_file_path.endswith(".txt"):
                 os.remove(cookies_file_path)
+
+    def get_saved_cookies(self, name="cookies.txt"):
+        """Gets the page cookies from the "saved_cookies" folder."""
+        if name.endswith("/"):
+            raise Exception("Invalid filename for Cookies!")
+        if "/" in name:
+            name = name.split("/")[-1]
+        if "\\" in name:
+            name = name.split("\\")[-1]
+        if len(name) < 1:
+            raise Exception("Filename for Cookies is too short!")
+        if not name.endswith(".txt"):
+            name = name + ".txt"
+        folder = constants.SavedCookies.STORAGE_FOLDER
+        abs_path = os.path.abspath(".")
+        file_path = os.path.join(abs_path, folder)
+        cookies_file_path = os.path.join(file_path, name)
+        json_cookies = None
+        with open(cookies_file_path, "r") as f:
+            json_cookies = f.read().strip()
+        return json.loads(json_cookies)
+
+    def get_cookie(self, name):
+        return self.driver.get_cookie(name)
+
+    def get_cookies(self):
+        return self.driver.get_cookies()
+
+    def add_cookie(self, cookie_dict):
+        """Usage examples:
+        self.add_cookie({'name': 'foo', 'value': 'bar'})
+        self.add_cookie({'name': 'foo', 'value': 'bar', 'path': '/'})
+        self.add_cookie({'name': 'foo', 'value': 'bar', 'secure': True})
+        self.add_cookie({'name': 'foo', 'value': 'bar', 'sameSite': 'Strict'})
+        """
+        self.driver.add_cookie(cookie_dict)
+
+    def add_cookies(self, cookies):
+        for cookie_dict in cookies:
+            self.driver.add_cookie(cookie_dict)
 
     def wait_for_ready_state_complete(self, timeout=None):
         """Waits for the "readyState" of the page to be "complete".
@@ -8717,6 +8740,14 @@ class BaseCase(unittest.TestCase):
     def clear_all_cookies(self):
         """Same as self.delete_all_cookies()"""
         self.delete_all_cookies()
+
+    def delete_local_storage(self):
+        """Same as self.clear_local_storage()"""
+        self.clear_local_storage()
+
+    def delete_session_storage(self):
+        """Same as clear_session_storage()"""
+        self.clear_session_storage()
 
     def assert_no_broken_links(self, multithreaded=True):
         """Same as self.assert_no_404_errors()"""
