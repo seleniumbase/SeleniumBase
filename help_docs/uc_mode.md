@@ -7,15 +7,11 @@
 <!-- YouTube View --><a href="https://www.youtube.com/watch?v=5dMFI3e85ig"><img src="http://img.youtube.com/vi/5dMFI3e85ig/0.jpg" title="SeleniumBase on YouTube" width="400" /></a>
 <!-- GitHub Only --><p>(<b><a href="https://www.youtube.com/watch?v=5dMFI3e85ig">Watch the UC Mode tutorial on YouTube! ▶️</a></b>)</p>
 
-👤 <b translate="no">UC Mode</b> is based on [undetected-chromedriver](https://github.com/ultrafunkamsterdam/undetected-chromedriver), but includes multiple updates, fixes, and improvements to support a wider range of features and edge cases:
+👤 <b translate="no">UC Mode</b> is based on [undetected-chromedriver](https://github.com/ultrafunkamsterdam/undetected-chromedriver), but includes multiple updates, fixes, and improvements, such as:
 
-* Automatically changes the user agent to prevent detection.
-* Supports multithreaded tests in parallel via `pytest-xdist`.
-* Adjusts some configuration based on the environment.
-* Includes driver version-detection and management.
-* Has options for setting proxy and proxy-with-auth.
-* Has args for adjusting timings from default values.
-* Includes multiple ways of structuring test scripts.
+* Automatically changing user agents to prevent detection.
+* Automatically setting various chromium args as needed.
+* Has special methods. Eg. `driver.uc_click(selector)`
 
 👤 Here's an example with the <b><code translate="no">Driver</code></b> manager:
 
@@ -80,6 +76,10 @@ with SB(uc=True, test=True) as sb:
 ```
 
 <img src="https://seleniumbase.github.io/other/turnstile_click.jpg" title="SeleniumBase" width="440">
+
+--------
+
+👤 In <b translate="no">UC Mode</b>, <code translate="no">driver.get(url)</code> has been modified from its original version: If anti-bot services are detected from a <code translate="no">requests.get(url)</code> call that's made before navigating to the website, then <code translate="no">driver.uc_open_with_reconnect(url)</code> will be used instead. To open a URL normally in <b translate="no">UC Mode</b>, use <code translate="no">driver.default_get(url)</code>.
 
 --------
 
@@ -212,21 +212,25 @@ with ThreadPoolExecutor(max_workers=len(urls)) as executor:
 from seleniumbase import SB
 
 with SB(uc=True, test=True) as sb:
-    sb.driver.uc_open_with_reconnect("nopecha.com/demo/turnstile", 4.5)
-    sb.switch_to_frame("#example-container5 iframe")
-    sb.driver.uc_click("span.mark", reconnect_time=3)
-
+    sb.driver.uc_open_with_reconnect("nopecha.com/demo/turnstile", 3.4)
     if sb.is_element_visible("#example-container0 iframe"):
         sb.switch_to_frame("#example-container0 iframe")
         if not sb.is_element_visible("circle.success-circle"):
             sb.driver.uc_click("span.mark", reconnect_time=3)
             sb.switch_to_frame("#example-container0 iframe")
-        sb.assert_element("circle.success-circle")
-        sb.switch_to_parent_frame()
+        sb.switch_to_default_content()
 
+    sb.switch_to_frame("#example-container5 iframe")
+    sb.driver.uc_click("span.mark", reconnect_time=2.5)
     sb.switch_to_frame("#example-container5 iframe")
     sb.assert_element("svg#success-icon", timeout=3)
     sb.switch_to_parent_frame()
+
+    if sb.is_element_visible("#example-container0 iframe"):
+        sb.switch_to_frame("#example-container0 iframe")
+        sb.assert_element("circle.success-circle")
+        sb.switch_to_parent_frame()
+
     sb.set_messenger_theme(location="top_center")
     sb.post_message("SeleniumBase wasn't detected!", duration=3)
 ```

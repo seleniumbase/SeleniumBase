@@ -9,11 +9,10 @@
 
 <h1>SeleniumBase</h1>
 
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/sb_logo_gs.png" alt="SeleniumBase" title="SeleniumBase" width="500" /></a></p>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/super_logo_i.png" alt="SeleniumBase" title="SeleniumBase" width="400" /></a></p>
 
-<h3 align="center" class="hero__title"><b>End-to-end testing for the next generation.</b></h3>
 
-<h4 align="center"><b>Overcome your greatest browser automation challenges.</b></h4>
+<p align="center" class="hero__title"><b>All-in-one Browser Automation Framework:<br />Web Crawling / Testing / Scraping / Stealth</b></p>
 
 <p align="center"><a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=3399EE" alt="PyPI version" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/releases" target="_blank"><img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=22AAEE" alt="GitHub version" /></a> <a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"><img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://img.shields.io/gitter/room/seleniumbase/SeleniumBase.svg" alt="Gitter chat"/></a></p>
 
@@ -57,7 +56,11 @@
 
 --------
 
-📚 Learn from [**over 200 examples** in the **SeleniumBase/examples/**](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder.
+📚 Learn from [**over 200 examples** in the **SeleniumBase/examples/** folder](https://github.com/seleniumbase/SeleniumBase/tree/master/examples).
+
+👤 Note that <span translate="no">SeleniumBase</span> <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md">UC Mode / Stealth Mode has its own ReadMe</a>.
+
+ℹ️ Scripts can be called via <code translate="no"><b>python</b></code>, although some <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md">Syntax Formats</a> expect <a href="https://docs.pytest.org/en/latest/how-to/usage.html" translate="no"><b>pytest</b></a> (a Python unit-testing framework included with SeleniumBase that can discover & collect tests automatically).
 
 <p align="left">📗 Here's <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py">my_first_test.py</a>, which tests login, shopping, and checkout:</p>
 
@@ -65,7 +68,7 @@
 pytest my_first_test.py
 ```
 
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py"><img src="https://seleniumbase.github.io/cdn/gif/fast_swag_2.gif" alt="SeleniumBase Test" title="SeleniumBase Test" width="550" /></a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py"><img src="https://seleniumbase.github.io/cdn/gif/fast_swag_2.gif" alt="SeleniumBase Test" title="SeleniumBase Test" width="520" /></a>
 
 > ``pytest`` uses ``--chrome`` by default unless set differently.
 
@@ -77,7 +80,7 @@ pytest my_first_test.py
 pytest test_coffee_cart.py --demo
 ```
 
-<p align="left"><a href="https://seleniumbase.io/coffee/" target="_blank"><img src="https://seleniumbase.github.io/cdn/gif/coffee_cart.gif" width="550" alt="SeleniumBase Coffee Cart Test" title="SeleniumBase Coffee Cart Test" /></a></p>
+<p align="left"><a href="https://seleniumbase.io/coffee/" target="_blank"><img src="https://seleniumbase.github.io/cdn/gif/coffee_cart.gif" width="520" alt="SeleniumBase Coffee Cart Test" title="SeleniumBase Coffee Cart Test" /></a></p>
 
 > <p>(<code translate="no">--demo</code> mode slows down tests and highlights actions)</p>
 
@@ -91,7 +94,7 @@ pytest test_coffee_cart.py --demo
 pytest test_demo_site.py
 ```
 
-<p align="left"><a href="https://seleniumbase.io/demo_page" target="_blank"><img src="https://seleniumbase.github.io/cdn/gif/demo_page_5.gif" width="550" alt="SeleniumBase Example" title="SeleniumBase Example" /></a></p>
+<p align="left"><a href="https://seleniumbase.io/demo_page" target="_blank"><img src="https://seleniumbase.github.io/cdn/gif/demo_page_5.gif" width="520" alt="SeleniumBase Example" title="SeleniumBase Example" /></a></p>
 
 > Easy to type, click, select, toggle, drag & drop, and more.
 
@@ -394,7 +397,7 @@ cd examples/
 pytest my_first_test.py
 ```
 
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py"><img src="https://seleniumbase.github.io/cdn/gif/fast_swag_2.gif" alt="SeleniumBase Test" title="SeleniumBase Test" width="550" /></a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py"><img src="https://seleniumbase.github.io/cdn/gif/fast_swag_2.gif" alt="SeleniumBase Test" title="SeleniumBase Test" width="520" /></a>
 
 <p align="left"><b>Here's the code for <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py">my_first_test.py</a>:</b></p>
 
@@ -835,7 +838,7 @@ python -m http.server 1948
 pytest test_suite.py test_image_saving.py --dashboard --rs --headless
 ```
 
-<img src="https://seleniumbase.github.io/cdn/img/dashboard_2.png" alt="The SeleniumBase Dashboard" title="The SeleniumBase Dashboard" width="550" />
+<img src="https://seleniumbase.github.io/cdn/img/dashboard_2.png" alt="The SeleniumBase Dashboard" title="The SeleniumBase Dashboard" width="520" />
 
 --------
 
@@ -890,7 +893,7 @@ pynose test_suite.py --report
 behave behave_bdd/features/ -D dashboard -D headless
 ```
 
-<img src="https://seleniumbase.github.io/cdn/img/sb_behave_dashboard.png" title="SeleniumBase" width="550">
+<img src="https://seleniumbase.github.io/cdn/img/sb_behave_dashboard.png" title="SeleniumBase" width="520">
 
 You can also use ``--junit`` to get ``.xml`` reports for each <code translate="no">behave</code> feature. Jenkins can use these files to display better reporting for your tests.
 
