@@ -9,9 +9,11 @@
 
 <h1>SeleniumBase</h1>
 
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/mac_sb_logo_b.png" alt="SeleniumBase" title="SeleniumBase" width="440" /></a></p>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/sb_logo_gs.png" alt="SeleniumBase" title="SeleniumBase" width="500" /></a></p>
 
-<h3 align="center" class="hero__title"><b>Web Automation and Testing with Python have evolved.</b></h3>
+<h3 align="center" class="hero__title"><b>End-to-end testing for the next generation.</b></h3>
+
+<h4 align="center"><b>Overcome your greatest browser automation challenges.</b></h4>
 
 <p align="center"><a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=3399EE" alt="PyPI version" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/releases" target="_blank"><img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=22AAEE" alt="GitHub version" /></a> <a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"><img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://img.shields.io/gitter/room/seleniumbase/SeleniumBase.svg" alt="Gitter chat"/></a></p>
 
@@ -63,7 +65,7 @@
 pytest my_first_test.py
 ```
 
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py"><img src="https://seleniumbase.github.io/cdn/gif/fast_swag_2.gif" alt="SeleniumBase Test" title="SeleniumBase Test" width="480" /></a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py"><img src="https://seleniumbase.github.io/cdn/gif/fast_swag_2.gif" alt="SeleniumBase Test" title="SeleniumBase Test" width="550" /></a>
 
 > ``pytest`` uses ``--chrome`` by default unless set differently.
 
@@ -75,7 +77,7 @@ pytest my_first_test.py
 pytest test_coffee_cart.py --demo
 ```
 
-<p align="left"><a href="https://seleniumbase.io/coffee/" target="_blank"><img src="https://seleniumbase.github.io/cdn/gif/coffee_cart.gif" width="480" alt="SeleniumBase Coffee Cart Test" title="SeleniumBase Coffee Cart Test" /></a></p>
+<p align="left"><a href="https://seleniumbase.io/coffee/" target="_blank"><img src="https://seleniumbase.github.io/cdn/gif/coffee_cart.gif" width="550" alt="SeleniumBase Coffee Cart Test" title="SeleniumBase Coffee Cart Test" /></a></p>
 
 > <p>(<code translate="no">--demo</code> mode slows down tests and highlights actions)</p>
 
@@ -89,7 +91,7 @@ pytest test_coffee_cart.py --demo
 pytest test_demo_site.py
 ```
 
-<p align="left"><a href="https://seleniumbase.io/demo_page" target="_blank"><img src="https://seleniumbase.github.io/cdn/gif/demo_page_5.gif" width="480" alt="SeleniumBase Example" title="SeleniumBase Example" /></a></p>
+<p align="left"><a href="https://seleniumbase.io/demo_page" target="_blank"><img src="https://seleniumbase.github.io/cdn/gif/demo_page_5.gif" width="550" alt="SeleniumBase Example" title="SeleniumBase Example" /></a></p>
 
 > Easy to type, click, select, toggle, drag & drop, and more.
 
@@ -392,7 +394,7 @@ cd examples/
 pytest my_first_test.py
 ```
 
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py"><img src="https://seleniumbase.github.io/cdn/gif/fast_swag_2.gif" alt="SeleniumBase Test" title="SeleniumBase Test" width="480" /></a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py"><img src="https://seleniumbase.github.io/cdn/gif/fast_swag_2.gif" alt="SeleniumBase Test" title="SeleniumBase Test" width="550" /></a>
 
 <p align="left"><b>Here's the code for <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py">my_first_test.py</a>:</b></p>
 
@@ -833,7 +835,7 @@ python -m http.server 1948
 pytest test_suite.py test_image_saving.py --dashboard --rs --headless
 ```
 
-<img src="https://seleniumbase.github.io/cdn/img/dashboard_2.png" alt="The SeleniumBase Dashboard" title="The SeleniumBase Dashboard" width="480" />
+<img src="https://seleniumbase.github.io/cdn/img/dashboard_2.png" alt="The SeleniumBase Dashboard" title="The SeleniumBase Dashboard" width="550" />
 
 --------
 
@@ -888,7 +890,7 @@ pynose test_suite.py --report
 behave behave_bdd/features/ -D dashboard -D headless
 ```
 
-<img src="https://seleniumbase.github.io/cdn/img/sb_behave_dashboard.png" title="SeleniumBase" width="500">
+<img src="https://seleniumbase.github.io/cdn/img/sb_behave_dashboard.png" title="SeleniumBase" width="550">
 
 You can also use ``--junit`` to get ``.xml`` reports for each <code translate="no">behave</code> feature. Jenkins can use these files to display better reporting for your tests.
 
@@ -1350,10 +1352,12 @@ pytest --reruns=1 --reruns-delay=1
 
 <p>
 <div><b>If you see something, say something!</b></div>
-<div><a href="https://github.com/seleniumbase/SeleniumBase/issues?q=is%3Aissue+is%3Aclosed"><img src="https://img.shields.io/github/issues-closed-raw/seleniumbase/SeleniumBase.svg?color=22BB88" title="Closed Issues" /></a>   <a href="https://github.com/seleniumbase/SeleniumBase/pulls?q=is%3Apr+is%3Aclosed"><img src="https://img.shields.io/github/issues-pr-closed/seleniumbase/SeleniumBase.svg?logo=github&logoColor=white&color=22BB99" title="Closed Pull Requests" /></a></div>
+<div><a href="https://github.com/seleniumbase/SeleniumBase/issues?q=is%3Aissue+is%3Aclosed"><img src="https://img.shields.io/github/issues-closed-raw/seleniumbase/SeleniumBase.svg?color=22BB88" title="Closed Issues" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/pulls?q=is%3Apr+is%3Aclosed"><img src="https://img.shields.io/github/issues-pr-closed/seleniumbase/SeleniumBase.svg?logo=github&logoColor=white&color=22BB99" title="Closed Pull Requests" /></a></div>
 </p>
 
 <p align="left"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/sb_logo_10t.png" alt="SeleniumBase" title="SeleniumBase" width="266" /></a></p>
+
+<a href="https://pypi.org/project/seleniumbase/" target="_blank"><img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=22AAEE&logo=python&logoColor=FEDC54" title="Supported Python Versions" /></a>
 
 <p><div>
 <span><a href="https://www.youtube.com/playlist?list=PLp9uKicxkBc5UIlGi2BuE3aWC7JyXpD3m"><img src="https://seleniumbase.github.io/cdn/img/youtube.png" title="SeleniumBase Playlist on YouTube" alt="SeleniumBase Playlist on YouTube" width="68" /></a></span>
@@ -1364,11 +1368,8 @@ pytest --reruns=1 --reruns-delay=1
 
 <p><div><b><a href="https://github.com/mdmintz">https://github.com/mdmintz</a></b></div></p>
 
-<div><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/fancy_logo_14.png" title="SeleniumBase" width="240" /></a></div> <div><a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a></div> <div><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://img.shields.io/badge/tested%20with-SeleniumBase-04C38E.svg" alt="Tested with SeleniumBase" /></a></div> <div><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" title="SeleniumBase" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://img.shields.io/gitter/room/seleniumbase/SeleniumBase.svg" alt="Gitter chat"/></a></div>
+<div><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="240" /></a></div>
+<div><a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a></div> <div><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://img.shields.io/badge/tested%20with-SeleniumBase-04C38E.svg" alt="Tested with SeleniumBase" /></a></div> <div><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" title="SeleniumBase" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://img.shields.io/gitter/room/seleniumbase/SeleniumBase.svg" alt="Gitter chat"/></a></div>
 <div><a href="https://pepy.tech/project/seleniumbase" target="_blank"><img src="https://static.pepy.tech/badge/seleniumbase" alt="SeleniumBase PyPI downloads" /></a></div>
 <div><a href="https://github.com/seleniumbase/SeleniumBase/stargazers"><img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=19A57B" title="Stargazers" /></a></div>
-
---------
-
-<p><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/super_logo_sb.png" alt="SeleniumBase" title="SeleniumBase" width="300" /></a></p>
-<p><a href="https://pypi.org/project/seleniumbase/" target="_blank"><img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=22AAEE&logo=python&logoColor=FEDC54" title="Supported Python Versions" /></a></p>
+<div align="left"><img src="https://views.whatilearened.today/views/github/seleniumbase/SeleniumBase.svg" width="124px" height="28px" alt="Views" /></div>
