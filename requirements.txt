@@ -34,7 +34,8 @@ selenium==4.19.0;python_version>="3.8"
 cssselect==1.2.0
 sortedcontainers==2.4.0
 fasteners==0.19
-execnet==2.0.2
+execnet==2.0.2;python_version<"3.8"
+execnet==2.1.0;python_version>="3.8"
 iniconfig==2.0.0
 pluggy==1.2.0;python_version<"3.8"
 pluggy==1.4.0;python_version>="3.8"
