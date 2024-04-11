@@ -9,7 +9,7 @@
 
 <h1>SeleniumBase</h1>
 
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/super_logo_i.png" alt="SeleniumBase" title="SeleniumBase" width="400" /></a></p>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/super_logo_sb2.png" alt="SeleniumBase" title="SeleniumBase" width="350" /></a></p>
 
 
 <p align="center" class="hero__title"><b>All-in-one Browser Automation Framework:<br />Web Crawling / Testing / Scraping / Stealth</b></p>
@@ -845,7 +845,7 @@ pytest test_suite.py test_image_saving.py --dashboard --rs --headless
 <a id="creating_visual_reports"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" /> Generating Test Reports:</h2>
 
-<h3>🔵 Pytest Reports:</h3>
+<h3>🔵 <code>pytest</code> HTML Reports:</h3>
 
 ✅ Using ``--html=report.html`` gives you a fancy report of the name specified after your test suite completes.
 
@@ -873,7 +873,7 @@ You can also use ``--junit-xml=report.xml`` to get an xml report instead. Jenkin
 pytest test_suite.py --junit-xml=report.xml
 ```
 
-<h3>🔵 pynose Reports:</h3>
+<h3>🔵 <code>pynose</code> Reports:</h3>
 
 The ``--report`` option gives you a fancy report after your test suite completes.
 
@@ -885,7 +885,7 @@ pynose test_suite.py --report
 
 (NOTE: You can add ``--show-report`` to immediately display pynose reports after the test suite completes. Only use ``--show-report`` when running tests locally because it pauses the test run.)
 
-<h3>🔵 Behave Dashboard & Reports:</h3>
+<h3>🔵 <code>behave</code> Dashboard & Reports:</h3>
 
 (The [behave_bdd/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/behave_bdd) folder can be found in the [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder.)
 
@@ -957,7 +957,7 @@ pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1
 ```
 
 
-<h3><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" /> Handling Pop-Up / Pop Up Alerts:</h3>
+<h3><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" /> Handling Pop-Up Alerts:</h3>
 
 🔵 <code translate="no">self.accept_alert()</code> automatically waits for and accepts alert pop-ups. <code translate="no">self.dismiss_alert()</code> automatically waits for and dismisses alert pop-ups. On occasion, some methods like <code translate="no">self.click(SELECTOR)</code> might dismiss a pop-up on its own because they call JavaScript to make sure that the <code translate="no">readyState</code> of the page is <code translate="no">complete</code> before advancing. If you're trying to accept a pop-up that got dismissed this way, use this workaround: Call <code translate="no">self.find_element(SELECTOR).click()</code> instead, (which will let the pop-up remain on the screen), and then use <code translate="no">self.accept_alert()</code> to accept the pop-up (<a href="https://github.com/seleniumbase/SeleniumBase/issues/600#issuecomment-647270426">more on that here</a>). If pop-ups are intermittent, wrap code in a try/except block.
 
@@ -1371,7 +1371,7 @@ pytest --reruns=1 --reruns-delay=1
 
 <p><div><b><a href="https://github.com/mdmintz">https://github.com/mdmintz</a></b></div></p>
 
-<div><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="240" /></a></div>
+<div><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/super_logo_sb2.png" title="SeleniumBase" width="240" /></a></div>
 <div><a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a></div> <div><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://img.shields.io/badge/tested%20with-SeleniumBase-04C38E.svg" alt="Tested with SeleniumBase" /></a></div> <div><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" title="SeleniumBase" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://img.shields.io/gitter/room/seleniumbase/SeleniumBase.svg" alt="Gitter chat"/></a></div>
 <div><a href="https://pepy.tech/project/seleniumbase" target="_blank"><img src="https://static.pepy.tech/badge/seleniumbase" alt="SeleniumBase PyPI downloads" /></a></div>
 <div><a href="https://github.com/seleniumbase/SeleniumBase/stargazers"><img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=19A57B" title="Stargazers" /></a></div>
