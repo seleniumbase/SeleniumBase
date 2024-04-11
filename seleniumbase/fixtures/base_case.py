@@ -4134,6 +4134,23 @@ class BaseCase(unittest.TestCase):
                         self.__dont_record_open = True
                         self.open(new_start_page)
                         self.__dont_record_open = False
+        if undetectable:
+            if hasattr(new_driver, "uc_open"):
+                self.uc_open = new_driver.uc_open
+            if hasattr(new_driver, "uc_open_with_tab"):
+                self.uc_open_with_tab = new_driver.uc_open_with_tab
+            if hasattr(new_driver, "uc_open_with_reconnect"):
+                self.uc_open_with_reconnect = new_driver.uc_open_with_reconnect
+            if hasattr(new_driver, "reconnect"):
+                self.reconnect = new_driver.reconnect
+            if hasattr(new_driver, "disconnect"):
+                self.disconnect = new_driver.disconnect
+            if hasattr(new_driver, "connect"):
+                self.connect = new_driver.connect
+            if hasattr(new_driver, "uc_click"):
+                self.uc_click = new_driver.uc_click
+            if hasattr(new_driver, "uc_switch_to_frame"):
+                self.uc_switch_to_frame = new_driver.uc_switch_to_frame
         return new_driver
 
     def switch_to_driver(self, driver):
