@@ -1,6 +1,5 @@
 from seleniumbase import SB
 
-
 with SB(uc=True, test=True, locale_code="en") as sb:
     url = "https://ahrefs.com/website-authority-checker"
     input_field = 'input[placeholder="Enter domain"]'

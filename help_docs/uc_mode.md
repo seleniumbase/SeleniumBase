@@ -19,9 +19,12 @@
 from seleniumbase import Driver
 
 driver = Driver(uc=True)
-driver.uc_open_with_reconnect("https://gitlab.com/users/sign_in", 3)
+url = "https://gitlab.com/users/sign_in"
+driver.uc_open_with_reconnect(url, 3)
 driver.quit()
 ```
+
+<img src="https://seleniumbase.github.io/other/gitlab_bypass.png" title="SeleniumBase" width="370">
 
 👤 Here's an example with the <b><code translate="no">SB</code></b> manager (which has more methods and functionality than the <b><code translate="no">Driver</code></b> format):
 
@@ -29,7 +32,8 @@ driver.quit()
 from seleniumbase import SB
 
 with SB(uc=True) as sb:
-    sb.driver.uc_open_with_reconnect("https://gitlab.com/users/sign_in", 3)
+    url = "https://gitlab.com/users/sign_in"
+    sb.driver.uc_open_with_reconnect(url, 3)
 ```
 
 👤 Here's a longer example, which includes a retry if the CAPTCHA isn't bypassed on the first attempt:
@@ -55,9 +59,8 @@ with SB(uc=True, test=True) as sb:
 from seleniumbase import SB
 
 def open_the_turnstile_page(sb):
-    sb.driver.uc_open_with_reconnect(
-        "https://seleniumbase.io/apps/turnstile", reconnect_time=3,
-    )
+    url = "seleniumbase.io/apps/turnstile"
+    sb.driver.uc_open_with_reconnect(url, reconnect_time=2)
 
 def click_turnstile_and_verify(sb):
     sb.switch_to_frame("iframe")
@@ -76,6 +79,46 @@ with SB(uc=True, test=True) as sb:
 ```
 
 <img src="https://seleniumbase.github.io/other/turnstile_click.jpg" title="SeleniumBase" width="440">
+
+👤 Here's an example <b>where the CAPTCHA appears after submitting a form</b>:
+
+```python
+from seleniumbase import SB
+
+with SB(uc=True, test=True, locale_code="en") as sb:
+    url = "https://ahrefs.com/website-authority-checker"
+    input_field = 'input[placeholder="Enter domain"]'
+    submit_button = 'span:contains("Check Authority")'
+    sb.driver.uc_open_with_reconnect(url, 1)  # The bot-check is later
+    sb.type(input_field, "github.com/seleniumbase/SeleniumBase")
+    sb.driver.reconnect(0.1)
+    sb.driver.uc_click(submit_button, reconnect_time=4)
+    sb.wait_for_text_not_visible("Checking", timeout=10)
+    sb.highlight('p:contains("github.com/seleniumbase/SeleniumBase")')
+    sb.highlight('a:contains("Top 100 backlinks")')
+    sb.set_messenger_theme(location="bottom_center")
+    sb.post_message("SeleniumBase wasn't detected!")
+```
+
+<img src="https://seleniumbase.github.io/other/ahrefs_bypass.png" title="SeleniumBase" width="540">
+
+👤 Here, <b>the CAPTCHA appears after clicking to go to the sign-in screen</b>:
+
+```python
+from seleniumbase import SB
+
+with SB(uc=True, test=True, ad_block_on=True) as sb:
+    url = "https://www.thaiticketmajor.com/concert/"
+    sb.driver.uc_open_with_reconnect(url, 5.5)
+    sb.driver.uc_click("button.btn-signin", 4)
+    sb.switch_to_frame('iframe[title*="Cloudflare"]')
+    sb.assert_element("div#success svg#success-icon")
+    sb.switch_to_default_content()
+    sb.set_messenger_theme(location="top_center")
+    sb.post_message("SeleniumBase wasn't detected!")
+```
+
+<img src="https://seleniumbase.github.io/other/ttm_bypass.png" title="SeleniumBase" width="540">
 
 --------
 
@@ -247,7 +290,7 @@ Here are the 3 primary things that <b translate="no">UC Mode</b> does to make bo
 
 For example, if the <b translate="no">Chrome DevTools Console</b> variables aren't renamed, you can expect to find them easily when using <b><code translate="no">selenium</code></b> for browser automation:
 
-<img src="https://seleniumbase.github.io/other/cdc_args.png" title="SeleniumBase" width="380">
+<img src="https://seleniumbase.github.io/other/cdc_args.png" title="SeleniumBase" width="390">
 
 (If those variables are still there, then websites can easily detect your bots.)
 
@@ -278,13 +321,25 @@ The above JS method is used within the <b><code translate="no">SeleniumBase</cod
 
 🏆 <b>Choosing the right CAPTCHA service</b> for your business / website:
 
-<img src="https://seleniumbase.github.io/other/me_se_conf.jpg" title="SeleniumBase" width="340">
+<img src="https://seleniumbase.github.io/other/me_se_conf.jpg" title="SeleniumBase" width="370">
 
 As an ethical hacker / cybersecurity researcher who builds bots that bypass CAPTCHAs for sport, <b>the CAPTCHA service that I personally recommend</b> for keeping bots out is <b translate="no">Google's reCAPTCHA</b>:
 
 <img src="https://seleniumbase.github.io/other/g_recaptcha.png" title="SeleniumBase" width="315">
 
 Since Google makes Chrome, Google's own <b translate="no">reCAPTCHA</b> service has access to more data than other CAPTCHA services (eg. hCaptcha, CloudFlare, DataDome, etc.), and can therefore use that data to make better decisions about whether or not web activity is coming from real humans or automated bots.
+
+--------
+
+⚖️ <b>Legal implications of web-scraping</b>:
+
+Based on the following article, https://nubela.co/blog/meta-lost-the-scraping-legal-battle-to-bright-data/, (which outlines a court case where social-networking company: Meta lost the legal battle to data-scraping company: Bright Data), it was determined that web scraping is 100% legal in the eyes of the courts as long as:
+1. The scraping is only done with <b>public data</b> and <b>not private data</b>.
+2. The scraping isn’t done while logged in on the site being scraped.
+
+If the above criteria are met, then scrape away! (According to the article)
+
+(Note: I'm not a lawyer, so I can't officially offer legal advice, but I can direct people to existing articles online where people can find their own answers.)
 
 --------
 

@@ -14,7 +14,7 @@ class WebElement(selenium.webdriver.remote.webelement.WebElement):
     ):
         if driver and selector and by:
             delayed_click = False
-            if tag_name == "span" or tag_name == "button" or tag_name == "div":
+            if tag_name in ["span", "button", "div", "a"]:
                 delayed_click = True
             if delayed_click and ":contains" not in selector:
                 selector = js_utils.convert_to_css_selector(selector, by)

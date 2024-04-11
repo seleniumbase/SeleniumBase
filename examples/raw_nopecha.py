@@ -1,7 +1,7 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True) as sb:
-    sb.driver.uc_open_with_reconnect("nopecha.com/demo/turnstile", 3.4)
+    sb.driver.uc_open_with_reconnect("nopecha.com/demo/turnstile", 4)
     if sb.is_element_visible("#example-container0 iframe"):
         sb.switch_to_frame("#example-container0 iframe")
         if not sb.is_element_visible("circle.success-circle"):
