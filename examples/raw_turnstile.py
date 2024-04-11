@@ -2,9 +2,8 @@ from seleniumbase import SB
 
 
 def open_the_turnstile_page(sb):
-    sb.driver.uc_open_with_reconnect(
-        "seleniumbase.io/apps/turnstile", reconnect_time=3,
-    )
+    url = "seleniumbase.io/apps/turnstile"
+    sb.driver.uc_open_with_reconnect(url, reconnect_time=2)
 
 
 def click_turnstile_and_verify(sb):

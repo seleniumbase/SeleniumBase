@@ -1,7 +1,8 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True) as sb:
-    sb.driver.uc_open_with_reconnect("seleniumbase.io/apps/form_turnstile", 3)
+    url = "seleniumbase.io/apps/form_turnstile"
+    sb.driver.uc_open_with_reconnect(url, 2)
     sb.press_keys("#name", "SeleniumBase")
     sb.press_keys("#email", "test@test.test")
     sb.press_keys("#phone", "1-555-555-5555")
