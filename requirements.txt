@@ -1,7 +1,7 @@
 pip>=24.0
 packaging>=24.0
 setuptools>=68.0.0;python_version<"3.8"
-setuptools>=69.2.0;python_version>="3.8"
+setuptools>=69.5.1;python_version>="3.8"
 wheel>=0.42.0;python_version<"3.8"
 wheel>=0.43.0;python_version>="3.8"
 attrs>=23.2.0
