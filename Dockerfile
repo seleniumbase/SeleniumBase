@@ -1,13 +1,31 @@
 # SeleniumBase Docker Image
-FROM ubuntu:18.04
+FROM ubuntu:22.04
 
-#=======================================
-# Install Python and Basic Python Tools
-#=======================================
-RUN apt-get -o Acquire::Check-Valid-Until=false -o Acquire::Check-Date=false update
-RUN apt-get install -y python3 python3-pip python3-setuptools python3-dev python-distribute
-RUN alias python=python3
-RUN echo "alias python=python3" >> ~/.bashrc
+#============================
+# Install Linux Dependencies
+#============================
+RUN apt-get update && apt-get install -y \
+    fonts-liberation \
+    libasound2 \
+    libatk-bridge2.0-0 \
+    libatk1.0-0 \
+    libatspi2.0-0 \
+    libcups2 \
+    libdbus-1-3 \
+    libdrm2 \
+    libgbm1 \
+    libgtk-3-0 \
+    libnspr4 \
+    libnss3 \
+    libwayland-client0 \
+    libxcomposite1 \
+    libxdamage1 \
+    libxfixes3 \
+    libxkbcommon0 \
+    libxrandr2 \
+    xdg-utils \
+    libu2f-udev \
+    libvulkan1
 
 #=================================
 # Install Bash Command Line Tools
@@ -17,8 +35,6 @@ RUN apt-get -qy --no-install-recommends install \
     unzip \
     wget \
     curl \
-    libxi6 \
-    libgconf-2-4 \
     vim \
     xvfb \
   && rm -rf /var/lib/apt/lists/*
@@ -26,24 +42,17 @@ RUN apt-get -qy --no-install-recommends install \
 #================
 # Install Chrome
 #================
-RUN curl -sS -o - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
-    echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list && \
-    apt-get -yqq update && \
-    apt-get -yqq install google-chrome-stable && \
-    rm -rf /var/lib/apt/lists/*
+RUN curl -LO  https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+RUN apt-get install -y ./google-chrome-stable_current_amd64.deb
+RUN rm google-chrome-stable_current_amd64.deb
 
-#=================
-# Install Firefox
-#=================
-RUN apt-get -qy --no-install-recommends install \
-     $(apt-cache depends firefox | grep Depends | sed "s/.*ends:\ //" | tr '\n' ' ') \
-  && rm -rf /var/lib/apt/lists/* \
-  && cd /tmp \
-  && wget --no-check-certificate -O firefox-esr.tar.bz2 \
-    'https://download.mozilla.org/?product=firefox-esr-latest&os=linux64&lang=en-US' \
-  && tar -xjf firefox-esr.tar.bz2 -C /opt/ \
-  && ln -s /opt/firefox/firefox /usr/bin/firefox \
-  && rm -f /tmp/firefox-esr.tar.bz2
+#=======================================
+# Install Python and Basic Python Tools
+#=======================================
+RUN apt-get -o Acquire::Check-Valid-Until=false -o Acquire::Check-Date=false update
+RUN apt-get install -y python3 python3-pip python3-setuptools python3-dev python-distribute
+RUN alias python=python3
+RUN echo "alias python=python3" >> ~/.bashrc
 
 #===========================
 # Configure Virtual Display
@@ -58,9 +67,9 @@ RUN exec "$@"
 # Update Python Version
 #=======================
 RUN apt-get update -y
-RUN apt-get -qy --no-install-recommends install python3.8
+RUN apt-get -qy --no-install-recommends install python3.10
 RUN rm /usr/bin/python3
-RUN ln -s python3.8 /usr/bin/python3
+RUN ln -s python3.10 /usr/bin/python3
 
 #=============================================
 # Allow Special Characters in Python Programs
@@ -78,30 +87,20 @@ COPY integrations /SeleniumBase/integrations/
 COPY requirements.txt /SeleniumBase/requirements.txt
 COPY setup.py /SeleniumBase/setup.py
 RUN find . -name '*.pyc' -delete
-RUN find . -name __pycache__ -delete
 RUN pip3 install --upgrade pip setuptools wheel
 RUN cd /SeleniumBase && ls && pip3 install -r requirements.txt --upgrade
 RUN cd /SeleniumBase && pip3 install .
 
-#=====================
-# Download WebDrivers
-#=====================
-RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.34.0/geckodriver-v0.34.0-linux64.tar.gz
-RUN tar -xvzf geckodriver-v0.34.0-linux64.tar.gz
-RUN chmod +x geckodriver
-RUN mv geckodriver /usr/local/bin/
-RUN wget https://chromedriver.storage.googleapis.com/72.0.3626.69/chromedriver_linux64.zip
-RUN unzip chromedriver_linux64.zip
-RUN chmod +x chromedriver
-RUN mv chromedriver /usr/local/bin/
+#=======================
+# Download chromedriver
+#=======================
+RUN sbase get chromedriver --path
 
 #==========================================
 # Create entrypoint and grab example tests
 #==========================================
 COPY integrations/docker/docker-entrypoint.sh /
-COPY integrations/docker/run_docker_test_in_firefox.sh /
 COPY integrations/docker/run_docker_test_in_chrome.sh /
 RUN chmod +x *.sh
-COPY integrations/docker/docker_config.cfg /SeleniumBase/examples/
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["/bin/bash"]
