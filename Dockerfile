@@ -23,19 +23,19 @@ RUN apt-get update && apt-get install -y \
     libxfixes3 \
     libxkbcommon0 \
     libxrandr2 \
-    xdg-utils \
     libu2f-udev \
-    libvulkan1
+    libvulkan1 \
+    xdg-utils
 
 #=================================
 # Install Bash Command Line Tools
 #=================================
 RUN apt-get -qy --no-install-recommends install \
+    curl \
     sudo \
     unzip \
-    wget \
-    curl \
     vim \
+    wget \
     xvfb \
   && rm -rf /var/lib/apt/lists/*
 
@@ -46,27 +46,13 @@ RUN curl -LO  https://dl.google.com/linux/direct/google-chrome-stable_current_am
 RUN apt-get install -y ./google-chrome-stable_current_amd64.deb
 RUN rm google-chrome-stable_current_amd64.deb
 
-#=======================================
-# Install Python and Basic Python Tools
-#=======================================
-RUN apt-get -o Acquire::Check-Valid-Until=false -o Acquire::Check-Date=false update
-RUN apt-get install -y python3 python3-pip python3-setuptools python3-dev python-distribute
+#================
+# Install Python
+#================
+RUN apt-get update -y
+RUN apt-get install -y python3 python3-pip python3-setuptools python3-dev
 RUN alias python=python3
 RUN echo "alias python=python3" >> ~/.bashrc
-
-#===========================
-# Configure Virtual Display
-#===========================
-RUN set -e
-RUN echo "Starting X virtual framebuffer (Xvfb) in background..."
-RUN Xvfb -ac :99 -screen 0 1280x1024x16 > /dev/null 2>&1 &
-RUN export DISPLAY=:99
-RUN exec "$@"
-
-#=======================
-# Update Python Version
-#=======================
-RUN apt-get update -y
 RUN apt-get -qy --no-install-recommends install python3.10
 RUN rm /usr/bin/python3
 RUN ln -s python3.10 /usr/bin/python3
@@ -77,6 +63,15 @@ RUN ln -s python3.10 /usr/bin/python3
 RUN export PYTHONIOENCODING=utf8
 RUN echo "export PYTHONIOENCODING=utf8" >> ~/.bashrc
 
+#===========================
+# Configure Virtual Display
+#===========================
+RUN set -e
+RUN echo "Starting X virtual framebuffer (Xvfb) in background..."
+RUN Xvfb -ac :99 -screen 0 1280x1024x16 > /dev/null 2>&1 &
+RUN export DISPLAY=:99
+RUN exec "$@"
+
 #=====================
 # Set up SeleniumBase
 #=====================
@@ -86,15 +81,19 @@ COPY examples /SeleniumBase/examples/
 COPY integrations /SeleniumBase/integrations/
 COPY requirements.txt /SeleniumBase/requirements.txt
 COPY setup.py /SeleniumBase/setup.py
+COPY MANIFEST.in /SeleniumBase/MANIFEST.in
+COPY pytest.ini /SeleniumBase/pytest.ini
+COPY setup.cfg /SeleniumBase/setup.cfg
+COPY virtualenv_install.sh /SeleniumBase/virtualenv_install.sh
 RUN find . -name '*.pyc' -delete
-RUN pip3 install --upgrade pip setuptools wheel
-RUN cd /SeleniumBase && ls && pip3 install -r requirements.txt --upgrade
-RUN cd /SeleniumBase && pip3 install .
+RUN pip install --upgrade pip setuptools wheel
+RUN cd /SeleniumBase && ls && pip install -r requirements.txt --upgrade
+RUN cd /SeleniumBase && pip install .
 
 #=======================
 # Download chromedriver
 #=======================
-RUN sbase get chromedriver --path
+RUN seleniumbase get chromedriver --path
 
 #==========================================
 # Create entrypoint and grab example tests
