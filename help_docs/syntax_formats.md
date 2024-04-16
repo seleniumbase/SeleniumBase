@@ -585,7 +585,7 @@ class 私のテストクラス(セレニウムテストケース):
         self.JS入力('input[name="search"]', "寿司")
         self.クリックして("#searchform button")
         self.テキストを確認する("寿司", "#firstHeading")
-        self.要素を確認する('img[alt="握り寿司"]')
+        self.要素を確認する('img[src*="Various_sushi"]')
         self.JS入力("#searchInput", "レゴランド・ジャパン")
         self.クリックして("#searchform button")
         self.要素を確認する('img[src*="LEGOLAND_JAPAN"]')
