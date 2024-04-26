@@ -21,7 +21,8 @@ class CDPTests(BaseCase):
     def test_display_cdp_events(self):
         if not (self.undetectable and self.uc_cdp_events):
             self.get_new_driver(undetectable=True, uc_cdp_events=True)
-        self.driver.uc_open_with_reconnect("seleniumbase.io/apps/turnstile")
+        url = "seleniumbase.io/apps/turnstile"
+        self.driver.uc_open_with_reconnect(url, 2)
         self.add_cdp_listener()
         self.click_turnstile_and_verify()
         self.sleep(1)

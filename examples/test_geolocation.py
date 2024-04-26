@@ -42,4 +42,4 @@ class TestGeolocation(BaseCase):
         self.assert_url_contains("48.87645/2.26340")
         self.save_screenshot_to_logs()
         if self.headed:
-            self.sleep(2.5)
+            self.sleep(4)

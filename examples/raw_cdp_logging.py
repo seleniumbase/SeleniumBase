@@ -3,7 +3,8 @@ from seleniumbase import Driver
 
 driver = Driver(uc=True, log_cdp=True)
 try:
-    driver.uc_open_with_reconnect("https://seleniumbase.io/apps/turnstile")
+    url = "seleniumbase.io/apps/turnstile"
+    driver.uc_open_with_reconnect(url, 2)
     driver.switch_to_frame("iframe")
     driver.uc_click("span.mark")
     driver.sleep(3)
