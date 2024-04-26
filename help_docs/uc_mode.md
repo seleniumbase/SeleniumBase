@@ -4,8 +4,17 @@
 
 👤 <b translate="no">SeleniumBase</b> <b translate="no">UC Mode</b> (Undetected-Chromedriver Mode) allows bots to appear human, which lets them evade detection from anti-bot services that try to block them or trigger CAPTCHAs on various websites.
 
-<!-- YouTube View --><a href="https://www.youtube.com/watch?v=5dMFI3e85ig"><img src="http://img.youtube.com/vi/5dMFI3e85ig/0.jpg" title="SeleniumBase on YouTube" width="400" /></a>
-<!-- GitHub Only --><p>(<b><a href="https://www.youtube.com/watch?v=5dMFI3e85ig">Watch the UC Mode tutorial on YouTube! ▶️</a></b>)</p>
+---
+
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=5dMFI3e85ig"><img src="http://img.youtube.com/vi/5dMFI3e85ig/0.jpg" title="SeleniumBase on YouTube" width="350" /></a>
+<!-- GitHub Only --><p>(<b><a href="https://www.youtube.com/watch?v=5dMFI3e85ig">Watch the 1st UC Mode tutorial on YouTube! ▶️</a></b>)</p>
+
+----
+
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=2pTpBtaE7SQ"><img src="http://img.youtube.com/vi/2pTpBtaE7SQ/0.jpg" title="SeleniumBase on YouTube" width="350" /></a>
+<!-- GitHub Only --><p>(<b><a href="https://www.youtube.com/watch?v=2pTpBtaE7SQ">Watch the 2nd UC Mode tutorial on YouTube! ▶️</a></b>)</p>
+
+----
 
 👤 <b translate="no">UC Mode</b> is based on [undetected-chromedriver](https://github.com/ultrafunkamsterdam/undetected-chromedriver), but includes multiple updates, fixes, and improvements, such as:
 
@@ -312,8 +321,7 @@ The above JS method is used within <b translate="no"><code>SeleniumBase</code></
 
 Avoiding detection while clicking is easy if you schedule your clicks to happen at a future point when the <b><code translate="no">chromedriver</code></b> service has been stopped. Here's a JS command that lets you schedule events (such as clicks) to happen in the future:
 
-<li><b><code translate="no">
-window.setTimeout(function() { SCRIPT }, MS);</code></b> --> (Info: <a href="https://www.w3schools.com/jsref/met_win_settimeout.asp" target="_blank">W3Schools</a>)</li>
+<li><b><code translate="no">window.setTimeout(function() { SCRIPT }, MS);</code></b> --> (Info: <a href="https://www.w3schools.com/jsref/met_win_settimeout.asp" target="_blank">W3Schools</a>)</li>
 
 The above JS method is used within the <b><code translate="no">SeleniumBase</code></b> <b translate="no">UC Mode</b> method: <b><code translate="no">driver.uc_click(selector)</code></b> so that clicking can be done in a stealthy way. <b translate="no">UC Mode</b> schedules your click, disconnects <b><code translate="no">chromedriver</code></b> from <b translate="no">Chrome</b>, waits a little (customizable), and reconnects.
 
