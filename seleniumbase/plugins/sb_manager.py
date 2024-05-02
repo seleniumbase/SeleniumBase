@@ -378,9 +378,20 @@ def SB(
             record_sleep = True
         else:
             record_sleep = False
+    if xvfb is None:
+        if "--xvfb" in sys_argv:
+            xvfb = True
+        else:
+            xvfb = False
     if not shared_utils.is_linux():
         # The Xvfb virtual display server is for Linux OS Only!
         xvfb = False
+    if headed is None:
+        # Override the default headless mode on Linux if set.
+        if "--gui" in sys_argv or "--headed" in sys_argv:
+            headed = True
+        else:
+            headed = False
     if (
         shared_utils.is_linux()
         and not headed
@@ -532,6 +543,13 @@ def SB(
         _disable_beforeunload = True
     if pls is not None and page_load_strategy is None:
         page_load_strategy = pls
+    if not page_load_strategy and "--pls=" in arg_join:
+        if "--pls=none" in sys_argv or '--pls="none"' in sys_argv:
+            page_load_strategy = "none"
+        elif "--pls=eager" in sys_argv or '--pls="eager"' in sys_argv:
+            page_load_strategy = "eager"
+        elif "--pls=normal" in sys_argv or '--pls="normal"' in sys_argv:
+            page_load_strategy = "normal"
     if page_load_strategy is not None:
         if page_load_strategy.lower() not in ["normal", "eager", "none"]:
             raise Exception(

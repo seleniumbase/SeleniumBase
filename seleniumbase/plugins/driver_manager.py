@@ -328,6 +328,12 @@ def Driver(
     ):
         recorder_mode = True
         recorder_ext = True
+    if headed is None:
+        # Override the default headless mode on Linux if set.
+        if "--gui" in sys_argv or "--headed" in sys_argv:
+            headed = True
+        else:
+            headed = False
     if (
         shared_utils.is_linux()
         and not headed
@@ -434,6 +440,13 @@ def Driver(
             disable_js = False
     if pls is not None and page_load_strategy is None:
         page_load_strategy = pls
+    if not page_load_strategy and "--pls=" in arg_join:
+        if "--pls=none" in sys_argv or '--pls="none"' in sys_argv:
+            page_load_strategy = "none"
+        elif "--pls=eager" in sys_argv or '--pls="eager"' in sys_argv:
+            page_load_strategy = "eager"
+        elif "--pls=normal" in sys_argv or '--pls="normal"' in sys_argv:
+            page_load_strategy = "normal"
     if page_load_strategy is not None:
         if page_load_strategy.lower() not in ["normal", "eager", "none"]:
             raise Exception(
