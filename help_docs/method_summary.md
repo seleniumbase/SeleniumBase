@@ -294,6 +294,7 @@ self.get_new_driver(
     enable_3d_apis=None,
     swiftshader=None,
     ad_block_on=None,
+    host_resolver_rules=None,
     block_images=None,
     do_not_track=None,
     chromium_arg=None,
@@ -302,6 +303,7 @@ self.get_new_driver(
     user_data_dir=None,
     extension_zip=None,
     extension_dir=None,
+    disable_features=None,
     binary_location=None,
     driver_version=None,
     page_load_strategy=None,
@@ -938,7 +940,7 @@ self._print(TEXT)  # Calls Python's print() / Allows for translations
 
 ############
 
-# "driver"-specific methods added by SeleniumBase
+# "driver"-specific methods added (or modified) by SeleniumBase
 
 driver.default_get(url)  # Because driver.get(url) works differently in UC Mode
 
@@ -969,6 +971,10 @@ driver.assert_element_not_visible(selector)
 driver.assert_text(text, selector)
 
 driver.assert_exact_text(text, selector)
+
+driver.find_element(selector)
+
+driver.find_elements(selector)
 
 driver.wait_for_element(selector)
 
@@ -1028,25 +1034,25 @@ driver.switch_to_frame(frame)
 
 ############
 
-# "driver"-specific methods added by SeleniumBase for UC Mode: "--uc" / uc=True
+# "driver"-specific methods added (or modified) by SeleniumBase for UC Mode:
 
-driver.uc_open(url)
+driver.get(url)  # If UC Mode and site detects bots, then uc_open_with_tab(url)
 
-driver.uc_open_with_tab(url)
+driver.uc_open(url)  # (Open in same tab with default reconnect_time)
 
-driver.uc_open_with_reconnect(url, reconnect_time=None)
+driver.uc_open_with_tab(url)  # (New tab with default reconnect_time)
 
-driver.reconnect(timeout)
+driver.uc_open_with_reconnect(url, reconnect_time=None)  # (New tab)
 
-driver.disconnect()
+driver.reconnect(timeout)  # disconnect() + sleep(timeout) + connect()
 
-driver.connect()
+driver.disconnect()  # Stops the webdriver service to prevent detection
 
-driver.uc_click(
-    selector, by="css selector",
-    timeout=settings.SMALL_TIMEOUT, reconnect_time=None)
+driver.connect()  # Starts the webdriver service to allow actions again
 
-driver.uc_switch_to_frame(frame, reconnect_time=None)
+driver.uc_click(selector)  # A stealthy click for evading bot-detection
+
+driver.uc_switch_to_frame(frame)  # switch_to_frame() in a stealthy way
 ```
 
 --------
