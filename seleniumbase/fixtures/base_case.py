@@ -60,6 +60,7 @@ from selenium.common.exceptions import (
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.remote_connection import LOGGER
+from selenium.webdriver.remote.webelement import WebElement
 from seleniumbase import config as sb_config
 from seleniumbase.__version__ import __version__
 from seleniumbase.common import decorators
@@ -5645,6 +5646,40 @@ class BaseCase(unittest.TestCase):
         if self.is_element_visible(selector, by=by):
             self.__highlight(selector, by=by, loops=loops, scroll=scroll)
 
+    def __highlight_element(self, element, loops=None, scroll=True):
+        self.__check_scope()
+        if not loops:
+            loops = settings.HIGHLIGHTS
+        if scroll and self.browser != "safari":
+            try:
+                self.__slow_scroll_to_element(element)
+            except Exception:
+                pass
+        if self.highlights:
+            loops = self.highlights
+        if self.browser == "ie":
+            loops = 1  # Override previous setting because IE is slow
+        loops = int(loops)
+        if self.headless or self.headless2 or self.xvfb:
+            # Headless modes have less need for highlighting elements.
+            # However, highlight() may be used as a sleep alternative.
+            loops = int(math.ceil(loops * 0.5))
+        o_bs = ""  # original_box_shadow
+        try:
+            style = element.get_attribute("style")
+        except Exception:
+            self.wait_for_ready_state_complete()
+            time.sleep(0.12)
+            style = element.get_attribute("style")
+        if style:
+            if "box-shadow: " in style:
+                box_start = style.find("box-shadow: ")
+                box_end = style.find(";", box_start) + 1
+                original_box_shadow = style[box_start:box_end]
+                o_bs = original_box_shadow
+        self.__highlight_element_with_js(element, loops, o_bs)
+        time.sleep(0.065)
+
     def __highlight(
         self, selector, by="css selector", loops=None, scroll=True
     ):
@@ -5733,13 +5768,16 @@ class BaseCase(unittest.TestCase):
     ):
         """This method uses fancy JavaScript to highlight an element.
         @Params
-        selector - the selector of the element to find
+        selector - the selector of the element to find (Accepts WebElement)
         by - the type of selector to search by (Default: CSS)
         loops - # of times to repeat the highlight animation
                 (Default: 4. Each loop lasts for about 0.2s)
         scroll - the option to scroll to the element first (Default: True)
         timeout - the time to wait for the element to appear """
         self.__check_scope()
+        if isinstance(selector, WebElement):
+            self.__highlight_element(selector, loops=loops, scroll=scroll)
+            return
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
         self.wait_for_element_visible(selector, by=by, timeout=timeout)
@@ -5750,6 +5788,31 @@ class BaseCase(unittest.TestCase):
                 origin = self.get_origin()
                 action = ["hi_li", selector, origin, time_stamp]
                 self.__extra_actions.append(action)
+
+    def highlight_elements(
+        self,
+        selector,
+        by="css selector",
+        loops=None,
+        scroll=True,
+        limit=0,
+    ):
+        if not limit:
+            limit = 0  # 0 means no limit
+        limit = int(limit)
+        count = 0
+        elements = self.find_elements(selector, by=by)
+        for element in elements:
+            try:
+                if element.is_displayed():
+                    self.__highlight_element(
+                        element, loops=loops, scroll=scroll
+                    )
+                    count += 1
+            except Exception:
+                pass
+            if limit > 0 and count >= limit:
+                break
 
     def press_up_arrow(self, selector="html", times=1, by="css selector"):
         """Simulates pressing the UP Arrow on the keyboard.
