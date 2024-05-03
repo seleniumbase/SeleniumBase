@@ -386,6 +386,8 @@ self.highlight_if_visible(selector, by="css selector", loops=4, scroll=True)
 
 self.highlight(selector, by="css selector", loops=4, scroll=True, timeout=None)
 
+self.highlight_elements(selector, by="css selector", loops=4, scroll=True, limit=0)
+
 self.press_up_arrow(selector="html", times=1, by="css selector")
 
 self.press_down_arrow(selector="html", times=1, by="css selector")
