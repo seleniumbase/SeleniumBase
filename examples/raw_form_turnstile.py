@@ -13,7 +13,7 @@ with SB(uc=True, test=True) as sb:
     sb.highlight_click('input[value="AR"] + span')
     sb.click('input[value="cc"] + span')
     sb.switch_to_frame("iframe")
-    sb.driver.uc_click("span.mark")
+    sb.driver.uc_click("span")
     sb.highlight("img#captcha-success", timeout=3)
     sb.highlight_click('button:contains("Request & Pay")')
     sb.highlight("img#submit-success")

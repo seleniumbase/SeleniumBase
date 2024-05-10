@@ -5,12 +5,12 @@ with SB(uc=True, test=True) as sb:
     if sb.is_element_visible("#example-container0 iframe"):
         sb.switch_to_frame("#example-container0 iframe")
         if not sb.is_element_visible("circle.success-circle"):
-            sb.driver.uc_click("span.mark", reconnect_time=3)
+            sb.driver.uc_click("span", reconnect_time=3)
             sb.switch_to_frame("#example-container0 iframe")
         sb.switch_to_default_content()
 
     sb.switch_to_frame("#example-container5 iframe")
-    sb.driver.uc_click("span.mark", reconnect_time=2.5)
+    sb.driver.uc_click("span", reconnect_time=2.5)
     sb.switch_to_frame("#example-container5 iframe")
     sb.assert_element("svg#success-icon", timeout=3)
     sb.switch_to_parent_frame()

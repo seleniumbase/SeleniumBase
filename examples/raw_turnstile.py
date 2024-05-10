@@ -8,7 +8,7 @@ def open_the_turnstile_page(sb):
 
 def click_turnstile_and_verify(sb):
     sb.driver.switch_to_frame("iframe")
-    sb.driver.uc_click("span.mark")
+    sb.driver.uc_click("span")
     sb.assert_element("img#captcha-success", timeout=3)
 
 
