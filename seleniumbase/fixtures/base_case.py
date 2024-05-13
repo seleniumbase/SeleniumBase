@@ -4146,6 +4146,10 @@ class BaseCase(unittest.TestCase):
                 self.uc_open_with_tab = new_driver.uc_open_with_tab
             if hasattr(new_driver, "uc_open_with_reconnect"):
                 self.uc_open_with_reconnect = new_driver.uc_open_with_reconnect
+            if hasattr(new_driver, "uc_open_with_disconnect"):
+                self.uc_open_with_disconnect = (
+                    new_driver.uc_open_with_disconnect
+                )
             if hasattr(new_driver, "reconnect"):
                 self.reconnect = new_driver.reconnect
             if hasattr(new_driver, "disconnect"):
@@ -15886,6 +15890,11 @@ class BaseCase(unittest.TestCase):
             )
             raise Exception(message)
         # *** Start tearDown() officially ***
+        if self.undetectable:
+            try:
+                self.driver.window_handles
+            except urllib3.exceptions.MaxRetryError:
+                self.driver.connect()
         self.__slow_mode_pause_if_active()
         has_exception = self.__has_exception()
         sb_config._has_exception = has_exception

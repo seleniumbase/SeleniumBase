@@ -1046,6 +1046,8 @@ driver.uc_open_with_tab(url)  # (New tab with default reconnect_time)
 
 driver.uc_open_with_reconnect(url, reconnect_time=None)  # (New tab)
 
+driver.uc_open_with_disconnect(url)  # Open in new tab + disconnect()
+
 driver.reconnect(timeout)  # disconnect() + sleep(timeout) + connect()
 
 driver.disconnect()  # Stops the webdriver service to prevent detection
