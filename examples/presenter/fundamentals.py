@@ -112,7 +112,6 @@ class MyTestClass(BaseCase):
                 "driver = webdriver.Chrome(options=options)\n"
             ),
         )
-
         self.add_slide(
             "<h4>Test frameworks wrap Selenium to improve things!</h4><hr />\n"
             "<br />"

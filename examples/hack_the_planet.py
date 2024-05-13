@@ -86,14 +86,11 @@ class HackTests(BaseCase):
         self.highlight('form[role="search"]', loops=8)
 
         self.open("https://github.com/features/actions")
-        self.set_text_content('a[href="/pricing"]', aybabtu)
-        self.set_text_content("h1 span:nth-child(1)", ayb)
-        self.set_text_content("h1 span:nth-of-type(2)", "ARE")
-        self.set_text_content("h1 span:nth-of-type(3)", "BELONG")
-        self.set_text_content("h1 span:nth-of-type(4)", "TO")
-        self.set_text_content("h1 span:nth-of-type(5)", "US")
-        self.highlight('a[href="/pricing"]', loops=6, scroll=False)
-        self.highlight("h1.h2-mktg", loops=7, scroll=False)
+        self.set_text_content("h2.h2-mktg", aybabtu)
+        self.set_text_content("a.btn-large-mktg", aybabtu)
+        self.highlight("h2.h2-mktg", loops=8, scroll=False)
+        self.scroll_to("h2.h2-mktg")
+        self.highlight("a.btn-large-mktg", loops=8, scroll=False)
 
         self.open("https://dev.to/top/infinity")
         self.click_if_visible('button[aria-label="Close campaign banner"]')
@@ -290,14 +287,14 @@ class HackTests(BaseCase):
         self.highlight("h1", loops=10, scroll=False)
 
         self.open("https://wordpress.com/")
-        zoom_out = "h1.is-page-header{zoom: 0.8;-moz-transform: scale(0.8);}"
+        zoom_out = "h1{zoom: 0.8;-moz-transform: scale(0.8);}"
         self.add_css_style(zoom_out)
         zoom_in = "a.wp-element-button{zoom: 1.4;-moz-transform: scale(1.4);}"
         self.add_css_style(zoom_in)
-        self.set_text_content("h1.is-page-header", aybabtu)
+        self.set_text_content("h1", aybabtu)
         self.set_text_content("a.wp-element-button", "Use SeleniumBase!")
-        self.highlight("h1.is-page-header", loops=6, scroll=False)
-        self.highlight("a.wp-element-button", loops=4, scroll=False)
+        self.highlight("h1", loops=8, scroll=False)
+        self.highlight("a.wp-element-button", loops=8, scroll=False)
 
         self.open("https://seleniumbase.com/")
         self.set_text_content("h1", aybabtu)
