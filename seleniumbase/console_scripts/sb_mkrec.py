@@ -93,6 +93,7 @@ def main():
     invalid_cmd = None
     use_edge = False
     use_uc = False
+    esc_end = False
     start_page = None
     next_is_url = False
     use_colors = True
@@ -145,6 +146,8 @@ def main():
                 help_me = True
             elif option.lower() == "--edge":
                 use_edge = True
+            elif option.lower() == "--ee":
+                esc_end = True
             elif option.lower() in ("--gui", "--headed"):
                 if "linux" in sys.platform:
                     force_gui = True
@@ -183,6 +186,42 @@ def main():
     data.append('            # type "c", and press [Enter].')
     data.append("            import pdb; pdb.set_trace()")
     data.append("")
+
+    if esc_end:
+        msg = ">>> Use [SHIFT + ESC] in the browser to end recording!"
+        d2 = []
+        d2.append("from seleniumbase import BaseCase")
+        d2.append("")
+        d2.append("")
+        d2.append("class RecorderTest(BaseCase):")
+        d2.append("    def test_recording(self):")
+        d2.append("        if self.recorder_ext:")
+        d2.append("            print(")
+        d2.append('                "\\n\\n%s\\n"' % msg)
+        d2.append("            )")
+        d2.append('            script = self._get_rec_shift_esc_script()')
+        d2.append('            esc = "return document.sb_esc_end;"')
+        d2.append("            start_time = self.time()")
+        d2.append("            last_handles_num = self._get_num_handles()")
+        d2.append("            for i in range(1200):")
+        d2.append("                try:")
+        d2.append("                    self.execute_script(script)")
+        d2.append("                    handles_num = self._get_num_handles()")
+        d2.append("                    if handles_num < 1:")
+        d2.append("                        return")
+        d2.append("                    elif handles_num != last_handles_num:")
+        d2.append("                        self.switch_to_window(-1)")
+        d2.append("                        last_handles_num = handles_num")
+        d2.append('                    if self.execute_script(esc) == "yes":')
+        d2.append("                        return")
+        d2.append("                    elif self.time() - start_time > 600:")
+        d2.append("                        return")
+        d2.append("                    self.sleep(0.5)")
+        d2.append("                except Exception:")
+        d2.append("                    return")
+        d2.append("")
+        data = d2
+
     file = codecs.open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()

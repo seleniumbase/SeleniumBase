@@ -114,6 +114,7 @@ class BaseCase(unittest.TestCase):
         ]
         self.version_tuple = tuple(self.version_list)
         self.version_info = self.version_tuple
+        self.time = time.time
         self.__page_sources = []
         self.__extra_actions = []
         self.__js_start_time = 0
@@ -381,6 +382,7 @@ class BaseCase(unittest.TestCase):
         self, selector, by="css selector", timeout=None, delay=0, scroll=True
     ):
         self.__check_scope()
+        self.__skip_if_esc()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
@@ -671,6 +673,7 @@ class BaseCase(unittest.TestCase):
                 self.__demo_mode_pause_if_active(tiny=True)
         elif self.slow_mode:
             self.__slow_mode_pause_if_active()
+        self.__set_esc_skip()
 
     def slow_click(self, selector, by="css selector", timeout=None):
         """Similar to click(), but pauses for a brief moment before clicking.
@@ -1586,6 +1589,7 @@ class BaseCase(unittest.TestCase):
     def click_link_text(self, link_text, timeout=None):
         """This method clicks link text on a page."""
         self.__check_scope()
+        self.__skip_if_esc()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
@@ -4404,11 +4408,35 @@ class BaseCase(unittest.TestCase):
         for cookie_dict in cookies:
             self.driver.add_cookie(cookie_dict)
 
+    def __set_esc_skip(self):
+        if hasattr(self, "esc_end") and self.esc_end:
+            script = (
+                """document.onkeydown = function(evt) {
+                    evt = evt || window.event;
+                    var isEscape = false;
+                    if ("key" in evt) {
+                        isEscape = (evt.key === "Escape" || evt.key === "Esc");
+                    } else {
+                        isEscape = (evt.keyCode === 27);
+                    }
+                    if (isEscape) {
+                        document.sb_esc_end = 'yes';
+                    }
+                };"""
+            )
+            self.execute_script(script)
+
+    def __skip_if_esc(self):
+        if hasattr(self, "esc_end") and self.esc_end:
+            if self.execute_script("return document.sb_esc_end;") == "yes":
+                self.skip()
+
     def wait_for_ready_state_complete(self, timeout=None):
         """Waits for the "readyState" of the page to be "complete".
         Returns True when the method completes."""
         self.__check_scope()
         self._check_browser()
+        self.__skip_if_esc()
         if not timeout:
             timeout = settings.EXTREME_TIMEOUT
         if self.timeout_multiplier and timeout == settings.EXTREME_TIMEOUT:
@@ -4427,6 +4455,7 @@ class BaseCase(unittest.TestCase):
             time.sleep(0.01)
             if self.undetectable:
                 time.sleep(0.035)
+        self.__set_esc_skip()
         return True
 
     def wait_for_angularjs(self, timeout=None, **kwargs):
@@ -5775,6 +5804,7 @@ class BaseCase(unittest.TestCase):
         scroll - the option to scroll to the element first (Default: True)
         timeout - the time to wait for the element to appear """
         self.__check_scope()
+        self.__skip_if_esc()
         if isinstance(selector, WebElement):
             self.__highlight_element(selector, loops=loops, scroll=scroll)
             return
@@ -8709,6 +8739,7 @@ class BaseCase(unittest.TestCase):
     ):
         """Same as self.wait_for_element()"""
         self.__check_scope()
+        self.__skip_if_esc()
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
@@ -13478,6 +13509,7 @@ class BaseCase(unittest.TestCase):
             self.slow_scroll_to(selector, by=by)
 
     def __demo_mode_highlight_if_active(self, selector, by):
+        self.__skip_if_esc()
         if self.demo_mode:
             # Includes self.slow_scroll_to(selector, by=by) by default
             self.__highlight(selector, by=by)
@@ -14379,6 +14411,7 @@ class BaseCase(unittest.TestCase):
             self.firefox_arg = sb_config.firefox_arg
             self.firefox_pref = sb_config.firefox_pref
             self.verify_delay = sb_config.verify_delay
+            self.esc_end = sb_config.esc_end
             self.recorder_mode = sb_config.recorder_mode
             self.recorder_ext = sb_config.recorder_mode
             self.rec_print = sb_config.rec_print
@@ -15697,6 +15730,31 @@ class BaseCase(unittest.TestCase):
             return ("iedriver", self._get_browser_version())
         else:
             return None
+
+    def _get_num_handles(self):
+        return len(self.driver.window_handles)
+
+    def _get_rec_shift_esc_script(self):
+        return (
+            """document.onkeydown = function(evt) {
+                evt = evt || window.event;
+                var isEscape = false;
+                if ("key" in evt) {
+                    isEscape = (evt.key === "Escape" || evt.key === "Esc");
+                    last_key = evt.key;
+                } else {
+                    isEscape = (evt.keyCode === 27);
+                    last_key = evt.keyCode;
+                    if (last_key === 16) {
+                        last_key = "Shift";
+                    }
+                }
+                if (isEscape && document.sb_last_key === "Shift") {
+                    document.sb_esc_end = "yes";
+                }
+                document.sb_last_key = last_key;
+            };"""
+        )
 
     def _addSkip(self, result, test_case, reason):
         """This method should NOT be called directly from tests."""

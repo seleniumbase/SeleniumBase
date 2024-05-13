@@ -60,6 +60,7 @@ class SeleniumBrowser(Plugin):
     --block-images  (Block images from loading during tests.)
     --do-not-track  (Indicate to websites that you don't want to be tracked.)
     --verify-delay=SECONDS  (The delay before MasterQA verification checks.)
+    --ee / --esc-end  (Lets the user end the current test via the ESC key.)
     --recorder  (Enables the Recorder for turning browser actions into code.)
     --rec-behave  (Same as Recorder Mode, but also generates behave-gherkin.)
     --rec-sleep  (If the Recorder is enabled, also records self.sleep calls.)
@@ -614,6 +615,16 @@ class SeleniumBrowser(Plugin):
                     before each MasterQA verification pop-up.""",
         )
         parser.addoption(
+            "--esc-end",
+            "--esc_end",
+            "--ee",
+            action="store_true",
+            dest="esc_end",
+            default=False,
+            help="""End the current test early via the ESC key.
+                    The test will be marked as skipped.""",
+        )
+        parser.addoption(
             "--recorder",
             "--record",
             "--rec",
@@ -1126,6 +1137,7 @@ class SeleniumBrowser(Plugin):
         test.test.block_images = self.options.block_images
         test.test.do_not_track = self.options.do_not_track
         test.test.verify_delay = self.options.verify_delay  # MasterQA
+        test.test.esc_end = self.options.esc_end
         test.test.recorder_mode = self.options.recorder_mode
         test.test.recorder_ext = self.options.recorder_mode  # Again
         test.test.rec_behave = self.options.rec_behave

@@ -406,6 +406,7 @@ sbase codegen new_test.py --url=wikipedia.org
 ``--edge``  (Use Edge browser instead of Chrome.)
 ``--gui`` / ``--headed``  (Use headed mode on Linux.)
 ``--uc`` / ``--undetected``  (Use undetectable mode.)
+``--ee``  (Use SHIFT + ESC to end the recording.)
 ``--overwrite``  (Overwrite file when it exists.)
 ``--behave``  (Also output Behave/Gherkin files.)
 

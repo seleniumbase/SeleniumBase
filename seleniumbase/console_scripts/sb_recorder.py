@@ -162,6 +162,8 @@ def do_recording(file_name, url, overwrite_enabled, use_chrome, window):
             or "--undetectable" in command_args
         ):
             command += " --uc"
+        if "--ee" in command_args:
+            command += " --ee"
         command += add_on
         poll = None
         if sb_config.rec_subprocess_used:
