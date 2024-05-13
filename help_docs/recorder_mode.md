@@ -121,6 +121,8 @@ pytest TEST_NAME.py --trace --rec -s
 
 ⏺️ Inside recorded tests, you might find the <code>self.open_if_not_url(URL)</code> method, which opens the URL given if the browser is not currently on that page. SeleniumBase uses this method in recorded scripts when the Recorder detects that a browser action changed the current URL. This method prevents an unnecessary page load and shows what page the test visited after a browser action.
 
+⏺️ By launching the Recorder App with <code>sbase recorder --ee</code>, you can end the recording by pressing {<code>SHIFT</code>+<code>ESC</code>} instead of the usual way of ending the recording by typing <code>c</code> from a <code>breakpoint()</code> and pressing <code>Enter</code>. Those buttons don't need to be pressed at the same time, but <code>SHIFT</code> must be pressed directly before <code>ESC</code>.
+
 --------
 
 <div>To learn more about SeleniumBase, check out the Docs Site:</div>

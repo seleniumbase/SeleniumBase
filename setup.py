@@ -205,7 +205,8 @@ setup(
         'soupsieve==2.4.1;python_version<"3.8"',
         'soupsieve==2.5;python_version>="3.8"',
         "beautifulsoup4==4.12.3",
-        'pygments==2.17.2',
+        'pygments==2.17.2;python_version<"3.8"',
+        'pygments==2.18.0;python_version>="3.8"',
         'pyreadline3==3.4.1;platform_system=="Windows"',
         "tabcompleter==1.3.0",
         "pdbp==1.5.0",
@@ -229,7 +230,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage==7.2.7;python_version<"3.8"',
-            'coverage>=7.5.0;python_version>="3.8"',
+            'coverage>=7.5.1;python_version>="3.8"',
             'pytest-cov==4.1.0;python_version<"3.8"',
             'pytest-cov>=5.0.0;python_version>="3.8"',
         ],
@@ -256,7 +257,7 @@ setup(
             'pdfminer.six==20221105;python_version<"3.8"',
             'pdfminer.six==20231228;python_version>="3.8"',
             'cryptography==39.0.2;python_version<"3.9"',
-            'cryptography==42.0.5;python_version>="3.9"',
+            'cryptography==42.0.7;python_version>="3.9"',
             'cffi==1.15.1;python_version<"3.8"',
             'cffi==1.16.0;python_version>="3.8"',
             "pycparser==2.22",
@@ -277,7 +278,7 @@ setup(
         # Usage: proxy
         # (That starts a proxy server on "127.0.0.1:8899".)
         "proxy": [
-            "proxy.py==2.4.3",
+            "proxy.py==2.4.4",
         ],
         # pip install -e .[psutil]
         "psutil": [

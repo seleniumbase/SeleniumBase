@@ -443,8 +443,32 @@ def uc_open_with_reconnect(driver, url, reconnect_time=None):
         js_utils.call_me_later(driver, script, 3)
         time.sleep(0.007)
         driver.close()
-        driver.reconnect(reconnect_time)
-        driver.switch_to.window(driver.window_handles[-1])
+        if reconnect_time == "disconnect":
+            driver.disconnect()
+            time.sleep(0.007)
+        else:
+            driver.reconnect(reconnect_time)
+            driver.switch_to.window(driver.window_handles[-1])
+    else:
+        driver.default_get(url)  # The original one
+    return None
+
+
+def uc_open_with_disconnect(driver, url):
+    """Open a url and disconnect chromedriver.
+    Note: You can't perform Selenium actions again
+    until after you've called driver.connect()."""
+    if url.startswith("//"):
+        url = "https:" + url
+    elif ":" not in url:
+        url = "https://" + url
+    if (url.startswith("http:") or url.startswith("https:")):
+        script = 'window.open("%s","_blank");' % url
+        js_utils.call_me_later(driver, script, 3)
+        time.sleep(0.007)
+        driver.close()
+        driver.disconnect()
+        time.sleep(0.007)
     else:
         driver.default_get(url)  # The original one
     return None
@@ -3751,6 +3775,11 @@ def get_local_driver(
                     )
                     driver.uc_open_with_reconnect = (
                         lambda *args, **kwargs: uc_open_with_reconnect(
+                            driver, *args, **kwargs
+                        )
+                    )
+                    driver.uc_open_with_disconnect = (
+                        lambda *args, **kwargs: uc_open_with_disconnect(
                             driver, *args, **kwargs
                         )
                     )

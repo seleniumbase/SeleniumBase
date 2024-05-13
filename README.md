@@ -671,6 +671,7 @@ pytest test_coffee_cart.py --trace
 --block-images  # (Block images from loading during tests.)
 --do-not-track  # (Indicate to websites that you don't want to be tracked.)
 --verify-delay=SECONDS  # (The delay before MasterQA verification checks.)
+--ee | --esc-end  # (Lets the user end the current test via the ESC key.)
 --recorder  # (Enables the Recorder for turning browser actions into code.)
 --rec-behave  # (Same as Recorder Mode, but also generates behave-gherkin.)
 --rec-sleep  # (If the Recorder is enabled, also records self.sleep calls.)
