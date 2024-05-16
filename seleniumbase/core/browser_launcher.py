@@ -1772,14 +1772,28 @@ def get_remote_driver(
         pip_find_lock = fasteners.InterProcessLock(
             constants.PipInstall.FINDLOCK
         )
-        with pip_find_lock:
+        with pip_find_lock:  # Prevent issues with multiple processes
             try:
                 from seleniumwire import webdriver
+                import blinker
+                try:
+                    use_blinker_ver = constants.SeleniumWire.BLINKER_VER
+                    if blinker.__version__ != use_blinker_ver:
+                        shared_utils.pip_install(
+                            "blinker", version=use_blinker_ver
+                        )
+                except Exception:
+                    pass
+                del blinker
             except Exception:
+                shared_utils.pip_install(
+                    "blinker", version=constants.SeleniumWire.BLINKER_VER
+                )
                 shared_utils.pip_install(
                     "selenium-wire", version=constants.SeleniumWire.VER
                 )
                 from seleniumwire import webdriver
+            warnings.simplefilter("ignore", category=DeprecationWarning)
     else:
         from selenium import webdriver
 
@@ -2186,17 +2200,31 @@ def get_local_driver(
     downloads_path = DOWNLOADS_FOLDER
     b_path = binary_location
     if use_wire:
-        driver_fixing_lock = fasteners.InterProcessLock(
-            constants.MultiBrowser.DRIVER_FIXING_LOCK
+        pip_find_lock = fasteners.InterProcessLock(
+            constants.PipInstall.FINDLOCK
         )
-        with driver_fixing_lock:  # Prevent multi-processes mode issues
+        with pip_find_lock:  # Prevent issues with multiple processes
             try:
                 from seleniumwire import webdriver
+                import blinker
+                try:
+                    use_blinker_ver = constants.SeleniumWire.BLINKER_VER
+                    if blinker.__version__ != use_blinker_ver:
+                        shared_utils.pip_install(
+                            "blinker", version=use_blinker_ver
+                        )
+                except Exception:
+                    pass
+                del blinker
             except Exception:
+                shared_utils.pip_install(
+                    "blinker", version=constants.SeleniumWire.BLINKER_VER
+                )
                 shared_utils.pip_install(
                     "selenium-wire", version=constants.SeleniumWire.VER
                 )
                 from seleniumwire import webdriver
+            warnings.simplefilter("ignore", category=DeprecationWarning)
     else:
         from selenium import webdriver
 

@@ -351,6 +351,7 @@ class ProxyPy:
 class SeleniumWire:
     # The version installed if selenium-wire is not installed
     VER = "5.1.0"
+    BLINKER_VER = "1.7.0"  # The "blinker" dependency version
 
 
 class Mobile:
