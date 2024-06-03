@@ -149,17 +149,17 @@ setup(
         'pip>=24.0',
         'packaging>=24.0',
         'setuptools>=68.0.0;python_version<"3.8"',
-        'setuptools>=69.5.1;python_version>="3.8"',
+        'setuptools>=70.0.0;python_version>="3.8"',
         'wheel>=0.42.0;python_version<"3.8"',
         'wheel>=0.43.0;python_version>="3.8"',
         'attrs>=23.2.0',
-        "certifi>=2024.2.2",
+        "certifi>=2024.6.2",
         "exceptiongroup>=1.2.1",
         'filelock>=3.12.2;python_version<"3.8"',
         'filelock>=3.14.0;python_version>="3.8"',
         'platformdirs>=4.0.0;python_version<"3.8"',
         'platformdirs>=4.2.2;python_version>="3.8"',
-        'typing-extensions>=4.11.0;python_version>="3.8"',
+        'typing-extensions>=4.12.1;python_version>="3.8"',
         'parse>=1.20.1',
         'parse-type>=0.6.2',
         'pyyaml>=6.0.1',
@@ -188,9 +188,9 @@ setup(
         'iniconfig==2.0.0',
         'pluggy==1.2.0;python_version<"3.8"',
         'pluggy==1.5.0;python_version>="3.8"',
-        "py==1.11.0",
+        "py==1.11.0",  # Needed by pytest-html
         'pytest==7.4.4;python_version<"3.8"',
-        'pytest==8.2.0;python_version>="3.8"',
+        'pytest==8.2.1;python_version>="3.8"',
         "pytest-html==2.0.1",  # Newer ones had issues
         'pytest-metadata==3.0.0;python_version<"3.8"',
         'pytest-metadata==3.1.1;python_version>="3.8"',
@@ -230,7 +230,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage==7.2.7;python_version<"3.8"',
-            'coverage>=7.5.1;python_version>="3.8"',
+            'coverage>=7.5.3;python_version>="3.8"',
             'pytest-cov==4.1.0;python_version<"3.8"',
             'pytest-cov>=5.0.0;python_version>="3.8"',
         ],
@@ -292,7 +292,7 @@ setup(
         "selenium-wire": [
             'selenium-wire==5.1.0',
             'Brotli==1.1.0',
-            'blinker==1.7.0',
+            'blinker==1.7.0',  # Newer ones had issues
             'h2==4.1.0',
             'hpack==4.0.0',
             'hyperframe==6.0.1',

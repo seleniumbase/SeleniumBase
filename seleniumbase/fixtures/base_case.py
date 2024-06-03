@@ -3728,7 +3728,15 @@ class BaseCase(unittest.TestCase):
         """Opens a new browser tab/window and switches to it by default."""
         self.wait_for_ready_state_complete()
         if switch_to:
-            self.driver.switch_to.new_window("tab")
+            if self.undetectable:
+                self.driver.execute_script("window.open('data:,');")
+                self.switch_to_newest_window()
+            else:
+                try:
+                    self.driver.switch_to.new_window("tab")
+                except Exception:
+                    self.driver.execute_script("window.open('');")
+                    self.switch_to_newest_window()
         else:
             self.driver.execute_script("window.open('');")
         time.sleep(0.01)
