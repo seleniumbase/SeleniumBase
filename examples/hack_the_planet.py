@@ -106,6 +106,7 @@ class HackTests(BaseCase):
         self.set_text_content('nav a[data-text="Month"]', "BELONG")
         self.set_text_content('nav a[data-text="Year"]', "TO")
         self.set_text_content('nav a[data-text="Infinity"]', "US")
+        self.click_if_visible('button[id*="sponsorship-close-trigger"]')
         self.set_text_content('aside a[class*="tful"]', aybabtu)
         self.set_text_content('aside a[aria-label="Create new account"]', ayb)
         self.set_text_content('aside a[aria-label="Log in"]', abtu)
@@ -117,8 +118,6 @@ class HackTests(BaseCase):
         self.set_text_content(".profile-preview-card button", "SeleniumBase")
         if self.is_element_visible('h2 a[href*="simonh"]'):
             self.set_text_content('h2 a[href*="simonh"]', aybabtu)
-        self.type('input[name="q"]', aybabtu)
-        self.highlight('input[name="q"]', loops=4, scroll=False)
         self.highlight('[aria-label="Primary sidebar"] div div', scroll=False)
         self.highlight('nav a[data-text="Relevant"]', loops=1, scroll=False)
         self.highlight('nav a[data-text="Latest"]', loops=1, scroll=False)
@@ -129,6 +128,7 @@ class HackTests(BaseCase):
         self.highlight('nav a[data-text="Infinity"]', loops=3, scroll=False)
         if self.is_element_visible('h2 a[href*="simonh"]'):
             self.highlight('h2 a[href*="simonh"]', loops=7, scroll=False)
+        self.highlight("section.crayons-card", loops=7, scroll=False)
 
         self.open("https://azure.microsoft.com/en-us/services/playfab/")
         self.remove_elements('div[role="dialog"]')
