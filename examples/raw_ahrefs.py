@@ -1,10 +1,10 @@
 from seleniumbase import SB
 
-with SB(uc=True, test=True, locale_code="en") as sb:
+with SB(uc=True, test=True, incognito=True, locale_code="en") as sb:
     url = "https://ahrefs.com/website-authority-checker"
     input_field = 'input[placeholder="Enter domain"]'
     submit_button = 'span:contains("Check Authority")'
-    sb.driver.uc_open_with_reconnect(url, 1)  # The bot-check is later
+    sb.driver.uc_open_with_reconnect(url, 2)  # The bot-check is later
     sb.type(input_field, "github.com/seleniumbase/SeleniumBase")
     sb.driver.reconnect(0.1)
     sb.driver.uc_click(submit_button, reconnect_time=4)
