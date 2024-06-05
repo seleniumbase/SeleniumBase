@@ -190,7 +190,7 @@ setup(
         'pluggy==1.5.0;python_version>="3.8"',
         "py==1.11.0",  # Needed by pytest-html
         'pytest==7.4.4;python_version<"3.8"',
-        'pytest==8.2.1;python_version>="3.8"',
+        'pytest==8.2.2;python_version>="3.8"',
         "pytest-html==2.0.1",  # Newer ones had issues
         'pytest-metadata==3.0.0;python_version<"3.8"',
         'pytest-metadata==3.1.1;python_version>="3.8"',
@@ -257,7 +257,7 @@ setup(
             'pdfminer.six==20221105;python_version<"3.8"',
             'pdfminer.six==20231228;python_version>="3.8"',
             'cryptography==39.0.2;python_version<"3.9"',
-            'cryptography==42.0.7;python_version>="3.9"',
+            'cryptography==42.0.8;python_version>="3.9"',
             'cffi==1.15.1;python_version<"3.8"',
             'cffi==1.16.0;python_version>="3.8"',
             "pycparser==2.22",
