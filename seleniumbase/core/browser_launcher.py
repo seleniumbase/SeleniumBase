@@ -1166,31 +1166,24 @@ def _set_chrome_options(
     chrome_options.add_argument("--no-crash-upload")
     chrome_options.add_argument("--deny-permission-prompts")
     included_disabled_features = []
+    included_disabled_features.append("OptimizationHints")
+    included_disabled_features.append("OptimizationHintsFetching")
+    included_disabled_features.append("Translate")
+    included_disabled_features.append("OptimizationTargetPrediction")
+    included_disabled_features.append("OptimizationGuideModelDownloading")
+    included_disabled_features.append("DownloadBubble")
+    included_disabled_features.append("DownloadBubbleV2")
+    included_disabled_features.append("InsecureDownloadWarnings")
+    included_disabled_features.append("InterestFeedContentSuggestions")
     if user_data_dir:
-        included_disabled_features.append("OptimizationHintsFetching")
-        included_disabled_features.append("Translate")
-        included_disabled_features.append("OptimizationTargetPrediction")
         included_disabled_features.append("PrivacySandboxSettings4")
-        included_disabled_features.append("DownloadBubble")
-        included_disabled_features.append("DownloadBubbleV2")
-        included_disabled_features.append("InsecureDownloadWarnings")
-        for item in extra_disabled_features:
-            if item not in included_disabled_features:
-                included_disabled_features.append(item)
-        d_f_string = ",".join(included_disabled_features)
-        chrome_options.add_argument("--disable-features=%s" % d_f_string)
-    else:
-        included_disabled_features.append("OptimizationHintsFetching")
-        included_disabled_features.append("Translate")
-        included_disabled_features.append("OptimizationTargetPrediction")
-        included_disabled_features.append("DownloadBubble")
-        included_disabled_features.append("DownloadBubbleV2")
-        included_disabled_features.append("InsecureDownloadWarnings")
-        for item in extra_disabled_features:
-            if item not in included_disabled_features:
-                included_disabled_features.append(item)
-        d_f_string = ",".join(included_disabled_features)
-        chrome_options.add_argument("--disable-features=%s" % d_f_string)
+    if not is_using_uc(undetectable, browser_name) or user_data_dir:
+        included_disabled_features.append("SidePanelPinning")
+    for item in extra_disabled_features:
+        if item not in included_disabled_features:
+            included_disabled_features.append(item)
+    d_f_string = ",".join(included_disabled_features)
+    chrome_options.add_argument("--disable-features=%s" % d_f_string)
     if (
         is_using_uc(undetectable, browser_name)
         and (
@@ -2828,27 +2821,22 @@ def get_local_driver(
         if disable_features:
             extra_disabled_features.extend(disable_features.split(","))
         included_disabled_features = []
+        included_disabled_features.append("OptimizationHints")
+        included_disabled_features.append("OptimizationHintsFetching")
+        included_disabled_features.append("Translate")
+        included_disabled_features.append("OptimizationTargetPrediction")
+        included_disabled_features.append("OptimizationGuideModelDownloading")
+        included_disabled_features.append("InsecureDownloadWarnings")
+        included_disabled_features.append("InterestFeedContentSuggestions")
         if user_data_dir:
-            included_disabled_features.append("OptimizationHintsFetching")
-            included_disabled_features.append("Translate")
-            included_disabled_features.append("OptimizationTargetPrediction")
             included_disabled_features.append("PrivacySandboxSettings4")
-            included_disabled_features.append("InsecureDownloadWarnings")
-            for item in extra_disabled_features:
-                if item not in included_disabled_features:
-                    included_disabled_features.append(item)
-            d_f_string = ",".join(included_disabled_features)
-            edge_options.add_argument("--disable-features=%s" % d_f_string)
-        else:
-            included_disabled_features.append("OptimizationHintsFetching")
-            included_disabled_features.append("Translate")
-            included_disabled_features.append("OptimizationTargetPrediction")
-            included_disabled_features.append("InsecureDownloadWarnings")
-            for item in extra_disabled_features:
-                if item not in included_disabled_features:
-                    included_disabled_features.append(item)
-            d_f_string = ",".join(included_disabled_features)
-            edge_options.add_argument("--disable-features=%s" % d_f_string)
+        if not is_using_uc(undetectable, browser_name) or user_data_dir:
+            included_disabled_features.append("SidePanelPinning")
+        for item in extra_disabled_features:
+            if item not in included_disabled_features:
+                included_disabled_features.append(item)
+        d_f_string = ",".join(included_disabled_features)
+        edge_options.add_argument("--disable-features=%s" % d_f_string)
         if (set_binary or IS_LINUX) and not binary_location:
             br_app = "edge"
             binary_loc = detect_b_ver.get_binary_location(br_app)
