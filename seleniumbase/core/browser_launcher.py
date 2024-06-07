@@ -1165,6 +1165,14 @@ def _set_chrome_options(
     chrome_options.add_argument("--ash-no-nudges")
     chrome_options.add_argument("--no-crash-upload")
     chrome_options.add_argument("--deny-permission-prompts")
+    chrome_options.add_argument(
+        '--simulate-outdated-no-au="Tue, 31 Dec 2099 23:59:59 GMT"'
+    )
+    chrome_options.add_argument("--disable-ipc-flooding-protection")
+    chrome_options.add_argument("--disable-password-generation")
+    chrome_options.add_argument("--disable-domain-reliability")
+    chrome_options.add_argument("--disable-component-update")
+    chrome_options.add_argument("--disable-breakpad")
     included_disabled_features = []
     included_disabled_features.append("OptimizationHints")
     included_disabled_features.append("OptimizationHintsFetching")
@@ -2286,11 +2294,13 @@ def get_local_driver(
                     or "Process unexpectedly closed" in str(e)
                     or "Failed to read marionette port" in str(e)
                     or "A connection attempt failed" in str(e)
+                    or "Expected browser binary" in str(e)
                     or hasattr(e, "msg") and (
                         "geckodriver unexpectedly exited" in e.msg
                         or "Process unexpectedly closed" in e.msg
                         or "Failed to read marionette port" in e.msg
                         or "A connection attempt failed" in e.msg
+                        or "Expected browser binary" in e.msg
                     )
                 ):
                     time.sleep(0.1)
@@ -2326,11 +2336,13 @@ def get_local_driver(
                     or "Process unexpectedly closed" in str(e)
                     or "Failed to read marionette port" in str(e)
                     or "A connection attempt failed" in str(e)
+                    or "Expected browser binary" in str(e)
                     or hasattr(e, "msg") and (
                         "geckodriver unexpectedly exited" in e.msg
                         or "Process unexpectedly closed" in e.msg
                         or "Failed to read marionette port" in e.msg
                         or "A connection attempt failed" in e.msg
+                        or "Expected browser binary" in e.msg
                     )
                 ):
                     time.sleep(0.1)
@@ -2820,6 +2832,14 @@ def get_local_driver(
                     edge_options.add_argument(chromium_arg_item)
         if disable_features:
             extra_disabled_features.extend(disable_features.split(","))
+        edge_options.add_argument(
+            '--simulate-outdated-no-au="Tue, 31 Dec 2099 23:59:59 GMT"'
+        )
+        edge_options.add_argument("--disable-ipc-flooding-protection")
+        edge_options.add_argument("--disable-password-generation")
+        edge_options.add_argument("--disable-domain-reliability")
+        edge_options.add_argument("--disable-component-update")
+        edge_options.add_argument("--disable-breakpad")
         included_disabled_features = []
         included_disabled_features.append("OptimizationHints")
         included_disabled_features.append("OptimizationHintsFetching")
