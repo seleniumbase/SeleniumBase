@@ -159,7 +159,7 @@ setup(
         'filelock>=3.14.0;python_version>="3.8"',
         'platformdirs>=4.0.0;python_version<"3.8"',
         'platformdirs>=4.2.2;python_version>="3.8"',
-        'typing-extensions>=4.12.1;python_version>="3.8"',
+        'typing-extensions>=4.12.2;python_version>="3.8"',
         'parse>=1.20.1',
         'parse-type>=0.6.2',
         'pyyaml>=6.0.1',
