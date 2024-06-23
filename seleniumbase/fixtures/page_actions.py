@@ -1017,7 +1017,7 @@ def wait_for_element_not_visible(
 def wait_for_text_not_visible(
     driver,
     text,
-    selector,
+    selector="html",
     by="css selector",
     timeout=settings.LARGE_TIMEOUT,
 ):
@@ -1060,7 +1060,7 @@ def wait_for_text_not_visible(
 def wait_for_exact_text_not_visible(
     driver,
     text,
-    selector,
+    selector="html",
     by="css selector",
     timeout=settings.LARGE_TIMEOUT,
 ):
@@ -1686,15 +1686,46 @@ def assert_text(
     by="css selector",
     timeout=settings.SMALL_TIMEOUT,
 ):
+    selector, by = page_utils.recalculate_selector(selector, by)
     wait_for_text_visible(
         driver, text.strip(), selector, by=by, timeout=timeout
     )
 
 
 def assert_exact_text(
-    driver, text, selector, by="css selector", timeout=settings.SMALL_TIMEOUT
+    driver,
+    text,
+    selector="html",
+    by="css selector",
+    timeout=settings.SMALL_TIMEOUT,
 ):
+    selector, by = page_utils.recalculate_selector(selector, by)
     wait_for_exact_text_visible(
+        driver, text.strip(), selector, by=by, timeout=timeout
+    )
+
+
+def assert_non_empty_text(
+    driver,
+    selector,
+    by="css selector",
+    timeout=settings.SMALL_TIMEOUT,
+):
+    selector, by = page_utils.recalculate_selector(selector, by)
+    wait_for_non_empty_text_visible(
+        driver, selector, by=by, timeout=timeout
+    )
+
+
+def assert_text_not_visible(
+    driver,
+    text,
+    selector="html",
+    by="css selector",
+    timeout=settings.SMALL_TIMEOUT,
+):
+    selector, by = page_utils.recalculate_selector(selector, by)
+    wait_for_text_not_visible(
         driver, text.strip(), selector, by=by, timeout=timeout
     )
 
@@ -1748,6 +1779,7 @@ def wait_for_text(
     by="css selector",
     timeout=settings.LARGE_TIMEOUT,
 ):
+    selector, by = page_utils.recalculate_selector(selector, by)
     return wait_for_text_visible(
         driver=driver,
         text=text,
@@ -1764,6 +1796,7 @@ def wait_for_exact_text(
     by="css selector",
     timeout=settings.LARGE_TIMEOUT,
 ):
+    selector, by = page_utils.recalculate_selector(selector, by)
     return wait_for_exact_text_visible(
         driver=driver,
         text=text,
@@ -1779,6 +1812,7 @@ def wait_for_non_empty_text(
     by="css selector",
     timeout=settings.LARGE_TIMEOUT,
 ):
+    selector, by = page_utils.recalculate_selector(selector, by)
     return wait_for_non_empty_text_visible(
         driver=driver,
         selector=selector,

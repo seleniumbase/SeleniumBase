@@ -103,6 +103,7 @@ def SB(
     uc_cdp=None,  # Shortcut / Duplicate of "uc_cdp_events".
     uc_sub=None,  # Shortcut / Duplicate of "uc_subprocess".
     log_cdp=None,  # Shortcut / Duplicate of "log_cdp_events".
+    server=None,  # Shortcut / Duplicate of "servername".
     wire=None,  # Shortcut / Duplicate of "use_wire".
     pls=None,  # Shortcut / Duplicate of "page_load_strategy".
     sjw=None,  # Shortcut / Duplicate of "skip_js_waits".
@@ -282,6 +283,8 @@ def SB(
             headless2 = False
     if protocol is None:
         protocol = "http"  # For the Selenium Grid only!
+    if server is not None and servername is None:
+        servername = server
     if servername is None:
         servername = "localhost"  # For the Selenium Grid only!
     if port is None:

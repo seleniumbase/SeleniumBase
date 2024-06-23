@@ -1007,7 +1007,7 @@ def _set_chrome_options(
     prefs["download.prompt_for_download"] = False
     prefs["credentials_enable_service"] = False
     prefs["local_discovery.notifications_enabled"] = False
-    prefs["safebrowsing.enabled"] = False
+    prefs["safebrowsing.enabled"] = False  # Prevent PW "data breach" pop-ups
     prefs["safebrowsing.disable_download_protection"] = True
     prefs["omnibox-max-zero-suggest-matches"] = 0
     prefs["omnibox-use-existing-autocomplete-client"] = 0
@@ -1534,7 +1534,7 @@ def _set_firefox_options(
                     f_pref_value = False
                 elif f_pref_value.isdigit():
                     f_pref_value = int(f_pref_value)
-                elif f_pref_value.isdecimal():
+                elif f_pref_value.replace(".", "", 1).isdigit():
                     f_pref_value = float(f_pref_value)
                 else:
                     pass  # keep as string
@@ -2598,7 +2598,7 @@ def get_local_driver(
             "credentials_enable_service": False,
             "local_discovery.notifications_enabled": False,
             "safebrowsing.disable_download_protection": True,
-            "safebrowsing.enabled": False,
+            "safebrowsing.enabled": False,  # Prevent PW "data breach" pop-ups
             "omnibox-max-zero-suggest-matches": 0,
             "omnibox-use-existing-autocomplete-client": 0,
             "omnibox-trending-zero-prefix-suggestions-on-ntp": 0,

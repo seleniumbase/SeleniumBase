@@ -1251,9 +1251,17 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
-        element = self.wait_for_element_visible(
+        element = self.wait_for_element_present(
             selector, by=by, timeout=timeout
         )
+        if not element.is_displayed():
+            css_selector = self.convert_to_css_selector(selector, by=by)
+            css_selector = re.escape(css_selector)  # Add "\\" to special chars
+            css_selector = self.__escape_quotes_if_needed(css_selector)
+            script = """document.querySelector('%s').focus();""" % css_selector
+            self.execute_script(script)
+            self.__demo_mode_pause_if_active()
+            return
         self.scroll_to(selector, by=by, timeout=timeout)
         try:
             element.send_keys(Keys.NULL)
@@ -1828,7 +1836,7 @@ class BaseCase(unittest.TestCase):
         elif self.slow_mode:
             self.__slow_mode_pause_if_active()
 
-    def get_text(self, selector, by="css selector", timeout=None):
+    def get_text(self, selector="html", by="css selector", timeout=None):
         self.__check_scope()
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
@@ -2083,7 +2091,9 @@ class BaseCase(unittest.TestCase):
             return ""
         return property_value
 
-    def get_text_content(self, selector, by="css selector", timeout=None):
+    def get_text_content(
+        self, selector="html", by="css selector", timeout=None
+    ):
         """Returns the text that appears in the HTML for an element.
         This is different from "self.get_text(selector, by="css selector")"
         because that only returns the visible text on a page for an element,
@@ -3401,7 +3411,7 @@ class BaseCase(unittest.TestCase):
         self.driver.maximize_window()
         self.__demo_mode_pause_if_active()
 
-    def switch_to_frame(self, frame, timeout=None):
+    def switch_to_frame(self, frame="iframe", timeout=None):
         """Wait for an iframe to appear, and switch to it. This should be
         usable as a drop-in replacement for driver.switch_to.frame().
         The iframe identifier can be a selector, an index, an id, a name,
@@ -6812,9 +6822,11 @@ class BaseCase(unittest.TestCase):
                     try:
                         import cryptography
                         if cryptography.__version__ != "39.0.2":
+                            del cryptography  # To get newer ver
                             shared_utils.pip_install(
                                 "cryptography", version="39.0.2"
                             )
+                            import cryptography
                     except Exception:
                         shared_utils.pip_install(
                             "cryptography", version="39.0.2"
