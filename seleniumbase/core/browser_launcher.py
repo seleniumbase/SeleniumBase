@@ -1329,6 +1329,7 @@ def _set_chrome_options(
         chrome_options.add_argument("--auto-open-devtools-for-tabs")
     if user_agent:
         chrome_options.add_argument("--user-agent=%s" % user_agent)
+    chrome_options.add_argument("--safebrowsing-disable-download-protection")
     chrome_options.add_argument("--disable-browser-side-navigation")
     chrome_options.add_argument("--disable-save-password-bubble")
     chrome_options.add_argument("--disable-single-click-autofill")
@@ -1367,10 +1368,9 @@ def _set_chrome_options(
     included_disabled_features.append("DownloadBubbleV2")
     included_disabled_features.append("InsecureDownloadWarnings")
     included_disabled_features.append("InterestFeedContentSuggestions")
-    if user_data_dir:
-        included_disabled_features.append("PrivacySandboxSettings4")
-    if not is_using_uc(undetectable, browser_name) or user_data_dir:
-        included_disabled_features.append("SidePanelPinning")
+    included_disabled_features.append("PrivacySandboxSettings4")
+    included_disabled_features.append("SidePanelPinning")
+    included_disabled_features.append("UserAgentClientHint")
     for item in extra_disabled_features:
         if item not in included_disabled_features:
             included_disabled_features.append(item)
@@ -2891,6 +2891,7 @@ def get_local_driver(
         edge_options.add_argument(
             "--disable-autofill-keyboard-accessory-view[8]"
         )
+        edge_options.add_argument("--safebrowsing-disable-download-protection")
         edge_options.add_argument("--disable-browser-side-navigation")
         edge_options.add_argument("--disable-translate")
         if not enable_ws:
@@ -3032,10 +3033,9 @@ def get_local_driver(
         included_disabled_features.append("OptimizationGuideModelDownloading")
         included_disabled_features.append("InsecureDownloadWarnings")
         included_disabled_features.append("InterestFeedContentSuggestions")
-        if user_data_dir:
-            included_disabled_features.append("PrivacySandboxSettings4")
-        if not is_using_uc(undetectable, browser_name) or user_data_dir:
-            included_disabled_features.append("SidePanelPinning")
+        included_disabled_features.append("PrivacySandboxSettings4")
+        included_disabled_features.append("SidePanelPinning")
+        included_disabled_features.append("UserAgentClientHint")
         for item in extra_disabled_features:
             if item not in included_disabled_features:
                 included_disabled_features.append(item)
