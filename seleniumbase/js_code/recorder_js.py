@@ -103,7 +103,7 @@ function hasDigit(str) {
     return /\d/.test(str);
 };
 function isGen(str) {
-    return /[_-]\d/.test(str);
+    return /[_-]\d/.test(str) || /\d[a-z]/.test(str);
 };
 function tagName(el) {
     return el.tagName.toLowerCase();
