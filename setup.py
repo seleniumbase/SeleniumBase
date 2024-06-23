@@ -34,7 +34,7 @@ if sys.argv[-1] == "publish":
             print("\nERROR! Publishing to PyPI requires Python>=3.9")
             sys.exit()
         print("\n*** Checking code health with flake8:\n")
-        os.system("python -m pip install 'flake8==7.0.0'")
+        os.system("python -m pip install 'flake8==7.1.0'")
         flake8_status = os.system("flake8 --exclude=recordings,temp")
         if flake8_status != 0:
             print("\nERROR! Fix flake8 issues before publishing to PyPI!\n")
@@ -146,21 +146,23 @@ setup(
     ],
     python_requires=">=3.7",
     install_requires=[
-        'pip>=24.0',
-        'packaging>=24.0',
+        'pip>=24.0;python_version<"3.8"',
+        'pip>=24.1;python_version>="3.8"',
+        'packaging>=24.0;python_version<"3.8"',
+        'packaging>=24.1;python_version>="3.8"',
         'setuptools>=68.0.0;python_version<"3.8"',
-        'setuptools>=70.0.0;python_version>="3.8"',
+        'setuptools>=70.1.0;python_version>="3.8"',
         'wheel>=0.42.0;python_version<"3.8"',
         'wheel>=0.43.0;python_version>="3.8"',
         'attrs>=23.2.0',
         "certifi>=2024.6.2",
         "exceptiongroup>=1.2.1",
         'filelock>=3.12.2;python_version<"3.8"',
-        'filelock>=3.14.0;python_version>="3.8"',
+        'filelock>=3.15.4;python_version>="3.8"',
         'platformdirs>=4.0.0;python_version<"3.8"',
         'platformdirs>=4.2.2;python_version>="3.8"',
         'typing-extensions>=4.12.2;python_version>="3.8"',
-        'parse>=1.20.1',
+        'parse>=1.20.2',
         'parse-type>=0.6.2',
         'pyyaml>=6.0.1',
         "six==1.16.0",
@@ -178,8 +180,9 @@ setup(
         'trio==0.25.1;python_version>="3.8"',
         'trio-websocket==0.11.1',
         'wsproto==1.2.0',
+        'websocket-client==1.8.0;python_version>="3.8"',
         'selenium==4.11.2;python_version<"3.8"',
-        'selenium==4.21.0;python_version>="3.8"',
+        'selenium==4.22.0;python_version>="3.8"',
         'cssselect==1.2.0',
         "sortedcontainers==2.4.0",
         'fasteners==0.19',
@@ -212,6 +215,7 @@ setup(
         "pdbp==1.5.0",
         'colorama==0.4.6',
         'pyotp==2.9.0',
+        'python-xlib==0.33;platform_system=="Linux"',
         'markdown-it-py==2.2.0;python_version<"3.8"',
         'markdown-it-py==3.0.0;python_version>="3.8"',
         'mdurl==0.1.2',
@@ -230,7 +234,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage==7.2.7;python_version<"3.8"',
-            'coverage>=7.5.3;python_version>="3.8"',
+            'coverage>=7.5.4;python_version>="3.8"',
             'pytest-cov==4.1.0;python_version<"3.8"',
             'pytest-cov>=5.0.0;python_version>="3.8"',
         ],
@@ -238,12 +242,12 @@ setup(
         # Usage: flake8
         "flake8": [
             'flake8==5.0.4;python_version<"3.9"',
-            'flake8==7.0.0;python_version>="3.9"',
+            'flake8==7.1.0;python_version>="3.9"',
             "mccabe==0.7.0",
             'pyflakes==2.5.0;python_version<"3.9"',
             'pyflakes==3.2.0;python_version>="3.9"',
             'pycodestyle==2.9.1;python_version<"3.9"',
-            'pycodestyle==2.11.1;python_version>="3.9"',
+            'pycodestyle==2.12.0;python_version>="3.9"',
         ],
         # pip install -e .[ipdb]
         # (Not needed for debugging anymore. SeleniumBase now includes "pdbp".)
@@ -283,6 +287,10 @@ setup(
         # pip install -e .[psutil]
         "psutil": [
             "psutil==5.9.8",
+        ],
+        # pip install -e .[pyautogui]
+        "pyautogui": [
+            "PyAutoGUI==0.9.54",
         ],
         # pip install -e .[selenium-stealth]
         "selenium-stealth": [

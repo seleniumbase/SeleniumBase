@@ -1204,15 +1204,19 @@ class SeleniumBrowser(Plugin):
             and not self.options.headless2
             and not self.options.xvfb
         ):
-            print(
-                "(Linux uses --headless by default. "
-                "To override, use --headed / --gui. "
-                "For Xvfb mode instead, use --xvfb. "
-                "Or you can hide this info by using "
-                "--headless / --headless2.)"
-            )
-            self.options.headless = True
-            test.test.headless = True
+            if not self.options.undetectable:
+                print(
+                    "(Linux uses --headless by default. "
+                    "To override, use --headed / --gui. "
+                    "For Xvfb mode instead, use --xvfb. "
+                    "Or you can hide this info by using "
+                    "--headless / --headless2 / --uc.)"
+                )
+                self.options.headless = True
+                test.test.headless = True
+            else:
+                self.options.xvfb = True
+                test.test.xvfb = True
         if self.options.use_wire and self.options.undetectable:
             print(
                 "\n"

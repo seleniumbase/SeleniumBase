@@ -159,7 +159,7 @@ driver.uc_open_with_tab(url)
 
 driver.uc_open_with_reconnect(url, reconnect_time=None)
 
-driver.uc_open_with_disconnect(url)
+driver.uc_open_with_disconnect(url, timeout=None)
 
 driver.reconnect(timeout)
 
@@ -170,6 +170,14 @@ driver.connect()
 driver.uc_click(
     selector, by="css selector",
     timeout=settings.SMALL_TIMEOUT, reconnect_time=None)
+
+driver.uc_gui_press_key(key)
+
+driver.uc_gui_press_keys(keys)
+
+driver.uc_gui_write(text)
+
+driver.uc_gui_handle_cf(frame="iframe")
 
 driver.uc_switch_to_frame(frame, reconnect_time=None)
 ```
@@ -210,6 +218,8 @@ driver.reconnect("breakpoint")
 
 <li>Timing. (<b translate="no">UC Mode</b> methods let you customize default values that aren't good enough for your environment.)</li>
 <li>Not using <b><code translate="no">driver.uc_click(selector)</code></b> when you need to remain undetected while clicking something.</li>
+
+👤 On Linux, you may need to use `driver.uc_gui_handle_cf()` to successfully bypass a Cloudflare CAPTCHA. If there's more than one iframe on that website (and Cloudflare isn't the first one) then put the CSS Selector of that iframe as the first arg to `driver.uc_gui_handle_cf()`. This method uses `pyautogui`. In order for `pyautogui` to focus on the correct element, use `xvfb=True` / `--xvfb` to activate a special virtual display on Linux.
 
 👤 To find out if <b translate="no">UC Mode</b> will work at all on a specific site (before adjusting for timing), load your site with the following script:
 

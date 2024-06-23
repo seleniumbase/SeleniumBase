@@ -1,4 +1,5 @@
 import collections
+import os
 import pdb
 try:
     import pdbp  # (Pdb+) --- Python Debugger Plus
@@ -34,11 +35,13 @@ if sys.version_info[0] < 3 and "pdbp" in locals():
         pdb.DefaultConfig.truncate_long_lines = False
         pdb.DefaultConfig.sticky_by_default = True
 colored_traceback.add_hook()
+os.environ["SE_AVOID_STATS"] = "true"  # Disable Selenium Manager stats
 if sys.version_info >= (3, 7):
     webdriver.TouchActions = None  # Lifeline for past selenium-wire versions
 if sys.version_info >= (3, 10):
     collections.Callable = collections.abc.Callable  # Lifeline for nosetests
 del collections  # Undo "import collections" / Simplify "dir(seleniumbase)"
+del os  # Undo "import os" / Simplify "dir(seleniumbase)"
 del sys  # Undo "import sys" / Simplify "dir(seleniumbase)"
 del webdriver  # Undo "import webdriver" / Simplify "dir(seleniumbase)"
 

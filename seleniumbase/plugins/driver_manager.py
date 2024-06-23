@@ -36,6 +36,7 @@ driver.get("https://google.com/ncr")
 
 ###########################################################################
 """
+import os
 import sys
 
 
@@ -124,6 +125,7 @@ def Driver(
     uc_cdp=None,  # Shortcut / Duplicate of "uc_cdp_events".
     uc_sub=None,  # Shortcut / Duplicate of "uc_subprocess".
     log_cdp=None,  # Shortcut / Duplicate of "log_cdp_events".
+    server=None,  # Shortcut / Duplicate of "servername".
     wire=None,  # Shortcut / Duplicate of "use_wire".
     pls=None,  # Shortcut / Duplicate of "page_load_strategy".
 ):
@@ -246,6 +248,8 @@ def Driver(
             headless2 = False
     if protocol is None:
         protocol = "http"  # For the Selenium Grid only!
+    if server is not None and servername is None:
+        servername = server
     if servername is None:
         servername = "localhost"  # For the Selenium Grid only!
     use_grid = False
@@ -328,37 +332,6 @@ def Driver(
     ):
         recorder_mode = True
         recorder_ext = True
-    if headed is None:
-        # Override the default headless mode on Linux if set.
-        if "--gui" in sys_argv or "--headed" in sys_argv:
-            headed = True
-        else:
-            headed = False
-    if (
-        shared_utils.is_linux()
-        and not headed
-        and not headless
-        and not headless2
-    ):
-        headless = True
-    if recorder_mode and headless:
-        headless = False
-        headless2 = True
-    if headless2 and browser == "firefox":
-        headless2 = False  # Only for Chromium browsers
-        headless = True  # Firefox has regular headless
-    elif browser not in ["chrome", "edge"]:
-        headless2 = False  # Only for Chromium browsers
-    if disable_csp is None:
-        disable_csp = False
-    if (
-        (enable_ws is None and disable_ws is None)
-        or (disable_ws is not None and not disable_ws)
-        or (enable_ws is not None and enable_ws)
-    ):
-        enable_ws = True
-    else:
-        enable_ws = False
     if (
         undetectable
         or undetected
@@ -414,6 +387,50 @@ def Driver(
         uc_cdp_events = True
     else:
         uc_cdp_events = False
+    if undetectable and browser != "chrome":
+        message = (
+            '\n  Undetected-Chromedriver Mode ONLY supports Chrome!'
+            '\n  ("uc=True" / "undetectable=True" / "--uc")'
+            '\n  (Your browser choice was: "%s".)'
+            '\n  (Will use "%s" without UC Mode.)\n' % (browser, browser)
+        )
+        print(message)
+    if headed is None:
+        # Override the default headless mode on Linux if set.
+        if "--gui" in sys_argv or "--headed" in sys_argv:
+            headed = True
+        else:
+            headed = False
+    if (
+        shared_utils.is_linux()
+        and not headed
+        and not headless
+        and not headless2
+        and (
+            not undetectable
+            or "DISPLAY" not in os.environ.keys()
+            or not os.environ["DISPLAY"]
+        )
+    ):
+        headless = True
+    if recorder_mode and headless:
+        headless = False
+        headless2 = True
+    if headless2 and browser == "firefox":
+        headless2 = False  # Only for Chromium browsers
+        headless = True  # Firefox has regular headless
+    elif browser not in ["chrome", "edge"]:
+        headless2 = False  # Only for Chromium browsers
+    if disable_csp is None:
+        disable_csp = False
+    if (
+        (enable_ws is None and disable_ws is None)
+        or (disable_ws is not None and not disable_ws)
+        or (enable_ws is not None and enable_ws)
+    ):
+        enable_ws = True
+    else:
+        enable_ws = False
     if log_cdp_events is None and log_cdp is None:
         if (
             "--log-cdp-events" in sys_argv

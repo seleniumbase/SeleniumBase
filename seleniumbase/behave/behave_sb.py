@@ -862,14 +862,17 @@ def get_configured_sb(context):
         and not sb.headless2
         and not sb.xvfb
     ):
-        print(
-            '(Linux uses "-D headless" by default. '
-            'To override, use "-D headed" / "-D gui". '
-            'For Xvfb mode instead, use "-D xvfb". '
-            "Or you can hide this info by using"
-            '"-D headless" / "-D headless2".)'
-        )
-        sb.headless = True
+        if not sb.undetectable:
+            print(
+                '(Linux uses "-D headless" by default. '
+                'To override, use "-D headed" / "-D gui". '
+                'For Xvfb mode instead, use "-D xvfb". '
+                "Or you can hide this info by using"
+                '"-D headless" / "-D headless2" / "-D uc".)'
+            )
+            sb.headless = True
+        else:
+            sb.xvfb = True
     # Recorder Mode can still optimize scripts in --headless2 mode.
     if sb.recorder_mode and sb.headless:
         sb.headless = False

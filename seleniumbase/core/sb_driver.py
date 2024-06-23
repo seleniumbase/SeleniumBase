@@ -94,6 +94,16 @@ class DriverMethods():
     def assert_exact_text(self, *args, **kwargs):
         page_actions.assert_exact_text(self.driver, *args, **kwargs)
 
+    def assert_non_empty_text(self, *args, **kwargs):
+        return page_actions.assert_non_empty_text(
+            self.driver, *args, **kwargs
+        )
+
+    def assert_text_not_visible(self, *args, **kwargs):
+        return page_actions.assert_text_not_visible(
+            self.driver, *args, **kwargs
+        )
+
     def wait_for_element(self, *args, **kwargs):
         return page_actions.wait_for_element(self.driver, *args, **kwargs)
 
@@ -111,6 +121,16 @@ class DriverMethods():
 
     def wait_for_exact_text(self, *args, **kwargs):
         return page_actions.wait_for_exact_text(self.driver, *args, **kwargs)
+
+    def wait_for_non_empty_text(self, *args, **kwargs):
+        return page_actions.wait_for_non_empty_text(
+            self.driver, *args, **kwargs
+        )
+
+    def wait_for_text_not_visible(self, *args, **kwargs):
+        return page_actions.wait_for_text_not_visible(
+            self.driver, *args, **kwargs
+        )
 
     def wait_for_and_accept_alert(self, *args, **kwargs):
         return page_actions.wait_for_and_accept_alert(
@@ -134,14 +154,22 @@ class DriverMethods():
     def is_exact_text_visible(self, *args, **kwargs):
         return page_actions.is_exact_text_visible(self.driver, *args, **kwargs)
 
-    def get_text(self, *args, **kwargs):
-        return page_actions.get_text(self.driver, *args, **kwargs)
+    def is_attribute_present(self, *args, **kwargs):
+        return page_actions.has_attribute(self.driver, *args, **kwargs)
+
+    def is_non_empty_text_visible(self, *args, **kwargs):
+        return page_actions.is_non_empty_text_visible(
+            self.driver, *args, **kwargs
+        )
+
+    def is_online(self):
+        return self.driver.execute_script("return navigator.onLine;")
 
     def js_click(self, *args, **kwargs):
         return page_actions.js_click(self.driver, *args, **kwargs)
 
-    def is_attribute_present(self, *args, **kwargs):
-        return page_actions.has_attribute(self.driver, *args, **kwargs)
+    def get_text(self, *args, **kwargs):
+        return page_actions.get_text(self.driver, *args, **kwargs)
 
     def get_active_element_css(self, *args, **kwargs):
         return js_utils.get_active_element_css(self.driver, *args, **kwargs)
@@ -182,7 +210,32 @@ class DriverMethods():
         if self.is_element_visible(selector, by=by):
             self.highlight(selector, by=by, loops=loops, scroll=scroll)
 
-    def switch_to_frame(self, frame):
+    def switch_to_default_window(self):
+        self.driver.switch_to.window(self.driver.window_handles[0])
+
+    def switch_to_newest_window(self):
+        self.driver.switch_to.window(self.driver.window_handles[-1])
+
+    def open_new_window(self, switch_to=True):
+        if switch_to:
+            try:
+                self.driver.switch_to.new_window("tab")
+            except Exception:
+                self.driver.execute_script("window.open('');")
+                self.switch_to_newest_window()
+        else:
+            self.driver.execute_script("window.open('');")
+
+    def open_new_tab(self, switch_to=True):
+        self.open_new_window(switch_to=switch_to)
+
+    def switch_to_window(self, *args, **kwargs):
+        page_actions.switch_to_window(self.driver, *args, **kwargs)
+
+    def switch_to_tab(self, *args, **kwargs):
+        self.switch_to_window(*args, **kwargs)
+
+    def switch_to_frame(self, frame="iframe"):
         if isinstance(frame, WebElement):
             self.driver.switch_to.frame(frame)
         else:
