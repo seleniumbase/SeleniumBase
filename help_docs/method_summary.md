@@ -111,7 +111,7 @@ self.click_partial_link(partial_link_text, timeout=None)
 # Duplicates:
 # self.click_partial_link_text(partial_link_text, timeout=None)
 
-self.get_text(selector, by="css selector", timeout=None)
+self.get_text(selector="html", by="css selector", timeout=None)
 
 self.get_attribute(selector, attribute, by="css selector", timeout=None, hard_fail=True)
 
@@ -127,7 +127,7 @@ self.remove_attributes(selector, attribute, by="css selector")
 
 self.get_property(selector, property, by="css selector", timeout=None)
 
-self.get_text_content(selector, by="css selector", timeout=None)
+self.get_text_content(selector="html", by="css selector", timeout=None)
 
 self.get_property_value(selector, property, by="css selector", timeout=None)
 
@@ -229,7 +229,7 @@ self.set_window_size(width, height)
 
 self.maximize_window()
 
-self.switch_to_frame(frame, timeout=None)
+self.switch_to_frame(frame="iframe", timeout=None)
 
 self.switch_to_default_content()
 
@@ -1032,7 +1032,7 @@ driver.get_page_source()
 
 driver.get_title()
 
-driver.switch_to_frame(frame)
+driver.switch_to_frame(frame="iframe")
 
 ############
 
