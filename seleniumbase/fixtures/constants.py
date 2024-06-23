@@ -164,6 +164,7 @@ class MultiBrowser:
     CERT_FIXING_LOCK = Files.DOWNLOADS_FOLDER + "/cert_fixing.lock"
     DOWNLOAD_FILE_LOCK = Files.DOWNLOADS_FOLDER + "/downloading.lock"
     FILE_IO_LOCK = Files.DOWNLOADS_FOLDER + "/file_io.lock"
+    PYAUTOGUILOCK = Files.DOWNLOADS_FOLDER + "/pyautogui.lock"
 
 
 class SavedCookies:
@@ -352,6 +353,11 @@ class SeleniumWire:
     # The version installed if selenium-wire is not installed
     VER = "5.1.0"
     BLINKER_VER = "1.7.0"  # The "blinker" dependency version
+
+
+class PyAutoGUI:
+    # The version installed if PyAutoGUI is not installed
+    VER = "0.9.54"
 
 
 class Mobile:

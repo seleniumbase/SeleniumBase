@@ -1703,14 +1703,17 @@ def pytest_configure(config):
         and not sb_config.headless2
         and not sb_config.xvfb
     ):
-        print(
-            "(Linux uses --headless by default. "
-            "To override, use --headed / --gui. "
-            "For Xvfb mode instead, use --xvfb. "
-            "Or you can hide this info by using "
-            "--headless / --headless2.)"
-        )
-        sb_config.headless = True
+        if not sb_config.undetectable:
+            print(
+                "(Linux uses --headless by default. "
+                "To override, use --headed / --gui. "
+                "For Xvfb mode instead, use --xvfb. "
+                "Or you can hide this info by using "
+                "--headless / --headless2 / --uc.)"
+            )
+            sb_config.headless = True
+        else:
+            sb_config.xvfb = True
 
     # Recorder Mode can still optimize scripts in --headless2 mode.
     if sb_config.recorder_mode and sb_config.headless:

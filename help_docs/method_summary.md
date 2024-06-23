@@ -1046,7 +1046,7 @@ driver.uc_open_with_tab(url)  # (New tab with default reconnect_time)
 
 driver.uc_open_with_reconnect(url, reconnect_time=None)  # (New tab)
 
-driver.uc_open_with_disconnect(url)  # Open in new tab + disconnect()
+driver.uc_open_with_disconnect(url, timeout=None)  # New tab + sleep()
 
 driver.reconnect(timeout)  # disconnect() + sleep(timeout) + connect()
 
@@ -1056,7 +1056,15 @@ driver.connect()  # Starts the webdriver service to allow actions again
 
 driver.uc_click(selector)  # A stealthy click for evading bot-detection
 
-driver.uc_switch_to_frame(frame)  # switch_to_frame() in a stealthy way
+driver.uc_gui_press_key(key)  # Use PyAutoGUI to press the keyboard key
+
+driver.uc_gui_press_keys(keys)  # Use PyAutoGUI to press a list of keys
+
+driver.uc_gui_write(text)  # Similar to uc_gui_press_keys(), but faster
+
+driver.uc_gui_handle_cf(frame="iframe")  # PyAutoGUI click CF Turnstile
+
+driver.uc_switch_to_frame(frame="iframe")  # Stealthy switch_to_frame()
 ```
 
 --------

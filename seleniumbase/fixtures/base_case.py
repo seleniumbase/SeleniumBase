@@ -3728,15 +3728,11 @@ class BaseCase(unittest.TestCase):
         """Opens a new browser tab/window and switches to it by default."""
         self.wait_for_ready_state_complete()
         if switch_to:
-            if self.undetectable:
-                self.driver.execute_script("window.open('data:,');")
+            try:
+                self.driver.switch_to.new_window("tab")
+            except Exception:
+                self.driver.execute_script("window.open('');")
                 self.switch_to_newest_window()
-            else:
-                try:
-                    self.driver.switch_to.new_window("tab")
-                except Exception:
-                    self.driver.execute_script("window.open('');")
-                    self.switch_to_newest_window()
         else:
             self.driver.execute_script("window.open('');")
         time.sleep(0.01)
@@ -4166,6 +4162,14 @@ class BaseCase(unittest.TestCase):
                 self.connect = new_driver.connect
             if hasattr(new_driver, "uc_click"):
                 self.uc_click = new_driver.uc_click
+            if hasattr(new_driver, "uc_gui_press_key"):
+                self.uc_gui_press_key = new_driver.uc_gui_press_key
+            if hasattr(new_driver, "uc_gui_press_keys"):
+                self.uc_gui_press_keys = new_driver.uc_gui_press_keys
+            if hasattr(new_driver, "uc_gui_write"):
+                self.uc_gui_write = new_driver.uc_gui_write
+            if hasattr(new_driver, "uc_gui_handle_cf"):
+                self.uc_gui_handle_cf = new_driver.uc_gui_handle_cf
             if hasattr(new_driver, "uc_switch_to_frame"):
                 self.uc_switch_to_frame = new_driver.uc_switch_to_frame
         return new_driver
@@ -13681,23 +13685,95 @@ class BaseCase(unittest.TestCase):
                 pass  # JQuery probably couldn't load. Skip highlighting.
         time.sleep(0.065)
 
+    def __activate_standard_virtual_display(self):
+        from sbvirtualdisplay import Display
+        width = settings.HEADLESS_START_WIDTH
+        height = settings.HEADLESS_START_HEIGHT
+        try:
+            self._xvfb_display = Display(
+                visible=0, size=(width, height)
+            )
+            self._xvfb_display.start()
+            sb_config._virtual_display = self._xvfb_display
+            self.headless_active = True
+            sb_config.headless_active = True
+        except Exception:
+            pass
+
     def __activate_virtual_display_as_needed(self):
         """Should be needed only on Linux.
         The "--xvfb" arg is still useful, as it prevents headless mode,
         which is the default mode on Linux unless using another arg."""
         if "linux" in sys.platform and (not self.headed or self.xvfb):
-            width = settings.HEADLESS_START_WIDTH
-            height = settings.HEADLESS_START_HEIGHT
-            try:
-                from sbvirtualdisplay import Display
-
-                self._xvfb_display = Display(visible=0, size=(width, height))
-                self._xvfb_display.start()
-                sb_config._virtual_display = self._xvfb_display
-                self.headless_active = True
-                sb_config.headless_active = True
-            except Exception:
-                pass
+            from sbvirtualdisplay import Display
+            if self.undetectable and not (self.headless or self.headless2):
+                import Xlib.display
+                try:
+                    self._xvfb_display = Display(
+                        visible=True,
+                        size=(1366, 768),
+                        backend="xvfb",
+                        use_xauth=True,
+                    )
+                    self._xvfb_display.start()
+                    if "DISPLAY" not in os.environ.keys():
+                        print("\nX11 display failed! Will use regular xvfb!")
+                        self.__activate_standard_virtual_display()
+                except Exception as e:
+                    if hasattr(e, "msg"):
+                        print("\n" + str(e.msg))
+                    else:
+                        print(e)
+                    print("\nX11 display failed! Will use regular xvfb!")
+                    self.__activate_standard_virtual_display()
+                    return
+                pip_find_lock = fasteners.InterProcessLock(
+                    constants.PipInstall.FINDLOCK
+                )
+                with pip_find_lock:  # Prevent issues with multiple processes
+                    pyautogui_is_installed = False
+                    try:
+                        import pyautogui
+                        try:
+                            use_pyautogui_ver = constants.PyAutoGUI.VER
+                            if pyautogui.__version__ != use_pyautogui_ver:
+                                del pyautogui  # To get newer ver
+                                shared_utils.pip_install(
+                                    "pyautogui", version=use_pyautogui_ver
+                                )
+                                import pyautogui
+                        except Exception:
+                            pass
+                        pyautogui_is_installed = True
+                    except Exception:
+                        message = (
+                            "PyAutoGUI is required for UC Mode on Linux! "
+                            "Installing now..."
+                        )
+                        print("\n" + message)
+                        shared_utils.pip_install(
+                            "pyautogui", version=constants.PyAutoGUI.VER
+                        )
+                        import pyautogui
+                        pyautogui_is_installed = True
+                    if (
+                        pyautogui_is_installed
+                        and hasattr(pyautogui, "_pyautogui_x11")
+                    ):
+                        try:
+                            pyautogui._pyautogui_x11._display = (
+                                Xlib.display.Display(os.environ['DISPLAY'])
+                            )
+                            sb_config._pyautogui_x11_display = (
+                                pyautogui._pyautogui_x11._display
+                            )
+                        except Exception as e:
+                            if hasattr(e, "msg"):
+                                print("\n" + str(e.msg))
+                            else:
+                                print(e)
+            else:
+                self.__activate_standard_virtual_display()
 
     def __ad_block_as_needed(self):
         """This is an internal method for handling ad-blocking.
@@ -15898,7 +15974,7 @@ class BaseCase(unittest.TestCase):
         if self.undetectable:
             try:
                 self.driver.window_handles
-            except urllib3.exceptions.MaxRetryError:
+            except Exception:
                 self.driver.connect()
         self.__slow_mode_pause_if_active()
         has_exception = self.__has_exception()

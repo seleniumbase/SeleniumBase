@@ -437,10 +437,12 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                 self.service.start()
             except Exception:
                 pass
+            time.sleep(0.012)
         try:
             self.start_session()
         except Exception:
             pass
+        time.sleep(0.012)
 
     def disconnect(self):
         """Stops the chromedriver service that runs in the background.
@@ -450,6 +452,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                 self.service.stop()
             except Exception:
                 pass
+            time.sleep(0.012)
 
     def connect(self):
         """Starts the chromedriver service that runs in the background
@@ -459,10 +462,12 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                 self.service.start()
             except Exception:
                 pass
+            time.sleep(0.012)
         try:
             self.start_session()
         except Exception:
             pass
+        time.sleep(0.012)
 
     def start_session(self, capabilities=None):
         if not capabilities:

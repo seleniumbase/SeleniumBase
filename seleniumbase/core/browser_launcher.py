@@ -11,6 +11,7 @@ import urllib3
 import warnings
 from selenium import webdriver
 from selenium.common.exceptions import ElementClickInterceptedException
+from selenium.common.exceptions import InvalidSessionIdException
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.common.options import ArgOptions
 from selenium.webdriver.common.service import utils as service_utils
@@ -28,6 +29,7 @@ from seleniumbase.core import proxy_helper
 from seleniumbase.core import sb_driver
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import js_utils
+from seleniumbase.fixtures import page_actions
 from seleniumbase.fixtures import shared_utils
 
 urllib3.disable_warnings()
@@ -409,7 +411,7 @@ def uc_open(driver, url):
     if (url.startswith("http:") or url.startswith("https:")):
         with driver:
             script = 'window.location.href = "%s";' % url
-            js_utils.call_me_later(driver, script, 33)
+            js_utils.call_me_later(driver, script, 5)
     else:
         driver.default_get(url)  # The original one
     return None
@@ -440,22 +442,28 @@ def uc_open_with_reconnect(driver, url, reconnect_time=None):
         url = "https://" + url
     if (url.startswith("http:") or url.startswith("https:")):
         script = 'window.open("%s","_blank");' % url
-        js_utils.call_me_later(driver, script, 3)
-        time.sleep(0.007)
+        driver.execute_script(script)
+        time.sleep(0.05)
         driver.close()
         if reconnect_time == "disconnect":
             driver.disconnect()
-            time.sleep(0.007)
+            time.sleep(0.008)
         else:
             driver.reconnect(reconnect_time)
-            driver.switch_to.window(driver.window_handles[-1])
+            time.sleep(0.004)
+            try:
+                driver.switch_to.window(driver.window_handles[-1])
+            except InvalidSessionIdException:
+                time.sleep(0.05)
+                driver.switch_to.window(driver.window_handles[-1])
     else:
         driver.default_get(url)  # The original one
     return None
 
 
-def uc_open_with_disconnect(driver, url):
+def uc_open_with_disconnect(driver, url, timeout=None):
     """Open a url and disconnect chromedriver.
+    Then waits for the duration of the timeout.
     Note: You can't perform Selenium actions again
     until after you've called driver.connect()."""
     if url.startswith("//"):
@@ -464,11 +472,16 @@ def uc_open_with_disconnect(driver, url):
         url = "https://" + url
     if (url.startswith("http:") or url.startswith("https:")):
         script = 'window.open("%s","_blank");' % url
-        js_utils.call_me_later(driver, script, 3)
-        time.sleep(0.007)
+        driver.execute_script(script)
+        time.sleep(0.05)
         driver.close()
         driver.disconnect()
-        time.sleep(0.007)
+        min_timeout = 0.008
+        if timeout and not str(timeout).replace(".", "", 1).isdigit():
+            timeout = min_timeout
+        if not timeout or timeout < min_timeout:
+            timeout = min_timeout
+        time.sleep(timeout)
     else:
         driver.default_get(url)  # The original one
     return None
@@ -490,7 +503,7 @@ def uc_click(
         pass
     element = driver.wait_for_selector(selector, by=by, timeout=timeout)
     tag_name = element.tag_name
-    if not tag_name == "span":  # Element must be "visible"
+    if not tag_name == "span" and not tag_name == "input":  # Must be "visible"
         element = driver.wait_for_element(selector, by=by, timeout=timeout)
     try:
         element.uc_click(
@@ -509,7 +522,154 @@ def uc_click(
             driver.reconnect(reconnect_time)
 
 
-def uc_switch_to_frame(driver, frame, reconnect_time=None):
+def verify_pyautogui_has_a_headed_browser():
+    """PyAutoGUI requires a headed browser so that it can
+    focus on the correct element when performing actions."""
+    if sb_config.headless or sb_config.headless2:
+        raise Exception(
+            "PyAutoGUI can't be used in headless mode!"
+        )
+
+
+def install_pyautogui_if_missing():
+    verify_pyautogui_has_a_headed_browser()
+    pip_find_lock = fasteners.InterProcessLock(
+        constants.PipInstall.FINDLOCK
+    )
+    with pip_find_lock:  # Prevent issues with multiple processes
+        try:
+            import pyautogui
+            try:
+                use_pyautogui_ver = constants.PyAutoGUI.VER
+                if pyautogui.__version__ != use_pyautogui_ver:
+                    del pyautogui
+                    shared_utils.pip_install(
+                        "pyautogui", version=use_pyautogui_ver
+                    )
+                    import pyautogui
+            except Exception:
+                pass
+        except Exception:
+            print("\nPyAutoGUI required! Installing now...")
+            shared_utils.pip_install(
+                "pyautogui", version=constants.PyAutoGUI.VER
+            )
+
+
+def get_configured_pyautogui(pyautogui_copy):
+    if (
+        IS_LINUX
+        and hasattr(pyautogui_copy, "_pyautogui_x11")
+        and "DISPLAY" in os.environ.keys()
+    ):
+        if (
+            hasattr(sb_config, "_pyautogui_x11_display")
+            and sb_config._pyautogui_x11_display
+            and hasattr(pyautogui_copy._pyautogui_x11, "_display")
+            and (
+                sb_config._pyautogui_x11_display
+                == pyautogui_copy._pyautogui_x11._display
+            )
+        ):
+            pass
+        else:
+            import Xlib.display
+            pyautogui_copy._pyautogui_x11._display = (
+                Xlib.display.Display(os.environ['DISPLAY'])
+            )
+            sb_config._pyautogui_x11_display = (
+                pyautogui_copy._pyautogui_x11._display
+            )
+    return pyautogui_copy
+
+
+def uc_gui_press_key(driver, key):
+    install_pyautogui_if_missing()
+    import pyautogui
+    pyautogui = get_configured_pyautogui(pyautogui)
+    gui_lock = fasteners.InterProcessLock(
+        constants.MultiBrowser.PYAUTOGUILOCK
+    )
+    with gui_lock:
+        pyautogui.press(key)
+
+
+def uc_gui_press_keys(driver, keys):
+    install_pyautogui_if_missing()
+    import pyautogui
+    pyautogui = get_configured_pyautogui(pyautogui)
+    gui_lock = fasteners.InterProcessLock(
+        constants.MultiBrowser.PYAUTOGUILOCK
+    )
+    with gui_lock:
+        for key in keys:
+            pyautogui.press(key)
+
+
+def uc_gui_write(driver, text):
+    install_pyautogui_if_missing()
+    import pyautogui
+    pyautogui = get_configured_pyautogui(pyautogui)
+    gui_lock = fasteners.InterProcessLock(
+        constants.MultiBrowser.PYAUTOGUILOCK
+    )
+    with gui_lock:
+        pyautogui.write(text)
+
+
+def uc_gui_handle_cf(driver, frame="iframe"):
+    source = driver.get_page_source()
+    if (
+        "//challenges.cloudflare.com" not in source
+        and 'aria-label="Cloudflare"' not in source
+    ):
+        return
+    install_pyautogui_if_missing()
+    import pyautogui
+    pyautogui = get_configured_pyautogui(pyautogui)
+    gui_lock = fasteners.InterProcessLock(
+        constants.MultiBrowser.PYAUTOGUILOCK
+    )
+    with gui_lock:  # Prevent issues with multiple processes
+        needs_switch = False
+        is_in_frame = js_utils.is_in_frame(driver)
+        if is_in_frame and driver.is_element_present("#challenge-stage"):
+            driver.switch_to.parent_frame()
+            needs_switch = True
+            is_in_frame = js_utils.is_in_frame(driver)
+        if not is_in_frame:
+            # Make sure the window is on top
+            page_actions.switch_to_window(
+                driver,
+                driver.current_window_handle,
+                timeout=settings.SMALL_TIMEOUT,
+            )
+        if not is_in_frame or needs_switch:
+            # Currently not in frame (or nested frame outside CF one)
+            try:
+                driver.switch_to_frame(frame)
+            except Exception:
+                if driver.is_element_present("iframe"):
+                    driver.switch_to_frame("iframe")
+                else:
+                    return
+        try:
+            driver.execute_script('document.querySelector("input").focus()')
+        except Exception:
+            try:
+                driver.switch_to.default_content()
+            except Exception:
+                return
+        driver.disconnect()
+        try:
+            pyautogui.press(" ")
+        except Exception:
+            pass
+    reconnect_time = (float(constants.UC.RECONNECT_TIME) / 2.0) + 0.5
+    driver.reconnect(reconnect_time)
+
+
+def uc_switch_to_frame(driver, frame="iframe", reconnect_time=None):
     from selenium.webdriver.remote.webelement import WebElement
     if isinstance(frame, WebElement):
         if not reconnect_time:
@@ -3821,6 +3981,26 @@ def get_local_driver(
                     )
                     driver.uc_click = lambda *args, **kwargs: uc_click(
                         driver, *args, **kwargs
+                    )
+                    driver.uc_gui_press_key = (
+                        lambda *args, **kwargs: uc_gui_press_key(
+                            driver, *args, **kwargs
+                        )
+                    )
+                    driver.uc_gui_press_keys = (
+                        lambda *args, **kwargs: uc_gui_press_keys(
+                            driver, *args, **kwargs
+                        )
+                    )
+                    driver.uc_gui_write = (
+                        lambda *args, **kwargs: uc_gui_write(
+                            driver, *args, **kwargs
+                        )
+                    )
+                    driver.uc_gui_handle_cf = (
+                        lambda *args, **kwargs: uc_gui_handle_cf(
+                            driver, *args, **kwargs
+                        )
                     )
                     driver.uc_switch_to_frame = (
                         lambda *args, **kwargs: uc_switch_to_frame(

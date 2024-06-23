@@ -386,6 +386,69 @@ def SB(
     if not shared_utils.is_linux():
         # The Xvfb virtual display server is for Linux OS Only!
         xvfb = False
+    if (
+        undetectable
+        or undetected
+        or uc
+        or uc_cdp_events
+        or uc_cdp
+        or uc_subprocess
+        or uc_sub
+    ):
+        undetectable = True
+    if (
+        (undetectable or undetected or uc)
+        and (uc_subprocess is None)
+        and (uc_sub is None)
+    ):
+        uc_subprocess = True  # Use UC as a subprocess by default.
+    elif (
+        "--undetectable" in sys_argv
+        or "--undetected" in sys_argv
+        or "--uc" in sys_argv
+        or "--uc-cdp-events" in sys_argv
+        or "--uc_cdp_events" in sys_argv
+        or "--uc-cdp" in sys_argv
+        or "--uc-subprocess" in sys_argv
+        or "--uc_subprocess" in sys_argv
+        or "--uc-sub" in sys_argv
+    ):
+        undetectable = True
+        if uc_subprocess is None and uc_sub is None:
+            uc_subprocess = True  # Use UC as a subprocess by default.
+    else:
+        undetectable = False
+    if uc_subprocess or uc_sub:
+        uc_subprocess = True
+    elif (
+        "--uc-subprocess" in sys_argv
+        or "--uc_subprocess" in sys_argv
+        or "--uc-sub" in sys_argv
+    ):
+        uc_subprocess = True
+    else:
+        uc_subprocess = False
+    if uc_cdp_events or uc_cdp:
+        undetectable = True
+        uc_cdp_events = True
+    elif (
+        "--uc-cdp-events" in sys_argv
+        or "--uc_cdp_events" in sys_argv
+        or "--uc-cdp" in sys_argv
+        or "--uc_cdp" in sys_argv
+    ):
+        undetectable = True
+        uc_cdp_events = True
+    else:
+        uc_cdp_events = False
+    if undetectable and browser != "chrome":
+        message = (
+            '\n  Undetected-Chromedriver Mode ONLY supports Chrome!'
+            '\n  ("uc=True" / "undetectable=True" / "--uc")'
+            '\n  (Your browser choice was: "%s".)'
+            '\n  (Will use "%s" without UC Mode.)\n' % (browser, browser)
+        )
+        print(message)
     if headed is None:
         # Override the default headless mode on Linux if set.
         if "--gui" in sys_argv or "--headed" in sys_argv:
@@ -399,7 +462,10 @@ def SB(
         and not headless2
         and not xvfb
     ):
-        headless = True
+        if not undetectable:
+            headless = True
+        else:
+            xvfb = True
     if headless2 and browser == "firefox":
         headless2 = False  # Only for Chromium browsers
         headless = True  # Firefox has regular headless
@@ -456,61 +522,6 @@ def SB(
     else:
         enable_ws = False
         disable_ws = True
-    if (
-        undetectable
-        or undetected
-        or uc
-        or uc_cdp_events
-        or uc_cdp
-        or uc_subprocess
-        or uc_sub
-    ):
-        undetectable = True
-    if (
-        (undetectable or undetected or uc)
-        and (uc_subprocess is None)
-        and (uc_sub is None)
-    ):
-        uc_subprocess = True  # Use UC as a subprocess by default.
-    elif (
-        "--undetectable" in sys_argv
-        or "--undetected" in sys_argv
-        or "--uc" in sys_argv
-        or "--uc-cdp-events" in sys_argv
-        or "--uc_cdp_events" in sys_argv
-        or "--uc-cdp" in sys_argv
-        or "--uc-subprocess" in sys_argv
-        or "--uc_subprocess" in sys_argv
-        or "--uc-sub" in sys_argv
-    ):
-        undetectable = True
-        if uc_subprocess is None and uc_sub is None:
-            uc_subprocess = True  # Use UC as a subprocess by default.
-    else:
-        undetectable = False
-    if uc_subprocess or uc_sub:
-        uc_subprocess = True
-    elif (
-        "--uc-subprocess" in sys_argv
-        or "--uc_subprocess" in sys_argv
-        or "--uc-sub" in sys_argv
-    ):
-        uc_subprocess = True
-    else:
-        uc_subprocess = False
-    if uc_cdp_events or uc_cdp:
-        undetectable = True
-        uc_cdp_events = True
-    elif (
-        "--uc-cdp-events" in sys_argv
-        or "--uc_cdp_events" in sys_argv
-        or "--uc-cdp" in sys_argv
-        or "--uc_cdp" in sys_argv
-    ):
-        undetectable = True
-        uc_cdp_events = True
-    else:
-        uc_cdp_events = False
     if log_cdp_events is None and log_cdp is None:
         if (
             "--log-cdp-events" in sys_argv
