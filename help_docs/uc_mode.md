@@ -20,7 +20,7 @@
 
 * Automatically changing user agents to prevent detection.
 * Automatically setting various chromium args as needed.
-* Has special methods. Eg. `driver.uc_click(selector)`
+* Has special `uc_*()` methods.
 
 👤 Here's an example with the <b><code translate="no">Driver</code></b> manager:
 
@@ -67,22 +67,11 @@ with SB(uc=True, test=True) as sb:
 ```python
 from seleniumbase import SB
 
-def open_the_turnstile_page(sb):
-    url = "seleniumbase.io/apps/turnstile"
-    sb.driver.uc_open_with_reconnect(url, reconnect_time=2)
-
-def click_turnstile_and_verify(sb):
-    sb.switch_to_frame("iframe")
-    sb.driver.uc_click("span")
-    sb.assert_element("img#captcha-success", timeout=3)
-
 with SB(uc=True, test=True) as sb:
-    open_the_turnstile_page(sb)
-    try:
-        click_turnstile_and_verify(sb)
-    except Exception:
-        open_the_turnstile_page(sb)
-        click_turnstile_and_verify(sb)
+    url = "seleniumbase.io/apps/turnstile"
+    sb.uc_open_with_reconnect(url, reconnect_time=2)
+    sb.uc_gui_handle_cf()
+    sb.assert_element("img#captcha-success", timeout=3)
     sb.set_messenger_theme(location="top_left")
     sb.post_message("SeleniumBase wasn't detected", duration=3)
 ```
@@ -129,6 +118,27 @@ with SB(uc=True, test=True, ad_block_on=True) as sb:
 
 <img src="https://seleniumbase.github.io/other/ttm_bypass.png" title="SeleniumBase" width="540">
 
+👤 <b>On Linux</b>, use `sb.uc_gui_handle_cf()` to handle Cloudflare Turnstiles:
+
+```python
+from seleniumbase import SB
+
+with SB(uc=True, test=True) as sb:
+    url = "https://www.virtualmanager.com/en/login"
+    sb.uc_open_with_reconnect(url, 4)
+    print(sb.get_page_title())
+    sb.uc_gui_handle_cf()  # Ready if needed!
+    print(sb.get_page_title())
+    sb.assert_element('input[name*="email"]')
+    sb.assert_element('input[name*="login"]')
+    sb.set_messenger_theme(location="bottom_center")
+    sb.post_message("SeleniumBase wasn't detected!")
+```
+
+<a href="https://github.com/mdmintz/undetected-testing/actions/runs/9637461606/job/26576722411"><img width="540" alt="uc_gui_handle_cf on Linux" src="https://github.com/seleniumbase/SeleniumBase/assets/6788579/6aceb2a3-2a32-4521-b30a-f79446d2ce28"></a>
+
+The 2nd `print()` should output "Virtual Manager", which means that the automation successfully passed the Turnstile.
+
 --------
 
 👤 In <b translate="no">UC Mode</b>, <code translate="no">driver.get(url)</code> has been modified from its original version: If anti-bot services are detected from a <code translate="no">requests.get(url)</code> call that's made before navigating to the website, then <code translate="no">driver.uc_open_with_reconnect(url)</code> will be used instead. To open a URL normally in <b translate="no">UC Mode</b>, use <code translate="no">driver.default_get(url)</code>.
@@ -144,6 +154,7 @@ with SB(uc=True, test=True, ad_block_on=True) as sb:
 <img src="https://seleniumbase.github.io/other/pixelscan.jpg" title="SeleniumBase" width="540">
 
 ### 👤 Here are some UC Mode examples that bypass CAPTCHAs when clicking is required:
+* [SeleniumBase/examples/raw_pyautogui.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_pyautogui.py)
 * [SeleniumBase/examples/raw_turnstile.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_turnstile.py)
 * [SeleniumBase/examples/raw_form_turnstile.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_form_turnstile.py)
 * [SeleniumBase/examples/uc_cdp_events.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/uc_cdp_events.py)
@@ -214,11 +225,6 @@ driver.reconnect("breakpoint")
 
 (Note that while the special <b><code translate="no">UC Mode</code></b> breakpoint is active, you can't use <b><code translate="no">Selenium</code></b> commands in the browser, and the browser can't detect <b><code translate="no">Selenium</code></b>.)
 
-👤 The two main causes of getting detected in <b translate="no">UC Mode</b> (which are both easily handled) are:
-
-<li>Timing. (<b translate="no">UC Mode</b> methods let you customize default values that aren't good enough for your environment.)</li>
-<li>Not using <b><code translate="no">driver.uc_click(selector)</code></b> when you need to remain undetected while clicking something.</li>
-
 👤 On Linux, you may need to use `driver.uc_gui_handle_cf()` to successfully bypass a Cloudflare CAPTCHA. If there's more than one iframe on that website (and Cloudflare isn't the first one) then put the CSS Selector of that iframe as the first arg to `driver.uc_gui_handle_cf()`. This method uses `pyautogui`. In order for `pyautogui` to focus on the correct element, use `xvfb=True` / `--xvfb` to activate a special virtual display on Linux.
 
 👤 To find out if <b translate="no">UC Mode</b> will work at all on a specific site (before adjusting for timing), load your site with the following script:
@@ -268,46 +274,15 @@ with ThreadPoolExecutor(max_workers=len(urls)) as executor:
 
 --------
 
-👥 <b>Double Duty:</b> Here's an example of handling two CAPTCHAs on one page:
-
-<img src="https://seleniumbase.github.io/other/nopecha.png" title="SeleniumBase" align="center" width="630">
-
-```python
-from seleniumbase import SB
-
-with SB(uc=True, test=True) as sb:
-    sb.driver.uc_open_with_reconnect("nopecha.com/demo/turnstile", 3.4)
-    if sb.is_element_visible("#example-container0 iframe"):
-        sb.switch_to_frame("#example-container0 iframe")
-        if not sb.is_element_visible("circle.success-circle"):
-            sb.driver.uc_click("span", reconnect_time=3)
-            sb.switch_to_frame("#example-container0 iframe")
-        sb.switch_to_default_content()
-
-    sb.switch_to_frame("#example-container5 iframe")
-    sb.driver.uc_click("span", reconnect_time=2.5)
-    sb.switch_to_frame("#example-container5 iframe")
-    sb.assert_element("svg#success-icon", timeout=3)
-    sb.switch_to_parent_frame()
-
-    if sb.is_element_visible("#example-container0 iframe"):
-        sb.switch_to_frame("#example-container0 iframe")
-        sb.assert_element("circle.success-circle")
-        sb.switch_to_parent_frame()
-
-    sb.set_messenger_theme(location="top_center")
-    sb.post_message("SeleniumBase wasn't detected!", duration=3)
-```
-
---------
-
 👤 <b>What makes UC Mode work?</b>
 
 Here are the 3 primary things that <b translate="no">UC Mode</b> does to make bots appear human:
 
+<ul>
 <li>Modifies <b><code translate="no">chromedriver</code></b> to rename <b translate="no">Chrome DevTools Console</b> variables.</li>
 <li>Launches <b translate="no">Chrome</b> browsers before attaching <b><code translate="no">chromedriver</code></b> to them.</li>
 <li>Disconnects <b><code translate="no">chromedriver</code></b> from <b translate="no">Chrome</b> during stealthy actions.</li>
+</ul>
 
 For example, if the <b translate="no">Chrome DevTools Console</b> variables aren't renamed, you can expect to find them easily when using <b><code translate="no">selenium</code></b> for browser automation:
 
@@ -321,13 +296,17 @@ While <b><code translate="no">chromedriver</code></b> is connected to <b transla
 
 Links to those <a href="https://github.com/SeleniumHQ/selenium">raw <b>Selenium</b></a> method definitions have been provided for reference (but you don't need to call those methods directly):
 
+<ul>
 <li><b><code translate="no"><a href="https://github.com/SeleniumHQ/selenium/blob/9c6ccdbf40356284fad342f70fbdc0afefd27bd3/py/selenium/webdriver/common/service.py#L135">driver.service.stop()</a></code></b></li>
 <li><b><code translate="no"><a href="https://github.com/SeleniumHQ/selenium/blob/9c6ccdbf40356284fad342f70fbdc0afefd27bd3/py/selenium/webdriver/common/service.py#L91">driver.service.start()</a></code></b></li>
 <li><b><code translate="no"><a href="https://github.com/SeleniumHQ/selenium/blob/9c6ccdbf40356284fad342f70fbdc0afefd27bd3/py/selenium/webdriver/remote/webdriver.py#L284">driver.start_session(capabilities)</a></code></b></li>
+</ul>
 
 Also note that <b><code translate="no">chromedriver</code></b> isn't detectable in a browser tab if it never touches that tab. Here's a JS command that lets you open a URL in a new tab (from your current tab):
 
+<ul>
 <li><b><code translate="no">window.open("URL");</code></b> --> (Info: <a href="https://www.w3schools.com/jsref/met_win_open.asp" target="_blank">W3Schools</a>)</li>
+</ul>
 
 The above JS method is used within <b translate="no"><code>SeleniumBase</code></b> <b translate="no">UC Mode</b> methods for opening URLs in a stealthy way. Since some websites try to detect if your browser is a bot on the initial page load, this allows you to bypass detection in those situations. After a few seconds (customizable), <b translate="no">UC Mode</b> tells <b><code translate="no">chromedriver</code></b> to connect to that tab so that automated commands can now be issued. At that point, <b><code translate="no">chromedriver</code></b> could be detected if websites are looking for it (but generally websites only look for it during specific events, such as page loads, form submissions, and button clicks).
 
