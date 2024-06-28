@@ -125,7 +125,9 @@ def Driver(
     uc_cdp=None,  # Shortcut / Duplicate of "uc_cdp_events".
     uc_sub=None,  # Shortcut / Duplicate of "uc_subprocess".
     log_cdp=None,  # Shortcut / Duplicate of "log_cdp_events".
+    ad_block=None,  # Shortcut / Duplicate of "ad_block_on".
     server=None,  # Shortcut / Duplicate of "servername".
+    guest=None,  # Shortcut / Duplicate of "guest_mode".
     wire=None,  # Shortcut / Duplicate of "use_wire".
     pls=None,  # Shortcut / Duplicate of "page_load_strategy".
 ):
@@ -263,6 +265,8 @@ def Driver(
             incognito = True
         else:
             incognito = False
+    if guest is not None and guest_mode is None:
+        guest_mode = guest
     if guest_mode is None:
         if "--guest" in sys_argv:
             guest_mode = True
@@ -515,6 +519,8 @@ def Driver(
             swiftshader = True
         else:
             swiftshader = False
+    if ad_block is not None and ad_block_on is None:
+        ad_block_on = ad_block
     if ad_block_on is None:
         if "--ad-block" in sys_argv or "--ad_block" in sys_argv:
             ad_block_on = True
