@@ -13,8 +13,7 @@ class CDPTests(BaseCase):
         )
 
     def click_turnstile_and_verify(sb):
-        sb.switch_to_frame("iframe")
-        sb.driver.uc_click("span")
+        sb.uc_gui_handle_cf()
         sb.assert_element("img#captcha-success", timeout=3)
         sb.highlight("img#captcha-success", loops=8)
 
@@ -22,7 +21,7 @@ class CDPTests(BaseCase):
         if not (self.undetectable and self.uc_cdp_events):
             self.get_new_driver(undetectable=True, uc_cdp_events=True)
         url = "seleniumbase.io/apps/turnstile"
-        self.driver.uc_open_with_reconnect(url, 2)
+        self.uc_open_with_reconnect(url, 2)
         self.add_cdp_listener()
         self.click_turnstile_and_verify()
         self.sleep(1)

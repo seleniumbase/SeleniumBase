@@ -1,19 +1,11 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True) as sb:
-    sb.driver.uc_open_with_reconnect("nopecha.com/demo/turnstile", 4)
-    if sb.is_element_visible("#example-container0 iframe"):
-        sb.switch_to_frame("#example-container0 iframe")
-        if not sb.is_element_visible("circle.success-circle"):
-            sb.driver.uc_click("span", reconnect_time=3)
-            sb.switch_to_frame("#example-container0 iframe")
-        sb.switch_to_default_content()
-
-    sb.switch_to_frame("#example-container5 iframe")
-    sb.driver.uc_click("span", reconnect_time=2.5)
-    sb.switch_to_frame("#example-container5 iframe")
-    sb.assert_element("svg#success-icon", timeout=3)
-    sb.switch_to_parent_frame()
+    sb.uc_open_with_disconnect("nopecha.com/demo/turnstile", 3.5)
+    sb.uc_gui_press_keys("\t\t ")
+    sb.sleep(3.5)
+    sb.connect()
+    sb.uc_gui_handle_cf("#example-container5 iframe")
 
     if sb.is_element_visible("#example-container0 iframe"):
         sb.switch_to_frame("#example-container0 iframe")
