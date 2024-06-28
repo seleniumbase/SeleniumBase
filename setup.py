@@ -147,11 +147,11 @@ setup(
     python_requires=">=3.7",
     install_requires=[
         'pip>=24.0;python_version<"3.8"',
-        'pip>=24.1;python_version>="3.8"',
+        'pip>=24.1.1;python_version>="3.8"',
         'packaging>=24.0;python_version<"3.8"',
         'packaging>=24.1;python_version>="3.8"',
         'setuptools>=68.0.0;python_version<"3.8"',
-        'setuptools>=70.1.0;python_version>="3.8"',
+        'setuptools>=70.1.1;python_version>="3.8"',
         'wheel>=0.42.0;python_version<"3.8"',
         'wheel>=0.43.0;python_version>="3.8"',
         'attrs>=23.2.0',
