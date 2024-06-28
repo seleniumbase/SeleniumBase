@@ -1634,6 +1634,10 @@ def get_driver(
     if headless2 and browser_name == constants.Browser.FIREFOX:
         headless2 = False  # Only for Chromium
         headless = True
+    if not hasattr(sb_config, "headless"):
+        sb_config.headless = headless
+    if not hasattr(sb_config, "headless2"):
+        sb_config.headless2 = headless2
     if (
         binary_location
         and isinstance(binary_location, str)
