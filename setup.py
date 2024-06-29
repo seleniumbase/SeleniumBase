@@ -212,7 +212,7 @@ setup(
         'pygments==2.18.0;python_version>="3.8"',
         'pyreadline3==3.4.1;platform_system=="Windows"',
         "tabcompleter==1.3.0",
-        "pdbp==1.5.0",
+        "pdbp==1.5.1",
         'colorama==0.4.6',
         'pyotp==2.9.0',
         'python-xlib==0.33;platform_system=="Linux"',

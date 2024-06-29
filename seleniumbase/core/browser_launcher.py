@@ -389,7 +389,9 @@ def uc_special_open_if_cf(
                 driver.execute_script('window.open("%s","_blank");' % url)
                 driver.close()
                 if mobile_emulator:
-                    driver.switch_to.window(driver.window_handles[-1])
+                    page_actions.switch_to_window(
+                        driver, driver.window_handles[-1], 2
+                    )
                     uc_metrics = {}
                     if (
                         isinstance(device_width, int)
@@ -419,7 +421,9 @@ def uc_special_open_if_cf(
                     except Exception:
                         pass
             if not mobile_emulator:
-                driver.switch_to.window(driver.window_handles[-1])
+                page_actions.switch_to_window(
+                    driver, driver.window_handles[-1], 2
+                )
         else:
             driver.default_get(url)  # The original one
     else:
@@ -450,7 +454,7 @@ def uc_open_with_tab(driver, url):
         with driver:
             driver.execute_script('window.open("%s","_blank");' % url)
             driver.close()
-        driver.switch_to.window(driver.window_handles[-1])
+        page_actions.switch_to_window(driver, driver.window_handles[-1], 2)
     else:
         driver.default_get(url)  # The original one
     return None
@@ -476,10 +480,14 @@ def uc_open_with_reconnect(driver, url, reconnect_time=None):
             driver.reconnect(reconnect_time)
             time.sleep(0.004)
             try:
-                driver.switch_to.window(driver.window_handles[-1])
+                page_actions.switch_to_window(
+                    driver, driver.window_handles[-1], 2
+                )
             except InvalidSessionIdException:
                 time.sleep(0.05)
-                driver.switch_to.window(driver.window_handles[-1])
+                page_actions.switch_to_window(
+                    driver, driver.window_handles[-1], 2
+                )
     else:
         driver.default_get(url)  # The original one
     return None
@@ -546,17 +554,17 @@ def uc_click(
             driver.reconnect(reconnect_time)
 
 
-def verify_pyautogui_has_a_headed_browser():
+def verify_pyautogui_has_a_headed_browser(driver):
     """PyAutoGUI requires a headed browser so that it can
     focus on the correct element when performing actions."""
-    if sb_config.headless or sb_config.headless2:
+    if hasattr(driver, "_is_hidden") and driver._is_hidden:
         raise Exception(
             "PyAutoGUI can't be used in headless mode!"
         )
 
 
-def install_pyautogui_if_missing():
-    verify_pyautogui_has_a_headed_browser()
+def install_pyautogui_if_missing(driver):
+    verify_pyautogui_has_a_headed_browser(driver)
     pip_find_lock = fasteners.InterProcessLock(
         constants.PipInstall.FINDLOCK
     )
@@ -608,7 +616,7 @@ def get_configured_pyautogui(pyautogui_copy):
 
 
 def uc_gui_press_key(driver, key):
-    install_pyautogui_if_missing()
+    install_pyautogui_if_missing(driver)
     import pyautogui
     pyautogui = get_configured_pyautogui(pyautogui)
     gui_lock = fasteners.InterProcessLock(
@@ -619,7 +627,7 @@ def uc_gui_press_key(driver, key):
 
 
 def uc_gui_press_keys(driver, keys):
-    install_pyautogui_if_missing()
+    install_pyautogui_if_missing(driver)
     import pyautogui
     pyautogui = get_configured_pyautogui(pyautogui)
     gui_lock = fasteners.InterProcessLock(
@@ -631,7 +639,7 @@ def uc_gui_press_keys(driver, keys):
 
 
 def uc_gui_write(driver, text):
-    install_pyautogui_if_missing()
+    install_pyautogui_if_missing(driver)
     import pyautogui
     pyautogui = get_configured_pyautogui(pyautogui)
     gui_lock = fasteners.InterProcessLock(
@@ -648,7 +656,7 @@ def uc_gui_handle_cf(driver, frame="iframe"):
         and 'aria-label="Cloudflare"' not in source
     ):
         return
-    install_pyautogui_if_missing()
+    install_pyautogui_if_missing(driver)
     import pyautogui
     pyautogui = get_configured_pyautogui(pyautogui)
     gui_lock = fasteners.InterProcessLock(
@@ -664,9 +672,7 @@ def uc_gui_handle_cf(driver, frame="iframe"):
         if not is_in_frame:
             # Make sure the window is on top
             page_actions.switch_to_window(
-                driver,
-                driver.current_window_handle,
-                timeout=settings.SMALL_TIMEOUT,
+                driver, driver.current_window_handle, 2
             )
         if not is_in_frame or needs_switch:
             # Currently not in frame (or nested frame outside CF one)
@@ -1634,10 +1640,6 @@ def get_driver(
     if headless2 and browser_name == constants.Browser.FIREFOX:
         headless2 = False  # Only for Chromium
         headless = True
-    if not hasattr(sb_config, "headless"):
-        sb_config.headless = headless
-    if not hasattr(sb_config, "headless2"):
-        sb_config.headless2 = headless2
     if (
         binary_location
         and isinstance(binary_location, str)
@@ -4035,6 +4037,8 @@ def get_local_driver(
                             driver, *args, **kwargs
                         )
                     )
+                    driver._is_hidden = (headless or headless2)
+                    driver._is_using_uc = True
                     if mobile_emulator:
                         uc_metrics = {}
                         if (

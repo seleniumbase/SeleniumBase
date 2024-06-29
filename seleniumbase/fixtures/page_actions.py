@@ -18,6 +18,7 @@ By.TAG_NAME            # "tag name"
 By.PARTIAL_LINK_TEXT   # "partial link text"
 """
 import codecs
+import fasteners
 import os
 import time
 from selenium.common.exceptions import ElementNotInteractableException
@@ -32,6 +33,7 @@ from selenium.webdriver.common.keys import Keys
 from seleniumbase.common.exceptions import LinkTextNotFoundException
 from seleniumbase.common.exceptions import TextNotVisibleException
 from seleniumbase.config import settings
+from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import page_utils
 from seleniumbase.fixtures import shared_utils
 
@@ -1428,6 +1430,18 @@ def switch_to_frame(driver, frame, timeout=settings.SMALL_TIMEOUT):
     timeout_exception(Exception, message)
 
 
+def __switch_to_window(driver, window_handle):
+    if hasattr(driver, "_is_using_uc") and driver._is_using_uc:
+        gui_lock = fasteners.InterProcessLock(
+            constants.MultiBrowser.PYAUTOGUILOCK
+        )
+        with gui_lock:
+            driver.switch_to.window(window_handle)
+    else:
+        driver.switch_to.window(window_handle)
+    return True
+
+
 def switch_to_window(driver, window, timeout=settings.SMALL_TIMEOUT):
     """
     Wait for a window to appear, and switch to it. This should be usable
@@ -1451,7 +1465,7 @@ def switch_to_window(driver, window, timeout=settings.SMALL_TIMEOUT):
             shared_utils.check_if_time_limit_exceeded()
             try:
                 window_handle = driver.window_handles[window]
-                driver.switch_to.window(window_handle)
+                __switch_to_window(driver, window_handle)
                 return True
             except IndexError:
                 now_ms = time.time() * 1000.0
@@ -1472,7 +1486,7 @@ def switch_to_window(driver, window, timeout=settings.SMALL_TIMEOUT):
         for x in range(int(timeout * 10)):
             shared_utils.check_if_time_limit_exceeded()
             try:
-                driver.switch_to.window(window_handle)
+                __switch_to_window(driver, window_handle)
                 return True
             except NoSuchWindowException:
                 now_ms = time.time() * 1000.0
