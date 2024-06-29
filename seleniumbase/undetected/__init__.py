@@ -278,15 +278,19 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                     options.binary_location, *options.arguments
                 )
             else:
-                browser = subprocess.Popen(
-                    [options.binary_location, *options.arguments],
-                    stdin=subprocess.PIPE,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE,
-                    close_fds=IS_POSIX,
-                    creationflags=creationflags,
+                gui_lock = fasteners.InterProcessLock(
+                    constants.MultiBrowser.PYAUTOGUILOCK
                 )
-                self.browser_pid = browser.pid
+                with gui_lock:
+                    browser = subprocess.Popen(
+                        [options.binary_location, *options.arguments],
+                        stdin=subprocess.PIPE,
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE,
+                        close_fds=IS_POSIX,
+                        creationflags=creationflags,
+                    )
+                    self.browser_pid = browser.pid
             service_ = None
             log_output = subprocess.PIPE
             if sys.version_info < (3, 8):
