@@ -1430,8 +1430,12 @@ def switch_to_frame(driver, frame, timeout=settings.SMALL_TIMEOUT):
     timeout_exception(Exception, message)
 
 
-def __switch_to_window(driver, window_handle):
-    if hasattr(driver, "_is_using_uc") and driver._is_using_uc:
+def __switch_to_window(driver, window_handle, uc_lock=True):
+    if (
+        hasattr(driver, "_is_using_uc")
+        and driver._is_using_uc
+        and uc_lock
+    ):
         gui_lock = fasteners.InterProcessLock(
             constants.MultiBrowser.PYAUTOGUILOCK
         )
@@ -1442,7 +1446,12 @@ def __switch_to_window(driver, window_handle):
     return True
 
 
-def switch_to_window(driver, window, timeout=settings.SMALL_TIMEOUT):
+def switch_to_window(
+    driver,
+    window,
+    timeout=settings.SMALL_TIMEOUT,
+    uc_lock=True,
+):
     """
     Wait for a window to appear, and switch to it. This should be usable
     as a drop-in replacement for driver.switch_to.window().
@@ -1450,6 +1459,7 @@ def switch_to_window(driver, window, timeout=settings.SMALL_TIMEOUT):
     driver - the webdriver object (required)
     window - the window index or window handle
     timeout - the time to wait for the window in seconds
+    uc_lock - if UC Mode and True, switch_to_window() uses thread-locking
     """
     if window == -1:
         window = len(driver.window_handles) - 1
@@ -1465,7 +1475,7 @@ def switch_to_window(driver, window, timeout=settings.SMALL_TIMEOUT):
             shared_utils.check_if_time_limit_exceeded()
             try:
                 window_handle = driver.window_handles[window]
-                __switch_to_window(driver, window_handle)
+                __switch_to_window(driver, window_handle, uc_lock=uc_lock)
                 return True
             except IndexError:
                 now_ms = time.time() * 1000.0
@@ -1486,7 +1496,7 @@ def switch_to_window(driver, window, timeout=settings.SMALL_TIMEOUT):
         for x in range(int(timeout * 10)):
             shared_utils.check_if_time_limit_exceeded()
             try:
-                __switch_to_window(driver, window_handle)
+                __switch_to_window(driver, window_handle, uc_lock=uc_lock)
                 return True
             except NoSuchWindowException:
                 now_ms = time.time() * 1000.0
