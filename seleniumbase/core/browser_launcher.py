@@ -672,7 +672,7 @@ def uc_gui_handle_cf(driver, frame="iframe"):
         if not is_in_frame:
             # Make sure the window is on top
             page_actions.switch_to_window(
-                driver, driver.current_window_handle, 2
+                driver, driver.current_window_handle, 2, uc_lock=False
             )
         if not is_in_frame or needs_switch:
             # Currently not in frame (or nested frame outside CF one)
