@@ -151,11 +151,11 @@ setup(
         'packaging>=24.0;python_version<"3.8"',
         'packaging>=24.1;python_version>="3.8"',
         'setuptools>=68.0.0;python_version<"3.8"',
-        'setuptools>=70.1.1;python_version>="3.8"',
+        'setuptools>=70.2.0;python_version>="3.8"',
         'wheel>=0.42.0;python_version<"3.8"',
         'wheel>=0.43.0;python_version>="3.8"',
         'attrs>=23.2.0',
-        "certifi>=2024.6.2",
+        "certifi>=2024.7.4",
         "exceptiongroup>=1.2.1",
         'filelock>=3.12.2;python_version<"3.8"',
         'filelock>=3.15.4;python_version>="3.8"',
@@ -177,7 +177,7 @@ setup(
         'h11==0.14.0',
         'outcome==1.3.0.post0',
         'trio==0.22.2;python_version<"3.8"',
-        'trio==0.25.1;python_version>="3.8"',
+        'trio==0.26.0;python_version>="3.8"',
         'trio-websocket==0.11.1',
         'wsproto==1.2.0',
         'websocket-client==1.8.0;python_version>="3.8"',
@@ -270,7 +270,7 @@ setup(
         # (An optional library for image-processing.)
         "pillow": [
             'Pillow==9.5.0;python_version<"3.8"',
-            'Pillow>=10.3.0;python_version>="3.8"',
+            'Pillow>=10.4.0;python_version>="3.8"',
         ],
         # pip install -e .[pip-system-certs]
         # (If you see [SSL: CERTIFICATE_VERIFY_FAILED], then get this.)
@@ -282,7 +282,7 @@ setup(
         # Usage: proxy
         # (That starts a proxy server on "127.0.0.1:8899".)
         "proxy": [
-            "proxy.py==2.4.4",
+            "proxy.py==2.4.3",  # 2.4.4 did not have "Listening on ..."
         ],
         # pip install -e .[psutil]
         "psutil": [
