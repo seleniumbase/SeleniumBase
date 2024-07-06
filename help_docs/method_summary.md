@@ -223,9 +223,21 @@ self.execute_async_script(script, timeout=None)
 
 self.safe_execute_script(script, *args, **kwargs)
 
+self.get_gui_element_rect(selector, by="css selector")
+
+self.get_gui_element_center(selector, by="css selector")
+
+self.get_window_rect()
+
+self.get_window_size()
+
+self.get_window_position()
+
 self.set_window_rect(x, y, width, height)
 
 self.set_window_size(width, height)
+
+self.set_window_position(x, y)
 
 self.maximize_window()
 
@@ -1061,6 +1073,10 @@ driver.uc_gui_press_key(key)  # Use PyAutoGUI to press the keyboard key
 driver.uc_gui_press_keys(keys)  # Use PyAutoGUI to press a list of keys
 
 driver.uc_gui_write(text)  # Similar to uc_gui_press_keys(), but faster
+
+driver.uc_gui_click_x_y(x, y, timeframe=0.25)  # PyAutoGUI click screen
+
+driver.uc_gui_click_cf(frame="iframe", retry=False, blind=False)  # (*)
 
 driver.uc_gui_handle_cf(frame="iframe")  # PyAutoGUI click CF Turnstile
 
