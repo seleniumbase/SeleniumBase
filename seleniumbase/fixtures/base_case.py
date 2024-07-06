@@ -4178,6 +4178,10 @@ class BaseCase(unittest.TestCase):
                 self.uc_gui_press_keys = new_driver.uc_gui_press_keys
             if hasattr(new_driver, "uc_gui_write"):
                 self.uc_gui_write = new_driver.uc_gui_write
+            if hasattr(new_driver, "uc_gui_click_x_y"):
+                self.uc_gui_click_x_y = new_driver.uc_gui_click_x_y
+            if hasattr(new_driver, "uc_gui_click_cf"):
+                self.uc_gui_click_cf = new_driver.uc_gui_click_cf
             if hasattr(new_driver, "uc_gui_handle_cf"):
                 self.uc_gui_handle_cf = new_driver.uc_gui_handle_cf
             if hasattr(new_driver, "uc_switch_to_frame"):
