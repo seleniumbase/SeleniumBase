@@ -42,7 +42,7 @@ from seleniumbase import SB
 
 with SB(uc=True) as sb:
     url = "https://gitlab.com/users/sign_in"
-    sb.driver.uc_open_with_reconnect(url, 3)
+    sb.uc_open_with_reconnect(url, 3)
 ```
 
 👤 Here's a longer example, which includes a retry if the CAPTCHA isn't bypassed on the first attempt:
@@ -52,9 +52,9 @@ from seleniumbase import SB
 
 with SB(uc=True, test=True) as sb:
     url = "https://gitlab.com/users/sign_in"
-    sb.driver.uc_open_with_reconnect(url, 3)
+    sb.uc_open_with_reconnect(url, 3)
     if not sb.is_text_visible("Username", '[for="user_login"]'):
-        sb.driver.uc_open_with_reconnect(url, 4)
+        sb.uc_open_with_reconnect(url, 4)
     sb.assert_text("Username", '[for="user_login"]', timeout=3)
     sb.highlight('label[for="user_login"]', loops=3)
     sb.post_message("SeleniumBase wasn't detected", duration=4)
@@ -78,6 +78,8 @@ with SB(uc=True, test=True) as sb:
 
 <img src="https://seleniumbase.github.io/other/turnstile_click.jpg" title="SeleniumBase" width="440">
 
+If running on a Linux server, `uc_gui_handle_cf()` might not be good enough. Switch to `uc_gui_click_cf()` to be more stealthy.
+
 👤 Here's an example <b>where the CAPTCHA appears after submitting a form</b>:
 
 ```python
@@ -87,10 +89,10 @@ with SB(uc=True, test=True, locale_code="en") as sb:
     url = "https://ahrefs.com/website-authority-checker"
     input_field = 'input[placeholder="Enter domain"]'
     submit_button = 'span:contains("Check Authority")'
-    sb.driver.uc_open_with_reconnect(url, 1)  # The bot-check is later
+    sb.uc_open_with_reconnect(url, 1)  # The bot-check is later
     sb.type(input_field, "github.com/seleniumbase/SeleniumBase")
-    sb.driver.reconnect(0.1)
-    sb.driver.uc_click(submit_button, reconnect_time=4)
+    sb.reconnect(0.1)
+    sb.uc_click(submit_button, reconnect_time=4)
     sb.wait_for_text_not_visible("Checking", timeout=10)
     sb.highlight('p:contains("github.com/seleniumbase/SeleniumBase")')
     sb.highlight('a:contains("Top 100 backlinks")')
@@ -105,10 +107,10 @@ with SB(uc=True, test=True, locale_code="en") as sb:
 ```python
 from seleniumbase import SB
 
-with SB(uc=True, test=True, ad_block_on=True) as sb:
+with SB(uc=True, test=True, ad_block=True) as sb:
     url = "https://www.thaiticketmajor.com/concert/"
-    sb.driver.uc_open_with_reconnect(url, 5.5)
-    sb.driver.uc_click("button.btn-signin", 4)
+    sb.uc_open_with_reconnect(url, 5.5)
+    sb.uc_click("button.btn-signin", 4)
     sb.switch_to_frame('iframe[title*="Cloudflare"]')
     sb.assert_element("div#success svg#success-icon")
     sb.switch_to_default_content()
@@ -118,7 +120,7 @@ with SB(uc=True, test=True, ad_block_on=True) as sb:
 
 <img src="https://seleniumbase.github.io/other/ttm_bypass.png" title="SeleniumBase" width="540">
 
-👤 <b>On Linux</b>, use `sb.uc_gui_handle_cf()` to handle Cloudflare Turnstiles:
+👤 <b>On Linux</b>, use `sb.uc_gui_click_cf()` to handle Cloudflare Turnstiles:
 
 ```python
 from seleniumbase import SB
@@ -127,7 +129,7 @@ with SB(uc=True, test=True) as sb:
     url = "https://www.virtualmanager.com/en/login"
     sb.uc_open_with_reconnect(url, 4)
     print(sb.get_page_title())
-    sb.uc_gui_handle_cf()  # Ready if needed!
+    sb.uc_gui_click_cf()  # Ready if needed!
     print(sb.get_page_title())
     sb.assert_element('input[name*="email"]')
     sb.assert_element('input[name*="login"]')
@@ -135,7 +137,7 @@ with SB(uc=True, test=True) as sb:
     sb.post_message("SeleniumBase wasn't detected!")
 ```
 
-<a href="https://github.com/mdmintz/undetected-testing/actions/runs/9637461606/job/26576722411"><img width="540" alt="uc_gui_handle_cf on Linux" src="https://github.com/seleniumbase/SeleniumBase/assets/6788579/6aceb2a3-2a32-4521-b30a-f79446d2ce28"></a>
+<a href="https://github.com/mdmintz/undetected-testing/actions/runs/9637461606/job/26576722411"><img width="540" alt="uc_gui_click_cf on Linux" src="https://github.com/seleniumbase/SeleniumBase/assets/6788579/6aceb2a3-2a32-4521-b30a-f79446d2ce28"></a>
 
 The 2nd `print()` should output "Virtual Manager", which means that the automation successfully passed the Turnstile.
 
@@ -188,6 +190,10 @@ driver.uc_gui_press_keys(keys)
 
 driver.uc_gui_write(text)
 
+driver.uc_gui_click_x_y(x, y, timeframe=0.25)
+
+driver.uc_gui_click_cf(frame="iframe", retry=False, blind=False)
+
 driver.uc_gui_handle_cf(frame="iframe")
 
 driver.uc_switch_to_frame(frame, reconnect_time=None)
@@ -225,7 +231,9 @@ driver.reconnect("breakpoint")
 
 (Note that while the special <b><code translate="no">UC Mode</code></b> breakpoint is active, you can't use <b><code translate="no">Selenium</code></b> commands in the browser, and the browser can't detect <b><code translate="no">Selenium</code></b>.)
 
-👤 On Linux, you may need to use `driver.uc_gui_handle_cf()` to successfully bypass a Cloudflare CAPTCHA. If there's more than one iframe on that website (and Cloudflare isn't the first one) then put the CSS Selector of that iframe as the first arg to `driver.uc_gui_handle_cf()`. This method uses `pyautogui`. In order for `pyautogui` to focus on the correct element, use `xvfb=True` / `--xvfb` to activate a special virtual display on Linux.
+👤 On Linux, you may need to use `driver.uc_gui_click_cf()` to successfully bypass a Cloudflare CAPTCHA. If there's more than one iframe on that website (and Cloudflare isn't the first one) then put the CSS Selector of that iframe as the first arg to `driver.uc_gui_click_cf()`. This method uses `pyautogui`. In order for `pyautogui` to focus on the correct element, use `xvfb=True` / `--xvfb` to activate a special virtual display on Linux.
+
+👤 `driver.uc_gui_click_cf(frame="iframe", retry=False, blind=False)` has three args. (All optional). The first one, `frame`, lets you specify the iframe in case the CAPTCHA is not located in the first iframe on the page. The second one, `retry`, lets you retry the click after reloading the page if the first one didn't work (and a CAPTCHA is still present after the page reload). The third arg, `blind`, will retry after a page reload (if the first click failed) by clicking at the last known coordinates of the CAPTCHA checkbox without confirming first with Selenium that a CAPTCHA is still on the page.
 
 👤 To find out if <b translate="no">UC Mode</b> will work at all on a specific site (before adjusting for timing), load your site with the following script:
 

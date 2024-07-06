@@ -3393,23 +3393,85 @@ class BaseCase(unittest.TestCase):
             self.activate_jquery()
         return self.driver.execute_script(script, *args, **kwargs)
 
+    def get_gui_element_rect(self, selector, by="css selector"):
+        """Very similar to element.rect, but the x, y coordinates are
+        relative to the entire screen, rather than the browser window.
+        This is specifically for PyAutoGUI actions on the full screen.
+        (Note: There may be complications if iframes are involved.)"""
+        element = self.wait_for_element_present(selector, by=by, timeout=1)
+        element_rect = element.rect
+        e_width = element_rect["width"]
+        e_height = element_rect["height"]
+        i_x = 0
+        i_y = 0
+        iframe_switch = False
+        if self.__is_in_frame():
+            self.switch_to_parent_frame()
+            if self.__is_in_frame():
+                raise Exception("Nested iframes breaks get_gui_element_rect!")
+            iframe_switch = True
+            iframe = self.wait_for_element_present("iframe", timeout=1)
+            i_x = iframe.rect["x"]
+            i_y = iframe.rect["y"]
+        window_rect = self.get_window_rect()
+        w_bottom_y = window_rect["y"] + window_rect["height"]
+        viewport_height = self.execute_script("return window.innerHeight;")
+        x = math.ceil(window_rect["x"] + i_x + element_rect["x"])
+        y = math.ceil(w_bottom_y - viewport_height + i_y + element_rect["y"])
+        if iframe_switch:
+            self.switch_to_frame()
+            if not self.is_element_present(selector, by=by):
+                self.switch_to_parent_frame()
+        return ({"height": e_height, "width": e_width, "x": x, "y": y})
+
+    def get_gui_element_center(self, selector, by="css selector"):
+        """Returns the x, y coordinates of the element's center based
+        on the entire GUI / screen, rather than on the browser window.
+        This is specifically for PyAutoGUI actions on the full screen.
+        (Note: There may be complications if iframes are involved.)"""
+        element_rect = self.get_gui_element_rect(selector, by=by)
+        x = int(element_rect["x"]) + int(element_rect["width"] / 2) + 1
+        y = int(element_rect["y"]) + int(element_rect["height"] / 2) + 1
+        return (x, y)
+
+    def get_window_rect(self):
+        self.__check_scope()
+        self._check_browser()
+        return self.driver.get_window_rect()
+
+    def get_window_size(self):
+        self.__check_scope()
+        self._check_browser()
+        return self.driver.get_window_size()
+
+    def get_window_position(self):
+        self.__check_scope()
+        self._check_browser()
+        return self.driver.get_window_position()
+
     def set_window_rect(self, x, y, width, height):
         self.__check_scope()
         self._check_browser()
         self.driver.set_window_rect(x, y, width, height)
-        self.__demo_mode_pause_if_active()
+        self.__demo_mode_pause_if_active(tiny=True)
 
     def set_window_size(self, width, height):
         self.__check_scope()
         self._check_browser()
         self.driver.set_window_size(width, height)
-        self.__demo_mode_pause_if_active()
+        self.__demo_mode_pause_if_active(tiny=True)
+
+    def set_window_position(self, x, y):
+        self.__check_scope()
+        self._check_browser()
+        self.driver.set_window_position(x, y)
+        self.__demo_mode_pause_if_active(tiny=True)
 
     def maximize_window(self):
         self.__check_scope()
         self._check_browser()
         self.driver.maximize_window()
-        self.__demo_mode_pause_if_active()
+        self.__demo_mode_pause_if_active(tiny=True)
 
     def switch_to_frame(self, frame="iframe", timeout=None):
         """Wait for an iframe to appear, and switch to it. This should be
@@ -4178,6 +4240,10 @@ class BaseCase(unittest.TestCase):
                 self.uc_gui_press_keys = new_driver.uc_gui_press_keys
             if hasattr(new_driver, "uc_gui_write"):
                 self.uc_gui_write = new_driver.uc_gui_write
+            if hasattr(new_driver, "uc_gui_click_x_y"):
+                self.uc_gui_click_x_y = new_driver.uc_gui_click_x_y
+            if hasattr(new_driver, "uc_gui_click_cf"):
+                self.uc_gui_click_cf = new_driver.uc_gui_click_cf
             if hasattr(new_driver, "uc_gui_handle_cf"):
                 self.uc_gui_handle_cf = new_driver.uc_gui_handle_cf
             if hasattr(new_driver, "uc_switch_to_frame"):

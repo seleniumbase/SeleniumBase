@@ -649,12 +649,144 @@ def uc_gui_write(driver, text):
         pyautogui.write(text)
 
 
-def uc_gui_handle_cf(driver, frame="iframe"):
+def get_gui_element_position(driver, selector):
+    element = driver.wait_for_element_present(selector, timeout=3)
+    element_rect = element.rect
+    window_rect = driver.get_window_rect()
+    window_bottom_y = window_rect["y"] + window_rect["height"]
+    viewport_height = driver.execute_script("return window.innerHeight;")
+    viewport_x = window_rect["x"] + element_rect["x"]
+    viewport_y = window_bottom_y - viewport_height + element_rect["y"]
+    return (viewport_x, viewport_y)
+
+
+def uc_gui_click_x_y(driver, x, y, timeframe=0.25, uc_lock=True):
+    install_pyautogui_if_missing(driver)
+    import pyautogui
+    pyautogui = get_configured_pyautogui(pyautogui)
+    screen_width, screen_height = pyautogui.size()
+    if x > screen_width or y > screen_height:
+        raise Exception(
+            "PyAutoGUI cannot click on point (%s, %s)"
+            " outside screen. (Width: %s, Height: %s)"
+            % (x, y, screen_width, screen_height)
+        )
+    if uc_lock:
+        gui_lock = fasteners.InterProcessLock(
+            constants.MultiBrowser.PYAUTOGUILOCK
+        )
+        with gui_lock:  # Prevent issues with multiple processes
+            pyautogui.moveTo(x, y, timeframe, pyautogui.easeOutQuad)
+            if timeframe >= 0.25:
+                time.sleep(0.0555)  # Wait if moving at human-speed
+            if "--debug" in sys.argv:
+                print(" <DEBUG> pyautogui.click(%s, %s)" % (x, y))
+            pyautogui.click(x=x, y=y)
+    else:
+        # Called from a method where the gui_lock is already active
+        pyautogui.moveTo(x, y, timeframe, pyautogui.easeOutQuad)
+        if timeframe >= 0.25:
+            time.sleep(0.0555)  # Wait if moving at human-speed
+        if "--debug" in sys.argv:
+            print(" <DEBUG> pyautogui.click(%s, %s)" % (x, y))
+        pyautogui.click(x=x, y=y)
+
+
+def on_a_cf_turnstile_page(driver):
     source = driver.get_page_source()
     if (
-        "//challenges.cloudflare.com" not in source
-        and 'aria-label="Cloudflare"' not in source
+        "//challenges.cloudflare.com" in source
+        or 'aria-label="Cloudflare"' in source
     ):
+        return True
+    return False
+
+
+def uc_gui_click_cf(driver, frame="iframe", retry=False, blind=False):
+    if not on_a_cf_turnstile_page(driver):
+        return
+    install_pyautogui_if_missing(driver)
+    import pyautogui
+    pyautogui = get_configured_pyautogui(pyautogui)
+    x = None
+    y = None
+    gui_lock = fasteners.InterProcessLock(
+        constants.MultiBrowser.PYAUTOGUILOCK
+    )
+    with gui_lock:  # Prevent issues with multiple processes
+        needs_switch = False
+        is_in_frame = js_utils.is_in_frame(driver)
+        if is_in_frame and driver.is_element_present("#challenge-stage"):
+            driver.switch_to.parent_frame()
+            needs_switch = True
+            is_in_frame = js_utils.is_in_frame(driver)
+        if not is_in_frame:
+            # Make sure the window is on top
+            page_actions.switch_to_window(
+                driver, driver.current_window_handle, 2, uc_lock=False
+            )
+        if not is_in_frame or needs_switch:
+            # Currently not in frame (or nested frame outside CF one)
+            try:
+                i_x, i_y = get_gui_element_position(driver, "iframe")
+                driver.switch_to_frame(frame)
+            except Exception:
+                if driver.is_element_present("iframe"):
+                    i_x, i_y = get_gui_element_position(driver, "iframe")
+                    driver.switch_to_frame("iframe")
+                else:
+                    return
+        try:
+            selector = "span"
+            element = driver.wait_for_element_present(selector, timeout=2.5)
+            x = i_x + element.rect["x"] + int(element.rect["width"] / 2) + 1
+            y = i_y + element.rect["y"] + int(element.rect["height"] / 2) + 1
+            driver.switch_to.default_content()
+        except Exception:
+            try:
+                driver.switch_to.default_content()
+            except Exception:
+                return
+        driver.disconnect()
+        try:
+            if x and y:
+                sb_config._saved_cf_x_y = (x, y)
+                uc_gui_click_x_y(driver, x, y, timeframe=0.842, uc_lock=False)
+        except Exception:
+            pass
+    reconnect_time = (float(constants.UC.RECONNECT_TIME) / 2.0) + 0.5
+    if IS_LINUX:
+        reconnect_time = constants.UC.RECONNECT_TIME
+    if not x or not y:
+        reconnect_time = 1  # Make it quick (it already failed)
+    driver.reconnect(reconnect_time)
+    if blind:
+        retry = True
+    if retry and x and y and on_a_cf_turnstile_page(driver):
+        with gui_lock:  # Prevent issues with multiple processes
+            # Make sure the window is on top
+            page_actions.switch_to_window(
+                driver, driver.current_window_handle, 2, uc_lock=False
+            )
+            driver.switch_to_frame("iframe")
+            if driver.is_element_visible("#success-icon"):
+                driver.switch_to.parent_frame()
+                return
+            if blind:
+                driver.uc_open_with_disconnect(driver.current_url, 3.8)
+                uc_gui_click_x_y(driver, x, y, timeframe=1.05, uc_lock=False)
+            else:
+                driver.uc_open_with_reconnect(driver.current_url, 3.8)
+                if on_a_cf_turnstile_page(driver):
+                    driver.disconnect()
+                    uc_gui_click_x_y(
+                        driver, x, y, timeframe=1.05, uc_lock=False
+                    )
+        driver.reconnect(reconnect_time)
+
+
+def uc_gui_handle_cf(driver, frame="iframe"):
+    if not on_a_cf_turnstile_page(driver):
         return
     install_pyautogui_if_missing(driver)
     import pyautogui
@@ -696,6 +828,8 @@ def uc_gui_handle_cf(driver, frame="iframe"):
         except Exception:
             pass
     reconnect_time = (float(constants.UC.RECONNECT_TIME) / 2.0) + 0.5
+    if IS_LINUX:
+        reconnect_time = constants.UC.RECONNECT_TIME
     driver.reconnect(reconnect_time)
 
 
@@ -4024,6 +4158,16 @@ def get_local_driver(
                     )
                     driver.uc_gui_write = (
                         lambda *args, **kwargs: uc_gui_write(
+                            driver, *args, **kwargs
+                        )
+                    )
+                    driver.uc_gui_click_x_y = (
+                        lambda *args, **kwargs: uc_gui_click_x_y(
+                            driver, *args, **kwargs
+                        )
+                    )
+                    driver.uc_gui_click_cf = (
+                        lambda *args, **kwargs: uc_gui_click_cf(
                             driver, *args, **kwargs
                         )
                     )
