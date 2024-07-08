@@ -4242,6 +4242,10 @@ class BaseCase(unittest.TestCase):
                 self.uc_gui_write = new_driver.uc_gui_write
             if hasattr(new_driver, "uc_gui_click_x_y"):
                 self.uc_gui_click_x_y = new_driver.uc_gui_click_x_y
+            if hasattr(new_driver, "uc_gui_click_captcha"):
+                self.uc_gui_click_captcha = new_driver.uc_gui_click_captcha
+            if hasattr(new_driver, "uc_gui_click_rc"):
+                self.uc_gui_click_rc = new_driver.uc_gui_click_rc
             if hasattr(new_driver, "uc_gui_click_cf"):
                 self.uc_gui_click_cf = new_driver.uc_gui_click_cf
             if hasattr(new_driver, "uc_gui_handle_cf"):

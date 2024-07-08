@@ -1076,7 +1076,11 @@ driver.uc_gui_write(text)  # Similar to uc_gui_press_keys(), but faster
 
 driver.uc_gui_click_x_y(x, y, timeframe=0.25)  # PyAutoGUI click screen
 
-driver.uc_gui_click_cf(frame="iframe", retry=False, blind=False)  # (*)
+driver.uc_gui_click_captcha(frame="iframe", retry=False, blind=False)
+
+driver.uc_gui_click_rc(frame="iframe", retry=False, blind=False)  # reC
+
+driver.uc_gui_click_cf(frame="iframe", retry=False, blind=False)  # CFT
 
 driver.uc_gui_handle_cf(frame="iframe")  # PyAutoGUI click CF Turnstile
 

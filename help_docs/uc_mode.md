@@ -68,7 +68,7 @@ with SB(uc=True, test=True) as sb:
 from seleniumbase import SB
 
 with SB(uc=True, test=True) as sb:
-    url = "seleniumbase.io/apps/turnstile"
+    url = "https://seleniumbase.io/apps/turnstile"
     sb.uc_open_with_reconnect(url, reconnect_time=2)
     sb.uc_gui_handle_cf()
     sb.assert_element("img#captcha-success", timeout=3)
@@ -78,7 +78,7 @@ with SB(uc=True, test=True) as sb:
 
 <img src="https://seleniumbase.github.io/other/turnstile_click.jpg" title="SeleniumBase" width="440">
 
-If running on a Linux server, `uc_gui_handle_cf()` might not be good enough. Switch to `uc_gui_click_cf()` to be more stealthy.
+If running on a Linux server, `uc_gui_handle_cf()` might not be good enough. Switch to `uc_gui_click_cf()` to be more stealthy. You can also use `uc_gui_click_captcha()` as a generic CAPTCHA-clicker, which auto-detects between CF Turnstile and reCAPTCHA.
 
 👤 Here's an example <b>where the CAPTCHA appears after submitting a form</b>:
 
@@ -192,6 +192,10 @@ driver.uc_gui_write(text)
 
 driver.uc_gui_click_x_y(x, y, timeframe=0.25)
 
+driver.uc_gui_click_captcha(frame="iframe", retry=False, blind=False)
+
+driver.uc_gui_click_rc(frame="iframe", retry=False, blind=False)
+
 driver.uc_gui_click_cf(frame="iframe", retry=False, blind=False)
 
 driver.uc_gui_handle_cf(frame="iframe")
@@ -234,6 +238,10 @@ driver.reconnect("breakpoint")
 👤 On Linux, you may need to use `driver.uc_gui_click_cf()` to successfully bypass a Cloudflare CAPTCHA. If there's more than one iframe on that website (and Cloudflare isn't the first one) then put the CSS Selector of that iframe as the first arg to `driver.uc_gui_click_cf()`. This method uses `pyautogui`. In order for `pyautogui` to focus on the correct element, use `xvfb=True` / `--xvfb` to activate a special virtual display on Linux.
 
 👤 `driver.uc_gui_click_cf(frame="iframe", retry=False, blind=False)` has three args. (All optional). The first one, `frame`, lets you specify the iframe in case the CAPTCHA is not located in the first iframe on the page. The second one, `retry`, lets you retry the click after reloading the page if the first one didn't work (and a CAPTCHA is still present after the page reload). The third arg, `blind`, will retry after a page reload (if the first click failed) by clicking at the last known coordinates of the CAPTCHA checkbox without confirming first with Selenium that a CAPTCHA is still on the page.
+
+👤 `driver.uc_gui_click_rc(frame="iframe", retry=False, blind=False)` is for reCAPTCHA. This may only work a few times before not working anymore... not because Selenium was detected, but because reCAPTCHA uses advanced AI to detect unusual activity, unlike the CF Turnstile, which only uses basic detection.
+
+👤 `driver.uc_gui_click_captcha()` auto-detects the CAPTCHA type before trying to click it. This is a generic method for both CF Turnstile and Google reCAPTCHA. It will use the code from `uc_gui_click_cf()` and `uc_gui_click_rc()` as needed.
 
 👤 To find out if <b translate="no">UC Mode</b> will work at all on a specific site (before adjusting for timing), load your site with the following script:
 
