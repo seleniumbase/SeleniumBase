@@ -1,7 +1,7 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True) as sb:
-    url = "https://seleniumbase.io/apps/turnstile"
+    url = "https://seleniumbase.io/apps/recaptcha"
     sb.uc_open_with_reconnect(url)
     sb.uc_gui_click_captcha()
     sb.assert_element("img#captcha-success", timeout=3)

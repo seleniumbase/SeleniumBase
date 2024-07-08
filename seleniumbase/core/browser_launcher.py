@@ -660,7 +660,7 @@ def get_gui_element_position(driver, selector):
     return (viewport_x, viewport_y)
 
 
-def uc_gui_click_x_y(driver, x, y, timeframe=0.25, uc_lock=True):
+def _uc_gui_click_x_y(driver, x, y, timeframe=0.25, uc_lock=False):
     install_pyautogui_if_missing(driver)
     import pyautogui
     pyautogui = get_configured_pyautogui(pyautogui)
@@ -678,7 +678,7 @@ def uc_gui_click_x_y(driver, x, y, timeframe=0.25, uc_lock=True):
         with gui_lock:  # Prevent issues with multiple processes
             pyautogui.moveTo(x, y, timeframe, pyautogui.easeOutQuad)
             if timeframe >= 0.25:
-                time.sleep(0.0555)  # Wait if moving at human-speed
+                time.sleep(0.056)  # Wait if moving at human-speed
             if "--debug" in sys.argv:
                 print(" <DEBUG> pyautogui.click(%s, %s)" % (x, y))
             pyautogui.click(x=x, y=y)
@@ -686,30 +686,71 @@ def uc_gui_click_x_y(driver, x, y, timeframe=0.25, uc_lock=True):
         # Called from a method where the gui_lock is already active
         pyautogui.moveTo(x, y, timeframe, pyautogui.easeOutQuad)
         if timeframe >= 0.25:
-            time.sleep(0.0555)  # Wait if moving at human-speed
+            time.sleep(0.056)  # Wait if moving at human-speed
         if "--debug" in sys.argv:
             print(" <DEBUG> pyautogui.click(%s, %s)" % (x, y))
         pyautogui.click(x=x, y=y)
 
 
-def on_a_cf_turnstile_page(driver):
+def uc_gui_click_x_y(driver, x, y, timeframe=0.25):
+    _uc_gui_click_x_y(driver, x, y, timeframe=timeframe, uc_lock=True)
+
+
+def _on_a_cf_turnstile_page(driver):
     source = driver.get_page_source()
     if (
-        "//challenges.cloudflare.com" in source
-        or 'aria-label="Cloudflare"' in source
+        'data-callback="onCaptchaSuccess"' in source
+        or "cf-turnstile-wrapper" in source
     ):
         return True
     return False
 
 
-def uc_gui_click_cf(driver, frame="iframe", retry=False, blind=False):
-    if not on_a_cf_turnstile_page(driver):
-        return
+def _on_a_g_recaptcha_page(driver):
+    source = driver.get_page_source()
+    if (
+        'id="recaptcha-token"' in source
+        or 'title="reCAPTCHA"' in source
+    ):
+        return True
+    return False
+
+
+def _uc_gui_click_captcha(
+    driver,
+    frame="iframe",
+    retry=False,
+    blind=False,
+    ctype=None,
+):
+    _on_a_captcha_page = None
+    if ctype == "cf_t":
+        if not _on_a_cf_turnstile_page(driver):
+            return
+        else:
+            _on_a_captcha_page = _on_a_cf_turnstile_page
+    elif ctype == "g_rc":
+        if not _on_a_g_recaptcha_page(driver):
+            return
+        else:
+            _on_a_captcha_page = _on_a_g_recaptcha_page
+    else:
+        if _on_a_g_recaptcha_page(driver):
+            ctype = "g_rc"
+            _on_a_captcha_page = _on_a_g_recaptcha_page
+        elif _on_a_cf_turnstile_page(driver):
+            ctype = "cf_t"
+            _on_a_captcha_page = _on_a_cf_turnstile_page
+        else:
+            return
     install_pyautogui_if_missing(driver)
     import pyautogui
     pyautogui = get_configured_pyautogui(pyautogui)
+    i_x = None
+    i_y = None
     x = None
     y = None
+    visible_iframe = True
     gui_lock = fasteners.InterProcessLock(
         constants.MultiBrowser.PYAUTOGUILOCK
     )
@@ -725,22 +766,54 @@ def uc_gui_click_cf(driver, frame="iframe", retry=False, blind=False):
             page_actions.switch_to_window(
                 driver, driver.current_window_handle, 2, uc_lock=False
             )
+        if ctype == "cf_t":
+            if (
+                driver.is_element_present(".cf-turnstile-wrapper iframe")
+                or driver.is_element_present(
+                    '[data-callback="onCaptchaSuccess"] iframe'
+                )
+            ):
+                pass
+            else:
+                visible_iframe = False
+                if driver.is_element_present(".cf-turnstile-wrapper"):
+                    frame = ".cf-turnstile-wrapper"
+                elif driver.is_element_present(
+                    '[data-callback="onCaptchaSuccess"]'
+                ):
+                    frame = '[data-callback="onCaptchaSuccess"]'
+                else:
+                    return
         if not is_in_frame or needs_switch:
             # Currently not in frame (or nested frame outside CF one)
             try:
-                i_x, i_y = get_gui_element_position(driver, "iframe")
-                driver.switch_to_frame(frame)
+                i_x, i_y = get_gui_element_position(driver, frame)
+                if visible_iframe:
+                    driver.switch_to_frame(frame)
             except Exception:
-                if driver.is_element_present("iframe"):
-                    i_x, i_y = get_gui_element_position(driver, "iframe")
-                    driver.switch_to_frame("iframe")
-                else:
-                    return
+                if visible_iframe:
+                    if driver.is_element_present("iframe"):
+                        i_x, i_y = get_gui_element_position(driver, "iframe")
+                        driver.switch_to_frame("iframe")
+                    else:
+                        return
+            if not i_x or not i_y:
+                return
         try:
-            selector = "span"
-            element = driver.wait_for_element_present(selector, timeout=2.5)
-            x = i_x + element.rect["x"] + int(element.rect["width"] / 2) + 1
-            y = i_y + element.rect["y"] + int(element.rect["height"] / 2) + 1
+            if visible_iframe:
+                selector = "span"
+                if ctype == "g_rc":
+                    selector = "span.recaptcha-checkbox"
+                element = driver.wait_for_element_present(
+                    selector, timeout=2.5
+                )
+                x = i_x + element.rect["x"] + int(element.rect["width"] / 2)
+                x += 1
+                y = i_y + element.rect["y"] + int(element.rect["height"] / 2)
+                y += 1
+            else:
+                x = i_x + 34
+                y = i_y + 34
             driver.switch_to.default_content()
         except Exception:
             try:
@@ -751,46 +824,91 @@ def uc_gui_click_cf(driver, frame="iframe", retry=False, blind=False):
         try:
             if x and y:
                 sb_config._saved_cf_x_y = (x, y)
-                uc_gui_click_x_y(driver, x, y, timeframe=0.842, uc_lock=False)
+                _uc_gui_click_x_y(driver, x, y, timeframe=0.95)
         except Exception:
             pass
     reconnect_time = (float(constants.UC.RECONNECT_TIME) / 2.0) + 0.5
     if IS_LINUX:
-        reconnect_time = constants.UC.RECONNECT_TIME
+        reconnect_time = constants.UC.RECONNECT_TIME + 0.15
     if not x or not y:
         reconnect_time = 1  # Make it quick (it already failed)
     driver.reconnect(reconnect_time)
     if blind:
         retry = True
-    if retry and x and y and on_a_cf_turnstile_page(driver):
+    if retry and x and y and _on_a_captcha_page(driver):
         with gui_lock:  # Prevent issues with multiple processes
             # Make sure the window is on top
             page_actions.switch_to_window(
                 driver, driver.current_window_handle, 2, uc_lock=False
             )
-            driver.switch_to_frame("iframe")
-            if driver.is_element_visible("#success-icon"):
-                driver.switch_to.parent_frame()
+            if not driver.is_element_present("iframe"):
                 return
+            else:
+                try:
+                    driver.switch_to_frame(frame)
+                except Exception:
+                    try:
+                        driver.switch_to_frame("iframe")
+                    except Exception:
+                        return
+                checkbox_success = None
+                if ctype == "cf_t":
+                    checkbox_success = "#success-icon"
+                elif ctype == "g_rc":
+                    checkbox_success = "span.recaptcha-checkbox-checked"
+                else:
+                    return  # If this line is reached, ctype wasn't set
+                if driver.is_element_visible("#success-icon"):
+                    driver.switch_to.parent_frame(checkbox_success)
+                    return
             if blind:
                 driver.uc_open_with_disconnect(driver.current_url, 3.8)
-                uc_gui_click_x_y(driver, x, y, timeframe=1.05, uc_lock=False)
+                _uc_gui_click_x_y(driver, x, y, timeframe=1.05)
             else:
                 driver.uc_open_with_reconnect(driver.current_url, 3.8)
-                if on_a_cf_turnstile_page(driver):
+                if _on_a_captcha_page(driver):
                     driver.disconnect()
-                    uc_gui_click_x_y(
-                        driver, x, y, timeframe=1.05, uc_lock=False
-                    )
+                    _uc_gui_click_x_y(driver, x, y, timeframe=1.05)
         driver.reconnect(reconnect_time)
 
 
+def uc_gui_click_captcha(driver, frame="iframe", retry=False, blind=False):
+    _uc_gui_click_captcha(
+        driver,
+        frame=frame,
+        retry=retry,
+        blind=blind,
+        ctype=None,
+    )
+
+
+def uc_gui_click_rc(driver, frame="iframe", retry=False, blind=False):
+    _uc_gui_click_captcha(
+        driver,
+        frame=frame,
+        retry=retry,
+        blind=blind,
+        ctype="g_rc",
+    )
+
+
+def uc_gui_click_cf(driver, frame="iframe", retry=False, blind=False):
+    _uc_gui_click_captcha(
+        driver,
+        frame=frame,
+        retry=retry,
+        blind=blind,
+        ctype="cf_t",
+    )
+
+
 def uc_gui_handle_cf(driver, frame="iframe"):
-    if not on_a_cf_turnstile_page(driver):
+    if not _on_a_cf_turnstile_page(driver):
         return
     install_pyautogui_if_missing(driver)
     import pyautogui
     pyautogui = get_configured_pyautogui(pyautogui)
+    visible_iframe = True
     gui_lock = fasteners.InterProcessLock(
         constants.MultiBrowser.PYAUTOGUILOCK
     )
@@ -806,16 +924,46 @@ def uc_gui_handle_cf(driver, frame="iframe"):
             page_actions.switch_to_window(
                 driver, driver.current_window_handle, 2, uc_lock=False
             )
+        if (
+            driver.is_element_present(".cf-turnstile-wrapper iframe")
+            or driver.is_element_present(
+                '[data-callback="onCaptchaSuccess"] iframe'
+            )
+        ):
+            pass
+        else:
+            visible_iframe = False
+            if driver.is_element_present(".cf-turnstile-wrapper"):
+                frame = ".cf-turnstile-wrapper"
+            elif driver.is_element_present(
+                '[data-callback="onCaptchaSuccess"]'
+            ):
+                frame = '[data-callback="onCaptchaSuccess"]'
+            else:
+                return
         if not is_in_frame or needs_switch:
             # Currently not in frame (or nested frame outside CF one)
             try:
-                driver.switch_to_frame(frame)
+                if visible_iframe:
+                    driver.switch_to_frame(frame)
             except Exception:
-                if driver.is_element_present("iframe"):
-                    driver.switch_to_frame("iframe")
-                else:
-                    return
+                if visible_iframe:
+                    if driver.is_element_present("iframe"):
+                        driver.switch_to_frame("iframe")
+                    else:
+                        return
         try:
+            found_checkbox = False
+            for i in range(10):
+                pyautogui.press("\t")
+                time.sleep(0.02)
+                active_element_css = js_utils.get_active_element_css(driver)
+                if active_element_css == "div.cf-turnstile-wrapper":
+                    found_checkbox = True
+                    break
+                time.sleep(0.02)
+            if not found_checkbox:
+                return
             driver.execute_script('document.querySelector("input").focus()')
         except Exception:
             try:
@@ -829,7 +977,7 @@ def uc_gui_handle_cf(driver, frame="iframe"):
             pass
     reconnect_time = (float(constants.UC.RECONNECT_TIME) / 2.0) + 0.5
     if IS_LINUX:
-        reconnect_time = constants.UC.RECONNECT_TIME
+        reconnect_time = constants.UC.RECONNECT_TIME + 0.15
     driver.reconnect(reconnect_time)
 
 
@@ -4163,6 +4311,16 @@ def get_local_driver(
                     )
                     driver.uc_gui_click_x_y = (
                         lambda *args, **kwargs: uc_gui_click_x_y(
+                            driver, *args, **kwargs
+                        )
+                    )
+                    driver.uc_gui_click_captcha = (
+                        lambda *args, **kwargs: uc_gui_click_captcha(
+                            driver, *args, **kwargs
+                        )
+                    )
+                    driver.uc_gui_click_rc = (
+                        lambda *args, **kwargs: uc_gui_click_rc(
                             driver, *args, **kwargs
                         )
                     )
