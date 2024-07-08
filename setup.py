@@ -147,7 +147,7 @@ setup(
     python_requires=">=3.7",
     install_requires=[
         'pip>=24.0;python_version<"3.8"',
-        'pip>=24.1.1;python_version>="3.8"',
+        'pip>=24.1.2;python_version>="3.8"',
         'packaging>=24.0;python_version<"3.8"',
         'packaging>=24.1;python_version>="3.8"',
         'setuptools>=68.0.0;python_version<"3.8"',
@@ -169,8 +169,8 @@ setup(
         "idna==3.7",
         'chardet==5.2.0',
         'charset-normalizer==3.3.2',
-        'urllib3>=1.26.18,<2;python_version<"3.10"',
-        'urllib3>=1.26.18,<2.3.0;python_version>="3.10"',
+        'urllib3>=1.26.19,<2;python_version<"3.10"',
+        'urllib3>=1.26.19,<2.3.0;python_version>="3.10"',
         'requests==2.31.0',
         "pynose==1.5.1",
         'sniffio==1.3.1',
@@ -259,7 +259,7 @@ setup(
         # (An optional library for parsing PDF files.)
         "pdfminer": [
             'pdfminer.six==20221105;python_version<"3.8"',
-            'pdfminer.six==20231228;python_version>="3.8"',
+            'pdfminer.six==20240706;python_version>="3.8"',
             'cryptography==39.0.2;python_version<"3.9"',
             'cryptography==42.0.8;python_version>="3.9"',
             'cffi==1.15.1;python_version<"3.8"',
@@ -286,7 +286,7 @@ setup(
         ],
         # pip install -e .[psutil]
         "psutil": [
-            "psutil==5.9.8",
+            "psutil==6.0.0",
         ],
         # pip install -e .[pyautogui]
         "pyautogui": [
