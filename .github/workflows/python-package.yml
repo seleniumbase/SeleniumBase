@@ -34,7 +34,6 @@ jobs:
     - name: Install SeleniumBase
       run: |
         pip install .
-        pip install setuptools==70.2.0
     - name: Lint with flake8
       run: |
         pip install flake8
