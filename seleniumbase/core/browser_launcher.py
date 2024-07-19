@@ -586,6 +586,29 @@ def install_pyautogui_if_missing(driver):
             shared_utils.pip_install(
                 "pyautogui", version=constants.PyAutoGUI.VER
             )
+            try:
+                import pyautogui
+            except Exception:
+                if (
+                    IS_LINUX
+                    and hasattr(sb_config, "xvfb")
+                    and hasattr(sb_config, "headed")
+                    and hasattr(sb_config, "headless")
+                    and hasattr(sb_config, "headless2")
+                    and (not sb_config.headed or sb_config.xvfb)
+                    and not (sb_config.headless or sb_config.headless2)
+                ):
+                    from sbvirtualdisplay import Display
+                    try:
+                        xvfb_display = Display(
+                            visible=True,
+                            size=(1366, 768),
+                            backend="xvfb",
+                            use_xauth=True,
+                        )
+                        xvfb_display.start()
+                    except Exception:
+                        pass
 
 
 def get_configured_pyautogui(pyautogui_copy):
