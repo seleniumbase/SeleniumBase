@@ -13788,31 +13788,33 @@ class BaseCase(unittest.TestCase):
         which is the default mode on Linux unless using another arg."""
         if "linux" in sys.platform and (not self.headed or self.xvfb):
             from sbvirtualdisplay import Display
-            if self.undetectable and not (self.headless or self.headless2):
-                import Xlib.display
-                try:
-                    self._xvfb_display = Display(
-                        visible=True,
-                        size=(1366, 768),
-                        backend="xvfb",
-                        use_xauth=True,
-                    )
-                    self._xvfb_display.start()
-                    if "DISPLAY" not in os.environ.keys():
+            pip_find_lock = fasteners.InterProcessLock(
+                constants.PipInstall.FINDLOCK
+            )
+            with pip_find_lock:  # Prevent issues with multiple processes
+                if self.undetectable and not (self.headless or self.headless2):
+                    import Xlib.display
+                    try:
+                        self._xvfb_display = Display(
+                            visible=True,
+                            size=(1366, 768),
+                            backend="xvfb",
+                            use_xauth=True,
+                        )
+                        self._xvfb_display.start()
+                        if "DISPLAY" not in os.environ.keys():
+                            print(
+                                "\nX11 display failed! Will use regular xvfb!"
+                            )
+                            self.__activate_standard_virtual_display()
+                    except Exception as e:
+                        if hasattr(e, "msg"):
+                            print("\n" + str(e.msg))
+                        else:
+                            print(e)
                         print("\nX11 display failed! Will use regular xvfb!")
                         self.__activate_standard_virtual_display()
-                except Exception as e:
-                    if hasattr(e, "msg"):
-                        print("\n" + str(e.msg))
-                    else:
-                        print(e)
-                    print("\nX11 display failed! Will use regular xvfb!")
-                    self.__activate_standard_virtual_display()
-                    return
-                pip_find_lock = fasteners.InterProcessLock(
-                    constants.PipInstall.FINDLOCK
-                )
-                with pip_find_lock:  # Prevent issues with multiple processes
+                        return
                     pyautogui_is_installed = False
                     try:
                         import pyautogui
@@ -13854,8 +13856,8 @@ class BaseCase(unittest.TestCase):
                                 print("\n" + str(e.msg))
                             else:
                                 print(e)
-            else:
-                self.__activate_standard_virtual_display()
+                else:
+                    self.__activate_standard_virtual_display()
 
     def __ad_block_as_needed(self):
         """This is an internal method for handling ad-blocking.

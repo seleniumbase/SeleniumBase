@@ -173,7 +173,7 @@ setup(
         'urllib3>=1.26.19,<2;python_version<"3.10"',
         'urllib3>=1.26.19,<2.3.0;python_version>="3.10"',
         'requests==2.31.0',
-        "pynose==1.5.1",
+        "pynose==1.5.2",
         'sniffio==1.3.1',
         'h11==0.14.0',
         'outcome==1.3.0.post0',
@@ -212,8 +212,8 @@ setup(
         'pygments==2.17.2;python_version<"3.8"',
         'pygments==2.18.0;python_version>="3.8"',
         'pyreadline3==3.4.1;platform_system=="Windows"',
-        "tabcompleter==1.3.0",
-        "pdbp==1.5.1",
+        "tabcompleter==1.3.3",
+        "pdbp==1.5.3",
         'colorama==0.4.6',
         'pyotp==2.9.0',
         'python-xlib==0.33;platform_system=="Linux"',
@@ -235,7 +235,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage==7.2.7;python_version<"3.8"',
-            'coverage>=7.5.4;python_version>="3.8"',
+            'coverage>=7.6.0;python_version>="3.8"',
             'pytest-cov==4.1.0;python_version<"3.8"',
             'pytest-cov>=5.0.0;python_version>="3.8"',
         ],
@@ -308,7 +308,7 @@ setup(
             'kaitaistruct==0.10',
             'pyasn1==0.5.1;python_version<"3.8"',
             'pyasn1==0.6.0;python_version>="3.8"',
-            'zstandard==0.22.0',
+            'zstandard==0.23.0',
         ],
     },
     packages=[
