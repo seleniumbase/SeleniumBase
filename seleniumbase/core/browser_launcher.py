@@ -680,6 +680,8 @@ def get_gui_element_position(driver, selector):
     viewport_height = driver.execute_script("return window.innerHeight;")
     viewport_x = window_rect["x"] + element_rect["x"]
     viewport_y = window_bottom_y - viewport_height + element_rect["y"]
+    y_scroll_offset = driver.execute_script("return window.pageYOffset;")
+    viewport_y = viewport_y - y_scroll_offset
     return (viewport_x, viewport_y)
 
 
@@ -688,7 +690,7 @@ def _uc_gui_click_x_y(driver, x, y, timeframe=0.25, uc_lock=False):
     import pyautogui
     pyautogui = get_configured_pyautogui(pyautogui)
     screen_width, screen_height = pyautogui.size()
-    if x > screen_width or y > screen_height:
+    if x < 0 or y < 0 or x > screen_width or y > screen_height:
         raise Exception(
             "PyAutoGUI cannot click on point (%s, %s)"
             " outside screen. (Width: %s, Height: %s)"
@@ -807,6 +809,16 @@ def _uc_gui_click_captcha(
                     frame = '[data-callback="onCaptchaSuccess"]'
                 else:
                     return
+            if driver.is_element_present('form[class*=center]'):
+                script = (
+                    """var $elements = document.querySelectorAll('form');
+                    var index = 0, length = $elements.length;
+                    for(; index < length; index++){
+                    the_class = $elements[index].getAttribute('class');
+                    new_class = the_class.replaceAll('center', 'left');
+                    $elements[index].setAttribute('class', new_class);}"""
+                )
+                driver.execute_script(script)
         if not is_in_frame or needs_switch:
             # Currently not in frame (or nested frame outside CF one)
             try:
@@ -977,7 +989,7 @@ def uc_gui_handle_cf(driver, frame="iframe"):
                         return
         try:
             found_checkbox = False
-            for i in range(10):
+            for i in range(24):
                 pyautogui.press("\t")
                 time.sleep(0.02)
                 active_element_css = js_utils.get_active_element_css(driver)
@@ -987,7 +999,6 @@ def uc_gui_handle_cf(driver, frame="iframe"):
                 time.sleep(0.02)
             if not found_checkbox:
                 return
-            driver.execute_script('document.querySelector("input").focus()')
         except Exception:
             try:
                 driver.switch_to.default_content()

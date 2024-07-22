@@ -3418,6 +3418,8 @@ class BaseCase(unittest.TestCase):
         viewport_height = self.execute_script("return window.innerHeight;")
         x = math.ceil(window_rect["x"] + i_x + element_rect["x"])
         y = math.ceil(w_bottom_y - viewport_height + i_y + element_rect["y"])
+        y_scroll_offset = self.execute_script("return window.pageYOffset;")
+        y = int(y - y_scroll_offset)
         if iframe_switch:
             self.switch_to_frame()
             if not self.is_element_present(selector, by=by):
