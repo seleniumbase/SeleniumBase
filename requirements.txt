@@ -35,7 +35,7 @@ trio-websocket==0.11.1
 wsproto==1.2.0
 websocket-client==1.8.0;python_version>="3.8"
 selenium==4.11.2;python_version<"3.8"
-selenium==4.22.0;python_version>="3.8"
+selenium==4.23.1;python_version>="3.8"
 cssselect==1.2.0
 sortedcontainers==2.4.0
 fasteners==0.19

@@ -801,7 +801,14 @@ def _uc_gui_click_captcha(
                 pass
             else:
                 visible_iframe = False
-                if driver.is_element_present(".cf-turnstile-wrapper"):
+                if (
+                    frame != "iframe"
+                    and driver.is_element_present(
+                        "%s .cf-turnstile-wrapper" % frame
+                    )
+                ):
+                    frame = "%s .cf-turnstile-wrapper" % frame
+                elif driver.is_element_present(".cf-turnstile-wrapper"):
                     frame = ".cf-turnstile-wrapper"
                 elif driver.is_element_present(
                     '[data-callback="onCaptchaSuccess"]'
