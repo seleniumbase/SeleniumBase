@@ -194,7 +194,7 @@ setup(
         'pluggy==1.5.0;python_version>="3.8"',
         "py==1.11.0",  # Needed by pytest-html
         'pytest==7.4.4;python_version<"3.8"',
-        'pytest==8.3.1;python_version>="3.8"',
+        'pytest==8.3.2;python_version>="3.8"',
         "pytest-html==2.0.1",  # Newer ones had issues
         'pytest-metadata==3.0.0;python_version<"3.8"',
         'pytest-metadata==3.1.1;python_version>="3.8"',
