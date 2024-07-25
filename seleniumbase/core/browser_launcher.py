@@ -725,7 +725,7 @@ def _on_a_cf_turnstile_page(driver):
     source = driver.get_page_source()
     if (
         'data-callback="onCaptchaSuccess"' in source
-        or "cf-turnstile-wrapper" in source
+        or "cf-turnstile-" in source
     ):
         return True
     return False
@@ -802,6 +802,17 @@ def _uc_gui_click_captcha(
             else:
                 visible_iframe = False
                 if (
+                    frame != "iframe"
+                    and driver.is_element_present('[name*="cf-turnstile-"]')
+                    and driver.is_element_present("%s div[style]" % frame)
+                ):
+                    frame = "%s div[style]" % frame
+                elif (
+                    driver.is_element_present('[name*="cf-turnstile-"]')
+                    and driver.is_element_present("div.spacer div[style]")
+                ):
+                    frame = "div.spacer div[style]"
+                elif (
                     frame != "iframe"
                     and driver.is_element_present(
                         "%s .cf-turnstile-wrapper" % frame
@@ -981,6 +992,11 @@ def uc_gui_handle_cf(driver, frame="iframe"):
                 '[data-callback="onCaptchaSuccess"]'
             ):
                 frame = '[data-callback="onCaptchaSuccess"]'
+            elif (
+                driver.is_element_present('[name*="cf-turnstile-"]')
+                and driver.is_element_present("div.spacer div[style]")
+            ):
+                frame = "div.spacer div[style]"
             else:
                 return
         if not is_in_frame or needs_switch:
@@ -1000,7 +1016,10 @@ def uc_gui_handle_cf(driver, frame="iframe"):
                 pyautogui.press("\t")
                 time.sleep(0.02)
                 active_element_css = js_utils.get_active_element_css(driver)
-                if active_element_css == "div.cf-turnstile-wrapper":
+                if (
+                    active_element_css == "div.cf-turnstile-wrapper"
+                    or active_element_css.startswith("div#PYMIw2")
+                ):
                     found_checkbox = True
                     break
                 time.sleep(0.02)
