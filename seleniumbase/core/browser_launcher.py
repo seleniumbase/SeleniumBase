@@ -1659,6 +1659,7 @@ def _set_chrome_options(
     if user_agent:
         chrome_options.add_argument("--user-agent=%s" % user_agent)
     chrome_options.add_argument("--safebrowsing-disable-download-protection")
+    chrome_options.add_argument("--disable-search-engine-choice-screen")
     chrome_options.add_argument("--disable-browser-side-navigation")
     chrome_options.add_argument("--disable-save-password-bubble")
     chrome_options.add_argument("--disable-single-click-autofill")
@@ -3221,6 +3222,7 @@ def get_local_driver(
             "--disable-autofill-keyboard-accessory-view[8]"
         )
         edge_options.add_argument("--safebrowsing-disable-download-protection")
+        edge_options.add_argument("--disable-search-engine-choice-screen")
         edge_options.add_argument("--disable-browser-side-navigation")
         edge_options.add_argument("--disable-translate")
         if not enable_ws:
