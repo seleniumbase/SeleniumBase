@@ -813,6 +813,16 @@ def _uc_gui_click_captcha(
                 ):
                     frame = "div.spacer div[style]"
                 elif (
+                    (
+                        driver.is_element_present('[name*="cf-turnstile-"]')
+                        or driver.is_element_present('[id*="cf-turnstile-"]')
+                    )
+                    and driver.is_element_present(
+                        'form div div[style*="margin"][style*="padding"]'
+                    )
+                ):
+                    frame = 'form div div[style*="margin"][style*="padding"]'
+                elif (
                     frame != "iframe"
                     and driver.is_element_present(
                         "%s .cf-turnstile-wrapper" % frame
@@ -1017,7 +1027,7 @@ def uc_gui_handle_cf(driver, frame="iframe"):
                 time.sleep(0.02)
                 active_element_css = js_utils.get_active_element_css(driver)
                 if (
-                    active_element_css == "div.cf-turnstile-wrapper"
+                    active_element_css.startswith("div.cf-turnstile")
                     or active_element_css.startswith("div#PYMIw2")
                 ):
                     found_checkbox = True
