@@ -3,13 +3,11 @@ from seleniumbase import SB
 
 with SB(uc=True, test=True, disable_csp=True) as sb:
     url = "https://steamdb.info/"
-    sb.driver.uc_open_with_reconnect(url, 3)
-    sb.uc_click("a.header-login span", 4)
-    if not sb.is_text_visible("Sign in", "button#js-sign-in"):
-        sb.driver.uc_open_with_reconnect(url, 3)
-        sb.uc_click("a.header-login span", 4)
+    sb.uc_open_with_reconnect(url, 3)
+    sb.uc_click("a.header-login span", 3)
+    sb.uc_gui_click_captcha()
     sb.assert_text("Sign in", "button#js-sign-in", timeout=3)
-    sb.driver.uc_click("button#js-sign-in", 2)
+    sb.uc_click("button#js-sign-in", 2)
     sb.highlight("div.page_content form")
     sb.highlight('button:contains("Sign in")', scroll=False)
     sb.set_messenger_theme(location="top_center")
