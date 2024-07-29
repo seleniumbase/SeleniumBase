@@ -835,6 +835,16 @@ def _uc_gui_click_captcha(
                     '[data-callback="onCaptchaSuccess"]'
                 ):
                     frame = '[data-callback="onCaptchaSuccess"]'
+                elif (
+                    (
+                        driver.is_element_present('[name*="cf-turnstile-"]')
+                        or driver.is_element_present('[id*="cf-turnstile-"]')
+                    )
+                    and driver.is_element_present(
+                        'div > div > [style*="margin"][style*="padding"]'
+                    )
+                ):
+                    frame = 'div > div > [style*="margin"][style*="padding"]'
                 else:
                     return
             if driver.is_element_present('form[class*=center]'):
@@ -1007,6 +1017,26 @@ def uc_gui_handle_cf(driver, frame="iframe"):
                 and driver.is_element_present("div.spacer div[style]")
             ):
                 frame = "div.spacer div[style]"
+            elif (
+                (
+                    driver.is_element_present('[name*="cf-turnstile-"]')
+                    or driver.is_element_present('[id*="cf-turnstile-"]')
+                )
+                and driver.is_element_present(
+                    'form div div[style*="margin"][style*="padding"]'
+                )
+            ):
+                frame = 'form div div[style*="margin"][style*="padding"]'
+            elif (
+                (
+                    driver.is_element_present('[name*="cf-turnstile-"]')
+                    or driver.is_element_present('[id*="cf-turnstile-"]')
+                )
+                and driver.is_element_present(
+                    'div > div > [style*="margin"][style*="padding"]'
+                )
+            ):
+                frame = 'div > div > [style*="margin"][style*="padding"]'
             else:
                 return
         if not is_in_frame or needs_switch:
@@ -1028,7 +1058,7 @@ def uc_gui_handle_cf(driver, frame="iframe"):
                 active_element_css = js_utils.get_active_element_css(driver)
                 if (
                     active_element_css.startswith("div.cf-turnstile")
-                    or active_element_css.startswith("div#PYMIw2")
+                    or active_element_css.endswith(" > div" * 2)
                 ):
                     found_checkbox = True
                     break
