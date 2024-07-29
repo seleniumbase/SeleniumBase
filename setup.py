@@ -147,7 +147,7 @@ setup(
     python_requires=">=3.7",
     install_requires=[
         'pip>=24.0;python_version<"3.8"',
-        'pip>=24.1.2;python_version>="3.8"',
+        'pip>=24.1.2;python_version>="3.8"',  # 24.2: editable install warnings
         'packaging>=24.0;python_version<"3.8"',
         'packaging>=24.1;python_version>="3.8"',
         'setuptools>=68.0.0;python_version<"3.8"',
