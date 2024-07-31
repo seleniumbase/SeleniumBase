@@ -22,14 +22,14 @@
 * Automatically setting various chromium args as needed.
 * Has special `uc_*()` methods.
 
-👤 Here's an example with the <b><code translate="no">Driver</code></b> manager:
+👤 Here's a simple example with the <b><code translate="no">Driver</code></b> manager:
 
 ```python
 from seleniumbase import Driver
 
 driver = Driver(uc=True)
 url = "https://gitlab.com/users/sign_in"
-driver.uc_open_with_reconnect(url, 3)
+driver.uc_open_with_reconnect(url, 4)
 driver.quit()
 ```
 
@@ -42,21 +42,22 @@ from seleniumbase import SB
 
 with SB(uc=True) as sb:
     url = "https://gitlab.com/users/sign_in"
-    sb.uc_open_with_reconnect(url, 3)
+    sb.uc_open_with_reconnect(url, 4)
 ```
 
-👤 Here's a longer example, which includes a retry if the CAPTCHA isn't bypassed on the first attempt:
+👤 Here's a longer example, which includes a special click if the CAPTCHA isn't bypassed on the initial page load:
 
 ```python
 from seleniumbase import SB
 
 with SB(uc=True, test=True) as sb:
     url = "https://gitlab.com/users/sign_in"
-    sb.uc_open_with_reconnect(url, 3)
-    if not sb.is_text_visible("Username", '[for="user_login"]'):
-        sb.uc_open_with_reconnect(url, 4)
+    sb.uc_open_with_reconnect(url, 4)
+    sb.uc_gui_click_captcha()
     sb.assert_text("Username", '[for="user_login"]', timeout=3)
-    sb.highlight('label[for="user_login"]', loops=3)
+    sb.assert_element('label[for="user_login"]')
+    sb.highlight('button:contains("Sign in")')
+    sb.highlight('h1:contains("GitLab.com")')
     sb.post_message("SeleniumBase wasn't detected", duration=4)
 ```
 
@@ -78,21 +79,22 @@ with SB(uc=True, test=True) as sb:
 
 <img src="https://seleniumbase.github.io/other/turnstile_click.jpg" title="SeleniumBase" width="440">
 
-If running on a Linux server, `uc_gui_handle_cf()` might not be good enough. Switch to `uc_gui_click_cf()` to be more stealthy. You can also use `uc_gui_click_captcha()` as a generic CAPTCHA-clicker, which auto-detects between CF Turnstile and reCAPTCHA.
+If running on a Linux server, `uc_gui_handle_cf()` might not be good enough. Switch to `uc_gui_click_cf()` to be more stealthy. You can also use `uc_gui_click_captcha()` as a generic CAPTCHA-clicker, which auto-detects between CF Turnstile and Google reCAPTCHA.
 
 👤 Here's an example <b>where the CAPTCHA appears after submitting a form</b>:
 
 ```python
 from seleniumbase import SB
 
-with SB(uc=True, test=True, locale_code="en") as sb:
+with SB(uc=True, test=True, incognito=True, locale_code="en") as sb:
     url = "https://ahrefs.com/website-authority-checker"
     input_field = 'input[placeholder="Enter domain"]'
     submit_button = 'span:contains("Check Authority")'
-    sb.uc_open_with_reconnect(url, 1)  # The bot-check is later
+    sb.uc_open_with_reconnect(url, 2)  # The bot-check is later
     sb.type(input_field, "github.com/seleniumbase/SeleniumBase")
     sb.reconnect(0.1)
     sb.uc_click(submit_button, reconnect_time=4)
+    sb.uc_gui_click_captcha()
     sb.wait_for_text_not_visible("Checking", timeout=10)
     sb.highlight('p:contains("github.com/seleniumbase/SeleniumBase")')
     sb.highlight('a:contains("Top 100 backlinks")')
@@ -109,13 +111,9 @@ from seleniumbase import SB
 
 with SB(uc=True, test=True, ad_block=True) as sb:
     url = "https://www.thaiticketmajor.com/concert/"
-    sb.uc_open_with_reconnect(url, 5.5)
-    sb.uc_click("button.btn-signin", 4)
-    sb.switch_to_frame('iframe[title*="Cloudflare"]')
-    sb.assert_element("div#success svg#success-icon")
-    sb.switch_to_default_content()
-    sb.set_messenger_theme(location="top_center")
-    sb.post_message("SeleniumBase wasn't detected!")
+    sb.uc_open_with_reconnect(url, 6.111)
+    sb.uc_click("button.btn-signin", 4.1)
+    sb.uc_gui_click_captcha()
 ```
 
 <img src="https://seleniumbase.github.io/other/ttm_bypass.png" title="SeleniumBase" width="540">
@@ -235,7 +233,7 @@ driver.reconnect("breakpoint")
 
 (Note that while the special <b><code translate="no">UC Mode</code></b> breakpoint is active, you can't use <b><code translate="no">Selenium</code></b> commands in the browser, and the browser can't detect <b><code translate="no">Selenium</code></b>.)
 
-👤 On Linux, you may need to use `driver.uc_gui_click_cf()` to successfully bypass a Cloudflare CAPTCHA. If there's more than one iframe on that website (and Cloudflare isn't the first one) then put the CSS Selector of that iframe as the first arg to `driver.uc_gui_click_cf()`. This method uses `pyautogui`. In order for `pyautogui` to focus on the correct element, use `xvfb=True` / `--xvfb` to activate a special virtual display on Linux.
+👤 On Linux, you may need to use `driver.uc_gui_click_cf()` to successfully bypass a Cloudflare CAPTCHA. If there's more than one Cloudflare iframe on that website, then put the CSS Selector of an element that's above the iframe as the first arg to `driver.uc_gui_click_cf()`. This method uses `pyautogui`. In order for `pyautogui` to focus on the correct element, use `xvfb=True` / `--xvfb` to activate a special virtual display on Linux.
 
 👤 `driver.uc_gui_click_cf(frame="iframe", retry=False, blind=False)` has three args. (All optional). The first one, `frame`, lets you specify the iframe in case the CAPTCHA is not located in the first iframe on the page. The second one, `retry`, lets you retry the click after reloading the page if the first one didn't work (and a CAPTCHA is still present after the page reload). The third arg, `blind`, will retry after a page reload (if the first click failed) by clicking at the last known coordinates of the CAPTCHA checkbox without confirming first with Selenium that a CAPTCHA is still on the page.
 
@@ -331,6 +329,16 @@ Avoiding detection while clicking is easy if you schedule your clicks to happen 
 <li><b><code translate="no">window.setTimeout(function() { SCRIPT }, MS);</code></b> --> (Info: <a href="https://www.w3schools.com/jsref/met_win_settimeout.asp" target="_blank">W3Schools</a>)</li>
 
 The above JS method is used within the <b><code translate="no">SeleniumBase</code></b> <b translate="no">UC Mode</b> method: <b><code translate="no">driver.uc_click(selector)</code></b> so that clicking can be done in a stealthy way. <b translate="no">UC Mode</b> schedules your click, disconnects <b><code translate="no">chromedriver</code></b> from <b translate="no">Chrome</b>, waits a little (customizable), and reconnects.
+
+--------
+
+🛠️ <b>Troubleshooting UC Mode</b>
+
+On Windows, the `uc_gui_click_cf()` and `uc_gui_click_captcha()` methods require "Scaling" to be set at "100%". (Note that "100%" may be different from the system's "Recommended" percent, which can be higher depending on your screen resolution and monitor size.)
+
+<img src="https://seleniumbase.github.io/other/ts_uc_1.jpg" title="Make sure Scaling is set to 100%" width="410">
+
+As an alternative to using the `uc_gui_click_cf()` or `uc_gui_click_captcha()` methods on Windows, you can use `sb.uc_gui_handle_cf()`, which does not require "Scaling" to be set to a specific value. Instead of using the mouse to click a CAPTCHA, `sb.uc_gui_handle_cf()` uses a combination of the `TAB` key and the `SPACEBAR`.
 
 --------
 
