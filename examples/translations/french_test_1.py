@@ -8,6 +8,7 @@ class MaClasseDeTest(CasDeBase):
         self.ouvrir("https://fr.wikipedia.org/wiki/")
         self.vérifier_texte("Wikipédia")
         self.vérifier_élément('[alt="Wikipédia"]')
+        self.cliquer_si_affiché('button[aria-label="Close"]')
         self.js_taper("#searchform input", "Crème brûlée")
         self.cliquer("#searchform button")
         self.vérifier_texte("Crème brûlée", "#firstHeading")
