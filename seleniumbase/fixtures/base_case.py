@@ -4246,12 +4246,16 @@ class BaseCase(unittest.TestCase):
                 self.uc_gui_click_x_y = new_driver.uc_gui_click_x_y
             if hasattr(new_driver, "uc_gui_click_captcha"):
                 self.uc_gui_click_captcha = new_driver.uc_gui_click_captcha
-            if hasattr(new_driver, "uc_gui_click_rc"):
-                self.uc_gui_click_rc = new_driver.uc_gui_click_rc
             if hasattr(new_driver, "uc_gui_click_cf"):
                 self.uc_gui_click_cf = new_driver.uc_gui_click_cf
+            if hasattr(new_driver, "uc_gui_click_rc"):
+                self.uc_gui_click_rc = new_driver.uc_gui_click_rc
+            if hasattr(new_driver, "uc_gui_handle_captcha"):
+                self.uc_gui_handle_captcha = new_driver.uc_gui_handle_captcha
             if hasattr(new_driver, "uc_gui_handle_cf"):
                 self.uc_gui_handle_cf = new_driver.uc_gui_handle_cf
+            if hasattr(new_driver, "uc_gui_handle_rc"):
+                self.uc_gui_handle_rc = new_driver.uc_gui_handle_rc
             if hasattr(new_driver, "uc_switch_to_frame"):
                 self.uc_switch_to_frame = new_driver.uc_switch_to_frame
         return new_driver
