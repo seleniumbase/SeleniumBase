@@ -13,7 +13,7 @@ class CDPTests(BaseCase):
         )
 
     def click_turnstile_and_verify(sb):
-        sb.uc_gui_handle_cf()
+        sb.uc_gui_handle_captcha()
         sb.assert_element("img#captcha-success", timeout=3)
         sb.highlight("img#captcha-success", loops=8)
 
