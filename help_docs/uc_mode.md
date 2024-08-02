@@ -45,7 +45,9 @@ with SB(uc=True) as sb:
     sb.uc_open_with_reconnect(url, 4)
 ```
 
-👤 Here's a longer example, which includes a special click if the CAPTCHA isn't bypassed on the initial page load:
+(Note: If running UC Mode scripts on headless Linux machines, then you'll need to use the <b><code translate="no">SB</code></b> manager instead of the <b><code translate="no">Driver</code></b> manager because the <b><code translate="no">SB</code></b> manager includes a special virtual display that allows for <b><code translate="no">PyAutoGUI</code></b> actions.)
+
+👤 Here's a longer example, which includes a special <b><code translate="no">PyAutoGUI</code></b> click if the CAPTCHA isn't bypassed on the initial page load:
 
 ```python
 from seleniumbase import SB
@@ -71,7 +73,7 @@ from seleniumbase import SB
 with SB(uc=True, test=True) as sb:
     url = "https://seleniumbase.io/apps/turnstile"
     sb.uc_open_with_reconnect(url, reconnect_time=2)
-    sb.uc_gui_handle_cf()
+    sb.uc_gui_handle_captcha()
     sb.assert_element("img#captcha-success", timeout=3)
     sb.set_messenger_theme(location="top_left")
     sb.post_message("SeleniumBase wasn't detected", duration=3)
@@ -79,7 +81,7 @@ with SB(uc=True, test=True) as sb:
 
 <img src="https://seleniumbase.github.io/other/turnstile_click.jpg" title="SeleniumBase" width="440">
 
-If running on a Linux server, `uc_gui_handle_cf()` might not be good enough. Switch to `uc_gui_click_cf()` to be more stealthy. You can also use `uc_gui_click_captcha()` as a generic CAPTCHA-clicker, which auto-detects between CF Turnstile and Google reCAPTCHA.
+If running on a Linux server, `uc_gui_handle_captcha()` might not be good enough. Switch to `uc_gui_click_captcha()` to be more stealthy. Note that these methods auto-detect between CF Turnstile and Google reCAPTCHA.
 
 👤 Here's an example <b>where the CAPTCHA appears after submitting a form</b>:
 
@@ -118,7 +120,7 @@ with SB(uc=True, test=True, ad_block=True) as sb:
 
 <img src="https://seleniumbase.github.io/other/ttm_bypass.png" title="SeleniumBase" width="540">
 
-👤 <b>On Linux</b>, use `sb.uc_gui_click_cf()` to handle Cloudflare Turnstiles:
+👤 <b>On Linux</b>, use `sb.uc_gui_click_captcha()` to handle CAPTCHAs (Cloudflare Turnstiles):
 
 ```python
 from seleniumbase import SB
@@ -127,7 +129,7 @@ with SB(uc=True, test=True) as sb:
     url = "https://www.virtualmanager.com/en/login"
     sb.uc_open_with_reconnect(url, 4)
     print(sb.get_page_title())
-    sb.uc_gui_click_cf()  # Ready if needed!
+    sb.uc_gui_click_captcha()  # Only if needed
     print(sb.get_page_title())
     sb.assert_element('input[name*="email"]')
     sb.assert_element('input[name*="login"]')
@@ -135,7 +137,7 @@ with SB(uc=True, test=True) as sb:
     sb.post_message("SeleniumBase wasn't detected!")
 ```
 
-<a href="https://github.com/mdmintz/undetected-testing/actions/runs/9637461606/job/26576722411"><img width="540" alt="uc_gui_click_cf on Linux" src="https://github.com/seleniumbase/SeleniumBase/assets/6788579/6aceb2a3-2a32-4521-b30a-f79446d2ce28"></a>
+<a href="https://github.com/mdmintz/undetected-testing/actions/runs/9637461606/job/26576722411"><img width="540" alt="uc_gui_click_captcha on Linux" src="https://github.com/seleniumbase/SeleniumBase/assets/6788579/6aceb2a3-2a32-4521-b30a-f79446d2ce28"></a>
 
 The 2nd `print()` should output "Virtual Manager", which means that the automation successfully passed the Turnstile.
 
@@ -191,12 +193,12 @@ driver.uc_gui_write(text)
 driver.uc_gui_click_x_y(x, y, timeframe=0.25)
 
 driver.uc_gui_click_captcha(frame="iframe", retry=False, blind=False)
+# driver.uc_gui_click_cf(frame="iframe", retry=False, blind=False)
+# driver.uc_gui_click_rc(frame="iframe", retry=False, blind=False)
 
-driver.uc_gui_click_rc(frame="iframe", retry=False, blind=False)
-
-driver.uc_gui_click_cf(frame="iframe", retry=False, blind=False)
-
-driver.uc_gui_handle_cf(frame="iframe")
+driver.uc_gui_handle_captcha(frame="iframe")
+# driver.uc_gui_handle_cf(frame="iframe")
+# driver.uc_gui_handle_rc(frame="iframe")
 
 driver.uc_switch_to_frame(frame, reconnect_time=None)
 ```
@@ -233,13 +235,13 @@ driver.reconnect("breakpoint")
 
 (Note that while the special <b><code translate="no">UC Mode</code></b> breakpoint is active, you can't use <b><code translate="no">Selenium</code></b> commands in the browser, and the browser can't detect <b><code translate="no">Selenium</code></b>.)
 
-👤 On Linux, you may need to use `driver.uc_gui_click_cf()` to successfully bypass a Cloudflare CAPTCHA. If there's more than one Cloudflare iframe on that website, then put the CSS Selector of an element that's above the iframe as the first arg to `driver.uc_gui_click_cf()`. This method uses `pyautogui`. In order for `pyautogui` to focus on the correct element, use `xvfb=True` / `--xvfb` to activate a special virtual display on Linux.
+👤 On Linux, you may need to use `driver.uc_gui_click_captcha()` to successfully bypass a Cloudflare CAPTCHA. If there's more than one Cloudflare iframe on that website, then put the CSS Selector of an element that's above the iframe as the first arg to `driver.uc_gui_click_captcha()`. This method uses `pyautogui`. In order for `pyautogui` to focus on the correct element, use `xvfb=True` / `--xvfb` to activate a special virtual display on Linux.
+
+👤 `driver.uc_gui_click_captcha()` auto-detects the CAPTCHA type before trying to click it. This is a generic method for both CF Turnstile and Google reCAPTCHA. It will use the code from `uc_gui_click_cf()` and `uc_gui_click_rc()` as needed.
 
 👤 `driver.uc_gui_click_cf(frame="iframe", retry=False, blind=False)` has three args. (All optional). The first one, `frame`, lets you specify the iframe in case the CAPTCHA is not located in the first iframe on the page. The second one, `retry`, lets you retry the click after reloading the page if the first one didn't work (and a CAPTCHA is still present after the page reload). The third arg, `blind`, will retry after a page reload (if the first click failed) by clicking at the last known coordinates of the CAPTCHA checkbox without confirming first with Selenium that a CAPTCHA is still on the page.
 
 👤 `driver.uc_gui_click_rc(frame="iframe", retry=False, blind=False)` is for reCAPTCHA. This may only work a few times before not working anymore... not because Selenium was detected, but because reCAPTCHA uses advanced AI to detect unusual activity, unlike the CF Turnstile, which only uses basic detection.
-
-👤 `driver.uc_gui_click_captcha()` auto-detects the CAPTCHA type before trying to click it. This is a generic method for both CF Turnstile and Google reCAPTCHA. It will use the code from `uc_gui_click_cf()` and `uc_gui_click_rc()` as needed.
 
 👤 To find out if <b translate="no">UC Mode</b> will work at all on a specific site (before adjusting for timing), load your site with the following script:
 
@@ -334,11 +336,11 @@ The above JS method is used within the <b><code translate="no">SeleniumBase</cod
 
 🛠️ <b>Troubleshooting UC Mode</b>
 
-On Windows, the `uc_gui_click_cf()` and `uc_gui_click_captcha()` methods require "Scaling" to be set at "100%". (Note that "100%" may be different from the system's "Recommended" percent, which can be higher depending on your screen resolution and monitor size.)
+On Windows, the `uc_gui_click_captcha()` method requires "Scaling" to be set at "100%". (Note that "100%" may be different from the system's "Recommended" percent, which can be higher depending on your screen resolution and monitor size.)
 
 <img src="https://seleniumbase.github.io/other/ts_uc_1.jpg" title="Make sure Scaling is set to 100%" width="410">
 
-As an alternative to using the `uc_gui_click_cf()` or `uc_gui_click_captcha()` methods on Windows, you can use `sb.uc_gui_handle_cf()`, which does not require "Scaling" to be set to a specific value. Instead of using the mouse to click a CAPTCHA, `sb.uc_gui_handle_cf()` uses a combination of the `TAB` key and the `SPACEBAR`.
+As an alternative to using the `uc_gui_click_captcha()` method on Windows, you can use `sb.uc_gui_handle_captcha()`, which does not require "Scaling" to be set to a specific value. Instead of using the mouse to click a CAPTCHA, `sb.uc_gui_handle_captcha()` uses a combination of the `TAB` key and the `SPACEBAR`.
 
 --------
 
