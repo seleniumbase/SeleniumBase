@@ -394,9 +394,9 @@ def uc_special_open_if_cf(
                     )
                     uc_metrics = {}
                     if (
-                        isinstance(device_width, int)
-                        and isinstance(device_height, int)
-                        and isinstance(device_pixel_ratio, int)
+                        isinstance(device_width, (int, float))
+                        and isinstance(device_height, (int, float))
+                        and isinstance(device_pixel_ratio, (int, float))
                     ):
                         uc_metrics["width"] = device_width
                         uc_metrics["height"] = device_height
@@ -975,9 +975,24 @@ def uc_gui_click_cf(driver, frame="iframe", retry=False, blind=False):
     )
 
 
-def uc_gui_handle_cf(driver, frame="iframe"):
-    if not _on_a_cf_turnstile_page(driver):
-        return
+def _uc_gui_handle_captcha(
+    driver,
+    frame="iframe",
+    ctype=None,
+):
+    if ctype == "cf_t":
+        if not _on_a_cf_turnstile_page(driver):
+            return
+    elif ctype == "g_rc":
+        if not _on_a_g_recaptcha_page(driver):
+            return
+    else:
+        if _on_a_g_recaptcha_page(driver):
+            ctype = "g_rc"
+        elif _on_a_cf_turnstile_page(driver):
+            ctype = "cf_t"
+        else:
+            return
     install_pyautogui_if_missing(driver)
     import pyautogui
     pyautogui = get_configured_pyautogui(pyautogui)
@@ -988,7 +1003,10 @@ def uc_gui_handle_cf(driver, frame="iframe"):
     with gui_lock:  # Prevent issues with multiple processes
         needs_switch = False
         is_in_frame = js_utils.is_in_frame(driver)
-        if is_in_frame and driver.is_element_present("#challenge-stage"):
+        selector = "#challenge-stage"
+        if ctype == "g_rc":
+            selector = "#recaptcha-token"
+        if is_in_frame and driver.is_element_present(selector):
             driver.switch_to.parent_frame()
             needs_switch = True
             is_in_frame = js_utils.is_in_frame(driver)
@@ -997,67 +1015,77 @@ def uc_gui_handle_cf(driver, frame="iframe"):
             page_actions.switch_to_window(
                 driver, driver.current_window_handle, 2, uc_lock=False
             )
-        if (
-            driver.is_element_present(".cf-turnstile-wrapper iframe")
-            or driver.is_element_present(
-                '[data-callback="onCaptchaSuccess"] iframe'
-            )
-        ):
-            pass
-        else:
-            visible_iframe = False
-            if driver.is_element_present(".cf-turnstile-wrapper"):
-                frame = ".cf-turnstile-wrapper"
-            elif driver.is_element_present(
-                '[data-callback="onCaptchaSuccess"]'
-            ):
-                frame = '[data-callback="onCaptchaSuccess"]'
-            elif (
-                driver.is_element_present('[name*="cf-turnstile-"]')
-                and driver.is_element_present("div.spacer div[style]")
-            ):
-                frame = "div.spacer div[style]"
-            elif (
-                (
-                    driver.is_element_present('[name*="cf-turnstile-"]')
-                    or driver.is_element_present('[id*="cf-turnstile-"]')
-                )
-                and driver.is_element_present(
-                    'form div div[style*="margin"][style*="padding"]'
+        if ctype == "cf_t":
+            if (
+                driver.is_element_present(".cf-turnstile-wrapper iframe")
+                or driver.is_element_present(
+                    '[data-callback="onCaptchaSuccess"] iframe'
                 )
             ):
-                frame = 'form div div[style*="margin"][style*="padding"]'
-            elif (
-                (
-                    driver.is_element_present('[name*="cf-turnstile-"]')
-                    or driver.is_element_present('[id*="cf-turnstile-"]')
-                )
-                and driver.is_element_present(
-                    'div > div > [style*="margin"][style*="padding"]'
-                )
-            ):
-                frame = 'div > div > [style*="margin"][style*="padding"]'
+                pass
             else:
-                return
+                visible_iframe = False
+                if driver.is_element_present(".cf-turnstile-wrapper"):
+                    frame = ".cf-turnstile-wrapper"
+                elif driver.is_element_present(
+                    '[data-callback="onCaptchaSuccess"]'
+                ):
+                    frame = '[data-callback="onCaptchaSuccess"]'
+                elif (
+                    driver.is_element_present('[name*="cf-turnstile-"]')
+                    and driver.is_element_present("div.spacer div[style]")
+                ):
+                    frame = "div.spacer div[style]"
+                elif (
+                    (
+                        driver.is_element_present('[name*="cf-turnstile-"]')
+                        or driver.is_element_present('[id*="cf-turnstile-"]')
+                    )
+                    and driver.is_element_present(
+                        'form div div[style*="margin"][style*="padding"]'
+                    )
+                ):
+                    frame = 'form div div[style*="margin"][style*="padding"]'
+                elif (
+                    (
+                        driver.is_element_present('[name*="cf-turnstile-"]')
+                        or driver.is_element_present('[id*="cf-turnstile-"]')
+                    )
+                    and driver.is_element_present(
+                        'div > div > [style*="margin"][style*="padding"]'
+                    )
+                ):
+                    frame = 'div > div > [style*="margin"][style*="padding"]'
+                else:
+                    return
+        else:
+            if (
+                driver.is_element_present('iframe[title="reCAPTCHA"]')
+                and frame == "iframe"
+            ):
+                frame = 'iframe[title="reCAPTCHA"]'
         if not is_in_frame or needs_switch:
             # Currently not in frame (or nested frame outside CF one)
             try:
-                if visible_iframe:
+                if visible_iframe or ctype == "g_rc":
                     driver.switch_to_frame(frame)
             except Exception:
-                if visible_iframe:
+                if visible_iframe or ctype == "g_rc":
                     if driver.is_element_present("iframe"):
                         driver.switch_to_frame("iframe")
                     else:
                         return
         try:
+            selector = "div.cf-turnstile"
+            if ctype == "g_rc":
+                selector = "span#recaptcha-anchor"
             found_checkbox = False
             for i in range(24):
                 pyautogui.press("\t")
                 time.sleep(0.02)
                 active_element_css = js_utils.get_active_element_css(driver)
                 if (
-                    active_element_css.startswith("div.cf-turnstile")
+                    active_element_css.startswith(selector)
                     or active_element_css.endswith(" > div" * 2)
                 ):
                     found_checkbox = True
@@ -1079,6 +1107,18 @@ def uc_gui_handle_cf(driver, frame="iframe"):
     if IS_LINUX:
         reconnect_time = constants.UC.RECONNECT_TIME + 0.15
     driver.reconnect(reconnect_time)
+
+
+def uc_gui_handle_captcha(driver, frame="iframe"):
+    _uc_gui_handle_captcha(driver, frame=frame, ctype=None)
+
+
+def uc_gui_handle_cf(driver, frame="iframe"):
+    _uc_gui_handle_captcha(driver, frame=frame, ctype="cf_t")
+
+
+def uc_gui_handle_rc(driver, frame="iframe"):
+    _uc_gui_handle_captcha(driver, frame=frame, ctype="g_rc")
 
 
 def uc_switch_to_frame(driver, frame="iframe", reconnect_time=None):
@@ -1479,9 +1519,9 @@ def _set_chrome_options(
         emulator_settings = {}
         device_metrics = {}
         if (
-            isinstance(device_width, int)
-            and isinstance(device_height, int)
-            and isinstance(device_pixel_ratio, int)
+            isinstance(device_width, (int, float))
+            and isinstance(device_height, (int, float))
+            and isinstance(device_pixel_ratio, (int, float))
         ):
             device_metrics["width"] = device_width
             device_metrics["height"] = device_height
@@ -3229,9 +3269,9 @@ def get_local_driver(
             emulator_settings = {}
             device_metrics = {}
             if (
-                isinstance(device_width, int)
-                and isinstance(device_height, int)
-                and isinstance(device_pixel_ratio, int)
+                isinstance(device_width, (int, float))
+                and isinstance(device_height, (int, float))
+                and isinstance(device_pixel_ratio, (int, float))
             ):
                 device_metrics["width"] = device_width
                 device_metrics["height"] = device_height
@@ -4421,18 +4461,28 @@ def get_local_driver(
                             driver, *args, **kwargs
                         )
                     )
-                    driver.uc_gui_click_rc = (
-                        lambda *args, **kwargs: uc_gui_click_rc(
-                            driver, *args, **kwargs
-                        )
-                    )
                     driver.uc_gui_click_cf = (
                         lambda *args, **kwargs: uc_gui_click_cf(
                             driver, *args, **kwargs
                         )
                     )
+                    driver.uc_gui_click_rc = (
+                        lambda *args, **kwargs: uc_gui_click_rc(
+                            driver, *args, **kwargs
+                        )
+                    )
+                    driver.uc_gui_handle_captcha = (
+                        lambda *args, **kwargs: uc_gui_handle_captcha(
+                            driver, *args, **kwargs
+                        )
+                    )
                     driver.uc_gui_handle_cf = (
                         lambda *args, **kwargs: uc_gui_handle_cf(
+                            driver, *args, **kwargs
+                        )
+                    )
+                    driver.uc_gui_handle_rc = (
+                        lambda *args, **kwargs: uc_gui_handle_rc(
                             driver, *args, **kwargs
                         )
                     )
@@ -4446,9 +4496,9 @@ def get_local_driver(
                     if mobile_emulator:
                         uc_metrics = {}
                         if (
-                            isinstance(device_width, int)
-                            and isinstance(device_height, int)
-                            and isinstance(device_pixel_ratio, int)
+                            isinstance(device_width, (int, float))
+                            and isinstance(device_height, (int, float))
+                            and isinstance(device_pixel_ratio, (int, float))
                         ):
                             uc_metrics["width"] = device_width
                             uc_metrics["height"] = device_height

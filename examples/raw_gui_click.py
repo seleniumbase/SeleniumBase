@@ -1,10 +1,7 @@
-"""
-UC Mode now has uc_gui_click_cf(), which uses PyAutoGUI.
-An incomplete UserAgent forces CAPTCHA-solving on macOS.
-"""
 import sys
 from seleniumbase import SB
 
+# An incomplete UserAgent forces CAPTCHA-solving on macOS
 agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/126.0.0.0"
 if "linux" in sys.platform or "win32" in sys.platform:
     agent = None  # Use the default UserAgent
@@ -12,7 +9,7 @@ if "linux" in sys.platform or "win32" in sys.platform:
 with SB(uc=True, test=True, rtf=True, agent=agent) as sb:
     url = "https://gitlab.com/users/sign_in"
     sb.uc_open_with_reconnect(url, 4)
-    sb.uc_gui_click_cf()  # Ready if needed!
+    sb.uc_gui_click_captcha()  # Only if needed
     sb.assert_element('label[for="user_login"]')
     sb.assert_element('input[data-testid*="username"]')
     sb.assert_element('input[data-testid*="password"]')
