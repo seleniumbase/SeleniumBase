@@ -14818,8 +14818,8 @@ class BaseCase(unittest.TestCase):
             metrics_list = metrics_string.split(",")
             exception_string = (
                 "Invalid input for Mobile Emulator device metrics!\n"
-                "Expecting a comma-separated string with three\n"
-                "integer values for Width, Height, and Pixel-Ratio.\n"
+                "Expecting a comma-separated string with integer values\n"
+                "for Width/Height, and an int or float for Pixel-Ratio.\n"
                 'Example: --metrics="411,731,3" '
             )
             if len(metrics_list) != 3:
@@ -14827,7 +14827,7 @@ class BaseCase(unittest.TestCase):
             try:
                 self.__device_width = int(metrics_list[0])
                 self.__device_height = int(metrics_list[1])
-                self.__device_pixel_ratio = int(metrics_list[2])
+                self.__device_pixel_ratio = float(metrics_list[2])
                 self.mobile_emulator = True
             except Exception:
                 raise Exception(exception_string)

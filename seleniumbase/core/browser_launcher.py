@@ -394,8 +394,8 @@ def uc_special_open_if_cf(
                     )
                     uc_metrics = {}
                     if (
-                        isinstance(device_width, (int, float))
-                        and isinstance(device_height, (int, float))
+                        isinstance(device_width, int)
+                        and isinstance(device_height, int)
                         and isinstance(device_pixel_ratio, (int, float))
                     ):
                         uc_metrics["width"] = device_width
@@ -1519,8 +1519,8 @@ def _set_chrome_options(
         emulator_settings = {}
         device_metrics = {}
         if (
-            isinstance(device_width, (int, float))
-            and isinstance(device_height, (int, float))
+            isinstance(device_width, int)
+            and isinstance(device_height, int)
             and isinstance(device_pixel_ratio, (int, float))
         ):
             device_metrics["width"] = device_width
@@ -3269,8 +3269,8 @@ def get_local_driver(
             emulator_settings = {}
             device_metrics = {}
             if (
-                isinstance(device_width, (int, float))
-                and isinstance(device_height, (int, float))
+                isinstance(device_width, int)
+                and isinstance(device_height, int)
                 and isinstance(device_pixel_ratio, (int, float))
             ):
                 device_metrics["width"] = device_width
@@ -4496,8 +4496,8 @@ def get_local_driver(
                     if mobile_emulator:
                         uc_metrics = {}
                         if (
-                            isinstance(device_width, (int, float))
-                            and isinstance(device_height, (int, float))
+                            isinstance(device_width, int)
+                            and isinstance(device_height, int)
                             and isinstance(device_pixel_ratio, (int, float))
                         ):
                             uc_metrics["width"] = device_width
