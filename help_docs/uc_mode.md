@@ -334,16 +334,6 @@ The above JS method is used within the <b><code translate="no">SeleniumBase</cod
 
 --------
 
-🛠️ <b>Troubleshooting UC Mode</b>
-
-On Windows, the `uc_gui_click_captcha()` method requires "Scaling" to be set at "100%". (Note that "100%" may be different from the system's "Recommended" percent, which can be higher depending on your screen resolution and monitor size.)
-
-<img src="https://seleniumbase.github.io/other/ts_uc_1.jpg" title="Make sure Scaling is set to 100%" width="410">
-
-As an alternative to using the `uc_gui_click_captcha()` method on Windows, you can use `sb.uc_gui_handle_captcha()`, which does not require "Scaling" to be set to a specific value. Instead of using the mouse to click a CAPTCHA, `sb.uc_gui_handle_captcha()` uses a combination of the `TAB` key and the `SPACEBAR`.
-
---------
-
 🏆 <b>Choosing the right CAPTCHA service</b> for your business / website:
 
 <img src="https://seleniumbase.github.io/other/me_se_conf.jpg" title="SeleniumBase" width="370">

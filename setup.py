@@ -154,8 +154,8 @@ setup(
         'setuptools~=70.2;python_version>="3.8" and python_version<"3.10"',
         'setuptools>=70.2.0;python_version>="3.10"',  # 71.0.x has issues
         'wheel>=0.42.0;python_version<"3.8"',
-        'wheel>=0.43.0;python_version>="3.8"',
-        'attrs>=23.2.0',
+        'wheel>=0.44.0;python_version>="3.8"',
+        'attrs>=24.2.0',
         "certifi>=2024.7.4",
         "exceptiongroup>=1.2.2",
         'filelock>=3.12.2;python_version<"3.8"',
@@ -165,7 +165,8 @@ setup(
         'typing-extensions>=4.12.2;python_version>="3.8"',
         'parse>=1.20.2',
         'parse-type>=0.6.2',
-        'pyyaml>=6.0.1',
+        'pyyaml==6.0.1;python_version<"3.8"',
+        'pyyaml>=6.0.2;python_version>="3.8"',
         "six==1.16.0",
         "idna==3.7",
         'chardet==5.2.0',
@@ -178,7 +179,7 @@ setup(
         'h11==0.14.0',
         'outcome==1.3.0.post0',
         'trio==0.22.2;python_version<"3.8"',
-        'trio==0.26.0;python_version>="3.8"',
+        'trio==0.26.1;python_version>="3.8"',
         'trio-websocket==0.11.1',
         'wsproto==1.2.0',
         'websocket-client==1.8.0;python_version>="3.8"',
@@ -235,7 +236,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage==7.2.7;python_version<"3.8"',
-            'coverage>=7.6.0;python_version>="3.8"',
+            'coverage>=7.6.1;python_version>="3.8"',
             'pytest-cov==4.1.0;python_version<"3.8"',
             'pytest-cov>=5.0.0;python_version>="3.8"',
         ],
@@ -243,12 +244,12 @@ setup(
         # Usage: flake8
         "flake8": [
             'flake8==5.0.4;python_version<"3.9"',
-            'flake8==7.1.0;python_version>="3.9"',
+            'flake8==7.1.1;python_version>="3.9"',
             "mccabe==0.7.0",
             'pyflakes==2.5.0;python_version<"3.9"',
             'pyflakes==3.2.0;python_version>="3.9"',
             'pycodestyle==2.9.1;python_version<"3.9"',
-            'pycodestyle==2.12.0;python_version>="3.9"',
+            'pycodestyle==2.12.1;python_version>="3.9"',
         ],
         # pip install -e .[ipdb]
         # (Not needed for debugging anymore. SeleniumBase now includes "pdbp".)
@@ -264,7 +265,7 @@ setup(
             'cryptography==39.0.2;python_version<"3.9"',
             'cryptography==43.0.0;python_version>="3.9"',
             'cffi==1.15.1;python_version<"3.8"',
-            'cffi==1.16.0;python_version>="3.8"',
+            'cffi==1.17.0;python_version>="3.8"',
             "pycparser==2.22",
         ],
         # pip install -e .[pillow]
