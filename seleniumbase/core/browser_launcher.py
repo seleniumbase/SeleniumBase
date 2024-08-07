@@ -1688,7 +1688,10 @@ def _set_chrome_options(
         chrome_options.add_argument("--ignore-certificate-errors")
     if not enable_ws:
         chrome_options.add_argument("--disable-web-security")
-    if IS_LINUX or not is_using_uc(undetectable, browser_name):
+    if (
+        IS_LINUX
+        or (IS_MAC and not is_using_uc(undetectable, browser_name))
+    ):
         chrome_options.add_argument("--no-sandbox")
     if remote_debug:
         # To access the Debugger, go to: chrome://inspect/#devices
@@ -3405,7 +3408,10 @@ def get_local_driver(
         edge_options.add_argument("--allow-running-insecure-content")
         if user_agent:
             edge_options.add_argument("--user-agent=%s" % user_agent)
-        if IS_LINUX or not is_using_uc(undetectable, browser_name):
+        if (
+            IS_LINUX
+            or (IS_MAC and not is_using_uc(undetectable, browser_name))
+        ):
             edge_options.add_argument("--no-sandbox")
         if remote_debug:
             # To access the Debugger, go to: edge://inspect/#devices
