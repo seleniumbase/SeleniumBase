@@ -781,6 +781,7 @@ def _uc_gui_click_captcha(
     )
     with gui_lock:  # Prevent issues with multiple processes
         needs_switch = False
+        width_ratio = 1.0
         is_in_frame = js_utils.is_in_frame(driver)
         if is_in_frame and driver.is_element_present("#challenge-stage"):
             driver.switch_to.parent_frame()
@@ -791,6 +792,20 @@ def _uc_gui_click_captcha(
             page_actions.switch_to_window(
                 driver, driver.current_window_handle, 2, uc_lock=False
             )
+        if IS_WINDOWS:
+            window_rect = driver.get_window_rect()
+            width = window_rect["width"]
+            height = window_rect["height"]
+            win_x = window_rect["x"]
+            win_y = window_rect["y"]
+            scr_width = pyautogui.size().width
+            driver.maximize_window()
+            win_width = driver.get_window_size()["width"]
+            width_ratio = round(float(scr_width) / float(win_width), 2) + 0.01
+            if width_ratio < 0.45 or width_ratio > 2.55:
+                width_ratio = 1.01
+            driver.minimize_window()
+            driver.set_window_rect(win_x, win_y, width, height)
         if ctype == "cf_t":
             if (
                 driver.is_element_present(".cf-turnstile-wrapper iframe")
@@ -1015,6 +1030,18 @@ def _uc_gui_handle_captcha(
             page_actions.switch_to_window(
                 driver, driver.current_window_handle, 2, uc_lock=False
             )
+        if IS_WINDOWS and hasattr(pyautogui, "getActiveWindowTitle"):
+            py_a_g_title = pyautogui.getActiveWindowTitle()
+            window_title = driver.title
+            if not py_a_g_title.startswith(window_title):
+                window_rect = driver.get_window_rect()
+                width = window_rect["width"]
+                height = window_rect["height"]
+                win_x = window_rect["x"]
+                win_y = window_rect["y"]
+                driver.minimize_window()
+                driver.set_window_rect(win_x, win_y, width, height)
+                time.sleep(0.33)
         if ctype == "cf_t":
             if (
                 driver.is_element_present(".cf-turnstile-wrapper iframe")
