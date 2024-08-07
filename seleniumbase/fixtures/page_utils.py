@@ -114,6 +114,13 @@ def recalculate_selector(selector, by, xp_ok=True):
             by = By.XPATH
     if by == "":
         by = By.CSS_SELECTOR
+    if not is_valid_by(by):
+        valid_by_options = [
+            "css selector", "link text", "partial link text",
+            "name", "xpath", "id", "tag name", "class name",
+        ]
+        msg = "Choose a `by` from: %s." % valid_by_options
+        raise Exception('Invalid `by`: "%s"\n%s' % (by, msg))
     return (selector, by)
 
 
