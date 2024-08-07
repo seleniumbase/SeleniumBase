@@ -900,8 +900,8 @@ def _uc_gui_click_captcha(
                 y = i_y + element.rect["y"] + int(element.rect["height"] / 2)
                 y += 1
             else:
-                x = i_x + 34
-                y = i_y + 34
+                x = (i_x + 34) * width_ratio
+                y = (i_y + 34) * width_ratio
             driver.switch_to.default_content()
         except Exception:
             try:
