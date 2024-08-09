@@ -126,7 +126,7 @@ def SB(
     time_limit: Optional[float] = None,  # Time limit for safely failing tests.
 ):
     """
-    Context manager for configuring and managing SeleniumBase test sessions.
+    SeleniumBase as a Python Context Manager.
 
     Example:
     .. code-block:: python
