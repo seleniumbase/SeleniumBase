@@ -24,104 +24,215 @@ with SB() as sb:  # Many args! Eg. SB(browser="edge")
 #########################################
 """
 from contextlib import contextmanager
+from typing import Any, Dict, Literal, Callable, Optional
 
 
-@contextmanager  # Usage: -> ``with SB() as sb:``
+@contextmanager
 def SB(
-    test=None,  # Test Mode: Output, Logging, Continue on failure unless "rtf".
-    rtf=None,  # Shortcut / Duplicate of "raise_test_failure".
-    raise_test_failure=None,  # If "test" mode, raise Exception on 1st failure.
-    browser=None,  # Choose from "chrome", "edge", "firefox", or "safari".
-    headless=None,  # The original headless mode for Chromium and Firefox.
-    headless2=None,  # Chromium's new headless mode. (Has more features)
-    locale_code=None,  # Set the Language Locale Code for the web browser.
-    protocol=None,  # The Selenium Grid protocol: "http" or "https".
-    servername=None,  # The Selenium Grid server/IP used for tests.
-    port=None,  # The Selenium Grid port used by the test server.
-    proxy=None,  # Use proxy. Format: "SERVER:PORT" or "USER:PASS@SERVER:PORT".
-    proxy_bypass_list=None,  # Skip proxy when using the listed domains.
-    proxy_pac_url=None,  # Use PAC file. (Format: URL or USERNAME:PASSWORD@URL)
-    multi_proxy=False,  # Allow multiple proxies with auth when multi-threaded.
-    agent=None,  # Modify the web browser's User-Agent string.
-    cap_file=None,  # The desired capabilities to use with a Selenium Grid.
-    cap_string=None,  # The desired capabilities to use with a Selenium Grid.
-    recorder_ext=None,  # Enables the SeleniumBase Recorder Chromium extension.
-    disable_js=None,  # Disable JavaScript on websites. Pages might break!
-    disable_csp=None,  # Disable the Content Security Policy of websites.
-    enable_ws=None,  # Enable Web Security on Chromium-based browsers.
-    enable_sync=None,  # Enable "Chrome Sync" on websites.
-    use_auto_ext=None,  # Use Chrome's automation extension.
-    undetectable=None,  # Use undetected-chromedriver to evade bot-detection.
-    uc_cdp_events=None,  # Capture CDP events in undetected-chromedriver mode.
-    uc_subprocess=None,  # Use undetected-chromedriver as a subprocess.
-    log_cdp_events=None,  # Capture {"performance": "ALL", "browser": "ALL"}
-    incognito=None,  # Enable Chromium's Incognito mode.
-    guest_mode=None,  # Enable Chromium's Guest mode.
-    dark_mode=None,  # Enable Chromium's Dark mode.
-    devtools=None,  # Open Chromium's DevTools when the browser opens.
-    remote_debug=None,  # Enable Chrome's Debugger on "http://localhost:9222".
-    enable_3d_apis=None,  # Enable WebGL and 3D APIs.
-    swiftshader=None,  # Chrome: --use-gl=angle / --use-angle=swiftshader-webgl
-    ad_block_on=None,  # Block some types of display ads from loading.
-    host_resolver_rules=None,  # Set host-resolver-rules, comma-separated.
-    block_images=None,  # Block images from loading during tests.
-    do_not_track=None,  # Tell websites that you don't want to be tracked.
-    chromium_arg=None,  # "ARG=N,ARG2" (Set Chromium args, ","-separated.)
-    firefox_arg=None,  # "ARG=N,ARG2" (Set Firefox args, comma-separated.)
-    firefox_pref=None,  # SET (Set Firefox PREFERENCE:VALUE set, ","-separated)
-    user_data_dir=None,  # Set the Chrome user data directory to use.
-    extension_zip=None,  # Load a Chrome Extension .zip|.crx, comma-separated.
-    extension_dir=None,  # Load a Chrome Extension directory, comma-separated.
-    disable_features=None,  # "F1,F2" (Disable Chrome features, ","-separated.)
-    binary_location=None,  # Set path of the Chromium browser binary to use.
-    driver_version=None,  # Set the chromedriver or uc_driver version to use.
-    skip_js_waits=None,  # Skip JS Waits (readyState=="complete" and Angular).
-    use_wire=None,  # Use selenium-wire's webdriver over selenium webdriver.
-    external_pdf=None,  # Set Chrome "plugins.always_open_pdf_externally":True.
-    is_mobile=None,  # Use the mobile device emulator while running tests.
-    mobile=None,  # Shortcut / Duplicate of "is_mobile".
-    device_metrics=None,  # Set mobile metrics: "CSSWidth,CSSHeight,PixelRatio"
-    xvfb=None,  # Run tests using the Xvfb virtual display server on Linux OS.
-    start_page=None,  # The starting URL for the web browser when tests begin.
-    rec_print=None,  # If Recorder is enabled, prints output after tests end.
-    rec_behave=None,  # Like Recorder Mode, but also generates behave-gherkin.
-    record_sleep=None,  # If Recorder enabled, also records self.sleep calls.
-    data=None,  # Extra test data. Access with "self.data" in tests.
-    var1=None,  # Extra test data. Access with "self.var1" in tests.
-    var2=None,  # Extra test data. Access with "self.var2" in tests.
-    var3=None,  # Extra test data. Access with "self.var3" in tests.
-    variables=None,  # DICT (Extra test data. Access with "self.variables")
-    account=None,  # Set account. Access with "self.account" in tests.
-    environment=None,  # Set the test env. Access with "self.env" in tests.
-    headed=None,  # Run tests in headed/GUI mode on Linux, where not default.
-    maximize=None,  # Start tests with the browser window maximized.
-    disable_ws=None,  # Reverse of "enable_ws". (None and False are different)
-    disable_beforeunload=None,  # Disable the "beforeunload" event on Chromium.
-    settings_file=None,  # A file for overriding default SeleniumBase settings.
-    uc=None,  # Shortcut / Duplicate of "undetectable".
-    undetected=None,  # Shortcut / Duplicate of "undetectable".
-    uc_cdp=None,  # Shortcut / Duplicate of "uc_cdp_events".
-    uc_sub=None,  # Shortcut / Duplicate of "uc_subprocess".
-    log_cdp=None,  # Shortcut / Duplicate of "log_cdp_events".
-    ad_block=None,  # Shortcut / Duplicate of "ad_block_on".
-    server=None,  # Shortcut / Duplicate of "servername".
-    guest=None,  # Shortcut / Duplicate of "guest_mode".
-    wire=None,  # Shortcut / Duplicate of "use_wire".
-    pls=None,  # Shortcut / Duplicate of "page_load_strategy".
-    sjw=None,  # Shortcut / Duplicate of "skip_js_waits".
-    save_screenshot=None,  # Save a screenshot at the end of each test.
-    no_screenshot=None,  # No screenshots saved unless tests directly ask it.
-    page_load_strategy=None,  # Set Chrome PLS to "normal", "eager", or "none".
-    timeout_multiplier=None,  # Multiplies the default timeout values.
-    js_checking_on=None,  # Check for JavaScript errors after page loads.
-    slow=None,  # Slow down the automation. Faster than using Demo Mode.
-    demo=None,  # Slow down and visually see test actions as they occur.
-    demo_sleep=None,  # SECONDS (Set wait time after Slow & Demo Mode actions.)
-    message_duration=None,  # SECONDS (The time length for Messenger alerts.)
-    highlights=None,  # Number of highlight animations for Demo Mode actions.
-    interval=None,  # SECONDS (Autoplay interval for SB Slides & Tour steps.)
-    time_limit=None,  # SECONDS (Safely fail tests that exceed the time limit.)
+    test: Optional[Callable[..., Any]] = None,  # Test Mode: Output, Logging, Continue on failure unless "rtf".
+    rtf: Optional[Callable[..., Any]] = None,  # Shortcut / Duplicate of "raise_test_failure".
+    raise_test_failure: Optional[bool] = None,  # If "test" mode, raise Exception on 1st failure.
+    browser: Optional[
+        Literal["chrome", "edge", "firefox", "safari"]
+    ] = None,  # Browser choice ("chrome", "edge", "firefox", "safari").
+    headless: Optional[bool] = None,  # The original headless mode for Chromium and Firefox.
+    headless2: Optional[bool] = None,  # Chromium's new headless mode. (Has more features)
+    locale_code: Optional[str] = None,  # Language locale code for the browser.
+    protocol: Optional[str] = None,  # Selenium Grid protocol ("http" or "https").
+    servername: Optional[str] = None,  # Selenium Grid server/IP.
+    port: Optional[int] = None,  # Selenium Grid port.
+    proxy: Optional[str] = None,  # Proxy configuration ("SERVER:PORT" or "USER:PASS@SERVER:PORT").
+    proxy_bypass_list: Optional[str] = None,  # Domains to bypass proxy.
+    proxy_pac_url: Optional[str] = None,  # PAC file URL or credentials.
+    multi_proxy: bool = False,  # Support multiple proxies with authentication.
+    agent: Optional[str] = None,  # Custom User-Agent string for the browser.
+    cap_file: Optional[str] = None,  # Desired capabilities from a file.
+    cap_string: Optional[str] = None,  # Desired capabilities as a string.
+    recorder_ext: Optional[bool] = None,  # Enable the SeleniumBase Recorder extension.
+    disable_js: Optional[bool] = None,  # Disable JavaScript.
+    disable_csp: Optional[bool] = None,  # Disable Content Security Policy.
+    enable_ws: Optional[bool] = None,  # Enable Web Security on Chromium-based browsers.
+    enable_sync: Optional[bool] = None,  # Enable "Chrome Sync".
+    use_auto_ext: Optional[bool] = None,  # Use Chrome's automation extension.
+    undetectable: Optional[bool] = None,  # Use undetected-chromedriver.
+    uc_cdp_events: Optional[bool] = None,  # Capture CDP events in undetected-chromedriver mode.
+    uc_subprocess: Optional[bool] = None,  # Use undetected-chromedriver as a subprocess.
+    log_cdp_events: Optional[bool] = None,  # Capture CDP events logs.
+    incognito: Optional[bool] = None,  # Enable Incognito mode.
+    guest_mode: Optional[bool] = None,  # Enable Guest mode.
+    dark_mode: Optional[bool] = None,  # Enable Dark mode.
+    devtools: Optional[bool] = None,  # Open DevTools.
+    remote_debug: Optional[bool] = None,  # Enable Chrome Debugger.
+    enable_3d_apis: Optional[bool] = None,  # Enable WebGL and 3D APIs.
+    swiftshader: Optional[bool] = None,  # Use SwiftShader for WebGL.
+    ad_block_on: Optional[bool] = None,  # Block display ads.
+    host_resolver_rules: Optional[str] = None,  # Host resolver rules.
+    block_images: Optional[bool] = None,  # Block images.
+    do_not_track: Optional[bool] = None,  # Enable "Do Not Track".
+    chromium_arg: Optional[str] = None,  # Set Chromium arguments.
+    firefox_arg: Optional[str] = None,  # Set Firefox arguments.
+    firefox_pref: Optional[str] = None,  # Set Firefox preferences.
+    user_data_dir: Optional[str] = None,  # Set Chrome user data directory.
+    extension_zip: Optional[str] = None,  # Load Chrome extensions from a zip file.
+    extension_dir: Optional[str] = None,  # Load Chrome extensions from a directory.
+    disable_features: Optional[str] = None,  # Disable Chrome features.
+    binary_location: Optional[str] = None,  # Path to Chromium binary.
+    driver_version: Optional[str] = None,  # Chromedriver version.
+    skip_js_waits: Optional[bool] = None,  # Skip JavaScript waits.
+    use_wire: Optional[bool] = None,  # Use selenium-wire.
+    external_pdf: Optional[bool] = None,  # Open PDFs externally.
+    is_mobile: Optional[bool] = None,  # Use mobile device emulator.
+    mobile: Optional[bool] = None,  # Shortcut for "is_mobile".
+    device_metrics: Optional[str] = None,  # Set mobile device metrics.
+    xvfb: Optional[bool] = None,  # Run tests using Xvfb.
+    start_page: Optional[str] = None,  # Starting URL for tests.
+    rec_print: Optional[bool] = None,  # Print recorder output after tests.
+    rec_behave: Optional[bool] = None,  # Recorder mode with behave-gherkin.
+    record_sleep: Optional[bool] = None,  # Record sleep calls in recorder mode.
+    data: Optional[Dict[str, Any]] = None,  # Extra test data.
+    var1: Optional[Any] = None,  # Extra test data (var1).
+    var2: Optional[Any] = None,  # Extra test data (var2).
+    var3: Optional[Any] = None,  # Extra test data (var3).
+    variables: Optional[Dict[str, Any]] = None,  # Extra test data as a dictionary.
+    account: Optional[str] = None,  # Set account for tests.
+    environment: Optional[str] = None,  # Set environment for tests.
+    headed: Optional[bool] = None,  # Run tests in headed mode on Linux.
+    maximize: Optional[bool] = None,  # Start browser maximized.
+    disable_ws: Optional[bool] = None,  # Disable Web Security.
+    disable_beforeunload: Optional[bool] = None,  # Disable "beforeunload" event.
+    settings_file: Optional[str] = None,  # Settings file for SeleniumBase.
+    uc: Optional[bool] = None,  # Shortcut for "undetectable".
+    undetected: Optional[bool] = None,  # Shortcut for "undetectable".
+    uc_cdp: Optional[bool] = None,  # Shortcut for "uc_cdp_events".
+    uc_sub: Optional[bool] = None,  # Shortcut for "uc_subprocess".
+    log_cdp: Optional[bool] = None,  # Shortcut for "log_cdp_events".
+    ad_block: Optional[bool] = None,  # Shortcut for "ad_block_on".
+    server: Optional[str] = None,  # Shortcut for "servername".
+    guest: Optional[bool] = None,  # Shortcut for "guest_mode".
+    wire: Optional[bool] = None,  # Shortcut for "use_wire".
+    pls: Optional[str] = None,  # Shortcut for "page_load_strategy".
+    sjw: Optional[bool] = None,  # Shortcut for "skip_js_waits".
+    save_screenshot: Optional[bool] = None,  # Save a screenshot at the end of each test.
+    no_screenshot: Optional[bool] = None,  # No screenshot saving unless requested.
+    page_load_strategy: Optional[str] = None,  # Set page load strategy.
+    timeout_multiplier: Optional[float] = None,  # Multiplies default timeout values.
+    js_checking_on: Optional[bool] = None,  # Check for JavaScript errors.
+    slow: Optional[bool] = None,  # Slow down automation.
+    demo: Optional[bool] = None,  # Visualize test actions with delays.
+    demo_sleep: Optional[float] = None,  # Delay time after actions in demo mode.
+    message_duration: Optional[float] = None,  # Duration for Messenger alerts.
+    highlights: Optional[int] = None,  # Number of highlight animations for demo mode.
+    interval: Optional[float] = None,  # Autoplay interval for slides and tour steps.
+    time_limit: Optional[float] = None,  # Time limit for safely failing tests.
 ):
+    """
+    Context manager for configuring and managing SeleniumBase test sessions.
+
+    Example:
+    .. code-block:: python
+        with SB() as sb:  # Many args! Eg. SB(browser="edge")
+            sb.open("https://google.com/ncr")
+            sb.type('[name="q"]', "SeleniumBase on GitHub")
+            sb.click('a[href*="github.com/seleniumbase"]')
+            sb.highlight("div.Layout-main")
+            sb.highlight("div.Layout-sidebar")
+            sb.sleep(0.5)
+
+    Parameters:
+        test (Optional[Callable[..., Any]]): The mode for test execution (logging, output, etc.).
+        rtf (Optional[Callable[..., Any]]): Shortcut for "raise_test_failure".
+        raise_test_failure (Optional[bool]): Raise an exception on the first failure in test mode.
+        browser (Optional[Literal["chrome", "edge", "firefox", "safari"]]): Browser choice ("chrome", "edge", "firefox", "safari").
+        headless (Optional[bool]): Run browser in headless mode.
+        headless2 (Optional[bool]): Use Chromium's new headless mode.
+        locale_code (Optional[str]): Language locale code for the browser.
+        protocol (Optional[str]): Selenium Grid protocol ("http" or "https").
+        servername (Optional[str]): Selenium Grid server or IP.
+        port (Optional[int]): Selenium Grid port.
+        proxy (Optional[str]): Proxy configuration ("SERVER:PORT" or "USER:PASS@SERVER:PORT").
+        proxy_bypass_list (Optional[str]): Domains to bypass proxy.
+        proxy_pac_url (Optional[str]): PAC file URL or credentials.
+        multi_proxy (bool): Support for multiple proxies with authentication.
+        agent (Optional[str]): Custom User-Agent string for the browser.
+        cap_file (Optional[str]): Desired capabilities from a file.
+        cap_string (Optional[str]): Desired capabilities as a string.
+        recorder_ext (Optional[bool]): Enable the SeleniumBase Recorder extension.
+        disable_js (Optional[bool]): Disable JavaScript.
+        disable_csp (Optional[bool]): Disable Content Security Policy.
+        enable_ws (Optional[bool]): Enable Web Security on Chromium-based browsers.
+        enable_sync (Optional[bool]): Enable "Chrome Sync".
+        use_auto_ext (Optional[bool]): Use Chrome's automation extension.
+        undetectable (Optional[bool]): Use undetected-chromedriver.
+        uc_cdp_events (Optional[bool]): Capture CDP events in undetected-chromedriver mode.
+        uc_subprocess (Optional[bool]): Use undetected-chromedriver as a subprocess.
+        log_cdp_events (Optional[bool]): Capture CDP events logs.
+        incognito (Optional[bool]): Enable Incognito mode.
+        guest_mode (Optional[bool]): Enable Guest mode.
+        dark_mode (Optional[bool]): Enable Dark mode.
+        devtools (Optional[bool]): Open DevTools.
+        remote_debug (Optional[bool]): Enable Chrome Debugger.
+        enable_3d_apis (Optional[bool]): Enable WebGL and 3D APIs.
+        swiftshader (Optional[bool]): Use SwiftShader for WebGL.
+        ad_block_on (Optional[bool]): Block display ads.
+        host_resolver_rules (Optional[str]): Host resolver rules.
+        block_images (Optional[bool]): Block images.
+        do_not_track (Optional[bool]): Enable "Do Not Track".
+        chromium_arg (Optional[str]): Set Chromium arguments.
+        firefox_arg (Optional[str]): Set Firefox arguments.
+        firefox_pref (Optional[str]): Set Firefox preferences.
+        user_data_dir (Optional[str]): Set Chrome user data directory.
+        extension_zip (Optional[str]): Load Chrome extensions from a zip file.
+        extension_dir (Optional[str]): Load Chrome extensions from a directory.
+        disable_features (Optional[str]): Disable Chrome features.
+        binary_location (Optional[str]): Path to Chromium binary.
+        driver_version (Optional[str]): Chromedriver version.
+        skip_js_waits (Optional[bool]): Skip JavaScript waits.
+        use_wire (Optional[bool]): Use selenium-wire.
+        external_pdf (Optional[bool]): Open PDFs externally.
+        is_mobile (Optional[bool]): Use mobile device emulator.
+        mobile (Optional[bool]): Shortcut for "is_mobile".
+        device_metrics (Optional[str]): Set mobile device metrics.
+        xvfb (Optional[bool]): Run tests using Xvfb.
+        start_page (Optional[str]): Starting URL for tests.
+        rec_print (Optional[bool]): Print recorder output after tests.
+        rec_behave (Optional[bool]): Recorder mode with behave-gherkin.
+        record_sleep (Optional[bool]): Record sleep calls in recorder mode.
+        data (Optional[Dict[str, Any]]): Extra test data.
+        var1 (Optional[Any]): Extra test data (var1).
+        var2 (Optional[Any]): Extra test data (var2).
+        var3 (Optional[Any]): Extra test data (var3).
+        variables (Optional[Dict[str, Any]]): Extra test data as a dictionary.
+        account (Optional[str]): Set account for tests.
+        environment (Optional[str]): Set environment for tests.
+        headed (Optional[bool]): Run tests in headed mode on Linux.
+        maximize (Optional[bool]): Start browser maximized.
+        disable_ws (Optional[bool]): Disable Web Security.
+        disable_beforeunload (Optional[bool]): Disable "beforeunload" event.
+        settings_file (Optional[str]): Settings file for SeleniumBase.
+        uc (Optional[bool]): Shortcut for "undetectable".
+        undetected (Optional[bool]): Shortcut for "undetectable".
+        uc_cdp (Optional[bool]): Shortcut for "uc_cdp_events".
+        uc_sub (Optional[bool]): Shortcut for "uc_subprocess".
+        log_cdp (Optional[bool]): Shortcut for "log_cdp_events".
+        ad_block (Optional[bool]): Shortcut for "ad_block_on".
+        server (Optional[str]): Shortcut for "servername".
+        guest (Optional[bool]): Shortcut for "guest_mode".
+        wire (Optional[bool]): Shortcut for "use_wire".
+        pls (Optional[str]): Shortcut for "page_load_strategy".
+        sjw (Optional[bool]): Shortcut for "skip_js_waits".
+        save_screenshot (Optional[bool]): Save a screenshot at the end of each test.
+        no_screenshot (Optional[bool]): No screenshot saving unless requested.
+        page_load_strategy (Optional[str]): Set page load strategy.
+        timeout_multiplier (Optional[float]): Multiplies default timeout values.
+        js_checking_on (Optional[bool]): Check for JavaScript errors.
+        slow (Optional[bool]): Slow down automation.
+        demo (Optional[bool]): Visualize test actions with delays.
+        demo_sleep (Optional[float]): Delay time after actions in demo mode.
+        message_duration (Optional[float]): Duration for Messenger alerts.
+        highlights (Optional[int]): Number of highlight animations for demo mode.
+        interval (Optional[float]): Autoplay interval for slides and tour steps.
+        time_limit (Optional[float]): Time limit for safely failing tests.
+    """
     import os
     import sys
     import time
