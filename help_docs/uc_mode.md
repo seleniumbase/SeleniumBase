@@ -199,8 +199,6 @@ driver.uc_gui_click_captcha(frame="iframe", retry=False, blind=False)
 driver.uc_gui_handle_captcha(frame="iframe")
 # driver.uc_gui_handle_cf(frame="iframe")
 # driver.uc_gui_handle_rc(frame="iframe")
-
-driver.uc_switch_to_frame(frame, reconnect_time=None)
 ```
 
 (Note that the <b><code translate="no">reconnect_time</code></b> is used to specify how long the driver should be disconnected from Chrome to prevent detection before reconnecting again.)

@@ -58,7 +58,7 @@
 
 📚 Learn from [**over 200 examples** in the **SeleniumBase/examples/** folder](https://github.com/seleniumbase/SeleniumBase/tree/master/examples).
 
-👤 Note that <span translate="no">SeleniumBase</span> <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md">UC Mode / Stealth Mode has its own ReadMe</a>.
+👤 Note that <span translate="no">SeleniumBase</span> <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md"><b>UC Mode</b> (Stealth Mode) has its own ReadMe</a>.
 
 ℹ️ Scripts can be called via <code translate="no"><b>python</b></code>, although some <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md">Syntax Formats</a> expect <a href="https://docs.pytest.org/en/latest/how-to/usage.html" translate="no"><b>pytest</b></a> (a Python unit-testing framework included with SeleniumBase that can discover & collect tests automatically).
 
