@@ -303,28 +303,44 @@ def Driver(
                 proxy_string = proxy_string[1:-1]
     c_a = chromium_arg
     if c_a is None and "--chromium-arg" in arg_join:
-        if "--chromium-arg=" in arg_join:
-            c_a = arg_join.split("--chromium-arg=")[1].split(" ")[0]
-        elif "--chromium-arg " in arg_join:
-            c_a = arg_join.split("--chromium-arg ")[1].split(" ")[0]
-        if c_a:
-            if c_a.startswith('"') and c_a.endswith('"'):
-                c_a = c_a[1:-1]
-            elif c_a.startswith("'") and c_a.endswith("'"):
-                c_a = c_a[1:-1]
+        count = 0
+        for arg in sys_argv:
+            if arg.startswith("--chromium-arg="):
+                c_a = arg.split("--chromium-arg=")[1]
+                break
+            elif arg == "--chromium-arg" and len(sys_argv) > count + 1:
+                c_a = sys_argv[count + 1]
+                if c_a.startswith("-"):
+                    c_a = None
+                break
+            count += 1
     chromium_arg = c_a
     d_f = disable_features
     if d_f is None and "--disable-features" in arg_join:
-        if "--disable-features=" in arg_join:
-            d_f = arg_join.split("--disable-features=")[1].split(" ")[0]
-        elif "--disable-features " in arg_join:
-            d_f = arg_join.split("--disable-features ")[1].split(" ")[0]
-        if d_f:
-            if d_f.startswith('"') and d_f.endswith('"'):
-                d_f = d_f[1:-1]
-            elif c_a.startswith("'") and d_f.endswith("'"):
-                d_f = d_f[1:-1]
+        count = 0
+        for arg in sys_argv:
+            if arg.startswith("--disable-features="):
+                d_f = arg.split("--disable-features=")[1]
+                break
+            elif arg == "--disable-features" and len(sys_argv) > count + 1:
+                d_f = sys_argv[count + 1]
+                if d_f.startswith("-"):
+                    d_f = None
+                break
+            count += 1
     disable_features = d_f
+    if agent is None and "--agent" in arg_join:
+        count = 0
+        for arg in sys_argv:
+            if arg.startswith("--agent="):
+                agent = arg.split("--agent=")[1]
+                break
+            elif arg == "--agent" and len(sys_argv) > count + 1:
+                agent = sys_argv[count + 1]
+                if agent.startswith("-"):
+                    agent = None
+                break
+            count += 1
     user_agent = agent
     recorder_mode = False
     if recorder_ext:
@@ -535,15 +551,30 @@ def Driver(
             host_resolver_rules = (
                 arg_join.split("--host_resolver_rules=")[1].split('"')[0]
             )
-    if driver_version is None:
-        if "--driver-version=" in arg_join:
-            driver_version = (
-                arg_join.split("--driver-version=")[1].split(" ")[0]
-            )
-        elif "--driver_version=" in arg_join:
-            driver_version = (
-                arg_join.split("--driver_version=")[1].split(" ")[0]
-            )
+    if driver_version is None and "--driver-version" in arg_join:
+        count = 0
+        for arg in sys_argv:
+            if arg.startswith("--driver-version="):
+                driver_version = arg.split("--driver-version=")[1]
+                break
+            elif arg == "--driver-version" and len(sys_argv) > count + 1:
+                driver_version = sys_argv[count + 1]
+                if driver_version.startswith("-"):
+                    driver_version = None
+                break
+            count += 1
+    if driver_version is None and "--driver_version" in arg_join:
+        count = 0
+        for arg in sys_argv:
+            if arg.startswith("--driver_version="):
+                driver_version = arg.split("--driver_version=")[1]
+                break
+            elif arg == "--driver_version" and len(sys_argv) > count + 1:
+                driver_version = sys_argv[count + 1]
+                if driver_version.startswith("-"):
+                    driver_version = None
+                break
+            count += 1
     browser_name = browser
 
     # Launch a web browser
