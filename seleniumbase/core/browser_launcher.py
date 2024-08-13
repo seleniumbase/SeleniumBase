@@ -12,6 +12,7 @@ import warnings
 from selenium import webdriver
 from selenium.common.exceptions import ElementClickInterceptedException
 from selenium.common.exceptions import InvalidSessionIdException
+from selenium.common.exceptions import SessionNotCreatedException
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.common.options import ArgOptions
 from selenium.webdriver.common.service import utils as service_utils
@@ -4277,11 +4278,11 @@ def get_local_driver(
                                     driver.quit()
                             except Exception:
                                 pass
+                            uc_path = None
+                            if os.path.exists(LOCAL_UC_DRIVER):
+                                uc_path = LOCAL_UC_DRIVER
+                                uc_path = os.path.realpath(uc_path)
                             try:
-                                uc_path = None
-                                if os.path.exists(LOCAL_UC_DRIVER):
-                                    uc_path = LOCAL_UC_DRIVER
-                                    uc_path = os.path.realpath(uc_path)
                                 driver = undetected.Chrome(
                                     options=chrome_options,
                                     user_data_dir=user_data_dir,
@@ -4298,6 +4299,19 @@ def get_local_driver(
                                     mac_certificate_error = True
                                 else:
                                     raise
+                            except SessionNotCreatedException:
+                                time.sleep(0.2)
+                                driver = undetected.Chrome(
+                                    options=chrome_options,
+                                    user_data_dir=user_data_dir,
+                                    driver_executable_path=uc_path,
+                                    browser_executable_path=b_path,
+                                    enable_cdp_events=cdp_events,
+                                    headless=False,  # Xvfb needed!
+                                    version_main=uc_chrome_version,
+                                    use_subprocess=True,  # Always!
+                                )
+                                uc_activated = True
                             if mac_certificate_error:
                                 cf_lock_path = (
                                     constants.MultiBrowser.CERT_FIXING_LOCK
