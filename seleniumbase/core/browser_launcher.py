@@ -718,7 +718,44 @@ def _uc_gui_click_x_y(driver, x, y, timeframe=0.25, uc_lock=False):
 
 
 def uc_gui_click_x_y(driver, x, y, timeframe=0.25):
-    _uc_gui_click_x_y(driver, x, y, timeframe=timeframe, uc_lock=True)
+    gui_lock = fasteners.InterProcessLock(
+        constants.MultiBrowser.PYAUTOGUILOCK
+    )
+    with gui_lock:  # Prevent issues with multiple processes
+        install_pyautogui_if_missing(driver)
+        import pyautogui
+        pyautogui = get_configured_pyautogui(pyautogui)
+        if IS_WINDOWS:
+            width_ratio = 1.0
+            window_rect = driver.get_window_rect()
+            width = window_rect["width"]
+            height = window_rect["height"]
+            win_x = window_rect["x"]
+            win_y = window_rect["y"]
+            if (
+                hasattr(sb_config, "_saved_width_ratio")
+                and sb_config._saved_width_ratio
+            ):
+                width_ratio = sb_config._saved_width_ratio
+            else:
+                scr_width = pyautogui.size().width
+                driver.maximize_window()
+                win_width = driver.get_window_size()["width"]
+                width_ratio = round(float(scr_width) / float(win_width), 2)
+                width_ratio += 0.01
+                if width_ratio < 0.45 or width_ratio > 2.55:
+                    width_ratio = 1.01
+                sb_config._saved_width_ratio = width_ratio
+            driver.minimize_window()
+            driver.set_window_rect(win_x, win_y, width, height)
+            x = x * width_ratio
+            y = y * width_ratio
+            _uc_gui_click_x_y(driver, x, y, timeframe=timeframe, uc_lock=False)
+            return
+        page_actions.switch_to_window(
+            driver, driver.current_window_handle, 2, uc_lock=False
+        )
+        _uc_gui_click_x_y(driver, x, y, timeframe=timeframe, uc_lock=False)
 
 
 def _on_a_cf_turnstile_page(driver):
@@ -804,6 +841,7 @@ def _uc_gui_click_captcha(
             width_ratio = round(float(scr_width) / float(win_width), 2) + 0.01
             if width_ratio < 0.45 or width_ratio > 2.55:
                 width_ratio = 1.01
+            sb_config._saved_width_ratio = width_ratio
             driver.minimize_window()
             driver.set_window_rect(win_x, win_y, width, height)
         if ctype == "cf_t":
