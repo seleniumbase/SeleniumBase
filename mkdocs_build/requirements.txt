@@ -11,12 +11,12 @@ MarkupSafe==2.1.5
 Jinja2==3.1.4
 click==8.1.7
 ghp-import==2.1.0
-watchdog==4.0.1
+watchdog==4.0.2
 cairocffi==1.7.1
 pathspec==0.12.1
-Babel==2.15.0
+Babel==2.16.0
 paginate==0.5.6
-lxml==5.2.2
+lxml==5.3.0
 pyquery==2.0.0
 readtime==3.0.0
 mkdocs==1.6.0
