@@ -846,7 +846,7 @@ with SB() as sb:
     sb.assert_text("signed out", "#top_message")
 ```
 
-(See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_sb.py">examples/raw_sb.py</a> for the test.)
+(See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_login_sb.py">examples/raw_login_sb.py</a> for the test.)
 
 Here's another example, which uses <code translate="no">test</code> mode:
 
