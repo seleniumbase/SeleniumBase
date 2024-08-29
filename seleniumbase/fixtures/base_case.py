@@ -6759,6 +6759,7 @@ class BaseCase(unittest.TestCase):
         for link in all_links:
             if (
                 "data:" not in link
+                and "tel:" not in link
                 and "mailto:" not in link
                 and "javascript:" not in link
                 and "://fonts.gstatic.com" not in link

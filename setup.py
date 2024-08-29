@@ -164,11 +164,11 @@ setup(
         'platformdirs>=4.2.2;python_version>="3.8"',
         'typing-extensions>=4.12.2;python_version>="3.8"',
         'parse>=1.20.2',
-        'parse-type>=0.6.2',
+        'parse-type>=0.6.3',
         'pyyaml==6.0.1;python_version<"3.8"',
         'pyyaml>=6.0.2;python_version>="3.8"',
         "six==1.16.0",
-        "idna==3.7",
+        "idna==3.8",
         'chardet==5.2.0',
         'charset-normalizer==3.3.2',
         'urllib3>=1.26.19,<2;python_version<"3.10"',
@@ -184,7 +184,7 @@ setup(
         'wsproto==1.2.0',
         'websocket-client==1.8.0;python_version>="3.8"',
         'selenium==4.11.2;python_version<"3.8"',
-        'selenium==4.23.1;python_version>="3.8"',
+        'selenium==4.24.0;python_version>="3.8"',
         'cssselect==1.2.0',
         "sortedcontainers==2.4.0",
         'fasteners==0.19',
@@ -208,7 +208,7 @@ setup(
         "sbvirtualdisplay==1.3.0",
         "behave==1.2.6",
         'soupsieve==2.4.1;python_version<"3.8"',
-        'soupsieve==2.5;python_version>="3.8"',
+        'soupsieve==2.6;python_version>="3.8"',
         "beautifulsoup4==4.12.3",
         'pygments==2.17.2;python_version<"3.8"',
         'pygments==2.18.0;python_version>="3.8"',
@@ -221,7 +221,7 @@ setup(
         'markdown-it-py==2.2.0;python_version<"3.8"',
         'markdown-it-py==3.0.0;python_version>="3.8"',
         'mdurl==0.1.2',
-        'rich==13.7.1',
+        'rich==13.8.0',
     ],
     extras_require={
         # pip install -e .[allure]
@@ -302,6 +302,7 @@ setup(
         "selenium-wire": [
             'selenium-wire==5.1.0',
             'pyOpenSSL==24.2.1',
+            'pyparsing>=3.1.4',
             'Brotli==1.1.0',
             'blinker==1.7.0',  # Newer ones had issues
             'h2==4.1.0',
