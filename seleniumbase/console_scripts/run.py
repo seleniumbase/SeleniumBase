@@ -264,9 +264,10 @@ def show_mkfile_usage():
     print("  Example:")
     print("           sbase mkfile new_test.py")
     print("  Options:")
+    print("           --uc  (UC Mode boilerplate using SB context manager)")
     print("           -b / --basic  (Basic boilerplate / single-line test)")
-    print("           -r / --rec  (adds Pdb+ breakpoint for Recorder Mode)")
-    print("           --url=URL  (makes the test start on a specific page)")
+    print("           -r / --rec  (Adds Pdb+ breakpoint for Recorder Mode)")
+    print("           --url=URL  (Makes the test start on a specific page)")
     print("  Language Options:")
     print("           --en / --English    |    --zh / --Chinese")
     print("           --nl / --Dutch      |    --fr / --French")
@@ -289,6 +290,7 @@ def show_mkfile_usage():
     print('           and "assert_text". If using the basic boilerplate')
     print('           option, only the "open" method is included. Only the')
     print("           BaseCase format supports Languages or Recorder Mode.")
+    print("           UC Mode automatically uses English with SB() format.")
     print("")
 
 

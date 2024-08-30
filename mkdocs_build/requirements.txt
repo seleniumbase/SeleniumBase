@@ -17,9 +17,9 @@ pathspec==0.12.1
 Babel==2.16.0
 paginate==0.5.7
 lxml==5.3.0
-pyquery==2.0.0
+pyquery==2.0.1
 readtime==3.0.0
-mkdocs==1.6.0
+mkdocs==1.6.1
 mkdocs-material==9.5.33
 mkdocs-exclude-search==0.6.6
 mkdocs-simple-hooks==0.1.5
