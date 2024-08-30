@@ -350,9 +350,10 @@ sbase mkfile new_test.py
 
 * Options:
 
+``--uc``  (UC Mode boilerplate using SB context manager)
 `-b` / `--basic`  (Basic boilerplate / single-line test)
-`-r` / `--rec`  (adds Pdb+ breakpoint for Recorder Mode)
-``--url=URL``  (makes the test start on a specific page)
+`-r` / `--rec`  (Adds Pdb+ breakpoint for Recorder Mode)
+``--url=URL``  (Makes the test start on a specific page)
 
 * Language Options:
 
@@ -381,6 +382,7 @@ methods: "open", "type", "click", "assert_element",
 and "assert_text". If using the basic boilerplate
 option, only the "open" method is included. Only the
 BaseCase format supports Languages or Recorder Mode.
+UC Mode automatically uses English with SB() format.
 
 <h3>mkrec / record / codegen</h3>
 
