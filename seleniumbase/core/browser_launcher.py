@@ -863,9 +863,9 @@ def _uc_gui_click_captcha(
                     frame = "%s div[style]" % frame
                 elif (
                     driver.is_element_present('[name*="cf-turnstile-"]')
-                    and driver.is_element_present("div.spacer div[style]")
+                    and driver.is_element_present("div.spacer div")
                 ):
-                    frame = "div.spacer div[style]"
+                    frame = "div.spacer div"
                 elif (
                     (
                         driver.is_element_present('[name*="cf-turnstile-"]')
@@ -1099,9 +1099,9 @@ def _uc_gui_handle_captcha(
                     frame = '[data-callback="onCaptchaSuccess"]'
                 elif (
                     driver.is_element_present('[name*="cf-turnstile-"]')
-                    and driver.is_element_present("div.spacer div[style]")
+                    and driver.is_element_present("div.spacer div")
                 ):
-                    frame = "div.spacer div[style]"
+                    frame = "div.spacer div"
                 elif (
                     (
                         driver.is_element_present('[name*="cf-turnstile-"]')
