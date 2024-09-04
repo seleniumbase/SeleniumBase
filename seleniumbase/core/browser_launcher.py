@@ -340,17 +340,19 @@ def find_edgedriver_version_to_use(use_version, driver_version):
     return use_version
 
 
-def has_cf(text):
+def has_captcha(text):
     if (
         "<title>403 Forbidden</title>" in text
         or "Permission Denied</title>" in text
         or 'id="challenge-error-text"' in text
         or "<title>Just a moment..." in text
         or 'action="/?__cf_chl_f_tk' in text
+        or 'id="challenge-widget-' in text
         or 'src="chromedriver.js"' in text
         or 'class="g-recaptcha"' in text
         or 'content="Pixelscan"' in text
         or 'id="challenge-form"' in text
+        or "/challenge-platform" in text
         or "window._cf_chl_opt" in text
         or "/recaptcha/api.js" in text
         or "/turnstile/" in text
@@ -377,7 +379,7 @@ def uc_special_open_if_cf(
                 status_str.startswith("3")
                 or status_str.startswith("4")
                 or status_str.startswith("5")
-                or has_cf(req_get.text)
+                or has_captcha(req_get.text)
             ):
                 special = True
                 if status_str == "403" or status_str == "429":
@@ -763,6 +765,8 @@ def _on_a_cf_turnstile_page(driver):
     source = driver.get_page_source()
     if (
         'data-callback="onCaptchaSuccess"' in source
+        or "/challenge-platform/scripts/" in source
+        or 'id="challenge-widget-' in source
         or "cf-turnstile-" in source
     ):
         return True
@@ -867,6 +871,13 @@ def _uc_gui_click_captcha(
                 ):
                     frame = "div.spacer div"
                 elif (
+                    driver.is_element_present('script[src*="challenges.c"]')
+                    and driver.is_element_present(
+                        '[data-testid*="challenge-"] div'
+                    )
+                ):
+                    frame = '[data-testid*="challenge-"] div'
+                elif (
                     (
                         driver.is_element_present('[name*="cf-turnstile-"]')
                         or driver.is_element_present('[id*="cf-turnstile-"]')
@@ -883,6 +894,14 @@ def _uc_gui_click_captcha(
                     )
                 ):
                     frame = "%s .cf-turnstile-wrapper" % frame
+                elif (
+                    frame != "iframe"
+                    and driver.is_element_present(
+                        '%s [name*="cf-turnstile"]' % frame
+                    )
+                    and driver.is_element_present("%s div" % frame)
+                ):
+                    frame = "%s div" % frame
                 elif driver.is_element_present(".cf-turnstile-wrapper"):
                     frame = ".cf-turnstile-wrapper"
                 elif driver.is_element_present(
@@ -1102,6 +1121,13 @@ def _uc_gui_handle_captcha(
                     and driver.is_element_present("div.spacer div")
                 ):
                     frame = "div.spacer div"
+                elif (
+                    driver.is_element_present('script[src*="challenges.c"]')
+                    and driver.is_element_present(
+                        '[data-testid*="challenge-"] div'
+                    )
+                ):
+                    frame = '[data-testid*="challenge-"] div'
                 elif (
                     (
                         driver.is_element_present('[name*="cf-turnstile-"]')
