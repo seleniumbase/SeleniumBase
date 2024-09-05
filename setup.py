@@ -34,7 +34,7 @@ if sys.argv[-1] == "publish":
             print("\nERROR! Publishing to PyPI requires Python>=3.9")
             sys.exit()
         print("\n*** Checking code health with flake8:\n")
-        os.system("python -m pip install 'flake8==7.1.0'")
+        os.system("python -m pip install 'flake8==7.1.1'")
         flake8_status = os.system("flake8 --exclude=recordings,temp")
         if flake8_status != 0:
             print("\nERROR! Fix flake8 issues before publishing to PyPI!\n")
@@ -265,7 +265,7 @@ setup(
             'cryptography==39.0.2;python_version<"3.9"',
             'cryptography==43.0.1;python_version>="3.9"',
             'cffi==1.15.1;python_version<"3.8"',
-            'cffi==1.17.0;python_version>="3.8"',
+            'cffi==1.17.1;python_version>="3.8"',
             "pycparser==2.22",
         ],
         # pip install -e .[pillow]

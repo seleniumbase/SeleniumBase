@@ -99,12 +99,12 @@ with SB(uc=True, test=True, incognito=True, locale_code="en") as sb:
     url = "https://ahrefs.com/website-authority-checker"
     input_field = 'input[placeholder="Enter domain"]'
     submit_button = 'span:contains("Check Authority")'
-    sb.uc_open_with_reconnect(url, 2)  # The bot-check is later
+    sb.uc_open_with_reconnect(url)  # The bot-check is later
     sb.type(input_field, "github.com/seleniumbase/SeleniumBase")
     sb.reconnect(0.1)
     sb.uc_click(submit_button, reconnect_time=4)
     sb.uc_gui_click_captcha()
-    sb.wait_for_text_not_visible("Checking", timeout=10)
+    sb.wait_for_text_not_visible("Checking", timeout=12)
     sb.highlight('p:contains("github.com/seleniumbase/SeleniumBase")')
     sb.highlight('a:contains("Top 100 backlinks")')
     sb.set_messenger_theme(location="bottom_center")
@@ -158,9 +158,28 @@ The 2nd `print()` should output "Virtual Manager", which means that the automati
 * [SeleniumBase/examples/verify_undetected.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/verify_undetected.py)
 * [SeleniumBase/examples/raw_bing_captcha.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_bing_captcha.py)
 * [SeleniumBase/examples/raw_uc_mode.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_uc_mode.py)
+* [SeleniumBase/examples/raw_cf.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_cf.py)
+
+--------
+
+👤 Here's an example where **`incognito=True` is needed for bypassing detection**:
+
 * [SeleniumBase/examples/raw_pixelscan.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_pixelscan.py)
 
+```python
+from seleniumbase import SB
+
+with SB(uc=True, incognito=True, test=True) as sb:
+    sb.driver.uc_open_with_reconnect("https://pixelscan.net/", 10)
+    sb.remove_elements("jdiv")  # Remove chat widgets
+    sb.highlight("span.text-success", loops=8)
+    sb.highlight(".bot-detection-context", loops=10, scroll=False)
+    sb.sleep(2)
+```
+
 <img src="https://seleniumbase.github.io/other/pixelscan.jpg" title="SeleniumBase" width="540">
+
+--------
 
 ### 👤 Here are some UC Mode examples that bypass CAPTCHAs when clicking is required:
 * [SeleniumBase/examples/raw_pyautogui.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_pyautogui.py)
@@ -169,6 +188,8 @@ The 2nd `print()` should output "Virtual Manager", which means that the automati
 * [SeleniumBase/examples/uc_cdp_events.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/uc_cdp_events.py)
 
 <img src="https://seleniumbase.github.io/other/cf_bypass.png" title="SeleniumBase" width="260">
+
+--------
 
 ### 👤 Here are the <b><code translate="no">driver</code></b>-specific methods added by SeleniumBase for UC Mode: `--uc` / <b><code translate="no">uc=True</code></b>
 
@@ -240,6 +261,8 @@ driver.reconnect("breakpoint")
 
 (Note that while the special <b><code translate="no">UC Mode</code></b> breakpoint is active, you can't use <b><code translate="no">Selenium</code></b> commands in the browser, and the browser can't detect <b><code translate="no">Selenium</code></b>.)
 
+--------
+
 👤 On Linux, you may need to use `uc_gui_click_captcha()` to successfully bypass a Cloudflare CAPTCHA. If there's more than one Cloudflare iframe on that website, then put the CSS Selector of an element that's above the iframe as the first arg to `uc_gui_click_captcha()`. This method uses `pyautogui`. In order for `pyautogui` to focus on the correct element, use `xvfb=True` / `--xvfb` to activate a special virtual display on Linux.
 
 👤 `uc_gui_click_captcha()` auto-detects the CAPTCHA type before trying to click it. This is a generic method for both CF Turnstile and Google reCAPTCHA. It will use the code from `uc_gui_click_cf()` and `uc_gui_click_rc()` as needed.
@@ -247,6 +270,8 @@ driver.reconnect("breakpoint")
 👤 `uc_gui_click_cf(frame="iframe", retry=False, blind=False)` has three args. (All optional). The first one, `frame`, lets you specify the selector above the iframe in case the CAPTCHA is not located in the first iframe on the page. The second one, `retry`, lets you retry the click after reloading the page if the first one didn't work (and a CAPTCHA is still present after the page reload). The third arg, `blind`, (if `True`), will retry after a page reload (if the first click failed) by clicking at the last known coordinates of the CAPTCHA checkbox without confirming first with Selenium that a CAPTCHA is still on the page.
 
 👤 `uc_gui_click_rc(frame="iframe", retry=False, blind=False)` is for reCAPTCHA. This may only work a few times before not working anymore... not because Selenium was detected, but because reCAPTCHA uses advanced AI to detect unusual activity, unlike the CF Turnstile, which only uses basic detection.
+
+--------
 
 👤 To find out if <b translate="no">UC Mode</b> will work at all on a specific site (before adjusting for timing), load your site with the following script:
 
@@ -258,6 +283,8 @@ with SB(uc=True) as sb:
 ```
 
 (If you remain undetected while loading the page and performing manual actions, then you know you can create a working script once you swap the breakpoint with a time and add special methods like <b><code translate="no">sb.uc_click</code></b> as needed.)
+
+--------
 
 👤 <b>Multithreaded UC Mode:</b>
 
@@ -343,7 +370,7 @@ The above JS method is used within the <b><code translate="no">SeleniumBase</cod
 
 <img src="https://seleniumbase.github.io/other/me_se_conf.jpg" title="SeleniumBase" width="370">
 
-As an ethical hacker / cybersecurity researcher who builds bots that bypass CAPTCHAs for sport, <b>the CAPTCHA service that I personally recommend</b> for keeping bots out is <b translate="no">Google's reCAPTCHA</b>:
+As an ethical hacker / cybersecurity researcher who builds bots that bypass CAPTCHAs for sport, <b>the CAPTCHA service that I personally recommend</b> for keeping bots out is <b translate="no">Google reCAPTCHA</b>:
 
 <img src="https://seleniumbase.github.io/other/g_recaptcha.png" title="SeleniumBase" width="315">
 

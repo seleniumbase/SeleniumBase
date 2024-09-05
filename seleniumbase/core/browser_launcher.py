@@ -861,34 +861,6 @@ def _uc_gui_click_captcha(
                 visible_iframe = False
                 if (
                     frame != "iframe"
-                    and driver.is_element_present('[name*="cf-turnstile-"]')
-                    and driver.is_element_present("%s div[style]" % frame)
-                ):
-                    frame = "%s div[style]" % frame
-                elif (
-                    driver.is_element_present('[name*="cf-turnstile-"]')
-                    and driver.is_element_present("div.spacer div")
-                ):
-                    frame = "div.spacer div"
-                elif (
-                    driver.is_element_present('script[src*="challenges.c"]')
-                    and driver.is_element_present(
-                        '[data-testid*="challenge-"] div'
-                    )
-                ):
-                    frame = '[data-testid*="challenge-"] div'
-                elif (
-                    (
-                        driver.is_element_present('[name*="cf-turnstile-"]')
-                        or driver.is_element_present('[id*="cf-turnstile-"]')
-                    )
-                    and driver.is_element_present(
-                        'form div div[style*="margin"][style*="padding"]'
-                    )
-                ):
-                    frame = 'form div div[style*="margin"][style*="padding"]'
-                elif (
-                    frame != "iframe"
                     and driver.is_element_present(
                         "%s .cf-turnstile-wrapper" % frame
                     )
@@ -902,22 +874,33 @@ def _uc_gui_click_captcha(
                     and driver.is_element_present("%s div" % frame)
                 ):
                     frame = "%s div" % frame
+                elif (
+                    driver.is_element_present('[name*="cf-turnstile-"]')
+                    and driver.is_element_present("div.spacer div")
+                ):
+                    frame = "div.spacer div"
+                elif (
+                    driver.is_element_present('script[src*="challenges.c"]')
+                    and driver.is_element_present(
+                        '[data-testid*="challenge-"] div'
+                    )
+                ):
+                    frame = '[data-testid*="challenge-"] div'
+                elif driver.is_element_present(
+                    'form div:not([class]):has(input[name*="cf-turn"])'
+                ):
+                    frame = 'form div:not([class]):has(input[name*="cf-turn"])'
+                elif (
+                    driver.is_element_present('[src*="/turnstile/"]')
+                    and driver.is_element_present("form div:not(:has(*))")
+                ):
+                    frame = "form div:not(:has(*))"
                 elif driver.is_element_present(".cf-turnstile-wrapper"):
                     frame = ".cf-turnstile-wrapper"
                 elif driver.is_element_present(
                     '[data-callback="onCaptchaSuccess"]'
                 ):
                     frame = '[data-callback="onCaptchaSuccess"]'
-                elif (
-                    (
-                        driver.is_element_present('[name*="cf-turnstile-"]')
-                        or driver.is_element_present('[id*="cf-turnstile-"]')
-                    )
-                    and driver.is_element_present(
-                        'div > div > [style*="margin"][style*="padding"]'
-                    )
-                ):
-                    frame = 'div > div > [style*="margin"][style*="padding"]'
                 else:
                     return
             if driver.is_element_present('form[class*=center]'):
@@ -1100,6 +1083,8 @@ def _uc_gui_handle_captcha(
                 driver.minimize_window()
                 driver.set_window_rect(win_x, win_y, width, height)
                 time.sleep(0.33)
+        tab_up_first = False
+        special_form = False
         if ctype == "cf_t":
             if (
                 driver.is_element_present(".cf-turnstile-wrapper iframe")
@@ -1128,26 +1113,18 @@ def _uc_gui_handle_captcha(
                     )
                 ):
                     frame = '[data-testid*="challenge-"] div'
-                elif (
-                    (
-                        driver.is_element_present('[name*="cf-turnstile-"]')
-                        or driver.is_element_present('[id*="cf-turnstile-"]')
-                    )
-                    and driver.is_element_present(
-                        'form div div[style*="margin"][style*="padding"]'
-                    )
+                elif driver.is_element_present(
+                    'form div:not([class]):has(input[name*="cf-turn"])'
                 ):
-                    frame = 'form div div[style*="margin"][style*="padding"]'
+                    frame = 'form div:not([class]):has(input[name*="cf-turn"])'
+                    tab_up_first = True
+                    special_form = True
                 elif (
-                    (
-                        driver.is_element_present('[name*="cf-turnstile-"]')
-                        or driver.is_element_present('[id*="cf-turnstile-"]')
-                    )
-                    and driver.is_element_present(
-                        'div > div > [style*="margin"][style*="padding"]'
-                    )
+                    driver.is_element_present('[src*="/turnstile/"]')
+                    and driver.is_element_present("form div:not(:has(*))")
                 ):
-                    frame = 'div > div > [style*="margin"][style*="padding"]'
+                    frame = "form div:not(:has(*))"
+                    tab_up_first = True
                 else:
                     return
         else:
@@ -1172,13 +1149,18 @@ def _uc_gui_handle_captcha(
             if ctype == "g_rc":
                 selector = "span#recaptcha-anchor"
             found_checkbox = False
-            for i in range(24):
+            if tab_up_first:
+                for i in range(10):
+                    pyautogui.hotkey("shift", "tab")
+                    time.sleep(0.027)
+            for i in range(34):
                 pyautogui.press("\t")
-                time.sleep(0.02)
+                time.sleep(0.027)
                 active_element_css = js_utils.get_active_element_css(driver)
                 if (
                     active_element_css.startswith(selector)
                     or active_element_css.endswith(" > div" * 2)
+                    or (special_form and active_element_css.endswith(" div"))
                 ):
                     found_checkbox = True
                     break
