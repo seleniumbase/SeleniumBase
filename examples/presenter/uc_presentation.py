@@ -30,12 +30,12 @@ class UCPresentationClass(BaseCase):
         self.get_new_driver(undetectable=True)
         url = "https://gitlab.com/users/sign_in"
         try:
-            self.driver.uc_open_with_reconnect(url, reconnect_time=3)
+            self.uc_open_with_reconnect(url, reconnect_time=3)
             try:
                 self.assert_text("Username", '[for="user_login"]', timeout=3)
                 self.post_message("SeleniumBase wasn't detected", duration=4)
             except Exception:
-                self.driver.uc_open_with_reconnect(url, reconnect_time=4)
+                self.uc_open_with_reconnect(url, reconnect_time=4)
                 self.assert_text("Username", '[for="user_login"]', timeout=3)
                 self.post_message("SeleniumBase wasn't detected", duration=4)
         finally:
@@ -249,8 +249,7 @@ class UCPresentationClass(BaseCase):
             code=(
                 "<mk-1>from seleniumbase import SB</mk-1>\n\n"
                 "<mk-2>with SB(uc=True) as sb:</mk-2>\n"
-                '    <mk-3>sb.driver.get('
-                '"https://seleniumbase.io/simple/login")</mk-3>\n'
+                '    <mk-3>sb.get("seleniumbase.io/simple/login")</mk-3>\n'
                 '    <mk-4>sb.type("#username", "demo_user")</mk-4>\n'
                 '    <mk-5>sb.type("#password", "secret_pass")</mk-5>\n'
                 '    <mk-6>sb.click(\'a:contains("Sign in")\')</mk-6>\n'
@@ -266,7 +265,7 @@ class UCPresentationClass(BaseCase):
 
         try:
             with SB(uc=True) as sb:
-                sb.driver.get("https://seleniumbase.io/simple/login")
+                sb.get("https://seleniumbase.io/simple/login")
                 sb.type("#username", "demo_user")
                 sb.type("#password", "secret_pass")
                 sb.click('a:contains("Sign in")')
@@ -285,7 +284,7 @@ class UCPresentationClass(BaseCase):
             code=(
                 "from seleniumbase import SB\n\n"
                 "with SB(uc=True<mk-1>, demo=True</mk-1>) as sb:\n"
-                '    sb.driver.get('
+                '    sb.get('
                 '"https://seleniumbase.io/simple/login")\n'
                 '    sb.type("#username", "demo_user")\n'
                 '    sb.type("#password", "secret_pass")\n'
@@ -301,7 +300,7 @@ class UCPresentationClass(BaseCase):
 
         try:
             with SB(uc=True, demo=True) as sb:
-                sb.driver.get("https://seleniumbase.io/simple/login")
+                sb.get("https://seleniumbase.io/simple/login")
                 sb.type("#username", "demo_user")
                 sb.type("#password", "secret_pass")
                 sb.click('a:contains("Sign in")')
@@ -340,11 +339,11 @@ class UCPresentationClass(BaseCase):
             code=(
                 "from seleniumbase import SB\n\n"
                 "with SB(uc=True) as sb:\n"
-                '    sb.driver.get("https://nowsecure.nl/#relax")\n'
+                '    sb.get("https://nowsecure.nl/#relax")\n'
                 "    sb.sleep(1)\n"
                 '    if not sb.is_text_visible("OH YEAH, you passed", "h1"):\n'
                 "        sb.get_new_driver(undetectable=True)\n"
-                '        sb.driver.get("https://nowsecure.nl/#relax")\n'
+                '        sb.get("https://nowsecure.nl/#relax")\n'
                 "        sb.sleep(1)\n"
                 '    sb.activate_demo_mode()\n'
                 '    sb.assert_text("OH YEAH, you passed!", "h1", timeout=3)\n'
@@ -354,10 +353,10 @@ class UCPresentationClass(BaseCase):
 
         try:
             with SB(uc=True) as sb:
-                sb.driver.uc_open_with_tab("https://nowsecure.nl/#relax")
+                sb.uc_open_with_tab("https://nowsecure.nl/#relax")
                 sb.sleep(1)
                 if not sb.is_text_visible("OH YEAH, you passed", "h1"):
-                    sb.driver.uc_open_with_tab("https://nowsecure.nl/#relax")
+                    sb.uc_open_with_tab("https://nowsecure.nl/#relax")
                     sb.sleep(1)
                 sb.activate_demo_mode()
                 sb.assert_text("OH YEAH, you passed!", "h1", timeout=3)
