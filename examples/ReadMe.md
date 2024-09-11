@@ -251,6 +251,12 @@ python gui_test_runner.py
 
 --------
 
+<h3><a href="https://discord.gg/EdhQTn3EyE"><img src="https://seleniumbase.github.io/other/discord_icon.png" title="Join the SeleniumBase chat on Discord" alt="Join the SeleniumBase chat on Discord" width="44" /></a> <a href="https://discord.gg/EdhQTn3EyE">Join the SeleniumBase chat on Discord!</a></h3>
+
+Ask questions. Find answers. Learn how to automate!
+
+--------
+
 <img src="https://seleniumbase.github.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="320" />
 
 <a href="https://github.com/seleniumbase/SeleniumBase">

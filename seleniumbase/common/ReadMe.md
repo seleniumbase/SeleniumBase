@@ -1,6 +1,6 @@
 <!-- SeleniumBase Docs -->
 
-## Using [seleniumbase/common](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/common) methods.
+## [seleniumbase/common](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/common) decorators and security.
 
 ### Part 1: Decorators - (from [decorators.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/common/decorators.py))
 
