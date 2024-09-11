@@ -197,6 +197,13 @@ def do_playback(file_name, use_chrome, window, demo_mode=False):
         command += " --edge"
     if demo_mode:
         command += " --demo"
+    command_args = sys.argv[2:]
+    if (
+        "--uc" in command_args
+        or "--undetected" in command_args
+        or "--undetectable" in command_args
+    ):
+        command += " --uc"
     poll = None
     if sb_config.rec_subprocess_used:
         poll = sb_config.rec_subprocess_p.poll()

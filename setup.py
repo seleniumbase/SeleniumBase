@@ -159,9 +159,9 @@ setup(
         "certifi>=2024.8.30",
         "exceptiongroup>=1.2.2",
         'filelock>=3.12.2;python_version<"3.8"',
-        'filelock>=3.15.4;python_version>="3.8"',
+        'filelock>=3.16.0;python_version>="3.8"',
         'platformdirs>=4.0.0;python_version<"3.8"',
-        'platformdirs>=4.2.2;python_version>="3.8"',
+        'platformdirs>=4.3.2;python_version>="3.8"',
         'typing-extensions>=4.12.2;python_version>="3.8"',
         'parse>=1.20.2',
         'parse-type>=0.6.3',
@@ -195,7 +195,7 @@ setup(
         'pluggy==1.5.0;python_version>="3.8"',
         "py==1.11.0",  # Needed by pytest-html
         'pytest==7.4.4;python_version<"3.8"',
-        'pytest==8.3.2;python_version>="3.8"',
+        'pytest==8.3.3;python_version>="3.8"',
         "pytest-html==2.0.1",  # Newer ones had issues
         'pytest-metadata==3.0.0;python_version<"3.8"',
         'pytest-metadata==3.1.1;python_version>="3.8"',
@@ -221,7 +221,7 @@ setup(
         'markdown-it-py==2.2.0;python_version<"3.8"',
         'markdown-it-py==3.0.0;python_version>="3.8"',
         'mdurl==0.1.2',
-        'rich==13.8.0',
+        'rich==13.8.1',
     ],
     extras_require={
         # pip install -e .[allure]
@@ -310,7 +310,7 @@ setup(
             'hyperframe==6.0.1',
             'kaitaistruct==0.10',
             'pyasn1==0.5.1;python_version<"3.8"',
-            'pyasn1==0.6.0;python_version>="3.8"',
+            'pyasn1==0.6.1;python_version>="3.8"',
             'zstandard==0.23.0',
         ],
     },
