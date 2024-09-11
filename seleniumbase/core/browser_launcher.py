@@ -728,8 +728,23 @@ def uc_gui_click_x_y(driver, x, y, timeframe=0.25):
         install_pyautogui_if_missing(driver)
         import pyautogui
         pyautogui = get_configured_pyautogui(pyautogui)
+        connected = True
+        width_ratio = 1.0
         if IS_WINDOWS:
-            width_ratio = 1.0
+            try:
+                driver.window_handles
+            except Exception:
+                connected = False
+            if (
+                not connected
+                and (
+                    not hasattr(sb_config, "_saved_width_ratio")
+                    or not sb_config._saved_width_ratio
+                )
+            ):
+                driver.reconnect(0.1)
+                connected = True
+        if IS_WINDOWS and connected:
             window_rect = driver.get_window_rect()
             width = window_rect["width"]
             height = window_rect["height"]
@@ -751,13 +766,24 @@ def uc_gui_click_x_y(driver, x, y, timeframe=0.25):
                 sb_config._saved_width_ratio = width_ratio
             driver.minimize_window()
             driver.set_window_rect(win_x, win_y, width, height)
+        elif (
+            IS_WINDOWS
+            and not connected
+            and hasattr(sb_config, "_saved_width_ratio")
+            and sb_config._saved_width_ratio
+        ):
+            width_ratio = sb_config._saved_width_ratio
+        if IS_WINDOWS:
             x = x * width_ratio
             y = y * width_ratio
             _uc_gui_click_x_y(driver, x, y, timeframe=timeframe, uc_lock=False)
             return
-        page_actions.switch_to_window(
-            driver, driver.current_window_handle, 2, uc_lock=False
-        )
+        try:
+            page_actions.switch_to_window(
+                driver, driver.current_window_handle, 2, uc_lock=False
+            )
+        except Exception:
+            pass
         _uc_gui_click_x_y(driver, x, y, timeframe=timeframe, uc_lock=False)
 
 
@@ -958,21 +984,20 @@ def _uc_gui_click_captcha(
             pass
     reconnect_time = (float(constants.UC.RECONNECT_TIME) / 2.0) + 0.5
     if IS_LINUX:
-        reconnect_time = constants.UC.RECONNECT_TIME + 0.15
+        reconnect_time = constants.UC.RECONNECT_TIME + 0.2
     if not x or not y:
         reconnect_time = 1  # Make it quick (it already failed)
     driver.reconnect(reconnect_time)
-    if blind:
+    if blind or (IS_LINUX and "Just a moment" in driver.title):
         retry = True
+        blind = True
     if retry and x and y and _on_a_captcha_page(driver):
         with gui_lock:  # Prevent issues with multiple processes
             # Make sure the window is on top
             page_actions.switch_to_window(
                 driver, driver.current_window_handle, 2, uc_lock=False
             )
-            if not driver.is_element_present("iframe"):
-                return
-            else:
+            if driver.is_element_present("iframe"):
                 try:
                     driver.switch_to_frame(frame)
                 except Exception:
@@ -1179,7 +1204,7 @@ def _uc_gui_handle_captcha(
             pass
     reconnect_time = (float(constants.UC.RECONNECT_TIME) / 2.0) + 0.5
     if IS_LINUX:
-        reconnect_time = constants.UC.RECONNECT_TIME + 0.15
+        reconnect_time = constants.UC.RECONNECT_TIME + 0.2
     driver.reconnect(reconnect_time)
 
 
