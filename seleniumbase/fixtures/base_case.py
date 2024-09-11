@@ -16029,6 +16029,11 @@ class BaseCase(unittest.TestCase):
             # This test already called tearDown()
             return
         if hasattr(self, "recorder_mode") and self.recorder_mode:
+            if self.undetectable:
+                try:
+                    self.driver.window_handles
+                except Exception:
+                    self.driver.connect()
             self.__process_recorded_actions()
         self.__called_teardown = True
         self.__called_setup = False
