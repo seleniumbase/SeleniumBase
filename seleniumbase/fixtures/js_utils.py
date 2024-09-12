@@ -38,7 +38,7 @@ def wait_for_ready_state_complete(driver, timeout=settings.LARGE_TIMEOUT):
             time.sleep(0.03)
             return True
         if ready_state == "complete":
-            time.sleep(0.01)  # Better be sure everything is done loading
+            time.sleep(0.002)
             return True
         else:
             now_ms = time.time() * 1000.0
@@ -61,15 +61,14 @@ def wait_for_angularjs(driver, timeout=settings.LARGE_TIMEOUT, **kwargs):
         driver.execute_script("")
     except Exception:
         pass
-    if hasattr(driver, "_is_using_uc") and driver._is_using_uc:
-        # Calling AngularJS waits may make UC Mode detectable.
-        # Instead, pause for a brief moment, and then return.
-        time.sleep(0.007)
-        return
-    if not settings.WAIT_FOR_ANGULARJS:
+    if (
+        (hasattr(driver, "_is_using_uc") and driver._is_using_uc)
+        or not settings.WAIT_FOR_ANGULARJS
+    ):
+        wait_for_ready_state_complete(driver)
         return
     if timeout == settings.MINI_TIMEOUT:
-        timeout = settings.MINI_TIMEOUT / 4.0
+        timeout = settings.MINI_TIMEOUT / 6.0
     NG_WRAPPER = (
         "%(prefix)s"
         "var $elm=document.querySelector("
@@ -96,7 +95,7 @@ def wait_for_angularjs(driver, timeout=settings.LARGE_TIMEOUT, **kwargs):
     try:
         execute_async_script(driver, script, timeout=timeout)
     except Exception:
-        time.sleep(0.0456)
+        pass
 
 
 def convert_to_css_selector(selector, by=By.CSS_SELECTOR):

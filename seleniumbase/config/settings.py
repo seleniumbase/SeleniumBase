@@ -75,7 +75,7 @@ WAIT_FOR_RSC_ON_PAGE_LOADS = True
 # Called after self.click(selector), NOT element.click()
 WAIT_FOR_RSC_ON_CLICKS = False
 # Wait for AngularJS calls to complete after various browser actions.
-WAIT_FOR_ANGULARJS = False
+WAIT_FOR_ANGULARJS = True
 # Skip all calls to wait_for_ready_state_complete() and wait_for_angularjs().
 SKIP_JS_WAITS = False
 
