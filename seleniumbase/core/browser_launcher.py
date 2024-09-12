@@ -989,7 +989,10 @@ def _uc_gui_click_captcha(
         reconnect_time = 1  # Make it quick (it already failed)
     driver.reconnect(reconnect_time)
     caught = False
-    if driver.is_element_present(".footer .clearfix .ray-id"):
+    if (
+        driver.is_element_present(".footer .clearfix .ray-id")
+        and not driver.is_element_present("#challenge-success-text")
+    ):
         blind = True
         caught = True
     if blind:
@@ -1209,7 +1212,10 @@ def _uc_gui_handle_captcha_(driver, frame="iframe", ctype=None):
 
 def _uc_gui_handle_captcha(driver, frame="iframe", ctype=None):
     _uc_gui_handle_captcha_(driver, frame=frame, ctype=ctype)
-    if driver.is_element_present(".footer .clearfix .ray-id"):
+    if (
+        driver.is_element_present(".footer .clearfix .ray-id")
+        and not driver.is_element_present("#challenge-success-text")
+    ):
         driver.uc_open_with_reconnect(driver.current_url, 3.8)
         _uc_gui_handle_captcha_(driver, frame=frame, ctype=ctype)
 
