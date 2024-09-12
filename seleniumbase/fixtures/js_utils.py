@@ -48,7 +48,7 @@ def wait_for_ready_state_complete(driver, timeout=settings.LARGE_TIMEOUT):
     return False  # readyState stayed "interactive" (Not "complete")
 
 
-def execute_async_script(driver, script, timeout=settings.EXTREME_TIMEOUT):
+def execute_async_script(driver, script, timeout=settings.LARGE_TIMEOUT):
     driver.set_script_timeout(timeout)
     return driver.execute_async_script(script)
 
@@ -56,11 +56,20 @@ def execute_async_script(driver, script, timeout=settings.EXTREME_TIMEOUT):
 def wait_for_angularjs(driver, timeout=settings.LARGE_TIMEOUT, **kwargs):
     if hasattr(settings, "SKIP_JS_WAITS") and settings.SKIP_JS_WAITS:
         return
+    try:
+        # This closes pop-up alerts
+        driver.execute_script("")
+    except Exception:
+        pass
+    if hasattr(driver, "_is_using_uc") and driver._is_using_uc:
+        # Calling AngularJS waits may make UC Mode detectable.
+        # Instead, pause for a brief moment, and then return.
+        time.sleep(0.007)
+        return
     if not settings.WAIT_FOR_ANGULARJS:
         return
     if timeout == settings.MINI_TIMEOUT:
-        timeout = settings.MINI_TIMEOUT / 2.0
-
+        timeout = settings.MINI_TIMEOUT / 4.0
     NG_WRAPPER = (
         "%(prefix)s"
         "var $elm=document.querySelector("
@@ -85,14 +94,9 @@ def wait_for_angularjs(driver, timeout=settings.LARGE_TIMEOUT, **kwargs):
         "suffix": suffix,
     }
     try:
-        # This closes any pop-up alerts (otherwise the next part fails)
-        driver.execute_script("")
-    except Exception:
-        pass
-    try:
         execute_async_script(driver, script, timeout=timeout)
     except Exception:
-        time.sleep(0.05)
+        time.sleep(0.0456)
 
 
 def convert_to_css_selector(selector, by=By.CSS_SELECTOR):
