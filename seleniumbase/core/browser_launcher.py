@@ -982,16 +982,19 @@ def _uc_gui_click_captcha(
                 _uc_gui_click_x_y(driver, x, y, timeframe=0.95)
         except Exception:
             pass
-    reconnect_time = (float(constants.UC.RECONNECT_TIME) / 2.0) + 0.5
+    reconnect_time = (float(constants.UC.RECONNECT_TIME) / 2.0) + 0.6
     if IS_LINUX:
         reconnect_time = constants.UC.RECONNECT_TIME + 0.2
     if not x or not y:
         reconnect_time = 1  # Make it quick (it already failed)
     driver.reconnect(reconnect_time)
-    if blind or (IS_LINUX and "Just a moment" in driver.title):
-        retry = True
+    caught = False
+    if driver.is_element_present(".footer .clearfix .ray-id"):
         blind = True
-    if retry and x and y and _on_a_captcha_page(driver):
+        caught = True
+    if blind:
+        retry = True
+    if retry and x and y and (caught or _on_a_captcha_page(driver)):
         with gui_lock:  # Prevent issues with multiple processes
             # Make sure the window is on top
             page_actions.switch_to_window(
@@ -1056,11 +1059,7 @@ def uc_gui_click_cf(driver, frame="iframe", retry=False, blind=False):
     )
 
 
-def _uc_gui_handle_captcha(
-    driver,
-    frame="iframe",
-    ctype=None,
-):
+def _uc_gui_handle_captcha_(driver, frame="iframe", ctype=None):
     if ctype == "cf_t":
         if not _on_a_cf_turnstile_page(driver):
             return
@@ -1202,10 +1201,17 @@ def _uc_gui_handle_captcha(
             pyautogui.press(" ")
         except Exception:
             pass
-    reconnect_time = (float(constants.UC.RECONNECT_TIME) / 2.0) + 0.5
+    reconnect_time = (float(constants.UC.RECONNECT_TIME) / 2.0) + 0.6
     if IS_LINUX:
         reconnect_time = constants.UC.RECONNECT_TIME + 0.2
     driver.reconnect(reconnect_time)
+
+
+def _uc_gui_handle_captcha(driver, frame="iframe", ctype=None):
+    _uc_gui_handle_captcha_(driver, frame=frame, ctype=ctype)
+    if driver.is_element_present(".footer .clearfix .ray-id"):
+        driver.uc_open_with_reconnect(driver.current_url, 3.8)
+        _uc_gui_handle_captcha_(driver, frame=frame, ctype=ctype)
 
 
 def uc_gui_handle_captcha(driver, frame="iframe"):
