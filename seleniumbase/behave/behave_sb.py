@@ -889,6 +889,16 @@ def get_configured_sb(context):
         # If the port is "443", the protocol is "https"
         if str(sb.port) == "443":
             sb.protocol = "https"
+    if (
+        (sb.enable_ws is None and sb.disable_ws is None)
+        or (sb.disable_ws is not None and not sb.disable_ws)
+        or (sb.enable_ws is not None and sb.enable_ws)
+    ):
+        sb.enable_ws = True
+        sb.disable_ws = False
+    else:
+        sb.enable_ws = False
+        sb.disable_ws = True
     if sb.window_size:
         window_size = sb.window_size
         if window_size.count(",") != 1:

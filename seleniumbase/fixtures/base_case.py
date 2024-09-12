@@ -16071,7 +16071,10 @@ class BaseCase(unittest.TestCase):
             try:
                 self.driver.window_handles
             except Exception:
-                self.driver.connect()
+                try:
+                    self.driver.connect()
+                except Exception:
+                    pass
         self.__slow_mode_pause_if_active()
         has_exception = self.__has_exception()
         sb_config._has_exception = has_exception
