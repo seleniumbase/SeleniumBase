@@ -142,6 +142,7 @@ pytest my_first_test.py --settings-file=custom_settings.py
 --binary-location=PATH  # (Set path of the Chromium browser binary to use.)
 --driver-version=VER  # (Set the chromedriver or uc_driver version to use.)
 --sjw  # (Skip JS Waits for readyState to be "complete" or Angular to load.)
+--wfa  # (Wait for AngularJS to be done loading after specific web actions.)
 --pls=PLS  # (Set pageLoadStrategy on Chrome: "normal", "eager", or "none".)
 --headless  # (Run tests in headless mode. The default arg on Linux OS.)
 --headless2  # (Use the new headless mode, which supports extensions.)
