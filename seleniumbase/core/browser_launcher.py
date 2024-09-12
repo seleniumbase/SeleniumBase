@@ -1188,8 +1188,10 @@ def _uc_gui_handle_captcha_(driver, frame="iframe", ctype=None):
                 for i in range(10):
                     pyautogui.hotkey("shift", "tab")
                     time.sleep(0.027)
+            tab_count = 0
             for i in range(34):
                 pyautogui.press("\t")
+                tab_count += 1
                 time.sleep(0.027)
                 active_element_css = js_utils.get_active_element_css(driver)
                 if (
@@ -1198,6 +1200,7 @@ def _uc_gui_handle_captcha_(driver, frame="iframe", ctype=None):
                     or (special_form and active_element_css.endswith(" div"))
                 ):
                     found_checkbox = True
+                    sb_config._saved_cf_tab_count = tab_count
                     break
                 time.sleep(0.02)
             if not found_checkbox:
@@ -1207,11 +1210,22 @@ def _uc_gui_handle_captcha_(driver, frame="iframe", ctype=None):
                 driver.switch_to.default_content()
             except Exception:
                 return
-        driver.disconnect()
-        try:
+        if (
+            driver.is_element_present(".footer .clearfix .ray-id")
+            and hasattr(sb_config, "_saved_cf_tab_count")
+            and sb_config._saved_cf_tab_count
+        ):
+            driver.uc_open_with_disconnect(driver.current_url, 3.8)
+            try:
+                for i in range(sb_config._saved_cf_tab_count):
+                    pyautogui.press("\t")
+                    time.sleep(0.027)
+                pyautogui.press(" ")
+            except Exception:
+                pass
+        else:
+            driver.disconnect()
             pyautogui.press(" ")
-        except Exception:
-            pass
     reconnect_time = (float(constants.UC.RECONNECT_TIME) / 2.0) + 0.6
     if IS_LINUX:
         reconnect_time = constants.UC.RECONNECT_TIME + 0.2
