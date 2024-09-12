@@ -76,6 +76,7 @@ def SB(
     binary_location=None,  # Set path of the Chromium browser binary to use.
     driver_version=None,  # Set the chromedriver or uc_driver version to use.
     skip_js_waits=None,  # Skip JS Waits (readyState=="complete" and Angular).
+    wait_for_angularjs=None,  # Wait for AngularJS to load after some actions.
     use_wire=None,  # Use selenium-wire's webdriver over selenium webdriver.
     external_pdf=None,  # Set Chrome "plugins.always_open_pdf_externally":True.
     is_mobile=None,  # Use the mobile device emulator while running tests.
@@ -109,6 +110,7 @@ def SB(
     wire=None,  # Shortcut / Duplicate of "use_wire".
     pls=None,  # Shortcut / Duplicate of "page_load_strategy".
     sjw=None,  # Shortcut / Duplicate of "skip_js_waits".
+    wfa=None,  # Shortcut / Duplicate of "wait_for_angularjs".
     save_screenshot=None,  # Save a screenshot at the end of each test.
     no_screenshot=None,  # No screenshots saved unless tests directly ask it.
     page_load_strategy=None,  # Set Chrome PLS to "normal", "eager", or "none".
@@ -607,6 +609,17 @@ def SB(
             settings.SKIP_JS_WAITS = True
     elif skip_js_waits:
         settings.SKIP_JS_WAITS = skip_js_waits
+    if wfa is not None and wait_for_angularjs is None:
+        wait_for_angularjs = wfa
+    if wait_for_angularjs is None:
+        if (
+            "--wfa" in sys_argv
+            or "--wait_for_angularjs" in sys_argv
+            or "--wait-for-angularjs" in sys_argv
+        ):
+            settings.WAIT_FOR_ANGULARJS = True
+    elif wait_for_angularjs:
+        settings.WAIT_FOR_ANGULARJS = wait_for_angularjs
     if save_screenshot is None:
         if (
             "--screenshot" in sys_argv

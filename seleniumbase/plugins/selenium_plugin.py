@@ -40,6 +40,7 @@ class SeleniumBrowser(Plugin):
     --binary-location=PATH  (Set path of the Chromium browser binary to use.)
     --driver-version=VER  (Set the chromedriver or uc_driver version to use.)
     --sjw  (Skip JS Waits for readyState to be "complete" or Angular to load.)
+    --wfa  (Wait for AngularJS to be done loading after specific web actions.)
     --pls=PLS  (Set pageLoadStrategy on Chrome: "normal", "eager", or "none".)
     --headless  (Run tests in headless mode. The default arg on Linux OS.)
     --headless2  (Use the new headless mode, which supports extensions.)
@@ -177,6 +178,17 @@ class SeleniumBrowser(Plugin):
             help="""Skip all calls to wait_for_ready_state_complete()
                     and wait_for_angularjs(), which are part of many
                     SeleniumBase methods for improving reliability.""",
+        )
+        parser.addoption(
+            "--wfa",
+            "--wait_for_angularjs",
+            "--wait-for-angularjs",
+            action="store_true",
+            dest="wait_for_angularjs",
+            default=False,
+            help="""Add waiting for AngularJS. (The default setting
+                    was changed to no longer wait for AngularJS to
+                    finish loading as an extra JavaScript call.)""",
         )
         parser.addoption(
             "--protocol",
@@ -1105,6 +1117,8 @@ class SeleniumBrowser(Plugin):
         test.test.start_page = self.options.start_page
         if self.options.skip_js_waits:
             settings.SKIP_JS_WAITS = True
+        if self.options.wait_for_angularjs:
+            settings.WAIT_FOR_ANGULARJS = True
         test.test.protocol = self.options.protocol
         test.test.servername = self.options.servername
         test.test.port = self.options.port
