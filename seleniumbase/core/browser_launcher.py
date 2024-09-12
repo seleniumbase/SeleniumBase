@@ -902,6 +902,11 @@ def _uc_gui_click_captcha(
                     frame = "%s div" % frame
                 elif (
                     driver.is_element_present('[name*="cf-turnstile-"]')
+                    and driver.is_element_present('[class*=spacer] + div div')
+                ):
+                    frame = '[class*=spacer] + div div'
+                elif (
+                    driver.is_element_present('[name*="cf-turnstile-"]')
                     and driver.is_element_present("div.spacer div")
                 ):
                     frame = "div.spacer div"
@@ -975,13 +980,16 @@ def _uc_gui_click_captcha(
                 driver.switch_to.default_content()
             except Exception:
                 return
-        driver.disconnect()
-        try:
-            if x and y:
-                sb_config._saved_cf_x_y = (x, y)
-                _uc_gui_click_x_y(driver, x, y, timeframe=0.95)
-        except Exception:
-            pass
+        if x and y:
+            sb_config._saved_cf_x_y = (x, y)
+            if driver.is_element_present(".footer .clearfix .ray-id"):
+                driver.uc_open_with_disconnect(driver.current_url, 3.8)
+            else:
+                driver.disconnect()
+            try:
+                _uc_gui_click_x_y(driver, x, y, timeframe=0.54321)
+            except Exception:
+                pass
     reconnect_time = (float(constants.UC.RECONNECT_TIME) / 2.0) + 0.6
     if IS_LINUX:
         reconnect_time = constants.UC.RECONNECT_TIME + 0.2
@@ -991,7 +999,7 @@ def _uc_gui_click_captcha(
     caught = False
     if (
         driver.is_element_present(".footer .clearfix .ray-id")
-        and not driver.is_element_present("#challenge-success-text")
+        and not driver.is_element_visible("#challenge-success-text")
     ):
         blind = True
         caught = True
@@ -1214,7 +1222,7 @@ def _uc_gui_handle_captcha(driver, frame="iframe", ctype=None):
     _uc_gui_handle_captcha_(driver, frame=frame, ctype=ctype)
     if (
         driver.is_element_present(".footer .clearfix .ray-id")
-        and not driver.is_element_present("#challenge-success-text")
+        and not driver.is_element_visible("#challenge-success-text")
     ):
         driver.uc_open_with_reconnect(driver.current_url, 3.8)
         _uc_gui_handle_captcha_(driver, frame=frame, ctype=ctype)
