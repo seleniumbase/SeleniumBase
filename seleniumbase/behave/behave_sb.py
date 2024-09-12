@@ -42,6 +42,7 @@ behave -D agent="User Agent String" -D demo
 -D binary-location=PATH  (Set path of the Chromium browser binary to use.)
 -D driver-version=VER  (Set the chromedriver or uc_driver version to use.)
 -D sjw  (Skip JS Waits for readyState to be "complete" or Angular to load.)
+-D wfa  (Wait for AngularJS to be done loading after specific web actions.)
 -D pls=PLS  (Set pageLoadStrategy on Chrome: "normal", "eager", or "none".)
 -D headless  (Run tests in headless mode. The default arg on Linux OS.)
 -D headless2  (Use the new headless mode, which supports extensions.)
@@ -588,6 +589,10 @@ def get_configured_sb(context):
         if low_key in ["sjw", "skip-js-waits", "skip_js_waits"]:
             settings.SKIP_JS_WAITS = True
             continue
+        # Handle: -D wfa / wait-for-angularjs / wait_for_angularjs
+        if low_key in ["wfa", "wait-for-angularjs", "wait_for_angularjs"]:
+            settings.WAIT_FOR_ANGULARJS = True
+            continue
         # Handle: -D visual-baseline / visual_baseline
         if low_key in ["visual-baseline", "visual_baseline"]:
             sb.visual_baseline = True
@@ -889,6 +894,16 @@ def get_configured_sb(context):
         # If the port is "443", the protocol is "https"
         if str(sb.port) == "443":
             sb.protocol = "https"
+    if (
+        (sb.enable_ws is None and sb.disable_ws is None)
+        or (sb.disable_ws is not None and not sb.disable_ws)
+        or (sb.enable_ws is not None and sb.enable_ws)
+    ):
+        sb.enable_ws = True
+        sb.disable_ws = False
+    else:
+        sb.enable_ws = False
+        sb.disable_ws = True
     if sb.window_size:
         window_size = sb.window_size
         if window_size.count(",") != 1:

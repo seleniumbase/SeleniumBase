@@ -59,6 +59,7 @@ def pytest_addoption(parser):
     --binary-location=PATH  (Set path of the Chromium browser binary to use.)
     --driver-version=VER  (Set the chromedriver or uc_driver version to use.)
     --sjw  (Skip JS Waits for readyState to be "complete" or Angular to load.)
+    --wfa  (Wait for AngularJS to be done loading after specific web actions.)
     --pls=PLS  (Set pageLoadStrategy on Chrome: "normal", "eager", or "none".)
     --headless  (Run tests in headless mode. The default arg on Linux OS.)
     --headless2  (Use the new headless mode, which supports extensions.)
@@ -357,6 +358,17 @@ def pytest_addoption(parser):
         help="""Skip all calls to wait_for_ready_state_complete()
                 and wait_for_angularjs(), which are part of many
                 SeleniumBase methods for improving reliability.""",
+    )
+    parser.addoption(
+        "--wfa",
+        "--wait_for_angularjs",
+        "--wait-for-angularjs",
+        action="store_true",
+        dest="wait_for_angularjs",
+        default=False,
+        help="""Add waiting for AngularJS. (The default setting
+                was changed to no longer wait for AngularJS to
+                finish loading as an extra JavaScript call.)""",
     )
     parser.addoption(
         "--with-db_reporting",
@@ -1546,6 +1558,8 @@ def pytest_configure(config):
         settings.ARCHIVE_EXISTING_DOWNLOADS = True
     if config.getoption("skip_js_waits"):
         settings.SKIP_JS_WAITS = True
+    if config.getoption("wait_for_angularjs"):
+        settings.WAIT_FOR_ANGULARJS = True
     sb_config.all_scripts = config.getoption("all_scripts")
     sb_config._time_limit = config.getoption("time_limit")
     sb_config.time_limit = config.getoption("time_limit")
