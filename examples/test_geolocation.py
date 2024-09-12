@@ -39,7 +39,7 @@ class TestGeolocation(BaseCase):
         )
         self.open("https://www.openstreetmap.org/")
         self.click("span.geolocate")
-        self.assert_url_contains("48.87645/2.26340")
+        self.assert_url_contains("48.876450/2.263400")
         self.save_screenshot_to_logs()
         if self.headed:
             self.sleep(4)
