@@ -585,7 +585,9 @@ def main(override=None, intel_for_uc=None, force_uc=None):
         elif IS_LINUX:
             if "64" in ARCH:
                 if "aarch64" in platform.processor():
-                    file_name = "geckodriver-%s-linux-aarch64.tar.gz" % use_version
+                    file_name = (
+                        "geckodriver-%s-linux-aarch64.tar.gz" % use_version
+                    )
                 else:
                     file_name = "geckodriver-%s-linux64.tar.gz" % use_version
             else:
