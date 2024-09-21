@@ -581,7 +581,10 @@ def main(override=None, intel_for_uc=None, force_uc=None):
             file_name = "geckodriver-%s-macos.tar.gz" % use_version
         elif IS_LINUX:
             if "64" in ARCH:
-                file_name = "geckodriver-%s-linux64.tar.gz" % use_version
+                if IS_ARM_MAC:
+                    file_name = "geckodriver-%s-linux-aarch64.tar.gz" % use_version
+                else:
+                    file_name = "geckodriver-%s-linux64.tar.gz" % use_version
             else:
                 file_name = "geckodriver-%s-linux32.tar.gz" % use_version
         elif IS_WINDOWS:
