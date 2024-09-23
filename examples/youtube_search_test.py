@@ -12,20 +12,19 @@ class YouTubeSearchTests(BaseCase):
         self.open("https://www.youtube.com/c/MichaelMintz")
         search_term = "seleniumbase"
         search_selector = "input#search"
-        result_selector = 'li[role="presentation"]'
+        results_selector = '[role="listbox"]'
         self.click_if_visible('button[aria-label="Close"]')
         self.double_click(search_selector)
         self.sleep(0.15)
         self.type(search_selector, search_term)
         self.sleep(0.15)
         # First verify that an autocomplete result exists
-        self.assert_element(result_selector)
-        top_result = self.get_text(result_selector)
+        self.assert_element(results_selector)
+        top_results = self.get_text(results_selector)
         # Now verify that the autocomplete result is good
         self.assert_true(
-            search_term in top_result,
-            'Expected text "%s" not found in top result! '
-            'Actual text was "%s"!' % (search_term, top_result),
+            search_term in top_results,
+            'Expected text "%s" not found in top results! '
+            'Actual text was "%s"!' % (search_term, top_results),
         )
-        self.click(result_selector)
         self.sleep(1)

@@ -108,7 +108,9 @@ class DialogBoxTests(BaseCase):
             self.highlight_type('input[aria-label="Search"]', text + "\n")
         else:
             self.open("https://en.wikipedia.org/wiki/Special:Search")
-            self.highlight_type('input[id*="search"]', text + "\n")
+            self.highlight_type('input[id*="search"]', text)
+            self.sleep(1)
+            self.click("#searchform button")
         self.wait_for_ready_state_complete()
         self.sleep(1)
         self.highlight("body")
