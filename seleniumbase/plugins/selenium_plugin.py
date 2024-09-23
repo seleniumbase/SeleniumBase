@@ -46,6 +46,7 @@ class SeleniumBrowser(Plugin):
     --headless2  (Use the new headless mode, which supports extensions.)
     --headed  (Run tests in headed/GUI mode on Linux OS, where not default.)
     --xvfb  (Run tests using the Xvfb virtual display server on Linux OS.)
+    --xvfb-metrics=STRING  (Set Xvfb display size on Linux: "Width,Height".)
     --locale=LOCALE_CODE  (Set the Language Locale Code for the web browser.)
     --interval=SECONDS  (The autoplay interval for presentations & tour steps)
     --start-page=URL  (The starting URL for the web browser when tests begin.)
@@ -82,6 +83,7 @@ class SeleniumBrowser(Plugin):
     --dark  (Enable Chrome's Dark mode.)
     --devtools  (Open Chrome's DevTools when the browser opens.)
     --disable-beforeunload  (Disable the "beforeunload" event on Chrome.)
+    --window-position=X,Y  (Set the browser's starting window position.)
     --window-size=WIDTH,HEIGHT  (Set the browser's starting window size.)
     --maximize  (Start tests with the browser window maximized.)
     --screenshot  (Save a screenshot at the end of each test.)
@@ -464,6 +466,17 @@ class SeleniumBrowser(Plugin):
                     When using "--xvfb", the "--headless" option
                     will no longer be enabled by default on Linux.
                     Default: False. (Linux-ONLY!)""",
+        )
+        parser.addoption(
+            "--xvfb-metrics",
+            "--xvfb_metrics",
+            action="store",
+            dest="xvfb_metrics",
+            default=None,
+            help="""Customize the Xvfb metrics (Width,Height) on Linux.
+                    Format: A comma-separated string with the 2 values.
+                    Examples: "1920,1080" or "1366,768" or "1024,768".
+                    Default: None. (None: "1366,768". Min: "1024,768".)""",
         )
         parser.addoption(
             "--locale_code",
@@ -887,6 +900,17 @@ class SeleniumBrowser(Plugin):
                     This is already the default Firefox option.""",
         )
         parser.addoption(
+            "--window-position",
+            "--window_position",
+            action="store",
+            dest="window_position",
+            default=None,
+            help="""The option to set the starting window x,y position.
+                    Format: A comma-separated string with the 2 values.
+                    Example: "55,66"
+                    Default: None. (Will use default values if None)""",
+        )
+        parser.addoption(
             "--window-size",
             "--window_size",
             action="store",
@@ -1060,6 +1084,29 @@ class SeleniumBrowser(Plugin):
                 '\n  (Your browser choice was: "%s")\n' % browser
             )
             raise Exception(message)
+        window_position = self.options.window_position
+        if window_position:
+            if window_position.count(",") != 1:
+                message = (
+                    '\n\n  window_position expects an "x,y" string!'
+                    '\n  (Your input was: "%s")\n' % window_position
+                )
+                raise Exception(message)
+            window_position = window_position.replace(" ", "")
+            win_x = None
+            win_y = None
+            try:
+                win_x = int(window_position.split(",")[0])
+                win_y = int(window_position.split(",")[1])
+            except Exception:
+                message = (
+                    '\n\n  Expecting integer values for "x,y"!'
+                    '\n  (window_position input was: "%s")\n'
+                    % window_position
+                )
+                raise Exception(message)
+            settings.WINDOW_START_X = win_x
+            settings.WINDOW_START_Y = win_y
         window_size = self.options.window_size
         if window_size:
             if window_size.count(",") != 1:
@@ -1112,6 +1159,7 @@ class SeleniumBrowser(Plugin):
             self.options.headless2 = False
         test.test.headed = self.options.headed
         test.test.xvfb = self.options.xvfb
+        test.test.xvfb_metrics = self.options.xvfb_metrics
         test.test.locale_code = self.options.locale_code
         test.test.interval = self.options.interval
         test.test.start_page = self.options.start_page
@@ -1192,6 +1240,7 @@ class SeleniumBrowser(Plugin):
         test.test.dark_mode = self.options.dark_mode
         test.test.devtools = self.options.devtools
         test.test._disable_beforeunload = self.options._disable_beforeunload
+        test.test.window_position = self.options.window_position
         test.test.window_size = self.options.window_size
         test.test.maximize_option = self.options.maximize_option
         if self.options.save_screenshot and self.options.no_screenshot:

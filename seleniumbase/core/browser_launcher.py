@@ -602,16 +602,32 @@ def install_pyautogui_if_missing(driver):
                     and not (sb_config.headless or sb_config.headless2)
                 ):
                     from sbvirtualdisplay import Display
-                    try:
+                    xvfb_width = 1366
+                    xvfb_height = 768
+                    if (
+                        hasattr(sb_config, "_xvfb_width")
+                        and sb_config._xvfb_width
+                        and isinstance(sb_config._xvfb_width, int)
+                        and hasattr(sb_config, "_xvfb_height")
+                        and sb_config._xvfb_height
+                        and isinstance(sb_config._xvfb_height, int)
+                    ):
+                        xvfb_width = sb_config._xvfb_width
+                        xvfb_height = sb_config._xvfb_height
+                        if xvfb_width < 1024:
+                            xvfb_width = 1024
+                        sb_config._xvfb_width = xvfb_width
+                        if xvfb_height < 768:
+                            xvfb_height = 768
+                        sb_config._xvfb_height = xvfb_height
+                    with suppress(Exception):
                         xvfb_display = Display(
                             visible=True,
-                            size=(1366, 768),
+                            size=(xvfb_width, xvfb_height),
                             backend="xvfb",
                             use_xauth=True,
                         )
                         xvfb_display.start()
-                    except Exception:
-                        pass
 
 
 def get_configured_pyautogui(pyautogui_copy):
@@ -1669,18 +1685,49 @@ def _set_chrome_options(
         chrome_options.add_experimental_option(
             "mobileEmulation", emulator_settings
         )
-    if headless or headless2:
-        chrome_options.add_argument(
-            "--window-size=%s,%s" % (
-                settings.HEADLESS_START_WIDTH, settings.HEADLESS_START_HEIGHT
-            )
-        )
+    # Handle Window Position
+    if (headless or headless2) and IS_WINDOWS:
+        # https://stackoverflow.com/a/78999088/7058266
+        chrome_options.add_argument("--window-position=-2400,-2400")
     else:
-        chrome_options.add_argument(
-            "--window-size=%s,%s" % (
-                settings.CHROME_START_WIDTH, settings.CHROME_START_HEIGHT
+        if (
+            hasattr(settings, "WINDOW_START_X")
+            and isinstance(settings.WINDOW_START_X, int)
+            and hasattr(settings, "WINDOW_START_Y")
+            and isinstance(settings.WINDOW_START_Y, int)
+        ):
+            chrome_options.add_argument(
+                "--window-position=%s,%s" % (
+                    settings.WINDOW_START_X, settings.WINDOW_START_Y
+                )
             )
-        )
+    # Handle Window Size
+    if headless or headless2:
+        if (
+            hasattr(settings, "HEADLESS_START_WIDTH")
+            and isinstance(settings.HEADLESS_START_WIDTH, int)
+            and hasattr(settings, "HEADLESS_START_HEIGHT")
+            and isinstance(settings.HEADLESS_START_HEIGHT, int)
+        ):
+            chrome_options.add_argument(
+                "--window-size=%s,%s" % (
+                    settings.HEADLESS_START_WIDTH,
+                    settings.HEADLESS_START_HEIGHT,
+                )
+            )
+    else:
+        if (
+            hasattr(settings, "CHROME_START_WIDTH")
+            and isinstance(settings.CHROME_START_WIDTH, int)
+            and hasattr(settings, "CHROME_START_HEIGHT")
+            and isinstance(settings.CHROME_START_HEIGHT, int)
+        ):
+            chrome_options.add_argument(
+                "--window-size=%s,%s" % (
+                    settings.CHROME_START_WIDTH,
+                    settings.CHROME_START_HEIGHT,
+                )
+            )
     if (
         not proxy_auth
         and not disable_csp
@@ -1858,8 +1905,12 @@ def _set_chrome_options(
                     binary_location = binary_loc
     extra_disabled_features = []
     if chromium_arg:
-        # Can be a comma-separated list of Chromium args
-        chromium_arg_list = chromium_arg.split(",")
+        # Can be a comma-separated list of Chromium args or a list
+        chromium_arg_list = None
+        if isinstance(chromium_arg, (list, tuple)):
+            chromium_arg_list = chromium_arg
+        else:
+            chromium_arg_list = chromium_arg.split(",")
         for chromium_arg_item in chromium_arg_list:
             chromium_arg_item = chromium_arg_item.strip()
             if not chromium_arg_item.startswith("--"):
@@ -3422,20 +3473,49 @@ def get_local_driver(
             edge_options.add_experimental_option(
                 "mobileEmulation", emulator_settings
             )
-        if headless or headless2:
-            edge_options.add_argument(
-                "--window-size=%s,%s" % (
-                    settings.HEADLESS_START_WIDTH,
-                    settings.HEADLESS_START_HEIGHT,
-                )
-            )
+        # Handle Window Position
+        if (headless or headless2) and IS_WINDOWS:
+            # https://stackoverflow.com/a/78999088/7058266
+            edge_options.add_argument("--window-position=-2400,-2400")
         else:
-            edge_options.add_argument(
-                "--window-size=%s,%s" % (
-                    settings.CHROME_START_WIDTH,
-                    settings.CHROME_START_HEIGHT,
+            if (
+                hasattr(settings, "WINDOW_START_X")
+                and isinstance(settings.WINDOW_START_X, int)
+                and hasattr(settings, "WINDOW_START_Y")
+                and isinstance(settings.WINDOW_START_Y, int)
+            ):
+                edge_options.add_argument(
+                    "--window-position=%s,%s" % (
+                        settings.WINDOW_START_X, settings.WINDOW_START_Y
+                    )
                 )
-            )
+        # Handle Window Size
+        if headless or headless2:
+            if (
+                hasattr(settings, "HEADLESS_START_WIDTH")
+                and isinstance(settings.HEADLESS_START_WIDTH, int)
+                and hasattr(settings, "HEADLESS_START_HEIGHT")
+                and isinstance(settings.HEADLESS_START_HEIGHT, int)
+            ):
+                edge_options.add_argument(
+                    "--window-size=%s,%s" % (
+                        settings.HEADLESS_START_WIDTH,
+                        settings.HEADLESS_START_HEIGHT,
+                    )
+                )
+        else:
+            if (
+                hasattr(settings, "CHROME_START_WIDTH")
+                and isinstance(settings.CHROME_START_WIDTH, int)
+                and hasattr(settings, "CHROME_START_HEIGHT")
+                and isinstance(settings.CHROME_START_HEIGHT, int)
+            ):
+                edge_options.add_argument(
+                    "--window-size=%s,%s" % (
+                        settings.CHROME_START_WIDTH,
+                        settings.CHROME_START_HEIGHT,
+                    )
+                )
         if user_data_dir and not is_using_uc(undetectable, browser_name):
             abs_path = os.path.abspath(user_data_dir)
             edge_options.add_argument("--user-data-dir=%s" % abs_path)
@@ -3569,7 +3649,11 @@ def get_local_driver(
         set_binary = False
         if chromium_arg:
             # Can be a comma-separated list of Chromium args
-            chromium_arg_list = chromium_arg.split(",")
+            chromium_arg_list = None
+            if isinstance(chromium_arg, (list, tuple)):
+                chromium_arg_list = chromium_arg
+            else:
+                chromium_arg_list = chromium_arg.split(",")
             for chromium_arg_item in chromium_arg_list:
                 chromium_arg_item = chromium_arg_item.strip()
                 if not chromium_arg_item.startswith("--"):

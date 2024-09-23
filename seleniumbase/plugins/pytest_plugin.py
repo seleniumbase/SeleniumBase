@@ -65,6 +65,7 @@ def pytest_addoption(parser):
     --headless2  (Use the new headless mode, which supports extensions.)
     --headed  (Run tests in headed/GUI mode on Linux OS, where not default.)
     --xvfb  (Run tests using the Xvfb virtual display server on Linux OS.)
+    --xvfb-metrics=STRING  (Set Xvfb display size on Linux: "Width,Height".)
     --locale=LOCALE_CODE  (Set the Language Locale Code for the web browser.)
     --interval=SECONDS  (The autoplay interval for presentations & tour steps)
     --start-page=URL  (The starting URL for the web browser when tests begin.)
@@ -109,6 +110,7 @@ def pytest_addoption(parser):
     --rcs | --reuse-class-session  (Reuse session for tests in class.)
     --crumbs  (Delete all cookies between tests reusing a session.)
     --disable-beforeunload  (Disable the "beforeunload" event on Chrome.)
+    --window-position=X,Y  (Set the browser's starting window position.)
     --window-size=WIDTH,HEIGHT  (Set the browser's starting window size.)
     --maximize  (Start tests with the browser window maximized.)
     --screenshot  (Save a screenshot at the end of each test.)
@@ -729,6 +731,17 @@ def pytest_addoption(parser):
                 Default: False. (Linux-ONLY!)""",
     )
     parser.addoption(
+        "--xvfb-metrics",
+        "--xvfb_metrics",
+        action="store",
+        dest="xvfb_metrics",
+        default=None,
+        help="""Customize the Xvfb metrics (Width,Height) on Linux.
+                Format: A comma-separated string with the 2 values.
+                Examples: "1920,1080" or "1366,768" or "1024,768".
+                Default: None. (None: "1366,768". Min: "1024,768".)""",
+    )
+    parser.addoption(
         "--locale_code",
         "--locale-code",
         "--locale",
@@ -1230,6 +1243,17 @@ def pytest_addoption(parser):
                 This is already the default Firefox option.""",
     )
     parser.addoption(
+        "--window-position",
+        "--window_position",
+        action="store",
+        dest="window_position",
+        default=None,
+        help="""The option to set the starting window x,y position
+                Format: A comma-separated string with the 2 values.
+                Example: "55,66"
+                Default: None. (Will use default values if None)""",
+    )
+    parser.addoption(
         "--window-size",
         "--window_size",
         action="store",
@@ -1516,6 +1540,7 @@ def pytest_configure(config):
         sb_config.headless2 = False  # Only for Chromium browsers
     sb_config.headed = config.getoption("headed")
     sb_config.xvfb = config.getoption("xvfb")
+    sb_config.xvfb_metrics = config.getoption("xvfb_metrics")
     sb_config.locale_code = config.getoption("locale_code")
     sb_config.interval = config.getoption("interval")
     sb_config.start_page = config.getoption("start_page")
@@ -1624,6 +1649,7 @@ def pytest_configure(config):
     sb_config.shared_driver = None  # The default driver for session reuse
     sb_config.crumbs = config.getoption("crumbs")
     sb_config._disable_beforeunload = config.getoption("_disable_beforeunload")
+    sb_config.window_position = config.getoption("window_position")
     sb_config.window_size = config.getoption("window_size")
     sb_config.maximize_option = config.getoption("maximize_option")
     sb_config.save_screenshot = config.getoption("save_screenshot")

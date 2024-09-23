@@ -79,10 +79,13 @@ def SB(
     wait_for_angularjs=None,  # Wait for AngularJS to load after some actions.
     use_wire=None,  # Use selenium-wire's webdriver over selenium webdriver.
     external_pdf=None,  # Set Chrome "plugins.always_open_pdf_externally":True.
+    window_position=None,  # Set the browser's starting window position: "X,Y"
+    window_size=None,  # Set the browser's starting window size: "Width,Height"
     is_mobile=None,  # Use the mobile device emulator while running tests.
     mobile=None,  # Shortcut / Duplicate of "is_mobile".
     device_metrics=None,  # Set mobile metrics: "CSSWidth,CSSHeight,PixelRatio"
     xvfb=None,  # Run tests using the Xvfb virtual display server on Linux OS.
+    xvfb_metrics=None,  # Set Xvfb display size on Linux: "Width,Height".
     start_page=None,  # The starting URL for the web browser when tests begin.
     rec_print=None,  # If Recorder is enabled, prints output after tests end.
     rec_behave=None,  # Like Recorder Mode, but also generates behave-gherkin.
@@ -365,6 +368,48 @@ def SB(
                 break
             count += 1
     disable_features = d_f
+    w_p = window_position
+    if w_p is None and "--window-position" in arg_join:
+        count = 0
+        for arg in sys_argv:
+            if arg.startswith("--window-position="):
+                w_p = arg.split("--window-position=")[1]
+                break
+            elif arg == "--window-position" and len(sys_argv) > count + 1:
+                w_p = sys_argv[count + 1]
+                if w_p.startswith("-"):
+                    w_p = None
+                break
+            count += 1
+    window_position = w_p
+    w_s = window_size
+    if w_s is None and "--window-size" in arg_join:
+        count = 0
+        for arg in sys_argv:
+            if arg.startswith("--window-size="):
+                w_s = arg.split("--window-size=")[1]
+                break
+            elif arg == "--window-size" and len(sys_argv) > count + 1:
+                w_s = sys_argv[count + 1]
+                if w_s.startswith("-"):
+                    w_s = None
+                break
+            count += 1
+    window_size = w_s
+    x_m = xvfb_metrics
+    if x_m is None and "--xvfb-metrics" in arg_join:
+        count = 0
+        for arg in sys_argv:
+            if arg.startswith("--xvfb-metrics="):
+                x_m = arg.split("--xvfb-metrics=")[1]
+                break
+            elif arg == "--xvfb-metrics" and len(sys_argv) > count + 1:
+                x_m = sys_argv[count + 1]
+                if x_m.startswith("-"):
+                    x_m = None
+                break
+            count += 1
+    xvfb_metrics = x_m
     if agent is None and "--agent" in arg_join:
         count = 0
         for arg in sys_argv:
@@ -761,6 +806,7 @@ def SB(
     sb_config.headless2 = headless2
     sb_config.headed = headed
     sb_config.xvfb = xvfb
+    sb_config.xvfb_metrics = xvfb_metrics
     sb_config.start_page = start_page
     sb_config.locale_code = locale_code
     sb_config.protocol = protocol
@@ -803,7 +849,8 @@ def SB(
     sb_config.crumbs = False
     sb_config.final_debug = False
     sb_config.visual_baseline = False
-    sb_config.window_size = None
+    sb_config.window_position = window_position
+    sb_config.window_size = window_size
     sb_config.maximize_option = maximize_option
     sb_config._disable_beforeunload = _disable_beforeunload
     sb_config.save_screenshot = save_screenshot
@@ -864,6 +911,7 @@ def SB(
     sb.headless2 = sb_config.headless2
     sb.headed = sb_config.headed
     sb.xvfb = sb_config.xvfb
+    sb.xvfb_metrics = sb_config.xvfb_metrics
     sb.start_page = sb_config.start_page
     sb.locale_code = sb_config.locale_code
     sb.protocol = sb_config.protocol
@@ -908,6 +956,7 @@ def SB(
     sb._crumbs = sb_config.crumbs
     sb._final_debug = sb_config.final_debug
     sb.visual_baseline = sb_config.visual_baseline
+    sb.window_position = sb_config.window_position
     sb.window_size = sb_config.window_size
     sb.maximize_option = sb_config.maximize_option
     sb._disable_beforeunload = sb_config._disable_beforeunload

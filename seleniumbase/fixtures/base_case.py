@@ -13802,9 +13802,13 @@ class BaseCase(unittest.TestCase):
                 if self.undetectable and not (self.headless or self.headless2):
                     import Xlib.display
                     try:
+                        if not self._xvfb_width:
+                            self._xvfb_width = 1366
+                        if not self._xvfb_height:
+                            self._xvfb_height = 768
                         self._xvfb_display = Display(
                             visible=True,
-                            size=(1366, 768),
+                            size=(self._xvfb_width, self._xvfb_height),
                             backend="xvfb",
                             use_xauth=True,
                         )
@@ -14553,6 +14557,7 @@ class BaseCase(unittest.TestCase):
             sb_config.headless_active = False
             self.headed = sb_config.headed
             self.xvfb = sb_config.xvfb
+            self.xvfb_metrics = sb_config.xvfb_metrics
             self.locale_code = sb_config.locale_code
             self.interval = sb_config.interval
             self.start_page = sb_config.start_page
@@ -14644,31 +14649,8 @@ class BaseCase(unittest.TestCase):
             self.use_wire = sb_config.use_wire
             self.external_pdf = sb_config.external_pdf
             self._final_debug = sb_config.final_debug
+            self.window_position = sb_config.window_position
             self.window_size = sb_config.window_size
-            window_size = self.window_size
-            if window_size:
-                if window_size.count(",") != 1:
-                    message = (
-                        '\n\n  window_size expects a "width,height" string!'
-                        '\n  (Your input was: "%s")\n' % window_size
-                    )
-                    raise Exception(message)
-                window_size = window_size.replace(" ", "")
-                width = None
-                height = None
-                try:
-                    width = int(window_size.split(",")[0])
-                    height = int(window_size.split(",")[1])
-                except Exception:
-                    message = (
-                        '\n\n  Expecting integer values for "width,height"!'
-                        '\n  (window_size input was: "%s")\n' % window_size
-                    )
-                    raise Exception(message)
-                settings.CHROME_START_WIDTH = width
-                settings.CHROME_START_HEIGHT = height
-                settings.HEADLESS_START_WIDTH = width
-                settings.HEADLESS_START_HEIGHT = height
             self.maximize_option = sb_config.maximize_option
             self.save_screenshot_after_test = sb_config.save_screenshot
             self.no_screenshot_after_test = sb_config.no_screenshot
@@ -14832,9 +14814,87 @@ class BaseCase(unittest.TestCase):
                 self.mobile_emulator = True
             except Exception:
                 raise Exception(exception_string)
+
+        window_position = self.window_position
+        if window_position:
+            if window_position.count(",") != 1:
+                message = (
+                    '\n\n  window_position expects an "x,y" string!'
+                    '\n  (Your input was: "%s")\n' % window_position
+                )
+                raise Exception(message)
+            window_position = window_position.replace(" ", "")
+            win_x = None
+            win_y = None
+            try:
+                win_x = int(window_position.split(",")[0])
+                win_y = int(window_position.split(",")[1])
+            except Exception:
+                message = (
+                    '\n\n  Expecting integer values for "x,y"!'
+                    '\n  (window_position input was: "%s")\n'
+                    % window_position
+                )
+                raise Exception(message)
+            settings.WINDOW_START_X = win_x
+            settings.WINDOW_START_Y = win_y
+
+        window_size = self.window_size
+        if window_size:
+            if window_size.count(",") != 1:
+                message = (
+                    '\n\n  window_size expects a "width,height" string!'
+                    '\n  (Your input was: "%s")\n' % window_size
+                )
+                raise Exception(message)
+            window_size = window_size.replace(" ", "")
+            width = None
+            height = None
+            try:
+                width = int(window_size.split(",")[0])
+                height = int(window_size.split(",")[1])
+            except Exception:
+                message = (
+                    '\n\n  Expecting integer values for "width,height"!'
+                    '\n  (window_size input was: "%s")\n' % window_size
+                )
+                raise Exception(message)
+            settings.CHROME_START_WIDTH = width
+            settings.CHROME_START_HEIGHT = height
+            settings.HEADLESS_START_WIDTH = width
+            settings.HEADLESS_START_HEIGHT = height
+
+        if self.xvfb_metrics:
+            metrics_string = self.xvfb_metrics
+            metrics_string = metrics_string.replace(" ", "")
+            metrics_list = metrics_string.split(",")[0:2]
+            exception_string = (
+                "Invalid input for xvfb_metrics!\n"
+                "Expecting a comma-separated string\n"
+                "with integer values for Width/Height.\n"
+                'Eg. --xvfb-metrics="1920,1080".\n'
+                "(Minimum: 1024,768) (Default: 1366,768)"
+            )
+            if len(metrics_list) != 2:
+                raise Exception(exception_string)
+            try:
+                self._xvfb_width = int(metrics_list[0])
+                self._xvfb_height = int(metrics_list[1])
+                # The minimum width,height is: 1024,768
+                if self._xvfb_width < 1024:
+                    self._xvfb_width = 1024
+                sb_config._xvfb_width = self._xvfb_width
+                if self._xvfb_height < 768:
+                    self._xvfb_height = 768
+                sb_config._xvfb_height = self._xvfb_height
+                self.xvfb = True
+            except Exception:
+                raise Exception(exception_string)
+
         if self.mobile_emulator and not self.user_agent:
             # Use a Pixel user agent by default if not specified
             self.user_agent = constants.Mobile.AGENT
+
         if self.browser in ["firefox", "ie", "safari"]:
             # The Recorder Mode browser extension is only for Chrome/Edge.
             if self.recorder_mode:
