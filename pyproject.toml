@@ -1,0 +1,72 @@
+[build-system]
+requires = ["setuptools>=70.2.0", "wheel>=0.44.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "seleniumbase"
+readme = "README.md"
+dynamic = [
+    "version",
+    "license",
+    "authors",
+    "scripts",
+    "keywords",
+    "classifiers",
+    "description",
+    "entry-points",
+    "dependencies",
+    "requires-python",
+    "optional-dependencies",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/seleniumbase/SeleniumBase"
+"Changelog" = "https://github.com/seleniumbase/SeleniumBase/releases"
+"Download" = "https://pypi.org/project/seleniumbase/#files"
+"Blog" = "https://seleniumbase.com/"
+"Discord" = "https://discord.gg/EdhQTn3EyE"
+"PyPI" = "https://pypi.org/project/seleniumbase/"
+"Source" = "https://github.com/seleniumbase/SeleniumBase"
+"Repository" = "https://github.com/seleniumbase/SeleniumBase"
+"Documentation" = "https://seleniumbase.io/"
+
+[tool.setuptools]
+packages = [
+    "seleniumbase",
+    "sbase",
+    "seleniumbase.behave",
+    "seleniumbase.common",
+    "seleniumbase.config",
+    "seleniumbase.console_scripts",
+    "seleniumbase.core",
+    "seleniumbase.drivers",
+    "seleniumbase.extensions",
+    "seleniumbase.fixtures",
+    "seleniumbase.js_code",
+    "seleniumbase.masterqa",
+    "seleniumbase.plugins",
+    "seleniumbase.resources",
+    "seleniumbase.translate",
+    "seleniumbase.undetected",
+    "seleniumbase.utilities",
+    "seleniumbase.utilities.selenium_grid",
+    "seleniumbase.utilities.selenium_ide",
+]
+
+[tool.pytest.ini_options]
+addopts = ["--capture=no", "-p no:cacheprovider"]
+norecursedirs = [".*", "build", "dist", "recordings", "temp", "assets"]
+filterwarnings = [
+    "ignore::pytest.PytestWarning",
+    "ignore:.*U.*mode is deprecated:DeprecationWarning",
+]
+junit_family = ["legacy"]
+python_files = ["test_*.py", "*_test.py", "*_tests.py", "*_suite.py"]
+python_classes = ["Test*", "*Test*", "*Test", "*Tests", "*Suite"]
+python_functions = ["test_*"]
+markers = [
+    "marker1", "marker2", "marker3", "marker_test_suite",
+    "local", "remote", "offline", "expected_failure",
+    "qa", "ci", "e2e", "smoke", "ready", "master", "deploy",
+    "develop", "staging", "production", "release", "active",
+]
