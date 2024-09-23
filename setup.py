@@ -1,5 +1,5 @@
 """Setup steps for installing SeleniumBase dependencies and plugins.
-(Uses selenium 4.x and is compatible with Python 3.7+)"""
+(Uses selenium 4.x and is compatible with Python 3.8+)"""
 from setuptools import setup, find_packages  # noqa: F401
 import os
 import sys
@@ -47,7 +47,7 @@ if sys.argv[-1] == "publish":
         print("\n*** Installing build: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'build'")
         print("\n*** Installing pkginfo: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'pkginfo'")
+        os.system("python -m pip install 'pkginfo'")
         print("\n*** Installing readme-renderer: *** (For PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'readme-renderer'")
         print("\n*** Installing jaraco.classes: *** (For PyPI uploads)\n")
@@ -79,12 +79,14 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/seleniumbase/SeleniumBase",
     project_urls={
+        "Homepage": "https://github.com/seleniumbase/SeleniumBase",
         "Changelog": "https://github.com/seleniumbase/SeleniumBase/releases",
         "Download": "https://pypi.org/project/seleniumbase/#files",
-        "Gitter": "https://gitter.im/seleniumbase/SeleniumBase",
         "Blog": "https://seleniumbase.com/",
+        "Discord": "https://discord.gg/EdhQTn3EyE",
         "PyPI": "https://pypi.org/project/seleniumbase/",
         "Source": "https://github.com/seleniumbase/SeleniumBase",
+        "Repository": "https://github.com/seleniumbase/SeleniumBase",
         "Documentation": "https://seleniumbase.io/",
     },
     platforms=["Windows", "Linux", "Mac OS-X"],
@@ -120,7 +122,6 @@ setup(
         "Operating System :: POSIX :: Linux",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
@@ -144,82 +145,64 @@ setup(
         "Topic :: Software Development :: Testing :: Traffic Generation",
         "Topic :: Utilities",
     ],
-    python_requires=">=3.7",
+    python_requires=">=3.8",
     install_requires=[
-        'pip>=24.0;python_version<"3.8"',
-        'pip>=24.1.2;python_version>="3.8"',  # 24.2: editable install warnings
-        'packaging>=24.0;python_version<"3.8"',
-        'packaging>=24.1;python_version>="3.8"',
-        'setuptools>=68.0.0;python_version<"3.8"',
-        'setuptools~=70.2;python_version>="3.8" and python_version<"3.10"',
+        'pip>=24.1.2',  # 24.2: editable install warnings
+        'packaging>=24.1',
+        'setuptools~=70.2;python_version<"3.10"',
         'setuptools>=70.2.0;python_version>="3.10"',  # 71.0.x has issues
-        'wheel>=0.42.0;python_version<"3.8"',
-        'wheel>=0.44.0;python_version>="3.8"',
+        'wheel>=0.44.0',
         'attrs>=24.2.0',
         "certifi>=2024.8.30",
         "exceptiongroup>=1.2.2",
-        'filelock>=3.12.2;python_version<"3.8"',
-        'filelock>=3.16.0;python_version>="3.8"',
-        'platformdirs>=4.0.0;python_version<"3.8"',
-        'platformdirs>=4.3.2;python_version>="3.8"',
-        'typing-extensions>=4.12.2;python_version>="3.8"',
+        'filelock>=3.16.1',
+        'fasteners>=0.19',
+        "pynose>=1.5.3",
+        'platformdirs>=4.3.6',
+        'typing-extensions>=4.12.2',
+        "sbvirtualdisplay>=1.3.0",
+        "six>=1.16.0",
         'parse>=1.20.2',
         'parse-type>=0.6.3',
-        'pyyaml==6.0.1;python_version<"3.8"',
-        'pyyaml>=6.0.2;python_version>="3.8"',
-        "six==1.16.0",
-        "idna==3.8",
+        'colorama>=0.4.6',
+        'pyyaml>=6.0.2',
+        'pygments>=2.18.0',
+        'pyreadline3>=3.5.3;platform_system=="Windows"',
+        "tabcompleter>=1.3.3",
+        "pdbp>=1.5.4",
+        "idna==3.10",
         'chardet==5.2.0',
         'charset-normalizer==3.3.2',
         'urllib3>=1.26.20,<2;python_version<"3.10"',
         'urllib3>=1.26.20,<2.3.0;python_version>="3.10"',
         'requests==2.31.0',
-        "pynose==1.5.2",
         'sniffio==1.3.1',
         'h11==0.14.0',
         'outcome==1.3.0.post0',
-        'trio==0.22.2;python_version<"3.8"',
-        'trio==0.26.2;python_version>="3.8"',
+        'trio==0.26.2',
         'trio-websocket==0.11.1',
         'wsproto==1.2.0',
-        'websocket-client==1.8.0;python_version>="3.8"',
-        'selenium==4.11.2;python_version<"3.8"',
-        'selenium==4.24.0;python_version>="3.8"',
+        'websocket-client==1.8.0',
+        'selenium==4.25.0',
         'cssselect==1.2.0',
         "sortedcontainers==2.4.0",
-        'fasteners==0.19',
-        'execnet==2.0.2;python_version<"3.8"',
-        'execnet==2.1.1;python_version>="3.8"',
+        'execnet==2.1.1',
         'iniconfig==2.0.0',
-        'pluggy==1.2.0;python_version<"3.8"',
-        'pluggy==1.5.0;python_version>="3.8"',
+        'pluggy==1.5.0',
         "py==1.11.0",  # Needed by pytest-html
-        'pytest==7.4.4;python_version<"3.8"',
-        'pytest==8.3.3;python_version>="3.8"',
+        'pytest==8.3.3',
         "pytest-html==2.0.1",  # Newer ones had issues
-        'pytest-metadata==3.0.0;python_version<"3.8"',
-        'pytest-metadata==3.1.1;python_version>="3.8"',
+        'pytest-metadata==3.1.1',
         "pytest-ordering==0.6",
-        'pytest-rerunfailures==13.0;python_version<"3.8"',
-        'pytest-rerunfailures==14.0;python_version>="3.8"',
-        'pytest-xdist==3.5.0;python_version<"3.8"',
-        'pytest-xdist==3.6.1;python_version>="3.8"',
+        'pytest-rerunfailures==14.0',
+        'pytest-xdist==3.6.1',
         'parameterized==0.9.0',
-        "sbvirtualdisplay==1.3.0",
         "behave==1.2.6",
-        'soupsieve==2.4.1;python_version<"3.8"',
-        'soupsieve==2.6;python_version>="3.8"',
+        'soupsieve==2.6',
         "beautifulsoup4==4.12.3",
-        'pygments==2.17.2;python_version<"3.8"',
-        'pygments==2.18.0;python_version>="3.8"',
-        'pyreadline3==3.4.1;platform_system=="Windows"',
-        "tabcompleter==1.3.3",
-        "pdbp==1.5.4",
-        'colorama==0.4.6',
         'pyotp==2.9.0',
         'python-xlib==0.33;platform_system=="Linux"',
-        'markdown-it-py==2.2.0;python_version<"3.8"',
-        'markdown-it-py==3.0.0;python_version>="3.8"',
+        'markdown-it-py==3.0.0',
         'mdurl==0.1.2',
         'rich==13.8.1',
     ],
@@ -235,10 +218,8 @@ setup(
         # pip install -e .[coverage]
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
-            'coverage==7.2.7;python_version<"3.8"',
-            'coverage>=7.6.1;python_version>="3.8"',
-            'pytest-cov==4.1.0;python_version<"3.8"',
-            'pytest-cov>=5.0.0;python_version>="3.8"',
+            'coverage>=7.6.1',
+            'pytest-cov>=5.0.0',
         ],
         # pip install -e .[flake8]
         # Usage: flake8
@@ -260,19 +241,16 @@ setup(
         # pip install -e .[pdfminer]
         # (An optional library for parsing PDF files.)
         "pdfminer": [
-            'pdfminer.six==20221105;python_version<"3.8"',
-            'pdfminer.six==20240706;python_version>="3.8"',
+            'pdfminer.six==20240706',
             'cryptography==39.0.2;python_version<"3.9"',
             'cryptography==43.0.1;python_version>="3.9"',
-            'cffi==1.15.1;python_version<"3.8"',
-            'cffi==1.17.1;python_version>="3.8"',
+            'cffi==1.17.1',
             "pycparser==2.22",
         ],
         # pip install -e .[pillow]
         # (An optional library for image-processing.)
         "pillow": [
-            'Pillow==9.5.0;python_version<"3.8"',
-            'Pillow>=10.4.0;python_version>="3.8"',
+            'Pillow>=10.4.0',
         ],
         # pip install -e .[pip-system-certs]
         # (If you see [SSL: CERTIFICATE_VERIFY_FAILED], then get this.)
@@ -309,8 +287,7 @@ setup(
             'hpack==4.0.0',
             'hyperframe==6.0.1',
             'kaitaistruct==0.10',
-            'pyasn1==0.5.1;python_version<"3.8"',
-            'pyasn1==0.6.1;python_version>="3.8"',
+            'pyasn1==0.6.1',
             'zstandard==0.23.0',
         ],
     },

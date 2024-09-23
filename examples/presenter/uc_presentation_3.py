@@ -1,4 +1,5 @@
 import sys
+from contextlib import suppress
 from seleniumbase import BaseCase
 from seleniumbase import SB
 BaseCase.main(__name__, __file__)
@@ -54,7 +55,7 @@ class UCPresentationClass(BaseCase):
         )
         self.begin_presentation(filename="uc_presentation.html")
 
-        try:
+        with suppress(Exception):
             with SB(uc=True) as sb:
                 url = "https://gitlab.com/users/sign_in"
                 sb.uc_open_with_reconnect(url, 4)
@@ -63,8 +64,6 @@ class UCPresentationClass(BaseCase):
                 sb.highlight('button:contains("Sign in")')
                 sb.highlight('h1:contains("GitLab.com")')
                 sb.post_message("SeleniumBase wasn't detected", duration=4)
-        except Exception:
-            pass
 
         self.create_presentation(theme="serif", transition="none")
         self.add_slide(
@@ -151,7 +150,7 @@ class UCPresentationClass(BaseCase):
         if "linux" in sys.platform or "win32" in sys.platform:
             agent = None  # Use the default UserAgent
 
-        try:
+        with suppress(Exception):
             with SB(uc=True, test=True, agent=agent) as sb:
                 url = "https://gitlab.com/users/sign_in"
                 sb.uc_open_with_reconnect(url, 4)
@@ -159,8 +158,6 @@ class UCPresentationClass(BaseCase):
                 sb.assert_element('label[for="user_login"]')
                 sb.set_messenger_theme(location="bottom_center")
                 sb.post_message("SeleniumBase wasn't detected!")
-        except Exception:
-            pass
 
         self.create_presentation(theme="serif", transition="none")
         self.add_slide(
@@ -201,7 +198,7 @@ class UCPresentationClass(BaseCase):
         )
         self.begin_presentation(filename="uc_presentation.html")
 
-        try:
+        with suppress(Exception):
             with SB(uc=True, test=True, agent=agent) as sb:
                 url = "https://gitlab.com/users/sign_in"
                 sb.uc_open_with_reconnect(url, 4)
@@ -209,8 +206,6 @@ class UCPresentationClass(BaseCase):
                 sb.assert_element('label[for="user_login"]')
                 sb.set_messenger_theme(location="bottom_center")
                 sb.post_message("SeleniumBase wasn't detected!")
-        except Exception:
-            pass
 
         self.create_presentation(theme="serif", transition="none")
         self.add_slide(
@@ -276,7 +271,7 @@ class UCPresentationClass(BaseCase):
         )
         self.begin_presentation(filename="uc_presentation.html")
 
-        try:
+        with suppress(Exception):
             with SB(uc=True, incognito=True, locale_code="en") as sb:
                 url = "https://ahrefs.com/website-authority-checker"
                 input_field = 'input[placeholder="Enter domain"]'
@@ -291,8 +286,6 @@ class UCPresentationClass(BaseCase):
                 sb.highlight('a:contains("Top 100 backlinks")')
                 sb.set_messenger_theme(location="bottom_center")
                 sb.post_message("SeleniumBase wasn't detected!")
-        except Exception:
-            pass
 
         self.create_presentation(theme="serif", transition="none")
         self.add_slide(
@@ -312,7 +305,7 @@ class UCPresentationClass(BaseCase):
         )
         self.begin_presentation(filename="uc_presentation.html")
 
-        try:
+        with suppress(Exception):
             with SB(uc=True, test=True, disable_csp=True) as sb:
                 url = "https://steamdb.info/"
                 sb.uc_open_with_reconnect(url, 3)
@@ -324,8 +317,6 @@ class UCPresentationClass(BaseCase):
                 sb.highlight('button:contains("Sign in")', scroll=False)
                 sb.set_messenger_theme(location="top_center")
                 sb.post_message("SeleniumBase wasn't detected", duration=4)
-        except Exception:
-            pass
 
         self.create_presentation(theme="serif", transition="none")
         self.add_slide(
@@ -405,7 +396,7 @@ class UCPresentationClass(BaseCase):
         )
         self.begin_presentation(filename="uc_presentation.html")
 
-        try:
+        with suppress(Exception):
             with SB(uc=True, test=True) as sb:
                 url = "https://seleniumbase.io/apps/recaptcha"
                 sb.uc_open_with_reconnect(url)
@@ -413,8 +404,6 @@ class UCPresentationClass(BaseCase):
                 sb.assert_element("img#captcha-success", timeout=3)
                 sb.set_messenger_theme(location="top_left")
                 sb.post_message("SeleniumBase wasn't detected")
-        except Exception:
-            pass
 
         self.create_presentation(theme="serif", transition="none")
         self.add_slide(
@@ -673,7 +662,7 @@ class UCPresentationClass(BaseCase):
         )
         self.begin_presentation(filename="uc_presentation.html")
 
-        try:
+        with suppress(Exception):
             with SB(test=True) as sb:
                 url = "https://seleniumbase.io/hobbit/login"
                 sb.open(url)
@@ -682,8 +671,6 @@ class UCPresentationClass(BaseCase):
                 sb.click("img")
                 sb.highlight("h1")
                 sb.sleep(3)  # Gandalf: "You Shall Not Pass!"
-        except Exception:
-            pass
 
         self.create_presentation(theme="serif", transition="none")
         self.add_slide(
@@ -692,7 +679,7 @@ class UCPresentationClass(BaseCase):
         )
         self.begin_presentation(filename="uc_presentation.html")
 
-        try:
+        with suppress(Exception):
             with SB(uc=True, test=True) as sb:
                 url = "https://seleniumbase.io/hobbit/login"
                 sb.uc_open_with_disconnect(url, 2.2)
@@ -703,8 +690,6 @@ class UCPresentationClass(BaseCase):
                 sb.post_message("SeleniumBase wasn't detected!")
                 sb.click("img")
                 sb.sleep(5.888)  # Cool animation happening now!
-        except Exception:
-            pass
 
         self.create_presentation(theme="serif", transition="none")
         self.add_slide(

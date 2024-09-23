@@ -11,3 +11,4 @@ from seleniumbase import MasterQA  # noqa
 from seleniumbase import page_actions  # noqa
 from seleniumbase import page_utils  # noqa
 from seleniumbase import SB  # noqa
+from seleniumbase import translate  # noqa

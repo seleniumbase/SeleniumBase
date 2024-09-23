@@ -2,6 +2,7 @@
 import ast
 import sys
 import time
+from contextlib import suppress
 from nose.plugins import Plugin
 from seleniumbase import config as sb_config
 from seleniumbase.config import settings
@@ -305,14 +306,12 @@ class Base(Plugin):
         if python3_11_or_newer and py311_patch2:
             # Handle a bug on Python 3.11 where exceptions aren't seen
             sb_config._browser_version = None
-            try:
+            with suppress(Exception):
                 test._BaseCase__set_last_page_screenshot()
                 test._BaseCase__set_last_page_url()
                 test._BaseCase__set_last_page_source()
                 sb_config._browser_version = test._get_browser_version()
                 test._log_fail_data()
-            except Exception:
-                pass
             sb_config._excinfo_tb = err
             log_path = None
             if hasattr(sb_config, "_test_logpath"):

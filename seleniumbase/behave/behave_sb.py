@@ -48,6 +48,7 @@ behave -D agent="User Agent String" -D demo
 -D headless2  (Use the new headless mode, which supports extensions.)
 -D headed  (Run tests in headed/GUI mode on Linux OS, where not default.)
 -D xvfb  (Run tests using the Xvfb virtual display server on Linux OS.)
+-D xvfb-metrics=STRING  (Set Xvfb display size on Linux: "Width,Height".)
 -D locale=LOCALE_CODE  (Set the Language Locale Code for the web browser.)
 -D pdb  (Activate Post Mortem Debug Mode if a test fails.)
 -D interval=SECONDS  (The autoplay interval for presentations & tour steps)
@@ -90,6 +91,7 @@ behave -D agent="User Agent String" -D demo
 -D rcs | -D reuse-class-session  (Reuse session for tests in class/feature)
 -D crumbs  (Delete all cookies between tests reusing a session.)
 -D disable-beforeunload  (Disable the "beforeunload" event on Chrome.)
+-D window-position=X,Y  (Set the browser's starting window position.)
 -D window-size=WIDTH,HEIGHT  (Set the browser's starting window size.)
 -D maximize  (Start tests with the browser window maximized.)
 -D screenshot  (Save a screenshot at the end of each test.)
@@ -104,6 +106,7 @@ import colorama
 import os
 import re
 import sys
+from contextlib import suppress
 from seleniumbase import config as sb_config
 from seleniumbase.config import settings
 from seleniumbase.core import download_helper
@@ -145,6 +148,7 @@ def get_configured_sb(context):
     sb.headless_active = False
     sb.headed = False
     sb.xvfb = False
+    sb.xvfb_metrics = None
     sb.start_page = None
     sb.locale_code = None
     sb.pdb_option = False
@@ -193,6 +197,7 @@ def get_configured_sb(context):
     sb._disable_beforeunload = False
     sb.visual_baseline = False
     sb.use_wire = False
+    sb.window_position = None
     sb.window_size = None
     sb.maximize_option = False
     sb.is_context_manager = False
@@ -301,6 +306,13 @@ def get_configured_sb(context):
         # Handle: -D xvfb
         if low_key == "xvfb":
             sb.xvfb = True
+            continue
+        # Handle: -D xvfb-metrics=STR / xvfb_metrics=STR
+        if low_key in ["xvfb-metrics", "xvfb_metrics"]:
+            xvfb_metrics = userdata[key]
+            if xvfb_metrics == "true":
+                xvfb_metrics = sb.xvfb_metrics  # revert to default
+            sb.xvfb_metrics = xvfb_metrics
             continue
         # Handle: -D start-page=URL / start_page=URL / url=URL
         if low_key in ["start-page", "start_page", "url"]:
@@ -600,6 +612,13 @@ def get_configured_sb(context):
         # Handle: -D wire
         if low_key == "wire":
             sb.use_wire = True
+            continue
+        # Handle: -D window-position=X,Y / window_position=X,Y
+        if low_key in ["window-position", "window_position"]:
+            window_position = userdata[key]
+            if window_position == "true":
+                window_position = sb.window_position  # revert to default
+            sb.window_position = window_position
             continue
         # Handle: -D window-size=Width,Height / window_size=Width,Height
         if low_key in ["window-size", "window_size"]:
@@ -904,6 +923,29 @@ def get_configured_sb(context):
     else:
         sb.enable_ws = False
         sb.disable_ws = True
+    if sb.window_position:
+        window_position = sb.window_position
+        if window_position.count(",") != 1:
+            message = (
+                '\n\n  window_position expects an "x,y" string!'
+                '\n  (Your input was: "%s")\n' % window_position
+            )
+            raise Exception(message)
+        window_position = window_position.replace(" ", "")
+        win_x = None
+        win_y = None
+        try:
+            win_x = int(window_position.split(",")[0])
+            win_y = int(window_position.split(",")[1])
+        except Exception:
+            message = (
+                '\n\n  Expecting integer values for "x,y"!'
+                '\n  (window_position input was: "%s")\n'
+                % window_position
+            )
+            raise Exception(message)
+        settings.WINDOW_START_X = win_x
+        settings.WINDOW_START_Y = win_y
     if sb.window_size:
         window_size = sb.window_size
         if window_size.count(",") != 1:
@@ -938,9 +980,11 @@ def get_configured_sb(context):
     sb_config.is_pytest = False
     sb_config.is_nosetest = False
     sb_config.is_context_manager = False
+    sb_config.window_position = sb.window_position
     sb_config.window_size = sb.window_size
     sb_config.maximize_option = sb.maximize_option
     sb_config.xvfb = sb.xvfb
+    sb_config.xvfb_metrics = sb.xvfb_metrics
     sb_config.reuse_class_session = sb._reuse_class_session
     sb_config.save_screenshot = sb.save_screenshot_after_test
     sb_config.no_screenshot = sb.no_screenshot_after_test
@@ -1162,12 +1206,10 @@ def behave_dashboard_prepare():
         sb_config.item_count_untested = sb_config.item_count
         dash_path = os.path.join(os.getcwd(), "dashboard.html")
         star_len = len("Dashboard: ") + len(dash_path)
-        try:
+        with suppress(Exception):
             terminal_size = os.get_terminal_size().columns
             if terminal_size > 30 and star_len > terminal_size:
                 star_len = terminal_size
-        except Exception:
-            pass
         stars = "*" * star_len
         c1 = ""
         cr = ""
@@ -1263,7 +1305,7 @@ def _perform_behave_unconfigure_():
 
 
 def do_final_driver_cleanup_as_needed():
-    try:
+    with suppress(Exception):
         if hasattr(sb_config, "last_driver") and sb_config.last_driver:
             if (
                 not is_windows
@@ -1271,8 +1313,6 @@ def do_final_driver_cleanup_as_needed():
                 or sb_config.last_driver.service.process
             ):
                 sb_config.last_driver.quit()
-    except Exception:
-        pass
 
 
 def _perform_behave_terminal_summary_():
@@ -1281,12 +1321,10 @@ def _perform_behave_terminal_summary_():
     )
     dash_path = os.path.join(os.getcwd(), "dashboard.html")
     equals_len = len("Dashboard: ") + len(dash_path)
-    try:
+    with suppress(Exception):
         terminal_size = os.get_terminal_size().columns
         if terminal_size > 30 and equals_len > terminal_size:
             equals_len = terminal_size
-    except Exception:
-        pass
     equals = "=" * (equals_len + 2)
     c2 = ""
     cr = ""

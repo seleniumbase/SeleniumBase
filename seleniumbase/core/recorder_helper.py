@@ -422,9 +422,14 @@ def generate_sbase_code(srt_actions):
         ):
             import unicodedata
 
-            action[1][0] = unicodedata.normalize("NFKC", action[1][0])
-            action[1][0] = action[1][0].replace("\n", "\\n")
-            action[1][0] = action[1][0].replace("\u00B6", "")
+            text_list = False
+            try:
+                action[1][0] = unicodedata.normalize("NFKC", action[1][0])
+                action[1][0] = action[1][0].replace("\n", "\\n")
+                action[1][0] = action[1][0].replace("\u00B6", "")
+            except Exception:
+                text_list = True
+
             method = "assert_text"
             if action[0] == "as_et":
                 method = "assert_exact_text"
@@ -437,7 +442,17 @@ def generate_sbase_code(srt_actions):
             elif action[0] == "da_et":
                 method = "deferred_assert_exact_text"
             if action[1][1] != "html":
-                if '"' not in action[1][0] and '"' not in action[1][1]:
+                if text_list and '"' not in action[1][1]:
+                    sb_actions.append(
+                        'self.%s(%s, "%s")'
+                        % (method, action[1][0], action[1][1])
+                    )
+                elif text_list and "'" not in action[1][1]:
+                    sb_actions.append(
+                        "self.%s(%s, '%s')"
+                        % (method, action[1][0], action[1][1])
+                    )
+                elif '"' not in action[1][0] and '"' not in action[1][1]:
                     sb_actions.append(
                         'self.%s("%s", "%s")'
                         % (method, action[1][0], action[1][1])
@@ -458,7 +473,11 @@ def generate_sbase_code(srt_actions):
                         % (method, action[1][0], action[1][1])
                     )
             else:
-                if '"' not in action[1][0]:
+                if text_list:
+                    sb_actions.append(
+                        'self.%s(%s)' % (method, action[1][0])
+                    )
+                elif '"' not in action[1][0]:
                     sb_actions.append(
                         'self.%s("%s")' % (method, action[1][0])
                     )

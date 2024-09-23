@@ -110,6 +110,10 @@ DISABLE_CSP_ON_CHROME = False
 # (This applies when using --proxy=[PROXY_STRING] for using a proxy server.)
 RAISE_INVALID_PROXY_STRING_EXCEPTION = True
 
+# Default browser coordinates when opening new windows for tests.
+WINDOW_START_X = 20
+WINDOW_START_Y = 54
+
 # Default browser resolutions when opening new windows for tests.
 # (Headless resolutions take priority, and include all browsers.)
 # (Firefox starts maximized by default when running in GUI Mode.)

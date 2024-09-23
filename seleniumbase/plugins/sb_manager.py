@@ -7,7 +7,7 @@ Usage --> ``with SB() as sb:``
 
 Example -->
 
-```
+```python
 from seleniumbase import SB
 
 with SB() as sb:  # Many args! Eg. SB(browser="edge")
@@ -41,7 +41,7 @@ def SB(
     proxy=None,  # Use proxy. Format: "SERVER:PORT" or "USER:PASS@SERVER:PORT".
     proxy_bypass_list=None,  # Skip proxy when using the listed domains.
     proxy_pac_url=None,  # Use PAC file. (Format: URL or USERNAME:PASSWORD@URL)
-    multi_proxy=False,  # Allow multiple proxies with auth when multi-threaded.
+    multi_proxy=None,  # Allow multiple proxies with auth when multi-threaded.
     agent=None,  # Modify the web browser's User-Agent string.
     cap_file=None,  # The desired capabilities to use with a Selenium Grid.
     cap_string=None,  # The desired capabilities to use with a Selenium Grid.
@@ -79,10 +79,13 @@ def SB(
     wait_for_angularjs=None,  # Wait for AngularJS to load after some actions.
     use_wire=None,  # Use selenium-wire's webdriver over selenium webdriver.
     external_pdf=None,  # Set Chrome "plugins.always_open_pdf_externally":True.
+    window_position=None,  # Set the browser's starting window position: "X,Y"
+    window_size=None,  # Set the browser's starting window size: "Width,Height"
     is_mobile=None,  # Use the mobile device emulator while running tests.
     mobile=None,  # Shortcut / Duplicate of "is_mobile".
     device_metrics=None,  # Set mobile metrics: "CSSWidth,CSSHeight,PixelRatio"
     xvfb=None,  # Run tests using the Xvfb virtual display server on Linux OS.
+    xvfb_metrics=None,  # Set Xvfb display size on Linux: "Width,Height".
     start_page=None,  # The starting URL for the web browser when tests begin.
     rec_print=None,  # If Recorder is enabled, prints output after tests end.
     rec_behave=None,  # Like Recorder Mode, but also generates behave-gherkin.
@@ -124,6 +127,124 @@ def SB(
     interval=None,  # SECONDS (Autoplay interval for SB Slides & Tour steps.)
     time_limit=None,  # SECONDS (Safely fail tests that exceed the time limit.)
 ):
+    """
+    * SeleniumBase as a Python Context Manager *
+
+    Example:
+    --------
+    .. code-block:: python
+        from seleniumbase import SB
+
+        with SB() as sb:  # Many args! Eg. SB(browser="edge")
+            sb.open("https://google.com/ncr")
+            sb.type('[name="q"]', "SeleniumBase on GitHub")
+            sb.submit('[name="q"]')
+            sb.click('a[href*="github.com/seleniumbase"]')
+            sb.highlight("div.Layout-main")
+            sb.highlight("div.Layout-sidebar")
+            sb.sleep(0.5)
+
+    Optional Parameters:
+    --------------------
+    test:  Test Mode: Output, Logging, Continue on failure unless "rtf".
+    rtf:  Shortcut / Duplicate of "raise_test_failure".
+    raise_test_failure:  If "test" mode, raise Exception on 1st failure.
+    browser:  Choose from "chrome", "edge", "firefox", or "safari".
+    headless:  The original headless mode for Chromium and Firefox.
+    headless2:  Chromium's new headless mode. (Has more features)
+    locale_code:  Set the Language Locale Code for the web browser.
+    protocol:  The Selenium Grid protocol: "http" or "https".
+    servername:  The Selenium Grid server/IP used for tests.
+    port:  The Selenium Grid port used by the test server.
+    proxy:  Use proxy. Format: "SERVER:PORT" or "USER:PASS@SERVER:PORT".
+    proxy_bypass_list:  Skip proxy when using the listed domains.
+    proxy_pac_url:  Use PAC file. (Format: URL or USERNAME:PASSWORD@URL)
+    multi_proxy:  # Allow multiple proxies with auth when multi-threaded.
+    agent:  Modify the web browser's User-Agent string.
+    cap_file:  The desired capabilities to use with a Selenium Grid.
+    cap_string:  The desired capabilities to use with a Selenium Grid.
+    recorder_ext:  Enables the SeleniumBase Recorder Chromium extension.
+    disable_js:  Disable JavaScript on websites. Pages might break!
+    disable_csp:  Disable the Content Security Policy of websites.
+    enable_ws:  Enable Web Security on Chromium-based browsers.
+    enable_sync:  Enable "Chrome Sync" on websites.
+    use_auto_ext:  Use Chrome's automation extension.
+    undetectable:  Use undetected-chromedriver to evade bot-detection.
+    uc_cdp_events:  Capture CDP events in undetected-chromedriver mode.
+    uc_subprocess:  Use undetected-chromedriver as a subprocess.
+    log_cdp_events:  Capture {"performance": "ALL", "browser": "ALL"}
+    incognito:  Enable Chromium's Incognito mode.
+    guest_mode:  Enable Chromium's Guest mode.
+    dark_mode:  Enable Chromium's Dark mode.
+    devtools:  Open Chromium's DevTools when the browser opens.
+    remote_debug:  Enable Chrome's Debugger on "http://localhost:9222".
+    enable_3d_apis:  Enable WebGL and 3D APIs.
+    swiftshader:  Chrome: --use-gl=angle / --use-angle=swiftshader-webgl
+    ad_block_on:  Block some types of display ads from loading.
+    host_resolver_rules:  Set host-resolver-rules, comma-separated.
+    block_images:  Block images from loading during tests.
+    do_not_track:  Tell websites that you don't want to be tracked.
+    chromium_arg:  "ARG=N,ARG2" (Set Chromium args, ","-separated.)
+    firefox_arg:  "ARG=N,ARG2" (Set Firefox args, comma-separated.)
+    firefox_pref:  SET (Set Firefox PREFERENCE:VALUE set, ","-separated)
+    user_data_dir:  Set the Chrome user data directory to use.
+    extension_zip:  Load a Chrome Extension .zip|.crx, comma-separated.
+    extension_dir:  Load a Chrome Extension directory, comma-separated.
+    disable_features:  "F1,F2" (Disable Chrome features, ","-separated.)
+    binary_location:  Set path of the Chromium browser binary to use.
+    driver_version:  Set the chromedriver or uc_driver version to use.
+    skip_js_waits:  Skip JS Waits (readyState=="complete" and Angular).
+    wait_for_angularjs:  Wait for AngularJS to load after some actions.
+    use_wire:  Use selenium-wire's webdriver over selenium webdriver.
+    external_pdf:  Set Chrome "plugins.always_open_pdf_externally":True.
+    window_position:  Set the browser's starting window position: "X,Y"
+    window_size:  Set the browser's starting window size: "Width,Height"
+    is_mobile:  Use the mobile device emulator while running tests.
+    mobile:  Shortcut / Duplicate of "is_mobile".
+    device_metrics:  Set mobile metrics: "CSSWidth,CSSHeight,PixelRatio"
+    xvfb:  Run tests using the Xvfb virtual display server on Linux OS.
+    xvfb_metrics:  Set Xvfb display size on Linux: "Width,Height".
+    start_page:  The starting URL for the web browser when tests begin.
+    rec_print:  If Recorder is enabled, prints output after tests end.
+    rec_behave:  Like Recorder Mode, but also generates behave-gherkin.
+    record_sleep:  If Recorder enabled, also records self.sleep calls.
+    data:  Extra test data. Access with "self.data" in tests.
+    var1:  Extra test data. Access with "self.var1" in tests.
+    var2:  Extra test data. Access with "self.var2" in tests.
+    var3:  Extra test data. Access with "self.var3" in tests.
+    variables:  DICT (Extra test data. Access with "self.variables")
+    account:  Set account. Access with "self.account" in tests.
+    environment:  Set the test env. Access with "self.env" in tests.
+    headed:  Run tests in headed/GUI mode on Linux, where not default.
+    maximize:  Start tests with the browser window maximized.
+    disable_ws:  Reverse of "enable_ws". (None and False are different)
+    disable_beforeunload:  Disable the "beforeunload" event on Chromium.
+    settings_file:  A file for overriding default SeleniumBase settings.
+    uc:  Shortcut / Duplicate of "undetectable".
+    undetected:  Shortcut / Duplicate of "undetectable".
+    uc_cdp:  Shortcut / Duplicate of "uc_cdp_events".
+    uc_sub:  Shortcut / Duplicate of "uc_subprocess".
+    log_cdp:  Shortcut / Duplicate of "log_cdp_events".
+    ad_block:  Shortcut / Duplicate of "ad_block_on".
+    server:  Shortcut / Duplicate of "servername".
+    guest:  Shortcut / Duplicate of "guest_mode".
+    wire:  Shortcut / Duplicate of "use_wire".
+    pls:  Shortcut / Duplicate of "page_load_strategy".
+    sjw:  Shortcut / Duplicate of "skip_js_waits".
+    wfa:  Shortcut / Duplicate of "wait_for_angularjs".
+    save_screenshot:  Save a screenshot at the end of each test.
+    no_screenshot:  No screenshots saved unless tests directly ask it.
+    page_load_strategy:  Set Chrome PLS to "normal", "eager", or "none".
+    timeout_multiplier:  Multiplies the default timeout values.
+    js_checking_on:  Check for JavaScript errors after page loads.
+    slow:  Slow down the automation. Faster than using Demo Mode.
+    demo:  Slow down and visually see test actions as they occur.
+    demo_sleep:  SECONDS (Set wait time after Slow & Demo Mode actions.)
+    message_duration:  SECONDS (The time length for Messenger alerts.)
+    highlights:  Number of highlight animations for Demo Mode actions.
+    interval:  SECONDS (Autoplay interval for SB Slides & Tour steps.)
+    time_limit:  SECONDS (Safely fail tests that exceed the time limit.)
+    """
     import os
     import sys
     import time
@@ -365,6 +486,48 @@ def SB(
                 break
             count += 1
     disable_features = d_f
+    w_p = window_position
+    if w_p is None and "--window-position" in arg_join:
+        count = 0
+        for arg in sys_argv:
+            if arg.startswith("--window-position="):
+                w_p = arg.split("--window-position=")[1]
+                break
+            elif arg == "--window-position" and len(sys_argv) > count + 1:
+                w_p = sys_argv[count + 1]
+                if w_p.startswith("-"):
+                    w_p = None
+                break
+            count += 1
+    window_position = w_p
+    w_s = window_size
+    if w_s is None and "--window-size" in arg_join:
+        count = 0
+        for arg in sys_argv:
+            if arg.startswith("--window-size="):
+                w_s = arg.split("--window-size=")[1]
+                break
+            elif arg == "--window-size" and len(sys_argv) > count + 1:
+                w_s = sys_argv[count + 1]
+                if w_s.startswith("-"):
+                    w_s = None
+                break
+            count += 1
+    window_size = w_s
+    x_m = xvfb_metrics
+    if x_m is None and "--xvfb-metrics" in arg_join:
+        count = 0
+        for arg in sys_argv:
+            if arg.startswith("--xvfb-metrics="):
+                x_m = arg.split("--xvfb-metrics=")[1]
+                break
+            elif arg == "--xvfb-metrics" and len(sys_argv) > count + 1:
+                x_m = sys_argv[count + 1]
+                if x_m.startswith("-"):
+                    x_m = None
+                break
+            count += 1
+    xvfb_metrics = x_m
     if agent is None and "--agent" in arg_join:
         count = 0
         for arg in sys_argv:
@@ -761,6 +924,7 @@ def SB(
     sb_config.headless2 = headless2
     sb_config.headed = headed
     sb_config.xvfb = xvfb
+    sb_config.xvfb_metrics = xvfb_metrics
     sb_config.start_page = start_page
     sb_config.locale_code = locale_code
     sb_config.protocol = protocol
@@ -803,7 +967,8 @@ def SB(
     sb_config.crumbs = False
     sb_config.final_debug = False
     sb_config.visual_baseline = False
-    sb_config.window_size = None
+    sb_config.window_position = window_position
+    sb_config.window_size = window_size
     sb_config.maximize_option = maximize_option
     sb_config._disable_beforeunload = _disable_beforeunload
     sb_config.save_screenshot = save_screenshot
@@ -864,6 +1029,7 @@ def SB(
     sb.headless2 = sb_config.headless2
     sb.headed = sb_config.headed
     sb.xvfb = sb_config.xvfb
+    sb.xvfb_metrics = sb_config.xvfb_metrics
     sb.start_page = sb_config.start_page
     sb.locale_code = sb_config.locale_code
     sb.protocol = sb_config.protocol
@@ -908,6 +1074,7 @@ def SB(
     sb._crumbs = sb_config.crumbs
     sb._final_debug = sb_config.final_debug
     sb.visual_baseline = sb_config.visual_baseline
+    sb.window_position = sb_config.window_position
     sb.window_size = sb_config.window_size
     sb.maximize_option = sb_config.maximize_option
     sb._disable_beforeunload = sb_config._disable_beforeunload
