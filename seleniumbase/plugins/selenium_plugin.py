@@ -1,5 +1,6 @@
 """Selenium Plugin for SeleniumBase tests that run with pynose / nosetests"""
 import sys
+from contextlib import suppress
 from nose.plugins import Plugin
 from seleniumbase import config as sb_config
 from seleniumbase.config import settings
@@ -1308,7 +1309,7 @@ class SeleniumBrowser(Plugin):
         ):
             width = settings.HEADLESS_START_WIDTH
             height = settings.HEADLESS_START_HEIGHT
-            try:
+            with suppress(Exception):
                 from sbvirtualdisplay import Display
 
                 self._xvfb_display = Display(visible=0, size=(width, height))
@@ -1316,8 +1317,6 @@ class SeleniumBrowser(Plugin):
                 sb_config._virtual_display = self._xvfb_display
                 self.headless_active = True
                 sb_config.headless_active = True
-            except Exception:
-                pass
         sb_config._is_timeout_changed = False
         sb_config._SMALL_TIMEOUT = settings.SMALL_TIMEOUT
         sb_config._LARGE_TIMEOUT = settings.LARGE_TIMEOUT
@@ -1350,7 +1349,7 @@ class SeleniumBrowser(Plugin):
             pass
         except Exception:
             pass
-        try:
+        with suppress(Exception):
             if (
                 hasattr(self, "_xvfb_display")
                 and self._xvfb_display
@@ -1367,5 +1366,3 @@ class SeleniumBrowser(Plugin):
             ):
                 sb_config._virtual_display.stop()
                 sb_config._virtual_display = None
-        except Exception:
-            pass

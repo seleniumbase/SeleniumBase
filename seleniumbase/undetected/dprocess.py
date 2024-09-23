@@ -3,7 +3,10 @@ import os
 import sys
 import atexit
 import logging
+import platform
+from contextlib import suppress
 from subprocess import PIPE
+from subprocess import Popen
 
 CREATE_NEW_PROCESS_GROUP = 0x00000200
 DETACHED_PROCESS = 0x00000008
@@ -37,9 +40,6 @@ def start_detached(executable, *args):
 def _start_detached(executable, *args, writer=None):
     # Configure Launch
     kwargs = {}
-    import platform
-    from subprocess import Popen
-
     if platform.system() == "Windows":
         kwargs.update(
             creationflags=DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP
@@ -58,11 +58,9 @@ def _cleanup():
     import signal
 
     for pid in REGISTERED:
-        try:
+        with suppress(Exception):
             logging.getLogger(__name__).debug("cleaning up pid %d " % pid)
             os.kill(pid, signal.SIGTERM)
-        except Exception:
-            pass
 
 
 atexit.register(_cleanup)

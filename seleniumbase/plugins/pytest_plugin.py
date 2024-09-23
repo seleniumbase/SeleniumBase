@@ -4,6 +4,7 @@ import os
 import pytest
 import sys
 import time
+from contextlib import suppress
 from seleniumbase import config as sb_config
 from seleniumbase.config import settings
 from seleniumbase.core import log_helper
@@ -1848,10 +1849,8 @@ def _create_dashboard_assets_():
     abs_path = os.path.abspath(".")
     assets_folder = os.path.join(abs_path, "assets")
     if not os.path.exists(assets_folder):
-        try:
+        with suppress(Exception):
             os.makedirs(assets_folder, exist_ok=True)
-        except Exception:
-            pass
     pytest_style_css = os.path.join(assets_folder, "pytest_style.css")
     add_pytest_style_css = True
     if os.path.exists(pytest_style_css):
@@ -1923,12 +1922,10 @@ def pytest_collection_finish(session):
         dash_path = os.path.join(os.getcwd(), "dashboard.html")
         dash_url = "file://" + dash_path.replace("\\", "/")
         star_len = len("Dashboard: ") + len(dash_url)
-        try:
+        with suppress(Exception):
             terminal_size = os.get_terminal_size().columns
             if terminal_size > 30 and star_len > terminal_size:
                 star_len = terminal_size
-        except Exception:
-            pass
         stars = "*" * star_len
         c1 = ""
         cr = ""
@@ -1970,11 +1967,11 @@ def pytest_runtest_teardown(item):
     (Has zero effect on tests using --reuse-session / --rs)"""
     if "--co" in sys_argv or "--collect-only" in sys_argv:
         return
-    try:
+    with suppress(Exception):
         if hasattr(item, "_testcase") or hasattr(sb_config, "_sb_pdb_driver"):
             if hasattr(item, "_testcase"):
                 self = item._testcase
-                try:
+                with suppress(Exception):
                     if (
                         hasattr(self, "driver")
                         and self.driver
@@ -1982,22 +1979,18 @@ def pytest_runtest_teardown(item):
                     ):
                         if not (is_windows or self.driver.service.process):
                             self.driver.quit()
-                except Exception:
-                    pass
             elif (
                 hasattr(sb_config, "_sb_pdb_driver")
                 and sb_config._sb_pdb_driver
             ):
-                try:
+                with suppress(Exception):
                     if (
                         not is_windows
                         or sb_config._sb_pdb_driver.service.process
                     ):
                         sb_config._sb_pdb_driver.quit()
                         sb_config._sb_pdb_driver = None
-                except Exception:
-                    pass
-        try:
+        with suppress(Exception):
             if (
                 hasattr(self, "_xvfb_display")
                 and self._xvfb_display
@@ -2014,10 +2007,6 @@ def pytest_runtest_teardown(item):
             ):
                 sb_config._virtual_display.stop()
                 sb_config._virtual_display = None
-        except Exception:
-            pass
-    except Exception:
-        pass
     if (
         (
             sb_config._has_exception
@@ -2398,7 +2387,7 @@ def pytest_runtest_makereport(item, call):
                     )
                 if log_path:
                     sb_config._log_fail_data()
-        try:
+        with suppress(Exception):
             extra_report = None
             if hasattr(item, "_testcase"):
                 extra_report = item._testcase._html_report_extra
@@ -2443,5 +2432,3 @@ def pytest_runtest_makereport(item, call):
                     "</script>" % constants.Dashboard.LIVE_JS
                 )
                 report.extra.append(pytest_html.extras.html(refresh_updates))
-        except Exception:
-            pass

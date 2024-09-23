@@ -9,6 +9,7 @@ import time
 import types
 import urllib3
 import warnings
+from contextlib import suppress
 from selenium import webdriver
 from selenium.common.exceptions import ElementClickInterceptedException
 from selenium.common.exceptions import InvalidSessionIdException
@@ -277,7 +278,7 @@ def chromedriver_on_path():
 def get_uc_driver_version(full=False):
     uc_driver_version = None
     if os.path.exists(LOCAL_UC_DRIVER):
-        try:
+        with suppress(Exception):
             output = subprocess.check_output(
                 '"%s" --version' % LOCAL_UC_DRIVER, shell=True
             )
@@ -292,8 +293,6 @@ def get_uc_driver_version(full=False):
                     uc_driver_version = full_version
                 else:
                     uc_driver_version = output
-        except Exception:
-            pass
     return uc_driver_version
 
 
@@ -372,7 +371,7 @@ def uc_special_open_if_cf(
 ):
     if url.startswith("http:") or url.startswith("https:"):
         special = False
-        try:
+        with suppress(Exception):
             req_get = requests_get(url, proxy_string)
             status_str = str(req_get.status_code)
             if (
@@ -384,8 +383,6 @@ def uc_special_open_if_cf(
                 special = True
                 if status_str == "403" or status_str == "429":
                     time.sleep(0.06)  # Forbidden / Blocked! (Wait first!)
-        except Exception:
-            pass
         if special:
             time.sleep(0.05)
             with driver:
@@ -416,13 +413,11 @@ def uc_special_open_if_cf(
                             "mobile": True
                         }
                     )
-                    try:
+                    with suppress(Exception):
                         driver.execute_cdp_cmd(
                             'Emulation.setDeviceMetricsOverride',
                             set_device_metrics_override
                         )
-                    except Exception:
-                        pass
             if not mobile_emulator:
                 page_actions.switch_to_window(
                     driver, driver.window_handles[-1], 2
@@ -529,13 +524,11 @@ def uc_click(
     timeout=settings.SMALL_TIMEOUT,
     reconnect_time=None,
 ):
-    try:
+    with suppress(Exception):
         rct = float(by)  # Add shortcut: driver.uc_click(selector, RCT)
         if not reconnect_time:
             reconnect_time = rct
         by = "css selector"
-    except Exception:
-        pass
     element = driver.wait_for_selector(selector, by=by, timeout=timeout)
     tag_name = element.tag_name
     if not tag_name == "span" and not tag_name == "input":  # Must be "visible"
@@ -574,7 +567,7 @@ def install_pyautogui_if_missing(driver):
     with pip_find_lock:  # Prevent issues with multiple processes
         try:
             import pyautogui
-            try:
+            with suppress(Exception):
                 use_pyautogui_ver = constants.PyAutoGUI.VER
                 if pyautogui.__version__ != use_pyautogui_ver:
                     del pyautogui
@@ -582,8 +575,6 @@ def install_pyautogui_if_missing(driver):
                         "pyautogui", version=use_pyautogui_ver
                     )
                     import pyautogui
-            except Exception:
-                pass
         except Exception:
             print("\nPyAutoGUI required! Installing now...")
             shared_utils.pip_install(
@@ -794,12 +785,10 @@ def uc_gui_click_x_y(driver, x, y, timeframe=0.25):
             y = y * width_ratio
             _uc_gui_click_x_y(driver, x, y, timeframe=timeframe, uc_lock=False)
             return
-        try:
+        with suppress(Exception):
             page_actions.switch_to_window(
                 driver, driver.current_window_handle, 2, uc_lock=False
             )
-        except Exception:
-            pass
         _uc_gui_click_x_y(driver, x, y, timeframe=timeframe, uc_lock=False)
 
 
@@ -1002,10 +991,8 @@ def _uc_gui_click_captcha(
                 driver.uc_open_with_disconnect(driver.current_url, 3.8)
             else:
                 driver.disconnect()
-            try:
-                _uc_gui_click_x_y(driver, x, y, timeframe=0.54321)
-            except Exception:
-                pass
+            with suppress(Exception):
+                _uc_gui_click_x_y(driver, x, y, timeframe=0.32)
     reconnect_time = (float(constants.UC.RECONNECT_TIME) / 2.0) + 0.6
     if IS_LINUX:
         reconnect_time = constants.UC.RECONNECT_TIME + 0.2
@@ -1047,12 +1034,12 @@ def _uc_gui_click_captcha(
                     return
             if blind:
                 driver.uc_open_with_disconnect(driver.current_url, 3.8)
-                _uc_gui_click_x_y(driver, x, y, timeframe=1.05)
+                _uc_gui_click_x_y(driver, x, y, timeframe=0.32)
             else:
                 driver.uc_open_with_reconnect(driver.current_url, 3.8)
                 if _on_a_captcha_page(driver):
                     driver.disconnect()
-                    _uc_gui_click_x_y(driver, x, y, timeframe=1.05)
+                    _uc_gui_click_x_y(driver, x, y, timeframe=0.32)
         driver.reconnect(reconnect_time)
 
 
@@ -1232,13 +1219,11 @@ def _uc_gui_handle_captcha_(driver, frame="iframe", ctype=None):
             and sb_config._saved_cf_tab_count
         ):
             driver.uc_open_with_disconnect(driver.current_url, 3.8)
-            try:
+            with suppress(Exception):
                 for i in range(sb_config._saved_cf_tab_count):
                     pyautogui.press("\t")
                     time.sleep(0.027)
                 pyautogui.press(" ")
-            except Exception:
-                pass
         else:
             driver.disconnect()
             pyautogui.press(" ")
@@ -1919,13 +1904,11 @@ def _set_chrome_options(
                 else:
                     chromium_arg_item = "--" + chromium_arg_item
             if "remote-debugging-port=" in chromium_arg_item:
-                try:
+                with suppress(Exception):
                     # Extra processing for UC Mode
                     chrome_options._remote_debugging_port = int(
                         chromium_arg_item.split("remote-debugging-port=")[1]
                     )
-                except Exception:
-                    pass
             if "set-binary" in chromium_arg_item and not binary_location:
                 br_app = "google-chrome"
                 binary_loc = detect_b_ver.get_binary_location(
@@ -2577,14 +2560,12 @@ def get_remote_driver(
             try:
                 from seleniumwire import webdriver
                 import blinker
-                try:
+                with suppress(Exception):
                     use_blinker_ver = constants.SeleniumWire.BLINKER_VER
                     if blinker.__version__ != use_blinker_ver:
                         shared_utils.pip_install(
                             "blinker", version=use_blinker_ver
                         )
-                except Exception:
-                    pass
                 del blinker
             except Exception:
                 shared_utils.pip_install(
@@ -3008,14 +2989,12 @@ def get_local_driver(
             try:
                 from seleniumwire import webdriver
                 import blinker
-                try:
+                with suppress(Exception):
                     use_blinker_ver = constants.SeleniumWire.BLINKER_VER
                     if blinker.__version__ != use_blinker_ver:
                         shared_utils.pip_install(
                             "blinker", version=use_blinker_ver
                         )
-                except Exception:
-                    pass
                 del blinker
             except Exception:
                 shared_utils.pip_install(
@@ -3306,7 +3285,7 @@ def get_local_driver(
         edge_driver_version = None
         edgedriver_upgrade_needed = False
         if os.path.exists(LOCAL_EDGEDRIVER):
-            try:
+            with suppress(Exception):
                 output = subprocess.check_output(
                     '"%s" --version' % LOCAL_EDGEDRIVER, shell=True
                 )
@@ -3332,8 +3311,6 @@ def get_local_driver(
                         edge_driver_version = output
                     if driver_version == "keep":
                         driver_version = edge_driver_version
-            except Exception:
-                pass
         use_version = find_edgedriver_version_to_use(
             use_version, driver_version
         )
@@ -3437,7 +3414,7 @@ def get_local_driver(
                 edge_options.add_argument("--headless=new")
         elif headless and undetectable:
             # (For later: UC Mode doesn't support Edge now)
-            try:
+            with suppress(Exception):
                 if int(use_version) >= 109:
                     edge_options.add_argument("--headless=new")
                 elif (
@@ -3447,8 +3424,6 @@ def get_local_driver(
                     edge_options.add_argument("--headless=chrome")
                 else:
                     pass  # Will need Xvfb on Linux
-            except Exception:
-                pass
         elif headless:
             if "--headless" not in edge_options.arguments:
                 edge_options.add_argument("--headless")
@@ -3748,19 +3723,15 @@ def get_local_driver(
                     constants.MultiBrowser.DRIVER_FIXING_LOCK
                 )
                 with edgedriver_fixing_lock:
-                    try:
+                    with suppress(Exception):
                         if not _was_driver_repaired():
                             _repair_edgedriver(edge_version)
                             _mark_driver_repaired()
-                    except Exception:
-                        pass
             else:
-                try:
+                with suppress(Exception):
                     if not _was_driver_repaired():
                         _repair_edgedriver(edge_version)
                     _mark_driver_repaired()
-                except Exception:
-                    pass
             driver = Edge(service=service, options=edge_options)
         return extend_driver(driver)
     elif browser_name == constants.Browser.SAFARI:
@@ -3912,7 +3883,7 @@ def get_local_driver(
             ch_driver_version = None
             path_chromedriver = chromedriver_on_path()
             if os.path.exists(LOCAL_CHROMEDRIVER):
-                try:
+                with suppress(Exception):
                     output = subprocess.check_output(
                         '"%s" --version' % LOCAL_CHROMEDRIVER, shell=True
                     )
@@ -3926,8 +3897,6 @@ def get_local_driver(
                         ch_driver_version = output
                         if driver_version == "keep":
                             driver_version = ch_driver_version
-                except Exception:
-                    pass
             elif path_chromedriver:
                 try:
                     make_driver_executable_if_not(path_chromedriver)
@@ -3936,7 +3905,7 @@ def get_local_driver(
                         "\nWarning: Could not make chromedriver"
                         " executable: %s" % e
                     )
-                try:
+                with suppress(Exception):
                     output = subprocess.check_output(
                         '"%s" --version' % path_chromedriver, shell=True
                     )
@@ -3950,8 +3919,6 @@ def get_local_driver(
                         ch_driver_version = output
                         if driver_version == "keep":
                             use_version = ch_driver_version
-                except Exception:
-                    pass
             disable_build_check = True
             uc_driver_version = None
             if is_using_uc(undetectable, browser_name):
@@ -4144,7 +4111,7 @@ def get_local_driver(
                         if IS_ARM_MAC and use_uc:
                             intel_for_uc = True  # Use Intel driver for UC Mode
                         if os.path.exists(LOCAL_CHROMEDRIVER):
-                            try:
+                            with suppress(Exception):
                                 output = subprocess.check_output(
                                     '"%s" --version' % LOCAL_CHROMEDRIVER,
                                     shell=True,
@@ -4157,8 +4124,6 @@ def get_local_driver(
                                 output = full_ch_driver_version.split(".")[0]
                                 if int(output) >= 2:
                                     ch_driver_version = output
-                            except Exception:
-                                pass
                         if (
                             (
                                 not use_uc
@@ -4296,7 +4261,7 @@ def get_local_driver(
                                 chrome_options.add_argument(
                                     "--user-agent=%s" % user_agent
                                 )
-                            try:
+                            with suppress(Exception):
                                 if (
                                     (
                                         not user_agent
@@ -4402,7 +4367,7 @@ def get_local_driver(
                                             service=service,
                                             options=headless_options,
                                         )
-                                    try:
+                                    with suppress(Exception):
                                         user_agent = driver.execute_script(
                                             "return navigator.userAgent;"
                                         )
@@ -4424,11 +4389,7 @@ def get_local_driver(
                                             "--user-agent=%s" % user_agent
                                         )
                                         sb_config.uc_agent_cache = user_agent
-                                    except Exception:
-                                        pass
                                     driver.quit()
-                            except Exception:
-                                pass
                             uc_path = None
                             if os.path.exists(LOCAL_UC_DRIVER):
                                 uc_path = LOCAL_UC_DRIVER
@@ -4751,13 +4712,11 @@ def get_local_driver(
                                 "mobile": True
                             }
                         )
-                        try:
+                        with suppress(Exception):
                             driver.execute_cdp_cmd(
                                 'Emulation.setDeviceMetricsOverride',
                                 set_device_metrics_override
                             )
-                        except Exception:
-                            pass
                 return extend_driver(driver)
             else:  # Running headless on Linux (and not using --uc)
                 try:
@@ -4803,23 +4762,19 @@ def get_local_driver(
                             )
                             with chromedr_fixing_lock:
                                 if not _was_driver_repaired():
-                                    try:
+                                    with suppress(Exception):
                                         _repair_chromedriver(
                                             chrome_options, chrome_options, mcv
                                         )
                                         _mark_driver_repaired()
-                                    except Exception:
-                                        pass
                         else:
                             if not _was_driver_repaired():
-                                try:
+                                with suppress(Exception):
                                     _repair_chromedriver(
                                         chrome_options, chrome_options, mcv
                                     )
-                                except Exception:
-                                    pass
                             _mark_driver_repaired()
-                        try:
+                        with suppress(Exception):
                             service = ChromeService(
                                 log_output=os.devnull,
                                 service_args=["--disable-build-check"],
@@ -4829,8 +4784,6 @@ def get_local_driver(
                                 options=chrome_options,
                             )
                             return extend_driver(driver)
-                        except Exception:
-                            pass
                     # Use the virtual display on Linux during headless errors
                     logging.debug(
                         "\nWarning: Chrome failed to launch in"
@@ -4851,14 +4804,12 @@ def get_local_driver(
             if is_using_uc(undetectable, browser_name):
                 raise
             # Try again if Chrome didn't launch
-            try:
+            with suppress(Exception):
                 service = ChromeService(service_args=["--disable-build-check"])
                 driver = webdriver.Chrome(
                     service=service, options=chrome_options
                 )
                 return extend_driver(driver)
-            except Exception:
-                pass
             if user_data_dir:
                 print("\nUnable to set user_data_dir while starting Chrome!\n")
                 raise

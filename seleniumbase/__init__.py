@@ -10,7 +10,7 @@ from selenium import webdriver
 from seleniumbase.__version__ import __version__
 from seleniumbase.common import decorators  # noqa
 from seleniumbase.common import encryption  # noqa
-from seleniumbase.core import colored_traceback
+from seleniumbase.core import colored_traceback  # noqa
 from seleniumbase.core.browser_launcher import get_driver  # noqa
 from seleniumbase.fixtures import js_utils  # noqa
 from seleniumbase.fixtures import page_actions  # noqa
@@ -36,8 +36,7 @@ if sys.version_info[0] < 3 and "pdbp" in locals():
         pdb.DefaultConfig.sticky_by_default = True
 colored_traceback.add_hook()
 os.environ["SE_AVOID_STATS"] = "true"  # Disable Selenium Manager stats
-if sys.version_info >= (3, 7):
-    webdriver.TouchActions = None  # Lifeline for past selenium-wire versions
+webdriver.TouchActions = None  # Lifeline for past selenium-wire versions
 if sys.version_info >= (3, 10):
     collections.Callable = collections.abc.Callable  # Lifeline for nosetests
 del collections  # Undo "import collections" / Simplify "dir(seleniumbase)"

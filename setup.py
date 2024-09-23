@@ -1,5 +1,5 @@
 """Setup steps for installing SeleniumBase dependencies and plugins.
-(Uses selenium 4.x and is compatible with Python 3.7+)"""
+(Uses selenium 4.x and is compatible with Python 3.8+)"""
 from setuptools import setup, find_packages  # noqa: F401
 import os
 import sys
@@ -47,7 +47,7 @@ if sys.argv[-1] == "publish":
         print("\n*** Installing build: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'build'")
         print("\n*** Installing pkginfo: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'pkginfo'")
+        os.system("python -m pip install 'pkginfo'")
         print("\n*** Installing readme-renderer: *** (For PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'readme-renderer'")
         print("\n*** Installing jaraco.classes: *** (For PyPI uploads)\n")
@@ -79,12 +79,14 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/seleniumbase/SeleniumBase",
     project_urls={
+        "Homepage": "https://github.com/seleniumbase/SeleniumBase",
         "Changelog": "https://github.com/seleniumbase/SeleniumBase/releases",
         "Download": "https://pypi.org/project/seleniumbase/#files",
-        "Gitter": "https://gitter.im/seleniumbase/SeleniumBase",
         "Blog": "https://seleniumbase.com/",
+        "Discord": "https://discord.gg/EdhQTn3EyE",
         "PyPI": "https://pypi.org/project/seleniumbase/",
         "Source": "https://github.com/seleniumbase/SeleniumBase",
+        "Repository": "https://github.com/seleniumbase/SeleniumBase",
         "Documentation": "https://seleniumbase.io/",
     },
     platforms=["Windows", "Linux", "Mac OS-X"],
@@ -120,7 +122,6 @@ setup(
         "Operating System :: POSIX :: Linux",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",

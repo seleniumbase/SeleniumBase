@@ -21,6 +21,7 @@ import codecs
 import fasteners
 import os
 import time
+from contextlib import suppress
 from selenium.common.exceptions import ElementNotInteractableException
 from selenium.common.exceptions import ElementNotVisibleException
 from selenium.common.exceptions import NoAlertPresentException
@@ -1409,12 +1410,10 @@ def switch_to_frame(driver, frame, timeout=settings.SMALL_TIMEOUT):
                 else:
                     by = "css selector"
                 if is_element_visible(driver, frame, by=by):
-                    try:
+                    with suppress(Exception):
                         element = driver.find_element(by=by, value=frame)
                         driver.switch_to.frame(element)
                         return True
-                    except Exception:
-                        pass
             now_ms = time.time() * 1000.0
             if now_ms >= stop_ms:
                 break
@@ -1548,12 +1547,10 @@ def click_if_visible(
     if is_element_visible(driver, selector, by=by):
         click(driver, selector, by=by, timeout=1)
     elif timeout > 0:
-        try:
+        with suppress(Exception):
             wait_for_element_visible(
                 driver, selector, by=by, timeout=timeout
             )
-        except Exception:
-            pass
         if is_element_visible(driver, selector, by=by):
             click(driver, selector, by=by, timeout=1)
 
