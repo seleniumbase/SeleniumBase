@@ -32,7 +32,8 @@ def SB(
     rtf=None,  # Shortcut / Duplicate of "raise_test_failure".
     raise_test_failure=None,  # If "test" mode, raise Exception on 1st failure.
     browser=None,  # Choose from "chrome", "edge", "firefox", or "safari".
-    headless=None,  # The original headless mode for Chromium and Firefox.
+    headless=None,  # The default headless mode for Chromium and Firefox.
+    headless1=None,  # Chromium's old headless mode. (Fast, but limited)
     headless2=None,  # Chromium's new headless mode. (Has more features)
     locale_code=None,  # Set the Language Locale Code for the web browser.
     protocol=None,  # The Selenium Grid protocol: "http" or "https".
@@ -401,6 +402,13 @@ def SB(
             headless = True
         else:
             headless = False
+    if headless1 is None:
+        if "--headless1" in sys_argv:
+            headless1 = True
+        else:
+            headless1 = False
+    if headless1:
+        headless = True
     if headless2 is None:
         if "--headless2" in sys_argv:
             headless2 = True
@@ -672,6 +680,7 @@ def SB(
         recorder_ext = True
     if recorder_mode and headless:
         headless = False
+        headless1 = False
         headless2 = True
     sb_config.proxy_driver = False
     if "--proxy-driver" in sys_argv or "--proxy_driver" in sys_argv:
@@ -801,6 +810,7 @@ def SB(
         save_screenshot = False  # "no_screenshot" has priority
     if browser == "safari" and headless:
         headless = False  # Safari doesn't support headless mode
+        headless1 = False
     if js_checking_on is None:
         if "--check-js" in sys_argv:
             js_checking_on = True
@@ -921,6 +931,7 @@ def SB(
         sb_config.is_nosetest = False
     sb_config.is_context_manager = True
     sb_config.headless = headless
+    sb_config.headless1 = headless1
     sb_config.headless2 = headless2
     sb_config.headed = headed
     sb_config.xvfb = xvfb
@@ -1026,6 +1037,7 @@ def SB(
     sb.is_nosetest = False
     sb.is_context_manager = sb_config.is_context_manager
     sb.headless = sb_config.headless
+    sb.headless1 = sb_config.headless1
     sb.headless2 = sb_config.headless2
     sb.headed = sb_config.headed
     sb.xvfb = sb_config.xvfb

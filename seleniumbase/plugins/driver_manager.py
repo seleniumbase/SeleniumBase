@@ -65,7 +65,8 @@ class DriverContext():
 
 def Driver(
     browser=None,  # Choose from "chrome", "edge", "firefox", or "safari".
-    headless=None,  # The original headless mode for Chromium and Firefox.
+    headless=None,  # The default headless mode for Chromium and Firefox.
+    headless1=None,  # Chromium's old headless mode. (Fast, but limited)
     headless2=None,  # Chromium's new headless mode. (Has more features)
     headed=None,  # Run tests in headed/GUI mode on Linux, where not default.
     locale_code=None,  # Set the Language Locale Code for the web browser.
@@ -336,6 +337,13 @@ def Driver(
             headless = True
         else:
             headless = False
+    if headless1 is None:
+        if "--headless1" in sys_argv:
+            headless1 = True
+        else:
+            headless1 = False
+    if headless1:
+        headless = True
     if headless2 is None:
         if "--headless2" in sys_argv:
             headless2 = True
@@ -601,6 +609,7 @@ def Driver(
         headless = True
     if recorder_mode and headless:
         headless = False
+        headless1 = False
         headless2 = True
     if headless2 and browser == "firefox":
         headless2 = False  # Only for Chromium browsers
@@ -773,6 +782,7 @@ def Driver(
         log_cdp_events=log_cdp_events,
         no_sandbox=no_sandbox,
         disable_gpu=disable_gpu,
+        headless1=headless1,
         headless2=headless2,
         incognito=incognito,
         guest_mode=guest_mode,

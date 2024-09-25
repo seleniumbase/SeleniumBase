@@ -43,8 +43,9 @@ class SeleniumBrowser(Plugin):
     --sjw  (Skip JS Waits for readyState to be "complete" or Angular to load.)
     --wfa  (Wait for AngularJS to be done loading after specific web actions.)
     --pls=PLS  (Set pageLoadStrategy on Chrome: "normal", "eager", or "none".)
-    --headless  (Run tests in headless mode. The default arg on Linux OS.)
-    --headless2  (Use the new headless mode, which supports extensions.)
+    --headless  (The default headless mode. Linux uses this mode by default.)
+    --headless1  (Use Chrome's old headless mode. Fast, but has limitations.)
+    --headless2  (Use Chrome's new headless mode, which supports extensions.)
     --headed  (Run tests in headed/GUI mode on Linux OS, where not default.)
     --xvfb  (Run tests using the Xvfb virtual display server on Linux OS.)
     --xvfb-metrics=STRING  (Set Xvfb display size on Linux: "Width,Height".)
@@ -436,6 +437,15 @@ class SeleniumBrowser(Plugin):
                 which is required on headless machines
                 UNLESS using a virtual display with Xvfb.
                 Default: False on Mac/Windows. True on Linux.""",
+        )
+        parser.addoption(
+            "--headless1",
+            action="store_true",
+            dest="headless1",
+            default=False,
+            help="""This option activates the old headless mode,
+                    which is faster, but has limitations.
+                    (May be phased out by Chrome in the future.)""",
         )
         parser.addoption(
             "--headless2",
@@ -1009,6 +1019,7 @@ class SeleniumBrowser(Plugin):
         browser = self.options.browser
         test.test.browser = browser
         test.test.headless = None
+        test.test.headless1 = None
         test.test.headless2 = None
         # As a shortcut, you can use "--edge" instead of "--browser=edge", etc,
         # but you can only specify one default browser. (Default: chrome)
@@ -1147,9 +1158,13 @@ class SeleniumBrowser(Plugin):
         test.test.cap_file = self.options.cap_file
         test.test.cap_string = self.options.cap_string
         test.test.headless = self.options.headless
+        test.test.headless1 = self.options.headless1
+        if test.test.headless1:
+            test.test.headless = True
         test.test.headless2 = self.options.headless2
         if test.test.headless and test.test.browser == "safari":
             test.test.headless = False  # Safari doesn't use headless
+            test.test.headless1 = False
         if test.test.headless2 and test.test.browser == "firefox":
             test.test.headless2 = False  # Only for Chromium browsers
             test.test.headless = True  # Firefox has regular headless
@@ -1294,8 +1309,10 @@ class SeleniumBrowser(Plugin):
         # Recorder Mode can still optimize scripts in --headless2 mode.
         if self.options.recorder_mode and self.options.headless:
             self.options.headless = False
+            self.options.headless1 = False
             self.options.headless2 = True
             test.test.headless = False
+            test.test.headless1 = False
             test.test.headless2 = True
         if not self.options.headless and not self.options.headless2:
             self.options.headed = True
