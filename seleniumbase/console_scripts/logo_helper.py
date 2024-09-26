@@ -3,7 +3,9 @@
     http://www.patorjk.com/software/taag/#p=display&f=Slant&t=SeleniumBase """
 
 import colorama
+import os
 import sys
+from contextlib import suppress
 
 r"""
    ______     __           _                  ____
@@ -64,6 +66,51 @@ def get_seleniumbase_logo():
     sb += "                                          "
     sb += c4
     sb += "                        "
+    sb += cr
+    sb += cr
+    with suppress(Exception):
+        terminal_width = os.get_terminal_size().columns
+        if isinstance(terminal_width, int) and terminal_width >= 66:
+            return sb
+
+    # If the logo is wider than the screen width, use a smaller one:
+    r"""
+     ___      _          _             ___
+    / __| ___| |___ _ _ (_)_  _ _ __  | _ ) __ _ ______
+    \__ \/ -_) / -_) ' \| | \| | '  \ | _ \/ _` (_-< -_)
+    |___/\___|_\___|_||_|_|\_,_|_|_|_\|___/\__,_/__|___|
+    """
+    sb = " "
+    sb += cr
+    sb += "\n"
+    sb += c1
+    sb += " ___      _          _            "
+    sb += c2
+    sb += " ___              "
+    sb += cr
+    sb += "\n"
+    sb += c1
+    sb += "/ __| ___| |___ _ _ (_)_  _ _ __  "
+    sb += c2
+    sb += "| _ ) __ _ ______ "
+    sb += cr
+    sb += "\n"
+    sb += c1
+    sb += "\\__ \\/ -_) / -_) ' \\| | \\| | '  \\ "
+    sb += c2
+    sb += "| _ \\/ _` (_-< -_)"
+    sb += cr
+    sb += "\n"
+    sb += c1
+    sb += "|___/\\___|_\\___|_||_|_|\\_,_|_|_|_\\"
+    sb += c2
+    sb += "|___/\\__,_/__|___|"
+    sb += cr
+    sb += "\n"
+    sb += c3
+    sb += "                                  "
+    sb += c4
+    sb += "                  "
     sb += cr
     sb += cr
     return sb

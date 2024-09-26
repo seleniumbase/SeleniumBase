@@ -62,8 +62,9 @@ def pytest_addoption(parser):
     --sjw  (Skip JS Waits for readyState to be "complete" or Angular to load.)
     --wfa  (Wait for AngularJS to be done loading after specific web actions.)
     --pls=PLS  (Set pageLoadStrategy on Chrome: "normal", "eager", or "none".)
-    --headless  (Run tests in headless mode. The default arg on Linux OS.)
-    --headless2  (Use the new headless mode, which supports extensions.)
+    --headless  (The default headless mode. Linux uses this mode by default.)
+    --headless1  (Use Chrome's old headless mode. Fast, but has limitations.)
+    --headless2  (Use Chrome's new headless mode, which supports extensions.)
     --headed  (Run tests in headed/GUI mode on Linux OS, where not default.)
     --xvfb  (Run tests using the Xvfb virtual display server on Linux OS.)
     --xvfb-metrics=STRING  (Set Xvfb display size on Linux: "Width,Height".)
@@ -699,6 +700,15 @@ def pytest_addoption(parser):
                 which is required on headless machines
                 UNLESS using a virtual display with Xvfb.
                 Default: False on Mac/Windows. True on Linux.""",
+    )
+    parser.addoption(
+        "--headless1",
+        action="store_true",
+        dest="headless1",
+        default=False,
+        help="""This option activates the old headless mode,
+                which is faster, but has limitations.
+                (May be phased out by Chrome in the future.)""",
     )
     parser.addoption(
         "--headless2",
@@ -1533,6 +1543,9 @@ def pytest_configure(config):
     sb_config.mobile_emulator = config.getoption("mobile_emulator")
     sb_config.device_metrics = config.getoption("device_metrics")
     sb_config.headless = config.getoption("headless")
+    sb_config.headless1 = config.getoption("headless1")
+    if sb_config.headless1:
+        sb_config.headless = True
     sb_config.headless2 = config.getoption("headless2")
     if sb_config.headless2 and sb_config.browser == "firefox":
         sb_config.headless2 = False  # Only for Chromium browsers
@@ -1759,6 +1772,7 @@ def pytest_configure(config):
     # Recorder Mode can still optimize scripts in --headless2 mode.
     if sb_config.recorder_mode and sb_config.headless:
         sb_config.headless = False
+        sb_config.headless1 = False
         sb_config.headless2 = True
 
     if not sb_config.headless and not sb_config.headless2:
@@ -1779,6 +1793,7 @@ def pytest_configure(config):
 
     if sb_config.browser == "safari" and sb_config.headless:
         sb_config.headless = False  # Safari doesn't support headless mode
+        sb_config.headless1 = False
 
     if sb_config.dash_title:
         constants.Dashboard.TITLE = sb_config.dash_title.replace("_", " ")

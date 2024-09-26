@@ -161,6 +161,17 @@ class DriverMethods():
             self.driver, *args, **kwargs
         )
 
+    def is_valid_url(self, url):
+        """Return True if the url is a valid url."""
+        return page_utils.is_valid_url(url)
+
+    def is_alert_present(self):
+        try:
+            self.driver.switch_to.alert
+            return True
+        except Exception:
+            return False
+
     def is_online(self):
         return self.driver.execute_script("return navigator.onLine;")
 

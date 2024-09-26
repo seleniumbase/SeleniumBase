@@ -203,6 +203,8 @@ def extend_driver(driver):
     driver.is_exact_text_visible = DM.is_exact_text_visible
     driver.is_attribute_present = DM.is_attribute_present
     driver.is_non_empty_text_visible = DM.is_non_empty_text_visible
+    driver.is_valid_url = DM.is_valid_url
+    driver.is_alert_present = DM.is_alert_present
     driver.is_online = DM.is_online
     driver.js_click = DM.js_click
     driver.get_text = DM.get_text
@@ -1553,6 +1555,7 @@ def _set_chrome_options(
     log_cdp_events,
     no_sandbox,
     disable_gpu,
+    headless1,
     headless2,
     incognito,
     guest_mode,
@@ -1771,7 +1774,10 @@ def _set_chrome_options(
             pass  # Processed After Version Check
     elif headless:
         if not undetectable:
-            chrome_options.add_argument("--headless")
+            if headless1:
+                chrome_options.add_argument("--headless=old")
+            else:
+                chrome_options.add_argument("--headless")
         if undetectable and servername and servername != "localhost":
             # The Grid Node will need Chrome 109 or newer
             chrome_options.add_argument("--headless=new")
@@ -2193,6 +2199,7 @@ def get_driver(
     log_cdp_events=False,
     no_sandbox=False,
     disable_gpu=False,
+    headless1=False,
     headless2=False,
     incognito=False,
     guest_mode=False,
@@ -2406,6 +2413,7 @@ def get_driver(
             log_cdp_events,
             no_sandbox,
             disable_gpu,
+            headless1,
             headless2,
             incognito,
             guest_mode,
@@ -2462,6 +2470,7 @@ def get_driver(
             log_cdp_events,
             no_sandbox,
             disable_gpu,
+            headless1,
             headless2,
             incognito,
             guest_mode,
@@ -2522,6 +2531,7 @@ def get_remote_driver(
     log_cdp_events,
     no_sandbox,
     disable_gpu,
+    headless1,
     headless2,
     incognito,
     guest_mode,
@@ -2657,6 +2667,7 @@ def get_remote_driver(
             log_cdp_events,
             no_sandbox,
             disable_gpu,
+            headless1,
             headless2,
             incognito,
             guest_mode,
@@ -2829,6 +2840,7 @@ def get_remote_driver(
             log_cdp_events,
             no_sandbox,
             disable_gpu,
+            headless1,
             headless2,
             incognito,
             guest_mode,
@@ -2948,6 +2960,7 @@ def get_local_driver(
     log_cdp_events,
     no_sandbox,
     disable_gpu,
+    headless1,
     headless2,
     incognito,
     guest_mode,
@@ -3425,8 +3438,14 @@ def get_local_driver(
                 else:
                     pass  # Will need Xvfb on Linux
         elif headless:
-            if "--headless" not in edge_options.arguments:
-                edge_options.add_argument("--headless")
+            if (
+                "--headless" not in edge_options.arguments
+                and "--headless=old" not in edge_options.arguments
+            ):
+                if headless1:
+                    edge_options.add_argument("--headless=old")
+                else:
+                    edge_options.add_argument("--headless")
         if mobile_emulator and not is_using_uc(undetectable, browser_name):
             emulator_settings = {}
             device_metrics = {}
@@ -3788,6 +3807,7 @@ def get_local_driver(
                 log_cdp_events,
                 no_sandbox,
                 disable_gpu,
+                headless1,
                 headless2,
                 incognito,
                 guest_mode,
@@ -3960,8 +3980,14 @@ def get_local_driver(
                 except Exception:
                     pass  # Will need Xvfb on Linux
             elif headless:
-                if "--headless" not in chrome_options.arguments:
-                    chrome_options.add_argument("--headless")
+                if (
+                    "--headless" not in chrome_options.arguments
+                    and "--headless=old" not in chrome_options.arguments
+                ):
+                    if headless1:
+                        chrome_options.add_argument("--headless=old")
+                    else:
+                        chrome_options.add_argument("--headless")
             if LOCAL_CHROMEDRIVER and os.path.exists(LOCAL_CHROMEDRIVER):
                 try:
                     make_driver_executable_if_not(LOCAL_CHROMEDRIVER)
@@ -4227,6 +4253,12 @@ def get_local_driver(
                                     chrome_options.arguments.remove(
                                         "--headless"
                                     )
+                                if "--headless=old" in (
+                                    chrome_options.arguments
+                                ):
+                                    chrome_options.arguments.remove(
+                                        "--headless=old"
+                                    )
                             uc_chrome_version = None
                             if (
                                 use_version.isnumeric()
@@ -4300,6 +4332,7 @@ def get_local_driver(
                                         False,  # log_cdp_events
                                         no_sandbox,
                                         disable_gpu,
+                                        False,  # headless1
                                         False,  # headless2
                                         incognito,
                                         guest_mode,
@@ -4541,6 +4574,7 @@ def get_local_driver(
                         False,  # log_cdp_events
                         no_sandbox,
                         disable_gpu,
+                        False,  # headless1
                         False,  # headless2
                         incognito,
                         guest_mode,
@@ -4792,6 +4826,8 @@ def get_local_driver(
                     )
                     if "--headless" in chrome_options.arguments:
                         chrome_options.arguments.remove("--headless")
+                    if "--headless=old" in chrome_options.arguments:
+                        chrome_options.arguments.remove("--headless=old")
                     service = ChromeService(
                         log_output=os.devnull,
                         service_args=["--disable-build-check"]

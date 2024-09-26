@@ -32,8 +32,9 @@ def SB(
     rtf=None,  # Shortcut / Duplicate of "raise_test_failure".
     raise_test_failure=None,  # If "test" mode, raise Exception on 1st failure.
     browser=None,  # Choose from "chrome", "edge", "firefox", or "safari".
-    headless=None,  # The original headless mode for Chromium and Firefox.
-    headless2=None,  # Chromium's new headless mode. (Has more features)
+    headless=None,  # Use the default headless mode for Chromium and Firefox.
+    headless1=None,  # Use Chromium's old headless mode. (Fast, but limited)
+    headless2=None,  # Use Chromium's new headless mode. (Has more features)
     locale_code=None,  # Set the Language Locale Code for the web browser.
     protocol=None,  # The Selenium Grid protocol: "http" or "https".
     servername=None,  # The Selenium Grid server/IP used for tests.
@@ -146,104 +147,105 @@ def SB(
 
     Optional Parameters:
     --------------------
-    test:  Test Mode: Output, Logging, Continue on failure unless "rtf".
-    rtf:  Shortcut / Duplicate of "raise_test_failure".
-    raise_test_failure:  If "test" mode, raise Exception on 1st failure.
-    browser:  Choose from "chrome", "edge", "firefox", or "safari".
-    headless:  The original headless mode for Chromium and Firefox.
-    headless2:  Chromium's new headless mode. (Has more features)
-    locale_code:  Set the Language Locale Code for the web browser.
-    protocol:  The Selenium Grid protocol: "http" or "https".
-    servername:  The Selenium Grid server/IP used for tests.
-    port:  The Selenium Grid port used by the test server.
-    proxy:  Use proxy. Format: "SERVER:PORT" or "USER:PASS@SERVER:PORT".
-    proxy_bypass_list:  Skip proxy when using the listed domains.
-    proxy_pac_url:  Use PAC file. (Format: URL or USERNAME:PASSWORD@URL)
-    multi_proxy:  # Allow multiple proxies with auth when multi-threaded.
-    agent:  Modify the web browser's User-Agent string.
-    cap_file:  The desired capabilities to use with a Selenium Grid.
-    cap_string:  The desired capabilities to use with a Selenium Grid.
-    recorder_ext:  Enables the SeleniumBase Recorder Chromium extension.
-    disable_js:  Disable JavaScript on websites. Pages might break!
-    disable_csp:  Disable the Content Security Policy of websites.
-    enable_ws:  Enable Web Security on Chromium-based browsers.
-    enable_sync:  Enable "Chrome Sync" on websites.
-    use_auto_ext:  Use Chrome's automation extension.
-    undetectable:  Use undetected-chromedriver to evade bot-detection.
-    uc_cdp_events:  Capture CDP events in undetected-chromedriver mode.
-    uc_subprocess:  Use undetected-chromedriver as a subprocess.
-    log_cdp_events:  Capture {"performance": "ALL", "browser": "ALL"}
-    incognito:  Enable Chromium's Incognito mode.
-    guest_mode:  Enable Chromium's Guest mode.
-    dark_mode:  Enable Chromium's Dark mode.
-    devtools:  Open Chromium's DevTools when the browser opens.
-    remote_debug:  Enable Chrome's Debugger on "http://localhost:9222".
-    enable_3d_apis:  Enable WebGL and 3D APIs.
-    swiftshader:  Chrome: --use-gl=angle / --use-angle=swiftshader-webgl
-    ad_block_on:  Block some types of display ads from loading.
-    host_resolver_rules:  Set host-resolver-rules, comma-separated.
-    block_images:  Block images from loading during tests.
-    do_not_track:  Tell websites that you don't want to be tracked.
-    chromium_arg:  "ARG=N,ARG2" (Set Chromium args, ","-separated.)
-    firefox_arg:  "ARG=N,ARG2" (Set Firefox args, comma-separated.)
-    firefox_pref:  SET (Set Firefox PREFERENCE:VALUE set, ","-separated)
-    user_data_dir:  Set the Chrome user data directory to use.
-    extension_zip:  Load a Chrome Extension .zip|.crx, comma-separated.
-    extension_dir:  Load a Chrome Extension directory, comma-separated.
-    disable_features:  "F1,F2" (Disable Chrome features, ","-separated.)
-    binary_location:  Set path of the Chromium browser binary to use.
-    driver_version:  Set the chromedriver or uc_driver version to use.
-    skip_js_waits:  Skip JS Waits (readyState=="complete" and Angular).
-    wait_for_angularjs:  Wait for AngularJS to load after some actions.
-    use_wire:  Use selenium-wire's webdriver over selenium webdriver.
-    external_pdf:  Set Chrome "plugins.always_open_pdf_externally":True.
-    window_position:  Set the browser's starting window position: "X,Y"
-    window_size:  Set the browser's starting window size: "Width,Height"
-    is_mobile:  Use the mobile device emulator while running tests.
-    mobile:  Shortcut / Duplicate of "is_mobile".
-    device_metrics:  Set mobile metrics: "CSSWidth,CSSHeight,PixelRatio"
-    xvfb:  Run tests using the Xvfb virtual display server on Linux OS.
-    xvfb_metrics:  Set Xvfb display size on Linux: "Width,Height".
-    start_page:  The starting URL for the web browser when tests begin.
-    rec_print:  If Recorder is enabled, prints output after tests end.
-    rec_behave:  Like Recorder Mode, but also generates behave-gherkin.
-    record_sleep:  If Recorder enabled, also records self.sleep calls.
-    data:  Extra test data. Access with "self.data" in tests.
-    var1:  Extra test data. Access with "self.var1" in tests.
-    var2:  Extra test data. Access with "self.var2" in tests.
-    var3:  Extra test data. Access with "self.var3" in tests.
-    variables:  DICT (Extra test data. Access with "self.variables")
-    account:  Set account. Access with "self.account" in tests.
-    environment:  Set the test env. Access with "self.env" in tests.
-    headed:  Run tests in headed/GUI mode on Linux, where not default.
-    maximize:  Start tests with the browser window maximized.
-    disable_ws:  Reverse of "enable_ws". (None and False are different)
-    disable_beforeunload:  Disable the "beforeunload" event on Chromium.
-    settings_file:  A file for overriding default SeleniumBase settings.
-    uc:  Shortcut / Duplicate of "undetectable".
-    undetected:  Shortcut / Duplicate of "undetectable".
-    uc_cdp:  Shortcut / Duplicate of "uc_cdp_events".
-    uc_sub:  Shortcut / Duplicate of "uc_subprocess".
-    log_cdp:  Shortcut / Duplicate of "log_cdp_events".
-    ad_block:  Shortcut / Duplicate of "ad_block_on".
-    server:  Shortcut / Duplicate of "servername".
-    guest:  Shortcut / Duplicate of "guest_mode".
-    wire:  Shortcut / Duplicate of "use_wire".
-    pls:  Shortcut / Duplicate of "page_load_strategy".
-    sjw:  Shortcut / Duplicate of "skip_js_waits".
-    wfa:  Shortcut / Duplicate of "wait_for_angularjs".
-    save_screenshot:  Save a screenshot at the end of each test.
-    no_screenshot:  No screenshots saved unless tests directly ask it.
-    page_load_strategy:  Set Chrome PLS to "normal", "eager", or "none".
-    timeout_multiplier:  Multiplies the default timeout values.
-    js_checking_on:  Check for JavaScript errors after page loads.
-    slow:  Slow down the automation. Faster than using Demo Mode.
-    demo:  Slow down and visually see test actions as they occur.
-    demo_sleep:  SECONDS (Set wait time after Slow & Demo Mode actions.)
-    message_duration:  SECONDS (The time length for Messenger alerts.)
-    highlights:  Number of highlight animations for Demo Mode actions.
-    interval:  SECONDS (Autoplay interval for SB Slides & Tour steps.)
-    time_limit:  SECONDS (Safely fail tests that exceed the time limit.)
+    test (bool):  Test Mode: Output, Logging, Continue on failure unless "rtf".
+    rtf (bool):  Shortcut / Duplicate of "raise_test_failure".
+    raise_test_failure (bool):  If "test" mode, raise Exception on 1st failure.
+    browser (str):  Choose from "chrome", "edge", "firefox", or "safari".
+    headless (bool):  Use the default headless mode for Chromium and Firefox.
+    headless1 (bool):  Use Chromium's old headless mode. (Fast, but limited)
+    headless2 (bool):  Use Chromium's new headless mode. (Has more features)
+    locale_code (str):  Set the Language Locale Code for the web browser.
+    protocol (str):  The Selenium Grid protocol: "http" or "https".
+    servername (str):  The Selenium Grid server/IP used for tests.
+    port (int):  The Selenium Grid port used by the test server.
+    proxy (str):  Use proxy. Format: "SERVER:PORT" or "USER:PASS@SERVER:PORT".
+    proxy_bypass_list (str):  Skip proxy when using the listed domains.
+    proxy_pac_url (str):  Use PAC file. (Format: URL or USERNAME:PASSWORD@URL)
+    multi_proxy (bool):  # Allow multiple proxies with auth when multithreaded.
+    agent (str):  Modify the web browser's User-Agent string.
+    cap_file (str):  The desired capabilities to use with a Selenium Grid.
+    cap_string (str):  The desired capabilities to use with a Selenium Grid.
+    recorder_ext (bool):  Enables the SeleniumBase Recorder Chromium extension.
+    disable_js (bool):  Disable JavaScript on websites. Pages might break!
+    disable_csp (bool):  Disable the Content Security Policy of websites.
+    enable_ws (bool):  Enable Web Security on Chromium-based browsers.
+    enable_sync (bool):  Enable "Chrome Sync" on websites.
+    use_auto_ext (bool):  Use Chrome's automation extension.
+    undetectable (bool):  Use undetected-chromedriver to evade bot-detection.
+    uc_cdp_events (bool):  Capture CDP events in undetected-chromedriver mode.
+    uc_subprocess (bool):  Use undetected-chromedriver as a subprocess.
+    log_cdp_events (bool):  Capture {"performance": "ALL", "browser": "ALL"}
+    incognito (bool):  Enable Chromium's Incognito mode.
+    guest_mode (bool):  Enable Chromium's Guest mode.
+    dark_mode (bool):  Enable Chromium's Dark mode.
+    devtools (bool):  Open Chromium's DevTools when the browser opens.
+    remote_debug (bool):  Enable Chrome's Debugger on "http://localhost:9222".
+    enable_3d_apis (bool):  Enable WebGL and 3D APIs.
+    swiftshader (bool):  Chrome: --use-gl=angle / --use-angle=swiftshader-webgl
+    ad_block_on (bool):  Block some types of display ads from loading.
+    host_resolver_rules (str):  Set host-resolver-rules, comma-separated.
+    block_images (bool):  Block images from loading during tests.
+    do_not_track (bool):  Tell websites that you don't want to be tracked.
+    chromium_arg (str):  "ARG=N,ARG2" (Set Chromium args, ","-separated.)
+    firefox_arg (str):  "ARG=N,ARG2" (Set Firefox args, comma-separated.)
+    firefox_pref (str):  SET (Set Firefox PREFERENCE:VALUE set, ","-separated)
+    user_data_dir (str):  Set the Chrome user data directory to use.
+    extension_zip (str):  Load a Chrome Extension .zip|.crx, comma-separated.
+    extension_dir (str):  Load a Chrome Extension directory, comma-separated.
+    disable_features (str):  "F1,F2" (Disable Chrome features, ","-separated.)
+    binary_location (str):  Set path of the Chromium browser binary to use.
+    driver_version (str):  Set the chromedriver or uc_driver version to use.
+    skip_js_waits (bool):  Skip JS Waits (readyState=="complete" and Angular).
+    wait_for_angularjs (bool):  Wait for AngularJS to load after some actions.
+    use_wire (bool):  Use selenium-wire's webdriver over selenium webdriver.
+    external_pdf (bool):  Set Chrome "plugins.always_open_pdf_externally":True.
+    window_position (x,y):  Set the browser's starting window position: "X,Y"
+    window_size (w,h):  Set the browser's starting window size: "Width,Height"
+    is_mobile (bool):  Use the mobile device emulator while running tests.
+    mobile (bool):  Shortcut / Duplicate of "is_mobile".
+    device_metrics (w,h,pr):  Mobile metrics: "CSSWidth,CSSHeight,PixelRatio"
+    xvfb (bool):  Run tests using the Xvfb virtual display server on Linux OS.
+    xvfb_metrics (w,h):  Set Xvfb display size on Linux: "Width,Height".
+    start_page (str):  The starting URL for the web browser when tests begin.
+    rec_print (bool):  If Recorder is enabled, prints output after tests end.
+    rec_behave (bool):  Like Recorder Mode, but also generates behave-gherkin.
+    record_sleep (bool):  If Recorder enabled, also records self.sleep calls.
+    data (str):  Extra test data. Access with "self.data" in tests.
+    var1 (str):  Extra test data. Access with "self.var1" in tests.
+    var2 (str):  Extra test data. Access with "self.var2" in tests.
+    var3 (str):  Extra test data. Access with "self.var3" in tests.
+    variables (dict):  Extra test data. Access with "self.variables".
+    account (str):  Set account. Access with "self.account" in tests.
+    environment (str):  Set the test env. Access with "self.env" in tests.
+    headed (bool):  Run tests in headed/GUI mode on Linux, where not default.
+    maximize (bool):  Start tests with the browser window maximized.
+    disable_ws (bool):  Reverse of "enable_ws". (None and False are different)
+    disable_beforeunload (bool):  Disable the "beforeunload" event on Chromium.
+    settings_file (str):  A file for overriding default SeleniumBase settings.
+    uc (bool):  Shortcut / Duplicate of "undetectable".
+    undetected (bool):  Shortcut / Duplicate of "undetectable".
+    uc_cdp (bool):  Shortcut / Duplicate of "uc_cdp_events".
+    uc_sub (bool):  Shortcut / Duplicate of "uc_subprocess".
+    log_cdp (bool):  Shortcut / Duplicate of "log_cdp_events".
+    ad_block (bool):  Shortcut / Duplicate of "ad_block_on".
+    server (str):  Shortcut / Duplicate of "servername".
+    guest (bool):  Shortcut / Duplicate of "guest_mode".
+    wire (bool):  Shortcut / Duplicate of "use_wire".
+    pls (str):  Shortcut / Duplicate of "page_load_strategy".
+    sjw (bool):  Shortcut / Duplicate of "skip_js_waits".
+    wfa (bool):  Shortcut / Duplicate of "wait_for_angularjs".
+    save_screenshot (bool):  Save a screenshot at the end of each test.
+    no_screenshot (bool):  No screenshots saved unless tests directly ask it.
+    page_load_strategy (str):  Set Chrome PLS to "normal", "eager", or "none".
+    timeout_multiplier (float):  Multiplies the default timeout values.
+    js_checking_on (bool):  Check for JavaScript errors after page loads.
+    slow (bool):  Slow down the automation. Faster than using Demo Mode.
+    demo (bool):  Slow down and visually see test actions as they occur.
+    demo_sleep (float):  SECONDS (Set wait time after Slow & Demo Mode actions)
+    message_duration (float):  SECONDS (The time length for Messenger alerts.)
+    highlights (int):  Number of highlight animations for Demo Mode actions.
+    interval (float):  SECONDS (Autoplay interval for SB Slides & Tour steps.)
+    time_limit (float):  SECONDS (Safely fail tests that exceed the time limit)
     """
     import os
     import sys
@@ -401,6 +403,13 @@ def SB(
             headless = True
         else:
             headless = False
+    if headless1 is None:
+        if "--headless1" in sys_argv:
+            headless1 = True
+        else:
+            headless1 = False
+    if headless1:
+        headless = True
     if headless2 is None:
         if "--headless2" in sys_argv:
             headless2 = True
@@ -672,6 +681,7 @@ def SB(
         recorder_ext = True
     if recorder_mode and headless:
         headless = False
+        headless1 = False
         headless2 = True
     sb_config.proxy_driver = False
     if "--proxy-driver" in sys_argv or "--proxy_driver" in sys_argv:
@@ -801,6 +811,7 @@ def SB(
         save_screenshot = False  # "no_screenshot" has priority
     if browser == "safari" and headless:
         headless = False  # Safari doesn't support headless mode
+        headless1 = False
     if js_checking_on is None:
         if "--check-js" in sys_argv:
             js_checking_on = True
@@ -921,6 +932,7 @@ def SB(
         sb_config.is_nosetest = False
     sb_config.is_context_manager = True
     sb_config.headless = headless
+    sb_config.headless1 = headless1
     sb_config.headless2 = headless2
     sb_config.headed = headed
     sb_config.xvfb = xvfb
@@ -1026,6 +1038,7 @@ def SB(
     sb.is_nosetest = False
     sb.is_context_manager = sb_config.is_context_manager
     sb.headless = sb_config.headless
+    sb.headless1 = sb_config.headless1
     sb.headless2 = sb_config.headless2
     sb.headed = sb_config.headed
     sb.xvfb = sb_config.xvfb

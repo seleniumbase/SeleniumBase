@@ -44,8 +44,9 @@ behave -D agent="User Agent String" -D demo
 -D sjw  (Skip JS Waits for readyState to be "complete" or Angular to load.)
 -D wfa  (Wait for AngularJS to be done loading after specific web actions.)
 -D pls=PLS  (Set pageLoadStrategy on Chrome: "normal", "eager", or "none".)
--D headless  (Run tests in headless mode. The default arg on Linux OS.)
--D headless2  (Use the new headless mode, which supports extensions.)
+-D headless  (The default headless mode. Linux uses this mode by default.)
+-D headless1  (Use Chrome's old headless mode. Fast, but has limitations.)
+-D headless2  (Use Chrome's new headless mode, which supports extensions.)
 -D headed  (Run tests in headed/GUI mode on Linux OS, where not default.)
 -D xvfb  (Run tests using the Xvfb virtual display server on Linux OS.)
 -D xvfb-metrics=STRING  (Set Xvfb display size on Linux: "Width,Height".)
@@ -144,6 +145,7 @@ def get_configured_sb(context):
     sb.browser = "chrome"
     sb.is_behave = True
     sb.headless = False
+    sb.headless1 = False
     sb.headless2 = False
     sb.headless_active = False
     sb.headed = False
@@ -293,6 +295,11 @@ def get_configured_sb(context):
             continue
         # Handle: -D headless
         if low_key == "headless":
+            sb.headless = True
+            continue
+        # Handle: -D headless2
+        if low_key == "headless1":
+            sb.headless1 = True
             sb.headless = True
             continue
         # Handle: -D headless2
@@ -864,6 +871,7 @@ def get_configured_sb(context):
     # Recorder Mode can still optimize scripts in "-D headless2" mode.
     if sb.recorder_ext and sb.headless:
         sb.headless = False
+        sb.headless1 = False
         sb.headless2 = True
     if sb.headless2 and sb.browser == "firefox":
         sb.headless2 = False  # Only for Chromium browsers
@@ -900,11 +908,13 @@ def get_configured_sb(context):
     # Recorder Mode can still optimize scripts in --headless2 mode.
     if sb.recorder_mode and sb.headless:
         sb.headless = False
+        sb.headless1 = False
         sb.headless2 = True
     if not sb.headless and not sb.headless2:
         sb.headed = True
     if sb.browser == "safari" and sb.headless:
         sb.headless = False  # Safari doesn't support headless mode
+        sb.headless1 = False
     if sb.save_screenshot_after_test and sb.no_screenshot_after_test:
         sb.save_screenshot_after_test = False  # "no_screenshot" has priority
     if sb.servername != "localhost":

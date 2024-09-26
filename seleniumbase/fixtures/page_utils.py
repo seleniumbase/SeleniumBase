@@ -163,12 +163,15 @@ def is_valid_url(url):
         r"(?:/?|[/?]\S+)$",
         re.IGNORECASE,
     )
-    return (
+    if (
         regex.match(url)
         or url.startswith((
             "about:", "blob:", "chrome:", "data:", "edge:", "file:"
         ))
-    )
+    ):
+        return True
+    else:
+        return False
 
 
 def _get_unique_links(page_url, soup):

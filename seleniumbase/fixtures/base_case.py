@@ -3771,6 +3771,7 @@ class BaseCase(unittest.TestCase):
         log_cdp_events=None,
         no_sandbox=None,
         disable_gpu=None,
+        headless1=None,
         headless2=None,
         incognito=None,
         guest_mode=None,
@@ -3830,6 +3831,7 @@ class BaseCase(unittest.TestCase):
         log_cdp_events - capture {"performance": "ALL", "browser": "ALL"})
         no_sandbox - the option to enable the "No-Sandbox" feature (Chrome)
         disable_gpu - the option to enable Chrome's "Disable GPU" feature
+        headless1 - the option to use the older headless mode (Chromium)
         headless2 - the option to use the newer headless mode (Chromium)
         incognito - the option to enable Chrome's Incognito mode (Chrome)
         guest_mode - the option to enable Chrome's Guest mode (Chrome)
@@ -3938,6 +3940,8 @@ class BaseCase(unittest.TestCase):
             no_sandbox = self.no_sandbox
         if disable_gpu is None:
             disable_gpu = self.disable_gpu
+        if headless1 is None:
+            headless1 = self.headless1
         if headless2 is None:
             headless2 = self.headless2
         if incognito is None:
@@ -4036,6 +4040,7 @@ class BaseCase(unittest.TestCase):
             log_cdp_events=log_cdp_events,
             no_sandbox=no_sandbox,
             disable_gpu=disable_gpu,
+            headless1=headless1,
             headless2=headless2,
             incognito=incognito,
             guest_mode=guest_mode,
@@ -7807,6 +7812,13 @@ class BaseCase(unittest.TestCase):
     def is_valid_url(self, url):
         """Return True if the url is a valid url."""
         return page_utils.is_valid_url(url)
+
+    def is_alert_present(self):
+        try:
+            self.driver.switch_to.alert
+            return True
+        except Exception:
+            return False
 
     def is_online(self):
         """Return True if connected to the Internet."""
@@ -14324,6 +14336,10 @@ class BaseCase(unittest.TestCase):
             self.env = self.environment  # Add a shortened version
             self.with_selenium = sb_config.with_selenium  # Should be True
             self.headless = sb_config.headless
+            self.headless1 = sb_config.headless1
+            if self.headless1:
+                self.headless = True
+            self.headless2 = sb_config.headless2
             self.headless_active = False
             sb_config.headless_active = False
             self.headed = sb_config.headed
@@ -14392,7 +14408,6 @@ class BaseCase(unittest.TestCase):
             self.log_cdp_events = sb_config.log_cdp_events
             self.no_sandbox = sb_config.no_sandbox
             self.disable_gpu = sb_config.disable_gpu
-            self.headless2 = sb_config.headless2
             self.incognito = sb_config.incognito
             self.guest_mode = sb_config.guest_mode
             self.dark_mode = sb_config.dark_mode
@@ -14768,6 +14783,7 @@ class BaseCase(unittest.TestCase):
                 log_cdp_events=self.log_cdp_events,
                 no_sandbox=self.no_sandbox,
                 disable_gpu=self.disable_gpu,
+                headless1=self.headless1,
                 headless2=self.headless2,
                 incognito=self.incognito,
                 guest_mode=self.guest_mode,
