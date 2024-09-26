@@ -681,6 +681,7 @@ pytest test_coffee_cart.py --trace
 --rec-behave  # (Same as Recorder Mode, but also generates behave-gherkin.)
 --rec-sleep  # (If the Recorder is enabled, also records self.sleep calls.)
 --rec-print  # (If the Recorder is enabled, prints output after tests end.)
+--disable-cookies  # (Disable Cookies on websites. Pages might break!)
 --disable-js  # (Disable JavaScript on websites. Pages might break!)
 --disable-csp  # (Disable the Content Security Policy of websites.)
 --disable-ws  # (Disable Web Security on Chromium-based browsers.)
