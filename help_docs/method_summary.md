@@ -550,6 +550,8 @@ self.inspect_html()
 
 self.is_valid_url(url)
 
+self.is_alert_present()
+
 self.is_online()
 
 self.is_chromium()
