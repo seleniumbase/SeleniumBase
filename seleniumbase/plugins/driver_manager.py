@@ -65,9 +65,9 @@ class DriverContext():
 
 def Driver(
     browser=None,  # Choose from "chrome", "edge", "firefox", or "safari".
-    headless=None,  # The default headless mode for Chromium and Firefox.
-    headless1=None,  # Chromium's old headless mode. (Fast, but limited)
-    headless2=None,  # Chromium's new headless mode. (Has more features)
+    headless=None,  # Use the default headless mode for Chromium and Firefox.
+    headless1=None,  # Use Chromium's old headless mode. (Fast, but limited)
+    headless2=None,  # Use Chromium's new headless mode. (Has more features)
     headed=None,  # Run tests in headed/GUI mode on Linux, where not default.
     locale_code=None,  # Set the Language Locale Code for the web browser.
     protocol=None,  # The Selenium Grid protocol: "http" or "https".
@@ -155,74 +155,75 @@ def Driver(
 
     Optional Parameters:
     --------------------
-    browser:  # Choose from "chrome", "edge", "firefox", or "safari".
-    headless:  # The original headless mode for Chromium and Firefox.
-    headless2:  # Chromium's new headless mode. (Has more features)
-    headed:  # Run tests in headed/GUI mode on Linux, where not default.
-    locale_code:  # Set the Language Locale Code for the web browser.
-    protocol:  # The Selenium Grid protocol: "http" or "https".
-    servername:  # The Selenium Grid server/IP used for tests.
-    port:  # The Selenium Grid port used by the test server.
-    proxy:  # Use proxy. Format: "SERVER:PORT" or "USER:PASS@SERVER:PORT".
-    proxy_bypass_list:  # Skip proxy when using the listed domains.
-    proxy_pac_url:  # Use PAC file. (Format: URL or USERNAME:PASSWORD@URL)
-    multi_proxy:  # Allow multiple proxies with auth when multi-threaded.
-    agent:  # Modify the web browser's User-Agent string.
-    cap_file:  # The desired capabilities to use with a Selenium Grid.
-    cap_string:  # The desired capabilities to use with a Selenium Grid.
-    recorder_ext:  # Enables the SeleniumBase Recorder Chromium extension.
-    disable_js:  # Disable JavaScript on websites. Pages might break!
-    disable_csp:  # Disable the Content Security Policy of websites.
-    enable_ws:  # Enable Web Security on Chromium-based browsers.
-    disable_ws:  # Reverse of "enable_ws". (None and False are different)
-    enable_sync:  # Enable "Chrome Sync" on websites.
-    use_auto_ext:  # Use Chrome's automation extension.
-    undetectable:  # Use undetected-chromedriver to evade bot-detection.
-    uc_cdp_events:  # Capture CDP events in undetected-chromedriver mode.
-    uc_subprocess:  # Use undetected-chromedriver as a subprocess.
-    log_cdp_events:  # Capture {"performance": "ALL", "browser": "ALL"}
-    no_sandbox:  # (DEPRECATED) - "--no-sandbox" is always used now.
-    disable_gpu:  # (DEPRECATED) - GPU is disabled if not "swiftshader".
-    incognito:  # Enable Chromium's Incognito mode.
-    guest_mode:  # Enable Chromium's Guest mode.
-    dark_mode:  # Enable Chromium's Dark mode.
-    devtools:  # Open Chromium's DevTools when the browser opens.
-    remote_debug:  # Enable Chrome's Debugger on "http://localhost:9222".
-    enable_3d_apis:  # Enable WebGL and 3D APIs.
-    swiftshader:  # Chrome: --use-gl=angle / --use-angle=swiftshader-webgl
-    ad_block_on:  # Block some types of display ads from loading.
-    host_resolver_rules:  # Set host-resolver-rules, comma-separated.
-    block_images:  # Block images from loading during tests.
-    do_not_track:  # Tell websites that you don't want to be tracked.
-    chromium_arg:  # "ARG=N,ARG2" (Set Chromium args, ","-separated.)
-    firefox_arg:  # "ARG=N,ARG2" (Set Firefox args, comma-separated.)
-    firefox_pref:  # SET (Set Firefox PREFERENCE:VALUE set, ","-separated)
-    user_data_dir:  # Set the Chrome user data directory to use.
-    extension_zip:  # Load a Chrome Extension .zip|.crx, comma-separated.
-    extension_dir:  # Load a Chrome Extension directory, comma-separated.
-    disable_features:  # "F1,F2" (Disable Chrome features, ","-separated.)
-    binary_location:  # Set path of the Chromium browser binary to use.
-    driver_version:  # Set the chromedriver or uc_driver version to use.
-    page_load_strategy:  # Set Chrome PLS to "normal", "eager", or "none".
-    use_wire:  # Use selenium-wire's webdriver over selenium webdriver.
-    external_pdf:  # Set Chrome "plugins.always_open_pdf_externally":True.
-    window_position:  # Set the browser's starting window position: "X,Y"
-    window_size:  # Set the browser's starting window size: "Width,Height"
-    is_mobile:  # Use the mobile device emulator while running tests.
-    mobile:  # Shortcut / Duplicate of "is_mobile".
-    d_width:  # Set device width
-    d_height:  # Set device height
-    d_p_r:  # Set device pixel ratio
-    uc:  # Shortcut / Duplicate of "undetectable".
-    undetected:  # Shortcut / Duplicate of "undetectable".
-    uc_cdp:  # Shortcut / Duplicate of "uc_cdp_events".
-    uc_sub:  # Shortcut / Duplicate of "uc_subprocess".
-    log_cdp:  # Shortcut / Duplicate of "log_cdp_events".
-    ad_block:  # Shortcut / Duplicate of "ad_block_on".
-    server:  # Shortcut / Duplicate of "servername".
-    guest:  # Shortcut / Duplicate of "guest_mode".
-    wire:  # Shortcut / Duplicate of "use_wire".
-    pls:  # Shortcut / Duplicate of "page_load_strategy".
+    browser (str):  Choose from "chrome", "edge", "firefox", or "safari".
+    headless (bool):  Use the default headless mode for Chromium and Firefox.
+    headless1 (bool):  Use Chromium's old headless mode. (Fast, but limited)
+    headless2 (bool):  Use Chromium's new headless mode. (Has more features)
+    headed (bool):  Run tests in headed/GUI mode on Linux, where not default.
+    locale_code (str):  Set the Language Locale Code for the web browser.
+    protocol (str):  The Selenium Grid protocol: "http" or "https".
+    servername (str):  The Selenium Grid server/IP used for tests.
+    port (int):  The Selenium Grid port used by the test server.
+    proxy (str):  Use proxy. Format: "SERVER:PORT" or "USER:PASS@SERVER:PORT".
+    proxy_bypass_list (str):  Skip proxy when using the listed domains.
+    proxy_pac_url (str):  Use PAC file. (Format: URL or USERNAME:PASSWORD@URL)
+    multi_proxy (bool):  Allow multiple proxies with auth when multi-threaded.
+    agent (str):  Modify the web browser's User-Agent string.
+    cap_file (str):  The desired capabilities to use with a Selenium Grid.
+    cap_string (str):  The desired capabilities to use with a Selenium Grid.
+    recorder_ext (bool):  Enables the SeleniumBase Recorder Chromium extension.
+    disable_js (bool):  Disable JavaScript on websites. Pages might break!
+    disable_csp (bool):  Disable the Content Security Policy of websites.
+    enable_ws (bool):  Enable Web Security on Chromium-based browsers.
+    disable_ws (bool):  Reverse of "enable_ws". (None and False are different)
+    enable_sync (bool):  Enable "Chrome Sync" on websites.
+    use_auto_ext (bool):  Use Chrome's automation extension.
+    undetectable (bool):  Use undetected-chromedriver to evade bot-detection.
+    uc_cdp_events (bool):  Capture CDP events in undetected-chromedriver mode.
+    uc_subprocess (bool):  Use undetected-chromedriver as a subprocess.
+    log_cdp_events (bool):  Capture {"performance": "ALL", "browser": "ALL"}
+    no_sandbox (bool):  (DEPRECATED) - "--no-sandbox" is always used now.
+    disable_gpu (bool):  (DEPRECATED) - GPU is disabled if not "swiftshader".
+    incognito (bool):  Enable Chromium's Incognito mode.
+    guest_mode (bool):  Enable Chromium's Guest mode.
+    dark_mode (bool):  Enable Chromium's Dark mode.
+    devtools (bool):  Open Chromium's DevTools when the browser opens.
+    remote_debug (bool):  Enable Chrome's Debugger on "http://localhost:9222".
+    enable_3d_apis (bool):  Enable WebGL and 3D APIs.
+    swiftshader (bool):  Chrome: --use-gl=angle / --use-angle=swiftshader-webgl
+    ad_block_on (bool):  Block some types of display ads from loading.
+    host_resolver_rules (str):  Set host-resolver-rules, comma-separated.
+    block_images (bool):  Block images from loading during tests.
+    do_not_track (bool):  Tell websites that you don't want to be tracked.
+    chromium_arg (str):  "ARG=N,ARG2" (Set Chromium args, ","-separated.)
+    firefox_arg (str):  "ARG=N,ARG2" (Set Firefox args, comma-separated.)
+    firefox_pref (str):  SET (Set Firefox PREFERENCE:VALUE set, ","-separated)
+    user_data_dir (str):  Set the Chrome user data directory to use.
+    extension_zip (str):  Load a Chrome Extension .zip|.crx, comma-separated.
+    extension_dir (str):  Load a Chrome Extension directory, comma-separated.
+    disable_features (str):  "F1,F2" (Disable Chrome features, ","-separated.)
+    binary_location (str):  Set path of the Chromium browser binary to use.
+    driver_version (str):  Set the chromedriver or uc_driver version to use.
+    page_load_strategy (str):  Set Chrome PLS to "normal", "eager", or "none".
+    use_wire (bool):  Use selenium-wire's webdriver over selenium webdriver.
+    external_pdf (bool):  Set Chrome "plugins.always_open_pdf_externally":True
+    window_position (x,y):  Set the browser's starting window position: "X,Y"
+    window_size (w,h):  Set the browser's starting window size: "Width,Height"
+    is_mobile (bool):  Use the mobile device emulator while running tests.
+    mobile (bool):  Shortcut / Duplicate of "is_mobile".
+    d_width (int):  Set device width
+    d_height (int):  Set device height
+    d_p_r (float):  Set device pixel ratio
+    uc (bool):  Shortcut / Duplicate of "undetectable".
+    undetected (bool):  Shortcut / Duplicate of "undetectable".
+    uc_cdp (bool):  Shortcut / Duplicate of "uc_cdp_events".
+    uc_sub (bool):  Shortcut / Duplicate of "uc_subprocess".
+    log_cdp (bool):  Shortcut / Duplicate of "log_cdp_events".
+    ad_block (bool):  Shortcut / Duplicate of "ad_block_on".
+    server (str):  Shortcut / Duplicate of "servername".
+    guest (bool):  Shortcut / Duplicate of "guest_mode".
+    wire (bool):  Shortcut / Duplicate of "use_wire".
+    pls (str):  Shortcut / Duplicate of "page_load_strategy".
     """
     from seleniumbase import config as sb_config
     from seleniumbase.config import settings
