@@ -54,8 +54,8 @@ else:
 def show_usage():
     show_basic_usage()
     sc = ""
-    sc += '    Type "sbase help [COMMAND]" for specific command info.\n'
-    sc += '    For info on all commands, type: "seleniumbase --help".\n'
+    sc += '    Type "sbase help [COMMAND]" for specific info.\n'
+    sc += '    For all commands, type: "seleniumbase --help".\n'
     sc += '    Use "pytest" for running tests.\n'
     if "linux" not in sys.platform:
         c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
@@ -76,12 +76,15 @@ def show_basic_usage():
 
     seleniumbase_logo = logo_helper.get_seleniumbase_logo()
     print(seleniumbase_logo)
+    time.sleep(0.044)
     print("")
-    time.sleep(0.28)  # Enough time to see the logo
+    time.sleep(0.033)
     show_package_location()
+    time.sleep(0.032)
     show_version_info()
+    time.sleep(0.031)
     print("")
-    time.sleep(0.62)  # Enough time to see the version
+    time.sleep(0.68)  # Enough time to see the logo & version
     sc = ""
     sc += ' * USAGE: "seleniumbase [COMMAND] [PARAMETERS]"\n'
     sc += ' *    OR:        "sbase [COMMAND] [PARAMETERS]"\n'
