@@ -203,6 +203,8 @@ def extend_driver(driver):
     driver.is_exact_text_visible = DM.is_exact_text_visible
     driver.is_attribute_present = DM.is_attribute_present
     driver.is_non_empty_text_visible = DM.is_non_empty_text_visible
+    driver.is_valid_url = DM.is_valid_url
+    driver.is_alert_present = DM.is_alert_present
     driver.is_online = DM.is_online
     driver.js_click = DM.js_click
     driver.get_text = DM.get_text
