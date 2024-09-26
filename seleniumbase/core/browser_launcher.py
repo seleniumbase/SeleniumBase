@@ -1544,6 +1544,7 @@ def _set_chrome_options(
     multi_proxy,
     user_agent,
     recorder_ext,
+    disable_cookies,
     disable_js,
     disable_csp,
     enable_ws,
@@ -1621,6 +1622,8 @@ def _set_chrome_options(
         prefs["intl.accept_languages"] = locale_code
     if block_images:
         prefs["profile.managed_default_content_settings.images"] = 2
+    if disable_cookies:
+        prefs["profile.default_content_setting_values.cookies"] = 2
     if disable_js:
         prefs["profile.managed_default_content_settings.javascript"] = 2
     if do_not_track:
@@ -2016,6 +2019,7 @@ def _set_firefox_options(
     proxy_bypass_list,
     proxy_pac_url,
     user_agent,
+    disable_cookies,
     disable_js,
     disable_csp,
     firefox_arg,
@@ -2089,6 +2093,8 @@ def _set_firefox_options(
         "security.mixed_content.block_active_content", False
     )
     options.set_preference("security.warn_submit_insecure", False)
+    if disable_cookies:
+        options.set_preference("network.cookie.cookieBehavior", 2)
     if disable_js:
         options.set_preference("javascript.enabled", False)
     if settings.DISABLE_CSP_ON_FIREFOX or disable_csp:
@@ -2188,6 +2194,7 @@ def get_driver(
     cap_file=None,
     cap_string=None,
     recorder_ext=False,
+    disable_cookies=False,
     disable_js=False,
     disable_csp=False,
     enable_ws=False,
@@ -2348,6 +2355,7 @@ def get_driver(
         headless
         and (
             proxy_auth
+            or disable_cookies
             or disable_js
             or ad_block_on
             or disable_csp
@@ -2402,6 +2410,7 @@ def get_driver(
             cap_file,
             cap_string,
             recorder_ext,
+            disable_cookies,
             disable_js,
             disable_csp,
             enable_ws,
@@ -2459,6 +2468,7 @@ def get_driver(
             multi_proxy,
             user_agent,
             recorder_ext,
+            disable_cookies,
             disable_js,
             disable_csp,
             enable_ws,
@@ -2520,6 +2530,7 @@ def get_remote_driver(
     cap_file,
     cap_string,
     recorder_ext,
+    disable_cookies,
     disable_js,
     disable_csp,
     enable_ws,
@@ -2656,6 +2667,7 @@ def get_remote_driver(
             multi_proxy,
             user_agent,
             recorder_ext,
+            disable_cookies,
             disable_js,
             disable_csp,
             enable_ws,
@@ -2751,6 +2763,7 @@ def get_remote_driver(
             proxy_bypass_list,
             proxy_pac_url,
             user_agent,
+            disable_cookies,
             disable_js,
             disable_csp,
             firefox_arg,
@@ -2829,6 +2842,7 @@ def get_remote_driver(
             multi_proxy,
             user_agent,
             recorder_ext,
+            disable_cookies,
             disable_js,
             disable_csp,
             enable_ws,
@@ -2949,6 +2963,7 @@ def get_local_driver(
     multi_proxy,
     user_agent,
     recorder_ext,
+    disable_cookies,
     disable_js,
     disable_csp,
     enable_ws,
@@ -3030,6 +3045,7 @@ def get_local_driver(
             proxy_bypass_list,
             proxy_pac_url,
             user_agent,
+            disable_cookies,
             disable_js,
             disable_csp,
             firefox_arg,
@@ -3386,6 +3402,8 @@ def get_local_driver(
             prefs["intl.accept_languages"] = locale_code
         if block_images:
             prefs["profile.managed_default_content_settings.images"] = 2
+        if disable_cookies:
+            prefs["profile.default_content_setting_values.cookies"] = 2
         if disable_js:
             prefs["profile.managed_default_content_settings.javascript"] = 2
         if do_not_track:
@@ -3796,6 +3814,7 @@ def get_local_driver(
                 multi_proxy,
                 user_agent,
                 recorder_ext,
+                disable_cookies,
                 disable_js,
                 disable_csp,
                 enable_ws,
@@ -4321,6 +4340,7 @@ def get_local_driver(
                                         None,  # multi_proxy
                                         None,  # user_agent
                                         None,  # recorder_ext
+                                        disable_cookies,
                                         disable_js,
                                         disable_csp,
                                         enable_ws,
@@ -4563,6 +4583,7 @@ def get_local_driver(
                         None,  # multi_proxy
                         None,  # user_agent
                         None,  # recorder_ext
+                        disable_cookies,
                         disable_js,
                         disable_csp,
                         enable_ws,
