@@ -1,11 +1,13 @@
 """ The main purpose of this file is to demonstrate running SeleniumBase
     scripts without the use of Pytest by calling the script directly
-    with Python or from a Python interactive interpreter. Based on
-    whether relative imports work or don't, the script can autodetect
-    how this file was run. With pure Python, it will initialize
-    all the variables that would've been automatically initialized
-    by the Pytest plugin. The setUp() and tearDown() methods are also
-    now called from the script itself.
+    with Python or from a Python interactive interpreter.
+    Based on whether relative imports work or don't work, this script
+    can autodetect how this file was run. With pure Python, it
+    initializes all the variables that would've been automatically
+    initialized by the Pytest plugin. The setUp() and tearDown() methods
+    are also now called from the script itself.
+
+    (Note: The SB() and Driver() formats make this example obsolete.)
 
     One big advantage to running tests with Pytest is that most of this
     is done for you automatically, with the option to update any of the
@@ -13,8 +15,9 @@
     with other plugins, such as ones for generating test reports,
     handling multithreading, and parametrized tests. Depending on your
     specific needs, you may need to call SeleniumBase commands without
-    using Pytest, and this example shows you how.
+    using Pytest, and this example shows you one way of doing that.
 """
+
 pure_python = False
 try:
     # Running with Pytest / (Finds test methods to run using autodiscovery)
@@ -33,9 +36,11 @@ if pure_python:
     sb.browser = "chrome"
     sb.is_behave = False
     sb.headless = False
+    sb.headless1 = False
     sb.headless2 = False
     sb.headed = False
     sb.xvfb = False
+    sb.xvfb_metrics = None
     sb.start_page = None
     sb.locale_code = None
     sb.protocol = "http"
@@ -79,9 +84,11 @@ if pure_python:
     sb.esc_end = False
     sb.use_wire = False
     sb.enable_3d_apis = False
+    sb.window_position = None
     sb.window_size = None
     sb.maximize_option = False
     sb.visual_baseline = False
+    sb.disable_cookies = False
     sb.disable_features = None
     sb._disable_beforeunload = False
     sb.save_screenshot_after_test = False
