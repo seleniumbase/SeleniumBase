@@ -69,6 +69,7 @@ class SeleniumBrowser(Plugin):
     --rec-behave  (Same as Recorder Mode, but also generates behave-gherkin.)
     --rec-sleep  (If the Recorder is enabled, also records self.sleep calls.)
     --rec-print  (If the Recorder is enabled, prints output after tests end.)
+    --disable-cookies  (Disable Cookies on websites. Pages might break!)
     --disable-js  (Disable JavaScript on websites. Pages might break!)
     --disable-csp  (Disable the Content Security Policy of websites.)
     --disable-ws  (Disable Web Security on Chromium-based browsers.)
@@ -711,6 +712,15 @@ class SeleniumBrowser(Plugin):
                     Warning: Most web pages will stop working!""",
         )
         parser.addoption(
+            "--disable_cookies",
+            "--disable-cookies",
+            action="store_true",
+            dest="disable_cookies",
+            default=False,
+            help="""The option to disable Cookies on web pages.
+                    Warning: Several pages may stop working!""",
+        )
+        parser.addoption(
             "--disable_csp",
             "--disable-csp",
             "--no_csp",
@@ -1230,6 +1240,7 @@ class SeleniumBrowser(Plugin):
         elif self.options.record_sleep:
             test.test.recorder_mode = True
             test.test.recorder_ext = True
+        test.test.disable_cookies = self.options.disable_cookies
         test.test.disable_js = self.options.disable_js
         test.test.disable_csp = self.options.disable_csp
         test.test.disable_ws = self.options.disable_ws

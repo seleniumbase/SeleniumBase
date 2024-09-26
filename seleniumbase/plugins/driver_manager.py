@@ -81,7 +81,8 @@ def Driver(
     cap_file=None,  # The desired capabilities to use with a Selenium Grid.
     cap_string=None,  # The desired capabilities to use with a Selenium Grid.
     recorder_ext=None,  # Enables the SeleniumBase Recorder Chromium extension.
-    disable_js=None,  # Disable JavaScript on websites. Pages might break!
+    disable_cookies=None,  # Disable Cookies on websites. (Pages might break!)
+    disable_js=None,  # Disable JavaScript on websites. (Pages might break!)
     disable_csp=None,  # Disable the Content Security Policy of websites.
     enable_ws=None,  # Enable Web Security on Chromium-based browsers.
     disable_ws=None,  # Reverse of "enable_ws". (None and False are different)
@@ -172,7 +173,8 @@ def Driver(
     cap_file (str):  The desired capabilities to use with a Selenium Grid.
     cap_string (str):  The desired capabilities to use with a Selenium Grid.
     recorder_ext (bool):  Enables the SeleniumBase Recorder Chromium extension.
-    disable_js (bool):  Disable JavaScript on websites. Pages might break!
+    disable_cookies (bool):  Disable Cookies on websites. (Pages might break!)
+    disable_js (bool):  Disable JavaScript on websites. (Pages might break!)
     disable_csp (bool):  Disable the Content Security Policy of websites.
     enable_ws (bool):  Enable Web Security on Chromium-based browsers.
     disable_ws (bool):  Reverse of "enable_ws". (None and False are different)
@@ -646,6 +648,11 @@ def Driver(
             use_auto_ext = True
         else:
             use_auto_ext = False
+    if disable_cookies is None:
+        if "--disable-cookies" in sys_argv:
+            disable_cookies = True
+        else:
+            disable_cookies = False
     if disable_js is None:
         if "--disable-js" in sys_argv:
             disable_js = True
@@ -772,6 +779,7 @@ def Driver(
         cap_file=cap_file,
         cap_string=cap_string,
         recorder_ext=recorder_ext,
+        disable_cookies=disable_cookies,
         disable_js=disable_js,
         disable_csp=disable_csp,
         enable_ws=enable_ws,

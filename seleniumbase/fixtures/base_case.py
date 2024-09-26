@@ -3760,6 +3760,7 @@ class BaseCase(unittest.TestCase):
         cap_file=None,
         cap_string=None,
         recorder_ext=None,
+        disable_cookies=None,
         disable_js=None,
         disable_csp=None,
         enable_ws=None,
@@ -3820,6 +3821,7 @@ class BaseCase(unittest.TestCase):
         cap_file - the file containing desired capabilities for the browser
         cap_string - the string with desired capabilities for the browser
         recorder_ext - the option to enable the SBase Recorder extension
+        disable_cookies - the option to disable Cookies (May break things!)
         disable_js - the option to disable JavaScript (May break websites!)
         disable_csp - an option to disable Chrome's Content Security Policy
         enable_ws - the option to enable the Web Security feature (Chrome)
@@ -3918,6 +3920,8 @@ class BaseCase(unittest.TestCase):
             user_agent = self.user_agent
         if recorder_ext is None:
             recorder_ext = self.recorder_ext
+        if disable_cookies is None:
+            disable_cookies = self.disable_cookies
         if disable_js is None:
             disable_js = self.disable_js
         if disable_csp is None:
@@ -4029,6 +4033,7 @@ class BaseCase(unittest.TestCase):
             cap_file=cap_file,
             cap_string=cap_string,
             recorder_ext=recorder_ext,
+            disable_cookies=disable_cookies,
             disable_js=disable_js,
             disable_csp=disable_csp,
             enable_ws=enable_ws,
@@ -14394,6 +14399,7 @@ class BaseCase(unittest.TestCase):
             elif self.record_sleep and not self.recorder_mode:
                 self.recorder_mode = True
                 self.recorder_ext = True
+            self.disable_cookies = sb_config.disable_cookies
             self.disable_js = sb_config.disable_js
             self.disable_csp = sb_config.disable_csp
             self.disable_ws = sb_config.disable_ws
@@ -14772,6 +14778,7 @@ class BaseCase(unittest.TestCase):
                 cap_file=self.cap_file,
                 cap_string=self.cap_string,
                 recorder_ext=self.recorder_ext,
+                disable_cookies=self.disable_cookies,
                 disable_js=self.disable_js,
                 disable_csp=self.disable_csp,
                 enable_ws=self.enable_ws,

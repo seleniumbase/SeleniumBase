@@ -71,7 +71,8 @@ behave -D agent="User Agent String" -D demo
 -D rec-behave  (Same as Recorder Mode, but also generates behave-gherkin.)
 -D rec-sleep  (If the Recorder is enabled, also records self.sleep calls.)
 -D rec-print  (If the Recorder is enabled, prints output after tests end.)
--D disable-js  (Disable JavaScript on Chromium. May break websites!)
+-D disable-cookies  (Disable Cookies on websites. Pages might break!)
+-D disable-js  (Disable JavaScript on websites. Pages might break!)
 -D disable-csp  (Disable the Content Security Policy of websites.)
 -D disable-ws  (Disable Web Security on Chromium-based browsers.)
 -D enable-ws  (Enable Web Security on Chromium-based browsers.)
@@ -180,6 +181,7 @@ def get_configured_sb(context):
     sb.database_env = "test"
     sb.log_path = constants.Logs.LATEST + os.sep
     sb.archive_logs = False
+    sb.disable_cookies = False
     sb.disable_js = False
     sb.disable_csp = False
     sb.disable_ws = False
@@ -534,6 +536,10 @@ def get_configured_sb(context):
         # Handle: -D archive-logs / archive_logs
         if low_key in ["archive-logs", "archive_logs"]:
             sb.archive_logs = True
+            continue
+        # Handle: -D disable-cookies / disable_cookies
+        if low_key in ["disable-cookies", "disable_cookies"]:
+            sb.disable_cookies = True
             continue
         # Handle: -D disable-js / disable_js
         if low_key in ["disable-js", "disable_js"]:
@@ -1005,6 +1011,7 @@ def get_configured_sb(context):
     sb_config.pdb_option = sb.pdb_option
     sb_config.rec_behave = sb.rec_behave
     sb_config.rec_print = sb.rec_print
+    sb_config.disable_cookies = sb.disable_cookies
     sb_config.disable_js = sb.disable_js
     sb_config.disable_csp = sb.disable_csp
     sb_config.record_sleep = sb.record_sleep

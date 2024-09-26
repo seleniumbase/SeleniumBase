@@ -47,7 +47,8 @@ def SB(
     cap_file=None,  # The desired capabilities to use with a Selenium Grid.
     cap_string=None,  # The desired capabilities to use with a Selenium Grid.
     recorder_ext=None,  # Enables the SeleniumBase Recorder Chromium extension.
-    disable_js=None,  # Disable JavaScript on websites. Pages might break!
+    disable_cookies=None,  # Disable Cookies on websites. (Pages might break!)
+    disable_js=None,  # Disable JavaScript on websites. (Pages might break!)
     disable_csp=None,  # Disable the Content Security Policy of websites.
     enable_ws=None,  # Enable Web Security on Chromium-based browsers.
     enable_sync=None,  # Enable "Chrome Sync" on websites.
@@ -166,7 +167,8 @@ def SB(
     cap_file (str):  The desired capabilities to use with a Selenium Grid.
     cap_string (str):  The desired capabilities to use with a Selenium Grid.
     recorder_ext (bool):  Enables the SeleniumBase Recorder Chromium extension.
-    disable_js (bool):  Disable JavaScript on websites. Pages might break!
+    disable_cookies (bool):  Disable Cookies on websites. (Pages might break!)
+    disable_js (bool):  Disable JavaScript on websites. (Pages might break!)
     disable_csp (bool):  Disable the Content Security Policy of websites.
     enable_ws (bool):  Enable Web Security on Chromium-based browsers.
     enable_sync (bool):  Enable "Chrome Sync" on websites.
@@ -739,6 +741,11 @@ def SB(
             use_auto_ext = True
         else:
             use_auto_ext = False
+    if disable_cookies is None:
+        if "--disable-cookies" in sys_argv:
+            disable_cookies = True
+        else:
+            disable_cookies = False
     if disable_js is None:
         if "--disable-js" in sys_argv:
             disable_js = True
@@ -973,6 +980,7 @@ def SB(
     sb_config.log_cdp_events = log_cdp_events
     sb_config.no_sandbox = None
     sb_config.disable_gpu = None
+    sb_config.disable_cookies = disable_cookies
     sb_config.disable_js = disable_js
     sb_config._multithreaded = False
     sb_config.reuse_session = False
@@ -1081,6 +1089,7 @@ def SB(
     sb.log_cdp_events = sb_config.log_cdp_events
     sb.no_sandbox = sb_config.no_sandbox
     sb.disable_gpu = sb_config.disable_gpu
+    sb.disable_cookies = sb_config.disable_cookies
     sb.disable_js = sb_config.disable_js
     sb._multithreaded = sb_config._multithreaded
     sb._reuse_session = sb_config.reuse_session

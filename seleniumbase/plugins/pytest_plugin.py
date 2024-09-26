@@ -90,6 +90,7 @@ def pytest_addoption(parser):
     --rec-behave  (Same as Recorder Mode, but also generates behave-gherkin.)
     --rec-sleep  (If the Recorder is enabled, also records self.sleep calls.)
     --rec-print  (If the Recorder is enabled, prints output after tests end.)
+    --disable-cookies  (Disable Cookies on websites. Pages might break!)
     --disable-js  (Disable JavaScript on websites. Pages might break!)
     --disable-csp  (Disable the Content Security Policy of websites.)
     --disable-ws  (Disable Web Security on Chromium-based browsers.)
@@ -993,6 +994,15 @@ def pytest_addoption(parser):
                 Warning: Most web pages will stop working!""",
     )
     parser.addoption(
+        "--disable_cookies",
+        "--disable-cookies",
+        action="store_true",
+        dest="disable_cookies",
+        default=False,
+        help="""The option to disable Cookies on web pages.
+                Warning: Several pages may stop working!""",
+    )
+    parser.addoption(
         "--disable_csp",
         "--disable-csp",
         "--no_csp",
@@ -1628,6 +1638,7 @@ def pytest_configure(config):
     elif sb_config.record_sleep and not sb_config.recorder_mode:
         sb_config.recorder_mode = True
         sb_config.recorder_ext = True
+    sb_config.disable_cookies = config.getoption("disable_cookies")
     sb_config.disable_js = config.getoption("disable_js")
     sb_config.disable_csp = config.getoption("disable_csp")
     sb_config.disable_ws = config.getoption("disable_ws")
