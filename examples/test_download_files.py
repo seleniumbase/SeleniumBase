@@ -52,9 +52,9 @@ class DownloadTests(BaseCase):
             self.download_file(whl_href)
             self.download_file(tar_href)
         else:
-            self.click(whl_selector)  # Download the "whl" file
+            self.js_click(whl_selector)  # Download the "whl" file
             self.sleep(0.1)
-            self.click(tar_selector)  # Download the "tar" file
+            self.js_click(tar_selector)  # Download the "tar" file
 
         # Verify that the downloaded files appear in the [Downloads Folder]
         # (This only guarantees that the exact file name is in the folder.)
