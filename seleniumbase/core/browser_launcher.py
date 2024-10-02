@@ -2024,6 +2024,7 @@ def _set_firefox_options(
     disable_csp,
     firefox_arg,
     firefox_pref,
+    external_pdf,
 ):
     blank_p = "about:blank"
     options = webdriver.FirefoxOptions()
@@ -2035,7 +2036,6 @@ def _set_firefox_options(
     options.set_preference("browser.newtab.url", blank_p)
     options.set_preference("trailhead.firstrun.branches", "nofirstrun-empty")
     options.set_preference("browser.aboutwelcome.enabled", False)
-    options.set_preference("pdfjs.disabled", True)
     options.set_preference("app.update.auto", False)
     options.set_preference("app.update.enabled", False)
     options.set_preference("browser.formfill.enable", False)
@@ -2122,13 +2122,20 @@ def _set_firefox_options(
     options.set_preference(
         "browser.helperApps.neverAsk.saveToDisk",
         (
-            "application/pdf, application/zip, application/octet-stream, "
-            "text/csv, text/xml, application/xml, text/plain, "
-            "text/octet-stream, application/x-gzip, application/x-tar "
-            "application/"
-            "vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            "application/pdf,application/zip,application/octet-stream,"
+            "text/csv,text/xml,application/xml,text/plain,application/json,"
+            "text/octet-stream,application/x-gzip,application/x-tar,"
+            "application/java-archive,text/x-java-source,java,"
+            "application/javascript,video/jpeg,audio/x-aac,image/svg+xml,"
+            "application/x-font-woff,application/x-7z-compressed,"
+            "application/mp4,video/mp4,audio/mp4,video/x-msvideo,"
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         ),
     )
+    if external_pdf:
+        options.set_preference("pdfjs.disabled", True)
+    else:
+        options.set_preference("pdfjs.disabled", False)
     if firefox_arg:
         # Can be a comma-separated list of Firefox args
         firefox_arg_list = firefox_arg.split(",")
@@ -2768,6 +2775,7 @@ def get_remote_driver(
             disable_csp,
             firefox_arg,
             firefox_pref,
+            external_pdf,
         )
         capabilities = webdriver.FirefoxOptions().to_capabilities()
         capabilities["marionette"] = True
@@ -3050,6 +3058,7 @@ def get_local_driver(
             disable_csp,
             firefox_arg,
             firefox_pref,
+            external_pdf,
         )
         if LOCAL_GECKODRIVER and os.path.exists(LOCAL_GECKODRIVER):
             try:
