@@ -14500,15 +14500,13 @@ class BaseCase(unittest.TestCase):
                 self.__skip_reason = None
                 self.testcase_manager.insert_testcase_data(data_payload)
                 self.case_start_time = int(time.time() * 1000.0)
-            self.__activate_virtual_display_as_needed()
         elif hasattr(self, "is_behave") and self.is_behave:
             self.__initialize_variables()
-            self.__activate_virtual_display_as_needed()
         elif hasattr(self, "is_nosetest") and self.is_nosetest:
             pass  # Setup performed in plugins for pynose
         else:
-            # Pure Python run. Eg. SB() Manager
-            self.__activate_virtual_display_as_needed()
+            # Pure Python run. (Eg. SB() and Driver() Managers)
+            pass  # Variables initialized in respective plugins
 
         # Verify SeleniumBase is installed successfully, and used correctly
         if not hasattr(self, "browser"):
@@ -14695,6 +14693,10 @@ class BaseCase(unittest.TestCase):
                     '(Your browser choice was: "%s")' % self.browser
                 )
                 raise Exception(message)
+
+        if not hasattr(self, "is_nosetest") or not self.is_nosetest:
+            # Xvfb Virtual Display activation for Linux
+            self.__activate_virtual_display_as_needed()
 
         # Dashboard pre-processing:
         if self.dashboard:
