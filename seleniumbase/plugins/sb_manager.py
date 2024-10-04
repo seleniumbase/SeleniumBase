@@ -711,8 +711,25 @@ def SB(
     else:
         variables = {}
     if disable_csp is None:
-        disable_csp = False
+        if (
+            "--disable-csp" in sys_argv
+            or "--no-csp" in sys_argv
+            or "--dcsp" in sys_argv
+        ):
+            disable_csp = True
+        else:
+            disable_csp = False
     if (
+        (enable_ws is None and disable_ws is None)
+        and (
+            "--disable-web-security" in sys_argv
+            or "--disable-ws" in sys_argv
+            or "--dws" in sys_argv
+        )
+    ):
+        enable_ws = False
+        disable_ws = True
+    elif (
         (enable_ws is None and disable_ws is None)
         or (disable_ws is not None and not disable_ws)
         or (enable_ws is not None and enable_ws)

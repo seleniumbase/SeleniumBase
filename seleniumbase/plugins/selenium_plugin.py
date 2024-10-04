@@ -739,6 +739,7 @@ class SeleniumBrowser(Plugin):
         parser.addoption(
             "--disable_ws",
             "--disable-ws",
+            "--dws",
             "--disable-web-security",
             action="store_true",
             dest="disable_ws",

@@ -163,7 +163,7 @@ setup(
         "sbvirtualdisplay>=1.3.0",
         "six>=1.16.0",
         'parse>=1.20.2',
-        'parse-type>=0.6.3',
+        'parse-type>=0.6.4',
         'colorama>=0.4.6',
         'pyyaml>=6.0.2',
         'pygments>=2.18.0',
@@ -204,7 +204,7 @@ setup(
         'python-xlib==0.33;platform_system=="Linux"',
         'markdown-it-py==3.0.0',
         'mdurl==0.1.2',
-        'rich==13.9.1',
+        'rich==13.9.2',
     ],
     extras_require={
         # pip install -e .[allure]

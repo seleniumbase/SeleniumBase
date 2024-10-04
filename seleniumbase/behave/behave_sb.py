@@ -545,12 +545,12 @@ def get_configured_sb(context):
         if low_key in ["disable-js", "disable_js"]:
             sb.disable_js = True
             continue
-        # Handle: -D disable-csp / disable_csp
-        if low_key in ["disable-csp", "disable_csp"]:
+        # Handle: -D disable-csp / disable_csp / dcsp
+        if low_key in ["disable-csp", "disable_csp", "dcsp"]:
             sb.disable_csp = True
             continue
-        # Handle: -D disable-ws / disable_ws
-        if low_key in ["disable-ws", "disable_ws"]:
+        # Handle: -D disable-ws / disable_ws / dws
+        if low_key in ["disable-ws", "disable_ws", "dws"]:
             sb.disable_ws = True
             continue
         # Handle: -D enable-ws / enable_ws
