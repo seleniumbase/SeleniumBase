@@ -31,22 +31,22 @@ import sys
 def invalid_run_command(msg=None):
     exp = "  ** mkpres **\n\n"
     exp += "  Usage:\n"
-    exp += "          seleniumbase mkpres [FILE.py] [LANG]\n"
-    exp += "          OR     sbase mkpres [FILE.py] [LANG]\n"
+    exp += "     seleniumbase mkpres [FILE.py] [LANG]\n"
+    exp += "     OR     sbase mkpres [FILE.py] [LANG]\n"
     exp += "  Example:\n"
-    exp += "          sbase mkpres new_presentation.py --en\n"
+    exp += "     sbase mkpres new_presentation.py --en\n"
     exp += "  Language Options:\n"
-    exp += "          --en / --English    |    --zh / --Chinese\n"
-    exp += "          --nl / --Dutch      |    --fr / --French\n"
-    exp += "          --it / --Italian    |    --ja / --Japanese\n"
-    exp += "          --ko / --Korean     |    --pt / --Portuguese\n"
-    exp += "          --ru / --Russian    |    --es / --Spanish\n"
+    exp += "     --en / --English    |    --zh / --Chinese\n"
+    exp += "     --nl / --Dutch      |    --fr / --French\n"
+    exp += "     --it / --Italian    |    --ja / --Japanese\n"
+    exp += "     --ko / --Korean     |    --pt / --Portuguese\n"
+    exp += "     --ru / --Russian    |    --es / --Spanish\n"
     exp += "  Output:\n"
-    exp += "          Creates a new presentation with 3 example slides.\n"
-    exp += "          If the file already exists, an error is raised.\n"
-    exp += "          By default, the slides are written in English,\n"
-    exp += '          and use "serif" theme with "slide" transition.\n'
-    exp += "          The slides can be used as a basic boilerplate.\n"
+    exp += "     Creates a new presentation with 3 example slides.\n"
+    exp += "     If the file already exists, an error is raised.\n"
+    exp += "     By default, the slides are written in English,\n"
+    exp += '     and use "serif" theme with "slide" transition.\n'
+    exp += "     The slides can be used as a basic boilerplate.\n"
     if not msg:
         raise Exception("INVALID RUN COMMAND!\n\n%s" % exp)
     elif msg == "help":
@@ -62,13 +62,6 @@ def main():
     c7 = ""
     cr = ""
     if "linux" not in sys.platform:
-        if (
-            "win32" in sys.platform
-            and hasattr(colorama, "just_fix_windows_console")
-        ):
-            colorama.just_fix_windows_console()
-        else:
-            colorama.init(autoreset=True)
         c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
         c5 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
         c7 = colorama.Fore.BLACK + colorama.Back.MAGENTA

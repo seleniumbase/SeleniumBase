@@ -1231,10 +1231,6 @@ def behave_dashboard_prepare():
         c1 = ""
         cr = ""
         if not is_linux:
-            if is_windows and hasattr(colorama, "just_fix_windows_console"):
-                colorama.just_fix_windows_console()
-            else:
-                colorama.init(autoreset=True)
             c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
             cr = colorama.Style.RESET_ALL
         print("Dashboard: %s%s%s\n%s" % (c1, dash_path, cr, stars))
@@ -1346,10 +1342,6 @@ def _perform_behave_terminal_summary_():
     c2 = ""
     cr = ""
     if not is_linux:
-        if is_windows and hasattr(colorama, "just_fix_windows_console"):
-            colorama.just_fix_windows_console()
-        else:
-            colorama.init(autoreset=True)
         c2 = colorama.Fore.MAGENTA + colorama.Back.LIGHTYELLOW_EX
         cr = colorama.Style.RESET_ALL
     if sb_config.dashboard:

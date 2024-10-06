@@ -27,18 +27,18 @@ import sys
 def invalid_run_command(msg=None):
     exp = "  ** mkdir **\n\n"
     exp += "  Usage:\n"
-    exp += "          seleniumbase mkdir [DIRECTORY] [OPTIONS]\n"
-    exp += "          OR     sbase mkdir [DIRECTORY] [OPTIONS]\n"
+    exp += "     seleniumbase mkdir [DIRECTORY] [OPTIONS]\n"
+    exp += "     OR     sbase mkdir [DIRECTORY] [OPTIONS]\n"
     exp += "  Example:\n"
-    exp += "          sbase mkdir ui_tests\n"
+    exp += "     sbase mkdir ui_tests\n"
     exp += "  Options:\n"
-    exp += "          -b / --basic  (Only config files. No tests added.)\n"
+    exp += "     -b / --basic  (Only config files. No tests added.)\n"
     exp += "  Output:\n"
-    exp += "          Creates a new folder for running SBase scripts.\n"
-    exp += "          The new folder contains default config files,\n"
-    exp += "          sample tests for helping new users get started,\n"
-    exp += "          and Python boilerplates for setting up customized\n"
-    exp += "          test frameworks.\n"
+    exp += "     Creates a new folder for running SBase scripts.\n"
+    exp += "     The new folder contains default config files,\n"
+    exp += "     sample tests for helping new users get started,\n"
+    exp += "     and Python boilerplates for setting up customized\n"
+    exp += "     test frameworks.\n"
     if not msg:
         raise Exception("INVALID RUN COMMAND!\n\n%s" % exp)
     elif msg == "help":
@@ -54,13 +54,6 @@ def main():
     c7 = ""
     cr = ""
     if "linux" not in sys.platform:
-        if (
-            "win32" in sys.platform
-            and hasattr(colorama, "just_fix_windows_console")
-        ):
-            colorama.just_fix_windows_console()
-        else:
-            colorama.init(autoreset=True)
         c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
         c5 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
         c7 = colorama.Fore.BLACK + colorama.Back.MAGENTA

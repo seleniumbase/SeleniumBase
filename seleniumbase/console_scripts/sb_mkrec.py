@@ -39,21 +39,21 @@ import sys
 def invalid_run_command(msg=None):
     exp = "  ** mkrec / record / codegen **\n\n"
     exp += "  Usage:\n"
-    exp += "           seleniumbase mkrec [FILE.py]\n"
-    exp += "           OR:    sbase mkrec [FILE.py]\n"
+    exp += "     seleniumbase mkrec [FILE.py]\n"
+    exp += "     OR:    sbase mkrec [FILE.py]\n"
     exp += "  Examples:\n"
-    exp += "           sbase mkrec new_test.py\n"
-    exp += "           sbase mkrec new_test.py --url=wikipedia.org\n"
+    exp += "     sbase mkrec new_test.py\n"
+    exp += "     sbase mkrec new_test.py --url=wikipedia.org\n"
     exp += "  Options:\n"
-    exp += "           --url=URL  (Sets the initial start page URL.)\n"
-    exp += "           --edge  (Use Edge browser instead of Chrome.)\n"
-    exp += "           --gui / --headed  (Use headed mode on Linux.)\n"
-    exp += "           --uc / --undetected  (Use undetectable mode.)\n"
-    exp += "           --overwrite  (Overwrite file when it exists.)\n"
-    exp += "           --behave  (Also output Behave/Gherkin files.)\n"
+    exp += "     --url=URL  (Sets the initial start page URL.)\n"
+    exp += "     --edge  (Use Edge browser instead of Chrome.)\n"
+    exp += "     --gui / --headed  (Use headed mode on Linux.)\n"
+    exp += "     --uc / --undetected  (Use undetectable mode.)\n"
+    exp += "     --overwrite  (Overwrite file when it exists.)\n"
+    exp += "     --behave  (Also output Behave/Gherkin files.)\n"
     exp += "  Output:\n"
-    exp += "           Creates a new SeleniumBase test using the Recorder.\n"
-    exp += "           If the filename already exists, an error is raised.\n"
+    exp += "     Creates a new SeleniumBase test using the Recorder.\n"
+    exp += "     If the filename already exists, an error is raised.\n"
     if not msg:
         raise Exception("INVALID RUN COMMAND!\n\n%s" % exp)
     elif msg == "help":
@@ -71,13 +71,6 @@ def set_colors(use_colors):
     c7 = ""
     cr = ""
     if use_colors:
-        if (
-            "win32" in sys.platform
-            and hasattr(colorama, "just_fix_windows_console")
-        ):
-            colorama.just_fix_windows_console()
-        else:
-            colorama.init(autoreset=True)
         c0 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
         c1 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
         c2 = colorama.Fore.LIGHTRED_EX + colorama.Back.LIGHTYELLOW_EX
