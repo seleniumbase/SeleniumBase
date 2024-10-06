@@ -4,7 +4,6 @@
 
 import colorama
 import os
-import sys
 from contextlib import suppress
 
 r"""
@@ -17,13 +16,6 @@ r"""
 
 
 def get_seleniumbase_logo():
-    if (
-        "win32" in sys.platform
-        and hasattr(colorama, "just_fix_windows_console")
-    ):
-        colorama.just_fix_windows_console()
-    else:
-        colorama.init(autoreset=True)
     c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Back.CYAN

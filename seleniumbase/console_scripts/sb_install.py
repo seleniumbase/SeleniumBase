@@ -2,28 +2,28 @@
 Downloads the specified webdriver to "seleniumbase/drivers/"
 
 Usage:
-         sbase get {chromedriver|geckodriver|edgedriver|
-                    iedriver|uc_driver} [OPTIONS]
+    sbase get {chromedriver|geckodriver|edgedriver|
+               iedriver|uc_driver} [OPTIONS]
 Options:
-         VERSION         Specify the version.
-                         Tries to detect the needed version.
-                         If using chromedriver or edgedriver,
-                         you can use the major version integer.
-         -p OR --path    Also copy the driver to /usr/local/bin
+    VERSION         Specify the version.
+                    Tries to detect the needed version.
+                    If using chromedriver or edgedriver,
+                    you can use the major version integer.
+    -p OR --path    Also copy the driver to /usr/local/bin
 Examples:
-         sbase get chromedriver
-         sbase get geckodriver
-         sbase get edgedriver
-         sbase get chromedriver 114
-         sbase get chromedriver 114.0.5735.90
-         sbase get chromedriver stable
-         sbase get chromedriver beta
-         sbase get chromedriver -p
+    sbase get chromedriver
+    sbase get geckodriver
+    sbase get edgedriver
+    sbase get chromedriver 114
+    sbase get chromedriver 114.0.5735.90
+    sbase get chromedriver stable
+    sbase get chromedriver beta
+    sbase get chromedriver -p
 Output:
-         Downloads the webdriver to seleniumbase/drivers/
-         (chromedriver is required for Chrome automation)
-         (geckodriver is required for Firefox automation)
-         (edgedriver is required for MS__Edge automation)
+    Downloads the webdriver to seleniumbase/drivers/
+    (chromedriver is required for Chrome automation)
+    (geckodriver is required for Firefox automation)
+    (edgedriver is required for MS__Edge automation)
 """
 import colorama
 import logging
@@ -57,32 +57,33 @@ DEFAULT_EDGEDRIVER_VERSION = "115.0.1901.183"  # (If can't find LATEST_STABLE)
 def invalid_run_command():
     exp = "  ** get / install **\n\n"
     exp += "  Usage:\n"
-    exp += "           seleniumbase install [DRIVER] [OPTIONS]\n"
-    exp += "           OR     sbase install [DRIVER] [OPTIONS]\n"
-    exp += "           OR  seleniumbase get [DRIVER] [OPTIONS]\n"
-    exp += "           OR         sbase get [DRIVER] [OPTIONS]\n"
-    exp += "                (Drivers: chromedriver, geckodriver, edgedriver,\n"
-    exp += "                          iedriver, uc_driver)\n"
+    exp += "     seleniumbase install [DRIVER_NAME] [OPTIONS]\n"
+    exp += "     OR     sbase install [DRIVER_NAME] [OPTIONS]\n"
+    exp += "     OR  seleniumbase get [DRIVER_NAME] [OPTIONS]\n"
+    exp += "     OR         sbase get [DRIVER_NAME] [OPTIONS]\n"
+    exp += "         (Drivers: chromedriver, geckodriver,\n"
+    exp += "                   edgedriver, iedriver, uc_driver)\n"
     exp += "  Options:\n"
-    exp += "           VERSION        Specify the version.\n"
-    exp += "                          Tries to detect the needed version.\n"
-    exp += "                          If using chromedriver or edgedriver,\n"
-    exp += "                          you can use the major version integer.\n"
-    exp += "           -p OR --path   Also copy the driver to /usr/local/bin\n"
+    exp += "     VERSION    Specify the version.\n"
+    exp += "                Tries to detect the needed version.\n"
+    exp += "                If using chromedriver or edgedriver,\n"
+    exp += "                you can use the major version integer.\n"
+    exp += "\n"
+    exp += "     -p OR --path   Also copy the driver to /usr/local/bin\n"
     exp += "  Examples:\n"
-    exp += "           sbase get chromedriver\n"
-    exp += "           sbase get geckodriver\n"
-    exp += "           sbase get edgedriver\n"
-    exp += "           sbase get chromedriver 114\n"
-    exp += "           sbase get chromedriver 114.0.5735.90\n"
-    exp += "           sbase get chromedriver stable\n"
-    exp += "           sbase get chromedriver beta\n"
-    exp += "           sbase get chromedriver -p\n"
+    exp += "     sbase get chromedriver\n"
+    exp += "     sbase get geckodriver\n"
+    exp += "     sbase get edgedriver\n"
+    exp += "     sbase get chromedriver 114\n"
+    exp += "     sbase get chromedriver 114.0.5735.90\n"
+    exp += "     sbase get chromedriver stable\n"
+    exp += "     sbase get chromedriver beta\n"
+    exp += "     sbase get chromedriver -p\n"
     exp += "  Output:\n"
-    exp += "          Downloads the webdriver to seleniumbase/drivers/\n"
-    exp += "          (chromedriver is required for Chrome automation)\n"
-    exp += "          (geckodriver is required for Firefox automation)\n"
-    exp += "          (edgedriver is required for MS__Edge automation)\n"
+    exp += "     Downloads the webdriver to seleniumbase/drivers/\n"
+    exp += "     (chromedriver is required for Chrome automation)\n"
+    exp += "     (geckodriver is required for Firefox automation)\n"
+    exp += "     (edgedriver is required for MS__Edge automation)\n"
     print("")
     raise Exception("%s\n\n%s" % (constants.Warnings.INVALID_RUN_COMMAND, exp))
 
@@ -293,10 +294,6 @@ def main(override=None, intel_for_uc=None, force_uc=None):
     use_version = ""
     new_file = ""
     f_name = ""
-    if IS_WINDOWS and hasattr(colorama, "just_fix_windows_console"):
-        colorama.just_fix_windows_console()
-    else:
-        colorama.init(autoreset=True)
     c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
@@ -944,7 +941,10 @@ def main(override=None, intel_for_uc=None, force_uc=None):
                         f_name = "uc_driver"
                 new_file = os.path.join(downloads_folder, str(f_name))
                 pr_file = c3 + new_file + cr
-                log_d("The file [%s] was saved to:\n%s\n" % (f_name, pr_file))
+                d_folder = os.sep.join(pr_file.split(os.sep)[:-1]) + os.sep
+                d_file = pr_file.split(os.sep)[-1]
+                d_ff = c3 + d_folder + cr + "\n" + c3 + d_file + cr
+                log_d("The file [%s] was saved to:\n%s\n" % (f_name, d_ff))
                 log_d("Making [%s %s] executable ..." % (f_name, use_version))
                 make_executable(new_file)
                 log_d(

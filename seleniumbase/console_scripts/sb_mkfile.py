@@ -49,38 +49,38 @@ import sys
 def invalid_run_command(msg=None):
     exp = "  ** mkfile **\n\n"
     exp += "  Usage:\n"
-    exp += "           seleniumbase mkfile [FILE.py] [OPTIONS]\n"
-    exp += "           OR     sbase mkfile [FILE.py] [OPTIONS]\n"
+    exp += "     seleniumbase mkfile [FILE.py] [OPTIONS]\n"
+    exp += "     OR     sbase mkfile [FILE.py] [OPTIONS]\n"
     exp += "  Example:\n"
-    exp += "           sbase mkfile new_test.py\n"
+    exp += "     sbase mkfile new_test.py\n"
     exp += "  Options:\n"
-    exp += "           --uc  (UC Mode boilerplate using SB context manager)\n"
-    exp += "           -b / --basic  (Basic boilerplate / single-line test)\n"
-    exp += "           -r / --rec  (Adds Pdb+ breakpoint for Recorder Mode)\n"
-    exp += "           --url=URL  (Makes the test start on a specific page)\n"
+    exp += "     --uc  (UC Mode boilerplate using SB context manager)\n"
+    exp += "     -b / --basic  (Basic boilerplate / single-line test)\n"
+    exp += "     -r / --rec  (Adds Pdb+ breakpoint for Recorder Mode)\n"
+    exp += "     --url=URL  (Makes the test start on a specific page)\n"
     exp += "  Language Options:\n"
-    exp += "           --en / --English    |    --zh / --Chinese\n"
-    exp += "           --nl / --Dutch      |    --fr / --French\n"
-    exp += "           --it / --Italian    |    --ja / --Japanese\n"
-    exp += "           --ko / --Korean     |    --pt / --Portuguese\n"
-    exp += "           --ru / --Russian    |    --es / --Spanish\n"
+    exp += "     --en / --English    |    --zh / --Chinese\n"
+    exp += "     --nl / --Dutch      |    --fr / --French\n"
+    exp += "     --it / --Italian    |    --ja / --Japanese\n"
+    exp += "     --ko / --Korean     |    --pt / --Portuguese\n"
+    exp += "     --ru / --Russian    |    --es / --Spanish\n"
     exp += "  Syntax Formats:\n"
-    exp += "           --bc / --basecase       (BaseCase class inheritance)\n"
-    exp += "           --pf / --pytest-fixture          (sb pytest fixture)\n"
-    exp += "           --cf / --class-fixture   (class + sb pytest fixture)\n"
-    exp += "           --cm / --context-manager        (SB context manager)\n"
-    exp += "           --dc / --driver-context      (DriverContext manager)\n"
-    exp += "           --dm / --driver-manager             (Driver manager)\n"
+    exp += "     --bc / --basecase       (BaseCase class inheritance)\n"
+    exp += "     --pf / --pytest-fixture          (sb pytest fixture)\n"
+    exp += "     --cf / --class-fixture   (class + sb pytest fixture)\n"
+    exp += "     --cm / --context-manager        (SB context manager)\n"
+    exp += "     --dc / --driver-context      (DriverContext manager)\n"
+    exp += "     --dm / --driver-manager             (Driver manager)\n"
     exp += "  Output:\n"
-    exp += "           Creates a new SBase test file with boilerplate code.\n"
-    exp += "           If the file already exists, an error is raised.\n"
-    exp += "           By default, uses English with BaseCase inheritance,\n"
-    exp += "           and creates a boilerplate with common SeleniumBase\n"
-    exp += '           methods: "open", "type", "click", "assert_element",\n'
-    exp += '           and "assert_text". If using the basic boilerplate\n'
-    exp += '           option, only the "open" method is included. Only the\n'
-    exp += "           BaseCase format supports Languages or Recorder Mode.\n"
-    exp += "           UC Mode automatically uses English with SB() format.\n"
+    exp += "     Creates a new SBase test file with boilerplate code.\n"
+    exp += "     If the file already exists, an error is raised.\n"
+    exp += "     By default, uses English with BaseCase inheritance,\n"
+    exp += "     and creates a boilerplate with common SeleniumBase\n"
+    exp += '     methods: "open", "type", "click", "assert_element",\n'
+    exp += '     and "assert_text". If using the basic boilerplate\n'
+    exp += '     option, only the "open" method is included. Only the\n'
+    exp += "     BaseCase format supports Languages or Recorder Mode.\n"
+    exp += "     UC Mode automatically uses English with SB() format.\n"
     if not msg:
         raise Exception("INVALID RUN COMMAND!\n\n%s" % exp)
     elif msg == "help":
@@ -96,13 +96,6 @@ def main():
     c7 = ""
     cr = ""
     if "linux" not in sys.platform:
-        if (
-            "win32" in sys.platform
-            and hasattr(colorama, "just_fix_windows_console")
-        ):
-            colorama.just_fix_windows_console()
-        else:
-            colorama.init(autoreset=True)
         c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
         c5 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
         c7 = colorama.Fore.BLACK + colorama.Back.MAGENTA

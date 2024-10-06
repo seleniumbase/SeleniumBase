@@ -130,10 +130,6 @@ def pytest_addoption(parser):
     cr = ""
     if "linux" not in sys.platform:
         # This will be seen when typing "pytest --help" on the command line.
-        if is_windows and hasattr(colorama, "just_fix_windows_console"):
-            colorama.just_fix_windows_console()
-        else:
-            colorama.init(autoreset=True)
         c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
         c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
         c3 = colorama.Fore.MAGENTA + colorama.Back.LIGHTYELLOW_EX
@@ -1957,10 +1953,6 @@ def pytest_collection_finish(session):
         c1 = ""
         cr = ""
         if "linux" not in sys.platform:
-            if is_windows and hasattr(colorama, "just_fix_windows_console"):
-                colorama.just_fix_windows_console()
-            else:
-                colorama.init(autoreset=True)
             c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
             cr = colorama.Style.RESET_ALL
         if sb_config._multithreaded:
