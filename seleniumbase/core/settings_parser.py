@@ -113,6 +113,10 @@ def set_settings(settings_file):
             settings.RAISE_INVALID_PROXY_STRING_EXCEPTION = override_settings[
                 key
             ]
+        elif key == "WINDOW_START_X":
+            settings.WINDOW_START_X = override_settings[key]
+        elif key == "WINDOW_START_Y":
+            settings.WINDOW_START_Y = override_settings[key]
         elif key == "CHROME_START_WIDTH":
             settings.CHROME_START_WIDTH = override_settings[key]
         elif key == "CHROME_START_HEIGHT":

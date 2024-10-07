@@ -1,5 +1,6 @@
 import os
 import subprocess
+from contextlib import suppress
 from seleniumbase import BaseCase
 from seleniumbase import SB
 BaseCase.main(__name__, __file__)
@@ -8,6 +9,7 @@ BaseCase.main(__name__, __file__)
 class UCPresentationClass(BaseCase):
     def test_presentation(self):
         self.open("data:,")
+        self._output_file_saves = False
         self.create_presentation(theme="beige", transition="fade")
         self.add_slide(
             "<p>A deep dive into <b>undetectable automation</b>, with:</p>"
@@ -30,12 +32,12 @@ class UCPresentationClass(BaseCase):
         self.get_new_driver(undetectable=True)
         url = "https://gitlab.com/users/sign_in"
         try:
-            self.driver.uc_open_with_reconnect(url, reconnect_time=3)
+            self.uc_open_with_reconnect(url, reconnect_time=3)
             try:
                 self.assert_text("Username", '[for="user_login"]', timeout=3)
                 self.post_message("SeleniumBase wasn't detected", duration=4)
             except Exception:
-                self.driver.uc_open_with_reconnect(url, reconnect_time=4)
+                self.uc_open_with_reconnect(url, reconnect_time=4)
                 self.assert_text("Username", '[for="user_login"]', timeout=3)
                 self.post_message("SeleniumBase wasn't detected", duration=4)
         finally:
@@ -235,7 +237,8 @@ class UCPresentationClass(BaseCase):
                 "<mk-2>from seleniumbase import Driver</mk-2>\n\n"
                 "<mk-3>driver = Driver(uc=True)</mk-3>\n"
                 "<mk-4>try:</mk-4>\n"
-                '    <mk-5>driver.get("https://nowsecure.nl/#relax")</mk-5>\n'
+                '    <mk-5>driver.get("https://gitlab.com/users/sign_in")'
+                '</mk-5>\n'
                 "    <mk-1><mk-6>driver.sleep(4)</mk-6></mk-1>\n"
                 "    <mk-7># DO MORE STUFF</mk-7>\n"
                 "<mk-4>finally:</mk-4>\n"
@@ -249,8 +252,7 @@ class UCPresentationClass(BaseCase):
             code=(
                 "<mk-1>from seleniumbase import SB</mk-1>\n\n"
                 "<mk-2>with SB(uc=True) as sb:</mk-2>\n"
-                '    <mk-3>sb.driver.get('
-                '"https://seleniumbase.io/simple/login")</mk-3>\n'
+                '    <mk-3>sb.get("seleniumbase.io/simple/login")</mk-3>\n'
                 '    <mk-4>sb.type("#username", "demo_user")</mk-4>\n'
                 '    <mk-5>sb.type("#password", "secret_pass")</mk-5>\n'
                 '    <mk-6>sb.click(\'a:contains("Sign in")\')</mk-6>\n'
@@ -264,9 +266,9 @@ class UCPresentationClass(BaseCase):
         )
         self.begin_presentation(filename="uc_presentation.html")
 
-        try:
+        with suppress(Exception):
             with SB(uc=True) as sb:
-                sb.driver.get("https://seleniumbase.io/simple/login")
+                sb.get("https://seleniumbase.io/simple/login")
                 sb.type("#username", "demo_user")
                 sb.type("#password", "secret_pass")
                 sb.click('a:contains("Sign in")')
@@ -275,8 +277,6 @@ class UCPresentationClass(BaseCase):
                 sb.highlight("#image1")
                 sb.click_link("Sign out")
                 sb.assert_text("signed out", "#top_message")
-        except Exception:
-            pass
 
         self.create_presentation(theme="serif", transition="fade")
         self.add_slide(
@@ -285,7 +285,7 @@ class UCPresentationClass(BaseCase):
             code=(
                 "from seleniumbase import SB\n\n"
                 "with SB(uc=True<mk-1>, demo=True</mk-1>) as sb:\n"
-                '    sb.driver.get('
+                '    sb.get('
                 '"https://seleniumbase.io/simple/login")\n'
                 '    sb.type("#username", "demo_user")\n'
                 '    sb.type("#password", "secret_pass")\n'
@@ -299,9 +299,9 @@ class UCPresentationClass(BaseCase):
         )
         self.begin_presentation(filename="uc_presentation.html")
 
-        try:
+        with suppress(Exception):
             with SB(uc=True, demo=True) as sb:
-                sb.driver.get("https://seleniumbase.io/simple/login")
+                sb.get("https://seleniumbase.io/simple/login")
                 sb.type("#username", "demo_user")
                 sb.type("#password", "secret_pass")
                 sb.click('a:contains("Sign in")')
@@ -310,8 +310,6 @@ class UCPresentationClass(BaseCase):
                 sb.highlight("#image1")
                 sb.click_link("Sign out")
                 sb.assert_text("signed out", "#top_message")
-        except Exception:
-            pass
 
         self.create_presentation(theme="serif", transition="fade")
         self.add_slide(
@@ -340,29 +338,22 @@ class UCPresentationClass(BaseCase):
             code=(
                 "from seleniumbase import SB\n\n"
                 "with SB(uc=True) as sb:\n"
-                '    sb.driver.get("https://nowsecure.nl/#relax")\n'
-                "    sb.sleep(1)\n"
-                '    if not sb.is_text_visible("OH YEAH, you passed", "h1"):\n'
-                "        sb.get_new_driver(undetectable=True)\n"
-                '        sb.driver.get("https://nowsecure.nl/#relax")\n'
-                "        sb.sleep(1)\n"
-                '    sb.activate_demo_mode()\n'
-                '    sb.assert_text("OH YEAH, you passed!", "h1", timeout=3)\n'
+                '    url = "https://gitlab.com/users/sign_in"\n'
+                "    sb.uc_open_with_reconnect(url, 4)\n\n"
+                "    ...\n"
             ),
         )
         self.begin_presentation(filename="uc_presentation.html")
 
-        try:
+        with suppress(Exception):
             with SB(uc=True) as sb:
-                sb.driver.uc_open_with_tab("https://nowsecure.nl/#relax")
-                sb.sleep(1)
-                if not sb.is_text_visible("OH YEAH, you passed", "h1"):
-                    sb.driver.uc_open_with_tab("https://nowsecure.nl/#relax")
-                    sb.sleep(1)
-                sb.activate_demo_mode()
-                sb.assert_text("OH YEAH, you passed!", "h1", timeout=3)
-        except Exception:
-            pass
+                url = "https://gitlab.com/users/sign_in"
+                sb.uc_open_with_reconnect(url, 4)
+                sb.assert_text("Username", '[for="user_login"]', timeout=3)
+                sb.assert_element('[for="user_login"]')
+                sb.highlight('button:contains("Sign in")')
+                sb.highlight('h1:contains("GitLab.com")')
+                sb.post_message("SeleniumBase wasn't detected", duration=4)
 
         self.create_presentation(theme="serif", transition="fade")
         self.add_slide(
@@ -496,11 +487,12 @@ class UCPresentationClass(BaseCase):
             code=(
                 "# Example:\n"
                 "<mk-1>driver.uc_open_with_reconnect(\n"
-                '    "https://nowsecure.nl/#relax", reconnect_time=6\n)</mk-1>'
+                '    "https://steamdb.info/login/", reconnect_time=6\n)'
+                "</mk-1>"
                 "\n\n"
                 "# Short form example:\n"
                 "<mk-2>driver.uc_open_with_reconnect("
-                '"https://nowsecure.nl/#relax", 6)</mk-2>\n'
+                '"https://steamdb.info/login/", 6)</mk-2>\n'
             ),
         )
         self.add_slide(

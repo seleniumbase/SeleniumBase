@@ -1,4 +1,5 @@
 """Add new methods to extend the driver"""
+from contextlib import suppress
 from selenium.webdriver.remote.webelement import WebElement
 from seleniumbase.fixtures import js_utils
 from seleniumbase.fixtures import page_actions
@@ -36,10 +37,8 @@ class DriverMethods():
             selector, by = page_utils.swap_selector_and_by_if_reversed(
                 selector, by
             )
-        try:
+        with suppress(Exception):
             return self.driver.default_find_element(by=by, value=selector)
-        except Exception:
-            pass
         raise Exception('No such Element: {%s} (by="%s")!' % (selector, by))
 
     def get_attribute(self, selector, attribute, by="css selector"):
@@ -161,6 +160,17 @@ class DriverMethods():
         return page_actions.is_non_empty_text_visible(
             self.driver, *args, **kwargs
         )
+
+    def is_valid_url(self, url):
+        """Return True if the url is a valid url."""
+        return page_utils.is_valid_url(url)
+
+    def is_alert_present(self):
+        try:
+            self.driver.switch_to.alert
+            return True
+        except Exception:
+            return False
 
     def is_online(self):
         return self.driver.execute_script("return navigator.onLine;")

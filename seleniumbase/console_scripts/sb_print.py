@@ -18,13 +18,13 @@ import sys
 def invalid_run_command(msg=None):
     exp = "  ** print **\n\n"
     exp += "  Usage:\n"
-    exp += "         seleniumbase print [FILE] [OPTIONS]\n"
-    exp += "         OR:    sbase print [FILE] [OPTIONS]\n"
+    exp += "     seleniumbase print [FILE] [OPTIONS]\n"
+    exp += "     OR:    sbase print [FILE] [OPTIONS]\n"
     exp += "  Options:\n"
-    exp += "         -n   (Add line Numbers to the rows)\n"
+    exp += "     -n   (Add line Numbers to the rows)\n"
     exp += "  Output:\n"
-    exp += "         Prints the code/text of any file\n"
-    exp += "         with syntax-highlighting.\n"
+    exp += "     Prints the code/text of any file\n"
+    exp += "     with syntax-highlighting.\n"
     if not msg:
         raise Exception("INVALID RUN COMMAND!\n\n%s" % exp)
     else:
@@ -61,13 +61,6 @@ def get_width(line):
 
 
 def main():
-    if (
-        "win32" in sys.platform
-        and hasattr(colorama, "just_fix_windows_console")
-    ):
-        colorama.just_fix_windows_console()
-    else:
-        colorama.init(autoreset=True)
     c5 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
     c7 = colorama.Fore.BLACK + colorama.Back.MAGENTA
     cr = colorama.Style.RESET_ALL

@@ -131,10 +131,11 @@ class HackTests(BaseCase):
         self.highlight("section.crayons-card", loops=7, scroll=False)
 
         self.open("https://azure.microsoft.com/en-us/services/playfab/")
-        self.remove_elements('div[role="dialog"]')
         self.set_text_content("h1", aybabtu)
         self.set_text_content('a[aria-label*="Try Azure"]', ayb)
         self.set_text_content('a[aria-label*="Sign in to"]', abtu)
+        self.remove_elements('div[role="dialog"]')
+        self.remove_elements('[aria-label*="Microsoft Survey"]')
         self.highlight("h1", loops=6, scroll=False)
         self.highlight('a[aria-label*="Try Azure"]', loops=4, scroll=False)
         self.highlight('a[aria-label*="Sign in to"]', loops=6, scroll=False)
@@ -307,15 +308,6 @@ class HackTests(BaseCase):
         self.highlight('a[href="/sponsors/"]', loops=6, scroll=False)
         self.highlight("h1", loops=6, scroll=False)
         self.highlight("input#search", loops=8, scroll=False)
-
-        self.open("https://www.atlassian.com/software/jira")
-        self.set_text_content('a[href*="jira/pricing"]', ayb)
-        self.set_text_content('a[href*="jira/enterprise"]', abtu)
-        self.set_text_content('a[href="/software/jira/features"]', "")
-        self.set_text_content("h1", aybabtu)
-        self.highlight('a[href*="jira/pricing"]', loops=5, scroll=False)
-        self.highlight('a[href*="jira/enterprise"]', loops=6, scroll=False)
-        self.highlight("h1", loops=8, scroll=False)
 
         self.open("https://status.iboss.com/ibcloud/app/cloudStatus.html")
         self.wait_for_element_clickable('div[translate*="cloudStatus"]')

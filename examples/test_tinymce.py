@@ -4,6 +4,9 @@ BaseCase.main(__name__, __file__)
 
 class TinyMceTests(BaseCase):
     def test_tinymce(self):
+        if self.headless:
+            self.open_if_not_url("about:blank")
+            self.skip("Skip this test in headless mode!")
         self.open("https://seleniumbase.io/tinymce/")
         self.wait_for_element("div.mce-container-body")
         self.click('span:contains("File")')

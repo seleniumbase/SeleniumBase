@@ -39,21 +39,21 @@ import sys
 def invalid_run_command(msg=None):
     exp = "  ** mkrec / record / codegen **\n\n"
     exp += "  Usage:\n"
-    exp += "           seleniumbase mkrec [FILE.py]\n"
-    exp += "           OR:    sbase mkrec [FILE.py]\n"
+    exp += "     seleniumbase mkrec [FILE.py]\n"
+    exp += "     OR:    sbase mkrec [FILE.py]\n"
     exp += "  Examples:\n"
-    exp += "           sbase mkrec new_test.py\n"
-    exp += "           sbase mkrec new_test.py --url=wikipedia.org\n"
+    exp += "     sbase mkrec new_test.py\n"
+    exp += "     sbase mkrec new_test.py --url=wikipedia.org\n"
     exp += "  Options:\n"
-    exp += "           --url=URL  (Sets the initial start page URL.)\n"
-    exp += "           --edge  (Use Edge browser instead of Chrome.)\n"
-    exp += "           --gui / --headed  (Use headed mode on Linux.)\n"
-    exp += "           --uc / --undetected  (Use undetectable mode.)\n"
-    exp += "           --overwrite  (Overwrite file when it exists.)\n"
-    exp += "           --behave  (Also output Behave/Gherkin files.)\n"
+    exp += "     --url=URL  (Sets the initial start page URL.)\n"
+    exp += "     --edge  (Use Edge browser instead of Chrome.)\n"
+    exp += "     --gui / --headed  (Use headed mode on Linux.)\n"
+    exp += "     --uc / --undetected  (Use undetectable mode.)\n"
+    exp += "     --overwrite  (Overwrite file when it exists.)\n"
+    exp += "     --behave  (Also output Behave/Gherkin files.)\n"
     exp += "  Output:\n"
-    exp += "           Creates a new SeleniumBase test using the Recorder.\n"
-    exp += "           If the filename already exists, an error is raised.\n"
+    exp += "     Creates a new SeleniumBase test using the Recorder.\n"
+    exp += "     If the filename already exists, an error is raised.\n"
     if not msg:
         raise Exception("INVALID RUN COMMAND!\n\n%s" % exp)
     elif msg == "help":
@@ -71,13 +71,6 @@ def set_colors(use_colors):
     c7 = ""
     cr = ""
     if use_colors:
-        if (
-            "win32" in sys.platform
-            and hasattr(colorama, "just_fix_windows_console")
-        ):
-            colorama.just_fix_windows_console()
-        else:
-            colorama.init(autoreset=True)
         c0 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
         c1 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
         c2 = colorama.Fore.LIGHTRED_EX + colorama.Back.LIGHTYELLOW_EX
@@ -181,6 +174,28 @@ def main():
     data.append("")
     data.append("class RecorderTest(BaseCase):")
     data.append("    def test_recording(self):")
+    if use_uc:
+        data.append("        if self.undetectable:")
+        if (
+            start_page
+            and (
+                start_page.startswith("http:")
+                or start_page.startswith("https:")
+                or start_page.startswith("file:")
+            )
+        ):
+            used_sp = start_page
+            if '"' not in start_page:
+                used_sp = '"%s"' % start_page
+            elif "'" not in start_page:
+                used_sp = "'%s'" % start_page
+            data.append(
+                "            self.uc_open_with_disconnect(\n"
+                "                %s\n"
+                "            )" % used_sp
+            )
+        else:
+            data.append("            self.disconnect()")
     data.append("        if self.recorder_ext:")
     data.append("            # When done recording actions,")
     data.append('            # type "c", and press [Enter].')
@@ -231,7 +246,18 @@ def main():
     )
     print(success)
     run_cmd = None
-    if not start_page:
+    if (
+        not start_page
+        or (
+            use_uc
+            and (
+                start_page.startswith("http:")
+                or start_page.startswith("https:")
+                or start_page.startswith("file:")
+            )
+            and not esc_end
+        )
+    ):
         run_cmd = "%s -m pytest %s --rec -q -s" % (sys_executable, file_name)
     else:
         run_cmd = "%s -m pytest %s --rec -q -s --url=%s" % (

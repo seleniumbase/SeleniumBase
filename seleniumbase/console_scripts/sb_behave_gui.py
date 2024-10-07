@@ -16,16 +16,16 @@ Output:
 import colorama
 import subprocess
 import sys
+import tkinter as tk
+from seleniumbase.fixtures import shared_utils
+from tkinter.scrolledtext import ScrolledText
 
-if sys.version_info <= (3, 7):
+if sys.version_info <= (3, 8):
     current_version = ".".join(str(ver) for ver in sys.version_info[:3])
     raise Exception(
-        "\n* SBase Commander requires Python 3.7 or newer!"
+        "\n* SBase Commander requires Python 3.8 or newer!"
         "\n** You are currently using Python %s" % current_version
     )
-from seleniumbase.fixtures import shared_utils
-import tkinter as tk  # noqa: E402
-from tkinter.scrolledtext import ScrolledText  # noqa: E402
 
 
 def set_colors(use_colors):
@@ -38,13 +38,6 @@ def set_colors(use_colors):
     c6 = ""
     cr = ""
     if use_colors:
-        if (
-            shared_utils.is_windows()
-            and hasattr(colorama, "just_fix_windows_console")
-        ):
-            colorama.just_fix_windows_console()
-        else:
-            colorama.init(autoreset=True)
         c0 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
         c1 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
         c2 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX

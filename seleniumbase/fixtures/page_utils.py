@@ -16,7 +16,7 @@ def get_domain_url(url):
     Into this:
     https://blog.xkcd.com
     """
-    if not url.startswith("http://") and not url.startswith("https://"):
+    if not url.startswith(("http://", "https://")):
         return url
     url_header = url.split("://")[0]
     simple_url = url.split("://")[1]
@@ -41,44 +41,29 @@ def swap_selector_and_by_if_reversed(selector, by):
 
 def is_xpath_selector(selector):
     """Determine if a selector is an xpath selector."""
-    if (
-        selector.startswith("/")
-        or selector.startswith("./")
-        or selector.startswith("(")
-    ):
-        return True
-    return False
+    return selector.startswith(("/", "./", "("))
 
 
 def is_link_text_selector(selector):
     """Determine if a selector is a link text selector."""
-    if (
-        selector.startswith("link=")
-        or selector.startswith("link_text=")
-        or selector.startswith("linkText=")
-        or selector.startswith("text=")
-    ):
-        return True
-    return False
+    return selector.startswith(("link=", "link_text=","linkText=", "text="))
 
 
 def is_partial_link_text_selector(selector):
     """Determine if a selector is a partial link text selector."""
-    if (
-        selector.startswith("partial_link=")
-        or selector.startswith("partial_link_text=")
-        or selector.startswith("partial_text=")
-        or selector.startswith("p_link=")
-        or selector.startswith("p_link_text=")
-        or selector.startswith("p_text=")
-    ):
-        return True
-    return False
+    return selector.startswith((
+        "partial_link=", "partial_link_text=", "partial_text=",
+        "p_link=", "p_link_text=", "p_text="
+    ))
 
 
 def is_name_selector(selector):
     """Determine if a selector is a name selector."""
-    if selector.startswith("name=") or selector.startswith("&"):
+    return selector.startswith(("name=", "&"))
+
+def is_id_selector(selector):
+    """Determine if a selector is a ID selector chrome selenium IDE extensions."""
+    if selector.startswith("id="):
         return True
     return False
 
@@ -127,15 +112,14 @@ def recalculate_selector(selector, by, xp_ok=True):
         name = get_name_from_selector(selector)
         selector = '[name="%s"]' % name
         by = By.CSS_SELECTOR
-    if xp_ok:
-        if ":contains(" in selector and by == By.CSS_SELECTOR:
-            selector = css_to_xpath.convert_css_to_xpath(selector)
-            by = By.XPATH
-
+    if xp_ok and ":contains(" in selector and by == By.CSS_SELECTOR:
+        selector = css_to_xpath.convert_css_to_xpath(selector)
+        by = By.XPATH
+        
     if is_css_selector(selector):
         selector = selector[len("css="):]  # Remove the "css="(selector)
         by = By.CSS_SELECTOR
-
+    
     if by == "":
         by = By.CSS_SELECTOR
     
@@ -156,21 +140,10 @@ def looks_like_a_page_url(url):
     possible typos when calling self.get(url), which will try to
     navigate to the page if a URL is detected, but will instead call
     self.get_element(URL_AS_A_SELECTOR) if the input is not a URL."""
-    if (
-        url.startswith("http:")
-        or url.startswith("https:")
-        or url.startswith("://")
-        or url.startswith("about:")
-        or url.startswith("blob:")
-        or url.startswith("chrome:")
-        or url.startswith("data:")
-        or url.startswith("edge:")
-        or url.startswith("file:")
-        or url.startswith("view-source:")
-    ):
-        return True
-    else:
-        return False
+    return url.startswith((
+        "http:", "https:", "://", "about:", "blob:", "chrome:",
+        "data:", "edge:", "file:", "view-source:"
+    ))
 
 
 def get_link_text_from_selector(selector):
@@ -231,12 +204,9 @@ def is_valid_url(url):
     )
     if (
         regex.match(url)
-        or url.startswith("about:")
-        or url.startswith("blob:")
-        or url.startswith("chrome:")
-        or url.startswith("data:")
-        or url.startswith("edge:")
-        or url.startswith("file:")
+        or url.startswith((
+            "about:", "blob:", "chrome:", "data:", "edge:", "file:"
+        ))
     ):
         return True
     else:

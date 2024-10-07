@@ -286,6 +286,7 @@ self.get_new_driver(
     cap_file=None,
     cap_string=None,
     recorder_ext=None,
+    disable_cookies=None,
     disable_js=None,
     disable_csp=None,
     enable_ws=None,
@@ -297,6 +298,7 @@ self.get_new_driver(
     log_cdp_events=None,
     no_sandbox=None,
     disable_gpu=None,
+    headless1=None,
     headless2=None,
     incognito=None,
     guest_mode=None,
@@ -549,6 +551,8 @@ self.assert_no_js_errors(exclude=[])
 self.inspect_html()
 
 self.is_valid_url(url)
+
+self.is_alert_present()
 
 self.is_online()
 

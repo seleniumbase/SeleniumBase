@@ -14,6 +14,9 @@ class SoupParsingTests(BaseCase):
         self.click("#%s" % the_id)
 
     def test_beautiful_soup_parsing(self):
+        if self.headless:
+            self.open_if_not_url("about:blank")
+            self.skip("Skip this test in headless mode!")
         self.open("https://seleniumbase.io/tinymce/")
         self.wait_for_element("div.mce-container-body")
         self.click_menu_item("File")

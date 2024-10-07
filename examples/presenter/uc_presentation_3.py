@@ -1,4 +1,5 @@
 import sys
+from contextlib import suppress
 from seleniumbase import BaseCase
 from seleniumbase import SB
 BaseCase.main(__name__, __file__)
@@ -18,7 +19,7 @@ class UCPresentationClass(BaseCase):
         self.begin_presentation(filename="uc_presentation.html")
 
         self.open("https://seleniumbase.io/other/uc3_title.jpg")
-        self.sleep(3)
+        self.sleep(2.5)
 
         self.create_presentation(theme="serif", transition="fade")
         self.add_slide(
@@ -54,7 +55,7 @@ class UCPresentationClass(BaseCase):
         )
         self.begin_presentation(filename="uc_presentation.html")
 
-        try:
+        with suppress(Exception):
             with SB(uc=True) as sb:
                 url = "https://gitlab.com/users/sign_in"
                 sb.uc_open_with_reconnect(url, 4)
@@ -63,8 +64,6 @@ class UCPresentationClass(BaseCase):
                 sb.highlight('button:contains("Sign in")')
                 sb.highlight('h1:contains("GitLab.com")')
                 sb.post_message("SeleniumBase wasn't detected", duration=4)
-        except Exception:
-            pass
 
         self.create_presentation(theme="serif", transition="none")
         self.add_slide(
@@ -108,11 +107,11 @@ class UCPresentationClass(BaseCase):
             "<p><mk-0>Special <b>UC Mode</b> methods for clicking CAPTCHAs:"
             "</mk-0></p><hr /><div></div>"
             "<ul><br />\n"
-            "<li><mk-1><code><b>uc_gui_handle_captcha()</b></code></mk-1></li>"
-            "\n"
+            "<li><mk-1><code><b>sb.uc_gui_handle_captcha()</b></code></mk-1>"
+            "</li>\n"
             "PyAutoGUI uses the TAB key with SPACEBAR.<br /><br />\n\n"
-            "<li><mk-2><code><b>uc_gui_click_captcha()</b></code></mk-2></li>"
-            "\n\n"
+            "<li><mk-2><code><b>sb.uc_gui_click_captcha()</b></code></mk-2>"
+            "</li>\n\n"
             "PyAutoGUI clicks CAPTCHA with the mouse.<br />\n"
             "(Note that you'll need to use this one on Linux!)\n"
             "</ul>\n\n\n\n"
@@ -151,7 +150,7 @@ class UCPresentationClass(BaseCase):
         if "linux" in sys.platform or "win32" in sys.platform:
             agent = None  # Use the default UserAgent
 
-        try:
+        with suppress(Exception):
             with SB(uc=True, test=True, agent=agent) as sb:
                 url = "https://gitlab.com/users/sign_in"
                 sb.uc_open_with_reconnect(url, 4)
@@ -159,8 +158,6 @@ class UCPresentationClass(BaseCase):
                 sb.assert_element('label[for="user_login"]')
                 sb.set_messenger_theme(location="bottom_center")
                 sb.post_message("SeleniumBase wasn't detected!")
-        except Exception:
-            pass
 
         self.create_presentation(theme="serif", transition="none")
         self.add_slide(
@@ -171,7 +168,7 @@ class UCPresentationClass(BaseCase):
                 "<mk-2>with SB(uc=True) as sb:</mk-2>\n"
                 '<mk-3>    url = "https://gitlab.com/users/sign_in"</mk-3>\n'
                 "<mk-4>    sb.uc_open_with_reconnect(url, 4)</mk-4>\n"
-                "<mk-5>    uc_gui_handle_captcha()</mk-5>\n\n"
+                "<mk-5>    sb.uc_gui_handle_captcha()</mk-5>\n\n"
                 "<mk-6>    ...</mk-6>\n\n\n\n\n\n"
             ),
         )
@@ -183,7 +180,7 @@ class UCPresentationClass(BaseCase):
                 "with SB(uc=True) as sb:\n"
                 '    url = "https://gitlab.com/users/sign_in"\n'
                 "    sb.uc_open_with_reconnect(url, 4)\n"
-                "    uc_gui_handle_captcha()\n\n"
+                "    sb.uc_gui_handle_captcha()\n\n"
                 '<mk-1>    sb.assert_text("Username", \'[for="user_login"]\','
                 ' timeout=3)</mk-1>\n'
                 '<mk-2>    sb.assert_element(\'[for="user_login"]\')</mk-2>\n'
@@ -201,7 +198,7 @@ class UCPresentationClass(BaseCase):
         )
         self.begin_presentation(filename="uc_presentation.html")
 
-        try:
+        with suppress(Exception):
             with SB(uc=True, test=True, agent=agent) as sb:
                 url = "https://gitlab.com/users/sign_in"
                 sb.uc_open_with_reconnect(url, 4)
@@ -209,8 +206,6 @@ class UCPresentationClass(BaseCase):
                 sb.assert_element('label[for="user_login"]')
                 sb.set_messenger_theme(location="bottom_center")
                 sb.post_message("SeleniumBase wasn't detected!")
-        except Exception:
-            pass
 
         self.create_presentation(theme="serif", transition="none")
         self.add_slide(
@@ -221,7 +216,7 @@ class UCPresentationClass(BaseCase):
                 "<mk-2>with SB(uc=True) as sb:</mk-2>\n"
                 '<mk-3>    url = "https://gitlab.com/users/sign_in"</mk-3>\n'
                 "<mk-4>    sb.uc_open_with_reconnect(url, 4)</mk-4>\n"
-                "<mk-5>    uc_gui_click_captcha()</mk-5>\n\n"
+                "<mk-5>    sb.uc_gui_click_captcha()</mk-5>\n\n"
                 "<mk-6>    ...</mk-6>\n\n\n\n\n"
             ),
         )
@@ -233,7 +228,7 @@ class UCPresentationClass(BaseCase):
                 "with SB(uc=True) as sb:\n"
                 '    url = "https://gitlab.com/users/sign_in"\n'
                 "    sb.uc_open_with_reconnect(url, 4)\n"
-                "    uc_gui_click_captcha()\n\n"
+                "    sb.uc_gui_click_captcha()\n\n"
                 '<mk-1>    sb.assert_text("Username", \'[for="user_login"]\','
                 ' timeout=3)</mk-1>\n'
                 '<mk-2>    sb.assert_element(\'[for="user_login"]\')</mk-2>\n'
@@ -252,8 +247,8 @@ class UCPresentationClass(BaseCase):
             "<li><mk-2>Navigate with stealth by calling "
             "<code><b>sb.uc_open_with_reconnect(url)</b></code>"
             "</mk-2></li><br />\n"
-            "<li><mk-3>Use <code><b>uc_gui_handle_captcha()</b></code>"
-            " or <code><b>uc_gui_click_captcha()</b></code>"
+            "<li><mk-3>Use <code><b>sb.uc_gui_handle_captcha()</b></code>"
+            " or <code><b>sb.uc_gui_click_captcha()</b></code>"
             " to bypass CAPTCHAs as needed.</mk-3></li>\n"
             "</ul>\n"
             "<p><br /><mk-4>(It's that easy!)</mk-4></p><br />\n"
@@ -263,7 +258,7 @@ class UCPresentationClass(BaseCase):
             "<hr /><div></div><br />"
             "<ul>\n"
             "<li><mk-1>Previous tutorials mentioned this method:<br />"
-            "<code><b>uc_click(selector)</b></code>"
+            "<code><b>sb.uc_click(selector)</b></code>"
             "</mk-1></li><br />\n"
             "<mk-2>Although this method can no longer click a<br />"
             "CAPTCHA directly, it should be used when<br />"
@@ -276,12 +271,12 @@ class UCPresentationClass(BaseCase):
         )
         self.begin_presentation(filename="uc_presentation.html")
 
-        try:
+        with suppress(Exception):
             with SB(uc=True, incognito=True, locale_code="en") as sb:
                 url = "https://ahrefs.com/website-authority-checker"
                 input_field = 'input[placeholder="Enter domain"]'
                 submit_button = 'span:contains("Check Authority")'
-                sb.uc_open_with_reconnect(url, 2)  # The bot-check is later
+                sb.uc_open_with_reconnect(url)  # The bot-check is later
                 sb.type(input_field, "github.com/seleniumbase/SeleniumBase")
                 sb.reconnect(0.1)
                 sb.uc_click(submit_button, reconnect_time=4)
@@ -291,8 +286,6 @@ class UCPresentationClass(BaseCase):
                 sb.highlight('a:contains("Top 100 backlinks")')
                 sb.set_messenger_theme(location="bottom_center")
                 sb.post_message("SeleniumBase wasn't detected!")
-        except Exception:
-            pass
 
         self.create_presentation(theme="serif", transition="none")
         self.add_slide(
@@ -312,7 +305,7 @@ class UCPresentationClass(BaseCase):
         )
         self.begin_presentation(filename="uc_presentation.html")
 
-        try:
+        with suppress(Exception):
             with SB(uc=True, test=True, disable_csp=True) as sb:
                 url = "https://steamdb.info/"
                 sb.uc_open_with_reconnect(url, 3)
@@ -324,8 +317,6 @@ class UCPresentationClass(BaseCase):
                 sb.highlight('button:contains("Sign in")', scroll=False)
                 sb.set_messenger_theme(location="top_center")
                 sb.post_message("SeleniumBase wasn't detected", duration=4)
-        except Exception:
-            pass
 
         self.create_presentation(theme="serif", transition="none")
         self.add_slide(
@@ -349,7 +340,7 @@ class UCPresentationClass(BaseCase):
                 '    url = "https://steamdb.info/"\n'
                 "    sb.uc_open_with_reconnect(url, 3)\n"
                 '    sb.uc_click("a.header-login span", 3)\n\n'
-                "<mk-0>    uc_gui_click_captcha()</mk-0>\n"
+                "<mk-0>    sb.uc_gui_click_captcha()</mk-0>\n"
                 '<mk-1>    sb.assert_text("Sign in", "button#js-sign-in",'
                 ' timeout=3)</mk-1>\n'
                 '<mk-2>    sb.uc_click("button#js-sign-in", 2)</mk-2>\n'
@@ -405,7 +396,7 @@ class UCPresentationClass(BaseCase):
         )
         self.begin_presentation(filename="uc_presentation.html")
 
-        try:
+        with suppress(Exception):
             with SB(uc=True, test=True) as sb:
                 url = "https://seleniumbase.io/apps/recaptcha"
                 sb.uc_open_with_reconnect(url)
@@ -413,8 +404,6 @@ class UCPresentationClass(BaseCase):
                 sb.assert_element("img#captcha-success", timeout=3)
                 sb.set_messenger_theme(location="top_left")
                 sb.post_message("SeleniumBase wasn't detected")
-        except Exception:
-            pass
 
         self.create_presentation(theme="serif", transition="none")
         self.add_slide(
@@ -673,7 +662,7 @@ class UCPresentationClass(BaseCase):
         )
         self.begin_presentation(filename="uc_presentation.html")
 
-        try:
+        with suppress(Exception):
             with SB(test=True) as sb:
                 url = "https://seleniumbase.io/hobbit/login"
                 sb.open(url)
@@ -682,8 +671,6 @@ class UCPresentationClass(BaseCase):
                 sb.click("img")
                 sb.highlight("h1")
                 sb.sleep(3)  # Gandalf: "You Shall Not Pass!"
-        except Exception:
-            pass
 
         self.create_presentation(theme="serif", transition="none")
         self.add_slide(
@@ -692,7 +679,7 @@ class UCPresentationClass(BaseCase):
         )
         self.begin_presentation(filename="uc_presentation.html")
 
-        try:
+        with suppress(Exception):
             with SB(uc=True, test=True) as sb:
                 url = "https://seleniumbase.io/hobbit/login"
                 sb.uc_open_with_disconnect(url, 2.2)
@@ -703,8 +690,6 @@ class UCPresentationClass(BaseCase):
                 sb.post_message("SeleniumBase wasn't detected!")
                 sb.click("img")
                 sb.sleep(5.888)  # Cool animation happening now!
-        except Exception:
-            pass
 
         self.create_presentation(theme="serif", transition="none")
         self.add_slide(
@@ -726,7 +711,7 @@ class UCPresentationClass(BaseCase):
             "<p>👤 <mk-0>The plan to handle real-time bot-scanning</mk-0> 👤</p>"
             "<hr /><h6><br /></h6>"
             "<p>"
-            '<pre><code>uc_gui_click_captcha(frame="iframe", retry=False,'
+            '<pre><code>sb.uc_gui_click_captcha(frame="iframe", retry=False,'
             ' <mk-1>blind=True</mk-1>)</code></pre><br /><mk-1>'
             'Set the third arg, `blind`, to `True` to force a retry'
             ' (if the first click failed) by clicking at the last known'

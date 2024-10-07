@@ -9,9 +9,10 @@ Example:
     sbase mkfile new_test.py
 
 Options:
+    --uc  (UC Mode boilerplate using SB context manager)
     -b / --basic  (Basic boilerplate / single-line test)
-    -r / --rec  (adds Pdb+ breakpoint for Recorder Mode)
-    --url=URL  (makes the test start on a specific page)
+    -r / --rec  (Adds Pdb+ breakpoint for Recorder Mode)
+    --url=URL  (Makes the test start on a specific page)
 
 Language Options:
     --en / --English    |    --zh / --Chinese
@@ -37,6 +38,7 @@ Output:
     and "assert_text". If using the basic boilerplate
     option, only the "open" method is included. Only the
     BaseCase format supports Languages or Recorder Mode.
+    UC Mode automatically uses English with SB() format.
 """
 import codecs
 import colorama
@@ -47,36 +49,38 @@ import sys
 def invalid_run_command(msg=None):
     exp = "  ** mkfile **\n\n"
     exp += "  Usage:\n"
-    exp += "           seleniumbase mkfile [FILE.py] [OPTIONS]\n"
-    exp += "           OR     sbase mkfile [FILE.py] [OPTIONS]\n"
+    exp += "     seleniumbase mkfile [FILE.py] [OPTIONS]\n"
+    exp += "     OR     sbase mkfile [FILE.py] [OPTIONS]\n"
     exp += "  Example:\n"
-    exp += "           sbase mkfile new_test.py\n"
+    exp += "     sbase mkfile new_test.py\n"
     exp += "  Options:\n"
-    exp += "           -b / --basic  (Basic boilerplate / single-line test)\n"
-    exp += "           -r / --rec  (adds Pdb+ breakpoint for Recorder Mode)\n"
-    exp += "           --url=URL  (makes the test start on a specific page)\n"
+    exp += "     --uc  (UC Mode boilerplate using SB context manager)\n"
+    exp += "     -b / --basic  (Basic boilerplate / single-line test)\n"
+    exp += "     -r / --rec  (Adds Pdb+ breakpoint for Recorder Mode)\n"
+    exp += "     --url=URL  (Makes the test start on a specific page)\n"
     exp += "  Language Options:\n"
-    exp += "           --en / --English    |    --zh / --Chinese\n"
-    exp += "           --nl / --Dutch      |    --fr / --French\n"
-    exp += "           --it / --Italian    |    --ja / --Japanese\n"
-    exp += "           --ko / --Korean     |    --pt / --Portuguese\n"
-    exp += "           --ru / --Russian    |    --es / --Spanish\n"
+    exp += "     --en / --English    |    --zh / --Chinese\n"
+    exp += "     --nl / --Dutch      |    --fr / --French\n"
+    exp += "     --it / --Italian    |    --ja / --Japanese\n"
+    exp += "     --ko / --Korean     |    --pt / --Portuguese\n"
+    exp += "     --ru / --Russian    |    --es / --Spanish\n"
     exp += "  Syntax Formats:\n"
-    exp += "           --bc / --basecase       (BaseCase class inheritance)\n"
-    exp += "           --pf / --pytest-fixture          (sb pytest fixture)\n"
-    exp += "           --cf / --class-fixture   (class + sb pytest fixture)\n"
-    exp += "           --cm / --context-manager        (SB context manager)\n"
-    exp += "           --dc / --driver-context      (DriverContext manager)\n"
-    exp += "           --dm / --driver-manager             (Driver manager)\n"
+    exp += "     --bc / --basecase       (BaseCase class inheritance)\n"
+    exp += "     --pf / --pytest-fixture          (sb pytest fixture)\n"
+    exp += "     --cf / --class-fixture   (class + sb pytest fixture)\n"
+    exp += "     --cm / --context-manager        (SB context manager)\n"
+    exp += "     --dc / --driver-context      (DriverContext manager)\n"
+    exp += "     --dm / --driver-manager             (Driver manager)\n"
     exp += "  Output:\n"
-    exp += "           Creates a new SBase test file with boilerplate code.\n"
-    exp += "           If the file already exists, an error is raised.\n"
-    exp += "           By default, uses English with BaseCase inheritance,\n"
-    exp += "           and creates a boilerplate with common SeleniumBase\n"
-    exp += '           methods: "open", "type", "click", "assert_element",\n'
-    exp += '           and "assert_text". If using the basic boilerplate\n'
-    exp += '           option, only the "open" method is included. Only the\n'
-    exp += "           BaseCase format supports Languages or Recorder Mode.\n"
+    exp += "     Creates a new SBase test file with boilerplate code.\n"
+    exp += "     If the file already exists, an error is raised.\n"
+    exp += "     By default, uses English with BaseCase inheritance,\n"
+    exp += "     and creates a boilerplate with common SeleniumBase\n"
+    exp += '     methods: "open", "type", "click", "assert_element",\n'
+    exp += '     and "assert_text". If using the basic boilerplate\n'
+    exp += '     option, only the "open" method is included. Only the\n'
+    exp += "     BaseCase format supports Languages or Recorder Mode.\n"
+    exp += "     UC Mode automatically uses English with SB() format.\n"
     if not msg:
         raise Exception("INVALID RUN COMMAND!\n\n%s" % exp)
     elif msg == "help":
@@ -92,19 +96,13 @@ def main():
     c7 = ""
     cr = ""
     if "linux" not in sys.platform:
-        if (
-            "win32" in sys.platform
-            and hasattr(colorama, "just_fix_windows_console")
-        ):
-            colorama.just_fix_windows_console()
-        else:
-            colorama.init(autoreset=True)
         c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
         c5 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
         c7 = colorama.Fore.BLACK + colorama.Back.MAGENTA
         cr = colorama.Style.RESET_ALL
 
     basic = False
+    use_uc = False
     help_me = False
     recorder = False
     error_msg = None
@@ -152,6 +150,9 @@ def main():
                 recorder = True
             elif option == "--record" or option == "--recorder":
                 recorder = True
+            elif use_uc:
+                # UC must use English & ContextManager formats
+                continue
             elif option == "--en" or option == "--english":
                 language = "English"
             elif option == "--zh" or option == "--chinese":
@@ -184,6 +185,11 @@ def main():
                 syntax = "DriverContext"
             elif option == "--dm" or option == "--driver-manager":
                 syntax = "DriverManager"
+            elif option == "--uc":
+                basic = True
+                language = "English"
+                syntax = "ContextManager"
+                use_uc = True
             else:
                 invalid_cmd = "\n===> INVALID OPTION: >> %s <<\n" % option
                 invalid_cmd = invalid_cmd.replace(">> ", ">>" + c5 + " ")
@@ -319,16 +325,22 @@ def main():
         data = []
         data.append("from seleniumbase import SB")
         data.append("")
-        data.append('with SB(browser="chrome") as sb:')
-        data.append(
-            '    sb.open("data:text/html,<div>Hello<br><input></div>")'
-        )
+        if use_uc:
+            data.append('with SB(uc=True) as sb:')
+        else:
+            data.append('with SB(browser="chrome") as sb:')
+        if use_uc:
+            data.append('    url = "%s"' % url)
+            data.append("    sb.uc_open_with_reconnect(url, 4)")
+            data.append("    sb.uc_gui_click_captcha()")
+        else:
+            data.append('    sb.open("%s")' % url)
         if not basic:
             data.append('    sb.type("input", "Goodbye")  # selector, text')
-            data.append('    sb.click("html body > div")  # selector')
+            data.append('    sb.click("html body > p")  # selector')
             data.append('    sb.assert_element("input")  # selector')
-            data.append('    sb.assert_text("Hello", "div")  # text, selector')
-            data.append('    sb.highlight("div")  # selector')
+            data.append('    sb.assert_text("Hello", "p")  # text, selector')
+            data.append('    sb.highlight("p")  # selector')
             data.append("    sb.sleep(0.5)  # seconds")
         data.append("")
         new_data = data
@@ -337,7 +349,14 @@ def main():
         data.append("from seleniumbase import DriverContext")
         data.append("")
         data.append('with DriverContext(browser="chrome") as driver:')
-        data.append('    driver.get("data:text/html,<p>Hello<br><input>")')
+        data.append('    driver.get("%s")' % url)
+        if not basic:
+            data.append('    driver.type("input", "Goodbye")  # sel, text')
+            data.append('    driver.click("html body > p")  # selector')
+            data.append('    driver.assert_element("input")  # selector')
+            data.append('    driver.assert_text("Hello", "p")  # text, sel')
+            data.append('    driver.highlight("p")  # selector')
+            data.append("    driver.sleep(0.5)  # seconds")
         data.append("")
         new_data = data
     elif language == "English" and syntax == "DriverManager":
@@ -346,7 +365,14 @@ def main():
         data.append("")
         data.append('driver = Driver(browser="chrome")')
         data.append("try:")
-        data.append('    driver.get("data:text/html,<p>Hello<br><input>")')
+        data.append('    driver.get("%s")' % url)
+        if not basic:
+            data.append('    driver.type("input", "Goodbye")  # sel, text')
+            data.append('    driver.click("html body > p")  # selector')
+            data.append('    driver.assert_element("input")  # selector')
+            data.append('    driver.assert_text("Hello", "p")  # text, sel')
+            data.append('    driver.highlight("p")  # selector')
+            data.append("    driver.sleep(0.5)  # seconds")
         data.append("finally:")
         data.append("    driver.quit()")
         data.append("")

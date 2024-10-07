@@ -142,11 +142,14 @@ pytest my_first_test.py --settings-file=custom_settings.py
 --binary-location=PATH  # (Set path of the Chromium browser binary to use.)
 --driver-version=VER  # (Set the chromedriver or uc_driver version to use.)
 --sjw  # (Skip JS Waits for readyState to be "complete" or Angular to load.)
+--wfa  # (Wait for AngularJS to be done loading after specific web actions.)
 --pls=PLS  # (Set pageLoadStrategy on Chrome: "normal", "eager", or "none".)
---headless  # (Run tests in headless mode. The default arg on Linux OS.)
---headless2  # (Use the new headless mode, which supports extensions.)
+--headless  # (The default headless mode. Linux uses this mode by default.)
+--headless1  # (Use Chrome's old headless mode. Fast, but has limitations.)
+--headless2  # (Use Chrome's new headless mode, which supports extensions.)
 --headed  # (Run tests in headed/GUI mode on Linux OS, where not default.)
 --xvfb  # (Run tests using the Xvfb virtual display server on Linux OS.)
+--xvfb-metrics=STRING  # (Set Xvfb display size on Linux: "Width,Height".)
 --locale=LOCALE_CODE  # (Set the Language Locale Code for the web browser.)
 --interval=SECONDS  # (The autoplay interval for presentations & tour steps)
 --start-page=URL  # (The starting URL for the web browser when tests begin.)
@@ -169,6 +172,7 @@ pytest my_first_test.py --settings-file=custom_settings.py
 --rec-behave  # (Same as Recorder Mode, but also generates behave-gherkin.)
 --rec-sleep  # (If the Recorder is enabled, also records self.sleep calls.)
 --rec-print  # (If the Recorder is enabled, prints output after tests end.)
+--disable-cookies  # (Disable Cookies on websites. Pages might break!)
 --disable-js  # (Disable JavaScript on websites. Pages might break!)
 --disable-csp  # (Disable the Content Security Policy of websites.)
 --disable-ws  # (Disable Web Security on Chromium-based browsers.)
@@ -191,6 +195,7 @@ pytest my_first_test.py --settings-file=custom_settings.py
 --rcs | --reuse-class-session  # (Reuse session for tests in class.)
 --crumbs  # (Delete all cookies between tests reusing a session.)
 --disable-beforeunload  # (Disable the "beforeunload" event on Chrome.)
+--window-position=X,Y  # (Set the browser's starting window position.)
 --window-size=WIDTH,HEIGHT  # (Set the browser's starting window size.)
 --maximize  # (Start tests with the browser window maximized.)
 --screenshot  # (Save a screenshot at the end of each test.)
@@ -379,7 +384,7 @@ pytest test_suite.py --dashboard --html=report.html
 
 <img src="https://seleniumbase.github.io/cdn/img/dash_report.jpg" alt="Dashboard Pytest HTML Report" title="Dashboard Pytest HTML Report" width="520" />
 
-If viewing pytest html reports in [Jenkins](https://www.jenkins.io/), you may need to [configure Jenkins settings](https://stackoverflow.com/a/46197356) for the html to render correctly. This is due to [Jenkins CSP changes](https://www.jenkins.io/doc/book/system-administration/security/configuring-content-security-policy/).
+If viewing pytest html reports in [Jenkins](https://www.jenkins.io/), you may need to [configure Jenkins settings](https://stackoverflow.com/a/46197356/7058266) for the html to render correctly. This is due to [Jenkins CSP changes](https://www.jenkins.io/doc/book/system-administration/security/configuring-content-security-policy/).
 
 You can also use ``--junit-xml=report.xml`` to get an xml report instead. Jenkins can use this file to display better reporting for your tests.
 

@@ -8,6 +8,7 @@ import string
 import sys
 import time
 import zipfile
+from contextlib import suppress
 
 logger = logging.getLogger(__name__)
 IS_POSIX = sys.platform.startswith(("darwin", "cygwin", "linux"))
@@ -53,10 +54,8 @@ class Patcher(object):
         self.executable_path = None
         prefix = "undetected"
         if not os.path.exists(self.data_path):
-            try:
+            with suppress(Exception):
                 os.makedirs(self.data_path, exist_ok=True)
-            except Exception:
-                pass
         if not executable_path:
             self.executable_path = os.path.join(
                 self.data_path, "_".join([prefix, self.exe_name])

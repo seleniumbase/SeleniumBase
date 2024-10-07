@@ -4,6 +4,7 @@ import os
 import pytest
 import sys
 import time
+from contextlib import suppress
 from seleniumbase import config as sb_config
 from seleniumbase.config import settings
 from seleniumbase.core import log_helper
@@ -59,11 +60,14 @@ def pytest_addoption(parser):
     --binary-location=PATH  (Set path of the Chromium browser binary to use.)
     --driver-version=VER  (Set the chromedriver or uc_driver version to use.)
     --sjw  (Skip JS Waits for readyState to be "complete" or Angular to load.)
+    --wfa  (Wait for AngularJS to be done loading after specific web actions.)
     --pls=PLS  (Set pageLoadStrategy on Chrome: "normal", "eager", or "none".)
-    --headless  (Run tests in headless mode. The default arg on Linux OS.)
-    --headless2  (Use the new headless mode, which supports extensions.)
+    --headless  (The default headless mode. Linux uses this mode by default.)
+    --headless1  (Use Chrome's old headless mode. Fast, but has limitations.)
+    --headless2  (Use Chrome's new headless mode, which supports extensions.)
     --headed  (Run tests in headed/GUI mode on Linux OS, where not default.)
     --xvfb  (Run tests using the Xvfb virtual display server on Linux OS.)
+    --xvfb-metrics=STRING  (Set Xvfb display size on Linux: "Width,Height".)
     --locale=LOCALE_CODE  (Set the Language Locale Code for the web browser.)
     --interval=SECONDS  (The autoplay interval for presentations & tour steps)
     --start-page=URL  (The starting URL for the web browser when tests begin.)
@@ -86,6 +90,7 @@ def pytest_addoption(parser):
     --rec-behave  (Same as Recorder Mode, but also generates behave-gherkin.)
     --rec-sleep  (If the Recorder is enabled, also records self.sleep calls.)
     --rec-print  (If the Recorder is enabled, prints output after tests end.)
+    --disable-cookies  (Disable Cookies on websites. Pages might break!)
     --disable-js  (Disable JavaScript on websites. Pages might break!)
     --disable-csp  (Disable the Content Security Policy of websites.)
     --disable-ws  (Disable Web Security on Chromium-based browsers.)
@@ -108,6 +113,7 @@ def pytest_addoption(parser):
     --rcs | --reuse-class-session  (Reuse session for tests in class.)
     --crumbs  (Delete all cookies between tests reusing a session.)
     --disable-beforeunload  (Disable the "beforeunload" event on Chrome.)
+    --window-position=X,Y  (Set the browser's starting window position.)
     --window-size=WIDTH,HEIGHT  (Set the browser's starting window size.)
     --maximize  (Start tests with the browser window maximized.)
     --screenshot  (Save a screenshot at the end of each test.)
@@ -124,10 +130,6 @@ def pytest_addoption(parser):
     cr = ""
     if "linux" not in sys.platform:
         # This will be seen when typing "pytest --help" on the command line.
-        if is_windows and hasattr(colorama, "just_fix_windows_console"):
-            colorama.just_fix_windows_console()
-        else:
-            colorama.init(autoreset=True)
         c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
         c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
         c3 = colorama.Fore.MAGENTA + colorama.Back.LIGHTYELLOW_EX
@@ -357,6 +359,17 @@ def pytest_addoption(parser):
         help="""Skip all calls to wait_for_ready_state_complete()
                 and wait_for_angularjs(), which are part of many
                 SeleniumBase methods for improving reliability.""",
+    )
+    parser.addoption(
+        "--wfa",
+        "--wait_for_angularjs",
+        "--wait-for-angularjs",
+        action="store_true",
+        dest="wait_for_angularjs",
+        default=False,
+        help="""Add waiting for AngularJS. (The default setting
+                was changed to no longer wait for AngularJS to
+                finish loading as an extra JavaScript call.)""",
     )
     parser.addoption(
         "--with-db_reporting",
@@ -686,6 +699,15 @@ def pytest_addoption(parser):
                 Default: False on Mac/Windows. True on Linux.""",
     )
     parser.addoption(
+        "--headless1",
+        action="store_true",
+        dest="headless1",
+        default=False,
+        help="""This option activates the old headless mode,
+                which is faster, but has limitations.
+                (May be phased out by Chrome in the future.)""",
+    )
+    parser.addoption(
         "--headless2",
         action="store_true",
         dest="headless2",
@@ -715,6 +737,17 @@ def pytest_addoption(parser):
                 When using "--xvfb", the "--headless" option
                 will no longer be enabled by default on Linux.
                 Default: False. (Linux-ONLY!)""",
+    )
+    parser.addoption(
+        "--xvfb-metrics",
+        "--xvfb_metrics",
+        action="store",
+        dest="xvfb_metrics",
+        default=None,
+        help="""Customize the Xvfb metrics (Width,Height) on Linux.
+                Format: A comma-separated string with the 2 values.
+                Examples: "1920,1080" or "1366,768" or "1024,768".
+                Default: None. (None: "1366,768". Min: "1024,768".)""",
     )
     parser.addoption(
         "--locale_code",
@@ -957,6 +990,15 @@ def pytest_addoption(parser):
                 Warning: Most web pages will stop working!""",
     )
     parser.addoption(
+        "--disable_cookies",
+        "--disable-cookies",
+        action="store_true",
+        dest="disable_cookies",
+        default=False,
+        help="""The option to disable Cookies on web pages.
+                Warning: Several pages may stop working!""",
+    )
+    parser.addoption(
         "--disable_csp",
         "--disable-csp",
         "--no_csp",
@@ -975,6 +1017,7 @@ def pytest_addoption(parser):
     parser.addoption(
         "--disable_ws",
         "--disable-ws",
+        "--dws",
         "--disable-web-security",
         action="store_true",
         dest="disable_ws",
@@ -1216,6 +1259,17 @@ def pytest_addoption(parser):
         help="""The option to disable the "beforeunload" event
                 on Chromium browsers (Chrome or Edge).
                 This is already the default Firefox option.""",
+    )
+    parser.addoption(
+        "--window-position",
+        "--window_position",
+        action="store",
+        dest="window_position",
+        default=None,
+        help="""The option to set the starting window x,y position
+                Format: A comma-separated string with the 2 values.
+                Example: "55,66"
+                Default: None. (Will use default values if None)""",
     )
     parser.addoption(
         "--window-size",
@@ -1496,6 +1550,9 @@ def pytest_configure(config):
     sb_config.mobile_emulator = config.getoption("mobile_emulator")
     sb_config.device_metrics = config.getoption("device_metrics")
     sb_config.headless = config.getoption("headless")
+    sb_config.headless1 = config.getoption("headless1")
+    if sb_config.headless1:
+        sb_config.headless = True
     sb_config.headless2 = config.getoption("headless2")
     if sb_config.headless2 and sb_config.browser == "firefox":
         sb_config.headless2 = False  # Only for Chromium browsers
@@ -1504,6 +1561,7 @@ def pytest_configure(config):
         sb_config.headless2 = False  # Only for Chromium browsers
     sb_config.headed = config.getoption("headed")
     sb_config.xvfb = config.getoption("xvfb")
+    sb_config.xvfb_metrics = config.getoption("xvfb_metrics")
     sb_config.locale_code = config.getoption("locale_code")
     sb_config.interval = config.getoption("interval")
     sb_config.start_page = config.getoption("start_page")
@@ -1546,6 +1604,8 @@ def pytest_configure(config):
         settings.ARCHIVE_EXISTING_DOWNLOADS = True
     if config.getoption("skip_js_waits"):
         settings.SKIP_JS_WAITS = True
+    if config.getoption("wait_for_angularjs"):
+        settings.WAIT_FOR_ANGULARJS = True
     sb_config.all_scripts = config.getoption("all_scripts")
     sb_config._time_limit = config.getoption("time_limit")
     sb_config.time_limit = config.getoption("time_limit")
@@ -1575,6 +1635,7 @@ def pytest_configure(config):
     elif sb_config.record_sleep and not sb_config.recorder_mode:
         sb_config.recorder_mode = True
         sb_config.recorder_ext = True
+    sb_config.disable_cookies = config.getoption("disable_cookies")
     sb_config.disable_js = config.getoption("disable_js")
     sb_config.disable_csp = config.getoption("disable_csp")
     sb_config.disable_ws = config.getoption("disable_ws")
@@ -1610,6 +1671,7 @@ def pytest_configure(config):
     sb_config.shared_driver = None  # The default driver for session reuse
     sb_config.crumbs = config.getoption("crumbs")
     sb_config._disable_beforeunload = config.getoption("_disable_beforeunload")
+    sb_config.window_position = config.getoption("window_position")
     sb_config.window_size = config.getoption("window_size")
     sb_config.maximize_option = config.getoption("maximize_option")
     sb_config.save_screenshot = config.getoption("save_screenshot")
@@ -1718,6 +1780,7 @@ def pytest_configure(config):
     # Recorder Mode can still optimize scripts in --headless2 mode.
     if sb_config.recorder_mode and sb_config.headless:
         sb_config.headless = False
+        sb_config.headless1 = False
         sb_config.headless2 = True
 
     if not sb_config.headless and not sb_config.headless2:
@@ -1738,6 +1801,7 @@ def pytest_configure(config):
 
     if sb_config.browser == "safari" and sb_config.headless:
         sb_config.headless = False  # Safari doesn't support headless mode
+        sb_config.headless1 = False
 
     if sb_config.dash_title:
         constants.Dashboard.TITLE = sb_config.dash_title.replace("_", " ")
@@ -1808,10 +1872,8 @@ def _create_dashboard_assets_():
     abs_path = os.path.abspath(".")
     assets_folder = os.path.join(abs_path, "assets")
     if not os.path.exists(assets_folder):
-        try:
+        with suppress(Exception):
             os.makedirs(assets_folder, exist_ok=True)
-        except Exception:
-            pass
     pytest_style_css = os.path.join(assets_folder, "pytest_style.css")
     add_pytest_style_css = True
     if os.path.exists(pytest_style_css):
@@ -1883,20 +1945,14 @@ def pytest_collection_finish(session):
         dash_path = os.path.join(os.getcwd(), "dashboard.html")
         dash_url = "file://" + dash_path.replace("\\", "/")
         star_len = len("Dashboard: ") + len(dash_url)
-        try:
+        with suppress(Exception):
             terminal_size = os.get_terminal_size().columns
             if terminal_size > 30 and star_len > terminal_size:
                 star_len = terminal_size
-        except Exception:
-            pass
         stars = "*" * star_len
         c1 = ""
         cr = ""
         if "linux" not in sys.platform:
-            if is_windows and hasattr(colorama, "just_fix_windows_console"):
-                colorama.just_fix_windows_console()
-            else:
-                colorama.init(autoreset=True)
             c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
             cr = colorama.Style.RESET_ALL
         if sb_config._multithreaded:
@@ -1930,11 +1986,11 @@ def pytest_runtest_teardown(item):
     (Has zero effect on tests using --reuse-session / --rs)"""
     if "--co" in sys_argv or "--collect-only" in sys_argv:
         return
-    try:
+    with suppress(Exception):
         if hasattr(item, "_testcase") or hasattr(sb_config, "_sb_pdb_driver"):
             if hasattr(item, "_testcase"):
                 self = item._testcase
-                try:
+                with suppress(Exception):
                     if (
                         hasattr(self, "driver")
                         and self.driver
@@ -1942,22 +1998,18 @@ def pytest_runtest_teardown(item):
                     ):
                         if not (is_windows or self.driver.service.process):
                             self.driver.quit()
-                except Exception:
-                    pass
             elif (
                 hasattr(sb_config, "_sb_pdb_driver")
                 and sb_config._sb_pdb_driver
             ):
-                try:
+                with suppress(Exception):
                     if (
                         not is_windows
                         or sb_config._sb_pdb_driver.service.process
                     ):
                         sb_config._sb_pdb_driver.quit()
                         sb_config._sb_pdb_driver = None
-                except Exception:
-                    pass
-        try:
+        with suppress(Exception):
             if (
                 hasattr(self, "_xvfb_display")
                 and self._xvfb_display
@@ -1974,10 +2026,6 @@ def pytest_runtest_teardown(item):
             ):
                 sb_config._virtual_display.stop()
                 sb_config._virtual_display = None
-        except Exception:
-            pass
-    except Exception:
-        pass
     if (
         (
             sb_config._has_exception
@@ -2358,7 +2406,7 @@ def pytest_runtest_makereport(item, call):
                     )
                 if log_path:
                     sb_config._log_fail_data()
-        try:
+        with suppress(Exception):
             extra_report = None
             if hasattr(item, "_testcase"):
                 extra_report = item._testcase._html_report_extra
@@ -2403,5 +2451,3 @@ def pytest_runtest_makereport(item, call):
                     "</script>" % constants.Dashboard.LIVE_JS
                 )
                 report.extra.append(pytest_html.extras.html(refresh_updates))
-        except Exception:
-            pass

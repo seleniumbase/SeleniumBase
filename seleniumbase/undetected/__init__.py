@@ -10,6 +10,7 @@ import selenium.webdriver.chrome.service
 import selenium.webdriver.chrome.webdriver
 import selenium.webdriver.common.service
 import selenium.webdriver.remote.command
+from contextlib import suppress
 from .cdp import CDP
 from .cdp import PageElement
 from .dprocess import start_detached
@@ -201,11 +202,9 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                 # Create a temporary folder for the user-data profile.
                 options.add_argument(arg)
         if not language:
-            try:
+            with suppress(Exception):
                 import locale
                 language = locale.getlocale()[0].replace("_", "-")
-            except Exception:
-                pass
             if (
                 not language
                 or "English" in language
@@ -242,7 +241,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         )
         if hasattr(options, 'handle_prefs'):
             options.handle_prefs(user_data_dir)
-        try:
+        with suppress(Exception):
             import json
             with open(
                 os.path.join(
@@ -263,8 +262,6 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                 fs.seek(0, 0)
                 fs.truncate()
                 json.dump(config, fs)
-        except Exception:
-            pass
         creationflags = 0
         if "win32" in sys.platform:
             creationflags = subprocess.CREATE_NO_WINDOW
@@ -293,8 +290,6 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                     self.browser_pid = browser.pid
             service_ = None
             log_output = subprocess.PIPE
-            if sys.version_info < (3, 8):
-                log_output = os.devnull
             if patch_driver:
                 service_ = selenium.webdriver.chrome.service.Service(
                     executable_path=self.patcher.executable_path,
@@ -342,7 +337,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
 
     def _get_cdc_props(self):
         cdc_props = []
-        try:
+        with suppress(Exception):
             cdc_props = self.execute_script(
                 """
                 let objectToInspect = window,
@@ -355,8 +350,6 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                 return result.filter(i => i.match(/^[a-z]{3}_[a-z]{22}_.*/i))
                 """
             )
-        except Exception:
-            pass
         return cdc_props
 
     def _hook_remove_cdc_props(self, cdc_props):
@@ -427,50 +420,38 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         - Starts the chromedriver service that runs in the background.
         - Recreates the session."""
         if hasattr(self, "service"):
-            try:
+            with suppress(Exception):
                 self.service.stop()
-            except Exception:
-                pass
             if isinstance(timeout, str):
                 if timeout.lower() == "breakpoint":
                     breakpoint()  # To continue:
                     pass  # Type "c" & press ENTER!
             else:
                 time.sleep(timeout)
-            try:
+            with suppress(Exception):
                 self.service.start()
-            except Exception:
-                pass
             time.sleep(0.012)
-        try:
+        with suppress(Exception):
             self.start_session()
-        except Exception:
-            pass
         time.sleep(0.012)
 
     def disconnect(self):
         """Stops the chromedriver service that runs in the background.
         To use driver methods again, you MUST call driver.connect()"""
         if hasattr(self, "service"):
-            try:
+            with suppress(Exception):
                 self.service.stop()
-            except Exception:
-                pass
             time.sleep(0.012)
 
     def connect(self):
         """Starts the chromedriver service that runs in the background
         and recreates the session."""
         if hasattr(self, "service"):
-            try:
+            with suppress(Exception):
                 self.service.start()
-            except Exception:
-                pass
             time.sleep(0.012)
-        try:
+        with suppress(Exception):
             self.start_session()
-        except Exception:
-            pass
         time.sleep(0.012)
 
     def start_session(self, capabilities=None):
@@ -496,12 +477,10 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         if hasattr(self, "service") and getattr(self.service, "process", None):
             logger.debug("Stopping webdriver service")
             self.service.stop()
-        try:
+        with suppress(Exception):
             if self.reactor and isinstance(self.reactor, Reactor):
                 logger.debug("Shutting down Reactor")
                 self.reactor.event.set()
-        except Exception:
-            pass
         if (
             hasattr(self, "keep_user_data_dir")
             and hasattr(self, "user_data_dir")
@@ -530,18 +509,14 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         self.patcher = None
 
     def __del__(self):
-        try:
+        with suppress(Exception):
             if "win32" in sys.platform:
                 self.stop_client()
                 self.command_executor.close()
             else:
                 super().quit()
-        except Exception:
-            pass
-        try:
+        with suppress(Exception):
             self.quit()
-        except Exception:
-            pass
 
     def __enter__(self):
         return self
