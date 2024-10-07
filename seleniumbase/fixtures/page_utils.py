@@ -46,18 +46,7 @@ def is_xpath_selector(selector):
 
 def is_link_text_selector(selector):
     """Determine if a selector is a link text selector."""
-<<<<<<< HEAD
-    return selector.startswith(("link=", "link_text=", "text="))
-=======
-    if (
-        selector.startswith("link=")
-        or selector.startswith("link_text=")
-        or selector.startswith("linkText=")
-        or selector.startswith("text=")
-    ):
-        return True
-    return False
->>>>>>> ce84639a (add new selector type for recognition from chrome selenium IDE extension)
+    return selector.startswith(("link=", "link_text=","linkText=", "text="))
 
 
 def is_partial_link_text_selector(selector):
