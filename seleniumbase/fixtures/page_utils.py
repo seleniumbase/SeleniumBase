@@ -26,9 +26,10 @@ def get_domain_url(url):
 
 
 def is_valid_by(by):
+    # chrome Seleinum IDE extension -> css selector, linkText
     return by in [
-        "css selector", "class name", "id", "name",
-        "link text", "xpath", "tag name", "partial link text",
+        "css:finder","css selector", "class name", "id", "name",
+        "linkText","link text", "xpath", "tag name", "partial link text",
     ]
 
 
@@ -45,7 +46,18 @@ def is_xpath_selector(selector):
 
 def is_link_text_selector(selector):
     """Determine if a selector is a link text selector."""
+<<<<<<< HEAD
     return selector.startswith(("link=", "link_text=", "text="))
+=======
+    if (
+        selector.startswith("link=")
+        or selector.startswith("link_text=")
+        or selector.startswith("linkText=")
+        or selector.startswith("text=")
+    ):
+        return True
+    return False
+>>>>>>> ce84639a (add new selector type for recognition from chrome selenium IDE extension)
 
 
 def is_partial_link_text_selector(selector):
@@ -60,7 +72,18 @@ def is_name_selector(selector):
     """Determine if a selector is a name selector."""
     return selector.startswith(("name=", "&"))
 
+def is_id_selector(selector):
+    """Determine if a selector is a ID selector chrome selenium IDE extensions."""
+    if selector.startswith("id="):
+        return True
+    return False
 
+def is_css_selector(selector):
+    """Determine if a selector is a CSS selector from chrome selenium IDE extensions."""
+    if selector.startswith("css="):
+        return True
+    return False
+ 
 def recalculate_selector(selector, by, xp_ok=True):
     """Use autodetection to return the correct selector with "by" updated.
     If "xp_ok" is False, don't call convert_css_to_xpath(), which is
@@ -84,6 +107,12 @@ def recalculate_selector(selector, by, xp_ok=True):
     if is_partial_link_text_selector(selector):
         selector = get_partial_link_text_from_selector(selector)
         by = By.PARTIAL_LINK_TEXT
+
+    if is_id_selector(selector):
+        name = get_id_from_selector(selector)
+        selector = '[name="%s"]' % name
+        by = By.CSS_SELECTOR
+
     if is_name_selector(selector):
         name = get_name_from_selector(selector)
         selector = '[name="%s"]' % name
@@ -91,11 +120,18 @@ def recalculate_selector(selector, by, xp_ok=True):
     if xp_ok and ":contains(" in selector and by == By.CSS_SELECTOR:
         selector = css_to_xpath.convert_css_to_xpath(selector)
         by = By.XPATH
+        
+    if is_css_selector(selector):
+        selector = selector[len("css="):]  # Remove the "css="(selector)
+        by = By.CSS_SELECTOR
+    
     if by == "":
         by = By.CSS_SELECTOR
+    
     if not is_valid_by(by):
-        valid_by_options = [
-            "css selector", "link text", "partial link text",
+        # chrome Seleinum IDE extension -> css selector, linkText
+        valid_by_options = [          
+            "css selector", "link text","linkText", "partial link text",
             "name", "xpath", "id", "tag name", "class name",
         ]
         msg = "Choose a `by` from: %s." % valid_by_options
@@ -121,6 +157,8 @@ def get_link_text_from_selector(selector):
         return selector[len("link="):]
     elif selector.startswith("link_text="):
         return selector[len("link_text="):]
+    elif selector.startswith("linkText="):
+        return selector[len("linkText="):]
     elif selector.startswith("text="):
         return selector[len("text="):]
     return selector
@@ -149,6 +187,12 @@ def get_name_from_selector(selector):
         return selector[len("name="):]
     if selector.startswith("&"):
         return selector[len("&"):]
+    return selector
+
+def get_id_from_selector(selector):
+    """Get the name from a name selector."""
+    if selector.startswith("id="):
+        return selector[len("id="):]
     return selector
 
 
