@@ -22,14 +22,13 @@ from seleniumbase import translate  # noqa
 
 with suppress(Exception):
     import colorama
+
+with suppress(Exception):
     import pdbp  # (Pdb+) --- Python Debugger Plus
 
-is_windows = shared_utils.is_windows()
 with suppress(Exception):
-    if is_windows and hasattr(colorama, "just_fix_windows_console"):
-        colorama.just_fix_windows_console()
-    elif not shared_utils.is_linux():
-        colorama.init(autoreset=True)
+    shared_utils.fix_colorama_if_windows()
+    colorama.init(autoreset=True)
 
 if sys.version_info[0] < 3 and "pdbp" in locals():
     # With Python3, "import pdbp" is all you need

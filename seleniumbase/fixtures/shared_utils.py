@@ -1,4 +1,5 @@
 """Shared utility methods"""
+import colorama
 import os
 import platform
 import sys
@@ -65,6 +66,11 @@ def get_terminal_width():
         except Exception:
             pass
     return width
+
+
+def fix_colorama_if_windows():
+    if is_windows():
+        colorama.just_fix_windows_console()
 
 
 def format_exc(exception, message):

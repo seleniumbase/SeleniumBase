@@ -41,6 +41,7 @@ sbase grid-node start --hub=127.0.0.1
 import colorama
 import sys
 import time
+from contextlib import suppress
 from seleniumbase.config import settings
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import shared_utils
@@ -99,12 +100,25 @@ def show_basic_usage():
     sc += '│ *  For info on all commands => "sbase --help"    │\n'
     sc += "╰──────────────────────────────────────────────────╯"
     sc += ""
+    bordered_sc = sc
     if "linux" not in sys.platform:
         c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
         c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
         c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
         c4 = colorama.Fore.MAGENTA + colorama.Back.LIGHTYELLOW_EX
         cr = colorama.Style.RESET_ALL
+        sc = sc.replace("seleniumbase", c1 + "selenium" + c2 + "base" + cr)
+        sc = sc.replace("sbase", c1 + "s" + c2 + "base" + cr)
+        sc = sc.replace("[COMMAND]", c3 + "[COMMAND]" + cr)
+        sc = sc.replace("--help", c4 + "--help" + cr)
+        sc = sc.replace("help", c4 + "help" + cr)
+    with suppress(Exception):
+        print(sc)
+        return
+    sc = bordered_sc.replace("╮\n", "")
+    sc = sc.replace("╭", "").replace("╮", "").replace("│", "")
+    sc = sc.replace("╰", "").replace("╯", "").replace("─", "")
+    if "linux" not in sys.platform:
         sc = sc.replace("seleniumbase", c1 + "selenium" + c2 + "base" + cr)
         sc = sc.replace("sbase", c1 + "s" + c2 + "base" + cr)
         sc = sc.replace("[COMMAND]", c3 + "[COMMAND]" + cr)
