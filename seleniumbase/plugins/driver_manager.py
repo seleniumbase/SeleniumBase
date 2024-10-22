@@ -447,28 +447,28 @@ def Driver(
                 break
             count += 1
         window_position = w_p
-        if window_position:
-            if window_position.count(",") != 1:
-                message = (
-                    '\n\n  window_position expects an "x,y" string!'
-                    '\n  (Your input was: "%s")\n' % window_position
-                )
-                raise Exception(message)
-            window_position = window_position.replace(" ", "")
-            win_x = None
-            win_y = None
-            try:
-                win_x = int(window_position.split(",")[0])
-                win_y = int(window_position.split(",")[1])
-            except Exception:
-                message = (
-                    '\n\n  Expecting integer values for "x,y"!'
-                    '\n  (window_position input was: "%s")\n'
-                    % window_position
-                )
-                raise Exception(message)
-            settings.WINDOW_START_X = win_x
-            settings.WINDOW_START_Y = win_y
+    if window_position:
+        if window_position.count(",") != 1:
+            message = (
+                '\n\n  window_position expects an "x,y" string!'
+                '\n  (Your input was: "%s")\n' % window_position
+            )
+            raise Exception(message)
+        window_position = window_position.replace(" ", "")
+        win_x = None
+        win_y = None
+        try:
+            win_x = int(window_position.split(",")[0])
+            win_y = int(window_position.split(",")[1])
+        except Exception:
+            message = (
+                '\n\n  Expecting integer values for "x,y"!'
+                '\n  (window_position input was: "%s")\n'
+                % window_position
+            )
+            raise Exception(message)
+        settings.WINDOW_START_X = win_x
+        settings.WINDOW_START_Y = win_y
     w_s = window_size
     if w_s is None and "--window-size" in arg_join:
         count = 0
@@ -483,29 +483,29 @@ def Driver(
                 break
             count += 1
         window_size = w_s
-        if window_size:
-            if window_size.count(",") != 1:
-                message = (
-                    '\n\n  window_size expects a "width,height" string!'
-                    '\n  (Your input was: "%s")\n' % window_size
-                )
-                raise Exception(message)
-            window_size = window_size.replace(" ", "")
-            width = None
-            height = None
-            try:
-                width = int(window_size.split(",")[0])
-                height = int(window_size.split(",")[1])
-            except Exception:
-                message = (
-                    '\n\n  Expecting integer values for "width,height"!'
-                    '\n  (window_size input was: "%s")\n' % window_size
-                )
-                raise Exception(message)
-            settings.CHROME_START_WIDTH = width
-            settings.CHROME_START_HEIGHT = height
-            settings.HEADLESS_START_WIDTH = width
-            settings.HEADLESS_START_HEIGHT = height
+    if window_size:
+        if window_size.count(",") != 1:
+            message = (
+                '\n\n  window_size expects a "width,height" string!'
+                '\n  (Your input was: "%s")\n' % window_size
+            )
+            raise Exception(message)
+        window_size = window_size.replace(" ", "")
+        width = None
+        height = None
+        try:
+            width = int(window_size.split(",")[0])
+            height = int(window_size.split(",")[1])
+        except Exception:
+            message = (
+                '\n\n  Expecting integer values for "width,height"!'
+                '\n  (window_size input was: "%s")\n' % window_size
+            )
+            raise Exception(message)
+        settings.CHROME_START_WIDTH = width
+        settings.CHROME_START_HEIGHT = height
+        settings.HEADLESS_START_WIDTH = width
+        settings.HEADLESS_START_HEIGHT = height
     if agent is None and "--agent" in arg_join:
         count = 0
         for arg in sys_argv:
