@@ -1854,12 +1854,6 @@ def _set_chrome_options(
                 multi_proxy,
             )
         chrome_options.add_argument("--proxy-pac-url=%s" % proxy_pac_url)
-    if (
-        not is_using_uc(undetectable, browser_name)
-        or not enable_ws
-        or proxy_string
-    ):
-        chrome_options.add_argument("--ignore-certificate-errors")
     if not enable_ws:
         chrome_options.add_argument("--disable-web-security")
     if (
