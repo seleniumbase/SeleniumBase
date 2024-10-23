@@ -811,7 +811,7 @@ def main(override=None, intel_for_uc=None, force_uc=None):
         zip_ref.extractall(downloads_folder)
         zip_ref.close()
         os.remove(zip_file_path)
-        shutil.copyfile(driver_path, os.path.join(downloads_folder, filename))
+        shutil.copy3(driver_path, os.path.join(downloads_folder, filename))
         log_d("%sUnzip Complete!%s\n" % (c2, cr))
         to_remove = [
             "%s/%s/ruby_example/Gemfile" % (downloads_folder, h_ie_fn),
@@ -953,7 +953,7 @@ def main(override=None, intel_for_uc=None, force_uc=None):
                 )
                 if copy_to_path and os.path.exists(LOCAL_PATH):
                     path_file = LOCAL_PATH + f_name
-                    shutil.copyfile(new_file, path_file)
+                    shutil.copy2(new_file, path_file)
                     make_executable(path_file)
                     log_d("Also copied to: %s%s%s" % (c3, path_file, cr))
             log_d("")
@@ -1042,7 +1042,7 @@ def main(override=None, intel_for_uc=None, force_uc=None):
             )
             if copy_to_path and os.path.exists(LOCAL_PATH):
                 path_file = LOCAL_PATH + f_name
-                shutil.copyfile(new_file, path_file)
+                shutil.copy2(new_file, path_file)
                 make_executable(path_file)
                 log_d("Also copied to: %s%s%s" % (c3, path_file, cr))
             log_d("")
@@ -1078,7 +1078,7 @@ def main(override=None, intel_for_uc=None, force_uc=None):
                 )
                 if copy_to_path and os.path.exists(LOCAL_PATH):
                     path_file = LOCAL_PATH + f_name
-                    shutil.copyfile(new_file, path_file)
+                    shutil.copy2(new_file, path_file)
                     make_executable(path_file)
                     log_d("Also copied to: %s%s%s" % (c3, path_file, cr))
             log_d("")

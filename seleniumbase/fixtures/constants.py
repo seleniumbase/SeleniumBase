@@ -375,6 +375,7 @@ class Mobile:
 
 class UC:
     RECONNECT_TIME = 2.4  # Seconds
+    CDP_MODE_OPEN_WAIT = 0.9  # Seconds
 
 
 class ValidBrowsers:

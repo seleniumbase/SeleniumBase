@@ -29,6 +29,7 @@ from seleniumbase.core import detect_b_ver
 from seleniumbase.core import download_helper
 from seleniumbase.core import proxy_helper
 from seleniumbase.core import sb_driver
+from seleniumbase.core import sb_cdp
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import js_utils
 from seleniumbase.fixtures import page_actions
@@ -153,8 +154,10 @@ def extend_driver(driver):
     page.find_element = DM.find_element
     page.find_elements = DM.find_elements
     page.locator = DM.locator
+    page.get_current_url = DM.get_current_url
     page.get_page_source = DM.get_page_source
     page.get_title = DM.get_title
+    page.get_page_title = DM.get_title
     page.switch_to_default_window = DM.switch_to_default_window
     page.switch_to_newest_window = DM.switch_to_newest_window
     page.open_new_window = DM.open_new_window
@@ -206,6 +209,9 @@ def extend_driver(driver):
     driver.is_valid_url = DM.is_valid_url
     driver.is_alert_present = DM.is_alert_present
     driver.is_online = DM.is_online
+    driver.is_connected = DM.is_connected
+    driver.is_uc_mode_active = DM.is_uc_mode_active
+    driver.is_cdp_mode_active = DM.is_cdp_mode_active
     driver.js_click = DM.js_click
     driver.get_text = DM.get_text
     driver.get_active_element_css = DM.get_active_element_css
@@ -217,8 +223,10 @@ def extend_driver(driver):
     driver.highlight_if_visible = DM.highlight_if_visible
     driver.sleep = time.sleep
     driver.get_attribute = DM.get_attribute
+    driver.get_current_url = DM.get_current_url
     driver.get_page_source = DM.get_page_source
     driver.get_title = DM.get_title
+    driver.get_page_title = DM.get_title
     driver.switch_to_default_window = DM.switch_to_default_window
     driver.switch_to_newest_window = DM.switch_to_newest_window
     driver.open_new_window = DM.open_new_window
@@ -362,6 +370,11 @@ def has_captcha(text):
     return False
 
 
+def __is_cdp_swap_needed(driver):
+    """If the driver is disconnected, use a CDP method when available."""
+    return shared_utils.is_cdp_swap_needed(driver)
+
+
 def uc_special_open_if_cf(
     driver,
     url,
@@ -432,10 +445,11 @@ def uc_special_open_if_cf(
 
 
 def uc_open(driver, url):
-    if url.startswith("//"):
-        url = "https:" + url
-    elif ":" not in url:
-        url = "https://" + url
+    url = shared_utils.fix_url_as_needed(url)
+    if __is_cdp_swap_needed(driver):
+        driver.cdp.get(url)
+        time.sleep(0.3)
+        return
     if (url.startswith("http:") or url.startswith("https:")):
         with driver:
             script = 'window.location.href = "%s";' % url
@@ -446,10 +460,11 @@ def uc_open(driver, url):
 
 
 def uc_open_with_tab(driver, url):
-    if url.startswith("//"):
-        url = "https:" + url
-    elif ":" not in url:
-        url = "https://" + url
+    url = shared_utils.fix_url_as_needed(url)
+    if __is_cdp_swap_needed(driver):
+        driver.cdp.get(url)
+        time.sleep(0.3)
+        return
     if (url.startswith("http:") or url.startswith("https:")):
         with driver:
             driver.execute_script('window.open("%s","_blank");' % url)
@@ -462,12 +477,13 @@ def uc_open_with_tab(driver, url):
 
 def uc_open_with_reconnect(driver, url, reconnect_time=None):
     """Open a url, disconnect chromedriver, wait, and reconnect."""
+    url = shared_utils.fix_url_as_needed(url)
+    if __is_cdp_swap_needed(driver):
+        driver.cdp.get(url)
+        time.sleep(0.3)
+        return
     if not reconnect_time:
         reconnect_time = constants.UC.RECONNECT_TIME
-    if url.startswith("//"):
-        url = "https:" + url
-    elif ":" not in url:
-        url = "https://" + url
     if (url.startswith("http:") or url.startswith("https:")):
         script = 'window.open("%s","_blank");' % url
         driver.execute_script(script)
@@ -493,15 +509,157 @@ def uc_open_with_reconnect(driver, url, reconnect_time=None):
     return None
 
 
+def uc_open_with_cdp_mode(driver, url=None):
+    import asyncio
+    from seleniumbase.undetected.cdp_driver import cdp_util
+
+    current_url = None
+    try:
+        current_url = driver.current_url
+    except Exception:
+        driver.connect()
+        current_url = driver.current_url
+    url_protocol = current_url.split(":")[0]
+    if url_protocol not in ["about", "data", "chrome"]:
+        script = 'window.open("data:,","_blank");'
+        js_utils.call_me_later(driver, script, 3)
+        time.sleep(0.012)
+        driver.close()
+    driver.clear_cdp_listeners()
+    driver.delete_all_cookies()
+    driver.delete_network_conditions()
+    driver.disconnect()
+
+    cdp_details = driver._get_cdp_details()
+    cdp_host = cdp_details[1].split("://")[1].split(":")[0]
+    cdp_port = int(cdp_details[1].split("://")[1].split(":")[1].split("/")[0])
+
+    url = shared_utils.fix_url_as_needed(url)
+    url_protocol = url.split(":")[0]
+    safe_url = True
+    if url_protocol not in ["about", "data", "chrome"]:
+        safe_url = False
+
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    driver.cdp_base = loop.run_until_complete(
+        cdp_util.start(host=cdp_host, port=cdp_port)
+    )
+    page = loop.run_until_complete(driver.cdp_base.get(url))
+    if not safe_url:
+        time.sleep(constants.UC.CDP_MODE_OPEN_WAIT)
+    cdp = types.SimpleNamespace()
+    CDPM = sb_cdp.CDPMethods(loop, page, driver)
+    cdp.get = CDPM.get
+    cdp.open = CDPM.get
+    cdp.reload = CDPM.reload
+    cdp.refresh = CDPM.refresh
+    cdp.add_handler = CDPM.add_handler
+    cdp.get_event_loop = CDPM.get_event_loop
+    cdp.find_element = CDPM.find_element
+    cdp.find = CDPM.find_element
+    cdp.locator = CDPM.find_element
+    cdp.find_all = CDPM.find_all
+    cdp.find_elements_by_text = CDPM.find_elements_by_text
+    cdp.select = CDPM.select
+    cdp.select_all = CDPM.select_all
+    cdp.click_link = CDPM.click_link
+    cdp.tile_windows = CDPM.tile_windows
+    cdp.get_all_cookies = CDPM.get_all_cookies
+    cdp.set_all_cookies = CDPM.set_all_cookies
+    cdp.save_cookies = CDPM.save_cookies
+    cdp.load_cookies = CDPM.load_cookies
+    cdp.clear_cookies = CDPM.clear_cookies
+    cdp.bring_active_window_to_front = CDPM.bring_active_window_to_front
+    cdp.bring_to_front = CDPM.bring_active_window_to_front
+    cdp.get_active_element = CDPM.get_active_element
+    cdp.get_active_element_css = CDPM.get_active_element_css
+    cdp.click = CDPM.click
+    cdp.click_active_element = CDPM.click_active_element
+    cdp.click_if_visible = CDPM.click_if_visible
+    cdp.mouse_click = CDPM.mouse_click
+    cdp.remove_element = CDPM.remove_element
+    cdp.remove_from_dom = CDPM.remove_from_dom
+    cdp.remove_elements = CDPM.remove_elements
+    cdp.scroll_into_view = CDPM.scroll_into_view
+    cdp.send_keys = CDPM.send_keys
+    cdp.press_keys = CDPM.press_keys
+    cdp.type = CDPM.type
+    cdp.evaluate = CDPM.evaluate
+    cdp.js_dumps = CDPM.js_dumps
+    cdp.maximize = CDPM.maximize
+    cdp.minimize = CDPM.minimize
+    cdp.medimize = CDPM.medimize
+    cdp.set_window_rect = CDPM.set_window_rect
+    cdp.reset_window_size = CDPM.reset_window_size
+    cdp.set_attributes = CDPM.set_attributes
+    cdp.internalize_links = CDPM.internalize_links
+    cdp.get_window = CDPM.get_window
+    cdp.get_element_attributes = CDPM.get_element_attributes
+    cdp.get_element_html = CDPM.get_element_html
+    cdp.get_element_rect = CDPM.get_element_rect
+    cdp.get_element_size = CDPM.get_element_size
+    cdp.get_element_position = CDPM.get_element_position
+    cdp.get_gui_element_rect = CDPM.get_gui_element_rect
+    cdp.get_gui_element_center = CDPM.get_gui_element_center
+    cdp.get_page_source = CDPM.get_page_source
+    cdp.get_user_agent = CDPM.get_user_agent
+    cdp.get_cookie_string = CDPM.get_cookie_string
+    cdp.get_locale_code = CDPM.get_locale_code
+    cdp.get_text = CDPM.get_text
+    cdp.get_title = CDPM.get_title
+    cdp.get_page_title = CDPM.get_title
+    cdp.get_current_url = CDPM.get_current_url
+    cdp.get_origin = CDPM.get_origin
+    cdp.get_nested_element = CDPM.get_nested_element
+    cdp.get_document = CDPM.get_document
+    cdp.get_flattened_document = CDPM.get_flattened_document
+    cdp.get_screen_rect = CDPM.get_screen_rect
+    cdp.get_window_rect = CDPM.get_window_rect
+    cdp.get_window_size = CDPM.get_window_size
+    cdp.nested_click = CDPM.nested_click
+    cdp.flash = CDPM.flash
+    cdp.focus = CDPM.focus
+    cdp.highlight_overlay = CDPM.highlight_overlay
+    cdp.get_window_position = CDPM.get_window_position
+    cdp.is_element_present = CDPM.is_element_present
+    cdp.is_element_visible = CDPM.is_element_visible
+    cdp.assert_element_present = CDPM.assert_element_present
+    cdp.assert_element = CDPM.assert_element
+    cdp.assert_element_visible = CDPM.assert_element
+    cdp.assert_text = CDPM.assert_text
+    cdp.assert_exact_text = CDPM.assert_exact_text
+    cdp.save_screenshot = CDPM.save_screenshot
+    cdp.page = page  # async world
+    cdp.driver = driver.cdp_base  # async world
+    cdp.tab = cdp.page  # shortcut (original)
+    cdp.browser = driver.cdp_base  # shortcut (original)
+    cdp.util = cdp_util  # shortcut (original)
+    core_items = types.SimpleNamespace()
+    core_items.browser = cdp.browser
+    core_items.tab = cdp.tab
+    core_items.util = cdp.util
+    cdp.core = core_items
+    driver.cdp = cdp
+    driver._is_using_cdp = True
+
+
+def uc_activate_cdp_mode(driver, url=None):
+    uc_open_with_cdp_mode(driver, url=url)
+
+
 def uc_open_with_disconnect(driver, url, timeout=None):
     """Open a url and disconnect chromedriver.
     Then waits for the duration of the timeout.
     Note: You can't perform Selenium actions again
     until after you've called driver.connect()."""
-    if url.startswith("//"):
-        url = "https:" + url
-    elif ":" not in url:
-        url = "https://" + url
+    url = shared_utils.fix_url_as_needed(url)
+    if __is_cdp_swap_needed(driver):
+        driver.cdp.get(url)
+        time.sleep(0.3)
+        return
+    if not driver.is_connected():
+        driver.connect()
     if (url.startswith("http:") or url.startswith("https:")):
         script = 'window.open("%s","_blank");' % url
         driver.execute_script(script)
@@ -685,6 +843,9 @@ def uc_gui_write(driver, text):
 
 
 def get_gui_element_position(driver, selector):
+    if __is_cdp_swap_needed(driver):
+        element_rect = driver.cdp.get_gui_element_rect(selector)
+        return (element_rect["x"], element_rect["y"])
     element = driver.wait_for_element_present(selector, timeout=3)
     element_rect = element.rect
     window_rect = driver.get_window_rect()
@@ -823,6 +984,7 @@ def _uc_gui_click_captcha(
     blind=False,
     ctype=None,
 ):
+    cdp_mode_on_at_start = __is_cdp_swap_needed(driver)
     _on_a_captcha_page = None
     if ctype == "cf_t":
         if not _on_a_cf_turnstile_page(driver):
@@ -864,10 +1026,13 @@ def _uc_gui_click_captcha(
             is_in_frame = js_utils.is_in_frame(driver)
         if not is_in_frame:
             # Make sure the window is on top
-            page_actions.switch_to_window(
-                driver, driver.current_window_handle, 2, uc_lock=False
-            )
-        if IS_WINDOWS:
+            if __is_cdp_swap_needed(driver):
+                driver.cdp.bring_active_window_to_front()
+            else:
+                page_actions.switch_to_window(
+                    driver, driver.current_window_handle, 2, uc_lock=False
+                )
+        if IS_WINDOWS and not __is_cdp_swap_needed(driver):
             window_rect = driver.get_window_rect()
             width = window_rect["width"]
             height = window_rect["height"]
@@ -950,7 +1115,10 @@ def _uc_gui_click_captcha(
                     new_class = the_class.replaceAll('center', 'left');
                     $elements[index].setAttribute('class', new_class);}"""
                 )
-                driver.execute_script(script)
+                if __is_cdp_swap_needed(driver):
+                    driver.cdp.evaluate(script)
+                else:
+                    driver.execute_script(script)
         if not is_in_frame or needs_switch:
             # Currently not in frame (or nested frame outside CF one)
             try:
@@ -961,16 +1129,22 @@ def _uc_gui_click_captcha(
                 if visible_iframe:
                     if driver.is_element_present("iframe"):
                         i_x, i_y = get_gui_element_position(driver, "iframe")
-                        driver.switch_to_frame("iframe")
+                        if driver.is_connected():
+                            driver.switch_to_frame("iframe")
                     else:
                         return
             if not i_x or not i_y:
                 return
         try:
-            if visible_iframe:
+            if ctype == "g_rc" and not driver.is_connected():
+                x = (i_x + 32) * width_ratio
+                y = (i_y + 34) * width_ratio
+            elif visible_iframe:
                 selector = "span"
                 if ctype == "g_rc":
                     selector = "span.recaptcha-checkbox"
+                    if not driver.is_connected():
+                        selector = "iframe"
                 element = driver.wait_for_element_present(
                     selector, timeout=2.5
                 )
@@ -981,16 +1155,18 @@ def _uc_gui_click_captcha(
             else:
                 x = (i_x + 34) * width_ratio
                 y = (i_y + 34) * width_ratio
-            driver.switch_to.default_content()
-        except Exception:
-            try:
+            if driver.is_connected():
                 driver.switch_to.default_content()
-            except Exception:
-                return
+        except Exception:
+            if driver.is_connected():
+                try:
+                    driver.switch_to.default_content()
+                except Exception:
+                    return
         if x and y:
             sb_config._saved_cf_x_y = (x, y)
             if driver.is_element_present(".footer .clearfix .ray-id"):
-                driver.uc_open_with_disconnect(driver.current_url, 3.8)
+                driver.uc_open_with_disconnect(driver.get_current_url(), 3.8)
             else:
                 driver.disconnect()
             with suppress(Exception):
@@ -1013,9 +1189,12 @@ def _uc_gui_click_captcha(
     if retry and x and y and (caught or _on_a_captcha_page(driver)):
         with gui_lock:  # Prevent issues with multiple processes
             # Make sure the window is on top
-            page_actions.switch_to_window(
-                driver, driver.current_window_handle, 2, uc_lock=False
-            )
+            if __is_cdp_swap_needed(driver):
+                driver.cdp.bring_active_window_to_front()
+            else:
+                page_actions.switch_to_window(
+                    driver, driver.current_window_handle, 2, uc_lock=False
+                )
             if driver.is_element_present("iframe"):
                 try:
                     driver.switch_to_frame(frame)
@@ -1035,14 +1214,18 @@ def _uc_gui_click_captcha(
                     driver.switch_to.parent_frame(checkbox_success)
                     return
             if blind:
-                driver.uc_open_with_disconnect(driver.current_url, 3.8)
-                _uc_gui_click_x_y(driver, x, y, timeframe=0.32)
+                driver.uc_open_with_disconnect(driver.get_current_url(), 3.8)
+                if __is_cdp_swap_needed(driver) and _on_a_captcha_page(driver):
+                    _uc_gui_click_x_y(driver, x, y, timeframe=0.32)
+                else:
+                    time.sleep(0.1)
             else:
-                driver.uc_open_with_reconnect(driver.current_url, 3.8)
+                driver.uc_open_with_reconnect(driver.get_current_url(), 3.8)
                 if _on_a_captcha_page(driver):
                     driver.disconnect()
                     _uc_gui_click_x_y(driver, x, y, timeframe=0.32)
-        driver.reconnect(reconnect_time)
+        if not cdp_mode_on_at_start:
+            driver.reconnect(reconnect_time)
 
 
 def uc_gui_click_captcha(driver, frame="iframe", retry=False, blind=False):
@@ -1089,6 +1272,9 @@ def _uc_gui_handle_captcha_(driver, frame="iframe", ctype=None):
             ctype = "cf_t"
         else:
             return
+    if not driver.is_connected():
+        driver.connect()
+        time.sleep(2)
     install_pyautogui_if_missing(driver)
     import pyautogui
     pyautogui = get_configured_pyautogui(pyautogui)
@@ -1111,9 +1297,12 @@ def _uc_gui_handle_captcha_(driver, frame="iframe", ctype=None):
             page_actions.switch_to_window(
                 driver, driver.current_window_handle, 2, uc_lock=False
             )
-        if IS_WINDOWS and hasattr(pyautogui, "getActiveWindowTitle"):
+        if (
+            IS_WINDOWS
+            and hasattr(pyautogui, "getActiveWindowTitle")
+        ):
             py_a_g_title = pyautogui.getActiveWindowTitle()
-            window_title = driver.title
+            window_title = driver.get_title()
             if not py_a_g_title.startswith(window_title):
                 window_rect = driver.get_window_rect()
                 width = window_rect["width"]
@@ -1614,6 +1803,7 @@ def _set_chrome_options(
     prefs["default_content_settings.popups"] = 0
     prefs["managed_default_content_settings.popups"] = 0
     prefs["profile.password_manager_enabled"] = False
+    prefs["profile.password_manager_leak_detection"] = False
     prefs["profile.default_content_setting_values.notifications"] = 2
     prefs["profile.default_content_settings.popups"] = 0
     prefs["profile.managed_default_content_settings.popups"] = 0
@@ -3271,6 +3461,7 @@ def get_local_driver(
             "default_content_settings.popups": 0,
             "managed_default_content_settings.popups": 0,
             "profile.password_manager_enabled": False,
+            "profile.password_manager_leak_detection": False,
             "profile.default_content_setting_values.notifications": 2,
             "profile.default_content_settings.popups": 0,
             "profile.managed_default_content_settings.popups": 0,
@@ -4244,13 +4435,17 @@ def get_local_driver(
                 with uc_lock:  # Avoid multithreaded issues
                     if make_uc_driver_from_chromedriver:
                         if os.path.exists(LOCAL_CHROMEDRIVER):
-                            shutil.copyfile(
-                                LOCAL_CHROMEDRIVER, LOCAL_UC_DRIVER
-                            )
+                            with suppress(Exception):
+                                make_driver_executable_if_not(
+                                    LOCAL_CHROMEDRIVER
+                                )
+                            shutil.copy2(LOCAL_CHROMEDRIVER, LOCAL_UC_DRIVER)
                         elif os.path.exists(path_chromedriver):
-                            shutil.copyfile(
-                                path_chromedriver, LOCAL_UC_DRIVER
-                            )
+                            with suppress(Exception):
+                                make_driver_executable_if_not(
+                                    path_chromedriver
+                                )
+                            shutil.copy2(path_chromedriver, LOCAL_UC_DRIVER)
                         try:
                             make_driver_executable_if_not(LOCAL_UC_DRIVER)
                         except Exception as e:
@@ -4670,6 +4865,9 @@ def get_local_driver(
                             options=chrome_options,
                         )
                 driver.default_get = driver.get  # Save copy of original
+                driver.cdp = None  # Set a placeholder
+                driver._is_using_cdp = False
+                driver._is_connected = True
                 if uc_activated:
                     driver.get = lambda url: uc_special_open_if_cf(
                         driver,
@@ -4696,6 +4894,16 @@ def get_local_driver(
                     )
                     driver.uc_click = lambda *args, **kwargs: uc_click(
                         driver, *args, **kwargs
+                    )
+                    driver.uc_activate_cdp_mode = (
+                        lambda *args, **kwargs: uc_activate_cdp_mode(
+                            driver, *args, **kwargs
+                        )
+                    )
+                    driver.uc_open_with_cdp_mode = (
+                        lambda *args, **kwargs: uc_open_with_cdp_mode(
+                            driver, *args, **kwargs
+                        )
                     )
                     driver.uc_gui_press_key = (
                         lambda *args, **kwargs: uc_gui_press_key(

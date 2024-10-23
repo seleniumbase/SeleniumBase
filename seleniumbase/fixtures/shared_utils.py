@@ -73,6 +73,32 @@ def fix_colorama_if_windows():
         colorama.just_fix_windows_console()
 
 
+def fix_url_as_needed(url):
+    if not url:
+        url = "data:,"
+    elif url.startswith("//"):
+        url = "https:" + url
+    elif ":" not in url:
+        url = "https://" + url
+    return url
+
+
+def is_cdp_swap_needed(driver):
+    """
+    When someone is using CDP Mode with a disconnected webdriver,
+    but they forget to reconnect before calling a webdriver method,
+    this method is used to substitute the webdriver method for a
+    CDP Mode method instead, which keeps CDP Stealth Mode enabled.
+    For other webdriver methods, SeleniumBase will reconnect first.
+    """
+    return (
+        driver.is_cdp_mode_active()
+        # and hasattr(driver, "_is_connected")
+        # and not driver._is_connected
+        and not driver.is_connected()
+    )
+
+
 def format_exc(exception, message):
     """Formats an exception message to make the output cleaner."""
     from selenium.common.exceptions import ElementNotVisibleException

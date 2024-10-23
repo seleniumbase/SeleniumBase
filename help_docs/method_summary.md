@@ -125,6 +125,8 @@ self.remove_attribute(selector, attribute, by="css selector", timeout=None)
 
 self.remove_attributes(selector, attribute, by="css selector")
 
+self.internalize_links()
+
 self.get_property(selector, property, by="css selector", timeout=None)
 
 self.get_text_content(selector="html", by="css selector", timeout=None)
@@ -134,6 +136,8 @@ self.get_property_value(selector, property, by="css selector", timeout=None)
 self.get_image_url(selector, by="css selector", timeout=None)
 
 self.find_elements(selector, by="css selector", limit=0)
+# Duplicates:
+# self.select_all(selector, by="css selector", limit=0)
 
 self.find_visible_elements(selector, by="css selector", limit=0)
 
