@@ -59,7 +59,7 @@ sbase recorder
 
 ⏺️ While a recording is in progress, you can press the ``[ESC]`` key to pause the Recorder. To resume the recording, you can hit the ``[~`]`` key, which is located directly below the ``[ESC]`` key on most keyboards.
 
-⏺️ From within Recorder Mode there are two additional modes: "Assert Element Mode" and "Assert Text Mode". To switch into "Assert Element Mode", press the ``[^]-key (SHIFT+6)``: The border will become purple, and you'll be able to click on elements to assert from your test. To switch into "Assert Text Mode", press the ``[&]-key (SHIFT+7)``: The border will become teal, and you'll be able to click on elements for asserting text from your test.
+⏺️ From within Recorder Mode there are two additional modes: "Assert Element Mode" and "Assert Text Mode". To switch into "Assert Element Mode", press the ``[^]-key (SHIFT+6 on standard QWERTY keyboards)``: The border will become purple, and you'll be able to click on elements to assert from your test. To switch into "Assert Text Mode", press the ``[&]-key (SHIFT+7 on standard QWERTY keyboards)``: The border will become teal, and you'll be able to click on elements for asserting text from your test.
 
 ⏺️ While using either of the two special Assertion Modes, certain actions such as clicking on links won't have any effect. This lets you make assertions on elements without navigating away from the page, etc. To add an assertion for buttons without triggering default "click" behavior, mouse-down on the button and then mouse-up somewhere else. (This prevents a detected click while still recording the assert.) To return back to the original Recorder Mode, press any key other than ``[SHIFT]`` or ``[BACKSPACE]`` (Eg: Press ``[CONTROL]``, etc.). Press ``[ESC]`` once to leave the Assertion Modes, but it'll stop the Recorder if you press it again.
 
@@ -122,6 +122,8 @@ pytest TEST_NAME.py --trace --rec -s
 ⏺️ Inside recorded tests, you might find the <code>self.open_if_not_url(URL)</code> method, which opens the URL given if the browser is not currently on that page. SeleniumBase uses this method in recorded scripts when the Recorder detects that a browser action changed the current URL. This method prevents an unnecessary page load and shows what page the test visited after a browser action.
 
 ⏺️ By launching the Recorder App with <code>sbase recorder --ee</code>, you can end the recording by pressing {<code>SHIFT</code>+<code>ESC</code>} instead of the usual way of ending the recording by typing <code>c</code> from a <code>breakpoint()</code> and pressing <code>Enter</code>. Those buttons don't need to be pressed at the same time, but <code>SHIFT</code> must be pressed directly before <code>ESC</code>.
+
+⏺️ Use <code>sbase recorder --uc</code> to launch the Recorder App with UC Mode enabled. (The driver will be disconnected from Chrome, but the Recorder extension will still capture any browser actions.)
 
 --------
 

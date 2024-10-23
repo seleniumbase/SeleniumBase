@@ -20,7 +20,7 @@
 <a href="https://seleniumbase.io/help_docs/method_summary/">📘 Methods / APIs</a> |
 <a href="https://seleniumbase.io/examples/tour_examples/ReadMe/">🚎 Tours</a>
 <br />
-<a href="https://seleniumbase.io/help_docs/syntax_formats/">🔡 Syntax Formats</a> |
+<a href="https://seleniumbase.io/help_docs/syntax_formats/">🔠 Syntax Formats</a> |
 <a href="https://seleniumbase.io/integrations/github/workflows/ReadMe/">🤖 CI/CD</a>
 <br />
 <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/boilerplates">♻️ Boilerplates</a> |
@@ -40,6 +40,8 @@
 <br / >
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/commander.md">🎖️ GUI</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md">👤 UC Mode</a>
+<br / >
+<a href="https://seleniumbase.io/examples/cdp_mode/ReadMe/">🐙 CDP Mode</a>
 </p>
 
 --------

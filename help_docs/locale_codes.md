@@ -2,10 +2,16 @@
 
 ## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Language Locale Codes
 
-You can specify a Language Locale Code to customize web pages on supported websites. With SeleniumBase, you can change the web browser's Locale on the command line by doing this:
+You can specify a Language Locale Code to customize web pages on supported websites. With SeleniumBase, you can change the web browser's Locale on the command-line by doing this:
 
 ```bash
 pytest --locale=CODE  # Example: --locale=ru
+```
+
+From the ``SB()`` and ``Driver()`` formats, you can also set the ``locale_code`` arg like this:
+
+```python
+locale_code="CODE"  # Example: SB(locale_code="en")
 ```
 
 <h3><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="25" /> List of Language Locale Codes:</h3>

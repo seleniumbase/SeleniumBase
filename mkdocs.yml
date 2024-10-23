@@ -115,6 +115,7 @@ nav:
     - 🎞️ Presentation Maker: examples/presenter/ReadMe.md
   - Integrations:
     - 👤 UC Mode: help_docs/uc_mode.md
+    - 🐙 CDP Mode: examples/cdp_mode/ReadMe.md
     - 🤖 GitHub CI: integrations/github/workflows/ReadMe.md
     - 🛂 MasterQA: seleniumbase/masterqa/ReadMe.md
     - 🗂️ Case Plans: help_docs/case_plans.md

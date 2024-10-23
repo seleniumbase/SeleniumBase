@@ -4,7 +4,7 @@
 
 <h2><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="40"> The 23 Syntax Formats / Design Patterns</h2>
 
-<h3>🔡 SeleniumBase supports multiple ways of structuring tests:</h3>
+<h3>🔠 SeleniumBase supports multiple ways of structuring tests:</h3>
 
 <blockquote>
 <p dir="auto"></p>

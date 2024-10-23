@@ -13,6 +13,7 @@ dynamic = [
     "keywords",
     "classifiers",
     "description",
+    "maintainers",
     "entry-points",
     "dependencies",
     "requires-python",
