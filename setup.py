@@ -147,16 +147,18 @@ setup(
     ],
     python_requires=">=3.8",
     install_requires=[
-        'pip>=24.1.2',  # 24.2: editable install warnings
+        'pip>=24.2',
         'packaging>=24.1',
-        'setuptools~=70.2;python_version<"3.10"',
-        'setuptools>=70.2.0;python_version>="3.10"',  # 71.0.x has issues
+        'setuptools~=70.2;python_version<"3.10"',  # Newer ones had issues
+        'setuptools>=73.0.1;python_version>="3.10"',
         'wheel>=0.44.0',
         'attrs>=24.2.0',
         "certifi>=2024.8.30",
         "exceptiongroup>=1.2.2",
+        "websockets>=13.1",
         'filelock>=3.16.1',
         'fasteners>=0.19',
+        "mycdp>=1.0.1",
         "pynose>=1.5.3",
         'platformdirs>=4.3.6',
         'typing-extensions>=4.12.2',
@@ -172,14 +174,14 @@ setup(
         "pdbp>=1.5.4",
         "idna==3.10",
         'chardet==5.2.0',
-        'charset-normalizer==3.3.2',
+        'charset-normalizer==3.4.0',
         'urllib3>=1.26.20,<2;python_version<"3.10"',
         'urllib3>=1.26.20,<2.3.0;python_version>="3.10"',
-        'requests==2.31.0',
+        'requests==2.32.3',
         'sniffio==1.3.1',
         'h11==0.14.0',
         'outcome==1.3.0.post0',
-        'trio==0.26.2',
+        'trio==0.27.0',
         'trio-websocket==0.11.1',
         'wsproto==1.2.0',
         'websocket-client==1.8.0',
@@ -204,7 +206,7 @@ setup(
         'python-xlib==0.33;platform_system=="Linux"',
         'markdown-it-py==3.0.0',
         'mdurl==0.1.2',
-        'rich==13.9.2',
+        'rich==13.9.3',
     ],
     extras_require={
         # pip install -e .[allure]
@@ -218,7 +220,8 @@ setup(
         # pip install -e .[coverage]
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
-            'coverage>=7.6.1',
+            'coverage>=7.6.3;python_version<"3.9"',
+            'coverage>=7.6.4;python_version>="3.9"',
             'pytest-cov>=5.0.0',
         ],
         # pip install -e .[flake8]
@@ -238,19 +241,25 @@ setup(
             "ipdb==0.13.13",
             'ipython==7.34.0',
         ],
+        # pip install -e .[mss]
+        # (An optional library for tile_windows() in CDP Mode.)
+        "mss": [
+            "mss==9.0.2",  # Next one drops Python 3.8/3.9
+        ],
         # pip install -e .[pdfminer]
         # (An optional library for parsing PDF files.)
         "pdfminer": [
             'pdfminer.six==20240706',
             'cryptography==39.0.2;python_version<"3.9"',
-            'cryptography==43.0.1;python_version>="3.9"',
+            'cryptography==43.0.3;python_version>="3.9"',
             'cffi==1.17.1',
             "pycparser==2.22",
         ],
         # pip install -e .[pillow]
         # (An optional library for image-processing.)
         "pillow": [
-            'Pillow>=10.4.0',
+            'Pillow>=10.4.0;python_version<"3.9"',
+            'Pillow>=11.0.0;python_version>="3.9"',
         ],
         # pip install -e .[pip-system-certs]
         # (If you see [SSL: CERTIFICATE_VERIFY_FAILED], then get this.)
