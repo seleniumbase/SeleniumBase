@@ -4,11 +4,16 @@ from selenium.webdriver.remote.webelement import WebElement
 from seleniumbase.fixtures import js_utils
 from seleniumbase.fixtures import page_actions
 from seleniumbase.fixtures import page_utils
+from seleniumbase.fixtures import shared_utils
 
 
 class DriverMethods():
     def __init__(self, driver):
         self.driver = driver
+
+    def __is_cdp_swap_needed(self):
+        """If the driver is disconnected, use a CDP method when available."""
+        return shared_utils.is_cdp_swap_needed(self.driver)
 
     def find_element(self, by=None, value=None):
         if not value:
@@ -45,10 +50,21 @@ class DriverMethods():
         element = self.locator(selector, by=by)
         return element.get_attribute(attribute)
 
+    def get_current_url(self):
+        if self.__is_cdp_swap_needed():
+            current_url = self.driver.cdp.get_current_url()
+        else:
+            current_url = self.driver.current_url
+        return current_url
+
     def get_page_source(self):
+        if self.__is_cdp_swap_needed():
+            return self.driver.cdp.get_page_source()
         return self.driver.page_source
 
     def get_title(self):
+        if self.__is_cdp_swap_needed():
+            return self.driver.cdp.get_title()
         return self.driver.title
 
     def open_url(self, *args, **kwargs):
@@ -174,6 +190,34 @@ class DriverMethods():
 
     def is_online(self):
         return self.driver.execute_script("return navigator.onLine;")
+
+    def is_connected(self):
+        """
+        Return True if WebDriver is connected to the browser.
+        Note that the stealthy CDP-Driver isn't a WebDriver.
+        In CDP Mode, the CDP-Driver controls the web browser.
+        The CDP-Driver can be connected while WebDriver isn't.
+        """
+        try:
+            self.driver.window_handles
+            return True
+        except Exception:
+            return False
+
+    def is_uc_mode_active(self):
+        """Return True if the driver is using UC Mode. False otherwise."""
+        return (
+            hasattr(self.driver, "_is_using_uc")
+            and self.driver._is_using_uc
+        )
+
+    def is_cdp_mode_active(self):
+        """CDP Mode is a special mode within UC Mode. Activated separately.
+        Return True if CDP Mode is loaded in the driver. False otherwise."""
+        return (
+            hasattr(self.driver, "_is_using_cdp")
+            and self.driver._is_using_cdp
+        )
 
     def js_click(self, *args, **kwargs):
         return page_actions.js_click(self.driver, *args, **kwargs)

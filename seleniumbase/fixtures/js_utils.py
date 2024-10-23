@@ -243,6 +243,10 @@ def escape_quotes_if_needed(string):
 def is_in_frame(driver):
     # Returns True if the driver has switched to a frame.
     # Returns False if the driver was on default content.
+    from seleniumbase.fixtures import shared_utils
+
+    if shared_utils.is_cdp_swap_needed(driver):
+        return False
     in_basic_frame = driver.execute_script(
         """
         var frame = window.frameElement;

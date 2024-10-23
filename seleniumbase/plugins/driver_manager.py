@@ -124,10 +124,13 @@ def Driver(
     d_width=None,  # Set device width
     d_height=None,  # Set device height
     d_p_r=None,  # Set device pixel ratio
+    position=None,  # Shortcut / Duplicate of "window_position".
+    size=None,  # Shortcut / Duplicate of "window_size".
     uc=None,  # Shortcut / Duplicate of "undetectable".
     undetected=None,  # Shortcut / Duplicate of "undetectable".
     uc_cdp=None,  # Shortcut / Duplicate of "uc_cdp_events".
     uc_sub=None,  # Shortcut / Duplicate of "uc_subprocess".
+    locale=None,  # Shortcut / Duplicate of "locale_code".
     log_cdp=None,  # Shortcut / Duplicate of "log_cdp_events".
     ad_block=None,  # Shortcut / Duplicate of "ad_block_on".
     server=None,  # Shortcut / Duplicate of "servername".
@@ -216,10 +219,13 @@ def Driver(
     d_width (int):  Set device width
     d_height (int):  Set device height
     d_p_r (float):  Set device pixel ratio
+    position (x,y):  Shortcut / Duplicate of "window_position".
+    size (w,h):  Shortcut / Duplicate of "window_size".
     uc (bool):  Shortcut / Duplicate of "undetectable".
     undetected (bool):  Shortcut / Duplicate of "undetectable".
     uc_cdp (bool):  Shortcut / Duplicate of "uc_cdp_events".
     uc_sub (bool):  Shortcut / Duplicate of "uc_subprocess".
+    locale (str):  Shortcut / Duplicate of "locale_code".
     log_cdp (bool):  Shortcut / Duplicate of "log_cdp_events".
     ad_block (bool):  Shortcut / Duplicate of "ad_block_on".
     server (str):  Shortcut / Duplicate of "servername".
@@ -433,6 +439,8 @@ def Driver(
                 break
             count += 1
     disable_features = d_f
+    if window_position is None and position is not None:
+        window_position = position
     w_p = window_position
     if w_p is None and "--window-position" in arg_join:
         count = 0
@@ -446,29 +454,31 @@ def Driver(
                     w_p = None
                 break
             count += 1
-        window_position = w_p
-        if window_position:
-            if window_position.count(",") != 1:
-                message = (
-                    '\n\n  window_position expects an "x,y" string!'
-                    '\n  (Your input was: "%s")\n' % window_position
-                )
-                raise Exception(message)
-            window_position = window_position.replace(" ", "")
-            win_x = None
-            win_y = None
-            try:
-                win_x = int(window_position.split(",")[0])
-                win_y = int(window_position.split(",")[1])
-            except Exception:
-                message = (
-                    '\n\n  Expecting integer values for "x,y"!'
-                    '\n  (window_position input was: "%s")\n'
-                    % window_position
-                )
-                raise Exception(message)
-            settings.WINDOW_START_X = win_x
-            settings.WINDOW_START_Y = win_y
+    window_position = w_p
+    if window_position:
+        if window_position.count(",") != 1:
+            message = (
+                '\n\n  window_position expects an "x,y" string!'
+                '\n  (Your input was: "%s")\n' % window_position
+            )
+            raise Exception(message)
+        window_position = window_position.replace(" ", "")
+        win_x = None
+        win_y = None
+        try:
+            win_x = int(window_position.split(",")[0])
+            win_y = int(window_position.split(",")[1])
+        except Exception:
+            message = (
+                '\n\n  Expecting integer values for "x,y"!'
+                '\n  (window_position input was: "%s")\n'
+                % window_position
+            )
+            raise Exception(message)
+        settings.WINDOW_START_X = win_x
+        settings.WINDOW_START_Y = win_y
+    if window_size is None and size is not None:
+        window_size = size
     w_s = window_size
     if w_s is None and "--window-size" in arg_join:
         count = 0
@@ -482,30 +492,30 @@ def Driver(
                     w_s = None
                 break
             count += 1
-        window_size = w_s
-        if window_size:
-            if window_size.count(",") != 1:
-                message = (
-                    '\n\n  window_size expects a "width,height" string!'
-                    '\n  (Your input was: "%s")\n' % window_size
-                )
-                raise Exception(message)
-            window_size = window_size.replace(" ", "")
-            width = None
-            height = None
-            try:
-                width = int(window_size.split(",")[0])
-                height = int(window_size.split(",")[1])
-            except Exception:
-                message = (
-                    '\n\n  Expecting integer values for "width,height"!'
-                    '\n  (window_size input was: "%s")\n' % window_size
-                )
-                raise Exception(message)
-            settings.CHROME_START_WIDTH = width
-            settings.CHROME_START_HEIGHT = height
-            settings.HEADLESS_START_WIDTH = width
-            settings.HEADLESS_START_HEIGHT = height
+    window_size = w_s
+    if window_size:
+        if window_size.count(",") != 1:
+            message = (
+                '\n\n  window_size expects a "width,height" string!'
+                '\n  (Your input was: "%s")\n' % window_size
+            )
+            raise Exception(message)
+        window_size = window_size.replace(" ", "")
+        width = None
+        height = None
+        try:
+            width = int(window_size.split(",")[0])
+            height = int(window_size.split(",")[1])
+        except Exception:
+            message = (
+                '\n\n  Expecting integer values for "width,height"!'
+                '\n  (window_size input was: "%s")\n' % window_size
+            )
+            raise Exception(message)
+        settings.CHROME_START_WIDTH = width
+        settings.CHROME_START_HEIGHT = height
+        settings.HEADLESS_START_WIDTH = width
+        settings.HEADLESS_START_HEIGHT = height
     if agent is None and "--agent" in arg_join:
         count = 0
         for arg in sys_argv:
@@ -734,6 +744,8 @@ def Driver(
             swiftshader = True
         else:
             swiftshader = False
+    if locale is not None and locale_code is None:
+        locale_code = locale
     if ad_block is not None and ad_block_on is None:
         ad_block_on = ad_block
     if ad_block_on is None:
@@ -778,6 +790,83 @@ def Driver(
 
     # Launch a web browser
     from seleniumbase.core import browser_launcher
+
+    # Fix Chrome-130 issues by creating a user-data-dir in advance
+    if undetectable and not user_data_dir and browser == "chrome":
+        import tempfile
+        import time
+        user_data_dir = (
+            os.path.normpath(tempfile.mkdtemp())
+        )
+        try:
+            decoy_driver = browser_launcher.get_driver(
+                browser_name=browser_name,
+                headless=False,
+                locale_code=locale_code,
+                use_grid=use_grid,
+                protocol=protocol,
+                servername=servername,
+                port=port,
+                proxy_string=proxy_string,
+                proxy_bypass_list=proxy_bypass_list,
+                proxy_pac_url=proxy_pac_url,
+                multi_proxy=multi_proxy,
+                user_agent=user_agent,
+                cap_file=cap_file,
+                cap_string=cap_string,
+                recorder_ext=recorder_ext,
+                disable_cookies=disable_cookies,
+                disable_js=disable_js,
+                disable_csp=disable_csp,
+                enable_ws=enable_ws,
+                enable_sync=enable_sync,
+                use_auto_ext=use_auto_ext,
+                undetectable=undetectable,
+                uc_cdp_events=uc_cdp_events,
+                uc_subprocess=uc_subprocess,
+                log_cdp_events=log_cdp_events,
+                no_sandbox=no_sandbox,
+                disable_gpu=disable_gpu,
+                headless1=False,
+                headless2=True,
+                incognito=incognito,
+                guest_mode=guest_mode,
+                dark_mode=dark_mode,
+                devtools=devtools,
+                remote_debug=remote_debug,
+                enable_3d_apis=enable_3d_apis,
+                swiftshader=swiftshader,
+                ad_block_on=ad_block_on,
+                host_resolver_rules=host_resolver_rules,
+                block_images=block_images,
+                do_not_track=do_not_track,
+                chromium_arg=chromium_arg,
+                firefox_arg=firefox_arg,
+                firefox_pref=firefox_pref,
+                user_data_dir=user_data_dir,
+                extension_zip=extension_zip,
+                extension_dir=extension_dir,
+                disable_features=disable_features,
+                binary_location=binary_location,
+                driver_version=driver_version,
+                page_load_strategy=page_load_strategy,
+                use_wire=use_wire,
+                external_pdf=external_pdf,
+                test_id=test_id,
+                mobile_emulator=is_mobile,
+                device_width=d_width,
+                device_height=d_height,
+                device_pixel_ratio=d_p_r,
+                browser=browser_name,
+            )
+            time.sleep(0.555)
+        except Exception:
+            pass
+        finally:
+            try:
+                decoy_driver.quit()
+            except Exception:
+                pass
 
     driver = browser_launcher.get_driver(
         browser_name=browser_name,

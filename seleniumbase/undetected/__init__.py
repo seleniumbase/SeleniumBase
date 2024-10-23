@@ -441,6 +441,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         if hasattr(self, "service"):
             with suppress(Exception):
                 self.service.stop()
+            self._is_connected = False
             time.sleep(0.012)
 
     def connect(self):
@@ -452,6 +453,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
             time.sleep(0.012)
         with suppress(Exception):
             self.start_session()
+        self._is_connected = True
         time.sleep(0.012)
 
     def start_session(self, capabilities=None):

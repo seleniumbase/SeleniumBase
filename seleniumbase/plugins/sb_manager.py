@@ -104,10 +104,13 @@ def SB(
     disable_ws=None,  # Reverse of "enable_ws". (None and False are different)
     disable_beforeunload=None,  # Disable the "beforeunload" event on Chromium.
     settings_file=None,  # A file for overriding default SeleniumBase settings.
+    position=None,  # Shortcut / Duplicate of "window_position".
+    size=None,  # Shortcut / Duplicate of "window_size".
     uc=None,  # Shortcut / Duplicate of "undetectable".
     undetected=None,  # Shortcut / Duplicate of "undetectable".
     uc_cdp=None,  # Shortcut / Duplicate of "uc_cdp_events".
     uc_sub=None,  # Shortcut / Duplicate of "uc_subprocess".
+    locale=None,  # Shortcut / Duplicate of "locale_code".
     log_cdp=None,  # Shortcut / Duplicate of "log_cdp_events".
     ad_block=None,  # Shortcut / Duplicate of "ad_block_on".
     server=None,  # Shortcut / Duplicate of "servername".
@@ -224,10 +227,13 @@ def SB(
     disable_ws (bool):  Reverse of "enable_ws". (None and False are different)
     disable_beforeunload (bool):  Disable the "beforeunload" event on Chromium.
     settings_file (str):  A file for overriding default SeleniumBase settings.
+    position (x,y):  Shortcut / Duplicate of "window_position".
+    size (w,h):  Shortcut / Duplicate of "window_size".
     uc (bool):  Shortcut / Duplicate of "undetectable".
     undetected (bool):  Shortcut / Duplicate of "undetectable".
     uc_cdp (bool):  Shortcut / Duplicate of "uc_cdp_events".
     uc_sub (bool):  Shortcut / Duplicate of "uc_subprocess".
+    locale (str):  Shortcut / Duplicate of "locale_code".
     log_cdp (bool):  Shortcut / Duplicate of "log_cdp_events".
     ad_block (bool):  Shortcut / Duplicate of "ad_block_on".
     server (str):  Shortcut / Duplicate of "servername".
@@ -497,8 +503,13 @@ def SB(
                 break
             count += 1
     disable_features = d_f
+    if window_position is None and position is not None:
+        window_position = position
     w_p = window_position
-    if w_p is None and "--window-position" in arg_join:
+    if (
+        w_p is None
+        and ("--window-position" in arg_join or "--position" in arg_join)
+    ):
         count = 0
         for arg in sys_argv:
             if arg.startswith("--window-position="):
@@ -511,6 +522,8 @@ def SB(
                 break
             count += 1
     window_position = w_p
+    if window_size is None and size is not None:
+        window_size = size
     w_s = window_size
     if w_s is None and "--window-size" in arg_join:
         count = 0
@@ -890,6 +903,8 @@ def SB(
             swiftshader = True
         else:
             swiftshader = False
+    if locale is not None and locale_code is None:
+        locale_code = locale
     if ad_block is not None and ad_block_on is None:
         ad_block_on = ad_block
     if ad_block_on is None:
@@ -1197,6 +1212,30 @@ def SB(
         if not sb_config.multi_proxy:
             proxy_helper.remove_proxy_zip_if_present()
     start_time = time.time()
+    saved_headless2 = headless2
+
+    # Fix Chrome-130 issues by creating a user-data-dir in advance
+    if undetectable and not user_data_dir and browser == "chrome":
+        import tempfile
+        user_data_dir = (
+            os.path.normpath(tempfile.mkdtemp())
+        )
+        sb.user_data_dir = user_data_dir
+        sb_config.user_data_dir = user_data_dir
+        try:
+            decoy = sb
+            decoy.headless2 = True
+            decoy.setUp()
+            decoy.sleep(0.555)
+        except Exception:
+            pass
+        finally:
+            try:
+                decoy.tearDown()
+            except Exception:
+                pass
+            sb.headless2 = saved_headless2
+
     sb.setUp()
     test_passed = True  # This can change later
     teardown_exception = None
