@@ -1620,6 +1620,7 @@ def _set_chrome_options(
     prefs["profile.default_content_setting_values.automatic_downloads"] = 1
     if locale_code:
         prefs["intl.accept_languages"] = locale_code
+        chrome_options.add_argument(f"--lang={locale_code}")
     if block_images:
         prefs["profile.managed_default_content_settings.images"] = 2
     if disable_cookies:
