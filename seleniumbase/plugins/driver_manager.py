@@ -792,12 +792,21 @@ def Driver(
     from seleniumbase.core import browser_launcher
 
     # Fix Chrome-130 issues by creating a user-data-dir in advance
-    if undetectable and not user_data_dir and browser == "chrome":
+    if (
+        undetectable
+        and (
+            not user_data_dir
+            or not os.path.exists(user_data_dir)
+            or not any(os.scandir(user_data_dir))
+        )
+        and browser == "chrome"
+    ):
         import tempfile
         import time
-        user_data_dir = (
-            os.path.normpath(tempfile.mkdtemp())
-        )
+        if not user_data_dir:
+            user_data_dir = (
+                os.path.normpath(tempfile.mkdtemp())
+            )
         try:
             decoy_driver = browser_launcher.get_driver(
                 browser_name=browser_name,

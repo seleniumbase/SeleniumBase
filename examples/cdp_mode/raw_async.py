@@ -38,7 +38,7 @@ if __name__ == "__main__":
     sb.internalize_links()  # Don't open links in a new tab
     sb.click("#link_header_nav_experiences")
     sb.sleep(2)
-    sb.remove_element("msm-cookie-banner")
+    sb.remove_elements("msm-cookie-banner")
     sb.sleep(1)
     sb.press_keys('input[data-test-id*="search"]', "Amsterdam")
     sb.sleep(2)
