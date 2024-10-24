@@ -525,9 +525,6 @@ def uc_open_with_cdp_mode(driver, url=None):
         js_utils.call_me_later(driver, script, 3)
         time.sleep(0.012)
         driver.close()
-    driver.clear_cdp_listeners()
-    driver.delete_all_cookies()
-    driver.delete_network_conditions()
     driver.disconnect()
 
     cdp_details = driver._get_cdp_details()
@@ -546,6 +543,7 @@ def uc_open_with_cdp_mode(driver, url=None):
         cdp_util.start(host=cdp_host, port=cdp_port)
     )
     page = loop.run_until_complete(driver.cdp_base.get(url))
+    loop.run_until_complete(page.activate())
     if not safe_url:
         time.sleep(constants.UC.CDP_MODE_OPEN_WAIT)
     cdp = types.SimpleNamespace()

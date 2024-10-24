@@ -6,7 +6,7 @@
 
 👤 <b translate="no">UC Mode</b> avoids bot-detection by first disconnecting WebDriver from the browser at strategic times, calling special <code>PyAutoGUI</code> methods to bypass CAPTCHAs (as needed), and finally reconnecting the <code>driver</code> afterwards so that WebDriver actions can be performed again. Although this approach works for bypassing simple CAPTCHAs, more flexibility is needed for bypassing bot-detection on websites with advanced protection. (That's where <b translate="no">CDP Mode</b> comes in.)
 
-🐙 <b translate="no">CDP Mode</b> is based on <a href="https://github.com/HyperionGray/python-chrome-devtools-protocol" translate="no">python-cdp</a>, <a href="https://github.com/HyperionGray/trio-chrome-devtools-protocol" translate="no">trio-cdp</a>, and <a href="https://github.com/ultrafunkamsterdam/nodriver" translate="no">nodriver</a>. <code>trio-cdp</code> was an early implementation of <code>python-cdp</code>, whereas <code>nodriver</code> is a modern implementation of <code>python-cdp</code>. (Refactored CDP code is imported from <a href="https://github.com/mdmintz/MyCDP" translate="no">MyCDP</a>.)
+🐙 <b translate="no">CDP Mode</b> is based on <a href="https://github.com/HyperionGray/python-chrome-devtools-protocol" translate="no">python-cdp</a>, <a href="https://github.com/HyperionGray/trio-chrome-devtools-protocol" translate="no">trio-cdp</a>, and <a href="https://github.com/ultrafunkamsterdam/nodriver" translate="no">nodriver</a>. <code>trio-cdp</code> is an early implementation of <code>python-cdp</code>, and <code>nodriver</code> is a modern implementation of <code>python-cdp</code>. (Refactored Python-CDP code is imported from <a href="https://github.com/mdmintz/MyCDP" translate="no">MyCDP</a>.)
 
 🐙 <b translate="no">CDP Mode</b> includes multiple updates to the above, such as:
 
@@ -19,11 +19,40 @@
 
 --------
 
-### 🐙 <b translate="no">CDP Mode</b> initialization:
+### 🐙 <b translate="no">CDP Mode</b> usage:
 
-* `sb.activate_cdp_mode(url)`
+* **`sb.activate_cdp_mode(url)`**
 
 > (Call that from a **UC Mode** script)
+
+That disconnects WebDriver from Chrome (which prevents detection), and gives you access to `sb.cdp` methods (which don't trigger anti-bot checks).
+
+### 🐙 Here are some common `sb.cdp` methods:
+
+* `sb.cdp.click(selector)`
+* `sb.cdp.click_if_visible(selector)`
+* `sb.cdp.type(selector, text)`
+* `sb.cdp.press_keys(selector, text)`
+* `sb.cdp.select_all(selector)`
+* `sb.cdp.get_text(selector)`
+
+When `type()` is too fast, use the slower `press_keys()` to avoid detection. You can also use `sb.sleep(seconds)` to slow things down.
+
+To use WebDriver methods again, call:
+
+* **`sb.reconnect()`** or **`sb.connect()`**
+
+(Note that reconnecting allows anti-bots to detect you, so only reconnect if it is safe to do so.)
+
+To disconnect again, call:
+
+* **`sb.disconnect()`**
+
+While disconnected, if you accidentally call a WebDriver method, then SeleniumBase will attempt to use the CDP Mode version of that method (if available). For example, if you accidentally call `sb.click(selector)` instead of `sb.cdp.click(selector)`, then your WebDriver call will automatically be redirected to the CDP Mode version. Not all WebDriver methods have a matching CDP Mode method. In that scenario, calling a WebDriver method while disconnected could raise an error, or make WebDriver automatically reconnect first.
+
+To find out if WebDriver is connected or disconnected, call:
+
+* **`sb.is_connected()`**
 
 --------
 
@@ -45,13 +74,15 @@ from seleniumbase import SB
 with SB(uc=True, test=True, locale_code="en") as sb:
     url = "https://www.pokemon.com/us"
     sb.activate_cdp_mode(url)
-    sb.sleep(1)
+    sb.sleep(1.5)
     sb.cdp.click_if_visible("button#onetrust-reject-all-handler")
+    sb.sleep(0.5)
     sb.cdp.click('a[href="https://www.pokemon.com/us/pokedex/"]')
     sb.sleep(1)
     sb.cdp.click('b:contains("Show Advanced Search")')
     sb.sleep(1)
     sb.cdp.click('span[data-type="type"][data-value="electric"]')
+    sb.sleep(0.5)
     sb.cdp.click("a#advSearch")
     sb.sleep(1)
     sb.cdp.click('img[src*="img/pokedex/detail/025.png"]')
@@ -99,7 +130,7 @@ from seleniumbase import SB
 with SB(uc=True, test=True, locale_code="en") as sb:
     url = "https://www.hyatt.com/"
     sb.activate_cdp_mode(url)
-    sb.sleep(1)
+    sb.sleep(1.5)
     sb.cdp.click_if_visible('button[aria-label="Close"]')
     sb.sleep(0.5)
     sb.cdp.click('span:contains("Explore")')
@@ -188,10 +219,14 @@ with SB(uc=True, test=True, locale_code="en") as sb:
 
 ```python
 sb.cdp.get(url)
-sb.cdp.reload()
+sb.cdp.open(url)
+sb.cdp.reload(ignore_cache=True, script_to_evaluate_on_load=None)
 sb.cdp.refresh()
+sb.cdp.get_event_loop()
 sb.cdp.add_handler(event, handler)
 sb.cdp.find_element(selector)
+sb.cdp.find(selector)
+sb.cdp.locator(selector)
 sb.cdp.find_all(selector)
 sb.cdp.find_elements_by_text(text, tag_name=None)
 sb.cdp.select(selector)
@@ -205,6 +240,7 @@ sb.cdp.load_cookies(*args, **kwargs)
 sb.cdp.clear_cookies(*args, **kwargs)
 sb.cdp.sleep(seconds)
 sb.cdp.bring_active_window_to_front()
+sb.cdp.bring_to_front()
 sb.cdp.get_active_element()
 sb.cdp.get_active_element_css()
 sb.cdp.click(selector)
@@ -231,7 +267,7 @@ sb.cdp.medimize()
 sb.cdp.set_window_rect()
 sb.cdp.reset_window_size()
 sb.cdp.get_window()
-sb.cdp.get_text()
+sb.cdp.get_text(selector)
 sb.cdp.get_title()
 sb.cdp.get_current_url()
 sb.cdp.get_origin()

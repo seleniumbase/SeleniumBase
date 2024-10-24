@@ -37,6 +37,8 @@ async def start(
     Helper function to launch a browser. It accepts several keyword parameters.
     Conveniently, you can just call it bare (no parameters) to quickly launch
     an instance with best practice defaults.
+    Note: Due to a Chrome-130 bug, use start_async or start_sync instead.
+     (Calling this method directly could lead to an unresponsive browser)
     Note: New args are expected: Use kwargs only!
     Note: This should be called ``await start()``
     :param user_data_dir:
@@ -86,6 +88,20 @@ async def start(
             **kwargs,
         )
     return await Browser.create(config)
+
+
+async def start_async(*args, **kwargs) -> Browser:
+    headless = False
+    if "headless" in kwargs:
+        headless = kwargs["headless"]
+    decoy_args = kwargs
+    decoy_args["headless"] = True
+    driver = await start(**decoy_args)
+    kwargs["headless"] = headless
+    kwargs["user_data_dir"] = driver.config.user_data_dir
+    driver.stop()  # Due to Chrome-130, must stop & start
+    time.sleep(0.15)
+    return await start(*args, **kwargs)
 
 
 def start_sync(*args, **kwargs) -> Browser:
