@@ -5,7 +5,7 @@ from seleniumbase.undetected import cdp_driver
 
 
 async def main():
-    driver = await cdp_driver.cdp_util.start()
+    driver = await cdp_driver.cdp_util.start_async()
     page = await driver.get("https://www.priceline.com/")
     time.sleep(3)
     print(await page.evaluate("document.title"))
@@ -21,7 +21,7 @@ if __name__ == "__main__":
     loop.run_until_complete(main())
 
     # Call everything without using async / await
-    driver = loop.run_until_complete(cdp_driver.cdp_util.start())
+    driver = cdp_driver.cdp_util.start_sync()
     page = loop.run_until_complete(driver.get("https://www.pokemon.com/us"))
     time.sleep(3)
     print(loop.run_until_complete(page.evaluate("document.title")))

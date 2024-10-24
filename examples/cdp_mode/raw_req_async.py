@@ -23,7 +23,7 @@ class RequestPausedTest():
             )
 
     async def start_test(self):
-        driver = await cdp_driver.cdp_util.start(incognito=True)
+        driver = await cdp_driver.cdp_util.start_async(incognito=True)
         tab = await driver.get("about:blank")
         tab.add_handler(mycdp.fetch.RequestPaused, self.request_paused_handler)
         url = "https://gettyimages.com/photos/firefly-2003-nathan"
