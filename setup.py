@@ -317,6 +317,7 @@ setup(
         "seleniumbase.resources",
         "seleniumbase.translate",
         "seleniumbase.undetected",
+        "seleniumbase.undetected.cdp_driver",
         "seleniumbase.utilities",
         "seleniumbase.utilities.selenium_grid",
         "seleniumbase.utilities.selenium_ide",
