@@ -133,8 +133,11 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
             options = ChromeOptions()
         try:
             if hasattr(options, "_session") and options._session is not None:
-                # Prevent reuse of options
-                raise RuntimeError("You cannot reuse the ChromeOptions object")
+                # Prevent reuse of options.
+                # (Probably a port overlap. Quit existing driver and continue.)
+                logger.debug("You cannot reuse the ChromeOptions object")
+                with suppress(Exception):
+                    options._session.quit()
         except AttributeError:
             pass
         options._session = self
