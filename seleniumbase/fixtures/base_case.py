@@ -4090,6 +4090,88 @@ class BaseCase(unittest.TestCase):
                 "Browser: {%s} is not a valid browser option. "
                 "Valid options = {%s}" % (browser, valid_browsers)
             )
+        # Fix Chrome-130 issues by creating a user-data-dir in advance
+        if (
+            undetectable
+            and (
+                not user_data_dir
+                or not os.path.exists(user_data_dir)
+                or not any(os.scandir(user_data_dir))
+            )
+            and self.browser == "chrome"
+        ):
+            import tempfile
+            if not user_data_dir:
+                user_data_dir = os.path.normpath(tempfile.mkdtemp())
+            self.user_data_dir = user_data_dir
+            sb_config.user_data_dir = user_data_dir
+            try:
+                decoy_driver = browser_launcher.get_driver(
+                    browser_name=browser_name,
+                    headless=headless,
+                    locale_code=locale_code,
+                    use_grid=use_grid,
+                    protocol=protocol,
+                    servername=servername,
+                    port=port,
+                    proxy_string=proxy_string,
+                    proxy_bypass_list=proxy_bypass_list,
+                    proxy_pac_url=proxy_pac_url,
+                    multi_proxy=multi_proxy,
+                    user_agent=user_agent,
+                    cap_file=cap_file,
+                    cap_string=cap_string,
+                    recorder_ext=recorder_ext,
+                    disable_cookies=disable_cookies,
+                    disable_js=disable_js,
+                    disable_csp=disable_csp,
+                    enable_ws=enable_ws,
+                    enable_sync=enable_sync,
+                    use_auto_ext=use_auto_ext,
+                    undetectable=undetectable,
+                    uc_cdp_events=uc_cdp_events,
+                    uc_subprocess=uc_subprocess,
+                    log_cdp_events=log_cdp_events,
+                    no_sandbox=no_sandbox,
+                    disable_gpu=disable_gpu,
+                    headless1=headless1,
+                    headless2=True,
+                    incognito=incognito,
+                    guest_mode=guest_mode,
+                    dark_mode=dark_mode,
+                    devtools=devtools,
+                    remote_debug=remote_debug,
+                    enable_3d_apis=enable_3d_apis,
+                    swiftshader=swiftshader,
+                    ad_block_on=ad_block_on,
+                    host_resolver_rules=host_resolver_rules,
+                    block_images=block_images,
+                    do_not_track=do_not_track,
+                    chromium_arg=chromium_arg,
+                    firefox_arg=firefox_arg,
+                    firefox_pref=firefox_pref,
+                    user_data_dir=user_data_dir,
+                    extension_zip=extension_zip,
+                    extension_dir=extension_dir,
+                    disable_features=disable_features,
+                    binary_location=binary_location,
+                    driver_version=driver_version,
+                    page_load_strategy=page_load_strategy,
+                    use_wire=use_wire,
+                    external_pdf=external_pdf,
+                    test_id=test_id,
+                    mobile_emulator=is_mobile,
+                    device_width=d_width,
+                    device_height=d_height,
+                    device_pixel_ratio=d_p_r,
+                    browser=browser_name,
+                )
+                time.sleep(0.555)
+            except Exception:
+                pass
+            finally:
+                with suppress(Exception):
+                    decoy_driver.quit()
         # Launch a web browser
         new_driver = browser_launcher.get_driver(
             browser_name=browser_name,
@@ -4435,7 +4517,12 @@ class BaseCase(unittest.TestCase):
         """Loads the page cookies from the "saved_cookies" folder."""
         cookies = self.get_saved_cookies(name)
         self.wait_for_ready_state_complete()
+        origin = self.get_origin()
+        trim_origin = origin.split("://")[-1]
         for cookie in cookies:
+            if "domain" in cookie:
+                if cookie["domain"] not in origin:
+                    cookie["domain"] = trim_origin
             if "expiry" in cookie:
                 del cookie["expiry"]
             self.driver.add_cookie(cookie)
@@ -4656,30 +4743,6 @@ class BaseCase(unittest.TestCase):
         if hasattr(self.driver, "_is_using_uc") and self.driver._is_using_uc:
             self.driver.uc_open_with_cdp_mode(url)
         else:
-            # Fix Chrome-130 issues by creating a user-data-dir in advance
-            if (
-                (
-                    not self.user_data_dir
-                    or not os.path.exists(self.user_data_dir)
-                )
-                and self.browser == "chrome"
-            ):
-                import tempfile
-                user_data_dir = os.path.normpath(tempfile.mkdtemp())
-                self.user_data_dir = user_data_dir
-                sb_config.user_data_dir = user_data_dir
-                try:
-                    driver = self.get_new_driver(
-                        user_data_dir=user_data_dir,
-                        undetectable=True,
-                        headless2=True,
-                    )
-                    time.sleep(0.555)
-                except Exception:
-                    pass
-                finally:
-                    with suppress(Exception):
-                        driver.quit()
             self.get_new_driver(undetectable=True)
             self.driver.uc_open_with_cdp_mode(url)
         self.cdp = self.driver.cdp
@@ -14941,31 +15004,6 @@ class BaseCase(unittest.TestCase):
                         self.__js_start_time = int(time.time() * 1000.0)
         else:
             # Launch WebDriver for both pytest and pynose
-
-            # Fix Chrome-130 issues by creating a user-data-dir in advance
-            if (
-                self.undetectable
-                and (
-                    not self.user_data_dir
-                    or not os.path.exists(self.user_data_dir)
-                )
-                and self.browser == "chrome"
-            ):
-                import tempfile
-                user_data_dir = os.path.normpath(tempfile.mkdtemp())
-                self.user_data_dir = user_data_dir
-                sb_config.user_data_dir = user_data_dir
-                try:
-                    driver = self.get_new_driver(
-                        user_data_dir=user_data_dir,
-                        headless2=True,
-                    )
-                    time.sleep(0.555)
-                except Exception:
-                    pass
-                finally:
-                    with suppress(Exception):
-                        driver.quit()
             self.driver = self.get_new_driver(
                 browser=self.browser,
                 headless=self.headless,

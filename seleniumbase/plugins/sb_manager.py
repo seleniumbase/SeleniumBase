@@ -1212,30 +1212,6 @@ def SB(
         if not sb_config.multi_proxy:
             proxy_helper.remove_proxy_zip_if_present()
     start_time = time.time()
-    saved_headless2 = headless2
-
-    # Fix Chrome-130 issues by creating a user-data-dir in advance
-    if undetectable and not user_data_dir and browser == "chrome":
-        import tempfile
-        user_data_dir = (
-            os.path.normpath(tempfile.mkdtemp())
-        )
-        sb.user_data_dir = user_data_dir
-        sb_config.user_data_dir = user_data_dir
-        try:
-            decoy = sb
-            decoy.headless2 = True
-            decoy.setUp()
-            decoy.sleep(0.555)
-        except Exception:
-            pass
-        finally:
-            try:
-                decoy.tearDown()
-            except Exception:
-                pass
-            sb.headless2 = saved_headless2
-
     sb.setUp()
     test_passed = True  # This can change later
     teardown_exception = None
