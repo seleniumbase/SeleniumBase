@@ -349,7 +349,7 @@ self.save_page_source(name, folder=None)
 
 self.save_cookies(name="cookies.txt")
 
-self.load_cookies(name="cookies.txt")
+self.load_cookies(name="cookies.txt", expiry=False)
 
 self.delete_all_cookies()
 # Duplicates: self.clear_all_cookies()
@@ -362,9 +362,9 @@ self.get_cookie(name)
 
 self.get_cookies()
 
-self.add_cookie(cookie_dict)
+self.add_cookie(cookie_dict, expiry=False)
 
-self.add_cookies(cookies)
+self.add_cookies(cookies, expiry=False)
 
 self.wait_for_ready_state_complete(timeout=None)
 

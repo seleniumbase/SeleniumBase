@@ -5,6 +5,7 @@ import logging
 import time
 import types
 import typing
+from seleniumbase.fixtures import shared_utils
 from typing import Optional, List, Union, Callable
 from .element import Element
 from .browser import Browser
@@ -92,30 +93,40 @@ async def start(
 
 async def start_async(*args, **kwargs) -> Browser:
     headless = False
-    if "headless" in kwargs:
-        headless = kwargs["headless"]
-    decoy_args = kwargs
-    decoy_args["headless"] = True
-    driver = await start(**decoy_args)
-    kwargs["headless"] = headless
-    kwargs["user_data_dir"] = driver.config.user_data_dir
-    driver.stop()  # Due to Chrome-130, must stop & start
-    time.sleep(0.15)
+    binary_location = None
+    if "browser_executable_path" in kwargs:
+        binary_location = kwargs["browser_executable_path"]
+    if shared_utils.is_chrome_130_or_newer(binary_location):
+        if "headless" in kwargs:
+            headless = kwargs["headless"]
+        decoy_args = kwargs
+        decoy_args["headless"] = True
+        driver = await start(**decoy_args)
+        kwargs["headless"] = headless
+        kwargs["user_data_dir"] = driver.config.user_data_dir
+        time.sleep(0.2)
+        driver.stop()  # Due to Chrome-130, must stop & start
+        time.sleep(0.1)
     return await start(*args, **kwargs)
 
 
 def start_sync(*args, **kwargs) -> Browser:
     loop = asyncio.get_event_loop()
     headless = False
-    if "headless" in kwargs:
-        headless = kwargs["headless"]
-    decoy_args = kwargs
-    decoy_args["headless"] = True
-    driver = loop.run_until_complete(start(**decoy_args))
-    kwargs["headless"] = headless
-    kwargs["user_data_dir"] = driver.config.user_data_dir
-    driver.stop()  # Due to Chrome-130, must stop & start
-    time.sleep(0.15)
+    binary_location = None
+    if "browser_executable_path" in kwargs:
+        binary_location = kwargs["browser_executable_path"]
+    if shared_utils.is_chrome_130_or_newer(binary_location):
+        if "headless" in kwargs:
+            headless = kwargs["headless"]
+        decoy_args = kwargs
+        decoy_args["headless"] = True
+        driver = loop.run_until_complete(start(**decoy_args))
+        kwargs["headless"] = headless
+        kwargs["user_data_dir"] = driver.config.user_data_dir
+        time.sleep(0.2)
+        driver.stop()  # Due to Chrome-130, must stop & start
+        time.sleep(0.1)
     return loop.run_until_complete(start(*args, **kwargs))
 
 

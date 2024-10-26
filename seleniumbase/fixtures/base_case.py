@@ -4099,6 +4099,7 @@ class BaseCase(unittest.TestCase):
                 or not any(os.scandir(user_data_dir))
             )
             and self.browser == "chrome"
+            and shared_utils.is_chrome_130_or_newer(binary_location)
         ):
             import tempfile
             if not user_data_dir:
@@ -4108,7 +4109,7 @@ class BaseCase(unittest.TestCase):
             try:
                 decoy_driver = browser_launcher.get_driver(
                     browser_name=browser_name,
-                    headless=headless,
+                    headless=False,
                     locale_code=locale_code,
                     use_grid=use_grid,
                     protocol=protocol,
@@ -4134,7 +4135,7 @@ class BaseCase(unittest.TestCase):
                     log_cdp_events=log_cdp_events,
                     no_sandbox=no_sandbox,
                     disable_gpu=disable_gpu,
-                    headless1=headless1,
+                    headless1=False,
                     headless2=True,
                     incognito=incognito,
                     guest_mode=guest_mode,
@@ -4147,12 +4148,12 @@ class BaseCase(unittest.TestCase):
                     host_resolver_rules=host_resolver_rules,
                     block_images=block_images,
                     do_not_track=do_not_track,
-                    chromium_arg=chromium_arg,
+                    chromium_arg="decoy",
                     firefox_arg=firefox_arg,
                     firefox_pref=firefox_pref,
                     user_data_dir=user_data_dir,
-                    extension_zip=extension_zip,
-                    extension_dir=extension_dir,
+                    extension_zip=None,
+                    extension_dir=None,
                     disable_features=disable_features,
                     binary_location=binary_location,
                     driver_version=driver_version,
@@ -4166,12 +4167,13 @@ class BaseCase(unittest.TestCase):
                     device_pixel_ratio=d_p_r,
                     browser=browser_name,
                 )
-                time.sleep(0.555)
+                time.sleep(0.2)
             except Exception:
                 pass
             finally:
                 with suppress(Exception):
                     decoy_driver.quit()
+                    time.sleep(0.1)
         # Launch a web browser
         new_driver = browser_launcher.get_driver(
             browser_name=browser_name,
@@ -4513,8 +4515,15 @@ class BaseCase(unittest.TestCase):
         cookies_file.writelines(json_cookies)
         cookies_file.close()
 
-    def load_cookies(self, name="cookies.txt"):
-        """Loads the page cookies from the "saved_cookies" folder."""
+    def load_cookies(self, name="cookies.txt", expiry=False):
+        """
+        Loads the page cookies from the "saved_cookies" folder.
+        Usage for setting expiry:
+        If expiry == 0 or False: Delete "expiry".
+        If expiry == -1 (or < 0): Do not modify "expiry".
+        If expiry > 0: Set "expiry" to expiry minutes in the future.
+        If expiry == True: Set "expiry" to 24 hours in the future.
+        """
         cookies = self.get_saved_cookies(name)
         self.wait_for_ready_state_complete()
         origin = self.get_origin()
@@ -4523,8 +4532,14 @@ class BaseCase(unittest.TestCase):
             if "domain" in cookie:
                 if cookie["domain"] not in origin:
                     cookie["domain"] = trim_origin
-            if "expiry" in cookie:
+            if "expiry" in cookie and (not expiry or expiry == 0):
                 del cookie["expiry"]
+            elif isinstance(expiry, (int, float)) and expiry < 0:
+                pass
+            elif isinstance(expiry, (int, float)) and expiry > 0:
+                cookie["expiry"] = int(time.time()) + int(expiry * 60.0)
+            elif expiry:
+                cookie["expiry"] = int(time.time()) + 86400
             self.driver.add_cookie(cookie)
 
     def delete_all_cookies(self):
@@ -4585,18 +4600,57 @@ class BaseCase(unittest.TestCase):
     def get_cookies(self):
         return self.driver.get_cookies()
 
-    def add_cookie(self, cookie_dict):
+    def add_cookie(self, cookie_dict, expiry=False):
         """Usage examples:
         self.add_cookie({'name': 'foo', 'value': 'bar'})
         self.add_cookie({'name': 'foo', 'value': 'bar', 'path': '/'})
         self.add_cookie({'name': 'foo', 'value': 'bar', 'secure': True})
         self.add_cookie({'name': 'foo', 'value': 'bar', 'sameSite': 'Strict'})
+        Usage for setting expiry:
+        If expiry == 0 or False: Delete "expiry".
+        If expiry == -1 (or < 0): Do not modify "expiry".
+        If expiry > 0: Set "expiry" to expiry minutes in the future.
+        If expiry == True: Set "expiry" to 24 hours in the future.
         """
+        cookie = cookie_dict
+        if "domain" in cookie:
+            origin = self.get_origin()
+            trim_origin = origin.split("://")[-1]
+            if cookie["domain"] not in origin:
+                cookie["domain"] = trim_origin
+        if "expiry" in cookie and (not expiry or expiry == 0):
+            del cookie["expiry"]
+        elif isinstance(expiry, (int, float)) and expiry < 0:
+            pass
+        elif isinstance(expiry, (int, float)) and expiry > 0:
+            cookie["expiry"] = int(time.time()) + int(expiry * 60.0)
+        elif expiry:
+            cookie["expiry"] = int(time.time()) + 86400
         self.driver.add_cookie(cookie_dict)
 
-    def add_cookies(self, cookies):
-        for cookie_dict in cookies:
-            self.driver.add_cookie(cookie_dict)
+    def add_cookies(self, cookies, expiry=False):
+        """
+        Usage for setting expiry:
+        If expiry == 0 or False: Delete "expiry".
+        If expiry == -1 (or < 0): Do not modify "expiry".
+        If expiry > 0: Set "expiry" to expiry minutes in the future.
+        If expiry == True: Set "expiry" to 24 hours in the future.
+        """
+        origin = self.get_origin()
+        trim_origin = origin.split("://")[-1]
+        for cookie in cookies:
+            if "domain" in cookie:
+                if cookie["domain"] not in origin:
+                    cookie["domain"] = trim_origin
+            if "expiry" in cookie and (not expiry or expiry == 0):
+                del cookie["expiry"]
+            elif isinstance(expiry, (int, float)) and expiry < 0:
+                pass
+            elif isinstance(expiry, (int, float)) and expiry > 0:
+                cookie["expiry"] = int(time.time()) + int(expiry * 60.0)
+            elif expiry:
+                cookie["expiry"] = int(time.time()) + 86400
+            self.driver.add_cookie(cookie)
 
     def __set_esc_skip(self):
         if hasattr(self, "esc_end") and self.esc_end:

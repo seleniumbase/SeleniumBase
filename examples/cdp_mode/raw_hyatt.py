@@ -3,13 +3,13 @@ from seleniumbase import SB
 with SB(uc=True, test=True, locale_code="en") as sb:
     url = "https://www.hyatt.com/"
     sb.activate_cdp_mode(url)
-    sb.sleep(1.5)
+    sb.sleep(2)
     sb.cdp.click_if_visible('button[aria-label="Close"]')
-    sb.sleep(0.5)
+    sb.sleep(1)
     sb.cdp.click('span:contains("Explore")')
     sb.sleep(1)
     sb.cdp.click('a:contains("Hotels & Resorts")')
-    sb.sleep(2.5)
+    sb.sleep(3)
     location = "Anaheim, CA, USA"
     sb.cdp.press_keys("input#searchbox", location)
     sb.sleep(1)
@@ -18,7 +18,7 @@ with SB(uc=True, test=True, locale_code="en") as sb:
     sb.cdp.click('div.hotel-card-footer button')
     sb.sleep(1)
     sb.cdp.click('button[data-locator="find-hotels"]')
-    sb.sleep(4)
+    sb.sleep(5)
     hotel_names = sb.cdp.select_all(
         'div[data-booking-status="BOOKABLE"] [class*="HotelCard_header"]'
     )

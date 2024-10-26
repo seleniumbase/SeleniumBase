@@ -8,7 +8,7 @@ if "linux" in sys.platform or "win32" in sys.platform:
 
 with SB(uc=True, test=True, rtf=True, agent=agent) as sb:
     url = "https://gitlab.com/users/sign_in"
-    sb.uc_open_with_reconnect(url, 4)
+    sb.uc_open_with_reconnect(url)
     sb.uc_gui_handle_captcha()  # Only if needed
     sb.assert_element('label[for="user_login"]')
     sb.assert_element('input[data-testid*="username"]')

@@ -9,6 +9,7 @@ import sys
 import types
 from asyncio import iscoroutine, iscoroutinefunction
 from typing import (
+    Optional,
     Generator,
     Union,
     Awaitable,
@@ -335,6 +336,10 @@ class Connection(metaclass=CantTouchThis):
         except AttributeError:
             # No listener created yet.
             pass
+
+    async def set_locale(self, locale: Optional[str] = None):
+        """Sets the Language Locale code via set_user_agent_override."""
+        await self.send(cdp.network.set_user_agent_override("", locale))
 
     def __getattr__(self, item):
         """:meta private:"""

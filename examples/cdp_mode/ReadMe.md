@@ -2,7 +2,7 @@
 
 ## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) CDP Mode 🐙
 
-🐙 <b translate="no">SeleniumBase</b> <b translate="no">CDP Mode</b> (Chrome Devtools Protocol Mode) is a special mode inside of <b><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md" translate="no"><span translate="no">SeleniumBase UC Mode</span></a></b> that lets bots appear human while controlling the browser with the <b translate="no">CDP-Driver</b>. Although regular <span translate="no">UC Mode</span> can't perform <span translate="no">WebDriver</span> actions while the <code>driver</code> is disconnected from the browser, the <span translate="no">CDP-Driver</span> can still perform actions (while maintaining its cover).
+🐙 <b translate="no">SeleniumBase</b> <b translate="no">CDP Mode</b> (Chrome Devtools Protocol Mode) is a special mode inside of <b><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md" translate="no"><span translate="no">SeleniumBase UC Mode</span></a></b> that lets bots appear human while controlling the browser with the <b translate="no">CDP-Driver</b>. Although regular <span translate="no">UC Mode</span> can't perform <span translate="no">WebDriver</span> actions while the <code>driver</code> is disconnected from the browser, the <span translate="no">CDP-Driver</span> can still perform actions while maintaining its cover. (For Python 3.11 or newer!)
 
 👤 <b translate="no">UC Mode</b> avoids bot-detection by first disconnecting WebDriver from the browser at strategic times, calling special <code>PyAutoGUI</code> methods to bypass CAPTCHAs (as needed), and finally reconnecting the <code>driver</code> afterwards so that WebDriver actions can be performed again. Although this approach works for bypassing simple CAPTCHAs, more flexibility is needed for bypassing bot-detection on websites with advanced protection. (That's where <b translate="no">CDP Mode</b> comes in.)
 
@@ -74,15 +74,15 @@ from seleniumbase import SB
 with SB(uc=True, test=True, locale_code="en") as sb:
     url = "https://www.pokemon.com/us"
     sb.activate_cdp_mode(url)
-    sb.sleep(1.5)
+    sb.sleep(3)
     sb.cdp.click_if_visible("button#onetrust-reject-all-handler")
-    sb.sleep(0.5)
+    sb.sleep(1)
     sb.cdp.click('a[href="https://www.pokemon.com/us/pokedex/"]')
     sb.sleep(1)
     sb.cdp.click('b:contains("Show Advanced Search")')
     sb.sleep(1)
     sb.cdp.click('span[data-type="type"][data-value="electric"]')
-    sb.sleep(0.5)
+    sb.sleep(1)
     sb.cdp.click("a#advSearch")
     sb.sleep(1)
     sb.cdp.click('img[src*="img/pokedex/detail/025.png"]')
@@ -130,13 +130,13 @@ from seleniumbase import SB
 with SB(uc=True, test=True, locale_code="en") as sb:
     url = "https://www.hyatt.com/"
     sb.activate_cdp_mode(url)
-    sb.sleep(1.5)
+    sb.sleep(2)
     sb.cdp.click_if_visible('button[aria-label="Close"]')
-    sb.sleep(0.5)
+    sb.sleep(1)
     sb.cdp.click('span:contains("Explore")')
     sb.sleep(1)
     sb.cdp.click('a:contains("Hotels & Resorts")')
-    sb.sleep(2.5)
+    sb.sleep(3)
     location = "Anaheim, CA, USA"
     sb.cdp.press_keys("input#searchbox", location)
     sb.sleep(1)
@@ -145,7 +145,7 @@ with SB(uc=True, test=True, locale_code="en") as sb:
     sb.cdp.click('div.hotel-card-footer button')
     sb.sleep(1)
     sb.cdp.click('button[data-locator="find-hotels"]')
-    sb.sleep(4)
+    sb.sleep(5)
     hotel_names = sb.cdp.select_all(
         'div[data-booking-status="BOOKABLE"] [class*="HotelCard_header"]'
     )
@@ -177,20 +177,20 @@ from seleniumbase import SB
 with SB(uc=True, test=True, locale_code="en") as sb:
     url = "https://www.bestwestern.com/en_US.html"
     sb.activate_cdp_mode(url)
-    sb.sleep(1.5)
+    sb.sleep(2.5)
     sb.cdp.click_if_visible("div.onetrust-close-btn-handler")
-    sb.sleep(0.5)
+    sb.sleep(1)
     sb.cdp.click("input#destination-input")
-    sb.sleep(1.5)
+    sb.sleep(2)
     location = "Palm Springs, CA, USA"
     sb.cdp.press_keys("input#destination-input", location)
-    sb.sleep(0.6)
+    sb.sleep(1)
     sb.cdp.click("ul#google-suggestions li")
-    sb.sleep(0.6)
+    sb.sleep(1)
     sb.cdp.click("button#btn-modify-stay-update")
-    sb.sleep(1.5)
-    sb.cdp.click("label#available-label")
     sb.sleep(4)
+    sb.cdp.click("label#available-label")
+    sb.sleep(2.5)
     print("Best Western Hotels in %s:" % location)
     summary_details = sb.cdp.get_text("#summary-details-column")
     dates = summary_details.split("ROOM")[0].split("DATES")[-1].strip()
@@ -288,6 +288,7 @@ sb.cdp.get_document()
 sb.cdp.get_flattened_document()
 sb.cdp.get_element_attributes(selector)
 sb.cdp.get_element_html(selector)
+sb.cdp.set_locale(locale)
 sb.cdp.set_attributes(selector, attribute, value)
 sb.cdp.internalize_links()
 sb.cdp.is_element_present(selector)

@@ -10,7 +10,7 @@ class UndetectedTest(BaseCase):
         url = "https://gitlab.com/users/sign_in"
         if not self.undetectable:
             self.get_new_driver(undetectable=True)
-        self.activate_cdp_mode(url)
+        self.uc_open_with_reconnect(url)
         self.uc_gui_click_captcha()
         self.assert_text("Username", '[for="user_login"]', timeout=3)
         self.post_message("SeleniumBase wasn't detected", duration=4)

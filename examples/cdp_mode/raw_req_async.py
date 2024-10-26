@@ -9,12 +9,11 @@ class RequestPausedTest():
     async def request_paused_handler(self, event, tab):
         r = event.request
         is_image = ".png" in r.url or ".jpg" in r.url or ".gif" in r.url
-        is_blocked = True if is_image else False
-        if not is_blocked:
+        if not is_image:  # Let the data through
             tab.feed_cdp(
                 mycdp.fetch.continue_request(request_id=event.request_id)
             )
-        else:
+        else:  # Block the data (images)
             TIMED_OUT = mycdp.network.ErrorReason.TIMED_OUT
             s = f"BLOCKING | {r.method} | {r.url}"
             print(f" >>> ------------\n{s}")
@@ -23,7 +22,7 @@ class RequestPausedTest():
             )
 
     async def start_test(self):
-        driver = await cdp_driver.cdp_util.start_async(incognito=True)
+        driver = await cdp_driver.cdp_util.start_async()
         tab = await driver.get("about:blank")
         tab.add_handler(mycdp.fetch.RequestPaused, self.request_paused_handler)
         url = "https://gettyimages.com/photos/firefly-2003-nathan"
