@@ -12,7 +12,7 @@ with SB(uc=True, test=True, locale_code="en") as sb:
     sb.cdp.press_keys('input[aria-label="Search"]', search)
     sb.sleep(2)
     sb.cdp.mouse_click('ul[id*="typeahead"] li div')
-    sb.sleep(2)
+    sb.sleep(3)
     elements = sb.cdp.select_all("a.ProductCard-link")
     if elements:
         print('**** Found results for "%s": ****' % search)

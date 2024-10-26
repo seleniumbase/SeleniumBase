@@ -3,19 +3,17 @@ from contextlib import suppress
 from seleniumbase import SB
 
 
-with SB(uc=True, test=True) as sb:
+with SB(uc=True, test=True, locale_code="en") as sb:
     url = "https://www.priceline.com/"
     sb.activate_cdp_mode(url)
     sb.sleep(3)
     sb.internalize_links()  # Don't open links in a new tab
     sb.click("#link_header_nav_experiences")
-    sb.sleep(2)
+    sb.sleep(2.5)
     sb.remove_elements("msm-cookie-banner")
-    sb.sleep(1)
+    sb.sleep(1.5)
     location = "Amsterdam"
     sb.press_keys('input[data-test-id*="search"]', location)
-    sb.sleep(1)
-    sb.click('input[data-test-id*="search"]')
     sb.sleep(2)
     sb.click('span[data-test-id*="autocomplete"]')
     sb.sleep(5)

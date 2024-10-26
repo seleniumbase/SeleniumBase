@@ -3,15 +3,15 @@ from seleniumbase import SB
 with SB(uc=True, test=True, locale_code="en") as sb:
     url = "https://www.pokemon.com/us"
     sb.activate_cdp_mode(url)
-    sb.sleep(1.5)
+    sb.sleep(3)
     sb.cdp.click_if_visible("button#onetrust-reject-all-handler")
-    sb.sleep(0.5)
+    sb.sleep(1)
     sb.cdp.click('a[href="https://www.pokemon.com/us/pokedex/"]')
     sb.sleep(1)
     sb.cdp.click('b:contains("Show Advanced Search")')
     sb.sleep(1)
     sb.cdp.click('span[data-type="type"][data-value="electric"]')
-    sb.sleep(0.5)
+    sb.sleep(1)
     sb.cdp.click("a#advSearch")
     sb.sleep(1)
     sb.cdp.click('img[src*="img/pokedex/detail/025.png"]')

@@ -4,7 +4,7 @@ with SB(uc=True, test=True, locale_code="en") as sb:
     window_handle = sb.driver.current_window_handle
     url = "https://www.priceline.com"
     sb.activate_cdp_mode(url)
-    sb.sleep(1)
+    sb.sleep(3)
     sb.cdp.click('input[name="endLocation"]')
     sb.sleep(1)
     location = "Portland, OR, USA"
@@ -12,18 +12,18 @@ with SB(uc=True, test=True, locale_code="en") as sb:
     sb.cdp.press_keys('input[name="endLocation"]', location)
     sb.sleep(1)
     sb.click_if_visible('input[name="endLocation"]')
-    sb.sleep(1)
-    sb.cdp.click("Oregon, United States")
-    sb.sleep(1)
+    sb.sleep(0.5)
+    sb.cdp.click(selection)
+    sb.sleep(1.5)
     sb.cdp.click('button[aria-label="Dismiss calendar"]')
-    sb.sleep(3)
+    sb.sleep(5)
     sb.connect()
     if len(sb.driver.window_handles) > 1:
         sb.switch_to_window(window_handle)
         sb.driver.close()
-        sb.sleep(0.1)
+        sb.sleep(0.2)
         sb.switch_to_newest_window()
-        sb.sleep(1)
+        sb.sleep(0.6)
     hotel_names = sb.find_elements('a[data-autobot-element-id*="HOTEL_NAME"]')
     hotel_prices = sb.find_elements('span[font-size="4,,,5"]')
     print("Priceline Hotels in %s:" % location)

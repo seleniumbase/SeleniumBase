@@ -8,21 +8,22 @@ from seleniumbase.undetected import cdp_driver
 
 @decorators.print_runtime("CDP Priceline Example")
 def main():
-    url = "https://www.priceline.com/"
+    url0 = "about:blank"  # Set Locale code from here first
+    url1 = "https://www.priceline.com/"  # (The "real" URL)
     loop = asyncio.new_event_loop()
     driver = cdp_driver.cdp_util.start_sync()
-    page = loop.run_until_complete(driver.get(url))
+    page = loop.run_until_complete(driver.get(url0))
     sb = sb_cdp.CDPMethods(loop, page, driver)
+    sb.set_locale("en")  # This test expects English locale
+    sb.open(url1)
     sb.sleep(3)
     sb.internalize_links()  # Don't open links in a new tab
     sb.click("#link_header_nav_experiences")
-    sb.sleep(2)
+    sb.sleep(2.5)
     sb.remove_elements("msm-cookie-banner")
-    sb.sleep(1)
+    sb.sleep(1.5)
     location = "Amsterdam"
     sb.press_keys('input[data-test-id*="search"]', location)
-    sb.sleep(1)
-    sb.click('input[data-test-id*="search"]')
     sb.sleep(2)
     sb.click('span[data-test-id*="autocomplete"]')
     sb.sleep(5)
