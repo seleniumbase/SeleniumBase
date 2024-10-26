@@ -4,6 +4,7 @@ import os
 import platform
 import sys
 import time
+from contextlib import suppress
 from seleniumbase import config as sb_config
 from seleniumbase.fixtures import constants
 
@@ -97,6 +98,23 @@ def is_cdp_swap_needed(driver):
         # and not driver._is_connected
         and not driver.is_connected()
     )
+
+
+def is_chrome_130_or_newer(self, binary_location=None):
+    from seleniumbase.core import detect_b_ver
+
+    """Due to changes in Chrome-130, UC Mode freezes at start-up
+    unless the user-data-dir already exists and is populated."""
+    with suppress(Exception):
+        if not binary_location:
+            ver = detect_b_ver.get_browser_version_from_os("google-chrome")
+        else:
+            ver = detect_b_ver.get_browser_version_from_binary(
+                binary_location
+            )
+        if ver and len(ver) > 3 and int(ver.split(".")[0]) >= 130:
+            return True
+    return False
 
 
 def format_exc(exception, message):

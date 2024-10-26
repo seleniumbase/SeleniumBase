@@ -76,13 +76,21 @@ class CDPMethods():
 
     def get(self, url):
         url = shared_utils.fix_url_as_needed(url)
-        self.page = self.loop.run_until_complete(self.driver.cdp_base.get(url))
+        driver = self.driver
+        if hasattr(driver, "cdp_base"):
+            driver = driver.cdp_base
+        self.page = self.loop.run_until_complete(driver.get(url))
         url_protocol = url.split(":")[0]
         safe_url = True
         if url_protocol not in ["about", "data", "chrome"]:
             safe_url = False
         if not safe_url:
             time.sleep(constants.UC.CDP_MODE_OPEN_WAIT)
+        self.__slow_mode_pause_if_set()
+        self.loop.run_until_complete(self.page.wait())
+
+    def open(self, url):
+        self.get(url)
 
     def reload(self, ignore_cache=True, script_to_evaluate_on_load=None):
         self.loop.run_until_complete(
@@ -111,18 +119,28 @@ class CDPMethods():
         with the closest text-length to the text being searched for."""
         self.__add_light_pause()
         selector = self.__convert_to_css_if_xpath(selector)
+        early_failure = False
         if (":contains(" in selector):
             tag_name = selector.split(":contains(")[0].split(" ")[-1]
             text = selector.split(":contains(")[1].split(")")[0][1:-1]
             with suppress(Exception):
                 self.loop.run_until_complete(
-                    self.page.select(tag_name, timeout=3)
+                    self.page.select(tag_name, timeout=timeout)
                 )
-                self.loop.run_until_complete(self.page.find(text, timeout=3))
-            element = self.find_elements_by_text(text, tag_name=tag_name)[0]
-            return self.__add_sync_methods(element)
+                self.loop.run_until_complete(
+                    self.page.find(text, timeout=timeout)
+                )
+            elements = []
+            with suppress(Exception):
+                elements = self.find_elements_by_text(text, tag_name=tag_name)
+            if elements:
+                return self.__add_sync_methods(elements[0])
+            else:
+                early_failure = True
         failure = False
         try:
+            if early_failure:
+                raise Exception("Failed!")
             element = self.loop.run_until_complete(
                 self.page.find(
                     selector, best_match=best_match, timeout=timeout
@@ -230,9 +248,11 @@ class CDPMethods():
         )
 
     def __click(self, element):
-        return (
+        result = (
             self.loop.run_until_complete(element.click_async())
         )
+        self.loop.run_until_complete(self.page.wait())
+        return result
 
     def __flash(self, element):
         return (
@@ -250,9 +270,11 @@ class CDPMethods():
         )
 
     def __mouse_click(self, element):
-        return (
+        result = (
             self.loop.run_until_complete(element.mouse_click_async())
         )
+        self.loop.run_until_complete(self.page.wait())
+        return result
 
     def __mouse_drag(self, element, destination):
         return (
@@ -353,33 +375,51 @@ class CDPMethods():
 
     def tile_windows(self, windows=None, max_columns=0):
         """Tile windows and return the grid of tiled windows."""
+        driver = self.driver
+        if hasattr(driver, "cdp_base"):
+            driver = driver.cdp_base
         return self.loop.run_until_complete(
-            self.driver.cdp_base.tile_windows(windows, max_columns)
+            driver.tile_windows(windows, max_columns)
         )
 
     def get_all_cookies(self, *args, **kwargs):
+        driver = self.driver
+        if hasattr(driver, "cdp_base"):
+            driver = driver.cdp_base
         return self.loop.run_until_complete(
-            self.driver.cdp_base.cookies.get_all(*args, **kwargs)
+            driver.cookies.get_all(*args, **kwargs)
         )
 
     def set_all_cookies(self, *args, **kwargs):
+        driver = self.driver
+        if hasattr(driver, "cdp_base"):
+            driver = driver.cdp_base
         return self.loop.run_until_complete(
-            self.driver.cdp_base.cookies.set_all(*args, **kwargs)
+            driver.cookies.set_all(*args, **kwargs)
         )
 
     def save_cookies(self, *args, **kwargs):
+        driver = self.driver
+        if hasattr(driver, "cdp_base"):
+            driver = driver.cdp_base
         return self.loop.run_until_complete(
-            self.driver.cdp_base.cookies.save(*args, **kwargs)
+            driver.cookies.save(*args, **kwargs)
         )
 
     def load_cookies(self, *args, **kwargs):
+        driver = self.driver
+        if hasattr(driver, "cdp_base"):
+            driver = driver.cdp_base
         return self.loop.run_until_complete(
-            self.driver.cdp_base.cookies.load(*args, **kwargs)
+            driver.cookies.load(*args, **kwargs)
         )
 
     def clear_cookies(self, *args, **kwargs):
+        driver = self.driver
+        if hasattr(driver, "cdp_base"):
+            driver = driver.cdp_base
         return self.loop.run_until_complete(
-            self.driver.cdp_base.cookies.clear(*args, **kwargs)
+            driver.cookies.clear(*args, **kwargs)
         )
 
     def sleep(self, seconds):
@@ -408,17 +448,20 @@ class CDPMethods():
         self.__add_light_pause()
         element.click()
         self.__slow_mode_pause_if_set()
+        self.loop.run_until_complete(self.page.wait())
 
     def click_active_element(self):
         self.loop.run_until_complete(
             self.page.evaluate("document.activeElement.click()")
         )
         self.__slow_mode_pause_if_set()
+        self.loop.run_until_complete(self.page.wait())
 
     def click_if_visible(self, selector):
         if self.is_element_visible(selector):
             self.find_element(selector).click()
             self.__slow_mode_pause_if_set()
+            self.loop.run_until_complete(self.page.wait())
 
     def mouse_click(self, selector, timeout=settings.SMALL_TIMEOUT):
         """(Attempt simulating a mouse click)"""
@@ -427,6 +470,7 @@ class CDPMethods():
         self.__add_light_pause()
         element.mouse_click()
         self.__slow_mode_pause_if_set()
+        self.loop.run_until_complete(self.page.wait())
 
     def nested_click(self, parent_selector, selector):
         """
@@ -436,6 +480,7 @@ class CDPMethods():
         element = self.find_element(parent_selector)
         element.query_selector(selector).mouse_click()
         self.__slow_mode_pause_if_set()
+        self.loop.run_until_complete(self.page.wait())
 
     def get_nested_element(self, parent_selector, selector):
         """(Can be used to find an element inside an iframe)"""
@@ -483,6 +528,7 @@ class CDPMethods():
             text = text[:-1] + "\r\n"
         element.send_keys(text)
         self.__slow_mode_pause_if_set()
+        self.loop.run_until_complete(self.page.wait())
 
     def press_keys(self, selector, text, timeout=settings.SMALL_TIMEOUT):
         """Similar to send_keys(), but presses keys at human speed."""
@@ -499,6 +545,7 @@ class CDPMethods():
             element.send_keys("\r\n")
             time.sleep(0.0375)
         self.__slow_mode_pause_if_set()
+        self.loop.run_until_complete(self.page.wait())
 
     def type(self, selector, text, timeout=settings.SMALL_TIMEOUT):
         """Similar to send_keys(), but clears the text field first."""
@@ -510,6 +557,7 @@ class CDPMethods():
             text = text[:-1] + "\r\n"
         element.send_keys(text)
         self.__slow_mode_pause_if_set()
+        self.loop.run_until_complete(self.page.wait())
 
     def evaluate(self, expression):
         """Run a JavaScript expression and return the result."""
@@ -759,6 +807,10 @@ class CDPMethods():
                 % js_utils.escape_quotes_if_needed(re.escape(selector))
             )
         )
+
+    def set_locale(self, locale):
+        """(Settings will take effect on the next page load)"""
+        self.loop.run_until_complete(self.page.set_locale(locale))
 
     def set_attributes(self, selector, attribute, value):
         """This method uses JavaScript to set/update a common attribute.

@@ -549,7 +549,7 @@ def uc_open_with_cdp_mode(driver, url=None):
     cdp = types.SimpleNamespace()
     CDPM = sb_cdp.CDPMethods(loop, page, driver)
     cdp.get = CDPM.get
-    cdp.open = CDPM.get
+    cdp.open = CDPM.open
     cdp.reload = CDPM.reload
     cdp.refresh = CDPM.refresh
     cdp.add_handler = CDPM.add_handler
@@ -590,6 +590,7 @@ def uc_open_with_cdp_mode(driver, url=None):
     cdp.medimize = CDPM.medimize
     cdp.set_window_rect = CDPM.set_window_rect
     cdp.reset_window_size = CDPM.reset_window_size
+    cdp.set_locale = CDPM.set_locale
     cdp.set_attributes = CDPM.set_attributes
     cdp.internalize_links = CDPM.internalize_links
     cdp.get_window = CDPM.get_window
@@ -2179,8 +2180,13 @@ def _set_chrome_options(
             or IS_LINUX  # switches to Xvfb (non-headless)
         )
     ):
+        chrome_options.add_argument("--no-pings")
         chrome_options.add_argument("--disable-popup-blocking")
-        chrome_options.add_argument("--homepage=chrome://new-tab-page/")
+        chrome_options.add_argument("--homepage=chrome://version/")
+        chrome_options.add_argument("--animation-duration-scale=0")
+        chrome_options.add_argument("--wm-window-animations-disabled")
+        chrome_options.add_argument("--enable-privacy-sandbox-ads-apis")
+        chrome_options.add_argument("--disable-background-timer-throttling")
         # Skip remaining options that trigger anti-bot services
         return chrome_options
     chrome_options.add_argument("--test-type")
@@ -4523,6 +4529,7 @@ def get_local_driver(
                                     and uc_chrome_version
                                     and uc_chrome_version >= 117
                                     and (headless or headless2)
+                                    and chromium_arg != "decoy"
                                 ):
                                     from seleniumbase.console_scripts import (
                                         sb_install

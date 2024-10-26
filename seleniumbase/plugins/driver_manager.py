@@ -233,6 +233,7 @@ def Driver(
     wire (bool):  Shortcut / Duplicate of "use_wire".
     pls (str):  Shortcut / Duplicate of "page_load_strategy".
     """
+    from contextlib import suppress
     from seleniumbase import config as sb_config
     from seleniumbase.config import settings
     from seleniumbase.fixtures import constants
@@ -800,6 +801,7 @@ def Driver(
             or not any(os.scandir(user_data_dir))
         )
         and browser == "chrome"
+        and shared_utils.is_chrome_130_or_newer(binary_location)
     ):
         import tempfile
         import time
@@ -849,12 +851,12 @@ def Driver(
                 host_resolver_rules=host_resolver_rules,
                 block_images=block_images,
                 do_not_track=do_not_track,
-                chromium_arg=chromium_arg,
+                chromium_arg="decoy",
                 firefox_arg=firefox_arg,
                 firefox_pref=firefox_pref,
                 user_data_dir=user_data_dir,
-                extension_zip=extension_zip,
-                extension_dir=extension_dir,
+                extension_zip=None,
+                extension_dir=None,
                 disable_features=disable_features,
                 binary_location=binary_location,
                 driver_version=driver_version,
@@ -868,14 +870,13 @@ def Driver(
                 device_pixel_ratio=d_p_r,
                 browser=browser_name,
             )
-            time.sleep(0.555)
+            time.sleep(0.2)
         except Exception:
             pass
         finally:
-            try:
+            with suppress(Exception):
                 decoy_driver.quit()
-            except Exception:
-                pass
+                time.sleep(0.1)
 
     driver = browser_launcher.get_driver(
         browser_name=browser_name,
