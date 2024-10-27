@@ -68,4 +68,4 @@ password = encryption.decrypt('$^*ENCRYPT=RXlYMSJWTz8HSwM=?&#$')
 
 (You'll notice that encrypted strings have a common start token and end token. This is to help tell them apart from non-encrypted strings. You can customize these tokens in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py). The current default setting is `$^*ENCRYPT=` for the start token and `?&#$` for the end token.)
 
-See [decryption_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/decryption_test.py) for an example of decrypting encrypted passwords in tests.
+See [test_decryption.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_decryption.py) for an example of decrypting encrypted passwords in tests.
