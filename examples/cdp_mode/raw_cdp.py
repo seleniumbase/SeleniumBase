@@ -24,6 +24,8 @@ def main():
     sb.sleep(1.5)
     location = "Amsterdam"
     sb.press_keys('input[data-test-id*="search"]', location)
+    sb.sleep(1)
+    sb.click('input[data-test-id*="search"]')
     sb.sleep(2)
     sb.click('span[data-test-id*="autocomplete"]')
     sb.sleep(5)
