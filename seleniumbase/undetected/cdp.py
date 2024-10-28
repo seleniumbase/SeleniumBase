@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import fasteners
 import json
 import logging

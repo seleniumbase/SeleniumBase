@@ -292,7 +292,14 @@ class Connection(metaclass=CantTouchThis):
             if self.listener and self.listener.running:
                 self.listener.cancel()
                 self.enabled_domains.clear()
-            await self.websocket.close()
+            await asyncio.sleep(0.015)
+            try:
+                await self.websocket.close()
+            except Exception:
+                logger.debug(
+                    "\n❌ Error closing websocket connection to %s",
+                    self.websocket_url
+                )
             logger.debug(
                 "\n❌ Closed websocket connection to %s", self.websocket_url
             )
@@ -540,6 +547,7 @@ class Listener:
                 self.idle.set()
                 # Pause for a moment.
                 # await asyncio.sleep(self.time_before_considered_idle / 10)
+                await asyncio.sleep(0.015)
                 continue
             except (Exception,) as e:
                 logger.debug(

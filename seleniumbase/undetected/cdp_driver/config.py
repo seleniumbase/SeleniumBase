@@ -5,6 +5,7 @@ import secrets
 import sys
 import tempfile
 import zipfile
+from seleniumbase.config import settings
 from typing import Union, List, Optional
 
 __all__ = [
@@ -101,7 +102,13 @@ class Config:
         # Other keyword args will be accessible by attribute
         self.__dict__.update(kwargs)
         super().__init__()
+        start_width = settings.CHROME_START_WIDTH
+        start_height = settings.CHROME_START_HEIGHT
+        start_x = settings.WINDOW_START_X
+        start_y = settings.WINDOW_START_Y
         self._default_browser_args = [
+            "--window-size=%s,%s" % (start_width, start_height),
+            "--window-position=%s,%s" % (start_x, start_y),
             "--remote-allow-origins=*",
             "--no-first-run",
             "--no-service-autorun",

@@ -62,6 +62,8 @@
 
 👤 Note that <span translate="no">SeleniumBase</span> <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md"><b>UC Mode</b> (Stealth Mode) has its own ReadMe</a>.
 
+🐙 Also note that Seleniumbase <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md"><b>CDP Mode</b> has its own separate ReadMe</a>.
+
 ℹ️ Scripts can be called via <code translate="no"><b>python</b></code>, although some <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md">Syntax Formats</a> expect <a href="https://docs.pytest.org/en/latest/how-to/usage.html" translate="no"><b>pytest</b></a> (a Python unit-testing framework included with SeleniumBase that can discover, collect, and run tests automatically).
 
 <p align="left">📗 Here's <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py">my_first_test.py</a>, which tests login, shopping, and checkout:</p>
@@ -315,48 +317,49 @@ pip install -e .
 🔵 **Type ``seleniumbase`` or ``sbase`` to verify that SeleniumBase was installed successfully:**
 
 ```bash
-   ______     __           _                  ____                
-  / ____/__  / /__  ____  (_)_  ______ ___   / _  \____  ________ 
-  \__ \/ _ \/ / _ \/ __ \/ / / / / __ `__ \ / /_) / __ \/ ___/ _ \
- ___/ /  __/ /  __/ / / / / /_/ / / / / / // /_) / (_/ /__  /  __/
-/____/\___/_/\___/_/ /_/_/\__,_/_/ /_/ /_//_____/\__,_/____/\___/ 
-------------------------------------------------------------------
+ ___      _          _             ___              
+/ __| ___| |___ _ _ (_)_  _ _ __  | _ ) __ _ ______ 
+\__ \/ -_) / -_) ' \| | \| | '  \ | _ \/ _` (_-< -_)
+|___/\___|_\___|_||_|_|\_,_|_|_|_\|___/\__,_/__|___|
+----------------------------------------------------
 
- * USAGE: "seleniumbase [COMMAND] [PARAMETERS]"
- *    OR:        "sbase [COMMAND] [PARAMETERS]"
-
-COMMANDS:
-      get / install    [DRIVER] [OPTIONS]
-      methods          (List common Python methods)
-      options          (List common pytest options)
-      behave-options   (List common behave options)
-      gui / commander  [OPTIONAL PATH or TEST FILE]
-      behave-gui       (SBase Commander for Behave)
-      caseplans        [OPTIONAL PATH or TEST FILE]
-      mkdir            [DIRECTORY] [OPTIONS]
-      mkfile           [FILE.py] [OPTIONS]
-      mkrec / codegen  [FILE.py] [OPTIONS]
-      recorder         (Open Recorder Desktop App.)
-      record           (If args: mkrec. Else: App.)
-      mkpres           [FILE.py] [LANG]
-      mkchart          [FILE.py] [LANG]
-      print            [FILE] [OPTIONS]
-      translate        [SB_FILE.py] [LANG] [ACTION]
-      convert          [WEBDRIVER_UNITTEST_FILE.py]
-      extract-objects  [SB_FILE.py]
-      inject-objects   [SB_FILE.py] [OPTIONS]
-      objectify        [SB_FILE.py] [OPTIONS]
-      revert-objects   [SB_FILE.py] [OPTIONS]
-      encrypt / obfuscate
-      decrypt / unobfuscate
-      download server  (Get Selenium Grid JAR file)
-      grid-hub         [start|stop] [OPTIONS]
-      grid-node        [start|stop] --hub=[HOST/IP]
- * (EXAMPLE: "sbase get chromedriver latest") *
-
-    Type "sbase help [COMMAND]" for specific command info.
-    For info on all commands, type: "seleniumbase --help".
-    Use "pytest" for running tests.
+╭──────────────────────────────────────────────────╮
+│  * USAGE: "seleniumbase [COMMAND] [PARAMETERS]"  │
+│  *    OR:        "sbase [COMMAND] [PARAMETERS]"  │
+│                                                  │
+│ COMMANDS:        PARAMETERS / DESCRIPTIONS:      │
+│    get / install    [DRIVER_NAME] [OPTIONS]      │
+│    methods          (List common Python methods) │
+│    options          (List common pytest options) │
+│    behave-options   (List common behave options) │
+│    gui / commander  [OPTIONAL PATH or TEST FILE] │
+│    behave-gui       (SBase Commander for Behave) │
+│    caseplans        [OPTIONAL PATH or TEST FILE] │
+│    mkdir            [DIRECTORY] [OPTIONS]        │
+│    mkfile           [FILE.py] [OPTIONS]          │
+│    mkrec / codegen  [FILE.py] [OPTIONS]          │
+│    recorder         (Open Recorder Desktop App.) │
+│    record           (If args: mkrec. Else: App.) │
+│    mkpres           [FILE.py] [LANG]             │
+│    mkchart          [FILE.py] [LANG]             │
+│    print            [FILE] [OPTIONS]             │
+│    translate        [SB_FILE.py] [LANG] [ACTION] │
+│    convert          [WEBDRIVER_UNITTEST_FILE.py] │
+│    extract-objects  [SB_FILE.py]                 │
+│    inject-objects   [SB_FILE.py] [OPTIONS]       │
+│    objectify        [SB_FILE.py] [OPTIONS]       │
+│    revert-objects   [SB_FILE.py] [OPTIONS]       │
+│    encrypt / obfuscate                           │
+│    decrypt / unobfuscate                         │
+│    proxy            (Start a basic proxy server) │
+│    download server  (Get Selenium Grid JAR file) │
+│    grid-hub         [start|stop] [OPTIONS]       │
+│    grid-node        [start|stop] --hub=[HOST/IP] │
+│                                                  │
+│ *  EXAMPLE => "sbase get chromedriver stable"    │
+│ *  For command info => "sbase help [COMMAND]"    │
+│ *  For info on all commands => "sbase --help"    │
+╰──────────────────────────────────────────────────╯
 ```
 
 <h3>🔵 Downloading webdrivers:</h3>
@@ -1375,7 +1378,6 @@ pytest --reruns=1 --reruns-delay=1
 <span><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.github.io/img/social/share_github.svg" title="SeleniumBase on GitHub" alt="SeleniumBase on GitHub" width="64" /></a></span>
 <span><a href="https://discord.gg/EdhQTn3EyE"><img src="https://seleniumbase.github.io/other/discord_icon.png" title="SeleniumBase on Discord" alt="SeleniumBase on Discord" width="66" /></a></span>
 <span><a href="https://www.facebook.com/SeleniumBase"><img src="https://seleniumbase.io/img/social/share_facebook.svg" title="SeleniumBase on Facebook" alt="SeleniumBase on Facebook" width="62" /></a></span>
-<span><a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://seleniumbase.github.io/img/social/share_gitter.svg" title="SeleniumBase on Gitter" alt="SeleniumBase on Gitter" width="48" /></a></span>
 </div></p>
 
 <p><div><b><a href="https://github.com/mdmintz">https://github.com/mdmintz</a></b></div></p>
