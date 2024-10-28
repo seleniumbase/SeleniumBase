@@ -235,6 +235,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                     "--no-first-run",
                     "--no-service-autorun",
                     "--password-store=basic",
+                    "--profile-directory=Default",
                 ]
             )
         options.add_argument(
@@ -423,7 +424,9 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         - Recreates the session."""
         if hasattr(self, "service"):
             with suppress(Exception):
-                self.service.stop()
+                if self.service.is_connectable():
+                    self.stop_client()
+                    self.service.stop()
             if isinstance(timeout, str):
                 if timeout.lower() == "breakpoint":
                     breakpoint()  # To continue:
@@ -437,7 +440,9 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         with suppress(Exception):
             if self.current_url.startswith("chrome-extension://"):
                 self.close()
-                self.service.stop()
+                if self.service.is_connectable():
+                    self.stop_client()
+                    self.service.stop()
                 self.service.start()
                 self.start_session()
         self._is_connected = True
@@ -447,7 +452,9 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         To use driver methods again, you MUST call driver.connect()"""
         if hasattr(self, "service"):
             with suppress(Exception):
-                self.service.stop()
+                if self.service.is_connectable():
+                    self.stop_client()
+                    self.service.stop()
             self._is_connected = False
 
     def connect(self):
@@ -461,7 +468,9 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         with suppress(Exception):
             if self.current_url.startswith("chrome-extension://"):
                 self.close()
-                self.service.stop()
+                if self.service.is_connectable():
+                    self.stop_client()
+                    self.service.stop()
                 self.service.start()
                 self.start_session()
         self._is_connected = True
@@ -488,7 +497,9 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
             pass
         if hasattr(self, "service") and getattr(self.service, "process", None):
             logger.debug("Stopping webdriver service")
-            self.service.stop()
+            with suppress(Exception):
+                self.stop_client()
+                self.service.stop()
         with suppress(Exception):
             if self.reactor and isinstance(self.reactor, Reactor):
                 logger.debug("Shutting down Reactor")

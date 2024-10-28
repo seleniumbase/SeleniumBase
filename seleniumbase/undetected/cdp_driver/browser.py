@@ -248,7 +248,7 @@ class Browser:
 
     async def get(
         self,
-        url="chrome://welcome",
+        url="about:blank",
         new_tab: bool = False,
         new_window: bool = False,
     ) -> tab.Tab:
