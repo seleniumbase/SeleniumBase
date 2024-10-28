@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import logging
 import os
 import re
@@ -433,10 +432,15 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                 time.sleep(timeout)
             with suppress(Exception):
                 self.service.start()
-            time.sleep(0.012)
         with suppress(Exception):
             self.start_session()
-        time.sleep(0.012)
+        with suppress(Exception):
+            if self.current_url.startswith("chrome-extension://"):
+                self.close()
+                self.service.stop()
+                self.service.start()
+                self.start_session()
+        self._is_connected = True
 
     def disconnect(self):
         """Stops the chromedriver service that runs in the background.
@@ -445,7 +449,6 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
             with suppress(Exception):
                 self.service.stop()
             self._is_connected = False
-            time.sleep(0.012)
 
     def connect(self):
         """Starts the chromedriver service that runs in the background
@@ -453,11 +456,15 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         if hasattr(self, "service"):
             with suppress(Exception):
                 self.service.start()
-            time.sleep(0.012)
         with suppress(Exception):
             self.start_session()
+        with suppress(Exception):
+            if self.current_url.startswith("chrome-extension://"):
+                self.close()
+                self.service.stop()
+                self.service.start()
+                self.start_session()
         self._is_connected = True
-        time.sleep(0.012)
 
     def start_session(self, capabilities=None):
         if not capabilities:

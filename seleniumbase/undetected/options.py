@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import json
 import os
 from contextlib import suppress
@@ -59,7 +58,9 @@ class ChromeOptions(ChromiumOptions):
                             json.load(f), undot_prefs
                         )
             with suppress(Exception):
-                with open(prefs_file, encoding="utf-8", mode="w") as f:
+                with open(
+                    prefs_file, encoding="utf-8", mode="w", errors="ignore"
+                ) as f:
                     json.dump(undot_prefs, f)
             # Remove experimental_options to avoid errors
             del self._experimental_options["prefs"]

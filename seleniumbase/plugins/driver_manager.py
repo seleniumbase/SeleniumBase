@@ -870,13 +870,13 @@ def Driver(
                 device_pixel_ratio=d_p_r,
                 browser=browser_name,
             )
-            time.sleep(0.2)
+            time.sleep(0.16)
         except Exception:
             pass
         finally:
             with suppress(Exception):
                 decoy_driver.quit()
-                time.sleep(0.1)
+                time.sleep(0.08)
 
     driver = browser_launcher.get_driver(
         browser_name=browser_name,

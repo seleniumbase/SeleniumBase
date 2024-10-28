@@ -542,6 +542,7 @@ def uc_open_with_cdp_mode(driver, url=None):
     driver.cdp_base = loop.run_until_complete(
         cdp_util.start(host=cdp_host, port=cdp_port)
     )
+
     page = loop.run_until_complete(driver.cdp_base.get(url))
     loop.run_until_complete(page.activate())
     if not safe_url:
