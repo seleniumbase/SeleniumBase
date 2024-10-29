@@ -233,9 +233,9 @@ def Driver(
     wire (bool):  Shortcut / Duplicate of "use_wire".
     pls (str):  Shortcut / Duplicate of "page_load_strategy".
     """
-    from contextlib import suppress
     from seleniumbase import config as sb_config
     from seleniumbase.config import settings
+    from seleniumbase.core import browser_launcher
     from seleniumbase.fixtures import constants
     from seleniumbase.fixtures import shared_utils
 
@@ -790,94 +790,6 @@ def Driver(
     browser_name = browser
 
     # Launch a web browser
-    from seleniumbase.core import browser_launcher
-
-    # Fix Chrome-130 issues by creating a user-data-dir in advance
-    if (
-        undetectable
-        and (
-            not user_data_dir
-            or not os.path.exists(user_data_dir)
-            or not any(os.scandir(user_data_dir))
-        )
-        and browser == "chrome"
-        and shared_utils.is_chrome_130_or_newer(binary_location)
-    ):
-        import tempfile
-        import time
-        if not user_data_dir:
-            user_data_dir = (
-                os.path.normpath(tempfile.mkdtemp())
-            )
-        try:
-            decoy_driver = browser_launcher.get_driver(
-                browser_name=browser_name,
-                headless=False,
-                locale_code=locale_code,
-                use_grid=use_grid,
-                protocol=protocol,
-                servername=servername,
-                port=port,
-                proxy_string=proxy_string,
-                proxy_bypass_list=proxy_bypass_list,
-                proxy_pac_url=proxy_pac_url,
-                multi_proxy=multi_proxy,
-                user_agent=user_agent,
-                cap_file=cap_file,
-                cap_string=cap_string,
-                recorder_ext=recorder_ext,
-                disable_cookies=disable_cookies,
-                disable_js=disable_js,
-                disable_csp=disable_csp,
-                enable_ws=enable_ws,
-                enable_sync=enable_sync,
-                use_auto_ext=use_auto_ext,
-                undetectable=undetectable,
-                uc_cdp_events=uc_cdp_events,
-                uc_subprocess=uc_subprocess,
-                log_cdp_events=log_cdp_events,
-                no_sandbox=no_sandbox,
-                disable_gpu=disable_gpu,
-                headless1=False,
-                headless2=True,
-                incognito=incognito,
-                guest_mode=guest_mode,
-                dark_mode=dark_mode,
-                devtools=devtools,
-                remote_debug=remote_debug,
-                enable_3d_apis=enable_3d_apis,
-                swiftshader=swiftshader,
-                ad_block_on=ad_block_on,
-                host_resolver_rules=host_resolver_rules,
-                block_images=block_images,
-                do_not_track=do_not_track,
-                chromium_arg="decoy",
-                firefox_arg=firefox_arg,
-                firefox_pref=firefox_pref,
-                user_data_dir=user_data_dir,
-                extension_zip=None,
-                extension_dir=None,
-                disable_features=disable_features,
-                binary_location=binary_location,
-                driver_version=driver_version,
-                page_load_strategy=page_load_strategy,
-                use_wire=use_wire,
-                external_pdf=external_pdf,
-                test_id=test_id,
-                mobile_emulator=is_mobile,
-                device_width=d_width,
-                device_height=d_height,
-                device_pixel_ratio=d_p_r,
-                browser=browser_name,
-            )
-            time.sleep(0.16)
-        except Exception:
-            pass
-        finally:
-            with suppress(Exception):
-                decoy_driver.quit()
-                time.sleep(0.08)
-
     driver = browser_launcher.get_driver(
         browser_name=browser_name,
         headless=headless,

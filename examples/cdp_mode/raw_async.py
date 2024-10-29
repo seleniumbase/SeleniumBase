@@ -52,7 +52,10 @@ if __name__ == "__main__":
     sb.sleep(2.5)
     sb.remove_elements("msm-cookie-banner")
     sb.sleep(1.5)
-    sb.press_keys('input[data-test-id*="search"]', "Amsterdam")
+    location = "Amsterdam"
+    sb.press_keys('input[data-test-id*="search"]', location)
+    sb.sleep(1)
+    sb.click('input[data-test-id*="search"]')
     sb.sleep(2)
     sb.click('span[data-test-id*="autocomplete"]')
     sb.sleep(5)

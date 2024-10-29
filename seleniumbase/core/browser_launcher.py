@@ -542,7 +542,33 @@ def uc_open_with_cdp_mode(driver, url=None):
     driver.cdp_base = loop.run_until_complete(
         cdp_util.start(host=cdp_host, port=cdp_port)
     )
+    loop.run_until_complete(driver.cdp_base.wait(0))
 
+    if (
+        "chrome-extension://" in str(driver.cdp_base.main_tab)
+        and len(driver.cdp_base.tabs) >= 2
+    ):
+        with suppress(Exception):
+            loop.run_until_complete(driver.cdp_base.main_tab.close())
+
+        for tab in driver.cdp_base.tabs[-1::-1]:
+            if "chrome-extension://" not in str(tab):
+                loop.run_until_complete(tab.activate())
+                break
+
+        page_tab = None
+        if "chrome-extension://" not in str(driver.cdp_base.tabs[-1]):
+            page_tab = driver.cdp_base.tabs[-1]
+        else:
+            for tab in driver.cdp_base.tabs:
+                if "chrome-extension://" not in str(tab):
+                    page_tab = tab
+                    break
+        if page_tab:
+            loop.run_until_complete(page_tab.aopen())
+            loop.run_until_complete(page_tab.activate())
+
+    loop.run_until_complete(driver.cdp_base.update_targets())
     page = loop.run_until_complete(driver.cdp_base.get(url))
     loop.run_until_complete(page.activate())
     if not safe_url:
@@ -1106,13 +1132,23 @@ def _uc_gui_click_captcha(
                     frame = '[data-callback="onCaptchaSuccess"]'
                 else:
                     return
-            if driver.is_element_present('form[class*=center]'):
+            if (
+                driver.is_element_present("form")
+                and (
+                    driver.is_element_present('form[class*="center"]')
+                    or driver.is_element_present('form[class*="right"]')
+                    or driver.is_element_present('form div[class*="center"]')
+                    or driver.is_element_present('form div[class*="right"]')
+                )
+            ):
                 script = (
-                    """var $elements = document.querySelectorAll('form');
+                    """var $elements = document.querySelectorAll(
+                    'form[class], form div[class]');
                     var index = 0, length = $elements.length;
                     for(; index < length; index++){
                     the_class = $elements[index].getAttribute('class');
                     new_class = the_class.replaceAll('center', 'left');
+                    new_class = new_class.replaceAll('right', 'left');
                     $elements[index].setAttribute('class', new_class);}"""
                 )
                 if __is_cdp_swap_needed(driver):
