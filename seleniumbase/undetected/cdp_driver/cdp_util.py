@@ -1,10 +1,16 @@
 """CDP-Driver is based on NoDriver"""
 from __future__ import annotations
 import asyncio
+import fasteners
 import logging
+import os
 import time
 import types
 import typing
+from contextlib import suppress
+from seleniumbase import config as sb_config
+from seleniumbase.config import settings
+from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import shared_utils
 from typing import Optional, List, Union, Callable
 from .element import Element
@@ -15,7 +21,118 @@ from .tab import Tab
 import mycdp as cdp
 
 logger = logging.getLogger(__name__)
+IS_LINUX = shared_utils.is_linux()
 T = typing.TypeVar("T")
+
+
+def __activate_standard_virtual_display():
+    from sbvirtualdisplay import Display
+    width = settings.HEADLESS_START_WIDTH
+    height = settings.HEADLESS_START_HEIGHT
+    with suppress(Exception):
+        _xvfb_display = Display(
+            visible=0, size=(width, height)
+        )
+        _xvfb_display.start()
+        sb_config._virtual_display = _xvfb_display
+        sb_config.headless_active = True
+
+
+def __activate_virtual_display_as_needed(
+    headless, headed, xvfb, xvfb_metrics
+):
+    """This is only needed on Linux."""
+    if IS_LINUX and (not headed or xvfb):
+        from sbvirtualdisplay import Display
+        pip_find_lock = fasteners.InterProcessLock(
+            constants.PipInstall.FINDLOCK
+        )
+        with pip_find_lock:  # Prevent issues with multiple processes
+            if not headless:
+                import Xlib.display
+                try:
+                    _xvfb_width = None
+                    _xvfb_height = None
+                    if xvfb_metrics:
+                        with suppress(Exception):
+                            metrics_string = xvfb_metrics
+                            metrics_string = metrics_string.replace(" ", "")
+                            metrics_list = metrics_string.split(",")[0:2]
+                            _xvfb_width = int(metrics_list[0])
+                            _xvfb_height = int(metrics_list[1])
+                            # The minimum width,height is: 1024,768
+                            if _xvfb_width < 1024:
+                                _xvfb_width = 1024
+                            sb_config._xvfb_width = _xvfb_width
+                            if _xvfb_height < 768:
+                                _xvfb_height = 768
+                            sb_config._xvfb_height = _xvfb_height
+                            xvfb = True
+                    if not _xvfb_width:
+                        _xvfb_width = 1366
+                    if not _xvfb_height:
+                        _xvfb_height = 768
+                    _xvfb_display = Display(
+                        visible=True,
+                        size=(_xvfb_width, _xvfb_height),
+                        backend="xvfb",
+                        use_xauth=True,
+                    )
+                    _xvfb_display.start()
+                    if "DISPLAY" not in os.environ.keys():
+                        print(
+                            "\nX11 display failed! Will use regular xvfb!"
+                        )
+                        __activate_standard_virtual_display()
+                except Exception as e:
+                    if hasattr(e, "msg"):
+                        print("\n" + str(e.msg))
+                    else:
+                        print(e)
+                    print("\nX11 display failed! Will use regular xvfb!")
+                    __activate_standard_virtual_display()
+                    return
+                pyautogui_is_installed = False
+                try:
+                    import pyautogui
+                    with suppress(Exception):
+                        use_pyautogui_ver = constants.PyAutoGUI.VER
+                        if pyautogui.__version__ != use_pyautogui_ver:
+                            del pyautogui  # To get newer ver
+                            shared_utils.pip_install(
+                                "pyautogui", version=use_pyautogui_ver
+                            )
+                            import pyautogui
+                    pyautogui_is_installed = True
+                except Exception:
+                    message = (
+                        "PyAutoGUI is required for UC Mode on Linux! "
+                        "Installing now..."
+                    )
+                    print("\n" + message)
+                    shared_utils.pip_install(
+                        "pyautogui", version=constants.PyAutoGUI.VER
+                    )
+                    import pyautogui
+                    pyautogui_is_installed = True
+                if (
+                    pyautogui_is_installed
+                    and hasattr(pyautogui, "_pyautogui_x11")
+                ):
+                    try:
+                        pyautogui._pyautogui_x11._display = (
+                            Xlib.display.Display(os.environ['DISPLAY'])
+                        )
+                        sb_config._pyautogui_x11_display = (
+                            pyautogui._pyautogui_x11._display
+                        )
+                    except Exception as e:
+                        if hasattr(e, "msg"):
+                            print("\n" + str(e.msg))
+                        else:
+                            print(e)
+            else:
+                __activate_standard_virtual_display()
 
 
 async def start(
@@ -27,11 +144,14 @@ async def start(
     guest: Optional[bool] = False,
     browser_executable_path: Optional[PathLike] = None,
     browser_args: Optional[List[str]] = None,
+    xvfb_metrics: Optional[List[str]] = None,  # "Width,Height" for Linux
     sandbox: Optional[bool] = True,
     lang: Optional[str] = None,
     host: Optional[str] = None,
     port: Optional[int] = None,
-    expert: Optional[bool] = None,
+    xvfb: Optional[int] = None,  # Use a special virtual display on Linux
+    headed: Optional[bool] = None,  # Override default Xvfb mode on Linux
+    expert: Optional[bool] = None,  # Open up closed Shadow-root elements
     **kwargs: Optional[dict],
 ) -> Browser:
     """
@@ -73,6 +193,9 @@ async def start(
      (For example, ensuring shadow-root is always in "open" mode.)
     :type expert: bool
     """
+    if IS_LINUX and not headless and not headed and not xvfb:
+        xvfb = True  # The default setting on Linux
+    __activate_virtual_display_as_needed(headless, headed, xvfb, xvfb_metrics)
     if not config:
         config = Config(
             user_data_dir,

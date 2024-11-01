@@ -1,7 +1,9 @@
 """Add CDP methods to extend the driver"""
+import fasteners
 import math
 import os
 import re
+import sys
 import time
 from contextlib import suppress
 from seleniumbase import config as sb_config
@@ -238,6 +240,9 @@ class CDPMethods():
             updated_elements.append(element)
         self.__slow_mode_pause_if_set()
         return updated_elements
+
+    def find_elements(self, selector, timeout=settings.SMALL_TIMEOUT):
+        return self.select_all(selector, timeout=timeout)
 
     def click_link(self, link_text):
         self.find_elements_by_text(link_text, "a")[0].click()
@@ -835,6 +840,194 @@ class CDPMethods():
         with suppress(Exception):
             self.loop.run_until_complete(self.page.evaluate(js_code))
 
+    def __verify_pyautogui_has_a_headed_browser(self):
+        """PyAutoGUI requires a headed browser so that it can
+        focus on the correct element when performing actions."""
+        driver = self.driver
+        if hasattr(driver, "cdp_base"):
+            driver = driver.cdp_base
+        if driver.config.headless:
+            raise Exception(
+                "PyAutoGUI can't be used in headless mode!"
+            )
+
+    def __install_pyautogui_if_missing(self):
+        self.__verify_pyautogui_has_a_headed_browser()
+        driver = self.driver
+        if hasattr(driver, "cdp_base"):
+            driver = driver.cdp_base
+        pip_find_lock = fasteners.InterProcessLock(
+            constants.PipInstall.FINDLOCK
+        )
+        with pip_find_lock:  # Prevent issues with multiple processes
+            try:
+                import pyautogui
+                with suppress(Exception):
+                    use_pyautogui_ver = constants.PyAutoGUI.VER
+                    if pyautogui.__version__ != use_pyautogui_ver:
+                        del pyautogui
+                        shared_utils.pip_install(
+                            "pyautogui", version=use_pyautogui_ver
+                        )
+                        import pyautogui
+            except Exception:
+                print("\nPyAutoGUI required! Installing now...")
+                shared_utils.pip_install(
+                    "pyautogui", version=constants.PyAutoGUI.VER
+                )
+                try:
+                    import pyautogui
+                except Exception:
+                    if (
+                        shared_utils.is_linux()
+                        and (not sb_config.headed or sb_config.xvfb)
+                        and not driver.config.headless
+                    ):
+                        from sbvirtualdisplay import Display
+                        xvfb_width = 1366
+                        xvfb_height = 768
+                        if (
+                            hasattr(sb_config, "_xvfb_width")
+                            and sb_config._xvfb_width
+                            and isinstance(sb_config._xvfb_width, int)
+                            and hasattr(sb_config, "_xvfb_height")
+                            and sb_config._xvfb_height
+                            and isinstance(sb_config._xvfb_height, int)
+                        ):
+                            xvfb_width = sb_config._xvfb_width
+                            xvfb_height = sb_config._xvfb_height
+                            if xvfb_width < 1024:
+                                xvfb_width = 1024
+                            sb_config._xvfb_width = xvfb_width
+                            if xvfb_height < 768:
+                                xvfb_height = 768
+                            sb_config._xvfb_height = xvfb_height
+                        with suppress(Exception):
+                            xvfb_display = Display(
+                                visible=True,
+                                size=(xvfb_width, xvfb_height),
+                                backend="xvfb",
+                                use_xauth=True,
+                            )
+                            xvfb_display.start()
+
+    def __get_configured_pyautogui(self, pyautogui_copy):
+        if (
+            shared_utils.is_linux()
+            and hasattr(pyautogui_copy, "_pyautogui_x11")
+            and "DISPLAY" in os.environ.keys()
+        ):
+            if (
+                hasattr(sb_config, "_pyautogui_x11_display")
+                and sb_config._pyautogui_x11_display
+                and hasattr(pyautogui_copy._pyautogui_x11, "_display")
+                and (
+                    sb_config._pyautogui_x11_display
+                    == pyautogui_copy._pyautogui_x11._display
+                )
+            ):
+                pass
+            else:
+                import Xlib.display
+                pyautogui_copy._pyautogui_x11._display = (
+                    Xlib.display.Display(os.environ['DISPLAY'])
+                )
+                sb_config._pyautogui_x11_display = (
+                    pyautogui_copy._pyautogui_x11._display
+                )
+        return pyautogui_copy
+
+    def __gui_click_x_y(self, x, y, timeframe=0.25, uc_lock=False):
+        self.__install_pyautogui_if_missing()
+        import pyautogui
+        pyautogui = self.__get_configured_pyautogui(pyautogui)
+        screen_width, screen_height = pyautogui.size()
+        if x < 0 or y < 0 or x > screen_width or y > screen_height:
+            raise Exception(
+                "PyAutoGUI cannot click on point (%s, %s)"
+                " outside screen. (Width: %s, Height: %s)"
+                % (x, y, screen_width, screen_height)
+            )
+        if uc_lock:
+            gui_lock = fasteners.InterProcessLock(
+                constants.MultiBrowser.PYAUTOGUILOCK
+            )
+            with gui_lock:  # Prevent issues with multiple processes
+                pyautogui.moveTo(x, y, timeframe, pyautogui.easeOutQuad)
+                if timeframe >= 0.25:
+                    time.sleep(0.056)  # Wait if moving at human-speed
+                if "--debug" in sys.argv:
+                    print(" <DEBUG> pyautogui.click(%s, %s)" % (x, y))
+                pyautogui.click(x=x, y=y)
+        else:
+            # Called from a method where the gui_lock is already active
+            pyautogui.moveTo(x, y, timeframe, pyautogui.easeOutQuad)
+            if timeframe >= 0.25:
+                time.sleep(0.056)  # Wait if moving at human-speed
+            if "--debug" in sys.argv:
+                print(" <DEBUG> pyautogui.click(%s, %s)" % (x, y))
+            pyautogui.click(x=x, y=y)
+
+    def gui_click_x_y(self, x, y, timeframe=0.25):
+        gui_lock = fasteners.InterProcessLock(
+            constants.MultiBrowser.PYAUTOGUILOCK
+        )
+        with gui_lock:  # Prevent issues with multiple processes
+            self.__install_pyautogui_if_missing()
+            import pyautogui
+            pyautogui = self.__get_configured_pyautogui(pyautogui)
+            width_ratio = 1.0
+            if (
+                shared_utils.is_windows()
+                and (
+                    not hasattr(sb_config, "_saved_width_ratio")
+                    or not sb_config._saved_width_ratio
+                )
+            ):
+                window_rect = self.get_window_rect()
+                width = window_rect["width"]
+                height = window_rect["height"]
+                win_x = window_rect["x"]
+                win_y = window_rect["y"]
+                if (
+                    hasattr(sb_config, "_saved_width_ratio")
+                    and sb_config._saved_width_ratio
+                ):
+                    width_ratio = sb_config._saved_width_ratio
+                else:
+                    scr_width = pyautogui.size().width
+                    self.maximize()
+                    win_width = self.get_window_size()["width"]
+                    width_ratio = round(float(scr_width) / float(win_width), 2)
+                    width_ratio += 0.01
+                    if width_ratio < 0.45 or width_ratio > 2.55:
+                        width_ratio = 1.01
+                    sb_config._saved_width_ratio = width_ratio
+                self.set_window_rect(win_x, win_y, width, height)
+                self.bring_active_window_to_front()
+            elif (
+                shared_utils.is_windows()
+                and hasattr(sb_config, "_saved_width_ratio")
+                and sb_config._saved_width_ratio
+            ):
+                width_ratio = sb_config._saved_width_ratio
+                self.bring_active_window_to_front()
+            if shared_utils.is_windows():
+                x = x * width_ratio
+                y = y * width_ratio
+                self.__gui_click_x_y(x, y, timeframe=timeframe, uc_lock=False)
+                return
+            self.bring_active_window_to_front()
+            self.__gui_click_x_y(x, y, timeframe=timeframe, uc_lock=False)
+
+    def gui_click_element(self, selector, timeframe=0.25):
+        self.__slow_mode_pause_if_set()
+        x, y = self.get_gui_element_center(selector)
+        self.__add_light_pause()
+        self.gui_click_x_y(x, y, timeframe=timeframe)
+        self.__slow_mode_pause_if_set()
+        self.loop.run_until_complete(self.page.wait())
+
     def internalize_links(self):
         """All `target="_blank"` links become `target="_self"`.
         This prevents those links from opening in a new tab."""
@@ -936,6 +1129,16 @@ class CDPMethods():
         raise Exception(
             "Expected Text {%s}, is not equal to {%s} in {%s}!"
             % (text, element.text_all, selector)
+        )
+
+    def scroll_down(self, amount=25):
+        self.loop.run_until_complete(
+            self.page.scroll_down(amount)
+        )
+
+    def scroll_up(self, amount=25):
+        self.loop.run_until_complete(
+            self.page.scroll_up(amount)
         )
 
     def save_screenshot(self, name, folder=None, selector=None):

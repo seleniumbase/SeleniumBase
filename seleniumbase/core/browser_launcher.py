@@ -588,6 +588,7 @@ def uc_open_with_cdp_mode(driver, url=None):
     cdp.find_elements_by_text = CDPM.find_elements_by_text
     cdp.select = CDPM.select
     cdp.select_all = CDPM.select_all
+    cdp.find_elements = CDPM.find_elements
     cdp.click_link = CDPM.click_link
     cdp.tile_windows = CDPM.tile_windows
     cdp.get_all_cookies = CDPM.get_all_cookies
@@ -619,6 +620,8 @@ def uc_open_with_cdp_mode(driver, url=None):
     cdp.reset_window_size = CDPM.reset_window_size
     cdp.set_locale = CDPM.set_locale
     cdp.set_attributes = CDPM.set_attributes
+    cdp.gui_click_x_y = CDPM.gui_click_x_y
+    cdp.gui_click_element = CDPM.gui_click_element
     cdp.internalize_links = CDPM.internalize_links
     cdp.get_window = CDPM.get_window
     cdp.get_element_attributes = CDPM.get_element_attributes
@@ -655,6 +658,8 @@ def uc_open_with_cdp_mode(driver, url=None):
     cdp.assert_element_visible = CDPM.assert_element
     cdp.assert_text = CDPM.assert_text
     cdp.assert_exact_text = CDPM.assert_exact_text
+    cdp.scroll_down = CDPM.scroll_down
+    cdp.scroll_up = CDPM.scroll_up
     cdp.save_screenshot = CDPM.save_screenshot
     cdp.page = page  # async world
     cdp.driver = driver.cdp_base  # async world
@@ -2218,7 +2223,6 @@ def _set_chrome_options(
         )
     ):
         chrome_options.add_argument("--no-pings")
-        chrome_options.add_argument("--disable-popup-blocking")
         chrome_options.add_argument("--homepage=chrome://version/")
         chrome_options.add_argument("--animation-duration-scale=0")
         chrome_options.add_argument("--wm-window-animations-disabled")
