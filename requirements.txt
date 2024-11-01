@@ -36,7 +36,7 @@ trio==0.27.0
 trio-websocket==0.11.1
 wsproto==1.2.0
 websocket-client==1.8.0
-selenium==4.25.0
+selenium==4.26.1
 cssselect==1.2.0
 sortedcontainers==2.4.0
 execnet==2.1.1
@@ -64,7 +64,8 @@ rich==13.9.3
 
 coverage>=7.6.1;python_version<"3.9"
 coverage>=7.6.4;python_version>="3.9"
-pytest-cov>=5.0.0
+pytest-cov>=5.0.0;python_version<"3.9"
+pytest-cov>=6.0.0;python_version>="3.9"
 flake8==5.0.4;python_version<"3.9"
 flake8==7.1.1;python_version>="3.9"
 mccabe==0.7.0
