@@ -1,4 +1,4 @@
-"""Using CDP.fetch.RequestPaused to filter content in real time."""
+"""Using CDP.fetch.RequestPaused to filter content in real-time."""
 import mycdp
 from seleniumbase import SB
 
