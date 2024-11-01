@@ -185,7 +185,7 @@ setup(
         'trio-websocket==0.11.1',
         'wsproto==1.2.0',
         'websocket-client==1.8.0',
-        'selenium==4.25.0',
+        'selenium==4.26.1',
         'cssselect==1.2.0',
         "sortedcontainers==2.4.0",
         'execnet==2.1.1',
@@ -222,7 +222,8 @@ setup(
         "coverage": [
             'coverage>=7.6.1;python_version<"3.9"',
             'coverage>=7.6.4;python_version>="3.9"',
-            'pytest-cov>=5.0.0',
+            'pytest-cov>=5.0.0;python_version<"3.9"',
+            'pytest-cov>=6.0.0;python_version>="3.9"',
         ],
         # pip install -e .[flake8]
         # Usage: flake8
