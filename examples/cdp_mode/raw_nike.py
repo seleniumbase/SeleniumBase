@@ -12,7 +12,6 @@ with SB(uc=True, test=True, locale_code="en") as sb:
     elements = sb.cdp.select_all('ul[data-testid*="products"] figure .details')
     if elements:
         print('**** Found results for "%s": ****' % search)
-        print("------------------ >>>")
     for element in elements:
         print("* " + element.text)
     sb.sleep(2)

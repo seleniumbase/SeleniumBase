@@ -5,7 +5,7 @@ BaseCase.main(__name__, __file__)
 
 class HackTests(BaseCase):
     def test_all_your_base_are_belong_to_us(self):
-        self.set_window_size(1220, 740)
+        self.set_window_size(1250, 740)
         ayb = "ALL YOUR BASE"
         abtu = "ARE BELONG TO US"
         aybabtu = "%s %s" % (ayb, abtu)
@@ -22,8 +22,7 @@ class HackTests(BaseCase):
         self.set_text_content("#n-currentevents a", "BASE")
         self.set_text_content("#n-randompage a", "ARE")
         self.set_text_content("#n-aboutsite a", "BELONG")
-        self.set_text_content("#n-contactpage a", "TO")
-        self.set_text_content("#n-sitesupport a", "US")
+        self.set_text_content("#n-contactpage a", "TO US")
         self.highlight("h1#firstHeading", loops=5, scroll=False)
         zoom_in = "#ca-history a{zoom: 1.8;-moz-transform: scale(1.8);}"
         self.add_css_style(zoom_in)
@@ -86,11 +85,8 @@ class HackTests(BaseCase):
         self.highlight('form[role="search"]', loops=8)
 
         self.open("https://github.com/features/actions")
-        self.set_text_content("h2.h2-mktg", aybabtu)
-        self.set_text_content("a.btn-large-mktg", aybabtu)
-        self.highlight("h2.h2-mktg", loops=8, scroll=False)
-        self.scroll_to("h2.h2-mktg")
-        self.highlight("a.btn-large-mktg", loops=8, scroll=False)
+        self.set_text_content("#hero-section-brand-heading", aybabtu)
+        self.highlight("#hero-section-brand-heading", loops=14, scroll=False)
 
         self.open("https://dev.to/top/infinity")
         self.click_if_visible('button[aria-label="Close campaign banner"]')

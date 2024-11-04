@@ -23,7 +23,7 @@ with SB(uc=True, test=True, locale_code="en") as sb:
         'div[data-booking-status="BOOKABLE"] [class*="HotelCard_header"]'
     )
     hotel_prices = sb.cdp.select_all(
-        'div[data-booking-status="BOOKABLE"] div.rate-currency'
+        'div[data-booking-status="BOOKABLE"] div.rate'
     )
     sb.assert_true(len(hotel_names) == len(hotel_prices))
     print("Hyatt Hotels in %s:" % location)

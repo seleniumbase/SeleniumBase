@@ -16,4 +16,4 @@ class GitHubTests(BaseCase):
         self.assert_text("SeleniumBase", "strong a")
         self.js_click('a[title="seleniumbase"]')
         self.slow_click('td[class*="large"] a[title="fixtures"]')
-        self.assert_element('td[class*="large"] a[title="base_case.py"]')
+        self.highlight('td[class*="large"] a[title="base_case.py"]', loops=8)

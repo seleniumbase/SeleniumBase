@@ -26,7 +26,7 @@ with SB(uc=True, test=True, locale_code="en") as sb:
     sb.sleep(3.5)
     sb.connect()
     sb.sleep(0.5)
-    if "easyjet.com" not in sb.get_current_url():
+    if "/buy/flights" not in sb.get_current_url():
         sb.driver.close()
     sb.switch_to_newest_window()
     days = sb.find_elements("div.flight-grid-day")
