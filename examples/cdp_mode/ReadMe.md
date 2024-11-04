@@ -150,7 +150,7 @@ with SB(uc=True, test=True, locale_code="en") as sb:
         'div[data-booking-status="BOOKABLE"] [class*="HotelCard_header"]'
     )
     hotel_prices = sb.cdp.select_all(
-        'div[data-booking-status="BOOKABLE"] div.rate-currency'
+        'div[data-booking-status="BOOKABLE"] div.rate'
     )
     sb.assert_true(len(hotel_names) == len(hotel_prices))
     print("Hyatt Hotels in %s:" % location)
@@ -203,6 +203,82 @@ with SB(uc=True, test=True, locale_code="en") as sb:
             print("* %s: %s => %s" % (
                 i + 1, hotel.text.strip(), price.text.strip())
             )
+```
+
+</details>
+
+### 🔖 Example 4: (Walmart site using Akamai protection with PerimeterX)
+
+* [SeleniumBase/examples/cdp_mode/raw_walmart.py](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode/raw_walmart.py)
+
+<div></div>
+<details>
+<summary> ▶️ (<b>Click to expand code preview</b>)</summary>
+
+```python
+from seleniumbase import SB
+
+with SB(uc=True, test=True, locale_code="en") as sb:
+    url = "https://www.walmart.com/"
+    sb.activate_cdp_mode(url)
+    sb.sleep(2.5)
+    sb.cdp.mouse_click('input[aria-label="Search"]')
+    sb.sleep(1.2)
+    search = "Settlers of Catan Board Game"
+    required_text = "Catan"
+    sb.cdp.press_keys('input[aria-label="Search"]', search + "\n")
+    sb.sleep(3.8)
+    print('*** Walmart Search for "%s":' % search)
+    print('    (Results must contain "%s".)' % required_text)
+    unique_item_text = []
+    items = sb.cdp.find_elements('div[data-testid="list-view"]')
+    for item in items:
+        if required_text in item.text:
+            description = item.querySelector(
+                '[data-automation-id="product-price"] + span'
+            )
+            if description and description.text not in unique_item_text:
+                unique_item_text.append(description.text)
+                print("* " + description.text)
+                price = item.querySelector(
+                    '[data-automation-id="product-price"]'
+                )
+                if price:
+                    price_text = price.text
+                    price_text = price_text.split("current price Now ")[-1]
+                    price_text = price_text.split("current price ")[-1]
+                    price_text = price_text.split(" ")[0]
+                    print("  (" + price_text + ")")
+```
+
+</details>
+
+### 🔖 Example 5: (Nike site using Shape Security)
+
+* [SeleniumBase/examples/cdp_mode/raw_nike.py](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode/raw_nike.py)
+
+<div></div>
+<details>
+<summary> ▶️ (<b>Click to expand code preview</b>)</summary>
+
+```python
+from seleniumbase import SB
+
+with SB(uc=True, test=True, locale_code="en") as sb:
+    url = "https://www.nike.com/"
+    sb.activate_cdp_mode(url)
+    sb.sleep(3)
+    sb.cdp.gui_click_element('div[data-testid="user-tools-container"]')
+    sb.sleep(1.5)
+    search = "Nike Air Force 1"
+    sb.cdp.press_keys('input[type="search"]', search)
+    sb.sleep(4)
+    elements = sb.cdp.select_all('ul[data-testid*="products"] figure .details')
+    if elements:
+        print('**** Found results for "%s": ****' % search)
+    for element in elements:
+        print("* " + element.text)
+    sb.sleep(2)
 ```
 
 </details>
