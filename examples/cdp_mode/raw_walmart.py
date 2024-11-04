@@ -10,15 +10,17 @@ with SB(uc=True, test=True, locale_code="en") as sb:
     required_text = "Catan"
     sb.cdp.press_keys('input[aria-label="Search"]', search + "\n")
     sb.sleep(3.8)
-    items = sb.cdp.find_elements('div[data-testid="list-view"]')
     print('*** Walmart Search for "%s":' % search)
     print('    (Results must contain "%s".)' % required_text)
+    unique_item_text = []
+    items = sb.cdp.find_elements('div[data-testid="list-view"]')
     for item in items:
         if required_text in item.text:
             description = item.querySelector(
                 '[data-automation-id="product-price"] + span'
             )
-            if description:
+            if description and description.text not in unique_item_text:
+                unique_item_text.append(description.text)
                 print("* " + description.text)
                 price = item.querySelector(
                     '[data-automation-id="product-price"]'
