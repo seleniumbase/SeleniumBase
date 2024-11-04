@@ -206,7 +206,7 @@ setup(
         'python-xlib==0.33;platform_system=="Linux"',
         'markdown-it-py==3.0.0',
         'mdurl==0.1.2',
-        'rich==13.9.3',
+        'rich==13.9.4',
     ],
     extras_require={
         # pip install -e .[allure]
