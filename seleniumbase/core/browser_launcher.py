@@ -2128,6 +2128,10 @@ def _set_chrome_options(
                 binary_loc = detect_b_ver.get_binary_location(br_app, True)
                 if os.path.exists(binary_loc):
                     binary_location = binary_loc
+                elif os.path.exists("/usr/bin/google-chrome-stable"):
+                    binary_location = "/usr/bin/google-chrome-stable"
+                elif os.path.exists("/usr/bin/google-chrome"):
+                    binary_location = "/usr/bin/google-chrome"
     extra_disabled_features = []
     if chromium_arg:
         # Can be a comma-separated list of Chromium args or a list
