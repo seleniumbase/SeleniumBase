@@ -2128,6 +2128,10 @@ def _set_chrome_options(
                 binary_loc = detect_b_ver.get_binary_location(br_app, True)
                 if os.path.exists(binary_loc):
                     binary_location = binary_loc
+                elif os.path.exists("/usr/bin/google-chrome-stable"):
+                    binary_location = "/usr/bin/google-chrome-stable"
+                elif os.path.exists("/usr/bin/google-chrome"):
+                    binary_location = "/usr/bin/google-chrome"
     extra_disabled_features = []
     if chromium_arg:
         # Can be a comma-separated list of Chromium args or a list
@@ -2228,6 +2232,8 @@ def _set_chrome_options(
         chrome_options.add_argument("--wm-window-animations-disabled")
         chrome_options.add_argument("--enable-privacy-sandbox-ads-apis")
         chrome_options.add_argument("--disable-background-timer-throttling")
+        # Prevent new tabs opened by Selenium from being blocked:
+        chrome_options.add_argument("--disable-popup-blocking")
         # Skip remaining options that trigger anti-bot services
         return chrome_options
     chrome_options.add_argument("--test-type")
