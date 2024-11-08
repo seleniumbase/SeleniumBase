@@ -1,6 +1,5 @@
 """Add CDP methods to extend the driver"""
 import fasteners
-import math
 import os
 import re
 import sys
@@ -771,10 +770,12 @@ class CDPMethods():
         window_rect = self.get_window_rect()
         w_bottom_y = window_rect["y"] + window_rect["height"]
         viewport_height = window_rect["innerHeight"]
-        x = math.ceil(window_rect["x"] + element_rect["x"])
-        y = math.ceil(w_bottom_y - viewport_height + element_rect["y"])
+        x = window_rect["x"] + element_rect["x"]
+        y = w_bottom_y - viewport_height + element_rect["y"]
         y_scroll_offset = window_rect["pageYOffset"]
-        y = int(y - y_scroll_offset)
+        y = y - y_scroll_offset
+        x = x + window_rect["scrollX"]
+        y = y + window_rect["scrollY"]
         return ({"height": e_height, "width": e_width, "x": x, "y": y})
 
     def get_gui_element_center(self, selector):
@@ -803,6 +804,10 @@ class CDPMethods():
                 % js_utils.escape_quotes_if_needed(re.escape(selector))
             )
         )
+
+    def get_element_attribute(self, selector, attribute):
+        attributes = self.get_element_attributes(selector)
+        return attributes[attribute]
 
     def get_element_html(self, selector):
         selector = self.__convert_to_css_if_xpath(selector)
@@ -1032,6 +1037,28 @@ class CDPMethods():
         """All `target="_blank"` links become `target="_self"`.
         This prevents those links from opening in a new tab."""
         self.set_attributes('[target="_blank"]', "target", "_self")
+
+    def is_checked(self, selector):
+        """Return True if checkbox (or radio button) is checked."""
+        self.find_element(selector, timeout=settings.SMALL_TIMEOUT)
+        return self.get_element_attribute(selector, "checked")
+
+    def is_selected(self, selector):
+        return self.is_checked(selector)
+
+    def check_if_unchecked(self, selector):
+        if not self.is_checked(selector):
+            self.click(selector)
+
+    def select_if_unselected(self, selector):
+        self.check_if_unchecked(selector)
+
+    def uncheck_if_checked(self, selector):
+        if self.is_checked(selector):
+            self.click(selector)
+
+    def unselect_if_selected(self, selector):
+        self.uncheck_if_checked(selector)
 
     def is_element_present(self, selector):
         try:
