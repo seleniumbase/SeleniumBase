@@ -1884,6 +1884,8 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_cdp_swap_needed():
+            return self.cdp.get_element_attribute(selector)
         self.wait_for_ready_state_complete()
         time.sleep(0.01)
         if self.__is_shadow_selector(selector):
@@ -2460,16 +2462,14 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_cdp_swap_needed():
+            return self.cdp.is_checked(selector)
         kind = self.get_attribute(selector, "type", by=by, timeout=timeout)
         if kind != "checkbox" and kind != "radio":
             raise Exception("Expecting a checkbox or a radio button element!")
-        is_checked = self.get_attribute(
+        return self.get_attribute(
             selector, "checked", by=by, timeout=timeout, hard_fail=False
         )
-        if is_checked:
-            return True
-        else:  # (NoneType)
-            return False
 
     def is_selected(self, selector, by="css selector", timeout=None):
         """Same as is_checked()"""
@@ -2479,6 +2479,9 @@ class BaseCase(unittest.TestCase):
         """If a checkbox or radio button is not checked, will check it."""
         self.__check_scope()
         selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_cdp_swap_needed():
+            self.cdp.check_if_unchecked(selector)
+            return
         if not self.is_checked(selector, by=by):
             if self.is_element_visible(selector, by=by):
                 self.click(selector, by=by)
@@ -2515,6 +2518,9 @@ class BaseCase(unittest.TestCase):
         """If a checkbox is checked, will uncheck it."""
         self.__check_scope()
         selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_cdp_swap_needed():
+            self.cdp.uncheck_if_checked(selector)
+            return
         if self.is_checked(selector, by=by):
             if self.is_element_visible(selector, by=by):
                 self.click(selector, by=by)
@@ -6087,6 +6093,9 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        if self.__is_cdp_swap_needed():
+            self.cdp.scroll_into_view(selector)
+            return
         if self.demo_mode or self.slow_mode:
             self.slow_scroll_to(selector, by=by, timeout=timeout)
             return
