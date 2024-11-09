@@ -18,6 +18,7 @@ from typing import (
     TypeVar,
 )
 import websockets
+from websockets.protocol import State
 from . import cdp_util as util
 import mycdp as cdp
 import mycdp.network
@@ -261,7 +262,7 @@ class Connection(metaclass=CantTouchThis):
         """
         Opens the websocket connection. Shouldn't be called manually by users.
         """
-        if not self.websocket or self.websocket.closed:
+        if not self.websocket or self.websocket.state is State.CLOSED:
             try:
                 self.websocket = await websockets.connect(
                     self.websocket_url,
@@ -288,7 +289,7 @@ class Connection(metaclass=CantTouchThis):
         """
         Closes the websocket connection. Shouldn't be called manually by users.
         """
-        if self.websocket and not self.websocket.closed:
+        if self.websocket and self.websocket.state is not State.CLOSED:
             if self.listener and self.listener.running:
                 self.listener.cancel()
                 self.enabled_domains.clear()
@@ -393,7 +394,7 @@ class Connection(metaclass=CantTouchThis):
             when multiple calls to connection.send() are made.
         """
         await self.aopen()
-        if not self.websocket or self.closed:
+        if not self.websocket or self.websocket.state is State.CLOSED:
             return
         if self._owner:
             browser = self._owner
