@@ -620,6 +620,9 @@ def uc_open_with_cdp_mode(driver, url=None):
     cdp.reset_window_size = CDPM.reset_window_size
     cdp.set_locale = CDPM.set_locale
     cdp.set_attributes = CDPM.set_attributes
+    cdp.gui_press_key = CDPM.gui_press_key
+    cdp.gui_press_keys = CDPM.gui_press_keys
+    cdp.gui_write = CDPM.gui_write
     cdp.gui_click_x_y = CDPM.gui_click_x_y
     cdp.gui_click_element = CDPM.gui_click_element
     cdp.internalize_links = CDPM.internalize_links
@@ -721,6 +724,9 @@ def uc_click(
     timeout=settings.SMALL_TIMEOUT,
     reconnect_time=None,
 ):
+    if __is_cdp_swap_needed(driver):
+        driver.cdp.click(selector)
+        return
     with suppress(Exception):
         rct = float(by)  # Add shortcut: driver.uc_click(selector, RCT)
         if not reconnect_time:

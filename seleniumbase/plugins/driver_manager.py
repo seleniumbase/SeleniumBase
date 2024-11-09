@@ -550,11 +550,7 @@ def Driver(
         or uc_sub
     ):
         undetectable = True
-    if (
-        (undetectable or undetected or uc)
-        and (uc_subprocess is None)
-        and (uc_sub is None)
-    ):
+    if undetectable or undetected or uc:
         uc_subprocess = True  # Use UC as a subprocess by default.
     elif (
         "--undetectable" in sys_argv

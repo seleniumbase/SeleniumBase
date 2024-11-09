@@ -942,6 +942,45 @@ class CDPMethods():
                 )
         return pyautogui_copy
 
+    def gui_press_key(self, key):
+        self.__install_pyautogui_if_missing()
+        import pyautogui
+        pyautogui = self.__get_configured_pyautogui(pyautogui)
+        gui_lock = fasteners.InterProcessLock(
+            constants.MultiBrowser.PYAUTOGUILOCK
+        )
+        with gui_lock:
+            pyautogui.press(key)
+            time.sleep(0.0375)
+        self.__slow_mode_pause_if_set()
+        self.loop.run_until_complete(self.page.wait())
+
+    def gui_press_keys(self, keys):
+        self.__install_pyautogui_if_missing()
+        import pyautogui
+        pyautogui = self.__get_configured_pyautogui(pyautogui)
+        gui_lock = fasteners.InterProcessLock(
+            constants.MultiBrowser.PYAUTOGUILOCK
+        )
+        with gui_lock:
+            for key in keys:
+                pyautogui.press(key)
+                time.sleep(0.0375)
+        self.__slow_mode_pause_if_set()
+        self.loop.run_until_complete(self.page.wait())
+
+    def gui_write(self, text):
+        self.__install_pyautogui_if_missing()
+        import pyautogui
+        pyautogui = self.__get_configured_pyautogui(pyautogui)
+        gui_lock = fasteners.InterProcessLock(
+            constants.MultiBrowser.PYAUTOGUILOCK
+        )
+        with gui_lock:
+            pyautogui.write(text)
+        self.__slow_mode_pause_if_set()
+        self.loop.run_until_complete(self.page.wait())
+
     def __gui_click_x_y(self, x, y, timeframe=0.25, uc_lock=False):
         self.__install_pyautogui_if_missing()
         import pyautogui
