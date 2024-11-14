@@ -84,6 +84,17 @@ def fix_url_as_needed(url):
     return url
 
 
+def reconnect_if_disconnected(driver):
+    if (
+        hasattr(driver, "_is_using_uc")
+        and driver._is_using_uc
+        and hasattr(driver, "is_connected")
+        and not driver.is_connected()
+    ):
+        with suppress(Exception):
+            driver.connect()
+
+
 def is_cdp_swap_needed(driver):
     """
     When someone is using CDP Mode with a disconnected webdriver,
@@ -93,9 +104,9 @@ def is_cdp_swap_needed(driver):
     For other webdriver methods, SeleniumBase will reconnect first.
     """
     return (
-        driver.is_cdp_mode_active()
-        # and hasattr(driver, "_is_connected")
-        # and not driver._is_connected
+        hasattr(driver, "is_cdp_mode_active")
+        and driver.is_cdp_mode_active()
+        and hasattr(driver, "is_connected")
         and not driver.is_connected()
     )
 

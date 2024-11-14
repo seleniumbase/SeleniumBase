@@ -544,6 +544,8 @@ def uc_open_with_cdp_mode(driver, url=None):
     )
     loop.run_until_complete(driver.cdp_base.wait(0))
 
+    gui_lock = fasteners.InterProcessLock(constants.MultiBrowser.PYAUTOGUILOCK)
+
     if (
         "chrome-extension://" in str(driver.cdp_base.main_tab)
         and len(driver.cdp_base.tabs) >= 2
@@ -553,7 +555,8 @@ def uc_open_with_cdp_mode(driver, url=None):
 
         for tab in driver.cdp_base.tabs[-1::-1]:
             if "chrome-extension://" not in str(tab):
-                loop.run_until_complete(tab.activate())
+                with gui_lock:
+                    loop.run_until_complete(tab.activate())
                 break
 
         page_tab = None
@@ -566,13 +569,20 @@ def uc_open_with_cdp_mode(driver, url=None):
                     break
         if page_tab:
             loop.run_until_complete(page_tab.aopen())
-            loop.run_until_complete(page_tab.activate())
+            with gui_lock:
+                loop.run_until_complete(page_tab.activate())
 
     loop.run_until_complete(driver.cdp_base.update_targets())
     page = loop.run_until_complete(driver.cdp_base.get(url))
-    loop.run_until_complete(page.activate())
+    with gui_lock:
+        loop.run_until_complete(page.activate())
+    loop.run_until_complete(page.wait())
     if not safe_url:
         time.sleep(constants.UC.CDP_MODE_OPEN_WAIT)
+        if IS_WINDOWS:
+            time.sleep(constants.UC.EXTRA_WINDOWS_WAIT)
+    else:
+        time.sleep(0.012)
     cdp = types.SimpleNamespace()
     CDPM = sb_cdp.CDPMethods(loop, page, driver)
     cdp.get = CDPM.get
@@ -603,14 +613,15 @@ def uc_open_with_cdp_mode(driver, url=None):
     cdp.click = CDPM.click
     cdp.click_active_element = CDPM.click_active_element
     cdp.click_if_visible = CDPM.click_if_visible
+    cdp.click_visible_elements = CDPM.click_visible_elements
     cdp.mouse_click = CDPM.mouse_click
     cdp.remove_element = CDPM.remove_element
     cdp.remove_from_dom = CDPM.remove_from_dom
     cdp.remove_elements = CDPM.remove_elements
-    cdp.scroll_into_view = CDPM.scroll_into_view
     cdp.send_keys = CDPM.send_keys
     cdp.press_keys = CDPM.press_keys
     cdp.type = CDPM.type
+    cdp.set_value = CDPM.set_value
     cdp.evaluate = CDPM.evaluate
     cdp.js_dumps = CDPM.js_dumps
     cdp.maximize = CDPM.maximize
@@ -625,6 +636,11 @@ def uc_open_with_cdp_mode(driver, url=None):
     cdp.gui_write = CDPM.gui_write
     cdp.gui_click_x_y = CDPM.gui_click_x_y
     cdp.gui_click_element = CDPM.gui_click_element
+    cdp.gui_drag_drop_points = CDPM.gui_drag_drop_points
+    cdp.gui_drag_and_drop = CDPM.gui_drag_and_drop
+    cdp.gui_hover_x_y = CDPM.gui_hover_x_y
+    cdp.gui_hover_element = CDPM.gui_hover_element
+    cdp.gui_hover_and_click = CDPM.gui_hover_and_click
     cdp.internalize_links = CDPM.internalize_links
     cdp.get_window = CDPM.get_window
     cdp.get_element_attributes = CDPM.get_element_attributes
@@ -651,7 +667,9 @@ def uc_open_with_cdp_mode(driver, url=None):
     cdp.get_window_rect = CDPM.get_window_rect
     cdp.get_window_size = CDPM.get_window_size
     cdp.nested_click = CDPM.nested_click
+    cdp.select_option_by_text = CDPM.select_option_by_text
     cdp.flash = CDPM.flash
+    cdp.highlight = CDPM.highlight
     cdp.focus = CDPM.focus
     cdp.highlight_overlay = CDPM.highlight_overlay
     cdp.get_window_position = CDPM.get_window_position
@@ -663,12 +681,19 @@ def uc_open_with_cdp_mode(driver, url=None):
     cdp.is_element_present = CDPM.is_element_present
     cdp.is_element_visible = CDPM.is_element_visible
     cdp.assert_element_present = CDPM.assert_element_present
+    cdp.assert_element_absent = CDPM.assert_element_absent
     cdp.assert_element = CDPM.assert_element
     cdp.assert_element_visible = CDPM.assert_element
+    cdp.assert_element_not_visible = CDPM.assert_element_not_visible
+    cdp.assert_title = CDPM.assert_title
     cdp.assert_text = CDPM.assert_text
     cdp.assert_exact_text = CDPM.assert_exact_text
-    cdp.scroll_down = CDPM.scroll_down
+    cdp.scroll_into_view = CDPM.scroll_into_view
+    cdp.scroll_to_y = CDPM.scroll_to_y
+    cdp.scroll_to_top = CDPM.scroll_to_top
+    cdp.scroll_to_bottom = CDPM.scroll_to_bottom
     cdp.scroll_up = CDPM.scroll_up
+    cdp.scroll_down = CDPM.scroll_down
     cdp.save_screenshot = CDPM.save_screenshot
     cdp.page = page  # async world
     cdp.driver = driver.cdp_base  # async world
@@ -680,6 +705,7 @@ def uc_open_with_cdp_mode(driver, url=None):
     core_items.tab = cdp.tab
     core_items.util = cdp.util
     cdp.core = core_items
+    cdp.loop = cdp.get_event_loop()
     driver.cdp = cdp
     driver._is_using_cdp = True
 
@@ -944,48 +970,46 @@ def uc_gui_click_x_y(driver, x, y, timeframe=0.25):
         connected = True
         width_ratio = 1.0
         if IS_WINDOWS:
-            try:
-                driver.window_handles
-            except Exception:
-                connected = False
+            connected = driver.is_connected()
             if (
                 not connected
                 and (
                     not hasattr(sb_config, "_saved_width_ratio")
                     or not sb_config._saved_width_ratio
                 )
+                and not __is_cdp_swap_needed(driver)
             ):
                 driver.reconnect(0.1)
-                connected = True
-        if IS_WINDOWS and connected:
+        if IS_WINDOWS and not __is_cdp_swap_needed(driver):
             window_rect = driver.get_window_rect()
             width = window_rect["width"]
             height = window_rect["height"]
             win_x = window_rect["x"]
             win_y = window_rect["y"]
-            if (
-                hasattr(sb_config, "_saved_width_ratio")
-                and sb_config._saved_width_ratio
-            ):
-                width_ratio = sb_config._saved_width_ratio
-            else:
-                scr_width = pyautogui.size().width
-                driver.maximize_window()
-                win_width = driver.get_window_size()["width"]
-                width_ratio = round(float(scr_width) / float(win_width), 2)
-                width_ratio += 0.01
-                if width_ratio < 0.45 or width_ratio > 2.55:
-                    width_ratio = 1.01
-                sb_config._saved_width_ratio = width_ratio
+            scr_width = pyautogui.size().width
+            driver.maximize_window()
+            win_width = driver.get_window_size()["width"]
+            width_ratio = round(float(scr_width) / float(win_width), 2) + 0.01
+            if width_ratio < 0.45 or width_ratio > 2.55:
+                width_ratio = 1.01
+            sb_config._saved_width_ratio = width_ratio
             driver.minimize_window()
             driver.set_window_rect(win_x, win_y, width, height)
-        elif (
-            IS_WINDOWS
-            and not connected
-            and hasattr(sb_config, "_saved_width_ratio")
-            and sb_config._saved_width_ratio
-        ):
-            width_ratio = sb_config._saved_width_ratio
+        elif IS_WINDOWS and __is_cdp_swap_needed(driver):
+            window_rect = driver.cdp.get_window_rect()
+            width = window_rect["width"]
+            height = window_rect["height"]
+            win_x = window_rect["x"]
+            win_y = window_rect["y"]
+            scr_width = pyautogui.size().width
+            driver.cdp.maximize()
+            win_width = driver.cdp.get_window_size()["width"]
+            width_ratio = round(float(scr_width) / float(win_width), 2) + 0.01
+            if width_ratio < 0.45 or width_ratio > 2.55:
+                width_ratio = 1.01
+            sb_config._saved_width_ratio = width_ratio
+            driver.cdp.minimize()
+            driver.cdp.set_window_rect(win_x, win_y, width, height)
         if IS_WINDOWS:
             x = x * width_ratio
             y = y * width_ratio
@@ -1090,6 +1114,21 @@ def _uc_gui_click_captcha(
             sb_config._saved_width_ratio = width_ratio
             driver.minimize_window()
             driver.set_window_rect(win_x, win_y, width, height)
+        elif IS_WINDOWS and __is_cdp_swap_needed(driver):
+            window_rect = driver.cdp.get_window_rect()
+            width = window_rect["width"]
+            height = window_rect["height"]
+            win_x = window_rect["x"]
+            win_y = window_rect["y"]
+            scr_width = pyautogui.size().width
+            driver.cdp.maximize()
+            win_width = driver.cdp.get_window_size()["width"]
+            width_ratio = round(float(scr_width) / float(win_width), 2) + 0.01
+            if width_ratio < 0.45 or width_ratio > 2.55:
+                width_ratio = 1.01
+            sb_config._saved_width_ratio = width_ratio
+            driver.cdp.minimize()
+            driver.cdp.set_window_rect(win_x, win_y, width, height)
         if ctype == "cf_t":
             if (
                 driver.is_element_present(".cf-turnstile-wrapper iframe")
@@ -1201,10 +1240,10 @@ def _uc_gui_click_captcha(
                 element = driver.wait_for_element_present(
                     selector, timeout=2.5
                 )
-                x = i_x + element.rect["x"] + int(element.rect["width"] / 2)
-                x += 1
-                y = i_y + element.rect["y"] + int(element.rect["height"] / 2)
-                y += 1
+                x = i_x + element.rect["x"] + (element.rect["width"] / 2.0)
+                x += 0.5
+                y = i_y + element.rect["y"] + (element.rect["height"] / 2.0)
+                y += 0.5
             else:
                 x = (i_x + 34) * width_ratio
                 y = (i_y + 34) * width_ratio
@@ -1218,12 +1257,18 @@ def _uc_gui_click_captcha(
                     return
         if x and y:
             sb_config._saved_cf_x_y = (x, y)
-            if driver.is_element_present(".footer .clearfix .ray-id"):
-                driver.uc_open_with_disconnect(driver.get_current_url(), 3.8)
-            else:
-                driver.disconnect()
+            if not __is_cdp_swap_needed(driver):
+                if driver.is_element_present(".footer .clearfix .ray-id"):
+                    driver.uc_open_with_disconnect(
+                        driver.get_current_url(), 3.8
+                    )
+                else:
+                    driver.disconnect()
             with suppress(Exception):
                 _uc_gui_click_x_y(driver, x, y, timeframe=0.32)
+                if __is_cdp_swap_needed(driver):
+                    time.sleep(float(constants.UC.RECONNECT_TIME) / 2.0)
+                    return
     reconnect_time = (float(constants.UC.RECONNECT_TIME) / 2.0) + 0.6
     if IS_LINUX:
         reconnect_time = constants.UC.RECONNECT_TIME + 0.2

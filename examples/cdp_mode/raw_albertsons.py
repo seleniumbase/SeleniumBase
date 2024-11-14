@@ -28,7 +28,7 @@ with SB(uc=True, test=True, locale_code="en") as sb:
         item.scroll_into_view()
         sb.sleep(0.025)
         if required_text in item.text:
-            item.flash()
+            item.flash(color="44CC88")
             sb.sleep(0.025)
             if item.text not in unique_item_text:
                 unique_item_text.append(item.text)

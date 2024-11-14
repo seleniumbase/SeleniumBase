@@ -3,7 +3,7 @@ from seleniumbase import SB
 with SB(uc=True, test=True, locale_code="en") as sb:
     url = "https://www.footlocker.com/"
     sb.activate_cdp_mode(url)
-    sb.sleep(3)
+    sb.sleep(2.5)
     sb.cdp.click_if_visible('button[id*="Agree"]')
     sb.sleep(1.5)
     sb.cdp.mouse_click('input[aria-label="Search"]')

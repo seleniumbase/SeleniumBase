@@ -1592,6 +1592,9 @@ class BaseCase(unittest.TestCase):
     def click_link_text(self, link_text, timeout=None):
         """This method clicks link text on a page."""
         self.__check_scope()
+        if self.__is_cdp_swap_needed():
+            self.cdp.find_element(link_text).click()
+            return
         self.__skip_if_esc()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -2197,6 +2200,9 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_cdp_swap_needed():
+            self.cdp.click_visible_elements(selector)
+            return
         self.wait_for_ready_state_complete()
         if self.__needs_minimum_wait():
             time.sleep(0.12)
@@ -2637,6 +2643,9 @@ class BaseCase(unittest.TestCase):
         original_selector = selector
         original_by = by
         selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_cdp_swap_needed():
+            self.cdp.gui_hover_element(selector)
+            return
         self.wait_for_element_visible(
             original_selector, by=original_by, timeout=timeout
         )
@@ -2679,6 +2688,9 @@ class BaseCase(unittest.TestCase):
         click_selector, click_by = self.__recalculate_selector(
             click_selector, click_by
         )
+        if self.__is_cdp_swap_needed():
+            self.cdp.gui_hover_and_click(hover_selector, click_selector)
+            return
         dropdown_element = self.wait_for_element_visible(
             original_selector, by=original_by, timeout=timeout
         )
@@ -3105,6 +3117,9 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        if self.__is_cdp_swap_needed():
+            self.cdp.select_option_by_text(dropdown_selector, option)
+            return
         self.__select_option(
             dropdown_selector,
             option,
@@ -3419,8 +3434,8 @@ class BaseCase(unittest.TestCase):
         if self.__is_cdp_swap_needed():
             return self.cdp.get_gui_element_center(selector)
         element_rect = self.get_gui_element_rect(selector, by=by)
-        x = int(element_rect["x"]) + int(element_rect["width"] / 2) + 1
-        y = int(element_rect["y"]) + int(element_rect["height"] / 2) + 1
+        x = element_rect["x"] + (element_rect["width"] / 2.0) + 0.5
+        y = element_rect["y"] + (element_rect["height"] / 2.0) + 0.5
         return (x, y)
 
     def get_window_rect(self):
@@ -5959,6 +5974,9 @@ class BaseCase(unittest.TestCase):
         scroll - the option to scroll to the element first (Default: True)
         timeout - the time to wait for the element to appear """
         self.__check_scope()
+        if self.__is_cdp_swap_needed() and ":contains(" not in selector:
+            self.cdp.highlight(selector)
+            return
         self._check_browser()
         self.__skip_if_esc()
         if isinstance(selector, WebElement):
@@ -6126,6 +6144,9 @@ class BaseCase(unittest.TestCase):
         original_selector = selector
         original_by = by
         selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_cdp_swap_needed() and ":contains(" not in selector:
+            self.cdp.scroll_into_view(selector)
+            return
         element = self.wait_for_element_visible(
             original_selector, by=original_by, timeout=timeout
         )
@@ -6172,24 +6193,36 @@ class BaseCase(unittest.TestCase):
     def scroll_to_top(self):
         """Scroll to the top of the page."""
         self.__check_scope()
+        if self.__is_cdp_swap_needed():
+            self.cdp.scroll_to_top()
+            return
         scroll_script = "window.scrollTo(0, 0);"
-        try:
+        with suppress(Exception):
             self.execute_script(scroll_script)
             time.sleep(0.012)
-            return True
-        except Exception:
-            return False
 
     def scroll_to_bottom(self):
         """Scroll to the bottom of the page."""
         self.__check_scope()
+        if self.__is_cdp_swap_needed():
+            self.cdp.scroll_to_bottom()
+            return
         scroll_script = "window.scrollTo(0, 10000);"
-        try:
+        with suppress(Exception):
             self.execute_script(scroll_script)
             time.sleep(0.012)
-            return True
-        except Exception:
-            return False
+
+    def scroll_to_y(self, y):
+        """Scroll to y position on the page."""
+        self.__check_scope()
+        y = int(y)
+        if self.__is_cdp_swap_needed():
+            self.cdp.scroll_to_y(y)
+            return
+        scroll_script = "window.scrollTo(0, %s);" % y
+        with suppress(Exception):
+            self.execute_script(scroll_script)
+            time.sleep(0.012)
 
     def click_xpath(self, xpath):
         """Technically, self.click() automatically detects xpath selectors,
@@ -7676,6 +7709,9 @@ class BaseCase(unittest.TestCase):
             but then the title switches over to the actual page title.
         In Recorder Mode, this assertion is skipped because the Recorder
             changes the page title to the selector of the hovered element."""
+        if self.__is_cdp_swap_needed():
+            self.cdp.assert_title(title)
+            return
         self.wait_for_ready_state_complete()
         expected = title.strip()
         actual = self.get_page_title().strip()
@@ -8166,7 +8202,7 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by, xp_ok=False)
         if self.__is_cdp_swap_needed():
-            self.cdp.type(selector, text)
+            self.cdp.set_value(selector, text)
             return
         self.wait_for_ready_state_complete()
         self.wait_for_element_present(selector, by=by, timeout=timeout)
@@ -8932,6 +8968,9 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         original_selector = selector
         selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_cdp_swap_needed():
+            self.cdp.assert_element_absent(selector)
+            return True
         return page_actions.wait_for_element_absent(
             self.driver,
             selector,
@@ -9966,6 +10005,9 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        if self.__is_cdp_swap_needed():
+            self.cdp.find_element(link_text)
+            return
         self.wait_for_link_text_visible(link_text, timeout=timeout)
         if self.demo_mode:
             a_t = "ASSERT LINK TEXT"
@@ -10065,6 +10107,9 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        if self.__is_cdp_swap_needed():
+            self.cdp.assert_element_absent(selector)
+            return True
         self.wait_for_element_absent(selector, by=by, timeout=timeout)
         return True
 
@@ -10083,6 +10128,9 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         original_selector = selector
         selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_cdp_swap_needed():
+            self.cdp.assert_element_not_visible(selector)
+            return True
         return page_actions.wait_for_element_not_visible(
             self.driver,
             selector,

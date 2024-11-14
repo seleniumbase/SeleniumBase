@@ -198,6 +198,11 @@ class DriverMethods():
         In CDP Mode, the CDP-Driver controls the web browser.
         The CDP-Driver can be connected while WebDriver isn't.
         """
+        if shared_utils.is_windows():
+            return (
+                not hasattr(self.driver, "_is_connected")
+                or self.driver._is_connected
+            )
         try:
             self.driver.window_handles
             return True
@@ -238,6 +243,17 @@ class DriverMethods():
         return js_utils.get_user_agent(self.driver, *args, **kwargs)
 
     def highlight(self, *args, **kwargs):
+        if self.__is_cdp_swap_needed():
+            selector = None
+            if "selector" in kwargs:
+                selector = kwargs["selector"]
+            else:
+                selector = args[0]
+            if ":contains(" not in selector:
+                self.driver.cdp.highlight(selector)
+                return
+            else:
+                self.driver.connect()
         if "scroll" in kwargs:
             kwargs.pop("scroll")
         w_args = kwargs.copy()

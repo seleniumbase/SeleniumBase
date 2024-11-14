@@ -1555,8 +1555,6 @@ def _reconnect_if_disconnected(driver):
     if (
         hasattr(driver, "_is_using_uc")
         and driver._is_using_uc
-        and hasattr(driver, "_is_connected")
-        and not driver._is_connected
         and hasattr(driver, "is_connected")
         and not driver.is_connected()
     ):

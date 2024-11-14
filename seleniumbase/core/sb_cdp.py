@@ -39,7 +39,9 @@ class CDPMethods():
             return element
         element.clear_input = lambda: self.__clear_input(element)
         element.click = lambda: self.__click(element)
-        element.flash = lambda: self.__flash(element)
+        element.flash = lambda *args, **kwargs: self.__flash(
+            element, *args, **kwargs
+        )
         element.focus = lambda: self.__focus(element)
         element.highlight_overlay = lambda: self.__highlight_overlay(element)
         element.mouse_click = lambda: self.__mouse_click(element)
@@ -87,6 +89,10 @@ class CDPMethods():
             safe_url = False
         if not safe_url:
             time.sleep(constants.UC.CDP_MODE_OPEN_WAIT)
+            if shared_utils.is_windows():
+                time.sleep(constants.UC.EXTRA_WINDOWS_WAIT)
+        else:
+            time.sleep(0.012)
         self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.wait())
 
@@ -186,7 +192,10 @@ class CDPMethods():
         )
         updated_elements = []
         for element in elements:
-            if not tag_name or tag_name.lower() == element.tag_name.lower():
+            if (
+                not tag_name
+                or tag_name.lower().strip() in element.tag_name.lower().strip()
+            ):
                 element = self.__add_sync_methods(element)
                 updated_elements.append(element)
         self.__slow_mode_pause_if_set()
@@ -258,9 +267,11 @@ class CDPMethods():
         self.loop.run_until_complete(self.page.wait())
         return result
 
-    def __flash(self, element):
+    def __flash(self, element, *args, **kwargs):
         return (
-            self.loop.run_until_complete(element.flash_async())
+            self.loop.run_until_complete(
+                element.flash_async(*args, **kwargs)
+            )
         )
 
     def __focus(self, element):
@@ -292,11 +303,11 @@ class CDPMethods():
 
     def __query_selector(self, element, selector):
         selector = self.__convert_to_css_if_xpath(selector)
-        element = self.loop.run_until_complete(
+        element2 = self.loop.run_until_complete(
             element.query_selector_async(selector)
         )
-        element = self.__add_sync_methods(element)
-        return element
+        element2 = self.__add_sync_methods(element2)
+        return element2
 
     def __query_selector_all(self, element, selector):
         selector = self.__convert_to_css_if_xpath(selector)
@@ -431,6 +442,7 @@ class CDPMethods():
 
     def bring_active_window_to_front(self):
         self.loop.run_until_complete(self.page.bring_to_front())
+        self.__add_light_pause()
 
     def get_active_element(self):
         return self.loop.run_until_complete(
@@ -467,6 +479,19 @@ class CDPMethods():
             self.__slow_mode_pause_if_set()
             self.loop.run_until_complete(self.page.wait())
 
+    def click_visible_elements(self, selector):
+        elements = self.select_all(selector)
+        for element in elements:
+            try:
+                position = element.get_position()
+                if (position.width != 0 or position.height != 0):
+                    element.click()
+                    time.sleep(0.0375)
+                    self.__slow_mode_pause_if_set()
+                    self.loop.run_until_complete(self.page.wait())
+            except Exception:
+                pass
+
     def mouse_click(self, selector, timeout=settings.SMALL_TIMEOUT):
         """(Attempt simulating a mouse click)"""
         self.__slow_mode_pause_if_set()
@@ -491,9 +516,44 @@ class CDPMethods():
         element = self.find_element(parent_selector)
         return element.query_selector(selector)
 
-    def flash(self, selector):
+    def select_option_by_text(self, dropdown_selector, option):
+        element = self.find_element(dropdown_selector)
+        options = element.query_selector_all("option")
+        for found_option in options:
+            if found_option.text.strip() == option.strip():
+                found_option.select_option()
+                return
+        raise Exception(
+            "Unable to find text option {%s} in dropdown {%s}!"
+            % (dropdown_selector, option)
+        )
+
+    def flash(
+        self,
+        selector,  # The CSS Selector to flash
+        duration=1,  # (seconds) flash duration
+        color="44CC88",  # RGB hex flash color
+        pause=0,  # (seconds) If 0, the next action starts during flash
+    ):
         """Paint a quickly-vanishing dot over an element."""
-        self.find_element(selector).flash()
+        selector = self.__convert_to_css_if_xpath(selector)
+        element = self.find_element(selector)
+        element.flash(duration=duration, color=color)
+        if pause and isinstance(pause, (int, float)):
+            time.sleep(pause)
+
+    def highlight(self, selector):
+        """Highlight an element with multi-colors."""
+        selector = self.__convert_to_css_if_xpath(selector)
+        element = self.find_element(selector)
+        element.flash(0.46, "44CC88")
+        time.sleep(0.15)
+        element.flash(0.42, "8844CC")
+        time.sleep(0.15)
+        element.flash(0.38, "CC8844")
+        time.sleep(0.15)
+        element.flash(0.30, "44CC88")
+        time.sleep(0.30)
 
     def focus(self, selector):
         self.find_element(selector).focus()
@@ -522,12 +582,10 @@ class CDPMethods():
         with suppress(Exception):
             self.loop.run_until_complete(self.page.evaluate(js_code))
 
-    def scroll_into_view(self, selector):
-        self.find_element(selector).scroll_into_view()
-
     def send_keys(self, selector, text, timeout=settings.SMALL_TIMEOUT):
-        element = self.select(selector)
         self.__slow_mode_pause_if_set()
+        element = self.select(selector, timeout=timeout)
+        self.__add_light_pause()
         if text.endswith("\n") or text.endswith("\r"):
             text = text[:-1] + "\r\n"
         element.send_keys(text)
@@ -536,8 +594,9 @@ class CDPMethods():
 
     def press_keys(self, selector, text, timeout=settings.SMALL_TIMEOUT):
         """Similar to send_keys(), but presses keys at human speed."""
-        element = self.select(selector)
         self.__slow_mode_pause_if_set()
+        element = self.select(selector, timeout=timeout)
+        self.__add_light_pause()
         submit = False
         if text.endswith("\n") or text.endswith("\r"):
             submit = True
@@ -553,13 +612,50 @@ class CDPMethods():
 
     def type(self, selector, text, timeout=settings.SMALL_TIMEOUT):
         """Similar to send_keys(), but clears the text field first."""
-        element = self.select(selector)
         self.__slow_mode_pause_if_set()
+        element = self.select(selector, timeout=timeout)
+        self.__add_light_pause()
         with suppress(Exception):
             element.clear_input()
         if text.endswith("\n") or text.endswith("\r"):
             text = text[:-1] + "\r\n"
         element.send_keys(text)
+        self.__slow_mode_pause_if_set()
+        self.loop.run_until_complete(self.page.wait())
+
+    def set_value(self, selector, text, timeout=settings.SMALL_TIMEOUT):
+        """Similar to send_keys(), but clears the text field first."""
+        self.__slow_mode_pause_if_set()
+        selector = self.__convert_to_css_if_xpath(selector)
+        self.select(selector, timeout=timeout)
+        self.__add_light_pause()
+        press_enter = False
+        if text.endswith("\n"):
+            text = text[:-1]
+            press_enter = True
+        value = js_utils.escape_quotes_if_needed(re.escape(text))
+        css_selector = re.escape(selector)
+        css_selector = js_utils.escape_quotes_if_needed(css_selector)
+        set_value_script = (
+            """m_elm = document.querySelector('%s');"""
+            """m_elm.value = '%s';""" % (css_selector, value)
+        )
+        self.loop.run_until_complete(self.page.evaluate(set_value_script))
+        the_type = self.get_element_attribute(selector, "type")
+        if the_type == "range":
+            # Some input sliders need a mouse event to trigger listeners.
+            with suppress(Exception):
+                mouse_move_script = (
+                    """m_elm = document.querySelector('%s');"""
+                    """m_evt = new Event('mousemove');"""
+                    """m_elm.dispatchEvent(m_evt);""" % css_selector
+                )
+                self.loop.run_until_complete(
+                    self.page.evaluate(mouse_move_script)
+                )
+        elif press_enter:
+            self.__add_light_pause()
+            self.send_keys(selector, "\n")
         self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.wait())
 
@@ -576,21 +672,30 @@ class CDPMethods():
         )
 
     def maximize(self):
-        return self.loop.run_until_complete(
-            self.page.maximize()
-        )
+        if self.get_window()[1].window_state.value == "maximized":
+            return
+        elif self.get_window()[1].window_state.value == "minimized":
+            self.loop.run_until_complete(self.page.maximize())
+            time.sleep(0.0375)
+        return self.loop.run_until_complete(self.page.maximize())
 
     def minimize(self):
-        return self.loop.run_until_complete(
-            self.page.minimize()
-        )
+        if self.get_window()[1].window_state.value != "minimized":
+            return self.loop.run_until_complete(self.page.minimize())
 
     def medimize(self):
-        return self.loop.run_until_complete(
-            self.page.medimize()
-        )
+        if self.get_window()[1].window_state.value == "minimized":
+            self.loop.run_until_complete(self.page.medimize())
+            time.sleep(0.0375)
+        return self.loop.run_until_complete(self.page.medimize())
 
     def set_window_rect(self, x, y, width, height):
+        if self.get_window()[1].window_state.value == "minimized":
+            self.loop.run_until_complete(
+                self.page.set_window_size(
+                    left=x, top=y, width=width, height=height)
+            )
+            time.sleep(0.0375)
         return self.loop.run_until_complete(
             self.page.set_window_size(
                 left=x, top=y, width=width, height=height)
@@ -602,6 +707,7 @@ class CDPMethods():
         width = settings.CHROME_START_WIDTH
         height = settings.CHROME_START_HEIGHT
         self.set_window_rect(x, y, width, height)
+        self.__add_light_pause()
 
     def get_window(self):
         return self.loop.run_until_complete(
@@ -737,8 +843,10 @@ class CDPMethods():
         coordinates["y"] = y if y else 0
         return coordinates
 
-    def get_element_rect(self, selector):
+    def get_element_rect(self, selector, timeout=settings.SMALL_TIMEOUT):
         selector = self.__convert_to_css_if_xpath(selector)
+        self.select(selector, timeout=timeout)
+        self.__add_light_pause()
         coordinates = self.loop.run_until_complete(
             self.page.js_dumps(
                 """document.querySelector"""
@@ -785,7 +893,7 @@ class CDPMethods():
         e_height = element_rect["height"]
         e_x = element_rect["x"]
         e_y = element_rect["y"]
-        return ((e_x + e_width / 2), (e_y + e_height / 2))
+        return ((e_x + e_width / 2.0) + 0.5, (e_y + e_height / 2.0) + 0.5)
 
     def get_document(self):
         return self.loop.run_until_complete(
@@ -798,6 +906,7 @@ class CDPMethods():
         )
 
     def get_element_attributes(self, selector):
+        selector = self.__convert_to_css_if_xpath(selector)
         return self.loop.run_until_complete(
             self.page.js_dumps(
                 """document.querySelector('%s')"""
@@ -1021,6 +1130,156 @@ class CDPMethods():
             import pyautogui
             pyautogui = self.__get_configured_pyautogui(pyautogui)
             width_ratio = 1.0
+            if shared_utils.is_windows():
+                window_rect = self.get_window_rect()
+                width = window_rect["width"]
+                height = window_rect["height"]
+                win_x = window_rect["x"]
+                win_y = window_rect["y"]
+                scr_width = pyautogui.size().width
+                self.maximize()
+                self.__add_light_pause()
+                win_width = self.get_window_size()["width"]
+                width_ratio = round(float(scr_width) / float(win_width), 2)
+                width_ratio += 0.01
+                if width_ratio < 0.45 or width_ratio > 2.55:
+                    width_ratio = 1.01
+                sb_config._saved_width_ratio = width_ratio
+                self.minimize()
+                self.__add_light_pause()
+                self.set_window_rect(win_x, win_y, width, height)
+                self.__add_light_pause()
+                x = x * width_ratio
+                y = y * width_ratio
+            self.bring_active_window_to_front()
+            self.__gui_click_x_y(x, y, timeframe=timeframe, uc_lock=False)
+
+    def gui_click_element(self, selector, timeframe=0.25):
+        self.__slow_mode_pause_if_set()
+        x, y = self.get_gui_element_center(selector)
+        self.__add_light_pause()
+        self.gui_click_x_y(x, y, timeframe=timeframe)
+        self.__slow_mode_pause_if_set()
+        self.loop.run_until_complete(self.page.wait())
+
+    def __gui_drag_drop(self, x1, y1, x2, y2, timeframe=0.25, uc_lock=False):
+        self.__install_pyautogui_if_missing()
+        import pyautogui
+        pyautogui = self.__get_configured_pyautogui(pyautogui)
+        screen_width, screen_height = pyautogui.size()
+        if x1 < 0 or y1 < 0 or x1 > screen_width or y1 > screen_height:
+            raise Exception(
+                "PyAutoGUI cannot drag-drop from point (%s, %s)"
+                " outside screen. (Width: %s, Height: %s)"
+                % (x1, y1, screen_width, screen_height)
+            )
+        if x2 < 0 or y2 < 0 or x2 > screen_width or y2 > screen_height:
+            raise Exception(
+                "PyAutoGUI cannot drag-drop to point (%s, %s)"
+                " outside screen. (Width: %s, Height: %s)"
+                % (x2, y2, screen_width, screen_height)
+            )
+        if uc_lock:
+            gui_lock = fasteners.InterProcessLock(
+                constants.MultiBrowser.PYAUTOGUILOCK
+            )
+            with gui_lock:  # Prevent issues with multiple processes
+                pyautogui.moveTo(x1, y1, 0.25, pyautogui.easeOutQuad)
+                self.__add_light_pause()
+                if "--debug" in sys.argv:
+                    print(" <DEBUG> pyautogui.moveTo(%s, %s)" % (x1, y1))
+                pyautogui.dragTo(x2, y2, button="left", duration=timeframe)
+        else:
+            # Called from a method where the gui_lock is already active
+            pyautogui.moveTo(x1, y1, 0.25, pyautogui.easeOutQuad)
+            self.__add_light_pause()
+            if "--debug" in sys.argv:
+                print(" <DEBUG> pyautogui.dragTo(%s, %s)" % (x2, y2))
+            pyautogui.dragTo(x2, y2, button="left", duration=timeframe)
+
+    def gui_drag_drop_points(self, x1, y1, x2, y2, timeframe=0.35):
+        gui_lock = fasteners.InterProcessLock(
+            constants.MultiBrowser.PYAUTOGUILOCK
+        )
+        with gui_lock:  # Prevent issues with multiple processes
+            self.__install_pyautogui_if_missing()
+            import pyautogui
+            pyautogui = self.__get_configured_pyautogui(pyautogui)
+            width_ratio = 1.0
+            if shared_utils.is_windows():
+                window_rect = self.get_window_rect()
+                width = window_rect["width"]
+                height = window_rect["height"]
+                win_x = window_rect["x"]
+                win_y = window_rect["y"]
+                scr_width = pyautogui.size().width
+                self.maximize()
+                self.__add_light_pause()
+                win_width = self.get_window_size()["width"]
+                width_ratio = round(float(scr_width) / float(win_width), 2)
+                width_ratio += 0.01
+                if width_ratio < 0.45 or width_ratio > 2.55:
+                    width_ratio = 1.01
+                sb_config._saved_width_ratio = width_ratio
+                self.minimize()
+                self.__add_light_pause()
+                self.set_window_rect(win_x, win_y, width, height)
+                self.__add_light_pause()
+                x1 = x1 * width_ratio
+                y1 = y1 * width_ratio
+                x2 = x2 * width_ratio
+                y2 = y2 * width_ratio
+            self.bring_active_window_to_front()
+            self.__gui_drag_drop(
+                x1, y1, x2, y2, timeframe=timeframe, uc_lock=False
+            )
+        self.__slow_mode_pause_if_set()
+        self.loop.run_until_complete(self.page.wait())
+
+    def gui_drag_and_drop(self, drag_selector, drop_selector, timeframe=0.35):
+        self.__slow_mode_pause_if_set()
+        x1, y1 = self.get_gui_element_center(drag_selector)
+        self.__add_light_pause()
+        x2, y2 = self.get_gui_element_center(drop_selector)
+        self.__add_light_pause()
+        self.gui_drag_drop_points(x1, y1, x2, y2, timeframe=timeframe)
+
+    def __gui_hover_x_y(self, x, y, timeframe=0.25, uc_lock=False):
+        self.__install_pyautogui_if_missing()
+        import pyautogui
+        pyautogui = self.__get_configured_pyautogui(pyautogui)
+        screen_width, screen_height = pyautogui.size()
+        if x < 0 or y < 0 or x > screen_width or y > screen_height:
+            raise Exception(
+                "PyAutoGUI cannot hover on point (%s, %s)"
+                " outside screen. (Width: %s, Height: %s)"
+                % (x, y, screen_width, screen_height)
+            )
+        if uc_lock:
+            gui_lock = fasteners.InterProcessLock(
+                constants.MultiBrowser.PYAUTOGUILOCK
+            )
+            with gui_lock:  # Prevent issues with multiple processes
+                pyautogui.moveTo(x, y, timeframe, pyautogui.easeOutQuad)
+                time.sleep(0.056)
+                if "--debug" in sys.argv:
+                    print(" <DEBUG> pyautogui.moveTo(%s, %s)" % (x, y))
+        else:
+            # Called from a method where the gui_lock is already active
+            pyautogui.moveTo(x, y, timeframe, pyautogui.easeOutQuad)
+            time.sleep(0.056)
+            if "--debug" in sys.argv:
+                print(" <DEBUG> pyautogui.moveTo(%s, %s)" % (x, y))
+
+    def gui_hover_x_y(self, x, y, timeframe=0.25):
+        gui_lock = fasteners.InterProcessLock(
+            constants.MultiBrowser.PYAUTOGUILOCK
+        )
+        with gui_lock:  # Prevent issues with multiple processes
+            self.__install_pyautogui_if_missing()
+            import pyautogui
+            pyautogui = self.__get_configured_pyautogui(pyautogui)
+            width_ratio = 1.0
             if (
                 shared_utils.is_windows()
                 and (
@@ -1041,6 +1300,7 @@ class CDPMethods():
                 else:
                     scr_width = pyautogui.size().width
                     self.maximize()
+                    self.__add_light_pause()
                     win_width = self.get_window_size()["width"]
                     width_ratio = round(float(scr_width) / float(win_width), 2)
                     width_ratio += 0.01
@@ -1048,6 +1308,7 @@ class CDPMethods():
                         width_ratio = 1.01
                     sb_config._saved_width_ratio = width_ratio
                 self.set_window_rect(win_x, win_y, width, height)
+                self.__add_light_pause()
                 self.bring_active_window_to_front()
             elif (
                 shared_utils.is_windows()
@@ -1059,18 +1320,28 @@ class CDPMethods():
             if shared_utils.is_windows():
                 x = x * width_ratio
                 y = y * width_ratio
-                self.__gui_click_x_y(x, y, timeframe=timeframe, uc_lock=False)
+                self.__gui_hover_x_y(x, y, timeframe=timeframe, uc_lock=False)
                 return
             self.bring_active_window_to_front()
-            self.__gui_click_x_y(x, y, timeframe=timeframe, uc_lock=False)
+            self.__gui_hover_x_y(x, y, timeframe=timeframe, uc_lock=False)
 
-    def gui_click_element(self, selector, timeframe=0.25):
+    def gui_hover_element(self, selector, timeframe=0.25):
         self.__slow_mode_pause_if_set()
         x, y = self.get_gui_element_center(selector)
         self.__add_light_pause()
-        self.gui_click_x_y(x, y, timeframe=timeframe)
+        self.__gui_hover_x_y(x, y, timeframe=timeframe)
         self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.wait())
+
+    def gui_hover_and_click(self, hover_selector, click_selector):
+        gui_lock = fasteners.InterProcessLock(
+            constants.MultiBrowser.PYAUTOGUILOCK
+        )
+        with gui_lock:
+            self.gui_hover_element(hover_selector)
+            time.sleep(0.15)
+            self.gui_hover_element(click_selector)
+            self.click(click_selector)
 
     def internalize_links(self):
         """All `target="_blank"` links become `target="_self"`.
@@ -1079,24 +1350,30 @@ class CDPMethods():
 
     def is_checked(self, selector):
         """Return True if checkbox (or radio button) is checked."""
+        selector = self.__convert_to_css_if_xpath(selector)
         self.find_element(selector, timeout=settings.SMALL_TIMEOUT)
         return self.get_element_attribute(selector, "checked")
 
     def is_selected(self, selector):
+        selector = self.__convert_to_css_if_xpath(selector)
         return self.is_checked(selector)
 
     def check_if_unchecked(self, selector):
+        selector = self.__convert_to_css_if_xpath(selector)
         if not self.is_checked(selector):
             self.click(selector)
 
     def select_if_unselected(self, selector):
+        selector = self.__convert_to_css_if_xpath(selector)
         self.check_if_unchecked(selector)
 
     def uncheck_if_checked(self, selector):
+        selector = self.__convert_to_css_if_xpath(selector)
         if self.is_checked(selector):
             self.click(selector)
 
     def unselect_if_selected(self, selector):
+        selector = self.__convert_to_css_if_xpath(selector)
         self.uncheck_if_checked(selector)
 
     def is_element_present(self, selector):
@@ -1105,32 +1382,22 @@ class CDPMethods():
             return True
         except Exception:
             return False
-        selector = self.__convert_to_css_if_xpath(selector)
-        element = self.loop.run_until_complete(
-            self.page.js_dumps(
-                """document.querySelector('%s')"""
-                % js_utils.escape_quotes_if_needed(re.escape(selector))
-            )
-        )
-        return element is not None
 
     def is_element_visible(self, selector):
         selector = self.__convert_to_css_if_xpath(selector)
         element = None
         if ":contains(" not in selector:
             try:
-                element = self.loop.run_until_complete(
-                    self.page.js_dumps(
-                        """window.getComputedStyle(document.querySelector"""
-                        """('%s'))"""
-                        % js_utils.escape_quotes_if_needed(re.escape(selector))
-                    )
-                )
+                element = self.select(selector, timeout=0.01)
             except Exception:
                 return False
             if not element:
                 return False
-            return element.get("display") != "none"
+            try:
+                position = element.get_position()
+                return (position.width != 0 or position.height != 0)
+            except Exception:
+                return False
         else:
             with suppress(Exception):
                 tag_name = selector.split(":contains(")[0].split(" ")[-1]
@@ -1160,9 +1427,66 @@ class CDPMethods():
             raise Exception("Element {%s} not found!" % selector)
         return True
 
+    def assert_element_absent(self, selector, timeout=settings.SMALL_TIMEOUT):
+        start_ms = time.time() * 1000.0
+        stop_ms = start_ms + (timeout * 1000.0)
+        for i in range(int(timeout * 10)):
+            if not self.is_element_present(selector):
+                return True
+            now_ms = time.time() * 1000.0
+            if now_ms >= stop_ms:
+                break
+            time.sleep(0.1)
+        plural = "s"
+        if timeout == 1:
+            plural = ""
+        raise Exception(
+            "Element {%s} was still present after %s second%s!"
+            % (selector, timeout, plural)
+        )
+
+    def assert_element_not_visible(
+        self, selector, timeout=settings.SMALL_TIMEOUT
+    ):
+        start_ms = time.time() * 1000.0
+        stop_ms = start_ms + (timeout * 1000.0)
+        for i in range(int(timeout * 10)):
+            if not self.is_element_present(selector):
+                return True
+            elif not self.is_element_visible(selector):
+                return True
+            now_ms = time.time() * 1000.0
+            if now_ms >= stop_ms:
+                break
+            time.sleep(0.1)
+        plural = "s"
+        if timeout == 1:
+            plural = ""
+        raise Exception(
+            "Element {%s} was still visible after %s second%s!"
+            % (selector, timeout, plural)
+        )
+
+    def assert_title(self, title):
+        expected = title.strip()
+        actual = self.get_title().strip()
+        error = (
+            "Expected page title [%s] does not match the actual title [%s]!"
+        )
+        try:
+            if expected != actual:
+                raise Exception(error % (expected, actual))
+        except Exception:
+            time.sleep(2)
+            expected = title.strip()
+            actual = self.get_title().strip()
+            if expected != actual:
+                raise Exception(error % (expected, actual))
+
     def assert_text(
         self, text, selector="html", timeout=settings.SMALL_TIMEOUT
     ):
+        text = text.strip()
         element = None
         try:
             element = self.select(selector, timeout=timeout)
@@ -1180,6 +1504,7 @@ class CDPMethods():
     def assert_exact_text(
         self, text, selector="html", timeout=settings.SMALL_TIMEOUT
     ):
+        text = text.strip()
         element = None
         try:
             element = self.select(selector, timeout=timeout)
@@ -1197,15 +1522,36 @@ class CDPMethods():
             % (text, element.text_all, selector)
         )
 
-    def scroll_down(self, amount=25):
-        self.loop.run_until_complete(
-            self.page.scroll_down(amount)
-        )
+    def scroll_into_view(self, selector):
+        self.find_element(selector).scroll_into_view()
+        self.loop.run_until_complete(self.page.wait())
+
+    def scroll_to_y(self, y):
+        y = int(y)
+        js_code = "window.scrollTo(0, %s);" % y
+        with suppress(Exception):
+            self.loop.run_until_complete(self.page.evaluate(js_code))
+            self.loop.run_until_complete(self.page.wait())
+
+    def scroll_to_top(self):
+        js_code = "window.scrollTo(0, 0);"
+        with suppress(Exception):
+            self.loop.run_until_complete(self.page.evaluate(js_code))
+            self.loop.run_until_complete(self.page.wait())
+
+    def scroll_to_bottom(self):
+        js_code = "window.scrollTo(0, 10000);"
+        with suppress(Exception):
+            self.loop.run_until_complete(self.page.evaluate(js_code))
+            self.loop.run_until_complete(self.page.wait())
 
     def scroll_up(self, amount=25):
-        self.loop.run_until_complete(
-            self.page.scroll_up(amount)
-        )
+        self.loop.run_until_complete(self.page.scroll_up(amount))
+        self.loop.run_until_complete(self.page.wait())
+
+    def scroll_down(self, amount=25):
+        self.loop.run_until_complete(self.page.scroll_down(amount))
+        self.loop.run_until_complete(self.page.wait())
 
     def save_screenshot(self, name, folder=None, selector=None):
         filename = name

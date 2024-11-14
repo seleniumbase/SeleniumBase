@@ -150,16 +150,16 @@ setup(
         'pip>=24.2',
         'packaging>=24.2',
         'setuptools~=70.2;python_version<"3.10"',  # Newer ones had issues
-        'setuptools>=73.0.1;python_version>="3.10"',
+        'setuptools>=75.5.0;python_version>="3.10"',
         'wheel>=0.45.0',
         'attrs>=24.2.0',
         "certifi>=2024.8.30",
         "exceptiongroup>=1.2.2",
         'websockets~=13.1;python_version<"3.9"',
-        'websockets>=14.0;python_version>="3.9"',
+        'websockets>=14.1;python_version>="3.9"',
         'filelock>=3.16.1',
         'fasteners>=0.19',
-        "mycdp>=1.0.1",
+        "mycdp>=1.1.0",
         "pynose>=1.5.3",
         'platformdirs>=4.3.6',
         'typing-extensions>=4.12.2',
@@ -222,7 +222,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage>=7.6.1;python_version<"3.9"',
-            'coverage>=7.6.4;python_version>="3.9"',
+            'coverage>=7.6.5;python_version>="3.9"',
             'pytest-cov>=5.0.0;python_version<"3.9"',
             'pytest-cov>=6.0.0;python_version>="3.9"',
         ],
