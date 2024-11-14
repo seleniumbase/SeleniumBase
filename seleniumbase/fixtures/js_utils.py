@@ -10,6 +10,7 @@ from seleniumbase import config as sb_config
 from seleniumbase.config import settings
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import css_to_xpath
+from seleniumbase.fixtures import shared_utils
 from seleniumbase.fixtures import xpath_to_css
 
 
@@ -24,9 +25,6 @@ def wait_for_ready_state_complete(driver, timeout=settings.LARGE_TIMEOUT):
     (Previously, tests would fail immediately if exceeding the timeout.)"""
     if hasattr(settings, "SKIP_JS_WAITS") and settings.SKIP_JS_WAITS:
         return
-    if sb_config.time_limit and not sb_config.recorder_mode:
-        from seleniumbase.fixtures import shared_utils
-
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
@@ -243,8 +241,6 @@ def escape_quotes_if_needed(string):
 def is_in_frame(driver):
     # Returns True if the driver has switched to a frame.
     # Returns False if the driver was on default content.
-    from seleniumbase.fixtures import shared_utils
-
     if shared_utils.is_cdp_swap_needed(driver):
         return False
     in_basic_frame = driver.execute_script(

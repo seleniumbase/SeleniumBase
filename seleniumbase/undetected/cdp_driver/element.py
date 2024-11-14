@@ -5,6 +5,7 @@ import logging
 import pathlib
 import secrets
 import typing
+from contextlib import suppress
 from . import cdp_util as util
 from ._contradict import ContraDict
 from .config import PathLike
@@ -768,6 +769,11 @@ class Element:
         Gets the text contents of this element and child nodes, concatenated.
         Note: This includes text in the form of script content, (text nodes).
         """
+        with suppress(Exception):
+            if self.node.node_name.lower() in ["input", "textarea"]:
+                input_node = self.node.shadow_roots[0].children[0].children[0]
+                if input_node:
+                    return input_node.node_value
         text_nodes = util.filter_recurse_all(
             self.node, lambda n: n.node_type == 3
         )
@@ -776,6 +782,11 @@ class Element:
     @property
     def text_all(self):
         """Same as text(). Kept for backwards compatibility."""
+        with suppress(Exception):
+            if self.node.node_name.lower() in ["input", "textarea"]:
+                input_node = self.node.shadow_roots[0].children[0].children[0]
+                if input_node:
+                    return input_node.node_value
         text_nodes = util.filter_recurse_all(
             self.node, lambda n: n.node_type == 3
         )
@@ -868,7 +879,11 @@ class Element:
         path.write_bytes(data_bytes)
         return str(path)
 
-    async def flash_async(self, duration: typing.Union[float, int] = 0.5):
+    async def flash_async(
+        self,
+        duration: typing.Union[float, int] = 0.5,
+        color: typing.Optional[str] = "EE4488",
+    ):
         """
         Displays for a short time a red dot on the element.
         (Only if the element itself is visible)
@@ -892,11 +907,12 @@ class Element:
         style = (
             "position:absolute;z-index:99999999;padding:0;margin:0;"
             "left:{:.1f}px; top: {:.1f}px; opacity:0.7;"
-            "width:8px;height:8px;border-radius:50%;background:#EE4488;"
+            "width:8px;height:8px;border-radius:50%;background:#{};"
             "animation:show-pointer-ani {:.2f}s ease 1;"
         ).format(
             pos.center[0] - 4,  # -4 to account for drawn circle itself (w,h)
             pos.center[1] - 4,
+            color,
             duration,
         )
         script = (
