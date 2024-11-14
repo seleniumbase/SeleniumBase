@@ -64,12 +64,6 @@ pytest test_demo_site.py --server=USERNAME:KEY@hub.browserstack.com --port=80
 pytest test_demo_site.py --server=USERNAME:KEY@ondemand.us-east-1.saucelabs.com --port=443 --protocol=https
 ```
 
-* [CrossBrowserTesting](https://help.crossbrowsertesting.com/selenium-testing/getting-started/python/) Selenium Grid:
-
-```bash
-pytest test_demo_site.py --server=USERNAME:KEY@hub.crossbrowsertesting.com --port=80
-```
-
 To use a server on the ``https`` protocol, add ``--protocol=https``:
 (<i>SeleniumBase 1.65.2 and newer uses ``https`` automatically for ``--port=443``.</i>)
 

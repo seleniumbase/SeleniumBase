@@ -480,12 +480,6 @@ Here's how to connect to a Sauce Labs Selenium Grid server for running tests:
 pytest test_demo_site.py --server=USERNAME:KEY@ondemand.us-east-1.saucelabs.com --port=443 --protocol=https
 ```
 
-Here's how to connect to a CrossBrowserTesting Selenium Grid server for running tests:
-
-```bash
-pytest test_demo_site.py --server=USERNAME:KEY@hub.crossbrowsertesting.com --port=80
-```
-
 🌐 Or you can create your own Selenium Grid for test distribution. ([See this ReadMe for details](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md))
 
 🌐 To use a server on the ``https`` protocol, add ``--protocol=https``: (*Now automatic if the port is 443.*)

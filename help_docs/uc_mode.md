@@ -382,7 +382,7 @@ As an ethical hacker / cybersecurity researcher who builds bots that bypass CAPT
 
 <img src="https://seleniumbase.github.io/other/g_recaptcha.png" title="SeleniumBase" width="315">
 
-Since Google makes Chrome, Google's own <b translate="no">reCAPTCHA</b> service has access to more data than other CAPTCHA services (eg. hCaptcha, CloudFlare, DataDome, etc.), and can therefore use that data to make better decisions about whether or not web activity is coming from real humans or automated bots.
+Since Google makes Chrome, Google's own <b translate="no">reCAPTCHA</b> service has access to more data than other CAPTCHA services, and can therefore use that data to make better decisions about whether or not web activity is coming from real humans or automated bots.
 
 --------
 
