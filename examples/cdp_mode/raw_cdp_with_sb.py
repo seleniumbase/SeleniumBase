@@ -6,7 +6,7 @@ from seleniumbase import SB
 with SB(uc=True, test=True, locale_code="en") as sb:
     url = "https://www.priceline.com/"
     sb.activate_cdp_mode(url)
-    sb.sleep(3)
+    sb.sleep(2.5)
     sb.internalize_links()  # Don't open links in a new tab
     sb.click("#link_header_nav_experiences")
     sb.sleep(2.5)
