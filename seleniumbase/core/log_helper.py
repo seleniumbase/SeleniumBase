@@ -3,6 +3,7 @@ import os
 import shutil
 import sys
 import time
+from contextlib import suppress
 from seleniumbase import config as sb_config
 from seleniumbase.config import settings
 from seleniumbase.fixtures import constants
@@ -281,14 +282,13 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
         sb_config._report_time = the_time
         sb_config._report_traceback = traceback_message
         sb_config._report_exception = exc_message
-    try:
+    with suppress(Exception):
         if not os.path.exists(test_logpath):
             os.makedirs(test_logpath)
-    except Exception:
-        pass
-    log_file = codecs.open(basic_file_path, "w+", "utf-8")
-    log_file.writelines("\r\n".join(data_to_save))
-    log_file.close()
+    with suppress(Exception):
+        log_file = codecs.open(basic_file_path, "w+", encoding="utf-8")
+        log_file.writelines("\r\n".join(data_to_save))
+        log_file.close()
 
 
 def log_skipped_test_data(test, test_logpath, driver, browser, reason):
@@ -297,16 +297,12 @@ def log_skipped_test_data(test, test_logpath, driver, browser, reason):
     browser_version = None
     driver_version = None
     driver_name = None
-    try:
+    with suppress(Exception):
         browser_version = get_browser_version(driver)
-    except Exception:
-        pass
-    try:
+    with suppress(Exception):
         driver_name, driver_version = get_driver_name_and_version(
             driver, browser
         )
-    except Exception:
-        pass
     if browser_version:
         headless = ""
         if test.headless and browser in ["chrome", "edge", "firefox"]:
@@ -368,13 +364,11 @@ def log_page_source(test_logpath, driver, source=None):
                 "unresponsive, or closed prematurely!</h4>"
             )
         )
-    try:
+    with suppress(Exception):
         if not os.path.exists(test_logpath):
             os.makedirs(test_logpath)
-    except Exception:
-        pass
     html_file_path = os.path.join(test_logpath, html_file_name)
-    html_file = codecs.open(html_file_path, "w+", "utf-8")
+    html_file = codecs.open(html_file_path, "w+", encoding="utf-8")
     html_file.write(page_source)
     html_file.close()
 
@@ -543,7 +537,7 @@ def log_folder_setup(log_path, archive_logs=False):
         try:
             os.makedirs(log_path)
         except Exception:
-            pass  # Should only be reachable during multi-threaded runs
+            pass  # Only reachable during multi-threaded runs
     else:
         saved_folder = "%s/../%s/" % (log_path, constants.Logs.SAVED)
         archived_folder = os.path.realpath(saved_folder) + "/"
@@ -551,7 +545,7 @@ def log_folder_setup(log_path, archive_logs=False):
             try:
                 os.makedirs(archived_folder)
             except Exception:
-                pass  # Should only be reachable during multi-threaded runs
+                pass  # Only reachable during multi-threaded runs
         archived_logs = "%slogs_%s" % (archived_folder, int(time.time()))
         if len(os.listdir(log_path)) > 0:
             try:

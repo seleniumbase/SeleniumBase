@@ -2166,7 +2166,6 @@ class BaseCase(unittest.TestCase):
             if limit and limit > 0 and len(elements) > limit:
                 elements = elements[:limit]
             return elements
-
         self.wait_for_ready_state_complete()
         time.sleep(0.05)
         elements = self.driver.find_elements(by=by, value=selector)
@@ -2178,6 +2177,11 @@ class BaseCase(unittest.TestCase):
         """Returns a list of matching WebElements that are visible.
         If "limit" is set and > 0, will only return that many elements."""
         selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_cdp_swap_needed():
+            elements = self.cdp.find_visible_elements(selector)
+            if limit and limit > 0 and len(elements) > limit:
+                elements = elements[:limit]
+            return elements
         self.wait_for_ready_state_complete()
         time.sleep(0.05)
         return page_actions.find_visible_elements(
@@ -2201,7 +2205,7 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_cdp_swap_needed():
-            self.cdp.click_visible_elements(selector)
+            self.cdp.click_visible_elements(selector, limit)
             return
         self.wait_for_ready_state_complete()
         if self.__needs_minimum_wait():
@@ -2283,13 +2287,16 @@ class BaseCase(unittest.TestCase):
     ):
         """Finds all matching page elements and clicks the nth visible one.
         Example: self.click_nth_visible_element('[type="checkbox"]', 5)
-                    (Clicks the 5th visible checkbox on the page.)"""
+                (Clicks the 5th visible checkbox on the page.)"""
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_cdp_swap_needed():
+            self.cdp.click_nth_visible_element(selector, number)
+            return
         self.wait_for_ready_state_complete()
         self.wait_for_element_present(selector, by=by, timeout=timeout)
         elements = self.find_visible_elements(selector, by=by)
@@ -2897,6 +2904,9 @@ class BaseCase(unittest.TestCase):
         drop_selector, drop_by = self.__recalculate_selector(
             drop_selector, drop_by
         )
+        if self.__is_cdp_swap_needed():
+            self.cdp.gui_drag_and_drop(drag_selector, drop_selector)
+            return
         drag_element = self.wait_for_element_clickable(
             drag_selector, by=drag_by, timeout=timeout
         )
@@ -15435,7 +15445,8 @@ class BaseCase(unittest.TestCase):
         elif hasattr(self, "_using_sb_fixture") and self._using_sb_fixture:
             test_id = sb_config._latest_display_id
         test_id = test_id.replace(".py::", ".").replace("::", ".")
-        test_id = test_id.replace("/", ".").replace(" ", "_")
+        test_id = test_id.replace("/", ".").replace("\\", ".")
+        test_id = test_id.replace(" ", "_")
         # Linux filename length limit for `codecs.open(filename)` = 255
         # 255 - len("latest_logs/") - len("/basic_test_info.txt") = 223
         if len(test_id) <= 223:
@@ -16132,11 +16143,7 @@ class BaseCase(unittest.TestCase):
             # This test already called tearDown()
             return
         if hasattr(self, "recorder_mode") and self.recorder_mode:
-            if self.undetectable:
-                try:
-                    self.driver.window_handles
-                except Exception:
-                    self.driver.connect()
+            page_actions._reconnect_if_disconnected(self.driver)
             try:
                 self.__process_recorded_actions()
             except Exception as e:
@@ -16177,12 +16184,7 @@ class BaseCase(unittest.TestCase):
             )
             raise Exception(message)
         # *** Start tearDown() officially ***
-        if self.undetectable:
-            try:
-                self.driver.window_handles
-            except Exception:
-                with suppress(Exception):
-                    self.driver.connect()
+        page_actions._reconnect_if_disconnected(self.driver)
         self.__slow_mode_pause_if_active()
         has_exception = self.__has_exception()
         sb_config._has_exception = has_exception
