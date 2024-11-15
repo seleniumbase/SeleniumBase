@@ -1202,7 +1202,7 @@ def SB(
         from seleniumbase.core import download_helper
         from seleniumbase.core import proxy_helper
 
-        log_helper.log_folder_setup(constants.Logs.LATEST + "/")
+        log_helper.log_folder_setup(constants.Logs.LATEST + os.sep)
         log_helper.clear_empty_logs()
         download_helper.reset_downloads_folder()
         if not sb_config.multi_proxy:
@@ -1228,7 +1228,7 @@ def SB(
             the_traceback = traceback.format_exc().strip()
             try:
                 p2 = the_traceback.split(', in ')[1].split('", line ')[0]
-                filename = p2.split("/")[-1]
+                filename = p2.split(os.sep)[-1]
                 sb.cm_filename = filename
             except Exception:
                 sb.cm_filename = None

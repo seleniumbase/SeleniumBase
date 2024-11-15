@@ -252,6 +252,45 @@ class CDPMethods():
     def find_elements(self, selector, timeout=settings.SMALL_TIMEOUT):
         return self.select_all(selector, timeout=timeout)
 
+    def find_visible_elements(self, selector, timeout=settings.SMALL_TIMEOUT):
+        visible_elements = []
+        elements = self.select_all(selector, timeout=timeout)
+        for element in elements:
+            with suppress(Exception):
+                position = element.get_position()
+                if (position.width != 0 or position.height != 0):
+                    visible_elements.append(element)
+        return visible_elements
+
+    def click_nth_element(self, selector, number):
+        elements = self.select_all(selector)
+        if len(elements) < number:
+            raise Exception(
+                "Not enough matching {%s} elements to "
+                "click number %s!" % (selector, number)
+            )
+        number = number - 1
+        if number < 0:
+            number = 0
+        element = elements[number]
+        element.click()
+
+    def click_nth_visible_element(self, selector, number):
+        """Finds all matching page elements and clicks the nth visible one.
+        Example: self.click_nth_visible_element('[type="checkbox"]', 5)
+                (Clicks the 5th visible checkbox on the page.)"""
+        elements = self.find_visible_elements(selector)
+        if len(elements) < number:
+            raise Exception(
+                "Not enough matching {%s} elements to "
+                "click number %s!" % (selector, number)
+            )
+        number = number - 1
+        if number < 0:
+            number = 0
+        element = elements[number]
+        element.click()
+
     def click_link(self, link_text):
         self.find_elements_by_text(link_text, "a")[0].click()
 
@@ -479,18 +518,36 @@ class CDPMethods():
             self.__slow_mode_pause_if_set()
             self.loop.run_until_complete(self.page.wait())
 
-    def click_visible_elements(self, selector):
+    def click_visible_elements(self, selector, limit=0):
+        """Finds all matching page elements and clicks visible ones in order.
+        If a click reloads or opens a new page, the clicking will stop.
+        If no matching elements appear, an Exception will be raised.
+        If "limit" is set and > 0, will only click that many elements.
+        Also clicks elements that become visible from previous clicks.
+        Works best for actions such as clicking all checkboxes on a page.
+        Example: self.click_visible_elements('input[type="checkbox"]')"""
         elements = self.select_all(selector)
+        click_count = 0
         for element in elements:
+            if limit and limit > 0 and click_count >= limit:
+                return
             try:
-                position = element.get_position()
-                if (position.width != 0 or position.height != 0):
+                width = 0
+                height = 0
+                try:
+                    position = element.get_position()
+                    width = position.width
+                    height = position.height
+                except Exception:
+                    continue
+                if (width != 0 or height != 0):
                     element.click()
+                    click_count += 1
                     time.sleep(0.0375)
                     self.__slow_mode_pause_if_set()
                     self.loop.run_until_complete(self.page.wait())
             except Exception:
-                pass
+                break
 
     def mouse_click(self, selector, timeout=settings.SMALL_TIMEOUT):
         """(Attempt simulating a mouse click)"""
@@ -1238,6 +1295,7 @@ class CDPMethods():
 
     def gui_drag_and_drop(self, drag_selector, drop_selector, timeframe=0.35):
         self.__slow_mode_pause_if_set()
+        self.bring_active_window_to_front()
         x1, y1 = self.get_gui_element_center(drag_selector)
         self.__add_light_pause()
         x2, y2 = self.get_gui_element_center(drop_selector)
@@ -1327,10 +1385,14 @@ class CDPMethods():
 
     def gui_hover_element(self, selector, timeframe=0.25):
         self.__slow_mode_pause_if_set()
-        x, y = self.get_gui_element_center(selector)
-        self.__add_light_pause()
-        self.__gui_hover_x_y(x, y, timeframe=timeframe)
-        self.__slow_mode_pause_if_set()
+        element_rect = self.get_gui_element_rect(selector)
+        width = element_rect["width"]
+        height = element_rect["height"]
+        if width > 0 and height > 0:
+            x, y = self.get_gui_element_center(selector)
+            self.bring_active_window_to_front()
+            self.__gui_hover_x_y(x, y, timeframe=timeframe)
+            self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.wait())
 
     def gui_hover_and_click(self, hover_selector, click_selector):
@@ -1338,6 +1400,7 @@ class CDPMethods():
             constants.MultiBrowser.PYAUTOGUILOCK
         )
         with gui_lock:
+            self.bring_active_window_to_front()
             self.gui_hover_element(hover_selector)
             time.sleep(0.15)
             self.gui_hover_element(click_selector)
