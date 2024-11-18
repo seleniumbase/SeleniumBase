@@ -1310,9 +1310,13 @@ class BaseCase(unittest.TestCase):
         return self.get_page_title()
 
     def get_user_agent(self):
+        if self.__is_cdp_swap_needed():
+            return self.cdp.get_user_agent()
         return self.execute_script("return navigator.userAgent;")
 
     def get_locale_code(self):
+        if self.__is_cdp_swap_needed():
+            return self.cdp.get_locale_code()
         return self.execute_script(
             "return navigator.language || navigator.languages[0];"
         )
@@ -4547,6 +4551,11 @@ class BaseCase(unittest.TestCase):
     def get_cookies(self):
         return self.driver.get_cookies()
 
+    def get_cookie_string(self):
+        if self.__is_cdp_swap_needed():
+            return self.cdp.get_cookie_string()
+        return self.execute_script("return document.cookie;")
+
     def add_cookie(self, cookie_dict, expiry=False):
         """Usage examples:
         self.add_cookie({'name': 'foo', 'value': 'bar'})
@@ -5429,7 +5438,10 @@ class BaseCase(unittest.TestCase):
             new_file = True
             sb_config._recorded_actions[filename] = []
             data.append("from seleniumbase import BaseCase")
-            data.append("BaseCase.main(__name__, __file__)")
+            if "--uc" in sys.argv:
+                data.append('BaseCase.main(__name__, __file__, "--uc")')
+            else:
+                data.append("BaseCase.main(__name__, __file__)")
             data.append("")
             data.append("")
             data.append("class %s(BaseCase):" % classname)
@@ -5439,7 +5451,13 @@ class BaseCase(unittest.TestCase):
             data.append("class %s(BaseCase):" % classname)
         data.append("    def %s(self):" % methodname)
         if len(sb_actions) > 0:
+            if "--uc" in sys.argv:
+                data.append("        self.activate_cdp_mode()")
             for action in sb_actions:
+                if "--uc" in sys.argv:
+                    action = action.replace(
+                        "self.type(", "self.press_keys("
+                    )
                 data.append("        " + action)
         else:
             data.append("        pass")
@@ -5617,6 +5635,9 @@ class BaseCase(unittest.TestCase):
         data.append("  Scenario: %s" % scenario_test)
         if len(behave_actions) > 0:
             count = 0
+            if "--uc" in sys.argv:
+                data.append("    Given Activate CDP Mode")
+                count += 1
             for action in behave_actions:
                 if count == 0:
                     data.append("    Given " + action)
@@ -7645,7 +7666,10 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
-        if self.__is_shadow_selector(selector):
+        if self.__is_cdp_swap_needed():
+            self.cdp.assert_element_attribute(selector, attribute, value)
+            return
+        elif self.__is_shadow_selector(selector):
             return self.__wait_for_shadow_attribute_present(
                 selector, attribute, value=value, timeout=timeout
             )
@@ -7670,6 +7694,9 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_cdp_swap_needed():
+            self.cdp.assert_element_attribute(selector, attribute, value)
+            return
         self.wait_for_attribute(
             selector, attribute, value=value, by=by, timeout=timeout
         )
@@ -7768,6 +7795,9 @@ class BaseCase(unittest.TestCase):
             but then the title switches over to the actual page title.
         In Recorder Mode, this assertion is skipped because the Recorder
             changes the page title to the selector of the hovered element."""
+        if self.__is_cdp_swap_needed():
+            self.cdp.assert_title_contains(substring)
+            return
         self.wait_for_ready_state_complete()
         expected = substring.strip()
         actual = self.get_page_title().strip()
@@ -7811,6 +7841,9 @@ class BaseCase(unittest.TestCase):
 
     def assert_url(self, url):
         """Asserts that the web page URL matches the expected URL."""
+        if self.__is_cdp_swap_needed():
+            self.cdp.assert_url(url)
+            return
         self.wait_for_ready_state_complete()
         expected = url.strip()
         actual = self.get_current_url().strip()
@@ -7846,6 +7879,9 @@ class BaseCase(unittest.TestCase):
 
     def assert_url_contains(self, substring):
         """Asserts that the URL substring appears in the full URL."""
+        if self.__is_cdp_swap_needed():
+            self.cdp.assert_url_contains(substring)
+            return
         self.wait_for_ready_state_complete()
         expected = substring.strip()
         actual = self.get_current_url().strip()
@@ -8044,6 +8080,8 @@ class BaseCase(unittest.TestCase):
 
     def is_online(self):
         """Return True if connected to the Internet."""
+        if self.__is_cdp_swap_needed():
+            return self.cdp.evaluate("navigator.onLine;")
         return self.execute_script("return navigator.onLine;")
 
     def is_connected(self):
@@ -8952,7 +8990,9 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         original_selector = selector
         selector, by = self.__recalculate_selector(selector, by)
-        if self.__is_shadow_selector(selector):
+        if self.__is_cdp_swap_needed():
+            return self.cdp.select(selector)
+        elif self.__is_shadow_selector(selector):
             # If a shadow selector, use visible instead of clickable
             return self.__wait_for_shadow_element_visible(selector, timeout)
         return page_actions.wait_for_element_clickable(
@@ -9353,7 +9393,7 @@ class BaseCase(unittest.TestCase):
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_cdp_swap_needed():
             return self.cdp.select(selector)
-        if self.__is_shadow_selector(selector):
+        elif self.__is_shadow_selector(selector):
             return self.__wait_for_shadow_element_present(selector, timeout)
         return page_actions.wait_for_element_present(
             self.driver,
@@ -9416,6 +9456,8 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         css_selector = self.convert_to_css_selector(selector, by=by)
+        if self.__is_cdp_swap_needed():
+            return self.cdp.select(css_selector)
         return js_utils.wait_for_css_query_selector(
             self.driver, css_selector, timeout
         )
@@ -9637,7 +9679,7 @@ class BaseCase(unittest.TestCase):
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_cdp_swap_needed():
             return self.cdp.find_element(selector)
-        if self.__is_shadow_selector(selector):
+        elif self.__is_shadow_selector(selector):
             return self.__wait_for_shadow_text_visible(text, selector, timeout)
         return page_actions.wait_for_text_visible(
             self.driver, text, selector, by, timeout
@@ -10160,6 +10202,9 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        if self.__is_cdp_swap_needed():
+            self.cdp.assert_element_not_visible(selector)
+            return True
         self.wait_for_element_not_visible(selector, by=by, timeout=timeout)
         if self.recorder_mode and self.__current_url_is_recordable():
             if self.get_session_storage_item("pause_recorder") == "no":
@@ -14496,7 +14541,7 @@ class BaseCase(unittest.TestCase):
                 message = (
                     "Expected value {%s} for attribute {%s} of element "
                     "{%s} was not present after %s second%s! "
-                    "(The actual value was {%s})"
+                    "(Actual value was {%s})"
                     % (
                         value,
                         attribute,

@@ -1189,3 +1189,10 @@ def set_attributes(context, selector, attribute, value):
     if attribute.endswith("'") or attribute.endswith('"'):
         attribute = attribute[:-1]
     sb.set_attributes(selector, attribute, value)
+
+
+@step("Activate CDP Mode")
+@step("User activates CDP Mode")
+def activate_cdp_mode(context):
+    sb = context.sb
+    sb.activate_cdp_mode()

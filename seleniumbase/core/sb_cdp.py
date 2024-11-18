@@ -20,8 +20,16 @@ class CDPMethods():
         self.driver = driver
 
     def __slow_mode_pause_if_set(self):
-        if hasattr(sb_config, "slow_mode") and sb_config.slow_mode:
-            time.sleep(0.16)
+        if (
+            (hasattr(sb_config, "demo_mode") and sb_config.demo_mode)
+            or "--demo" in sys.argv
+        ):
+            time.sleep(0.48)
+        elif (
+            (hasattr(sb_config, "slow_mode") and sb_config.slow_mode)
+            or "--slow" in sys.argv
+        ):
+            time.sleep(0.24)
 
     def __add_light_pause(self):
         time.sleep(0.007)
@@ -543,7 +551,7 @@ class CDPMethods():
                 if (width != 0 or height != 0):
                     element.click()
                     click_count += 1
-                    time.sleep(0.0375)
+                    time.sleep(0.042)
                     self.__slow_mode_pause_if_set()
                     self.loop.run_until_complete(self.page.wait())
             except Exception:
@@ -660,10 +668,10 @@ class CDPMethods():
             text = text[:-1]
         for key in text:
             element.send_keys(key)
-            time.sleep(0.0375)
+            time.sleep(0.042)
         if submit:
             element.send_keys("\r\n")
-            time.sleep(0.0375)
+            time.sleep(0.042)
         self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.wait())
 
@@ -733,7 +741,7 @@ class CDPMethods():
             return
         elif self.get_window()[1].window_state.value == "minimized":
             self.loop.run_until_complete(self.page.maximize())
-            time.sleep(0.0375)
+            time.sleep(0.042)
         return self.loop.run_until_complete(self.page.maximize())
 
     def minimize(self):
@@ -743,7 +751,7 @@ class CDPMethods():
     def medimize(self):
         if self.get_window()[1].window_state.value == "minimized":
             self.loop.run_until_complete(self.page.medimize())
-            time.sleep(0.0375)
+            time.sleep(0.042)
         return self.loop.run_until_complete(self.page.medimize())
 
     def set_window_rect(self, x, y, width, height):
@@ -752,7 +760,7 @@ class CDPMethods():
                 self.page.set_window_size(
                     left=x, top=y, width=width, height=height)
             )
-            time.sleep(0.0375)
+            time.sleep(0.042)
         return self.loop.run_until_complete(
             self.page.set_window_size(
                 left=x, top=y, width=width, height=height)
@@ -1117,7 +1125,7 @@ class CDPMethods():
         )
         with gui_lock:
             pyautogui.press(key)
-            time.sleep(0.0375)
+            time.sleep(0.042)
         self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.wait())
 
@@ -1131,7 +1139,7 @@ class CDPMethods():
         with gui_lock:
             for key in keys:
                 pyautogui.press(key)
-                time.sleep(0.0375)
+                time.sleep(0.042)
         self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.wait())
 
@@ -1472,25 +1480,53 @@ class CDPMethods():
                 return True
             return False
 
-    def assert_element(self, selector, timeout=settings.SMALL_TIMEOUT):
+    def wait_for_element_visible(
+        self, selector, timeout=settings.SMALL_TIMEOUT
+    ):
         try:
             self.select(selector, timeout=timeout)
         except Exception:
-            raise Exception("Element {%s} not found!" % selector)
+            raise Exception("Element {%s} was not found!" % selector)
+        for i in range(30):
+            if self.is_element_visible(selector):
+                return self.select(selector)
+            time.sleep(0.1)
+        raise Exception("Element {%s} was not visible!" % selector)
+
+    def assert_element(self, selector, timeout=settings.SMALL_TIMEOUT):
+        """Same as assert_element_visible()"""
+        try:
+            self.select(selector, timeout=timeout)
+        except Exception:
+            raise Exception("Element {%s} was not found!" % selector)
         for i in range(30):
             if self.is_element_visible(selector):
                 return True
             time.sleep(0.1)
-        raise Exception("Element {%s} not visible!" % selector)
+        raise Exception("Element {%s} was not visible!" % selector)
 
-    def assert_element_present(self, selector, timeout=settings.SMALL_TIMEOUT):
+    def assert_element_visible(self, selector, timeout=settings.SMALL_TIMEOUT):
+        """Same as assert_element()"""
         try:
             self.select(selector, timeout=timeout)
         except Exception:
-            raise Exception("Element {%s} not found!" % selector)
+            raise Exception("Element {%s} was not found!" % selector)
+        for i in range(30):
+            if self.is_element_visible(selector):
+                return True
+            time.sleep(0.1)
+        raise Exception("Element {%s} was not visible!" % selector)
+
+    def assert_element_present(self, selector, timeout=settings.SMALL_TIMEOUT):
+        """Assert element is present in the DOM. (Visibility NOT required)"""
+        try:
+            self.select(selector, timeout=timeout)
+        except Exception:
+            raise Exception("Element {%s} was not found!" % selector)
         return True
 
     def assert_element_absent(self, selector, timeout=settings.SMALL_TIMEOUT):
+        """Assert element is not present in the DOM."""
         start_ms = time.time() * 1000.0
         stop_ms = start_ms + (timeout * 1000.0)
         for i in range(int(timeout * 10)):
@@ -1511,6 +1547,7 @@ class CDPMethods():
     def assert_element_not_visible(
         self, selector, timeout=settings.SMALL_TIMEOUT
     ):
+        """Assert element is not visible on page. (May still be in DOM)"""
         start_ms = time.time() * 1000.0
         stop_ms = start_ms + (timeout * 1000.0)
         for i in range(int(timeout * 10)):
@@ -1530,6 +1567,21 @@ class CDPMethods():
             % (selector, timeout, plural)
         )
 
+    def assert_element_attribute(self, selector, attribute, value=None):
+        attributes = self.get_element_attributes(selector)
+        if attribute not in attributes:
+            raise Exception(
+                "Attribute {%s} was not found in element {%s}!"
+                % (attribute, selector)
+            )
+        if value and attributes[attribute] != value:
+            raise Exception(
+                "Expected value {%s} of attribute {%s} "
+                "was not found in element {%s}! "
+                "(Actual value was {%s})"
+                % (value, attribute, selector, attributes[attribute])
+            )
+
     def assert_title(self, title):
         expected = title.strip()
         actual = self.get_title().strip()
@@ -1541,9 +1593,53 @@ class CDPMethods():
                 raise Exception(error % (expected, actual))
         except Exception:
             time.sleep(2)
-            expected = title.strip()
             actual = self.get_title().strip()
             if expected != actual:
+                raise Exception(error % (expected, actual))
+
+    def assert_title_contains(self, substring):
+        expected = substring.strip()
+        actual = self.get_title().strip()
+        error = (
+            "Expected title substring [%s] does not appear "
+            "in the actual page title [%s]!"
+        )
+        try:
+            if expected not in actual:
+                raise Exception(error % (expected, actual))
+        except Exception:
+            time.sleep(2)
+            actual = self.get_title().strip()
+            if expected not in actual:
+                raise Exception(error % (expected, actual))
+
+    def assert_url(self, url):
+        expected = url.strip()
+        actual = self.get_current_url().strip()
+        error = "Expected URL [%s] does not match the actual URL [%s]!"
+        try:
+            if expected != actual:
+                raise Exception(error % (expected, actual))
+        except Exception:
+            time.sleep(2)
+            actual = self.get_current_url().strip()
+            if expected != actual:
+                raise Exception(error % (expected, actual))
+
+    def assert_url_contains(self, substring):
+        expected = substring.strip()
+        actual = self.get_current_url().strip()
+        error = (
+            "Expected URL substring [%s] does not appear "
+            "in the full URL [%s]!"
+        )
+        try:
+            if expected not in actual:
+                raise Exception(error % (expected, actual))
+        except Exception:
+            time.sleep(2)
+            actual = self.get_current_url().strip()
+            if expected not in actual:
                 raise Exception(error % (expected, actual))
 
     def assert_text(

@@ -362,6 +362,8 @@ self.get_cookie(name)
 
 self.get_cookies()
 
+self.get_cookie_string()
+
 self.add_cookie(cookie_dict, expiry=False)
 
 self.add_cookies(cookies, expiry=False)

@@ -211,7 +211,11 @@ async def start(
             expert=expert,
             **kwargs,
         )
-    return await Browser.create(config)
+    try:
+        return await Browser.create(config)
+    except Exception:
+        time.sleep(0.15)
+        return await Browser.create(config)
 
 
 async def start_async(*args, **kwargs) -> Browser:

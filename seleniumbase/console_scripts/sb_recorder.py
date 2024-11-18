@@ -9,6 +9,7 @@ Usage:
 
 Options:
     --uc / --undetected  (Use undetectable mode.)
+    --cdp  (Same as "--uc" and "--undetectable".)
     --behave  (Also output Behave/Gherkin files.)
 
 Output:
@@ -151,6 +152,7 @@ def do_recording(file_name, url, overwrite_enabled, use_chrome, window):
             command += " --edge"
         if (
             "--uc" in command_args
+            or "--cdp" in command_args
             or "--undetected" in command_args
             or "--undetectable" in command_args
         ):
@@ -193,6 +195,7 @@ def do_playback(file_name, use_chrome, window, demo_mode=False):
     command_args = sys.argv[2:]
     if (
         "--uc" in command_args
+        or "--cdp" in command_args
         or "--undetected" in command_args
         or "--undetectable" in command_args
     ):
