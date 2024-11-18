@@ -1,20 +1,20 @@
 from seleniumbase import SB
 
-with SB(uc=True, test=True, locale_code="en") as sb:
+with SB(uc=True, test=True, locale_code="en", ad_block=True) as sb:
     url = "https://www.pokemon.com/us"
     sb.activate_cdp_mode(url)
+    sb.sleep(3.2)
+    sb.cdp.click("button#onetrust-accept-btn-handler")
+    sb.sleep(1.2)
+    sb.cdp.click("a span.icon_pokeball")
     sb.sleep(2.5)
-    sb.cdp.click_if_visible("button#onetrust-reject-all-handler")
-    sb.sleep(1.2)
-    sb.cdp.click('a[href="https://www.pokemon.com/us/pokedex/"]')
-    sb.sleep(1.2)
     sb.cdp.click('b:contains("Show Advanced Search")')
-    sb.sleep(1.2)
+    sb.sleep(2.5)
     sb.cdp.click('span[data-type="type"][data-value="electric"]')
     sb.sleep(0.5)
     sb.scroll_into_view("a#advSearch")
     sb.sleep(0.5)
-    sb.cdp.click("a#advSearch")
+    sb.cdp.mouse_click("a#advSearch")
     sb.sleep(1.2)
     sb.cdp.click('img[src*="img/pokedex/detail/025.png"]')
     sb.cdp.assert_text("Pikachu", 'div[class*="title"]')
@@ -31,11 +31,13 @@ with SB(uc=True, test=True, locale_code="en") as sb:
     sb.cdp.highlight_overlay("div.pokemon-ability-info")
     sb.sleep(2)
     sb.cdp.click('a[href="https://www.pokemon.com/us/play-pokemon/"]')
+    sb.sleep(0.6)
     sb.cdp.click('h3:contains("Find an Event")')
     location = "Concord, MA, USA"
     sb.cdp.type('input[data-testid="location-search"]', location)
-    sb.sleep(1)
+    sb.sleep(1.5)
     sb.cdp.click("div.autocomplete-dropdown-container div.suggestion-item")
+    sb.sleep(0.6)
     sb.cdp.click('img[alt="search-icon"]')
     sb.sleep(2)
     events = sb.cdp.select_all('div[data-testid="event-name"]')

@@ -147,7 +147,7 @@ setup(
     ],
     python_requires=">=3.8",
     install_requires=[
-        'pip>=24.2',
+        'pip>=24.3.1',
         'packaging>=24.2',
         'setuptools~=70.2;python_version<"3.10"',  # Newer ones had issues
         'setuptools>=75.5.0;python_version>="3.10"',
@@ -222,7 +222,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage>=7.6.1;python_version<"3.9"',
-            'coverage>=7.6.5;python_version>="3.9"',
+            'coverage>=7.6.7;python_version>="3.9"',
             'pytest-cov>=5.0.0;python_version<"3.9"',
             'pytest-cov>=6.0.0;python_version>="3.9"',
         ],

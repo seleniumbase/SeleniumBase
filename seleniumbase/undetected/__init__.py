@@ -455,7 +455,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                 if self.service.is_connectable():
                     self.stop_client()
                     self.service.stop()
-            self._is_connected = False
+        self._is_connected = False
 
     def connect(self):
         """Starts the chromedriver service that runs in the background

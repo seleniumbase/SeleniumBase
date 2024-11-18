@@ -144,7 +144,9 @@ def main():
             elif option.lower() in ("--gui", "--headed"):
                 if "linux" in sys.platform:
                     force_gui = True
-            elif option.lower() in ("--uc", "--undetected", "--undetectable"):
+            elif option.lower() in (
+                "--uc", "--cdp", "--undetected", "--undetectable"
+            ):
                 use_uc = True
             elif option.lower() in ("--rec-behave", "--behave", "--gherkin"):
                 rec_behave = True

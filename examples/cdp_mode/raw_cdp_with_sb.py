@@ -1,5 +1,4 @@
 """Example of using CDP Mode with WebDriver"""
-from contextlib import suppress
 from seleniumbase import SB
 
 
@@ -9,23 +8,22 @@ with SB(uc=True, test=True, locale_code="en") as sb:
     sb.sleep(2.5)
     sb.internalize_links()  # Don't open links in a new tab
     sb.click("#link_header_nav_experiences")
-    sb.sleep(2.5)
+    sb.sleep(3.5)
     sb.remove_elements("msm-cookie-banner")
     sb.sleep(1.5)
     location = "Amsterdam"
-    sb.press_keys('input[data-test-id*="search"]', location)
+    where_to = 'div[data-automation*="experiences"] input'
+    button = 'button[data-automation*="experiences-search"]'
+    sb.cdp.gui_click_element(where_to)
+    sb.press_keys(where_to, location)
     sb.sleep(1)
-    sb.click('input[data-test-id*="search"]')
-    sb.sleep(2)
-    sb.click('span[data-test-id*="autocomplete"]')
-    sb.sleep(5)
+    sb.cdp.gui_click_element(button)
+    sb.sleep(3)
     print(sb.get_title())
-    header = sb.get_text('h2[data-testid*="RelatedVenues"]')
-    print("*** %s: ***" % header)
-    cards = sb.select_all("div.venue-card__body")
+    print("************")
+    for i in range(8):
+        sb.cdp.scroll_down(50)
+        sb.sleep(0.2)
+    cards = sb.select_all('h2[data-automation*="product-list-card"]')
     for card in cards:
-        with suppress(Exception):
-            venue = card.text.split("\n")[0].strip()
-            rating = card.text.split("\n")[1].strip()
-            reviews = card.text.split("\n")[2].strip()[1:-1]
-            print("* %s: %s from %s reviews." % (venue, rating, reviews))
+        print("* %s" % card.text)

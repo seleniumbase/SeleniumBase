@@ -1,8 +1,16 @@
 """Using CDP.fetch.RequestPaused to filter content in real-time."""
 import asyncio
+import colorama
 import mycdp
+import sys
 from seleniumbase import decorators
 from seleniumbase.undetected import cdp_driver
+
+c1 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
+c2 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
+cr = colorama.Style.RESET_ALL
+if "linux" in sys.platform:
+    c1 = c2 = cr = ""
 
 
 class RequestPausedTest():
@@ -15,7 +23,7 @@ class RequestPausedTest():
             )
         else:  # Block the data (images)
             TIMED_OUT = mycdp.network.ErrorReason.TIMED_OUT
-            s = f"BLOCKING | {r.method} | {r.url}"
+            s = f"{c1}BLOCKING{cr} | {c2}{r.method}{cr} | {r.url}"
             print(f" >>> ------------\n{s}")
             tab.feed_cdp(
                 mycdp.fetch.fail_request(event.request_id, TIMED_OUT)

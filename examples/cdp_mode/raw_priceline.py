@@ -1,6 +1,6 @@
 from seleniumbase import SB
 
-with SB(uc=True, test=True, locale_code="en") as sb:
+with SB(uc=True, test=True, locale_code="en", ad_block=True) as sb:
     window_handle = sb.driver.current_window_handle
     url = "https://www.priceline.com"
     sb.activate_cdp_mode(url)
@@ -24,6 +24,7 @@ with SB(uc=True, test=True, locale_code="en") as sb:
         sb.sleep(0.2)
         sb.switch_to_newest_window()
         sb.sleep(0.6)
+    sb.sleep(0.8)
     for y in range(1, 9):
         sb.scroll_to_y(y * 400)
         sb.sleep(1.25)
