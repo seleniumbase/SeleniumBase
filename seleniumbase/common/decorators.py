@@ -1,10 +1,17 @@
+import colorama
 import logging
 import math
+import sys
 import time
 import warnings
 from contextlib import contextmanager
 from functools import wraps
 from seleniumbase.common.exceptions import TimeoutException
+
+c1 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+cr = colorama.Style.RESET_ALL
+if "linux" in sys.platform:
+    c1 = cr = ""
 
 
 @contextmanager
@@ -44,19 +51,20 @@ def print_runtime(description=None, limit=None):
         end_time = time.time()
         run_time = end_time - start_time
         name = description
+        info = c1 + "<info>" + cr
         # Print times with a statistically significant number of decimal places
         if run_time < 0.0001:
-            print("<info> - {%s} ran for %.7f seconds." % (name, run_time))
+            print("%s - {%s} ran for %.7f seconds." % (info, name, run_time))
         elif run_time < 0.001:
-            print("<info> - {%s} ran for %.6f seconds." % (name, run_time))
+            print("%s - {%s} ran for %.6f seconds." % (info, name, run_time))
         elif run_time < 0.01:
-            print("<info> - {%s} ran for %.5f seconds." % (name, run_time))
+            print("%s - {%s} ran for %.5f seconds." % (info, name, run_time))
         elif run_time < 0.1:
-            print("<info> - {%s} ran for %.4f seconds." % (name, run_time))
+            print("%s - {%s} ran for %.4f seconds." % (info, name, run_time))
         elif run_time < 1:
-            print("<info> - {%s} ran for %.3f seconds." % (name, run_time))
+            print("%s - {%s} ran for %.3f seconds." % (info, name, run_time))
         else:
-            print("<info> - {%s} ran for %.2f seconds." % (name, run_time))
+            print("%s - {%s} ran for %.2f seconds." % (info, name, run_time))
         if limit and limit > 0 and run_time > limit:
             message = (
                 "\n {%s} duration of %.2fs exceeded the time limit of %.2fs!"
