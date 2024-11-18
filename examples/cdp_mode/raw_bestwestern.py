@@ -1,6 +1,6 @@
 from seleniumbase import SB
 
-with SB(uc=True, test=True, locale_code="en") as sb:
+with SB(uc=True, test=True, locale_code="en", ad_block=True) as sb:
     url = "https://www.bestwestern.com/en_US.html"
     sb.activate_cdp_mode(url)
     sb.sleep(2.5)

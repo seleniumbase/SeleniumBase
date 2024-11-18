@@ -63,12 +63,11 @@ async def crawl():
     listenXHR(tab)
 
     # Change url to something that makes ajax requests
-    tab = await driver.get("https://resttesttest.com/")
-    time.sleep(1)
-    # Click AJAX button on https://resttesttest.com/
-    element = await tab.select("button#submitajax")
-    await element.click_async()
+    tab = await driver.get("https://learn.microsoft.com/en-us/")
     time.sleep(2)
+    for i in range(75):
+        await tab.scroll_down(3)
+        time.sleep(0.02)
 
     xhr_responses = await receiveXHR(tab, xhr_requests)
     for response in xhr_responses:
@@ -87,6 +86,6 @@ async def crawl():
 
 
 if __name__ == "__main__":
-    print("================= Starting =================")
+    print("================== Starting ==================")
     loop = asyncio.new_event_loop()
     loop.run_until_complete(crawl())
