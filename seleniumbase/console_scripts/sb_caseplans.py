@@ -15,6 +15,7 @@ Examples:
 Output:
       Launches the SeleniumBase Case Plans Generator.
 """
+
 import codecs
 import colorama
 import os
@@ -34,22 +35,18 @@ if sys.version_info <= (3, 8):
 
 
 def set_colors(use_colors):
-    c0 = ""
-    c1 = ""
-    c2 = ""
-    c3 = ""
-    c4 = ""
-    c5 = ""
-    cr = ""
     if use_colors:
-        c0 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
-        c1 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
-        c2 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
-        c3 = colorama.Fore.BLACK + colorama.Back.LIGHTCYAN_EX
-        c4 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
-        c5 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
-        cr = colorama.Style.RESET_ALL
-    return c0, c1, c2, c3, c4, c5, cr
+        return (
+            colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX,
+            colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX,
+            colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX,
+            colorama.Fore.BLACK + colorama.Back.LIGHTCYAN_EX,
+            colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX,
+            colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX,
+            colorama.Style.RESET_ALL,
+        )
+    else:
+        return "", "", "", "", "", "", ""
 
 
 def send_window_to_front(root):
@@ -67,9 +64,7 @@ def show_no_case_plans_warning():
 
 def get_test_id(display_id):
     """The id used in various places such as the test log path."""
-    return (
-        display_id.replace(".py::", ".").replace("::", ".").replace(" ", "_")
-    )
+    return display_id.replace(".py::", ".").replace("::", ".").replace(" ", "_")
 
 
 def generate_case_plan_boilerplates(
@@ -151,12 +146,12 @@ def generate_case_plan_boilerplates(
     if new_plans == 1:
         messagebox.showinfo(
             "A new Case Plan was generated!",
-            '\n✅ %s new boilerplate Case Plan was generated!' % new_plans,
+            "\n✅ %s new boilerplate Case Plan was generated!" % new_plans,
         )
     elif new_plans >= 2:
         messagebox.showinfo(
             "New Case Plans were generated!",
-            '\n✅ %s new boilerplate Case Plans were generated!' % new_plans,
+            "\n✅ %s new boilerplate Case Plans were generated!" % new_plans,
         )
     else:
         messagebox.showwarning(
@@ -198,9 +193,7 @@ def view_summary_of_existing_case_plans(root, tests):
 
     full_plan = []
     if len(case_data_storage) > 0:
-        full_plan.append(
-            "<h2>Summary of existing Case Plans</h2>"
-        )
+        full_plan.append("<h2>Summary of existing Case Plans</h2>")
         full_plan.append("")
         full_plan.append("|   |   |")
         full_plan.append("| - | - |")
@@ -256,10 +249,7 @@ def view_summary_of_existing_case_plans(root, tests):
                 + first_line[2:-2]
                 + "</b></code></summary>"
             )
-            if (
-                lines[2].strip().startswith("-")
-                and lines[2].strip().endswith("-")
-            ):
+            if lines[2].strip().startswith("-") and lines[2].strip().endswith("-"):
                 lines[2] = ""
             elif lines[2].strip() != "":
                 lines.insert(2, "")
@@ -299,9 +289,7 @@ def view_summary_of_existing_case_plans(root, tests):
 
     plan_head = []
     if len(case_data_storage) > 0:
-        plan_head.append(
-            "<h2>Summary of existing Case Plans</h2>"
-        )
+        plan_head.append("<h2>Summary of existing Case Plans</h2>")
         plan_head.append("")
         plan_head.append("|   |    |   |")
         plan_head.append("| - | -: | - |")
@@ -341,10 +329,9 @@ def view_summary_of_existing_case_plans(root, tests):
         msg_in_progress = " %s" % msg_in_progress
     gen_message = (
         '🗂️  Summary generated at "case_summary.md":'
-        '\n🔵 %s'
-        '\n⭕ %s'
-        '\n🚧 %s'
-        % (msg_ready_cases, msg_boilerplate, msg_in_progress)
+        "\n🔵 %s"
+        "\n⭕ %s"
+        "\n🚧 %s" % (msg_ready_cases, msg_boilerplate, msg_in_progress)
     )
     print(gen_message)
     if num_ready_cases < 10:
@@ -362,10 +349,9 @@ def view_summary_of_existing_case_plans(root, tests):
     messagebox.showinfo(
         "Case Plans Summary generated!",
         '\nSummary generated at "case_summary.md"'
-        '\n🔵 %s'
-        '\n⭕ %s'
-        '\n🚧 %s'
-        % (msg_ready_cases, msg_boilerplate, msg_in_progress)
+        "\n🔵 %s"
+        "\n⭕ %s"
+        "\n🚧 %s" % (msg_ready_cases, msg_boilerplate, msg_in_progress),
     )
     send_window_to_front(root)
 
@@ -380,8 +366,7 @@ def create_tkinter_gui(tests, command_string):
     tk.Label(root, text="").pack()
     run_display = (
         "Select from %s tests found:  "
-        "(Boilerplate Case Plans will be generated as needed)"
-        % len(tests)
+        "(Boilerplate Case Plans will be generated as needed)" % len(tests)
     )
     if len(tests) == 1:
         run_display = (
@@ -391,9 +376,7 @@ def create_tkinter_gui(tests, command_string):
     run_display_2 = "(Tests with existing Case Plans are already checked)"
     tk.Label(root, text=run_display, bg="yellow", fg="green").pack()
     tk.Label(root, text=run_display_2, bg="yellow", fg="magenta").pack()
-    text_area = ScrolledText(
-        root, width=100, height=12, wrap="word", state=tk.DISABLED
-    )
+    text_area = ScrolledText(root, width=100, height=12, wrap="word", state=tk.DISABLED)
     text_area.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
     count = 0
     ara = {}
@@ -452,9 +435,7 @@ def create_tkinter_gui(tests, command_string):
     tk.Label(root, text="").pack()
     tk.Button(
         root,
-        text=(
-            "Generate boilerplate Case Plans "
-            "for selected tests missing them"),
+        text=("Generate boilerplate Case Plans " "for selected tests missing them"),
         fg="green",
         command=lambda: generate_case_plan_boilerplates(
             root,
