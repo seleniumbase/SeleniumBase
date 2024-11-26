@@ -1,6 +1,7 @@
 """Add new methods to extend the driver"""
 from contextlib import suppress
 from selenium.webdriver.remote.webelement import WebElement
+from seleniumbase.config import settings
 from seleniumbase.fixtures import js_utils
 from seleniumbase.fixtures import page_actions
 from seleniumbase.fixtures import page_utils
@@ -189,6 +190,8 @@ class DriverMethods():
             return False
 
     def is_online(self):
+        if self.__is_cdp_swap_needed():
+            return self.driver.cdp.evaluate("navigator.onLine;")
         return self.driver.execute_script("return navigator.onLine;")
 
     def is_connected(self):
@@ -231,16 +234,34 @@ class DriverMethods():
         return page_actions.get_text(self.driver, *args, **kwargs)
 
     def get_active_element_css(self, *args, **kwargs):
+        if self.__is_cdp_swap_needed():
+            return self.driver.cdp.get_active_element_css()
         return js_utils.get_active_element_css(self.driver, *args, **kwargs)
 
     def get_locale_code(self, *args, **kwargs):
+        if self.__is_cdp_swap_needed():
+            return self.driver.cdp.get_locale_code()
         return js_utils.get_locale_code(self.driver, *args, **kwargs)
 
+    def get_screen_rect(self, *args, **kwargs):
+        if self.__is_cdp_swap_needed():
+            return self.driver.cdp.get_screen_rect()
+        return js_utils.get_screen_rect(self.driver, *args, **kwargs)
+
     def get_origin(self, *args, **kwargs):
+        if self.__is_cdp_swap_needed():
+            return self.driver.cdp.get_origin()
         return js_utils.get_origin(self.driver, *args, **kwargs)
 
     def get_user_agent(self, *args, **kwargs):
+        if self.__is_cdp_swap_needed():
+            return self.driver.cdp.get_user_agent()
         return js_utils.get_user_agent(self.driver, *args, **kwargs)
+
+    def get_cookie_string(self, *args, **kwargs):
+        if self.__is_cdp_swap_needed():
+            return self.driver.cdp.get_cookie_string()
+        return js_utils.get_cookie_string(self.driver, *args, **kwargs)
 
     def highlight(self, *args, **kwargs):
         if self.__is_cdp_swap_needed():
@@ -311,6 +332,16 @@ class DriverMethods():
         else:
             iframe = self.locator(frame)
             self.driver.switch_to.frame(iframe)
+
+    def reset_window_size(self):
+        if self.__is_cdp_swap_needed():
+            self.driver.cdp.reset_window_size()
+            return
+        x = settings.WINDOW_START_X
+        y = settings.WINDOW_START_Y
+        width = settings.CHROME_START_WIDTH
+        height = settings.CHROME_START_HEIGHT
+        self.driver.set_window_rect(x, y, width, height)
 
     def set_wire_proxy(self, string):
         """Set a proxy server for selenium-wire mode ("--wire")

@@ -216,8 +216,10 @@ def extend_driver(driver):
     driver.get_text = DM.get_text
     driver.get_active_element_css = DM.get_active_element_css
     driver.get_locale_code = DM.get_locale_code
+    driver.get_screen_rect = DM.get_screen_rect
     driver.get_origin = DM.get_origin
     driver.get_user_agent = DM.get_user_agent
+    driver.get_cookie_string = DM.get_cookie_string
     driver.highlight = DM.highlight
     driver.highlight_click = DM.highlight_click
     driver.highlight_if_visible = DM.highlight_if_visible
@@ -234,6 +236,7 @@ def extend_driver(driver):
     driver.switch_to_window = DM.switch_to_window
     driver.switch_to_tab = DM.switch_to_tab
     driver.switch_to_frame = DM.switch_to_frame
+    driver.reset_window_size = DM.reset_window_size
     if hasattr(driver, "proxy"):
         driver.set_wire_proxy = DM.set_wire_proxy
     return driver

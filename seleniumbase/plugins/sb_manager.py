@@ -275,12 +275,15 @@ def SB(
     collect_only = ("--co" in sys_argv or "--collect-only" in sys_argv)
     all_scripts = (hasattr(sb_config, "all_scripts") and sb_config.all_scripts)
     do_log_folder_setup = False  # The first "test=True" run does it
+    inner_test = False
     if (
         (hasattr(sb_config, "is_behave") and sb_config.is_behave)
         or (hasattr(sb_config, "is_pytest") and sb_config.is_pytest)
         or (hasattr(sb_config, "is_nosetest") and sb_config.is_nosetest)
     ):
         existing_runner = True
+        if test:
+            inner_test = True
         test = False  # Already using a test runner. Skip extra test steps.
     elif test is None and "--test" in sys_argv:
         test = True
@@ -1222,7 +1225,10 @@ def SB(
         sb._has_failure = True
         exception = e
         test_passed = False
-        if not test_name:
+        if (test or inner_test) and not test_name:
+            print(e)
+            return
+        elif not test_name:
             raise
         else:
             the_traceback = traceback.format_exc().strip()

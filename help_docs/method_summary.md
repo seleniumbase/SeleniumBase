@@ -231,6 +231,8 @@ self.get_gui_element_rect(selector, by="css selector")
 
 self.get_gui_element_center(selector, by="css selector")
 
+self.get_screen_rect()
+
 self.get_window_rect()
 
 self.get_window_size()
@@ -244,6 +246,10 @@ self.set_window_size(width, height)
 self.set_window_position(x, y)
 
 self.maximize_window()
+
+self.minimize_window()
+
+self.reset_window_size()
 
 self.switch_to_frame(frame="iframe", timeout=None)
 

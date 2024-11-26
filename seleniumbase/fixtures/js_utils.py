@@ -1188,12 +1188,20 @@ def get_locale_code(driver):
     return driver.execute_script(script)
 
 
+def get_screen_rect(driver):
+    return driver.execute_script("return window.screen;")
+
+
 def get_origin(driver):
     return driver.execute_script("return window.location.origin;")
 
 
 def get_user_agent(driver):
     return driver.execute_script("return navigator.userAgent;")
+
+
+def get_cookie_string(driver):
+    return driver.execute_script("return document.cookie;")
 
 
 def get_scroll_distance_to_element(driver, element):
