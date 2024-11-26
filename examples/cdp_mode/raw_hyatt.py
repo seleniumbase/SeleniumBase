@@ -12,7 +12,7 @@ with SB(uc=True, test=True, locale_code="en", ad_block=True) as sb:
     sb.sleep(3)
     location = "Anaheim, CA, USA"
     sb.cdp.press_keys("input#searchbox", location)
-    sb.sleep(1)
+    sb.sleep(2)
     sb.cdp.click("div#suggestion-list ul li a")
     sb.sleep(1)
     sb.cdp.click('div.hotel-card-footer button')
