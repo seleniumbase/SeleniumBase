@@ -2450,6 +2450,10 @@ def _set_firefox_options(
             if not firefox_arg_item.startswith("--"):
                 if firefox_arg_item.startswith("-"):
                     firefox_arg_item = "-" + firefox_arg_item
+                elif firefox_arg_item.count(":\\") == 1 or firefox_arg_item.count(':/') == 1:
+                    firefox_arg_item = firefox_arg_item
+                else:
+                    firefox_arg_item = "--" + firefox_arg_item
             if len(firefox_arg_item) >= 3:
                 options.add_argument(firefox_arg_item)
     if firefox_pref:
