@@ -216,8 +216,10 @@ def extend_driver(driver):
     driver.get_text = DM.get_text
     driver.get_active_element_css = DM.get_active_element_css
     driver.get_locale_code = DM.get_locale_code
+    driver.get_screen_rect = DM.get_screen_rect
     driver.get_origin = DM.get_origin
     driver.get_user_agent = DM.get_user_agent
+    driver.get_cookie_string = DM.get_cookie_string
     driver.highlight = DM.highlight
     driver.highlight_click = DM.highlight_click
     driver.highlight_if_visible = DM.highlight_if_visible
@@ -234,6 +236,7 @@ def extend_driver(driver):
     driver.switch_to_window = DM.switch_to_window
     driver.switch_to_tab = DM.switch_to_tab
     driver.switch_to_frame = DM.switch_to_frame
+    driver.reset_window_size = DM.reset_window_size
     if hasattr(driver, "proxy"):
         driver.set_wire_proxy = DM.set_wire_proxy
     return driver
@@ -2447,10 +2450,8 @@ def _set_firefox_options(
         firefox_arg_list = firefox_arg.split(",")
         for firefox_arg_item in firefox_arg_list:
             firefox_arg_item = firefox_arg_item.strip()
-            if not firefox_arg_item.startswith("--"):
-                if firefox_arg_item.startswith("-"):
-                    firefox_arg_item = "-" + firefox_arg_item
-                else:
+            if not firefox_arg_item.startswith("-"):
+                if firefox_arg_item.count(os.sep) == 0:
                     firefox_arg_item = "--" + firefox_arg_item
             if len(firefox_arg_item) >= 3:
                 options.add_argument(firefox_arg_item)

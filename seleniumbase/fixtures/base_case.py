@@ -3452,6 +3452,13 @@ class BaseCase(unittest.TestCase):
         y = element_rect["y"] + (element_rect["height"] / 2.0) + 0.5
         return (x, y)
 
+    def get_screen_rect(self):
+        self.__check_scope()
+        if self.__is_cdp_swap_needed():
+            return self.cdp.get_screen_rect()
+        self._check_browser()
+        return self.driver.get_screen_rect()
+
     def get_window_rect(self):
         self.__check_scope()
         if self.__is_cdp_swap_needed():
@@ -3475,6 +3482,9 @@ class BaseCase(unittest.TestCase):
 
     def set_window_rect(self, x, y, width, height):
         self.__check_scope()
+        if self.__is_cdp_swap_needed():
+            self.cdp.set_window_rect(x, y, width, height)
+            return
         self._check_browser()
         self.driver.set_window_rect(x, y, width, height)
         self.__demo_mode_pause_if_active(tiny=True)
@@ -3493,8 +3503,33 @@ class BaseCase(unittest.TestCase):
 
     def maximize_window(self):
         self.__check_scope()
+        if self.__is_cdp_swap_needed():
+            self.cdp.maximize()
+            return
         self._check_browser()
         self.driver.maximize_window()
+        self.__demo_mode_pause_if_active(tiny=True)
+
+    def minimize_window(self):
+        self.__check_scope()
+        if self.__is_cdp_swap_needed():
+            self.cdp.minimize()
+            return
+        self._check_browser()
+        self.driver.minimize_window()
+        self.__demo_mode_pause_if_active(tiny=True)
+
+    def reset_window_size(self):
+        self.__check_scope()
+        if self.__is_cdp_swap_needed():
+            self.cdp.reset_window_size()
+            return
+        self._check_browser()
+        x = settings.WINDOW_START_X
+        y = settings.WINDOW_START_Y
+        width = settings.CHROME_START_WIDTH
+        height = settings.CHROME_START_HEIGHT
+        self.set_window_rect(x, y, width, height)
         self.__demo_mode_pause_if_active(tiny=True)
 
     def switch_to_frame(self, frame="iframe", timeout=None):

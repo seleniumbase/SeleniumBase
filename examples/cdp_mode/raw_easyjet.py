@@ -20,7 +20,7 @@ with SB(uc=True, test=True, locale_code="en", ad_block=True) as sb:
     sb.sleep(1.2)
     sb.cdp.click('input[name="when"]')
     sb.sleep(1.2)
-    sb.cdp.click('[data-testid="month"] button[aria-disabled="false"]')
+    sb.cdp.click('[data-testid="month"]:last-of-type [aria-disabled="false"]')
     sb.sleep(1.2)
     sb.cdp.click('[data-testid="month"]:last-of-type [aria-disabled="false"]')
     sb.sleep(1.2)

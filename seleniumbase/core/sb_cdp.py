@@ -551,7 +551,7 @@ class CDPMethods():
                 if (width != 0 or height != 0):
                     element.click()
                     click_count += 1
-                    time.sleep(0.042)
+                    time.sleep(0.044)
                     self.__slow_mode_pause_if_set()
                     self.loop.run_until_complete(self.page.wait())
             except Exception:
@@ -668,10 +668,10 @@ class CDPMethods():
             text = text[:-1]
         for key in text:
             element.send_keys(key)
-            time.sleep(0.042)
+            time.sleep(0.044)
         if submit:
             element.send_keys("\r\n")
-            time.sleep(0.042)
+            time.sleep(0.044)
         self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.wait())
 
@@ -741,7 +741,7 @@ class CDPMethods():
             return
         elif self.get_window()[1].window_state.value == "minimized":
             self.loop.run_until_complete(self.page.maximize())
-            time.sleep(0.042)
+            time.sleep(0.044)
         return self.loop.run_until_complete(self.page.maximize())
 
     def minimize(self):
@@ -751,7 +751,7 @@ class CDPMethods():
     def medimize(self):
         if self.get_window()[1].window_state.value == "minimized":
             self.loop.run_until_complete(self.page.medimize())
-            time.sleep(0.042)
+            time.sleep(0.044)
         return self.loop.run_until_complete(self.page.medimize())
 
     def set_window_rect(self, x, y, width, height):
@@ -760,7 +760,7 @@ class CDPMethods():
                 self.page.set_window_size(
                     left=x, top=y, width=width, height=height)
             )
-            time.sleep(0.042)
+            time.sleep(0.044)
         return self.loop.run_until_complete(
             self.page.set_window_size(
                 left=x, top=y, width=width, height=height)
@@ -1125,7 +1125,7 @@ class CDPMethods():
         )
         with gui_lock:
             pyautogui.press(key)
-            time.sleep(0.042)
+            time.sleep(0.044)
         self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.wait())
 
@@ -1139,7 +1139,7 @@ class CDPMethods():
         with gui_lock:
             for key in keys:
                 pyautogui.press(key)
-                time.sleep(0.042)
+                time.sleep(0.044)
         self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.wait())
 
