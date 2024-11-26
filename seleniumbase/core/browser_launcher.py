@@ -2450,10 +2450,8 @@ def _set_firefox_options(
         firefox_arg_list = firefox_arg.split(",")
         for firefox_arg_item in firefox_arg_list:
             firefox_arg_item = firefox_arg_item.strip()
-            if not firefox_arg_item.startswith("--"):
-                if firefox_arg_item.startswith("-"):
-                    firefox_arg_item = "-" + firefox_arg_item
-                else:
+            if not firefox_arg_item.startswith("-"):
+                if firefox_arg_item.count(os.sep) == 0:
                     firefox_arg_item = "--" + firefox_arg_item
             if len(firefox_arg_item) >= 3:
                 options.add_argument(firefox_arg_item)
