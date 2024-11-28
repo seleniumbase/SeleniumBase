@@ -6,8 +6,9 @@ import http.cookiejar
 import json
 import logging
 import os
-import pickle
 import pathlib
+import pickle
+import re
 import shutil
 import urllib.parse
 import urllib.request
@@ -644,7 +645,7 @@ class CookieJar:
         """
         connection = None
         for _tab in self._browser.tabs:
-            if _tab.closed:
+            if hasattr(_tab, "closed") and _tab.closed:
                 continue
             connection = _tab
             break
@@ -674,7 +675,7 @@ class CookieJar:
         """
         connection = None
         for _tab in self._browser.tabs:
-            if _tab.closed:
+            if hasattr(_tab, "closed") and _tab.closed:
                 continue
             connection = _tab
             break
@@ -698,13 +699,11 @@ class CookieJar:
                 - Contain "nowsecure"
         :type pattern: str
         """
-        import re
-
         pattern = re.compile(pattern)
         save_path = pathlib.Path(file).resolve()
         connection = None
         for _tab in self._browser.tabs:
-            if _tab.closed:
+            if hasattr(_tab, "closed") and _tab.closed:
                 continue
             connection = _tab
             break
@@ -746,15 +745,13 @@ class CookieJar:
                 - Contain "nowsecure"
         :type pattern: str
         """
-        import re
-
         pattern = re.compile(pattern)
         save_path = pathlib.Path(file).resolve()
         cookies = pickle.load(save_path.open("r+b"))
         included_cookies = []
         connection = None
         for _tab in self._browser.tabs:
-            if _tab.closed:
+            if hasattr(_tab, "closed") and _tab.closed:
                 continue
             connection = _tab
             break
@@ -779,7 +776,7 @@ class CookieJar:
         """
         connection = None
         for _tab in self._browser.tabs:
-            if _tab.closed:
+            if hasattr(_tab, "closed") and _tab.closed:
                 continue
             connection = _tab
             break
