@@ -612,6 +612,7 @@ def uc_open_with_cdp_mode(driver, url=None):
     cdp.save_cookies = CDPM.save_cookies
     cdp.load_cookies = CDPM.load_cookies
     cdp.clear_cookies = CDPM.clear_cookies
+    cdp.sleep = CDPM.sleep
     cdp.bring_active_window_to_front = CDPM.bring_active_window_to_front
     cdp.bring_to_front = CDPM.bring_active_window_to_front
     cdp.get_active_element = CDPM.get_active_element
@@ -684,6 +685,7 @@ def uc_open_with_cdp_mode(driver, url=None):
     cdp.select_if_unselected = CDPM.select_if_unselected
     cdp.unselect_if_selected = CDPM.unselect_if_selected
     cdp.is_checked = CDPM.is_checked
+    cdp.is_selected = CDPM.is_selected
     cdp.is_element_present = CDPM.is_element_present
     cdp.is_element_visible = CDPM.is_element_visible
     cdp.wait_for_element_visible = CDPM.wait_for_element_visible
@@ -699,6 +701,8 @@ def uc_open_with_cdp_mode(driver, url=None):
     cdp.assert_url_contains = CDPM.assert_url_contains
     cdp.assert_text = CDPM.assert_text
     cdp.assert_exact_text = CDPM.assert_exact_text
+    cdp.assert_true = CDPM.assert_true
+    cdp.assert_false = CDPM.assert_false
     cdp.scroll_into_view = CDPM.scroll_into_view
     cdp.scroll_to_y = CDPM.scroll_to_y
     cdp.scroll_to_top = CDPM.scroll_to_top
@@ -1167,7 +1171,12 @@ def _uc_gui_click_captcha(
                     frame = "%s div" % frame
                 elif (
                     driver.is_element_present('[name*="cf-turnstile-"]')
-                    and driver.is_element_present('[class*=spacer] + div div')
+                    and driver.is_element_present("#challenge-form div > div")
+                ):
+                    frame = "#challenge-form div > div"
+                elif (
+                    driver.is_element_present('[name*="cf-turnstile-"]')
+                    and driver.is_element_present("[class*=spacer] + div div")
                 ):
                     frame = '[class*=spacer] + div div'
                 elif (
@@ -1240,8 +1249,8 @@ def _uc_gui_click_captcha(
                 return
         try:
             if ctype == "g_rc" and not driver.is_connected():
-                x = (i_x + 32) * width_ratio
-                y = (i_y + 34) * width_ratio
+                x = (i_x + 29) * width_ratio
+                y = (i_y + 35) * width_ratio
             elif visible_iframe:
                 selector = "span"
                 if ctype == "g_rc":
@@ -1256,8 +1265,8 @@ def _uc_gui_click_captcha(
                 y = i_y + element.rect["y"] + (element.rect["height"] / 2.0)
                 y += 0.5
             else:
-                x = (i_x + 34) * width_ratio
-                y = (i_y + 34) * width_ratio
+                x = (i_x + 32) * width_ratio
+                y = (i_y + 32) * width_ratio
             if driver.is_connected():
                 driver.switch_to.default_content()
         except Exception:
@@ -1497,6 +1506,7 @@ def _uc_gui_handle_captcha_(driver, frame="iframe", ctype=None):
                 tab_count += 1
                 time.sleep(0.027)
                 active_element_css = js_utils.get_active_element_css(driver)
+                print(active_element_css)
                 if (
                     active_element_css.startswith(selector)
                     or active_element_css.endswith(" > div" * 2)
@@ -1514,7 +1524,10 @@ def _uc_gui_handle_captcha_(driver, frame="iframe", ctype=None):
             except Exception:
                 return
         if (
-            driver.is_element_present(".footer .clearfix .ray-id")
+            (
+                driver.is_element_present(".footer .clearfix .ray-id")
+                or driver.is_element_present("script[data-cf-beacon]")
+            )
             and hasattr(sb_config, "_saved_cf_tab_count")
             and sb_config._saved_cf_tab_count
         ):

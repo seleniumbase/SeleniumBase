@@ -2,7 +2,14 @@
 
 ## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) CDP Mode 🐙
 
-🐙 <b translate="no">SeleniumBase</b> <b translate="no">CDP Mode</b> (Chrome Devtools Protocol Mode) is a special mode inside of <b><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md" translate="no"><span translate="no">SeleniumBase UC Mode</span></a></b> that lets bots appear human while controlling the browser with the <b translate="no">CDP-Driver</b>. Although regular <span translate="no">UC Mode</span> can't perform <span translate="no">WebDriver</span> actions while the <code>driver</code> is disconnected from the browser, the <span translate="no">CDP-Driver</span> can still perform actions while maintaining its cover. (For Python 3.11 or newer!)
+🐙 <b translate="no">SeleniumBase</b> <b translate="no">CDP Mode</b> (Chrome Devtools Protocol Mode) is a special mode inside of <b><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md" translate="no"><span translate="no">SeleniumBase UC Mode</span></a></b> that lets bots appear human while controlling the browser with the <b translate="no">CDP-Driver</b>. Although regular <span translate="no">UC Mode</span> can't perform <span translate="no">WebDriver</span> actions while the <code>driver</code> is disconnected from the browser, the <span translate="no">CDP-Driver</span> can still perform actions while maintaining its cover.
+
+--------
+
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=Mr90iQmNsKM"><img src="http://img.youtube.com/vi/Mr90iQmNsKM/0.jpg" title="SeleniumBase on YouTube" width="366" /></a>
+<p>(<b><a href="https://www.youtube.com/watch?v=Mr90iQmNsKM">Watch the CDP Mode tutorial on YouTube! ▶️</a></b>)</p>
+
+--------
 
 👤 <b translate="no">UC Mode</b> avoids bot-detection by first disconnecting WebDriver from the browser at strategic times, calling special <code>PyAutoGUI</code> methods to bypass CAPTCHAs (as needed), and finally reconnecting the <code>driver</code> afterwards so that WebDriver actions can be performed again. Although this approach works for bypassing simple CAPTCHAs, more flexibility is needed for bypassing bot-detection on websites with advanced protection. (That's where <b translate="no">CDP Mode</b> comes in.)
 
@@ -410,6 +417,8 @@ sb.cdp.assert_url(url)
 sb.cdp.assert_url_contains(substring)
 sb.cdp.assert_text(text, selector="html")
 sb.cdp.assert_exact_text(text, selector="html")
+sb.cdp.assert_true()
+sb.cdp.assert_false()
 sb.cdp.scroll_into_view(selector)
 sb.cdp.scroll_to_y(y)
 sb.cdp.scroll_to_top()

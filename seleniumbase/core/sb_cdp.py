@@ -1681,6 +1681,14 @@ class CDPMethods():
             % (text, element.text_all, selector)
         )
 
+    def assert_true(self, expression):
+        if not expression:
+            raise AssertionError("%s is not true")
+
+    def assert_false(self, expression):
+        if expression:
+            raise AssertionError("%s is not false")
+
     def scroll_into_view(self, selector):
         self.find_element(selector).scroll_into_view()
         self.loop.run_until_complete(self.page.wait())
