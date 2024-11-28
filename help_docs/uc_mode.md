@@ -23,6 +23,11 @@
 
 ----
 
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=Mr90iQmNsKM"><img src="http://img.youtube.com/vi/Mr90iQmNsKM/0.jpg" title="SeleniumBase on YouTube" width="350" /></a>
+<p>(<b><a href="https://www.youtube.com/watch?v=Mr90iQmNsKM">Watch the 4th UC Mode tutorial on YouTube! ▶️</a></b>)</p>
+
+----
+
 👤 <b translate="no">UC Mode</b> is based on [undetected-chromedriver](https://github.com/ultrafunkamsterdam/undetected-chromedriver). <span translate="no">UC Mode</span> includes multiple updates, fixes, and improvements, such as:
 
 * Automatically changing user-agents to prevent detection.
