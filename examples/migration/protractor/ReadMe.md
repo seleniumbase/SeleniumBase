@@ -9,12 +9,12 @@
 ```bash
 $ pytest --rs -v --guest
 =========================== test session starts ============================
-platform darwin -- Python 3.11.2, pytest-7.4.0, pluggy-1.2.0 -- /Users/michael/.virtualenvs/sb_venv/bin/python
-metadata: {'Python': '3.11.2', 'Platform': 'macOS-13.2.1-arm64-arm-64bit', 'Packages': {'pytest': '7.4.0', 'pluggy': '1.2.0'}, 'Plugins': {'html': '2.0.1', 'rerunfailures': '12.0', 'metadata': '3.0.0', 'ordering': '0.6', 'xdist': '3.3.1', 'seleniumbase': '4.15.10'}}
+platform darwin -- Python 3.11.9, pytest-8.3.3, pluggy-1.5.0 -- /Users/michael/.virtualenvs/sbase11/bin/python
+metadata: {'Python': '3.11.9', 'Platform': 'macOS-13.2.1-arm64-arm-64bit', 'Packages': {'pytest': '8.3.3', 'pluggy': '1.5.0'}, 'Plugins': {'cov': '6.0.0', 'html': '2.0.1', 'metadata': '3.1.1', 'seleniumbase': '4.33.2', 'ordering': '0.6', 'rerunfailures': '15.0', 'xdist': '3.6.1'}}
 rootdir: /Users/michael/github/SeleniumBase/examples
 configfile: pytest.ini
-plugins: html-2.0.1, rerunfailures-12.0, metadata-3.0.0, ordering-0.6, xdist-3.3.1, seleniumbase-4.15.10
-collected 4 items                                                                
+plugins: html-2.0.1, metadata-3.1.1, seleniumbase-4.33.2, ordering-0.6, rerunfailures-15.0, xdist-3.6.1
+collected 4 items
 
 example_test.py::AngularJSHomePageTests::test_greet_user PASSED
 example_test.py::AngularJSHomePageTests::test_todo_list PASSED

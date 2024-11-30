@@ -73,6 +73,7 @@ plugins:
         - CONTRIBUTING.md
         - SECURITY.md
         - examples/case_summary.md
+        - examples/migration/raw_selenium/ReadMe.md
         - help_docs/chinese.md
         - integrations/katalon/ReadMe.md
         - help_docs/ReadMe.md
@@ -174,6 +175,7 @@ nav:
     - 📃 Desired Capabilities: help_docs/desired_capabilities.md
     - 📜 Useful grep commands: help_docs/useful_grep_commands.md
     - ⚙️ Downloading drivers: help_docs/webdriver_installation.md
+    - ✅ Selenium Migration: examples/migration/raw_selenium/ReadMe.md
     - ✔️ Verifying drivers: help_docs/verify_webdriver.md
   - Behave-BDD Integration:
     - 🐝 Behave-BDD ReadMe: examples/behave_bdd/ReadMe.md
