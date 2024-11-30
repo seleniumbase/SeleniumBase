@@ -135,23 +135,10 @@ class CDPMethods():
         self.__add_light_pause()
         selector = self.__convert_to_css_if_xpath(selector)
         early_failure = False
-        if (":contains(" in selector):
-            tag_name = selector.split(":contains(")[0].split(" ")[-1]
-            text = selector.split(":contains(")[1].split(")")[0][1:-1]
-            with suppress(Exception):
-                self.loop.run_until_complete(
-                    self.page.select(tag_name, timeout=timeout)
-                )
-                self.loop.run_until_complete(
-                    self.page.find(text, timeout=timeout)
-                )
-            elements = []
-            with suppress(Exception):
-                elements = self.find_elements_by_text(text, tag_name=tag_name)
-            if elements:
-                return self.__add_sync_methods(elements[0])
-            else:
-                early_failure = True
+        if (":contains(") in selector:
+            selector, _ = page_utils.recalculate_selector(
+                selector, by="css selector", xp_ok=True
+            )
         failure = False
         try:
             if early_failure:
@@ -726,12 +713,16 @@ class CDPMethods():
 
     def evaluate(self, expression):
         """Run a JavaScript expression and return the result."""
+        if expression.startswith("return "):
+            expression = expression[len("return "):]
         return self.loop.run_until_complete(
             self.page.evaluate(expression)
         )
 
     def js_dumps(self, obj_name):
         """Similar to evaluate(), but for dictionary results."""
+        if obj_name.startswith("return "):
+            obj_name = obj_name[len("return "):]
         return self.loop.run_until_complete(
             self.page.js_dumps(obj_name)
         )
@@ -1648,11 +1639,11 @@ class CDPMethods():
         text = text.strip()
         element = None
         try:
-            element = self.select(selector, timeout=timeout)
+            element = self.find_element(selector, timeout=timeout)
         except Exception:
             raise Exception("Element {%s} not found!" % selector)
         for i in range(30):
-            if self.is_element_visible(selector) and text in element.text_all:
+            if text in element.text_all:
                 return True
             time.sleep(0.1)
         raise Exception(
@@ -1683,11 +1674,27 @@ class CDPMethods():
 
     def assert_true(self, expression):
         if not expression:
-            raise AssertionError("%s is not true")
+            raise AssertionError("%s is not true" % expression)
 
     def assert_false(self, expression):
         if expression:
-            raise AssertionError("%s is not false")
+            raise AssertionError("%s is not false" % expression)
+
+    def assert_equal(self, first, second):
+        if first != second:
+            raise AssertionError("%s is not equal to %s" % (first, second))
+
+    def assert_not_equal(self, first, second):
+        if first == second:
+            raise AssertionError("%s is equal to %s" % (first, second))
+
+    def assert_in(self, first, second):
+        if first not in second:
+            raise AssertionError("%s is not in %s" % (first, second))
+
+    def assert_not_in(self, first, second):
+        if first in second:
+            raise AssertionError("%s is in %s" % (first, second))
 
     def scroll_into_view(self, selector):
         self.find_element(selector).scroll_into_view()

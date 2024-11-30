@@ -392,7 +392,7 @@ class BaseCase(unittest.TestCase):
         original_by = by
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_cdp_swap_needed():
-            self.cdp.click(selector)
+            self.cdp.click(selector, timeout=timeout)
             return
         if delay and (type(delay) in [int, float]) and delay > 0:
             time.sleep(delay)
@@ -885,7 +885,7 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_cdp_swap_needed():
-            self.cdp.type(selector, text)
+            self.cdp.type(selector, text, timeout=timeout)
             return
         if self.__is_shadow_selector(selector):
             self.__shadow_type(selector, text, timeout)
@@ -1112,7 +1112,7 @@ class BaseCase(unittest.TestCase):
     def press_keys(self, selector, text, by="css selector", timeout=None):
         """Use send_keys() to press one key at a time."""
         if self.__is_cdp_swap_needed():
-            self.cdp.press_keys(selector, text)
+            self.cdp.press_keys(selector, text, timeout=timeout)
             return
         self.wait_for_ready_state_complete()
         element = self.wait_for_element_present(
@@ -1597,7 +1597,7 @@ class BaseCase(unittest.TestCase):
         """This method clicks link text on a page."""
         self.__check_scope()
         if self.__is_cdp_swap_needed():
-            self.cdp.find_element(link_text).click()
+            self.cdp.find_element(link_text, timeout=timeout).click()
             return
         self.__skip_if_esc()
         if not timeout:
@@ -3380,6 +3380,8 @@ class BaseCase(unittest.TestCase):
 
     def execute_script(self, script, *args, **kwargs):
         self.__check_scope()
+        if self.__is_cdp_swap_needed():
+            return self.cdp.evaluate(script)
         self._check_browser()
         return self.driver.execute_script(script, *args, **kwargs)
 
@@ -6308,7 +6310,7 @@ class BaseCase(unittest.TestCase):
         If "all_matches" is False, only the first match is clicked.
         If "scroll" is False, won't scroll unless running in Demo Mode."""
         if self.__is_cdp_swap_needed():
-            self.cdp.click(selector)
+            self.cdp.click(selector, timeout=timeout)
             return
         self.wait_for_ready_state_complete()
         if not timeout or timeout is True:
@@ -8245,7 +8247,7 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.__is_cdp_swap_needed():
             mfa_code = self.get_mfa_code(totp_key)
-            self.cdp.type(selector, mfa_code + "\n")
+            self.cdp.type(selector, mfa_code + "\n", timeout=timeout)
             return
         self.wait_for_element_visible(selector, by=by, timeout=timeout)
         if self.recorder_mode and self.__current_url_is_recordable():
@@ -9003,7 +9005,7 @@ class BaseCase(unittest.TestCase):
         original_selector = selector
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_cdp_swap_needed():
-            return self.cdp.select(selector)
+            return self.cdp.select(selector, timeout=timeout)
         if self.__is_shadow_selector(selector):
             return self.__get_shadow_element(selector, timeout)
         return page_actions.wait_for_element_visible(
@@ -9026,7 +9028,7 @@ class BaseCase(unittest.TestCase):
         original_selector = selector
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_cdp_swap_needed():
-            return self.cdp.select(selector)
+            return self.cdp.select(selector, timeout=timeout)
         elif self.__is_shadow_selector(selector):
             # If a shadow selector, use visible instead of clickable
             return self.__wait_for_shadow_element_visible(selector, timeout)
@@ -9427,7 +9429,7 @@ class BaseCase(unittest.TestCase):
         original_selector = selector
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_cdp_swap_needed():
-            return self.cdp.select(selector)
+            return self.cdp.select(selector, timeout=timeout)
         elif self.__is_shadow_selector(selector):
             return self.__wait_for_shadow_element_present(selector, timeout)
         return page_actions.wait_for_element_present(
@@ -9449,7 +9451,7 @@ class BaseCase(unittest.TestCase):
         original_selector = selector
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_cdp_swap_needed():
-            return self.cdp.select(selector)
+            return self.cdp.select(selector, timeout=timeout)
         if self.recorder_mode and self.__current_url_is_recordable():
             if self.get_session_storage_item("pause_recorder") == "no":
                 if by == By.XPATH:
@@ -9492,7 +9494,7 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         css_selector = self.convert_to_css_selector(selector, by=by)
         if self.__is_cdp_swap_needed():
-            return self.cdp.select(css_selector)
+            return self.cdp.select(css_selector, timeout=timeout)
         return js_utils.wait_for_css_query_selector(
             self.driver, css_selector, timeout
         )
@@ -9713,7 +9715,7 @@ class BaseCase(unittest.TestCase):
         text = self.__get_type_checked_text(text)
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_cdp_swap_needed():
-            return self.cdp.find_element(selector)
+            return self.cdp.find_element(selector, timeout=timeout)
         elif self.__is_shadow_selector(selector):
             return self.__wait_for_shadow_text_visible(text, selector, timeout)
         return page_actions.wait_for_text_visible(
@@ -10093,7 +10095,7 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         if self.__is_cdp_swap_needed():
-            self.cdp.find_element(link_text)
+            self.cdp.find_element(link_text, timeout=timeout)
             return
         self.wait_for_link_text_visible(link_text, timeout=timeout)
         if self.demo_mode:
