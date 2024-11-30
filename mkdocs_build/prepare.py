@@ -76,14 +76,17 @@ def main(*args, **kwargs):
     scanned_dir_list = []
     scanned_dir_list.append("help_docs")
     scanned_dir_list.append("examples")
-    scanned_dir_list.append("examples/behave_bdd")
-    scanned_dir_list.append("examples/example_logs")
+    scanned_dir_list.append("examples/cdp_mode")
+    scanned_dir_list.append("examples/master_qa")
     scanned_dir_list.append("examples/presenter")
+    scanned_dir_list.append("examples/behave_bdd")
     scanned_dir_list.append("examples/chart_maker")
+    scanned_dir_list.append("examples/example_logs")
     scanned_dir_list.append("examples/tour_examples")
     scanned_dir_list.append("examples/visual_testing")
     scanned_dir_list.append("integrations/google_cloud")
     scanned_dir_list.append("seleniumbase/console_scripts")
+    scanned_dir_list.append("examples/migration/raw_selenium")
     for scanned_dir in scanned_dir_list:
         for dir_ in os.listdir(ROOT_DIR / scanned_dir):
             files_to_process.append(os.path.join(scanned_dir, dir_))
@@ -159,6 +162,12 @@ def main(*args, **kwargs):
             )
             if alt_link_badge in line:
                 line = line.replace(alt_link_badge, back_to_gh)
+                changed = True
+            if "/help_docs/uc_mode/" in line and file_.count("/") >= 2:
+                line = line.replace(
+                    "/help_docs/uc_mode/", "/../help_docs/uc_mode/"
+                )
+                changed = True
             if "<!-- GitHub Only -->" in line:
                 changed = True
                 continue
