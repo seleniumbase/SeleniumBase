@@ -1323,6 +1323,9 @@ class BaseCase(unittest.TestCase):
 
     def go_back(self):
         self.__check_scope()
+        if self.__is_cdp_swap_needed():
+            self.cdp.go_back()
+            return
         if hasattr(self, "recorder_mode") and self.recorder_mode:
             self.save_recorded_actions()
         pre_action_url = None
@@ -1348,6 +1351,9 @@ class BaseCase(unittest.TestCase):
 
     def go_forward(self):
         self.__check_scope()
+        if self.__is_cdp_swap_needed():
+            self.cdp.go_forward()
+            return
         if hasattr(self, "recorder_mode") and self.recorder_mode:
             self.save_recorded_actions()
         self.__last_page_load_url = None
@@ -1732,6 +1738,9 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         partial_link_text = self.__get_type_checked_text(partial_link_text)
+        if self.__is_cdp_swap_needed():
+            self.cdp.find_element(partial_link_text, timeout=timeout).click()
+            return
         if not self.is_partial_link_text_present(partial_link_text):
             self.wait_for_partial_link_text_present(
                 partial_link_text, timeout=timeout
@@ -8133,6 +8142,8 @@ class BaseCase(unittest.TestCase):
     def is_chromium(self):
         """Return True if the browser is Chrome or Edge."""
         self.__check_scope()
+        if self.__is_cdp_swap_needed():
+            return True
         chromium = False
         if (
             "chrome" in self.driver.capabilities

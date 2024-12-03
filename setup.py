@@ -193,7 +193,7 @@ setup(
         'iniconfig==2.0.0',
         'pluggy==1.5.0',
         "py==1.11.0",  # Needed by pytest-html
-        'pytest==8.3.3',
+        'pytest==8.3.4',
         "pytest-html==2.0.1",  # Newer ones had issues
         'pytest-metadata==3.1.1',
         "pytest-ordering==0.6",
