@@ -22,11 +22,12 @@
 * Backwards compatibility for existing UC Mode scripts.
 * More configuration options when launching browsers.
 * More methods. (And bug-fixes for existing methods.)
+* `PyAutoGUI` integration for advanced stealth abilities.
 * Faster response time for support. (Eg. [Discord Chat](https://discord.gg/EdhQTn3EyE))
 
 --------
 
-### 🐙 <b translate="no">CDP Mode</b> usage:
+### 🐙 <b translate="no">CDP Mode</b> Usage:
 
 * **`sb.activate_cdp_mode(url)`**
 
@@ -34,16 +35,17 @@
 
 That disconnects WebDriver from Chrome (which prevents detection), and gives you access to `sb.cdp` methods (which don't trigger anti-bot checks).
 
-### 🐙 Here are some common `sb.cdp` methods:
+### 🐙 Here are a few common `sb.cdp` methods:
 
 * `sb.cdp.click(selector)`
 * `sb.cdp.click_if_visible(selector)`
+* `sb.cdp.gui_click_element(selector)`
 * `sb.cdp.type(selector, text)`
 * `sb.cdp.press_keys(selector, text)`
 * `sb.cdp.select_all(selector)`
 * `sb.cdp.get_text(selector)`
 
-When `type()` is too fast, use the slower `press_keys()` to avoid detection. You can also use `sb.sleep(seconds)` to slow things down.
+When `type()` is too fast, use the slower `press_keys()` to avoid detection. You can also use `sb.sleep(seconds)` to slow things down. Methods that start with `sb.cdp.gui` use `PyAutoGUI` for interaction.
 
 To use WebDriver methods again, call:
 
@@ -63,17 +65,13 @@ To find out if WebDriver is connected or disconnected, call:
 
 --------
 
-### 🐙 <b translate="no">CDP Mode</b> examples:
+### 🐙 <b translate="no">CDP Mode</b> Examples ([SeleniumBase/examples/cdp_mode](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode))
 
-> [SeleniumBase/examples/cdp_mode](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode)
-
-### 🔖 Example 1: (Pokemon site using Incapsula/Imperva protection with invisible reCAPTCHA)
-
-> [SeleniumBase/examples/cdp_mode/raw_pokemon.py](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode/raw_pokemon.py)
+<p><div /></p>
 
 <div></div>
 <details>
-<summary> ▶️ (<b>Click to expand code preview</b>)</summary>
+<summary> ▶️ 🔖 <b>Example 1: (Pokemon site using Incapsula/Imperva protection with invisible reCAPTCHA)</b></summary>
 
 ```python
 from seleniumbase import SB
@@ -127,13 +125,12 @@ with SB(uc=True, test=True, locale_code="en", ad_block=True) as sb:
 
 </details>
 
-### 🔖 Example 2: (Hyatt site using Kasada protection)
+> [SeleniumBase/examples/cdp_mode/raw_pokemon.py](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode/raw_pokemon.py)
 
-> [SeleniumBase/examples/cdp_mode/raw_hyatt.py](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode/raw_hyatt.py)
 
 <div></div>
 <details>
-<summary> ▶️ (<b>Click to expand code preview</b>)</summary>
+<summary> ▶️ 🔖 <b>Example 2: (Hyatt site using Kasada protection)</b></summary>
 
 ```python
 from seleniumbase import SB
@@ -157,30 +154,30 @@ with SB(uc=True, test=True, locale_code="en", ad_block=True) as sb:
     sb.sleep(1)
     sb.cdp.click('button[data-locator="find-hotels"]')
     sb.sleep(5)
-    hotel_names = sb.cdp.select_all(
-        'div[data-booking-status="BOOKABLE"] [class*="HotelCard_header"]'
-    )
-    hotel_prices = sb.cdp.select_all(
-        'div[data-booking-status="BOOKABLE"] div.rate'
-    )
-    sb.assert_true(len(hotel_names) == len(hotel_prices))
+    card_info = 'div[data-booking-status="BOOKABLE"] [class*="HotelCard_info"]'
+    hotels = sb.cdp.select_all(card_info)
     print("Hyatt Hotels in %s:" % location)
     print("(" + sb.cdp.get_text("ul.b-color_text-white") + ")")
-    if len(hotel_names) == 0:
+    if len(hotels) == 0:
         print("No availability over the selected dates!")
-    for i, hotel in enumerate(hotel_names):
-        print("* %s: %s => %s" % (i + 1, hotel.text, hotel_prices[i].text))
+    for hotel in hotels:
+        info = hotel.text.strip()
+        if "Avg/Night" in info and not info.startswith("Rates from"):
+            name = info.split("  (")[0].split(" + ")[0].split(" Award Cat")[0]
+            price = "?"
+            if "Rates from : " in info:
+                price = info.split("Rates from : ")[1].split(" Avg/Night")[0]
+            print("* %s => %s" % (name, price))
 ```
 
 </details>
 
-### 🔖 Example 3: (BestWestern site using DataDome protection)
+> [SeleniumBase/examples/cdp_mode/raw_hyatt.py](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode/raw_hyatt.py)
 
-* [SeleniumBase/examples/cdp_mode/raw_bestwestern.py](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode/raw_bestwestern.py)
 
 <div></div>
 <details>
-<summary> ▶️ (<b>Click to expand code preview</b>)</summary>
+<summary> ▶️ 🔖 <b>Example 3: (BestWestern site using DataDome protection)</b></summary>
 
 ```python
 from seleniumbase import SB
@@ -218,13 +215,12 @@ with SB(uc=True, test=True, locale_code="en", ad_block=True) as sb:
 
 </details>
 
-### 🔖 Example 4: (Walmart site using Akamai protection with PerimeterX)
+> [SeleniumBase/examples/cdp_mode/raw_bestwestern.py](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode/raw_bestwestern.py)
 
-* [SeleniumBase/examples/cdp_mode/raw_walmart.py](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode/raw_walmart.py)
 
 <div></div>
 <details>
-<summary> ▶️ (<b>Click to expand code preview</b>)</summary>
+<summary> ▶️ 🔖 <b>Example 4: (Walmart site using Akamai protection with PerimeterX)</b></summary>
 
 ```python
 from seleniumbase import SB
@@ -264,13 +260,12 @@ with SB(uc=True, test=True, locale_code="en", ad_block=True) as sb:
 
 </details>
 
-### 🔖 Example 5: (Nike site using Shape Security)
+> [SeleniumBase/examples/cdp_mode/raw_walmart.py](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode/raw_walmart.py)
 
-* [SeleniumBase/examples/cdp_mode/raw_nike.py](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode/raw_nike.py)
 
 <div></div>
 <details>
-<summary> ▶️ (<b>Click to expand code preview</b>)</summary>
+<summary> ▶️ 🔖 <b>Example 5: (Nike site using Shape Security)</b></summary>
 
 ```python
 from seleniumbase import SB
@@ -294,13 +289,17 @@ with SB(uc=True, test=True, locale_code="en", ad_block=True) as sb:
 
 </details>
 
+> [SeleniumBase/examples/cdp_mode/raw_nike.py](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode/raw_nike.py)
+
+<p><div /></p>
+
 (<b>Note:</b> Extra <code translate="no">sb.sleep()</code> calls have been added to prevent bot-detection because some sites will flag you as a bot if you perform actions too quickly.)
 
 (<b>Note:</b> Some sites may IP-block you for 36 hours or more if they catch you using regular <span translate="no">Selenium WebDriver</span>. Be extra careful when creating and/or modifying automation scripts that run on them.)
 
 --------
 
-### 🐙 CDP Mode API / Methods
+### 🐙 <b translate="no">CDP Mode</b> API / Methods
 
 (Some method args have been left out for simplicity. Eg: <code translate="no">timeout</code>)
 
@@ -323,6 +322,9 @@ sb.cdp.find_visible_elements(selector)
 sb.cdp.click_nth_element(selector, number)
 sb.cdp.click_nth_visible_element(selector, number)
 sb.cdp.click_link(link_text)
+sb.cdp.go_back()
+sb.cdp.go_forward()
+sb.cdp.get_navigation_history()
 sb.cdp.tile_windows(windows=None, max_columns=0)
 sb.cdp.get_all_cookies(*args, **kwargs)
 sb.cdp.set_all_cookies(*args, **kwargs)
@@ -434,7 +436,7 @@ sb.cdp.save_screenshot(name, folder=None, selector=None)
 
 --------
 
-### 🐙 CDP Mode WebElement API / Methods
+### 🐙 <b translate="no">CDP Mode</b> WebElement API / Methods
 
 ```python
 element.clear_input()

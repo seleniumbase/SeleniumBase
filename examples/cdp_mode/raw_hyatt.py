@@ -19,16 +19,17 @@ with SB(uc=True, test=True, locale_code="en", ad_block=True) as sb:
     sb.sleep(1)
     sb.cdp.click('button[data-locator="find-hotels"]')
     sb.sleep(5)
-    hotel_names = sb.cdp.select_all(
-        'div[data-booking-status="BOOKABLE"] [class*="HotelCard_header"]'
-    )
-    hotel_prices = sb.cdp.select_all(
-        'div[data-booking-status="BOOKABLE"] div.rate'
-    )
-    sb.assert_true(len(hotel_names) == len(hotel_prices))
+    card_info = 'div[data-booking-status="BOOKABLE"] [class*="HotelCard_info"]'
+    hotels = sb.cdp.select_all(card_info)
     print("Hyatt Hotels in %s:" % location)
     print("(" + sb.cdp.get_text("ul.b-color_text-white") + ")")
-    if len(hotel_names) == 0:
+    if len(hotels) == 0:
         print("No availability over the selected dates!")
-    for i, hotel in enumerate(hotel_names):
-        print("* %s: %s => %s" % (i + 1, hotel.text, hotel_prices[i].text))
+    for hotel in hotels:
+        info = hotel.text.strip()
+        if "Avg/Night" in info and not info.startswith("Rates from"):
+            name = info.split("  (")[0].split(" + ")[0].split(" Award Cat")[0]
+            price = "?"
+            if "Rates from : " in info:
+                price = info.split("Rates from : ")[1].split(" Avg/Night")[0]
+            print("* %s => %s" % (name, price))
