@@ -1423,8 +1423,8 @@ def _uc_gui_handle_captcha_(driver, frame="iframe", ctype=None):
             IS_WINDOWS
             and hasattr(pyautogui, "getActiveWindowTitle")
         ):
-            
-            # if there is no-active window then it returns "None" which is not expected in the code. 
+            # Fix for NoneType error: When getActiveWindowTitle() returns None,
+            # default to empty string so startswith() check doesn't fail
             py_a_g_title = pyautogui.getActiveWindowTitle() or ""
             window_title = driver.get_title()
             if not py_a_g_title.startswith(window_title):
