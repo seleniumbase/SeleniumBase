@@ -606,6 +606,9 @@ def uc_open_with_cdp_mode(driver, url=None):
     cdp.click_nth_element = CDPM.click_nth_element
     cdp.click_nth_visible_element = CDPM.click_nth_visible_element
     cdp.click_link = CDPM.click_link
+    cdp.go_back = CDPM.go_back
+    cdp.go_forward = CDPM.go_forward
+    cdp.get_navigation_history = CDPM.get_navigation_history
     cdp.tile_windows = CDPM.tile_windows
     cdp.get_all_cookies = CDPM.get_all_cookies
     cdp.set_all_cookies = CDPM.set_all_cookies
@@ -1419,11 +1422,8 @@ def _uc_gui_handle_captcha_(driver, frame="iframe", ctype=None):
             page_actions.switch_to_window(
                 driver, driver.current_window_handle, 2, uc_lock=False
             )
-        if (
-            IS_WINDOWS
-            and hasattr(pyautogui, "getActiveWindowTitle")
-        ):
-            py_a_g_title = pyautogui.getActiveWindowTitle()
+        if IS_WINDOWS and hasattr(pyautogui, "getActiveWindowTitle"):
+            py_a_g_title = pyautogui.getActiveWindowTitle() or ""
             window_title = driver.get_title()
             if not py_a_g_title.startswith(window_title):
                 window_rect = driver.get_window_rect()

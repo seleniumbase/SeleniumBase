@@ -289,6 +289,15 @@ class CDPMethods():
     def click_link(self, link_text):
         self.find_elements_by_text(link_text, "a")[0].click()
 
+    def go_back(self):
+        self.loop.run_until_complete(self.page.back())
+
+    def go_forward(self):
+        self.loop.run_until_complete(self.page.forward())
+
+    def get_navigation_history(self):
+        return self.loop.run_until_complete(self.page.get_navigation_history())
+
     def __clear_input(self, element):
         return (
             self.loop.run_until_complete(element.clear_input_async())

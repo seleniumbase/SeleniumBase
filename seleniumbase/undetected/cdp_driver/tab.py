@@ -636,6 +636,10 @@ class Tab(Connection):
         """History forward"""
         await self.send(cdp.runtime.evaluate("window.history.forward()"))
 
+    async def get_navigation_history(self):
+        """Get Navigation History"""
+        return await self.send(cdp.page.get_navigation_history())
+
     async def reload(
         self,
         ignore_cache: Optional[bool] = True,
