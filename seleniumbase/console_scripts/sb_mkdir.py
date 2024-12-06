@@ -259,6 +259,7 @@ def main():
     data.append("report_archives")
     data.append("archived_reports")
     data.append("html_report.html")
+    data.append("last_report.html")
     data.append("report.html")
     data.append("report.xml")
     data.append("dashboard.html")
