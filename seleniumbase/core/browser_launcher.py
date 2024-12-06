@@ -97,6 +97,13 @@ def log_d(message):
         print(message)
 
 
+def make_writable(file_path):
+    # Set permissions to: "If you can read it, you can write it."
+    mode = os.stat(file_path).st_mode
+    mode |= (mode & 0o444) >> 1  # copy R bits to W
+    os.chmod(file_path, mode)
+
+
 def make_executable(file_path):
     # Set permissions to: "If you can read it, you can execute it."
     mode = os.stat(file_path).st_mode
@@ -815,6 +822,13 @@ def install_pyautogui_if_missing(driver):
     pip_find_lock = fasteners.InterProcessLock(
         constants.PipInstall.FINDLOCK
     )
+    try:
+        with pip_find_lock:
+            pass
+    except Exception:
+        # Need write permissions
+        with suppress(Exception):
+            make_writable(constants.PipInstall.FINDLOCK)
     with pip_find_lock:  # Prevent issues with multiple processes
         try:
             import pyautogui

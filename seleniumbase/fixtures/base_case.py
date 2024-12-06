@@ -13983,6 +13983,15 @@ class BaseCase(unittest.TestCase):
             pip_find_lock = fasteners.InterProcessLock(
                 constants.PipInstall.FINDLOCK
             )
+            try:
+                with pip_find_lock:
+                    pass
+            except Exception:
+                # Need write permissions
+                with suppress(Exception):
+                    mode = os.stat(constants.PipInstall.FINDLOCK).st_mode
+                    mode |= (mode & 0o444) >> 1  # copy R bits to W
+                    os.chmod(constants.PipInstall.FINDLOCK, mode)
             with pip_find_lock:  # Prevent issues with multiple processes
                 if self.undetectable and not (self.headless or self.headless2):
                     import Xlib.display
