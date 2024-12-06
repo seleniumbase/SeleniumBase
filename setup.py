@@ -164,7 +164,7 @@ setup(
         'platformdirs>=4.3.6',
         'typing-extensions>=4.12.2',
         "sbvirtualdisplay>=1.3.0",
-        "six>=1.16.0",
+        "six>=1.17.0",
         'parse>=1.20.2',
         'parse-type>=0.6.4',
         'colorama>=0.4.6',
@@ -192,9 +192,8 @@ setup(
         'execnet==2.1.1',
         'iniconfig==2.0.0',
         'pluggy==1.5.0',
-        "py==1.11.0",  # Needed by pytest-html
         'pytest==8.3.4',
-        "pytest-html==2.0.1",  # Newer ones had issues
+        "pytest-html==4.1.1",
         'pytest-metadata==3.1.1',
         "pytest-ordering==0.6",
         'pytest-rerunfailures==14.0;python_version<"3.9"',
