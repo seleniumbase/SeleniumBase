@@ -1709,6 +1709,7 @@ def pytest_configure(config):
     sb_config._saved_dashboard_pie = None  # Copy of pie chart for html report
     sb_config._dash_final_summary = None  # Dash status to add to html report
     sb_config._html_report_name = None  # The name of the pytest html report
+    sb_config._html_report_copy = None  # The copy of the pytest html report
 
     arg_join = " ".join(sys_argv)
     if (
@@ -1742,6 +1743,7 @@ def pytest_configure(config):
         if sb_config.dashboard:
             if sb_config._html_report_name == "dashboard.html":
                 sb_config._dash_is_html_report = True
+        sb_config._html_report_copy = "last_report.html"
 
     # Recorder Mode does not support multi-threaded / multi-process runs.
     if sb_config.recorder_mode and sb_config._multithreaded:
@@ -2151,6 +2153,10 @@ def _perform_pytest_unconfigure_(config):
             html_report_path = os.path.join(
                 abs_path, sb_config._html_report_name
             )
+        if sb_config._html_report_copy:
+            html_report_path_copy = os.path.join(
+                abs_path, sb_config._html_report_copy
+            )
         if (
             sb_config._using_html_report
             and html_report_path
@@ -2200,6 +2206,8 @@ def _perform_pytest_unconfigure_(config):
                 the_html_r[:rc_loc] + new_time + the_html_r[end_rc_loc:]
             )
             with open(html_report_path, "w", encoding="utf-8") as f:
+                f.write(the_html_r)  # Finalize the HTML report
+            with open(html_report_path_copy, "w", encoding="utf-8") as f:
                 f.write(the_html_r)  # Finalize the HTML report
         # Done with "pytest_unconfigure" unless using the Dashboard
         return
@@ -2288,6 +2296,10 @@ def _perform_pytest_unconfigure_(config):
                 html_report_path = os.path.join(
                     abs_path, sb_config._html_report_name
                 )
+            if sb_config._html_report_copy:
+                html_report_path_copy = os.path.join(
+                    abs_path, sb_config._html_report_copy
+                )
             if (
                 sb_config._using_html_report
                 and html_report_path
@@ -2357,6 +2369,8 @@ def _perform_pytest_unconfigure_(config):
                     the_html_r[:rc_loc] + new_time + the_html_r[end_rc_loc:]
                 )
                 with open(html_report_path, "w", encoding="utf-8") as f:
+                    f.write(the_html_r)  # Finalize the HTML report
+                with open(html_report_path_copy, "w", encoding="utf-8") as f:
                     f.write(the_html_r)  # Finalize the HTML report
     except KeyboardInterrupt:
         pass
