@@ -120,7 +120,7 @@ def main():
 
     data = []
     data.append("[pytest]")
-    data.append("addopts = --capture=no -p no:cacheprovider")
+    data.append("addopts = --capture=tee-sys -p no:cacheprovider")
     data.append("norecursedirs = .* build dist recordings temp assets")
     data.append("filterwarnings =")
     data.append("    ignore::pytest.PytestWarning")

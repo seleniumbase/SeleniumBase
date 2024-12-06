@@ -17,6 +17,7 @@ if sys.version_info >= (3, 11):
     python3_11_or_newer = True
 py311_patch2 = constants.PatchPy311.PATCH
 sys_argv = sys.argv
+full_time = None
 pytest_plugins = ["pytester"]  # Adds the "testdir" fixture
 
 
@@ -2038,11 +2039,15 @@ def pytest_runtest_teardown(item):
         if (
             "-s" in sys_argv
             or "--capture=no" in sys_argv
+            or "--capture=tee-sys" in sys_argv
             or (
                 hasattr(sb_config.pytest_config, "invocation_params")
                 and (
                     "-s" in sb_config.pytest_config.invocation_params.args
                     or "--capture=no" in (
+                        sb_config.pytest_config.invocation_params.args
+                    )
+                    or "--capture=tee-sys" in (
                         sb_config.pytest_config.invocation_params.args
                     )
                 )
@@ -2051,6 +2056,10 @@ def pytest_runtest_teardown(item):
             print("\n=> Fail Page: %s" % sb_config._fail_page)
         else:
             sys.stdout.write("\n=> Fail Page: %s\n" % sb_config._fail_page)
+
+
+def pytest_html_duration_format(duration):
+    return "%.2f" % duration
 
 
 def pytest_sessionfinish(session):
@@ -2103,9 +2112,11 @@ def pytest_terminal_summary(terminalreporter):
         )
 
 
-def _perform_pytest_unconfigure_():
+def _perform_pytest_unconfigure_(config):
     from seleniumbase.core import proxy_helper
 
+    reporter = config.pluginmanager.get_plugin("terminalreporter")
+    duration = time.time() - reporter._sessionstarttime
     if (
         (hasattr(sb_config, "multi_proxy") and not sb_config.multi_proxy)
         or not hasattr(sb_config, "multi_proxy")
@@ -2133,6 +2144,63 @@ def _perform_pytest_unconfigure_():
     log_helper.clear_empty_logs()
     # Dashboard post-processing: Disable time-based refresh and stamp complete
     if not hasattr(sb_config, "dashboard") or not sb_config.dashboard:
+        html_report_path = None
+        the_html_r = None
+        abs_path = os.path.abspath(".")
+        if sb_config._html_report_name:
+            html_report_path = os.path.join(
+                abs_path, sb_config._html_report_name
+            )
+        if (
+            sb_config._using_html_report
+            and html_report_path
+            and os.path.exists(html_report_path)
+        ):
+            with open(html_report_path, "r", encoding="utf-8") as f:
+                the_html_r = f.read()
+            assets_chunk = "if (assets.length === 1) {"
+            remove_media = "container.classList.remove('media-container')"
+            rm_n_left = '<div class="media-container__nav--left"><</div>'
+            rm_n_right = '<div class="media-container__nav--right">></div>'
+            the_html_r = the_html_r.replace(
+                assets_chunk,
+                "%s %s" % (assets_chunk, remove_media),
+            )
+            the_html_r = the_html_r.replace(rm_n_left, "")
+            the_html_r = the_html_r.replace(rm_n_right, "")
+            the_html_r = the_html_r.replace("<ul>$", "$")
+            the_html_r = the_html_r.replace("}<ul>", "}")
+            the_html_r = the_html_r.replace(
+                "<li>${val}</li>", "${val},&nbsp;&nbsp;"
+            )
+            the_html_r = the_html_r.replace(
+                "<div>${value}</div>", "<span>${value}</span"
+            )
+            ph_link = '<a href="https://pypi.python.org/pypi/pytest-html">'
+            sb_link = (
+                '<a href="https://github.com/seleniumbase/SeleniumBase">'
+                'SeleniumBase</a>'
+            )
+            the_html_r = the_html_r.replace(
+                ph_link, "%s and %s" % (sb_link, ph_link)
+            )
+            the_html_r = the_html_r.replace(
+                "mediaName.innerText", "//mediaName.innerText"
+            )
+            the_html_r = the_html_r.replace(
+                "counter.innerText", "//counter.innerText"
+            )
+            run_count = '<p class="run-count">'
+            run_c_loc = the_html_r.find(run_count)
+            rc_loc = the_html_r.find(" took ", run_c_loc)
+            end_rc_loc = the_html_r.find(".</p>", rc_loc)
+            run_time = "%.2f" % duration
+            new_time = " ran in %s seconds" % run_time
+            the_html_r = (
+                the_html_r[:rc_loc] + new_time + the_html_r[end_rc_loc:]
+            )
+            with open(html_report_path, "w", encoding="utf-8") as f:
+                f.write(the_html_r)  # Finalize the HTML report
         # Done with "pytest_unconfigure" unless using the Dashboard
         return
     stamp = ""
@@ -2237,7 +2305,7 @@ def _perform_pytest_unconfigure_():
                     elif "\\" in h_r_name and h_r_name.endswith(".html"):
                         h_r_name = h_r_name.split("\\")[-1]
                     the_html_r = the_html_r.replace(
-                        "<h1>%s</h1>" % h_r_name,
+                        '<h1 id="title">%s</h1>' % h_r_name,
                         sb_config._saved_dashboard_pie,
                     )
                     the_html_r = the_html_r.replace(
@@ -2247,6 +2315,47 @@ def _perform_pytest_unconfigure_():
                     )
                     if sb_config._dash_final_summary:
                         the_html_r += sb_config._dash_final_summary
+                assets_chunk = "if (assets.length === 1) {"
+                remove_media = "container.classList.remove('media-container')"
+                rm_n_left = '<div class="media-container__nav--left"><</div>'
+                rm_n_right = '<div class="media-container__nav--right">></div>'
+                the_html_r = the_html_r.replace(
+                    assets_chunk,
+                    "%s %s" % (assets_chunk, remove_media),
+                )
+                the_html_r = the_html_r.replace(rm_n_left, "")
+                the_html_r = the_html_r.replace(rm_n_right, "")
+                the_html_r = the_html_r.replace("<ul>$", "$")
+                the_html_r = the_html_r.replace("}<ul>", "}")
+                the_html_r = the_html_r.replace(
+                    "<li>${val}</li>", "${val},&nbsp;&nbsp;"
+                )
+                the_html_r = the_html_r.replace(
+                    "<div>${value}</div>", "<span>${value}</span"
+                )
+                ph_link = '<a href="https://pypi.python.org/pypi/pytest-html">'
+                sb_link = (
+                    '<a href="https://github.com/seleniumbase/SeleniumBase">'
+                    'SeleniumBase</a>'
+                )
+                the_html_r = the_html_r.replace(
+                    ph_link, "%s and %s" % (sb_link, ph_link)
+                )
+                the_html_r = the_html_r.replace(
+                    "mediaName.innerText", "//mediaName.innerText"
+                )
+                the_html_r = the_html_r.replace(
+                    "counter.innerText", "//counter.innerText"
+                )
+                run_count = '<p class="run-count">'
+                run_c_loc = the_html_r.find(run_count)
+                rc_loc = the_html_r.find(" took ", run_c_loc)
+                end_rc_loc = the_html_r.find(".</p>", rc_loc)
+                run_time = "%.2f" % duration
+                new_time = " ran in %s seconds" % run_time
+                the_html_r = (
+                    the_html_r[:rc_loc] + new_time + the_html_r[end_rc_loc:]
+                )
                 with open(html_report_path, "w", encoding="utf-8") as f:
                     f.write(the_html_r)  # Finalize the HTML report
     except KeyboardInterrupt:
@@ -2281,19 +2390,19 @@ def pytest_unconfigure(config):
                         with open(dashboard_path, "w", encoding="utf-8") as f:
                             f.write(sb_config._dash_html)
                     # Dashboard Multithreaded
-                    _perform_pytest_unconfigure_()
+                    _perform_pytest_unconfigure_(config)
                     return
             else:
                 # Dash Lock is missing
-                _perform_pytest_unconfigure_()
+                _perform_pytest_unconfigure_(config)
                 return
         with dash_lock:
             # Multi-threaded tests
-            _perform_pytest_unconfigure_()
+            _perform_pytest_unconfigure_(config)
             return
     else:
         # Single-threaded tests
-        _perform_pytest_unconfigure_()
+        _perform_pytest_unconfigure_(config)
         return
 
 
@@ -2442,7 +2551,7 @@ def pytest_runtest_makereport(item, call):
                 return
             extra = getattr(report, "extra", [])
             if len(extra_report) > 1 and extra_report[1]["content"]:
-                report.extra = extra + extra_report
+                report.extras = extra + extra_report
             if sb_config._dash_is_html_report:
                 # If the Dashboard URL is the same as the HTML Report URL,
                 # have the html report refresh back to a dashboard on update.
@@ -2450,4 +2559,4 @@ def pytest_runtest_makereport(item, call):
                     '<script type="text/javascript" src="%s">'
                     "</script>" % constants.Dashboard.LIVE_JS
                 )
-                report.extra.append(pytest_html.extras.html(refresh_updates))
+                report.extras.append(pytest_html.extras.html(refresh_updates))
