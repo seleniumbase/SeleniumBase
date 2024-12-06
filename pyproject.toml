@@ -56,7 +56,7 @@ packages = [
 ]
 
 [tool.pytest.ini_options]
-addopts = ["--capture=no", "-p no:cacheprovider"]
+addopts = ["--capture=tee-sys", "-p no:cacheprovider"]
 norecursedirs = [".*", "build", "dist", "recordings", "temp", "assets"]
 filterwarnings = [
     "ignore::pytest.PytestWarning",

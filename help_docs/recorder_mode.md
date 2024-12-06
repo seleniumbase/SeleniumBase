@@ -75,7 +75,7 @@ sbase print ./recordings/TEST_NAME_rec.py -n
 cp ./recordings/TEST_NAME_rec.py ./TEST_NAME.py
 ```
 
-The first command creates a boilerplate test with a breakpoint; the second command runs the test with the Recorder activated; the third command prints the completed test to the console; and the fourth command replaces the initial boilerplate with the completed test. If you're just experimenting with the Recorder, you can run the second command as many times as you want, and it'll override previous recordings saved to ``./recordings/TEST_NAME_rec.py``. (Note that ``-s`` is needed to allow breakpoints, unless you already have a ``pytest.ini`` file present with ``addopts = --capture=no`` in it. The ``-q`` is optional, which shortens ``pytest`` console output.)
+The first command creates a boilerplate test with a breakpoint; the second command runs the test with the Recorder activated; the third command prints the completed test to the console; and the fourth command replaces the initial boilerplate with the completed test. If you're just experimenting with the Recorder, you can run the second command as many times as you want, and it'll override previous recordings saved to ``./recordings/TEST_NAME_rec.py``. (Note that ``-s`` is needed to allow breakpoints, unless you already have a ``pytest.ini`` file present where you set it. The ``-q`` is optional, which shortens ``pytest`` console output.)
 
 ⏺️ You can also use the Recorder to add code to an existing test. To do that, you'll first need to create a breakpoint in your code to insert manual browser actions:
 
