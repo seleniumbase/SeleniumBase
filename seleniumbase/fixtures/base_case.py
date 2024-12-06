@@ -13974,12 +13974,82 @@ class BaseCase(unittest.TestCase):
             self.headless_active = True
             sb_config.headless_active = True
 
+    def __activate_virtual_display(self):
+        if self.undetectable and not (self.headless or self.headless2):
+            from sbvirtualdisplay import Display
+            import Xlib.display
+            try:
+                if not self._xvfb_width:
+                    self._xvfb_width = 1366
+                if not self._xvfb_height:
+                    self._xvfb_height = 768
+                self._xvfb_display = Display(
+                    visible=True,
+                    size=(self._xvfb_width, self._xvfb_height),
+                    backend="xvfb",
+                    use_xauth=True,
+                )
+                self._xvfb_display.start()
+                if "DISPLAY" not in os.environ.keys():
+                    print(
+                        "\nX11 display failed! Will use regular xvfb!"
+                    )
+                    self.__activate_standard_virtual_display()
+            except Exception as e:
+                if hasattr(e, "msg"):
+                    print("\n" + str(e.msg))
+                else:
+                    print(e)
+                print("\nX11 display failed! Will use regular xvfb!")
+                self.__activate_standard_virtual_display()
+                return
+            pyautogui_is_installed = False
+            try:
+                import pyautogui
+                with suppress(Exception):
+                    use_pyautogui_ver = constants.PyAutoGUI.VER
+                    if pyautogui.__version__ != use_pyautogui_ver:
+                        del pyautogui  # To get newer ver
+                        shared_utils.pip_install(
+                            "pyautogui", version=use_pyautogui_ver
+                        )
+                        import pyautogui
+                pyautogui_is_installed = True
+            except Exception:
+                message = (
+                    "PyAutoGUI is required for UC Mode on Linux! "
+                    "Installing now..."
+                )
+                print("\n" + message)
+                shared_utils.pip_install(
+                    "pyautogui", version=constants.PyAutoGUI.VER
+                )
+                import pyautogui
+                pyautogui_is_installed = True
+            if (
+                pyautogui_is_installed
+                and hasattr(pyautogui, "_pyautogui_x11")
+            ):
+                try:
+                    pyautogui._pyautogui_x11._display = (
+                        Xlib.display.Display(os.environ['DISPLAY'])
+                    )
+                    sb_config._pyautogui_x11_display = (
+                        pyautogui._pyautogui_x11._display
+                    )
+                except Exception as e:
+                    if hasattr(e, "msg"):
+                        print("\n" + str(e.msg))
+                    else:
+                        print(e)
+        else:
+            self.__activate_standard_virtual_display()
+
     def __activate_virtual_display_as_needed(self):
         """This is only needed on Linux.
         The "--xvfb" arg is still useful, as it prevents headless mode,
         which is the default mode on Linux unless using another arg."""
         if "linux" in sys.platform and (not self.headed or self.xvfb):
-            from sbvirtualdisplay import Display
             pip_find_lock = fasteners.InterProcessLock(
                 constants.PipInstall.FINDLOCK
             )
@@ -13992,75 +14062,15 @@ class BaseCase(unittest.TestCase):
                     mode = os.stat(constants.PipInstall.FINDLOCK).st_mode
                     mode |= (mode & 0o444) >> 1  # copy R bits to W
                     os.chmod(constants.PipInstall.FINDLOCK, mode)
+                try:
+                    with pip_find_lock:
+                        pass
+                except Exception:
+                    # Since missing permissions, skip the locks
+                    self.__activate_virtual_display()
+                    return
             with pip_find_lock:  # Prevent issues with multiple processes
-                if self.undetectable and not (self.headless or self.headless2):
-                    import Xlib.display
-                    try:
-                        if not self._xvfb_width:
-                            self._xvfb_width = 1366
-                        if not self._xvfb_height:
-                            self._xvfb_height = 768
-                        self._xvfb_display = Display(
-                            visible=True,
-                            size=(self._xvfb_width, self._xvfb_height),
-                            backend="xvfb",
-                            use_xauth=True,
-                        )
-                        self._xvfb_display.start()
-                        if "DISPLAY" not in os.environ.keys():
-                            print(
-                                "\nX11 display failed! Will use regular xvfb!"
-                            )
-                            self.__activate_standard_virtual_display()
-                    except Exception as e:
-                        if hasattr(e, "msg"):
-                            print("\n" + str(e.msg))
-                        else:
-                            print(e)
-                        print("\nX11 display failed! Will use regular xvfb!")
-                        self.__activate_standard_virtual_display()
-                        return
-                    pyautogui_is_installed = False
-                    try:
-                        import pyautogui
-                        with suppress(Exception):
-                            use_pyautogui_ver = constants.PyAutoGUI.VER
-                            if pyautogui.__version__ != use_pyautogui_ver:
-                                del pyautogui  # To get newer ver
-                                shared_utils.pip_install(
-                                    "pyautogui", version=use_pyautogui_ver
-                                )
-                                import pyautogui
-                        pyautogui_is_installed = True
-                    except Exception:
-                        message = (
-                            "PyAutoGUI is required for UC Mode on Linux! "
-                            "Installing now..."
-                        )
-                        print("\n" + message)
-                        shared_utils.pip_install(
-                            "pyautogui", version=constants.PyAutoGUI.VER
-                        )
-                        import pyautogui
-                        pyautogui_is_installed = True
-                    if (
-                        pyautogui_is_installed
-                        and hasattr(pyautogui, "_pyautogui_x11")
-                    ):
-                        try:
-                            pyautogui._pyautogui_x11._display = (
-                                Xlib.display.Display(os.environ['DISPLAY'])
-                            )
-                            sb_config._pyautogui_x11_display = (
-                                pyautogui._pyautogui_x11._display
-                            )
-                        except Exception as e:
-                            if hasattr(e, "msg"):
-                                print("\n" + str(e.msg))
-                            else:
-                                print(e)
-                else:
-                    self.__activate_standard_virtual_display()
+                self.__activate_virtual_display()
 
     def __ad_block_as_needed(self):
         """This is an internal method for handling ad-blocking.

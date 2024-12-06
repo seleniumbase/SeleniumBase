@@ -817,6 +817,63 @@ def verify_pyautogui_has_a_headed_browser(driver):
         )
 
 
+def __install_pyautogui_if_missing():
+    try:
+        import pyautogui
+        with suppress(Exception):
+            use_pyautogui_ver = constants.PyAutoGUI.VER
+            if pyautogui.__version__ != use_pyautogui_ver:
+                del pyautogui
+                shared_utils.pip_install(
+                    "pyautogui", version=use_pyautogui_ver
+                )
+                import pyautogui
+    except Exception:
+        print("\nPyAutoGUI required! Installing now...")
+        shared_utils.pip_install(
+            "pyautogui", version=constants.PyAutoGUI.VER
+        )
+        try:
+            import pyautogui
+        except Exception:
+            if (
+                IS_LINUX
+                and hasattr(sb_config, "xvfb")
+                and hasattr(sb_config, "headed")
+                and hasattr(sb_config, "headless")
+                and hasattr(sb_config, "headless2")
+                and (not sb_config.headed or sb_config.xvfb)
+                and not (sb_config.headless or sb_config.headless2)
+            ):
+                from sbvirtualdisplay import Display
+                xvfb_width = 1366
+                xvfb_height = 768
+                if (
+                    hasattr(sb_config, "_xvfb_width")
+                    and sb_config._xvfb_width
+                    and isinstance(sb_config._xvfb_width, int)
+                    and hasattr(sb_config, "_xvfb_height")
+                    and sb_config._xvfb_height
+                    and isinstance(sb_config._xvfb_height, int)
+                ):
+                    xvfb_width = sb_config._xvfb_width
+                    xvfb_height = sb_config._xvfb_height
+                    if xvfb_width < 1024:
+                        xvfb_width = 1024
+                    sb_config._xvfb_width = xvfb_width
+                    if xvfb_height < 768:
+                        xvfb_height = 768
+                    sb_config._xvfb_height = xvfb_height
+                with suppress(Exception):
+                    xvfb_display = Display(
+                        visible=True,
+                        size=(xvfb_width, xvfb_height),
+                        backend="xvfb",
+                        use_xauth=True,
+                    )
+                    xvfb_display.start()
+
+
 def install_pyautogui_if_missing(driver):
     verify_pyautogui_has_a_headed_browser(driver)
     pip_find_lock = fasteners.InterProcessLock(
@@ -829,61 +886,15 @@ def install_pyautogui_if_missing(driver):
         # Need write permissions
         with suppress(Exception):
             make_writable(constants.PipInstall.FINDLOCK)
-    with pip_find_lock:  # Prevent issues with multiple processes
         try:
-            import pyautogui
-            with suppress(Exception):
-                use_pyautogui_ver = constants.PyAutoGUI.VER
-                if pyautogui.__version__ != use_pyautogui_ver:
-                    del pyautogui
-                    shared_utils.pip_install(
-                        "pyautogui", version=use_pyautogui_ver
-                    )
-                    import pyautogui
+            with pip_find_lock:
+                pass
         except Exception:
-            print("\nPyAutoGUI required! Installing now...")
-            shared_utils.pip_install(
-                "pyautogui", version=constants.PyAutoGUI.VER
-            )
-            try:
-                import pyautogui
-            except Exception:
-                if (
-                    IS_LINUX
-                    and hasattr(sb_config, "xvfb")
-                    and hasattr(sb_config, "headed")
-                    and hasattr(sb_config, "headless")
-                    and hasattr(sb_config, "headless2")
-                    and (not sb_config.headed or sb_config.xvfb)
-                    and not (sb_config.headless or sb_config.headless2)
-                ):
-                    from sbvirtualdisplay import Display
-                    xvfb_width = 1366
-                    xvfb_height = 768
-                    if (
-                        hasattr(sb_config, "_xvfb_width")
-                        and sb_config._xvfb_width
-                        and isinstance(sb_config._xvfb_width, int)
-                        and hasattr(sb_config, "_xvfb_height")
-                        and sb_config._xvfb_height
-                        and isinstance(sb_config._xvfb_height, int)
-                    ):
-                        xvfb_width = sb_config._xvfb_width
-                        xvfb_height = sb_config._xvfb_height
-                        if xvfb_width < 1024:
-                            xvfb_width = 1024
-                        sb_config._xvfb_width = xvfb_width
-                        if xvfb_height < 768:
-                            xvfb_height = 768
-                        sb_config._xvfb_height = xvfb_height
-                    with suppress(Exception):
-                        xvfb_display = Display(
-                            visible=True,
-                            size=(xvfb_width, xvfb_height),
-                            backend="xvfb",
-                            use_xauth=True,
-                        )
-                        xvfb_display.start()
+            # Since missing permissions, skip the locks
+            __install_pyautogui_if_missing()
+            return
+    with pip_find_lock:  # Prevent issues with multiple processes
+        __install_pyautogui_if_missing()
 
 
 def get_configured_pyautogui(pyautogui_copy):
