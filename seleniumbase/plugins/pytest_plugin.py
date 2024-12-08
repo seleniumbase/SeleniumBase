@@ -2209,6 +2209,20 @@ def _perform_pytest_unconfigure_(config):
                 f.write(the_html_r)  # Finalize the HTML report
             with open(html_report_path_copy, "w", encoding="utf-8") as f:
                 f.write(the_html_r)  # Finalize the HTML report
+            assets_style = "./assets/style.css"
+            if os.path.exists(assets_style):
+                html_style = None
+                with open(assets_style, "r", encoding="utf-8") as f:
+                    html_style = f.read()
+                if html_style:
+                    html_style = html_style.replace("top: -50px;", "top: 2px;")
+                    html_style = html_style.replace("+ 50px)", "+ 40px)")
+                    html_style = html_style.replace("ht: 240px;", "ht: 228px;")
+                    html_style = html_style.replace(
+                        "- 80px);", "- 80px);\n  margin-bottom: -42px;"
+                    )
+                with open(assets_style, "w", encoding="utf-8") as f:
+                    f.write(html_style)
         # Done with "pytest_unconfigure" unless using the Dashboard
         return
     stamp = ""
@@ -2290,6 +2304,20 @@ def _perform_pytest_unconfigure_(config):
                 )
             with open(dashboard_path, "w", encoding="utf-8") as f:
                 f.write(the_html_d)  # Finalize the dashboard
+            assets_style = "./assets/style.css"
+            if os.path.exists(assets_style):
+                html_style = None
+                with open(assets_style, "r", encoding="utf-8") as f:
+                    html_style = f.read()
+                if html_style:
+                    html_style = html_style.replace("top: -50px;", "top: 2px;")
+                    html_style = html_style.replace("+ 50px)", "+ 40px)")
+                    html_style = html_style.replace("ht: 240px;", "ht: 228px;")
+                    html_style = html_style.replace(
+                        "- 80px);", "- 80px);\n  margin-bottom: -42px;"
+                    )
+                with open(assets_style, "w", encoding="utf-8") as f:
+                    f.write(html_style)
             # Part 2: Appending a pytest html report with dashboard data
             html_report_path = None
             if sb_config._html_report_name:

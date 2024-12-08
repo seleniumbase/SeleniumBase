@@ -34,6 +34,8 @@ class MyTourClass(BaseCase):
         self.wait_for_element("#searchboxinput", timeout=20)
         self.wait_for_element("#minimap", timeout=20)
         self.wait_for_element("#zoom", timeout=20)
+        self.wait_for_element("#widget-zoom-out")
+        self.wait_for_element('[jsaction*="minimap.main;"]')
 
         self.set_introjs_colors("#f26721", "#db5409")
         self.create_introjs_tour()

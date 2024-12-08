@@ -7042,6 +7042,8 @@ class BaseCase(unittest.TestCase):
                 constants.PipInstall.FINDLOCK
             )
             with pip_find_lock:
+                with suppress(Exception):
+                    shared_utils.make_writable(constants.PipInstall.FINDLOCK)
                 if sys.version_info < (3, 9):
                     # Fix bug in newer cryptography for Python 3.7 and 3.8:
                     # "pyo3_runtime.PanicException: Python API call failed"
@@ -7292,6 +7294,8 @@ class BaseCase(unittest.TestCase):
                 constants.PipInstall.FINDLOCK
             )
             with pip_find_lock:
+                with suppress(Exception):
+                    shared_utils.make_writable(constants.PipInstall.FINDLOCK)
                 try:
                     from PIL import Image, ImageDraw
                 except Exception:
@@ -7337,6 +7341,10 @@ class BaseCase(unittest.TestCase):
             constants.MultiBrowser.DOWNLOAD_FILE_LOCK
         )
         with download_file_lock:
+            with suppress(Exception):
+                shared_utils.make_writable(
+                    constants.MultiBrowser.DOWNLOAD_FILE_LOCK
+                )
             if not destination_folder:
                 destination_folder = constants.Files.DOWNLOADS_FOLDER
             if not os.path.exists(destination_folder):
@@ -7357,6 +7365,10 @@ class BaseCase(unittest.TestCase):
             constants.MultiBrowser.DOWNLOAD_FILE_LOCK
         )
         with download_file_lock:
+            with suppress(Exception):
+                shared_utils.make_writable(
+                    constants.MultiBrowser.DOWNLOAD_FILE_LOCK
+                )
             if not destination_folder:
                 destination_folder = constants.Files.DOWNLOADS_FOLDER
             if not os.path.exists(destination_folder):
@@ -7462,6 +7474,8 @@ class BaseCase(unittest.TestCase):
             constants.MultiBrowser.FILE_IO_LOCK
         )
         with file_io_lock:
+            with suppress(Exception):
+                shared_utils.make_writable(constants.MultiBrowser.FILE_IO_LOCK)
             with open(fpath, "r") as f:
                 data = f.read().strip()
         return data
@@ -14057,19 +14071,12 @@ class BaseCase(unittest.TestCase):
                 with pip_find_lock:
                     pass
             except Exception:
-                # Need write permissions
-                with suppress(Exception):
-                    mode = os.stat(constants.PipInstall.FINDLOCK).st_mode
-                    mode |= (mode & 0o444) >> 1  # copy R bits to W
-                    os.chmod(constants.PipInstall.FINDLOCK, mode)
-                try:
-                    with pip_find_lock:
-                        pass
-                except Exception:
-                    # Since missing permissions, skip the locks
-                    self.__activate_virtual_display()
-                    return
+                # Since missing permissions, skip the locks
+                self.__activate_virtual_display()
+                return
             with pip_find_lock:  # Prevent issues with multiple processes
+                with suppress(Exception):
+                    shared_utils.make_writable(constants.PipInstall.FINDLOCK)
                 self.__activate_virtual_display()
 
     def __ad_block_as_needed(self):
@@ -15091,6 +15098,10 @@ class BaseCase(unittest.TestCase):
         if self.dashboard:
             if self._multithreaded:
                 with self.dash_lock:
+                    with suppress(Exception):
+                        shared_utils.make_writable(
+                            constants.Dashboard.LOCKFILE
+                        )
                     if not self._dash_initialized:
                         sb_config._dashboard_initialized = True
                         self._dash_initialized = True
@@ -15650,6 +15661,8 @@ class BaseCase(unittest.TestCase):
                 constants.Dashboard.LOCKFILE
             )
             with self.dash_lock:
+                with suppress(Exception):
+                    shared_utils.make_writable(constants.Dashboard.LOCKFILE)
                 self.__process_dashboard(has_exception, init)
         else:
             self.__process_dashboard(has_exception, init)
@@ -16419,6 +16432,10 @@ class BaseCase(unittest.TestCase):
                 if self.dashboard:
                     if self._multithreaded:
                         with self.dash_lock:
+                            with suppress(Exception):
+                                shared_utils.make_writable(
+                                    constants.Dashboard.LOCKFILE
+                                )
                             self.__process_dashboard(has_exception)
                     else:
                         self.__process_dashboard(has_exception)

@@ -34,6 +34,8 @@ class MyTourClass(BaseCase):
         self.wait_for_element("#searchboxinput", timeout=20)
         self.wait_for_element("#minimap", timeout=20)
         self.wait_for_element("#zoom", timeout=20)
+        self.wait_for_element("#widget-zoom-out")
+        self.wait_for_element('[jsaction*="minimap.main;"]')
 
         self.create_shepherd_tour(theme="dark")
         self.add_tour_step("Welcome to Google Maps!")

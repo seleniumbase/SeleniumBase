@@ -1,4 +1,5 @@
 import sys
+import textwrap
 from seleniumbase.fixtures import constants
 
 
@@ -116,6 +117,7 @@ def get_report_style():
         }
         </style>"""
     )
+    style = textwrap.dedent(style)
     Saved.report_style = style
     return style
 
@@ -132,6 +134,7 @@ def get_bt_backdrop_style():
             box-shadow: 0 0 0 88422px rgba(0, 0, 0, 0.42);
             pointer-events: auto !important;
         }"""
+    bt_backdrop_style = textwrap.dedent(bt_backdrop_style)
     Saved.bt_backdrop_style = bt_backdrop_style
     return bt_backdrop_style
 
@@ -150,6 +153,7 @@ def get_dt_backdrop_style():
         button.driver-prev-btn.driver-disabled {
             visibility: hidden;
         }"""
+    dt_backdrop_style = textwrap.dedent(dt_backdrop_style)
     Saved.dt_backdrop_style = dt_backdrop_style
     return dt_backdrop_style
 
@@ -167,6 +171,7 @@ def get_messenger_style():
             box-shadow: 2px 2px 9px 4px rgba(32, 142, 120, 0.28),
             2px 2px 9px 4px rgba(200, 240, 80, 0.34) !important;
         }""" % font_family
+    messenger_style = textwrap.dedent(messenger_style)
     Saved.messenger_style = messenger_style
     return messenger_style
 
@@ -181,6 +186,7 @@ def get_sh_style_test():
             scrollTo: true
           }
         });"""
+    sh_style_test = textwrap.dedent(sh_style_test)
     Saved.sh_style_test = sh_style_test
     return sh_style_test
 
@@ -193,6 +199,7 @@ def get_hops_backdrop_style():
         .hopscotch-bubble-container {
             font-size: 110%;
         }"""
+    hops_backdrop_style = textwrap.dedent(hops_backdrop_style)
     Saved.hops_backdrop_style = hops_backdrop_style
     return hops_backdrop_style
 
@@ -227,6 +234,7 @@ def get_introjs_style():
             box-sizing: content-box;
             position: absolute;
         }"""
+    introjs_style = textwrap.dedent(introjs_style)
     Saved.introjs_style = introjs_style
     return introjs_style
 
@@ -261,6 +269,7 @@ def get_sh_backdrop_style():
         body.shepherd-active {
             pointer-events: none !important;
         }"""
+    sh_backdrop_style = textwrap.dedent(sh_backdrop_style)
     Saved.sh_backdrop_style = sh_backdrop_style
     return sh_backdrop_style
 
@@ -387,5 +396,6 @@ def get_pytest_style():
         .desc.active .sort-icon {
             border-top: 8px solid #999;
         }"""
+    pytest_style = textwrap.dedent(pytest_style)
     Saved.pytest_style = pytest_style
     return pytest_style

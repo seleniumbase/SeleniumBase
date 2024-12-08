@@ -193,7 +193,7 @@ setup(
         'iniconfig==2.0.0',
         'pluggy==1.5.0',
         'pytest==8.3.4',
-        "pytest-html==4.0.2",
+        "pytest-html==4.0.2",  # Newer ones had issues
         'pytest-metadata==3.1.1',
         "pytest-ordering==0.6",
         'pytest-rerunfailures==14.0;python_version<"3.9"',
@@ -222,7 +222,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage>=7.6.1;python_version<"3.9"',
-            'coverage>=7.6.8;python_version>="3.9"',
+            'coverage>=7.6.9;python_version>="3.9"',
             'pytest-cov>=5.0.0;python_version<"3.9"',
             'pytest-cov>=6.0.0;python_version>="3.9"',
         ],

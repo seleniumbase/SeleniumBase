@@ -1019,6 +1019,10 @@ class CDPMethods():
         with suppress(Exception):
             self.loop.run_until_complete(self.page.evaluate(js_code))
 
+    def __make_sure_pyautogui_lock_is_writable(self):
+        with suppress(Exception):
+            shared_utils.make_writable(constants.MultiBrowser.PYAUTOGUILOCK)
+
     def __verify_pyautogui_has_a_headed_browser(self):
         """PyAutoGUI requires a headed browser so that it can
         focus on the correct element when performing actions."""
@@ -1039,6 +1043,8 @@ class CDPMethods():
             constants.PipInstall.FINDLOCK
         )
         with pip_find_lock:  # Prevent issues with multiple processes
+            with suppress(Exception):
+                shared_utils.make_writable(constants.PipInstall.FINDLOCK)
             try:
                 import pyautogui
                 with suppress(Exception):
@@ -1124,6 +1130,7 @@ class CDPMethods():
             constants.MultiBrowser.PYAUTOGUILOCK
         )
         with gui_lock:
+            self.__make_sure_pyautogui_lock_is_writable()
             pyautogui.press(key)
             time.sleep(0.044)
         self.__slow_mode_pause_if_set()
@@ -1137,6 +1144,7 @@ class CDPMethods():
             constants.MultiBrowser.PYAUTOGUILOCK
         )
         with gui_lock:
+            self.__make_sure_pyautogui_lock_is_writable()
             for key in keys:
                 pyautogui.press(key)
                 time.sleep(0.044)
@@ -1151,6 +1159,7 @@ class CDPMethods():
             constants.MultiBrowser.PYAUTOGUILOCK
         )
         with gui_lock:
+            self.__make_sure_pyautogui_lock_is_writable()
             pyautogui.write(text)
         self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.wait())
@@ -1171,6 +1180,7 @@ class CDPMethods():
                 constants.MultiBrowser.PYAUTOGUILOCK
             )
             with gui_lock:  # Prevent issues with multiple processes
+                self.__make_sure_pyautogui_lock_is_writable()
                 pyautogui.moveTo(x, y, timeframe, pyautogui.easeOutQuad)
                 if timeframe >= 0.25:
                     time.sleep(0.056)  # Wait if moving at human-speed
@@ -1191,6 +1201,7 @@ class CDPMethods():
             constants.MultiBrowser.PYAUTOGUILOCK
         )
         with gui_lock:  # Prevent issues with multiple processes
+            self.__make_sure_pyautogui_lock_is_writable()
             self.__install_pyautogui_if_missing()
             import pyautogui
             pyautogui = self.__get_configured_pyautogui(pyautogui)
@@ -1408,6 +1419,7 @@ class CDPMethods():
             constants.MultiBrowser.PYAUTOGUILOCK
         )
         with gui_lock:
+            self.__make_sure_pyautogui_lock_is_writable()
             self.bring_active_window_to_front()
             self.gui_hover_element(hover_selector)
             time.sleep(0.15)

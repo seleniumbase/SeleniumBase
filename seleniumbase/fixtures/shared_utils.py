@@ -128,6 +128,20 @@ def is_chrome_130_or_newer(self, binary_location=None):
     return False
 
 
+def make_writable(file_path):
+    # Set permissions to: "If you can read it, you can write it."
+    mode = os.stat(file_path).st_mode
+    mode |= (mode & 0o444) >> 1  # copy R bits to W
+    os.chmod(file_path, mode)
+
+
+def make_executable(file_path):
+    # Set permissions to: "If you can read it, you can execute it."
+    mode = os.stat(file_path).st_mode
+    mode |= (mode & 0o444) >> 2  # copy R bits to X
+    os.chmod(file_path, mode)
+
+
 def format_exc(exception, message):
     """Formats an exception message to make the output cleaner."""
     from selenium.common.exceptions import ElementNotVisibleException
