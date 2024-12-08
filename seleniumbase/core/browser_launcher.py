@@ -97,26 +97,12 @@ def log_d(message):
         print(message)
 
 
-def make_writable(file_path):
-    # Set permissions to: "If you can read it, you can write it."
-    mode = os.stat(file_path).st_mode
-    mode |= (mode & 0o444) >> 1  # copy R bits to W
-    os.chmod(file_path, mode)
-
-
-def make_executable(file_path):
-    # Set permissions to: "If you can read it, you can execute it."
-    mode = os.stat(file_path).st_mode
-    mode |= (mode & 0o444) >> 2  # copy R bits to X
-    os.chmod(file_path, mode)
-
-
 def make_driver_executable_if_not(driver_path):
     # Verify driver has executable permissions. If not, add them.
     permissions = oct(os.stat(driver_path)[0])[-3:]
     if "4" in permissions or "6" in permissions:
         # We want at least a '5' or '7' to make sure it's executable
-        make_executable(driver_path)
+        shared_utils.make_executable(driver_path)
 
 
 def extend_driver(driver):
@@ -566,6 +552,10 @@ def uc_open_with_cdp_mode(driver, url=None):
         for tab in driver.cdp_base.tabs[-1::-1]:
             if "chrome-extension://" not in str(tab):
                 with gui_lock:
+                    with suppress(Exception):
+                        shared_utils.make_writable(
+                            constants.MultiBrowser.PYAUTOGUILOCK
+                        )
                     loop.run_until_complete(tab.activate())
                 break
 
@@ -580,11 +570,17 @@ def uc_open_with_cdp_mode(driver, url=None):
         if page_tab:
             loop.run_until_complete(page_tab.aopen())
             with gui_lock:
+                with suppress(Exception):
+                    shared_utils.make_writable(
+                        constants.MultiBrowser.PYAUTOGUILOCK
+                    )
                 loop.run_until_complete(page_tab.activate())
 
     loop.run_until_complete(driver.cdp_base.update_targets())
     page = loop.run_until_complete(driver.cdp_base.get(url))
     with gui_lock:
+        with suppress(Exception):
+            shared_utils.make_writable(constants.MultiBrowser.PYAUTOGUILOCK)
         loop.run_until_complete(page.activate())
     loop.run_until_complete(page.wait())
     if not safe_url:
@@ -883,17 +879,12 @@ def install_pyautogui_if_missing(driver):
         with pip_find_lock:
             pass
     except Exception:
-        # Need write permissions
-        with suppress(Exception):
-            make_writable(constants.PipInstall.FINDLOCK)
-        try:
-            with pip_find_lock:
-                pass
-        except Exception:
-            # Since missing permissions, skip the locks
-            __install_pyautogui_if_missing()
-            return
+        # Since missing permissions, skip the locks
+        __install_pyautogui_if_missing()
+        return
     with pip_find_lock:  # Prevent issues with multiple processes
+        with suppress(Exception):
+            shared_utils.make_writable(constants.PipInstall.FINDLOCK)
         __install_pyautogui_if_missing()
 
 
@@ -1789,6 +1780,8 @@ def _add_chrome_proxy_extension(
         if zip_it:
             proxy_zip_lock = fasteners.InterProcessLock(PROXY_ZIP_LOCK)
             with proxy_zip_lock:
+                with suppress(Exception):
+                    shared_utils.make_writable(PROXY_ZIP_LOCK)
                 if multi_proxy:
                     _set_proxy_filenames()
                 if not os.path.exists(proxy_helper.PROXY_ZIP_PATH):
@@ -1800,6 +1793,8 @@ def _add_chrome_proxy_extension(
         else:
             proxy_dir_lock = fasteners.InterProcessLock(PROXY_DIR_LOCK)
             with proxy_dir_lock:
+                with suppress(Exception):
+                    shared_utils.make_writable(PROXY_DIR_LOCK)
                 if multi_proxy:
                     _set_proxy_filenames()
                 if not os.path.exists(proxy_helper.PROXY_DIR_PATH):
@@ -1825,6 +1820,8 @@ def is_using_uc(undetectable, browser_name):
 def _unzip_to_new_folder(zip_file, folder):
     proxy_dir_lock = fasteners.InterProcessLock(PROXY_DIR_LOCK)
     with proxy_dir_lock:
+        with suppress(Exception):
+            shared_utils.make_writable(PROXY_DIR_LOCK)
         if not os.path.exists(folder):
             import zipfile
             zip_ref = zipfile.ZipFile(zip_file, "r")
@@ -2934,6 +2931,8 @@ def get_remote_driver(
             constants.PipInstall.FINDLOCK
         )
         with pip_find_lock:  # Prevent issues with multiple processes
+            with suppress(Exception):
+                shared_utils.make_writable(constants.PipInstall.FINDLOCK)
             try:
                 from seleniumwire import webdriver
                 import blinker
@@ -3371,6 +3370,8 @@ def get_local_driver(
             constants.PipInstall.FINDLOCK
         )
         with pip_find_lock:  # Prevent issues with multiple processes
+            with suppress(Exception):
+                shared_utils.make_writable(constants.PipInstall.FINDLOCK)
             try:
                 from seleniumwire import webdriver
                 import blinker
@@ -3434,6 +3435,10 @@ def get_local_driver(
                     constants.MultiBrowser.DRIVER_FIXING_LOCK
                 )
                 with geckodriver_fixing_lock:
+                    with suppress(Exception):
+                        shared_utils.make_writable(
+                            constants.MultiBrowser.DRIVER_FIXING_LOCK
+                        )
                     if not geckodriver_on_path():
                         sys_args = sys.argv  # Save a copy of sys args
                         log_d(
@@ -3736,6 +3741,10 @@ def get_local_driver(
                     constants.MultiBrowser.DRIVER_FIXING_LOCK
                 )
                 with edgedriver_fixing_lock:
+                    with suppress(Exception):
+                        shared_utils.make_writable(
+                            constants.MultiBrowser.DRIVER_FIXING_LOCK
+                        )
                     msg = "Microsoft Edge Driver not found."
                     if edgedriver_upgrade_needed:
                         msg = "Microsoft Edge Driver update needed."
@@ -4120,6 +4129,10 @@ def get_local_driver(
                 )
                 with edgedriver_fixing_lock:
                     with suppress(Exception):
+                        shared_utils.make_writable(
+                            constants.MultiBrowser.DRIVER_FIXING_LOCK
+                        )
+                    with suppress(Exception):
                         if not _was_driver_repaired():
                             _repair_edgedriver(edge_version)
                             _mark_driver_repaired()
@@ -4501,6 +4514,10 @@ def get_local_driver(
                         constants.MultiBrowser.DRIVER_FIXING_LOCK
                     )
                     with chromedriver_fixing_lock:
+                        with suppress(Exception):
+                            shared_utils.make_writable(
+                                constants.MultiBrowser.DRIVER_FIXING_LOCK
+                            )
                         msg = "chromedriver update needed. Getting it now:"
                         if not path_chromedriver:
                             msg = "chromedriver not found. Getting it now:"
@@ -4592,6 +4609,10 @@ def get_local_driver(
                     constants.MultiBrowser.DRIVER_FIXING_LOCK
                 )
                 with uc_lock:  # Avoid multithreaded issues
+                    with suppress(Exception):
+                        shared_utils.make_writable(
+                            constants.MultiBrowser.DRIVER_FIXING_LOCK
+                        )
                     if make_uc_driver_from_chromedriver:
                         if os.path.exists(LOCAL_CHROMEDRIVER):
                             with suppress(Exception):
@@ -4851,6 +4872,10 @@ def get_local_driver(
                                 if not os.path.exists(cf_lock_path):
                                     # Avoid multithreaded issues
                                     with cf_lock:
+                                        with suppress(Exception):
+                                            shared_utils.make_writable(
+                                                cf_lock_path
+                                            )
                                         # Install Python Certificates (MAC)
                                         os.system(
                                             r"bash /Applications/Python*/"
@@ -4994,6 +5019,10 @@ def get_local_driver(
                             constants.MultiBrowser.DRIVER_FIXING_LOCK
                         )
                         with chromedriver_fixing_lock:
+                            with suppress(Exception):
+                                shared_utils.make_writable(
+                                    constants.MultiBrowser.DRIVER_FIXING_LOCK
+                                )
                             if not _was_driver_repaired():
                                 _repair_chromedriver(
                                     chrome_options, headless_options, mcv
@@ -5192,7 +5221,10 @@ def get_local_driver(
                             chromedr_fixing_lock = fasteners.InterProcessLock(
                                 constants.MultiBrowser.DRIVER_FIXING_LOCK
                             )
+                            D_F_L = constants.MultiBrowser.DRIVER_FIXING_LOCK
                             with chromedr_fixing_lock:
+                                with suppress(Exception):
+                                    shared_utils.make_writable(D_F_L)
                                 if not _was_driver_repaired():
                                     with suppress(Exception):
                                         _repair_chromedriver(

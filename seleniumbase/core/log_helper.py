@@ -339,9 +339,10 @@ def log_skipped_test_data(test, test_logpath, driver, browser, reason):
     data_to_save.append(" * Skip Reason: %s" % reason)
     data_to_save.append("")
     file_path = os.path.join(test_logpath, "skip_reason.txt")
-    log_file = codecs.open(file_path, "w+", encoding="utf-8")
-    log_file.writelines("\r\n".join(data_to_save))
-    log_file.close()
+    with suppress(Exception):
+        log_file = codecs.open(file_path, "w+", encoding="utf-8")
+        log_file.writelines("\r\n".join(data_to_save))
+        log_file.close()
 
 
 def log_page_source(test_logpath, driver, source=None):
@@ -368,9 +369,10 @@ def log_page_source(test_logpath, driver, source=None):
         if not os.path.exists(test_logpath):
             os.makedirs(test_logpath)
     html_file_path = os.path.join(test_logpath, html_file_name)
-    html_file = codecs.open(html_file_path, "w+", encoding="utf-8")
-    html_file.write(page_source)
-    html_file.close()
+    with suppress(Exception):
+        html_file = codecs.open(html_file_path, "w+", encoding="utf-8")
+        html_file.write(page_source)
+        html_file.close()
 
 
 def get_test_id(test):
