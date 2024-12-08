@@ -40,6 +40,8 @@ class MyTourClass(BaseCase):
         self.wait_for_element("#searchboxinput")
         self.wait_for_element("#minimap")
         self.wait_for_element("#zoom")
+        self.wait_for_element("#widget-zoom-out")
+        self.wait_for_element('[jsaction*="minimap.main;"]')
 
         # Create a website tour using the IntroJS library
         # Same as:  self.create_introjs_tour()
