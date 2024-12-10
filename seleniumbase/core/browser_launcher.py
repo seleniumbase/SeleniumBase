@@ -1769,17 +1769,27 @@ def _add_chrome_proxy_extension(
     ):
         # Single-threaded
         if zip_it:
-            proxy_helper.create_proxy_ext(
-                proxy_string, proxy_user, proxy_pass, bypass_list
-            )
-            proxy_zip = proxy_helper.PROXY_ZIP_PATH
-            chrome_options.add_extension(proxy_zip)
+            proxy_zip_lock = fasteners.InterProcessLock(PROXY_ZIP_LOCK)
+            with proxy_zip_lock:
+                proxy_helper.create_proxy_ext(
+                    proxy_string, proxy_user, proxy_pass, bypass_list
+                )
+                proxy_zip = proxy_helper.PROXY_ZIP_PATH
+                chrome_options.add_extension(proxy_zip)
         else:
-            proxy_helper.create_proxy_ext(
-                proxy_string, proxy_user, proxy_pass, bypass_list, zip_it=False
-            )
-            proxy_dir_path = proxy_helper.PROXY_DIR_PATH
-            chrome_options = add_chrome_ext_dir(chrome_options, proxy_dir_path)
+            proxy_dir_lock = fasteners.InterProcessLock(PROXY_DIR_LOCK)
+            with proxy_dir_lock:
+                proxy_helper.create_proxy_ext(
+                    proxy_string,
+                    proxy_user,
+                    proxy_pass,
+                    bypass_list,
+                    zip_it=False,
+                )
+                proxy_dir_path = proxy_helper.PROXY_DIR_PATH
+                chrome_options = add_chrome_ext_dir(
+                    chrome_options, proxy_dir_path
+                )
     else:
         # Multi-threaded
         if zip_it:
@@ -1808,7 +1818,7 @@ def _add_chrome_proxy_extension(
                         proxy_user,
                         proxy_pass,
                         bypass_list,
-                        False,
+                        zip_it=False,
                     )
                 chrome_options = add_chrome_ext_dir(
                     chrome_options, proxy_helper.PROXY_DIR_PATH

@@ -2,10 +2,12 @@ import os
 import re
 import warnings
 import zipfile
+from contextlib import suppress
 from seleniumbase.config import proxy_list
 from seleniumbase.config import settings
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import page_utils
+from seleniumbase.fixtures import shared_utils
 
 DOWNLOADS_DIR = constants.Files.DOWNLOADS_FOLDER
 PROXY_ZIP_PATH = os.path.join(DOWNLOADS_DIR, "proxy.zip")
@@ -109,31 +111,35 @@ def create_proxy_ext(
         """"minimum_chrome_version":"22.0.0"\n"""
         """}"""
     )
-    import threading
-
-    lock = threading.RLock()  # Support multi-threaded tests. Eg. "pytest -n=4"
-    with lock:
-        abs_path = os.path.abspath(".")
-        downloads_path = os.path.join(abs_path, DOWNLOADS_DIR)
-        if not os.path.exists(downloads_path):
-            os.mkdir(downloads_path)
-        if zip_it:
-            zf = zipfile.ZipFile(PROXY_ZIP_PATH, mode="w")
-            zf.writestr("background.js", background_js)
-            zf.writestr("manifest.json", manifest_json)
-            zf.close()
-        else:
-            proxy_ext_dir = PROXY_DIR_PATH
-            if not os.path.exists(proxy_ext_dir):
-                os.mkdir(proxy_ext_dir)
-            manifest_file = os.path.join(proxy_ext_dir, "manifest.json")
-            with open(manifest_file, mode="w") as f:
-                f.write(manifest_json)
-            proxy_host = proxy_string.split(":")[0]
-            proxy_port = proxy_string.split(":")[1]
-            background_file = os.path.join(proxy_ext_dir, "background.js")
-            with open(background_file, mode="w") as f:
-                f.write(background_js)
+    abs_path = os.path.abspath(".")
+    downloads_path = os.path.join(abs_path, DOWNLOADS_DIR)
+    if not os.path.exists(downloads_path):
+        os.mkdir(downloads_path)
+    if zip_it:
+        zf = zipfile.ZipFile(PROXY_ZIP_PATH, mode="w")
+        zf.writestr("background.js", background_js)
+        zf.writestr("manifest.json", manifest_json)
+        zf.close()
+        with suppress(Exception):
+            shared_utils.make_writable(PROXY_ZIP_PATH)
+    else:
+        proxy_ext_dir = PROXY_DIR_PATH
+        if not os.path.exists(proxy_ext_dir):
+            os.mkdir(proxy_ext_dir)
+        with suppress(Exception):
+            shared_utils.make_writable(proxy_ext_dir)
+        manifest_file = os.path.join(proxy_ext_dir, "manifest.json")
+        with open(manifest_file, mode="w") as f:
+            f.write(manifest_json)
+        with suppress(Exception):
+            shared_utils.make_writable(manifest_json)
+        proxy_host = proxy_string.split(":")[0]
+        proxy_port = proxy_string.split(":")[1]
+        background_file = os.path.join(proxy_ext_dir, "background.js")
+        with open(background_file, mode="w") as f:
+            f.write(background_js)
+        with suppress(Exception):
+            shared_utils.make_writable(background_js)
 
 
 def remove_proxy_zip_if_present():
@@ -141,13 +147,12 @@ def remove_proxy_zip_if_present():
     Used in the implementation of https://stackoverflow.com/a/35293284
     for https://stackoverflow.com/questions/12848327/
     """
-    try:
-        if os.path.exists(PROXY_ZIP_PATH):
+    if os.path.exists(PROXY_ZIP_PATH):
+        with suppress(Exception):
             os.remove(PROXY_ZIP_PATH)
-        if os.path.exists(PROXY_ZIP_LOCK):
+    if os.path.exists(PROXY_ZIP_LOCK):
+        with suppress(Exception):
             os.remove(PROXY_ZIP_LOCK)
-    except Exception:
-        pass
 
 
 def validate_proxy_string(proxy_string):
