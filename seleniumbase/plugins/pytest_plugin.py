@@ -2143,6 +2143,9 @@ def _perform_pytest_unconfigure_(config):
         log_helper.archive_logs_if_set(
             constants.Logs.LATEST + "/", sb_config.archive_logs
         )
+        if os.path.exists("./assets/"):  # Used by pytest-html reports
+            with suppress(Exception):
+                shared_utils.make_dir_files_writable("./assets/")
     log_helper.clear_empty_logs()
     # Dashboard post-processing: Disable time-based refresh and stamp complete
     if not hasattr(sb_config, "dashboard") or not sb_config.dashboard:
@@ -2207,8 +2210,12 @@ def _perform_pytest_unconfigure_(config):
             )
             with open(html_report_path, "w", encoding="utf-8") as f:
                 f.write(the_html_r)  # Finalize the HTML report
+            with suppress(Exception):
+                shared_utils.make_writable(html_report_path)
             with open(html_report_path_copy, "w", encoding="utf-8") as f:
-                f.write(the_html_r)  # Finalize the HTML report
+                f.write(the_html_r)  # Finalize the HTML report copy
+            with suppress(Exception):
+                shared_utils.make_writable(html_report_path_copy)
             assets_style = "./assets/style.css"
             if os.path.exists(assets_style):
                 html_style = None
@@ -2223,6 +2230,8 @@ def _perform_pytest_unconfigure_(config):
                     )
                 with open(assets_style, "w", encoding="utf-8") as f:
                     f.write(html_style)
+                with suppress(Exception):
+                    shared_utils.make_writable(assets_style)
         # Done with "pytest_unconfigure" unless using the Dashboard
         return
     stamp = ""
@@ -2304,6 +2313,8 @@ def _perform_pytest_unconfigure_(config):
                 )
             with open(dashboard_path, "w", encoding="utf-8") as f:
                 f.write(the_html_d)  # Finalize the dashboard
+            with suppress(Exception):
+                shared_utils.make_writable(dashboard_path)
             assets_style = "./assets/style.css"
             if os.path.exists(assets_style):
                 html_style = None
@@ -2318,6 +2329,8 @@ def _perform_pytest_unconfigure_(config):
                     )
                 with open(assets_style, "w", encoding="utf-8") as f:
                     f.write(html_style)
+                with suppress(Exception):
+                    shared_utils.make_writable(assets_style)
             # Part 2: Appending a pytest html report with dashboard data
             html_report_path = None
             if sb_config._html_report_name:
@@ -2398,8 +2411,12 @@ def _perform_pytest_unconfigure_(config):
                 )
                 with open(html_report_path, "w", encoding="utf-8") as f:
                     f.write(the_html_r)  # Finalize the HTML report
+                with suppress(Exception):
+                    shared_utils.make_writable(html_report_path)
                 with open(html_report_path_copy, "w", encoding="utf-8") as f:
-                    f.write(the_html_r)  # Finalize the HTML report
+                    f.write(the_html_r)  # Finalize the HTML report copy
+                with suppress(Exception):
+                    shared_utils.make_writable(html_report_path_copy)
     except KeyboardInterrupt:
         pass
     except Exception:

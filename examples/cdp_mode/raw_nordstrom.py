@@ -11,7 +11,7 @@ with SB(uc=True, test=True, locale_code="en") as sb:
     sb.sleep(2.2)
     for i in range(16):
         sb.cdp.scroll_down(16)
-        sb.sleep(0.16)
+        sb.sleep(0.14)
     print('*** Nordstrom Search for "%s":' % search)
     unique_item_text = []
     items = sb.cdp.find_elements("article")

@@ -1413,7 +1413,7 @@ def _uc_gui_handle_captcha_(driver, frame="iframe", ctype=None):
             ctype = "cf_t"
         else:
             return
-    if not driver.is_connected():
+    if not driver.is_connected() and not __is_cdp_swap_needed(driver):
         driver.connect()
         time.sleep(2)
     install_pyautogui_if_missing(driver)
@@ -1425,7 +1425,10 @@ def _uc_gui_handle_captcha_(driver, frame="iframe", ctype=None):
     )
     with gui_lock:  # Prevent issues with multiple processes
         needs_switch = False
-        is_in_frame = js_utils.is_in_frame(driver)
+        if not __is_cdp_swap_needed(driver):
+            is_in_frame = js_utils.is_in_frame(driver)
+        else:
+            is_in_frame = False
         selector = "#challenge-stage"
         if ctype == "g_rc":
             selector = "#recaptcha-token"
@@ -1433,7 +1436,7 @@ def _uc_gui_handle_captcha_(driver, frame="iframe", ctype=None):
             driver.switch_to.parent_frame()
             needs_switch = True
             is_in_frame = js_utils.is_in_frame(driver)
-        if not is_in_frame:
+        if not is_in_frame and not __is_cdp_swap_needed(driver):
             # Make sure the window is on top
             page_actions.switch_to_window(
                 driver, driver.current_window_handle, 2, uc_lock=False
@@ -1500,17 +1503,18 @@ def _uc_gui_handle_captcha_(driver, frame="iframe", ctype=None):
                 and frame == "iframe"
             ):
                 frame = 'iframe[title="reCAPTCHA"]'
-        if not is_in_frame or needs_switch:
-            # Currently not in frame (or nested frame outside CF one)
-            try:
-                if visible_iframe or ctype == "g_rc":
-                    driver.switch_to_frame(frame)
-            except Exception:
-                if visible_iframe or ctype == "g_rc":
-                    if driver.is_element_present("iframe"):
-                        driver.switch_to_frame("iframe")
-                    else:
-                        return
+        if not __is_cdp_swap_needed(driver):
+            if not is_in_frame or needs_switch:
+                # Currently not in frame (or nested frame outside CF one)
+                try:
+                    if visible_iframe or ctype == "g_rc":
+                        driver.switch_to_frame(frame)
+                except Exception:
+                    if visible_iframe or ctype == "g_rc":
+                        if driver.is_element_present("iframe"):
+                            driver.switch_to_frame("iframe")
+                        else:
+                            return
         try:
             selector = "div.cf-turnstile"
             if ctype == "g_rc":
@@ -1526,11 +1530,11 @@ def _uc_gui_handle_captcha_(driver, frame="iframe", ctype=None):
                 tab_count += 1
                 time.sleep(0.027)
                 active_element_css = js_utils.get_active_element_css(driver)
-                print(active_element_css)
                 if (
                     active_element_css.startswith(selector)
                     or active_element_css.endswith(" > div" * 2)
                     or (special_form and active_element_css.endswith(" div"))
+                    or (ctype == "g_rc" and "frame[name" in active_element_css)
                 ):
                     found_checkbox = True
                     sb_config._saved_cf_tab_count = tab_count
@@ -1550,6 +1554,7 @@ def _uc_gui_handle_captcha_(driver, frame="iframe", ctype=None):
             )
             and hasattr(sb_config, "_saved_cf_tab_count")
             and sb_config._saved_cf_tab_count
+            and not __is_cdp_swap_needed(driver)
         ):
             driver.uc_open_with_disconnect(driver.current_url, 3.8)
             with suppress(Exception):
@@ -1764,17 +1769,27 @@ def _add_chrome_proxy_extension(
     ):
         # Single-threaded
         if zip_it:
-            proxy_helper.create_proxy_ext(
-                proxy_string, proxy_user, proxy_pass, bypass_list
-            )
-            proxy_zip = proxy_helper.PROXY_ZIP_PATH
-            chrome_options.add_extension(proxy_zip)
+            proxy_zip_lock = fasteners.InterProcessLock(PROXY_ZIP_LOCK)
+            with proxy_zip_lock:
+                proxy_helper.create_proxy_ext(
+                    proxy_string, proxy_user, proxy_pass, bypass_list
+                )
+                proxy_zip = proxy_helper.PROXY_ZIP_PATH
+                chrome_options.add_extension(proxy_zip)
         else:
-            proxy_helper.create_proxy_ext(
-                proxy_string, proxy_user, proxy_pass, bypass_list, zip_it=False
-            )
-            proxy_dir_path = proxy_helper.PROXY_DIR_PATH
-            chrome_options = add_chrome_ext_dir(chrome_options, proxy_dir_path)
+            proxy_dir_lock = fasteners.InterProcessLock(PROXY_DIR_LOCK)
+            with proxy_dir_lock:
+                proxy_helper.create_proxy_ext(
+                    proxy_string,
+                    proxy_user,
+                    proxy_pass,
+                    bypass_list,
+                    zip_it=False,
+                )
+                proxy_dir_path = proxy_helper.PROXY_DIR_PATH
+                chrome_options = add_chrome_ext_dir(
+                    chrome_options, proxy_dir_path
+                )
     else:
         # Multi-threaded
         if zip_it:
@@ -1803,7 +1818,7 @@ def _add_chrome_proxy_extension(
                         proxy_user,
                         proxy_pass,
                         bypass_list,
-                        False,
+                        zip_it=False,
                     )
                 chrome_options = add_chrome_ext_dir(
                     chrome_options, proxy_helper.PROXY_DIR_PATH
@@ -4845,7 +4860,12 @@ def get_local_driver(
                                 )
                                 uc_activated = True
                             except URLError as e:
-                                if cert in e.args[0] and IS_MAC:
+                                if (
+                                    IS_MAC
+                                    and hasattr(e, "args")
+                                    and isinstance(e.args, (list, tuple))
+                                    and cert in e.args[0]
+                                ):
                                     mac_certificate_error = True
                                 else:
                                     raise

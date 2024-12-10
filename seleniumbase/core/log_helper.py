@@ -7,6 +7,7 @@ from contextlib import suppress
 from seleniumbase import config as sb_config
 from seleniumbase.config import settings
 from seleniumbase.fixtures import constants
+from seleniumbase.fixtures import shared_utils
 
 python3_11_or_newer = False
 if sys.version_info >= (3, 11):
@@ -33,6 +34,8 @@ def log_screenshot(test_logpath, driver, screenshot=None, get=False):
         if screenshot != screenshot_warning:
             with open(screenshot_path, "wb") as file:
                 file.write(screenshot)
+            with suppress(Exception):
+                shared_utils.make_writable(screenshot_path)
         else:
             print("WARNING: %s" % screenshot_warning)
         if get:
@@ -282,13 +285,14 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
         sb_config._report_time = the_time
         sb_config._report_traceback = traceback_message
         sb_config._report_exception = exc_message
-    with suppress(Exception):
-        if not os.path.exists(test_logpath):
+    if not os.path.exists(test_logpath):
+        with suppress(Exception):
             os.makedirs(test_logpath)
     with suppress(Exception):
         log_file = codecs.open(basic_file_path, "w+", encoding="utf-8")
         log_file.writelines("\r\n".join(data_to_save))
         log_file.close()
+        shared_utils.make_writable(basic_file_path)
 
 
 def log_skipped_test_data(test, test_logpath, driver, browser, reason):
@@ -343,6 +347,7 @@ def log_skipped_test_data(test, test_logpath, driver, browser, reason):
         log_file = codecs.open(file_path, "w+", encoding="utf-8")
         log_file.writelines("\r\n".join(data_to_save))
         log_file.close()
+        shared_utils.make_writable(file_path)
 
 
 def log_page_source(test_logpath, driver, source=None):
@@ -365,14 +370,15 @@ def log_page_source(test_logpath, driver, source=None):
                 "unresponsive, or closed prematurely!</h4>"
             )
         )
-    with suppress(Exception):
-        if not os.path.exists(test_logpath):
+    if not os.path.exists(test_logpath):
+        with suppress(Exception):
             os.makedirs(test_logpath)
     html_file_path = os.path.join(test_logpath, html_file_name)
     with suppress(Exception):
         html_file = codecs.open(html_file_path, "w+", encoding="utf-8")
         html_file.write(page_source)
         html_file.close()
+        shared_utils.make_writable(html_file_path)
 
 
 def get_test_id(test):

@@ -883,6 +883,8 @@ class Element:
         self,
         duration: typing.Union[float, int] = 0.5,
         color: typing.Optional[str] = "EE4488",
+        x_offset: typing.Union[float, int] = 0,
+        y_offset: typing.Union[float, int] = 0,
     ):
         """
         Displays for a short time a red dot on the element.
@@ -910,8 +912,8 @@ class Element:
             "width:8px;height:8px;border-radius:50%;background:#{};"
             "animation:show-pointer-ani {:.2f}s ease 1;"
         ).format(
-            pos.center[0] - 4,  # -4 to account for drawn circle itself (w,h)
-            pos.center[1] - 4,
+            pos.center[0] + x_offset - 4,  # -4 to account for the circle
+            pos.center[1] + y_offset - 4,  # -4 to account for the circle
             color,
             duration,
         )
