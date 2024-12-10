@@ -1188,6 +1188,8 @@ def highlight_with_jquery_2(driver, message, selector, o_bs, msg_dur):
 def get_active_element_css(driver):
     from seleniumbase.js_code import active_css_js
 
+    if shared_utils.is_cdp_swap_needed(driver):
+        return driver.cdp.get_active_element_css()
     return execute_script(driver, active_css_js.get_active_element_css)
 
 

@@ -1451,7 +1451,7 @@ class BaseCase(unittest.TestCase):
             return self.__is_shadow_element_enabled(selector)
         return page_actions.is_element_enabled(self.driver, selector, by)
 
-    def is_text_visible(self, text, selector="html", by="css selector"):
+    def is_text_visible(self, text, selector="body", by="css selector"):
         """Returns whether the text substring is visible in the element."""
         self.wait_for_ready_state_complete()
         time.sleep(0.01)
@@ -1460,7 +1460,7 @@ class BaseCase(unittest.TestCase):
             return self.__is_shadow_text_visible(text, selector)
         return page_actions.is_text_visible(self.driver, text, selector, by)
 
-    def is_exact_text_visible(self, text, selector="html", by="css selector"):
+    def is_exact_text_visible(self, text, selector="body", by="css selector"):
         """Returns whether the text is exactly equal to the element text.
         (Leading and trailing whitespace is ignored in the verification.)"""
         self.wait_for_ready_state_complete()
@@ -1472,7 +1472,7 @@ class BaseCase(unittest.TestCase):
             self.driver, text, selector, by
         )
 
-    def is_non_empty_text_visible(self, selector="html", by="css selector"):
+    def is_non_empty_text_visible(self, selector="body", by="css selector"):
         """Returns whether the element has any non-empty text visible.
         Whitespace-only text is considered empty text."""
         self.wait_for_ready_state_complete()
@@ -1842,7 +1842,7 @@ class BaseCase(unittest.TestCase):
         elif self.slow_mode:
             self.__slow_mode_pause_if_active()
 
-    def get_text(self, selector="html", by="css selector", timeout=None):
+    def get_text(self, selector="body", by="css selector", timeout=None):
         self.__check_scope()
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
@@ -2105,7 +2105,7 @@ class BaseCase(unittest.TestCase):
         return property_value
 
     def get_text_content(
-        self, selector="html", by="css selector", timeout=None
+        self, selector="body", by="css selector", timeout=None
     ):
         """Returns the text that appears in the HTML for an element.
         This is different from "self.get_text(selector, by="css selector")"
@@ -6093,7 +6093,7 @@ class BaseCase(unittest.TestCase):
             if limit > 0 and count >= limit:
                 break
 
-    def press_up_arrow(self, selector="html", times=1, by="css selector"):
+    def press_up_arrow(self, selector="body", times=1, by="css selector"):
         """Simulates pressing the UP Arrow on the keyboard.
         By default, "html" will be used as the CSS Selector target.
         You can specify how many times in-a-row the action happens."""
@@ -6115,7 +6115,7 @@ class BaseCase(unittest.TestCase):
             if self.slow_mode:
                 time.sleep(0.1)
 
-    def press_down_arrow(self, selector="html", times=1, by="css selector"):
+    def press_down_arrow(self, selector="body", times=1, by="css selector"):
         """Simulates pressing the DOWN Arrow on the keyboard.
         By default, "html" will be used as the CSS Selector target.
         You can specify how many times in-a-row the action happens."""
@@ -6137,7 +6137,7 @@ class BaseCase(unittest.TestCase):
             if self.slow_mode:
                 time.sleep(0.1)
 
-    def press_left_arrow(self, selector="html", times=1, by="css selector"):
+    def press_left_arrow(self, selector="body", times=1, by="css selector"):
         """Simulates pressing the LEFT Arrow on the keyboard.
         By default, "html" will be used as the CSS Selector target.
         You can specify how many times in-a-row the action happens."""
@@ -6159,7 +6159,7 @@ class BaseCase(unittest.TestCase):
             if self.slow_mode:
                 time.sleep(0.1)
 
-    def press_right_arrow(self, selector="html", times=1, by="css selector"):
+    def press_right_arrow(self, selector="body", times=1, by="css selector"):
         """Simulates pressing the RIGHT Arrow on the keyboard.
         By default, "html" will be used as the CSS Selector target.
         You can specify how many times in-a-row the action happens."""
@@ -9730,7 +9730,7 @@ class BaseCase(unittest.TestCase):
     ############
 
     def wait_for_text_visible(
-        self, text, selector="html", by="css selector", timeout=None
+        self, text, selector="body", by="css selector", timeout=None
     ):
         self.__check_scope()
         if not timeout:
@@ -9748,7 +9748,7 @@ class BaseCase(unittest.TestCase):
         )
 
     def wait_for_exact_text_visible(
-        self, text, selector="html", by="css selector", timeout=None
+        self, text, selector="body", by="css selector", timeout=None
     ):
         self.__check_scope()
         if not timeout:
@@ -9765,7 +9765,7 @@ class BaseCase(unittest.TestCase):
         )
 
     def wait_for_non_empty_text_visible(
-        self, selector="html", by="css selector", timeout=None
+        self, selector="body", by="css selector", timeout=None
     ):
         """Searches for any text in the element of the given selector.
         Returns the element if it has visible text within the timeout.
@@ -9786,7 +9786,7 @@ class BaseCase(unittest.TestCase):
         )
 
     def wait_for_text(
-        self, text, selector="html", by="css selector", timeout=None
+        self, text, selector="body", by="css selector", timeout=None
     ):
         """The shorter version of wait_for_text_visible()"""
         self.__check_scope()
@@ -9799,7 +9799,7 @@ class BaseCase(unittest.TestCase):
         )
 
     def wait_for_exact_text(
-        self, text, selector="html", by="css selector", timeout=None
+        self, text, selector="body", by="css selector", timeout=None
     ):
         """The shorter version of wait_for_exact_text_visible()"""
         self.__check_scope()
@@ -9812,7 +9812,7 @@ class BaseCase(unittest.TestCase):
         )
 
     def wait_for_non_empty_text(
-        self, selector="html", by="css selector", timeout=None
+        self, selector="body", by="css selector", timeout=None
     ):
         """The shorter version of wait_for_non_empty_text_visible()"""
         self.__check_scope()
@@ -9825,7 +9825,7 @@ class BaseCase(unittest.TestCase):
         )
 
     def find_text(
-        self, text, selector="html", by="css selector", timeout=None
+        self, text, selector="body", by="css selector", timeout=None
     ):
         """Same as wait_for_text_visible() - returns the element"""
         self.__check_scope()
@@ -9838,7 +9838,7 @@ class BaseCase(unittest.TestCase):
         )
 
     def find_exact_text(
-        self, text, selector="html", by="css selector", timeout=None
+        self, text, selector="body", by="css selector", timeout=None
     ):
         """Same as wait_for_exact_text_visible() - returns the element"""
         self.__check_scope()
@@ -9851,7 +9851,7 @@ class BaseCase(unittest.TestCase):
         )
 
     def find_non_empty_text(
-        self, selector="html", by="css selector", timeout=None
+        self, selector="body", by="css selector", timeout=None
     ):
         """Same as wait_for_non_empty_text_visible() - returns the element"""
         self.__check_scope()
@@ -9864,7 +9864,7 @@ class BaseCase(unittest.TestCase):
         )
 
     def assert_text_visible(
-        self, text, selector="html", by="css selector", timeout=None
+        self, text, selector="body", by="css selector", timeout=None
     ):
         """Same as assert_text()"""
         self.__check_scope()
@@ -9875,7 +9875,7 @@ class BaseCase(unittest.TestCase):
         return self.assert_text(text, selector, by=by, timeout=timeout)
 
     def assert_text(
-        self, text, selector="html", by="css selector", timeout=None
+        self, text, selector="body", by="css selector", timeout=None
     ):
         """Similar to wait_for_text_visible()
         Raises an exception if the element or the text is not found.
@@ -9945,7 +9945,7 @@ class BaseCase(unittest.TestCase):
         return True
 
     def assert_exact_text(
-        self, text, selector="html", by="css selector", timeout=None
+        self, text, selector="body", by="css selector", timeout=None
     ):
         """Similar to assert_text(), but the text must be exact,
         rather than exist as a subset of the full text.
@@ -9992,7 +9992,7 @@ class BaseCase(unittest.TestCase):
         return True
 
     def assert_non_empty_text(
-        self, selector="html", by="css selector", timeout=None
+        self, selector="body", by="css selector", timeout=None
     ):
         """Assert that the element has any non-empty text visible.
         Raises an exception if the element has no text within the timeout.
@@ -10279,7 +10279,7 @@ class BaseCase(unittest.TestCase):
     ############
 
     def wait_for_text_not_visible(
-        self, text, selector="html", by="css selector", timeout=None
+        self, text, selector="body", by="css selector", timeout=None
     ):
         self.__check_scope()
         if not timeout:
@@ -10292,7 +10292,7 @@ class BaseCase(unittest.TestCase):
         )
 
     def wait_for_exact_text_not_visible(
-        self, text, selector="html", by="css selector", timeout=None
+        self, text, selector="body", by="css selector", timeout=None
     ):
         self.__check_scope()
         if not timeout:
@@ -10305,7 +10305,7 @@ class BaseCase(unittest.TestCase):
         )
 
     def assert_text_not_visible(
-        self, text, selector="html", by="css selector", timeout=None
+        self, text, selector="body", by="css selector", timeout=None
     ):
         """Similar to wait_for_text_not_visible()
         Raises an exception if the text is still visible after timeout.
@@ -10326,7 +10326,7 @@ class BaseCase(unittest.TestCase):
         return True
 
     def assert_exact_text_not_visible(
-        self, text, selector="html", by="css selector", timeout=None
+        self, text, selector="body", by="css selector", timeout=None
     ):
         """Similar to wait_for_exact_text_not_visible()
         Raises an exception if the exact text is still visible after timeout.
@@ -11083,7 +11083,7 @@ class BaseCase(unittest.TestCase):
             return False
 
     def deferred_assert_text(
-        self, text, selector="html", by="css selector", timeout=None, fs=False
+        self, text, selector="body", by="css selector", timeout=None, fs=False
     ):
         """A non-terminating assertion for text from an element on a page.
         Failures will be saved until the process_deferred_asserts()
@@ -11119,7 +11119,7 @@ class BaseCase(unittest.TestCase):
             return False
 
     def deferred_assert_exact_text(
-        self, text, selector="html", by="css selector", timeout=None, fs=False
+        self, text, selector="body", by="css selector", timeout=None, fs=False
     ):
         """A non-terminating assertion for exact text from an element.
         Failures will be saved until the process_deferred_asserts()
@@ -11158,7 +11158,7 @@ class BaseCase(unittest.TestCase):
 
     def deferred_assert_non_empty_text(
         self,
-        selector="html",
+        selector="body",
         by="css selector",
         timeout=None,
         fs=False,
@@ -11278,7 +11278,7 @@ class BaseCase(unittest.TestCase):
         )
 
     def delayed_assert_text(
-        self, text, selector="html", by="css selector", timeout=None, fs=False
+        self, text, selector="body", by="css selector", timeout=None, fs=False
     ):
         """Same as self.deferred_assert_text()"""
         return self.deferred_assert_text(
@@ -11286,7 +11286,7 @@ class BaseCase(unittest.TestCase):
         )
 
     def delayed_assert_exact_text(
-        self, text, selector="html", by="css selector", timeout=None, fs=False
+        self, text, selector="body", by="css selector", timeout=None, fs=False
     ):
         """Same as self.deferred_assert_exact_text()"""
         return self.deferred_assert_exact_text(
@@ -11295,7 +11295,7 @@ class BaseCase(unittest.TestCase):
 
     def delayed_assert_non_empty_text(
         self,
-        selector="html",
+        selector="body",
         by="css selector",
         timeout=None,
         fs=False,

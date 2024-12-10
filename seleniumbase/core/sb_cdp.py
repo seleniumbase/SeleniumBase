@@ -268,6 +268,7 @@ class CDPMethods():
         if number < 0:
             number = 0
         element = elements[number]
+        element.scroll_into_view()
         element.click()
 
     def click_nth_visible_element(self, selector, number):
@@ -284,6 +285,7 @@ class CDPMethods():
         if number < 0:
             number = 0
         element = elements[number]
+        element.scroll_into_view()
         element.click()
 
     def click_link(self, link_text):
@@ -311,6 +313,13 @@ class CDPMethods():
         return result
 
     def __flash(self, element, *args, **kwargs):
+        element.scroll_into_view()
+        if len(args) < 3 and "x_offset" not in kwargs:
+            x_offset = self.__get_x_scroll_offset()
+            kwargs["x_offset"] = x_offset
+        if len(args) < 3 and "y_offset" not in kwargs:
+            y_offset = self.__get_y_scroll_offset()
+            kwargs["y_offset"] = y_offset
         return (
             self.loop.run_until_complete(
                 element.flash_async(*args, **kwargs)
@@ -382,9 +391,9 @@ class CDPMethods():
         )
 
     def __scroll_into_view(self, element):
-        return (
-            self.loop.run_until_complete(element.scroll_into_view_async())
-        )
+        self.loop.run_until_complete(element.scroll_into_view_async())
+        self.__add_light_pause()
+        return None
 
     def __select_option(self, element):
         return (
@@ -430,6 +439,18 @@ class CDPMethods():
         return (
             self.loop.run_until_complete(element.get_js_attributes_async())
         )
+
+    def __get_x_scroll_offset(self):
+        x_scroll_offset = self.loop.run_until_complete(
+            self.page.evaluate("window.pageXOffset")
+        )
+        return x_scroll_offset or 0
+
+    def __get_y_scroll_offset(self):
+        y_scroll_offset = self.loop.run_until_complete(
+            self.page.evaluate("window.pageYOffset")
+        )
+        return y_scroll_offset or 0
 
     def tile_windows(self, windows=None, max_columns=0):
         """Tile windows and return the grid of tiled windows."""
@@ -504,7 +525,7 @@ class CDPMethods():
     def click(self, selector, timeout=settings.SMALL_TIMEOUT):
         self.__slow_mode_pause_if_set()
         element = self.find_element(selector, timeout=timeout)
-        self.__add_light_pause()
+        element.scroll_into_view()
         element.click()
         self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.wait())
@@ -518,7 +539,9 @@ class CDPMethods():
 
     def click_if_visible(self, selector):
         if self.is_element_visible(selector):
-            self.find_element(selector).click()
+            element = self.find_element(selector)
+            element.scroll_into_view()
+            element.click()
             self.__slow_mode_pause_if_set()
             self.loop.run_until_complete(self.page.wait())
 
@@ -545,9 +568,10 @@ class CDPMethods():
                 except Exception:
                     continue
                 if (width != 0 or height != 0):
+                    element.scroll_into_view()
                     element.click()
                     click_count += 1
-                    time.sleep(0.044)
+                    time.sleep(0.042)
                     self.__slow_mode_pause_if_set()
                     self.loop.run_until_complete(self.page.wait())
             except Exception:
@@ -557,7 +581,7 @@ class CDPMethods():
         """(Attempt simulating a mouse click)"""
         self.__slow_mode_pause_if_set()
         element = self.find_element(selector, timeout=timeout)
-        self.__add_light_pause()
+        element.scroll_into_view()
         element.mouse_click()
         self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.wait())
@@ -579,6 +603,7 @@ class CDPMethods():
 
     def select_option_by_text(self, dropdown_selector, option):
         element = self.find_element(dropdown_selector)
+        element.scroll_into_view()
         options = element.query_selector_all("option")
         for found_option in options:
             if found_option.text.strip() == option.strip():
@@ -599,7 +624,10 @@ class CDPMethods():
         """Paint a quickly-vanishing dot over an element."""
         selector = self.__convert_to_css_if_xpath(selector)
         element = self.find_element(selector)
-        element.flash(duration=duration, color=color)
+        element.scroll_into_view()
+        x_offset = self.__get_x_scroll_offset()
+        y_offset = self.__get_y_scroll_offset()
+        element.flash(duration, color, x_offset, y_offset)
         if pause and isinstance(pause, (int, float)):
             time.sleep(pause)
 
@@ -607,17 +635,22 @@ class CDPMethods():
         """Highlight an element with multi-colors."""
         selector = self.__convert_to_css_if_xpath(selector)
         element = self.find_element(selector)
-        element.flash(0.46, "44CC88")
+        element.scroll_into_view()
+        x_offset = self.__get_x_scroll_offset()
+        y_offset = self.__get_y_scroll_offset()
+        element.flash(0.46, "44CC88", x_offset, y_offset)
         time.sleep(0.15)
-        element.flash(0.42, "8844CC")
+        element.flash(0.42, "8844CC", x_offset, y_offset)
         time.sleep(0.15)
-        element.flash(0.38, "CC8844")
+        element.flash(0.38, "CC8844", x_offset, y_offset)
         time.sleep(0.15)
-        element.flash(0.30, "44CC88")
+        element.flash(0.30, "44CC88", x_offset, y_offset)
         time.sleep(0.30)
 
     def focus(self, selector):
-        self.find_element(selector).focus()
+        element = self.find_element(selector)
+        element.scroll_into_view()
+        element.focus()
 
     def highlight_overlay(self, selector):
         self.find_element(selector).highlight_overlay()
@@ -646,7 +679,7 @@ class CDPMethods():
     def send_keys(self, selector, text, timeout=settings.SMALL_TIMEOUT):
         self.__slow_mode_pause_if_set()
         element = self.select(selector, timeout=timeout)
-        self.__add_light_pause()
+        element.scroll_into_view()
         if text.endswith("\n") or text.endswith("\r"):
             text = text[:-1] + "\r\n"
         element.send_keys(text)
@@ -657,7 +690,7 @@ class CDPMethods():
         """Similar to send_keys(), but presses keys at human speed."""
         self.__slow_mode_pause_if_set()
         element = self.select(selector, timeout=timeout)
-        self.__add_light_pause()
+        element.scroll_into_view()
         submit = False
         if text.endswith("\n") or text.endswith("\r"):
             submit = True
@@ -675,7 +708,7 @@ class CDPMethods():
         """Similar to send_keys(), but clears the text field first."""
         self.__slow_mode_pause_if_set()
         element = self.select(selector, timeout=timeout)
-        self.__add_light_pause()
+        element.scroll_into_view()
         with suppress(Exception):
             element.clear_input()
         if text.endswith("\n") or text.endswith("\r"):
@@ -688,8 +721,8 @@ class CDPMethods():
         """Similar to send_keys(), but clears the text field first."""
         self.__slow_mode_pause_if_set()
         selector = self.__convert_to_css_if_xpath(selector)
-        self.select(selector, timeout=timeout)
-        self.__add_light_pause()
+        element = self.select(selector, timeout=timeout)
+        element.scroll_into_view()
         press_enter = False
         if text.endswith("\n"):
             text = text[:-1]
@@ -1655,17 +1688,24 @@ class CDPMethods():
                 raise Exception(error % (expected, actual))
 
     def assert_text(
-        self, text, selector="html", timeout=settings.SMALL_TIMEOUT
+        self, text, selector="body", timeout=settings.SMALL_TIMEOUT
     ):
+        start_ms = time.time() * 1000.0
+        stop_ms = start_ms + (timeout * 1000.0)
         text = text.strip()
         element = None
         try:
             element = self.find_element(selector, timeout=timeout)
         except Exception:
             raise Exception("Element {%s} not found!" % selector)
-        for i in range(30):
+        for i in range(int(timeout * 10)):
+            with suppress(Exception):
+                element = self.find_element(selector, timeout=0.1)
             if text in element.text_all:
                 return True
+            now_ms = time.time() * 1000.0
+            if now_ms >= stop_ms:
+                break
             time.sleep(0.1)
         raise Exception(
             "Text {%s} not found in {%s}! Actual text: {%s}"
@@ -1673,20 +1713,27 @@ class CDPMethods():
         )
 
     def assert_exact_text(
-        self, text, selector="html", timeout=settings.SMALL_TIMEOUT
+        self, text, selector="body", timeout=settings.SMALL_TIMEOUT
     ):
+        start_ms = time.time() * 1000.0
+        stop_ms = start_ms + (timeout * 1000.0)
         text = text.strip()
         element = None
         try:
             element = self.select(selector, timeout=timeout)
         except Exception:
             raise Exception("Element {%s} not found!" % selector)
-        for i in range(30):
+        for i in range(int(timeout * 10)):
+            with suppress(Exception):
+                element = self.select(selector, timeout=0.1)
             if (
                 self.is_element_visible(selector)
                 and text.strip() == element.text_all.strip()
             ):
                 return True
+            now_ms = time.time() * 1000.0
+            if now_ms >= stop_ms:
+                break
             time.sleep(0.1)
         raise Exception(
             "Expected Text {%s}, is not equal to {%s} in {%s}!"
@@ -1727,26 +1774,31 @@ class CDPMethods():
         with suppress(Exception):
             self.loop.run_until_complete(self.page.evaluate(js_code))
             self.loop.run_until_complete(self.page.wait())
+        self.__add_light_pause()
 
     def scroll_to_top(self):
         js_code = "window.scrollTo(0, 0);"
         with suppress(Exception):
             self.loop.run_until_complete(self.page.evaluate(js_code))
             self.loop.run_until_complete(self.page.wait())
+        self.__add_light_pause()
 
     def scroll_to_bottom(self):
         js_code = "window.scrollTo(0, 10000);"
         with suppress(Exception):
             self.loop.run_until_complete(self.page.evaluate(js_code))
             self.loop.run_until_complete(self.page.wait())
+        self.__add_light_pause()
 
     def scroll_up(self, amount=25):
         self.loop.run_until_complete(self.page.scroll_up(amount))
         self.loop.run_until_complete(self.page.wait())
+        self.__add_light_pause()
 
     def scroll_down(self, amount=25):
         self.loop.run_until_complete(self.page.scroll_down(amount))
         self.loop.run_until_complete(self.page.wait())
+        self.__add_light_pause()
 
     def save_screenshot(self, name, folder=None, selector=None):
         filename = name
