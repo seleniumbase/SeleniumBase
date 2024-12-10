@@ -24,9 +24,7 @@ with SB(uc=True, test=True, locale_code="en") as sb:
     info_selector = 'span[data-test-id*="recipe-thumb-title"]'
     items = sb.cdp.find_elements("%s %s" % (item_selector, info_selector))
     for item in items:
-        sb.sleep(0.03)
-        item.scroll_into_view()
-        sb.sleep(0.025)
+        sb.sleep(0.06)
         if required_text in item.text:
             item.flash(color="44CC88")
             sb.sleep(0.025)

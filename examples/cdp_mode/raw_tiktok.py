@@ -11,5 +11,5 @@ with SB(
     print(sb.cdp.get_text('h2[data-e2e="user-bio"]'))
     for i in range(55):
         sb.cdp.scroll_down(12)
-        sb.sleep(0.06)
+        sb.sleep(0.05)
     sb.sleep(1)
