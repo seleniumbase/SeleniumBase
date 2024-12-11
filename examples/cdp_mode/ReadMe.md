@@ -384,6 +384,7 @@ sb.cdp.get_document()
 sb.cdp.get_flattened_document()
 sb.cdp.get_element_attributes(selector)
 sb.cdp.get_element_attribute(selector, attribute)
+sb.cdp.get_attribute(selector, attribute)
 sb.cdp.get_element_html(selector)
 sb.cdp.set_locale(locale)
 sb.cdp.set_attributes(selector, attribute, value)
@@ -463,6 +464,7 @@ element.type(text)
 element.get_position()
 element.get_html()
 element.get_js_attributes()
+element.get_attribute(attribute)
 ```
 
 --------
