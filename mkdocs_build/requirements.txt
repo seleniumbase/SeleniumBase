@@ -6,7 +6,7 @@ pymdown-extensions>=10.12
 pipdeptree>=2.24.0
 python-dateutil>=2.8.2
 Markdown==3.7
-markdown2==2.5.1
+markdown2==2.5.2
 MarkupSafe==3.0.2
 Jinja2==3.1.4
 click==8.1.7
