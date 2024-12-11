@@ -1,4 +1,4 @@
-"""Using CDP.network.ResponseReceived and CDP.network.RequestWillBeSent."""
+"""Using CDP.network.RequestWillBeSent and CDP.network.ResponseReceived."""
 import colorama
 import mycdp
 import sys

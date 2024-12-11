@@ -1,6 +1,6 @@
 from seleniumbase import SB
 
-with SB(uc=True, test=True, incognito=True) as sb:
+with SB(uc=True, test=True) as sb:
     url = "https://demo.fingerprint.com/playground"
     sb.activate_cdp_mode(url)
     sb.sleep(1)
