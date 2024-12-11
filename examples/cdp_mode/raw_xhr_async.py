@@ -86,6 +86,7 @@ async def crawl():
 
 
 if __name__ == "__main__":
-    print("================== Starting ==================")
+    print("<============= START: XHR Example =============>")
     loop = asyncio.new_event_loop()
     loop.run_until_complete(crawl())
+    print("<============== END: XHR Example ==============>")
