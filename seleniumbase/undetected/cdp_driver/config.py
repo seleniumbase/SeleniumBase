@@ -125,7 +125,6 @@ class Config:
             "--deny-permission-prompts",
             "--disable-infobars",
             "--disable-breakpad",
-            "--disable-component-update",
             "--disable-prompt-on-repost",
             "--disable-password-generation",
             "--disable-ipc-flooding-protection",
