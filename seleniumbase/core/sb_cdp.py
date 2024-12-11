@@ -83,6 +83,9 @@ class CDPMethods():
         element.get_position = lambda: self.__get_position(element)
         element.get_html = lambda: self.__get_html(element)
         element.get_js_attributes = lambda: self.__get_js_attributes(element)
+        element.get_attribute = (
+            lambda attribute: self.__get_attribute(element, attribute)
+        )
         return element
 
     def get(self, url):
@@ -439,6 +442,12 @@ class CDPMethods():
         return (
             self.loop.run_until_complete(element.get_js_attributes_async())
         )
+
+    def __get_attribute(self, element, attribute):
+        try:
+            return element.get_js_attributes()[attribute]
+        except Exception:
+            return None
 
     def __get_x_scroll_offset(self):
         x_scroll_offset = self.loop.run_until_complete(
@@ -1013,8 +1022,10 @@ class CDPMethods():
         )
 
     def get_element_attribute(self, selector, attribute):
-        attributes = self.get_element_attributes(selector)
-        return attributes[attribute]
+        return self.get_element_attributes(selector)[attribute]
+
+    def get_attribute(self, selector, attribute):
+        return self.find_element(selector).get_attribute(attribute)
 
     def get_element_html(self, selector):
         selector = self.__convert_to_css_if_xpath(selector)
@@ -1774,31 +1785,26 @@ class CDPMethods():
         with suppress(Exception):
             self.loop.run_until_complete(self.page.evaluate(js_code))
             self.loop.run_until_complete(self.page.wait())
-        self.__add_light_pause()
 
     def scroll_to_top(self):
         js_code = "window.scrollTo(0, 0);"
         with suppress(Exception):
             self.loop.run_until_complete(self.page.evaluate(js_code))
             self.loop.run_until_complete(self.page.wait())
-        self.__add_light_pause()
 
     def scroll_to_bottom(self):
         js_code = "window.scrollTo(0, 10000);"
         with suppress(Exception):
             self.loop.run_until_complete(self.page.evaluate(js_code))
             self.loop.run_until_complete(self.page.wait())
-        self.__add_light_pause()
 
     def scroll_up(self, amount=25):
         self.loop.run_until_complete(self.page.scroll_up(amount))
         self.loop.run_until_complete(self.page.wait())
-        self.__add_light_pause()
 
     def scroll_down(self, amount=25):
         self.loop.run_until_complete(self.page.scroll_down(amount))
         self.loop.run_until_complete(self.page.wait())
-        self.__add_light_pause()
 
     def save_screenshot(self, name, folder=None, selector=None):
         filename = name

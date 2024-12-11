@@ -658,6 +658,7 @@ def uc_open_with_cdp_mode(driver, url=None):
     cdp.get_window = CDPM.get_window
     cdp.get_element_attributes = CDPM.get_element_attributes
     cdp.get_element_attribute = CDPM.get_element_attribute
+    cdp.get_attribute = CDPM.get_attribute
     cdp.get_element_html = CDPM.get_element_html
     cdp.get_element_rect = CDPM.get_element_rect
     cdp.get_element_size = CDPM.get_element_size
@@ -2321,7 +2322,6 @@ def _set_chrome_options(
     chrome_options.add_argument("--disable-ipc-flooding-protection")
     chrome_options.add_argument("--disable-password-generation")
     chrome_options.add_argument("--disable-domain-reliability")
-    chrome_options.add_argument("--disable-component-update")
     chrome_options.add_argument("--disable-breakpad")
     included_disabled_features = []
     included_disabled_features.append("OptimizationHints")
@@ -4071,7 +4071,6 @@ def get_local_driver(
         edge_options.add_argument("--disable-ipc-flooding-protection")
         edge_options.add_argument("--disable-password-generation")
         edge_options.add_argument("--disable-domain-reliability")
-        edge_options.add_argument("--disable-component-update")
         edge_options.add_argument("--disable-breakpad")
         included_disabled_features = []
         included_disabled_features.append("OptimizationHints")

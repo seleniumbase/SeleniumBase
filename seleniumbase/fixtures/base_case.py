@@ -6051,10 +6051,8 @@ class BaseCase(unittest.TestCase):
         scroll - the option to scroll to the element first (Default: True)
         timeout - the time to wait for the element to appear """
         self.__check_scope()
-        if self.__is_cdp_swap_needed() and ":contains(" not in selector:
-            self.cdp.highlight(selector)
-            return
-        self._check_browser()
+        if not self.__is_cdp_swap_needed():
+            self._check_browser()
         self.__skip_if_esc()
         if isinstance(selector, WebElement):
             self.__highlight_element(selector, loops=loops, scroll=scroll)
@@ -13860,7 +13858,8 @@ class BaseCase(unittest.TestCase):
             js_utils.scroll_to_element(self.driver, element)
 
     def __highlight_with_js(self, selector, loops, o_bs):
-        self.wait_for_ready_state_complete()
+        if not self.__is_cdp_swap_needed():
+            self.wait_for_ready_state_complete()
         js_utils.highlight_with_js(self.driver, selector, loops, o_bs)
 
     def __highlight_element_with_js(self, element, loops, o_bs):

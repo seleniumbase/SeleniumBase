@@ -1,6 +1,5 @@
 from __future__ import annotations
 import asyncio
-import json
 import logging
 import pathlib
 import secrets
@@ -387,18 +386,16 @@ class Element:
 
     async def get_js_attributes_async(self):
         return ContraDict(
-            json.loads(
-                await self.apply(
-                    """
-            function (e) {
-                let o = {}
-                for(let k in e){
-                    o[k] = e[k]
+            await self.apply(
+                """
+                function (e) {
+                    let o = {}
+                    for(let k in e){
+                        o[k] = e[k]
+                    }
+                    return o
                 }
-                return JSON.stringify(o)
-            }
-            """
-                )
+                """
             )
         )
 
