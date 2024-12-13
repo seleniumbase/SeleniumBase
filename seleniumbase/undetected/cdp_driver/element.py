@@ -438,12 +438,15 @@ class Element:
                 )
             )
         )
-        if result and result[0]:
-            if return_by_value:
-                return result[0].value
-            return result[0]
-        elif result[1]:
-            return result[1]
+        try:
+            if result and result[0]:
+                if return_by_value:
+                    return result[0].value
+                return result[0]
+            elif result[1]:
+                return result[1]
+        except Exception:
+            return self
 
     async def get_position_async(self, abs=False) -> Position:
         if not self.parent or not self.object_id:
