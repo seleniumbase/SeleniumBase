@@ -163,7 +163,7 @@ setup(
         "pynose>=1.5.3",
         'platformdirs>=4.3.6',
         'typing-extensions>=4.12.2',
-        "sbvirtualdisplay>=1.3.0",
+        "sbvirtualdisplay>=1.3.1",
         "six>=1.17.0",
         'parse>=1.20.2',
         'parse-type>=0.6.4',

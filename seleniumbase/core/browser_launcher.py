@@ -600,6 +600,7 @@ def uc_open_with_cdp_mode(driver, url=None):
     cdp.find_element = CDPM.find_element
     cdp.find = CDPM.find_element
     cdp.locator = CDPM.find_element
+    cdp.find_element_by_text = CDPM.find_element_by_text
     cdp.find_all = CDPM.find_all
     cdp.find_elements_by_text = CDPM.find_elements_by_text
     cdp.select = CDPM.select

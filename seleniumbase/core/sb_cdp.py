@@ -167,6 +167,57 @@ class CDPMethods():
         self.__slow_mode_pause_if_set()
         return element
 
+    def find_element_by_text(
+        self, text, tag_name=None, timeout=settings.SMALL_TIMEOUT
+    ):
+        """Returns an element by matching text.
+        Optionally, provide a tag_name to narrow down the search to an
+        element with the given tag. (Eg: a, button, div, script, span)"""
+        self.__add_light_pause()
+        time_now = time.time()
+        self.assert_text(text, timeout=timeout)
+        spent = int(time.time() - time_now)
+        remaining = 1 + timeout - spent
+        if tag_name:
+            self.assert_element(tag_name, timeout=remaining)
+        elements = self.loop.run_until_complete(
+            self.page.find_elements_by_text(text=text)
+        )
+        if tag_name:
+            tag_name = tag_name.lower().strip()
+        for element in elements:
+            if element and not tag_name:
+                element = self.__add_sync_methods(element)
+                return self.__add_sync_methods(element)
+            elif (
+                element
+                and tag_name in element.tag_name.lower()
+                and text.strip() in element.text
+            ):
+                element = self.__add_sync_methods(element)
+                return self.__add_sync_methods(element)
+            elif (
+                element.parent
+                and tag_name in element.parent.tag_name.lower()
+                and text.strip() in element.parent.text
+            ):
+                element = self.__add_sync_methods(element.parent)
+                return self.__add_sync_methods(element)
+            elif (
+                element.parent.parent
+                and tag_name in element.parent.parent.tag_name.lower()
+                and text.strip() in element.parent.parent.text
+            ):
+                element = self.__add_sync_methods(element.parent.parent)
+                return self.__add_sync_methods(element)
+        plural = "s"
+        if timeout == 1:
+            plural = ""
+        raise Exception(
+            "Text {%s} with tag {%s} was not found after %s second%s!"
+            % (text, tag_name, timeout, plural)
+        )
+
     def find_all(self, selector, timeout=settings.SMALL_TIMEOUT):
         self.__add_light_pause()
         selector = self.__convert_to_css_if_xpath(selector)
@@ -177,26 +228,48 @@ class CDPMethods():
         for element in elements:
             element = self.__add_sync_methods(element)
             updated_elements.append(element)
-        self.__slow_mode_pause_if_set()
         return updated_elements
 
     def find_elements_by_text(self, text, tag_name=None):
         """Returns a list of elements by matching text.
-        Optionally, provide a tag_name to narrow down the search
-        to only elements with the given tag. (Eg: a, div, script, span)"""
+        Optionally, provide a tag_name to narrow down the search to only
+        elements with the given tag. (Eg: a, button, div, script, span)"""
         self.__add_light_pause()
         elements = self.loop.run_until_complete(
             self.page.find_elements_by_text(text=text)
         )
         updated_elements = []
+        if tag_name:
+            tag_name = tag_name.lower().strip()
         for element in elements:
-            if (
-                not tag_name
-                or tag_name.lower().strip() in element.tag_name.lower().strip()
+            if element and not tag_name:
+                element = self.__add_sync_methods(element)
+                if element not in updated_elements:
+                    updated_elements.append(element)
+            elif (
+                element
+                and tag_name in element.tag_name.lower()
+                and text.strip() in element.text
             ):
                 element = self.__add_sync_methods(element)
-                updated_elements.append(element)
-        self.__slow_mode_pause_if_set()
+                if element not in updated_elements:
+                    updated_elements.append(element)
+            elif (
+                element.parent
+                and tag_name in element.parent.tag_name.lower()
+                and text.strip() in element.parent.text
+            ):
+                element = self.__add_sync_methods(element.parent)
+                if element not in updated_elements:
+                    updated_elements.append(element)
+            elif (
+                element.parent.parent
+                and tag_name in element.parent.parent.tag_name.lower()
+                and text.strip() in element.parent.parent.text
+            ):
+                element = self.__add_sync_methods(element.parent.parent)
+                if element not in updated_elements:
+                    updated_elements.append(element)
         return updated_elements
 
     def select(self, selector, timeout=settings.SMALL_TIMEOUT):
@@ -244,7 +317,6 @@ class CDPMethods():
         for element in elements:
             element = self.__add_sync_methods(element)
             updated_elements.append(element)
-        self.__slow_mode_pause_if_set()
         return updated_elements
 
     def find_elements(self, selector, timeout=settings.SMALL_TIMEOUT):
