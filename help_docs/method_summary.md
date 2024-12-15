@@ -227,6 +227,8 @@ self.execute_async_script(script, timeout=None)
 
 self.safe_execute_script(script, *args, **kwargs)
 
+self.get_element_at_x_y(x, y)
+
 self.get_gui_element_rect(selector, by="css selector")
 
 self.get_gui_element_center(selector, by="css selector")

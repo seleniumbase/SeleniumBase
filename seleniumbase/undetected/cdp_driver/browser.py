@@ -10,6 +10,7 @@ import pathlib
 import pickle
 import re
 import shutil
+import time
 import urllib.parse
 import urllib.request
 import warnings
@@ -30,8 +31,6 @@ def get_registered_instances():
 
 
 def deconstruct_browser():
-    import time
-
     for _ in __registered__instances__:
         if not _.stopped:
             _.stop()
@@ -117,8 +116,13 @@ class Browser:
                 port=port,
                 **kwargs,
             )
-        instance = cls(config)
-        await instance.start()
+        try:
+            instance = cls(config)
+            await instance.start()
+        except Exception:
+            time.sleep(0.15)
+            instance = cls(config)
+            await instance.start()
         return instance
 
     def __init__(self, config: Config, **kwargs):
@@ -379,8 +383,6 @@ class Browser:
                     --------------------------------
                     Failed to connect to the browser
                     --------------------------------
-                    Possibly because you are running as "root".
-                    If so, you may need to use no_sandbox=True.
                     """
                 )
             )

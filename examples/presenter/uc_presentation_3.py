@@ -456,7 +456,7 @@ class UCPresentationClass(BaseCase):
             "<hr /><h6><br /></h6>"
             "<p><mk-1>"
             "There are different ways of stucturing SeleniumBase scripts."
-            ' (Internally called: "The 23 Syntax Formats")'
+            ' (Internally called: "The 25 Syntax Formats")'
             "</mk-1><br /><br /><mk-2>"
             'Most examples use Syntax Format 1: "BaseCase direct class'
             ' inheritance", which uses the "pytest" test runner.'

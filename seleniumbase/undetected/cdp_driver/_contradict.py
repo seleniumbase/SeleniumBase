@@ -31,12 +31,12 @@ class ContraDict(dict):
 
     def __init__(self, *args, **kwargs):
         super().__init__()
-        silent = kwargs.pop("silent", False)
+        # silent = kwargs.pop("silent", False)
         _ = dict(*args, **kwargs)
 
         super().__setattr__("__dict__", self)
         for k, v in _.items():
-            _check_key(k, self, False, silent)
+            _check_key(k, self, False, True)
             super().__setitem__(k, _wrap(self.__class__, v))
 
     def __setitem__(self, key, value):
@@ -90,7 +90,7 @@ _warning_names_message = """\n\
 
 
 def _check_key(
-    key: str, mapping: _Mapping, boolean: bool = False, silent=False
+    key: str, mapping: _Mapping, boolean: bool = False, silent=True
 ):
     """Checks `key` and warns if needed.
     :param key:

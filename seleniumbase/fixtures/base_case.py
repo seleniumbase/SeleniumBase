@@ -3416,6 +3416,14 @@ class BaseCase(unittest.TestCase):
             self.activate_jquery()
         return self.driver.execute_script(script, *args, **kwargs)
 
+    def get_element_at_x_y(self, x, y):
+        """Return element at current window's x,y coordinates."""
+        self.__check_scope()
+        self._check_browser()
+        return self.execute_script(
+            "return document.elementFromPoint(%s, %s);" % (x, y)
+        )
+
     def get_gui_element_rect(self, selector, by="css selector"):
         """Very similar to element.rect, but the x, y coordinates are
         relative to the entire screen, rather than the browser window.
