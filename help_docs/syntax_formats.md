@@ -2,7 +2,7 @@
 
 <a id="syntax_formats"></a>
 
-<h2><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="40"> The 23 Syntax Formats / Design Patterns</h2>
+<h2><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="40"> The 25 Syntax Formats / Design Patterns</h2>
 
 <h3>🔠 SeleniumBase supports multiple ways of structuring tests:</h3>
 
@@ -32,6 +32,8 @@
 <li><a href="#sb_sf_21"><strong>21. SeleniumBase SB (Python context manager)</strong></a></li>
 <li><a href="#sb_sf_22"><strong>22. The driver manager (via context manager)</strong></a></li>
 <li><a href="#sb_sf_23"><strong>23. The driver manager (via direct import)</strong></a></li>
+<li><a href="#sb_sf_24"><strong>24. CDP driver (async/await API. No Selenium)</strong></a></li>
+<li><a href="#sb_sf_25"><strong>25. CDP driver (SB-CDP sync API. No Selenium)</strong></a></li>
 </ul>
 </blockquote>
 
@@ -550,12 +552,12 @@ class MiaClasseDiTest(CasoDiProva):
         self.apri("https://it.wikipedia.org/wiki/")
         self.verificare_testo("Wikipedia")
         self.verificare_elemento('a[title="Lingua italiana"]')
-        self.digitare("#searchInput", "Pizza")
-        self.fare_clic("#searchButton")
+        self.digitare('input[name="search"]', "Pizza")
+        self.fare_clic("#searchform button")
         self.verificare_testo("Pizza", "#firstHeading")
         self.verificare_elemento('figure img[src*="pizza"]')
-        self.digitare("#searchInput", "Colosseo")
-        self.fare_clic("#searchButton")
+        self.digitare('input[name="search"]', "Colosseo")
+        self.fare_clic("#searchform button")
         self.verificare_testo("Colosseo", "#firstHeading")
         self.verificare_elemento('figure img[src*="Colosseo"]')
         self.indietro()
@@ -876,6 +878,21 @@ with SB(test=True, rtf=True, demo=True) as sb:
 
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_test_scripts.py">examples/raw_test_scripts.py</a> for the test.)
 
+Here's another example, which uses [CDP Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md) from the SeleniumBase SB format:
+
+```python
+from seleniumbase import SB
+
+with SB(uc=True, test=True) as sb:
+    url = "www.planetminecraft.com/account/sign_in/"
+    sb.activate_cdp_mode(url)
+    sb.sleep(2)
+    sb.cdp.gui_click_element("#turnstile-widget div")
+    sb.sleep(2)
+```
+
+(See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_planetmc.py">examples/cdp_mode/raw_planetmc.py</a> for the test.)
+
 <a id="sb_sf_22"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 22. The driver manager (via context manager)</h2>
 
@@ -993,6 +1010,87 @@ finally:
 The ``Driver()`` manager format can be used as a drop-in replacement for virtually every Python/selenium framework, as it uses the raw ``driver`` instance for handling commands. The ``Driver()`` method simplifies the work of managing drivers with optimal settings, and it can be configured with multiple args. The ``Driver()`` also accepts command-line options (such as ``python --headless``) so that you don't need to modify your tests directly to use different settings. These command-line options only take effect if the associated method args remain unset (or set to ``None``) for the specified options.
 
 When using the ``Driver()`` format, you may need to activate a Virtual Display on your own if you want to run headed tests in a headless Linux environment. (See https://github.com/mdmintz/sbVirtualDisplay for details.) One such example of this is using an authenticated proxy, which is configured via a Chrome extension that is generated at runtime. (Note that regular headless mode in Chrome doesn't support extensions.)
+
+<a id="sb_sf_24"></a>
+<h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 24. CDP driver (async/await API. No Selenium)</h2>
+
+This format provides a pure CDP way of using SeleniumBase (without Selenium or a test runner). The async/await API is used. Here's an example:
+
+```python
+import asyncio
+import time
+from seleniumbase.undetected import cdp_driver
+
+
+async def main():
+    driver = await cdp_driver.cdp_util.start_async()
+    page = await driver.get("about:blank")
+    await page.set_locale("en")
+    await page.get("https://www.priceline.com/")
+    time.sleep(3)
+    print(await page.evaluate("document.title"))
+    element = await page.select('[data-testid*="endLocation"]')
+    await element.click_async()
+    time.sleep(1)
+    await element.send_keys_async("Boston")
+    time.sleep(2)
+
+if __name__ == "__main__":
+    loop = asyncio.new_event_loop()
+    loop.run_until_complete(main())
+```
+
+(See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_async.py">examples/cdp_mode/raw_async.py</a> for the test.)
+
+<a id="sb_sf_25"></a>
+<h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 25. CDP driver (SB-CDP sync API. No Selenium)</h2>
+
+This format provides a pure CDP way of using SeleniumBase (without Selenium or a test runner). The expanded SB-CDP sync API is used. Here's an example:
+
+```python
+import asyncio
+from seleniumbase.core import sb_cdp
+from seleniumbase.undetected import cdp_driver
+
+
+def main():
+    url0 = "about:blank"  # Set Locale code from here first
+    url1 = "https://www.priceline.com/"  # (The "real" URL)
+    loop = asyncio.new_event_loop()
+    driver = cdp_driver.cdp_util.start_sync()
+    page = loop.run_until_complete(driver.get(url0))
+    sb = sb_cdp.CDPMethods(loop, page, driver)
+    sb.set_locale("en")  # This test expects English locale
+    sb.open(url1)
+    sb.sleep(2.5)
+    sb.internalize_links()  # Don't open links in a new tab
+    sb.click("#link_header_nav_experiences")
+    sb.sleep(3.5)
+    sb.remove_elements("msm-cookie-banner")
+    sb.sleep(1.5)
+    location = "Amsterdam"
+    where_to = 'div[data-automation*="experiences"] input'
+    button = 'button[data-automation*="experiences-search"]'
+    sb.gui_click_element(where_to)
+    sb.press_keys(where_to, location)
+    sb.sleep(1)
+    sb.gui_click_element(button)
+    sb.sleep(3)
+    print(sb.get_title())
+    print("************")
+    for i in range(8):
+        sb.scroll_down(50)
+        sb.sleep(0.2)
+    cards = sb.select_all('h2[data-automation*="product-list-card"]')
+    for card in cards:
+        print("* %s" % card.text)
+
+
+if __name__ == "__main__":
+    main()
+```
+
+(See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp.py">examples/cdp_mode/raw_cdp.py</a> for the test.)
 
 --------
 
