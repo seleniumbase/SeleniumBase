@@ -519,7 +519,20 @@ class CDPMethods():
         try:
             return element.get_js_attributes()[attribute]
         except Exception:
-            return None
+            if not attribute:
+                raise
+            try:
+                attribute_str = element.get_js_attributes()
+                locate = ' %s="' % attribute
+                if locate in attribute_str.outerHTML:
+                    outer_html = attribute_str.outerHTML
+                    attr_start = outer_html.find(locate) + len(locate)
+                    attr_end = outer_html.find('"', attr_start)
+                    value = outer_html[attr_start:attr_end]
+                    return value
+            except Exception:
+                pass
+        return None
 
     def __get_x_scroll_offset(self):
         x_scroll_offset = self.loop.run_until_complete(
@@ -620,11 +633,12 @@ class CDPMethods():
 
     def click_if_visible(self, selector):
         if self.is_element_visible(selector):
-            element = self.find_element(selector)
-            element.scroll_into_view()
-            element.click()
-            self.__slow_mode_pause_if_set()
-            self.loop.run_until_complete(self.page.wait())
+            with suppress(Exception):
+                element = self.find_element(selector, timeout=0)
+                element.scroll_into_view()
+                element.click()
+                self.__slow_mode_pause_if_set()
+                self.loop.run_until_complete(self.page.wait())
 
     def click_visible_elements(self, selector, limit=0):
         """Finds all matching page elements and clicks visible ones in order.
@@ -1094,7 +1108,14 @@ class CDPMethods():
         )
 
     def get_element_attribute(self, selector, attribute):
-        return self.get_element_attributes(selector)[attribute]
+        attributes = self.get_element_attributes(selector)
+        with suppress(Exception):
+            return attributes[attribute]
+        locate = ' %s="' % attribute
+        value = self.get_attribute(selector, attribute)
+        if not value and locate not in attributes:
+            raise KeyError(attribute)
+        return value
 
     def get_attribute(self, selector, attribute):
         return self.find_element(selector).get_attribute(attribute)
