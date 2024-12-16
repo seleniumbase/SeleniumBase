@@ -101,7 +101,7 @@ with SB(uc=True, test=True, locale_code="en") as sb:
 
 --------
 
-<p align="left">📗 Here's <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_get_swag.py">test_get_swag.py</a>, which tests a QA shopping site:</p>
+<p align="left">📗 Here's <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_get_swag.py">test_get_swag.py</a>, which tests an e-commerce site:</p>
 
 ```python
 from seleniumbase import BaseCase
