@@ -85,6 +85,22 @@ with SB(test=True) as sb:
 
 --------
 
+<p align="left">📗 Here's an example of bypassing bot-detection on a site that uses Cloudflare: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_gitlab.py">SeleniumBase/examples/cdp_mode/raw_gitlab.py</a></p>
+
+```python
+from seleniumbase import SB
+
+with SB(uc=True, test=True, locale_code="en") as sb:
+    url = "https://gitlab.com/users/sign_in"
+    sb.activate_cdp_mode(url)
+    sb.uc_gui_click_captcha()  # PyAutoGUI if needed
+    sb.save_screenshot_to_logs()
+```
+
+<img src="https://seleniumbase.github.io/other/cf_sec.jpg" title="SeleniumBase" width="332"> <img src="https://seleniumbase.github.io/other/gitlab_bypass.png" title="SeleniumBase" width="288">
+
+--------
+
 <p align="left">📗 Here's <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_get_swag.py">test_get_swag.py</a>, which tests a QA shopping site:</p>
 
 ```python
