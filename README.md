@@ -60,7 +60,7 @@
 
 📚 Learn from [**over 200 examples** in the **SeleniumBase/examples/** folder](https://github.com/seleniumbase/SeleniumBase/tree/master/examples).
 
-🐙 Note that <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md"><b>UC Mode</b></a> and <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md"><b>CDP Mode</b></a> (Stealth Mode) have separate docs</a>.
+🐙 Note that <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md"><b>UC Mode</b></a> / <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md"><b>CDP Mode</b></a> (Stealth Mode) have their own ReadMe.
 
 ℹ️ Most scripts run with raw <code translate="no"><b>python</b></code>, although some scripts use <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md">Syntax Formats</a> that expect <a href="https://docs.pytest.org/en/latest/how-to/usage.html" translate="no"><b>pytest</b></a> (a Python unit-testing framework included with SeleniumBase that can discover, collect, and run tests automatically).
 
@@ -71,21 +71,21 @@
 ```python
 from seleniumbase import SB
 
-with SB(test=True, ad_block=True, locale_code="en") as sb:
+with SB(test=True) as sb:
     sb.open("https://google.com/ncr")
     sb.type('[title="Search"]', "SeleniumBase GitHub page\n")
-    sb.click('[href*="github.com/seleniumbase/SeleniumBase"]')
-    sb.save_screenshot_to_logs()  # (See ./latest_logs folder)
+    sb.click('[href*="github.com/seleniumbase/"]')
+    sb.save_screenshot_to_logs()  # ./latest_logs/
     print(sb.get_page_title())
 ```
 
 > `python raw_google.py`
 
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_google.py"><img src="https://seleniumbase.github.io/cdn/gif/google_search.gif" alt="SeleniumBase Test" title="SeleniumBase Test" width="480" /></a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_google.py"><img src="https://seleniumbase.github.io/cdn/gif/google_search.gif" alt="SeleniumBase Test" title="SeleniumBase Test" width="420" /></a>
 
 --------
 
-<p align="left">📗 Here's <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_get_swag.py">test_get_swag.py</a>, which tests a fake shopping site:</p>
+<p align="left">📗 Here's <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_get_swag.py">test_get_swag.py</a>, which tests a QA shopping site:</p>
 
 ```python
 from seleniumbase import BaseCase
@@ -111,7 +111,7 @@ class MyTestClass(BaseCase):
 
 > `pytest test_get_swag.py`
 
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_get_swag.py"><img src="https://seleniumbase.github.io/cdn/gif/fast_swag_2.gif" alt="SeleniumBase Test" title="SeleniumBase Test" width="520" /></a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_get_swag.py"><img src="https://seleniumbase.github.io/cdn/gif/fast_swag_2.gif" alt="SeleniumBase Test" title="SeleniumBase Test" width="480" /></a>
 
 > (The default browser is ``--chrome`` if not set.)
 
@@ -123,7 +123,7 @@ class MyTestClass(BaseCase):
 pytest test_coffee_cart.py --demo
 ```
 
-<p align="left"><a href="https://seleniumbase.io/coffee/" target="_blank"><img src="https://seleniumbase.github.io/cdn/gif/coffee_cart.gif" width="520" alt="SeleniumBase Coffee Cart Test" title="SeleniumBase Coffee Cart Test" /></a></p>
+<p align="left"><a href="https://seleniumbase.io/coffee/" target="_blank"><img src="https://seleniumbase.github.io/cdn/gif/coffee_cart.gif" width="480" alt="SeleniumBase Coffee Cart Test" title="SeleniumBase Coffee Cart Test" /></a></p>
 
 > <p>(<code translate="no">--demo</code> mode slows down tests and highlights actions)</p>
 
@@ -137,7 +137,7 @@ pytest test_coffee_cart.py --demo
 pytest test_demo_site.py
 ```
 
-<p align="left"><a href="https://seleniumbase.io/demo_page" target="_blank"><img src="https://seleniumbase.github.io/cdn/gif/demo_page_5.gif" width="520" alt="SeleniumBase Example" title="SeleniumBase Example" /></a></p>
+<p align="left"><a href="https://seleniumbase.io/demo_page" target="_blank"><img src="https://seleniumbase.github.io/cdn/gif/demo_page_5.gif" width="480" alt="SeleniumBase Example" title="SeleniumBase Example" /></a></p>
 
 > Easy to type, click, select, toggle, drag & drop, and more.
 
@@ -393,7 +393,7 @@ cd examples/
 pytest my_first_test.py
 ```
 
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py"><img src="https://seleniumbase.github.io/cdn/gif/fast_swag_2.gif" alt="SeleniumBase Test" title="SeleniumBase Test" width="520" /></a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py"><img src="https://seleniumbase.github.io/cdn/gif/fast_swag_2.gif" alt="SeleniumBase Test" title="SeleniumBase Test" width="480" /></a>
 
 <p align="left"><b>Here's the full code for <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py">my_first_test.py</a>:</b></p>
 
