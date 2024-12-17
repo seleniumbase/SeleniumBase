@@ -35,7 +35,27 @@
 
 That disconnects WebDriver from Chrome (which prevents detection), and gives you access to `sb.cdp` methods (which don't trigger anti-bot checks).
 
-Simple example: ([SeleniumBase/examples/cdp_mode/raw_planetmc.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_planetmc.py))
+Simple example: ([SeleniumBase/examples/cdp_mode/raw_gitlab.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_gitlab.py))
+
+```python
+from seleniumbase import SB
+
+with SB(uc=True, test=True, locale_code="en") as sb:
+    url = "https://gitlab.com/users/sign_in"
+    sb.activate_cdp_mode(url)
+    sb.uc_gui_click_captcha()
+    sb.sleep(2)
+```
+
+<img src="https://seleniumbase.github.io/other/cf_sec.jpg" title="SeleniumBase" width="332"> <img src="https://seleniumbase.github.io/other/gitlab_bypass.png" title="SeleniumBase" width="288">
+
+(If the CAPTCHA wasn't bypassed automatically, then `sb.uc_gui_click_captcha()` gets the job done.)
+
+Note that `PyAutoGUI` is an optional dependency. If calling a method that uses it when not already installed, then `SeleniumBase` installs `PyAutoGUI` at run-time.
+
+--------
+
+For Cloudflare CAPTCHAs that appear as part of a websites, you may need to use `sb.cdp.gui_click_element(selector)` instead (if the Turnstile wasn't bypassed automatically). Example: ([SeleniumBase/examples/cdp_mode/raw_planetmc.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_planetmc.py))
 
 ```python
 from seleniumbase import SB
@@ -50,23 +70,10 @@ with SB(uc=True, test=True) as sb:
 
 <img src="https://seleniumbase.github.io/other/planet_mc.png" title="SeleniumBase" width="480">
 
-(If the CAPTCHA wasn't initially bypassed, then the click gets the job done.)
+When using `sb.cdp.gui_click_element(selector)` on CF Turnstiles, use the parent `selector` that appears **above** the `#shadow-root` element:
+Eg. `sb.cdp.gui_click_element("#turnstile-widget div")`
 
-Note that `PyAutoGUI` is an optional dependency. If calling a method that uses it when not already installed, then `SeleniumBase` will install it at run-time, which pauses the script briefly.
-
-For standard Cloudflare pages, use `sb.uc_gui_click_captcha()` if Turnstiles aren't initially bypassed. Example: ([SeleniumBase/examples/cdp_mode/raw_gitlab.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_gitlab.py))
-
-```python
-from seleniumbase import SB
-
-with SB(uc=True, test=True, locale_code="en") as sb:
-    url = "https://gitlab.com/users/sign_in"
-    sb.activate_cdp_mode(url)
-    sb.uc_gui_click_captcha()
-    sb.sleep(2)
-```
-
-<img src="https://seleniumbase.github.io/other/cf_sec.jpg" title="SeleniumBase" width="404"> <img src="https://seleniumbase.github.io/other/gitlab_bypass.png" title="SeleniumBase" width="350">
+<img src="https://seleniumbase.github.io/other/above_shadow.png" title="SeleniumBase" width="480">
 
 --------
 
