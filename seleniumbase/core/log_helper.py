@@ -15,6 +15,11 @@ if sys.version_info >= (3, 11):
 py311_patch2 = constants.PatchPy311.PATCH
 
 
+def __is_cdp_swap_needed(driver):
+    """If the driver is disconnected, use a CDP method when available."""
+    return shared_utils.is_cdp_swap_needed(driver)
+
+
 def log_screenshot(test_logpath, driver, screenshot=None, get=False):
     screenshot_name = settings.SCREENSHOT_NAME
     screenshot_path = os.path.join(test_logpath, screenshot_name)
@@ -356,7 +361,11 @@ def log_page_source(test_logpath, driver, source=None):
         page_source = source
     else:
         try:
-            page_source = driver.page_source
+            page_source = None
+            if __is_cdp_swap_needed(driver):
+                page_source = driver.cdp.get_page_source()
+            else:
+                page_source = driver.page_source
             page_source = get_html_source_with_base_href(driver, page_source)
         except Exception:
             source = constants.Warnings.PAGE_SOURCE_UNDEFINED
@@ -448,7 +457,11 @@ def get_test_name(test):
 
 def get_last_page(driver):
     try:
-        last_page = driver.current_url
+        last_page = None
+        if __is_cdp_swap_needed(driver):
+            last_page = driver.cdp.get_current_url()
+        else:
+            last_page = driver.current_url
     except Exception:
         last_page = "[WARNING! Browser Not Open!]"
     if len(last_page) < 5:

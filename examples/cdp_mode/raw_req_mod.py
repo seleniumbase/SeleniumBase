@@ -5,14 +5,13 @@ from seleniumbase import SB
 
 async def request_paused_handler(event, tab):
     r = event.request
+    rid = event.request_id
     is_image = ".png" in r.url or ".jpg" in r.url or ".gif" in r.url
     if not is_image:  # Let the data through
-        tab.feed_cdp(mycdp.fetch.continue_request(request_id=event.request_id))
-    else:  # Modify the data (change the image)
-        tab.feed_cdp(mycdp.fetch.continue_request(
-            request_id=event.request_id,
-            url="https://seleniumbase.io/other/with_frakes.jpg"
-        ))
+        tab.feed_cdp(mycdp.fetch.continue_request(request_id=rid))
+    else:  # Modify the data (Change the image URL)
+        new_url = "https://seleniumbase.io/other/with_frakes.jpg"
+        tab.feed_cdp(mycdp.fetch.continue_request(request_id=rid, url=new_url))
 
 
 with SB(uc=True, test=True, locale_code="en", pls="none") as sb:
