@@ -1342,7 +1342,8 @@ def save_page_source(driver, name, folder=None):
     """
     from seleniumbase.core import log_helper
 
-    _reconnect_if_disconnected(driver)
+    if not __is_cdp_swap_needed(driver):
+        _reconnect_if_disconnected(driver)  # If disconnected without CDP
     if not name.endswith(".html"):
         name = name + ".html"
     if folder:
@@ -1353,7 +1354,11 @@ def save_page_source(driver, name, folder=None):
         html_file_path = os.path.join(file_path, name)
     else:
         html_file_path = name
-    page_source = driver.page_source
+    page_source = None
+    if __is_cdp_swap_needed(driver):
+        page_source = driver.cdp.get_page_source()
+    else:
+        page_source = driver.page_source
     html_file = codecs.open(html_file_path, "w+", "utf-8")
     rendered_source = log_helper.get_html_source_with_base_href(
         driver, page_source

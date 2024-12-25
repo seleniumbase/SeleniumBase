@@ -4492,7 +4492,8 @@ class BaseCase(unittest.TestCase):
         @Params
         name - The file name to save the current page's HTML to.
         folder - The folder to save the file to. (Default = current folder)"""
-        self.wait_for_ready_state_complete()
+        if not self.__is_cdp_swap_needed():
+            self.wait_for_ready_state_complete()
         return page_actions.save_page_source(self.driver, name, folder)
 
     def save_cookies(self, name="cookies.txt"):
@@ -4550,6 +4551,9 @@ class BaseCase(unittest.TestCase):
     def delete_all_cookies(self):
         """Deletes all cookies in the web browser.
         Does NOT delete the saved cookies file."""
+        if self.__is_cdp_swap_needed():
+            self.cdp.clear_cookies()
+            return
         self.wait_for_ready_state_complete()
         self.driver.delete_all_cookies()
         if self.recorder_mode:
@@ -4561,7 +4565,6 @@ class BaseCase(unittest.TestCase):
     def delete_saved_cookies(self, name="cookies.txt"):
         """Deletes the cookies file from the "saved_cookies" folder.
         Does NOT delete the cookies from the web browser."""
-        self.wait_for_ready_state_complete()
         if name.endswith("/"):
             raise Exception("Invalid filename for Cookies!")
         if "/" in name:
@@ -4600,14 +4603,20 @@ class BaseCase(unittest.TestCase):
         return json.loads(json_cookies)
 
     def get_cookie(self, name):
+        self.__check_scope()
+        self._check_browser()
         return self.driver.get_cookie(name)
 
     def get_cookies(self):
+        self.__check_scope()
+        self._check_browser()
         return self.driver.get_cookies()
 
     def get_cookie_string(self):
+        self.__check_scope()
         if self.__is_cdp_swap_needed():
             return self.cdp.get_cookie_string()
+        self._check_browser()
         return self.execute_script("return document.cookie;")
 
     def add_cookie(self, cookie_dict, expiry=False):
@@ -4622,6 +4631,8 @@ class BaseCase(unittest.TestCase):
         If expiry > 0: Set "expiry" to expiry minutes in the future.
         If expiry == True: Set "expiry" to 24 hours in the future.
         """
+        self.__check_scope()
+        self._check_browser()
         cookie = cookie_dict
         if "domain" in cookie:
             origin = self.get_origin()
@@ -4646,6 +4657,8 @@ class BaseCase(unittest.TestCase):
         If expiry > 0: Set "expiry" to expiry minutes in the future.
         If expiry == True: Set "expiry" to 24 hours in the future.
         """
+        self.__check_scope()
+        self._check_browser()
         origin = self.get_origin()
         trim_origin = origin.split("://")[-1]
         for cookie in cookies:
