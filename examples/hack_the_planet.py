@@ -114,6 +114,8 @@ class HackTests(BaseCase):
         self.set_text_content(".profile-preview-card button", "SeleniumBase")
         if self.is_element_visible('h2 a[href*="simonh"]'):
             self.set_text_content('h2 a[href*="simonh"]', aybabtu)
+        if self.is_element_visible('main h2 a[id*="article"]'):
+            self.set_text_content('main h2 a[id*="article"]', aybabtu)
         self.highlight('[aria-label="Primary sidebar"] div div', scroll=False)
         self.highlight('nav a[data-text="Relevant"]', loops=1, scroll=False)
         self.highlight('nav a[data-text="Latest"]', loops=1, scroll=False)
@@ -124,6 +126,8 @@ class HackTests(BaseCase):
         self.highlight('nav a[data-text="Infinity"]', loops=3, scroll=False)
         if self.is_element_visible('h2 a[href*="simonh"]'):
             self.highlight('h2 a[href*="simonh"]', loops=7, scroll=False)
+        if self.is_element_visible('main h2 a[id*="article"]'):
+            self.highlight('main h2 a[id*="article"]', loops=7, scroll=False)
         self.highlight("section.crayons-card", loops=7, scroll=False)
 
         self.open("https://azure.microsoft.com/en-us/services/playfab/")

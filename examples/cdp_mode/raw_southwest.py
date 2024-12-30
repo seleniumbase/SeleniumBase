@@ -4,6 +4,9 @@ with SB(uc=True, test=True, locale_code="en", ad_block=True) as sb:
     url = "https://www.southwest.com/air/booking/"
     sb.activate_cdp_mode(url)
     sb.sleep(2.8)
+    cookie_pop_up = '[class*="PopOverContainer"] span'
+    if sb.cdp.is_element_visible(cookie_pop_up):
+        sb.cdp.mouse_click(cookie_pop_up)
     origin = "DEN"
     destination = "PHX"
     sb.cdp.gui_click_element("input#originationAirportCode")

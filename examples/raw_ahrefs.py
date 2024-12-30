@@ -10,6 +10,7 @@ with SB(uc=True, test=True, incognito=True, locale_code="en") as sb:
     sb.uc_click(submit_button, reconnect_time=3.25)
     sb.uc_gui_click_captcha()
     sb.wait_for_text_not_visible("Checking", timeout=11.5)
+    sb.click_if_visible('button[data-cky-tag="close-button"]')
     sb.highlight('p:contains("github.com/seleniumbase/SeleniumBase")')
     sb.highlight('a:contains("Top 100 backlinks")')
     sb.set_messenger_theme(location="bottom_center")
