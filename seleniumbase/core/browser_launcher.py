@@ -533,10 +533,26 @@ def uc_open_with_cdp_mode(driver, url=None):
     if url_protocol not in ["about", "data", "chrome"]:
         safe_url = False
 
+    headless = False
+    headed = None
+    xvfb = None
+    if hasattr(sb_config, "headless"):
+        headless = sb_config.headless
+    if hasattr(sb_config, "headed"):
+        headed = sb_config.headed
+    if hasattr(sb_config, "xvfb"):
+        xvfb = sb_config.xvfb
+
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     driver.cdp_base = loop.run_until_complete(
-        cdp_util.start(host=cdp_host, port=cdp_port)
+        cdp_util.start(
+            host=cdp_host,
+            port=cdp_port,
+            headless=headless,
+            headed=headed,
+            xvfb=xvfb,
+        )
     )
     loop.run_until_complete(driver.cdp_base.wait(0))
 
@@ -863,13 +879,15 @@ def __install_pyautogui_if_missing():
                         xvfb_height = 768
                     sb_config._xvfb_height = xvfb_height
                 with suppress(Exception):
-                    xvfb_display = Display(
+                    _xvfb_display = Display(
                         visible=True,
                         size=(xvfb_width, xvfb_height),
                         backend="xvfb",
                         use_xauth=True,
                     )
-                    xvfb_display.start()
+                    _xvfb_display.start()
+                    sb_config._virtual_display = _xvfb_display
+                    sb_config.headless_active = True
 
 
 def install_pyautogui_if_missing(driver):
