@@ -36,5 +36,8 @@ with SB(uc=True, test=True, locale_code="en", ad_block=True) as sb:
         arrives = info.split("Arrives")[-1].split("M")[0].strip() + "M"
         stops = flight.query_selector(".flight-stops-badge").text
         duration = flight.query_selector('[class*="flight-duration"]').text
-        price = flight.query_selector('span.currency span[aria-hidden]').text
+        p_elm = flight.query_selector('span.currency span[aria-hidden]')
+        if not p_elm:
+            continue
+        price = p_elm.text
         print(f"* {day}, {departs} -> {arrives} ({stops}: {duration}) {price}")
