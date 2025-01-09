@@ -150,7 +150,7 @@ setup(
         'pip>=24.3.1',
         'packaging>=24.2',
         'setuptools~=70.2;python_version<"3.10"',  # Newer ones had issues
-        'setuptools>=75.6.0;python_version>="3.10"',
+        'setuptools>=75.8.0;python_version>="3.10"',
         'wheel>=0.45.1',
         'attrs>=24.3.0',
         "certifi>=2024.12.14",
@@ -172,7 +172,7 @@ setup(
         'parse-type>=0.6.4',
         'colorama>=0.4.6',
         'pyyaml>=6.0.2',
-        'pygments>=2.18.0',
+        'pygments>=2.19.1',
         'pyreadline3>=3.5.3;platform_system=="Windows"',
         "tabcompleter>=1.4.0",
         "pdbp>=1.6.1",
@@ -185,7 +185,8 @@ setup(
         'sniffio==1.3.1',
         'h11==0.14.0',
         'outcome==1.3.0.post0',
-        'trio==0.27.0',
+        'trio==0.27.0;python_version<"3.9"',
+        'trio==0.28.0;python_version>="3.9"',
         'trio-websocket==0.11.1',
         'wsproto==1.2.0',
         'websocket-client==1.8.0',
@@ -225,7 +226,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage>=7.6.1;python_version<"3.9"',
-            'coverage>=7.6.9;python_version>="3.9"',
+            'coverage>=7.6.10;python_version>="3.9"',
             'pytest-cov>=5.0.0;python_version<"3.9"',
             'pytest-cov>=6.0.0;python_version>="3.9"',
         ],
@@ -264,7 +265,7 @@ setup(
         # (An optional library for image-processing.)
         "pillow": [
             'Pillow>=10.4.0;python_version<"3.9"',
-            'Pillow>=11.0.0;python_version>="3.9"',
+            'Pillow>=11.1.0;python_version>="3.9"',
         ],
         # pip install -e .[pip-system-certs]
         # (If you see [SSL: CERTIFICATE_VERIFY_FAILED], then get this.)

@@ -13795,7 +13795,8 @@ class BaseCase(unittest.TestCase):
             if self.get_current_url() == "about:blank":
                 self.switch_to_window(current_window)
         except Exception:
-            self.switch_to_window(current_window)
+            with suppress(Exception):
+                self.switch_to_window(current_window)
 
     def __needs_minimum_wait(self):
         if (
@@ -14004,9 +14005,10 @@ class BaseCase(unittest.TestCase):
                 visible=0, size=(width, height)
             )
             self._xvfb_display.start()
-            sb_config._virtual_display = self._xvfb_display
             self.headless_active = True
-            sb_config.headless_active = True
+            if not self.undetectable:
+                sb_config._virtual_display = self._xvfb_display
+                sb_config.headless_active = True
 
     def __activate_virtual_display(self):
         if self.undetectable and not (self.headless or self.headless2):
@@ -14029,6 +14031,8 @@ class BaseCase(unittest.TestCase):
                         "\nX11 display failed! Will use regular xvfb!"
                     )
                     self.__activate_standard_virtual_display()
+                else:
+                    self.headless_active = True
             except Exception as e:
                 if hasattr(e, "msg"):
                     print("\n" + str(e.msg))
@@ -16601,11 +16605,26 @@ class BaseCase(unittest.TestCase):
             self.__quit_all_drivers()
         # Resume tearDown() for all test runners, (Pytest / Pynose / Behave)
         if hasattr(self, "_xvfb_display") and self._xvfb_display:
+            # Stop the Xvfb virtual display launched from BaseCase
             try:
                 if hasattr(self._xvfb_display, "stop"):
                     self._xvfb_display.stop()
                 self._xvfb_display = None
                 self.headless_active = False
+            except AttributeError:
+                pass
+            except Exception:
+                pass
+        if (
+            hasattr(sb_config, "_virtual_display")
+            and sb_config._virtual_display
+            and hasattr(sb_config._virtual_display, "stop")
+        ):
+            # CDP Mode may launch a 2nd Xvfb virtual display
+            try:
+                sb_config._virtual_display.stop()
+                sb_config._virtual_display = None
+                sb_config.headless_active = False
             except AttributeError:
                 pass
             except Exception:

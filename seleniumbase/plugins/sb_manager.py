@@ -1256,6 +1256,19 @@ def SB(
             print(traceback.format_exc().strip())
             if test and not test_passed:
                 print("********** ERROR: The test AND the tearDown() FAILED!")
+        if (
+            hasattr(sb_config, "_virtual_display")
+            and sb_config._virtual_display
+            and hasattr(sb_config._virtual_display, "stop")
+        ):
+            try:
+                sb_config._virtual_display.stop()
+                sb_config._virtual_display = None
+                sb_config.headless_active = False
+            except AttributeError:
+                pass
+            except Exception:
+                pass
         end_time = time.time()
         run_time = end_time - start_time
         sb_config = sb_config_backup

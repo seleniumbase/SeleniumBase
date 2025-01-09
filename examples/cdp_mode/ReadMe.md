@@ -6,8 +6,13 @@
 
 --------
 
-<!-- YouTube View --><a href="https://www.youtube.com/watch?v=Mr90iQmNsKM"><img src="http://img.youtube.com/vi/Mr90iQmNsKM/0.jpg" title="SeleniumBase on YouTube" width="366" /></a>
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=Mr90iQmNsKM"><img src="https://github.com/user-attachments/assets/91e7ff7b-d155-4ba9-b17b-b097825fcf42" title="SeleniumBase on YouTube" width="350" /></a>
 <p>(<b><a href="https://www.youtube.com/watch?v=Mr90iQmNsKM">Watch the CDP Mode tutorial on YouTube! ▶️</a></b>)</p>
+
+--------
+
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=vt2zsdiNh3U"><img src="https://github.com/user-attachments/assets/82ab2715-727e-4d09-9314-b8905795dc43" title="SeleniumBase on YouTube" width="350" /></a>
+<p>(<b><a href="https://www.youtube.com/watch?v=vt2zsdiNh3U">Watch "Hacking websites with CDP" on YouTube! ▶️</a></b>)</p>
 
 --------
 

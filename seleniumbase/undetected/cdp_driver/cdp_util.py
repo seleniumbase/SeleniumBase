@@ -84,6 +84,9 @@ def __activate_virtual_display_as_needed(
                             "\nX11 display failed! Will use regular xvfb!"
                         )
                         __activate_standard_virtual_display()
+                    else:
+                        sb_config._virtual_display = _xvfb_display
+                        sb_config.headless_active = True
                 except Exception as e:
                     if hasattr(e, "msg"):
                         print("\n" + str(e.msg))
