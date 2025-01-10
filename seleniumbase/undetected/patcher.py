@@ -187,7 +187,7 @@ class Patcher(object):
         with io.open(executable_path, "rb") as fh:
             if re.search(
                 b"window.cdc_adoQpoasnfa76pfcZLmcfl_"
-                b"(Array|Promise|Symbol|Object|Proxy|JSON)",
+                b"(Array|Promise|Symbol|Object|Proxy|JSON|Window)",
                 fh.read()
             ):
                 return False
@@ -210,14 +210,14 @@ class Patcher(object):
             file_bin = fh.read()
             file_bin = re.sub(
                 b"window\\.cdc_[a-zA-Z0-9]{22}_"
-                b"(Array|Promise|Symbol|Object|Proxy|JSON)"
-                b" = window\\.(Array|Promise|Symbol|Object|Proxy|JSON);",
+                b"(Array|Promise|Symbol|Object|Proxy|JSON|Window) "
+                b"= window\\.(Array|Promise|Symbol|Object|Proxy|JSON|Window);",
                 gen_js_whitespaces,
                 file_bin,
             )
             file_bin = re.sub(
                 b"window\\.cdc_[a-zA-Z0-9]{22}_"
-                b"(Array|Promise|Symbol|Object|Proxy|JSON) \\|\\|",
+                b"(Array|Promise|Symbol|Object|Proxy|JSON|Window) \\|\\|",
                 gen_js_whitespaces,
                 file_bin,
             )
