@@ -516,17 +516,19 @@ class UCPresentationClass(BaseCase):
         )
         self.begin_presentation(filename="uc_presentation.html")
 
-        with SB(uc=True, test=True, locale_code="en", ad_block=True) as sb:
+        with SB(uc=True, test=True, ad_block=True) as sb:
             url = "https://www.walmart.com/"
             sb.activate_cdp_mode(url)
             sb.sleep(2.5)
+            sb.cdp.click_if_visible('[data-automation-id*="close-mark"]')
             sb.cdp.mouse_click('input[aria-label="Search"]')
             sb.sleep(1.2)
             search = "Settlers of Catan Board Game"
             required_text = "Catan"
             sb.cdp.press_keys('input[aria-label="Search"]', search + "\n")
             sb.sleep(3.8)
-            print('\n\n*** Walmart Search for "%s":' % search)
+            sb.cdp.remove_elements('[data-testid="skyline-ad"]')
+            print('*** Walmart Search for "%s":' % search)
             print('    (Results must contain "%s".)' % required_text)
             unique_item_text = []
             items = sb.cdp.find_elements('div[data-testid="list-view"]')
@@ -642,7 +644,7 @@ class UCPresentationClass(BaseCase):
             sb.cdp.click('button[data-testid="submit"]')
             sb.sleep(3.5)
             sb.connect()
-            sb.sleep(2.5)
+            sb.sleep(4.2)
             for window in sb.driver.window_handles:
                 sb.switch_to_window(window)
                 if "/buy/flights" in sb.get_current_url():
@@ -708,6 +710,7 @@ class UCPresentationClass(BaseCase):
                 if "Avg/Night" in info and not info.startswith("Rates from"):
                     name = info.split("  (")[0]
                     name = name.split(" + ")[0].split(" Award Cat")[0]
+                    name = name.split(" Rates from :")[0]
                     price = "?"
                     if "Rates from : " in info:
                         price = info.split("Rates from : ")[1]
@@ -728,7 +731,7 @@ class UCPresentationClass(BaseCase):
             url = "https://www.bestwestern.com/en_US.html"
             sb.activate_cdp_mode(url)
             sb.sleep(2.5)
-            sb.cdp.click_if_visible("div.onetrust-close-btn-handler")
+            sb.cdp.click_if_visible(".onetrust-close-btn-handler")
             sb.sleep(1)
             sb.cdp.click("input#destination-input")
             sb.sleep(2)
@@ -741,9 +744,11 @@ class UCPresentationClass(BaseCase):
             sb.sleep(4)
             sb.cdp.click("label#available-label")
             sb.sleep(2.5)
-            print("\n\nBest Western Hotels in %s:" % location)
+            print("Best Western Hotels in %s:" % location)
             summary_details = sb.cdp.get_text("#summary-details-column")
-            dates = summary_details.split("ROOM")[0].split("DATES")[-1].strip()
+            dates = summary_details.split("DESTINATION")[-1]
+            dates = dates.split(" CHECK-OUT")[0].strip() + " CHECK-OUT"
+            dates = dates.replace("  ", " ")
             print("(Dates: %s)" % dates)
             flip_cards = sb.cdp.select_all(".flipCard")
             for i, flip_card in enumerate(flip_cards):

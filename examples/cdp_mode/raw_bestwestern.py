@@ -4,7 +4,7 @@ with SB(uc=True, test=True, locale_code="en", ad_block=True) as sb:
     url = "https://www.bestwestern.com/en_US.html"
     sb.activate_cdp_mode(url)
     sb.sleep(2.5)
-    sb.cdp.click_if_visible("div.onetrust-close-btn-handler")
+    sb.cdp.click_if_visible(".onetrust-close-btn-handler")
     sb.sleep(1)
     sb.cdp.click("input#destination-input")
     sb.sleep(2)
@@ -19,7 +19,9 @@ with SB(uc=True, test=True, locale_code="en", ad_block=True) as sb:
     sb.sleep(2.5)
     print("Best Western Hotels in %s:" % location)
     summary_details = sb.cdp.get_text("#summary-details-column")
-    dates = summary_details.split("ROOM")[0].split("DATES")[-1].strip()
+    dates = summary_details.split("DESTINATION")[-1]
+    dates = dates.split(" CHECK-OUT")[0].strip() + " CHECK-OUT"
+    dates = dates.replace("  ", " ")
     print("(Dates: %s)" % dates)
     flip_cards = sb.cdp.select_all(".flipCard")
     for i, flip_card in enumerate(flip_cards):
