@@ -1544,6 +1544,9 @@ def _uc_gui_handle_captcha_(driver, frame="iframe", ctype=None):
                 for i in range(10):
                     pyautogui.hotkey("shift", "tab")
                     time.sleep(0.027)
+                    if ctype == "g_rc":
+                        if js_utils.get_active_element_css(driver) == "body":
+                            break
             tab_count = 0
             for i in range(34):
                 pyautogui.press("\t")
