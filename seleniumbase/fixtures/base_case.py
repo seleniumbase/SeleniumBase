@@ -1901,7 +1901,7 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_cdp_swap_needed():
-            return self.cdp.get_element_attribute(selector)
+            return self.cdp.get_element_attribute(selector, attribute)
         self.wait_for_ready_state_complete()
         time.sleep(0.01)
         if self.__is_shadow_selector(selector):
