@@ -2,7 +2,7 @@
 Some sites use scripts to detect Selenium, and then block you.
 To evade detection, add --uc as a pytest command-line option."""
 from seleniumbase import BaseCase
-BaseCase.main(__name__, __file__, "--uc", "-s")
+BaseCase.main(__name__, __file__, "--uc")
 
 
 class UndetectedTest(BaseCase):

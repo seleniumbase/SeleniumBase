@@ -1,6 +1,6 @@
 from rich.pretty import pprint
 from seleniumbase import BaseCase
-BaseCase.main(__name__, __file__, "--uc", "--uc-cdp", "-s")
+BaseCase.main(__name__, __file__, "--uc", "--uc-cdp")
 
 
 class CDPTests(BaseCase):

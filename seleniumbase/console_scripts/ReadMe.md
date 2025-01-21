@@ -290,7 +290,9 @@ sbase mkdir ui_tests
 
 * Options:
 
-``-b`` / ``--basic``  (Only config files. No tests added.)
+```bash
+-b / --basic  (Only config files. No tests added.)
+```
 
 * Output:
 
@@ -350,27 +352,33 @@ sbase mkfile new_test.py
 
 * Options:
 
-``--uc``  (UC Mode boilerplate using SB context manager)
-`-b` / `--basic`  (Basic boilerplate / single-line test)
-`-r` / `--rec`  (Adds Pdb+ breakpoint for Recorder Mode)
-``--url=URL``  (Makes the test start on a specific page)
+```bash
+--uc  (UC Mode boilerplate using SB context manager)
+-b / --basic  (Basic boilerplate / single-line test)
+-r / --rec  (Adds Pdb+ breakpoint for Recorder Mode)
+--url=URL  (Makes the test start on a specific page)
+```
 
 * Language Options:
 
-``--en`` / ``--English``    |    ``--zh`` / ``--Chinese``
-``--nl`` / ``--Dutch``      |    ``--fr`` / ``--French``
-``--it`` / ``--Italian``    |    ``--ja`` / ``--Japanese``
-``--ko`` / ``--Korean``     |    ``--pt`` / ``--Portuguese``
-``--ru`` / ``--Russian``    |    ``--es`` / ``--Spanish``
+```bash
+--en / --English    |    --zh / --Chinese
+--nl / --Dutch      |    --fr / --French
+--it / --Italian    |    --ja / --Japanese
+--ko / --Korean     |    --pt / --Portuguese
+--ru / --Russian    |    --es / --Spanish
+```
 
 * Syntax Formats:
 
-``--bc`` / ``--basecase``      (BaseCase class inheritance)
-``--pf`` / ``--pytest-fixture``         (sb pytest fixture)
-``--cf`` / ``--class-fixture``  (class + sb pytest fixture)
-``--cm`` / ``--context-manager``       (SB context manager)
-``--dc`` / ``--driver-context``     (DriverContext manager)
-``--dm`` / ``--driver-manager``            (Driver manager)
+```bash
+--bc / --basecase      (BaseCase class inheritance)
+--pf / --pytest-fixture         (sb pytest fixture)
+--cf / --class-fixture  (class + sb pytest fixture)
+--cm / --context-manager       (SB context manager)
+--dc / --driver-context     (DriverContext manager)
+--dm / --driver-manager            (Driver manager)
+```
 
 * Output:
 
@@ -404,13 +412,15 @@ sbase codegen new_test.py --url=wikipedia.org
 
 * Options:
 
-``--url=URL``  (Sets the initial start page URL.)
-``--edge``  (Use Edge browser instead of Chrome.)
-``--gui`` / ``--headed``  (Use headed mode on Linux.)
-``--uc`` / ``--undetected``  (Use undetectable mode.)
-``--ee``  (Use SHIFT + ESC to end the recording.)
-``--overwrite``  (Overwrite file when it exists.)
-``--behave``  (Also output Behave/Gherkin files.)
+```bash
+--url=URL  (Sets the initial start page URL.)
+--edge  (Use Edge browser instead of Chrome.)
+--gui / --headed  (Use headed mode on Linux.)
+--uc / --undetected  (Use undetectable mode.)
+--ee  (Use SHIFT + ESC to end the recording.)
+--overwrite  (Overwrite file when it exists.)
+--behave  (Also output Behave/Gherkin files.)
+```
 
 * Output:
 
@@ -427,8 +437,10 @@ sbase recorder [OPTIONS]
 
 * Options:
 
-``--uc`` / ``--undetected``  (Use undetectable mode.)
-``--behave``  (Also output Behave/Gherkin files.)
+```bash
+--uc / --undetected  (Use undetectable mode.)
+--behave  (Also output Behave/Gherkin files.)
+```
 
 * Output:
 
@@ -450,11 +462,13 @@ sbase mkpres new_presentation.py --en
 
 * Language Options:
 
-``--en`` / ``--English``    |    ``--zh`` / ``--Chinese``
-``--nl`` / ``--Dutch``      |    ``--fr`` / ``--French``
-``--it`` / ``--Italian``    |    ``--ja`` / ``--Japanese``
-``--ko`` / ``--Korean``     |    ``--pt`` / ``--Portuguese``
-``--ru`` / ``--Russian``    |    ``--es`` / ``--Spanish``
+```bash
+--en / --English    |    --zh / --Chinese
+--nl / --Dutch      |    --fr / --French
+--it / --Italian    |    --ja / --Japanese
+--ko / --Korean     |    --pt / --Portuguese
+--ru / --Russian    |    --es / --Spanish
+```
 
 * Output:
 
@@ -480,11 +494,13 @@ sbase mkchart new_chart.py --en
 
 * Language Options:
 
-``--en`` / ``--English``    |    ``--zh`` / ``--Chinese``
-``--nl`` / ``--Dutch``      |    ``--fr`` / ``--French``
-``--it`` / ``--Italian``    |    ``--ja`` / ``--Japanese``
-``--ko`` / ``--Korean``     |    ``--pt`` / ``--Portuguese``
-``--ru`` / ``--Russian``    |    ``--es`` / ``--Spanish``
+```bash
+--en / --English    |    --zh / --Chinese
+--nl / --Dutch      |    --fr / --French
+--it / --Italian    |    --ja / --Japanese
+--ko / --Korean     |    --pt / --Portuguese
+--ru / --Russian    |    --es / --Spanish
+```
 
 * Output:
 
@@ -504,7 +520,9 @@ sbase print [FILE] [OPTIONS]
 
 * Options:
 
-``-n`` (Add line Numbers to the rows)
+```bash
+-n (Add line Numbers to the rows)
+```
 
 * Output:
 
@@ -521,21 +539,27 @@ sbase translate [SB_FILE.py] [LANGUAGE] [ACTION]
 
 * Languages:
 
-``--en`` / ``--English``    |    ``--zh`` / ``--Chinese``
-``--nl`` / ``--Dutch``      |    ``--fr`` / ``--French``
-``--it`` / ``--Italian``    |    ``--ja`` / ``--Japanese``
-``--ko`` / ``--Korean``     |    ``--pt`` / ``--Portuguese``
-``--ru`` / ``--Russian``    |    ``--es`` / ``--Spanish``
+```bash
+--en / --English    |    --zh / --Chinese
+--nl / --Dutch      |    --fr / --French
+--it / --Italian    |    --ja / --Japanese
+--ko / --Korean     |    --pt / --Portuguese
+--ru / --Russian    |    --es / --Spanish
+```
 
 * Actions:
 
-``-p`` / ``--print``  (Print translation output to the screen)
-``-o`` / ``--overwrite``  (Overwrite the file being translated)
-``-c`` / ``--copy``  (Copy the translation to a new ``.py`` file)
+```bash
+-p / --print  (Print translation output to the screen)
+-o / --overwrite  (Overwrite the file being translated)
+-c / --copy  (Copy the translation to a new ``.py`` file)
+```
 
 * Options:
 
-``-n``  (include line Numbers when using the Print action)
+```bash
+-n  (include line Numbers when using the Print action)
+```
 
 * Output:
 
@@ -573,7 +597,9 @@ sbase inject-objects [SB_FILE.py] [OPTIONS]
 
 * Options:
 
-``-c``, ``--comments``  (Add object selectors to the comments.)
+```bash
+-c / --comments  (Add object selectors to the comments.)
+```
 
 * Output:
 
@@ -591,7 +617,9 @@ sbase objectify [SB_FILE.py] [OPTIONS]
 
 * Options:
 
-``-c``, ``--comments``  (Add object selectors to the comments.)
+```bash
+-c / --comments  (Add object selectors to the comments.)
+```
 
 * Output:
 
@@ -611,7 +639,9 @@ sbase revert-objects [SB_FILE.py] [OPTIONS]
 
 * Options:
 
-``-c``, ``--comments``  (Keep existing comments for the lines.)
+```bash
+-c / --comments  (Keep existing comments for the lines.)
+```
 
 * Output:
 
@@ -639,7 +669,7 @@ Works on both Selenium IDE & Katalon Recorder scripts.
 
 * Usage:
 
-``sbase encrypt``  OR  ``sbase obfuscate``
+``sbase encrypt``  /  ``sbase obfuscate``
 
 * Output:
 
@@ -650,7 +680,7 @@ Runs the password encryption/obfuscation tool.
 
 * Usage:
 
-``sbase decrypt``  OR  ``sbase unobfuscate``
+``sbase decrypt``  /  ``sbase unobfuscate``
 
 * Output:
 
@@ -667,9 +697,11 @@ sbase proxy [OPTIONS]
 
 * Options:
 
-``--hostname=HOSTNAME``  (Set ``hostname``) (Default: ``127.0.0.1``)
-``--port=PORT``          (Set ``port``)     (Default: ``8899``)
-``--help`` / ``-h``      (Display list of all available ``proxy`` options.)
+```bash
+--hostname=HOSTNAME  (Set `hostname`) (Default: `127.0.0.1`)
+--port=PORT          (Set `port`)     (Default: `8899`)
+--help / -h      (Display available `proxy` options.)
+```
 
 * Output:
 
@@ -699,8 +731,10 @@ sbase grid-hub {start|stop|restart} [OPTIONS]
 
 * Options:
 
-``-v``, ``--verbose``  (Increases verbosity of logging output.)
-``--timeout=TIMEOUT``  (Close idle browser windows after TIMEOUT seconds.)
+```bash
+-v / --verbose  (Increases verbosity of logging output.)
+--timeout=TIMEOUT  (Close idle browser windows after TIMEOUT seconds.)
+```
 
 * Output:
 
@@ -720,8 +754,10 @@ sbase grid-node {start|stop|restart} [OPTIONS]
 
 * Options:
 
-``--hub=HUB_IP`` (The Grid Hub IP Address to connect to.) (Default: ``127.0.0.1``)
-``-v``, ``--verbose``  (Increases verbosity of logging output.)
+```bash
+--hub=HUB_IP (Grid Hub IP Address. Default: `127.0.0.1`)
+-v / --verbose  (Increases verbosity of logging output.)
+```
 
 * Output:
 

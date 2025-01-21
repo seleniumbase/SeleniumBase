@@ -7,8 +7,9 @@ attrs>=24.3.0
 certifi>=2024.12.14
 exceptiongroup>=1.2.2
 websockets~=13.1;python_version<"3.9"
-websockets>=14.1;python_version>="3.9"
-filelock>=3.16.1
+websockets>=14.2;python_version>="3.9"
+filelock~=3.16.1;python_version<"3.9"
+filelock>=3.17.0;python_version>="3.9"
 fasteners>=0.19
 mycdp>=1.1.0
 pynose>=1.5.3
@@ -41,7 +42,8 @@ trio==0.28.0;python_version>="3.9"
 trio-websocket==0.11.1
 wsproto==1.2.0
 websocket-client==1.8.0
-selenium==4.27.1
+selenium==4.27.1;python_version<"3.9"
+selenium==4.28.0;python_version>="3.9"
 cssselect==1.2.0
 sortedcontainers==2.4.0
 execnet==2.1.1

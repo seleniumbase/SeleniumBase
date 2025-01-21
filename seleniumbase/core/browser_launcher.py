@@ -888,6 +888,13 @@ def __install_pyautogui_if_missing():
                     _xvfb_display.start()
                     sb_config._virtual_display = _xvfb_display
                     sb_config.headless_active = True
+                    if (
+                        hasattr(sb_config, "reuse_session")
+                        and sb_config.reuse_session
+                        and hasattr(sb_config, "_vd_list")
+                        and isinstance(sb_config._vd_list, list)
+                    ):
+                        sb_config._vd_list.append(_xvfb_display)
 
 
 def install_pyautogui_if_missing(driver):
@@ -1217,6 +1224,13 @@ def _uc_gui_click_captcha(
                     and driver.is_element_present("#challenge-form div > div")
                 ):
                     frame = "#challenge-form div > div"
+                elif (
+                    driver.is_element_present('[name*="cf-turnstile-"]')
+                    and driver.is_element_present(
+                        '[style="display: grid;"] div div'
+                    )
+                ):
+                    frame = '[style="display: grid;"] div div'
                 elif (
                     driver.is_element_present('[name*="cf-turnstile-"]')
                     and driver.is_element_present("[class*=spacer] + div div")
@@ -3838,6 +3852,12 @@ def get_local_driver(
             edge_options.add_argument("--guest")
         if dark_mode:
             edge_options.add_argument("--enable-features=WebContentsForceDark")
+        if headless1:
+            # developer.chrome.com/blog/removing-headless-old-from-chrome
+            with suppress(Exception):
+                if int(str(use_version).split(".")[0]) >= 132:
+                    headless1 = False
+                    headless2 = True
         if headless2:
             try:
                 if use_version == "latest" or int(use_version) >= 109:
@@ -4379,6 +4399,12 @@ def get_local_driver(
             use_version = find_chromedriver_version_to_use(
                 use_version, driver_version
             )
+            if headless1:
+                # developer.chrome.com/blog/removing-headless-old-from-chrome
+                with suppress(Exception):
+                    if int(str(use_version).split(".")[0]) >= 132:
+                        headless1 = False
+                        headless2 = True
             if headless2:
                 try:
                     if (

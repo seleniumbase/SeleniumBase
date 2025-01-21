@@ -95,6 +95,7 @@ logging.getLogger("requests").setLevel(logging.ERROR)
 logging.getLogger("urllib3").setLevel(logging.ERROR)
 urllib3.disable_warnings()
 LOGGER.setLevel(logging.WARNING)
+is_linux = shared_utils.is_linux()
 is_windows = shared_utils.is_windows()
 python3_11_or_newer = False
 if sys.version_info >= (3, 11):
@@ -4828,7 +4829,7 @@ class BaseCase(unittest.TestCase):
         from seleniumbase.js_code.recorder_js import recorder_js
 
         if not self.is_chromium():
-            if "linux" not in sys.platform:
+            if not is_linux:
                 c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
                 c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
                 cr = colorama.Style.RESET_ALL
@@ -5658,7 +5659,7 @@ class BaseCase(unittest.TestCase):
         c1 = ""
         c2 = ""
         cr = ""
-        if "linux" not in sys.platform:
+        if not is_linux:
             c1 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
             c2 = colorama.Fore.LIGHTRED_EX + colorama.Back.LIGHTYELLOW_EX
             cr = colorama.Style.RESET_ALL
@@ -5760,7 +5761,7 @@ class BaseCase(unittest.TestCase):
         c1 = ""
         c2 = ""
         cr = ""
-        if "linux" not in sys.platform:
+        if not is_linux:
             c1 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
             c2 = colorama.Fore.LIGHTRED_EX + colorama.Back.LIGHTYELLOW_EX
             cr = colorama.Style.RESET_ALL
@@ -14009,6 +14010,9 @@ class BaseCase(unittest.TestCase):
             if not self.undetectable:
                 sb_config._virtual_display = self._xvfb_display
                 sb_config.headless_active = True
+            if self._reuse_session and hasattr(sb_config, "_vd_list"):
+                if isinstance(sb_config._vd_list, list):
+                    sb_config._vd_list.append(self._xvfb_display)
 
     def __activate_virtual_display(self):
         if self.undetectable and not (self.headless or self.headless2):
@@ -14033,6 +14037,9 @@ class BaseCase(unittest.TestCase):
                     self.__activate_standard_virtual_display()
                 else:
                     self.headless_active = True
+                    if self._reuse_session and hasattr(sb_config, "_vd_list"):
+                        if isinstance(sb_config._vd_list, list):
+                            sb_config._vd_list.append(self._xvfb_display)
             except Exception as e:
                 if hasattr(e, "msg"):
                     print("\n" + str(e.msg))
@@ -14087,7 +14094,7 @@ class BaseCase(unittest.TestCase):
         """This is only needed on Linux.
         The "--xvfb" arg is still useful, as it prevents headless mode,
         which is the default mode on Linux unless using another arg."""
-        if "linux" in sys.platform and (not self.headed or self.xvfb):
+        if is_linux and (not self.headed or self.xvfb):
             pip_find_lock = fasteners.InterProcessLock(
                 constants.PipInstall.FINDLOCK
             )
@@ -16604,7 +16611,11 @@ class BaseCase(unittest.TestCase):
             # (Pynose / Behave / Pure Python) Close all open browser windows
             self.__quit_all_drivers()
         # Resume tearDown() for all test runners, (Pytest / Pynose / Behave)
-        if hasattr(self, "_xvfb_display") and self._xvfb_display:
+        if (
+            hasattr(self, "_xvfb_display")
+            and self._xvfb_display
+            and not self._reuse_session
+        ):
             # Stop the Xvfb virtual display launched from BaseCase
             try:
                 if hasattr(self._xvfb_display, "stop"):
@@ -16619,6 +16630,13 @@ class BaseCase(unittest.TestCase):
             hasattr(sb_config, "_virtual_display")
             and sb_config._virtual_display
             and hasattr(sb_config._virtual_display, "stop")
+            and (
+                not hasattr(sb_config, "reuse_session")
+                or (
+                    hasattr(sb_config, "reuse_session")
+                    and not sb_config.reuse_session
+                )
+            )
         ):
             # CDP Mode may launch a 2nd Xvfb virtual display
             try:
