@@ -156,9 +156,9 @@ def do_pytest_run(
     if save_screenshots:
         full_run_command += " --screenshot"
 
-    dash_s_needed = False
-    if "-s" not in additional_options.split(" "):
-        dash_s_needed = True
+    capture_needed = False
+    if "--capture" not in additional_options:
+        capture_needed = True
 
     additional_options = additional_options.strip()
     if additional_options:
@@ -168,8 +168,8 @@ def do_pytest_run(
     if verbose:
         full_run_command += " -v"
 
-    if dash_s_needed:
-        full_run_command += " -s"
+    if capture_needed:
+        full_run_command += " --capture=tee-sys"
 
     print(full_run_command)
     subprocess.Popen(full_run_command, shell=True)
