@@ -2224,6 +2224,9 @@ def _perform_pytest_unconfigure_(config):
                 ph_link, "%s and %s" % (sb_link, ph_link)
             )
             the_html_r = the_html_r.replace(
+                "findAll('.collapsible", "//findAll('.collapsible"
+            )
+            the_html_r = the_html_r.replace(
                 "mediaName.innerText", "//mediaName.innerText"
             )
             the_html_r = the_html_r.replace(
@@ -2258,6 +2261,9 @@ def _perform_pytest_unconfigure_(config):
                     html_style = html_style.replace(
                         "- 80px);", "- 80px);\n  margin-bottom: -42px;"
                     )
+                    html_style = html_style.replace(".collapsible", ".oldc")
+                    html_style = html_style.replace(" (hide details)", "")
+                    html_style = html_style.replace(" (show details)", "")
                 with open(assets_style, "w", encoding="utf-8") as f:
                     f.write(html_style)
                 with suppress(Exception):
@@ -2357,6 +2363,9 @@ def _perform_pytest_unconfigure_(config):
                     html_style = html_style.replace(
                         "- 80px);", "- 80px);\n  margin-bottom: -42px;"
                     )
+                    html_style = html_style.replace(".collapsible", ".oldc")
+                    html_style = html_style.replace(" (hide details)", "")
+                    html_style = html_style.replace(" (show details)", "")
                 with open(assets_style, "w", encoding="utf-8") as f:
                     f.write(html_style)
                 with suppress(Exception):
@@ -2423,6 +2432,9 @@ def _perform_pytest_unconfigure_(config):
                 )
                 the_html_r = the_html_r.replace(
                     ph_link, "%s and %s" % (sb_link, ph_link)
+                )
+                the_html_r = the_html_r.replace(
+                    "findAll('.collapsible", "//findAll('.collapsible"
                 )
                 the_html_r = the_html_r.replace(
                     "mediaName.innerText", "//mediaName.innerText"
