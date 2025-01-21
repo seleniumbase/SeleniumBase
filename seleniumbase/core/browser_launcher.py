@@ -888,6 +888,13 @@ def __install_pyautogui_if_missing():
                     _xvfb_display.start()
                     sb_config._virtual_display = _xvfb_display
                     sb_config.headless_active = True
+                    if (
+                        hasattr(sb_config, "reuse_session")
+                        and sb_config.reuse_session
+                        and hasattr(sb_config, "_vd_list")
+                        and isinstance(sb_config._vd_list, list)
+                    ):
+                        sb_config._vd_list.append(_xvfb_display)
 
 
 def install_pyautogui_if_missing(driver):

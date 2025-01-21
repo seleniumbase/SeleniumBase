@@ -1371,6 +1371,7 @@ def pytest_addoption(parser):
 
     arg_join = " ".join(sys_argv)
     sb_config._browser_shortcut = None
+    sb_config._vd_list = []
 
     # SeleniumBase does not support pytest-timeout due to hanging browsers.
     for arg in sys_argv:
@@ -2017,6 +2018,13 @@ def pytest_runtest_teardown(item):
                 hasattr(self, "_xvfb_display")
                 and self._xvfb_display
                 and hasattr(self._xvfb_display, "stop")
+                and (
+                    not hasattr(sb_config, "reuse_session")
+                    or (
+                        hasattr(sb_config, "reuse_session")
+                        and not sb_config.reuse_session
+                    )
+                )
             ):
                 self.headless_active = False
                 sb_config.headless_active = False
@@ -2026,6 +2034,13 @@ def pytest_runtest_teardown(item):
                 hasattr(sb_config, "_virtual_display")
                 and sb_config._virtual_display
                 and hasattr(sb_config._virtual_display, "stop")
+                and (
+                    not hasattr(sb_config, "reuse_session")
+                    or (
+                        hasattr(sb_config, "reuse_session")
+                        and not sb_config.reuse_session
+                    )
+                )
             ):
                 sb_config._virtual_display.stop()
                 sb_config._virtual_display = None
@@ -2139,6 +2154,21 @@ def _perform_pytest_unconfigure_(config):
             except Exception:
                 pass
         sb_config.shared_driver = None
+        with suppress(Exception):
+            if (
+                hasattr(sb_config, "_virtual_display")
+                and sb_config._virtual_display
+                and hasattr(sb_config._virtual_display, "stop")
+            ):
+                sb_config._virtual_display.stop()
+                sb_config._virtual_display = None
+                sb_config.headless_active = False
+            if hasattr(sb_config, "_vd_list") and sb_config._vd_list:
+                if isinstance(sb_config._vd_list, list):
+                    for display in sb_config._vd_list:
+                        if display:
+                            with suppress(Exception):
+                                display.stop()
     if hasattr(sb_config, "log_path") and sb_config.item_count > 0:
         log_helper.archive_logs_if_set(
             constants.Logs.LATEST + "/", sb_config.archive_logs
