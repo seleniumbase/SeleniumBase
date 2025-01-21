@@ -95,6 +95,7 @@ logging.getLogger("requests").setLevel(logging.ERROR)
 logging.getLogger("urllib3").setLevel(logging.ERROR)
 urllib3.disable_warnings()
 LOGGER.setLevel(logging.WARNING)
+is_linux = shared_utils.is_linux()
 is_windows = shared_utils.is_windows()
 python3_11_or_newer = False
 if sys.version_info >= (3, 11):
@@ -4828,7 +4829,7 @@ class BaseCase(unittest.TestCase):
         from seleniumbase.js_code.recorder_js import recorder_js
 
         if not self.is_chromium():
-            if "linux" not in sys.platform:
+            if not is_linux:
                 c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
                 c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
                 cr = colorama.Style.RESET_ALL
@@ -5658,7 +5659,7 @@ class BaseCase(unittest.TestCase):
         c1 = ""
         c2 = ""
         cr = ""
-        if "linux" not in sys.platform:
+        if not is_linux:
             c1 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
             c2 = colorama.Fore.LIGHTRED_EX + colorama.Back.LIGHTYELLOW_EX
             cr = colorama.Style.RESET_ALL
@@ -5760,7 +5761,7 @@ class BaseCase(unittest.TestCase):
         c1 = ""
         c2 = ""
         cr = ""
-        if "linux" not in sys.platform:
+        if not is_linux:
             c1 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
             c2 = colorama.Fore.LIGHTRED_EX + colorama.Back.LIGHTYELLOW_EX
             cr = colorama.Style.RESET_ALL
