@@ -3845,6 +3845,12 @@ def get_local_driver(
             edge_options.add_argument("--guest")
         if dark_mode:
             edge_options.add_argument("--enable-features=WebContentsForceDark")
+        if headless1:
+            # developer.chrome.com/blog/removing-headless-old-from-chrome
+            with suppress(Exception):
+                if int(str(use_version).split(".")[0]) >= 132:
+                    headless1 = False
+                    headless2 = True
         if headless2:
             try:
                 if use_version == "latest" or int(use_version) >= 109:
@@ -4386,6 +4392,12 @@ def get_local_driver(
             use_version = find_chromedriver_version_to_use(
                 use_version, driver_version
             )
+            if headless1:
+                # developer.chrome.com/blog/removing-headless-old-from-chrome
+                with suppress(Exception):
+                    if int(str(use_version).split(".")[0]) >= 132:
+                        headless1 = False
+                        headless2 = True
             if headless2:
                 try:
                     if (
