@@ -1219,6 +1219,13 @@ def _uc_gui_click_captcha(
                     frame = "#challenge-form div > div"
                 elif (
                     driver.is_element_present('[name*="cf-turnstile-"]')
+                    and driver.is_element_present(
+                        '[style="display: grid;"] div div'
+                    )
+                ):
+                    frame = '[style="display: grid;"] div div'
+                elif (
+                    driver.is_element_present('[name*="cf-turnstile-"]')
                     and driver.is_element_present("[class*=spacer] + div div")
                 ):
                     frame = '[class*=spacer] + div div'
