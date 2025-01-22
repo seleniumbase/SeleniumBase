@@ -4909,6 +4909,7 @@ def get_local_driver(
                                     IS_MAC
                                     and hasattr(e, "args")
                                     and isinstance(e.args, (list, tuple))
+                                    and len(e.args) > 0
                                     and cert in e.args[0]
                                 ):
                                     mac_certificate_error = True

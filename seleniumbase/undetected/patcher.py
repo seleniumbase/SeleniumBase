@@ -8,6 +8,8 @@ import sys
 import time
 import zipfile
 from contextlib import suppress
+from seleniumbase.console_scripts import sb_install
+from seleniumbase.fixtures import shared_utils
 
 logger = logging.getLogger(__name__)
 IS_POSIX = sys.platform.startswith(("darwin", "cygwin", "linux"))
@@ -106,7 +108,14 @@ class Patcher(object):
         release = self.fetch_release_number()
         self.version_main = release.split(".")[0]
         self.version_full = release
-        self.unzip_package(self.fetch_package())
+        if int(self.version_main) < 115:
+            self.unzip_package(self.fetch_package())
+        else:
+            sb_install.main(
+                override="chromedriver %s" % self.version_main,
+                intel_for_uc=shared_utils.is_arm_mac(),
+                force_uc=True,
+            )
         return self.patch()
 
     def patch(self):
@@ -121,6 +130,12 @@ class Patcher(object):
             path += "_%s" % self.version_main
         path = path.upper()
         logger.debug("Getting release number from %s" % path)
+        if self.version_main and int(self.version_main) > 114:
+            return (
+                sb_install.get_cft_latest_version_from_milestone(
+                    str(self.version_main)
+                )
+            )
         return urlopen(self.url_repo + path).read().decode()
 
     def fetch_package(self):
