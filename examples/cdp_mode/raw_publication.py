@@ -10,6 +10,7 @@ with SB(uc=True, test=True, locale_code="en", ad_block=True) as sb:
     if sb.is_element_present(shadow_head):
         sb.cdp.gui_click_element(shadow_head)
         sb.sleep(1.5)
+    sb.cdp.click_if_visible('button[aria-label="Close"]')
     sb.cdp.remove_elements('div[class*="ad-container"]')
     sb.cdp.remove_elements("div.lite-page-ad")
     sb.sleep(0.5)
