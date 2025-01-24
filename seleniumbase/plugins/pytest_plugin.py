@@ -656,6 +656,7 @@ def pytest_addoption(parser):
     parser.addoption(
         "--binary_location",
         "--binary-location",
+        "--bl",
         action="store",
         dest="binary_location",
         default=None,
@@ -1574,6 +1575,14 @@ def pytest_configure(config):
     sb_config.extension_dir = config.getoption("extension_dir")
     sb_config.disable_features = config.getoption("disable_features")
     sb_config.binary_location = config.getoption("binary_location")
+    if (
+        sb_config.binary_location
+        and sb_config.binary_location.lower() == "chs"
+        and sb_config.browser == "chrome"
+    ):
+        sb_config.headless = True
+        sb_config.headless1 = False
+        sb_config.headless2 = False
     sb_config.driver_version = config.getoption("driver_version")
     sb_config.page_load_strategy = config.getoption("page_load_strategy")
     sb_config.with_testing_base = config.getoption("with_testing_base")

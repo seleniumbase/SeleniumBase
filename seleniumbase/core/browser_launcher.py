@@ -1,6 +1,7 @@
 import fasteners
 import logging
 import os
+import platform
 import re
 import shutil
 import subprocess
@@ -64,6 +65,7 @@ LOCAL_EDGEDRIVER = None
 LOCAL_IEDRIVER = None
 LOCAL_HEADLESS_IEDRIVER = None
 LOCAL_UC_DRIVER = None
+ARCH = platform.architecture()[0]
 IS_ARM_MAC = shared_utils.is_arm_mac()
 IS_MAC = shared_utils.is_mac()
 IS_LINUX = shared_utils.is_linux()
@@ -2657,6 +2659,118 @@ def get_driver(
             or browser_name == constants.Browser.EDGE
         )
     ):
+        if (
+            binary_location.lower() == "cft"
+            and browser_name == constants.Browser.GOOGLE_CHROME
+        ):
+            binary_folder = None
+            if IS_MAC:
+                if IS_ARM_MAC:
+                    binary_folder = "chrome-mac-arm64"
+                else:
+                    binary_folder = "chrome-mac-x64"
+            elif IS_LINUX:
+                binary_folder = "chrome-linux64"
+            elif IS_WINDOWS:
+                if "64" in ARCH:
+                    binary_folder = "chrome-win64"
+                else:
+                    binary_folder = "chrome-win32"
+            if binary_folder:
+                binary_location = os.path.join(DRIVER_DIR, binary_folder)
+                if not os.path.exists(binary_location):
+                    from seleniumbase.console_scripts import sb_install
+                    args = " ".join(sys.argv)
+                    if not (
+                        "-n" in sys.argv or " -n=" in args or args == "-c"
+                    ):
+                        # (Not multithreaded)
+                        sys_args = sys.argv  # Save a copy of current sys args
+                        log_d(
+                            "\nWarning: Chrome for Testing binary not found..."
+                        )
+                        try:
+                            sb_install.main(override="cft")
+                        except Exception as e:
+                            log_d("\nWarning: Chrome download failed: %s" % e)
+                        sys.argv = sys_args  # Put back the original sys args
+                    else:
+                        chrome_fixing_lock = fasteners.InterProcessLock(
+                            constants.MultiBrowser.DRIVER_FIXING_LOCK
+                        )
+                        with chrome_fixing_lock:
+                            with suppress(Exception):
+                                shared_utils.make_writable(
+                                    constants.MultiBrowser.DRIVER_FIXING_LOCK
+                                )
+                            if not os.path.exists(binary_location):
+                                sys_args = sys.argv  # Save a copy of sys args
+                                log_d(
+                                    "\nWarning: "
+                                    "Chrome for Testing binary not found..."
+                                )
+                                sb_install.main(override="cft")
+                                sys.argv = sys_args  # Put back original args
+            else:
+                binary_location = None
+        if (
+            binary_location.lower() == "chs"
+            and browser_name == constants.Browser.GOOGLE_CHROME
+        ):
+            binary_folder = None
+            if IS_MAC:
+                if IS_ARM_MAC:
+                    binary_folder = "chrome-headless-shell-mac-arm64"
+                else:
+                    binary_folder = "chrome-headless-shell-mac-x64"
+            elif IS_LINUX:
+                binary_folder = "chrome-headless-shell-linux64"
+            elif IS_WINDOWS:
+                if "64" in ARCH:
+                    binary_folder = "chrome-headless-shell-win64"
+                else:
+                    binary_folder = "chrome-headless-shell-win32"
+            if binary_folder:
+                binary_location = os.path.join(DRIVER_DIR, binary_folder)
+                if not os.path.exists(binary_location):
+                    from seleniumbase.console_scripts import sb_install
+                    args = " ".join(sys.argv)
+                    if not (
+                        "-n" in sys.argv or " -n=" in args or args == "-c"
+                    ):
+                        # (Not multithreaded)
+                        sys_args = sys.argv  # Save a copy of current sys args
+                        log_d(
+                            "\nWarning: "
+                            "Chrome-Headless-Shell binary not found..."
+                        )
+                        try:
+                            sb_install.main(override="chs")
+                        except Exception as e:
+                            log_d(
+                                "\nWarning: "
+                                "Chrome-Headless-Shell download failed: %s" % e
+                            )
+                        sys.argv = sys_args  # Put back the original sys args
+                    else:
+                        chrome_fixing_lock = fasteners.InterProcessLock(
+                            constants.MultiBrowser.DRIVER_FIXING_LOCK
+                        )
+                        with chrome_fixing_lock:
+                            with suppress(Exception):
+                                shared_utils.make_writable(
+                                    constants.MultiBrowser.DRIVER_FIXING_LOCK
+                                )
+                            if not os.path.exists(binary_location):
+                                sys_args = sys.argv  # Save a copy of sys args
+                                log_d(
+                                    "\nWarning: "
+                                    "Chrome-Headless-Shell binary not found..."
+                                )
+                                sb_install.main(override="chs")
+                                sys.argv = sys_args  # Put back original args
+            else:
+                binary_location = None
         if not os.path.exists(binary_location):
             log_d(
                 "\nWarning: The Chromium binary specified (%s) was NOT found!"
@@ -2666,7 +2780,7 @@ def get_driver(
         elif binary_location.endswith("/") or binary_location.endswith("\\"):
             log_d(
                 "\nWarning: The Chromium binary path must be a full path "
-                "that includes the driver filename at the end of it!"
+                "that includes the browser filename at the end of it!"
                 "\n(Will use default settings...)\n" % binary_location
             )
             # Example of a valid binary location path - MacOS:
@@ -2675,6 +2789,34 @@ def get_driver(
         else:
             binary_name = binary_location.split("/")[-1].split("\\")[-1]
             valid_names = get_valid_binary_names_for_browser(browser_name)
+            if binary_name == "Google Chrome for Testing.app":
+                binary_name = "Google Chrome for Testing"
+                binary_location += "/Contents/MacOS/Google Chrome for Testing"
+            elif binary_name in ["chrome-mac-arm64", "chrome-mac-x64"]:
+                binary_name = "Google Chrome for Testing"
+                binary_location += "/Google Chrome for Testing.app"
+                binary_location += "/Contents/MacOS/Google Chrome for Testing"
+            elif binary_name == "chrome-linux64":
+                binary_name = "chrome"
+                binary_location += "/chrome"
+            elif binary_name in ["chrome-win32", "chrome-win64"]:
+                binary_name = "chrome.exe"
+                binary_location += "\\chrome.exe"
+            elif binary_name in [
+                "chrome-headless-shell-mac-arm64",
+                "chrome-headless-shell-mac-x64",
+            ]:
+                binary_name = "chrome-headless-shell"
+                binary_location += "/chrome-headless-shell"
+            elif binary_name == "chrome-headless-shell-linux64":
+                binary_name = "chrome-headless-shell"
+                binary_location += "/chrome-headless-shell"
+            elif binary_name in [
+                "chrome-headless-shell-win32",
+                "chrome-headless-shell-win64",
+            ]:
+                binary_name = "chrome-headless-shell.exe"
+                binary_location += "\\chrome-headless-shell.exe"
             if binary_name not in valid_names:
                 log_d(
                     "\nWarning: The Chromium binary specified is NOT valid!"
@@ -2683,6 +2825,8 @@ def get_driver(
                     "" % (binary_name, valid_names)
                 )
                 binary_location = None
+            elif binary_location.lower() == "chs":
+                headless = True
     if (uc_cdp_events or uc_subprocess) and not undetectable:
         undetectable = True
     if mobile_emulator and not user_agent:

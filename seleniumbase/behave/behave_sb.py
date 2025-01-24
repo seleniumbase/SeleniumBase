@@ -482,8 +482,8 @@ def get_configured_sb(context):
                 extension_dir = sb.extension_dir  # revert to default
             sb.extension_dir = extension_dir
             continue
-        # Handle: -D binary-location=PATH / binary_location=PATH
-        if low_key in ["binary-location", "binary_location"]:
+        # Handle: -D binary-location=PATH / binary_location=PATH / bl=PATH
+        if low_key in ["binary-location", "binary_location", "bl"]:
             binary_location = userdata[key]
             if binary_location == "true":
                 binary_location = sb.binary_location  # revert to default
@@ -884,6 +884,14 @@ def get_configured_sb(context):
         sb.headless = True  # Firefox has regular headless
     elif sb.browser not in ["chrome", "edge"]:
         sb.headless2 = False  # Only for Chromium browsers
+    if (
+        sb.binary_location
+        and sb.binary_location.lower() == "chs"
+        and sb.browser == "chrome"
+    ):
+        sb.headless = True
+        sb.headless1 = False
+        sb.headless2 = False
     # Recorder Mode only supports Chromium browsers.
     if sb.recorder_ext and (sb.browser not in ["chrome", "edge"]):
         raise Exception(
