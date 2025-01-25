@@ -337,6 +337,22 @@ pytest --headless -n8 --dashboard --html=report.html -v --rs --crumbs
 
 The above not only runs tests in parallel processes, but it also tells tests in the same process to share the same browser session, runs the tests in headless mode, displays the full name of each test on a separate line, creates a real-time dashboard of the test results, and creates a full report after all tests complete.
 
+🎛️ For extra speed, run your tests using `chrome-headless-shell`:
+
+First, get `chrome-headless-shell` if you don't already have it:
+
+```bash
+sbase get chs
+```
+
+Then, run scripts with `binary_location` / `bl` set to `"chs"`:
+
+```bash
+pytest --bl="chs" -n8 --dashboard --html=report.html -v --rs
+```
+
+That makes your tests run very quickly in headless mode.
+
 --------
 
 <h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> The SeleniumBase Dashboard:</h3>
