@@ -1604,7 +1604,7 @@ class CDPMethods():
         """Return True if checkbox (or radio button) is checked."""
         selector = self.__convert_to_css_if_xpath(selector)
         self.find_element(selector, timeout=settings.SMALL_TIMEOUT)
-        return self.get_element_attribute(selector, "checked")
+        return bool(self.get_element_attribute(selector, "checked"))
 
     def is_selected(self, selector):
         selector = self.__convert_to_css_if_xpath(selector)

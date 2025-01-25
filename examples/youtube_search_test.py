@@ -11,7 +11,7 @@ class YouTubeSearchTests(BaseCase):
             self.skip("Unsupported mode for this test.")
         self.open("https://www.youtube.com/c/MichaelMintz")
         search_term = "seleniumbase"
-        search_selector = "input#search"
+        search_selector = 'input[name="search_query"]'
         results_selector = '[role="listbox"]'
         self.click_if_visible('button[aria-label="Close"]')
         self.double_click(search_selector)

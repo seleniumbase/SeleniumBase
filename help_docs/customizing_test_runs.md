@@ -337,6 +337,22 @@ pytest --headless -n8 --dashboard --html=report.html -v --rs --crumbs
 
 The above not only runs tests in parallel processes, but it also tells tests in the same process to share the same browser session, runs the tests in headless mode, displays the full name of each test on a separate line, creates a real-time dashboard of the test results, and creates a full report after all tests complete.
 
+🎛️ For extra speed, run your tests using `chrome-headless-shell`:
+
+First, get `chrome-headless-shell` if you don't already have it:
+
+```bash
+sbase get chs
+```
+
+Then, run scripts with `binary_location` / `bl` set to `"chs"`:
+
+```bash
+pytest --bl="chs" -n8 --dashboard --html=report.html -v --rs
+```
+
+That makes your tests run very quickly in headless mode.
+
 --------
 
 <h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> The SeleniumBase Dashboard:</h3>
@@ -446,6 +462,27 @@ The `VER` in `--driver-version=VER` can be:
 * ``"mlatest"`` (latest version for the milestone)
 
 Note that different options could lead to the same result. (Eg. If you have the latest version of a browser for a milestone, then ``"browser"`` and ``"mlatest"`` should give you the same driver if the latest driver version for that milestone matches the browser version.)
+
+--------
+
+<h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> Setting the binary location:</h3>
+
+🔵 By default, SeleniumBase uses the browser binary detected on the System PATH.
+
+🎛️ To change this default behavior, you can use:
+
+```bash
+pytest --binary-location=PATH
+```
+
+The `PATH` in `--binary-location=PATH` / `--bl=PATH` can be:
+* A relative or exact path to the browser binary.
+* `"cft"` as a special option for `Chrome for Testing`.
+* `"chs"` as a special option for `Chrome-Headless-Shell`.
+
+Before using the `"cft"` / `"chs"` options, call `sbase get cft` / `sbase get chs` in order to download the specified binaries into the `seleniumbase/drivers` folder. The default version is the latest stable version on https://googlechromelabs.github.io/chrome-for-testing/. You can change that by specifying the arg as a parameter. (Eg. `sbase get cft 131`, `sbase get chs 132`, etc.)
+
+With the `SB()` and `Driver()` formats, the binary location is set via the `binary_location` parameter.
 
 --------
 

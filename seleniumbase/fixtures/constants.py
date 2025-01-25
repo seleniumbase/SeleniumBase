@@ -400,6 +400,7 @@ class ValidBinaries:
         "google-chrome-beta",
         "google-chrome-dev",
         "google-chrome-unstable",
+        "chrome-headless-shell",
         "brave-browser",
         "brave-browser-stable",
         "brave",
@@ -418,6 +419,7 @@ class ValidBinaries:
         "Google Chrome",
         "Chromium",
         "Google Chrome for Testing",
+        "chrome-headless-shell",
         "Google Chrome Beta",
         "Google Chrome Dev",
         "Brave Browser",
@@ -429,6 +431,7 @@ class ValidBinaries:
     valid_chrome_binaries_on_windows = [
         "chrome.exe",
         "chromium.exe",
+        "chrome-headless-shell.exe",
         "brave.exe",
         "opera.exe",
     ]

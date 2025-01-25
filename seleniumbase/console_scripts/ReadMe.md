@@ -68,10 +68,12 @@ sbase get chromedriver 114.0.5735.90
 sbase get chromedriver stable
 sbase get chromedriver beta
 sbase get chromedriver -p
+sbase get cft 131
+sbase get chs
 ```
 
-(Drivers:  ``chromedriver``, ``geckodriver``, ``edgedriver``,
-           ``iedriver``, ``uc_driver``)
+(Drivers:  ``chromedriver``, ``cft``, ``uc_driver``,
+           ``edgedriver``, ``chs``, ``geckodriver``)
 
 (Options:  A specific driver version or major version integer.
            If not set, the driver version matches the browser.

@@ -13,12 +13,24 @@ class ProxyTests(BaseCase):
         if not self.page_load_strategy == "none" and not self.undetectable:
             # This page takes too long to load otherwise
             self.get_new_driver(page_load_strategy="none")
+        self.open("https://api.ipify.org/")
+        ip_address = self.get_text("body")
         self.open("https://ipinfo.io/")
-        self.wait_for_non_empty_text("form input", timeout=20)
-        ip_address = self.get_text('#ip-string span[class*="primary"] span')
+        self.type('input[name="search"]', ip_address, timeout=20)
+        self.click("form button span")
+        self.sleep(2)
+        self.click_if_visible("span.cursor-pointer", timeout=4)
         print("\n\nMy IP Address = %s\n" % ip_address)
         print("Displaying Host Info:")
-        text = self.get_text("#widget-scrollable-container").split("asn:")[0]
+        text = self.get_text("#block-summary").split("Hosted domains")[0]
+        rows = text.split("\n")
+        data = []
+        for row in rows:
+            if row.strip() != "":
+                data.append(row.strip())
+        print("\n".join(data).replace('\n"', " "))
+        print("\nDisplaying Geolocation Info:")
+        text = self.get_text("#block-geolocation").split("Coordinates")[0]
         rows = text.split("\n")
         data = []
         for row in rows:
@@ -26,5 +38,5 @@ class ProxyTests(BaseCase):
                 data.append(row.strip())
         print("\n".join(data).replace('\n"', " "))
         if not self.headless:
-            print("\nThe browser will close automatically in 7 seconds...")
-            self.sleep(7)
+            print("\nThe browser will close automatically in 3 seconds...")
+            self.sleep(3)

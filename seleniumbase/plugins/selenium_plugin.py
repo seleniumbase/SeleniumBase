@@ -397,6 +397,7 @@ class SeleniumBrowser(Plugin):
         parser.addoption(
             "--binary_location",
             "--binary-location",
+            "--bl",
             action="store",
             dest="binary_location",
             default=None,
@@ -1202,6 +1203,14 @@ class SeleniumBrowser(Plugin):
         test.test.extension_dir = self.options.extension_dir
         test.test.disable_features = self.options.disable_features
         test.test.binary_location = self.options.binary_location
+        if (
+            test.test.binary_location
+            and test.test.binary_location.lower() == "chs"
+            and test.test.browser == "chrome"
+        ):
+            test.test.headless = True
+            test.test.headless1 = False
+            test.test.headless2 = False
         test.test.driver_version = self.options.driver_version
         test.test.page_load_strategy = self.options.page_load_strategy
         test.test.chromium_arg = self.options.chromium_arg
