@@ -337,6 +337,8 @@ pytest --headless -n8 --dashboard --html=report.html -v --rs --crumbs
 
 The above not only runs tests in parallel processes, but it also tells tests in the same process to share the same browser session, runs the tests in headless mode, displays the full name of each test on a separate line, creates a real-time dashboard of the test results, and creates a full report after all tests complete.
 
+--------
+
 🎛️ For extra speed, run your tests using `chrome-headless-shell`:
 
 First, get `chrome-headless-shell` if you don't already have it:
@@ -345,10 +347,10 @@ First, get `chrome-headless-shell` if you don't already have it:
 sbase get chs
 ```
 
-Then, run scripts with `binary_location` / `bl` set to `"chs"`:
+Then, run scripts with `--chs` / `chs=True`:
 
 ```bash
-pytest --bl="chs" -n8 --dashboard --html=report.html -v --rs
+pytest --chs -n8 --dashboard --html=report.html -v --rs
 ```
 
 That makes your tests run very quickly in headless mode.
@@ -483,6 +485,26 @@ The `PATH` in `--binary-location=PATH` / `--bl=PATH` can be:
 Before using the `"cft"` / `"chs"` options, call `sbase get cft` / `sbase get chs` in order to download the specified binaries into the `seleniumbase/drivers` folder. The default version is the latest stable version on https://googlechromelabs.github.io/chrome-for-testing/. You can change that by specifying the arg as a parameter. (Eg. `sbase get cft 131`, `sbase get chs 132`, etc.)
 
 With the `SB()` and `Driver()` formats, the binary location is set via the `binary_location` parameter.
+
+--------
+
+🎛️ To use the special `Chrome for Testing` binary:
+
+```bash
+sbase get cft
+```
+
+Then, run scripts with `--cft` / `cft=True`:
+
+```bash
+pytest --cft -n8 --dashboard --html=report.html -v --rs --headless
+```
+
+--------
+
+(Note that `--chs` / `chs=True` activates `Chrome-Headless-Shell`)
+
+`Chrome-Headless-Shell` is the fastest version of Chrome, designed specifically for headless automation. (This mode is NOT compatible with UC Mode!)
 
 --------
 

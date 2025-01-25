@@ -119,6 +119,8 @@ def SB(
     pls=None,  # Shortcut / Duplicate of "page_load_strategy".
     sjw=None,  # Shortcut / Duplicate of "skip_js_waits".
     wfa=None,  # Shortcut / Duplicate of "wait_for_angularjs".
+    cft=None,  # Use "Chrome for Testing"
+    chs=None,  # Use "Chrome-Headless-Shell"
     save_screenshot=None,  # Save a screenshot at the end of each test.
     no_screenshot=None,  # No screenshots saved unless tests directly ask it.
     page_load_strategy=None,  # Set Chrome PLS to "normal", "eager", or "none".
@@ -588,6 +590,14 @@ def SB(
             if arg.startswith("--bl="):
                 binary_location = arg.split("--bl=")[1]
                 break
+    if cft and not binary_location:
+        binary_location = "cft"
+    elif chs and not binary_location:
+        binary_location = "chs"
+    if "--cft" in sys_argv and not binary_location:
+        binary_location = "cft"
+    elif "--chs" in sys_argv and not binary_location:
+        binary_location = "chs"
     if (
         binary_location
         and binary_location.lower() == "chs"
