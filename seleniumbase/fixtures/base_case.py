@@ -2494,8 +2494,10 @@ class BaseCase(unittest.TestCase):
         kind = self.get_attribute(selector, "type", by=by, timeout=timeout)
         if kind != "checkbox" and kind != "radio":
             raise Exception("Expecting a checkbox or a radio button element!")
-        return self.get_attribute(
-            selector, "checked", by=by, timeout=timeout, hard_fail=False
+        return bool(
+            self.get_attribute(
+                selector, "checked", by=by, timeout=timeout, hard_fail=False
+            )
         )
 
     def is_selected(self, selector, by="css selector", timeout=None):
@@ -15166,9 +15168,12 @@ class BaseCase(unittest.TestCase):
                             self.driver.close()
                         self.switch_to_window(0)
                     if self._crumbs:
-                        self.wait_for_ready_state_complete()
-                        with suppress(Exception):
-                            self.driver.delete_all_cookies()
+                        if self.binary_location == "chs":
+                            self.delete_session_storage()
+                        else:
+                            self.wait_for_ready_state_complete()
+                            with suppress(Exception):
+                                self.driver.delete_all_cookies()
         if self._reuse_session and sb_config.shared_driver and has_url:
             good_start_page = False
             if self.recorder_ext:
