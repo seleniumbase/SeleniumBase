@@ -2652,6 +2652,13 @@ def get_driver(
         headless2 = False  # Only for Chromium
         headless = True
     if (
+        is_using_uc(undetectable, browser_name)
+        and binary_location
+        and isinstance(binary_location, str)
+        and binary_location.lower() == "chs"
+    ):
+        raise Exception("UC Mode can't be used with Chrome-Headless-Shell!")
+    if (
         binary_location
         and isinstance(binary_location, str)
         and (

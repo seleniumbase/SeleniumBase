@@ -185,6 +185,20 @@ def pytest_addoption(parser):
         help="""Shortcut for --browser=safari""",
     )
     parser.addoption(
+        "--cft",
+        action="store_true",
+        dest="use_cft",
+        default=False,
+        help="""Shortcut for using `Chrome for Testing`""",
+    )
+    parser.addoption(
+        "--chs",
+        action="store_true",
+        dest="use_chs",
+        default=False,
+        help="""Shortcut for using `Chrome-Headless-Shell`""",
+    )
+    parser.addoption(
         "--with-selenium",
         action="store_true",
         dest="with_selenium",
@@ -1575,6 +1589,10 @@ def pytest_configure(config):
     sb_config.extension_dir = config.getoption("extension_dir")
     sb_config.disable_features = config.getoption("disable_features")
     sb_config.binary_location = config.getoption("binary_location")
+    if config.getoption("use_cft") and not sb_config.binary_location:
+        sb_config.binary_location = "cft"
+    elif config.getoption("use_chs") and not sb_config.binary_location:
+        sb_config.binary_location = "chs"
     if (
         sb_config.binary_location
         and sb_config.binary_location.lower() == "chs"

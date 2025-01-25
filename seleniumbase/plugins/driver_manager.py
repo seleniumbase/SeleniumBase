@@ -137,6 +137,8 @@ def Driver(
     guest=None,  # Shortcut / Duplicate of "guest_mode".
     wire=None,  # Shortcut / Duplicate of "use_wire".
     pls=None,  # Shortcut / Duplicate of "page_load_strategy".
+    cft=None,  # Use "Chrome for Testing"
+    chs=None,  # Use "Chrome-Headless-Shell"
 ):
     """
     * SeleniumBase Driver as a Python Context Manager or a returnable object. *
@@ -550,6 +552,14 @@ def Driver(
             if arg.startswith("--bl="):
                 binary_location = arg.split("--bl=")[1]
                 break
+    if cft and not binary_location:
+        binary_location = "cft"
+    elif chs and not binary_location:
+        binary_location = "chs"
+    if "--cft" in sys_argv and not binary_location:
+        binary_location = "cft"
+    elif "--chs" in sys_argv and not binary_location:
+        binary_location = "chs"
     if (
         binary_location
         and binary_location.lower() == "chs"

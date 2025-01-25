@@ -145,6 +145,20 @@ class SeleniumBrowser(Plugin):
             help="""Shortcut for --browser=safari""",
         )
         parser.addoption(
+            "--cft",
+            action="store_true",
+            dest="use_cft",
+            default=False,
+            help="""Shortcut for using `Chrome for Testing`""",
+        )
+        parser.addoption(
+            "--chs",
+            action="store_true",
+            dest="use_chs",
+            default=False,
+            help="""Shortcut for using `Chrome-Headless-Shell`""",
+        )
+        parser.addoption(
             "--cap_file",
             "--cap-file",
             action="store",
@@ -1203,6 +1217,10 @@ class SeleniumBrowser(Plugin):
         test.test.extension_dir = self.options.extension_dir
         test.test.disable_features = self.options.disable_features
         test.test.binary_location = self.options.binary_location
+        if self.options.use_cft and not test.test.binary_location:
+            test.test.binary_location = "cft"
+        elif self.options.use_chs and not test.test.binary_location:
+            test.test.binary_location = "chs"
         if (
             test.test.binary_location
             and test.test.binary_location.lower() == "chs"
