@@ -24,6 +24,7 @@ class CDPNetworkBlockingTests(BaseCase):
             ]})
         self.execute_cdp_cmd('Network.enable', {})
         self.open('https://www.w3schools.com/jquery/default.asp')
+        self.ad_block()
         source = self.get_page_source()
         self.assert_true("doubleclick.net" not in source)
         self.assert_true("google-analytics.com" not in source)
