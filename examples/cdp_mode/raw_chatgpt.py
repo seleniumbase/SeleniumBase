@@ -5,7 +5,7 @@ with SB(uc=True, test=True, ad_block=True) as sb:
     url = "https://chatgpt.com/"
     sb.activate_cdp_mode(url)
     query = "Compare Playwright to SeleniumBase in under 178 words"
-    sb.type("#prompt-textarea", query)
+    sb.press_keys("#prompt-textarea", query)
     sb.click('button[data-testid="send-button"]')
     print('*** Input for ChatGPT: ***\n"%s"' % query)
     with suppress(Exception):
