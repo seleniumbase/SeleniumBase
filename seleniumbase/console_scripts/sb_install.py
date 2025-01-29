@@ -39,6 +39,7 @@ import time
 import tarfile
 import urllib3
 import zipfile
+from contextlib import suppress
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import shared_utils
 from seleniumbase import config as sb_config
@@ -1200,7 +1201,7 @@ def main(override=None, intel_for_uc=None, force_uc=None):
             driver_path = None
             driver_file = None
             base_path = os.sep.join(zip_file_path.split(os.sep)[:-1])
-            folder_name = contents[0].split(os.sep)[0]
+            folder_name = contents[0].split("/")[0]
             folder_path = os.path.join(base_path, folder_name)
             if IS_MAC or IS_LINUX:
                 if (
@@ -1221,12 +1222,14 @@ def main(override=None, intel_for_uc=None, force_uc=None):
                         zip_file_path,
                         "-DestinationPath",
                         downloads_folder,
+                        "-Force",
                     ]
                 )
             else:
                 zip_ref.extractall(downloads_folder)
                 zip_ref.close()
-            os.remove(zip_file_path)
+            with suppress(Exception):
+                os.remove(zip_file_path)
             log_d("%sUnzip Complete!%s\n" % (c2, cr))
             pr_base_path = c3 + base_path + cr
             pr_sep = c3 + os.sep + cr
@@ -1240,7 +1243,7 @@ def main(override=None, intel_for_uc=None, force_uc=None):
             driver_path = None
             driver_file = None
             base_path = os.sep.join(zip_file_path.split(os.sep)[:-1])
-            folder_name = contents[0].split(os.sep)[0]
+            folder_name = contents[0].split("/")[0]
             folder_path = os.path.join(base_path, folder_name)
             if IS_MAC or IS_LINUX:
                 if (
@@ -1261,12 +1264,14 @@ def main(override=None, intel_for_uc=None, force_uc=None):
                         zip_file_path,
                         "-DestinationPath",
                         downloads_folder,
+                        "-Force",
                     ]
                 )
             else:
                 zip_ref.extractall(downloads_folder)
                 zip_ref.close()
-            os.remove(zip_file_path)
+            with suppress(Exception):
+                os.remove(zip_file_path)
             log_d("%sUnzip Complete!%s\n" % (c2, cr))
             pr_base_path = c3 + base_path + cr
             pr_sep = c3 + os.sep + cr
