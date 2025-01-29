@@ -82,12 +82,26 @@ msedgedriver.exe
 operadriver.exe
 uc_driver.exe
 
+# Chrome for Testing Zip Files
+chrome-mac-arm64.zip
+chrome-mac-x64.zip
+chrome-linux64.zip
+chrome-win64.zip
+chrome-win32.zip
+
 # Chrome for Testing folders
 chrome-mac-arm64
 chrome-mac-x64
 chrome-linux64
 chrome-win64
 chrome-win32
+
+# Chrome-Headless-Shell Zip Files
+chrome-headless-shell-mac-arm64.zip
+chrome-headless-shell-mac-x64.zip
+chrome-headless-shell-linux64.zip
+chrome-headless-shell-win64.zip
+chrome-headless-shell-win32.zip
 
 # Chrome-Headless-Shell folders
 chrome-headless-shell-mac-arm64
