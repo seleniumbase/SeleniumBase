@@ -25,6 +25,7 @@ __all__ = (
     "CDP",
     "find_chrome_executable",
 )
+IS_MAC = "darwin" in sys.platform
 IS_POSIX = sys.platform.startswith(("darwin", "cygwin", "linux"))
 logger = logging.getLogger("uc")
 logger.setLevel(logging.getLogger().getEffectiveLevel())
@@ -311,7 +312,21 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                 setattr(service_, "creationflags", creationflags)
             if hasattr(service_, "creation_flags"):
                 setattr(service_, "creation_flags", creationflags)
-            super().__init__(options=options, service=service_)
+            try:
+                super().__init__(options=options, service=service_)
+            except OSError as e:
+                if IS_MAC and "Bad CPU type in executable" in str(e):
+                    print(str(e))
+                    message = (
+                        "Missing a macOS dependency:\n"
+                        "Your Mac needs Rosetta 2 to use UC Mode!\n"
+                        'Run: "softwareupdate --install-rosetta"\n'
+                        "Info: "
+                        "https://apple.stackexchange.com/a/408379/607628"
+                    )
+                    raise Exception(message)
+                else:
+                    raise
             self.reactor = None
             if enable_cdp_events:
                 if logging.getLogger().getEffectiveLevel() == logging.DEBUG:
