@@ -19,6 +19,11 @@ class CDPMethods():
         self.page = page
         self.driver = driver
 
+    def _swap_driver(self, driver):
+        self.driver = driver
+        self.page = driver.cdp.page
+        self.loop = driver.cdp.loop
+
     def __slow_mode_pause_if_set(self):
         if (
             (hasattr(sb_config, "demo_mode") and sb_config.demo_mode)
