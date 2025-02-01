@@ -749,6 +749,7 @@ def uc_open_with_cdp_mode(driver, url=None):
     core_items.browser = cdp.browser
     core_items.tab = cdp.tab
     core_items.util = cdp.util
+    cdp._swap_driver = CDPM._swap_driver
     cdp.core = core_items
     cdp.loop = cdp.get_event_loop()
     driver.cdp = cdp

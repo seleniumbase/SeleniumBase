@@ -4358,6 +4358,8 @@ class BaseCase(unittest.TestCase):
         self.driver = driver
         if self.driver in self._drivers_browser_map:
             self.browser = self._drivers_browser_map[self.driver]
+        if self.__is_cdp_swap_needed():
+            self.cdp._swap_driver(self.driver)
         self.bring_active_window_to_front()
 
     def switch_to_default_driver(self):
@@ -4366,6 +4368,8 @@ class BaseCase(unittest.TestCase):
         self.driver = self._default_driver
         if self.driver in self._drivers_browser_map:
             self.browser = self._drivers_browser_map[self.driver]
+        if self.__is_cdp_swap_needed():
+            self.cdp._swap_driver(self.driver)
         self.bring_active_window_to_front()
 
     def save_screenshot(
