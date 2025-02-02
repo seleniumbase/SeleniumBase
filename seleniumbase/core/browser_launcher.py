@@ -2146,7 +2146,9 @@ def _set_chrome_options(
             chrome_options.add_extension(abs_path)
     if extension_dir:
         # load-extension input can be a comma-separated list
-        abs_path = os.path.abspath(extension_dir)
+        abs_path = (
+            ",".join(os.path.abspath(p) for p in extension_dir.split(","))
+        )
         chrome_options = add_chrome_ext_dir(chrome_options, abs_path)
     if (
         page_load_strategy
@@ -4114,7 +4116,9 @@ def get_local_driver(
                 edge_options.add_extension(abs_path)
         if extension_dir:
             # load-extension input can be a comma-separated list
-            abs_path = os.path.abspath(extension_dir)
+            abs_path = (
+                ",".join(os.path.abspath(p) for p in extension_dir.split(","))
+            )
             edge_options = add_chrome_ext_dir(edge_options, abs_path)
         edge_options.add_argument("--disable-infobars")
         edge_options.add_argument("--disable-notifications")
