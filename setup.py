@@ -208,7 +208,7 @@ setup(
         'parameterized==0.9.0',
         "behave==1.2.6",
         'soupsieve==2.6',
-        "beautifulsoup4==4.12.3",
+        "beautifulsoup4==4.13.3",
         'pyotp==2.9.0',
         'python-xlib==0.33;platform_system=="Linux"',
         'markdown-it-py==3.0.0',

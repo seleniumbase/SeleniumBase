@@ -111,7 +111,9 @@ def looks_like_a_page_url(url):
     self.get_element(URL_AS_A_SELECTOR) if the input is not a URL."""
     return url.startswith((
         "http:", "https:", "://", "about:", "blob:", "chrome:",
-        "data:", "edge:", "file:", "view-source:"
+        "data:", "edge:", "file:", "view-source:", "chrome-search:",
+        "chrome-extension:", "chrome-untrusted:", "isolated-app:",
+        "chrome-devtools:", "devtools:"
     ))
 
 
