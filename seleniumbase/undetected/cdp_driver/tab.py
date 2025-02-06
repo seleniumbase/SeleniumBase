@@ -896,6 +896,10 @@ class Tab(Connection):
         """
         return await self.set_window_state(left, top, width, height)
 
+    async def set_window_rect(self, left=0, top=0, width=1280, height=1024):
+        """Same as set_window_size(). Uses a different naming convention."""
+        return await self.set_window_state(left, top, width, height)
+
     async def activate(self):
         """Active this target (Eg: tab, window, page)"""
         await self.send(cdp.target.activate_target(self.target.target_id))
