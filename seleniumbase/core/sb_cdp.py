@@ -877,8 +877,13 @@ class CDPMethods():
 
     def evaluate(self, expression):
         """Run a JavaScript expression and return the result."""
-        if expression.startswith("return "):
-            expression = expression[len("return "):]
+        expression = expression.strip()
+        exp_list = expression.split("\n")
+        if exp_list and exp_list[-1].strip().startswith("return "):
+            expression = (
+                "\n".join(exp_list[0:-1]) + "\n"
+                + exp_list[-1].strip()[len("return "):]
+            ).strip()
         return self.loop.run_until_complete(
             self.page.evaluate(expression)
         )

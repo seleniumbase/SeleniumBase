@@ -241,7 +241,18 @@ async def start_async(*args, **kwargs) -> Browser:
 
 
 def start_sync(*args, **kwargs) -> Browser:
-    loop = asyncio.get_event_loop()
+    loop = None
+    if (
+        "loop" in kwargs
+        and kwargs["loop"]
+        and hasattr(kwargs["loop"], "create_task")
+    ):
+        loop = kwargs["loop"]
+    else:
+        try:
+            loop = asyncio.get_event_loop()
+        except RuntimeError:
+            loop = asyncio.new_event_loop()
     headless = False
     binary_location = None
     if "browser_executable_path" in kwargs:
