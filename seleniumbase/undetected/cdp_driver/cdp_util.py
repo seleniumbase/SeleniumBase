@@ -10,6 +10,7 @@ import typing
 from contextlib import suppress
 from seleniumbase import config as sb_config
 from seleniumbase.config import settings
+from seleniumbase.core import detect_b_ver
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import shared_utils
 from typing import Optional, List, Union, Callable
@@ -226,6 +227,10 @@ async def start_async(*args, **kwargs) -> Browser:
     binary_location = None
     if "browser_executable_path" in kwargs:
         binary_location = kwargs["browser_executable_path"]
+    else:
+        binary_location = detect_b_ver.get_binary_location("google-chrome")
+        if binary_location and not os.path.exists(binary_location):
+            binary_location = None
     if (
         shared_utils.is_chrome_130_or_newer(binary_location)
         and "user_data_dir" in kwargs
@@ -261,6 +266,10 @@ def start_sync(*args, **kwargs) -> Browser:
     binary_location = None
     if "browser_executable_path" in kwargs:
         binary_location = kwargs["browser_executable_path"]
+    else:
+        binary_location = detect_b_ver.get_binary_location("google-chrome")
+        if binary_location and not os.path.exists(binary_location):
+            binary_location = None
     if (
         shared_utils.is_chrome_130_or_newer(binary_location)
         and "user_data_dir" in kwargs
