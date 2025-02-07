@@ -565,10 +565,11 @@ class Browser:
             # asyncio.get_running_loop().create_task(
             #     self.connection.send(cdp.browser.close())
             # )
-            asyncio.get_event_loop().create_task(self.connection.aclose())
-            logger.debug(
-                "Closed the connection using get_event_loop().create_task()"
-            )
+            if self.connection:
+                asyncio.get_event_loop().create_task(self.connection.aclose())
+                logger.debug(
+                    "Closed connection using get_event_loop().create_task()"
+                )
         except RuntimeError:
             if self.connection:
                 try:

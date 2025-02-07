@@ -96,14 +96,9 @@ def linux_browser_apps_to_cmd(*apps):
     )
 
 
-def chrome_on_linux_path(prefer_chromium=False):
+def chrome_on_linux_path(chromium_ok=False):
     if os_name() != OSType.LINUX:
         return ""
-    if prefer_chromium:
-        paths = ["/bin/chromium", "/bin/chromium-browser"]
-        for path in paths:
-            if os.path.exists(path) and os.access(path, os.X_OK):
-                return path
     paths = ["/bin/google-chrome", "/bin/google-chrome-stable"]
     for path in paths:
         if os.path.exists(path) and os.access(path, os.X_OK):
@@ -112,17 +107,22 @@ def chrome_on_linux_path(prefer_chromium=False):
     binaries = []
     binaries.append("google-chrome")
     binaries.append("google-chrome-stable")
-    binaries.append("chrome")
-    binaries.append("chromium")
-    binaries.append("chromium-browser")
     binaries.append("google-chrome-beta")
     binaries.append("google-chrome-dev")
     binaries.append("google-chrome-unstable")
+    binaries.append("chrome")
+    binaries.append("chromium")
+    binaries.append("chromium-browser")
     for binary in binaries:
         for path in paths:
             full_path = os.path.join(path, binary)
             if os.path.exists(full_path) and os.access(full_path, os.X_OK):
                 return full_path
+    if chromium_ok:
+        paths = ["/bin/chromium", "/bin/chromium-browser"]
+        for path in paths:
+            if os.path.exists(path) and os.access(path, os.X_OK):
+                return path
     return "/usr/bin/google-chrome"
 
 
@@ -209,12 +209,11 @@ def windows_browser_apps_to_cmd(*apps):
     return '%s -NoProfile "%s"' % (powershell, script)
 
 
-def get_binary_location(browser_type, prefer_chromium=False):
-    """Return the full path of the browser binary.
-    If going for better results in UC Mode, use: prefer_chromium=True"""
+def get_binary_location(browser_type, chromium_ok=False):
+    """Return the full path of the browser binary."""
     cmd_mapping = {
         ChromeType.GOOGLE: {
-            OSType.LINUX: chrome_on_linux_path(prefer_chromium),
+            OSType.LINUX: chrome_on_linux_path(chromium_ok),
             OSType.MAC: r"/Applications/Google Chrome.app"
                         r"/Contents/MacOS/Google Chrome",
             OSType.WIN: chrome_on_windows_path(),
