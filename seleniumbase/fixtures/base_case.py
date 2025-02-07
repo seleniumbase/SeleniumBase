@@ -3256,7 +3256,7 @@ class BaseCase(unittest.TestCase):
         html_string = "\n".join(new_lines)
         soup = self.get_beautiful_soup(html_string)
         found_base = False
-        links = soup.findAll("link")
+        links = soup.find_all("link")
         href = None
         for link in links:
             if link.get("rel") == ["canonical"] and link.get("href"):
@@ -3272,7 +3272,7 @@ class BaseCase(unittest.TestCase):
                 "<head>", '<head><base href="%s">' % href
             )
         elif not found_base:
-            bases = soup.findAll("base")
+            bases = soup.find_all("base")
             for base in bases:
                 if base.get("href"):
                     href = base.get("href")
@@ -3280,7 +3280,7 @@ class BaseCase(unittest.TestCase):
             html_string = html_string.replace('base: "."', 'base: "%s"' % href)
 
         soup = self.get_beautiful_soup(html_string)
-        scripts = soup.findAll("script")
+        scripts = soup.find_all("script")
         for script in scripts:
             if script.get("type") != "application/json":
                 html_string = html_string.replace(str(script), "")
