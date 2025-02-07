@@ -226,7 +226,11 @@ async def start_async(*args, **kwargs) -> Browser:
     binary_location = None
     if "browser_executable_path" in kwargs:
         binary_location = kwargs["browser_executable_path"]
-    if shared_utils.is_chrome_130_or_newer(binary_location):
+    if (
+        shared_utils.is_chrome_130_or_newer(binary_location)
+        and "user_data_dir" in kwargs
+        and kwargs["user_data_dir"]
+    ):
         if "headless" in kwargs:
             headless = kwargs["headless"]
         decoy_args = kwargs
@@ -257,7 +261,11 @@ def start_sync(*args, **kwargs) -> Browser:
     binary_location = None
     if "browser_executable_path" in kwargs:
         binary_location = kwargs["browser_executable_path"]
-    if shared_utils.is_chrome_130_or_newer(binary_location):
+    if (
+        shared_utils.is_chrome_130_or_newer(binary_location)
+        and "user_data_dir" in kwargs
+        and kwargs["user_data_dir"]
+    ):
         if "headless" in kwargs:
             headless = kwargs["headless"]
         decoy_args = kwargs

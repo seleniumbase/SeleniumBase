@@ -1252,6 +1252,10 @@ def _uc_gui_click_captcha(
                 ):
                     frame = '[data-testid*="challenge-"] div'
                 elif driver.is_element_present(
+                    "form.turnstile div#turnstile-widget div:not([class])"
+                ):
+                    frame = "form.turnstile #turnstile-widget div:not([class])"
+                elif driver.is_element_present(
                     'form div:not([class]):has(input[name*="cf-turn"])'
                 ):
                     frame = 'form div:not([class]):has(input[name*="cf-turn"])'
@@ -1286,6 +1290,23 @@ def _uc_gui_click_captcha(
                     new_class = the_class.replaceAll('center', 'left');
                     new_class = new_class.replaceAll('right', 'left');
                     $elements[index].setAttribute('class', new_class);}"""
+                )
+                if __is_cdp_swap_needed(driver):
+                    driver.cdp.evaluate(script)
+                else:
+                    driver.execute_script(script)
+            elif (
+                driver.is_element_present("form")
+                and driver.is_element_present(
+                    "form.turnstile #turnstile-widget > div:not([class])"
+                )
+            ):
+                script = (
+                    """var $elements = document.querySelectorAll(
+                    'form.turnstile #turnstile-widget');
+                    var index = 0, length = $elements.length;
+                    for(; index < length; index++){
+                    $elements[index].setAttribute('align', 'left');}"""
                 )
                 if __is_cdp_swap_needed(driver):
                     driver.cdp.evaluate(script)
