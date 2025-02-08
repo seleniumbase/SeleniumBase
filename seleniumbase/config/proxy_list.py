@@ -23,8 +23,8 @@ you can try finding one from one of following sites:
 """
 
 PROXY_LIST = {
-    "example1": "35.185.196.38:3128",  # (Example) - set your own proxy here
-    "example2": "129.80.134.71:3128",  # (Example)
+    "example1": "98.8.195.160:443",  # (Example) - set your own proxy here
+    "example2": "200.174.198.86:8888",  # (Example)
     "example3": "socks5://184.178.172.5:15303",  # (Example)
     "proxy1": None,
     "proxy2": None,
