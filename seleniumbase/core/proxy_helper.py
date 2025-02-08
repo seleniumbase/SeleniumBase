@@ -40,7 +40,7 @@ def create_proxy_ext(
             """    mode: "fixed_servers",\n"""
             """    rules: {\n"""
             """      singleProxy: {\n"""
-            """        scheme: "http",\n"""
+            """        scheme: ["http", "https", "socks4", "socks5"],\n"""
             """        host: "%s",\n"""
             """        port: parseInt("%s")\n"""
             """      },\n"""

@@ -16,27 +16,19 @@ class ProxyTests(BaseCase):
         self.open("https://api.ipify.org/")
         ip_address = self.get_text("body")
         self.open("https://ipinfo.io/")
-        self.type('input[name="search"]', ip_address, timeout=20)
-        self.click("form button span")
-        self.sleep(2)
-        self.click_if_visible("span.cursor-pointer", timeout=4)
+        self.type('input[name="search"]\n', ip_address, timeout=20)
         print("\n\nMy IP Address = %s\n" % ip_address)
+        self.wait_for_text("IP Address", "h1", timeout=20)
+        self.wait_for_element_present('[href="/signup"]')
+        self.wait_for_text("hostname", timeout=20)
+        self.highlight("h1")
+        self.sleep(1.5)
         print("Displaying Host Info:")
-        text = self.get_text("#block-summary").split("Hosted domains")[0]
+        text = self.get_text("#api-preview-widget").split("is_anycast:")[0]
         rows = text.split("\n")
         data = []
         for row in rows:
             if row.strip() != "":
                 data.append(row.strip())
-        print("\n".join(data).replace('\n"', " "))
-        print("\nDisplaying Geolocation Info:")
-        text = self.get_text("#block-geolocation").split("Coordinates")[0]
-        rows = text.split("\n")
-        data = []
-        for row in rows:
-            if row.strip() != "":
-                data.append(row.strip())
-        print("\n".join(data).replace('\n"', " "))
-        if not self.headless:
-            print("\nThe browser will close automatically in 3 seconds...")
-            self.sleep(3)
+        print("\n".join(data).replace('\n"', ' "'))
+        self.sleep(3)
