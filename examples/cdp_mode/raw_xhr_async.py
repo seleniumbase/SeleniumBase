@@ -65,8 +65,8 @@ async def crawl():
     # Change url to something that makes ajax requests
     tab = await driver.get("https://learn.microsoft.com/en-us/")
     time.sleep(2)
-    for i in range(75):
-        await tab.scroll_down(3)
+    for i in range(20):
+        await tab.scroll_down(4)
         time.sleep(0.02)
 
     xhr_responses = await receiveXHR(tab, xhr_requests)
@@ -87,6 +87,5 @@ async def crawl():
 
 if __name__ == "__main__":
     print("<============= START: XHR Example =============>")
-    loop = asyncio.new_event_loop()
-    loop.run_until_complete(crawl())
+    asyncio.run(crawl())
     print("<============== END: XHR Example ==============>")

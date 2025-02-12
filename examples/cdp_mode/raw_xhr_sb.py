@@ -64,8 +64,8 @@ with SB(uc=True, test=True, locale_code="en") as sb:
     # Change url to something that makes ajax requests
     sb.cdp.open("https://learn.microsoft.com/en-us/")
     time.sleep(2)
-    for i in range(15):
-        sb.cdp.scroll_down(15)
+    for i in range(10):
+        sb.cdp.scroll_down(8)
 
     loop = sb.cdp.get_event_loop()
     xhr_responses = loop.run_until_complete(receiveXHR(tab, xhr_requests))
