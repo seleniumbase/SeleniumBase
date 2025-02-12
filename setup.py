@@ -147,7 +147,7 @@ setup(
     ],
     python_requires=">=3.8",
     install_requires=[
-        'pip>=25.0',
+        'pip>=25.0.1',
         'packaging>=24.2',
         'setuptools~=70.2;python_version<"3.10"',  # Newer ones had issues
         'setuptools>=75.8.0;python_version>="3.10"',
@@ -228,7 +228,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage>=7.6.1;python_version<"3.9"',
-            'coverage>=7.6.10;python_version>="3.9"',
+            'coverage>=7.6.12;python_version>="3.9"',
             'pytest-cov>=5.0.0;python_version<"3.9"',
             'pytest-cov>=6.0.0;python_version>="3.9"',
         ],
@@ -259,7 +259,7 @@ setup(
         "pdfminer": [
             'pdfminer.six==20240706',
             'cryptography==39.0.2;python_version<"3.9"',
-            'cryptography==44.0.0;python_version>="3.9"',
+            'cryptography==44.0.1;python_version>="3.9"',
             'cffi==1.17.1',
             "pycparser==2.22",
         ],
