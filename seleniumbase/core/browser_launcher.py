@@ -220,6 +220,7 @@ def extend_driver(driver):
     driver.highlight_if_visible = DM.highlight_if_visible
     driver.sleep = time.sleep
     driver.get_attribute = DM.get_attribute
+    driver.get_parent = DM.get_parent
     driver.get_current_url = DM.get_current_url
     driver.get_page_source = DM.get_page_source
     driver.get_title = DM.get_title
@@ -647,6 +648,7 @@ def uc_open_with_cdp_mode(driver, url=None):
     cdp.click_if_visible = CDPM.click_if_visible
     cdp.click_visible_elements = CDPM.click_visible_elements
     cdp.mouse_click = CDPM.mouse_click
+    cdp.get_parent = CDPM.get_parent
     cdp.remove_element = CDPM.remove_element
     cdp.remove_from_dom = CDPM.remove_from_dom
     cdp.remove_elements = CDPM.remove_elements
@@ -5394,6 +5396,19 @@ def get_local_driver(
                     )
                     driver._is_hidden = (headless or headless2)
                     driver._is_using_uc = True
+                    with suppress(Exception):
+                        if int(uc_driver_version) >= 133:
+                            for window_handle in driver.window_handles:
+                                driver.switch_to.window(window_handle)
+                                if driver.current_url.startswith(
+                                    "chrome-extension://"
+                                ):
+                                    driver.close()
+                                    time.sleep(0.003)
+                            driver.switch_to.window(driver.window_handles[0])
+                            time.sleep(0.003)
+                            driver.connect()
+                            time.sleep(0.003)
                     if mobile_emulator:
                         uc_metrics = {}
                         if (

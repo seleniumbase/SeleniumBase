@@ -405,6 +405,7 @@ sb.cdp.flash(selector, duration=1, color="44CC88", pause=0)
 sb.cdp.highlight(selector)
 sb.cdp.focus(selector)
 sb.cdp.highlight_overlay(selector)
+sb.cdp.get_parent(element)
 sb.cdp.remove_element(selector)
 sb.cdp.remove_from_dom(selector)
 sb.cdp.remove_elements(selector)
@@ -522,6 +523,7 @@ element.get_position()
 element.get_html()
 element.get_js_attributes()
 element.get_attribute(attribute)
+element.get_parent()
 ```
 
 --------

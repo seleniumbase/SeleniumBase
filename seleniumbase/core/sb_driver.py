@@ -51,6 +51,13 @@ class DriverMethods():
         element = self.locator(selector, by=by)
         return element.get_attribute(attribute)
 
+    def get_parent(self, element):
+        if self.__is_cdp_swap_needed():
+            return self.driver.cdp.get_parent(element)
+        if isinstance(element, str):
+            element = self.locator(element)
+        return element.find_element(by="xpath", value="..")
+
     def get_current_url(self):
         if self.__is_cdp_swap_needed():
             current_url = self.driver.cdp.get_current_url()

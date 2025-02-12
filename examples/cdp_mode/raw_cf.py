@@ -4,7 +4,7 @@ from seleniumbase import SB
 with SB(uc=True, test=True, locale_code="en") as sb:
     url = "https://www.cloudflare.com/login"
     sb.activate_cdp_mode(url)
-    sb.sleep(2)
+    sb.sleep(3)
     sb.uc_gui_handle_captcha()  # PyAutoGUI press Tab and Spacebar
     sb.sleep(2)
 
