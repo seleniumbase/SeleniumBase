@@ -220,6 +220,7 @@ def extend_driver(driver):
     driver.highlight_if_visible = DM.highlight_if_visible
     driver.sleep = time.sleep
     driver.get_attribute = DM.get_attribute
+    driver.get_parent = DM.get_parent
     driver.get_current_url = DM.get_current_url
     driver.get_page_source = DM.get_page_source
     driver.get_title = DM.get_title
@@ -647,6 +648,7 @@ def uc_open_with_cdp_mode(driver, url=None):
     cdp.click_if_visible = CDPM.click_if_visible
     cdp.click_visible_elements = CDPM.click_visible_elements
     cdp.mouse_click = CDPM.mouse_click
+    cdp.get_parent = CDPM.get_parent
     cdp.remove_element = CDPM.remove_element
     cdp.remove_from_dom = CDPM.remove_from_dom
     cdp.remove_elements = CDPM.remove_elements

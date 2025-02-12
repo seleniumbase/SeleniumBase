@@ -91,6 +91,8 @@ class CDPMethods():
         element.get_attribute = (
             lambda attribute: self.__get_attribute(element, attribute)
         )
+        # element.get_parent() should come last
+        element.get_parent = lambda: self.__get_parent(element)
         return element
 
     def get(self, url):
@@ -549,6 +551,9 @@ class CDPMethods():
                 pass
         return None
 
+    def __get_parent(self, element):
+        return self.__add_sync_methods(element.parent)
+
     def __get_x_scroll_offset(self):
         x_scroll_offset = self.loop.run_until_complete(
             self.page.evaluate("window.pageXOffset")
@@ -768,6 +773,11 @@ class CDPMethods():
 
     def highlight_overlay(self, selector):
         self.find_element(selector).highlight_overlay()
+
+    def get_parent(self, element):
+        if isinstance(element, str):
+            element = self.select(element)
+        return self.__add_sync_methods(element.parent)
 
     def remove_element(self, selector):
         self.select(selector).remove_from_dom()

@@ -2072,6 +2072,19 @@ class BaseCase(unittest.TestCase):
             return
         self.set_attributes('[target="_blank"]', "target", "_self")
 
+    def get_parent(self, element, by="css selector", timeout=None):
+        """Returns the parent element.
+        If element is a string, then finds element first via selector."""
+        if self.__is_cdp_swap_needed():
+            return self.cdp.get_parent(element)
+        if isinstance(element, str):
+            if not timeout:
+                timeout = settings.LARGE_TIMEOUT
+            element = self.wait_for_element_present(
+                element, by=by, timeout=timeout
+            )
+        return element.find_element(by="xpath", value="..")
+
     def get_property(
         self, selector, property, by="css selector", timeout=None
     ):
