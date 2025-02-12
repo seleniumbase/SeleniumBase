@@ -5394,6 +5394,19 @@ def get_local_driver(
                     )
                     driver._is_hidden = (headless or headless2)
                     driver._is_using_uc = True
+                    with suppress(Exception):
+                        if int(uc_driver_version) >= 133:
+                            for window_handle in driver.window_handles:
+                                driver.switch_to.window(window_handle)
+                                if driver.current_url.startswith(
+                                    "chrome-extension://"
+                                ):
+                                    driver.close()
+                                    time.sleep(0.003)
+                            driver.switch_to.window(driver.window_handles[0])
+                            time.sleep(0.003)
+                            driver.connect()
+                            time.sleep(0.003)
                     if mobile_emulator:
                         uc_metrics = {}
                         if (
