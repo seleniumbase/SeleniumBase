@@ -107,7 +107,7 @@ def make_driver_executable_if_not(driver_path):
         shared_utils.make_executable(driver_path)
 
 
-def extend_driver(driver):
+def extend_driver(driver, proxy_auth=False, use_uc=True):
     # Extend the driver with new methods
     driver.default_find_element = driver.find_element
     driver.default_find_elements = driver.find_elements
@@ -235,6 +235,8 @@ def extend_driver(driver):
     driver.reset_window_size = DM.reset_window_size
     if hasattr(driver, "proxy"):
         driver.set_wire_proxy = DM.set_wire_proxy
+    if proxy_auth and not use_uc:
+        time.sleep(0.11)  # Proxy needs moment to load in Manifest V3
     return driver
 
 
@@ -3591,6 +3593,7 @@ def get_local_driver(
     Can also be used to spin up additional browsers for the same test."""
     downloads_path = DOWNLOADS_FOLDER
     b_path = binary_location
+    use_uc = is_using_uc(undetectable, browser_name)
     if use_wire:
         pip_find_lock = fasteners.InterProcessLock(
             constants.PipInstall.FINDLOCK
@@ -4064,7 +4067,7 @@ def get_local_driver(
                     edge_options.add_argument("--headless=old")
                 else:
                     edge_options.add_argument("--headless")
-        if mobile_emulator and not is_using_uc(undetectable, browser_name):
+        if mobile_emulator and not use_uc:
             emulator_settings = {}
             device_metrics = {}
             if (
@@ -4128,7 +4131,7 @@ def get_local_driver(
                         settings.CHROME_START_HEIGHT,
                     )
                 )
-        if user_data_dir and not is_using_uc(undetectable, browser_name):
+        if user_data_dir and not use_uc:
             abs_path = os.path.abspath(user_data_dir)
             edge_options.add_argument("--user-data-dir=%s" % abs_path)
         if extension_zip:
@@ -4163,7 +4166,7 @@ def get_local_driver(
         edge_options.add_argument("--disable-prompt-on-repost")
         if not enable_3d_apis:
             edge_options.add_argument("--disable-3d-apis")
-        if headless or headless2 or is_using_uc(undetectable, browser_name):
+        if headless or headless2 or use_uc:
             edge_options.add_argument("--disable-renderer-backgrounding")
         edge_options.add_argument("--disable-backgrounding-occluded-windows")
         edge_options.add_argument("--disable-client-side-phishing-detection")
@@ -4235,10 +4238,7 @@ def get_local_driver(
         edge_options.add_argument("--allow-running-insecure-content")
         if user_agent:
             edge_options.add_argument("--user-agent=%s" % user_agent)
-        if (
-            IS_LINUX
-            or (IS_MAC and not is_using_uc(undetectable, browser_name))
-        ):
+        if IS_LINUX or (IS_MAC and not use_uc):
             edge_options.add_argument("--no-sandbox")
         if remote_debug:
             # To access the Debugger, go to: edge://inspect/#devices
@@ -4252,10 +4252,7 @@ def get_local_driver(
         if swiftshader:
             edge_options.add_argument("--use-gl=angle")
             edge_options.add_argument("--use-angle=swiftshader-webgl")
-        elif (
-            not is_using_uc(undetectable, browser_name)
-            and not enable_3d_apis
-        ):
+        elif not use_uc and not enable_3d_apis:
             edge_options.add_argument("--disable-gpu")
         if IS_LINUX:
             edge_options.add_argument("--disable-dev-shm-usage")
@@ -4502,14 +4499,14 @@ def get_local_driver(
                         and len(saved_mcv.split(".")) == 4
                     ):
                         driver_version = saved_mcv
-                        if is_using_uc(undetectable, browser_name):
+                        if use_uc:
                             use_br_version_for_uc = True
                     if (
                         (headless or headless2)
                         and IS_WINDOWS
                         and major_chrome_version
                         and int(major_chrome_version) >= 117
-                        and not is_using_uc(undetectable, browser_name)
+                        and not use_uc
                         and not (remote_debug or devtools or use_wire)
                         and not (proxy_string or multi_proxy or proxy_pac_url)
                         and (not chromium_arg or "debug" not in chromium_arg)
@@ -4565,7 +4562,7 @@ def get_local_driver(
                             use_version = ch_driver_version
             disable_build_check = True
             uc_driver_version = None
-            if is_using_uc(undetectable, browser_name):
+            if use_uc:
                 if use_br_version_for_uc or driver_version == "mlatest":
                     uc_driver_version = get_uc_driver_version(full=True)
                     full_ch_driver_version = uc_driver_version
@@ -4626,7 +4623,6 @@ def get_local_driver(
                         "\nWarning: Could not make chromedriver"
                         " executable: %s" % e
                     )
-            use_uc = is_using_uc(undetectable, browser_name)
             make_uc_driver_from_chromedriver = False
             local_ch_exists = (
                 LOCAL_CHROMEDRIVER and os.path.exists(LOCAL_CHROMEDRIVER)
@@ -4843,7 +4839,7 @@ def get_local_driver(
             service_args = []
             if disable_build_check:
                 service_args = ["--disable-build-check"]
-            if is_using_uc(undetectable, browser_name):
+            if use_uc:
                 uc_lock = fasteners.InterProcessLock(
                     constants.MultiBrowser.DRIVER_FIXING_LOCK
                 )
@@ -4872,20 +4868,14 @@ def get_local_driver(
                                 "\nWarning: Could not make uc_driver"
                                 " executable: %s" % e
                             )
-            if (
-                not headless
-                or not IS_LINUX
-                or is_using_uc(undetectable, browser_name)
-            ):
+            if not headless or not IS_LINUX or use_uc:
                 uc_activated = False
                 try:
-                    if (
-                        os.path.exists(LOCAL_CHROMEDRIVER)
-                        or is_using_uc(undetectable, browser_name)
-                    ):
+                    if os.path.exists(LOCAL_CHROMEDRIVER) or use_uc:
                         if headless and not IS_LINUX:
                             undetectable = False  # No support for headless
-                        if is_using_uc(undetectable, browser_name):
+                            use_uc = is_using_uc(undetectable, browser_name)
+                        if use_uc:
                             from seleniumbase import undetected
                             from urllib.error import URLError
                             if IS_LINUX:
@@ -5185,7 +5175,7 @@ def get_local_driver(
                             driver = webdriver.Chrome(
                                 service=service, options=chrome_options
                             )
-                            return extend_driver(driver)
+                            return extend_driver(driver, proxy_auth, use_uc)
                     if not auto_upgrade_chromedriver:
                         raise  # Not an obvious fix.
                     else:
@@ -5436,11 +5426,11 @@ def get_local_driver(
                                 'Emulation.setDeviceMetricsOverride',
                                 set_device_metrics_override
                             )
-                return extend_driver(driver)
+                return extend_driver(driver, proxy_auth, use_uc)
             else:  # Running headless on Linux (and not using --uc)
                 try:
                     driver = webdriver.Chrome(options=chrome_options)
-                    return extend_driver(driver)
+                    return extend_driver(driver, proxy_auth, use_uc)
                 except Exception as e:
                     if not hasattr(e, "msg"):
                         raise
@@ -5462,7 +5452,7 @@ def get_local_driver(
                             driver = webdriver.Chrome(
                                 service=service, options=chrome_options
                             )
-                            return extend_driver(driver)
+                            return extend_driver(driver, proxy_auth, use_uc)
                     mcv = None  # Major Chrome Version
                     if "Current browser version is " in e.msg:
                         line = e.msg.split("Current browser version is ")[1]
@@ -5505,7 +5495,7 @@ def get_local_driver(
                                 service=service,
                                 options=chrome_options,
                             )
-                            return extend_driver(driver)
+                            return extend_driver(driver, proxy_auth, use_uc)
                     # Use the virtual display on Linux during headless errors
                     logging.debug(
                         "\nWarning: Chrome failed to launch in"
@@ -5523,9 +5513,9 @@ def get_local_driver(
                     driver = webdriver.Chrome(
                         service=service, options=chrome_options
                     )
-                    return extend_driver(driver)
+                    return extend_driver(driver, proxy_auth, use_uc)
         except Exception as original_exception:
-            if is_using_uc(undetectable, browser_name):
+            if use_uc:
                 raise
             # Try again if Chrome didn't launch
             with suppress(Exception):
@@ -5533,7 +5523,7 @@ def get_local_driver(
                 driver = webdriver.Chrome(
                     service=service, options=chrome_options
                 )
-                return extend_driver(driver)
+                return extend_driver(driver, proxy_auth, use_uc)
             if user_data_dir:
                 print("\nUnable to set user_data_dir while starting Chrome!\n")
                 raise
@@ -5560,7 +5550,7 @@ def get_local_driver(
             )
             try:
                 driver = webdriver.Chrome(service=service)
-                return extend_driver(driver)
+                return extend_driver(driver, proxy_auth, use_uc)
             except Exception:
                 raise original_exception
     else:
