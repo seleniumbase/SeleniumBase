@@ -454,17 +454,20 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
             self.start_session()
             time.sleep(0.0075)
         with suppress(Exception):
-            for i in range(5):
-                if self.current_url.startswith("chrome-extension://"):
+            for window_handle in self.window_handles:
+                self.switch_to.window(window_handle)
+                if self.current_url.startswith(
+                    "chrome-extension://"
+                ):
                     self.close()
                     if self.service.is_connectable():
                         self.stop_client()
                         self.service.stop()
                     self.service.start()
                     self.start_session()
-                    time.sleep(0.0075)
-                else:
-                    break
+                    time.sleep(0.003)
+        with suppress(Exception):
+            self.switch_to.window(self.window_handles[-1])
         self._is_connected = True
 
     def disconnect(self):
@@ -487,17 +490,20 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
             self.start_session()
             time.sleep(0.0075)
         with suppress(Exception):
-            for i in range(5):
-                if self.current_url.startswith("chrome-extension://"):
+            for window_handle in self.window_handles:
+                self.switch_to.window(window_handle)
+                if self.current_url.startswith(
+                    "chrome-extension://"
+                ):
                     self.close()
                     if self.service.is_connectable():
                         self.stop_client()
                         self.service.stop()
                     self.service.start()
                     self.start_session()
-                    time.sleep(0.0075)
-                else:
-                    break
+                    time.sleep(0.003)
+        with suppress(Exception):
+            self.switch_to.window(self.window_handles[-1])
         self._is_connected = True
 
     def start_session(self, capabilities=None):
