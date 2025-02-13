@@ -796,7 +796,7 @@ class UCPresentationClass(BaseCase):
             sb.sleep(0.8)
             for y in range(1, 9):
                 sb.scroll_to_y(y * 400)
-                sb.sleep(1.25)
+                sb.sleep(0.75)
             hotel_names = sb.find_elements(
                 'a[data-autobot-element-id*="HOTEL_NAME"]'
             )
