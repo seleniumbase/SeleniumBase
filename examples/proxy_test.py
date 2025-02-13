@@ -20,7 +20,7 @@ class ProxyTests(BaseCase):
         print("\n\nMy IP Address = %s\n" % ip_address)
         self.wait_for_text("IP Address", "h1", timeout=20)
         self.wait_for_element_present('[href="/signup"]')
-        self.wait_for_text("hostname", timeout=20)
+        self.wait_for_text("country", timeout=20)
         self.highlight("h1")
         self.sleep(1.5)
         print("Displaying Host Info:")
