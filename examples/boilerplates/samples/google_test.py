@@ -4,7 +4,7 @@ try:
     from .google_objects import HomePage, ResultsPage
 except Exception:
     from google_objects import HomePage, ResultsPage
-    BaseCase.main(__name__, __file__)
+    BaseCase.main(__name__, __file__, "--uc")
 
 
 class GoogleTests(BaseCase):

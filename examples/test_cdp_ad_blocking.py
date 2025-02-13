@@ -5,8 +5,8 @@ BaseCase.main(__name__, __file__)
 class CDPNetworkBlockingTests(BaseCase):
     def test_cdp_network_blocking(self):
         self.open("about:blank")
-        if not self.is_chromium():
-            message = "This test is only for Chromium browsers!"
+        if self._reuse_session or not self.is_chromium():
+            message = "Skipping test if reusing session or not Chromium!"
             print(message)
             self.skip(message)
         self.execute_cdp_cmd(
