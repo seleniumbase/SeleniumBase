@@ -34,7 +34,7 @@ if sys.argv[-1] == "publish":
             print("\nERROR! Publishing to PyPI requires Python>=3.9")
             sys.exit()
         print("\n*** Checking code health with flake8:\n")
-        os.system("python -m pip install 'flake8==7.1.1'")
+        os.system("python -m pip install 'flake8==7.1.2'")
         flake8_status = os.system("flake8 --exclude=recordings,temp")
         if flake8_status != 0:
             print("\nERROR! Fix flake8 issues before publishing to PyPI!\n")
@@ -156,7 +156,7 @@ setup(
         "certifi>=2025.1.31",
         "exceptiongroup>=1.2.2",
         'websockets~=13.1;python_version<"3.9"',
-        'websockets>=14.2;python_version>="3.9"',
+        'websockets>=15.0;python_version>="3.9"',
         'filelock~=3.16.1;python_version<"3.9"',
         'filelock>=3.17.0;python_version>="3.9"',
         'fasteners>=0.19',
@@ -187,8 +187,8 @@ setup(
         'h11==0.14.0',
         'outcome==1.3.0.post0',
         'trio==0.27.0;python_version<"3.9"',
-        'trio==0.28.0;python_version>="3.9"',
-        'trio-websocket==0.11.1',
+        'trio==0.29.0;python_version>="3.9"',
+        'trio-websocket==0.12.1',
         'wsproto==1.2.0',
         'websocket-client==1.8.0',
         'selenium==4.27.1;python_version<"3.9"',
@@ -236,7 +236,7 @@ setup(
         # Usage: flake8
         "flake8": [
             'flake8==5.0.4;python_version<"3.9"',
-            'flake8==7.1.1;python_version>="3.9"',
+            'flake8==7.1.2;python_version>="3.9"',
             "mccabe==0.7.0",
             'pyflakes==2.5.0;python_version<"3.9"',
             'pyflakes==3.2.0;python_version>="3.9"',
