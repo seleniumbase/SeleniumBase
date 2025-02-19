@@ -1454,6 +1454,8 @@ class BaseCase(unittest.TestCase):
 
     def is_text_visible(self, text, selector="body", by="css selector"):
         """Returns whether the text substring is visible in the element."""
+        if self.__is_cdp_swap_needed():
+            return self.cdp.is_text_visible(text, selector)
         self.wait_for_ready_state_complete()
         time.sleep(0.01)
         selector, by = self.__recalculate_selector(selector, by)
@@ -1464,6 +1466,8 @@ class BaseCase(unittest.TestCase):
     def is_exact_text_visible(self, text, selector="body", by="css selector"):
         """Returns whether the text is exactly equal to the element text.
         (Leading and trailing whitespace is ignored in the verification.)"""
+        if self.__is_cdp_swap_needed():
+            return self.cdp.is_exact_text_visible(text, selector)
         self.wait_for_ready_state_complete()
         time.sleep(0.01)
         selector, by = self.__recalculate_selector(selector, by)
@@ -9281,7 +9285,8 @@ class BaseCase(unittest.TestCase):
                     "bottom_left", "bottom_center", "bottom_right"]
         max_messages: The limit of concurrent messages to display."""
         self.__check_scope()
-        self._check_browser()
+        if not self.__is_cdp_swap_needed():
+            self._check_browser()
         if not theme:
             theme = "default"  # "flat"
         if not location:
@@ -9308,7 +9313,8 @@ class BaseCase(unittest.TestCase):
         You can also post messages by using =>
             self.execute_script('Messenger().post("My Message")') """
         self.__check_scope()
-        self._check_browser()
+        if not self.__is_cdp_swap_needed():
+            self._check_browser()
         if style not in ["info", "success", "error"]:
             style = "info"
         if not duration:
@@ -10326,6 +10332,10 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_cdp_swap_needed():
+            return self.cdp.wait_for_text(
+                text, selector=selector, timeout=timeout
+            )
         return page_actions.wait_for_text_not_visible(
             self.driver, text, selector, by, timeout
         )
@@ -13909,7 +13919,8 @@ class BaseCase(unittest.TestCase):
         js_utils.highlight_element_with_js(self.driver, element, loops, o_bs)
 
     def __highlight_with_jquery(self, selector, loops, o_bs):
-        self.wait_for_ready_state_complete()
+        if not self.__is_cdp_swap_needed():
+            self.wait_for_ready_state_complete()
         js_utils.highlight_with_jquery(self.driver, selector, loops, o_bs)
 
     def __highlight_with_js_2(self, message, selector, o_bs):

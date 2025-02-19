@@ -4,6 +4,7 @@ import asyncio
 import fasteners
 import logging
 import os
+import sys
 import time
 import types
 import typing
@@ -11,6 +12,7 @@ from contextlib import suppress
 from seleniumbase import config as sb_config
 from seleniumbase.config import settings
 from seleniumbase.core import detect_b_ver
+from seleniumbase.core import proxy_helper
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import shared_utils
 from typing import Optional, List, Union, Callable
@@ -23,6 +25,7 @@ import mycdp as cdp
 
 logger = logging.getLogger(__name__)
 IS_LINUX = shared_utils.is_linux()
+PROXY_DIR_LOCK = proxy_helper.PROXY_DIR_LOCK
 T = typing.TypeVar("T")
 
 
@@ -139,6 +142,85 @@ def __activate_virtual_display_as_needed(
                 __activate_standard_virtual_display()
 
 
+def __set_proxy_filenames():
+    DOWNLOADS_DIR = constants.Files.DOWNLOADS_FOLDER
+    for num in range(1000):
+        PROXY_DIR_PATH = os.path.join(DOWNLOADS_DIR, "proxy_ext_dir_%s" % num)
+        if os.path.exists(PROXY_DIR_PATH):
+            continue
+        proxy_helper.PROXY_DIR_PATH = PROXY_DIR_PATH
+        return
+    # Exceeded upper bound. Use Defaults:
+    PROXY_DIR_PATH = os.path.join(DOWNLOADS_DIR, "proxy_ext_dir")
+    proxy_helper.PROXY_DIR_PATH = PROXY_DIR_PATH
+
+
+def __add_chrome_ext_dir(extension_dir, dir_path):
+    # Add dir_path to the existing extension_dir
+    option_exists = False
+    if extension_dir:
+        option_exists = True
+        extension_dir = "%s,%s" % (
+            extension_dir, os.path.realpath(dir_path)
+        )
+    if not option_exists:
+        extension_dir = os.path.realpath(dir_path)
+    return extension_dir
+
+
+def __add_chrome_proxy_extension(
+    extension_dir,
+    proxy_string,
+    proxy_user,
+    proxy_pass,
+    proxy_bypass_list=None,
+    multi_proxy=False,
+):
+    """Implementation of https://stackoverflow.com/a/35293284/7058266
+    for https://stackoverflow.com/q/12848327/7058266
+    (Run Selenium on a proxy server that requires authentication.)"""
+    args = " ".join(sys.argv)
+    bypass_list = proxy_bypass_list
+    if (
+        not ("-n" in sys.argv or " -n=" in args or args == "-c")
+        and not multi_proxy
+    ):
+        # Single-threaded
+        proxy_dir_lock = fasteners.InterProcessLock(PROXY_DIR_LOCK)
+        with proxy_dir_lock:
+            proxy_helper.create_proxy_ext(
+                proxy_string,
+                proxy_user,
+                proxy_pass,
+                bypass_list,
+                zip_it=False,
+            )
+            proxy_dir_path = proxy_helper.PROXY_DIR_PATH
+            extension_dir = __add_chrome_ext_dir(
+                extension_dir, proxy_dir_path
+            )
+    else:
+        # Multi-threaded
+        proxy_dir_lock = fasteners.InterProcessLock(PROXY_DIR_LOCK)
+        with proxy_dir_lock:
+            with suppress(Exception):
+                shared_utils.make_writable(PROXY_DIR_LOCK)
+            if multi_proxy:
+                __set_proxy_filenames()
+            if not os.path.exists(proxy_helper.PROXY_DIR_PATH):
+                proxy_helper.create_proxy_ext(
+                    proxy_string,
+                    proxy_user,
+                    proxy_pass,
+                    bypass_list,
+                    zip_it=False,
+                )
+            extension_dir = __add_chrome_ext_dir(
+                extension_dir, proxy_helper.PROXY_DIR_PATH
+            )
+    return extension_dir
+
+
 async def start(
     config: Optional[Config] = None,
     *,
@@ -156,6 +238,8 @@ async def start(
     xvfb: Optional[int] = None,  # Use a special virtual display on Linux
     headed: Optional[bool] = None,  # Override default Xvfb mode on Linux
     expert: Optional[bool] = None,  # Open up closed Shadow-root elements
+    proxy: Optional[str] = None,  # "host:port" or "user:pass@host:port"
+    extension_dir: Optional[str] = None,  # Chrome extension directory
     **kwargs: Optional[dict],
 ) -> Browser:
     """
@@ -200,6 +284,18 @@ async def start(
     if IS_LINUX and not headless and not headed and not xvfb:
         xvfb = True  # The default setting on Linux
     __activate_virtual_display_as_needed(headless, headed, xvfb, xvfb_metrics)
+    if proxy and "@" in str(proxy):
+        user_with_pass = proxy.split("@")[0]
+        if ":" in user_with_pass:
+            proxy_user = user_with_pass.split(":")[0]
+            proxy_pass = user_with_pass.split(":")[1]
+            proxy_string = proxy.split("@")[1]
+            extension_dir = __add_chrome_proxy_extension(
+                extension_dir,
+                proxy_string,
+                proxy_user,
+                proxy_pass,
+            )
     if not config:
         config = Config(
             user_data_dir,
@@ -213,13 +309,19 @@ async def start(
             host=host,
             port=port,
             expert=expert,
+            proxy=proxy,
+            extension_dir=extension_dir,
             **kwargs,
         )
+    driver = None
     try:
-        return await Browser.create(config)
+        driver = await Browser.create(config)
     except Exception:
         time.sleep(0.15)
-        return await Browser.create(config)
+        driver = await Browser.create(config)
+    if proxy and "@" in str(proxy):
+        time.sleep(0.11)
+    return driver
 
 
 async def start_async(*args, **kwargs) -> Browser:

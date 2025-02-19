@@ -265,6 +265,8 @@ class Browser:
         :param new_window: Open new window
         :return: Page
         """
+        if url and ":" not in url:
+            url = "https://" + url
         if new_tab or new_window:
             # Create new target using the browser session.
             target_id = await self.connection.send(

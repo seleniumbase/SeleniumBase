@@ -40,6 +40,8 @@ class Config:
         host: str = AUTO,
         port: int = AUTO,
         expert: bool = AUTO,
+        proxy: Optional[str] = None,
+        extension_dir: Optional[str] = None,
         **kwargs: dict,
     ):
         """
@@ -91,6 +93,8 @@ class Config:
         self.host = host
         self.port = port
         self.expert = expert
+        self.proxy = proxy
+        self.extension_dir = extension_dir
         self._extensions = []
         # When using posix-ish operating system and running as root,
         # you must use no_sandbox=True
@@ -195,6 +199,12 @@ class Config:
                 "--disable-web-security",
                 "--disable-site-isolation-trials",
             ]
+        if self.proxy:
+            args.append("--proxy-server=%s" % self.proxy.split("@")[-1])
+            args.append("--ignore-certificate-errors")
+            args.append("--ignore-ssl-errors=yes")
+        if self.extension_dir:
+            args.append("--load-extension=%s" % self.extension_dir)
         if self._browser_args:
             args.extend([arg for arg in self._browser_args if arg not in args])
         if self.headless:
