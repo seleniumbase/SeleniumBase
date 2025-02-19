@@ -718,6 +718,10 @@ def uc_open_with_cdp_mode(driver, url=None):
     cdp.is_selected = CDPM.is_selected
     cdp.is_element_present = CDPM.is_element_present
     cdp.is_element_visible = CDPM.is_element_visible
+    cdp.is_text_visible = CDPM.is_text_visible
+    cdp.is_exact_text_visible = CDPM.is_exact_text_visible
+    cdp.wait_for_text = CDPM.wait_for_text
+    cdp.wait_for_text_not_visible = CDPM.wait_for_text_not_visible
     cdp.wait_for_element_visible = CDPM.wait_for_element_visible
     cdp.assert_element = CDPM.assert_element
     cdp.assert_element_visible = CDPM.assert_element_visible
@@ -731,6 +735,7 @@ def uc_open_with_cdp_mode(driver, url=None):
     cdp.assert_url_contains = CDPM.assert_url_contains
     cdp.assert_text = CDPM.assert_text
     cdp.assert_exact_text = CDPM.assert_exact_text
+    cdp.assert_text_not_visible = CDPM.assert_text_not_visible
     cdp.assert_true = CDPM.assert_true
     cdp.assert_false = CDPM.assert_false
     cdp.assert_equal = CDPM.assert_equal
@@ -2280,6 +2285,7 @@ def _set_chrome_options(
         or proxy_string
     ):
         chrome_options.add_argument("--ignore-certificate-errors")
+        chrome_options.add_argument("--ignore-ssl-errors=yes")
     if not enable_ws:
         chrome_options.add_argument("--disable-web-security")
     if (
@@ -4231,6 +4237,7 @@ def get_local_driver(
         edge_options.add_argument("--log-level=3")
         edge_options.add_argument("--no-first-run")
         edge_options.add_argument("--ignore-certificate-errors")
+        edge_options.add_argument("--ignore-ssl-errors=yes")
         if devtools and not headless:
             edge_options.add_argument("--auto-open-devtools-for-tabs")
         edge_options.add_argument("--allow-file-access-from-files")

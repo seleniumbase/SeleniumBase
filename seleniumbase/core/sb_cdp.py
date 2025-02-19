@@ -62,6 +62,7 @@ class CDPMethods():
             lambda destination: self.__mouse_drag(element, destination)
         )
         element.mouse_move = lambda: self.__mouse_move(element)
+        element.press_keys = lambda text: self.__press_keys(element, text)
         element.query_selector = (
             lambda selector: self.__query_selector(element, selector)
         )
@@ -211,7 +212,8 @@ class CDPMethods():
                 element = self.__add_sync_methods(element.parent)
                 return self.__add_sync_methods(element)
             elif (
-                element.parent.parent
+                element.parent
+                and element.parent.parent
                 and tag_name in element.parent.parent.tag_name.lower()
                 and text.strip() in element.parent.parent.text
             ):
@@ -272,7 +274,8 @@ class CDPMethods():
                 if element not in updated_elements:
                     updated_elements.append(element)
             elif (
-                element.parent.parent
+                element.parent
+                and element.parent.parent
                 and tag_name in element.parent.parent.tag_name.lower()
                 and text.strip() in element.parent.parent.text
             ):
@@ -443,6 +446,23 @@ class CDPMethods():
     def __mouse_move(self, element):
         return (
             self.loop.run_until_complete(element.mouse_move_async())
+        )
+
+    def __press_keys(self, element, text):
+        element.scroll_into_view()
+        submit = False
+        if text.endswith("\n") or text.endswith("\r"):
+            submit = True
+            text = text[:-1]
+        for key in text:
+            element.send_keys(key)
+            time.sleep(0.044)
+        if submit:
+            element.send_keys("\r\n")
+            time.sleep(0.044)
+        self.__slow_mode_pause_if_set()
+        return (
+            self.loop.run_until_complete(self.page.wait())
         )
 
     def __query_selector(self, element, selector):
@@ -1681,6 +1701,78 @@ class CDPMethods():
                 return True
             return False
 
+    def is_text_visible(self, text, selector="body"):
+        selector = self.__convert_to_css_if_xpath(selector)
+        text = text.strip()
+        element = None
+        try:
+            element = self.find_element(selector, timeout=0.1)
+        except Exception:
+            return False
+        with suppress(Exception):
+            if text in element.text_all:
+                return True
+        return False
+
+    def is_exact_text_visible(self, text, selector="body"):
+        selector = self.__convert_to_css_if_xpath(selector)
+        text = text.strip()
+        element = None
+        try:
+            element = self.find_element(selector, timeout=0.1)
+        except Exception:
+            return False
+        with suppress(Exception):
+            if text == element.text_all.strip():
+                return True
+        return False
+
+    def wait_for_text(self, text, selector="body", timeout=None):
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        start_ms = time.time() * 1000.0
+        stop_ms = start_ms + (timeout * 1000.0)
+        text = text.strip()
+        element = None
+        try:
+            element = self.find_element(selector, timeout=timeout)
+        except Exception:
+            raise Exception("Element {%s} not found!" % selector)
+        for i in range(int(timeout * 10)):
+            with suppress(Exception):
+                element = self.find_element(selector, timeout=0.1)
+            if text in element.text_all:
+                return True
+            now_ms = time.time() * 1000.0
+            if now_ms >= stop_ms:
+                break
+            time.sleep(0.1)
+        raise Exception(
+            "Text {%s} not found in {%s}! Actual text: {%s}"
+            % (text, selector, element.text_all)
+        )
+
+    def wait_for_text_not_visible(self, text, selector="body", timeout=None):
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        text = text.strip()
+        start_ms = time.time() * 1000.0
+        stop_ms = start_ms + (timeout * 1000.0)
+        for i in range(int(timeout * 10)):
+            if not self.is_text_visible(text, selector):
+                return True
+            now_ms = time.time() * 1000.0
+            if now_ms >= stop_ms:
+                break
+            time.sleep(0.1)
+        plural = "s"
+        if timeout == 1:
+            plural = ""
+        raise Exception(
+            "Text {%s} in {%s} was still visible after %s second%s!"
+            % (text, selector, timeout, plural)
+        )
+
     def wait_for_element_visible(self, selector, timeout=None):
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -1696,17 +1788,8 @@ class CDPMethods():
 
     def assert_element(self, selector, timeout=None):
         """Same as assert_element_visible()"""
-        if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        try:
-            self.select(selector, timeout=timeout)
-        except Exception:
-            raise Exception("Element {%s} was not found!" % selector)
-        for i in range(30):
-            if self.is_element_visible(selector):
-                return True
-            time.sleep(0.1)
-        raise Exception("Element {%s} was not visible!" % selector)
+        self.assert_element_visible(selector, timeout=timeout)
+        return True
 
     def assert_element_visible(self, selector, timeout=None):
         """Same as assert_element()"""
@@ -1852,29 +1935,9 @@ class CDPMethods():
                 raise Exception(error % (expected, actual))
 
     def assert_text(self, text, selector="body", timeout=None):
-        if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        start_ms = time.time() * 1000.0
-        stop_ms = start_ms + (timeout * 1000.0)
-        text = text.strip()
-        element = None
-        try:
-            element = self.find_element(selector, timeout=timeout)
-        except Exception:
-            raise Exception("Element {%s} not found!" % selector)
-        for i in range(int(timeout * 10)):
-            with suppress(Exception):
-                element = self.find_element(selector, timeout=0.1)
-            if text in element.text_all:
-                return True
-            now_ms = time.time() * 1000.0
-            if now_ms >= stop_ms:
-                break
-            time.sleep(0.1)
-        raise Exception(
-            "Text {%s} not found in {%s}! Actual text: {%s}"
-            % (text, selector, element.text_all)
-        )
+        """Same as wait_for_text()"""
+        self.wait_for_text(text, selector=selector, timeout=timeout)
+        return True
 
     def assert_exact_text(self, text, selector="body", timeout=None):
         if not timeout:
@@ -1903,6 +1966,13 @@ class CDPMethods():
             "Expected Text {%s}, is not equal to {%s} in {%s}!"
             % (text, element.text_all, selector)
         )
+
+    def assert_text_not_visible(self, text, selector="body", timeout=None):
+        """Raises an exception if the text is still visible after timeout."""
+        self.wait_for_text_not_visible(
+            text, selector=selector, timeout=timeout
+        )
+        return True
 
     def assert_true(self, expression):
         if not expression:

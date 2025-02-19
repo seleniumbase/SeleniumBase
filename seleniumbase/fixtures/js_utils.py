@@ -585,52 +585,60 @@ def highlight_with_jquery(driver, selector, loops=4, o_bs=""):
         '0px 0px 6px 6px rgba(128, 128, 128, 0.5)');"""
         % selector
     )
-    safe_execute_script(driver, script)
+    with suppress(Exception):
+        safe_execute_script(driver, script)
     for n in range(loops):
         script = (
             """jQuery('%s').css('box-shadow',
             '0px 0px 6px 6px rgba(255, 0, 0, 1)');"""
             % selector
         )
-        execute_script(driver, script)
+        with suppress(Exception):
+            execute_script(driver, script)
         time.sleep(0.0181)
         script = (
             """jQuery('%s').css('box-shadow',
             '0px 0px 6px 6px rgba(128, 0, 128, 1)');"""
             % selector
         )
-        execute_script(driver, script)
+        with suppress(Exception):
+            execute_script(driver, script)
         time.sleep(0.0181)
         script = (
             """jQuery('%s').css('box-shadow',
             '0px 0px 6px 6px rgba(0, 0, 255, 1)');"""
             % selector
         )
-        execute_script(driver, script)
+        with suppress(Exception):
+            execute_script(driver, script)
         time.sleep(0.0181)
         script = (
             """jQuery('%s').css('box-shadow',
             '0px 0px 6px 6px rgba(0, 255, 0, 1)');"""
             % selector
         )
-        execute_script(driver, script)
+        with suppress(Exception):
+            execute_script(driver, script)
         time.sleep(0.0181)
         script = (
             """jQuery('%s').css('box-shadow',
             '0px 0px 6px 6px rgba(128, 128, 0, 1)');"""
             % selector
         )
-        execute_script(driver, script)
+        with suppress(Exception):
+            execute_script(driver, script)
         time.sleep(0.0181)
         script = (
             """jQuery('%s').css('box-shadow',
             '0px 0px 6px 6px rgba(128, 0, 128, 1)');"""
             % selector
         )
-        execute_script(driver, script)
+        with suppress(Exception):
+            execute_script(driver, script)
         time.sleep(0.0181)
     script = """jQuery('%s').css('box-shadow', '%s');""" % (selector, o_bs)
-    execute_script(driver, script)
+    with suppress(Exception):
+        execute_script(driver, script)
 
 
 def add_css_link(driver, css_link):
@@ -924,9 +932,20 @@ def post_message(driver, message, msg_dur=None, style="info"):
         """hideAfter: %s, hideOnNavigate: true});"""
         % (message, style, msg_dur)
     )
+    retry = False
     try:
         execute_script(driver, messenger_script)
+    except TypeError as e:
+        if (
+            shared_utils.is_cdp_swap_needed(driver)
+            and "cannot unpack non-iterable" in str(e)
+        ):
+            pass
+        else:
+            retry = True
     except Exception:
+        retry = True
+    if retry:
         activate_messenger(driver)
         set_messenger_theme(driver)
         try:
@@ -1273,7 +1292,10 @@ def slow_scroll_to_element(driver, element, *args, **kwargs):
     scroll_position = execute_script(driver, "return window.scrollY;")
     element_location_y = None
     try:
-        element_location_y = element.location["y"]
+        if shared_utils.is_cdp_swap_needed(driver):
+            element.get_position().y
+        else:
+            element_location_y = element.location["y"]
     except Exception:
         element.location_once_scrolled_into_view
         return
