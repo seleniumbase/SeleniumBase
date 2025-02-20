@@ -161,7 +161,7 @@ setup(
         'filelock>=3.17.0;python_version>="3.9"',
         'fasteners>=0.19',
         "mycdp>=1.1.0",
-        "pynose>=1.5.3",
+        "pynose>=1.5.4",
         'platformdirs>=4.3.6',
         'typing-extensions>=4.12.2',
         "sbvirtualdisplay>=1.4.0",

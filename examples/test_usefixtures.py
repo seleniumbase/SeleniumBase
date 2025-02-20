@@ -4,6 +4,9 @@ import pytest
 @pytest.mark.usefixtures("sb")
 class Test_UseFixtures:
     def test_usefixtures_on_class(self):
+        if not hasattr(self, "sb"):
+            print("This test is for pytest only!")
+            return
         sb = self.sb
         sb.open("https://seleniumbase.io/realworld/login")
         sb.type("#username", "demo_user")

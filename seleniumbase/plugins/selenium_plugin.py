@@ -1309,6 +1309,7 @@ class SeleniumBrowser(Plugin):
         test.test.dashboard = False
         test.test._multithreaded = False
         test.test._reuse_session = False
+        sb_config.recorder_mode = test.test.recorder_mode
         sb_config.no_screenshot = test.test.no_screenshot_after_test
         if test.test.servername != "localhost":
             # Using Selenium Grid
