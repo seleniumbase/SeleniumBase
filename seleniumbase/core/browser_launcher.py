@@ -723,6 +723,8 @@ def uc_open_with_cdp_mode(driver, url=None):
     cdp.wait_for_text = CDPM.wait_for_text
     cdp.wait_for_text_not_visible = CDPM.wait_for_text_not_visible
     cdp.wait_for_element_visible = CDPM.wait_for_element_visible
+    cdp.wait_for_element_not_visible = CDPM.wait_for_element_not_visible
+    cdp.wait_for_element_absent = CDPM.wait_for_element_absent
     cdp.assert_element = CDPM.assert_element
     cdp.assert_element_visible = CDPM.assert_element_visible
     cdp.assert_element_present = CDPM.assert_element_present
@@ -1628,9 +1630,19 @@ def _uc_gui_handle_captcha_(driver, frame="iframe", ctype=None):
         ):
             driver.uc_open_with_disconnect(driver.current_url, 3.8)
             with suppress(Exception):
+                if "--debug" in sys.argv:
+                    if sb_config._saved_cf_tab_count == 1:
+                        print(' <DEBUG> pyautogui.press("\\t")')
+                    else:
+                        print(
+                            ' <DEBUG> pyautogui.press("\\t") * %s'
+                            % sb_config._saved_cf_tab_count
+                        )
                 for i in range(sb_config._saved_cf_tab_count):
                     pyautogui.press("\t")
                     time.sleep(0.027)
+                if "--debug" in sys.argv:
+                    print(' <DEBUG> pyautogui.press(" ")')
                 pyautogui.press(" ")
         else:
             driver.disconnect()
@@ -2310,7 +2322,14 @@ def _set_chrome_options(
         and not enable_3d_apis
     ):
         chrome_options.add_argument("--disable-gpu")
-    if not IS_LINUX and is_using_uc(undetectable, browser_name):
+    if (
+        (not IS_LINUX and is_using_uc(undetectable, browser_name))
+        or (
+            IS_MAC
+            and binary_location
+            and "chrome-headless-shell" in binary_location
+        )
+    ):
         chrome_options.add_argument("--disable-dev-shm-usage")
         chrome_options.add_argument("--disable-application-cache")
     if IS_LINUX:

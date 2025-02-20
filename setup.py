@@ -192,7 +192,7 @@ setup(
         'wsproto==1.2.0',
         'websocket-client==1.8.0',
         'selenium==4.27.1;python_version<"3.9"',
-        'selenium==4.28.1;python_version>="3.9"',
+        'selenium==4.29.0;python_version>="3.9"',
         'cssselect==1.2.0',
         "sortedcontainers==2.4.0",
         'execnet==2.1.1',

@@ -497,7 +497,7 @@ class CDPMethods():
             element.send_keys("\r\n")
             time.sleep(0.044)
         self.__slow_mode_pause_if_set()
-        return self.loop.run_until_complete(self.page.wait())
+        return self.loop.run_until_complete(self.page.sleep(0.025))
 
     def __query_selector(self, element, selector):
         selector = self.__convert_to_css_if_xpath(selector)
@@ -864,7 +864,7 @@ class CDPMethods():
             text = text[:-1] + "\r\n"
         element.send_keys(text)
         self.__slow_mode_pause_if_set()
-        self.loop.run_until_complete(self.page.wait())
+        self.loop.run_until_complete(self.page.sleep(0.025))
 
     def press_keys(self, selector, text, timeout=None):
         """Similar to send_keys(), but presses keys at human speed."""
@@ -884,7 +884,7 @@ class CDPMethods():
             element.send_keys("\r\n")
             time.sleep(0.044)
         self.__slow_mode_pause_if_set()
-        self.loop.run_until_complete(self.page.wait())
+        self.loop.run_until_complete(self.page.sleep(0.025))
 
     def type(self, selector, text, timeout=None):
         """Similar to send_keys(), but clears the text field first."""
@@ -899,7 +899,7 @@ class CDPMethods():
             text = text[:-1] + "\r\n"
         element.send_keys(text)
         self.__slow_mode_pause_if_set()
-        self.loop.run_until_complete(self.page.wait())
+        self.loop.run_until_complete(self.page.sleep(0.025))
 
     def set_value(self, selector, text, timeout=None):
         """Similar to send_keys(), but clears the text field first."""
@@ -937,7 +937,7 @@ class CDPMethods():
             self.__add_light_pause()
             self.send_keys(selector, "\n")
         self.__slow_mode_pause_if_set()
-        self.loop.run_until_complete(self.page.wait())
+        self.loop.run_until_complete(self.page.sleep(0.025))
 
     def evaluate(self, expression):
         """Run a JavaScript expression and return the result."""
@@ -1377,7 +1377,7 @@ class CDPMethods():
             pyautogui.press(key)
             time.sleep(0.044)
         self.__slow_mode_pause_if_set()
-        self.loop.run_until_complete(self.page.wait())
+        self.loop.run_until_complete(self.page.sleep(0.025))
 
     def gui_press_keys(self, keys):
         self.__install_pyautogui_if_missing()
@@ -1392,7 +1392,7 @@ class CDPMethods():
                 pyautogui.press(key)
                 time.sleep(0.044)
         self.__slow_mode_pause_if_set()
-        self.loop.run_until_complete(self.page.wait())
+        self.loop.run_until_complete(self.page.sleep(0.025))
 
     def gui_write(self, text):
         self.__install_pyautogui_if_missing()
@@ -1405,7 +1405,7 @@ class CDPMethods():
             self.__make_sure_pyautogui_lock_is_writable()
             pyautogui.write(text)
         self.__slow_mode_pause_if_set()
-        self.loop.run_until_complete(self.page.wait())
+        self.loop.run_until_complete(self.page.sleep(0.025))
 
     def __gui_click_x_y(self, x, y, timeframe=0.25, uc_lock=False):
         self.__install_pyautogui_if_missing()
@@ -1820,6 +1820,50 @@ class CDPMethods():
             time.sleep(0.1)
         raise Exception("Element {%s} was not visible!" % selector)
 
+    def wait_for_element_not_visible(self, selector, timeout=None):
+        """Wait for element to not be visible on page. (May still be in DOM)"""
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        start_ms = time.time() * 1000.0
+        stop_ms = start_ms + (timeout * 1000.0)
+        for i in range(int(timeout * 10)):
+            if not self.is_element_present(selector):
+                return True
+            elif not self.is_element_visible(selector):
+                return True
+            now_ms = time.time() * 1000.0
+            if now_ms >= stop_ms:
+                break
+            time.sleep(0.1)
+        plural = "s"
+        if timeout == 1:
+            plural = ""
+        raise Exception(
+            "Element {%s} was still visible after %s second%s!"
+            % (selector, timeout, plural)
+        )
+
+    def wait_for_element_absent(self, selector, timeout=None):
+        """Wait for element to not be present in the DOM."""
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        start_ms = time.time() * 1000.0
+        stop_ms = start_ms + (timeout * 1000.0)
+        for i in range(int(timeout * 10)):
+            if not self.is_element_present(selector):
+                return True
+            now_ms = time.time() * 1000.0
+            if now_ms >= stop_ms:
+                break
+            time.sleep(0.1)
+        plural = "s"
+        if timeout == 1:
+            plural = ""
+        raise Exception(
+            "Element {%s} was still present after %s second%s!"
+            % (selector, timeout, plural)
+        )
+
     def assert_element(self, selector, timeout=None):
         """Same as assert_element_visible()"""
         self.assert_element_visible(selector, timeout=timeout)
@@ -1851,47 +1895,13 @@ class CDPMethods():
 
     def assert_element_absent(self, selector, timeout=None):
         """Assert element is not present in the DOM."""
-        if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        start_ms = time.time() * 1000.0
-        stop_ms = start_ms + (timeout * 1000.0)
-        for i in range(int(timeout * 10)):
-            if not self.is_element_present(selector):
-                return True
-            now_ms = time.time() * 1000.0
-            if now_ms >= stop_ms:
-                break
-            time.sleep(0.1)
-        plural = "s"
-        if timeout == 1:
-            plural = ""
-        raise Exception(
-            "Element {%s} was still present after %s second%s!"
-            % (selector, timeout, plural)
-        )
+        self.wait_for_element_absent(selector, timeout=timeout)
+        return True
 
     def assert_element_not_visible(self, selector, timeout=None):
         """Assert element is not visible on page. (May still be in DOM)"""
-        if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        start_ms = time.time() * 1000.0
-        stop_ms = start_ms + (timeout * 1000.0)
-        for i in range(int(timeout * 10)):
-            if not self.is_element_present(selector):
-                return True
-            elif not self.is_element_visible(selector):
-                return True
-            now_ms = time.time() * 1000.0
-            if now_ms >= stop_ms:
-                break
-            time.sleep(0.1)
-        plural = "s"
-        if timeout == 1:
-            plural = ""
-        raise Exception(
-            "Element {%s} was still visible after %s second%s!"
-            % (selector, timeout, plural)
-        )
+        self.wait_for_element_not_visible(selector, timeout=timeout)
+        return True
 
     def assert_element_attribute(self, selector, attribute, value=None):
         attributes = self.get_element_attributes(selector)
