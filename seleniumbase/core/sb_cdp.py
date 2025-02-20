@@ -56,6 +56,9 @@ class CDPMethods():
             element, *args, **kwargs
         )
         element.focus = lambda: self.__focus(element)
+        element.gui_click = (
+            lambda *args, **kwargs: self.__gui_click(element, *args, **kwargs)
+        )
         element.highlight_overlay = lambda: self.__highlight_overlay(element)
         element.mouse_click = lambda: self.__mouse_click(element)
         element.mouse_drag = (
@@ -426,6 +429,39 @@ class CDPMethods():
             self.loop.run_until_complete(element.focus_async())
         )
 
+    def __gui_click(self, element, timeframe=None):
+        element.scroll_into_view()
+        self.__add_light_pause()
+        position = element.get_position()
+        x = position.x
+        y = position.y
+        e_width = position.width
+        e_height = position.height
+        # Relative to window
+        element_rect = {"height": e_height, "width": e_width, "x": x, "y": y}
+        window_rect = self.get_window_rect()
+        w_bottom_y = window_rect["y"] + window_rect["height"]
+        viewport_height = window_rect["innerHeight"]
+        x = window_rect["x"] + element_rect["x"]
+        y = w_bottom_y - viewport_height + element_rect["y"]
+        y_scroll_offset = window_rect["pageYOffset"]
+        y = y - y_scroll_offset
+        x = x + window_rect["scrollX"]
+        y = y + window_rect["scrollY"]
+        # Relative to screen
+        element_rect = {"height": e_height, "width": e_width, "x": x, "y": y}
+        e_width = element_rect["width"]
+        e_height = element_rect["height"]
+        e_x = element_rect["x"]
+        e_y = element_rect["y"]
+        x, y = ((e_x + e_width / 2.0) + 0.5), ((e_y + e_height / 2.0) + 0.5)
+        if not timeframe or not isinstance(timeframe, (int, float)):
+            timeframe = 0.25
+        if timeframe > 3:
+            timeframe = 3
+        self.gui_click_x_y(x, y, timeframe=timeframe)
+        return self.loop.run_until_complete(self.page.wait())
+
     def __highlight_overlay(self, element):
         return (
             self.loop.run_until_complete(element.highlight_overlay_async())
@@ -461,9 +497,7 @@ class CDPMethods():
             element.send_keys("\r\n")
             time.sleep(0.044)
         self.__slow_mode_pause_if_set()
-        return (
-            self.loop.run_until_complete(self.page.wait())
-        )
+        return self.loop.run_until_complete(self.page.wait())
 
     def __query_selector(self, element, selector):
         selector = self.__convert_to_css_if_xpath(selector)
