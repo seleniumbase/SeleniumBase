@@ -26,6 +26,8 @@ with SB(uc=True, test=True, locale_code="en") as sb:
             print("*** Lowest Price: ***")
             lowest_price = sorted(prices)[0]
             print(lowest_price)
+            sb.cdp.scroll_down(12)
+            sb.sleep(1)
             sb.cdp.find_element_by_text(lowest_price).click()
             sb.sleep(1)
             search_cell = 'button[aria-label*="Search.cell.buttonTitle"]'
