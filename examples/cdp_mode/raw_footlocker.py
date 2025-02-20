@@ -5,9 +5,9 @@ with SB(uc=True, test=True, locale_code="en", ad_block=True) as sb:
     sb.activate_cdp_mode(url)
     sb.sleep(2.5)
     sb.cdp.click_if_visible('button[id*="Agree"]')
-    sb.sleep(2.5)
+    sb.sleep(1.5)
     sb.cdp.mouse_click('input[aria-label="Search"]')
-    sb.sleep(2.5)
+    sb.sleep(1.5)
     search = "Nike Shoes"
     sb.cdp.press_keys('input[aria-label="Search"]', search)
     sb.sleep(2.5)

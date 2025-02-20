@@ -8,7 +8,7 @@ driver = cdp_driver.cdp_util.start_sync()
 page = loop.run_until_complete(driver.get(url))
 sb = sb_cdp.CDPMethods(loop, page, driver)
 
-search = "Nike Fly Shoes"
+search = "Road Racing Shoes"
 sb.click('div[data-testid="user-tools-container"]')
 sb.sleep(1)
 sb.press_keys('input[type="search"]', search)
