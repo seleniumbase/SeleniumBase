@@ -9124,7 +9124,7 @@ class BaseCase(unittest.TestCase):
         original_selector = selector
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_cdp_swap_needed():
-            self.cdp.assert_element_absent(selector)
+            self.cdp.wait_for_element_absent(selector, timeout=timeout)
             return True
         return page_actions.wait_for_element_absent(
             self.driver,
@@ -9585,7 +9585,7 @@ class BaseCase(unittest.TestCase):
             self.assert_elements_present(selector, by=by, timeout=timeout)
             return True
         if self.__is_cdp_swap_needed():
-            self.cdp.assert_element_present(selector)
+            self.cdp.assert_element_present(selector, timeout=timeout)
             return True
         if self.__is_shadow_selector(selector):
             self.__assert_shadow_element_present(selector)
@@ -9662,7 +9662,7 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         if self.__is_cdp_swap_needed():
-            self.cdp.assert_element(selector)
+            self.cdp.assert_element(selector, timeout=timeout)
             return True
         if isinstance(selector, list):
             self.assert_elements(selector, by=by, timeout=timeout)
@@ -9955,7 +9955,7 @@ class BaseCase(unittest.TestCase):
                         messenger_post, selector, by
                     )
         elif self.__is_cdp_swap_needed():
-            self.cdp.assert_text(text, selector)
+            self.cdp.assert_text(text, selector, timeout=timeout)
             return True
         elif not self.is_connected():
             self.connect()
@@ -10005,7 +10005,7 @@ class BaseCase(unittest.TestCase):
         original_selector = selector
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_cdp_swap_needed():
-            self.cdp.assert_exact_text(text, selector)
+            self.cdp.assert_exact_text(text, selector, timeout=timeout)
             return True
         if self.__is_shadow_selector(selector):
             self.__assert_exact_shadow_text_visible(text, selector, timeout)
@@ -10245,6 +10245,9 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         original_selector = selector
         selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_cdp_swap_needed():
+            self.cdp.wait_for_element_absent(selector, timeout=timeout)
+            return True
         return page_actions.wait_for_element_absent(
             self.driver,
             selector,
@@ -10267,7 +10270,7 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         if self.__is_cdp_swap_needed():
-            self.cdp.assert_element_absent(selector)
+            self.cdp.assert_element_absent(selector, timeout=timeout)
             return True
         self.wait_for_element_absent(selector, by=by, timeout=timeout)
         return True
@@ -10288,7 +10291,7 @@ class BaseCase(unittest.TestCase):
         original_selector = selector
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_cdp_swap_needed():
-            self.cdp.assert_element_not_visible(selector)
+            self.cdp.wait_for_element_not_visible(selector, timeout=timeout)
             return True
         return page_actions.wait_for_element_not_visible(
             self.driver,
@@ -10310,7 +10313,7 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         if self.__is_cdp_swap_needed():
-            self.cdp.assert_element_not_visible(selector)
+            self.cdp.assert_element_not_visible(selector, timeout=timeout)
             return True
         self.wait_for_element_not_visible(selector, by=by, timeout=timeout)
         if self.recorder_mode and self.__current_url_is_recordable():
