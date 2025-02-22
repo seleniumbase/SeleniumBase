@@ -10,6 +10,7 @@ class MyTestClass(BaseCase):
         self.wait_for_element("#zoom", timeout=20)
         self.wait_for_element("#widget-zoom-out")
         self.wait_for_element('[jsaction*="minimap.main;"]')
+        self.sleep(0.5)
 
         # Create a website tour using the DriverJS library
         # Same as:  self.create_driverjs_tour()

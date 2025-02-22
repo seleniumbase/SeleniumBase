@@ -103,11 +103,13 @@ All methods have the optional ``name`` argument, which is only needed if you're 
 
 ```python
 from seleniumbase import BaseCase
-BaseCase.main(__name__, __file__)
+BaseCase.main(__name__, __file__, "--uc")
 
 class MyTourClass(BaseCase):
 
     def test_google_tour(self):
+        if not self.undetectable:
+            self.get_new_driver(undetectable=True)
         self.open('https://google.com/ncr')
         self.wait_for_element('input[title="Search"]')
         self.hide_elements("iframe")
