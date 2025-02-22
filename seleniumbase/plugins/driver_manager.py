@@ -10,7 +10,7 @@ Example -->
 ```python
 from seleniumbase import DriverContext
 
-with DriverContext() as driver:
+with DriverContext(uc=True) as driver:
     driver.get("https://google.com/ncr")
 ```
 
@@ -30,7 +30,7 @@ Example -->
 ```python
 from seleniumbase import Driver
 
-driver = Driver()
+driver = Driver(uc=True)
 driver.get("https://google.com/ncr")
 ```
 

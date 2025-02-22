@@ -631,10 +631,13 @@ def main():
     data = []
     data.append("from seleniumbase import BaseCase")
     data.append("from .google_objects import HomePage, ResultsPage")
+    data.append('BaseCase.main(__name__, __file__, "--uc")')
     data.append("")
     data.append("")
     data.append("class GoogleTests(BaseCase):")
     data.append("    def test_google_dot_com(self):")
+    data.append("        if not self.undetectable:")
+    data.append("            self.get_new_driver(undetectable=True)")
     data.append('        self.open("https://google.com/ncr")')
     data.append('        self.assert_title_contains("Google")')
     data.append("        self.sleep(0.05)")

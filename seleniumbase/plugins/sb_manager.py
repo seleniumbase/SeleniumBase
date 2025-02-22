@@ -10,7 +10,7 @@ Example -->
 ```python
 from seleniumbase import SB
 
-with SB() as sb:  # Many args! Eg. SB(browser="edge")
+with SB(uc=True) as sb:  # Many args! Eg. SB(browser="edge")
     sb.open("https://google.com/ncr")
     sb.type('[name="q"]', "SeleniumBase on GitHub\n")
     sb.click('a[href*="github.com/seleniumbase"]')
