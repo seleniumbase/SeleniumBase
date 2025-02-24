@@ -14,7 +14,7 @@ with SB(uc=True, test=True, locale_code="en", ad_block=True) as sb:
     sb.sleep(0.5)
     sb.scroll_into_view("a#advSearch")
     sb.sleep(0.5)
-    sb.cdp.mouse_click("a#advSearch")
+    sb.cdp.click("a#advSearch")
     sb.sleep(1.2)
     sb.cdp.click('img[src*="img/pokedex/detail/025.png"]')
     sb.cdp.assert_text("Pikachu", 'div[class*="title"]')
