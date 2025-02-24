@@ -950,6 +950,8 @@ def post_message(driver, message, msg_dur=None, style="info"):
         set_messenger_theme(driver)
         try:
             execute_script(driver, messenger_script)
+        except TypeError:
+            pass
         except Exception:
             time.sleep(0.17)
             activate_messenger(driver)

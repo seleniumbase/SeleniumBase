@@ -2496,6 +2496,9 @@ def pytest_unconfigure(config):
     """This runs after all tests have completed with pytest."""
     if "--co" in sys_argv or "--collect-only" in sys_argv:
         return
+    reporter = config.pluginmanager.get_plugin("terminalreporter")
+    if not hasattr(reporter, "_sessionstarttime"):
+        return
     if hasattr(sb_config, "_multithreaded") and sb_config._multithreaded:
         import fasteners
 

@@ -288,7 +288,7 @@ class CDPMethods():
         return updated_elements
 
     def select(self, selector, timeout=None):
-        """Similar to find_element(), but without text-based search."""
+        """Similar to find_element()."""
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
         self.__add_light_pause()
@@ -297,12 +297,25 @@ class CDPMethods():
             tag_name = selector.split(":contains(")[0].split(" ")[-1]
             text = selector.split(":contains(")[1].split(")")[0][1:-1]
             with suppress(Exception):
+                new_timeout = timeout
+                if new_timeout < 1:
+                    new_timeout = 1
                 self.loop.run_until_complete(
-                    self.page.select(tag_name, timeout=5)
+                    self.page.select(tag_name, timeout=new_timeout)
                 )
-                self.loop.run_until_complete(self.page.find(text, timeout=5))
-            element = self.find_elements_by_text(text, tag_name=tag_name)[0]
-            return self.__add_sync_methods(element)
+                self.loop.run_until_complete(
+                    self.page.find(text, timeout=new_timeout)
+                )
+            elements = self.find_elements_by_text(text, tag_name=tag_name)
+            if not elements:
+                plural = "s"
+                if timeout == 1:
+                    plural = ""
+                msg = "\n Element {%s} was not found after %s second%s!"
+                message = msg % (selector, timeout, plural)
+                raise Exception(message)
+            element = self.__add_sync_methods(elements[0])
+            return element
         failure = False
         try:
             element = self.loop.run_until_complete(
@@ -313,11 +326,8 @@ class CDPMethods():
             plural = "s"
             if timeout == 1:
                 plural = ""
-            message = "\n Element {%s} was not found after %s second%s!" % (
-                selector,
-                timeout,
-                plural,
-            )
+            msg = "\n Element {%s} was not found after %s second%s!"
+            message = msg % (selector, timeout, plural)
         if failure:
             raise Exception(message)
         element = self.__add_sync_methods(element)
