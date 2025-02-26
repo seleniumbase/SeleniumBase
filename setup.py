@@ -150,7 +150,7 @@ setup(
         'pip>=25.0.1',
         'packaging>=24.2',
         'setuptools~=70.2;python_version<"3.10"',  # Newer ones had issues
-        'setuptools>=75.8.0;python_version>="3.10"',
+        'setuptools>=75.8.2;python_version>="3.10"',
         'wheel>=0.45.1',
         'attrs>=25.1.0',
         "certifi>=2025.1.31",
@@ -188,7 +188,7 @@ setup(
         'outcome==1.3.0.post0',
         'trio==0.27.0;python_version<"3.9"',
         'trio==0.29.0;python_version>="3.9"',
-        'trio-websocket==0.12.1',
+        'trio-websocket==0.12.2',
         'wsproto==1.2.0',
         'websocket-client==1.8.0',
         'selenium==4.27.1;python_version<"3.9"',
@@ -283,7 +283,7 @@ setup(
         ],
         # pip install -e .[psutil]
         "psutil": [
-            "psutil==6.0.0",
+            "psutil==7.0.0",
         ],
         # pip install -e .[pyautogui]
         "pyautogui": [
