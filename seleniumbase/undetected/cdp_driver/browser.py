@@ -15,6 +15,7 @@ import urllib.parse
 import urllib.request
 import warnings
 from collections import defaultdict
+from seleniumbase import config as sb_config
 from typing import List, Set, Tuple, Union
 import mycdp as cdp
 from . import cdp_util as util
@@ -287,6 +288,9 @@ class Browser:
                 filter(lambda item: item.type_ == "page", self.targets)
             )
             # Use the tab to navigate to new url
+            if hasattr(sb_config, "_cdp_locale") and sb_config._cdp_locale:
+                await connection.send(cdp.page.navigate("about:blank"))
+                await connection.set_locale(sb_config._cdp_locale)
             frame_id, loader_id, *_ = await connection.send(
                 cdp.page.navigate(url)
             )

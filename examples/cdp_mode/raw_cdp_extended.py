@@ -1,7 +1,14 @@
+"""The long way of using CDP Mode without WebDriver"""
+import asyncio
 from seleniumbase import sb_cdp
+from seleniumbase import cdp_driver
 
 url = "https://seleniumbase.io/demo_page"
-sb = sb_cdp.Chrome(url)
+loop = asyncio.new_event_loop()
+driver = cdp_driver.start_sync()
+page = loop.run_until_complete(driver.get(url))
+sb = sb_cdp.CDPMethods(loop, page, driver)
+
 sb.press_keys("input", "Text")
 sb.highlight("button")
 sb.type("textarea", "Here are some words")

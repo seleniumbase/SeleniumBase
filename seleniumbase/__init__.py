@@ -8,6 +8,7 @@ from seleniumbase.__version__ import __version__
 from seleniumbase.common import decorators  # noqa
 from seleniumbase.common import encryption  # noqa
 from seleniumbase.core import colored_traceback
+from seleniumbase.core import sb_cdp  # noqa
 from seleniumbase.core.browser_launcher import get_driver  # noqa
 from seleniumbase.fixtures import js_utils  # noqa
 from seleniumbase.fixtures import page_actions  # noqa
@@ -18,6 +19,7 @@ from seleniumbase.masterqa.master_qa import MasterQA  # noqa
 from seleniumbase.plugins.sb_manager import SB  # noqa
 from seleniumbase.plugins.driver_manager import Driver  # noqa
 from seleniumbase.plugins.driver_manager import DriverContext  # noqa
+from seleniumbase.undetected import cdp_driver  # noqa
 from seleniumbase import translate  # noqa
 
 with suppress(Exception):

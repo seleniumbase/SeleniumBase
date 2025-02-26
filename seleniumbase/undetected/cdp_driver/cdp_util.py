@@ -232,9 +232,9 @@ async def start(
     browser_args: Optional[List[str]] = None,
     xvfb_metrics: Optional[List[str]] = None,  # "Width,Height" for Linux
     sandbox: Optional[bool] = True,
-    lang: Optional[str] = None,
-    host: Optional[str] = None,
-    port: Optional[int] = None,
+    lang: Optional[str] = None,  # Set the Language Locale Code
+    host: Optional[str] = None,  # Chrome remote-debugging-host
+    port: Optional[int] = None,  # Chrome remote-debugging-port
     xvfb: Optional[int] = None,  # Use a special virtual display on Linux
     headed: Optional[bool] = None,  # Override default Xvfb mode on Linux
     expert: Optional[bool] = None,  # Open up closed Shadow-root elements
@@ -320,7 +320,15 @@ async def start(
         time.sleep(0.15)
         driver = await Browser.create(config)
     if proxy and "@" in str(proxy):
-        time.sleep(0.11)
+        time.sleep(0.15)
+    if lang:
+        sb_config._cdp_locale = lang
+    elif "locale" in kwargs:
+        sb_config._cdp_locale = kwargs["locale"]
+    elif "locale_code" in kwargs:
+        sb_config._cdp_locale = kwargs["locale_code"]
+    else:
+        sb_config._cdp_locale = None
     return driver
 
 
@@ -360,10 +368,7 @@ def start_sync(*args, **kwargs) -> Browser:
     ):
         loop = kwargs["loop"]
     else:
-        try:
-            loop = asyncio.get_event_loop()
-        except RuntimeError:
-            loop = asyncio.new_event_loop()
+        loop = asyncio.new_event_loop()
     headless = False
     binary_location = None
     if "browser_executable_path" in kwargs:

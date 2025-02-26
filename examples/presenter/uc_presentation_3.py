@@ -273,7 +273,7 @@ class UCPresentationClass(BaseCase):
         self.begin_presentation(filename="uc_presentation.html")
 
         with suppress(Exception):
-            with SB(uc=True, incognito=True, locale_code="en") as sb:
+            with SB(uc=True, incognito=True, locale="en") as sb:
                 url = "https://ahrefs.com/website-authority-checker"
                 input_field = 'input[placeholder="Enter domain"]'
                 submit_button = 'span:contains("Check Authority")'

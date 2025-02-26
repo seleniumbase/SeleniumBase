@@ -1,6 +1,6 @@
 from seleniumbase import SB
 
-with SB(uc=True, test=True, locale_code="en", incognito=True) as sb:
+with SB(uc=True, test=True, locale="en", incognito=True) as sb:
     url = "https://www.radwell.com/en-US/Search/Advanced/"
     sb.activate_cdp_mode(url)
     sb.sleep(3)

@@ -1,16 +1,11 @@
 # Testing multiple CDP drivers using the sync API
-import asyncio
 from concurrent.futures import ThreadPoolExecutor
 from random import randint
-from seleniumbase.core import sb_cdp
-from seleniumbase.undetected import cdp_driver
+from seleniumbase import sb_cdp
 
 
 def main(url):
-    loop = asyncio.new_event_loop()
-    driver = cdp_driver.cdp_util.start_sync()
-    page = loop.run_until_complete(driver.get(url))
-    sb = sb_cdp.CDPMethods(loop, page, driver)
+    sb = sb_cdp.Chrome(url)
     sb.set_window_rect(randint(4, 720), randint(8, 410), 800, 500)
     sb.press_keys("input", "Text")
     sb.highlight("button")

@@ -1,6 +1,6 @@
 from seleniumbase import SB
 
-with SB(uc=True, test=True, locale_code="en") as sb:
+with SB(uc=True, test=True, locale="en") as sb:
     url = "www.elal.com/flight-deals/en-us/flights-from-boston-to-tel-aviv"
     sb.activate_cdp_mode(url)
     sb.sleep(2)
@@ -36,19 +36,21 @@ with SB(uc=True, test=True, locale_code="en") as sb:
             sb.cdp.click(search_cell)
             sb.sleep(5)
     else:
-        elements = sb.cdp.find_elements("div.ui-bound__price__value")
         print("*** Lowest Prices: ***")
-        first = True
+        departure_prices = "#uiFlightPanel0 div.ui-bound__price__value"
+        return_prices = "#uiFlightPanel1 div.ui-bound__price__value"
+        elements = sb.cdp.find_elements(departure_prices)
         for element in elements:
             if "lowest price" in element.text:
-                if first:
-                    print("Departure Flight:")
-                    print(element.text)
-                    first = False
-                else:
-                    print("Return Flight:")
-                    print(element.text)
-                    break
+                print("Departure Flight:")
+                print(element.text)
+                break
+        elements = sb.cdp.find_elements(return_prices)
+        for element in elements:
+            if "lowest price" in element.text:
+                print("Return Flight:")
+                print(element.text)
+                break
     dates = sb.cdp.find_elements('div[class*="flight-date"]')
     if len(dates) == 2:
         print("*** Departure Date: ***")

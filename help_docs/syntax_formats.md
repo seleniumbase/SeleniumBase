@@ -33,7 +33,7 @@
 <li><a href="#sb_sf_22"><strong>22. The driver manager (via context manager)</strong></a></li>
 <li><a href="#sb_sf_23"><strong>23. The driver manager (via direct import)</strong></a></li>
 <li><a href="#sb_sf_24"><strong>24. CDP driver (async/await API. No Selenium)</strong></a></li>
-<li><a href="#sb_sf_25"><strong>25. CDP driver (SB-CDP sync API. No Selenium)</strong></a></li>
+<li><a href="#sb_sf_25"><strong>25. CDP driver (SB CDP Sync API. No Selenium)</strong></a></li>
 </ul>
 </blockquote>
 
@@ -1019,14 +1019,13 @@ This format provides a pure CDP way of using SeleniumBase (without Selenium or a
 ```python
 import asyncio
 import time
-from seleniumbase.undetected import cdp_driver
+from seleniumbase import cdp_driver
 
 
 async def main():
-    driver = await cdp_driver.cdp_util.start_async()
-    page = await driver.get("about:blank")
-    await page.set_locale("en")
-    await page.get("https://www.priceline.com/")
+    url = "https://www.priceline.com/"
+    driver = await cdp_driver.start_async(lang="en")
+    page = await driver.get(url)
     time.sleep(3)
     print(await page.evaluate("document.title"))
     element = await page.select('[data-testid*="endLocation"]')
@@ -1043,25 +1042,17 @@ if __name__ == "__main__":
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_async.py">examples/cdp_mode/raw_async.py</a> for the test.)
 
 <a id="sb_sf_25"></a>
-<h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 25. CDP driver (SB-CDP sync API. No Selenium)</h2>
+<h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 25. CDP driver (SB CDP Sync API. No Selenium)</h2>
 
-This format provides a pure CDP way of using SeleniumBase (without Selenium or a test runner). The expanded SB-CDP sync API is used. Here's an example:
+This format provides a pure CDP way of using SeleniumBase (without Selenium or a test runner). The expanded SB CDP Sync API is used. Here's an example:
 
 ```python
-import asyncio
-from seleniumbase.core import sb_cdp
-from seleniumbase.undetected import cdp_driver
+from seleniumbase import sb_cdp
 
 
 def main():
-    url0 = "about:blank"  # Set Locale code from here first
-    url1 = "https://www.priceline.com/"  # (The "real" URL)
-    loop = asyncio.new_event_loop()
-    driver = cdp_driver.cdp_util.start_sync()
-    page = loop.run_until_complete(driver.get(url0))
-    sb = sb_cdp.CDPMethods(loop, page, driver)
-    sb.set_locale("en")  # This test expects English locale
-    sb.open(url1)
+    url = "https://www.priceline.com/"
+    sb = sb_cdp.Chrome(url, lang="en")
     sb.sleep(2.5)
     sb.internalize_links()  # Don't open links in a new tab
     sb.click("#link_header_nav_experiences")

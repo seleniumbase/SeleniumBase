@@ -12,13 +12,21 @@ https://docs.docker.com/engine/install/
 
 #### 3. Create your Docker image from your Dockerfile: (Get ready to wait awhile)
 
+**(Windows / Linux / Intel macOS)**
+
     docker build -t seleniumbase .
 
-**(NOTE) - If running on an Apple M1/M2 Mac, use this instead:**
+**(Apple Silicon macOS, eg. M1/M2/M3/M4):**
+
+Users should first [Enable Rosetta in Docker Desktop](https://stackoverflow.com/a/76586216/7058266). (Otherwise Chrome will crash on launch with errors such as: `"InvalidSessionIdException"` and `"Unable to receive message from renderer"`)
+
+<img width="420" alt="Enable Rosetta" src="https://seleniumbase.github.io/other/docker_rosetta.jpg" />
+
+Then you can run these commands:
+
+    export DOCKER_DEFAULT_PLATFORM=linux/amd64
 
     docker build --platform linux/amd64 -t seleniumbase .
-
-**M1/M2 Mac users** should also see [StackOverflow.com/a/76586216/7058266](https://stackoverflow.com/a/76586216/7058266) to **Enable Rosetta in Docker Desktop**. (Otherwise **you will** encounter errors like this when Chrome tries to launch: `"Chrome failed to start: crashed."`)
 
 #### 4. Run [the example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) with Chrome inside your Docker: (Once the test completes after a few seconds, you'll automatically exit the Docker shell)
 

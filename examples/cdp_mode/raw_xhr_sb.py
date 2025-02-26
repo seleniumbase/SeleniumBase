@@ -56,7 +56,7 @@ async def receiveXHR(page, requests):
     return responses
 
 
-with SB(uc=True, test=True, locale_code="en") as sb:
+with SB(uc=True, test=True, locale="en") as sb:
     sb.activate_cdp_mode("about:blank")
     tab = sb.cdp.page
     listenXHR(tab)
