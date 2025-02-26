@@ -235,8 +235,12 @@ def extend_driver(driver, proxy_auth=False, use_uc=True):
     driver.reset_window_size = DM.reset_window_size
     if hasattr(driver, "proxy"):
         driver.set_wire_proxy = DM.set_wire_proxy
-    if proxy_auth and not use_uc:
-        time.sleep(0.11)  # Proxy needs moment to load in Manifest V3
+    if proxy_auth:
+        # Proxy needs a moment to load in Manifest V3
+        if use_uc:
+            time.sleep(0.12)
+        else:
+            time.sleep(0.22)
     return driver
 
 

@@ -1,4 +1,5 @@
 """Add CDP methods to extend the driver"""
+import asyncio
 import fasteners
 import os
 import re
@@ -11,6 +12,7 @@ from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import js_utils
 from seleniumbase.fixtures import page_utils
 from seleniumbase.fixtures import shared_utils
+from seleniumbase.undetected.cdp_driver import cdp_util
 
 
 class CDPMethods():
@@ -208,14 +210,16 @@ class CDPMethods():
                 element = self.__add_sync_methods(element)
                 return self.__add_sync_methods(element)
             elif (
-                element.parent
+                element
+                and element.parent
                 and tag_name in element.parent.tag_name.lower()
                 and text.strip() in element.parent.text
             ):
                 element = self.__add_sync_methods(element.parent)
                 return self.__add_sync_methods(element)
             elif (
-                element.parent
+                element
+                and element.parent
                 and element.parent.parent
                 and tag_name in element.parent.parent.tag_name.lower()
                 and text.strip() in element.parent.parent.text
@@ -269,7 +273,8 @@ class CDPMethods():
                 if element not in updated_elements:
                     updated_elements.append(element)
             elif (
-                element.parent
+                element
+                and element.parent
                 and tag_name in element.parent.tag_name.lower()
                 and text.strip() in element.parent.text
             ):
@@ -277,7 +282,8 @@ class CDPMethods():
                 if element not in updated_elements:
                     updated_elements.append(element)
             elif (
-                element.parent
+                element
+                and element.parent
                 and element.parent.parent
                 and tag_name in element.parent.parent.tag_name.lower()
                 and text.strip() in element.parent.parent.text
@@ -2093,3 +2099,13 @@ class CDPMethods():
             )
         else:
             self.select(selector).save_screenshot(filename)
+
+
+class Chrome(CDPMethods):
+    def __init__(self, url=None, **kwargs):
+        if not url:
+            url = "about:blank"
+        loop = asyncio.new_event_loop()
+        driver = cdp_util.start_sync(**kwargs)
+        page = loop.run_until_complete(driver.get(url))
+        super().__init__(loop, page, driver)
