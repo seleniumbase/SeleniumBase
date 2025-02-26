@@ -1,7 +1,7 @@
 """Simple web-scraping example in CDP Mode"""
 from seleniumbase import SB
 
-with SB(uc=True, test=True, locale_code="en", ad_block=True) as sb:
+with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     url = "https://architectureofcities.com/roman-theaters"
     sb.activate_cdp_mode(url)
     sb.cdp.click_if_visible("#cn-close-notice")

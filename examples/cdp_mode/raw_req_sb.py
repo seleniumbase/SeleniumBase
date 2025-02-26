@@ -23,7 +23,7 @@ async def request_paused_handler(event, tab):
         tab.feed_cdp(mycdp.fetch.fail_request(event.request_id, TIMED_OUT))
 
 
-with SB(uc=True, test=True, locale_code="en") as sb:
+with SB(uc=True, test=True, locale="en") as sb:
     sb.activate_cdp_mode("about:blank")
     sb.cdp.add_handler(mycdp.fetch.RequestPaused, request_paused_handler)
     url = "https://gettyimages.com/photos/firefly-2003-nathan"

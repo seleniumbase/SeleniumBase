@@ -4,7 +4,7 @@ import colorama
 import mycdp
 import sys
 from seleniumbase import decorators
-from seleniumbase.undetected import cdp_driver
+from seleniumbase import cdp_driver
 
 c1 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
 c2 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
@@ -30,7 +30,7 @@ class RequestPausedTest():
             )
 
     async def start_test(self):
-        driver = await cdp_driver.cdp_util.start_async()
+        driver = await cdp_driver.start_async()
         tab = await driver.get("about:blank")
         tab.add_handler(mycdp.fetch.RequestPaused, self.request_paused_handler)
         url = "https://gettyimages.com/photos/firefly-2003-nathan"

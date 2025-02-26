@@ -1,6 +1,6 @@
 from seleniumbase import SB
 
-with SB(uc=True, test=True, locale_code="en", ad_block=True) as sb:
+with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     window_handle = sb.driver.current_window_handle
     url = "https://www.priceline.com"
     sb.activate_cdp_mode(url)

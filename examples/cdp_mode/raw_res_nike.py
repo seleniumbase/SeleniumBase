@@ -25,13 +25,13 @@ async def receive_handler(event: mycdp.network.ResponseReceived):
     print(event.response)
 
 
-with SB(uc=True, test=True, locale_code="en", pls="none") as sb:
+with SB(uc=True, test=True, locale="en", pls="none") as sb:
     url = "https://www.nike.com/"
     sb.activate_cdp_mode(url)
     sb.cdp.add_handler(mycdp.network.RequestWillBeSent, send_handler)
     sb.cdp.add_handler(mycdp.network.ResponseReceived, receive_handler)
     sb.sleep(2.5)
-    sb.cdp.mouse_click('div[data-testid="user-tools-container"]')
+    sb.cdp.click('div[data-testid="user-tools-container"]')
     sb.sleep(1.5)
     search = "Nike Air Force 1"
     sb.cdp.press_keys('input[type="search"]', search)

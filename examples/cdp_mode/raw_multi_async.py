@@ -2,11 +2,11 @@
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
 from random import randint
-from seleniumbase.undetected import cdp_driver
+from seleniumbase import cdp_driver
 
 
 async def main(url):
-    driver = await cdp_driver.cdp_util.start_async()
+    driver = await cdp_driver.start_async()
     page = await driver.get(url)
     await page.set_window_rect(randint(4, 600), randint(8, 410), 860, 500)
     await page.sleep(0.5)

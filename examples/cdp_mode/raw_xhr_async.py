@@ -5,7 +5,7 @@ import colorama
 import mycdp
 import sys
 import time
-from seleniumbase.undetected import cdp_driver
+from seleniumbase import cdp_driver
 
 xhr_requests = []
 last_xhr_request = None
@@ -58,7 +58,7 @@ async def receiveXHR(page, requests):
 
 
 async def crawl():
-    driver = await cdp_driver.cdp_util.start_async()
+    driver = await cdp_driver.start_async()
     tab = await driver.get("about:blank")
     listenXHR(tab)
 

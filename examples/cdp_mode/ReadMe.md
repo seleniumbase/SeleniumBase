@@ -50,7 +50,7 @@ Simple example: ([SeleniumBase/examples/cdp_mode/raw_gitlab.py](https://github.c
 ```python
 from seleniumbase import SB
 
-with SB(uc=True, test=True, locale_code="en") as sb:
+with SB(uc=True, test=True, locale="en") as sb:
     url = "https://gitlab.com/users/sign_in"
     sb.activate_cdp_mode(url)
     sb.uc_gui_click_captcha()
@@ -130,7 +130,7 @@ To find out if WebDriver is connected or disconnected, call:
 ```python
 from seleniumbase import SB
 
-with SB(uc=True, test=True, locale_code="en", ad_block=True) as sb:
+with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     url = "https://www.pokemon.com/us"
     sb.activate_cdp_mode(url)
     sb.sleep(3.2)
@@ -189,7 +189,7 @@ with SB(uc=True, test=True, locale_code="en", ad_block=True) as sb:
 ```python
 from seleniumbase import SB
 
-with SB(uc=True, test=True, locale_code="en", ad_block=True) as sb:
+with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     url = "https://www.hyatt.com/"
     sb.activate_cdp_mode(url)
     sb.sleep(2.5)
@@ -236,7 +236,7 @@ with SB(uc=True, test=True, locale_code="en", ad_block=True) as sb:
 ```python
 from seleniumbase import SB
 
-with SB(uc=True, test=True, locale_code="en", ad_block=True) as sb:
+with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     url = "https://www.bestwestern.com/en_US.html"
     sb.activate_cdp_mode(url)
     sb.sleep(2.5)
@@ -328,11 +328,11 @@ with SB(uc=True, test=True, ad_block=True) as sb:
 ```python
 from seleniumbase import SB
 
-with SB(uc=True, test=True, locale_code="en", pls="none") as sb:
+with SB(uc=True, test=True, locale="en", pls="none") as sb:
     url = "https://www.nike.com/"
     sb.activate_cdp_mode(url)
     sb.sleep(2.5)
-    sb.cdp.mouse_click('div[data-testid="user-tools-container"]')
+    sb.cdp.click('div[data-testid="user-tools-container"]')
     sb.sleep(1.5)
     search = "Nike Air Force 1"
     sb.cdp.press_keys('input[type="search"]', search)

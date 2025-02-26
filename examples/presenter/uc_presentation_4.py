@@ -352,7 +352,7 @@ class UCPresentationClass(BaseCase):
         )
         self.begin_presentation(filename="uc_presentation.html")
 
-        with SB(uc=True, test=True, locale_code="en") as sb:
+        with SB(uc=True, test=True, locale="en") as sb:
             url = "www.planetminecraft.com/account/sign_in/"
             sb.activate_cdp_mode(url)
             sb.sleep(2)
@@ -367,7 +367,7 @@ class UCPresentationClass(BaseCase):
         )
         self.begin_presentation(filename="uc_presentation.html")
 
-        with SB(uc=True, test=True, locale_code="en") as sb:
+        with SB(uc=True, test=True, locale="en") as sb:
             url = "https://www.cloudflare.com/login"
             sb.activate_cdp_mode(url)
             sb.sleep(3)
@@ -382,7 +382,7 @@ class UCPresentationClass(BaseCase):
         )
         self.begin_presentation(filename="uc_presentation.html")
 
-        with SB(uc=True, test=True, locale_code="en") as sb:
+        with SB(uc=True, test=True, locale="en") as sb:
             url = "https://gitlab.com/users/sign_in"
             sb.activate_cdp_mode(url)
             sb.sleep(2)
@@ -433,7 +433,7 @@ class UCPresentationClass(BaseCase):
         )
         self.begin_presentation(filename="uc_presentation.html")
 
-        with SB(uc=True, test=True, locale_code="en") as sb:
+        with SB(uc=True, test=True, locale="en") as sb:
             url = "https://www.bing.com/turing/captcha/challenge"
             sb.activate_cdp_mode(url)
             sb.sleep(1)
@@ -458,7 +458,7 @@ class UCPresentationClass(BaseCase):
         )
         self.begin_presentation(filename="uc_presentation.html")
 
-        with SB(uc=True, test=True, locale_code="en", ad_block=True) as sb:
+        with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
             url = "https://www.pokemon.com/us"
             sb.activate_cdp_mode(url)
             sb.sleep(3.2)
@@ -565,7 +565,7 @@ class UCPresentationClass(BaseCase):
         )
         self.begin_presentation(filename="uc_presentation.html")
 
-        with SB(uc=True, test=True, locale_code="en") as sb:
+        with SB(uc=True, test=True, locale="en") as sb:
             url = "https://www.albertsons.com/recipes/"
             sb.activate_cdp_mode(url)
             sb.sleep(2.5)
@@ -611,7 +611,7 @@ class UCPresentationClass(BaseCase):
         )
         self.begin_presentation(filename="uc_presentation.html")
 
-        with SB(uc=True, test=True, locale_code="en", ad_block=True) as sb:
+        with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
             url = "https://www.easyjet.com/en/"
             sb.activate_cdp_mode(url)
             sb.sleep(2.5)
@@ -678,7 +678,7 @@ class UCPresentationClass(BaseCase):
         )
         self.begin_presentation(filename="uc_presentation.html")
 
-        with SB(uc=True, test=True, locale_code="en", ad_block=True) as sb:
+        with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
             url = "https://www.hyatt.com/"
             sb.activate_cdp_mode(url)
             sb.sleep(2.5)
@@ -727,7 +727,7 @@ class UCPresentationClass(BaseCase):
         )
         self.begin_presentation(filename="uc_presentation.html")
 
-        with SB(uc=True, test=True, locale_code="en", ad_block=True) as sb:
+        with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
             url = "https://www.bestwestern.com/en_US.html"
             sb.activate_cdp_mode(url)
             sb.sleep(2.5)
@@ -769,7 +769,7 @@ class UCPresentationClass(BaseCase):
         )
         self.begin_presentation(filename="uc_presentation.html")
 
-        with SB(uc=True, test=True, locale_code="en", ad_block=True) as sb:
+        with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
             window_handle = sb.driver.current_window_handle
             url = "https://www.priceline.com"
             sb.activate_cdp_mode(url)
@@ -838,11 +838,11 @@ class UCPresentationClass(BaseCase):
         )
         self.begin_presentation(filename="uc_presentation.html")
 
-        with SB(uc=True, test=True, locale_code="en", pls="none") as sb:
+        with SB(uc=True, test=True, locale="en", pls="none") as sb:
             url = "https://www.nike.com/"
             sb.activate_cdp_mode(url)
             sb.sleep(2.5)
-            sb.cdp.mouse_click('div[data-testid="user-tools-container"]')
+            sb.cdp.click('div[data-testid="user-tools-container"]')
             sb.sleep(1.5)
             search = "Nike Air Force 1"
             sb.cdp.press_keys('input[type="search"]', search)
@@ -866,7 +866,7 @@ class UCPresentationClass(BaseCase):
         )
         self.begin_presentation(filename="uc_presentation.html")
 
-        with SB(uc=True, test=True, locale_code="en") as sb:
+        with SB(uc=True, test=True, locale="en") as sb:
             url = "https://www.nordstrom.com/"
             sb.activate_cdp_mode(url)
             sb.sleep(2.2)
