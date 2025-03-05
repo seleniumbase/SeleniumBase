@@ -106,7 +106,7 @@ class CDPMethods():
         driver = self.driver
         if hasattr(driver, "cdp_base"):
             driver = driver.cdp_base
-        self.page = self.loop.run_until_complete(driver.get(url))
+        self.loop.run_until_complete(self.page.get(url))
         url_protocol = url.split(":")[0]
         safe_url = True
         if url_protocol not in ["about", "data", "chrome"]:
@@ -1014,11 +1014,21 @@ class CDPMethods():
         self.set_window_rect(x, y, width, height)
         self.__add_light_pause()
 
+    def open_new_window(self, url=None, switch_to=True):
+        return self.open_new_tab(url=url, switch_to=switch_to)
+
     def switch_to_window(self, window):
         self.switch_to_tab(window)
 
     def switch_to_newest_window(self):
         self.switch_to_tab(-1)
+
+    def open_new_tab(self, url=None, switch_to=True):
+        if not isinstance(url, str):
+            url = "about:blank"
+        self.loop.run_until_complete(self.page.get(url, new_tab=True))
+        if switch_to:
+            self.switch_to_newest_tab()
 
     def switch_to_tab(self, tab):
         driver = self.driver

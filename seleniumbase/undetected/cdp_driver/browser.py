@@ -792,7 +792,7 @@ class CookieJar:
             connection = self._browser.connection
         cookies = await connection.send(cdp.network.get_cookies())
         if cookies:
-            await connection.send(cdp.network.clear_cookies())
+            await connection.send(cdp.storage.clear_cookies())
 
 
 class HTTPApi:

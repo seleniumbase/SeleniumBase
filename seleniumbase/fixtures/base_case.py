@@ -3896,6 +3896,9 @@ class BaseCase(unittest.TestCase):
 
     def open_new_window(self, switch_to=True):
         """Opens a new browser tab/window and switches to it by default."""
+        if self.__is_cdp_swap_needed():
+            self.cdp.open_new_tab(switch_to=switch_to)
+            return
         self.wait_for_ready_state_complete()
         if switch_to:
             try:
@@ -10339,7 +10342,7 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_cdp_swap_needed():
-            return self.cdp.wait_for_text(
+            return self.cdp.wait_for_text_not_visible(
                 text, selector=selector, timeout=timeout
             )
         return page_actions.wait_for_text_not_visible(

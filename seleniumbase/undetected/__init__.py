@@ -477,6 +477,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
             with suppress(Exception):
                 if self.service.is_connectable():
                     self.stop_client()
+                    time.sleep(0.003)
                     self.service.stop()
         self._is_connected = False
 
