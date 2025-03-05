@@ -198,7 +198,7 @@ setup(
         'execnet==2.1.1',
         'iniconfig==2.0.0',
         'pluggy==1.5.0',
-        'pytest==8.3.4',
+        'pytest==8.3.5',
         "pytest-html==4.0.2",  # Newer ones had issues
         'pytest-metadata==3.1.1',
         "pytest-ordering==0.6",
@@ -259,7 +259,7 @@ setup(
         "pdfminer": [
             'pdfminer.six==20240706',
             'cryptography==39.0.2;python_version<"3.9"',
-            'cryptography==44.0.1;python_version>="3.9"',
+            'cryptography==44.0.2;python_version>="3.9"',
             'cffi==1.17.1',
             "pycparser==2.22",
         ],
