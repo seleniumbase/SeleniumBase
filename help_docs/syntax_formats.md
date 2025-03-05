@@ -1072,7 +1072,7 @@ def main():
     for i in range(8):
         sb.scroll_down(50)
         sb.sleep(0.2)
-    cards = sb.select_all('h2[data-automation*="product-list-card"]')
+    cards = sb.select_all('span[data-automation*="product-list-card"]')
     for card in cards:
         print("* %s" % card.text)
 

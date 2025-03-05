@@ -852,6 +852,7 @@ class Tab(Connection):
             await self.send(
                 cdp.target.close_target(target_id=self.target.target_id)
             )
+            await asyncio.sleep(0.1)
 
     async def get_window(self) -> Tuple[
         cdp.browser.WindowID, cdp.browser.Bounds

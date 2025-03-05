@@ -3918,6 +3918,9 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        if self.__is_cdp_swap_needed() and not isinstance(window, str):
+            self.cdp.switch_to_tab(window)
+            return
         page_actions.switch_to_window(self.driver, window, timeout)
 
     def switch_to_default_window(self):

@@ -1,7 +1,6 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
-    window_handle = sb.driver.current_window_handle
     url = "https://www.priceline.com"
     sb.activate_cdp_mode(url)
     sb.sleep(2.5)
@@ -17,17 +16,14 @@ with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     sb.sleep(1.5)
     sb.cdp.click('button[aria-label="Dismiss calendar"]')
     sb.sleep(4.5)
-    sb.connect()
-    if len(sb.driver.window_handles) > 1:
-        sb.switch_to_window(window_handle)
-        sb.driver.close()
-        sb.sleep(0.2)
-        sb.switch_to_newest_window()
+    if len(sb.cdp.get_tabs()) > 1:
+        sb.cdp.close_active_tab()
+        sb.cdp.switch_to_newest_tab()
         sb.sleep(0.6)
     sb.sleep(0.8)
     for y in range(1, 9):
         sb.scroll_to_y(y * 400)
-        sb.sleep(0.75)
+        sb.sleep(0.5)
     hotel_names = sb.find_elements('a[data-autobot-element-id*="HOTEL_NAME"]')
     hotel_prices = sb.find_elements('span[font-size="4,,,5"]')
     print("Priceline Hotels in %s:" % location)

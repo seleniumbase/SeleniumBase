@@ -382,7 +382,7 @@ class Connection(metaclass=CantTouchThis):
     async def send(
         self,
         cdp_obj: Generator[dict[str, Any], dict[str, Any], Any],
-        _is_update=False,
+        _is_update=True,
     ) -> Any:
         """
         Send a protocol command.
