@@ -16,6 +16,7 @@ def main():
     location = "Amsterdam"
     where_to = 'div[data-automation*="experiences"] input'
     button = 'button[data-automation*="experiences-search"]'
+    sb.wait_for_text("Where to?")
     sb.gui_click_element(where_to)
     sb.press_keys(where_to, location)
     sb.sleep(1)
@@ -26,7 +27,7 @@ def main():
     for i in range(8):
         sb.scroll_down(50)
         sb.sleep(0.2)
-    cards = sb.select_all('h2[data-automation*="product-list-card"]')
+    cards = sb.select_all('span[data-automation*="product-list-card"]')
     for card in cards:
         print("* %s" % card.text)
 

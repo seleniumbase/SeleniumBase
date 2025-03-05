@@ -51,6 +51,7 @@ if __name__ == "__main__":
     location = "Amsterdam"
     where_to = 'div[data-automation*="experiences"] input'
     button = 'button[data-automation*="experiences-search"]'
+    sb.wait_for_text("Where to?")
     sb.gui_click_element(where_to)
     sb.press_keys(where_to, location)
     sb.sleep(1)
@@ -58,6 +59,6 @@ if __name__ == "__main__":
     sb.sleep(3)
     print(sb.get_title())
     print("************")
-    cards = sb.select_all('h2[data-automation*="product-list-card"]')
+    cards = sb.select_all('span[data-automation*="product-list-card"]')
     for card in cards:
         print("* %s" % card.text)
