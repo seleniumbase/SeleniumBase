@@ -1014,10 +1014,51 @@ class CDPMethods():
         self.set_window_rect(x, y, width, height)
         self.__add_light_pause()
 
+    def switch_to_window(self, window):
+        self.switch_to_tab(window)
+
+    def switch_to_newest_window(self):
+        self.switch_to_tab(-1)
+
+    def switch_to_tab(self, tab):
+        driver = self.driver
+        if hasattr(driver, "cdp_base"):
+            driver = driver.cdp_base
+        if isinstance(tab, int):
+            self.page = driver.tabs[tab]
+        elif isinstance(tab, cdp_util.Tab):
+            self.page = tab
+        else:
+            raise Exception("`tab` must be an int or a Tab type!")
+        self.bring_active_window_to_front()
+
+    def switch_to_newest_tab(self):
+        self.switch_to_tab(-1)
+
+    def close_active_tab(self):
+        """Close the active tab.
+        The active tab is the one currenly controlled by CDP.
+        The active tab MIGHT NOT be the currently visible tab!
+        (If a page opens a new tab, the new tab WON'T be active)
+        To switch the active tab, call: sb.switch_to_tab(tab)"""
+        return self.loop.run_until_complete(self.page.close())
+
+    def get_active_tab(self):
+        """Return the active tab.
+        The active tab is the one currenly controlled by CDP.
+        The active tab MIGHT NOT be the currently visible tab!
+        (If a page opens a new tab, the new tab WON'T be active)
+        To switch the active tab, call: sb.switch_to_tab(tab)"""
+        return self.page
+
+    def get_tabs(self):
+        driver = self.driver
+        if hasattr(driver, "cdp_base"):
+            driver = driver.cdp_base
+        return driver.tabs
+
     def get_window(self):
-        return self.loop.run_until_complete(
-            self.page.get_window()
-        )
+        return self.loop.run_until_complete(self.page.get_window())
 
     def get_text(self, selector):
         return self.find_element(selector).text_all
@@ -1211,14 +1252,10 @@ class CDPMethods():
         return ((e_x + e_width / 2.0) + 0.5, (e_y + e_height / 2.0) + 0.5)
 
     def get_document(self):
-        return self.loop.run_until_complete(
-            self.page.get_document()
-        )
+        return self.loop.run_until_complete(self.page.get_document())
 
     def get_flattened_document(self):
-        return self.loop.run_until_complete(
-            self.page.get_flattened_document()
-        )
+        return self.loop.run_until_complete(self.page.get_flattened_document())
 
     def get_element_attributes(self, selector):
         selector = self.__convert_to_css_if_xpath(selector)

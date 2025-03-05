@@ -660,7 +660,7 @@ class CookieJar:
             break
         else:
             connection = self._browser.connection
-        cookies = await connection.send(cdp.storage.get_cookies())
+        cookies = await connection.send(cdp.network.get_cookies())
         if requests_cookie_format:
             import requests.cookies
 
@@ -690,8 +690,7 @@ class CookieJar:
             break
         else:
             connection = self._browser.connection
-        cookies = await connection.send(cdp.storage.get_cookies())
-        await connection.send(cdp.storage.set_cookies(cookies))
+        await connection.send(cdp.network.set_cookies(cookies))
 
     async def save(self, file: PathLike = ".session.dat", pattern: str = ".*"):
         """
@@ -718,7 +717,7 @@ class CookieJar:
             break
         else:
             connection = self._browser.connection
-        cookies = await connection.send(cdp.storage.get_cookies())
+        cookies = await connection.send(cdp.network.get_cookies())
         # if not connection:
         #     return
         # if not connection.websocket:
@@ -776,7 +775,7 @@ class CookieJar:
                     cookie.value,
                 )
                 break
-        await connection.send(cdp.storage.set_cookies(included_cookies))
+        await connection.send(cdp.network.set_cookies(included_cookies))
 
     async def clear(self):
         """
@@ -791,9 +790,9 @@ class CookieJar:
             break
         else:
             connection = self._browser.connection
-        cookies = await connection.send(cdp.storage.get_cookies())
+        cookies = await connection.send(cdp.network.get_cookies())
         if cookies:
-            await connection.send(cdp.storage.clear_cookies())
+            await connection.send(cdp.network.clear_cookies())
 
 
 class HTTPApi:
