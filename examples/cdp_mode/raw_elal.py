@@ -5,13 +5,13 @@ with SB(uc=True, test=True, locale="en") as sb:
     sb.activate_cdp_mode(url)
     sb.sleep(2)
     sb.cdp.click('button[data-att="search"]')
-    sb.sleep(4)
+    sb.sleep(5)
     sb.cdp.click_if_visible("#onetrust-close-btn-container button")
-    sb.sleep(0.5)
+    sb.sleep(1)
     view_other_dates = 'button[aria-label*="viewOtherDates.cta"]'
     if sb.cdp.is_element_visible(view_other_dates):
         sb.cdp.click(view_other_dates)
-        sb.sleep(4.5)
+        sb.sleep(5)
     if sb.is_element_visible("flexible-search-calendar"):
         print("*** Flight Calendar for El Al (Boston to Tel Aviv): ***")
         print(sb.cdp.get_text("flexible-search-calendar"))
@@ -29,7 +29,7 @@ with SB(uc=True, test=True, locale="en") as sb:
             sb.cdp.scroll_down(12)
             sb.sleep(1)
             sb.cdp.find_element_by_text(lowest_price).click()
-            sb.sleep(1)
+            sb.sleep(2)
             search_cell = 'button[aria-label*="Search.cell.buttonTitle"]'
             sb.cdp.scroll_into_view(search_cell)
             sb.sleep(1)
