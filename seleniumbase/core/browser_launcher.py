@@ -1288,6 +1288,13 @@ def _uc_gui_click_captcha(
                     and driver.is_element_present("form div:not(:has(*))")
                 ):
                     frame = "form div:not(:has(*))"
+                elif (
+                    driver.is_element_present('[src*="/turnstile/"]')
+                    and driver.is_element_present(
+                        "body > div#check > div:not([class])"
+                    )
+                ):
+                    frame = "body > div#check > div:not([class])"
                 elif driver.is_element_present(".cf-turnstile-wrapper"):
                     frame = ".cf-turnstile-wrapper"
                 elif driver.is_element_present(
@@ -1321,13 +1328,34 @@ def _uc_gui_click_captcha(
                     driver.execute_script(script)
             elif (
                 driver.is_element_present("form")
-                and driver.is_element_present(
-                    "form.turnstile #turnstile-widget > div:not([class])"
+                and (
+                    driver.is_element_present('form div[style*="center"]')
+                    or driver.is_element_present('form div[style*="right"]')
                 )
             ):
                 script = (
                     """var $elements = document.querySelectorAll(
-                    'form.turnstile #turnstile-widget');
+                    'form[style], form div[style]');
+                    var index = 0, length = $elements.length;
+                    for(; index < length; index++){
+                    the_style = $elements[index].getAttribute('style');
+                    new_style = the_style.replaceAll('center', 'left');
+                    new_style = new_style.replaceAll('right', 'left');
+                    $elements[index].setAttribute('style', new_style);}"""
+                )
+                if __is_cdp_swap_needed(driver):
+                    driver.cdp.evaluate(script)
+                else:
+                    driver.execute_script(script)
+            elif (
+                driver.is_element_present("form")
+                and driver.is_element_present(
+                    'form [id*="turnstile"] > div:not([class])'
+                )
+            ):
+                script = (
+                    """var $elements = document.querySelectorAll(
+                    'form [id*="turnstile"]');
                     var index = 0, length = $elements.length;
                     for(; index < length; index++){
                     $elements[index].setAttribute('align', 'left');}"""
@@ -1577,6 +1605,13 @@ def _uc_gui_handle_captcha_(driver, frame="iframe", ctype=None):
                 ):
                     frame = "form div:not(:has(*))"
                     tab_up_first = True
+                elif (
+                    driver.is_element_present('[src*="/turnstile/"]')
+                    and driver.is_element_present(
+                        "body > div#check > div:not([class])"
+                    )
+                ):
+                    frame = "body > div#check > div:not([class])"
                 else:
                     return
         else:
