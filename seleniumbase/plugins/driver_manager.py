@@ -781,6 +781,23 @@ def Driver(
             swiftshader = False
     if locale is not None and locale_code is None:
         locale_code = locale
+    if locale_code is None:
+        if '--locale="' in arg_join:
+            locale_code = (
+                arg_join.split('--locale="')[1].split('"')[0]
+            )
+        elif '--locale=' in arg_join:
+            locale_code = (
+                arg_join.split('--locale=')[1].split(' ')[0]
+            )
+        elif '--locale-code="' in arg_join:
+            locale_code = (
+                arg_join.split('--locale-code="')[1].split('"')[0]
+            )
+        elif '--locale-code=' in arg_join:
+            locale_code = (
+                arg_join.split('--locale-code=')[1].split(' ')[0]
+            )
     if ad_block is not None and ad_block_on is None:
         ad_block_on = ad_block
     if ad_block_on is None:
