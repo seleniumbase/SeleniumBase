@@ -17,6 +17,7 @@ with SB(uc=True, test=True, ad_block=True) as sb:
             'button[data-testid="stop-button"]', timeout=20
         )
     chat = sb.find_element('[data-message-author-role="assistant"] .markdown')
-    soup = sb.get_beautiful_soup(chat.get_html()).get_text("\n").strip()
-    print("*** Response from ChatGPT: ***\n%s" % soup.replace("\n:", ":"))
+    soup = sb.get_beautiful_soup(chat.get_html()).text.strip()
+    soup = soup.replace("\n\n\n", "\n\n")
+    print("*** Response from ChatGPT: ***\n%s" % soup)
     sb.sleep(3)
