@@ -53,9 +53,7 @@
 <br />
 </p>
 
-<p align="center"><a href="https://trendshift.io/repositories/12493" target="_blank"><img src="https://trendshift.io/api/badge/repositories/12493" alt="seleniumbase%2FSeleniumBase | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a></p>
-
-<p>SeleniumBase is the professional toolkit for web automation. Built for testing websites, bypassing CAPTCHAs, completing tasks, and scaling your business.</p>
+<p>SeleniumBase is the professional toolkit for web automation activities. Built for testing websites, bypassing CAPTCHAs, enhancing productivity, completing tasks, and scaling your business.</p>
 
 --------
 
