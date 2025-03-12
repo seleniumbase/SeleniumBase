@@ -955,6 +955,20 @@ class CDPMethods():
         self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.sleep(0.025))
 
+    def submit(self, selector):
+        submit_script = (
+            """elm = document.querySelector('%s');
+            const event = new KeyboardEvent("keydown", {
+                key: "Enter",
+                keyCode: 13,
+                code: "Enter",
+                which: 13,
+                bubbles: true
+            });
+            elm.dispatchEvent(event);""" % selector
+        )
+        self.loop.run_until_complete(self.page.evaluate(submit_script))
+
     def evaluate(self, expression):
         """Run a JavaScript expression and return the result."""
         expression = expression.strip()
@@ -1114,6 +1128,16 @@ class CDPMethods():
         return self.loop.run_until_complete(
             self.page.evaluate("navigator.language || navigator.languages[0]")
         )
+
+    def get_local_storage_item(self, key):
+        js_code = """localStorage.getItem('%s');""" % key
+        with suppress(Exception):
+            return self.loop.run_until_complete(self.page.evaluate(js_code))
+
+    def get_session_storage_item(self, key):
+        js_code = """sessionStorage.getItem('%s');""" % key
+        with suppress(Exception):
+            return self.loop.run_until_complete(self.page.evaluate(js_code))
 
     def get_screen_rect(self):
         coordinates = self.loop.run_until_complete(
@@ -1301,6 +1325,16 @@ class CDPMethods():
     def set_locale(self, locale):
         """(Settings will take effect on the next page load)"""
         self.loop.run_until_complete(self.page.set_locale(locale))
+
+    def set_local_storage_item(self, key, value):
+        js_code = """localStorage.setItem('%s','%s');""" % (key, value)
+        with suppress(Exception):
+            self.loop.run_until_complete(self.page.evaluate(js_code))
+
+    def set_session_storage_item(self, key, value):
+        js_code = """sessionStorage.setItem('%s','%s');""" % (key, value)
+        with suppress(Exception):
+            self.loop.run_until_complete(self.page.evaluate(js_code))
 
     def set_attributes(self, selector, attribute, value):
         """This method uses JavaScript to set/update a common attribute.

@@ -11,7 +11,6 @@
 
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/super_logo_sb3.png" alt="SeleniumBase" title="SeleniumBase" width="350" /></a></p>
 
-
 <p align="center" class="hero__title"><b>All-in-one Browser Automation Framework:<br />Web Crawling / Testing / Scraping / Stealth</b></p>
 
 <p align="center"><a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=3399EE" alt="PyPI version" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/releases" target="_blank"><img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=22AAEE" alt="GitHub version" /></a> <a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"><img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://discord.gg/EdhQTn3EyE" target="_blank"><img src="https://img.shields.io/badge/join-discord-infomational" alt="Join the SeleniumBase chat on Discord"/></a></p>
@@ -54,7 +53,9 @@
 <br />
 </p>
 
-<p>SeleniumBase is the professional toolkit for web automation activities. Built for testing websites, bypassing CAPTCHAs, enhancing productivity, completing tasks, and scaling your business.</p>
+<p align="center"><a href="https://trendshift.io/repositories/12493" target="_blank"><img src="https://trendshift.io/api/badge/repositories/12493" alt="seleniumbase%2FSeleniumBase | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a></p>
+
+<p>SeleniumBase is the professional toolkit for web automation. Built for testing websites, bypassing CAPTCHAs, completing tasks, and scaling your business.</p>
 
 --------
 
@@ -81,7 +82,7 @@ with SB(test=True, uc=True) as sb:
 
 > `python raw_google.py`
 
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_google.py"><img src="https://seleniumbase.github.io/cdn/gif/google_search.gif" alt="SeleniumBase Test" title="SeleniumBase Test" width="420" /></a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_google.py"><img src="https://seleniumbase.github.io/cdn/gif/google_search.gif" alt="SeleniumBase Test" title="SeleniumBase Test" width="480" /></a>
 
 --------
 
@@ -1393,5 +1394,5 @@ pytest --reruns=1 --reruns-delay=1
 <div><a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" title="SeleniumBase" /></a></div>
 <div><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://img.shields.io/badge/tested%20with-SeleniumBase-04C38E.svg" alt="Tested with SeleniumBase" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/stargazers"><img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=19A57B" title="Stargazers" /></a></div>
 <div><a href="https://hellogithub.com/repository/c6be2d0f1969448697683d11a4ff915e" target="_blank"><img src="https://abroad.hellogithub.com/v1/widgets/recommend.svg?rid=c6be2d0f1969448697683d11a4ff915e&claim_uid=xcrm4p9j3d6JCO5&theme=small" alt="Featured｜HelloGitHub" /></a> <a href="https://discord.gg/EdhQTn3EyE" target="_blank"><img src="https://img.shields.io/badge/join-discord-infomational" alt="Join the SeleniumBase chat on Discord"/></a> <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://img.shields.io/gitter/room/seleniumbase/SeleniumBase.svg" alt="Gitter chat"/></a></div>
-<div><a href="https://pepy.tech/project/seleniumbase" target="_blank"><img src="https://static.pepy.tech/badge/seleniumbase" alt="SeleniumBase PyPI downloads" /></a> <img src="https://views.whatilearened.today/views/github/seleniumbase/SeleniumBase.svg" width="98px" height="20px" alt="Views" /></div>
+<div><a href="https://pepy.tech/projects/seleniumbase?timeRange=threeMonths&category=version&includeCIDownloads=true&granularity=daily&viewType=line&versions=*" target="_blank"><img src="https://static.pepy.tech/badge/seleniumbase" alt="SeleniumBase PyPI downloads" /></a> <img src="https://views.whatilearened.today/views/github/seleniumbase/SeleniumBase.svg" width="98px" height="20px" alt="Views" /></div>
 <div align="left"></div>

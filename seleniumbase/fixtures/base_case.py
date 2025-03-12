@@ -1164,6 +1164,9 @@ class BaseCase(unittest.TestCase):
         """Alternative to self.driver.find_element_by_*(SELECTOR).submit()"""
         self.__check_scope()
         selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_cdp_swap_needed():
+            self.cdp.submit(selector)
+            return
         element = self.wait_for_element_clickable(
             selector, by=by, timeout=settings.SMALL_TIMEOUT
         )
@@ -8800,6 +8803,9 @@ class BaseCase(unittest.TestCase):
         self.__check_scope()
         if not self.__is_valid_storage_url():
             raise WebDriverException("Local Storage is not available here!")
+        if self.__is_cdp_swap_needed():
+            self.cdp.set_local_storage_item(key, value)
+            return
         self.execute_script(
             "window.localStorage.setItem('{}', '{}');".format(key, value)
         )
@@ -8808,6 +8814,8 @@ class BaseCase(unittest.TestCase):
         self.__check_scope()
         if not self.__is_valid_storage_url():
             raise WebDriverException("Local Storage is not available here!")
+        if self.__is_cdp_swap_needed():
+            return self.cdp.get_local_storage_item(key)
         return self.execute_script(
             "return window.localStorage.getItem('{}');".format(key)
         )
@@ -8859,6 +8867,9 @@ class BaseCase(unittest.TestCase):
         self.__check_scope()
         if not self.__is_valid_storage_url():
             raise WebDriverException("Session Storage is not available here!")
+        if self.__is_cdp_swap_needed():
+            self.cdp.set_session_storage_item(key, value)
+            return
         self.execute_script(
             "window.sessionStorage.setItem('{}', '{}');".format(key, value)
         )
@@ -8867,6 +8878,8 @@ class BaseCase(unittest.TestCase):
         self.__check_scope()
         if not self.__is_valid_storage_url():
             raise WebDriverException("Session Storage is not available here!")
+        if self.__is_cdp_swap_needed():
+            return self.cdp.get_session_storage_item(key)
         return self.execute_script(
             "return window.sessionStorage.getItem('{}');".format(key)
         )
