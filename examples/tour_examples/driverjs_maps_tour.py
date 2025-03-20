@@ -54,7 +54,7 @@ class MyTestClass(BaseCase):
             )
         self.add_tour_step(
             "Or click here to see more Google apps.",
-            '[title="Google apps"]',
+            '[aria-label="Google apps"]',
             alignment="left",
         )
         self.add_tour_step(
