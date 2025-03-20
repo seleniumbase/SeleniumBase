@@ -16,15 +16,29 @@ class ProxyTests(BaseCase):
         self.open("https://api.ipify.org/")
         ip_address = self.get_text("body")
         self.open("https://ipinfo.io/")
-        self.type('input[name="search"]\n', ip_address, timeout=20)
+        self.type('input[name="search"]', ip_address, timeout=20)
+        self.sleep(0.5)
+        self.click('button span:contains("Search")')
         print("\n\nMy IP Address = %s\n" % ip_address)
-        self.wait_for_text("IP Address", "h1", timeout=20)
+        self.wait_for_text(ip_address, "h1", timeout=20)
         self.wait_for_element_present('[href="/signup"]')
-        self.wait_for_text("country", timeout=20)
+        self.wait_for_text("Hosted domains", timeout=20)
         self.highlight("h1")
-        self.sleep(1.5)
+        self.highlight("#block-summary")
+        self.highlight("#block-geolocation")
+        self.sleep(2)
+        self.click_if_visible("span.ipinfo-modal__close")
         print("Displaying Host Info:")
-        text = self.get_text("#api-preview-widget").split("is_anycast:")[0]
+        text = self.get_text("#block-summary").split("Hosted domains")[0]
+        rows = text.split("\n")
+        data = []
+        for row in rows:
+            if row.strip() != "":
+                data.append(row.strip())
+        print("\n".join(data).replace('\n"', ' "'))
+        print("\nDisplaying GeoLocation Info:")
+        text = self.get_text("#block-geolocation")
+        text = text.split("IP Geolocation data")[0]
         rows = text.split("\n")
         data = []
         for row in rows:
