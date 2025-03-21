@@ -1302,6 +1302,8 @@ def _uc_gui_click_captcha(
                     frame = "body > div#check > div:not([class])"
                 elif driver.is_element_present(".cf-turnstile-wrapper"):
                     frame = ".cf-turnstile-wrapper"
+                elif driver.is_element_present('[class="cf-turnstile"]'):
+                    frame = '[class="cf-turnstile"]'
                 elif driver.is_element_present(
                     '[data-callback="onCaptchaSuccess"]'
                 ):
@@ -1617,6 +1619,10 @@ def _uc_gui_handle_captcha_(driver, frame="iframe", ctype=None):
                     )
                 ):
                     frame = "body > div#check > div:not([class])"
+                elif driver.is_element_present(".cf-turnstile-wrapper"):
+                    frame = ".cf-turnstile-wrapper"
+                elif driver.is_element_present('[class="cf-turnstile"]'):
+                    frame = '[class="cf-turnstile"]'
                 else:
                     return
         else:
