@@ -3,7 +3,7 @@ from seleniumbase import SB
 with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     url = "https://www.easyjet.com/en/"
     sb.activate_cdp_mode(url)
-    sb.sleep(2.5)
+    sb.sleep(2)
     sb.cdp.click_if_visible("button#ensCloseBanner")
     sb.sleep(1.2)
     sb.cdp.click('input[name="from"]')

@@ -1,3 +1,4 @@
+import re
 from seleniumbase import SB
 
 with SB(uc=True, test=True, locale="en") as sb:
@@ -21,10 +22,11 @@ with SB(uc=True, test=True, locale="en") as sb:
             print("*** Prices List: ***")
             for element in elements:
                 prices.append(element.text)
-            for price in sorted(prices):
+            prices.sort(key=lambda x: int(re.sub("[^0-9]", "", x)))
+            for price in prices:
                 print(price)
             print("*** Lowest Price: ***")
-            lowest_price = sorted(prices)[0]
+            lowest_price = prices[0]
             print(lowest_price)
             sb.cdp.scroll_down(12)
             sb.sleep(1)
