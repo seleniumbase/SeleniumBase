@@ -2181,6 +2181,12 @@ class CDPMethods():
         else:
             self.select(selector).save_screenshot(filename)
 
+    def print_to_pdf(self, name, folder=None):
+        filename = name
+        if folder:
+            filename = os.path.join(folder, name)
+        self.loop.run_until_complete(self.page.print_to_pdf(filename))
+
 
 class Chrome(CDPMethods):
     def __init__(self, url=None, **kwargs):
