@@ -459,7 +459,9 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                 if self.current_url.startswith(
                     "chrome-extension://"
                 ):
-                    self.close()
+                    # https://issues.chromium.org/issues/396611138
+                    # (Uncomment below when resolved)
+                    # self.close()
                     if self.service.is_connectable():
                         self.stop_client()
                         self.service.stop()
@@ -496,7 +498,9 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                 if self.current_url.startswith(
                     "chrome-extension://"
                 ):
-                    self.close()
+                    # https://issues.chromium.org/issues/396611138
+                    # (Uncomment below when resolved)
+                    # self.close()
                     if self.service.is_connectable():
                         self.stop_client()
                         self.service.stop()
