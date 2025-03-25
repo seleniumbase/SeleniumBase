@@ -3993,6 +3993,7 @@ class BaseCase(unittest.TestCase):
         d_width=None,
         d_height=None,
         d_p_r=None,
+        **kwargs,
     ):
         """This method spins up an extra browser for tests that require
         more than one. The first browser is already provided by tests
@@ -4081,6 +4082,11 @@ class BaseCase(unittest.TestCase):
                 " for examples!)"
                 % (browserstack_ref, sauce_labs_ref)
             )
+        shortcuts = ["dark", "guest", "locale", "mobile", "pls", "uc", "wire"]
+        if kwargs:
+            for key in kwargs.keys():
+                if key not in shortcuts:
+                    raise TypeError("Unexpected keyword argument '%s'" % key)
         if browser is None:
             browser = self.browser
         browser_name = browser
@@ -4088,6 +4094,8 @@ class BaseCase(unittest.TestCase):
             headless = self.headless
         if locale_code is None:
             locale_code = self.locale_code
+        if "locale" in kwargs and not locale_code:
+            locale_code = kwargs["locale"]
         if protocol is None:
             protocol = self.protocol
         if servername is None:
@@ -4130,6 +4138,8 @@ class BaseCase(unittest.TestCase):
             uc_cdp_events = self.uc_cdp_events
         if uc_subprocess is None:
             uc_subprocess = self.uc_subprocess
+        if "uc" in kwargs and not undetectable:
+            undetectable = kwargs["uc"]
         if log_cdp_events is None:
             log_cdp_events = self.log_cdp_events
         if no_sandbox is None:
@@ -4144,8 +4154,12 @@ class BaseCase(unittest.TestCase):
             incognito = self.incognito
         if guest_mode is None:
             guest_mode = self.guest_mode
+        if "guest" in kwargs and not guest_mode:
+            guest_mode = kwargs["guest"]
         if dark_mode is None:
             dark_mode = self.dark_mode
+        if "dark" in kwargs and not dark_mode:
+            dark_mode = kwargs["dark"]
         if devtools is None:
             devtools = self.devtools
         if remote_debug is None:
@@ -4182,8 +4196,12 @@ class BaseCase(unittest.TestCase):
             driver_version = self.driver_version
         if page_load_strategy is None:
             page_load_strategy = self.page_load_strategy
+        if "pls" in kwargs and not page_load_strategy:
+            page_load_strategy = kwargs["pls"]
         if use_wire is None:
             use_wire = self.use_wire
+        if "wire" in kwargs and not use_wire:
+            use_wire = kwargs["wire"]
         if external_pdf is None:
             external_pdf = self.external_pdf
         test_id = self.__get_test_id()
@@ -4193,6 +4211,8 @@ class BaseCase(unittest.TestCase):
             cap_string = self.cap_string
         if is_mobile is None:
             is_mobile = self.mobile_emulator
+        if "mobile" in kwargs and not is_mobile:
+            is_mobile = kwargs["mobile"]
         if d_width is None:
             d_width = self.__device_width
         if d_height is None:
