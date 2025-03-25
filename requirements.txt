@@ -1,7 +1,7 @@
 pip>=25.0.1
 packaging>=24.2
 setuptools~=70.2;python_version<"3.10"
-setuptools>=77.0.3;python_version>="3.10"
+setuptools>=78.0.2;python_version>="3.10"
 wheel>=0.45.1
 attrs>=25.3.0
 certifi>=2025.1.31
@@ -28,7 +28,7 @@ pyyaml>=6.0.2
 pygments>=2.19.1
 pyreadline3>=3.5.3;platform_system=="Windows"
 tabcompleter>=1.4.0
-pdbp>=1.6.1
+pdbp>=1.7.0
 idna==3.10
 chardet==5.2.0
 charset-normalizer==3.4.1
