@@ -7,8 +7,8 @@ with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     cookie_pop_up = '[class*="PopOverContainer"] span'
     if sb.cdp.is_element_visible(cookie_pop_up):
         sb.cdp.mouse_click(cookie_pop_up)
-    origin = "DEN"
-    destination = "PHX"
+    origin = "BOS"
+    destination = "MDW"
     sb.cdp.gui_click_element("input#originationAirportCode")
     sb.sleep(0.5)
     sb.uc_gui_press_keys(" " + "\n")

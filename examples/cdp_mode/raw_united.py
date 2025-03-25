@@ -5,9 +5,9 @@ with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     sb.activate_cdp_mode(url)
     sb.sleep(2.5)
     origin_input = 'input[placeholder="Origin"]'
-    origin = "Boston, MA"
+    origin = "New York, NY"
     destination_input = 'input[placeholder="Destination"]'
-    destination = "San Diego, CA"
+    destination = "Orlando, FL"
     sb.cdp.gui_click_element(origin_input)
     sb.sleep(1.2)
     sb.cdp.type(origin_input, origin)
@@ -24,6 +24,7 @@ with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     sb.sleep(6)
     flights = sb.find_elements('div[class*="CardContainer__block"]')
     print("**** Flights from %s to %s ****" % (origin, destination))
+    print("    (" + sb.get_text("h2.atm-c-heading") + ")")
     if not flights:
         print("* No flights found!")
     for flight in flights:

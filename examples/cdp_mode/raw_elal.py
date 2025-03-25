@@ -1,10 +1,23 @@
+import datetime
 import re
 from seleniumbase import SB
 
 with SB(uc=True, test=True, locale="en") as sb:
     url = "www.elal.com/flight-deals/en-us/flights-from-boston-to-tel-aviv"
     sb.activate_cdp_mode(url)
-    sb.sleep(2)
+    sb.sleep(3)
+    sb.cdp.click('label:contains("Departure date")')
+    sb.sleep(1)
+    today = datetime.date.today()
+    days_ahead = (4 - today.weekday() + 7) % 7
+    next_friday = today + datetime.timedelta(days=days_ahead)
+    formatted_date = next_friday.strftime("%m/%d/%Y")
+    sb.cdp.gui_click_element('input[aria-describedby*="date-input"]')
+    sb.sleep(1)
+    sb.cdp.gui_press_keys("\b" * 10 + formatted_date + "\n")
+    sb.sleep(1)
+    sb.cdp.click('button[data-att="done"]')
+    sb.sleep(1)
     sb.cdp.click('button[data-att="search"]')
     sb.sleep(5)
     sb.cdp.click_if_visible("#onetrust-close-btn-container button")
