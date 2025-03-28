@@ -150,7 +150,7 @@ setup(
         'pip>=25.0.1',
         'packaging>=24.2',
         'setuptools~=70.2;python_version<"3.10"',  # Newer ones had issues
-        'setuptools>=78.0.2;python_version>="3.10"',
+        'setuptools>=78.1.0;python_version>="3.10"',
         'wheel>=0.45.1',
         'attrs>=25.3.0',
         "certifi>=2025.1.31",
@@ -164,7 +164,7 @@ setup(
         "pynose>=1.5.4",
         'platformdirs>=4.3.6;python_version<"3.9"',
         'platformdirs>=4.3.7;python_version>="3.9"',
-        'typing-extensions>=4.12.2',
+        'typing-extensions>=4.13.0',
         "sbvirtualdisplay>=1.4.0",
         'MarkupSafe==2.1.5;python_version<"3.9"',
         'MarkupSafe>=3.0.2;python_version>="3.9"',
@@ -254,12 +254,14 @@ setup(
         # pip install -e .[mss]
         # (An optional library for tile_windows() in CDP Mode.)
         "mss": [
-            "mss==9.0.2",  # Next one drops Python 3.8/3.9
+            'mss==9.0.2;python_version<"3.9"',
+            'mss==10.0.0;python_version>="3.9"',
         ],
         # pip install -e .[pdfminer]
         # (An optional library for parsing PDF files.)
         "pdfminer": [
-            'pdfminer.six==20250324',
+            'pdfminer.six==20250324;python_version<"3.9"',
+            'pdfminer.six==20250327;python_version>="3.9"',
             'cryptography==39.0.2;python_version<"3.9"',
             'cryptography==44.0.2;python_version>="3.9"',
             'cffi==1.17.1',
