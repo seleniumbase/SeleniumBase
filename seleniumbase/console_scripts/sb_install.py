@@ -54,7 +54,7 @@ IS_WINDOWS = shared_utils.is_windows()
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 LOCAL_PATH = "/usr/local/bin/"  # On Mac and Linux systems
 DEFAULT_CHROMEDRIVER_VERSION = "114.0.5735.90"  # (If can't find LATEST_STABLE)
-DEFAULT_GECKODRIVER_VERSION = "v0.35.0"
+DEFAULT_GECKODRIVER_VERSION = "v0.36.0"
 DEFAULT_EDGEDRIVER_VERSION = "115.0.1901.183"  # (If can't find LATEST_STABLE)
 
 
@@ -1296,7 +1296,10 @@ def main(override=None, intel_for_uc=None, force_uc=None):
                     if os.path.exists(new_file):
                         os.remove(new_file)  # Technically the old file now
             log_d("Extracting %s from %s ..." % (contents, file_name))
-            tar.extractall(downloads_folder)
+            if sys.version_info < (3, 12):
+                tar.extractall(downloads_folder)
+            else:
+                tar.extractall(downloads_folder, filter="fully_trusted")
             tar.close()
             os.remove(tar_file_path)
             log_d("%sUnzip Complete!%s\n" % (c2, cr))
