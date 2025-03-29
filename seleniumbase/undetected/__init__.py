@@ -460,8 +460,10 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                     "chrome-extension://"
                 ):
                     # https://issues.chromium.org/issues/396611138
-                    # (Uncomment below when resolved)
-                    # self.close()
+                    # (Remove the Linux conditional when resolved)
+                    # (So that close() is always called)
+                    if "linux" in sys.platform:
+                        self.close()
                     if self.service.is_connectable():
                         self.stop_client()
                         self.service.stop()
@@ -499,8 +501,10 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                     "chrome-extension://"
                 ):
                     # https://issues.chromium.org/issues/396611138
-                    # (Uncomment below when resolved)
-                    # self.close()
+                    # (Remove the Linux conditional when resolved)
+                    # (So that close() is always called)
+                    if "linux" in sys.platform:
+                        self.close()
                     if self.service.is_connectable():
                         self.stop_client()
                         self.service.stop()
