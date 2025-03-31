@@ -1,3 +1,4 @@
+from contextlib import suppress
 from seleniumbase import BaseCase
 BaseCase.main(__name__, __file__)
 
@@ -7,6 +8,54 @@ class UCPresentationClass(BaseCase):
         self.open("data:,")
         self.set_window_position(4, 40)
         self._output_file_saves = False
+        self.create_presentation(theme="serif", transition="none")
+        self.add_slide("<h2>Press SPACE to continue!</h2>\n")
+        self.add_slide(
+            "<h3><b>Before we begin</b></h3><hr />"
+            "<p><b>(Here's the GitHub page)</b></p>",
+            image="https://seleniumbase.io/other/sbase_qr_code.png",
+        )
+        self.begin_presentation(filename="uc_presentation.html")
+
+        with suppress(Exception):
+            self.open("https://www.bostoncodecamp.com/CC38/info")
+            self.create_tour(theme="hopscotch")
+            self.add_tour_step(
+                "<h2>Good Afternoon and Welcome!</h2>", 'h1.wow'
+            )
+            self.add_tour_step(
+                "<h4>PSA: Visit our sponsors later.</h4>",
+                '[href*="/Sponsors"]',
+            )
+            self.add_tour_step(
+                "<h4>Let's check out the schedule...</h4>",
+                '[href*="/Schedule/SessionGrid"]'
+            )
+            self.play_tour()
+
+        with suppress(Exception):
+            self.open(
+                "https://www.bostoncodecamp.com/CC38/Schedule/SessionGrid"
+            )
+            self.highlight("h2", loops=8)
+            if self.is_element_visible('[data-sessionid="869465"]'):
+                self.highlight(
+                    'div[data-sessionid="869465"]', loops=10, scroll=False
+                )
+                self.create_tour(theme="driverjs")
+                self.add_tour_step(
+                    "<h2>Here we are</h2>", '[data-sessionid="869465"]'
+                )
+                self.play_tour()
+                self.click('a[onclick*="869465"]')
+                self.create_tour(theme="hopscotch")
+                self.add_tour_step(
+                    "<h2>What to expect</h2>",
+                    "div.sz-modal-session",
+                    alignment="left",
+                )
+                self.play_tour()
+
         self.create_presentation(theme="serif", transition="none")
         self.add_slide("<h2>Press SPACE to begin!</h2>\n")
         self.add_slide(
@@ -243,5 +292,10 @@ class UCPresentationClass(BaseCase):
             "<h3>Let's move on to<br />some live demos</h3>"
             '<img src="https://seleniumbase.io/other/hackers_at_comp.jpg"'
             ' width="70%">'
+        )
+        self.add_slide(
+            "<h3><b>Live Demo Time!</b></h3><hr />"
+            "<h3>(Let's head over to GitHub...)</h3>",
+            image="https://seleniumbase.io/other/sbase_qr_code.png",
         )
         self.begin_presentation(filename="uc_presentation.html")
