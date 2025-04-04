@@ -1614,6 +1614,8 @@ class CDPMethods():
             pyautogui.dragTo(x2, y2, button="left", duration=timeframe)
 
     def gui_drag_drop_points(self, x1, y1, x2, y2, timeframe=0.35):
+        """Use PyAutoGUI to drag-and-drop from one point to another.
+        Can simulate click-and-hold when using the same point twice."""
         gui_lock = fasteners.InterProcessLock(
             constants.MultiBrowser.PYAUTOGUILOCK
         )
@@ -1653,6 +1655,8 @@ class CDPMethods():
         self.loop.run_until_complete(self.page.wait())
 
     def gui_drag_and_drop(self, drag_selector, drop_selector, timeframe=0.35):
+        """Use PyAutoGUI to drag-and-drop from one selector to another.
+        Can simulate click-and-hold when using the same selector twice."""
         self.__slow_mode_pause_if_set()
         self.bring_active_window_to_front()
         x1, y1 = self.get_gui_element_center(drag_selector)
