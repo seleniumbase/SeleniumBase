@@ -92,5 +92,5 @@ class S3LoggingBucket(object):
         """Keep a record of all file names that have been uploaded.
         Upload log files related to each test after its execution.
         Once done, use already_uploaded_files to create an index file."""
-        global already_uploaded_files
+        global already_uploaded_files  # noqa
         already_uploaded_files.extend(files)
