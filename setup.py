@@ -164,7 +164,7 @@ setup(
         "pynose>=1.5.4",
         'platformdirs>=4.3.6;python_version<"3.9"',
         'platformdirs>=4.3.7;python_version>="3.9"',
-        'typing-extensions>=4.13.0',
+        'typing-extensions>=4.13.1',
         "sbvirtualdisplay>=1.4.0",
         'MarkupSafe==2.1.5;python_version<"3.9"',
         'MarkupSafe>=3.0.2;python_version>="3.9"',
@@ -215,7 +215,7 @@ setup(
         'python-xlib==0.33;platform_system=="Linux"',
         'markdown-it-py==3.0.0',
         'mdurl==0.1.2',
-        'rich==13.9.4',
+        'rich>=14.0.0,<15',
     ],
     extras_require={
         # pip install -e .[allure]
@@ -230,20 +230,20 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage>=7.6.1;python_version<"3.9"',
-            'coverage>=7.7.1;python_version>="3.9"',
+            'coverage>=7.8.0;python_version>="3.9"',
             'pytest-cov>=5.0.0;python_version<"3.9"',
-            'pytest-cov>=6.0.0;python_version>="3.9"',
+            'pytest-cov>=6.1.0;python_version>="3.9"',
         ],
         # pip install -e .[flake8]
         # Usage: flake8
         "flake8": [
             'flake8==5.0.4;python_version<"3.9"',
-            'flake8==7.1.2;python_version>="3.9"',
+            'flake8==7.2.0;python_version>="3.9"',
             "mccabe==0.7.0",
             'pyflakes==2.5.0;python_version<"3.9"',
-            'pyflakes==3.2.0;python_version>="3.9"',
+            'pyflakes==3.3.2;python_version>="3.9"',
             'pycodestyle==2.9.1;python_version<"3.9"',
-            'pycodestyle==2.12.1;python_version>="3.9"',
+            'pycodestyle==2.13.0;python_version>="3.9"',
         ],
         # pip install -e .[ipdb]
         # (Not needed for debugging anymore. SeleniumBase now includes "pdbp".)
@@ -271,7 +271,7 @@ setup(
         # (An optional library for image-processing.)
         "pillow": [
             'Pillow>=10.4.0;python_version<"3.9"',
-            'Pillow>=11.1.0;python_version>="3.9"',
+            'Pillow>=11.2.0;python_version>="3.9"',
         ],
         # pip install -e .[pip-system-certs]
         # (If you see [SSL: CERTIFICATE_VERIFY_FAILED], then get this.)
