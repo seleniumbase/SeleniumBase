@@ -406,7 +406,13 @@ async def create_from_driver(driver) -> Browser:
     browser = await start(conf)
     browser._process_pid = driver.browser_pid
     # Stop chromedriver binary
-    driver.service.stop()
+    try:
+        driver.service.send_remote_shutdown_command()
+    except TypeError:
+        pass
+    finally:
+        with suppress(Exception):
+            driver.service._terminate_process()
     driver.browser_pid = -1
     driver.user_data_dir = None
     return browser
