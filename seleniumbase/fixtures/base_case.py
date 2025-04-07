@@ -4871,6 +4871,13 @@ class BaseCase(unittest.TestCase):
 
     def activate_cdp_mode(self, url=None):
         if hasattr(self.driver, "_is_using_uc") and self.driver._is_using_uc:
+            if self.__is_cdp_swap_needed():
+                return  # CDP Mode is already active
+            if not self.is_connected():
+                self.driver.connect()
+            current_url = self.get_current_url()
+            if not current_url.startswith(("about", "data", "chrome")):
+                self.get_new_driver(undetectable=True)
             self.driver.uc_open_with_cdp_mode(url)
         else:
             self.get_new_driver(undetectable=True)

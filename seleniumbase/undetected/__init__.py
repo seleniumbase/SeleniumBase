@@ -441,7 +441,13 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
             with suppress(Exception):
                 if self.service.is_connectable():
                     self.stop_client()
-                    self.service.stop()
+                    try:
+                        self.service.send_remote_shutdown_command()
+                    except TypeError:
+                        pass
+                    finally:
+                        with suppress(Exception):
+                            self.service._terminate_process()
             if isinstance(timeout, str):
                 if timeout.lower() == "breakpoint":
                     breakpoint()  # To continue:
@@ -466,7 +472,13 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                         self.close()
                     if self.service.is_connectable():
                         self.stop_client()
-                        self.service.stop()
+                        try:
+                            self.service.send_remote_shutdown_command()
+                        except TypeError:
+                            pass
+                        finally:
+                            with suppress(Exception):
+                                self.service._terminate_process()
                     self.service.start()
                     self.start_session()
                     time.sleep(0.003)
@@ -482,7 +494,13 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                 if self.service.is_connectable():
                     self.stop_client()
                     time.sleep(0.003)
-                    self.service.stop()
+                    try:
+                        self.service.send_remote_shutdown_command()
+                    except TypeError:
+                        pass
+                    finally:
+                        with suppress(Exception):
+                            self.service._terminate_process()
         self._is_connected = False
 
     def connect(self):
@@ -507,7 +525,13 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                         self.close()
                     if self.service.is_connectable():
                         self.stop_client()
-                        self.service.stop()
+                        try:
+                            self.service.send_remote_shutdown_command()
+                        except TypeError:
+                            pass
+                        finally:
+                            with suppress(Exception):
+                                self.service._terminate_process()
                     self.service.start()
                     self.start_session()
                     time.sleep(0.003)
@@ -539,7 +563,13 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
             logger.debug("Stopping webdriver service")
             with suppress(Exception):
                 self.stop_client()
-                self.service.stop()
+                try:
+                    self.service.send_remote_shutdown_command()
+                except TypeError:
+                    pass
+                finally:
+                    with suppress(Exception):
+                        self.service._terminate_process()
         with suppress(Exception):
             if self.reactor and isinstance(self.reactor, Reactor):
                 logger.debug("Shutting down Reactor")
