@@ -16,6 +16,15 @@ with SB(uc=True, test=True, locale="en") as sb:
     sb.sleep(1)
     sb.cdp.gui_press_keys("\b" * 10 + formatted_date + "\n")
     sb.sleep(1)
+    days_ahead = (4 - today.weekday() + 8) % 14
+    following_saturday = today + datetime.timedelta(days=days_ahead)
+    formatted_date = following_saturday.strftime("%m/%d/%Y")
+    sb.cdp.gui_click_element(
+        '[data-att="end-date-toggler"] [aria-describedby*="date-input"]'
+    )
+    sb.sleep(1)
+    sb.cdp.gui_press_keys("\b" * 10 + formatted_date + "\n")
+    sb.sleep(1)
     sb.cdp.click('button[data-att="done"]')
     sb.sleep(1)
     sb.cdp.click('button[data-att="search"]')
