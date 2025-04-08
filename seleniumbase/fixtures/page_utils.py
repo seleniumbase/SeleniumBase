@@ -2,11 +2,13 @@
 import codecs
 import fasteners
 import os
+import platform
 import re
 import requests
 from selenium.webdriver.common.by import By
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import css_to_xpath
+from urllib.parse import urlparse
 
 
 def get_domain_url(url):
@@ -298,7 +300,11 @@ def _download_file_to(file_url, destination_folder, new_file_name=None):
     if new_file_name:
         file_name = new_file_name
     else:
-        file_name = file_url.split("/")[-1]
+        if platform.system() == "Windows":
+            url_parts = urlparse(file_url)
+            file_name = url_parts.path.split("/")[-1]
+        else:
+            file_name = file_url.split("/")[-1]
     r = requests.get(file_url, timeout=5)
     file_path = os.path.join(destination_folder, file_name)
     download_file_lock = fasteners.InterProcessLock(
