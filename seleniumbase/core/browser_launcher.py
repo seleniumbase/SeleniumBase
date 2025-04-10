@@ -682,6 +682,7 @@ def uc_open_with_cdp_mode(driver, url=None):
     cdp.gui_click_element = CDPM.gui_click_element
     cdp.gui_drag_drop_points = CDPM.gui_drag_drop_points
     cdp.gui_drag_and_drop = CDPM.gui_drag_and_drop
+    cdp.gui_click_and_hold = CDPM.gui_click_and_hold
     cdp.gui_hover_x_y = CDPM.gui_hover_x_y
     cdp.gui_hover_element = CDPM.gui_hover_element
     cdp.gui_hover_and_click = CDPM.gui_hover_and_click
