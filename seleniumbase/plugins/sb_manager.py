@@ -23,7 +23,7 @@ with SB(uc=True) as sb:  # Many args! Eg. SB(browser="edge")
 
 #########################################
 """
-from contextlib import contextmanager
+from contextlib import contextmanager, suppress
 
 
 @contextmanager  # Usage: -> ``with SB() as sb:``
@@ -258,6 +258,7 @@ def SB(
     time_limit (float):  SECONDS (Safely fail tests that exceed the time limit)
     """
     import colorama
+    import gc
     import os
     import sys
     import time
@@ -1231,6 +1232,15 @@ def SB(
     sb.cap_file = sb_config.cap_file
     sb.cap_string = sb_config.cap_string
     sb._has_failure = False  # This may change
+
+    with suppress(Exception):
+        stack_base = traceback.format_stack()[0].split(os.sep)[-1]
+        test_base = stack_base.split(", in ")[0]
+        filename = test_base.split('"')[0]
+        methodname = ".line_" + test_base.split(", line ")[-1]
+        context_id = filename.split(".")[0] + methodname
+        sb._manager_saved_id = context_id
+
     if hasattr(sb_config, "headless_active"):
         sb.headless_active = sb_config.headless_active
     else:
@@ -1357,6 +1367,7 @@ def SB(
                     "%s%s%s%s%s"
                     % (c1, left_space, end_text, right_space, cr)
                 )
+        gc.collect()
     if test and test_name and not test_passed and raise_test_failure:
         raise exception
     elif (

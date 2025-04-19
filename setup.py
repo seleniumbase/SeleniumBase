@@ -148,7 +148,7 @@ setup(
     python_requires=">=3.8",
     install_requires=[
         'pip>=25.0.1',
-        'packaging>=24.2',
+        'packaging>=25.0',
         'setuptools~=70.2;python_version<"3.10"',  # Newer ones had issues
         'setuptools>=78.1.0;python_version>="3.10"',
         'wheel>=0.45.1',
@@ -210,7 +210,7 @@ setup(
         'parameterized==0.9.0',
         "behave==1.2.6",
         'soupsieve==2.6',
-        "beautifulsoup4==4.13.3",
+        "beautifulsoup4==4.13.4",
         'pyotp==2.9.0',
         'python-xlib==0.33;platform_system=="Linux"',
         'markdown-it-py==3.0.0',
@@ -261,7 +261,7 @@ setup(
         # (An optional library for parsing PDF files.)
         "pdfminer": [
             'pdfminer.six==20250324;python_version<"3.9"',
-            'pdfminer.six==20250327;python_version>="3.9"',
+            'pdfminer.six==20250416;python_version>="3.9"',
             'cryptography==39.0.2;python_version<"3.9"',
             'cryptography==44.0.2;python_version>="3.9"',
             'cffi==1.17.1',
@@ -271,7 +271,7 @@ setup(
         # (An optional library for image-processing.)
         "pillow": [
             'Pillow>=10.4.0;python_version<"3.9"',
-            'Pillow>=11.2.0;python_version>="3.9"',
+            'Pillow>=11.2.1;python_version>="3.9"',
         ],
         # pip install -e .[pip-system-certs]
         # (If you see [SSL: CERTIFICATE_VERIFY_FAILED], then get this.)
