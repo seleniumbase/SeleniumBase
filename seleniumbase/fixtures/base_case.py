@@ -162,6 +162,7 @@ class BaseCase(unittest.TestCase):
         self.__jqc_default_theme = None
         self.__jqc_default_color = None
         self.__jqc_default_width = None
+        self.__saved_id = None
         # Requires self._* instead of self.__* for external class use
         self._language = "English"
         self._presentation_slides = {}
@@ -15676,19 +15677,24 @@ class BaseCase(unittest.TestCase):
             test_id = "%s.%s" % (file_name, scenario_name)
             return test_id
         elif hasattr(self, "is_context_manager") and self.is_context_manager:
+            if hasattr(self, "_manager_saved_id"):
+                self.__saved_id = self._manager_saved_id
+            if self.__saved_id:
+                return self.__saved_id
             filename = self.__class__.__module__.split(".")[-1] + ".py"
             methodname = self._testMethodName
             context_id = None
             if filename == "base_case.py" or methodname == "runTest":
                 import traceback
-                stack_base = traceback.format_stack()[0].split(", in ")[0]
-                test_base = stack_base.split(", in ")[0].split(os.sep)[-1]
+                stack_base = traceback.format_stack()[0].split(os.sep)[-1]
+                test_base = stack_base.split(", in ")[0]
                 if hasattr(self, "cm_filename") and self.cm_filename:
                     filename = self.cm_filename
                 else:
                     filename = test_base.split('"')[0]
                 methodname = ".line_" + test_base.split(", line ")[-1]
                 context_id = filename.split(".")[0] + methodname
+                self.__saved_id = context_id
                 return context_id
         test_id = "%s.%s.%s" % (
             self.__class__.__module__,

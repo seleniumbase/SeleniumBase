@@ -53,28 +53,58 @@ class CDP:
         self._session = requests.Session()
         self._last_resp = None
         self._last_json = None
-        resp = self.get(self.endpoints.json)
-        self.sessionId = resp[0]["id"]
-        self.wsurl = resp[0]["webSocketDebuggerUrl"]
+        with requests.Session() as session:
+            resp = session.get(
+                self.server_addr + self.endpoints.json,
+                headers={"Connection": "close"},
+                timeout=2,
+            )
+            self.sessionId = resp.json()[0]["id"]
+            self.wsurl = resp.json()[0]["webSocketDebuggerUrl"]
 
     def tab_activate(self, id=None):
         if not id:
             active_tab = self.tab_list()[0]
             id = active_tab.id
             self.wsurl = active_tab.webSocketDebuggerUrl
-        return self.post(self.endpoints["activate"].format(id=id))
+        with requests.Session() as session:
+            resp = session.post(
+                self.server_addr + self.endpoints["activate"].format(id=id),
+                headers={"Connection": "close"},
+                timeout=2,
+            )
+            return resp.json()
 
     def tab_list(self):
-        retval = self.get(self.endpoints["list"])
-        return [PageElement(o) for o in retval]
+        with requests.Session() as session:
+            resp = session.get(
+                self.server_addr + self.endpoints["list"],
+                headers={"Connection": "close"},
+                timeout=2,
+            )
+            retval = resp.json()
+            return [PageElement(o) for o in retval]
 
     def tab_new(self, url):
-        return self.post(self.endpoints["new"].format(url=url))
+        with requests.Session() as session:
+            resp = session.post(
+                self.server_addr + self.endpoints["new"].format(url=url),
+                headers={"Connection": "close"},
+                timeout=2,
+            )
+            return resp.json()
 
     def tab_close_last_opened(self):
         sessions = self.tab_list()
         opentabs = [s for s in sessions if s["type"] == "page"]
-        return self.post(self.endpoints["close"].format(id=opentabs[-1]["id"]))
+        with requests.Session() as session:
+            endp_close = self.endpoints["close"]
+            resp = session.post(
+                self.server_addr + endp_close.format(id=opentabs[-1]["id"]),
+                headers={"Connection": "close"},
+                timeout=2,
+            )
+            return resp.json()
 
     async def send(self, method, params):
         pip_find_lock = fasteners.InterProcessLock(
@@ -101,14 +131,19 @@ class CDP:
         from urllib.parse import unquote
 
         uri = unquote(uri, errors="strict")
-        resp = self._session.get(self.server_addr + uri)
-        try:
-            self._last_resp = resp
-            self._last_json = resp.json()
-        except Exception:
-            return
-        else:
-            return self._last_json
+        with requests.Session() as session:
+            resp = session.get(
+                self.server_addr + uri,
+                headers={"Connection": "close"},
+                timeout=2,
+            )
+            try:
+                self._last_resp = resp
+                self._last_json = resp.json()
+            except Exception:
+                return
+            else:
+                return self._last_json
 
     def post(self, uri, data=None):
         from urllib.parse import unquote
@@ -116,12 +151,18 @@ class CDP:
         uri = unquote(uri, errors="strict")
         if not data:
             data = {}
-        resp = self._session.post(self.server_addr + uri, json=data)
-        try:
-            self._last_resp = resp
-            self._last_json = resp.json()
-        except Exception:
-            return self._last_resp
+        with requests.Session() as session:
+            resp = session.post(
+                self.server_addr + uri,
+                json=data,
+                headers={"Connection": "close"},
+                timeout=2,
+            )
+            try:
+                self._last_resp = resp
+                self._last_json = resp.json()
+            except Exception:
+                return self._last_resp
 
     @property
     def last_json(self):
