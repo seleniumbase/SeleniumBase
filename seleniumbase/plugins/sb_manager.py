@@ -1367,6 +1367,12 @@ def SB(
                     "%s%s%s%s%s"
                     % (c1, left_space, end_text, right_space, cr)
                 )
+        if hasattr(sb_config, "_cdp_aclose"):
+            import asyncio
+            with suppress(Exception):
+                loop = asyncio.get_event_loop()
+                asyncio.set_event_loop(loop)
+                loop.run_until_complete(sb_config._cdp_aclose())
         gc.collect()
     if test and test_name and not test_passed and raise_test_failure:
         raise exception
