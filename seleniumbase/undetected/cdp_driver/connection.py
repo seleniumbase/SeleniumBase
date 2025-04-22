@@ -295,7 +295,6 @@ class Connection(metaclass=CantTouchThis):
             if self.listener and self.listener.running:
                 self.listener.cancel()
                 self.enabled_domains.clear()
-            await asyncio.sleep(0.015)
             try:
                 await self.websocket.close()
             except Exception:
