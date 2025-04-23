@@ -1,12 +1,18 @@
 from seleniumbase import SB
 
 with SB(uc=True, incognito=True, test=True) as sb:
-    sb.driver.uc_open_with_reconnect("https://pixelscan.net/", 7)
-    sb.remove_elements(".bg-bannerBg")  # Remove the top banner
-    sb.remove_elements("pxlscn-ad1")  # Remove the ad banner
+    sb.driver.uc_open_with_reconnect("https://pixelscan.net/", 2)
+    sb.uc_click('button[class*="startButton"]', reconnect_time=20)
+    sb.remove_elements(".bg-bannerBg")  # Remove top banner
+    sb.remove_elements("pxlscn-ad1")  # Remove an ad banner
+    sb.remove_elements("pxlscn-ad2")  # Remove an ad banner
     sb.remove_elements("jdiv")  # Remove chat widgets
     no_automation_detected = "No automation framework detected"
-    sb.assert_text(no_automation_detected, "pxlscn-bot-detection")
+    sb.assert_text(
+        no_automation_detected,
+        "pxlscn-bot-detection",
+        timeout=20,
+    )
     not_masking_text = "You are not masking your fingerprint"
     sb.assert_text(not_masking_text, "pxlscn-fingerprint-masking")
     consistent_selector = 'div.bg-consistentBg [alt="Good"]'
