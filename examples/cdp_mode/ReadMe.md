@@ -286,6 +286,7 @@ with SB(uc=True, test=True, ad_block=True) as sb:
     sb.activate_cdp_mode(url)
     sb.sleep(2.5)
     sb.cdp.click_if_visible('[data-automation-id*="close-mark"]')
+    sb.sleep(0.3)
     sb.cdp.mouse_click('input[aria-label="Search"]')
     sb.sleep(1.2)
     search = "Settlers of Catan Board Game"
@@ -300,7 +301,7 @@ with SB(uc=True, test=True, ad_block=True) as sb:
     for item in items:
         if required_text in item.text:
             description = item.querySelector(
-                '[data-automation-id="product-price"] + span'
+                '[data-automation-id="product-title"]'
             )
             if description and description.text not in unique_item_text:
                 unique_item_text.append(description.text)

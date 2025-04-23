@@ -402,7 +402,8 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
 
     def add_cdp_listener(self, event_name, callback):
         if (
-            self.reactor
+            hasattr(self, "reactor")
+            and self.reactor
             and self.reactor is not None
             and isinstance(self.reactor, Reactor)
         ):
@@ -411,7 +412,11 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         return False
 
     def clear_cdp_listeners(self):
-        if self.reactor and isinstance(self.reactor, Reactor):
+        if (
+            hasattr(self, "reactor")
+            and self.reactor
+            and isinstance(self.reactor, Reactor)
+        ):
             self.reactor.handlers.clear()
 
     def window_new(self, url=None):
@@ -581,7 +586,11 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                 finally:
                     with suppress(Exception):
                         self.service._terminate_process()
-        if self.reactor and hasattr(self.reactor, "event"):
+        if (
+            hasattr(self, "reactor")
+            and self.reactor
+            and hasattr(self.reactor, "event")
+        ):
             logger.debug("Shutting down Reactor")
             with suppress(Exception):
                 self.reactor.event.set()

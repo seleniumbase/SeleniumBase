@@ -292,9 +292,6 @@ class Connection(metaclass=CantTouchThis):
         Closes the websocket connection. Shouldn't be called manually by users.
         """
         if self.websocket and self.websocket.state is not State.CLOSED:
-            if self.listener and self.listener.running:
-                self.listener.cancel()
-                self.enabled_domains.clear()
             try:
                 await self.websocket.close()
             except Exception:
@@ -302,6 +299,9 @@ class Connection(metaclass=CantTouchThis):
                     "\n❌ Error closing websocket connection to %s",
                     self.websocket_url
                 )
+            if self.listener and self.listener.running:
+                self.listener.cancel()
+                self.enabled_domains.clear()
             logger.debug(
                 "\n❌ Closed websocket connection to %s", self.websocket_url
             )
@@ -549,8 +549,7 @@ class Listener:
             except asyncio.TimeoutError:
                 self.idle.set()
                 # Pause for a moment.
-                # await asyncio.sleep(self.time_before_considered_idle / 10)
-                await asyncio.sleep(0.015)
+                await asyncio.sleep(self.time_before_considered_idle / 10)
                 continue
             except (Exception,) as e:
                 logger.debug(
