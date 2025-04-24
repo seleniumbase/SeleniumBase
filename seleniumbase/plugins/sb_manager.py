@@ -1373,6 +1373,7 @@ def SB(
                 loop = asyncio.get_event_loop()
                 asyncio.set_event_loop(loop)
                 loop.run_until_complete(sb_config._cdp_aclose())
+                loop.close()
         gc.collect()
     if test and test_name and not test_passed and raise_test_failure:
         raise exception

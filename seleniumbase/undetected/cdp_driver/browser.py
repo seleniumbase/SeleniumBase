@@ -190,7 +190,7 @@ class Browser:
 
     sleep = wait
     """Alias for wait"""
-    def _handle_target_update(
+    async def _handle_target_update(
         self,
         event: Union[
             cdp.target.TargetInfoChanged,
@@ -226,19 +226,17 @@ class Browser:
             target_info: cdp.target.TargetInfo = event.target_info
             from .tab import Tab
 
-            new_target = Tab(
-                (
-                    f"ws://{self.config.host}:{self.config.port}"
-                    f"/devtools/{target_info.type_ or 'page'}"
-                    f"/{target_info.target_id}"
-                ),
-                target=target_info,
-                browser=self,
+            websocket_url = (
+                f"ws://{self.config.host}:{self.config.port}"
+                f"/devtools/{target_info.type_ or 'page'}"
+                f"/{target_info.target_id}"
             )
-            self.targets.append(new_target)
-            logger.debug(
-                "Target #%d created => %s", len(self.targets), new_target
-            )
+
+            async with Tab(websocket_url=websocket_url, target=target_info, browser=self) as new_target:
+                self.targets.append(new_target)
+                logger.debug(
+                    "Target #%d created => %s", len(self.targets), new_target
+                )
         elif isinstance(event, cdp.target.TargetDestroyed):
             current_tab = next(
                 filter(

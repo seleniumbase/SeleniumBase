@@ -137,6 +137,16 @@ class Tab(Connection):
         self._dom = None
         self._window_id = None
 
+
+    async def __aenter__(self):
+        return self
+
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        await self.aclose()
+        if exc_type and exc_val:
+            raise exc_type(exc_val)
+
     @property
     def inspector_url(self):
         """

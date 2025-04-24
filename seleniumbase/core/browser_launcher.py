@@ -603,6 +603,7 @@ def uc_open_with_cdp_mode(driver, url=None):
                 loop.run_until_complete(page_tab.activate())
 
     loop.run_until_complete(driver.cdp_base.update_targets())
+    loop.run_until_complete(driver.cdp_base.connection.aclose())
     page = loop.run_until_complete(driver.cdp_base.get(url))
     with gui_lock:
         with suppress(Exception):
