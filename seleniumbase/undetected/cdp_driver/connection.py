@@ -348,7 +348,37 @@ class Connection(metaclass=CantTouchThis):
 
     async def set_locale(self, locale: Optional[str] = None):
         """Sets the Language Locale code via set_user_agent_override."""
-        await self.send(cdp.network.set_user_agent_override("", locale))
+        await self.set_user_agent(user_agent="", accept_language=locale)
+
+    async def set_timezone(self, timezone: Optional[str] = None):
+        """Sets the Timezone via set_timezone_override."""
+        await self.send(cdp.emulation.set_timezone_override(timezone))
+
+    async def set_user_agent(
+        self,
+        user_agent: Optional[str] = "",
+        accept_language: Optional[str] = None,
+        platform: Optional[str] = None,  # navigator.platform
+    ):
+        """Sets the User Agent via set_user_agent_override."""
+        if not user_agent:
+            user_agent = ""
+        await self.send(cdp.network.set_user_agent_override(
+            user_agent=user_agent,
+            accept_language=accept_language,
+            platform=platform,
+        ))
+
+    async def set_geolocation(self, geolocation: Optional[tuple] = None):
+        """Sets the User Agent via set_geolocation_override."""
+        await self.send(cdp.browser.grant_permissions(
+            permissions=["geolocation"],
+        ))
+        await self.send(cdp.emulation.set_geolocation_override(
+            latitude=geolocation[0],
+            longitude=geolocation[1],
+            accuracy=100,
+        ))
 
     def __getattr__(self, item):
         """:meta private:"""
