@@ -515,7 +515,7 @@ def uc_open_with_reconnect(driver, url, reconnect_time=None):
     return None
 
 
-def uc_open_with_cdp_mode(driver, url=None):
+def uc_open_with_cdp_mode(driver, url=None, browser_executable_path=None):
     import asyncio
     from seleniumbase.undetected.cdp_driver import cdp_util
 
@@ -562,6 +562,7 @@ def uc_open_with_cdp_mode(driver, url=None):
             headless=headless,
             headed=headed,
             xvfb=xvfb,
+            browser_executable_path=browser_executable_path
         )
     )
     loop.run_until_complete(driver.cdp_base.wait(0))
