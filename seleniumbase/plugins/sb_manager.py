@@ -1234,7 +1234,8 @@ def SB(
     sb._has_failure = False  # This may change
 
     with suppress(Exception):
-        stack_base = traceback.format_stack()[0].split(os.sep)[-1]
+        stack_base = traceback.format_stack()[0].split("with SB(")[0]
+        stack_base = stack_base.split(os.sep)[-1]
         test_base = stack_base.split(", in ")[0]
         filename = test_base.split('"')[0]
         methodname = ".line_" + test_base.split(", line ")[-1]
@@ -1251,7 +1252,8 @@ def SB(
         c1 = colorama.Fore.GREEN
         b1 = colorama.Style.BRIGHT
         cr = colorama.Style.RESET_ALL
-        stack_base = traceback.format_stack()[0].split(os.sep)[-1]
+        stack_base = traceback.format_stack()[0].split("with SB(")[0]
+        stack_base = stack_base.split(os.sep)[-1]
         test_name = stack_base.split(", in ")[0].replace('", line ', ":")
         test_name += ":SB"
         start_text = "=== {%s} starts ===" % test_name

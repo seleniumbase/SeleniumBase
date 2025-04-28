@@ -6,6 +6,7 @@ import logging
 import pathlib
 import urllib.parse
 import warnings
+from seleniumbase import config as sb_config
 from typing import Dict, List, Union, Optional, Tuple
 from . import browser as cdp_browser
 from . import element
@@ -136,6 +137,14 @@ class Tab(Connection):
         self.browser = browser
         self._dom = None
         self._window_id = None
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        await self.aclose()
+        if exc_type and exc_val:
+            raise exc_type(exc_val)
 
     @property
     def inspector_url(self):
@@ -348,7 +357,12 @@ class Tab(Connection):
         if new_window and not new_tab:
             new_tab = True
         if new_tab:
-            return await self.browser.get(url, new_tab, new_window)
+            if hasattr(sb_config, "incognito") and sb_config.incognito:
+                return await self.browser.get(
+                    url, new_tab=False, new_window=True
+                )
+            else:
+                return await self.browser.get(url, new_tab, new_window)
         else:
             frame_id, loader_id, *_ = await self.send(cdp.page.navigate(url))
             await self
