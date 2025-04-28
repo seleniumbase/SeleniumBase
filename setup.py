@@ -147,13 +147,14 @@ setup(
     ],
     python_requires=">=3.8",
     install_requires=[
-        'pip>=25.0.1',
+        'pip>=25.0.1;python_version<"3.9"',
+        'pip>=25.1;python_version>="3.9"',
         'packaging>=25.0',
         'setuptools~=70.2;python_version<"3.10"',  # Newer ones had issues
-        'setuptools>=79.0.1;python_version>="3.10"',
+        'setuptools>=80.0.0;python_version>="3.10"',
         'wheel>=0.45.1',
         'attrs>=25.3.0',
-        "certifi>=2025.1.31",
+        "certifi>=2025.4.26",
         "exceptiongroup>=1.2.2",
         'websockets~=13.1;python_version<"3.9"',
         'websockets>=15.0.1;python_version>="3.9"',
