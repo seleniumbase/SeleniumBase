@@ -271,7 +271,6 @@ class Connection(metaclass=CantTouchThis):
                     max_size=MAX_SIZE,
                 )
                 self.listener = Listener(self)
-                sb_config._cdp_aclose = self.aclose
             except (Exception,) as e:
                 logger.debug("Exception during opening of websocket: %s", e)
                 if self.listener:
@@ -446,7 +445,6 @@ class Connection(metaclass=CantTouchThis):
             if not _is_update:
                 await self._register_handlers()
             await self.websocket.send(tx.message)
-            sb_config._cdp_aclose = self.aclose
             try:
                 return await tx
             except ProtocolException as e:
