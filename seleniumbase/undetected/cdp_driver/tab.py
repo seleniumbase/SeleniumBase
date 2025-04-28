@@ -338,6 +338,7 @@ class Tab(Connection):
         url="about:blank",
         new_tab: bool = False,
         new_window: bool = False,
+        **kwargs,
     ):
         """
         Top level get. Utilizes the first tab to retrieve the given url.
@@ -359,14 +360,23 @@ class Tab(Connection):
         if new_tab:
             if hasattr(sb_config, "incognito") and sb_config.incognito:
                 return await self.browser.get(
-                    url, new_tab=False, new_window=True
+                    url, new_tab=False, new_window=True, **kwargs
                 )
             else:
-                return await self.browser.get(url, new_tab, new_window)
+                return await self.browser.get(
+                    url, new_tab, new_window, **kwargs
+                )
         else:
-            frame_id, loader_id, *_ = await self.send(cdp.page.navigate(url))
-            await self
-            return self
+            if not kwargs:
+                frame_id, loader_id, *_ = await self.send(
+                    cdp.page.navigate(url)
+                )
+                await self
+                return self
+            else:
+                return await self.browser.get(
+                    url, new_tab, new_window, **kwargs
+                )
 
     async def query_selector_all(
         self,

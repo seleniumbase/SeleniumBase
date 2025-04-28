@@ -101,12 +101,12 @@ class CDPMethods():
         element.get_parent = lambda: self.__get_parent(element)
         return element
 
-    def get(self, url):
+    def get(self, url, **kwargs):
         url = shared_utils.fix_url_as_needed(url)
         driver = self.driver
         if hasattr(driver, "cdp_base"):
             driver = driver.cdp_base
-        self.loop.run_until_complete(self.page.get(url))
+        self.loop.run_until_complete(self.page.get(url, **kwargs))
         url_protocol = url.split(":")[0]
         safe_url = True
         if url_protocol not in ["about", "data", "chrome"]:
@@ -120,8 +120,8 @@ class CDPMethods():
         self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.wait())
 
-    def open(self, url):
-        self.get(url)
+    def open(self, url, **kwargs):
+        self.get(url, **kwargs)
 
     def reload(self, ignore_cache=True, script_to_evaluate_on_load=None):
         self.loop.run_until_complete(

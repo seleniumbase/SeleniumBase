@@ -515,7 +515,7 @@ def uc_open_with_reconnect(driver, url, reconnect_time=None):
     return None
 
 
-def uc_open_with_cdp_mode(driver, url=None):
+def uc_open_with_cdp_mode(driver, url=None, **kwargs):
     import asyncio
     from seleniumbase.undetected.cdp_driver import cdp_util
 
@@ -607,7 +607,9 @@ def uc_open_with_cdp_mode(driver, url=None):
                 loop.run_until_complete(page_tab.activate())
 
     loop.run_until_complete(driver.cdp_base.update_targets())
-    page = loop.run_until_complete(driver.cdp_base.get(url))
+    page = loop.run_until_complete(
+        driver.cdp_base.get(url, **kwargs)
+    )
     with gui_lock:
         with suppress(Exception):
             shared_utils.make_writable(constants.MultiBrowser.PYAUTOGUILOCK)
@@ -792,8 +794,8 @@ def uc_open_with_cdp_mode(driver, url=None):
     driver._is_using_cdp = True
 
 
-def uc_activate_cdp_mode(driver, url=None):
-    uc_open_with_cdp_mode(driver, url=url)
+def uc_activate_cdp_mode(driver, url=None, **kwargs):
+    uc_open_with_cdp_mode(driver, url=url, **kwargs)
 
 
 def uc_open_with_disconnect(driver, url, timeout=None):

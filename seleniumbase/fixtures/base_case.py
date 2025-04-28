@@ -4870,7 +4870,7 @@ class BaseCase(unittest.TestCase):
         script = """document.designMode = 'off';"""
         self.execute_script(script)
 
-    def activate_cdp_mode(self, url=None):
+    def activate_cdp_mode(self, url=None, **kwargs):
         if hasattr(self.driver, "_is_using_uc") and self.driver._is_using_uc:
             if self.__is_cdp_swap_needed():
                 return  # CDP Mode is already active
@@ -4879,10 +4879,10 @@ class BaseCase(unittest.TestCase):
             current_url = self.get_current_url()
             if not current_url.startswith(("about", "data", "chrome")):
                 self.get_new_driver(undetectable=True)
-            self.driver.uc_open_with_cdp_mode(url)
+            self.driver.uc_open_with_cdp_mode(url, **kwargs)
         else:
             self.get_new_driver(undetectable=True)
-            self.driver.uc_open_with_cdp_mode(url)
+            self.driver.uc_open_with_cdp_mode(url, **kwargs)
         self.cdp = self.driver.cdp
 
     def activate_recorder(self):

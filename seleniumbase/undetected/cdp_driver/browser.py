@@ -256,6 +256,7 @@ class Browser:
         url="about:blank",
         new_tab: bool = False,
         new_window: bool = False,
+        **kwargs,
     ) -> tab.Tab:
         """Top level get. Utilizes the first tab to retrieve given url.
         Convenience function known from selenium.
@@ -309,6 +310,26 @@ class Browser:
                 and sb_config._cdp_geolocation
             ):
                 _cdp_geolocation = sb_config._cdp_geolocation
+            if "timezone" in kwargs:
+                _cdp_timezone = kwargs["timezone"]
+            elif "tzone" in kwargs:
+                _cdp_timezone = kwargs["tzone"]
+            if "user_agent" in kwargs:
+                _cdp_user_agent = kwargs["user_agent"]
+            elif "agent" in kwargs:
+                _cdp_user_agent = kwargs["agent"]
+            if "locale" in kwargs:
+                _cdp_locale = kwargs["locale"]
+            elif "lang" in kwargs:
+                _cdp_locale = kwargs["lang"]
+            if "platform" in kwargs:
+                _cdp_platform = kwargs["platform"]
+            elif "plat" in kwargs:
+                _cdp_platform = kwargs["plat"]
+            if "geolocation" in kwargs:
+                _cdp_geolocation = kwargs["geolocation"]
+            elif "geoloc" in kwargs:
+                _cdp_geolocation = kwargs["geoloc"]
             if _cdp_timezone:
                 await connection.send(cdp.page.navigate("about:blank"))
                 await connection.set_timezone(_cdp_timezone)

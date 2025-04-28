@@ -679,7 +679,7 @@ self._print(TEXT)  # Calls Python's print() / Allows for translations
 
 # (Mainly for CDP Mode)  -  (For all CDP methods, see the CDP Mode Docs)
 
-self.activate_cdp_mode(url=None)  # Activate CDP Mode on the given URL
+self.activate_cdp_mode(url=None, **kwargs)  # Activate CDP Mode on URL
 self.reconnect(timeout=0.1)  # disconnect() + sleep(timeout) + connect()
 self.disconnect()  # Stops the webdriver service to prevent detection
 self.connect()  # Starts the webdriver service to allow actions again
@@ -759,7 +759,7 @@ driver.uc_open(url)  # (Open in same tab with default reconnect_time)
 driver.uc_open_with_tab(url)  # (New tab with default reconnect_time)
 driver.uc_open_with_reconnect(url, reconnect_time=None)  # (New tab)
 driver.uc_open_with_disconnect(url, timeout=None)  # New tab + sleep()
-driver.uc_activate_cdp_mode(url=None)  # Activate CDP Mode on the given URL
+driver.uc_activate_cdp_mode(url=None, **kwargs)  # Activate CDP Mode on URL
 driver.reconnect(timeout=0.1)  # disconnect() + sleep(timeout) + connect()
 driver.disconnect()  # Stops the webdriver service to prevent detection
 driver.connect()  # Starts the webdriver service to allow actions again

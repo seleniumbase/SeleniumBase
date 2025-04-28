@@ -383,6 +383,10 @@ async def start(
         sb_config._cdp_user_agent = None
     if "platform" in kwargs:
         sb_config._cdp_platform = kwargs["platform"]
+    elif "plat" in kwargs:
+        sb_config._cdp_platform = kwargs["plat"]
+    else:
+        sb_config._cdp_platform = None
     return driver
 
 
