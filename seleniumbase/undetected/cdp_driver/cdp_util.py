@@ -10,8 +10,10 @@ import types
 import typing
 from contextlib import suppress
 from seleniumbase import config as sb_config
+from seleniumbase import extensions
 from seleniumbase.config import settings
 from seleniumbase.core import detect_b_ver
+from seleniumbase.core import download_helper
 from seleniumbase.core import proxy_helper
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import shared_utils
@@ -25,7 +27,10 @@ import mycdp as cdp
 
 logger = logging.getLogger(__name__)
 IS_LINUX = shared_utils.is_linux()
+DOWNLOADS_FOLDER = download_helper.get_downloads_folder()
 PROXY_DIR_LOCK = proxy_helper.PROXY_DIR_LOCK
+EXTENSIONS_DIR = os.path.dirname(os.path.realpath(extensions.__file__))
+AD_BLOCK_ZIP_PATH = os.path.join(EXTENSIONS_DIR, "ad_block.zip")
 T = typing.TypeVar("T")
 
 
@@ -168,6 +173,19 @@ def __add_chrome_ext_dir(extension_dir, dir_path):
     return extension_dir
 
 
+def __unzip_to_new_folder(zip_file, folder):
+    proxy_dir_lock = fasteners.InterProcessLock(PROXY_DIR_LOCK)
+    with proxy_dir_lock:
+        with suppress(Exception):
+            shared_utils.make_writable(PROXY_DIR_LOCK)
+        if not os.path.exists(folder):
+            import zipfile
+            zip_ref = zipfile.ZipFile(zip_file, "r")
+            os.makedirs(folder)
+            zip_ref.extractall(folder)
+            zip_ref.close()
+
+
 def __add_chrome_proxy_extension(
     extension_dir,
     proxy_string,
@@ -231,6 +249,7 @@ async def start(
     browser_executable_path: Optional[PathLike] = None,
     browser_args: Optional[List[str]] = None,
     xvfb_metrics: Optional[List[str]] = None,  # "Width,Height" for Linux
+    ad_block: Optional[bool] = False,
     sandbox: Optional[bool] = True,
     lang: Optional[str] = None,  # Set the Language Locale Code
     host: Optional[str] = None,  # Chrome remote-debugging-host
@@ -238,7 +257,10 @@ async def start(
     xvfb: Optional[int] = None,  # Use a special virtual display on Linux
     headed: Optional[bool] = None,  # Override default Xvfb mode on Linux
     expert: Optional[bool] = None,  # Open up closed Shadow-root elements
+    agent: Optional[str] = None,  # Set the user-agent string
     proxy: Optional[str] = None,  # "host:port" or "user:pass@host:port"
+    tzone: Optional[str] = None,  # Eg "America/New_York", "Asia/Kolkata"
+    geoloc: Optional[list | tuple] = None,  # Eg (48.87645, 2.26340)
     extension_dir: Optional[str] = None,  # Chrome extension directory
     **kwargs: Optional[dict],
 ) -> Browser:
@@ -296,6 +318,13 @@ async def start(
                 proxy_user,
                 proxy_pass,
             )
+    if ad_block:
+        incognito = False
+        guest = False
+        ad_block_zip = AD_BLOCK_ZIP_PATH
+        ad_block_dir = os.path.join(DOWNLOADS_FOLDER, "ad_block")
+        __unzip_to_new_folder(ad_block_zip, ad_block_dir)
+        extension_dir = __add_chrome_ext_dir(extension_dir, ad_block_dir)
     if not config:
         config = Config(
             user_data_dir,
@@ -329,6 +358,26 @@ async def start(
         sb_config._cdp_locale = kwargs["locale_code"]
     else:
         sb_config._cdp_locale = None
+    if tzone:
+        sb_config._cdp_timezone = tzone
+    elif "timezone" in kwargs:
+        sb_config._cdp_timezone = kwargs["timezone"]
+    else:
+        sb_config._cdp_timezone = None
+    if geoloc:
+        sb_config._cdp_geolocation = geoloc
+    elif "geolocation" in kwargs:
+        sb_config._cdp_geolocation = kwargs["geolocation"]
+    else:
+        sb_config._cdp_geolocation = None
+    if agent:
+        sb_config._cdp_user_agent = agent
+    elif "user_agent" in kwargs:
+        sb_config._cdp_user_agent = kwargs["user_agent"]
+    else:
+        sb_config._cdp_user_agent = None
+    if "platform" in kwargs:
+        sb_config._cdp_platform = kwargs["platform"]
     return driver
 
 

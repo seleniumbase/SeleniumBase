@@ -285,10 +285,63 @@ class Browser:
             connection: tab.Tab = next(
                 filter(lambda item: item.type_ == "page", self.targets)
             )
-            # Use the tab to navigate to new url
             if hasattr(sb_config, "_cdp_locale") and sb_config._cdp_locale:
                 await connection.send(cdp.page.navigate("about:blank"))
-                await connection.set_locale(sb_config._cdp_locale)
+                if (
+                    hasattr(sb_config, "_cdp_user_agent")
+                    and sb_config._cdp_user_agent
+                ):
+                    pass
+                elif (
+                    hasattr(sb_config, "_cdp_platform")
+                    and sb_config._cdp_platform
+                ):
+                    pass
+                else:
+                    await connection.set_locale(sb_config._cdp_locale)
+            if hasattr(sb_config, "_cdp_timezone") and sb_config._cdp_timezone:
+                await connection.send(cdp.page.navigate("about:blank"))
+                await connection.set_timezone(sb_config._cdp_timezone)
+            if (
+                hasattr(sb_config, "_cdp_user_agent")
+                and sb_config._cdp_user_agent
+            ):
+                await connection.send(cdp.page.navigate("about:blank"))
+                if hasattr(sb_config, "_cdp_locale") and sb_config._cdp_locale:
+                    _cdp_platform = None
+                    if (
+                        hasattr(sb_config, "_cdp_platform")
+                        and sb_config._cdp_platform
+                    ):
+                        _cdp_platform = sb_config._cdp_platform
+                    await connection.set_user_agent(
+                        sb_config._cdp_user_agent,
+                        sb_config._cdp_locale,
+                        _cdp_platform,
+                    )
+                else:
+                    await connection.set_user_agent(sb_config._cdp_user_agent)
+            elif (
+                hasattr(sb_config, "_cdp_platform") and sb_config._cdp_platform
+            ):
+                await connection.send(cdp.page.navigate("about:blank"))
+                if hasattr(sb_config, "_cdp_locale") and sb_config._cdp_locale:
+                    _cdp_platform = sb_config._cdp_platform
+                    await connection.set_user_agent(
+                        accept_language=sb_config._cdp_locale,
+                        platform=_cdp_platform,
+                    )
+                else:
+                    await connection.set_user_agent(
+                        platform=sb_config._cdp_platform
+                    )
+            if (
+                hasattr(sb_config, "_cdp_geolocation")
+                and sb_config._cdp_geolocation
+            ):
+                await connection.send(cdp.page.navigate("about:blank"))
+                await connection.set_geolocation(sb_config._cdp_geolocation)
+            # Use the tab to navigate to new url
             frame_id, loader_id, *_ = await connection.send(
                 cdp.page.navigate(url)
             )
