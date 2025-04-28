@@ -325,6 +325,11 @@ async def start(
         ad_block_dir = os.path.join(DOWNLOADS_FOLDER, "ad_block")
         __unzip_to_new_folder(ad_block_zip, ad_block_dir)
         extension_dir = __add_chrome_ext_dir(extension_dir, ad_block_dir)
+    if (
+        "binary_location" in kwargs
+        and not browser_executable_path
+    ):
+        browser_executable_path = kwargs["binary_location"]
     if not config:
         config = Config(
             user_data_dir,
