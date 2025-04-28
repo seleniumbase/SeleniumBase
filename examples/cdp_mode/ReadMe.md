@@ -361,8 +361,8 @@ with SB(uc=True, test=True, locale="en", pls="none") as sb:
 ### 🐙 <b translate="no">CDP Mode</b> API / Methods
 
 ```python
-sb.cdp.get(url)
-sb.cdp.open(url)
+sb.cdp.get(url, **kwargs)
+sb.cdp.open(url, **kwargs)
 sb.cdp.reload(ignore_cache=True, script_to_evaluate_on_load=None)
 sb.cdp.refresh()
 sb.cdp.get_event_loop()

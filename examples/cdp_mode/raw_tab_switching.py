@@ -1,6 +1,6 @@
 from seleniumbase import SB
 
-with SB(uc=True) as sb:
+with SB(uc=True, test=True) as sb:
     sb.activate_cdp_mode()
     sb.open("data:text/html,<h1>Page A</h1>")
     sb.assert_text("Page A")
