@@ -151,7 +151,7 @@ setup(
         'pip>=25.1;python_version>="3.9"',
         'packaging>=25.0',
         'setuptools~=70.2;python_version<"3.10"',  # Newer ones had issues
-        'setuptools>=80.0.0;python_version>="3.10"',
+        'setuptools>=80.1.0;python_version>="3.10"',
         'wheel>=0.45.1',
         'attrs>=25.3.0',
         "certifi>=2025.4.26",
