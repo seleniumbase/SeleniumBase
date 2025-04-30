@@ -3534,12 +3534,24 @@ class BaseCase(unittest.TestCase):
 
     def set_window_size(self, width, height):
         self.__check_scope()
+        if self.__is_cdp_swap_needed():
+            position = self.cdp.get_window_position()
+            x = position["x"]
+            y = position["y"]
+            self.cdp.set_window_rect(x, y, width, height)
+            return
         self._check_browser()
         self.driver.set_window_size(width, height)
         self.__demo_mode_pause_if_active(tiny=True)
 
     def set_window_position(self, x, y):
         self.__check_scope()
+        if self.__is_cdp_swap_needed():
+            size = self.cdp.get_window_size()
+            width = size["width"]
+            height = size["height"]
+            self.cdp.set_window_rect(x, y, width, height)
+            return
         self._check_browser()
         self.driver.set_window_position(x, y)
         self.__demo_mode_pause_if_active(tiny=True)
