@@ -1369,14 +1369,23 @@ def SB(
                     "%s%s%s%s%s"
                     % (c1, left_space, end_text, right_space, cr)
                 )
-        if undetectable and hasattr(sb, "_drivers_browser_map"):
+        python3_12_or_newer = (sys.version_info >= (3, 12))
+        if undetectable:
             import asyncio
-            for driver in sb._drivers_browser_map.keys():
-                if hasattr(driver, "cdp") and driver.cdp:
-                    asyncio.set_event_loop(driver.cdp.loop)
-                    tasks = [tab.aclose() for tab in driver.cdp.get_tabs()]
-                    tasks.append(driver.cdp.driver.connection.aclose())
-                    driver.cdp.loop.run_until_complete(asyncio.gather(*tasks))
+            if not python3_12_or_newer and hasattr(sb_config, "_cdp_aclose"):
+                with suppress(Exception):
+                    loop = asyncio.get_event_loop()
+                    asyncio.set_event_loop(loop)
+                    loop.run_until_complete(sb_config._cdp_aclose())
+            if python3_12_or_newer and hasattr(sb, "_drivers_browser_map"):
+                for driver in sb._drivers_browser_map.keys():
+                    if hasattr(driver, "cdp") and driver.cdp:
+                        asyncio.set_event_loop(driver.cdp.loop)
+                        tasks = [tab.aclose() for tab in driver.cdp.get_tabs()]
+                        tasks.append(driver.cdp.driver.connection.aclose())
+                        driver.cdp.loop.run_until_complete(
+                            asyncio.gather(*tasks)
+                        )
                     driver.cdp.loop.close()
         gc.collect()
     if test and test_name and not test_passed and raise_test_failure:

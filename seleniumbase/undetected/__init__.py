@@ -523,9 +523,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         with suppress(Exception):
             for window_handle in self.window_handles:
                 self.switch_to.window(window_handle)
-                if self.current_url.startswith(
-                    "chrome-extension://"
-                ):
+                if self.current_url.startswith("chrome-extension://"):
                     # https://issues.chromium.org/issues/396611138
                     # (Remove the Linux conditional when resolved)
                     # (So that close() is always called)
