@@ -19,7 +19,6 @@ from typing import (
 )
 import websockets
 from websockets.protocol import State
-from seleniumbase import config as sb_config
 from . import cdp_util as util
 import mycdp as cdp
 import mycdp.network
@@ -271,11 +270,10 @@ class Connection(metaclass=CantTouchThis):
                     max_size=MAX_SIZE,
                 )
                 self.listener = Listener(self)
-                sb_config._cdp_aclose = self.aclose
             except (Exception,) as e:
                 logger.debug("Exception during opening of websocket: %s", e)
                 if self.listener:
-                    self.listener.cancel()
+                    await self.listener.cancel()
                 raise
         if not self.listener or not self.listener.running:
             self.listener = Listener(self)
@@ -300,7 +298,7 @@ class Connection(metaclass=CantTouchThis):
                     self.websocket_url
                 )
             if self.listener and self.listener.running:
-                self.listener.cancel()
+                await self.listener.cancel()
                 self.enabled_domains.clear()
             logger.debug(
                 "\n❌ Closed websocket connection to %s", self.websocket_url
@@ -446,7 +444,6 @@ class Connection(metaclass=CantTouchThis):
             if not _is_update:
                 await self._register_handlers()
             await self.websocket.send(tx.message)
-            sb_config._cdp_aclose = self.aclose
             try:
                 return await tx
             except ProtocolException as e:
@@ -557,9 +554,13 @@ class Listener:
     def time_before_considered_idle(self, seconds: Union[int, float]):
         self._time_before_considered_idle = seconds
 
-    def cancel(self):
+    async def cancel(self):
         if self.task and not self.task.cancelled():
             self.task.cancel()
+            try:
+                await self.task
+            except asyncio.CancelledError:
+                pass
 
     @property
     def running(self):
