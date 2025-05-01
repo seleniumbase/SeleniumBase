@@ -519,16 +519,6 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
     import asyncio
     from seleniumbase.undetected.cdp_driver import cdp_util
 
-    if (
-        hasattr(driver, "_is_using_cdp")
-        and driver._is_using_cdp
-        and hasattr(driver, "cdp")
-        and driver.cdp
-    ):
-        # CDP Mode was already initialized
-        driver.disconnect()
-        driver.cdp.open(url, **kwargs)
-        return
     current_url = None
     try:
         current_url = driver.current_url
@@ -552,6 +542,23 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
     safe_url = True
     if url_protocol not in ["about", "data", "chrome"]:
         safe_url = False
+
+    if (
+        hasattr(driver, "_is_using_cdp")
+        and driver._is_using_cdp
+        and hasattr(driver, "cdp")
+        and driver.cdp
+        and hasattr(driver.cdp, "loop")
+    ):
+        # CDP Mode was already initialized
+        driver.cdp.open(url, **kwargs)
+        if not safe_url:
+            time.sleep(constants.UC.CDP_MODE_OPEN_WAIT)
+            if IS_WINDOWS:
+                time.sleep(constants.UC.EXTRA_WINDOWS_WAIT)
+        else:
+            time.sleep(0.012)
+        return
 
     headless = False
     headed = None
