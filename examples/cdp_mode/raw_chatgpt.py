@@ -6,6 +6,7 @@ with SB(uc=True, test=True, ad_block=True) as sb:
     sb.activate_cdp_mode(url)
     sb.sleep(1)
     sb.click_if_visible('button[aria-label="Close dialog"]')
+    sb.click_if_visible('button[data-testid="close-button"]')
     query = "Compare Playwright to SeleniumBase in under 178 words"
     sb.press_keys("#prompt-textarea", query)
     sb.click('button[data-testid="send-button"]')
