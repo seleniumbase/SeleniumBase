@@ -1,9 +1,12 @@
 from __future__ import annotations
 import asyncio
 import base64
+import cv2
 import datetime
 import logging
+import os
 import pathlib
+import uuid
 import urllib.parse
 import warnings
 from seleniumbase import config as sb_config
@@ -137,6 +140,7 @@ class Tab(Connection):
         self.browser = browser
         self._dom = None
         self._window_id = None
+        self._window_uuid = uuid.uuid4()
 
     async def __aenter__(self):
         return self
@@ -1283,19 +1287,146 @@ class Tab(Connection):
                         res.append(abs_url)
         return res
 
-    async def verify_cf(self):
-        """(An attempt)"""
-        checkbox = None
-        checkbox_sibling = await self.wait_for(text="verify you are human")
-        if checkbox_sibling:
-            parent = checkbox_sibling.parent
-            while parent:
-                checkbox = await parent.query_selector("input[type=checkbox]")
-                if checkbox:
-                    break
-                parent = parent.parent
-        await checkbox.mouse_move()
-        await checkbox.mouse_click()
+    async def mouse_click(
+        self,
+        x: float,
+        y: float,
+        button: str = "left",
+        buttons: Optional[int] = 1,
+        modifiers: Optional[int] = 0,
+        _until_event: Optional[type] = None,
+    ):
+        """native click on position x,y
+        :param y:
+        :type y:
+        :param x:
+        :type x:
+        :param button: str (default = "left")
+        :param buttons: which button (default 1 = left)
+        :param modifiers: *(Optional)* Bit field representing pressed modifier keys.
+                Alt=1, Ctrl=2, Meta/Command=4, Shift=8 (default: 0).
+        :param _until_event: internal. event to wait for before returning
+        :return:
+        """
+
+        await self.send(
+            cdp.input_.dispatch_mouse_event(
+                "mousePressed",
+                x=x,
+                y=y,
+                modifiers=modifiers,
+                button=cdp.input_.MouseButton(button),
+                buttons=buttons,
+                click_count=1,
+            )
+        )
+
+        await self.send(
+            cdp.input_.dispatch_mouse_event(
+                "mouseReleased",
+                x=x,
+                y=y,
+                modifiers=modifiers,
+                button=cdp.input_.MouseButton(button),
+                buttons=buttons,
+                click_count=1,
+            )
+        )
+
+    async def verify_checkbox(self, checkbox_template_path: str = None):
+        """
+        convenience function to click on a checkbox simulating a mouse click
+
+        :param checkbox_template:
+            checkbox_template can be custom (for example your language, included is english only),
+            but you need to create the checkbox_template yourself, which is just a cropped
+            image of the area, where the target is exactly in the center. see example on
+            (https://ultrafunkamsterdam.github.io/nodriver/nodriver/classes/tab.html#example-111x71),
+
+        :type template_image:
+        :param flash: whether to show an indicator where the mouse is clicking.
+        :type flash:
+        :return:
+        :rtype:
+        """
+        if self.browser and self.browser.config and self.browser.config.expert:
+            raise Exception(
+                """
+                this function is useless in expert mode, since it disables site-isolation-trials.
+                while this is a useful future to have access to all elements (also in iframes),
+                it is also being detected.
+                """
+            )
+        x, y = await self.get_checkbox_coords(
+            checkbox_template_path=checkbox_template_path
+        )
+        await self.mouse_click(x, y)
+
+    async def get_checkbox_coords(
+        self, checkbox_template_path: PathLike = None
+    ) -> Union[Tuple[int, int], None]:
+        """
+        attempts to find the location of given checkbox image in the current viewport
+        the only real use case for this is bot-detection systems.
+        you can find for example the location of a 'verify'-checkbox,
+        which are hidden from dom using shadow-root's or workers.
+
+        checkbox_template can be custom, but you need to create the checkbox_template yourself,
+        which is just a cropped image of the area, where the checkbox is exactly in the center.
+
+        :param checkbox_template:
+        :type checkbox_template:
+        :return:
+        :rtype:
+        """
+        try:
+
+            if checkbox_template_path:
+                checkbox_template = pathlib.Path(checkbox_template_path)
+                if not checkbox_template.exists():
+                    raise FileNotFoundError(
+                        "%s was not found in the current location : %s"
+                        % (checkbox_template, os.getcwd())
+                    )
+
+            await self.save_screenshot(f"auto_tab_screenshot_{self._window_uuid}.jpg")
+            await self.sleep(0.05)
+            im = cv2.imread(f"auto_tab_screenshot_{self._window_uuid}.jpg")
+            im_gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
+            if checkbox_template:
+                checkbox = cv2.imread(str(checkbox_template))
+            else:
+                with open(f"checkbox_template_{self._window_uuid}.png", "w+b") as fh:
+                    fh.write(util.get_cf_template())
+                checkbox = cv2.imread(f"checkbox_template_{self._window_uuid}.png")
+            template_gray = cv2.cvtColor(checkbox, cv2.COLOR_BGR2GRAY)
+            match = cv2.matchTemplate(im_gray, template_gray, cv2.TM_CCOEFF_NORMED)
+            (min_v, max_v, min_l, max_l) = cv2.minMaxLoc(match)
+            (xs, ys) = max_l
+            tmp_h, tmp_w = template_gray.shape[:2]
+            xe = xs + tmp_w
+            ye = ys + tmp_h
+            cx = (xs + xe) // 2
+            cy = (ys + ye) // 2
+            return cx, cy
+        except (TypeError, OSError, PermissionError):
+            pass  # ignore these exceptions
+        except:  # noqa - don't ignore other exceptions
+            raise
+        finally:
+            try:
+                os.unlink(f"auto_tab_screenshot_{self._window_uuid}.jpg")
+            except (FileNotFoundError, PermissionError) as e:
+                logger.warning(f"Could not unlink temporary screenshot: {e}")
+            if checkbox_template:
+                pass
+            else:
+                try:
+                    os.unlink(f"checkbox_template_{self._window_uuid}.png")
+                except:  # noqa
+                    logger.warning(
+                        f"could not unlink template file checkbox_template_{self._window_uuid}.png"
+                    )
 
     async def get_document(self):
         return await self.send(cdp.dom.get_document())
