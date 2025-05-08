@@ -78,7 +78,7 @@ class Files:
     # The "downloaded_files" folder is DELETED when starting new tests.
     # Add "--archive-downloads" to save a copy in "archived_files".
     # (These folder names should NOT be changed.)
-    DOWNLOADS_FOLDER = "downloaded_files"
+    DOWNLOADS_FOLDER = "tmp"
     ARCHIVED_DOWNLOADS_FOLDER = "archived_files"
 
 
