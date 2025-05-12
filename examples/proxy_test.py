@@ -15,6 +15,8 @@ class ProxyTests(BaseCase):
             self.get_new_driver(page_load_strategy="none")
         self.open("https://api.ipify.org/")
         ip_address = self.get_text("body")
+        if "ERR" in ip_address:
+            raise Exception("Failed to determine IP Address!")
         print("\n\nMy IP Address = %s\n" % ip_address)
         self.open("https://ipinfo.io/%s" % ip_address)
         self.sleep(2)
@@ -22,10 +24,13 @@ class ProxyTests(BaseCase):
         self.wait_for_element_present('[href="/signup"]')
         self.wait_for_text("Hosted domains", timeout=20)
         self.highlight("h1")
+        pop_up = '[role="dialog"] span.cursor-pointer'
+        self.click_if_visible(pop_up)
         self.highlight("#block-summary")
+        self.click_if_visible(pop_up)
         self.highlight("#block-geolocation")
+        self.click_if_visible(pop_up)
         self.sleep(2)
-        self.click_if_visible("span.ipinfo-modal__close")
         print("Displaying Host Info:")
         text = self.get_text("#block-summary").split("Hosted domains")[0]
         rows = text.split("\n")
