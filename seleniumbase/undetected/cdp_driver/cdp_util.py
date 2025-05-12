@@ -191,6 +191,7 @@ def __add_chrome_proxy_extension(
     proxy_string,
     proxy_user,
     proxy_pass,
+    proxy_scheme="http",
     proxy_bypass_list=None,
     multi_proxy=False,
 ):
@@ -210,6 +211,7 @@ def __add_chrome_proxy_extension(
                 proxy_string,
                 proxy_user,
                 proxy_pass,
+                proxy_scheme,
                 bypass_list,
                 zip_it=False,
             )
@@ -230,6 +232,7 @@ def __add_chrome_proxy_extension(
                     proxy_string,
                     proxy_user,
                     proxy_pass,
+                    proxy_scheme,
                     bypass_list,
                     zip_it=False,
                 )
@@ -312,11 +315,15 @@ async def start(
             proxy_user = user_with_pass.split(":")[0]
             proxy_pass = user_with_pass.split(":")[1]
             proxy_string = proxy.split("@")[1]
+            proxy_string, proxy_scheme = proxy_helper.validate_proxy_string(
+                proxy_string, keep_scheme=True
+            )
             extension_dir = __add_chrome_proxy_extension(
                 extension_dir,
                 proxy_string,
                 proxy_user,
                 proxy_pass,
+                proxy_scheme,
             )
     if ad_block:
         incognito = False

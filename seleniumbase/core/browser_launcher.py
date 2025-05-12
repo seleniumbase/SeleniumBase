@@ -1921,6 +1921,7 @@ def _add_chrome_proxy_extension(
     proxy_string,
     proxy_user,
     proxy_pass,
+    proxy_scheme,
     proxy_bypass_list=None,
     zip_it=True,
     multi_proxy=False,
@@ -1939,7 +1940,11 @@ def _add_chrome_proxy_extension(
             proxy_zip_lock = fasteners.InterProcessLock(PROXY_ZIP_LOCK)
             with proxy_zip_lock:
                 proxy_helper.create_proxy_ext(
-                    proxy_string, proxy_user, proxy_pass, bypass_list
+                    proxy_string,
+                    proxy_user,
+                    proxy_pass,
+                    proxy_scheme,
+                    bypass_list,
                 )
                 proxy_zip = proxy_helper.PROXY_ZIP_PATH
                 chrome_options.add_extension(proxy_zip)
@@ -1950,6 +1955,7 @@ def _add_chrome_proxy_extension(
                     proxy_string,
                     proxy_user,
                     proxy_pass,
+                    proxy_scheme,
                     bypass_list,
                     zip_it=False,
                 )
@@ -1968,7 +1974,11 @@ def _add_chrome_proxy_extension(
                     _set_proxy_filenames()
                 if not os.path.exists(proxy_helper.PROXY_ZIP_PATH):
                     proxy_helper.create_proxy_ext(
-                        proxy_string, proxy_user, proxy_pass, bypass_list
+                        proxy_string,
+                        proxy_user,
+                        proxy_pass,
+                        proxy_scheme,
+                        bypass_list,
                     )
                 proxy_zip = proxy_helper.PROXY_ZIP_PATH
                 chrome_options.add_extension(proxy_zip)
@@ -1984,6 +1994,7 @@ def _add_chrome_proxy_extension(
                         proxy_string,
                         proxy_user,
                         proxy_pass,
+                        proxy_scheme,
                         bypass_list,
                         zip_it=False,
                     )
@@ -2058,6 +2069,7 @@ def _set_chrome_options(
     proxy_auth,
     proxy_user,
     proxy_pass,
+    proxy_scheme,
     proxy_bypass_list,
     proxy_pac_url,
     multi_proxy,
@@ -2362,6 +2374,7 @@ def _set_chrome_options(
                 proxy_string,
                 proxy_user,
                 proxy_pass,
+                proxy_scheme,
                 proxy_bypass_list,
                 zip_it,
                 multi_proxy,
@@ -2381,6 +2394,7 @@ def _set_chrome_options(
                 None,
                 proxy_user,
                 proxy_pass,
+                proxy_scheme,
                 proxy_bypass_list,
                 zip_it,
                 multi_proxy,
@@ -2992,6 +3006,7 @@ def get_driver(
     proxy_auth = False
     proxy_user = None
     proxy_pass = None
+    proxy_scheme = "http"
     if proxy_string:
         username_and_password = None
         if "@" in proxy_string:
@@ -3015,7 +3030,9 @@ def get_driver(
                     "that has authentication! (If using a proxy server "
                     "without auth, Chrome, Edge, or Firefox may be used.)"
                 )
-        proxy_string = proxy_helper.validate_proxy_string(proxy_string)
+        proxy_string, proxy_scheme = proxy_helper.validate_proxy_string(
+            proxy_string, keep_scheme=True
+        )
         if proxy_string and proxy_user and proxy_pass:
             proxy_auth = True
     elif proxy_pac_url:
@@ -3104,6 +3121,7 @@ def get_driver(
             proxy_auth,
             proxy_user,
             proxy_pass,
+            proxy_scheme,
             proxy_bypass_list,
             proxy_pac_url,
             multi_proxy,
@@ -3164,6 +3182,7 @@ def get_driver(
             proxy_auth,
             proxy_user,
             proxy_pass,
+            proxy_scheme,
             proxy_bypass_list,
             proxy_pac_url,
             multi_proxy,
@@ -3224,6 +3243,7 @@ def get_remote_driver(
     proxy_auth,
     proxy_user,
     proxy_pass,
+    proxy_scheme,
     proxy_bypass_list,
     proxy_pac_url,
     multi_proxy,
@@ -3364,6 +3384,7 @@ def get_remote_driver(
             proxy_auth,
             proxy_user,
             proxy_pass,
+            proxy_scheme,
             proxy_bypass_list,
             proxy_pac_url,
             multi_proxy,
@@ -3540,6 +3561,7 @@ def get_remote_driver(
             proxy_auth,
             proxy_user,
             proxy_pass,
+            proxy_scheme,
             proxy_bypass_list,
             proxy_pac_url,
             multi_proxy,
@@ -3661,6 +3683,7 @@ def get_local_driver(
     proxy_auth,
     proxy_user,
     proxy_pass,
+    proxy_scheme,
     proxy_bypass_list,
     proxy_pac_url,
     multi_proxy,
@@ -4325,6 +4348,7 @@ def get_local_driver(
                     proxy_string,
                     proxy_user,
                     proxy_pass,
+                    proxy_scheme,
                     proxy_bypass_list,
                     zip_it=True,
                     multi_proxy=multi_proxy,
@@ -4341,6 +4365,7 @@ def get_local_driver(
                     None,
                     proxy_user,
                     proxy_pass,
+                    proxy_scheme,
                     proxy_bypass_list,
                     zip_it=True,
                     multi_proxy=multi_proxy,
@@ -4531,6 +4556,7 @@ def get_local_driver(
                 proxy_auth,
                 proxy_user,
                 proxy_pass,
+                proxy_scheme,
                 proxy_bypass_list,
                 proxy_pac_url,
                 multi_proxy,

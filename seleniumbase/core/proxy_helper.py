@@ -17,7 +17,12 @@ PROXY_DIR_LOCK = os.path.join(DOWNLOADS_DIR, "proxy_dir.lock")
 
 
 def create_proxy_ext(
-    proxy_string, proxy_user, proxy_pass, bypass_list=None, zip_it=True
+    proxy_string,
+    proxy_user,
+    proxy_pass,
+    proxy_scheme="http",
+    bypass_list=None,
+    zip_it=True,
 ):
     """Implementation of https://stackoverflow.com/a/35293284 for
     https://stackoverflow.com/questions/12848327/
@@ -40,7 +45,7 @@ def create_proxy_ext(
             """    mode: "fixed_servers",\n"""
             """    rules: {\n"""
             """      singleProxy: {\n"""
-            """        scheme: "http",\n"""
+            """        scheme: "%s",\n"""
             """        host: "%s",\n"""
             """        port: parseInt("%s")\n"""
             """      },\n"""
@@ -63,7 +68,12 @@ def create_proxy_ext(
             """        {urls: ["<all_urls>"]},\n"""
             """        ['blocking']\n"""
             """);""" % (
-                proxy_host, proxy_port, bypass_list, proxy_user, proxy_pass
+                proxy_scheme,
+                proxy_host,
+                proxy_port,
+                bypass_list,
+                proxy_user,
+                proxy_pass,
             )
         )
     else:
@@ -157,11 +167,18 @@ def remove_proxy_zip_if_present():
             os.remove(PROXY_ZIP_LOCK)
 
 
-def validate_proxy_string(proxy_string):
+def validate_proxy_string(proxy_string, keep_scheme=False):
     if proxy_string in proxy_list.PROXY_LIST.keys():
         proxy_string = proxy_list.PROXY_LIST[proxy_string]
         if not proxy_string:
             return None
+    proxy_scheme = "http"
+    if proxy_string.startswith("https://"):
+        proxy_scheme = "https"
+    elif proxy_string.startswith("socks4://"):
+        proxy_scheme = "socks4"
+    elif proxy_string.startswith("socks5://"):
+        proxy_scheme = "socks5"
     valid = False
     val_ip = re.match(
         r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+$", proxy_string
@@ -198,6 +215,8 @@ def validate_proxy_string(proxy_string):
     if not valid:
         __display_proxy_warning(proxy_string)
         proxy_string = None
+    if keep_scheme:
+        return (proxy_string, proxy_scheme)
     return proxy_string
 
 
