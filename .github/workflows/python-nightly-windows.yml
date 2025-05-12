@@ -39,6 +39,9 @@ jobs:
     - name: Install chromedriver
       run: |
         seleniumbase install chromedriver
+    - name: Get chrome-headless-shell
+      run: |
+        sbase get chs
     - name: Make sure pytest is working
       run: |
         echo "def test_1(): pass" > nothing.py

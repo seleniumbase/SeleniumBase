@@ -1,4 +1,10 @@
 """ SeleniumBase Verification """
+import sys
+
+headless = "--headless"
+if "win32" in sys.platform:
+    headless = "--chs"
+
 if __name__ == "__main__":
     from pytest import main
     main([__file__, "-v", "-s"])
@@ -19,7 +25,7 @@ def test_simple_cases(pytester):
                 self.assert_equal('yes', 'no')
         """
     )
-    result = pytester.inline_run("--headless", "--rs", "-v")
+    result = pytester.inline_run(headless, "--rs", "-v")
     assert result.matchreport("test_passing").passed
     assert result.matchreport("test_failing").skipped
 
@@ -37,7 +43,7 @@ def test_basecase(pytester):
                 self.click("body p")  # selector
         """
     )
-    result = pytester.inline_run("--headless", "-v")
+    result = pytester.inline_run(headless, "-v")
     assert result.matchreport("test_basecase").passed
 
 
@@ -54,7 +60,7 @@ def test_run_with_dashboard(pytester):
                 self.skip("Skip!")
         """
     )
-    result = pytester.inline_run("--headless", "--rs", "--dashboard", "-v")
+    result = pytester.inline_run(headless, "--rs", "--dashboard", "-v")
     assert result.matchreport("test_1_passing").passed
     assert result.matchreport("test_2_failing").failed
     assert result.matchreport("test_3_skipped").skipped
@@ -71,7 +77,7 @@ def test_sb_fixture(pytester):
             sb.click("body p")  # selector
         """
     )
-    result = pytester.inline_run("--headless", "-v")
+    result = pytester.inline_run(headless, "-v")
     assert result.matchreport("test_sb_fixture").passed
 
 
@@ -88,7 +94,7 @@ def test_request_sb_fixture(pytester):
             sb.tearDown()
         """
     )
-    result = pytester.inline_run("--headless", "-v")
+    result = pytester.inline_run(headless, "-v")
     assert result.matchreport("test_request_sb_fixture").passed
 
 
@@ -130,18 +136,22 @@ def test_rerun_failures(pytester):
                 self.assert_equal('yes', 'no')
         """
     )
-    result = pytester.runpytest("--headless", "--reruns=1", "--rs", "-v")
+    result = pytester.runpytest(headless, "--reruns=1", "--rs", "-v")
     assert_outcomes(result, passed=1, failed=1, rerun=1)
 
 
 def test_browser_launcher(pytester):
     pytester.makepyfile(
         """
+        import sys
         from seleniumbase import get_driver
+        b = None
+        if "win32" in sys.platform:
+            b = "chs"
         def test_browser_launcher():
             success = False
             try:
-                driver = get_driver("chrome", headless=True)
+                driver = get_driver("chrome", headless=True, binary_location=b)
                 driver.get("data:text/html,<p>Data URL</p>")
                 source = driver.page_source
                 assert "Data URL" in source
@@ -151,20 +161,24 @@ def test_browser_launcher(pytester):
             assert success
         """
     )
-    result = pytester.inline_run("--headless", "-v")
+    result = pytester.inline_run(headless, "-v")
     assert result.matchreport("test_browser_launcher").passed
 
 
 def test_framework_components(pytester):
     pytester.makepyfile(
         """
+        import sys
         from seleniumbase import get_driver
         from seleniumbase import js_utils
         from seleniumbase import page_actions
+        b = None
+        if "win32" in sys.platform:
+            b = "chs"
         def test_framework_components():
             success = False
             try:
-                driver = get_driver("chrome", headless=True)
+                driver = get_driver("chrome", headless=True, binary_location=b)
                 driver.get('data:text/html,<h1 class="top">Data URL</h2>')
                 source = driver.page_source
                 assert "Data URL" in source
@@ -176,5 +190,5 @@ def test_framework_components(pytester):
             assert success
         """
     )
-    result = pytester.inline_run("--headless", "-v", "-s")
+    result = pytester.inline_run(headless, "-v", "-s")
     assert result.matchreport("test_framework_components").passed
