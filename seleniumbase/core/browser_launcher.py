@@ -5095,6 +5095,7 @@ def get_local_driver(
                                         None,  # proxy_auth
                                         None,  # proxy_user
                                         None,  # proxy_pass
+                                        None,  # proxy_scheme
                                         None,  # proxy_bypass_list
                                         None,  # proxy_pac_url
                                         None,  # multi_proxy
@@ -5348,6 +5349,7 @@ def get_local_driver(
                         None,  # proxy_auth
                         None,  # proxy_user
                         None,  # proxy_pass
+                        None,  # proxy_scheme
                         None,  # proxy_bypass_list
                         None,  # proxy_pac_url
                         None,  # multi_proxy
