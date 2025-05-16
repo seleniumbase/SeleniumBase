@@ -7,7 +7,8 @@ from seleniumbase import sb_cdp
 def main():
     url = "https://www.openstreetmap.org/"
     sb = sb_cdp.Chrome(url, geoloc=(48.87645, 2.26340))
-    sb.click("span.geolocate")
+    sb.sleep(2)
+    sb.click('a[aria-label="Show My Location"]')
     sb.assert_url_contains("48.876450/2.263400")
     sb.sleep(5)
 

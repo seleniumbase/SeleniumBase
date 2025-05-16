@@ -38,7 +38,7 @@ class TestGeolocation(BaseCase):
             },
         )
         self.open("https://www.openstreetmap.org/")
-        self.click("span.geolocate")
+        self.click('a[aria-label="Show My Location"]')
         self.assert_url_contains("48.876450/2.263400")
         self.save_screenshot_to_logs()
         if self.headed:
