@@ -493,6 +493,8 @@ class Tab(Connection):
         search_id, nresult = await self.send(
             cdp.dom.perform_search(text, True)
         )
+        if not nresult:
+            return []
         if nresult:
             node_ids = await self.send(
                 cdp.dom.get_search_results(search_id, 0, nresult)
@@ -584,6 +586,8 @@ class Tab(Connection):
         search_id, nresult = await self.send(
             cdp.dom.perform_search(text, True)
         )
+        if not nresult:
+            return
         node_ids = await self.send(
             cdp.dom.get_search_results(search_id, 0, nresult)
         )

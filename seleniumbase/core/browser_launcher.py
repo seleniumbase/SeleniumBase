@@ -404,7 +404,7 @@ def uc_special_open_if_cf(
                 special = True
                 if status_str == "403" or status_str == "429":
                     time.sleep(0.06)  # Forbidden / Blocked! (Wait first!)
-        if special:
+        if special and not hasattr(driver, "cdp_base"):
             time.sleep(0.05)
             with driver:
                 driver.execute_script('window.open("%s","_blank");' % url)
@@ -472,9 +472,12 @@ def uc_open_with_tab(driver, url):
         time.sleep(0.3)
         return
     if (url.startswith("http:") or url.startswith("https:")):
-        with driver:
-            driver.execute_script('window.open("%s","_blank");' % url)
-            driver.close()
+        if not hasattr(driver, "cdp_base"):
+            with driver:
+                driver.execute_script('window.open("%s","_blank");' % url)
+                driver.close()
+        else:
+            driver.cdp.open(url)
         page_actions.switch_to_window(driver, driver.window_handles[-1], 2)
     else:
         driver.default_get(url)  # The original one
@@ -492,9 +495,12 @@ def uc_open_with_reconnect(driver, url, reconnect_time=None):
         reconnect_time = constants.UC.RECONNECT_TIME
     if (url.startswith("http:") or url.startswith("https:")):
         script = 'window.open("%s","_blank");' % url
-        driver.execute_script(script)
-        time.sleep(0.05)
-        driver.close()
+        if not hasattr(driver, "cdp_base"):
+            driver.execute_script(script)
+            time.sleep(0.05)
+            driver.close()
+        else:
+            driver.cdp.open(url)
         if reconnect_time == "disconnect":
             driver.disconnect()
             time.sleep(0.008)

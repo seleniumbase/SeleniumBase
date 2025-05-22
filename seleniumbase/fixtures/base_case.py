@@ -8262,7 +8262,10 @@ class BaseCase(unittest.TestCase):
         In CDP Mode, the CDP-Driver controls the web browser.
         The CDP-Driver can be connected while WebDriver isn't.
         """
-        return self.driver.is_connected()
+        if hasattr(self.driver, "is_connected"):
+            return self.driver.is_connected()
+        else:
+            return True
 
     def is_chromium(self):
         """Return True if the browser is Chrome or Edge."""
