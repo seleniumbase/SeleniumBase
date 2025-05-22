@@ -7678,10 +7678,13 @@ class BaseCase(unittest.TestCase):
                     break
                 time.sleep(1)
         if not found and not os.path.exists(downloaded_file_path):
+            plural = "s"
+            if timeout == 1:
+                plural = ""
             message = (
                 "File {%s} was not found in the downloads folder {%s} "
-                "after %s seconds! (Or the download didn't complete!)"
-                % (file, df, timeout)
+                "after %s second%s! (Or the download didn't complete!)"
+                % (file, df, timeout, plural)
             )
             page_actions.timeout_exception("NoSuchFileException", message)
         if self.recorder_mode and self.__current_url_is_recordable():
@@ -7735,10 +7738,13 @@ class BaseCase(unittest.TestCase):
                     break
                 time.sleep(1)
         if not found:
+            plural = "s"
+            if timeout == 1:
+                plural = ""
             message = (
                 "Regex {%s} was not found in the downloads folder {%s} "
-                "after %s seconds! (Or the download didn't complete!)"
-                % (regex, df, timeout)
+                "after %s second%s! (Or the download didn't complete!)"
+                % (regex, df, timeout, plural)
             )
             page_actions.timeout_exception("NoSuchFileException", message)
         if self.demo_mode:
@@ -8262,7 +8268,10 @@ class BaseCase(unittest.TestCase):
         In CDP Mode, the CDP-Driver controls the web browser.
         The CDP-Driver can be connected while WebDriver isn't.
         """
-        return self.driver.is_connected()
+        if hasattr(self.driver, "is_connected"):
+            return self.driver.is_connected()
+        else:
+            return True
 
     def is_chromium(self):
         """Return True if the browser is Chrome or Edge."""
@@ -10174,9 +10183,13 @@ class BaseCase(unittest.TestCase):
                 if now_ms >= stop_ms:
                     break
                 time.sleep(0.2)
-        message = "Link text {%s} was not found after %s seconds!" % (
+        plural = "s"
+        if timeout == 1:
+            plural = ""
+        message = "Link text {%s} was not found after %s second%s!" % (
             link_text,
             timeout,
+            plural,
         )
         page_actions.timeout_exception("LinkTextNotFoundException", message)
 
@@ -10199,9 +10212,12 @@ class BaseCase(unittest.TestCase):
                 if now_ms >= stop_ms:
                     break
                 time.sleep(0.2)
+        plural = "s"
+        if timeout == 1:
+            plural = ""
         message = (
-            "Partial Link text {%s} was not found after %s seconds!"
-            "" % (link_text, timeout)
+            "Partial Link text {%s} was not found after %s second%s!"
+            "" % (link_text, timeout, plural)
         )
         page_actions.timeout_exception("LinkTextNotFoundException", message)
 
@@ -14409,9 +14425,12 @@ class BaseCase(unittest.TestCase):
                 if must_be_visible and is_present:
                     error = "not visible"
                     the_exception = "ElementNotVisibleException"
+                plural = "s"
+                if timeout == 1:
+                    plural = ""
                 msg = (
-                    "Shadow DOM Element {%s} was %s after %s seconds!"
-                    % (selector_chain, error, timeout)
+                    "Shadow DOM Element {%s} was %s after %s second%s!"
+                    % (selector_chain, error, timeout, plural)
                 )
                 page_actions.timeout_exception(the_exception, msg)
         return element
