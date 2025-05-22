@@ -151,7 +151,7 @@ setup(
         'pip>=25.1.1;python_version>="3.9"',
         'packaging>=25.0',
         'setuptools~=70.2;python_version<"3.10"',  # Newer ones had issues
-        'setuptools>=80.4.0;python_version>="3.10"',
+        'setuptools>=80.8.0;python_version>="3.10"',
         'wheel>=0.45.1',
         'attrs>=25.3.0',
         "certifi>=2025.4.26",
@@ -200,7 +200,8 @@ setup(
         "sortedcontainers==2.4.0",
         'execnet==2.1.1',
         'iniconfig==2.1.0',
-        'pluggy==1.5.0',
+        'pluggy==1.5.0;python_version<"3.9"',
+        'pluggy==1.6.0;python_version>="3.9"',
         'pytest==8.3.5',
         "pytest-html==4.0.2",  # Newer ones had issues
         'pytest-metadata==3.1.1',
@@ -231,7 +232,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage>=7.6.1;python_version<"3.9"',
-            'coverage>=7.8.0;python_version>="3.9"',
+            'coverage>=7.8.1;python_version>="3.9"',
             'pytest-cov>=5.0.0;python_version<"3.9"',
             'pytest-cov>=6.1.1;python_version>="3.9"',
         ],
@@ -264,7 +265,7 @@ setup(
             'pdfminer.six==20250324;python_version<"3.9"',
             'pdfminer.six==20250506;python_version>="3.9"',
             'cryptography==39.0.2;python_version<"3.9"',
-            'cryptography==44.0.3;python_version>="3.9"',
+            'cryptography==45.0.2;python_version>="3.9"',
             'cffi==1.17.1',
             "pycparser==2.22",
         ],
