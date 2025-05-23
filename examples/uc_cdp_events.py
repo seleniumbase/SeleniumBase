@@ -26,4 +26,4 @@ class CDPTests(BaseCase):
         self.click_turnstile_and_verify()
         self.sleep(1)
         self.refresh()
-        self.sleep(0.5)
+        self.sleep(1.2)
