@@ -19,8 +19,8 @@ class DatabaseManager:
             constants.PipInstall.FINDLOCK
         )
         with pip_find_lock:
-            if sys.version_info >= (3, 7) and sys.version_info < (3, 9):
-                # Fix bug in newer cryptography for Python 3.7 and 3.8:
+            if sys.version_info < (3, 9):
+                # Fix bug with newer cryptography on Python 3.8:
                 # "pyo3_runtime.PanicException: Python API call failed"
                 # (Match the version needed for pdfminer.six functions)
                 try:

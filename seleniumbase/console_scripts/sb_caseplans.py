@@ -25,13 +25,6 @@ from seleniumbase.fixtures import shared_utils
 from tkinter import messagebox
 from tkinter.scrolledtext import ScrolledText
 
-if sys.version_info <= (3, 8):
-    current_version = ".".join(str(ver) for ver in sys.version_info[:3])
-    raise Exception(
-        "\n* SBase Case Plans Generator requires Python 3.8 or newer!"
-        "\n** You are currently using Python %s" % current_version
-    )
-
 
 def set_colors(use_colors):
     c0 = ""
