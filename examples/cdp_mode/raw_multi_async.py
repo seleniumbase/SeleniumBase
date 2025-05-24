@@ -15,6 +15,7 @@ async def main(url):
     button = await page.select("button")
     await button.click_async()
     await page.sleep(2)
+    driver.stop()
 
 
 def set_up_loop(url):

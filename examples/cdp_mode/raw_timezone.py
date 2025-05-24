@@ -28,6 +28,7 @@ def main():
     sb.remove_elements("#right-sidebar")
     sb.remove_elements('[id*="Footer"]')
     sb.sleep(6)
+    sb.driver.stop()
 
 
 if __name__ == "__main__":

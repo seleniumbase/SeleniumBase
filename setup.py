@@ -30,8 +30,10 @@ if sys.argv[-1] == "publish":
     confirm_text = ">>> Confirm release PUBLISH to PyPI? (yes/no): "
     reply = str(input_method(confirm_text)).lower().strip()
     if reply == "yes":
-        if sys.version_info < (3, 9):
-            print("\nERROR! Publishing to PyPI requires Python>=3.9")
+        if sys.version_info < (3, 10):
+            current_ver = ".".join(str(ver) for ver in sys.version_info[:3])
+            print("\nERROR! Publishing to PyPI requires Python>=3.10")
+            print("You are currently using Python %s\n" % current_ver)
             sys.exit()
         print("\n*** Checking code health with flake8:\n")
         os.system("python -m pip install 'flake8==7.2.0'")
@@ -194,7 +196,8 @@ setup(
         'wsproto==1.2.0',
         'websocket-client==1.8.0',
         'selenium==4.27.1;python_version<"3.9"',
-        'selenium==4.32.0;python_version>="3.9"',
+        'selenium==4.32.0;python_version>="3.9" and python_version<"3.10"',
+        'selenium==4.33.0;python_version>="3.10"',
         'cssselect==1.2.0;python_version<"3.9"',
         'cssselect==1.3.0;python_version>="3.9"',
         "sortedcontainers==2.4.0",
@@ -232,7 +235,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage>=7.6.1;python_version<"3.9"',
-            'coverage>=7.8.1;python_version>="3.9"',
+            'coverage>=7.8.2;python_version>="3.9"',
             'pytest-cov>=5.0.0;python_version<"3.9"',
             'pytest-cov>=6.1.1;python_version>="3.9"',
         ],

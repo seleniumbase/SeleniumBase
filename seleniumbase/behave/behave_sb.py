@@ -1280,15 +1280,9 @@ def _perform_behave_unconfigure_():
     )
     find_it_3 = '<td class="col-result">Untested</td>'
     swap_with_3 = '<td class="col-result">Unreported</td>'
-    if sys.version_info[0] >= 3:
-        # These use caching to prevent extra method calls
-        DASH_PIE_PNG_1 = constants.Dashboard.get_dash_pie_1()
-        DASH_PIE_PNG_2 = constants.Dashboard.get_dash_pie_2()
-    else:
-        from seleniumbase.core import encoded_images
-
-        DASH_PIE_PNG_1 = encoded_images.get_dash_pie_png1()
-        DASH_PIE_PNG_2 = encoded_images.get_dash_pie_png2()
+    # These use caching to prevent extra method calls
+    DASH_PIE_PNG_1 = constants.Dashboard.get_dash_pie_1()
+    DASH_PIE_PNG_2 = constants.Dashboard.get_dash_pie_2()
     find_it_4 = 'href="%s"' % DASH_PIE_PNG_1
     swap_with_4 = 'href="%s"' % DASH_PIE_PNG_2
     try:

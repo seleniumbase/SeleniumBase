@@ -16,6 +16,7 @@ async def main():
     time.sleep(1)
     await element.send_keys_async("Boston")
     time.sleep(2)
+    driver.stop()
 
 if __name__ == "__main__":
     # Call an async function with awaited methods
@@ -39,6 +40,7 @@ if __name__ == "__main__":
     time.sleep(2)
     print(loop.run_until_complete(page.evaluate("document.title")))
     time.sleep(1)
+    driver.stop()
 
     # Call CDP methods via the simplified SB CDP API
     sb = sb_cdp.Chrome("https://www.priceline.com/")
@@ -62,3 +64,4 @@ if __name__ == "__main__":
     cards = sb.select_all('span[data-automation*="product-list-card"]')
     for card in cards:
         print("* %s" % card.text)
+    sb.driver.stop()

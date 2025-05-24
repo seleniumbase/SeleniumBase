@@ -30,6 +30,7 @@ def main():
     cards = sb.select_all('span[data-automation*="product-list-card"]')
     for card in cards:
         print("* %s" % card.text)
+    sb.driver.stop()
 
 
 if __name__ == "__main__":

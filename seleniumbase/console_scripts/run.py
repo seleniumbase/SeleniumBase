@@ -1001,7 +1001,6 @@ def main():
             retry_msg_2 = "** Unable to download driver! Retrying in 5s..."
             if " --proxy=" in " ".join(sys.argv):
                 from seleniumbase.core import proxy_helper
-
                 for arg in sys.argv:
                     if arg.startswith("--proxy="):
                         proxy_string = arg.split("--proxy=")[1]
@@ -1036,11 +1035,9 @@ def main():
             show_install_usage()
     elif command == "commander" or command == "gui":
         from seleniumbase.console_scripts import sb_commander
-
         sb_commander.main()
     elif command == "behave-gui" or command == "gui-behave":
         from seleniumbase.console_scripts import sb_behave_gui
-
         sb_behave_gui.main()
     elif (
         command == "caseplans"
@@ -1048,14 +1045,12 @@ def main():
         or command == "case_plans"
     ):
         from seleniumbase.console_scripts import sb_caseplans
-
         sb_caseplans.main()
     elif (
         command == "recorder"
         or (command == "record" and len(command_args) == 0)
     ):
         from seleniumbase.console_scripts import sb_recorder
-
         sb_recorder.main()
     elif (
         command == "mkrec"
@@ -1064,7 +1059,6 @@ def main():
     ):
         if len(command_args) >= 1:
             from seleniumbase.console_scripts import sb_mkrec
-
             sb_mkrec.main()
         else:
             show_basic_usage()
@@ -1075,7 +1069,6 @@ def main():
     elif command == "mkdir":
         if len(command_args) >= 1:
             from seleniumbase.console_scripts import sb_mkdir
-
             sb_mkdir.main()
         else:
             show_basic_usage()
@@ -1083,7 +1076,6 @@ def main():
     elif command == "mkfile":
         if len(command_args) >= 1:
             from seleniumbase.console_scripts import sb_mkfile
-
             sb_mkfile.main()
         else:
             show_basic_usage()
@@ -1091,7 +1083,6 @@ def main():
     elif command == "mkpres":
         if len(command_args) >= 1:
             from seleniumbase.console_scripts import sb_mkpres
-
             sb_mkpres.main()
         else:
             show_basic_usage()
@@ -1099,7 +1090,6 @@ def main():
     elif command == "mkchart":
         if len(command_args) >= 1:
             from seleniumbase.console_scripts import sb_mkchart
-
             sb_mkchart.main()
         else:
             show_basic_usage()
@@ -1107,7 +1097,6 @@ def main():
     elif command == "convert":
         if len(command_args) == 1:
             from seleniumbase.utilities.selenium_ide import convert_ide
-
             convert_ide.main()
         else:
             show_basic_usage()
@@ -1115,22 +1104,13 @@ def main():
     elif command == "print":
         if len(command_args) >= 1:
             from seleniumbase.console_scripts import sb_print
-
             sb_print.main()
         else:
             show_basic_usage()
             show_print_usage()
     elif command == "translate":
         if len(command_args) >= 1:
-            if sys.version_info[0] == 2:
-                c5 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
-                cr = colorama.Style.RESET_ALL
-                msg = "The SeleniumBase Translator does NOT support Python 2!"
-                message = "\n" + c5 + msg + cr + "\n"
-                print("")
-                raise Exception(message)
             from seleniumbase.translate import translator
-
             translator.main()
         else:
             show_basic_usage()
@@ -1138,7 +1118,6 @@ def main():
     elif command == "extract-objects" or command == "extract_objects":
         if len(command_args) >= 1:
             from seleniumbase.console_scripts import sb_objectify
-
             sb_objectify.extract_objects()
         else:
             show_basic_usage()
@@ -1154,7 +1133,6 @@ def main():
     elif command == "objectify":
         if len(command_args) >= 1:
             from seleniumbase.console_scripts import sb_objectify
-
             sb_objectify.objectify()
         else:
             show_basic_usage()
@@ -1162,7 +1140,6 @@ def main():
     elif command == "revert-objects" or command == "revert_objects":
         if len(command_args) >= 1:
             from seleniumbase.console_scripts import sb_objectify
-
             sb_objectify.revert_objects()
         else:
             show_basic_usage()
@@ -1170,7 +1147,6 @@ def main():
     elif command == "encrypt" or command == "obfuscate":
         if len(command_args) >= 0:
             from seleniumbase.common import obfuscate
-
             obfuscate.main()
         else:
             show_basic_usage()
@@ -1178,7 +1154,6 @@ def main():
     elif command == "decrypt" or command == "unobfuscate":
         if len(command_args) >= 0:
             from seleniumbase.common import unobfuscate
-
             unobfuscate.main()
         else:
             show_basic_usage()
@@ -1188,7 +1163,6 @@ def main():
             from seleniumbase.utilities.selenium_grid import (
                 download_selenium_server,
             )
-
             download_selenium_server.main(force_download=True)
         else:
             show_basic_usage()
@@ -1196,7 +1170,6 @@ def main():
     elif command == "grid-hub" or command == "grid_hub":
         if len(command_args) >= 1:
             from seleniumbase.utilities.selenium_grid import grid_hub
-
             grid_hub.main()
         else:
             show_basic_usage()
@@ -1204,7 +1177,6 @@ def main():
     elif command == "grid-node" or command == "grid_node":
         if len(command_args) >= 1:
             from seleniumbase.utilities.selenium_grid import grid_node
-
             grid_node.main()
         else:
             show_basic_usage()
@@ -1212,7 +1184,6 @@ def main():
     elif command == "version" or command == "--version" or command == "-v":
         if len(command_args) == 0:
             from seleniumbase.console_scripts import logo_helper
-
             seleniumbase_logo = logo_helper.get_seleniumbase_logo()
             print(seleniumbase_logo)
             print("")
@@ -1231,7 +1202,6 @@ def main():
         import fasteners
         import os
         import warnings
-
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", category=UserWarning)
             pip_find_lock = fasteners.InterProcessLock(

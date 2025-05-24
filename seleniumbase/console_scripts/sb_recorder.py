@@ -30,12 +30,6 @@ sb_config.rec_subprocess_used = False
 sys_executable = sys.executable
 if " " in sys_executable:
     sys_executable = "python"
-if sys.version_info <= (3, 8):
-    current_version = ".".join(str(ver) for ver in sys.version_info[:3])
-    raise Exception(
-        "\n* Recorder Desktop requires Python 3.8 or newer!"
-        "\n*** You are currently using Python %s" % current_version
-    )
 
 
 def set_colors(use_colors):

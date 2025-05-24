@@ -10044,12 +10044,14 @@ class BaseCase(unittest.TestCase):
         elif self.__is_cdp_swap_needed():
             self.cdp.assert_text(text, selector, timeout=timeout)
             return True
-        elif not self.is_connected():
-            self.connect()
         elif self.__is_shadow_selector(selector):
+            if hasattr(self, "connect") and not self.is_connected():
+                self.connect()
             self.__assert_shadow_text_visible(text, selector, timeout)
             return True
         else:
+            if hasattr(self, "connect") and not self.is_connected():
+                self.connect()
             self.wait_for_text_visible(text, selector, by=by, timeout=timeout)
             if self.demo_mode:
                 a_t = "ASSERT TEXT"

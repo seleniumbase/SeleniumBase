@@ -36,6 +36,7 @@ class RequestPausedTest():
         url = "https://gettyimages.com/photos/firefly-2003-nathan"
         await driver.get(url)
         await asyncio.sleep(5)
+        driver.stop()
 
 
 @decorators.print_runtime("RequestPausedTest")

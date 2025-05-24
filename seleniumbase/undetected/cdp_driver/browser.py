@@ -680,6 +680,9 @@ class Browser:
             self._process = None
             self._process_pid = None
 
+    def quit(self):
+        self.stop()
+
     def __await__(self):
         # return ( asyncio.sleep(0)).__await__()
         return self.update_targets().__await__()
