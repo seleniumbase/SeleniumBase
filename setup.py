@@ -194,7 +194,7 @@ setup(
         'wsproto==1.2.0',
         'websocket-client==1.8.0',
         'selenium==4.27.1;python_version<"3.9"',
-        'selenium==4.32.0;python_version>="3.9"',
+        'selenium==4.33.0;python_version>="3.9"',
         'cssselect==1.2.0;python_version<"3.9"',
         'cssselect==1.3.0;python_version>="3.9"',
         "sortedcontainers==2.4.0",
@@ -232,7 +232,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage>=7.6.1;python_version<"3.9"',
-            'coverage>=7.8.1;python_version>="3.9"',
+            'coverage>=7.8.2;python_version>="3.9"',
             'pytest-cov>=5.0.0;python_version<"3.9"',
             'pytest-cov>=6.1.1;python_version>="3.9"',
         ],
