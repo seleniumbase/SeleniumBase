@@ -16,7 +16,7 @@ async def get_login_cookies():
     element = await page.select('input[type="submit"]')
     await element.click_async()
     cookies = await driver.cookies.get_all()
-    await page.close()
+    driver.stop()
     return cookies
 
 
@@ -30,6 +30,7 @@ async def login_with_cookies(cookies):
     await driver.get(url_2)
     await page.select("div.inventory_list")
     time.sleep(2)
+    driver.stop()
 
 
 if __name__ == "__main__":

@@ -44,6 +44,7 @@ def main():
             data.append(row.strip())
     print("\n".join(data).replace('\n"', ' "'))
     sb.sleep(3)
+    sb.driver.stop()
 
 
 if __name__ == "__main__":

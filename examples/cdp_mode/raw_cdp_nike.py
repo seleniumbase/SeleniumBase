@@ -12,3 +12,4 @@ if elements:
     print('**** Found results for "%s": ****' % search)
     for element in elements:
         print("* " + element.text)
+sb.driver.stop()
