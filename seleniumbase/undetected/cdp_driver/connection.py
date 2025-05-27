@@ -378,6 +378,36 @@ class Connection(metaclass=CantTouchThis):
             accuracy=100,
         ))
 
+    async def set_auth(self, username, password, tab):
+        async def auth_challenge_handler(event: cdp.fetch.AuthRequired):
+            await tab.send(
+                cdp.fetch.continue_with_auth(
+                    request_id=event.request_id,
+                    auth_challenge_response=cdp.fetch.AuthChallengeResponse(
+                        response="ProvideCredentials",
+                        username=username,
+                        password=password,
+                    ),
+                )
+            )
+
+        async def req_paused(event: cdp.fetch.RequestPaused):
+            await tab.send(
+                cdp.fetch.continue_request(request_id=event.request_id)
+            )
+
+        tab.add_handler(
+            cdp.fetch.RequestPaused,
+            lambda event: asyncio.create_task(req_paused(event)),
+        )
+
+        tab.add_handler(
+            cdp.fetch.AuthRequired,
+            lambda event: asyncio.create_task(auth_challenge_handler(event)),
+        )
+
+        await tab.send(cdp.fetch.enable(handle_auth_requests=True))
+
     def __getattr__(self, item):
         """:meta private:"""
         try:

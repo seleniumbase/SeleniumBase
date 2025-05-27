@@ -192,8 +192,9 @@ def main():
             elif "'" not in start_page:
                 used_sp = "'%s'" % start_page
             data.append(
-                "            self.uc_open_with_disconnect(\n"
-                "                %s\n"
+                "            self.activate_cdp_mode(\n"
+                "                %s,\n"
+                "                recorder=True,\n"
                 "            )" % used_sp
             )
         else:

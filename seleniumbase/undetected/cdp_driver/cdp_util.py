@@ -360,8 +360,10 @@ async def start(
     except Exception:
         time.sleep(0.15)
         driver = await Browser.create(config)
-    if proxy and "@" in str(proxy):
-        time.sleep(0.15)
+    if proxy:
+        sb_config._cdp_proxy = proxy
+        if "@" in str(proxy):
+            time.sleep(0.15)
     if lang:
         sb_config._cdp_locale = lang
     elif "locale" in kwargs:
@@ -402,10 +404,14 @@ async def start_async(*args, **kwargs) -> Browser:
     binary_location = None
     if "browser_executable_path" in kwargs:
         binary_location = kwargs["browser_executable_path"]
+        if binary_location and isinstance(binary_location, str):
+            binary_location = binary_location.strip()
     else:
         binary_location = detect_b_ver.get_binary_location("google-chrome")
-        if binary_location and not os.path.exists(binary_location):
-            binary_location = None
+        if binary_location and isinstance(binary_location, str):
+            binary_location = binary_location.strip()
+            if not os.path.exists(binary_location):
+                binary_location = None
     if (
         shared_utils.is_chrome_130_or_newer(binary_location)
         and "user_data_dir" in kwargs
@@ -438,10 +444,14 @@ def start_sync(*args, **kwargs) -> Browser:
     binary_location = None
     if "browser_executable_path" in kwargs:
         binary_location = kwargs["browser_executable_path"]
+        if binary_location and isinstance(binary_location, str):
+            binary_location = binary_location.strip()
     else:
         binary_location = detect_b_ver.get_binary_location("google-chrome")
-        if binary_location and not os.path.exists(binary_location):
-            binary_location = None
+        if binary_location and isinstance(binary_location, str):
+            binary_location = binary_location.strip()
+            if not os.path.exists(binary_location):
+                binary_location = None
     if (
         shared_utils.is_chrome_130_or_newer(binary_location)
         and "user_data_dir" in kwargs

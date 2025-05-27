@@ -144,7 +144,8 @@ class Config:
             "--disable-features=IsolateOrigins,site-per-process,Translate,"
             "InsecureDownloadWarnings,DownloadBubble,DownloadBubbleV2,"
             "OptimizationTargetPrediction,OptimizationGuideModelDownloading,"
-            "SidePanelPinning,UserAgentClientHint,PrivacySandboxSettings4",
+            "SidePanelPinning,UserAgentClientHint,PrivacySandboxSettings4,"
+            "DisableLoadExtensionCommandLineSwitch",
         ]
 
     @property

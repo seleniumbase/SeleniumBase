@@ -292,6 +292,7 @@ class Browser:
             _cdp_locale = None
             _cdp_platform = None
             _cdp_geolocation = None
+            _cdp_recorder = None
             if (
                 hasattr(sb_config, "_cdp_timezone") and sb_config._cdp_timezone
             ):
@@ -330,6 +331,8 @@ class Browser:
                 _cdp_geolocation = kwargs["geolocation"]
             elif "geoloc" in kwargs:
                 _cdp_geolocation = kwargs["geoloc"]
+            if "recorder" in kwargs:
+                _cdp_recorder = kwargs["recorder"]
             if _cdp_timezone:
                 await connection.send(cdp.page.navigate("about:blank"))
                 await connection.set_timezone(_cdp_timezone)
@@ -344,9 +347,37 @@ class Browser:
                 await connection.send(cdp.page.navigate("about:blank"))
                 await connection.set_geolocation(_cdp_geolocation)
             # Use the tab to navigate to new url
+            if (
+                hasattr(sb_config, "_cdp_proxy")
+                and "@" in sb_config._cdp_proxy
+                and sb_config._cdp_proxy
+                and "auth" not in kwargs
+            ):
+                username_and_password = sb_config._cdp_proxy.split("@")[0]
+                proxy_user = username_and_password.split(":")[0]
+                proxy_pass = username_and_password.split(":")[1]
+                await connection.set_auth(
+                    proxy_user, proxy_pass, self.tabs[0]
+                )
+                time.sleep(0.25)
+            elif "auth" in kwargs and kwargs["auth"] and ":" in kwargs["auth"]:
+                username_and_password = kwargs["auth"]
+                proxy_user = username_and_password.split(":")[0]
+                proxy_pass = username_and_password.split(":")[1]
+                await connection.set_auth(
+                    proxy_user, proxy_pass, self.tabs[0]
+                )
+                time.sleep(0.25)
             frame_id, loader_id, *_ = await connection.send(
                 cdp.page.navigate(url)
             )
+            if _cdp_recorder:
+                pass  # (The code below was for the Chrome 137 extension fix)
+                '''from seleniumbase.js_code.recorder_js import recorder_js
+                recorder_code = (
+                    """window.onload = function() { %s };""" % recorder_js
+                )
+                await connection.send(cdp.runtime.evaluate(recorder_code))'''
             # Update the frame_id on the tab
             connection.frame_id = frame_id
             connection.browser = self
