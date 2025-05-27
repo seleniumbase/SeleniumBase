@@ -108,7 +108,9 @@ def make_driver_executable_if_not(driver_path):
         shared_utils.make_executable(driver_path)
 
 
-def extend_driver(driver, proxy_auth=False, use_uc=True):
+def extend_driver(
+    driver, proxy_auth=False, use_uc=True, recorder_ext=False
+):
     # Extend the driver with new methods
     driver.default_find_element = driver.find_element
     driver.default_find_elements = driver.find_elements
@@ -234,6 +236,14 @@ def extend_driver(driver, proxy_auth=False, use_uc=True):
     driver.switch_to_tab = DM.switch_to_tab
     driver.switch_to_frame = DM.switch_to_frame
     driver.reset_window_size = DM.reset_window_size
+    if recorder_ext:
+        from seleniumbase.js_code.recorder_js import recorder_js
+        recorder_code = (
+            """window.onload = function() { %s };""" % recorder_js
+        )
+        driver.execute_cdp_cmd(
+            "Page.addScriptToEvaluateOnNewDocument", {"source": recorder_code}
+        )
     if hasattr(driver, "proxy"):
         driver.set_wire_proxy = DM.set_wire_proxy
     if proxy_auth:
@@ -2542,6 +2552,7 @@ def _set_chrome_options(
     included_disabled_features.append("PrivacySandboxSettings4")
     included_disabled_features.append("SidePanelPinning")
     included_disabled_features.append("UserAgentClientHint")
+    included_disabled_features.append("DisableLoadExtensionCommandLineSwitch")
     for item in extra_disabled_features:
         if item not in included_disabled_features:
             included_disabled_features.append(item)
@@ -2819,6 +2830,8 @@ def get_driver(
     if headless2 and browser_name == constants.Browser.FIREFOX:
         headless2 = False  # Only for Chromium
         headless = True
+    if binary_location and isinstance(binary_location, str):
+        binary_location = binary_location.strip()
     if (
         is_using_uc(undetectable, browser_name)
         and binary_location
@@ -3014,6 +3027,8 @@ def get_driver(
     proxy_pass = None
     proxy_scheme = "http"
     if proxy_string:
+        # (The code below was for the Chrome 137 extension fix)
+        # sb_config._cdp_proxy = proxy_string
         username_and_password = None
         if "@" in proxy_string:
             # Format => username:password@hostname:port
@@ -4450,6 +4465,9 @@ def get_local_driver(
         included_disabled_features.append("PrivacySandboxSettings4")
         included_disabled_features.append("SidePanelPinning")
         included_disabled_features.append("UserAgentClientHint")
+        included_disabled_features.append(
+            "DisableLoadExtensionCommandLineSwitch"
+        )
         for item in extra_disabled_features:
             if item not in included_disabled_features:
                 included_disabled_features.append(item)
@@ -5328,7 +5346,9 @@ def get_local_driver(
                             driver = webdriver.Chrome(
                                 service=service, options=chrome_options
                             )
-                            return extend_driver(driver, proxy_auth, use_uc)
+                            return extend_driver(
+                                driver, proxy_auth, use_uc, recorder_ext
+                            )
                     if not auto_upgrade_chromedriver:
                         raise  # Not an obvious fix.
                     else:
@@ -5580,11 +5600,15 @@ def get_local_driver(
                                 'Emulation.setDeviceMetricsOverride',
                                 set_device_metrics_override
                             )
-                return extend_driver(driver, proxy_auth, use_uc)
+                return extend_driver(
+                    driver, proxy_auth, use_uc, recorder_ext
+                )
             else:  # Running headless on Linux (and not using --uc)
                 try:
                     driver = webdriver.Chrome(options=chrome_options)
-                    return extend_driver(driver, proxy_auth, use_uc)
+                    return extend_driver(
+                        driver, proxy_auth, use_uc, recorder_ext
+                    )
                 except Exception as e:
                     if not hasattr(e, "msg"):
                         raise
@@ -5606,7 +5630,9 @@ def get_local_driver(
                             driver = webdriver.Chrome(
                                 service=service, options=chrome_options
                             )
-                            return extend_driver(driver, proxy_auth, use_uc)
+                            return extend_driver(
+                                driver, proxy_auth, use_uc, recorder_ext
+                            )
                     mcv = None  # Major Chrome Version
                     if "Current browser version is " in e.msg:
                         line = e.msg.split("Current browser version is ")[1]
@@ -5649,7 +5675,9 @@ def get_local_driver(
                                 service=service,
                                 options=chrome_options,
                             )
-                            return extend_driver(driver, proxy_auth, use_uc)
+                            return extend_driver(
+                                driver, proxy_auth, use_uc, recorder_ext
+                            )
                     # Use the virtual display on Linux during headless errors
                     logging.debug(
                         "\nWarning: Chrome failed to launch in"
@@ -5667,7 +5695,9 @@ def get_local_driver(
                     driver = webdriver.Chrome(
                         service=service, options=chrome_options
                     )
-                    return extend_driver(driver, proxy_auth, use_uc)
+                    return extend_driver(
+                        driver, proxy_auth, use_uc, recorder_ext
+                    )
         except Exception as original_exception:
             if use_uc:
                 raise
@@ -5677,7 +5707,9 @@ def get_local_driver(
                 driver = webdriver.Chrome(
                     service=service, options=chrome_options
                 )
-                return extend_driver(driver, proxy_auth, use_uc)
+                return extend_driver(
+                    driver, proxy_auth, use_uc, recorder_ext
+                )
             if user_data_dir:
                 print("\nUnable to set user_data_dir while starting Chrome!\n")
                 raise
@@ -5704,7 +5736,9 @@ def get_local_driver(
             )
             try:
                 driver = webdriver.Chrome(service=service)
-                return extend_driver(driver, proxy_auth, use_uc)
+                return extend_driver(
+                    driver, proxy_auth, use_uc, recorder_ext
+                )
             except Exception:
                 raise original_exception
     else:
