@@ -1,0 +1,30 @@
+# exclude version control
+.git
+.gitignore
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Virtual environments
+.env
+.venv/
+
+# Editor/project files
+.vscode/
+.idea/
+
+# Test caches
+.pytest_cache/
+.tox/
+
+# Build artifacts
+build/
+dist/
+
+# Logs
+*.log
+
+# Any other data directories you don’t need in your image
+data/
