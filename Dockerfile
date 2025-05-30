@@ -1,5 +1,7 @@
 # SeleniumBase Docker Image
 FROM ubuntu:22.04
+# Create non-root user for security
+RUN groupadd -r seleniumbase && useradd -r -g seleniumbase -s /bin/false seleniumbase
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONIOENCODING=UTF-8
@@ -136,3 +138,6 @@ COPY integrations/docker/run_docker_test_in_chrome.sh /
 RUN chmod +x *.sh
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["/bin/bash"]
+
+# Switch to non-root user for security
+USER seleniumbase
