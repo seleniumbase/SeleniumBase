@@ -24,6 +24,9 @@ with SB(uc=True) as sb:  # Many args! Eg. SB(browser="edge")
 #########################################
 """
 from contextlib import contextmanager, suppress
+from typing import Any, Generator
+
+from seleniumbase import BaseCase
 
 
 @contextmanager  # Usage: -> ``with SB() as sb:``
@@ -133,7 +136,7 @@ def SB(
     highlights=None,  # Number of highlight animations for Demo Mode actions.
     interval=None,  # SECONDS (Autoplay interval for SB Slides & Tour steps.)
     time_limit=None,  # SECONDS (Safely fail tests that exceed the time limit.)
-):
+) -> Generator[BaseCase, Any, None]:
     """
     * SeleniumBase as a Python Context Manager *
 
