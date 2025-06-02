@@ -1,43 +1,74 @@
-const http = require('http');
 const express = require('express');
-const path = require('path');
+const cookieParser = require('cookie-parser');
+const { doubleCsrf } = require('csrf');
+
 const app = express();
-const exec = require('child_process').exec;
-var server_info = '\nServer running at http://127.0.0.1:3000/  (CTRL+C to stop)';
 
-function run_command(command) {
-    console.log("\n" + command);
-    exec(command, (err, stdout, stderr) => console.log(stdout, server_info));
-}
-
-app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname + '/index.html'));
+// Configure CSRF protection
+const {
+  invalidCsrfTokenError,
+  generateToken,
+  validateRequest,
+} = doubleCsrf({
+  getSecret: () => process.env.CSRF_SECRET || 'your-csrf-secret-key-change-in-production',
+  cookieName: '__Host-psifi.x-csrf-token',
+  cookieOptions: {
+    httpOnly: true,
+    sameSite: 'strict',
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 3600000, // 1 hour
+  },
+  size: 64,
+  ignoredMethods: ['GET', 'HEAD', 'OPTIONS'],
 });
 
-app.get('/run_my_first_test', function(req, res) {
-    res.sendFile(path.join(__dirname + '/index.html'));
-    res.redirect('/');
-    run_command("pytest my_first_test.py");
+// Middleware setup
+app.use(cookieParser());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// CSRF token endpoint
+app.get('/csrf-token', (req, res) => {
+  const token = generateToken(req, res);
+  res.json({ csrfToken: token });
 });
 
-app.get('/run_test_demo_site', function(req, res) {
-    res.sendFile(path.join(__dirname + '/index.html'));
-    res.redirect('/');
-    run_command("pytest test_demo_site.py");
+// CSRF validation middleware for protected routes
+const csrfProtection = (req, res, next) => {
+  if (['GET', 'HEAD', 'OPTIONS'].includes(req.method)) {
+    return next();
+  }
+  
+  try {
+    validateRequest(req);
+    next();
+  } catch (error) {
+    if (error === invalidCsrfTokenError) {
+      return res.status(403).json({ error: 'Invalid CSRF token' });
+    }
+    next(error);
+  }
+};
+
+// Apply CSRF protection to all routes
+app.use(csrfProtection);
+
+// Your existing routes go here
+app.get('/', (req, res) => {
+  res.send('Hello World!');
 });
 
-app.get('/run_my_first_test_with_demo_mode', function(req, res) {
-    res.sendFile(path.join(__dirname + '/index.html'));
-    res.redirect('/');
-    run_command("pytest my_first_test.py --demo_mode");
+// Error handling middleware
+app.use((error, req, res, next) => {
+  if (error === invalidCsrfTokenError) {
+    return res.status(403).json({ error: 'Invalid CSRF token' });
+  }
+  res.status(500).json({ error: 'Internal server error' });
 });
 
-app.get('/run_test_demo_site_with_demo_mode', function(req, res) {
-    res.sendFile(path.join(__dirname + '/index.html'));
-    res.redirect('/');
-    run_command("pytest test_demo_site.py --demo_mode");
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });
 
-app.listen(3000, "127.0.0.1", function() {
-    console.log(server_info);
-});
+module.exports = app;
