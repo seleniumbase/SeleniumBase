@@ -1,5 +1,6 @@
 """Add new methods to extend the driver"""
 from contextlib import suppress
+from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 from seleniumbase.config import settings
 from seleniumbase.fixtures import js_utils
@@ -8,7 +9,7 @@ from seleniumbase.fixtures import page_utils
 from seleniumbase.fixtures import shared_utils
 
 
-class DriverMethods():
+class DriverMethods(WebDriver):
     def __init__(self, driver):
         self.driver = driver
 

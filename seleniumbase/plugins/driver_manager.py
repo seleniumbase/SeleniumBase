@@ -38,6 +38,7 @@ driver.get("https://google.com/ncr")
 """
 import os
 import sys
+from seleniumbase.core import sb_driver
 
 
 class DriverContext():
@@ -139,7 +140,7 @@ def Driver(
     pls=None,  # Shortcut / Duplicate of "page_load_strategy".
     cft=None,  # Use "Chrome for Testing"
     chs=None,  # Use "Chrome-Headless-Shell"
-):
+) -> sb_driver.DriverMethods:
     """
     * SeleniumBase Driver as a Python Context Manager or a returnable object. *
 
