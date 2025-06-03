@@ -323,6 +323,8 @@ class Browser:
                 _cdp_locale = kwargs["locale"]
             elif "lang" in kwargs:
                 _cdp_locale = kwargs["lang"]
+            elif "locale_code" in kwargs:
+                _cdp_locale = kwargs["locale_code"]
             if "platform" in kwargs:
                 _cdp_platform = kwargs["platform"]
             elif "plat" in kwargs:
@@ -336,6 +338,8 @@ class Browser:
             if _cdp_timezone:
                 await connection.send(cdp.page.navigate("about:blank"))
                 await connection.set_timezone(_cdp_timezone)
+            if _cdp_locale:
+                await connection.set_locale(_cdp_locale)
             if _cdp_user_agent or _cdp_locale or _cdp_platform:
                 await connection.send(cdp.page.navigate("about:blank"))
                 await connection.set_user_agent(

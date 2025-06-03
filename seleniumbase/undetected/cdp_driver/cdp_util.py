@@ -370,8 +370,6 @@ async def start(
         sb_config._cdp_locale = kwargs["locale"]
     elif "locale_code" in kwargs:
         sb_config._cdp_locale = kwargs["locale_code"]
-    else:
-        sb_config._cdp_locale = None
     if tzone:
         sb_config._cdp_timezone = tzone
     elif "timezone" in kwargs:

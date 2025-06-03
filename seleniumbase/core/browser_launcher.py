@@ -2169,6 +2169,9 @@ def _set_chrome_options(
     prefs["profile.default_content_setting_values.automatic_downloads"] = 1
     if locale_code:
         prefs["intl.accept_languages"] = locale_code
+        sb_config._cdp_locale = locale_code
+    else:
+        sb_config._cdp_locale = None
     if block_images:
         prefs["profile.managed_default_content_settings.images"] = 2
     if disable_cookies:
