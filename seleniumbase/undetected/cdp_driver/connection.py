@@ -347,6 +347,7 @@ class Connection(metaclass=CantTouchThis):
     async def set_locale(self, locale: Optional[str] = None):
         """Sets the Language Locale code via set_user_agent_override."""
         await self.set_user_agent(user_agent="", accept_language=locale)
+        await self.send(cdp.emulation.set_locale_override(locale))
 
     async def set_timezone(self, timezone: Optional[str] = None):
         """Sets the Timezone via set_timezone_override."""
