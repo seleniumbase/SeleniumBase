@@ -1,49 +1,49 @@
 """
-Test simple para verificar la funcionalidad de fullscreen
-sin depender de BaseCase
+Simple test to verify fullscreen functionality
+without depending on BaseCase
 """
 import sys
 import os
 
-# Añadir el directorio raíz al path para importar seleniumbase
+# Add root directory to path to import seleniumbase
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from seleniumbase.core import browser_launcher
 
 def test_fullscreen_basic():
-    """Test básico para verificar que --start-fullscreen funciona"""
-    print("🚀 Iniciando test de fullscreen...")
+    """Basic test to verify that --start-fullscreen works"""
+    print("🚀 Starting fullscreen test...")
     
-    # Configurar opciones para fullscreen
+    # Configure options for fullscreen
     driver = browser_launcher.get_driver(
         browser_name="chrome",
         headless=False,
-        start_fullscreen=True,  # Esta es la nueva opción
+        start_fullscreen=True,  # This is the new option
     )
     
     try:
-        # Navegar a una página de prueba
+        # Navigate to a test page
         driver.get("https://seleniumbase.io/demo_page")
         
-        # Verificar el tamaño de la ventana
+        # Verify window size
         window_size = driver.get_window_size()
-        print(f"📐 Tamaño de ventana: {window_size['width']} x {window_size['height']}")
+        print(f"📐 Window size: {window_size['width']} x {window_size['height']}")
         
-        # Verificar que estamos en fullscreen
-        assert window_size['width'] >= 1024, f"Ancho muy pequeño: {window_size['width']}"
-        assert window_size['height'] >= 768, f"Alto muy pequeño: {window_size['height']}"
+        # Verify we're in fullscreen
+        assert window_size['width'] >= 1024, f"Width too small: {window_size['width']}"
+        assert window_size['height'] >= 768, f"Height too small: {window_size['height']}"
         
-        print("✅ Test de fullscreen exitoso!")
-        print("🎯 El navegador se abrió correctamente en modo fullscreen")
+        print("✅ Fullscreen test successful!")
+        print("🎯 Browser opened correctly in fullscreen mode")
         
-        # Esperar un poco para ver el resultado
+        # Wait a bit to see the result
         import time
         time.sleep(3)
         
     finally:
-        # Cerrar el navegador
+        # Close the browser
         driver.quit()
-        print("🔚 Navegador cerrado")
+        print("🔚 Browser closed")
 
 if __name__ == "__main__":
     test_fullscreen_basic() 

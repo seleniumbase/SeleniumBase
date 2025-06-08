@@ -1,10 +1,10 @@
 """
-Test de validación del feature --start-fullscreen
+Fullscreen feature validation test
 
-EJECUTAR CON:
+RUN WITH:
 pytest examples/fullscreen_validation.py --start-fullscreen -v -s
 
-COMPARAR CON MODO NORMAL:
+COMPARE WITH NORMAL MODE:
 pytest examples/fullscreen_validation.py -v -s
 """
 from seleniumbase import BaseCase
@@ -13,72 +13,72 @@ from seleniumbase import BaseCase
 class TestFullscreenValidation(BaseCase):
     def test_fullscreen_works(self):
         """
-        Test simple para validar que --start-fullscreen funciona
+        Simple test to validate that --start-fullscreen works
         """
-        # Abrir cualquier página web
+        # Open any web page
         self.open("https://google.com")
         
-        # Obtener dimensiones de ventana
+        # Get window dimensions
         window_size = self.get_window_size()
         width = window_size['width']
         height = window_size['height']
         
-        print(f"\n📐 Dimensiones de ventana: {width} x {height}")
-        print(f"📊 Área total: {width * height:,} píxeles")
+        print(f"\n📐 Window dimensions: {width} x {height}")
+        print(f"📊 Total area: {width * height:,} pixels")
         
-        # Verificar si estamos en fullscreen basado en el tamaño
+        # Check if we're in fullscreen based on size
         is_fullscreen = width >= 1920 and height >= 1080
         
         if is_fullscreen:
-            print("✅ ¡FULLSCREEN CONFIRMADO!")
-            print("🚀 El navegador se abrió SIN barras de navegación")
-            print("🎯 Área máxima de pantalla utilizada")
+            print("✅ FULLSCREEN CONFIRMED!")
+            print("🚀 Browser opened WITHOUT navigation bars")
+            print("🎯 Maximum screen area utilized")
         else:
-            print("ℹ️  Modo ventana normal")
-            print(f"📏 Tamaño: {width}x{height}")
+            print("ℹ️  Normal window mode")
+            print(f"📏 Size: {width}x{height}")
         
-        # Verificar funcionalidad básica
+        # Verify basic functionality
         self.assert_element("body")
-        print("✅ Página cargada correctamente")
+        print("✅ Page loaded correctly")
         
-        # Mensaje de estado
+        # Status message
         mode = "FULLSCREEN" if is_fullscreen else "NORMAL"
-        print(f"\n🏁 Test completado en modo: {mode}")
+        print(f"\n🏁 Test completed in mode: {mode}")
         
-        # Breve pausa para ver el resultado
+        # Brief pause to see the result
         self.sleep(1)
 
     def test_feature_documentation(self):
         """
-        Test que documenta cómo usar la nueva funcionalidad
+        Test that documents how to use the new functionality
         """
-        print("\n📚 DOCUMENTACIÓN DEL FEATURE --start-fullscreen")
+        print("\n📚 --start-fullscreen FEATURE DOCUMENTATION")
         print("=" * 50)
-        print("✨ NUEVAS OPCIONES DISPONIBLES:")
-        print("   --start-fullscreen    (Modo fullscreen)")
+        print("✨ NEW AVAILABLE OPTIONS:")
+        print("   --start-fullscreen    (Fullscreen mode)")
         print("   --fullscreen          (Alias)")
-        print("   --start_fullscreen    (Formato alternativo)")
+        print("   --start_fullscreen    (Alternative format)")
         print()
-        print("🚀 EJEMPLOS DE USO:")
-        print("   pytest mi_test.py --start-fullscreen")
-        print("   pytest mi_test.py --fullscreen --demo")
-        print("   pytest mi_test.py --start-fullscreen --chrome")
+        print("🚀 USAGE EXAMPLES:")
+        print("   pytest my_test.py --start-fullscreen")
+        print("   pytest my_test.py --fullscreen --demo")
+        print("   pytest my_test.py --start-fullscreen --chrome")
         print()
-        print("✅ CARACTERÍSTICAS:")
-        print("   • Elimina barras de navegación del navegador")
-        print("   • Utiliza toda la pantalla disponible")
-        print("   • Compatible con Chrome y Edge")
-        print("   • Funciona en Windows, Linux y macOS")
-        print("   • Se integra con todas las opciones existentes")
+        print("✅ FEATURES:")
+        print("   • Removes browser navigation bars")
+        print("   • Uses all available screen space")
+        print("   • Compatible with Chrome and Edge")
+        print("   • Works on Windows, Linux and macOS")
+        print("   • Integrates with all existing options")
         print()
-        print("🎯 CASOS DE USO IDEALES:")
-        print("   • Testing de aplicaciones de quiosco")
-        print("   • Demos y presentaciones")
-        print("   • Captura de pantallas sin UI del navegador")
-        print("   • Testing de aplicaciones fullscreen")
+        print("🎯 IDEAL USE CASES:")
+        print("   • Kiosk application testing")
+        print("   • Demos and presentations")
+        print("   • Screenshots without browser UI")
+        print("   • Fullscreen application testing")
         print("=" * 50)
         
-        # Test funcional básico
+        # Basic functional test
         self.open("https://example.com")
         self.assert_title_contains("Example")
-        print("✅ Funcionalidad básica verificada") 
+        print("✅ Basic functionality verified") 
