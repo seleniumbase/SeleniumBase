@@ -4608,7 +4608,7 @@ class BaseCase(unittest.TestCase):
                 del cookie["expiry"]
             elif isinstance(expiry, (int, float)) and expiry < 0:
                 pass
-            elif isinstance(expiry, (int, float)) and expiry > 0:
+            elif isinstance(expiry, (int, float)) and expiry > 0 and expiry is not True:
                 cookie["expiry"] = int(time.time()) + int(expiry * 60.0)
             elif expiry:
                 cookie["expiry"] = int(time.time()) + 86400
