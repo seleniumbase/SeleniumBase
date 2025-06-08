@@ -962,12 +962,21 @@ class SeleniumBrowser(Plugin):
             "--maximize_window",
             "--maximize-window",
             "--maximize",
-            "--fullscreen",
             action="store_true",
             dest="maximize_option",
             default=False,
             help="""The option to start with a maximized browser window.
                     (Overrides the "window-size" option if used.)""",
+        )
+        parser.addoption(
+            "--start-fullscreen",
+            "--start_fullscreen",
+            "--fullscreen",
+            action="store_true",
+            dest="start_fullscreen",
+            default=False,
+            help="""The option to start the browser in fullscreen mode.
+                    (Overrides the "maximize" and "window-size" options.)""",
         )
         parser.addoption(
             "--screenshot",
@@ -1298,6 +1307,7 @@ class SeleniumBrowser(Plugin):
         test.test.window_position = self.options.window_position
         test.test.window_size = self.options.window_size
         test.test.maximize_option = self.options.maximize_option
+        test.test.start_fullscreen = self.options.start_fullscreen
         if self.options.save_screenshot and self.options.no_screenshot:
             self.options.save_screenshot = False  # no_screenshot has priority
         test.test.save_screenshot_after_test = self.options.save_screenshot

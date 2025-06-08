@@ -15003,6 +15003,7 @@ class BaseCase(unittest.TestCase):
             self.window_position = sb_config.window_position
             self.window_size = sb_config.window_size
             self.maximize_option = sb_config.maximize_option
+            self.start_fullscreen = sb_config.start_fullscreen
             self.save_screenshot_after_test = sb_config.save_screenshot
             self.no_screenshot_after_test = sb_config.no_screenshot
             self.visual_baseline = sb_config.visual_baseline

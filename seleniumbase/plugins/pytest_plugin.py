@@ -1302,12 +1302,21 @@ def pytest_addoption(parser):
         "--maximize_window",
         "--maximize-window",
         "--maximize",
-        "--fullscreen",
         action="store_true",
         dest="maximize_option",
         default=False,
         help="""The option to start with a maximized browser window.
                 (Overrides the "window-size" option if used.)""",
+    )
+    parser.addoption(
+        "--start-fullscreen",
+        "--start_fullscreen",
+        "--fullscreen",
+        action="store_true",
+        dest="start_fullscreen",
+        default=False,
+        help="""The option to start the browser in fullscreen mode.
+                (Overrides the "maximize" and "window-size" options.)""",
     )
     parser.addoption(
         "--screenshot",
@@ -1703,6 +1712,7 @@ def pytest_configure(config):
     sb_config.window_position = config.getoption("window_position")
     sb_config.window_size = config.getoption("window_size")
     sb_config.maximize_option = config.getoption("maximize_option")
+    sb_config.start_fullscreen = config.getoption("start_fullscreen")
     sb_config.save_screenshot = config.getoption("save_screenshot")
     sb_config.no_screenshot = config.getoption("no_screenshot")
     sb_config.visual_baseline = config.getoption("visual_baseline")

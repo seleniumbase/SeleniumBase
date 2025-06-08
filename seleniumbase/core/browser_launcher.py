@@ -2131,6 +2131,7 @@ def _set_chrome_options(
     device_width,
     device_height,
     device_pixel_ratio,
+    start_fullscreen=False,
 ):
     chrome_options = webdriver.ChromeOptions()
     if is_using_uc(undetectable, browser_name):
@@ -2280,6 +2281,11 @@ def _set_chrome_options(
                     settings.CHROME_START_HEIGHT,
                 )
             )
+    # Handle Start Fullscreen
+    if start_fullscreen and not headless and not headless2:
+        chrome_options.add_argument("--start-fullscreen")
+        if IS_LINUX:
+            chrome_options.add_argument("--kiosk")
     if (
         not proxy_auth
         and not disable_csp
@@ -2822,6 +2828,7 @@ def get_driver(
     device_width=None,
     device_height=None,
     device_pixel_ratio=None,
+    start_fullscreen=False,
     browser=None,  # A duplicate of browser_name to avoid confusion
 ):
     if not browser_name:
@@ -3253,6 +3260,7 @@ def get_driver(
             device_width,
             device_height,
             device_pixel_ratio,
+            start_fullscreen,
         )
 
 
@@ -3754,6 +3762,7 @@ def get_local_driver(
     device_width,
     device_height,
     device_pixel_ratio,
+    start_fullscreen=False,
 ):
     """Spins up a new web browser and returns the driver.
     Can also be used to spin up additional browsers for the same test."""
@@ -4629,6 +4638,7 @@ def get_local_driver(
                 device_width,
                 device_height,
                 device_pixel_ratio,
+                sb_config.start_fullscreen,
             )
             use_version = "latest"
             major_chrome_version = None
@@ -5168,6 +5178,7 @@ def get_local_driver(
                                         device_width,
                                         device_height,
                                         device_pixel_ratio,
+                                        False,  # start_fullscreen
                                     )
                                     if (
                                         not path_chromedriver
