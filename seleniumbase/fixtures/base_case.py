@@ -4592,9 +4592,9 @@ class BaseCase(unittest.TestCase):
         Loads the page cookies from the "saved_cookies" folder.
         Usage for setting expiry:
         If expiry == 0 or False: Delete "expiry".
+        If expiry is True: Set "expiry" to 24 hours in the future.
         If expiry == -1 (or < 0): Do not modify "expiry".
         If expiry > 0: Set "expiry" to expiry minutes in the future.
-        If expiry == True: Set "expiry" to 24 hours in the future.
         """
         cookies = self.get_saved_cookies(name)
         self.wait_for_ready_state_complete()
@@ -4606,12 +4606,12 @@ class BaseCase(unittest.TestCase):
                     cookie["domain"] = trim_origin
             if "expiry" in cookie and (not expiry or expiry == 0):
                 del cookie["expiry"]
+            elif expiry is True:
+                cookie["expiry"] = int(time.time()) + 86400
             elif isinstance(expiry, (int, float)) and expiry < 0:
                 pass
             elif isinstance(expiry, (int, float)) and expiry > 0:
                 cookie["expiry"] = int(time.time()) + int(expiry * 60.0)
-            elif expiry:
-                cookie["expiry"] = int(time.time()) + 86400
             self.driver.add_cookie(cookie)
 
     def delete_all_cookies(self):
@@ -4693,9 +4693,9 @@ class BaseCase(unittest.TestCase):
         self.add_cookie({'name': 'foo', 'value': 'bar', 'sameSite': 'Strict'})
         Usage for setting expiry:
         If expiry == 0 or False: Delete "expiry".
+        If expiry is True: Set "expiry" to 24 hours in the future.
         If expiry == -1 (or < 0): Do not modify "expiry".
         If expiry > 0: Set "expiry" to expiry minutes in the future.
-        If expiry == True: Set "expiry" to 24 hours in the future.
         """
         self.__check_scope()
         self._check_browser()
@@ -4707,21 +4707,21 @@ class BaseCase(unittest.TestCase):
                 cookie["domain"] = trim_origin
         if "expiry" in cookie and (not expiry or expiry == 0):
             del cookie["expiry"]
+        elif expiry is True:
+            cookie["expiry"] = int(time.time()) + 86400
         elif isinstance(expiry, (int, float)) and expiry < 0:
             pass
         elif isinstance(expiry, (int, float)) and expiry > 0:
             cookie["expiry"] = int(time.time()) + int(expiry * 60.0)
-        elif expiry:
-            cookie["expiry"] = int(time.time()) + 86400
         self.driver.add_cookie(cookie_dict)
 
     def add_cookies(self, cookies, expiry=False):
         """
         Usage for setting expiry:
         If expiry == 0 or False: Delete "expiry".
+        If expiry is True: Set "expiry" to 24 hours in the future.
         If expiry == -1 (or < 0): Do not modify "expiry".
         If expiry > 0: Set "expiry" to expiry minutes in the future.
-        If expiry == True: Set "expiry" to 24 hours in the future.
         """
         self.__check_scope()
         self._check_browser()
@@ -4733,12 +4733,12 @@ class BaseCase(unittest.TestCase):
                     cookie["domain"] = trim_origin
             if "expiry" in cookie and (not expiry or expiry == 0):
                 del cookie["expiry"]
+            elif expiry is True:
+                cookie["expiry"] = int(time.time()) + 86400
             elif isinstance(expiry, (int, float)) and expiry < 0:
                 pass
             elif isinstance(expiry, (int, float)) and expiry > 0:
                 cookie["expiry"] = int(time.time()) + int(expiry * 60.0)
-            elif expiry:
-                cookie["expiry"] = int(time.time()) + 86400
             self.driver.add_cookie(cookie)
 
     def __set_esc_skip(self):
