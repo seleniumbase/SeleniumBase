@@ -11,6 +11,8 @@ with SB(uc=True, test=True) as sb:
     sb.click('button[type="submit"]')
     sb.click('a:contains("%s")' % company)
     sb.sleep(3)
+    sb.uc_gui_click_captcha()
+    sb.sleep(1)
     sb.cdp.highlight('div[itemprop="name"]')
     sb.sleep(1)
     sb.cdp.highlight('h2:contains("About the company")')
