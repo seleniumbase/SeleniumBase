@@ -56,10 +56,6 @@ if sys.argv[-1] == "publish":
         os.system("python -m pip install --upgrade 'jaraco.classes'")
         print("\n*** Installing more-itertools: *** (For PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'more-itertools'")
-        print("\n*** Installing zipp: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'zipp'")
-        print("\n*** Installing importlib-metadata: *** (For PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'importlib-metadata'")
         print("\n*** Installing keyring, requests-toolbelt: *** (For PyPI)\n")
         os.system("python -m pip install --upgrade keyring requests-toolbelt")
         print("\n*** Installing twine: *** (Required for PyPI uploads)\n")
@@ -153,7 +149,7 @@ setup(
         'pip>=25.1.1;python_version>="3.9"',
         'packaging>=25.0',
         'setuptools~=70.2;python_version<"3.10"',  # Newer ones had issues
-        'setuptools>=80.8.0;python_version>="3.10"',
+        'setuptools>=80.9.0;python_version>="3.10"',
         'wheel>=0.45.1',
         'attrs>=25.3.0',
         "certifi>=2025.4.26",
@@ -186,7 +182,7 @@ setup(
         'charset-normalizer>=3.4.2,<4',
         'urllib3>=1.26.20,<2;python_version<"3.10"',
         'urllib3>=1.26.20,<2.5.0;python_version>="3.10"',
-        'requests==2.32.3',
+        'requests==2.32.4',
         'sniffio==1.3.1',
         'h11==0.16.0',
         'outcome==1.3.0.post0',
@@ -205,7 +201,8 @@ setup(
         'iniconfig==2.1.0',
         'pluggy==1.5.0;python_version<"3.9"',
         'pluggy==1.6.0;python_version>="3.9"',
-        'pytest==8.3.5',
+        'pytest==8.3.5;python_version<"3.9"',
+        'pytest==8.4.0;python_version>="3.9"',
         "pytest-html==4.0.2",  # Newer ones had issues
         'pytest-metadata==3.1.1',
         "pytest-ordering==0.6",

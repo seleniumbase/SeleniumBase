@@ -2160,7 +2160,12 @@ def _perform_pytest_unconfigure_(config):
     from seleniumbase.core import proxy_helper
 
     reporter = config.pluginmanager.get_plugin("terminalreporter")
-    duration = time.time() - reporter._sessionstarttime
+    start_time = None
+    if hasattr(reporter, "_sessionstarttime"):
+        start_time = reporter._sessionstarttime  # (pytest < 8.4.0)
+    else:
+        start_time = reporter._session_start.time  # (pytest >= 8.4.0)
+    duration = time.time() - start_time
     if (
         (hasattr(sb_config, "multi_proxy") and not sb_config.multi_proxy)
         or not hasattr(sb_config, "multi_proxy")
@@ -2497,7 +2502,11 @@ def pytest_unconfigure(config):
     if "--co" in sys_argv or "--collect-only" in sys_argv:
         return
     reporter = config.pluginmanager.get_plugin("terminalreporter")
-    if not hasattr(reporter, "_sessionstarttime"):
+    if (
+        not hasattr(reporter, "_sessionstarttime")
+        and not hasattr(reporter, "_session_start")
+        and not hasattr(reporter._session_start, "time")
+    ):
         return
     if hasattr(sb_config, "_multithreaded") and sb_config._multithreaded:
         import fasteners
