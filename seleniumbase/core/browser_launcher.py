@@ -1461,9 +1461,10 @@ def _uc_gui_click_captcha(
             sb_config._saved_cf_x_y = (x, y)
             if not __is_cdp_swap_needed(driver):
                 if driver.is_element_present(".footer .clearfix .ray-id"):
-                    driver.uc_open_with_disconnect(
-                        driver.get_current_url(), 3.8
-                    )
+                    # driver.uc_open_with_disconnect(
+                    #     driver.get_current_url(), 3.8
+                    # )
+                    driver.disconnect()
                 else:
                     driver.disconnect()
             with suppress(Exception):
@@ -1476,7 +1477,7 @@ def _uc_gui_click_captcha(
         reconnect_time = constants.UC.RECONNECT_TIME + 0.2
     if not x or not y:
         reconnect_time = 1  # Make it quick (it already failed)
-    driver.reconnect(reconnect_time)
+    driver.reconnect(reconnect_time + 2)
     caught = False
     if (
         driver.is_element_present(".footer .clearfix .ray-id")
