@@ -266,7 +266,7 @@ setup(
             'pdfminer.six==20250324;python_version<"3.9"',
             'pdfminer.six==20250506;python_version>="3.9"',
             'cryptography==39.0.2;python_version<"3.9"',
-            'cryptography==45.0.3;python_version>="3.9"',
+            'cryptography==45.0.4;python_version>="3.9"',
             'cffi==1.17.1',
             "pycparser==2.22",
         ],
