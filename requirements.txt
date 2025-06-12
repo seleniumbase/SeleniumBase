@@ -77,9 +77,9 @@ rich>=14.0.0,<15
 # ("pip install -r requirements.txt" also installs this, but "pip install -e ." won't.)
 
 coverage>=7.6.1;python_version<"3.9"
-coverage>=7.8.2;python_version>="3.9"
+coverage>=7.9.0;python_version>="3.9"
 pytest-cov>=5.0.0;python_version<"3.9"
-pytest-cov>=6.1.1;python_version>="3.9"
+pytest-cov>=6.2.1;python_version>="3.9"
 flake8==5.0.4;python_version<"3.9"
 flake8==7.2.0;python_version>="3.9"
 mccabe==0.7.0
