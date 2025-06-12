@@ -1336,7 +1336,10 @@ class CDPMethods():
         return self.find_element(selector).get_attribute(attribute)
 
     def get_element_html(self, selector):
+        """Find an element and return the outerHTML."""
         selector = self.__convert_to_css_if_xpath(selector)
+        self.find_element(selector)
+        self.__add_light_pause()
         return self.loop.run_until_complete(
             self.page.evaluate(
                 """document.querySelector('%s').outerHTML"""
