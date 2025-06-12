@@ -16,7 +16,7 @@ import urllib.request
 import warnings
 from collections import defaultdict
 from seleniumbase import config as sb_config
-from typing import List, Optional, Required, Set, Tuple, Union
+from typing import List, Optional, Set, Tuple, Union
 import mycdp as cdp
 from . import cdp_util as util
 from . import tab
@@ -506,7 +506,7 @@ class Browser:
 
     async def grant_permissions(
         self,
-        permissions: Required[List[str] | str],
+        permissions: List[str] | str,
         origin: Optional[str] = None,
     ):
         """Grant specific permissions to the current window.
