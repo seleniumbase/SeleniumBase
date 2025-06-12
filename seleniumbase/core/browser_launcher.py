@@ -679,6 +679,8 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
     cdp.go_forward = CDPM.go_forward
     cdp.get_navigation_history = CDPM.get_navigation_history
     cdp.tile_windows = CDPM.tile_windows
+    cdp.grant_permissions = CDPM.grant_permissions
+    cdp.grant_all_permissions = CDPM.grant_all_permissions
     cdp.get_all_cookies = CDPM.get_all_cookies
     cdp.set_all_cookies = CDPM.set_all_cookies
     cdp.save_cookies = CDPM.save_cookies
@@ -2144,6 +2146,7 @@ def _set_chrome_options(
     prefs["download.prompt_for_download"] = False
     prefs["download_bubble.partial_view_enabled"] = False
     prefs["credentials_enable_service"] = False
+    prefs["autofill.credit_card_enabled"] = False
     prefs["local_discovery.notifications_enabled"] = False
     prefs["safebrowsing.enabled"] = False  # Prevent PW "data breach" pop-ups
     prefs["safebrowsing.disable_download_protection"] = True
@@ -4002,6 +4005,7 @@ def get_local_driver(
             "download.directory_upgrade": True,
             "download.prompt_for_download": False,
             "credentials_enable_service": False,
+            "autofill.credit_card_enabled": False,
             "local_discovery.notifications_enabled": False,
             "safebrowsing.disable_download_protection": True,
             "safebrowsing.enabled": False,  # Prevent PW "data breach" pop-ups

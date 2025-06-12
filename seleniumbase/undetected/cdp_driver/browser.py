@@ -16,7 +16,7 @@ import urllib.request
 import warnings
 from collections import defaultdict
 from seleniumbase import config as sb_config
-from typing import List, Set, Tuple, Union
+from typing import List, Optional, Required, Set, Tuple, Union
 import mycdp as cdp
 from . import cdp_util as util
 from . import tab
@@ -504,10 +504,22 @@ class Browser:
         # self.connection.handlers[cdp.inspector.Detached] = [self.stop]
         # return self
 
+    async def grant_permissions(
+        self,
+        permissions: Required[List[str] | str],
+        origin: Optional[str] = None,
+    ):
+        """Grant specific permissions to the current window.
+        Applies to all origins if no origin is specified."""
+        if isinstance(permissions, str):
+            permissions = [permissions]
+        await self.connection.send(
+            cdp.browser.grant_permissions(permissions, origin)
+        )
+
     async def grant_all_permissions(self):
         """
         Grant permissions for:
-            accessibilityEvents
             audioCapture
             backgroundSync
             backgroundFetch
@@ -524,19 +536,39 @@ class Browser:
             notifications
             paymentHandler
             periodicBackgroundSync
-            protectedMediaIdentifier
             sensors
             storageAccess
             topLevelStorageAccess
             videoCapture
-            videoCapturePanTiltZoom
             wakeLockScreen
             wakeLockSystem
             windowManagement
         """
-        permissions = list(cdp.browser.PermissionType)
-        permissions.remove(cdp.browser.PermissionType.FLASH)
-        permissions.remove(cdp.browser.PermissionType.CAPTURED_SURFACE_CONTROL)
+        permissions = [
+            "audioCapture",
+            "backgroundSync",
+            "backgroundFetch",
+            "clipboardReadWrite",
+            "clipboardSanitizedWrite",
+            "displayCapture",
+            "durableStorage",
+            "geolocation",
+            "idleDetection",
+            "localFonts",
+            "midi",
+            "midiSysex",
+            "nfc",
+            "notifications",
+            "paymentHandler",
+            "periodicBackgroundSync",
+            "sensors",
+            "storageAccess",
+            "topLevelStorageAccess",
+            "videoCapture",
+            "wakeLockScreen",
+            "wakeLockSystem",
+            "windowManagement",
+        ]
         await self.connection.send(cdp.browser.grant_permissions(permissions))
 
     async def tile_windows(self, windows=None, max_columns: int = 0):
