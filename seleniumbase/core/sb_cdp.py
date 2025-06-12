@@ -645,6 +645,23 @@ class CDPMethods():
             driver.tile_windows(windows, max_columns)
         )
 
+    def grant_permissions(self, permissions, origin=None):
+        """Grant specific permissions to the current window.
+        Applies to all origins if no origin is specified."""
+        driver = self.driver
+        if hasattr(driver, "cdp_base"):
+            driver = driver.cdp_base
+        return self.loop.run_until_complete(
+            driver.grant_permissions(permissions, origin)
+        )
+
+    def grant_all_permissions(self):
+        """Grant all permissions to the current window for all origins."""
+        driver = self.driver
+        if hasattr(driver, "cdp_base"):
+            driver = driver.cdp_base
+        return self.loop.run_until_complete(driver.grant_all_permissions())
+
     def get_all_cookies(self, *args, **kwargs):
         driver = self.driver
         if hasattr(driver, "cdp_base"):
@@ -681,9 +698,7 @@ class CDPMethods():
         driver = self.driver
         if hasattr(driver, "cdp_base"):
             driver = driver.cdp_base
-        return self.loop.run_until_complete(
-            driver.cookies.clear()
-        )
+        return self.loop.run_until_complete(driver.cookies.clear())
 
     def sleep(self, seconds):
         time.sleep(seconds)
@@ -702,9 +717,7 @@ class CDPMethods():
 
         js_code = active_css_js.get_active_element_css
         js_code = js_code.replace("return getBestSelector", "getBestSelector")
-        return self.loop.run_until_complete(
-            self.page.evaluate(js_code)
-        )
+        return self.loop.run_until_complete(self.page.evaluate(js_code))
 
     def click(self, selector, timeout=None):
         if not timeout:
@@ -978,17 +991,13 @@ class CDPMethods():
                 "\n".join(exp_list[0:-1]) + "\n"
                 + exp_list[-1].strip()[len("return "):]
             ).strip()
-        return self.loop.run_until_complete(
-            self.page.evaluate(expression)
-        )
+        return self.loop.run_until_complete(self.page.evaluate(expression))
 
     def js_dumps(self, obj_name):
         """Similar to evaluate(), but for dictionary results."""
         if obj_name.startswith("return "):
             obj_name = obj_name[len("return "):]
-        return self.loop.run_until_complete(
-            self.page.js_dumps(obj_name)
-        )
+        return self.loop.run_until_complete(self.page.js_dumps(obj_name))
 
     def maximize(self):
         if self.get_window()[1].window_state.value == "maximized":
@@ -1309,6 +1318,8 @@ class CDPMethods():
         )
 
     def get_element_attribute(self, selector, attribute):
+        """Find an element and return the value of an attribute.
+        Raises an exception if there's no such element or attribute."""
         attributes = self.get_element_attributes(selector)
         with suppress(Exception):
             return attributes[attribute]
@@ -1319,10 +1330,16 @@ class CDPMethods():
         return value
 
     def get_attribute(self, selector, attribute):
+        """Find an element and return the value of an attribute.
+        If the element doesn't exist: Raises an exception.
+        If the attribute doesn't exist: Returns None."""
         return self.find_element(selector).get_attribute(attribute)
 
     def get_element_html(self, selector):
+        """Find an element and return the outerHTML."""
         selector = self.__convert_to_css_if_xpath(selector)
+        self.find_element(selector)
+        self.__add_light_pause()
         return self.loop.run_until_complete(
             self.page.evaluate(
                 """document.querySelector('%s').outerHTML"""

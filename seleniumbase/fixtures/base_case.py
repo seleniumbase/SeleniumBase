@@ -1910,7 +1910,10 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_cdp_swap_needed():
-            return self.cdp.get_element_attribute(selector, attribute)
+            if hard_fail:
+                return self.cdp.get_element_attribute(selector, attribute)
+            else:
+                return self.cdp.get_attribute(selector, attribute)
         self.wait_for_ready_state_complete()
         time.sleep(0.01)
         if self.__is_shadow_selector(selector):
@@ -4883,6 +4886,7 @@ class BaseCase(unittest.TestCase):
         self.execute_script(script)
 
     def activate_cdp_mode(self, url=None, **kwargs):
+        """Activate CDP Mode with the URL and kwargs."""
         if hasattr(self.driver, "_is_using_uc") and self.driver._is_using_uc:
             if self.__is_cdp_swap_needed():
                 return  # CDP Mode is already active
@@ -4898,6 +4902,8 @@ class BaseCase(unittest.TestCase):
         self.cdp = self.driver.cdp
 
     def activate_recorder(self):
+        """Activate Recorder Mode on the current tab/window.
+        For persistent Recorder Mode, use the extension instead."""
         from seleniumbase.js_code.recorder_js import recorder_js
 
         if not self.is_chromium():
