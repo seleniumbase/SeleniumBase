@@ -364,7 +364,7 @@ with SB(uc=True, test=True, locale="en", pls="none") as sb:
 sb.cdp.get(url, **kwargs)
 sb.cdp.open(url, **kwargs)
 sb.cdp.reload(ignore_cache=True, script_to_evaluate_on_load=None)
-sb.cdp.refresh()
+sb.cdp.refresh(*args, **kwargs)
 sb.cdp.get_event_loop()
 sb.cdp.add_handler(event, handler)
 sb.cdp.find_element(selector, best_match=False, timeout=None)

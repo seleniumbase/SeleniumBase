@@ -532,6 +532,7 @@ def uc_open_with_reconnect(driver, url, reconnect_time=None):
 
 
 def uc_open_with_cdp_mode(driver, url=None, **kwargs):
+    """Activate CDP Mode with the URL and kwargs."""
     import asyncio
     from seleniumbase.undetected.cdp_driver import cdp_util
 
