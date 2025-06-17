@@ -571,6 +571,10 @@ class Browser:
         ]
         await self.connection.send(cdp.browser.grant_permissions(permissions))
 
+    async def reset_permissions(self):
+        """Reset permissions for all origins on the current window."""
+        await self.connection.send(cdp.browser.reset_permissions())
+
     async def tile_windows(self, windows=None, max_columns: int = 0):
         import math
         try:
