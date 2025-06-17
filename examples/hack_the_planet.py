@@ -218,9 +218,9 @@ class HackTests(BaseCase):
         self.set_text_content('nav a[href="/docs/"]', "ALL")
         self.set_text_content('nav a[href="/blog/"]', "YOUR")
         self.set_text_content('nav a[href="/training/"]', "BASE")
-        self.set_text_content('nav a[href="/partners/"]', "ARE")
-        self.set_text_content('nav a[href="/community/"]', "BELONG")
-        self.set_text_content('nav a[href="/case-studies/"]', "TO")
+        self.set_text_content('nav a[href="/careers/"]', "ARE")
+        self.set_text_content('nav a[href="/partners/"]', "BELONG")
+        self.set_text_content('nav a[href="/community/"]', "TO")
         self.set_text_content("nav #navbarDropdown", "US")
         self.set_text_content("nav #navbarDropdownMenuLink", ".")
         if self.is_element_visible("h1"):
@@ -229,9 +229,9 @@ class HackTests(BaseCase):
         self.highlight('nav a[href="/docs/"]', loops=1, scroll=False)
         self.highlight('nav a[href="/blog/"]', loops=1, scroll=False)
         self.highlight('nav a[href="/training/"]', loops=2, scroll=False)
+        self.highlight('nav a[href="/careers/"]', loops=1, scroll=False)
         self.highlight('nav a[href="/partners/"]', loops=1, scroll=False)
         self.highlight('nav a[href="/community/"]', loops=1, scroll=False)
-        self.highlight('nav a[href="/case-studies/"]', loops=1, scroll=False)
         self.highlight("nav #navbarDropdown", loops=2, scroll=False)
         if self.is_element_visible("h1"):
             self.highlight("h1", loops=6, scroll=False)

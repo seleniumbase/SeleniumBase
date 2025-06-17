@@ -10,9 +10,6 @@ class ProxyTests(BaseCase):
             print("\n  Unsupported mode for this test.")
             self.skip("Unsupported mode for this test.")
         settings.SKIP_JS_WAITS = True
-        if not self.page_load_strategy == "none" and not self.undetectable:
-            # This page takes too long to load otherwise
-            self.get_new_driver(page_load_strategy="none")
         self.open("https://api.ipify.org/")
         ip_address = self.get_text("body")
         if "ERR" in ip_address:

@@ -14,12 +14,14 @@ class YouTubeSearchTests(BaseCase):
         search_selector = 'input[name="search_query"]'
         results_selector = '[role="listbox"]'
         self.click_if_visible('button[aria-label="Close"]')
+        self.sleep(0.25)
         self.double_click(search_selector)
-        self.sleep(0.15)
+        self.sleep(0.25)
         self.type(search_selector, search_term)
-        self.sleep(0.15)
+        self.sleep(0.25)
         # First verify that an autocomplete result exists
         self.assert_element(results_selector)
+        self.sleep(0.25)
         top_results = self.get_text(results_selector)
         # Now verify that the autocomplete result is good
         self.assert_true(
