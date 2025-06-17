@@ -662,6 +662,13 @@ class CDPMethods():
             driver = driver.cdp_base
         return self.loop.run_until_complete(driver.grant_all_permissions())
 
+    def reset_permissions(self):
+        """Reset permissions for all origins on the current window."""
+        driver = self.driver
+        if hasattr(driver, "cdp_base"):
+            driver = driver.cdp_base
+        return self.loop.run_until_complete(driver.reset_permissions())
+
     def get_all_cookies(self, *args, **kwargs):
         driver = self.driver
         if hasattr(driver, "cdp_base"):
