@@ -153,7 +153,7 @@ setup(
         'setuptools>=80.9.0;python_version>="3.10"',
         'wheel>=0.45.1',
         'attrs>=25.3.0',
-        "certifi>=2025.4.26",
+        "certifi>=2025.6.15",
         "exceptiongroup>=1.3.0",
         'websockets~=13.1;python_version<"3.9"',
         'websockets>=15.0.1;python_version>="3.9"',
@@ -234,7 +234,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage>=7.6.1;python_version<"3.9"',
-            'coverage>=7.9.0;python_version>="3.9"',
+            'coverage>=7.9.1;python_version>="3.9"',
             'pytest-cov>=5.0.0;python_version<"3.9"',
             'pytest-cov>=6.2.1;python_version>="3.9"',
         ],
