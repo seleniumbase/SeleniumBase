@@ -65,7 +65,7 @@ Note that `PyAutoGUI` is an optional dependency. If calling a method that uses i
 
 --------
 
-For some Cloudflare CAPTCHAs that appear within websites, you may need to use `sb.cdp.gui_click_element(selector)` instead (if the Turnstile wasn't bypassed automatically). For the `selector`, use the element directly above the `Shadow-root`. Example: ([SeleniumBase/examples/cdp_mode/raw_planetmc.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_planetmc.py))
+For some Cloudflare CAPTCHAs that appear within websites, you may need to use `sb.cdp.gui_click_element(selector)` instead (if the Turnstile wasn't bypassed automatically). Example: ([SeleniumBase/examples/cdp_mode/raw_planetmc.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_planetmc.py))
 
 ```python
 from seleniumbase import SB
