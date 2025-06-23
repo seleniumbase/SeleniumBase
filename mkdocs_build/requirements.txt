@@ -2,10 +2,10 @@
 # Minimum Python version: 3.9 (for generating docs only)
 
 regex>=2024.11.6
-pymdown-extensions>=10.15
+pymdown-extensions>=10.16
 pipdeptree>=2.26.1
 python-dateutil>=2.8.2
-Markdown==3.8
+Markdown==3.8.2
 click==8.2.1
 ghp-import==2.1.0
 watchdog==6.0.0
