@@ -684,19 +684,11 @@ class UCPresentationClass(BaseCase):
             sb.activate_cdp_mode(url)
             sb.sleep(2.5)
             sb.cdp.click_if_visible('button[aria-label="Close"]')
-            sb.sleep(1)
-            sb.cdp.click('span:contains("Explore")')
-            sb.sleep(1)
-            sb.cdp.click('a:contains("Hotels & Resorts")')
-            sb.sleep(3)
-            location = "Anaheim, CA, USA"
-            sb.cdp.press_keys("input#searchbox", location)
+            sb.cdp.click_if_visible("#onetrust-reject-all-handler")
             sb.sleep(2)
-            sb.cdp.click("div#suggestion-list ul li a")
-            sb.sleep(1)
-            sb.cdp.click('div.hotel-card-footer button')
-            sb.sleep(1)
-            sb.cdp.click('button[data-locator="find-hotels"]')
+            location = "Anaheim, CA, USA"
+            sb.cdp.type('input[data-id="location"]', location)
+            sb.cdp.click("button.quickbookSearchFormButton")
             sb.sleep(5)
             card_info = (
                 'div[data-booking-status="BOOKABLE"] [class*="HotelCard_info"]'
@@ -785,7 +777,7 @@ class UCPresentationClass(BaseCase):
             sb.cdp.click(selection)
             sb.sleep(1.5)
             sb.cdp.click('button[aria-label="Dismiss calendar"]')
-            sb.sleep(4.5)
+            sb.sleep(5.5)
             if len(sb.cdp.get_tabs()) > 1:
                 sb.cdp.close_active_tab()
                 sb.cdp.switch_to_newest_tab()
@@ -797,7 +789,12 @@ class UCPresentationClass(BaseCase):
             hotel_names = sb.find_elements(
                 'a[data-autobot-element-id*="HOTEL_NAME"]'
             )
-            hotel_prices = sb.find_elements('span[font-size="4,,,5"]')
+            if sb.is_element_visible('[font-size="4,,,5"]'):
+                hotel_prices = sb.find_elements('[font-size="4,,,5"]')
+            else:
+                hotel_prices = sb.find_elements(
+                    '[font-size="12px"] + [font-size="20px"]'
+                )
             print("Priceline Hotels in %s:" % location)
             print(sb.get_text('[data-testid="POPOVER-DATE-PICKER"]'))
             if len(hotel_names) == 0:

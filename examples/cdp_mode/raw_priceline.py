@@ -15,7 +15,7 @@ with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     sb.cdp.click(selection)
     sb.sleep(1.5)
     sb.cdp.click('button[aria-label="Dismiss calendar"]')
-    sb.sleep(4.5)
+    sb.sleep(5.5)
     if len(sb.cdp.get_tabs()) > 1:
         sb.cdp.close_active_tab()
         sb.cdp.switch_to_newest_tab()
@@ -25,7 +25,12 @@ with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
         sb.scroll_to_y(y * 400)
         sb.sleep(0.5)
     hotel_names = sb.find_elements('a[data-autobot-element-id*="HOTEL_NAME"]')
-    hotel_prices = sb.find_elements('span[font-size="4,,,5"]')
+    if sb.is_element_visible('[font-size="4,,,5"]'):
+        hotel_prices = sb.find_elements('[font-size="4,,,5"]')
+    else:
+        hotel_prices = sb.find_elements(
+            '[font-size="12px"] + [font-size="20px"]'
+        )
     print("Priceline Hotels in %s:" % location)
     print(sb.get_text('[data-testid="POPOVER-DATE-PICKER"]'))
     if len(hotel_names) == 0:

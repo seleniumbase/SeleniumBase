@@ -5,19 +5,11 @@ with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     sb.activate_cdp_mode(url)
     sb.sleep(2.5)
     sb.cdp.click_if_visible('button[aria-label="Close"]')
-    sb.sleep(1)
-    sb.cdp.click('span:contains("Explore")')
-    sb.sleep(1)
-    sb.cdp.click('a:contains("Hotels & Resorts")')
-    sb.sleep(3)
-    location = "Anaheim, CA, USA"
-    sb.cdp.press_keys("input#searchbox", location)
+    sb.cdp.click_if_visible("#onetrust-reject-all-handler")
     sb.sleep(2)
-    sb.cdp.click("div#suggestion-list ul li a")
-    sb.sleep(1)
-    sb.cdp.click('div.hotel-card-footer button')
-    sb.sleep(1)
-    sb.cdp.click('button[data-locator="find-hotels"]')
+    location = "Anaheim, CA, USA"
+    sb.cdp.type('input[data-id="location"]', location)
+    sb.cdp.click("button.quickbookSearchFormButton")
     sb.sleep(5)
     card_info = 'div[data-booking-status="BOOKABLE"] [class*="HotelCard_info"]'
     hotels = sb.cdp.select_all(card_info)
