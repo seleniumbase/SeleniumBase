@@ -5,23 +5,21 @@ with SB(uc=True, test=True, ad_block=True, pls="none") as sb:
     url = "https://socialblade.com/"
     sb.activate_cdp_mode(url)
     sb.sleep(1.5)
-    sb.uc_gui_click_captcha()
-    sb.sleep(0.5)
+    if not sb.is_element_visible('input[placeholder*="Search"]'):
+        sb.uc_gui_click_captcha()
+        sb.sleep(0.5)
     channel_name = "michaelmintz"
     channel_title = "Michael Mintz"
     sb.cdp.press_keys('input[placeholder*="Search"]', channel_name)
-    sb.sleep(1.5)
+    sb.sleep(2)
     sb.cdp.click('a:contains("%s")' % channel_title)
     sb.sleep(2)
     sb.cdp.remove_elements("#lngtd-top-sticky")
     sb.sleep(1.5)
-    name = sb.cdp.get_text("h1")
-    source = sb.get_page_source()
-    base = "https://www.youtube.com/c/"
-    base2 = 'href="/youtube/c/'
-    start = source.find(base2) + len(base2)
-    end = source.find('"', start)
-    link = base + source[start:end]
+    name = sb.cdp.get_text("h3")
+    ch_name = name.split(" ")[-1]
+    name = name.split(" @")[0]
+    link = "https://www.youtube.com/%s" % ch_name
     print("********** SocialBlade Stats for %s: **********" % name)
     print(">>> (Link: %s) <<<" % link)
     print(sb.get_text('[class*="grid lg:hidden"]'))
