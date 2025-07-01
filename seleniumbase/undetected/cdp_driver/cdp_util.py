@@ -51,7 +51,14 @@ def __activate_virtual_display_as_needed(
     headless, headed, xvfb, xvfb_metrics
 ):
     """This is only needed on Linux."""
-    if IS_LINUX and (not headed or xvfb):
+    if (
+        IS_LINUX
+        and (not headed or xvfb)
+        and (
+            not hasattr(sb_config, "_virtual_display")
+            or not sb_config._virtual_display
+        )
+    ):
         from sbvirtualdisplay import Display
         pip_find_lock = fasteners.InterProcessLock(
             constants.PipInstall.FINDLOCK
@@ -87,6 +94,11 @@ def __activate_virtual_display_as_needed(
                         backend="xvfb",
                         use_xauth=True,
                     )
+                    if "--debug-display" in sys.argv:
+                        print(
+                            "Starting VDisplay from cdp_util: (%s, %s)"
+                            % (_xvfb_width, _xvfb_height)
+                        )
                     _xvfb_display.start()
                     if "DISPLAY" not in os.environ.keys():
                         print(

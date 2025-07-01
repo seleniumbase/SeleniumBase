@@ -580,6 +580,7 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
     headless = False
     headed = None
     xvfb = None
+    xvfb_metrics = None
     binary_location = None
     if hasattr(sb_config, "headless"):
         headless = sb_config.headless
@@ -587,6 +588,8 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
         headed = sb_config.headed
     if hasattr(sb_config, "xvfb"):
         xvfb = sb_config.xvfb
+    if hasattr(sb_config, "xvfb_metrics"):
+        xvfb_metrics = sb_config.xvfb_metrics
     if hasattr(sb_config, "binary_location"):
         binary_location = sb_config.binary_location
 
@@ -599,6 +602,7 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
             headless=headless,
             headed=headed,
             xvfb=xvfb,
+            xvfb_metrics=xvfb_metrics,
             browser_executable_path=binary_location,
         )
     )
@@ -963,6 +967,11 @@ def __install_pyautogui_if_missing():
                         backend="xvfb",
                         use_xauth=True,
                     )
+                    if "--debug-display" in sys.argv:
+                        print(
+                            "Starting VDisplay from browser_launcher: (%s, %s)"
+                            % (xvfb_width, xvfb_height)
+                        )
                     _xvfb_display.start()
                     sb_config._virtual_display = _xvfb_display
                     sb_config.headless_active = True
