@@ -36,7 +36,7 @@ if sys.argv[-1] == "publish":
             print("You are currently using Python %s\n" % current_ver)
             sys.exit()
         print("\n*** Checking code health with flake8:\n")
-        os.system("python -m pip install 'flake8==7.2.0'")
+        os.system("python -m pip install 'flake8==7.3.0'")
         flake8_status = os.system("flake8 --exclude=recordings,temp")
         if flake8_status != 0:
             print("\nERROR! Fix flake8 issues before publishing to PyPI!\n")
@@ -174,7 +174,7 @@ setup(
         'parse-type>=0.6.4',
         'colorama>=0.4.6',
         'pyyaml>=6.0.2',
-        'pygments>=2.19.1',
+        'pygments>=2.19.2',
         'pyreadline3>=3.5.3;platform_system=="Windows"',
         "tabcompleter>=1.4.0",
         "pdbp>=1.7.0",
@@ -182,7 +182,7 @@ setup(
         'chardet==5.2.0',
         'charset-normalizer>=3.4.2,<4',
         'urllib3>=1.26.20,<2;python_version<"3.10"',
-        'urllib3>=1.26.20,<2.5.0;python_version>="3.10"',
+        'urllib3>=1.26.20,<2.6.0;python_version>="3.10"',
         'requests==2.32.4',
         'sniffio==1.3.1',
         'h11==0.16.0',
@@ -203,14 +203,14 @@ setup(
         'pluggy==1.5.0;python_version<"3.9"',
         'pluggy==1.6.0;python_version>="3.9"',
         'pytest==8.3.5;python_version<"3.9"',
-        'pytest==8.4.0;python_version>="3.9"',
+        'pytest==8.4.1;python_version>="3.9"',
         "pytest-html==4.0.2",  # Newer ones had issues
         'pytest-metadata==3.1.1',
         "pytest-ordering==0.6",
         'pytest-rerunfailures==14.0;python_version<"3.9"',
         'pytest-rerunfailures==15.1;python_version>="3.9"',
         'pytest-xdist==3.6.1;python_version<"3.9"',
-        'pytest-xdist==3.7.0;python_version>="3.9"',
+        'pytest-xdist==3.8.0;python_version>="3.9"',
         'parameterized==0.9.0',
         "behave==1.2.6",
         'soupsieve==2.7',
@@ -242,12 +242,12 @@ setup(
         # Usage: flake8
         "flake8": [
             'flake8==5.0.4;python_version<"3.9"',
-            'flake8==7.2.0;python_version>="3.9"',
+            'flake8==7.3.0;python_version>="3.9"',
             "mccabe==0.7.0",
             'pyflakes==2.5.0;python_version<"3.9"',
-            'pyflakes==3.3.2;python_version>="3.9"',
+            'pyflakes==3.4.0;python_version>="3.9"',
             'pycodestyle==2.9.1;python_version<"3.9"',
-            'pycodestyle==2.13.0;python_version>="3.9"',
+            'pycodestyle==2.14.0;python_version>="3.9"',
         ],
         # pip install -e .[ipdb]
         # (Not needed for debugging anymore. SeleniumBase now includes "pdbp".)
@@ -275,7 +275,7 @@ setup(
         # (An optional library for image-processing.)
         "pillow": [
             'Pillow>=10.4.0;python_version<"3.9"',
-            'Pillow>=11.2.1;python_version>="3.9"',
+            'Pillow>=11.3.0;python_version>="3.9"',
         ],
         # pip install -e .[pip-system-certs]
         # (If you see [SSL: CERTIFICATE_VERIFY_FAILED], then get this.)
