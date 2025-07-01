@@ -14164,7 +14164,13 @@ class BaseCase(unittest.TestCase):
                     backend="xvfb",
                     use_xauth=True,
                 )
+                if "--debug-display" in sys.argv:
+                    print(
+                        "Starting VDisplay from base_case: (%s, %s)"
+                        % (self._xvfb_width, self._xvfb_height)
+                    )
                 self._xvfb_display.start()
+                sb_config._virtual_display = self._xvfb_display
                 if "DISPLAY" not in os.environ.keys():
                     print(
                         "\nX11 display failed! Will use regular xvfb!"

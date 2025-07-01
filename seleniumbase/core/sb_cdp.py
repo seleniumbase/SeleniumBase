@@ -1439,6 +1439,10 @@ class CDPMethods():
                         shared_utils.is_linux()
                         and (not sb_config.headed or sb_config.xvfb)
                         and not driver.config.headless
+                        and (
+                            not hasattr(sb_config, "_virtual_display")
+                            or not sb_config._virtual_display
+                        )
                     ):
                         from sbvirtualdisplay import Display
                         xvfb_width = 1366
@@ -1466,6 +1470,11 @@ class CDPMethods():
                                 backend="xvfb",
                                 use_xauth=True,
                             )
+                            if "--debug-display" in sys.argv:
+                                print(
+                                    "Starting VDisplay from sb_cdp: (%s, %s)"
+                                    % (xvfb_width, xvfb_height)
+                                )
                             xvfb_display.start()
 
     def __get_configured_pyautogui(self, pyautogui_copy):
