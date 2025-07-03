@@ -91,10 +91,11 @@ class HackTests(BaseCase):
         self.open("https://dev.to/top/infinity")
         self.click_if_visible('button[aria-label="Close campaign banner"]')
         self.click_if_visible('svg[aria-label="Close campaign banner"]')
-        try:
+        self.click_if_visible('button[id*="sponsorship-close-trigger"]')
+        if self.is_element_visible('main div:contains("Pinned")'):
             self.hide_elements('main div:contains("Pinned")')
-        except Exception:
-            pass
+        if self.is_element_visible('[data-type-of="in_house"]'):
+            self.hide_elements('[data-type-of="in_house"]')
         self.set_text_content('nav a[data-text="Relevant"]', "ALL")
         self.set_text_content('nav a[data-text="Latest"]', "YOUR")
         self.set_text_content('nav a[data-text="Top"]', "BASE")
@@ -124,8 +125,6 @@ class HackTests(BaseCase):
         self.highlight('nav a[data-text="Month"]', loops=1, scroll=False)
         self.highlight('nav a[data-text="Year"]', loops=1, scroll=False)
         self.highlight('nav a[data-text="Infinity"]', loops=3, scroll=False)
-        if self.is_element_visible('h2 a[href*="simonh"]'):
-            self.highlight('h2 a[href*="simonh"]', loops=7, scroll=False)
         if self.is_element_visible('main h2 a[id*="article"]'):
             self.highlight('main h2 a[id*="article"]', loops=7, scroll=False)
         self.highlight("section.crayons-card", loops=7, scroll=False)
