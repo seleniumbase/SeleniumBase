@@ -325,6 +325,8 @@ setup(
         "seleniumbase.console_scripts",
         "seleniumbase.core",
         "seleniumbase.drivers",
+        "seleniumbase.drivers.cft_drivers",
+        "seleniumbase.drivers.chs_drivers",
         "seleniumbase.extensions",
         "seleniumbase.fixtures",
         "seleniumbase.js_code",
