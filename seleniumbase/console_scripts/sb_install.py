@@ -44,6 +44,8 @@ from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import shared_utils
 from seleniumbase import config as sb_config
 from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
+from seleniumbase.drivers import cft_drivers  # chrome-for-testing
+from seleniumbase.drivers import chs_drivers  # chrome-headless-shell
 
 urllib3.disable_warnings()
 ARCH = platform.architecture()[0]
@@ -52,6 +54,8 @@ IS_MAC = shared_utils.is_mac()
 IS_LINUX = shared_utils.is_linux()
 IS_WINDOWS = shared_utils.is_windows()
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
+DRIVER_DIR_CFT = os.path.dirname(os.path.realpath(cft_drivers.__file__))
+DRIVER_DIR_CHS = os.path.dirname(os.path.realpath(chs_drivers.__file__))
 LOCAL_PATH = "/usr/local/bin/"  # On Mac and Linux systems
 DEFAULT_CHROMEDRIVER_VERSION = "114.0.5735.90"  # (If can't find LATEST_STABLE)
 DEFAULT_GECKODRIVER_VERSION = "v0.36.0"
@@ -305,6 +309,17 @@ def main(override=None, intel_for_uc=None, force_uc=None):
     headless_ie_exists = False
     headless_ie_file_name = None
     downloads_folder = DRIVER_DIR
+    if (
+        hasattr(sb_config, "settings")
+        and hasattr(sb_config.settings, "NEW_DRIVER_DIR")
+        and sb_config.settings.NEW_DRIVER_DIR
+        and os.path.exists(sb_config.settings.NEW_DRIVER_DIR)
+    ):
+        downloads_folder = sb_config.settings.NEW_DRIVER_DIR
+    elif override == "cft" or name == "cft":
+        downloads_folder = DRIVER_DIR_CFT
+    elif override == "chs" or name == "chs":
+        downloads_folder = DRIVER_DIR_CHS
     expected_contents = None
     platform_code = None
     copy_to_path = False

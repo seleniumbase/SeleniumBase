@@ -25,6 +25,8 @@ from selenium.webdriver.safari.service import Service as SafariService
 from seleniumbase import config as sb_config
 from seleniumbase import decorators
 from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
+from seleniumbase.drivers import cft_drivers  # chrome-for-testing
+from seleniumbase.drivers import chs_drivers  # chrome-headless-shell
 from seleniumbase import extensions  # browser extensions storage folder
 from seleniumbase.config import settings
 from seleniumbase.core import detect_b_ver
@@ -39,6 +41,8 @@ from seleniumbase.fixtures import shared_utils
 
 urllib3.disable_warnings()
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
+DRIVER_DIR_CFT = os.path.dirname(os.path.realpath(cft_drivers.__file__))
+DRIVER_DIR_CHS = os.path.dirname(os.path.realpath(chs_drivers.__file__))
 # Make sure that the SeleniumBase DRIVER_DIR is at the top of the System PATH
 # (Changes to the System PATH with os.environ only last during the test run)
 if not os.environ["PATH"].startswith(DRIVER_DIR):
@@ -2833,6 +2837,18 @@ def get_driver(
     device_pixel_ratio=None,
     browser=None,  # A duplicate of browser_name to avoid confusion
 ):
+    driver_dir = DRIVER_DIR
+    if sb_config.binary_location == "cft":
+        driver_dir = DRIVER_DIR_CFT
+    if sb_config.binary_location == "chs":
+        driver_dir = DRIVER_DIR_CHS
+    if (
+        hasattr(sb_config, "settings")
+        and hasattr(sb_config.settings, "NEW_DRIVER_DIR")
+        and sb_config.settings.NEW_DRIVER_DIR
+        and os.path.exists(sb_config.settings.NEW_DRIVER_DIR)
+    ):
+        driver_dir = sb_config.settings.NEW_DRIVER_DIR
     if not browser_name:
         if browser:
             browser_name = browser
