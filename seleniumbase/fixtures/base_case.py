@@ -4894,7 +4894,7 @@ class BaseCase(unittest.TestCase):
                 self.driver.connect()
             current_url = self.get_current_url()
             if not current_url.startswith(("about", "data", "chrome")):
-                self.get_new_driver(undetectable=True)
+                self.open("about:blank")
             self.driver.uc_open_with_cdp_mode(url, **kwargs)
         else:
             self.get_new_driver(undetectable=True)

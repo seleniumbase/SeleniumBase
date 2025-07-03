@@ -543,11 +543,6 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
         driver.connect()
         current_url = driver.current_url
     url_protocol = current_url.split(":")[0]
-    if url_protocol not in ["about", "data", "chrome"]:
-        script = 'window.open("data:,","_blank");'
-        js_utils.call_me_later(driver, script, 3)
-        time.sleep(0.012)
-        driver.close()
     driver.disconnect()
 
     cdp_details = driver._get_cdp_details()
