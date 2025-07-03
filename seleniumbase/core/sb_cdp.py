@@ -2014,6 +2014,150 @@ class CDPMethods():
             % (selector, timeout, plural)
         )
 
+    def wait_for_any_of_elements_visible(self, *args, **kwargs):
+        """Waits for at least one of the elements to be visible.
+        Returns the first element that is found.
+        The input is a list of elements. (Should be CSS selectors)
+        Optional kwargs include: "timeout" (used by all selectors).
+        Raises an exception if no elements are visible by the timeout.
+        Examples:
+            sb.cdp.wait_for_any_of_elements_visible("h1", "h2", "h3")
+            OR
+            sb.cdp.wait_for_any_of_elements_visible(["h1", "h2", "h3"]) """
+        selectors = []
+        timeout = None
+        for kwarg in kwargs:
+            if kwarg == "timeout":
+                timeout = kwargs["timeout"]
+            elif kwarg == "by":
+                pass  # Autodetected
+            elif kwarg == "selector" or kwarg == "selectors":
+                selector = kwargs[kwarg]
+                if isinstance(selector, str):
+                    selectors.append(selector)
+                elif isinstance(selector, list):
+                    selectors_list = selector
+                    for selector in selectors_list:
+                        if isinstance(selector, str):
+                            selectors.append(selector)
+            else:
+                raise Exception('Unknown kwarg: "%s"!' % kwarg)
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        for arg in args:
+            if isinstance(arg, list):
+                for selector in arg:
+                    if isinstance(selector, str):
+                        selectors.append(selector)
+            elif isinstance(arg, str):
+                selectors.append(arg)
+        if not selectors:
+            raise Exception("The selectors list was empty!")
+        start_ms = time.time() * 1000.0
+        stop_ms = start_ms + (timeout * 1000.0)
+        any_present = False
+        for i in range(int(timeout * 10)):
+            for selector in selectors:
+                if self.is_element_visible(selector):
+                    return self.select(selector)
+                if self.is_element_present(selector):
+                    any_present = True
+            now_ms = time.time() * 1000.0
+            if now_ms >= stop_ms:
+                break
+            time.sleep(0.1)
+        plural = "s"
+        if timeout == 1:
+            plural = ""
+        if not any_present:
+            # None of the elements exist in the HTML
+            raise Exception(
+                "None of the elements {%s} were present after %s second%s!" % (
+                    str(selectors),
+                    timeout,
+                    plural,
+                )
+            )
+        raise Exception(
+            "None of the elements %s were visible after %s second%s!" % (
+                str(selectors),
+                timeout,
+                plural,
+            )
+        )
+
+    def wait_for_any_of_elements_present(self, *args, **kwargs):
+        """Waits for at least one of the elements to be present.
+        Visibility not required, but element must be in the DOM.
+        Returns the first element that is found.
+        The input is a list of elements. (Should be CSS selectors)
+        Optional kwargs include: "timeout" (used by all selectors).
+        Raises an exception if no elements are present by the timeout.
+        Examples:
+            self.wait_for_any_of_elements_present("style", "script")
+            OR
+            self.wait_for_any_of_elements_present(["style", "script"]) """
+        selectors = []
+        timeout = None
+        for kwarg in kwargs:
+            if kwarg == "timeout":
+                timeout = kwargs["timeout"]
+            elif kwarg == "by":
+                pass  # Autodetected
+            elif kwarg == "selector" or kwarg == "selectors":
+                selector = kwargs[kwarg]
+                if isinstance(selector, str):
+                    selectors.append(selector)
+                elif isinstance(selector, list):
+                    selectors_list = selector
+                    for selector in selectors_list:
+                        if isinstance(selector, str):
+                            selectors.append(selector)
+            else:
+                raise Exception('Unknown kwarg: "%s"!' % kwarg)
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        for arg in args:
+            if isinstance(arg, list):
+                for selector in arg:
+                    if isinstance(selector, str):
+                        selectors.append(selector)
+            elif isinstance(arg, str):
+                selectors.append(arg)
+        if not selectors:
+            raise Exception("The selectors list was empty!")
+        start_ms = time.time() * 1000.0
+        stop_ms = start_ms + (timeout * 1000.0)
+        for i in range(int(timeout * 10)):
+            for selector in selectors:
+                if self.is_element_present(selector):
+                    return self.select(selector)
+            now_ms = time.time() * 1000.0
+            if now_ms >= stop_ms:
+                break
+            time.sleep(0.1)
+        plural = "s"
+        if timeout == 1:
+            plural = ""
+        # None of the elements exist in the HTML
+        raise Exception(
+            "None of the elements %s were present after %s second%s!" % (
+                str(selectors),
+                timeout,
+                plural,
+            )
+        )
+
+    def assert_any_of_elements_visible(self, *args, **kwargs):
+        """Like wait_for_any_of_elements_visible(), but returns nothing."""
+        self.wait_for_any_of_elements_visible(*args, **kwargs)
+        return True
+
+    def assert_any_of_elements_present(self, *args, **kwargs):
+        """Like wait_for_any_of_elements_present(), but returns nothing."""
+        self.wait_for_any_of_elements_present(*args, **kwargs)
+        return True
+
     def assert_element(self, selector, timeout=None):
         """Same as assert_element_visible()"""
         self.assert_element_visible(selector, timeout=timeout)
