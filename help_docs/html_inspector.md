@@ -20,7 +20,7 @@ class HtmlInspectorTests(BaseCase):
 
 --------
 
-```bash
+```zsh
 pytest test_inspect_html.py
 ============== test session starts ==============
 

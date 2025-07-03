@@ -24,7 +24,7 @@
 
 <p>🗺️ This example is from <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/maps_introjs_tour.py">maps_introjs_tour.py</a>. (The <code>--interval=1</code> makes the tour go automatically to the next step after 1 second.)</p>
 
-```bash
+```zsh
 cd examples/tour_examples
 pytest maps_introjs_tour.py --interval=1
 ```
@@ -120,7 +120,7 @@ def add_css_link(driver, css_link):
 
 <h4>Here's how to run that example:</h4>
 
-```bash
+```zsh
 cd examples/dialog_boxes
 pytest test_dialog_boxes.py
 ```

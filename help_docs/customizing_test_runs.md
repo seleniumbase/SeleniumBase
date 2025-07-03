@@ -26,7 +26,7 @@
 
 🎛️ Here are some examples of configuring tests, which can be run from the [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder:
 
-```bash
+```zsh
 # Run a test in Chrome (default browser)
 pytest my_first_test.py
 
@@ -109,7 +109,7 @@ pytest my_first_test.py --settings-file=custom_settings.py
 
 🎛️ Here are some useful command-line options that come with ``pytest``:
 
-```bash
+```zsh
 -v  # Verbose mode. Prints the full name of each test and shows more details.
 -q  # Quiet mode. Print fewer details in the console output when running tests.
 -x  # Stop running the tests after the first failure is reached.
@@ -126,7 +126,7 @@ pytest my_first_test.py --settings-file=custom_settings.py
 
 🎛️ SeleniumBase provides additional ``pytest`` command-line options for tests:
 
-```bash
+```zsh
 --browser=BROWSER  # (The web browser to use. Default: "chrome".)
 --chrome  # (Shortcut for "--browser=chrome". On by default.)
 --edge  # (Shortcut for "--browser=edge".)
@@ -234,13 +234,13 @@ pytest my_first_test.py --settings-file=custom_settings.py
 
 🎛️ You can also view a list of popular ``pytest`` options for SeleniumBase by typing:
 
-```bash
+```zsh
 seleniumbase options
 ```
 
 Or the short form:
 
-```bash
+```zsh
 sbase options
 ```
 
@@ -250,7 +250,7 @@ sbase options
 
 To see logging abilities, you can run a test suite that includes tests that fail on purpose:
 
-```bash
+```zsh
 pytest test_suite.py
 ```
 
@@ -260,13 +260,13 @@ pytest test_suite.py
 
 🔵 If any test is moving too fast for your eyes to see what's going on, you can run it in **Demo Mode** by adding ``--demo`` on the command line, which pauses the browser briefly between actions, highlights page elements being acted on, and lets you know what test assertions are happening in real-time:
 
-```bash
+```zsh
 pytest my_first_test.py --demo
 ```
 
 🔵 You can override the default wait time by either updating [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) or by using ``--demo-sleep=NUM`` when using Demo Mode. (NOTE: If you use ``--demo-sleep=NUM`` without using ``--demo``, nothing will happen.)
 
-```bash
+```zsh
 pytest my_first_test.py --demo --demo-sleep=1.2
 ```
 
@@ -278,7 +278,7 @@ If you want to pass additional data from the command line to your tests, you can
 
 To run ``pytest`` with multiple processes, add ``-n=NUM``, ``-n NUM``, or ``-nNUM`` on the command line, where ``NUM`` is the number of CPUs you want to use.
 
-```bash
+```zsh
 pytest -n=8
 pytest -n 8
 pytest -n8
@@ -288,7 +288,7 @@ pytest -n8
 
 <p>You can use <code translate="no">pytest --reruns=NUM</code> to retry failing tests that many times. Add <code translate="no">--reruns-delay=SECONDS</code> to wait that many seconds between retries. Example:</p>
 
-```bash
+```zsh
 pytest --reruns=1 --reruns-delay=1
 ```
 
@@ -304,13 +304,13 @@ import pytest; pytest.set_trace()  # Debug Mode. n: next, c: continue, s: step, 
 
 🔵 To pause an active test that throws an exception or error, (*and keep the browser window open while **Debug Mode** begins in the console*), add **``--pdb``** as a ``pytest`` option:
 
-```bash
+```zsh
 pytest test_fail.py --pdb
 ```
 
 🔵 To start tests in Debug Mode, add **``--trace``** as a ``pytest`` option:
 
-```bash
+```zsh
 pytest test_coffee_cart.py --trace
 ```
 
@@ -351,7 +351,7 @@ class Test:
 
 🎛️ You might also want to combine multiple options at once. For example:
 
-```bash
+```zsh
 pytest --headless -n8 --dashboard --html=report.html -v --rs --crumbs
 ```
 
@@ -363,13 +363,13 @@ The above not only runs tests in parallel processes, but it also tells tests in 
 
 First, get `chrome-headless-shell` if you don't already have it:
 
-```bash
+```zsh
 sbase get chs
 ```
 
 Then, run scripts with `--chs` / `chs=True`:
 
-```bash
+```zsh
 pytest --chs -n8 --dashboard --html=report.html -v --rs
 ```
 
@@ -381,7 +381,7 @@ That makes your tests run very quickly in headless mode.
 
 🔵 The ``--dashboard`` option for pytest generates a SeleniumBase Dashboard located at ``dashboard.html``, which updates automatically as tests run and produce results. Example:
 
-```bash
+```zsh
 pytest --dashboard --rs --headless
 ```
 
@@ -389,7 +389,7 @@ pytest --dashboard --rs --headless
 
 🔵 Additionally, you can host your own SeleniumBase Dashboard Server on a port of your choice. Here's an example of that using Python 3's ``http.server``:
 
-```bash
+```zsh
 python -m http.server 1948
 ```
 
@@ -397,7 +397,7 @@ python -m http.server 1948
 
 🔵 Here's a full example of what the SeleniumBase Dashboard may look like:
 
-```bash
+```zsh
 pytest test_suite.py --dashboard --rs --headless
 ```
 
@@ -409,7 +409,7 @@ pytest test_suite.py --dashboard --rs --headless
 
 🔵 Using ``--html=report.html`` gives you a fancy report of the name specified after your test suite completes.
 
-```bash
+```zsh
 pytest test_suite.py --html=report.html
 ```
 
@@ -419,7 +419,7 @@ pytest test_suite.py --html=report.html
 
 🔵 Here's an example of an upgraded html report:
 
-```bash
+```zsh
 pytest test_suite.py --dashboard --html=report.html
 ```
 
@@ -429,7 +429,7 @@ If viewing pytest html reports in [Jenkins](https://www.jenkins.io/), you may ne
 
 You can also use ``--junit-xml=report.xml`` to get an xml report instead. Jenkins can use this file to display better reporting for your tests.
 
-```bash
+```zsh
 pytest test_suite.py --junit-xml=report.xml
 ```
 
@@ -439,7 +439,7 @@ pytest test_suite.py --junit-xml=report.xml
 
 The ``--report`` option gives you a fancy report after your test suite completes.
 
-```bash
+```zsh
 nosetests test_suite.py --report
 ```
 
@@ -453,7 +453,7 @@ nosetests test_suite.py --report
 
 You can specify a Language Locale Code to customize web pages on supported websites. With SeleniumBase, you can change the web browser's Locale on the command line by doing this:
 
-```bash
+```zsh
 pytest --locale=CODE  # Example: --locale=ru
 ```
 
@@ -467,7 +467,7 @@ Visit <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_doc
 
 🎛️ To change this default behavior, you can use:
 
-```bash
+```zsh
 pytest --driver-version=VER
 ```
 
@@ -493,7 +493,7 @@ Note that different options could lead to the same result. (Eg. If you have the 
 
 🎛️ To change this default behavior, you can use:
 
-```bash
+```zsh
 pytest --binary-location=PATH
 ```
 
@@ -510,13 +510,13 @@ With the `SB()` and `Driver()` formats, the binary location is set via the `bina
 
 🎛️ To use the special `Chrome for Testing` binary:
 
-```bash
+```zsh
 sbase get cft
 ```
 
 Then, run scripts with `--cft` / `cft=True`:
 
-```bash
+```zsh
 pytest --cft -n8 --dashboard --html=report.html -v --rs --headless
 ```
 
@@ -533,7 +533,7 @@ pytest --cft -n8 --dashboard --html=report.html -v --rs --headless
 🎛️ An easy way to override [seleniumbase/config/settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) is by using a custom settings file.
 Here's the command-line option to add to tests: (See [examples/custom_settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/custom_settings.py))
 
-```bash
+```zsh
 pytest --settings-file=custom_settings.py
 ```
 
@@ -549,13 +549,13 @@ pytest --settings-file=custom_settings.py
 
 Here's how to connect to a BrowserStack Selenium Grid server for running tests:
 
-```bash
+```zsh
 pytest test_demo_site.py --server=USERNAME:KEY@hub.browserstack.com --port=80
 ```
 
 Here's how to connect to a Sauce Labs Selenium Grid server for running tests:
 
-```bash
+```zsh
 pytest test_demo_site.py --server=USERNAME:KEY@ondemand.us-east-1.saucelabs.com --port=443 --protocol=https
 ```
 
@@ -563,7 +563,7 @@ pytest test_demo_site.py --server=USERNAME:KEY@ondemand.us-east-1.saucelabs.com 
 
 🌐 To use a server on the ``https`` protocol, add ``--protocol=https``: (*Now automatic if the port is 443.*)
 
-```bash
+```zsh
 pytest test_demo_site.py --protocol=https --server=IP_ADDRESS --port=PORT
 ```
 
@@ -573,19 +573,19 @@ pytest test_demo_site.py --protocol=https --server=IP_ADDRESS --port=PORT
 
 🌐 If you wish to use a proxy server for your browser tests (Chromium or Firefox), you can add ``--proxy=IP_ADDRESS:PORT`` as an argument on the command line.
 
-```bash
+```zsh
 pytest proxy_test.py --proxy=IP_ADDRESS:PORT
 ```
 
 🌐 If the proxy server that you wish to use requires authentication, you can do the following (Chromium only):
 
-```bash
+```zsh
 pytest proxy_test.py --proxy=USERNAME:PASSWORD@IP_ADDRESS:PORT
 ```
 
 🌐 SeleniumBase also supports SOCKS4 and SOCKS5 proxies:
 
-```bash
+```zsh
 pytest proxy_test.py --proxy="socks4://IP_ADDRESS:PORT"
 
 pytest proxy_test.py --proxy="socks5://IP_ADDRESS:PORT"
@@ -593,7 +593,7 @@ pytest proxy_test.py --proxy="socks5://IP_ADDRESS:PORT"
 
 To make things easier, you can add your frequently-used proxies to PROXY_LIST in [proxy_list.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/proxy_list.py), and then use ``--proxy=KEY_FROM_PROXY_LIST`` to use the IP_ADDRESS:PORT of that key.
 
-```bash
+```zsh
 pytest proxy_test.py --proxy=proxy1
 ```
 
@@ -603,7 +603,7 @@ pytest proxy_test.py --proxy=proxy1
 
 🔤 If you wish to change the User-Agent for your browser tests (Chrome and Firefox only), you can add ``--agent="USER-AGENT-STRING"`` as an argument on the command line.
 
-```bash
+```zsh
 pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1.7412.EU"
 ```
 
@@ -611,7 +611,7 @@ pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1
 
 📱 Use ``--mobile`` to quickly run your tests using Chrome's mobile device emulator with default values for device metrics (CSS Width, CSS Height, Pixel-Ratio) and a default value set for the user agent. To configure the mobile device metrics, use ``--metrics="CSS_Width,CSS_Height,Pixel_Ratio"`` to set those values. You'll also be able to set the user agent with ``--agent="USER-AGENT-STRING"`` (a default user agent will be used if not specified). To find real values for device metrics, [see this GitHub Gist](https://gist.github.com/sidferreira/3f5fad525e99b395d8bd882ee0fd9d00). For a list of available user agent strings, [check out this page](https://developers.whatismybrowser.com/useragents/explore/).
 
-```bash
+```zsh
 # Run tests using Chrome's mobile device emulator (default settings)
 pytest test_swag_labs.py --mobile
 

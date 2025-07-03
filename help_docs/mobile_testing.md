@@ -8,7 +8,7 @@ Use ``--mobile`` to run SeleniumBase tests using Chrome's mobile device emulator
 
 [SeleniumBase/examples/test_skype_site.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_skype_site.py)
 
-```bash
+```zsh
 pytest test_skype_site.py --mobile
 ```
 
@@ -16,13 +16,13 @@ pytest test_skype_site.py --mobile
 
 To configure Device Metrics, use:
 
-```bash
+```zsh
 --metrics="CSS_Width,CSS_Height,Pixel_Ratio"
 ```
 
 To configure the User-Agent, use:
 
-```bash
+```zsh
 --agent="USER-AGENT-STRING"
 ```
 
@@ -40,7 +40,7 @@ To find real User-Agent strings, see:
 
 [SeleniumBase/examples/test_swag_labs.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py)
 
-```bash
+```zsh
 pytest test_swag_labs.py --mobile
 ```
 
@@ -48,7 +48,7 @@ pytest test_swag_labs.py --mobile
 
 <b>Here's an example of configuring mobile settings for that test:</b>
 
-```bash
+```zsh
 # Run tests using Chrome's mobile device emulator (default settings)
 pytest test_swag_labs.py --mobile
 

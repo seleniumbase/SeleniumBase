@@ -65,7 +65,7 @@ class TestSimpleLogin(BaseCase):
 
 👁️🔎 Here are some examples of running tests with ``pytest``:
 
-```bash
+```zsh
 pytest test_mfa_login.py
 pytest --headless -n8 --dashboard --html=report.html -v --rs --crumbs
 pytest -m marker2
