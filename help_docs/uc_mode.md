@@ -305,7 +305,7 @@ with SB(uc=True) as sb:
 
 If you're using <b><code translate="no">pytest</code></b> for multithreaded <b translate="no">UC Mode</b> (which requires using one of the <b><code translate="no">pytest</code></b> [syntax formats](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md)), then all you have to do is set the number of threads when your script runs. (<code translate="no">-n NUM</code>) Eg:
 
-```bash
+```zsh
 pytest --uc -n 4
 ```
 

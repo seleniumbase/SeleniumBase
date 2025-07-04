@@ -11,6 +11,8 @@ behave -D agent="User Agent String" -D demo
 -D edge  (Shortcut for "-D browser=edge".)
 -D firefox  (Shortcut for "-D browser=firefox".)
 -D safari  (Shortcut for "-D browser=safari".)
+-D cft  (Shortcut for using `Chrome for Testing`)
+-D chs  (Shortcut for using `Chrome-Headless-Shell`)
 -D settings-file=FILE  (Override default SeleniumBase settings.)
 -D env=ENV  (Set the test env. Access with "self.env" in tests.)
 -D account=STR  (Set account. Access with "self.account" in tests.)
@@ -176,6 +178,7 @@ def get_configured_sb(context):
     sb.extension_zip = None
     sb.extension_dir = None
     sb.binary_location = None
+    sb_config.binary_location = None
     sb.driver_version = None
     sb.page_load_strategy = None
     sb.database_env = "test"
@@ -488,6 +491,19 @@ def get_configured_sb(context):
             if binary_location == "true":
                 binary_location = sb.binary_location  # revert to default
             sb.binary_location = binary_location
+            sb_config.binary_location = binary_location
+            continue
+        # Handle: -D cft
+        if low_key in ["cft"] and not sb_config.binary_location:
+            binary_location = "cft"
+            sb.binary_location = binary_location
+            sb_config.binary_location = binary_location
+            continue
+        # Handle: -D chs
+        if low_key in ["chs"] and not sb_config.binary_location:
+            binary_location = "chs"
+            sb.binary_location = binary_location
+            sb_config.binary_location = binary_location
             continue
         # Handle: -D driver-version=VER / driver_version=VER
         if low_key in ["driver-version", "driver_version"]:

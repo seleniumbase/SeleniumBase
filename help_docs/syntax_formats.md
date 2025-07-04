@@ -731,7 +731,7 @@ class MiClaseDePrueba(CasoDePrueba):
 
 With [Behave's BDD Gherkin format](https://behave.readthedocs.io/en/stable/gherkin.html), you can use natural language to write tests that work with SeleniumBase methods. Behave tests are run by calling ``behave`` on the command-line. This requires some special files in a specific directory structure. Here's an example of that structure:
 
-```bash
+```zsh
 features/
 ├── __init__.py
 ├── behave.ini

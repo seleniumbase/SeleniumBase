@@ -25,6 +25,8 @@ from selenium.webdriver.safari.service import Service as SafariService
 from seleniumbase import config as sb_config
 from seleniumbase import decorators
 from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
+from seleniumbase.drivers import cft_drivers  # chrome-for-testing
+from seleniumbase.drivers import chs_drivers  # chrome-headless-shell
 from seleniumbase import extensions  # browser extensions storage folder
 from seleniumbase.config import settings
 from seleniumbase.core import detect_b_ver
@@ -39,6 +41,8 @@ from seleniumbase.fixtures import shared_utils
 
 urllib3.disable_warnings()
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
+DRIVER_DIR_CFT = os.path.dirname(os.path.realpath(cft_drivers.__file__))
+DRIVER_DIR_CHS = os.path.dirname(os.path.realpath(chs_drivers.__file__))
 # Make sure that the SeleniumBase DRIVER_DIR is at the top of the System PATH
 # (Changes to the System PATH with os.environ only last during the test run)
 if not os.environ["PATH"].startswith(DRIVER_DIR):
@@ -98,6 +102,38 @@ def log_d(message):
         logging.debug(message)
     else:
         print(message)
+
+
+def override_driver_dir(driver_dir):
+    if (
+        driver_dir
+        and isinstance(driver_dir, str)
+        and os.path.exists(driver_dir)
+    ):
+        driver_dir = os.path.realpath(driver_dir)
+        sb_config.settings.NEW_DRIVER_DIR = driver_dir
+        if (
+            not os.environ["PATH"].startswith(driver_dir)
+            and len(driver_dir) >= 4
+        ):
+            os.environ["PATH"] = os.environ["PATH"].replace(driver_dir, "")
+            os.environ["PATH"] = os.environ["PATH"].replace(
+                os.pathsep + os.pathsep, os.pathsep
+            )
+            os.environ["PATH"] = driver_dir + os.pathsep + os.environ["PATH"]
+    elif (
+        not driver_dir
+        or not isinstance(driver_dir, str)
+        or not os.path.exists(driver_dir)
+    ):
+        bad_dir = ""
+        if driver_dir and isinstance(driver_dir, str):
+            bad_dir = os.path.realpath(driver_dir)
+        log_d(
+            "\n* Warning: Cannot set driver_dir to nonexistent directory:\n%s"
+            "\n* Will use the default folder instead:\n%s)"
+            % (bad_dir, DRIVER_DIR)
+        )
 
 
 def make_driver_executable_if_not(driver_path):
@@ -301,12 +337,14 @@ def chromedriver_on_path():
     return None
 
 
-def get_uc_driver_version(full=False):
+def get_uc_driver_version(full=False, local_uc_driver=None):
+    if not local_uc_driver:
+        local_uc_driver = LOCAL_UC_DRIVER
     uc_driver_version = None
-    if os.path.exists(LOCAL_UC_DRIVER):
+    if os.path.exists(local_uc_driver):
         with suppress(Exception):
             output = subprocess.check_output(
-                '"%s" --version' % LOCAL_UC_DRIVER, shell=True
+                '"%s" --version' % local_uc_driver, shell=True
             )
             if IS_WINDOWS:
                 output = output.decode("latin1")
@@ -543,11 +581,6 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
         driver.connect()
         current_url = driver.current_url
     url_protocol = current_url.split(":")[0]
-    if url_protocol not in ["about", "data", "chrome"]:
-        script = 'window.open("data:,","_blank");'
-        js_utils.call_me_later(driver, script, 3)
-        time.sleep(0.012)
-        driver.close()
     driver.disconnect()
 
     cdp_details = driver._get_cdp_details()
@@ -792,6 +825,14 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
     cdp.wait_for_element_visible = CDPM.wait_for_element_visible
     cdp.wait_for_element_not_visible = CDPM.wait_for_element_not_visible
     cdp.wait_for_element_absent = CDPM.wait_for_element_absent
+    cdp.wait_for_any_of_elements_visible = (
+        CDPM.wait_for_any_of_elements_visible
+    )
+    cdp.wait_for_any_of_elements_present = (
+        CDPM.wait_for_any_of_elements_present
+    )
+    cdp.assert_any_of_elements_visible = CDPM.assert_any_of_elements_visible
+    cdp.assert_any_of_elements_present = CDPM.assert_any_of_elements_present
     cdp.assert_element = CDPM.assert_element
     cdp.assert_element_visible = CDPM.assert_element_visible
     cdp.assert_element_present = CDPM.assert_element_present
@@ -2838,6 +2879,24 @@ def get_driver(
     device_pixel_ratio=None,
     browser=None,  # A duplicate of browser_name to avoid confusion
 ):
+    driver_dir = DRIVER_DIR
+    if (
+        hasattr(sb_config, "binary_location")
+        and sb_config.binary_location == "cft"
+    ):
+        driver_dir = DRIVER_DIR_CFT
+    if (
+        hasattr(sb_config, "binary_location")
+        and sb_config.binary_location == "chs"
+    ):
+        driver_dir = DRIVER_DIR_CHS
+    if (
+        hasattr(sb_config, "settings")
+        and hasattr(sb_config.settings, "NEW_DRIVER_DIR")
+        and sb_config.settings.NEW_DRIVER_DIR
+        and os.path.exists(sb_config.settings.NEW_DRIVER_DIR)
+    ):
+        driver_dir = sb_config.settings.NEW_DRIVER_DIR
     if not browser_name:
         if browser:
             browser_name = browser
@@ -2882,7 +2941,7 @@ def get_driver(
                 else:
                     binary_folder = "chrome-win32"
             if binary_folder:
-                binary_location = os.path.join(DRIVER_DIR, binary_folder)
+                binary_location = os.path.join(driver_dir, binary_folder)
                 if not os.path.exists(binary_location):
                     from seleniumbase.console_scripts import sb_install
                     args = " ".join(sys.argv)
@@ -2936,7 +2995,7 @@ def get_driver(
                 else:
                     binary_folder = "chrome-headless-shell-win32"
             if binary_folder:
-                binary_location = os.path.join(DRIVER_DIR, binary_folder)
+                binary_location = os.path.join(driver_dir, binary_folder)
                 if not os.path.exists(binary_location):
                     from seleniumbase.console_scripts import sb_install
                     args = " ".join(sys.argv)
@@ -3772,6 +3831,41 @@ def get_local_driver(
     """Spins up a new web browser and returns the driver.
     Can also be used to spin up additional browsers for the same test."""
     downloads_path = DOWNLOADS_FOLDER
+    driver_dir = DRIVER_DIR
+    special_chrome = False
+    if (
+        hasattr(sb_config, "binary_location")
+        and sb_config.binary_location == "cft"
+    ):
+        special_chrome = True
+        driver_dir = DRIVER_DIR_CFT
+    if (
+        hasattr(sb_config, "binary_location")
+        and sb_config.binary_location == "chs"
+    ):
+        special_chrome = True
+        driver_dir = DRIVER_DIR_CHS
+    if (
+        hasattr(sb_config, "settings")
+        and hasattr(sb_config.settings, "NEW_DRIVER_DIR")
+        and sb_config.settings.NEW_DRIVER_DIR
+        and os.path.exists(sb_config.settings.NEW_DRIVER_DIR)
+    ):
+        driver_dir = sb_config.settings.NEW_DRIVER_DIR
+    elif special_chrome:
+        override_driver_dir(driver_dir)
+    if IS_MAC or IS_LINUX:
+        local_chromedriver = driver_dir + "/chromedriver"
+        local_geckodriver = driver_dir + "/geckodriver"
+        local_edgedriver = driver_dir + "/msedgedriver"
+        local_uc_driver = driver_dir + "/uc_driver"
+    elif IS_WINDOWS:
+        local_edgedriver = driver_dir + "/msedgedriver.exe"
+        local_iedriver = driver_dir + "/IEDriverServer.exe"
+        local_headless_iedriver = driver_dir + "/headless_ie_selenium.exe"
+        local_chromedriver = driver_dir + "/chromedriver.exe"
+        local_geckodriver = driver_dir + "/geckodriver.exe"
+        local_uc_driver = driver_dir + "/uc_driver.exe"
     b_path = binary_location
     use_uc = is_using_uc(undetectable, browser_name)
     if use_wire:
@@ -3819,9 +3913,9 @@ def get_local_driver(
             firefox_pref,
             external_pdf,
         )
-        if LOCAL_GECKODRIVER and os.path.exists(LOCAL_GECKODRIVER):
+        if local_geckodriver and os.path.exists(local_geckodriver):
             try:
-                make_driver_executable_if_not(LOCAL_GECKODRIVER)
+                make_driver_executable_if_not(local_geckodriver)
             except Exception as e:
                 logging.debug(
                     "\nWarning: Could not make geckodriver"
@@ -3857,9 +3951,9 @@ def get_local_driver(
                         sb_install.main(override="geckodriver")
                         sys.argv = sys_args  # Put back original sys args
         # Launch Firefox
-        if os.path.exists(LOCAL_GECKODRIVER):
+        if os.path.exists(local_geckodriver):
             service = FirefoxService(
-                executable_path=LOCAL_GECKODRIVER,
+                executable_path=local_geckodriver,
                 log_output=os.devnull,
             )
             try:
@@ -3960,9 +4054,9 @@ def get_local_driver(
         ie_options.native_events = True
         ie_options.full_page_screenshot = True
         ie_options.persistent_hover = True
-        if LOCAL_IEDRIVER and os.path.exists(LOCAL_IEDRIVER):
+        if local_iedriver and os.path.exists(local_iedriver):
             try:
-                make_driver_executable_if_not(LOCAL_IEDRIVER)
+                make_driver_executable_if_not(local_iedriver)
             except Exception as e:
                 logging.debug(
                     "\nWarning: Could not make IEDriver executable: %s" % e
@@ -3976,9 +4070,9 @@ def get_local_driver(
                 log_d("\nWarning: IEDriver not found. Getting it now:")
                 sb_install.main(override="iedriver")
                 sys.argv = sys_args  # Put back the original sys args
-        if LOCAL_HEADLESS_IEDRIVER and os.path.exists(LOCAL_HEADLESS_IEDRIVER):
+        if local_headless_iedriver and os.path.exists(local_headless_iedriver):
             try:
-                make_driver_executable_if_not(LOCAL_HEADLESS_IEDRIVER)
+                make_driver_executable_if_not(local_headless_iedriver)
             except Exception as e:
                 logging.debug(
                     "\nWarning: Could not make HeadlessIEDriver executable: %s"
@@ -4004,7 +4098,7 @@ def get_local_driver(
         else:
             warnings.simplefilter("ignore", category=DeprecationWarning)
             service = Service(
-                executable_path=LOCAL_IEDRIVER,
+                executable_path=local_iedriver,
                 service_args=[d_b_c],
                 log_output=os.devnull,
             )
@@ -4087,10 +4181,10 @@ def get_local_driver(
             use_version = major_edge_version
         edge_driver_version = None
         edgedriver_upgrade_needed = False
-        if os.path.exists(LOCAL_EDGEDRIVER):
+        if os.path.exists(local_edgedriver):
             with suppress(Exception):
                 output = subprocess.check_output(
-                    '"%s" --version' % LOCAL_EDGEDRIVER, shell=True
+                    '"%s" --version' % local_edgedriver, shell=True
                 )
                 if IS_WINDOWS:
                     output = output.decode("latin1")
@@ -4118,7 +4212,7 @@ def get_local_driver(
             use_version, driver_version
         )
         local_edgedriver_exists = False
-        if LOCAL_EDGEDRIVER and os.path.exists(LOCAL_EDGEDRIVER):
+        if local_edgedriver and os.path.exists(local_edgedriver):
             local_edgedriver_exists = True
             if (
                 use_version != "latest"
@@ -4128,7 +4222,7 @@ def get_local_driver(
                 edgedriver_upgrade_needed = True
             else:
                 try:
-                    make_driver_executable_if_not(LOCAL_EDGEDRIVER)
+                    make_driver_executable_if_not(local_edgedriver)
                 except Exception as e:
                     logging.debug(
                         "\nWarning: Could not make edgedriver"
@@ -4166,9 +4260,9 @@ def get_local_driver(
         # For Microsoft Edge (Chromium) version 80 or higher
         Edge = webdriver.edge.webdriver.WebDriver
         EdgeOptions = webdriver.edge.webdriver.Options
-        if LOCAL_EDGEDRIVER and os.path.exists(LOCAL_EDGEDRIVER):
+        if local_edgedriver and os.path.exists(local_edgedriver):
             try:
-                make_driver_executable_if_not(LOCAL_EDGEDRIVER)
+                make_driver_executable_if_not(local_edgedriver)
             except Exception as e:
                 logging.debug(
                     "\nWarning: Could not make edgedriver"
@@ -4499,7 +4593,7 @@ def get_local_driver(
         if binary_location:
             edge_options.binary_location = binary_location
         service = EdgeService(
-            executable_path=LOCAL_EDGEDRIVER,
+            executable_path=local_edgedriver,
             log_output=os.devnull,
             service_args=["--disable-build-check"],
         )
@@ -4711,10 +4805,10 @@ def get_local_driver(
                 use_version = major_chrome_version
             ch_driver_version = None
             path_chromedriver = chromedriver_on_path()
-            if os.path.exists(LOCAL_CHROMEDRIVER):
+            if os.path.exists(local_chromedriver):
                 with suppress(Exception):
                     output = subprocess.check_output(
-                        '"%s" --version' % LOCAL_CHROMEDRIVER, shell=True
+                        '"%s" --version' % local_chromedriver, shell=True
                     )
                     if IS_WINDOWS:
                         output = output.decode("latin1")
@@ -4752,10 +4846,14 @@ def get_local_driver(
             uc_driver_version = None
             if use_uc:
                 if use_br_version_for_uc or driver_version == "mlatest":
-                    uc_driver_version = get_uc_driver_version(full=True)
+                    uc_driver_version = get_uc_driver_version(
+                        full=True, local_uc_driver=local_uc_driver
+                    )
                     full_ch_driver_version = uc_driver_version
                 else:
-                    uc_driver_version = get_uc_driver_version()
+                    uc_driver_version = get_uc_driver_version(
+                        local_uc_driver=local_uc_driver
+                    )
                 if multi_proxy:
                     sb_config.multi_proxy = True
                 if uc_driver_version and driver_version == "keep":
@@ -4803,9 +4901,9 @@ def get_local_driver(
                         chrome_options.add_argument("--headless=old")
                     else:
                         chrome_options.add_argument("--headless")
-            if LOCAL_CHROMEDRIVER and os.path.exists(LOCAL_CHROMEDRIVER):
+            if local_chromedriver and os.path.exists(local_chromedriver):
                 try:
-                    make_driver_executable_if_not(LOCAL_CHROMEDRIVER)
+                    make_driver_executable_if_not(local_chromedriver)
                 except Exception as e:
                     logging.debug(
                         "\nWarning: Could not make chromedriver"
@@ -4813,9 +4911,9 @@ def get_local_driver(
                     )
             make_uc_driver_from_chromedriver = False
             local_ch_exists = (
-                LOCAL_CHROMEDRIVER and os.path.exists(LOCAL_CHROMEDRIVER)
+                local_chromedriver and os.path.exists(local_chromedriver)
             )
-            """If no LOCAL_CHROMEDRIVER, but path_chromedriver, and the
+            """If no local_chromedriver, but path_chromedriver, and the
             browser version nearly matches the driver version, then use
             the path_chromedriver instead of downloading a new driver.
             Eg. 116.0.* for both is close, but not 116.0.* and 116.1.*"""
@@ -4843,20 +4941,20 @@ def get_local_driver(
                         (local_ch_exists or path_chromedriver)
                         and use_version == ch_driver_version
                         and (
-                            not os.path.exists(LOCAL_UC_DRIVER)
+                            not os.path.exists(local_uc_driver)
                             or uc_driver_version != use_version
                         )
                     )
                     or (
                         local_ch_exists
                         and use_version == "latest"
-                        and not os.path.exists(LOCAL_UC_DRIVER)
+                        and not os.path.exists(local_uc_driver)
                     )
                 )
             ):
                 make_uc_driver_from_chromedriver = True
             elif (
-                (use_uc and not os.path.exists(LOCAL_UC_DRIVER))
+                (use_uc and not os.path.exists(local_uc_driver))
                 or (not use_uc and not path_chromedriver)
                 or (
                     not use_uc
@@ -4893,9 +4991,9 @@ def get_local_driver(
                     msg = "chromedriver update needed. Getting it now:"
                     if not path_chromedriver:
                         msg = "chromedriver not found. Getting it now:"
-                    if use_uc and not os.path.exists(LOCAL_UC_DRIVER):
+                    if use_uc and not os.path.exists(local_uc_driver):
                         msg = "uc_driver not found. Getting it now:"
-                    if use_uc and os.path.exists(LOCAL_UC_DRIVER):
+                    if use_uc and os.path.exists(local_uc_driver):
                         msg = "uc_driver update needed. Getting it now:"
                     log_d("\nWarning: %s" % msg)
                     force_uc = False
@@ -4944,9 +5042,9 @@ def get_local_driver(
                         msg = "chromedriver update needed. Getting it now:"
                         if not path_chromedriver:
                             msg = "chromedriver not found. Getting it now:"
-                        if use_uc and not os.path.exists(LOCAL_UC_DRIVER):
+                        if use_uc and not os.path.exists(local_uc_driver):
                             msg = "uc_driver not found. Getting it now:"
-                        if use_uc and os.path.exists(LOCAL_UC_DRIVER):
+                        if use_uc and os.path.exists(local_uc_driver):
                             msg = "uc_driver update needed. Getting it now:"
                         force_uc = False
                         intel_for_uc = False
@@ -4954,10 +5052,10 @@ def get_local_driver(
                             force_uc = True
                         if IS_ARM_MAC and use_uc:
                             intel_for_uc = True  # Use Intel driver for UC Mode
-                        if os.path.exists(LOCAL_CHROMEDRIVER):
+                        if os.path.exists(local_chromedriver):
                             with suppress(Exception):
                                 output = subprocess.check_output(
-                                    '"%s" --version' % LOCAL_CHROMEDRIVER,
+                                    '"%s" --version' % local_chromedriver,
                                     shell=True,
                                 )
                                 if IS_WINDOWS:
@@ -4971,9 +5069,9 @@ def get_local_driver(
                         if (
                             (
                                 not use_uc
-                                and not os.path.exists(LOCAL_CHROMEDRIVER)
+                                and not os.path.exists(local_chromedriver)
                             )
-                            or (use_uc and not os.path.exists(LOCAL_UC_DRIVER))
+                            or (use_uc and not os.path.exists(local_uc_driver))
                             or (
                                 not use_uc
                                 and (
@@ -4985,7 +5083,9 @@ def get_local_driver(
                                 use_uc
                                 and (
                                     use_version.split(".")[0]
-                                    != get_uc_driver_version()
+                                    != get_uc_driver_version(
+                                        local_uc_driver=local_uc_driver
+                                    )
                                 )
                             )
                         ):
@@ -5037,20 +5137,20 @@ def get_local_driver(
                             constants.MultiBrowser.DRIVER_FIXING_LOCK
                         )
                     if make_uc_driver_from_chromedriver:
-                        if os.path.exists(LOCAL_CHROMEDRIVER):
+                        if os.path.exists(local_chromedriver):
                             with suppress(Exception):
                                 make_driver_executable_if_not(
-                                    LOCAL_CHROMEDRIVER
+                                    local_chromedriver
                                 )
-                            shutil.copy2(LOCAL_CHROMEDRIVER, LOCAL_UC_DRIVER)
+                            shutil.copy2(local_chromedriver, local_uc_driver)
                         elif os.path.exists(path_chromedriver):
                             with suppress(Exception):
                                 make_driver_executable_if_not(
                                     path_chromedriver
                                 )
-                            shutil.copy2(path_chromedriver, LOCAL_UC_DRIVER)
+                            shutil.copy2(path_chromedriver, local_uc_driver)
                         try:
-                            make_driver_executable_if_not(LOCAL_UC_DRIVER)
+                            make_driver_executable_if_not(local_uc_driver)
                         except Exception as e:
                             logging.debug(
                                 "\nWarning: Could not make uc_driver"
@@ -5059,7 +5159,7 @@ def get_local_driver(
             if not headless or not IS_LINUX or use_uc:
                 uc_activated = False
                 try:
-                    if os.path.exists(LOCAL_CHROMEDRIVER) or use_uc:
+                    if os.path.exists(local_chromedriver) or use_uc:
                         if headless and not IS_LINUX:
                             undetectable = False  # No support for headless
                             use_uc = is_using_uc(undetectable, browser_name)
@@ -5204,9 +5304,9 @@ def get_local_driver(
                                             force_uc=False,
                                         )
                                     d_b_c = "--disable-build-check"
-                                    if os.path.exists(LOCAL_CHROMEDRIVER):
+                                    if os.path.exists(local_chromedriver):
                                         service = ChromeService(
-                                            executable_path=LOCAL_CHROMEDRIVER,
+                                            executable_path=local_chromedriver,
                                             log_output=os.devnull,
                                             service_args=[d_b_c],
                                         )
@@ -5247,8 +5347,8 @@ def get_local_driver(
                                         sb_config.uc_agent_cache = user_agent
                                     driver.quit()
                             uc_path = None
-                            if os.path.exists(LOCAL_UC_DRIVER):
-                                uc_path = LOCAL_UC_DRIVER
+                            if os.path.exists(local_uc_driver):
+                                uc_path = local_uc_driver
                                 uc_path = os.path.realpath(uc_path)
                             try:
                                 driver = undetected.Chrome(
@@ -5326,7 +5426,7 @@ def get_local_driver(
                                     "w3c", True
                                 )
                             service = ChromeService(
-                                executable_path=LOCAL_CHROMEDRIVER,
+                                executable_path=local_chromedriver,
                                 log_output=os.devnull,
                                 service_args=service_args,
                             )
@@ -5461,9 +5561,9 @@ def get_local_driver(
                                 chrome_options, headless_options, mcv
                             )
                         _mark_driver_repaired()
-                    if os.path.exists(LOCAL_CHROMEDRIVER):
+                    if os.path.exists(local_chromedriver):
                         service = ChromeService(
-                            executable_path=LOCAL_CHROMEDRIVER,
+                            executable_path=local_chromedriver,
                             log_output=os.devnull,
                             service_args=["--disable-build-check"],
                         )
@@ -5740,9 +5840,9 @@ def get_local_driver(
             elif headless or headless2 or IS_LINUX or proxy_string or use_wire:
                 raise
             # Try running without any options (bare bones Chrome launch)
-            if LOCAL_CHROMEDRIVER and os.path.exists(LOCAL_CHROMEDRIVER):
+            if local_chromedriver and os.path.exists(local_chromedriver):
                 try:
-                    make_driver_executable_if_not(LOCAL_CHROMEDRIVER)
+                    make_driver_executable_if_not(local_chromedriver)
                 except Exception as e:
                     logging.debug(
                         "\nWarning: Could not make chromedriver"

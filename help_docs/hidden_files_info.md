@@ -12,7 +12,7 @@ Press the **“Command” + “Shift” + “.” (period)** keys at the same ti
 
 * On older versions of macOS, use the following command in a Terminal window to view hidden files, and then reopen the Finder window:
 
-```bash
+```zsh
 defaults write com.apple.finder AppleShowAllFiles -bool true
 ```
 

@@ -20,19 +20,19 @@ You can download Python from [https://www.python.org/downloads/](https://www.pyt
 
 ⚠️ If something went wrong with your ``pip`` installation, try this:
 
-```bash
+```zsh
 python -m ensurepip --default-pip
 ```
 
 If your existing version of pip is old, upgrade to the latest version:
 
-```bash
+```zsh
 python -m pip install --upgrade pip setuptools
 ```
 
 On CentOS 7 and some versions of Linux, you may need to install pip with ``yum``:
 
-```bash
+```zsh
 yum -y update
 yum -y install python-pip
 ```
@@ -43,7 +43,7 @@ When done, make sure the location of pip is on your path, which is ``$PATH`` for
 
 You can also get pip (or fix pip) by using:
 
-```bash
+```zsh
 curl https://bootstrap.pypa.io/get-pip.py | python
 ```
 
@@ -51,7 +51,7 @@ curl https://bootstrap.pypa.io/get-pip.py | python
 
 **Keep Pip and Setuptools up-to-date:**
 
-```bash
+```zsh
 python -m pip install -U pip setuptools
 ```
 

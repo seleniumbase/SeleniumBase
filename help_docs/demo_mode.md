@@ -8,7 +8,7 @@
 
 <p align="left">🏇💨 👀 If a test runs too fast for your eyes, use <b translate="no">Demo Mode</b> to slow it down, highlight actions, and display assertions. Example usage:</p>
 
-```bash
+```zsh
 cd examples/
 pytest test_coffee_cart.py --demo
 ```
@@ -21,7 +21,7 @@ pytest test_coffee_cart.py --demo
 
 Another example:
 
-```bash
+```zsh
 pytest my_first_test.py --demo
 ```
 
@@ -30,7 +30,7 @@ pytest my_first_test.py --demo
 <p align="left">Here's how to run <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py" target="_blank">test_swag_labs.py</a> from <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples" target="_blank">examples/</a> in <b>Demo Mode</b>:</p>
 
 
-```bash
+```zsh
 pytest test_swag_labs.py --demo
 ```
 
@@ -43,7 +43,7 @@ pytest test_swag_labs.py --demo
 
 <p align="left">(<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_error_page.py" target="_blank">test_error_page.py</a> from <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples" target="_blank">examples/</a>)</p>
 
-```bash
+```zsh
 pytest test_error_page.py
 ```
 

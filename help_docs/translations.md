@@ -52,11 +52,11 @@ class 私のテストクラス(セレニウムテストケース):
 
 You can use SeleniumBase to selectively translate the method names of any test from one language to another with the console scripts interface. Additionally, the ``import`` line at the top of the Python file will change to import the new ``BaseCase``. Example: ``BaseCase`` becomes ``CasoDeTeste`` when a test is translated into Portuguese.
 
-```bash
+```zsh
 seleniumbase translate
 ```
 
-```bash
+```zsh
 * Usage:
 seleniumbase translate [SB_FILE.py] [LANGUAGE] [ACTION]
 

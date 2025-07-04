@@ -18,14 +18,14 @@ There are multiple ways of creating a **[Python virtual environment](https://pac
 
 > macOS/Linux terminal (``python3 -m venv ENV``)
 
-```bash
+```zsh
 python3 -m venv sbase_env
 source sbase_env/bin/activate
 ```
 
 > Windows CMD prompt (``py -m venv ENV``):
 
-```bash
+```zsh
 py -m venv sbase_env
 call sbase_env\\Scripts\\activate
 ```
@@ -38,7 +38,7 @@ To exit a virtual env, type ``deactivate``.
 
 > macOS/Linux terminal:
 
-```bash
+```zsh
 python3 -m pip install virtualenvwrapper --force-reinstall
 export WORKON_HOME=$HOME/.virtualenvs
 source `which virtualenvwrapper.sh`
@@ -50,7 +50,7 @@ source `which virtualenvwrapper.sh`
 
 > Windows CMD prompt:
 
-```bash
+```zsh
 py -m pip install virtualenvwrapper-win --force-reinstall --user
 ```
 
@@ -61,7 +61,7 @@ py -m pip install virtualenvwrapper-win --force-reinstall --user
 
 * ``mkvirtualenv ENV``:
 
-```bash
+```zsh
 mkvirtualenv sbase_env
 ```
 
@@ -72,31 +72,31 @@ mkvirtualenv sbase_env
 
 Creating a virtual environment:
 
-```bash
+```zsh
 mkvirtualenv sbase_env
 ```
 
 Leaving your virtual environment:
 
-```bash
+```zsh
 deactivate
 ```
 
 Returning to a virtual environment:
 
-```bash
+```zsh
 workon sbase_env
 ```
 
 Listing all virtual environments:
 
-```bash
+```zsh
 workon
 ```
 
 Deleting a virtual environment:
 
-```bash
+```zsh
 rmvirtualenv sbase_env
 ```
 
@@ -104,7 +104,7 @@ rmvirtualenv sbase_env
 
 If the ``python`` and ``python3`` versions don't match (*while in a virtualenv on macOS or Linux*), the following command will sync the versions:
 
-```bash
+```zsh
 alias python=python3
 ```
 
@@ -114,13 +114,13 @@ alias python=python3
 
 To verify the ``python`` version, use:
 
-```bash
+```zsh
 python --version
 ```
 
 To see the PATH of your ``python`` (macOS/Linux), use:
 
-```bash
+```zsh
 which python
 ```
 

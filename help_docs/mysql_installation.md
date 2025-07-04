@@ -11,7 +11,7 @@
 
 ### GitHub Actions Ubuntu Linux MySQL Setup:
 
-```bash
+```zsh
 sudo /etc/init.d/mysql start
 mysql -e 'CREATE DATABASE IF NOT EXISTS test_db;' -uroot -proot
 wget https://raw.githubusercontent.com/seleniumbase/SeleniumBase/master/seleniumbase/core/create_db_tables.sql
@@ -22,13 +22,13 @@ sudo service mysql restart
 
 Have SeleniumBase tests write to the MySQL DB:
 
-```bash
+```zsh
 pytest --with-db_reporting
 ```
 
 Query MySQL DB Results:
 
-```bash
+```zsh
 mysql -e 'select test_address,browser,state,start_time,runtime from test_db.test_run_data;' -uroot -ptest
 ```
 
@@ -36,7 +36,7 @@ mysql -e 'select test_address,browser,state,start_time,runtime from test_db.test
 
 ### Standard Ubuntu Linux MySQL Setup:
 
-```bash
+```zsh
 sudo apt update
 sudo apt install mysql-server
 sudo mysql_secure_installation
@@ -47,20 +47,20 @@ sudo service mysql restart
 
 To change the password from `root` to `test`:
 
-```bash
+```zsh
 mysqladmin -u root -p'root' password 'test'
 sudo service mysql restart
 ```
 
 ### MacOS MySQL Setup:
 
-```bash
+```zsh
 brew install mysql
 ```
 
 Then start the MySQL service:
 
-```bash
+```zsh
 brew services start mysql
 ```
 
@@ -89,6 +89,6 @@ Update your [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/mast
 
 Add the ``--with-db_reporting`` argument on the command-line when you want tests to write to your MySQL database. Example:
 
-```bash
+```zsh
 pytest --with-db_reporting
 ```

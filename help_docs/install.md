@@ -4,19 +4,19 @@
 
 <h4>If installing <code>seleniumbase</code> directly from <a href="https://pypi.python.org/pypi/seleniumbase">PyPI</a>, (the Python Package Index), use:</h4>
 
-```bash
+```zsh
 pip install seleniumbase
 ```
 
 <h4>To upgrade an existing <code>seleniumbase</code> install from PyPI:</h4>
 
-```bash
+```zsh
 pip install -U seleniumbase
 ```
 
 <h4>If installing <code>seleniumbase</code> from a Git clone, use:</h4>
 
-```bash
+```zsh
 git clone https://github.com/seleniumbase/SeleniumBase.git
 cd SeleniumBase/
 pip install .
@@ -24,7 +24,7 @@ pip install .
 
 <h4>For a development mode install in editable mode, use:</h4>
 
-```bash
+```zsh
 git clone https://github.com/seleniumbase/SeleniumBase.git
 cd SeleniumBase/
 pip install -e .
@@ -32,14 +32,14 @@ pip install -e .
 
 <h4>To upgrade an existing <code>seleniumbase</code> install from GitHub:</h4>
 
-```bash
+```zsh
 git pull  # To pull the latest version
 pip install -e .  # Or "pip install ."
 ```
 
 <h4>If installing <code>seleniumbase</code> from a <a href="https://github.com/seleniumbase/SeleniumBase">GitHub branch</a>, use:</h4>
 
-```bash
+```zsh
 pip install git+https://github.com/seleniumbase/SeleniumBase.git@master#egg=seleniumbase
 ```
 

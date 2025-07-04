@@ -4894,7 +4894,7 @@ class BaseCase(unittest.TestCase):
                 self.driver.connect()
             current_url = self.get_current_url()
             if not current_url.startswith(("about", "data", "chrome")):
-                self.get_new_driver(undetectable=True)
+                self.open("about:blank")
             self.driver.uc_open_with_cdp_mode(url, **kwargs)
         else:
             self.get_new_driver(undetectable=True)
@@ -9227,6 +9227,162 @@ class BaseCase(unittest.TestCase):
             original_selector=original_selector,
         )
 
+    def wait_for_any_of_elements_visible(self, *args, **kwargs):
+        """Waits for at least one of the elements to be visible.
+        Returns the first element that is found.
+        The input is a list of elements. (Should be CSS selectors or XPath)
+        Optional kwargs include: "timeout" (used by all selectors).
+        Raises an exception if no elements are visible by the timeout.
+        Allows flexible inputs (Eg. Multiple args or a list of args)
+        Examples:
+            self.wait_for_any_of_elements_visible("h1", "h2", "h3")
+            OR
+            self.wait_for_any_of_elements_visible(["h1", "h2", "h3"]) """
+        self.__check_scope()
+        selectors = []
+        timeout = None
+        for kwarg in kwargs:
+            if kwarg == "timeout":
+                timeout = kwargs["timeout"]
+            elif kwarg == "by":
+                pass  # Autodetected
+            elif kwarg == "selector" or kwarg == "selectors":
+                selector = kwargs[kwarg]
+                if isinstance(selector, str):
+                    selectors.append(selector)
+                elif isinstance(selector, list):
+                    selectors_list = selector
+                    for selector in selectors_list:
+                        if isinstance(selector, str):
+                            selectors.append(selector)
+            else:
+                raise Exception('Unknown kwarg: "%s"!' % kwarg)
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        for arg in args:
+            if isinstance(arg, list):
+                for selector in arg:
+                    if isinstance(selector, str):
+                        selectors.append(selector)
+            elif isinstance(arg, str):
+                selectors.append(arg)
+        if not selectors:
+            raise Exception("The selectors list was empty!")
+        original_selectors = selectors
+        updated_selectors = []
+        for selector in selectors:
+            by = "css selector"
+            if page_utils.is_xpath_selector(selector):
+                by = "xpath"
+            selector, by = self.__recalculate_selector(selector, by)
+            updated_selectors.append(selector)
+        selectors = updated_selectors
+        if self.__is_cdp_swap_needed():
+            return self.cdp.wait_for_any_of_elements_visible(
+                selectors, timeout=timeout
+            )
+        return page_actions.wait_for_any_of_elements_visible(
+            self.driver,
+            selectors,
+            timeout=timeout,
+            original_selectors=original_selectors,
+        )
+
+    def wait_for_any_of_elements_present(self, *args, **kwargs):
+        """Waits for at least one of the elements to be present.
+        Visibility not required, but element must be in the DOM.
+        Returns the first element that is found.
+        The input is a list of elements. (Should be CSS selectors or XPath)
+        Optional kwargs include: "timeout" (used by all selectors).
+        Raises an exception if no elements are present by the timeout.
+        Allows flexible inputs (Eg. Multiple args or a list of args)
+        Examples:
+            self.wait_for_any_of_elements_present("style", "script")
+            OR
+            self.wait_for_any_of_elements_present(["style", "script"]) """
+        self.__check_scope()
+        selectors = []
+        timeout = None
+        for kwarg in kwargs:
+            if kwarg == "timeout":
+                timeout = kwargs["timeout"]
+            elif kwarg == "by":
+                pass  # Autodetected
+            elif kwarg == "selector" or kwarg == "selectors":
+                selector = kwargs[kwarg]
+                if isinstance(selector, str):
+                    selectors.append(selector)
+                elif isinstance(selector, list):
+                    selectors_list = selector
+                    for selector in selectors_list:
+                        if isinstance(selector, str):
+                            selectors.append(selector)
+            else:
+                raise Exception('Unknown kwarg: "%s"!' % kwarg)
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        for arg in args:
+            if isinstance(arg, list):
+                for selector in arg:
+                    if isinstance(selector, str):
+                        selectors.append(selector)
+            elif isinstance(arg, str):
+                selectors.append(arg)
+        if not selectors:
+            raise Exception("The selectors list was empty!")
+        original_selectors = selectors
+        updated_selectors = []
+        for selector in selectors:
+            by = "css selector"
+            if page_utils.is_xpath_selector(selector):
+                by = "xpath"
+            selector, by = self.__recalculate_selector(selector, by)
+            updated_selectors.append(selector)
+        selectors = updated_selectors
+        if self.__is_cdp_swap_needed():
+            return self.cdp.wait_for_any_of_elements_present(
+                selectors, timeout=timeout
+            )
+        return page_actions.wait_for_any_of_elements_present(
+            self.driver,
+            selectors,
+            timeout=timeout,
+            original_selectors=original_selectors,
+        )
+
+    def assert_any_of_elements_visible(self, *args, **kwargs):
+        """Similar to wait_for_any_of_elements_visible(), but returns nothing.
+        As above, raises an exception if none of the set elements are visible.
+        Returns True if successful. Default timeout = SMALL_TIMEOUT.
+        Allows flexible inputs (Eg. Multiple args or a list of args)
+        Examples:
+            self.assert_any_of_elements_visible("h1", "h2", "h3")
+            OR
+            self.assert_any_of_elements_visible(["h1", "h2", "h3"]) """
+        if "timeout" not in kwargs:
+            kwargs["timeout"] = settings.SMALL_TIMEOUT
+        self.wait_for_any_of_elements_visible(*args, **kwargs)
+        return True
+
+    def assert_any_of_elements_present(self, *args, **kwargs):
+        """Similar to wait_for_any_of_elements_present(), but returns nothing.
+        As above, raises an exception if none of the given elements are found.
+        Visibility is not required, but element must exist in the DOM.
+        Returns True if successful. Default timeout = SMALL_TIMEOUT.
+        Allows flexible inputs (Eg. Multiple args or a list of args)
+        Examples:
+            self.assert_any_of_elements_present("h1", "h2", "h3")
+            OR
+            self.assert_any_of_elements_present(["h1", "h2", "h3"]) """
+        if "timeout" not in kwargs:
+            kwargs["timeout"] = settings.SMALL_TIMEOUT
+        self.wait_for_any_of_elements_present(*args, **kwargs)
+        return True
+
     def select_all(self, selector, by="css selector", limit=0):
         return self.find_elements(selector, by=by, limit=limit)
 
@@ -9698,6 +9854,7 @@ class BaseCase(unittest.TestCase):
         The input is a list of elements.
         Optional kwargs include "by" and "timeout" (used by all selectors).
         Raises an exception if any of the elements are not visible.
+        Allows flexible inputs (Eg. Multiple args or a list of args)
         Examples:
             self.assert_elements_present("head", "style", "script", "body")
             OR
@@ -9711,7 +9868,7 @@ class BaseCase(unittest.TestCase):
                 timeout = kwargs["timeout"]
             elif kwarg == "by":
                 by = kwargs["by"]
-            elif kwarg == "selector":
+            elif kwarg == "selector" or kwarg == "selectors":
                 selector = kwargs["selector"]
                 if isinstance(selector, str):
                     selectors.append(selector)
@@ -9804,6 +9961,7 @@ class BaseCase(unittest.TestCase):
         The input is a list of elements.
         Optional kwargs include "by" and "timeout" (used by all selectors).
         Raises an exception if any of the elements are not visible.
+        Allows flexible inputs (Eg. Multiple args or a list of args)
         Examples:
             self.assert_elements("h1", "h2", "h3")
             OR
@@ -9817,7 +9975,7 @@ class BaseCase(unittest.TestCase):
                 timeout = kwargs["timeout"]
             elif kwarg == "by":
                 by = kwargs["by"]
-            elif kwarg == "selector":
+            elif kwarg == "selector" or kwarg == "selectors":
                 selector = kwargs["selector"]
                 if isinstance(selector, str):
                     selectors.append(selector)
@@ -16747,7 +16905,11 @@ class BaseCase(unittest.TestCase):
                     self._last_page_url = "(Error: Unknown URL)"
             if hasattr(self, "is_behave") and self.is_behave and has_exception:
                 if hasattr(sb_config, "pdb_option") and sb_config.pdb_option:
-                    self.__activate_behave_post_mortem_debug_mode()
+                    if (
+                        hasattr(sb_config, "behave_step")
+                        and hasattr(sb_config.behave_step, "exc_traceback")
+                    ):
+                        self.__activate_behave_post_mortem_debug_mode()
             if self._final_debug:
                 self.__activate_debug_mode_in_teardown()
             elif (

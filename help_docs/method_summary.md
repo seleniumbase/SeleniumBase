@@ -544,6 +544,13 @@ self.assert_elements(*args, **kwargs)
 
 ############
 
+self.wait_for_any_of_elements_visible(*args, **kwargs)
+self.wait_for_any_of_elements_present(*args, **kwargs)
+self.assert_any_of_elements_visible(*args, **kwargs)
+self.assert_any_of_elements_present(*args, **kwargs)
+
+############
+
 self.find_text(text, selector="html", by="css selector", timeout=None)
 # Duplicates:
 # self.wait_for_text(text, selector="html", by="css selector", timeout=None)

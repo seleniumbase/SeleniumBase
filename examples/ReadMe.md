@@ -21,7 +21,7 @@
 
 Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py): (Default option: ``--chrome``)
 
-```bash
+```zsh
 pytest my_first_test.py
 ```
 
@@ -31,7 +31,7 @@ pytest my_first_test.py
 
 Here's one way of changing the browser to Firefox:
 
-```bash
+```zsh
 pytest my_first_test.py --firefox
 ```
 
@@ -39,7 +39,7 @@ pytest my_first_test.py --firefox
 
 Another [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py) for a web page that has lots of different HTML items:
 
-```bash
+```zsh
 pytest test_demo_site.py
 ```
 
@@ -49,7 +49,7 @@ pytest test_demo_site.py
 
 Run an example test in ``--demo`` mode: (highlight assertions)
 
-```bash
+```zsh
 pytest test_swag_labs.py --demo
 ```
 
@@ -59,7 +59,7 @@ pytest test_swag_labs.py --demo
 
 Run [test_coffee_cart.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_coffee_cart.py) to test the [Coffee Cart](https://seleniumbase.io/coffee/) app:
 
-```bash
+```zsh
 pytest test_coffee_cart.py --demo
 ```
 
@@ -69,7 +69,7 @@ pytest test_coffee_cart.py --demo
 
 Run a [Wordle-solver example](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/wordle_test.py):
 
-```bash
+```zsh
 pytest wordle_test.py
 ```
 
@@ -79,7 +79,7 @@ pytest wordle_test.py
 
 Run an example test in ``--headless`` mode: (invisible browser)
 
-```bash
+```zsh
 pytest my_first_test.py --headless
 ```
 
@@ -87,7 +87,7 @@ pytest my_first_test.py --headless
 
 Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py) using Chrome's mobile device emulator: (default settings)
 
-```bash
+```zsh
 pytest test_swag_labs.py --mobile
 ```
 
@@ -97,7 +97,7 @@ pytest test_swag_labs.py --mobile
 
 Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_xkcd.py) in ``--demo`` mode: (highlight assertions)
 
-```bash
+```zsh
 pytest test_xkcd.py --demo
 ```
 
@@ -107,7 +107,7 @@ pytest test_xkcd.py --demo
 
 Run a [test suite](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_suite.py) with verbose output: (see more details)
 
-```bash
+```zsh
 pytest test_suite.py -v
 ```
 
@@ -115,7 +115,7 @@ pytest test_suite.py -v
 
 Run a test suite using multiple parallel processes (``-n=NUM``):
 
-```bash
+```zsh
 pytest test_suite.py -n=8
 ```
 
@@ -123,7 +123,7 @@ pytest test_suite.py -n=8
 
 Run a [parameterized test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/parameterized_test.py): (Generates multiple tests from one)
 
-```bash
+```zsh
 pytest parameterized_test.py -v
 ```
 
@@ -131,7 +131,7 @@ pytest parameterized_test.py -v
 
 Run a test suite and generate a SeleniumBase Dashboard:
 
-```bash
+```zsh
 pytest test_suite.py --dashboard
 ```
 
@@ -139,7 +139,7 @@ pytest test_suite.py --dashboard
 
 Run a test suite and generate a ``pytest`` report:
 
-```bash
+```zsh
 pytest test_suite.py --html=report.html
 ```
 
@@ -147,7 +147,7 @@ pytest test_suite.py --html=report.html
 
 Run a [failing test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_fail.py): (See the ``latest_logs/`` folder for logs and screenshots)
 
-```bash
+```zsh
 pytest test_fail.py
 ```
 
@@ -155,7 +155,7 @@ pytest test_fail.py
 
 Run a failing test that activates ``pdb`` debug mode on failure:
 
-```bash
+```zsh
 pytest test_fail.py --pdb -s
 ```
 
@@ -165,7 +165,7 @@ pytest test_fail.py --pdb -s
 
 Run a test suite that demonstrates the use of ``pytest`` markers:
 
-```bash
+```zsh
 pytest -m marker_test_suite -v
 ```
 
@@ -173,7 +173,7 @@ pytest -m marker_test_suite -v
 
 Run a test suite that reuses the browser session between tests:
 
-```bash
+```zsh
 pytest test_suite.py --rs
 ```
 
@@ -181,7 +181,7 @@ pytest test_suite.py --rs
 
 Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/rate_limiting_test.py) demonstrating the ``rate_limited`` Python decorator:
 
-```bash
+```zsh
 pytest rate_limiting_test.py
 ```
 
@@ -189,7 +189,7 @@ pytest rate_limiting_test.py
 
 Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/upload_file_test.py) that demonstrates how to upload a file to a website:
 
-```bash
+```zsh
 pytest upload_file_test.py
 ```
 
@@ -197,7 +197,7 @@ pytest upload_file_test.py
 
 🎖️  **SeleniumBase Commander** is a GUI for ``pytest``:
 
-```bash
+```zsh
 sbase gui
 ```
 
@@ -207,7 +207,7 @@ sbase gui
 
 <b>SeleniumBase tests can also be run with ``pynose``:</b>
 
-```bash
+```zsh
 pynose my_first_test.py
 ```
 
@@ -215,7 +215,7 @@ pynose my_first_test.py
 
 Run an example test suite and generate a ``pynose`` test report:
 
-```bash
+```zsh
 pynose test_suite.py --report --show-report
 ```
 
@@ -223,7 +223,7 @@ pynose test_suite.py --report --show-report
 
 Run an example test using a ``pynose`` configuration file:
 
-```bash
+```zsh
 pynose my_first_test.py --config=example_config.cfg
 ```
 
@@ -241,7 +241,7 @@ If you just need to perform some quick website verification on various devices, 
 
 To make things easier, here's a **simple GUI program** that allows you to run a few example tests by pressing a button:
 
-```bash
+```zsh
 python gui_test_runner.py
 ```
 
