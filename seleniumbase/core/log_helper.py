@@ -228,7 +228,11 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
         traceback_message = None
         if hasattr(test, "is_behave") and test.is_behave:
             if sb_config.behave_scenario.status.name == "failed":
-                if sb_config.behave_step.error_message:
+                if (
+                    hasattr(sb_config, "behave_step")
+                    and hasattr(sb_config.behave_step, "error_message")
+                    and sb_config.behave_step.error_message
+                ):
                     traceback_message = sb_config.behave_step.error_message
         else:
             format_exception = traceback.format_exception(

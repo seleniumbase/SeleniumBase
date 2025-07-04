@@ -16905,7 +16905,11 @@ class BaseCase(unittest.TestCase):
                     self._last_page_url = "(Error: Unknown URL)"
             if hasattr(self, "is_behave") and self.is_behave and has_exception:
                 if hasattr(sb_config, "pdb_option") and sb_config.pdb_option:
-                    self.__activate_behave_post_mortem_debug_mode()
+                    if (
+                        hasattr(sb_config, "behave_step")
+                        and hasattr(sb_config.behave_step, "exc_traceback")
+                    ):
+                        self.__activate_behave_post_mortem_debug_mode()
             if self._final_debug:
                 self.__activate_debug_mode_in_teardown()
             elif (

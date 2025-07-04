@@ -28,6 +28,8 @@ def pytest_addoption(parser):
     --edge  (Shortcut for "--browser=edge".)
     --firefox  (Shortcut for "--browser=firefox".)
     --safari  (Shortcut for "--browser=safari".)
+    --cft  (Shortcut for using `Chrome for Testing`)
+    --chs  (Shortcut for using `Chrome-Headless-Shell`)
     --settings-file=FILE  (Override default SeleniumBase settings.)
     --env=ENV  (Set the test env. Access with "self.env" in tests.)
     --account=STR  (Set account. Access with "self.account" in tests.)

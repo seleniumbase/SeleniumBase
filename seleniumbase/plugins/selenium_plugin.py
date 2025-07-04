@@ -16,6 +16,8 @@ class SeleniumBrowser(Plugin):
     --edge  (Shortcut for "--browser=edge".)
     --firefox  (Shortcut for "--browser=firefox".)
     --safari  (Shortcut for "--browser=safari".)
+    --cft  (Shortcut for using `Chrome for Testing`)
+    --chs  (Shortcut for using `Chrome-Headless-Shell`)
     --user-data-dir=DIR  (Set the Chrome user data directory to use.)
     --protocol=PROTOCOL  (The Selenium Grid protocol: http|https.)
     --server=SERVER  (The Selenium Grid server/IP used for tests.)
@@ -1221,6 +1223,7 @@ class SeleniumBrowser(Plugin):
             test.test.binary_location = "cft"
         elif self.options.use_chs and not test.test.binary_location:
             test.test.binary_location = "chs"
+        sb_config.binary_location = test.test.binary_location
         if (
             test.test.binary_location
             and test.test.binary_location.lower() == "chs"

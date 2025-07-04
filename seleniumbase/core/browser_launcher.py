@@ -2880,9 +2880,15 @@ def get_driver(
     browser=None,  # A duplicate of browser_name to avoid confusion
 ):
     driver_dir = DRIVER_DIR
-    if sb_config.binary_location == "cft":
+    if (
+        hasattr(sb_config, "binary_location")
+        and sb_config.binary_location == "cft"
+    ):
         driver_dir = DRIVER_DIR_CFT
-    if sb_config.binary_location == "chs":
+    if (
+        hasattr(sb_config, "binary_location")
+        and sb_config.binary_location == "chs"
+    ):
         driver_dir = DRIVER_DIR_CHS
     if (
         hasattr(sb_config, "settings")
@@ -3827,10 +3833,16 @@ def get_local_driver(
     downloads_path = DOWNLOADS_FOLDER
     driver_dir = DRIVER_DIR
     special_chrome = False
-    if sb_config.binary_location == "cft":
+    if (
+        hasattr(sb_config, "binary_location")
+        and sb_config.binary_location == "cft"
+    ):
         special_chrome = True
         driver_dir = DRIVER_DIR_CFT
-    if sb_config.binary_location == "chs":
+    if (
+        hasattr(sb_config, "binary_location")
+        and sb_config.binary_location == "chs"
+    ):
         special_chrome = True
         driver_dir = DRIVER_DIR_CHS
     if (
