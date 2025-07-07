@@ -131,7 +131,7 @@ def override_driver_dir(driver_dir):
             bad_dir = os.path.realpath(driver_dir)
         log_d(
             "\n* Warning: Cannot set driver_dir to nonexistent directory:\n%s"
-            "\n* Will use the default folder instead:\n%s)"
+            "\n* Will use the default folder instead:\n%s"
             % (bad_dir, DRIVER_DIR)
         )
 
