@@ -18,7 +18,7 @@ Katalon Recorder (Selenium IDE) is a tool that allows you to record and playback
 
 #### Step 3: Run ``seleniumbase convert`` on your exported Python file
 
-```bash
+```zsh
 seleniumbase convert MY_TEST.py
 ```
 

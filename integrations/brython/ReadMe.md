@@ -9,7 +9,7 @@
 
 ### 0. Install ``brython``:
 
-```bash
+```zsh
 pip install brython
 ```
 
@@ -17,7 +17,7 @@ pip install brython
 
 <i>Run from [SeleniumBase/integrations/brython](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/brython)</i>:
 
-```bash
+```zsh
 python -m http.server
 ```
 

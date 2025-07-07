@@ -53,7 +53,7 @@
 #### On the main page, you should be able to find the Public IP Address.
 * **Use that IP Address to SSH into the machine:**
 
-```bash
+```zsh
 ssh USERNAME@IP_ADDRESS
 ```
 
@@ -65,63 +65,63 @@ ssh USERNAME@IP_ADDRESS
 
 ### Step 4. Clone the SeleniumBase repository from the root ("/") directory.
 
-```bash
+```zsh
 cd /
 sudo git clone https://github.com/seleniumbase/SeleniumBase.git
 ```
 
 ### Step 5. Enter the "linux" folder
 
-```bash
+```zsh
 cd SeleniumBase/integrations/linux/
 ```
 
 ### Step 6. Give the "jenkins" user sudo access (See [jenkins_permissions.sh](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/linux/jenkins_permissions.sh) for details)
 
-```bash
+```zsh
 ./jenkins_permissions.sh
 ```
 
 ### Step 7. Become the "jenkins" user and enter a "bash" shell
 
-```bash
+```zsh
 sudo su jenkins
 bash
 ```
 
 ### Step 8. Install dependencies (See [Linuxfile.sh](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/linux/Linuxfile.sh) for details)
 
-```bash
+```zsh
 ./Linuxfile.sh
 ```
 
 ### Step 9. Start up the headless browser display mechanism: Xvfb (See [Xvfb_launcher.sh](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/linux/Xvfb_launcher.sh) for details)
 
-```bash
+```zsh
 ./Xvfb_launcher.sh
 ```
 
 ### Step 10. Go to the SeleniumBase directory
 
-```bash
+```zsh
 cd /SeleniumBase
 ```
 
 ### Step 11. Install the [requirements](https://github.com/seleniumbase/SeleniumBase/blob/master/requirements.txt) for SeleniumBase
 
-```bash
+```zsh
 sudo pip install -r requirements.txt --upgrade
 ```
 
 ### Step 12. Install SeleniumBase (Make sure you already installed the requirements above)
 
-```bash
+```zsh
 sudo python setup.py develop
 ```
 
 ### Step 13. Install chromedriver
 
-```bash
+```zsh
 sudo seleniumbase install chromedriver
 ```
 
@@ -131,7 +131,7 @@ sudo seleniumbase install chromedriver
 
 ----------
 
-```bash
+```zsh
 pytest examples/my_first_test.py --headless --browser=chrome
 ```
 
@@ -163,7 +163,7 @@ pytest examples/my_first_test.py --headless --browser=chrome
 
 #### You'll need to get the password from the SSH terminal on the Linux machine to log in:
 
-```bash
+```zsh
 sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 ```
 
@@ -209,7 +209,7 @@ sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 * **Select "Execute shell".**
 * **For the "Command", paste:**
 
-```bash
+```zsh
 cd examples
 pytest my_first_test.py --headless
 ```

@@ -28,57 +28,57 @@
 
 #### Step 4. Clone the SeleniumBase repository from the root ("/") directory.
 
-```bash
+```zsh
 cd /
 sudo git clone https://github.com/seleniumbase/SeleniumBase.git
 ```
 
 #### Step 5. Enter the "linux" folder
 
-```bash
+```zsh
 cd SeleniumBase/integrations/linux/
 ```
 
 #### Step 6. Give Jenkins (aka "tomcat" user) sudo access (See [tomcat_permissions.sh](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/linux/tomcat_permissions.sh) for details)
 
-```bash
+```zsh
 ./tomcat_permissions.sh
 ```
 
 #### Step 7. Become "tomcat" (the Jenkins user) and enter a "bash" shell
 
-```bash
+```zsh
 sudo su tomcat
 bash
 ```
 
 #### Step 8. Install dependencies (See [Linuxfile.sh](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/linux/Linuxfile.sh) for details)
 
-```bash
+```zsh
 ./Linuxfile.sh
 ```
 
 #### Step 9. Start up the headless browser display mechanism: Xvfb (See [Xvfb_launcher.sh](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/linux/Xvfb_launcher.sh) for details)
 
-```bash
+```zsh
 ./Xvfb_launcher.sh
 ```
 
 #### Step 10. Go to the SeleniumBase directory
 
-```bash
+```zsh
 cd /SeleniumBase
 ```
 
 #### Step 11. Install the [requirements](https://github.com/seleniumbase/SeleniumBase/blob/master/requirements.txt) for SeleniumBase
 
-```bash
+```zsh
 sudo pip install -r requirements.txt --upgrade
 ```
 
 #### Step 12. Install SeleniumBase
 
-```bash
+```zsh
 sudo python setup.py develop
 ```
 
@@ -86,19 +86,19 @@ sudo python setup.py develop
 
 ![](https://seleniumbase.github.io/cdn/img/gcp/gcp_bitnami.png "Linux SSH Terminal")
 
-```bash
+```zsh
 pytest examples/my_first_test.py --headless
 ```
 
 #### Step 14. If you prefer using nosetests, that works too
 
-```bash
+```zsh
 nosetests examples/my_first_test.py --headless
 ```
 
 #### Step 15. You can also verify that the example test runs on Firefox
 
-```bash
+```zsh
 pytest examples/my_first_test.py --headless --browser=firefox
 ```
 
@@ -122,7 +122,7 @@ pytest examples/my_first_test.py --headless --browser=firefox
 * Under "Build", click the "Add build step" dropdown and then select "Execute shell".
 * For the "Command", put:
 
-```bash
+```zsh
 pytest examples/my_first_test.py --headless
 ```
 
@@ -183,7 +183,7 @@ If you have a web application that you want to test, you'll be able to create Se
 
 * For the "Execute shell", use the following as your updated "Command":
 
-```bash
+```zsh
 pytest examples/test_suite.py --headless --with-db_reporting
 ```
 

@@ -4,7 +4,7 @@
 
 🐝 Behave examples with SeleniumBase: [SeleniumBase/examples/behave_bdd](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd)
 
-```bash
+```zsh
 > cd examples/behave_bdd/
 > behave features/realworld.feature -T -D dashboard -k
 
@@ -38,7 +38,7 @@ Took 0m4.682s
 
 🐝 Another example, which uses higher-level Behave steps to simplify the ``.feature`` file:
 
-```bash
+```zsh
 > cd examples/behave_bdd/
 > behave features/calculator.feature:61 -T -D dashboard -k
 
@@ -82,7 +82,7 @@ Took 0m1.672s
 
 🐝 The ``*.feature`` files can use any step seen from:
 
-```bash
+```zsh
 behave --steps-catalog
 ```
 
@@ -195,7 +195,7 @@ Feature: SeleniumBase scenarios for the RealWorld App
 
 🐝 If there's a test failure, that's easy to spot:
 
-```bash
+```zsh
 Feature: SeleniumBase scenarios for the Fail Page # features/fail_page.feature:1
 
   Scenario: Fail test on purpose to see what happens  # features/fail_page.feature:3
@@ -214,7 +214,7 @@ Feature: SeleniumBase scenarios for the Fail Page # features/fail_page.feature:1
 
 🐝🎖️ To launch it, call ``sbase behave-gui`` or ``sbase gui-behave``:
 
-```bash
+```zsh
 sbase behave-gui
 * Starting the SeleniumBase Behave Commander GUI App...
 ```
@@ -223,7 +223,7 @@ sbase behave-gui
 
 🐝🎖️ You can customize the tests that show up there:
 
-```bash
+```zsh
 sbase behave-gui  # all tests
 sbase behave-gui -i=calculator  # tests with "calculator" in the name
 sbase behave-gui features/  # tests located in the "features/" folder
