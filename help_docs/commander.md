@@ -6,7 +6,7 @@
 
 🎖️ To launch it, call ``sbase commander`` or ``sbase gui``:
 
-```bash
+```zsh
 sbase gui
 * Starting the SeleniumBase Commander Desktop App...
 ```
@@ -15,20 +15,20 @@ sbase gui
 
 🎖️ <b translate="no">SeleniumBase Commander</b> loads the same tests that are found by:
 
-```bash
+```zsh
 pytest --co -q
 ```
 
 🎖️ You can customize which tests are loaded by passing additional args:
 
-```bash
+```zsh
 sbase commander [OPTIONAL PATH or TEST FILE]
 sbase gui [OPTIONAL PATH or TEST FILE]
 ```
 
 🎖️ Here are examples of customizing test collection:
 
-```bash
+```zsh
 sbase gui
 sbase gui -k agent
 sbase gui -m marker2

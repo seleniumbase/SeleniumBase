@@ -44,7 +44,7 @@ Often in your tests, you may need to login to a website to perform testing. This
 
 * Next, use [obfuscate.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/common/obfuscate.py) to obfuscate/encrypt passwords into coded strings:
 
-```bash
+```zsh
 python obfuscate.py
 
 Enter password to obfuscate: (CTRL+C to exit)

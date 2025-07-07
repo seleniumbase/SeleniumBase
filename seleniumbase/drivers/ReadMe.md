@@ -6,7 +6,7 @@ To run web automation, you'll need webdrivers for each browser you plan on using
 
 🎛️ You can also download drivers manually with these commands:
 
-```bash
+```zsh
 seleniumbase get chromedriver
 seleniumbase get geckodriver
 seleniumbase get edgedriver
@@ -18,7 +18,7 @@ If the necessary driver is not found in this location while running tests, Selen
 
 🎛️ You can also download specific versions of drivers. Examples:
 
-```bash
+```zsh
 sbase get chromedriver 114
 sbase get chromedriver 114.0.5735.90
 sbase get chromedriver stable
@@ -38,7 +38,7 @@ sbase get edgedriver 115.0.1901.183
 
 🎛️ Use the `sbase get` command to download the `Chrome for Testing` and `Chrome-Headless-Shell` browser binaries. Example:
 
-```bash
+```zsh
 sbase get cft  # (For `Chrome for Testing`)
 sbase get chs  # (For `Chrome-Headless-Shell`)
 ```

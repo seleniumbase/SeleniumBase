@@ -56,14 +56,14 @@
 * 建议配合 [Python virtual env](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/) . <i><a href="https://seleniumbase.io/help_docs/virtualenv_instructions/">See shortcut</a>.</i>
 * 更新 **[pip](https://pypi.org/project/pip/)** 以防出现警告:
 
-```bash
+```zsh
 python -m pip install -U pip
 ```
 
 <a id="install_seleniumbase"></a>
 <h2><img src="https://seleniumbase.github.io/img/sb_icon.png" title="SeleniumBase" width="30" /> 安装 SeleniumBase:</h2>
 
-```bash
+```zsh
 git clone https://github.com/seleniumbase/SeleniumBase.git
 cd SeleniumBase/
 pip install -r requirements.txt
@@ -72,7 +72,7 @@ python setup.py install
 如果存在多个安装的python版本, 需要显示具体版本 (E.g. 使用 ``python3`` 代替 ``python``).
 
 * 你也可以通过[pypi](https://pypi.python.org/pypi/seleniumbase)安装 ``seleniumbase``  :
-```bash
+```zsh
 pip install seleniumbase
 ```
 * 添加 ``--upgrade`` 或 ``-U`` 来更新安装程序.
@@ -82,19 +82,19 @@ pip install seleniumbase
 
 SeleniumBase 下载 webdriver 驱动到 [seleniumbase/drivers](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/drivers) 文件夹下, 使用 ``install`` 命令:
 
-```bash
+```zsh
 seleniumbase install chromedriver
 ```
 
 * 你可能需要不同的 webdriver 来对应各种网页浏览器来完成自动化测试,例如: ``chromedriver`` 对应 Chrome, ``edgedriver`` 对应 Edge, ``geckodriver`` 对应 Firefox, ``operadriver`` 对应 Opera,  ``iedriver`` 对应 Internet Explorer.
 * 如果你需要安装最新版本的浏览器驱动, 以以下命令获取最新版本浏览器驱动 (<i>因兼容性原因,默认下载的版本为 chromedriver 2.44 </i>):
-```bash
+```zsh
 seleniumbase install chromedriver latest
 ```
 
 <h3><img src="https://seleniumbase.github.io/img/sb_icon.png" title="SeleniumBase" width="30" /> 使用 Chrome 运行用例:</h3>
 
-```bash
+```zsh
 cd examples/
 pytest my_first_test.py
 ```
@@ -104,7 +104,7 @@ pytest my_first_test.py
 
 <b>运行 [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) Demo Mode:</b>
 
-```bash
+```zsh
 pytest my_first_test.py --demo
 ```
 
@@ -259,7 +259,7 @@ element.submit()
 <h4>适用 ``pytest`` 或者 ``nosetests`` 在所有的浏览器中运行你的测试用例:</h4>
 (<i>推荐使用 **pytest** . **Chrome** 是默认的浏览器.</i>)
 
-```bash
+```zsh
 pytest my_first_test.py --browser=chrome
 
 nosetests test_suite.py --browser=firefox
@@ -267,7 +267,7 @@ nosetests test_suite.py --browser=firefox
 
 Python 文件中所有以 ``test_`` 开头的python方法将自动运行当你使用 ``pytest`` 或 ``nosetests``, (<i>或包含Python文件的文件夹</i>). 还可以使用以下命令更具体地说明在文件中运行什么: (<i>注意，pytest和nosetests的语法是不同的.</i>)
 
-```bash
+```zsh
 pytest [FILE_NAME].py::[CLASS_NAME]::[METHOD_NAME]
 nosetests [FILE_NAME].py:[CLASS_NAME].[METHOD_NAME]
 ```
@@ -291,7 +291,7 @@ SeleniumBase包括一个名为 <b><a href="https://seleniumbase.io/examples/mast
 
 首先，为您打算使用的每个浏览器安装一个webdriver:
 
-```bash
+```zsh
 seleniumbase install chromedriver
 seleniumbase install geckodriver
 seleniumbase install edgedriver
@@ -301,7 +301,7 @@ seleniumbase install operadriver
 
 接着, 在  **pytest** 和 **nosetests** 中选择一个为您的测试启动器. (<i>可以互换.</i>)
 
-```bash
+```zsh
 cd examples/
 
 pytest my_first_test.py --browser=chrome
@@ -316,7 +316,7 @@ nosetests my_first_test.py --browser=firefox
 
 如果示例测试运行得太快，您可以在**Demo模式**下运行它，方法是在命令行上添加``--Demo ``，它会在操作之间短暂地暂停浏览器，突出显示正在操作的页面元素，并让您实时了解测试断言的内容::
 
-```bash
+```zsh
 pytest my_first_test.py --demo
 ```
 
@@ -326,7 +326,7 @@ Python 方法应以 ``test_``开头.
 Python类名可以是任何东西，因为SeleniumBase的`` BaseCase ``类继承自`` unittest ``的TestCase的类。
 你可以看到哪些测试是由`` pytest ``发现使用::
 
-```bash
+```zsh
 pytest --collect-only -q
 ```
 
@@ -341,7 +341,7 @@ import pytest; pytest.set_trace()  # Enter debugging mode. n = next, c = continu
 
 <b>要暂停抛出异常或错误的活动测试，请添加``--pdb -s ``:</b>
 
-```bash
+```zsh
 pytest my_first_test.py --pdb -s
 ```
 
@@ -349,7 +349,7 @@ pytest my_first_test.py --pdb -s
 
 下面是Pytest附带的一些有用的命令行选项:
 
-```bash
+```zsh
 -v  # Verbose mode. Prints the full name of each test and shows more details.
 -q  # Quiet mode. Print fewer details in the console output when running tests.
 -x  # Stop running the tests after the first failure is reached.
@@ -366,7 +366,7 @@ pytest my_first_test.py --pdb -s
 
 SeleniumBase 为测试提供额外的Pytest命令行选项:
 
-```bash
+```zsh
 --browser=BROWSER  # (The web browser to use. Default: "chrome".)
 --chrome  # (Shortcut for "--browser=chrome". On by default.)
 --edge  # (Shortcut for "--browser=edge".)
@@ -465,7 +465,7 @@ SeleniumBase 为测试提供额外的Pytest命令行选项:
 
 在测试失败期间，最近一次测试运行的日志和屏幕截图将被保存到``latest_logs/``文件夹中。如果在命令行选项中添加——archive_logs，或者在 [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py)中将``ARCHIVE_EXISTING_LOGS``设置为``True``，那么这些日志将被移动到``archived_logs/``。否则，将在下一次测试运行开始时清理日志文件。``test_suite.py``集合包含故意失败的测试，以便您可以看到日志记录是如何工作的。
 
-```bash
+```zsh
 cd examples/
 
 pytest test_suite.py --browser=chrome
@@ -487,7 +487,7 @@ pytest test_suite.py --browser=firefox
 
 作为一个快捷方式，您可以运行`` seleniumbase mkdir [DIRECTORY_NAME] ``来创建一个新的文件夹，其中已经包含了必要的文件和一些可以运行的示例测试。例子:
 
-```bash
+```zsh
 seleniumbase mkdir ui_tests
 cd ui_tests/
 pytest my_first_test.py
@@ -511,7 +511,7 @@ class MyTestClass(BaseCase):
 
 你可以运行在``example``文件夹运行:
 
-```bash
+```zsh
 pytest test_fail.py
 ```
 
@@ -527,7 +527,7 @@ pytest test_fail.py
 
 使用 ``--html=report.html`` 在您的测试套件完成后，为您提供指定名称的漂亮报告。
 
-```bash
+```zsh
 pytest test_suite.py --html=report.html
 ```
 
@@ -535,7 +535,7 @@ pytest test_suite.py --html=report.html
 
 还可以使用``--junit-xml=report``。获取一个xml报告。Jenkins可以使用这个文件为您的测试显示更好的报告。
 
-```bash
+```zsh
 pytest test_suite.py --junit-xml=report.xml
 ```
 
@@ -543,7 +543,7 @@ pytest test_suite.py --junit-xml=report.xml
 
  ``--report`` 选项将在测试套件完成后为您提供一个漂亮的报告。
 
-```bash
+```zsh
 nosetests test_suite.py --report
 ```
 
@@ -556,19 +556,19 @@ nosetests test_suite.py --report
 
 如果您希望为您的浏览器测试使用代理服务器(仅适用于Chrome和Firefox)，您可以在命令行上添加``--proxy=IP_ADDRESS:PORT ``作为参数。
 
-```bash
+```zsh
 pytest proxy_test.py --proxy=IP_ADDRESS:PORT
 ```
 
 如果您希望使用的代理服务器需要身份验证，您可以执行以下操作 (Chrome only):
 
-```bash
+```zsh
 pytest proxy_test.py --proxy=USERNAME:PASSWORD@IP_ADDRESS:PORT
 ```
 
 为了使事情更简单，您可以将您经常使用的代理添加到PROXY_LIST中 [proxy_list.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/proxy_list.py), 然后使用``--proxy=KEY_FROM_PROXY_LIST ``来使用该键的IP_ADDRESS:PORT。
 
-```bash
+```zsh
 pytest proxy_test.py --proxy=proxy1
 ```
 
@@ -577,7 +577,7 @@ pytest proxy_test.py --proxy=proxy1
 
 如果您希望为您的浏览器测试更改用户代理(仅限Chrome和Firefox)，您可以在命令行上添加``--agent="USER agent STRING" ``作为参数。
 
-```bash
+```zsh
 pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1.7412.EU"
 ```
 
@@ -604,7 +604,7 @@ pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1
 
 下面是一个启用了附加功能的测试运行示例:
 
-```bash
+```zsh
 pytest [YOUR_TEST_FILE].py --with-db-reporting --with-s3-logging
 ```
 
@@ -920,15 +920,23 @@ pytest --reruns 5 --reruns-delay 1
 </p>
 <p><div><a href="https://github.com/mdmintz">https://github.com/mdmintz</a></div></p>
 
-<div><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="290" /></a></div>
 
-<div><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" title="SeleniumBase" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/releases"><img src="https://img.shields.io/github/repo-size/seleniumbase/seleniumbase.svg" title="SeleniumBase" alt="Repo Size" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" title="SeleniumBase" alt="Join the chat!" /></a></div>
+<p align="left"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/sb_logo_10t.png" alt="SeleniumBase" title="SeleniumBase" width="274" /></a></p>
 
-<div><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://img.shields.io/badge/tested%20with-SeleniumBase-04C38E.svg" alt="Tested with SeleniumBase" /></a> <a href="https://seleniumbase.io">
-<img src="https://img.shields.io/badge/docs-%20%20SeleniumBase.io-11BBDD.svg" alt="SeleniumBase.io Docs" /></a></div>
+<a href="https://pypi.org/project/seleniumbase/" target="_blank"><img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=22AAEE&logo=python&logoColor=FEDC54" title="Supported Python Versions" /></a>
 
-<p><div><span><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.github.io/img/social/share_github.svg" title="SeleniumBase on GitHub" alt="SeleniumBase on GitHub" width="56" /></a></span>
-<span><a href="https://gitter.im/seleniumbase/SeleniumBase"><img src="https://seleniumbase.github.io/img/social/share_gitter.svg" title="SeleniumBase on Gitter" alt="SeleniumBase on Gitter" width="44" /></a></span>
-<span><a href="https://twitter.com/seleniumbase"><img src="https://seleniumbase.github.io/img/social/share_twitter.svg" title="SeleniumBase on Twitter" alt="SeleniumBase on Twitter" width="60" /></a></span>
-<span><a href="https://instagram.com/seleniumbase"><img src="https://seleniumbase.github.io/img/social/share_instagram.svg" title="SeleniumBase on Instagram" alt="SeleniumBase on Instagram" width="52" /></a></span>
-<span><a href="https://www.facebook.com/SeleniumBase"><img src="https://seleniumbase.github.io/img/social/share_facebook.svg" title="SeleniumBase on Facebook" alt="SeleniumBase on Facebook" width="56" /></a></span></div></p>
+<p><div>
+<span><a href="https://www.youtube.com/playlist?list=PLp9uKicxkBc5UIlGi2BuE3aWC7JyXpD3m"><img src="https://seleniumbase.github.io/cdn/img/youtube.png" title="SeleniumBase Playlist on YouTube" alt="SeleniumBase Playlist on YouTube" width="70" /></a></span>
+<span><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.github.io/img/social/share_github.svg" title="SeleniumBase on GitHub" alt="SeleniumBase on GitHub" width="64" /></a></span>
+<span><a href="https://discord.gg/EdhQTn3EyE"><img src="https://seleniumbase.github.io/other/discord_icon.png" title="SeleniumBase on Discord" alt="SeleniumBase on Discord" width="66" /></a></span>
+<span><a href="https://www.facebook.com/SeleniumBase"><img src="https://seleniumbase.io/img/social/share_facebook.svg" title="SeleniumBase on Facebook" alt="SeleniumBase on Facebook" width="62" /></a></span>
+</div></p>
+
+<p><div><b><a href="https://github.com/mdmintz">https://github.com/mdmintz</a></b></div></p>
+
+<div><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/super_logo_sb3.png" title="SeleniumBase" width="274" /></a></div>
+<div><a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" title="SeleniumBase" /></a></div>
+<div><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://img.shields.io/badge/tested%20with-SeleniumBase-04C38E.svg" alt="Tested with SeleniumBase" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/stargazers"><img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=19A57B" title="Stargazers" /></a></div>
+<div><a href="https://hellogithub.com/repository/c6be2d0f1969448697683d11a4ff915e" target="_blank"><img src="https://abroad.hellogithub.com/v1/widgets/recommend.svg?rid=c6be2d0f1969448697683d11a4ff915e&claim_uid=xcrm4p9j3d6JCO5&theme=small" alt="Featured｜HelloGitHub" /></a> <a href="https://discord.gg/EdhQTn3EyE" target="_blank"><img src="https://img.shields.io/discord/727927627830001734?color=7289DA&label=Discord&logo=discord&logoColor=white"/></a></div>
+<div><a href="https://pepy.tech/projects/seleniumbase?timeRange=threeMonths&category=version&includeCIDownloads=true&granularity=daily&viewType=line&versions=*" target="_blank"><img src="https://static.pepy.tech/badge/seleniumbase" alt="SeleniumBase PyPI downloads" /></a> <img src="https://views.whatilearened.today/views/github/seleniumbase/SeleniumBase.svg" width="98px" height="20px" alt="Views" /></div>
+<div align="left"></div>

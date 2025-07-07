@@ -6,7 +6,7 @@
 
 🐝🎖️ To launch it, call ``sbase behave-gui`` or ``sbase gui-behave``:
 
-```bash
+```zsh
 > sbase behave-gui
 * Starting the SeleniumBase Behave Commander GUI App...
 ```
@@ -15,19 +15,19 @@
 
 🐝🎖️ <b translate="no">SeleniumBase Behave GUI</b> loads the same tests that are found by:
 
-```bash
+```zsh
 behave -d
 ```
 
 🐝🎖️ You can customize which tests are loaded by passing additional args:
 
-```bash
+```zsh
 sbase behave-gui [OPTIONAL PATH or TEST FILE]
 ```
 
 🐝🎖️ Here are examples of customizing test collection:
 
-```bash
+```zsh
 sbase behave-gui  # all tests
 sbase behave-gui -i=calculator  # tests with "calculator" in the name
 sbase behave-gui features/  # tests located in the "features/" folder
