@@ -7,7 +7,7 @@
 
 🔵 During test failures, logs and screenshots from the most recent test run will get saved to the ``latest_logs/`` folder. If ``--archive-logs`` is specified (or if ARCHIVE_EXISTING_LOGS is set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py)), test logs will also get archived to the ``archived_logs/`` folder. Otherwise, the log files will be cleaned out when the next test run begins (by default).
 
-```bash
+```zsh
 pytest test_fail.py
 ```
 
@@ -28,7 +28,7 @@ pytest test_fail.py
 
 🔵 The ``--dashboard`` option for pytest generates a SeleniumBase Dashboard located at ``dashboard.html``, which updates automatically as tests run and produce results. Example:
 
-```bash
+```zsh
 pytest --dashboard --rs --headless
 ```
 
@@ -36,7 +36,7 @@ pytest --dashboard --rs --headless
 
 🔵 Additionally, you can host your own SeleniumBase Dashboard Server on a port of your choice. Here's an example of that using Python 3's ``http.server``:
 
-```bash
+```zsh
 python -m http.server 1948
 ```
 
@@ -44,7 +44,7 @@ python -m http.server 1948
 
 🔵 Here's a full example of what the SeleniumBase Dashboard may look like:
 
-```bash
+```zsh
 pytest test_suite.py test_image_saving.py --dashboard --rs --headless
 ```
 
@@ -56,7 +56,7 @@ pytest test_suite.py test_image_saving.py --dashboard --rs --headless
 
 🔵 Using ``--html=report.html`` gives you a fancy report of the name specified after your test suite completes.
 
-```bash
+```zsh
 pytest test_suite.py --html=report.html
 ```
 
@@ -66,7 +66,7 @@ pytest test_suite.py --html=report.html
 
 🔵 Here's an example of an upgraded html report:
 
-```bash
+```zsh
 pytest test_suite.py --dashboard --html=report.html
 ```
 
@@ -84,7 +84,7 @@ System.setProperty("hudson.model.DirectoryBrowserSupport.CSP", "")
 
 You can also use ``--junit-xml=report.xml`` to get an xml report instead. Jenkins can use this file to display better reporting for your tests.
 
-```bash
+```zsh
 pytest test_suite.py --junit-xml=report.xml
 ```
 
@@ -94,7 +94,7 @@ pytest test_suite.py --junit-xml=report.xml
 
 The ``pynose`` ``--report`` option gives you a fancy report after your tests complete.
 
-```bash
+```zsh
 pynose test_suite.py --report
 ```
 
@@ -108,7 +108,7 @@ pynose test_suite.py --report
 
 (The [behave_bdd/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/behave_bdd) folder can be found in the [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder.)
 
-```bash
+```zsh
 behave behave_bdd/features/ -D dashboard -D headless
 ```
 
@@ -116,7 +116,7 @@ behave behave_bdd/features/ -D dashboard -D headless
 
 You can also use ``--junit`` to get ``.xml`` reports for each Behave feature. Jenkins can use these files to display better reporting for your tests.
 
-```bash
+```zsh
 behave behave_bdd/features/ --junit -D rs -D headless
 ```
 

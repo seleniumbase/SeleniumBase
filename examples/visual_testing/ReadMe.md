@@ -44,7 +44,7 @@ As shown, Level-3 is the most strict, Level-1 is the least strict. If the compar
 
 You can reset the visual baseline on the command line by adding the following parameter at runtime:
 
-```bash
+```zsh
 --visual_baseline
 ```
 
@@ -180,7 +180,7 @@ First differing element 22:
 
 To run the example (from [examples/visual_testing/](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/)) with a pytest HTML Report, use:
 
-```bash
+```zsh
 pytest test_layout_fail.py --html=report.html
 ```
 

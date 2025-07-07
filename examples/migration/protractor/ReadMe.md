@@ -6,7 +6,7 @@
 
 ✅ Here's a test run with ``pytest`` using ``--reuse-session`` mode and Chromium ``--guest`` mode:
 
-```bash
+```zsh
 $ pytest --rs -v --guest
 =========================== test session starts ============================
 platform darwin -- Python 3.11.9, pytest-8.3.3, pluggy-1.5.0 -- /Users/michael/.virtualenvs/sbase11/bin/python

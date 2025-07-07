@@ -15,7 +15,7 @@ SeleniumBase Dialog Boxes let your users provide input in the middle of automati
 
 <h4>Here's how to run that example:</h4>
 
-```bash
+```zsh
 cd examples/dialog_boxes
 pytest test_dialog_boxes.py
 ```

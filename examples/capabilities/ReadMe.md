@@ -6,11 +6,11 @@ You can specify browser capabilities when running SeleniumBase tests on a remote
 
 Sample run commands may look like this when run from the [SeleniumBase/examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder: (The browser is now specified in the capabilities file.)
 
-```bash
+```zsh
 pytest test_demo_site.py --browser=remote --server=USERNAME:KEY@hub.browserstack.com --port=80 --cap_file=capabilities/sample_cap_file_BS.py
 ```
 
-```bash
+```zsh
 pytest test_demo_site.py --browser=remote --server=USERNAME:KEY@ondemand.us-east-1.saucelabs.com --port=443 --protocol=https --cap_file=capabilities/sample_cap_file_SL.py
 ```
 
@@ -92,7 +92,7 @@ You'll need default SeleniumBase capabilities for:
 
 You can also set browser desired capabilities from a command-line string. Eg:
 
-```bash
+```zsh
 pytest test_swag_labs.py --cap-string='{"browserName":"chrome","name":"test1"}' --server="127.0.0.1" --browser=remote
 ```
 
@@ -110,7 +110,7 @@ Example name: ``"my_first_test.MyTestClass.test_basics"``
 
 If using a local Selenium Grid with SeleniumBase, start up the Grid Hub and nodes first:
 
-```bash
+```zsh
 sbase grid-hub start
 sbase grid-node start
 ```

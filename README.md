@@ -134,7 +134,7 @@ class MyTestClass(BaseCase):
 
 <p align="left">📗 Here's <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_coffee_cart.py" target="_blank">test_coffee_cart.py</a>, which verifies an e-commerce site:</p>
 
-```bash
+```zsh
 pytest test_coffee_cart.py --demo
 ```
 
@@ -148,7 +148,7 @@ pytest test_coffee_cart.py --demo
 
 <p align="left">📗 Here's <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py" target="_blank">test_demo_site.py</a>, which covers several actions:</p>
 
-```bash
+```zsh
 pytest test_demo_site.py
 ```
 
@@ -296,7 +296,7 @@ finally:
 
 🔵 **How to install ``seleniumbase`` from PyPI:**
 
-```bash
+```zsh
 pip install seleniumbase
 ```
 
@@ -306,7 +306,7 @@ pip install seleniumbase
 
 🔵 **How to install ``seleniumbase`` from a GitHub clone:**
 
-```bash
+```zsh
 git clone https://github.com/seleniumbase/SeleniumBase.git
 cd SeleniumBase/
 pip install -e .
@@ -314,14 +314,14 @@ pip install -e .
 
 🔵 **How to upgrade an existing install from a GitHub clone:**
 
-```bash
+```zsh
 git pull
 pip install -e .
 ```
 
 🔵 **Type ``seleniumbase`` or ``sbase`` to verify that SeleniumBase was installed successfully:**
 
-```bash
+```zsh
  ___      _          _             ___              
 / __| ___| |___ _ _ (_)_  _ _ __  | _ ) __ _ ______ 
 \__ \/ -_) / -_) ' \| | \| | '  \ | _ \/ _` (_-< -_)
@@ -375,7 +375,7 @@ pip install -e .
 <details>
 <summary> ▶️ Here's sample output from a chromedriver download. (<b>click to expand</b>)</summary>
 
-```bash
+```zsh
 *** chromedriver to download = 131.0.6778.108 (Latest Stable) 
 
 Downloading chromedriver-mac-arm64.zip from:
@@ -403,7 +403,7 @@ Making [chromedriver 131.0.6778.108] executable ...
 
 <p align="left">Here's <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py">my_first_test.py</a>:</p>
 
-```bash
+```zsh
 cd examples/
 pytest my_first_test.py
 ```
@@ -504,7 +504,7 @@ self.type("input", "dogs\n")  # (The "\n" presses ENTER)
 
 Most SeleniumBase scripts can be run with <code translate="no">pytest</code>, <code translate="no">pynose</code>, or pure <code translate="no">python</code>. Not all test runners can run all test formats. For example, tests that use the ``sb`` pytest fixture can only be run with ``pytest``. (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md">Syntax Formats</a>) There's also a <a href="https://behave.readthedocs.io/en/stable/gherkin.html#features" target="_blank">Gherkin</a> test format that runs with <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md">behave</a>.
 
-```bash
+```zsh
 pytest coffee_cart_tests.py --rs
 pytest test_sb_fixture.py --demo
 pytest test_suite.py --rs --html=report.html --dashboard
@@ -528,13 +528,13 @@ With a SeleniumBase [pytest.ini](https://github.com/seleniumbase/SeleniumBase/bl
 
 <p>✅ You can do a pre-flight check to see which tests would get discovered by <code translate="no">pytest</code> before the actual run:</p>
 
-```bash
+```zsh
 pytest --co -q
 ```
 
 <p>✅ You can be more specific when calling <code translate="no">pytest</code> or <code translate="no">pynose</code> on a file:</p>
 
-```bash
+```zsh
 pytest [FILE_NAME.py]::[CLASS_NAME]::[METHOD_NAME]
 
 pynose [FILE_NAME.py]:[CLASS_NAME].[METHOD_NAME]
@@ -562,7 +562,7 @@ pynose [FILE_NAME.py]:[CLASS_NAME].[METHOD_NAME]
 
 🔵 <b>Demo Mode</b> helps you see what a test is doing. If a test is moving too fast for your eyes, run it in <b>Demo Mode</b> to pause the browser briefly between actions, highlight page elements being acted on, and display assertions:
 
-```bash
+```zsh
 pytest my_first_test.py --demo
 ```
 
@@ -584,13 +584,13 @@ breakpoint()  # Shortcut for "import pdb; pdb.set_trace()"
 
 🔵 To pause an active test that throws an exception or error, (*and keep the browser window open while **Debug Mode** begins in the console*), add **``--pdb``** as a ``pytest`` option:
 
-```bash
+```zsh
 pytest test_fail.py --pdb
 ```
 
 🔵 To start tests in Debug Mode, add **``--trace``** as a ``pytest`` option:
 
-```bash
+```zsh
 pytest test_coffee_cart.py --trace
 ```
 
@@ -603,7 +603,7 @@ pytest test_coffee_cart.py --trace
 <a id="pytest_options"></a>
 ✅ Here are some useful command-line options that come with <code translate="no">pytest</code>:
 
-```bash
+```zsh
 -v  # Verbose mode. Prints the full name of each test and shows more details.
 -q  # Quiet mode. Print fewer details in the console output when running tests.
 -x  # Stop running the tests after the first failure is reached.
@@ -621,7 +621,7 @@ pytest test_coffee_cart.py --trace
 <a id="new_pytest_options"></a>
 ✅ SeleniumBase provides additional <code translate="no">pytest</code> command-line options for tests:
 
-```bash
+```zsh
 --browser=BROWSER  # (The web browser to use. Default: "chrome".)
 --chrome  # (Shortcut for "--browser=chrome". On by default.)
 --edge  # (Shortcut for "--browser=edge".)
@@ -731,7 +731,7 @@ pytest test_coffee_cart.py --trace
 
 🔵 During test failures, logs and screenshots from the most recent test run will get saved to the ``latest_logs/`` folder. Those logs will get moved to ``archived_logs/`` if you add --archive_logs to command-line options, or have ``ARCHIVE_EXISTING_LOGS`` set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), otherwise log files with be cleaned up at the start of the next test run. The ``test_suite.py`` collection contains tests that fail on purpose so that you can see how logging works.
 
-```bash
+```zsh
 cd examples/
 
 pytest test_suite.py --chrome
@@ -754,13 +754,13 @@ Inside your tests, you can use ``self.data`` to access that.
 
 🔵 ``sbase mkdir DIR`` creates a folder with config files and sample tests:
 
-```bash
+```zsh
 sbase mkdir ui_tests
 ```
 
 > That new folder will have these files:
 
-```bash
+```zsh
 ui_tests/
 ├── __init__.py
 ├── my_first_test.py
@@ -786,13 +786,13 @@ ui_tests/
 
 <b>ProTip™:</b> You can also create a boilerplate folder without any sample tests in it by adding ``-b`` or ``--basic`` to the ``sbase mkdir`` command:
 
-```bash
+```zsh
 sbase mkdir ui_tests --basic
 ```
 
 > That new folder will have these files:
 
-```bash
+```zsh
 ui_tests/
 ├── __init__.py
 ├── pytest.ini
@@ -822,7 +822,7 @@ class MyTestClass(BaseCase):
 
 You can run it from the ``examples/`` folder like this:
 
-```bash
+```zsh
 pytest test_fail.py
 ```
 
@@ -835,7 +835,7 @@ pytest test_fail.py
 
 🔵 The ``--dashboard`` option for pytest generates a SeleniumBase Dashboard located at ``dashboard.html``, which updates automatically as tests run and produce results. Example:
 
-```bash
+```zsh
 pytest --dashboard --rs --headless
 ```
 
@@ -843,7 +843,7 @@ pytest --dashboard --rs --headless
 
 🔵 Additionally, you can host your own SeleniumBase Dashboard Server on a port of your choice. Here's an example of that using Python's ``http.server``:
 
-```bash
+```zsh
 python -m http.server 1948
 ```
 
@@ -851,7 +851,7 @@ python -m http.server 1948
 
 🔵 Here's a full example of what the SeleniumBase Dashboard may look like:
 
-```bash
+```zsh
 pytest test_suite.py test_image_saving.py --dashboard --rs --headless
 ```
 
@@ -866,7 +866,7 @@ pytest test_suite.py test_image_saving.py --dashboard --rs --headless
 
 ✅ Using ``--html=report.html`` gives you a fancy report of the name specified after your test suite completes.
 
-```bash
+```zsh
 pytest test_suite.py --html=report.html
 ```
 
@@ -876,7 +876,7 @@ pytest test_suite.py --html=report.html
 
 ✅ Here's an example of an upgraded html report:
 
-```bash
+```zsh
 pytest test_suite.py --dashboard --html=report.html
 ```
 
@@ -886,7 +886,7 @@ If viewing pytest html reports in [Jenkins](https://www.jenkins.io/), you may ne
 
 You can also use ``--junit-xml=report.xml`` to get an xml report instead. Jenkins can use this file to display better reporting for your tests.
 
-```bash
+```zsh
 pytest test_suite.py --junit-xml=report.xml
 ```
 
@@ -894,7 +894,7 @@ pytest test_suite.py --junit-xml=report.xml
 
 The ``--report`` option gives you a fancy report after your test suite completes.
 
-```bash
+```zsh
 pynose test_suite.py --report
 ```
 
@@ -906,7 +906,7 @@ pynose test_suite.py --report
 
 (The [behave_bdd/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/behave_bdd) folder can be found in the [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder.)
 
-```bash
+```zsh
 behave behave_bdd/features/ -D dashboard -D headless
 ```
 
@@ -914,7 +914,7 @@ behave behave_bdd/features/ -D dashboard -D headless
 
 You can also use ``--junit`` to get ``.xml`` reports for each <code translate="no">behave</code> feature. Jenkins can use these files to display better reporting for your tests.
 
-```bash
+```zsh
 behave behave_bdd/features/ --junit -D rs -D headless
 ```
 
@@ -924,13 +924,13 @@ See: [https://allurereport.org/docs/pytest/](https://allurereport.org/docs/pytes
 
 SeleniumBase no longer includes ``allure-pytest`` as part of installed dependencies. If you want to use it, install it first:
 
-```bash
+```zsh
 pip install allure-pytest
 ```
 
 Now your tests can create Allure results files, which can be processed by Allure Reports.
 
-```bash
+```zsh
 pytest test_suite.py --alluredir=allure_results
 ```
 
@@ -940,19 +940,19 @@ pytest test_suite.py --alluredir=allure_results
 
 If you wish to use a proxy server for your browser tests (Chromium or Firefox), you can add ``--proxy=IP_ADDRESS:PORT`` as an argument on the command line.
 
-```bash
+```zsh
 pytest proxy_test.py --proxy=IP_ADDRESS:PORT
 ```
 
 If the proxy server that you wish to use requires authentication, you can do the following (Chromium only):
 
-```bash
+```zsh
 pytest proxy_test.py --proxy=USERNAME:PASSWORD@IP_ADDRESS:PORT
 ```
 
 SeleniumBase also supports SOCKS4 and SOCKS5 proxies:
 
-```bash
+```zsh
 pytest proxy_test.py --proxy="socks4://IP_ADDRESS:PORT"
 
 pytest proxy_test.py --proxy="socks5://IP_ADDRESS:PORT"
@@ -960,7 +960,7 @@ pytest proxy_test.py --proxy="socks5://IP_ADDRESS:PORT"
 
 To make things easier, you can add your frequently-used proxies to PROXY_LIST in [proxy_list.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/proxy_list.py), and then use ``--proxy=KEY_FROM_PROXY_LIST`` to use the IP_ADDRESS:PORT of that key.
 
-```bash
+```zsh
 pytest proxy_test.py --proxy=proxy1
 ```
 
@@ -969,7 +969,7 @@ pytest proxy_test.py --proxy=proxy1
 
 🔵 If you wish to change the User-Agent for your browser tests (Chromium and Firefox only), you can add ``--agent="USER AGENT STRING"`` as an argument on the command-line.
 
-```bash
+```zsh
 pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1.7412.EU"
 ```
 
@@ -1007,7 +1007,7 @@ pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1
 
 Here's an example of running tests with some additional features enabled:
 
-```bash
+```zsh
 pytest [YOUR_TEST_FILE.py] --with-db-reporting --with-s3-logging
 ```
 
@@ -1354,7 +1354,7 @@ self.driver.find_elements("partial link text", "GitHub")
 
 <p>You can use <code translate="no">pytest --reruns=NUM</code> to retry failing tests that many times. Add <code translate="no">--reruns-delay=SECONDS</code> to wait that many seconds between retries. Example:</p>
 
-```bash
+```zsh
 pytest --reruns=1 --reruns-delay=1
 ```
 

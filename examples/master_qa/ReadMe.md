@@ -33,7 +33,7 @@ You may have noticed the ``Incomplete Test Runs`` row on the results page. If th
 
 **How to run the example tests from scratch:**
 
-```bash
+```zsh
 git clone https://github.com/seleniumbase/SeleniumBase.git
 cd SeleniumBase
 pip install .
