@@ -32,3 +32,7 @@ with SB(uc=True, ad_block=True, test=True) as sb:
     file_name = "thundering_brook_falls.png"
     sb.save_screenshot(file_name, folder, selector="body")
     print('\n"./%s/%s" was saved!' % (folder, file_name))
+    folder = "downloaded_files"
+    file_name = "thundering_brook_falls.html"
+    sb.save_page_source(file_name, folder)
+    print('"./%s/%s" was saved!' % (folder, file_name))
