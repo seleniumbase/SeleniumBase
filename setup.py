@@ -194,7 +194,7 @@ setup(
         'websocket-client==1.8.0',
         'selenium==4.27.1;python_version<"3.9"',
         'selenium==4.32.0;python_version>="3.9" and python_version<"3.10"',
-        'selenium==4.34.1;python_version>="3.10"',
+        'selenium==4.34.2;python_version>="3.10"',
         'cssselect==1.2.0;python_version<"3.9"',
         'cssselect==1.3.0;python_version>="3.9"',
         "sortedcontainers==2.4.0",

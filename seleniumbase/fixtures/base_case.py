@@ -132,6 +132,7 @@ class BaseCase(unittest.TestCase):
         self.__called_teardown = False
         self.__start_time_ms = int(time.time() * 1000.0)
         self.__requests_timeout = None
+        self.__page_source_count = 0
         self.__screenshot_count = 0
         self.__logs_data_count = 0
         self.__last_data_file = None
@@ -4512,6 +4513,40 @@ class BaseCase(unittest.TestCase):
         sb_config._has_logs = True
         return page_actions.save_screenshot(self.driver, name, test_logpath)
 
+    def save_page_source_to_logs(self, name=None):
+        """Saves the page HTML to the "latest_logs/" folder.
+        Naming is automatic:
+            If NO NAME provided: "_1_source.html", "_2_source.html", etc.
+            If NAME IS provided, then: "_1_name.html", "_2_name.html", etc.
+        (The last_page / failure page_source is always "page_source.html")"""
+        if not self.__is_cdp_swap_needed():
+            self.wait_for_ready_state_complete()
+        test_logpath = os.path.join(self.log_path, self.__get_test_id())
+        self.__create_log_path_as_needed(test_logpath)
+        if name:
+            name = str(name)
+        self.__page_source_count += 1
+        if not name or len(name) == 0:
+            name = "_%s_source.html" % self.__page_source_count
+        else:
+            pre_name = "_%s_" % self.__page_source_count
+            if len(name) >= 4 and name[-4:].lower() == ".html":
+                name = name[:-4]
+                if len(name) == 0:
+                    name = "source"
+            name = "%s%s.html" % (pre_name, name)
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        action = ["spstl", "", origin, time_stamp]
+                        self.__extra_actions.append(action)
+        sb_config._has_logs = True
+        return page_actions.save_page_source(self.driver, name, test_logpath)
+
     def save_data_to_logs(self, data, file_name=None):
         """Saves data to the "latest_logs/" data folder of the current test.
         If no file_name, file_name becomes: "data_1.txt", "data_2.txt", etc.
@@ -5470,6 +5505,7 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("s_scr")
         ext_actions.append("ss_tf")
         ext_actions.append("ss_tl")
+        ext_actions.append("spstl")
         ext_actions.append("da_el")
         ext_actions.append("da_ep")
         ext_actions.append("da_te")

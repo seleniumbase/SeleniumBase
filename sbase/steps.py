@@ -1191,6 +1191,15 @@ def set_attributes(context, selector, attribute, value):
     sb.set_attributes(selector, attribute, value)
 
 
+@step("Save page source to logs")
+@step("Save the page source to the logs")
+@step("User saves page source to logs")
+@step("User saves the page source to the logs")
+def save_page_source_to_logs(context):
+    sb = context.sb
+    sb.save_page_source_to_logs()
+
+
 @step("Activate CDP Mode")
 @step("User activates CDP Mode")
 def activate_cdp_mode(context):

@@ -556,6 +556,9 @@ def generate_sbase_code(srt_actions):
         elif action[0] == "ss_tl":
             method = "save_screenshot_to_logs"
             sb_actions.append("self.%s()" % method)
+        elif action[0] == "spstl":
+            method = "save_page_source_to_logs"
+            sb_actions.append("self.%s()" % method)
         elif action[0] == "sh_fc":
             method = "show_file_choosers"
             sb_actions.append("self.%s()" % method)
