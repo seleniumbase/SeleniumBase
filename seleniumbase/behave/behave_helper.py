@@ -522,6 +522,8 @@ def generate_gherkin(srt_actions):
                 )
         elif action[0] == "ss_tl":
             sb_actions.append("Save screenshot to logs")
+        elif action[0] == "spstl":
+            sb_actions.append("Save page source to logs")
         elif action[0] == "sh_fc":
             sb_actions.append("Show file choosers")
         elif action[0] == "pr_da":
