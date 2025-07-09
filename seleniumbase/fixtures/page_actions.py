@@ -1572,7 +1572,9 @@ def wait_for_and_switch_to_alert(driver, timeout=settings.LARGE_TIMEOUT):
     timeout_exception(Exception, message)
 
 
-def switch_to_frame(driver, frame, timeout=settings.SMALL_TIMEOUT):
+def switch_to_frame(
+    driver, frame, timeout=settings.SMALL_TIMEOUT, invisible=False
+):
     """
     Wait for an iframe to appear, and switch to it. This should be
     usable as a drop-in replacement for driver.switch_to.frame().
@@ -1580,6 +1582,7 @@ def switch_to_frame(driver, frame, timeout=settings.SMALL_TIMEOUT):
     driver - the webdriver object (required)
     frame - the frame element, name, id, index, or selector
     timeout - the time to wait for the alert in seconds
+    invisible - if True, the iframe can be invisible
     """
     _reconnect_if_disconnected(driver)
     start_ms = time.time() * 1000.0
@@ -1596,7 +1599,10 @@ def switch_to_frame(driver, frame, timeout=settings.SMALL_TIMEOUT):
                     by = "xpath"
                 else:
                     by = "css selector"
-                if is_element_visible(driver, frame, by=by):
+                if (
+                    is_element_visible(driver, frame, by=by)
+                    or (invisible and is_element_present(driver, frame, by=by))
+                ):
                     with suppress(Exception):
                         element = driver.find_element(by=by, value=frame)
                         driver.switch_to.frame(element)
@@ -1608,8 +1614,12 @@ def switch_to_frame(driver, frame, timeout=settings.SMALL_TIMEOUT):
     plural = "s"
     if timeout == 1:
         plural = ""
-    message = "Frame {%s} was not visible after %s second%s!" % (
+    presence = "visible"
+    if invisible:
+        presence = "present"
+    message = "Frame {%s} was not %s after %s second%s!" % (
         frame,
+        presence,
         timeout,
         plural,
     )

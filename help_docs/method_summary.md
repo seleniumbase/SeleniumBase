@@ -161,7 +161,7 @@ self.set_window_position(x, y)
 self.maximize_window()
 self.minimize_window()
 self.reset_window_size()
-self.switch_to_frame(frame="iframe", timeout=None)
+self.switch_to_frame(frame="iframe", timeout=None, invisible=False)
 self.switch_to_default_content()
 self.switch_to_parent_frame()
 with self.frame_switch(frame, timeout=None):
