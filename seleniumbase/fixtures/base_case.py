@@ -3591,7 +3591,7 @@ class BaseCase(unittest.TestCase):
         self.set_window_rect(x, y, width, height)
         self.__demo_mode_pause_if_active(tiny=True)
 
-    def switch_to_frame(self, frame="iframe", timeout=None):
+    def switch_to_frame(self, frame="iframe", timeout=None, invisible=False):
         """Wait for an iframe to appear, and switch to it. This should be
         usable as a drop-in replacement for driver.switch_to.frame().
         The iframe identifier can be a selector, an index, an id, a name,
@@ -3599,7 +3599,8 @@ class BaseCase(unittest.TestCase):
         for visible iframes with a string selector.
         @Params
         frame - the frame element, name, id, index, or selector
-        timeout - the time to wait for the alert in seconds """
+        timeout - the time to wait for the alert in seconds
+        invisible - if True, the iframe can be invisible """
         self.__check_scope()
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
@@ -3649,7 +3650,9 @@ class BaseCase(unittest.TestCase):
             time.sleep(0.035)
             if self.undetectable:
                 time.sleep(0.035)
-        page_actions.switch_to_frame(self.driver, frame, timeout)
+        page_actions.switch_to_frame(
+            self.driver, frame, timeout, invisible=invisible
+        )
         self.wait_for_ready_state_complete()
         if self.__needs_minimum_wait():
             time.sleep(0.015)
