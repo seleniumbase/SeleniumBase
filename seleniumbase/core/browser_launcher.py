@@ -1377,9 +1377,9 @@ def _uc_gui_click_captcha(
                 ):
                     frame = '[data-testid*="challenge-"] div'
                 elif driver.is_element_present(
-                    "form.turnstile div#turnstile-widget div:not([class])"
+                    "div#turnstile-widget div:not([class])"
                 ):
-                    frame = "form.turnstile #turnstile-widget div:not([class])"
+                    frame = "div#turnstile-widget div:not([class])"
                 elif driver.is_element_present(
                     'form div:not([class]):has(input[name*="cf-turn"])'
                 ):
@@ -1667,7 +1667,6 @@ def _uc_gui_handle_captcha_(driver, frame="iframe", ctype=None):
                 driver.set_window_rect(win_x, win_y, width, height)
                 time.sleep(0.33)
         tab_up_first = False
-        special_form = False
         if ctype == "cf_t":
             if (
                 driver.is_element_present(".cf-turnstile-wrapper iframe")
@@ -1701,7 +1700,6 @@ def _uc_gui_handle_captcha_(driver, frame="iframe", ctype=None):
                 ):
                     frame = 'form div:not([class]):has(input[name*="cf-turn"])'
                     tab_up_first = True
-                    special_form = True
                 elif (
                     driver.is_element_present('[src*="/turnstile/"]')
                     and driver.is_element_present("form div:not(:has(*))")
@@ -1715,6 +1713,10 @@ def _uc_gui_handle_captcha_(driver, frame="iframe", ctype=None):
                     )
                 ):
                     frame = "body > div#check > div:not([class])"
+                elif driver.is_element_present(
+                    "div#turnstile-widget div:not([class])"
+                ):
+                    frame = "div#turnstile-widget div:not([class])"
                 elif driver.is_element_present(".cf-turnstile-wrapper"):
                     frame = ".cf-turnstile-wrapper"
                 elif driver.is_element_present('[class="cf-turnstile"]'):
@@ -1759,8 +1761,7 @@ def _uc_gui_handle_captcha_(driver, frame="iframe", ctype=None):
                 active_element_css = js_utils.get_active_element_css(driver)
                 if (
                     active_element_css.startswith(selector)
-                    or active_element_css.endswith(" > div" * 2)
-                    or (special_form and active_element_css.endswith(" div"))
+                    or active_element_css.endswith(" div")
                     or (ctype == "g_rc" and "frame[name" in active_element_css)
                 ):
                     found_checkbox = True
