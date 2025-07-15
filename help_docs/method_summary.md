@@ -757,6 +757,8 @@ driver.get_current_url()
 driver.get_page_source()
 driver.get_title()
 driver.switch_to_frame(frame="iframe")
+driver.is_cdp_mode_active()
+driver.is_connected()  # UC / CDP Mode can disconnect WebDriver
 
 ############
 
