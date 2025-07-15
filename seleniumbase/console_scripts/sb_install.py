@@ -851,7 +851,7 @@ def main(override=None, intel_for_uc=None, force_uc=None):
                 "Cannot determine which version of EdgeDriver to download!"
             )
         if use_version.isdigit():
-            edgedriver_st = "https://msedgedriver.azureedge.net/LATEST_RELEASE"
+            edgedriver_st = "https://msedgedriver.microsoft.com/LATEST_RELEASE"
             use_version = "%s_%s_%s" % (edgedriver_st, use_version, suffix)
             url_request = requests_get_with_retry(use_version)
             if url_request.ok:
@@ -862,7 +862,7 @@ def main(override=None, intel_for_uc=None, force_uc=None):
                     and use_version != "115.0.1901.183"
                 ):
                     use_version = "115.0.1901.183"
-        download_url = "https://msedgedriver.azureedge.net/%s/%s" % (
+        download_url = "https://msedgedriver.microsoft.com/%s/%s" % (
             use_version,
             file_name,
         )
