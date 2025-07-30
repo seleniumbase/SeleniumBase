@@ -572,7 +572,8 @@ class UCPresentationClass(BaseCase):
             sb.sleep(2.5)
             sb.remove_element("div > div > article")
             sb.cdp.scroll_into_view('input[type="search"]')
-            sb.cdp.click_if_visible("button.banner-close-button")
+            close_btn = ".notification-alert-wrapper__close-button"
+            sb.cdp.click_if_visible(close_btn)
             sb.cdp.click("input#search-suggestion-input")
             sb.sleep(0.2)
             search = "Avocado Smoked Salmon"
@@ -580,21 +581,16 @@ class UCPresentationClass(BaseCase):
             sb.cdp.press_keys("input#search-suggestion-input", search)
             sb.sleep(0.8)
             sb.cdp.click("#suggestion-0 a span")
-            sb.sleep(3.2)
-            sb.cdp.click_if_visible("button.banner-close-button")
-            sb.sleep(1.2)
-            print('\n\n*** Albertsons Search for "%s":' % search)
+            sb.sleep(0.8)
+            sb.cdp.click_if_visible(close_btn)
+            sb.sleep(2.8)
+            print('*** Albertsons Search for "%s":' % search)
             print('    (Results must contain "%s".)' % required_text)
             unique_item_text = []
             item_selector = 'a[href*="/meal-plans-recipes/shop/"]'
-            info_selector = 'span[data-test-id*="recipe-thumb-title"]'
-            items = sb.cdp.find_elements(
-                "%s %s" % (item_selector, info_selector)
-            )
+            items = sb.cdp.find_elements(item_selector)
             for item in items:
-                sb.sleep(0.03)
-                item.scroll_into_view()
-                sb.sleep(0.025)
+                sb.sleep(0.06)
                 if required_text in item.text:
                     item.flash(color="44CC88")
                     sb.sleep(0.025)
