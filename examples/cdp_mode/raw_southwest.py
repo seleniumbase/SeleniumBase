@@ -6,7 +6,7 @@ with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     sb.sleep(2.8)
     origin = "BOS"
     destination = "MDW"
-    sb.cdp.click("button#onetrust-accept-btn-handler")
+    sb.cdp.click_if_visible("button#onetrust-accept-btn-handler")
     sb.sleep(0.5)
     sb.cdp.gui_click_element("input#originationAirportCode")
     sb.sleep(0.2)
@@ -27,7 +27,9 @@ with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     sb.uc_gui_press_keys(destination + "\n")
     sb.sleep(0.4)
     sb.cdp.gui_click_element("h1")
-    sb.sleep(0.3)
+    sb.sleep(0.2)
+    sb.cdp.click_if_visible("button#onetrust-accept-btn-handler")
+    sb.sleep(0.1)
     sb.cdp.click('form button[data-test="submitField"]')
     sb.sleep(2.5)
     sb.cdp.click('button[aria-labelledby*="nearby-airport-drawer-"]')
