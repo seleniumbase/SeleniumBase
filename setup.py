@@ -147,7 +147,7 @@ setup(
     python_requires=">=3.8",
     install_requires=[
         'pip>=25.0.1;python_version<"3.9"',
-        'pip>=25.1.1;python_version>="3.9"',
+        'pip>=25.2;python_version>="3.9"',
         'packaging>=25.0',
         'setuptools~=70.2;python_version<"3.10"',  # Newer ones had issues
         'setuptools>=80.9.0;python_version>="3.10"',
@@ -219,7 +219,7 @@ setup(
         'python-xlib==0.33;platform_system=="Linux"',
         'markdown-it-py==3.0.0',
         'mdurl==0.1.2',
-        'rich>=14.0.0,<15',
+        'rich>=14.1.0,<15',
     ],
     extras_require={
         # pip install -e .[allure]
@@ -234,7 +234,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage>=7.6.1;python_version<"3.9"',
-            'coverage>=7.9.2;python_version>="3.9"',
+            'coverage>=7.10.1;python_version>="3.9"',
             'pytest-cov>=5.0.0;python_version<"3.9"',
             'pytest-cov>=6.2.1;python_version>="3.9"',
         ],

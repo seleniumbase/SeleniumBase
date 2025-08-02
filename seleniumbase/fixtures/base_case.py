@@ -1194,6 +1194,9 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_cdp_swap_needed():
+            self.cdp.clear_input(selector)
+            return
         if self.__is_shadow_selector(selector):
             self.__shadow_clear(selector, timeout)
             return
