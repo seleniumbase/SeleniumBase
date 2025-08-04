@@ -153,7 +153,7 @@ setup(
         'setuptools>=80.9.0;python_version>="3.10"',
         'wheel>=0.45.1',
         'attrs>=25.3.0',
-        "certifi>=2025.7.14",
+        "certifi>=2025.8.3",
         "exceptiongroup>=1.3.0",
         'websockets~=13.1;python_version<"3.9"',
         'websockets>=15.0.1;python_version>="3.9"',
@@ -212,7 +212,7 @@ setup(
         'pytest-xdist==3.6.1;python_version<"3.9"',
         'pytest-xdist==3.8.0;python_version>="3.9"',
         'parameterized==0.9.0',
-        "behave==1.2.6",
+        "behave==1.2.6",  # Newer ones had issues
         'soupsieve==2.7',
         "beautifulsoup4==4.13.4",
         'pyotp==2.9.0',
@@ -234,7 +234,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage>=7.6.1;python_version<"3.9"',
-            'coverage>=7.10.1;python_version>="3.9"',
+            'coverage>=7.10.2;python_version>="3.9"',
             'pytest-cov>=5.0.0;python_version<"3.9"',
             'pytest-cov>=6.2.1;python_version>="3.9"',
         ],
