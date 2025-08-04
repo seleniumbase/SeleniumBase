@@ -935,12 +935,12 @@ class HTTPApi:
     async def post(self, endpoint, data):
         return await self._request(endpoint, data)
 
-    async def _request(self, endpoint, method: str = "get", data: dict = None):
+    async def _request(self, endpoint, method: str = "GET", data: dict = None):
         url = urllib.parse.urljoin(
             self.api, f"json/{endpoint}" if endpoint else "/json"
         )
         if data and method.lower() == "get":
-            raise ValueError("get requests cannot contain data")
+            raise ValueError("GET requests cannot contain data")
         if not url:
             url = self.api + endpoint
         request = urllib.request.Request(url)
