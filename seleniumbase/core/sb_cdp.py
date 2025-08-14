@@ -1695,9 +1695,9 @@ class CDPMethods():
                 self.set_window_rect(win_x, win_y, width, height)
                 self.__add_light_pause()
                 x1 = x1 * width_ratio
-                y1 = y1 * width_ratio
+                y1 = y1 * (width_ratio - 0.02)
                 x2 = x2 * width_ratio
-                y2 = y2 * width_ratio
+                y2 = y2 * (width_ratio - 0.02)
             self.bring_active_window_to_front()
             self.__gui_drag_drop(
                 x1, y1, x2, y2, timeframe=timeframe, uc_lock=False

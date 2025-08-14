@@ -285,9 +285,9 @@ def extend_driver(
     if proxy_auth:
         # Proxy needs a moment to load in Manifest V3
         if use_uc:
-            time.sleep(0.12)
+            time.sleep(0.14)
         else:
-            time.sleep(0.22)
+            time.sleep(0.28)
     return driver
 
 
