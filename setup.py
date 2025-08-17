@@ -158,7 +158,7 @@ setup(
         'websockets~=13.1;python_version<"3.9"',
         'websockets>=15.0.1;python_version>="3.9"',
         'filelock~=3.16.1;python_version<"3.9"',
-        'filelock>=3.18.0;python_version>="3.9"',
+        'filelock>=3.19.1;python_version>="3.9"',
         'fasteners>=0.20',
         "mycdp>=1.2.0",
         "pynose>=1.5.4",
@@ -235,7 +235,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage>=7.6.1;python_version<"3.9"',
-            'coverage>=7.10.3;python_version>="3.9"',
+            'coverage>=7.10.4;python_version>="3.9"',
             'pytest-cov>=5.0.0;python_version<"3.9"',
             'pytest-cov>=6.2.1;python_version>="3.9"',
         ],

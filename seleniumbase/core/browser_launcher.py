@@ -1504,7 +1504,10 @@ def _uc_gui_click_captcha(
                 y += 0.5
             else:
                 x = (i_x + 32) * width_ratio
-                y = (i_y + 32) * width_ratio
+                if not IS_WINDOWS:
+                    y = (i_y + 32) * width_ratio
+                else:
+                    y = (i_y + 22) * width_ratio
             if driver.is_connected():
                 driver.switch_to.default_content()
         except Exception:
