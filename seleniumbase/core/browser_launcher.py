@@ -762,6 +762,7 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
     cdp.gui_write = CDPM.gui_write
     cdp.gui_click_x_y = CDPM.gui_click_x_y
     cdp.gui_click_element = CDPM.gui_click_element
+    cdp.gui_click_captcha = CDPM.gui_click_captcha
     cdp.gui_drag_drop_points = CDPM.gui_drag_drop_points
     cdp.gui_drag_and_drop = CDPM.gui_drag_and_drop
     cdp.gui_click_and_hold = CDPM.gui_click_and_hold
