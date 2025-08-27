@@ -163,7 +163,7 @@ setup(
         "mycdp>=1.2.0",
         "pynose>=1.5.4",
         'platformdirs>=4.3.6;python_version<"3.9"',
-        'platformdirs>=4.3.8;python_version>="3.9"',
+        'platformdirs>=4.4.0;python_version>="3.9"',
         'typing-extensions>=4.13.2',
         "sbvirtualdisplay>=1.4.0",
         'MarkupSafe==2.1.5;python_version<"3.9"',
@@ -183,7 +183,7 @@ setup(
         'charset-normalizer>=3.4.3,<4',
         'urllib3>=1.26.20,<2;python_version<"3.10"',
         'urllib3>=1.26.20,<2.6.0;python_version>="3.10"',
-        'requests==2.32.4',
+        'requests>=2.32.5,<2.33',
         'sniffio==1.3.1',
         'h11==0.16.0',
         'outcome==1.3.0.post0',
@@ -214,7 +214,7 @@ setup(
         'parameterized==0.9.0',
         "behave==1.2.6",  # Newer ones had issues
         'soupsieve==2.7',
-        "beautifulsoup4==4.13.4",
+        "beautifulsoup4>=4.13.5,<4.14",
         'pyotp==2.9.0',
         'python-xlib==0.33;platform_system=="Linux"',
         'markdown-it-py==3.0.0;python_version<"3.10"',
@@ -235,7 +235,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage>=7.6.1;python_version<"3.9"',
-            'coverage>=7.10.4;python_version>="3.9"',
+            'coverage>=7.10.5;python_version>="3.9"',
             'pytest-cov>=5.0.0;python_version<"3.9"',
             'pytest-cov>=6.2.1;python_version>="3.9"',
         ],
