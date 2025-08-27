@@ -1629,6 +1629,152 @@ class CDPMethods():
         self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.wait())
 
+    def _on_a_cf_turnstile_page(self):
+        source = self.get_page_source()
+        if (
+            'data-callback="onCaptchaSuccess"' in source
+            or "/challenge-platform/scripts/" in source
+            or 'id="challenge-widget-' in source
+            or "cf-turnstile-" in source
+        ):
+            return True
+        return False
+
+    def gui_click_captcha(self):
+        if not self._on_a_cf_turnstile_page():
+            return
+        selector = None
+        if (
+            self.is_element_present('[name*="cf-turnstile-"]')
+            and self.is_element_present("#challenge-form div > div")
+        ):
+            selector = "#challenge-form div > div"
+        elif (
+            self.is_element_present('[name*="cf-turnstile-"]')
+            and self.is_element_present(
+                '[style="display: grid;"] div div'
+            )
+        ):
+            selector = '[style="display: grid;"] div div'
+        elif (
+            self.is_element_present('[name*="cf-turnstile-"]')
+            and self.is_element_present("[class*=spacer] + div div")
+        ):
+            selector = '[class*=spacer] + div div'
+        elif (
+            self.is_element_present('[name*="cf-turnstile-"]')
+            and self.is_element_present("div.spacer div")
+        ):
+            selector = "div.spacer div"
+        elif (
+            self.is_element_present('script[src*="challenges.c"]')
+            and self.is_element_present(
+                '[data-testid*="challenge-"] div'
+            )
+        ):
+            selector = '[data-testid*="challenge-"] div'
+        elif self.is_element_present(
+            "div#turnstile-widget div:not([class])"
+        ):
+            selector = "div#turnstile-widget div:not([class])"
+        elif self.is_element_present(
+            'form div:not([class]):has(input[name*="cf-turn"])'
+        ):
+            selector = 'form div:not([class]):has(input[name*="cf-turn"])'
+        elif (
+            self.is_element_present('[src*="/turnstile/"]')
+            and self.is_element_present("form div:not(:has(*))")
+        ):
+            selector = "form div:not(:has(*))"
+        elif (
+            self.is_element_present('[src*="/turnstile/"]')
+            and self.is_element_present(
+                "body > div#check > div:not([class])"
+            )
+        ):
+            selector = "body > div#check > div:not([class])"
+        elif self.is_element_present(".cf-turnstile-wrapper"):
+            selector = ".cf-turnstile-wrapper"
+        elif self.is_element_present('[class="cf-turnstile"]'):
+            selector = '[class="cf-turnstile"]'
+        elif self.is_element_present(
+            '[data-callback="onCaptchaSuccess"]'
+        ):
+            selector = '[data-callback="onCaptchaSuccess"]'
+        else:
+            return
+        if not selector:
+            return
+        if (
+            self.is_element_present("form")
+            and (
+                self.is_element_present('form[class*="center"]')
+                or self.is_element_present('form[class*="right"]')
+                or self.is_element_present('form div[class*="center"]')
+                or self.is_element_present('form div[class*="right"]')
+            )
+        ):
+            script = (
+                """var $elements = document.querySelectorAll(
+                'form[class], form div[class]');
+                var index = 0, length = $elements.length;
+                for(; index < length; index++){
+                the_class = $elements[index].getAttribute('class');
+                new_class = the_class.replaceAll('center', 'left');
+                new_class = new_class.replaceAll('right', 'left');
+                $elements[index].setAttribute('class', new_class);}"""
+            )
+            with suppress(Exception):
+                self.loop.run_until_complete(self.page.evaluate(script))
+                self.loop.run_until_complete(self.page.wait())
+        elif (
+            self.is_element_present("form")
+            and (
+                self.is_element_present('form div[style*="center"]')
+                or self.is_element_present('form div[style*="right"]')
+            )
+        ):
+            script = (
+                """var $elements = document.querySelectorAll(
+                'form[style], form div[style]');
+                var index = 0, length = $elements.length;
+                for(; index < length; index++){
+                the_style = $elements[index].getAttribute('style');
+                new_style = the_style.replaceAll('center', 'left');
+                new_style = new_style.replaceAll('right', 'left');
+                $elements[index].setAttribute('style', new_style);}"""
+            )
+            with suppress(Exception):
+                self.loop.run_until_complete(self.page.evaluate(script))
+                self.loop.run_until_complete(self.page.wait())
+        elif (
+            self.is_element_present("form")
+            and self.is_element_present(
+                'form [id*="turnstile"] > div:not([class])'
+            )
+        ):
+            script = (
+                """var $elements = document.querySelectorAll(
+                'form [id*="turnstile"]');
+                var index = 0, length = $elements.length;
+                for(; index < length; index++){
+                $elements[index].setAttribute('align', 'left');}"""
+            )
+            with suppress(Exception):
+                self.loop.run_until_complete(self.page.evaluate(script))
+                self.loop.run_until_complete(self.page.wait())
+        with suppress(Exception):
+            element_rect = self.get_gui_element_rect(selector, timeout=1)
+            e_x = element_rect["x"]
+            e_y = element_rect["y"]
+            x = e_x + 32
+            if not shared_utils.is_windows():
+                y = e_y + 32
+            else:
+                y = e_y + 22
+            sb_config._saved_cf_x_y = (x, y)
+            self.gui_click_x_y(x, y)
+
     def __gui_drag_drop(self, x1, y1, x2, y2, timeframe=0.25, uc_lock=False):
         self.__install_pyautogui_if_missing()
         import pyautogui
