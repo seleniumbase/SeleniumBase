@@ -3137,7 +3137,9 @@ def get_driver(
         proxy_string, proxy_scheme = proxy_helper.validate_proxy_string(
             proxy_string, keep_scheme=True
         )
-        if proxy_string and proxy_user and proxy_pass:
+        if proxy_user and not proxy_pass:
+            proxy_pass = ""
+        if proxy_string and proxy_user:
             proxy_auth = True
     elif proxy_pac_url:
         username_and_password = None
@@ -3164,7 +3166,9 @@ def get_driver(
                 )
         if not proxy_pac_url.lower().endswith(".pac"):
             raise Exception('The proxy PAC URL must end with ".pac"!')
-        if proxy_pac_url and proxy_user and proxy_pass:
+        if proxy_user and not proxy_pass:
+            proxy_pass = ""
+        if proxy_pac_url and proxy_user:
             proxy_auth = True
     if (
         is_using_uc(undetectable, browser_name)
