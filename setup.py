@@ -214,8 +214,9 @@ setup(
         'pytest-xdist==3.8.0;python_version>="3.9"',
         'parameterized==0.9.0',
         "behave==1.2.6",  # Newer ones had issues
-        'soupsieve==2.7',
-        "beautifulsoup4>=4.13.5,<4.14",
+        'soupsieve==2.7;python_version<"3.9"',
+        'soupsieve~=2.8;python_version>="3.9"',
+        "beautifulsoup4~=4.13.5",
         'pyotp==2.9.0',
         'python-xlib==0.33;platform_system=="Linux"',
         'markdown-it-py==3.0.0;python_version<"3.10"',
