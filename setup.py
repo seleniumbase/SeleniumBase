@@ -204,12 +204,12 @@ setup(
         'pluggy==1.5.0;python_version<"3.9"',
         'pluggy==1.6.0;python_version>="3.9"',
         'pytest==8.3.5;python_version<"3.9"',
-        'pytest==8.4.1;python_version>="3.9"',
+        'pytest==8.4.2;python_version>="3.9"',
         "pytest-html==4.0.2",  # Newer ones had issues
         'pytest-metadata==3.1.1',
         "pytest-ordering==0.6",
         'pytest-rerunfailures==14.0;python_version<"3.9"',
-        'pytest-rerunfailures==15.1;python_version>="3.9"',
+        'pytest-rerunfailures==16.0.1;python_version>="3.9"',
         'pytest-xdist==3.6.1;python_version<"3.9"',
         'pytest-xdist==3.8.0;python_version>="3.9"',
         'parameterized==0.9.0',
@@ -237,7 +237,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage>=7.6.1;python_version<"3.9"',
-            'coverage>=7.10.5;python_version>="3.9"',
+            'coverage>=7.10.6;python_version>="3.9"',
             'pytest-cov>=5.0.0;python_version<"3.9"',
             'pytest-cov>=6.2.1;python_version>="3.9"',
         ],
@@ -270,7 +270,7 @@ setup(
             'pdfminer.six==20250324;python_version<"3.9"',
             'pdfminer.six==20250506;python_version>="3.9"',
             'cryptography==39.0.2;python_version<"3.9"',
-            'cryptography==45.0.6;python_version>="3.9"',
+            'cryptography==45.0.7;python_version>="3.9"',
             'cffi==1.17.1',
             "pycparser==2.22",
         ],

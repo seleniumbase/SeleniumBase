@@ -56,12 +56,12 @@ iniconfig==2.1.0
 pluggy==1.5.0;python_version<"3.9"
 pluggy==1.6.0;python_version>="3.9"
 pytest==8.3.5;python_version<"3.9"
-pytest==8.4.1;python_version>="3.9"
+pytest==8.4.2;python_version>="3.9"
 pytest-html==4.0.2
 pytest-metadata==3.1.1
 pytest-ordering==0.6
 pytest-rerunfailures==14.0;python_version<"3.9"
-pytest-rerunfailures==15.1;python_version>="3.9"
+pytest-rerunfailures==16.0.1;python_version>="3.9"
 pytest-xdist==3.6.1;python_version<"3.9"
 pytest-xdist==3.8.0;python_version>="3.9"
 parameterized==0.9.0
@@ -80,7 +80,7 @@ rich>=14.1.0,<15
 # ("pip install -r requirements.txt" also installs this, but "pip install -e ." won't.)
 
 coverage>=7.6.1;python_version<"3.9"
-coverage>=7.10.5;python_version>="3.9"
+coverage>=7.10.6;python_version>="3.9"
 pytest-cov>=5.0.0;python_version<"3.9"
 pytest-cov>=6.2.1;python_version>="3.9"
 flake8==5.0.4;python_version<"3.9"

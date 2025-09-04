@@ -823,6 +823,37 @@ class CDPMethods():
             % (dropdown_selector, option)
         )
 
+    def select_option_by_index(self, dropdown_selector, option):
+        element = self.find_element(dropdown_selector)
+        element.scroll_into_view()
+        options = element.query_selector_all("option")
+        count = 0
+        for found_option in options:
+            if count == int(option):
+                found_option.select_option()
+                return
+            count += 1
+        raise Exception(
+            "Unable to find index option {%s} in dropdown {%s}!"
+            % (dropdown_selector, option)
+        )
+
+    def select_option_by_value(self, dropdown_selector, option):
+        element = self.find_element(dropdown_selector)
+        element.scroll_into_view()
+        options = element.query_selector_all("option")
+        for found_option in options:
+            if (
+                "value" in found_option.attrs
+                and str(found_option.attrs["value"]) == str(option)
+            ):
+                found_option.select_option()
+                return
+        raise Exception(
+            "Unable to find value option {%s} in dropdown {%s}!"
+            % (dropdown_selector, option)
+        )
+
     def flash(
         self,
         selector,  # The CSS Selector to flash
