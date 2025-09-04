@@ -3198,6 +3198,9 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        if self.__is_cdp_swap_needed():
+            self.cdp.select_option_by_index(dropdown_selector, option)
+            return
         self.__select_option(
             dropdown_selector,
             option,
@@ -3222,6 +3225,9 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        if self.__is_cdp_swap_needed():
+            self.cdp.select_option_by_value(dropdown_selector, option)
+            return
         self.__select_option(
             dropdown_selector,
             option,
