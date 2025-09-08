@@ -51,6 +51,7 @@ jobs:
         seleniumbase install chromedriver
     - name: Make sure pytest is working
       run: |
+        pytest --help
         echo "def test_1(): pass" > nothing.py
         pytest nothing.py
     - name: Make sure nosetests is working
