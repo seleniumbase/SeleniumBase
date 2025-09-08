@@ -82,7 +82,7 @@ rich>=14.1.0,<15
 coverage>=7.6.1;python_version<"3.9"
 coverage>=7.10.6;python_version>="3.9"
 pytest-cov>=5.0.0;python_version<"3.9"
-pytest-cov>=6.2.1;python_version>="3.9"
+pytest-cov>=6.3.0;python_version>="3.9"
 flake8==5.0.4;python_version<"3.9"
 flake8==7.3.0;python_version>="3.9"
 mccabe==0.7.0
