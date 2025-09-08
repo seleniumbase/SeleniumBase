@@ -2506,8 +2506,13 @@ def pytest_unconfigure(config):
     reporter = config.pluginmanager.get_plugin("terminalreporter")
     if (
         not hasattr(reporter, "_sessionstarttime")
-        and not hasattr(reporter, "_session_start")
-        and not hasattr(reporter._session_start, "time")
+        and (
+            not hasattr(reporter, "_session_start")
+            or (
+                hasattr(reporter, "_session_start")
+                and not hasattr(reporter._session_start, "time")
+            )
+        )
     ):
         return
     if hasattr(sb_config, "_multithreaded") and sb_config._multithreaded:
