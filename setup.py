@@ -239,7 +239,7 @@ setup(
             'coverage>=7.6.1;python_version<"3.9"',
             'coverage>=7.10.6;python_version>="3.9"',
             'pytest-cov>=5.0.0;python_version<"3.9"',
-            'pytest-cov>=6.2.1;python_version>="3.9"',
+            'pytest-cov>=6.3.0;python_version>="3.9"',
         ],
         # pip install -e .[flake8]
         # Usage: flake8
