@@ -7245,6 +7245,7 @@ class BaseCase(unittest.TestCase):
             page_search = [page]
         else:
             page_search = None
+        logging.getLogger("pdfminer").setLevel(logging.ERROR)
         pdf_text = extract_text(
             file_path,
             password="",
