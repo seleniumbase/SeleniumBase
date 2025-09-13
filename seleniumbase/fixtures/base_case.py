@@ -7553,6 +7553,47 @@ class BaseCase(unittest.TestCase):
             folder = constants.Files.DOWNLOADS_FOLDER
         return page_utils._get_file_data(folder, file_name)
 
+    def print_to_pdf(self, name, folder=None):
+        """Saves the current page as a PDF.
+        If no folder is specified, uses the folder where pytest was called.
+        If the folder provided doesn't exist, it will get created.
+        @Params
+        name - The name to give the PDF file. Must end in ".pdf".
+        folder - The directory where you want to save the PDF."""
+        import base64
+        from selenium.webdriver.common.print_page_options import PrintOptions
+
+        if not name.lower().endswith(".pdf"):
+            raise Exception('PDF name {%s} must end in ".pdf"!)' % name)
+        download_file_lock = fasteners.InterProcessLock(
+            constants.MultiBrowser.DOWNLOAD_FILE_LOCK
+        )
+        if self.__is_cdp_swap_needed():
+            with download_file_lock:
+                with suppress(Exception):
+                    shared_utils.make_writable(
+                        constants.MultiBrowser.DOWNLOAD_FILE_LOCK
+                    )
+                if folder and not os.path.exists(folder):
+                    os.makedirs(folder)
+                self.cdp.print_to_pdf(name, folder)
+            return
+        self.wait_for_ready_state_complete()
+        print_options = PrintOptions()
+        pdf_base64 = self.driver.print_page(print_options)
+        with download_file_lock:
+            with suppress(Exception):
+                shared_utils.make_writable(
+                    constants.MultiBrowser.DOWNLOAD_FILE_LOCK
+                )
+            if folder and not os.path.exists(folder):
+                os.makedirs(folder)
+            filename = name
+            if folder:
+                filename = os.path.join(folder, name)
+            with open(filename, "wb") as f:
+                f.write(base64.b64decode(pdf_base64))
+
     def get_downloads_folder(self):
         """Returns the path of the SeleniumBase "downloaded_files/" folder.
         Calling self.download_file(file_url) will put that file in here.
