@@ -65,7 +65,7 @@
 
 --------
 
-<p align="left">📗 For performing a Google Search without hitting the "unusual traffic" page, you can use SeleniumBase UC Mode. Here's <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_google.py">SeleniumBase/examples/raw_google.py</a>, which exports the search results into different formats (PDF, HTML, PNG):</p>
+<p align="left">📗 For performing a Google Search without hitting the "unusual traffic" page, you can use SeleniumBase UC Mode.<br />Here's <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_google.py">SeleniumBase/examples/raw_google.py</a>, which exports results into different formats (PDF, HTML, PNG):</p>
 
 ```python
 from seleniumbase import SB
@@ -85,7 +85,7 @@ with SB(test=True, uc=True) as sb:
 
 > `python raw_google.py`
 
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_google.py"><img src="https://seleniumbase.github.io/cdn/img/google_sb_result.png" alt="SeleniumBase on Google" title="SeleniumBase on Google" width="440" /></a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_google.py"><img src="https://seleniumbase.github.io/cdn/img/google_sb_result.png" alt="SeleniumBase on Google" title="SeleniumBase on Google" width="480" /></a>
 
 --------
 
