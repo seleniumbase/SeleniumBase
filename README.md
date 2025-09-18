@@ -65,26 +65,31 @@
 
 --------
 
-<p align="left">📗 Here's <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_google.py">raw_google.py</a>, which performs a Google search:</p>
+<p align="left">📗 For performing a Google Search without hitting the "unusual traffic" page, you can use SeleniumBase UC Mode. Here's <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_google.py">SeleniumBase/examples/raw_google.py</a>, which exports the search results into different formats (PDF, HTML, PNG):</p>
 
 ```python
 from seleniumbase import SB
 
 with SB(test=True, uc=True) as sb:
     sb.open("https://google.com/ncr")
-    sb.type('[title="Search"]', "SeleniumBase GitHub page\n")
-    sb.click('[href*="github.com/seleniumbase/"]')
-    sb.save_screenshot_to_logs()  # ./latest_logs/
+    sb.type('[title="Search"]', "SeleniumBase GitHub page")
+    sb.click("div:not([jsname]) > * > input")
     print(sb.get_page_title())
+    sb.sleep(2)  # Wait for the "AI Overview" result
+    if sb.is_text_visible("Generating"):
+        sb.wait_for_text("AI Overview")
+    sb.save_as_pdf_to_logs()  # Saved to ./latest_logs/
+    sb.save_page_source_to_logs()
+    sb.save_screenshot_to_logs()
 ```
 
 > `python raw_google.py`
 
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_google.py"><img src="https://seleniumbase.github.io/cdn/gif/google_search.gif" alt="SeleniumBase Test" title="SeleniumBase Test" width="480" /></a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_google.py"><img src="https://seleniumbase.github.io/cdn/img/google_sb_result.png" alt="SeleniumBase on Google" title="SeleniumBase on Google" width="440" /></a>
 
 --------
 
-<p align="left">📗 Here's an example of bypassing Cloudflare's challenge page: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_gitlab.py">SeleniumBase/examples/cdp_mode/raw_gitlab.py</a></p>
+<p align="left">📗 Here's an example of bypassing Cloudflare's challenge page with UC Mode + CDP Mode: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_gitlab.py">SeleniumBase/examples/cdp_mode/raw_gitlab.py</a></p>
 
 ```python
 from seleniumbase import SB
@@ -92,16 +97,36 @@ from seleniumbase import SB
 with SB(uc=True, test=True, locale="en") as sb:
     url = "https://gitlab.com/users/sign_in"
     sb.activate_cdp_mode(url)
-    sb.sleep(1)
+    sb.sleep(2.2)
     sb.uc_gui_click_captcha()
-    sb.sleep(2)
+    sb.assert_text("Username", '[for="user_login"]', timeout=3)
+    sb.assert_element('label[for="user_login"]')
+    sb.highlight('button:contains("Sign in")')
+    sb.highlight('h1:contains("GitLab.com")')
+    sb.post_message("SeleniumBase wasn't detected", duration=4)
 ```
 
 <img src="https://seleniumbase.github.io/other/cf_sec.jpg" title="SeleniumBase" width="332"> <img src="https://seleniumbase.github.io/other/gitlab_bypass.png" title="SeleniumBase" width="288">
 
+<p align="left">📙 You can also use SeleniumBase's pure CDP Mode, which doesn't use chromedriver, Selenium, or a Python context manager at all: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_gitlab.py">SeleniumBase/examples/cdp_mode/raw_cdp_gitlab.py</a></p>
+
+```python
+from seleniumbase import sb_cdp
+
+url = "https://gitlab.com/users/sign_in"
+sb = sb_cdp.Chrome(url)
+sb.sleep(2.5)
+sb.gui_click_captcha()
+sb.highlight('h1:contains("GitLab.com")')
+sb.highlight('button:contains("Sign in")')
+sb.driver.stop()
+```
+
+> (Due to a change in Chrome 137 where the --load-extension switch was removed, one limitation with this format is that you can't load extensions directly. The other formats weren't affected by this change.)
+
 --------
 
-<p align="left">📗 Here's <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_get_swag.py">test_get_swag.py</a>, which tests an e-commerce site:</p>
+<p align="left">📗 Here's <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_get_swag.py">SeleniumBase/examples/test_get_swag.py</a>, which tests an e-commerce site:</p>
 
 ```python
 from seleniumbase import BaseCase
@@ -133,7 +158,7 @@ class MyTestClass(BaseCase):
 
 --------
 
-<p align="left">📗 Here's <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_coffee_cart.py" target="_blank">test_coffee_cart.py</a>, which verifies an e-commerce site:</p>
+<p align="left">📗 Here's <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_coffee_cart.py" target="_blank">SeleniumBase/examples/test_coffee_cart.py</a>, which verifies an e-commerce site:</p>
 
 ```zsh
 pytest test_coffee_cart.py --demo
@@ -147,7 +172,7 @@ pytest test_coffee_cart.py --demo
 
 <a id="multiple_examples"></a>
 
-<p align="left">📗 Here's <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py" target="_blank">test_demo_site.py</a>, which covers several actions:</p>
+<p align="left">📗 Here's <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py" target="_blank">SeleniumBase/examples/test_demo_site.py</a>, which covers several actions:</p>
 
 ```zsh
 pytest test_demo_site.py
