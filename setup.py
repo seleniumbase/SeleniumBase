@@ -270,7 +270,7 @@ setup(
             'pdfminer.six==20250324;python_version<"3.9"',
             'pdfminer.six==20250506;python_version>="3.9"',
             'cryptography==39.0.2;python_version<"3.9"',
-            'cryptography==45.0.7;python_version>="3.9"',
+            'cryptography==46.0.1;python_version>="3.9"',
             'cffi==1.17.1;python_version<"3.9"',
             'cffi==2.0.0;python_version>="3.9"',
             'pycparser==2.22;python_version<"3.9"',
@@ -296,7 +296,7 @@ setup(
         ],
         # pip install -e .[psutil]
         "psutil": [
-            "psutil==7.0.0",
+            "psutil==7.1.0",
         ],
         # pip install -e .[pyautogui]
         "pyautogui": [
