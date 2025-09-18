@@ -2571,6 +2571,9 @@ class CDPMethods():
             filename = os.path.join(folder, name)
         self.loop.run_until_complete(self.page.print_to_pdf(filename))
 
+    def save_as_pdf(self, *args, **kwargs):
+        self.print_to_pdf(*args, **kwargs)
+
 
 class Chrome(CDPMethods):
     def __init__(self, url=None, **kwargs):

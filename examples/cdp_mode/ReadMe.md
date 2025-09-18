@@ -521,6 +521,7 @@ sb.cdp.scroll_up(amount=25)
 sb.cdp.scroll_down(amount=25)
 sb.cdp.save_screenshot(name, folder=None, selector=None)
 sb.cdp.print_to_pdf(name, folder=None)
+sb.cdp.save_as_pdf(name, folder=None)
 ```
 
 --------
