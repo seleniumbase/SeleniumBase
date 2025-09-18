@@ -865,6 +865,7 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
     cdp.scroll_down = CDPM.scroll_down
     cdp.save_screenshot = CDPM.save_screenshot
     cdp.print_to_pdf = CDPM.print_to_pdf
+    cdp.save_as_pdf = CDPM.save_as_pdf
     cdp.page = page  # async world
     cdp.driver = driver.cdp_base  # async world
     cdp.tab = cdp.page  # shortcut (original)
