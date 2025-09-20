@@ -1227,6 +1227,7 @@ def _on_a_cf_turnstile_page(driver):
         'data-callback="onCaptchaSuccess"' in source
         or "/challenge-platform/scripts/" in source
         or 'id="challenge-widget-' in source
+        or "challenges.cloudf" in source
         or "cf-turnstile-" in source
     ):
         return True
