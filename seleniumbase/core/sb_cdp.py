@@ -1661,11 +1661,16 @@ class CDPMethods():
         self.loop.run_until_complete(self.page.wait())
 
     def _on_a_cf_turnstile_page(self):
+        time.sleep(0.042)
         source = self.get_page_source()
+        if not source or len(source) < 400:
+            time.sleep(0.22)
+            source = self.get_page_source()
         if (
             'data-callback="onCaptchaSuccess"' in source
             or "/challenge-platform/scripts/" in source
             or 'id="challenge-widget-' in source
+            or "challenges.cloudf" in source
             or "cf-turnstile-" in source
         ):
             return True
@@ -1795,6 +1800,7 @@ class CDPMethods():
                 self.loop.run_until_complete(self.page.evaluate(script))
                 self.loop.run_until_complete(self.page.wait())
         with suppress(Exception):
+            time.sleep(0.08)
             element_rect = self.get_gui_element_rect(selector, timeout=1)
             e_x = element_rect["x"]
             e_y = element_rect["y"]
@@ -1804,6 +1810,7 @@ class CDPMethods():
             else:
                 y = e_y + 22
             sb_config._saved_cf_x_y = (x, y)
+            time.sleep(0.08)
             self.gui_click_x_y(x, y)
 
     def __gui_drag_drop(self, x1, y1, x2, y2, timeframe=0.25, uc_lock=False):
