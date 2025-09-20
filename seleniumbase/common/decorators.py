@@ -53,7 +53,9 @@ def print_runtime(description=None, limit=None):
         name = description
         info = c1 + "<info>" + cr
         # Print times with a statistically significant number of decimal places
-        if run_time < 0.0001:
+        if run_time < 0.00001:
+            print("%s - {%s} ran for %.8f seconds." % (info, name, run_time))
+        elif run_time < 0.0001:
             print("%s - {%s} ran for %.7f seconds." % (info, name, run_time))
         elif run_time < 0.001:
             print("%s - {%s} ran for %.6f seconds." % (info, name, run_time))
