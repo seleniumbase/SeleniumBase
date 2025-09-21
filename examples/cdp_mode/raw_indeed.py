@@ -3,23 +3,27 @@ from seleniumbase import SB
 with SB(uc=True, test=True) as sb:
     url = "https://www.indeed.com/companies/search"
     sb.activate_cdp_mode(url)
-    sb.sleep(2.2)
-    sb.uc_gui_click_captcha()
-    sb.sleep(1)
-    company = "NASA Jet Propulsion Laboratory"
     search_box = 'input[data-testid="company-search-box"]'
+    if not sb.is_element_present(search_box):
+        sb.sleep(2)
+        sb.uc_gui_click_captcha()
+        sb.sleep(1)
+    company = "NASA Jet Propulsion Laboratory"
     sb.click(search_box)
     sb.sleep(0.1)
     sb.press_keys(search_box, company)
     sb.click('button[type="submit"]')
     sb.click('a:contains("%s")' % company)
-    sb.sleep(3)
-    sb.uc_gui_click_captcha()
+    name_header = 'div[itemprop="name"]'
     sb.sleep(1)
-    sb.cdp.highlight('div[itemprop="name"]')
+    if not sb.is_element_present(name_header):
+        sb.sleep(2)
+        sb.uc_gui_click_captcha()
+        sb.sleep(1)
+    sb.cdp.highlight(name_header)
     sb.sleep(1)
     sb.cdp.highlight('h2:contains("About the company")')
-    sb.sleep(2)
+    sb.sleep(1)
     for i in range(10):
         sb.cdp.scroll_down(12)
         sb.sleep(0.14)
