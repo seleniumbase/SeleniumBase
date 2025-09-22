@@ -6,17 +6,19 @@ from seleniumbase import cdp_driver
 
 
 async def main():
-    url = "https://www.priceline.com/"
-    driver = await cdp_driver.start_async(lang="en")
+    url = "seleniumbase.io/simple/login"
+    driver = await cdp_driver.start_async(incognito=True)
     page = await driver.get(url)
-    time.sleep(3)
     print(await page.evaluate("document.title"))
-    element = await page.select('[data-testid*="endLocation"]')
+    element = await page.select("#username")
+    await element.send_keys_async("demo_user")
+    element = await page.select("#password")
+    await element.send_keys_async("secret_pass")
+    element = await page.select("#log-in")
     await element.click_async()
     time.sleep(1)
-    await element.send_keys_async("Boston")
-    time.sleep(2)
-    driver.stop()
+    element = await page.select("h1")
+    assert element.text == "Welcome!"
 
 if __name__ == "__main__":
     # Call an async function with awaited methods
