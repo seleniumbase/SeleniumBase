@@ -1249,6 +1249,8 @@ def _uc_gui_click_captcha(
     ctype=None,
 ):
     cdp_mode_on_at_start = __is_cdp_swap_needed(driver)
+    if cdp_mode_on_at_start and (not ctype or ctype == "cf_t"):
+        return driver.cdp.gui_click_captcha()
     _on_a_captcha_page = None
     if ctype == "cf_t":
         if not _on_a_cf_turnstile_page(driver):

@@ -173,7 +173,7 @@ setup(
         'parse>=1.20.2',
         'parse-type>=0.6.6',
         'colorama>=0.4.6',
-        'pyyaml>=6.0.2',
+        'pyyaml>=6.0.3',
         'pygments>=2.19.2',
         'pyreadline3>=3.5.3;platform_system=="Windows"',
         "tabcompleter>=1.4.0",
