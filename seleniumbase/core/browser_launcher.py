@@ -12,6 +12,7 @@ import types
 import urllib3
 import warnings
 from contextlib import suppress
+from filelock import FileLock
 from selenium import webdriver
 from selenium.common.exceptions import ElementClickInterceptedException
 from selenium.common.exceptions import InvalidSessionIdException
@@ -429,6 +430,12 @@ def __is_cdp_swap_needed(driver):
     return shared_utils.is_cdp_swap_needed(driver)
 
 
+def uc_execute_cdp_cmd(driver, *args, **kwargs):
+    if not driver.is_connected():
+        driver.connect()
+    return driver.default_execute_cdp_cmd(*args, **kwargs)
+
+
 def uc_special_open_if_cf(
     driver,
     url,
@@ -641,7 +648,7 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
     )
     loop.run_until_complete(driver.cdp_base.wait(0))
 
-    gui_lock = fasteners.InterProcessLock(constants.MultiBrowser.PYAUTOGUILOCK)
+    gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
 
     if (
         "chrome-extension://" in str(driver.cdp_base.main_tab)
@@ -1080,9 +1087,7 @@ def uc_gui_press_key(driver, key):
     install_pyautogui_if_missing(driver)
     import pyautogui
     pyautogui = get_configured_pyautogui(pyautogui)
-    gui_lock = fasteners.InterProcessLock(
-        constants.MultiBrowser.PYAUTOGUILOCK
-    )
+    gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
     with gui_lock:
         pyautogui.press(key)
 
@@ -1091,9 +1096,7 @@ def uc_gui_press_keys(driver, keys):
     install_pyautogui_if_missing(driver)
     import pyautogui
     pyautogui = get_configured_pyautogui(pyautogui)
-    gui_lock = fasteners.InterProcessLock(
-        constants.MultiBrowser.PYAUTOGUILOCK
-    )
+    gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
     with gui_lock:
         for key in keys:
             pyautogui.press(key)
@@ -1103,9 +1106,7 @@ def uc_gui_write(driver, text):
     install_pyautogui_if_missing(driver)
     import pyautogui
     pyautogui = get_configured_pyautogui(pyautogui)
-    gui_lock = fasteners.InterProcessLock(
-        constants.MultiBrowser.PYAUTOGUILOCK
-    )
+    gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
     with gui_lock:
         pyautogui.write(text)
 
@@ -1138,9 +1139,7 @@ def _uc_gui_click_x_y(driver, x, y, timeframe=0.25, uc_lock=False):
             % (x, y, screen_width, screen_height)
         )
     if uc_lock:
-        gui_lock = fasteners.InterProcessLock(
-            constants.MultiBrowser.PYAUTOGUILOCK
-        )
+        gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
         with gui_lock:  # Prevent issues with multiple processes
             pyautogui.moveTo(x, y, timeframe, pyautogui.easeOutQuad)
             if timeframe >= 0.25:
@@ -1159,9 +1158,7 @@ def _uc_gui_click_x_y(driver, x, y, timeframe=0.25, uc_lock=False):
 
 
 def uc_gui_click_x_y(driver, x, y, timeframe=0.25):
-    gui_lock = fasteners.InterProcessLock(
-        constants.MultiBrowser.PYAUTOGUILOCK
-    )
+    gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
     with gui_lock:  # Prevent issues with multiple processes
         install_pyautogui_if_missing(driver)
         import pyautogui
@@ -1280,9 +1277,7 @@ def _uc_gui_click_captcha(
     x = None
     y = None
     visible_iframe = True
-    gui_lock = fasteners.InterProcessLock(
-        constants.MultiBrowser.PYAUTOGUILOCK
-    )
+    gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
     with gui_lock:  # Prevent issues with multiple processes
         needs_switch = False
         width_ratio = 1.0
@@ -1643,9 +1638,7 @@ def _uc_gui_handle_captcha_(driver, frame="iframe", ctype=None):
     import pyautogui
     pyautogui = get_configured_pyautogui(pyautogui)
     visible_iframe = True
-    gui_lock = fasteners.InterProcessLock(
-        constants.MultiBrowser.PYAUTOGUILOCK
-    )
+    gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
     with gui_lock:  # Prevent issues with multiple processes
         needs_switch = False
         if not __is_cdp_swap_needed(driver):
@@ -5688,6 +5681,12 @@ def get_local_driver(
                     )
                     driver.uc_switch_to_frame = (
                         lambda *args, **kwargs: uc_switch_to_frame(
+                            driver, *args, **kwargs
+                        )
+                    )
+                    driver.default_execute_cdp_cmd = driver.execute_cdp_cmd
+                    driver.execute_cdp_cmd = (
+                        lambda *args, **kwargs: uc_execute_cdp_cmd(
                             driver, *args, **kwargs
                         )
                     )

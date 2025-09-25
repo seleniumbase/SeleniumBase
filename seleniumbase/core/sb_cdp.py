@@ -6,6 +6,7 @@ import re
 import sys
 import time
 from contextlib import suppress
+from filelock import FileLock
 from seleniumbase import config as sb_config
 from seleniumbase.config import settings
 from seleniumbase.fixtures import constants
@@ -1065,24 +1066,42 @@ class CDPMethods():
             time.sleep(0.044)
         return self.loop.run_until_complete(self.page.medimize())
 
-    def set_window_rect(self, x, y, width, height):
-        if self.get_window()[1].window_state.value == "minimized":
-            self.loop.run_until_complete(
+    def __set_window_rect(self, x, y, width, height, uc_lock=False):
+        if uc_lock:
+            gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
+            with gui_lock:
+                self.__make_sure_pyautogui_lock_is_writable()
+                if self.get_window()[1].window_state.value == "minimized":
+                    self.loop.run_until_complete(
+                        self.page.set_window_size(
+                            left=x, top=y, width=width, height=height)
+                    )
+                    time.sleep(0.044)
+                return self.loop.run_until_complete(
+                    self.page.set_window_size(
+                        left=x, top=y, width=width, height=height)
+                )
+        else:
+            if self.get_window()[1].window_state.value == "minimized":
+                self.loop.run_until_complete(
+                    self.page.set_window_size(
+                        left=x, top=y, width=width, height=height)
+                )
+                time.sleep(0.044)
+            return self.loop.run_until_complete(
                 self.page.set_window_size(
                     left=x, top=y, width=width, height=height)
             )
-            time.sleep(0.044)
-        return self.loop.run_until_complete(
-            self.page.set_window_size(
-                left=x, top=y, width=width, height=height)
-        )
+
+    def set_window_rect(self, x, y, width, height):
+        return self.__set_window_rect(x, y, width, height, uc_lock=True)
 
     def reset_window_size(self):
         x = settings.WINDOW_START_X
         y = settings.WINDOW_START_Y
         width = settings.CHROME_START_WIDTH
         height = settings.CHROME_START_HEIGHT
-        self.set_window_rect(x, y, width, height)
+        self.__set_window_rect(x, y, width, height, uc_lock=True)
         self.__add_light_pause()
 
     def open_new_window(self, url=None, switch_to=True):
@@ -1548,9 +1567,7 @@ class CDPMethods():
         self.__install_pyautogui_if_missing()
         import pyautogui
         pyautogui = self.__get_configured_pyautogui(pyautogui)
-        gui_lock = fasteners.InterProcessLock(
-            constants.MultiBrowser.PYAUTOGUILOCK
-        )
+        gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
         with gui_lock:
             self.__make_sure_pyautogui_lock_is_writable()
             pyautogui.press(key)
@@ -1562,9 +1579,7 @@ class CDPMethods():
         self.__install_pyautogui_if_missing()
         import pyautogui
         pyautogui = self.__get_configured_pyautogui(pyautogui)
-        gui_lock = fasteners.InterProcessLock(
-            constants.MultiBrowser.PYAUTOGUILOCK
-        )
+        gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
         with gui_lock:
             self.__make_sure_pyautogui_lock_is_writable()
             for key in keys:
@@ -1577,9 +1592,7 @@ class CDPMethods():
         self.__install_pyautogui_if_missing()
         import pyautogui
         pyautogui = self.__get_configured_pyautogui(pyautogui)
-        gui_lock = fasteners.InterProcessLock(
-            constants.MultiBrowser.PYAUTOGUILOCK
-        )
+        gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
         with gui_lock:
             self.__make_sure_pyautogui_lock_is_writable()
             pyautogui.write(text)
@@ -1598,9 +1611,7 @@ class CDPMethods():
                 % (x, y, screen_width, screen_height)
             )
         if uc_lock:
-            gui_lock = fasteners.InterProcessLock(
-                constants.MultiBrowser.PYAUTOGUILOCK
-            )
+            gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
             with gui_lock:  # Prevent issues with multiple processes
                 self.__make_sure_pyautogui_lock_is_writable()
                 pyautogui.moveTo(x, y, timeframe, pyautogui.easeOutQuad)
@@ -1619,9 +1630,7 @@ class CDPMethods():
             pyautogui.click(x=x, y=y)
 
     def gui_click_x_y(self, x, y, timeframe=0.25):
-        gui_lock = fasteners.InterProcessLock(
-            constants.MultiBrowser.PYAUTOGUILOCK
-        )
+        gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
         with gui_lock:  # Prevent issues with multiple processes
             self.__make_sure_pyautogui_lock_is_writable()
             self.__install_pyautogui_if_missing()
@@ -1645,7 +1654,7 @@ class CDPMethods():
                 sb_config._saved_width_ratio = width_ratio
                 self.minimize()
                 self.__add_light_pause()
-                self.set_window_rect(win_x, win_y, width, height)
+                self.__set_window_rect(win_x, win_y, width, height)
                 self.__add_light_pause()
                 x = x * width_ratio
                 y = y * width_ratio
@@ -1831,9 +1840,7 @@ class CDPMethods():
                 % (x2, y2, screen_width, screen_height)
             )
         if uc_lock:
-            gui_lock = fasteners.InterProcessLock(
-                constants.MultiBrowser.PYAUTOGUILOCK
-            )
+            gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
             with gui_lock:  # Prevent issues with multiple processes
                 pyautogui.moveTo(x1, y1, 0.25, pyautogui.easeOutQuad)
                 self.__add_light_pause()
@@ -1851,9 +1858,7 @@ class CDPMethods():
     def gui_drag_drop_points(self, x1, y1, x2, y2, timeframe=0.35):
         """Use PyAutoGUI to drag-and-drop from one point to another.
         Can simulate click-and-hold when using the same point twice."""
-        gui_lock = fasteners.InterProcessLock(
-            constants.MultiBrowser.PYAUTOGUILOCK
-        )
+        gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
         with gui_lock:  # Prevent issues with multiple processes
             self.__install_pyautogui_if_missing()
             import pyautogui
@@ -1876,7 +1881,7 @@ class CDPMethods():
                 sb_config._saved_width_ratio = width_ratio
                 self.minimize()
                 self.__add_light_pause()
-                self.set_window_rect(win_x, win_y, width, height)
+                self.__set_window_rect(win_x, win_y, width, height)
                 self.__add_light_pause()
                 x1 = x1 * width_ratio
                 y1 = y1 * (width_ratio - 0.02)
@@ -1920,9 +1925,7 @@ class CDPMethods():
                 % (x, y, screen_width, screen_height)
             )
         if uc_lock:
-            gui_lock = fasteners.InterProcessLock(
-                constants.MultiBrowser.PYAUTOGUILOCK
-            )
+            gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
             with gui_lock:  # Prevent issues with multiple processes
                 pyautogui.moveTo(x, y, timeframe, pyautogui.easeOutQuad)
                 time.sleep(0.056)
@@ -1936,9 +1939,7 @@ class CDPMethods():
                 print(" <DEBUG> pyautogui.moveTo(%s, %s)" % (x, y))
 
     def gui_hover_x_y(self, x, y, timeframe=0.25):
-        gui_lock = fasteners.InterProcessLock(
-            constants.MultiBrowser.PYAUTOGUILOCK
-        )
+        gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
         with gui_lock:  # Prevent issues with multiple processes
             self.__install_pyautogui_if_missing()
             import pyautogui
@@ -1971,7 +1972,7 @@ class CDPMethods():
                     if width_ratio < 0.45 or width_ratio > 2.55:
                         width_ratio = 1.01
                     sb_config._saved_width_ratio = width_ratio
-                self.set_window_rect(win_x, win_y, width, height)
+                self.__set_window_rect(win_x, win_y, width, height)
                 self.__add_light_pause()
                 self.bring_active_window_to_front()
             elif (
@@ -2002,9 +2003,7 @@ class CDPMethods():
         self.loop.run_until_complete(self.page.wait())
 
     def gui_hover_and_click(self, hover_selector, click_selector):
-        gui_lock = fasteners.InterProcessLock(
-            constants.MultiBrowser.PYAUTOGUILOCK
-        )
+        gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
         with gui_lock:
             self.__make_sure_pyautogui_lock_is_writable()
             self.bring_active_window_to_front()
@@ -2586,7 +2585,7 @@ class Chrome(CDPMethods):
     def __init__(self, url=None, **kwargs):
         if not url:
             url = "about:blank"
-        loop = asyncio.new_event_loop()
         driver = cdp_util.start_sync(**kwargs)
+        loop = asyncio.new_event_loop()
         page = loop.run_until_complete(driver.get(url))
         super().__init__(loop, page, driver)
