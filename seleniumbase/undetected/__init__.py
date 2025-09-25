@@ -5,6 +5,7 @@ import requests
 import subprocess
 import sys
 import time
+from filelock import FileLock
 import selenium.webdriver.chrome.service
 import selenium.webdriver.chrome.webdriver
 import selenium.webdriver.common.service
@@ -117,6 +118,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         self.patcher = None
         import fasteners
         from seleniumbase.fixtures import constants
+        from seleniumbase.fixtures import shared_utils
         if patch_driver:
             uc_lock = fasteners.InterProcessLock(
                 constants.MultiBrowser.DRIVER_FIXING_LOCK
@@ -284,10 +286,11 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                     options.binary_location, *options.arguments
                 )
             else:
-                gui_lock = fasteners.InterProcessLock(
-                    constants.MultiBrowser.PYAUTOGUILOCK
-                )
+                gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
                 with gui_lock:
+                    shared_utils.make_writable(
+                        constants.MultiBrowser.PYAUTOGUILOCK
+                    )
                     browser = subprocess.Popen(
                         [options.binary_location, *options.arguments],
                         stdin=subprocess.PIPE,

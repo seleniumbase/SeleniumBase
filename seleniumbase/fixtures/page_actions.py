@@ -18,10 +18,10 @@ By.TAG_NAME            # "tag name"
 By.PARTIAL_LINK_TEXT   # "partial link text"
 """
 import codecs
-import fasteners
 import os
 import time
 from contextlib import suppress
+from filelock import FileLock
 from selenium.common.exceptions import ElementNotInteractableException
 from selenium.common.exceptions import ElementNotVisibleException
 from selenium.common.exceptions import NoAlertPresentException
@@ -1632,9 +1632,7 @@ def __switch_to_window(driver, window_handle, uc_lock=True):
         and driver._is_using_uc
         and uc_lock
     ):
-        gui_lock = fasteners.InterProcessLock(
-            constants.MultiBrowser.PYAUTOGUILOCK
-        )
+        gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
         with gui_lock:
             driver.switch_to.window(window_handle)
     else:

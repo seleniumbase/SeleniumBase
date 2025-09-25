@@ -5,6 +5,7 @@ import secrets
 import sys
 import tempfile
 import zipfile
+from contextlib import suppress
 from seleniumbase.config import settings
 from typing import Union, List, Optional
 
@@ -82,6 +83,14 @@ class Config:
             self._custom_data_dir = False
         else:
             self.user_data_dir = user_data_dir
+            profile = os.path.join(self.user_data_dir, "Default")
+            preferences_file = os.path.join(profile, "Preferences")
+            preferences = get_default_preferences()
+            if not os.path.exists(profile):
+                with suppress(Exception):
+                    os.makedirs(profile)
+            with open(preferences_file, "w") as f:
+                f.write(preferences)
         if not browser_executable_path:
             browser_executable_path = find_chrome_executable()
         self._browser_args = browser_args
@@ -270,9 +279,25 @@ def is_root():
         return ctypes.windll.shell32.IsUserAnAdmin() != 0
 
 
+def get_default_preferences():
+    return (
+        """{"credentials_enable_service": false,
+        "password_manager_enabled": false,
+        "password_manager_leak_detection": false}"""
+    )
+
+
 def temp_profile_dir():
     """Generate a temp dir (path)"""
     path = os.path.normpath(tempfile.mkdtemp(prefix="uc_"))
+    profile = os.path.join(path, "Default")
+    preferences_file = os.path.join(profile, "Preferences")
+    preferences = get_default_preferences()
+    if not os.path.exists(profile):
+        with suppress(Exception):
+            os.makedirs(profile)
+    with open(preferences_file, "w") as f:
+        f.write(preferences)
     return path
 
 

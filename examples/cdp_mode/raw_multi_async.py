@@ -3,6 +3,7 @@ import asyncio
 from concurrent.futures import ThreadPoolExecutor
 from random import randint
 from seleniumbase import cdp_driver
+from seleniumbase import decorators
 
 
 async def main(url):
@@ -24,7 +25,8 @@ def set_up_loop(url):
 
 
 if __name__ == "__main__":
-    urls = ["https://seleniumbase.io/demo_page" for i in range(4)]
-    with ThreadPoolExecutor(max_workers=len(urls)) as executor:
-        for url in urls:
-            executor.submit(set_up_loop, url)
+    urls = ["https://seleniumbase.io/demo_page" for i in range(5)]
+    with decorators.print_runtime("raw_multi_async.py"):
+        with ThreadPoolExecutor(max_workers=len(urls)) as executor:
+            for url in urls:
+                executor.submit(set_up_loop, url)

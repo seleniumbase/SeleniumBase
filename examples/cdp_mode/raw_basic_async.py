@@ -1,11 +1,12 @@
 import asyncio
 from seleniumbase import cdp_driver
+from seleniumbase import decorators
 
 
 async def main():
     url = "seleniumbase.io/simple/login"
-    driver = await cdp_driver.start_async(incognito=True)
-    page = await driver.get(url)
+    driver = await cdp_driver.start_async()
+    page = await driver.get(url, lang="en")
     print(await page.evaluate("document.title"))
     element = await page.select("#username")
     await element.send_keys_async("demo_user")
@@ -24,4 +25,5 @@ async def main():
 if __name__ == "__main__":
     # Call an async function with awaited methods
     loop = asyncio.new_event_loop()
-    loop.run_until_complete(main())
+    with decorators.print_runtime("raw_basic_async.py"):
+        loop.run_until_complete(main())

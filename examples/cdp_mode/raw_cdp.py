@@ -21,7 +21,9 @@ def main():
     sb.press_keys(where_to, location)
     sb.sleep(1)
     sb.gui_click_element(button)
-    sb.sleep(3)
+    sb.sleep(2)
+    sb.click_if_visible('button[aria-label="Close"]')
+    sb.sleep(1)
     print(sb.get_title())
     print("************")
     for i in range(8):
