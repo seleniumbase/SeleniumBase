@@ -19,6 +19,7 @@ async def main():
     time.sleep(1)
     element = await page.select("h1")
     assert element.text == "Welcome!"
+    driver.stop()
 
 if __name__ == "__main__":
     # Call an async function with awaited methods

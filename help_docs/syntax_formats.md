@@ -1021,18 +1021,20 @@ import asyncio
 import time
 from seleniumbase import cdp_driver
 
-
 async def main():
-    url = "https://www.priceline.com/"
-    driver = await cdp_driver.start_async(lang="en")
+    url = "seleniumbase.io/simple/login"
+    driver = await cdp_driver.start_async(incognito=True)
     page = await driver.get(url)
-    time.sleep(3)
     print(await page.evaluate("document.title"))
-    element = await page.select('[data-testid*="endLocation"]')
+    element = await page.select("#username")
+    await element.send_keys_async("demo_user")
+    element = await page.select("#password")
+    await element.send_keys_async("secret_pass")
+    element = await page.select("#log-in")
     await element.click_async()
     time.sleep(1)
-    await element.send_keys_async("Boston")
-    time.sleep(2)
+    element = await page.select("h1")
+    assert element.text == "Welcome!"
     driver.stop()
 
 if __name__ == "__main__":
@@ -1050,7 +1052,7 @@ This format provides a pure CDP way of using SeleniumBase (without Selenium or a
 ```python
 from seleniumbase import sb_cdp
 
-
+@decorators.print_runtime("CDP Priceline Example")
 def main():
     url = "https://www.priceline.com/"
     sb = sb_cdp.Chrome(url, lang="en")
@@ -1063,11 +1065,14 @@ def main():
     location = "Amsterdam"
     where_to = 'div[data-automation*="experiences"] input'
     button = 'button[data-automation*="experiences-search"]'
+    sb.wait_for_text("Where to?")
     sb.gui_click_element(where_to)
     sb.press_keys(where_to, location)
     sb.sleep(1)
     sb.gui_click_element(button)
-    sb.sleep(3)
+    sb.sleep(2)
+    sb.click_if_visible('button[aria-label="Close"]')
+    sb.sleep(1)
     print(sb.get_title())
     print("************")
     for i in range(8):
@@ -1077,7 +1082,6 @@ def main():
     for card in cards:
         print("* %s" % card.text)
     sb.driver.stop()
-
 
 if __name__ == "__main__":
     main()
