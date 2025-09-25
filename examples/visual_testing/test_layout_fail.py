@@ -15,17 +15,6 @@ class VisualLayout_FixtureTests:
 
 
 class VisualLayoutFailureTests(BaseCase):
-    def test_applitools_change(self):
-        self.open("https://applitools.com/helloworld/?diff1")
-        print('\nCreating baseline in "visual_baseline" folder.')
-        self.check_window(name="helloworld", baseline=True)
-        # Click a button that changes the text of an element
-        self.click('a[href="?diff1"]')
-        # Click a button that makes a hidden element visible
-        self.slow_click("button")
-        print("(This test should fail)")  # due to image now seen
-        self.check_window(name="helloworld", level=3)
-
     def test_xkcd_logo_change(self):
         self.open("https://xkcd.com/554/")
         print('\nCreating baseline in "visual_baseline" folder.')
