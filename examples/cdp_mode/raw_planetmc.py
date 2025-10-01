@@ -5,4 +5,5 @@ with SB(uc=True, test=True) as sb:
     sb.activate_cdp_mode(url)
     sb.sleep(2)
     sb.uc_gui_click_captcha()
+    sb.wait_for_element_absent("input[disabled]")
     sb.sleep(2)

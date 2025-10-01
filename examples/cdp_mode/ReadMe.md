@@ -75,6 +75,7 @@ with SB(uc=True, test=True) as sb:
     sb.activate_cdp_mode(url)
     sb.sleep(2)
     sb.cdp.gui_click_element("#turnstile-widget div")
+    sb.wait_for_element_absent("input[disabled]")
     sb.sleep(2)
 ```
 

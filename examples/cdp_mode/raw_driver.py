@@ -7,4 +7,5 @@ url = "www.planetminecraft.com/account"
 driver.uc_activate_cdp_mode(url)
 driver.sleep(1)
 driver.uc_gui_click_captcha()
+driver.wait_for_element_absent("input[disabled]")
 driver.sleep(2)
