@@ -301,11 +301,7 @@ class HackTests(BaseCase):
 
         self.open("https://git-scm.com/")
         self.set_text_content("span#tagline", aybabtu)
-        self.set_text_content("#nav-about h3", ayb)
-        self.set_text_content("#nav-documentation h3", abtu)
-        self.highlight("span#tagline", loops=8, scroll=False)
-        self.highlight("#nav-about h3", loops=5, scroll=False)
-        self.highlight("#nav-documentation h3", loops=6, scroll=False)
+        self.highlight("span#tagline", loops=10, scroll=False)
 
         self.open("https://pragprog.com/")
         self.set_text_content("header p", aybabtu)

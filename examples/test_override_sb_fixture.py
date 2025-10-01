@@ -1,5 +1,7 @@
 """Overriding the "sb" fixture to override the driver."""
 import pytest
+from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 
 @pytest.fixture()
@@ -66,7 +68,7 @@ def sb(request):
             sb._needs_tearDown = False
 
 
-def test_override_fixture_no_class(sb):
+def test_override_fixture_no_class(sb: BaseCase):
     sb.open("https://seleniumbase.io/demo_page")
     sb.type("#myTextInput", "This is Automated")
     sb.set_value("input#mySlider", "100")
@@ -77,7 +79,7 @@ def test_override_fixture_no_class(sb):
 
 
 class TestOverride:
-    def test_override_fixture_inside_class(self, sb):
+    def test_override_fixture_inside_class(self, sb: BaseCase):
         sb.open("https://seleniumbase.io/demo_page")
         sb.type("#myTextInput", "This is Automated")
         sb.set_value("input#mySlider", "100")

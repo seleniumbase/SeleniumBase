@@ -1,4 +1,6 @@
 import pytest
+from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 
 @pytest.mark.usefixtures("sb")
@@ -7,7 +9,7 @@ class Test_UseFixtures:
         if not hasattr(self, "sb"):
             print("This test is for pytest only!")
             return
-        sb = self.sb
+        sb: BaseCase = self.sb
         sb.open("https://seleniumbase.io/realworld/login")
         sb.type("#username", "demo_user")
         sb.type("#password", "secret_pass")
