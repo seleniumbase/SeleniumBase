@@ -301,28 +301,7 @@ class CDPMethods():
         self.__add_light_pause()
         selector = self.__convert_to_css_if_xpath(selector)
         if (":contains(" in selector):
-            tag_name = selector.split(":contains(")[0].split(" ")[-1]
-            text = selector.split(":contains(")[1].split(")")[0][1:-1]
-            with suppress(Exception):
-                new_timeout = timeout
-                if new_timeout < 1:
-                    new_timeout = 1
-                self.loop.run_until_complete(
-                    self.page.select(tag_name, timeout=new_timeout)
-                )
-                self.loop.run_until_complete(
-                    self.page.find(text, timeout=new_timeout)
-                )
-            elements = self.find_elements_by_text(text, tag_name=tag_name)
-            if not elements:
-                plural = "s"
-                if timeout == 1:
-                    plural = ""
-                msg = "\n Element {%s} was not found after %s second%s!"
-                message = msg % (selector, timeout, plural)
-                raise Exception(message)
-            element = self.__add_sync_methods(elements[0])
-            return element
+            return self.find_element(selector, timeout=timeout)
         failure = False
         try:
             element = self.loop.run_until_complete(
@@ -1708,9 +1687,9 @@ class CDPMethods():
             selector = '[class*=spacer] + div div'
         elif (
             self.is_element_present('[name*="cf-turnstile-"]')
-            and self.is_element_present("div.spacer div")
+            and self.is_element_present(".spacer div:not([class])")
         ):
-            selector = "div.spacer div"
+            selector = ".spacer div:not([class])"
         elif (
             self.is_element_present('script[src*="challenges.c"]')
             and self.is_element_present(
@@ -1722,6 +1701,8 @@ class CDPMethods():
             "div#turnstile-widget div:not([class])"
         ):
             selector = "div#turnstile-widget div:not([class])"
+        elif self.is_element_present("ngx-turnstile div:not([class])"):
+            selector = "ngx-turnstile div:not([class])"
         elif self.is_element_present(
             'form div:not([class]):has(input[name*="cf-turn"])'
         ):
@@ -1742,6 +1723,14 @@ class CDPMethods():
             selector = ".cf-turnstile-wrapper"
         elif self.is_element_present('[class="cf-turnstile"]'):
             selector = '[class="cf-turnstile"]'
+        elif self.is_element_present(
+            '[id*="turnstile"] div:not([class])'
+        ):
+            selector = '[id*="turnstile"] div:not([class])'
+        elif self.is_element_present(
+            '[class*="turnstile"] div:not([class])'
+        ):
+            selector = '[class*="turnstile"] div:not([class])'
         elif self.is_element_present(
             '[data-callback="onCaptchaSuccess"]'
         ):
@@ -1793,9 +1782,11 @@ class CDPMethods():
                 self.loop.run_until_complete(self.page.evaluate(script))
                 self.loop.run_until_complete(self.page.wait())
         elif (
-            self.is_element_present("form")
-            and self.is_element_present(
-                'form [id*="turnstile"] > div:not([class])'
+            self.is_element_present(
+                'form [id*="turnstile"] div:not([class])'
+            )
+            or self.is_element_present(
+                'form [class*="turnstile"] div:not([class])'
             )
         ):
             script = (
@@ -1803,7 +1794,29 @@ class CDPMethods():
                 'form [id*="turnstile"]');
                 var index = 0, length = $elements.length;
                 for(; index < length; index++){
+                $elements[index].setAttribute('align', 'left');}
+                var $elements = document.querySelectorAll(
+                'form [class*="turnstile"]');
+                var index = 0, length = $elements.length;
+                for(; index < length; index++){
                 $elements[index].setAttribute('align', 'left');}"""
+            )
+            with suppress(Exception):
+                self.loop.run_until_complete(self.page.evaluate(script))
+                self.loop.run_until_complete(self.page.wait())
+        elif (
+            self.is_element_present(
+                '[style*="text-align: center;"] div:not([class])'
+            )
+        ):
+            script = (
+                """var $elements = document.querySelectorAll(
+                '[style*="text-align: center;"]');
+                var index = 0, length = $elements.length;
+                for(; index < length; index++){
+                the_style = $elements[index].getAttribute('style');
+                new_style = the_style.replaceAll('center', 'left');
+                $elements[index].setAttribute('style', new_style);}"""
             )
             with suppress(Exception):
                 self.loop.run_until_complete(self.page.evaluate(script))
@@ -2162,6 +2175,10 @@ class CDPMethods():
                 return self.select(selector)
             time.sleep(0.1)
         raise Exception("Element {%s} was not visible!" % selector)
+
+    def wait_for_element(self, selector, **kwargs):
+        """Same as wait_for_element_visible()"""
+        return self.wait_for_element_visible(selector, **kwargs)
 
     def wait_for_element_not_visible(self, selector, timeout=None):
         """Wait for element to not be visible on page. (May still be in DOM)"""

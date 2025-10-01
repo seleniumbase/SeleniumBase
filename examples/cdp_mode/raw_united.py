@@ -35,7 +35,7 @@ with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
         part_3 = flight.text.split(" Destination")[-1].split(" Aircraft")[0]
         parts = "%s - %s %s" % (part_1, part_2, part_3)
         print("* " + parts)
-    for category in ["ECO-BASIC", "ECONOMY"]:
+    for category in ["ECONOMY", "ECONOMY-UNRESTRICTED"]:
         prices = sb.find_elements('[aria-describedby="%s"]' % category)
         full_prices = []
         for item in prices:

@@ -1,5 +1,9 @@
+from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
+
+
 # "sb" pytest fixture test in a method with no class
-def test_sb_fixture_with_no_class(sb):
+def test_sb_fixture_with_no_class(sb: BaseCase):
     sb.open("seleniumbase.io/simple/login")
     sb.type("#username", "demo_user")
     sb.type("#password", "secret_pass")
@@ -13,7 +17,7 @@ def test_sb_fixture_with_no_class(sb):
 
 # "sb" pytest fixture test in a method inside a class
 class Test_SB_Fixture:
-    def test_sb_fixture_inside_class(self, sb):
+    def test_sb_fixture_inside_class(self, sb: BaseCase):
         sb.open("seleniumbase.io/simple/login")
         sb.type("#username", "demo_user")
         sb.type("#password", "secret_pass")

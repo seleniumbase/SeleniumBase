@@ -119,7 +119,10 @@ class MyTests(BaseTestCase):
 The pytest framework comes with a unique system called fixtures, which replaces import statements at the top of Python files by importing libraries directly into test definitions. More than just being an import, a pytest fixture can also automatically call predefined <code translate="no">setUp()</code> and <code translate="no">tearDown()</code> methods at the beginning and end of test methods. To work, <code translate="no">sb</code> is added as an argument to each test method definition that needs SeleniumBase functionality. This means you no longer need import statements in your Python files to use SeleniumBase. <b>If using other pytest fixtures in your tests, you may need to use the SeleniumBase fixture (instead of <code translate="no">BaseCase</code> class inheritance) for compatibility reasons.</b> Here's an example of the <code translate="no">sb</code> fixture in a test that does not use Python classes:
 
 ```python
-def test_sb_fixture_with_no_class(sb):
+from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
+
+def test_sb_fixture_with_no_class(sb: BaseCase):
     sb.open("seleniumbase.io/help_docs/install/")
     sb.type('input[aria-label="Search"]', "GUI Commander")
     sb.click('mark:contains("Commander")')
@@ -134,8 +137,11 @@ def test_sb_fixture_with_no_class(sb):
 The <code translate="no">sb</code> pytest fixture can also be used inside of a class. There is a slight change to the syntax because that means test methods must also include <code translate="no">self</code> in their argument definitions when test methods are defined. (The <code translate="no">self</code> argument represents the class object, and is used in every test method that lives inside of a class.) Once again, no import statements are needed in your Python files for this to work. Here's an example of using the <code translate="no">sb</code> fixture in a test method that lives inside of a Python class:
 
 ```python
+from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
+
 class Test_SB_Fixture:
-    def test_sb_fixture_inside_class(self, sb):
+    def test_sb_fixture_inside_class(self, sb: BaseCase):
         sb.open("seleniumbase.io/help_docs/install/")
         sb.type('input[aria-label="Search"]', "GUI Commander")
         sb.click('mark:contains("Commander")')
@@ -154,7 +160,7 @@ from seleniumbase import BaseCase
 BaseCase.main(__name__, __file__)
 
 class LoginPage:
-    def login_to_swag_labs(self, sb, username):
+    def login_to_swag_labs(self, sb: BaseCase, username):
         sb.open("https://www.saucedemo.com")
         sb.type("#user-name", username)
         sb.type("#password", "secret_sauce")
@@ -175,18 +181,23 @@ class MyTests(BaseCase):
 This is similar to the classic Page Object Model with <code translate="no">BaseCase</code> inheritance, except that this time we pass the <code translate="no">sb</code> pytest fixture from the test into the <code translate="no">sb</code> arg of the page object class method, (instead of passing <code translate="no">self</code>). Now that you're using <code translate="no">sb</code> as a pytest fixture, you no longer need to import <code translate="no">BaseCase</code> anywhere in your code. See the example below:
 
 ```python
+from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
+
 class LoginPage:
-    def login_to_swag_labs(self, sb, username):
+    def login_to_swag_labs(self, sb: BaseCase, username):
         sb.open("https://www.saucedemo.com")
         sb.type("#user-name", username)
         sb.type("#password", "secret_sauce")
         sb.click('input[type="submit"]')
 
 class MyTests:
-    def test_swag_labs_login(self, sb):
+    def test_swag_labs_login(self, sb: BaseCase):
         LoginPage().login_to_swag_labs(sb, "standard_user")
         sb.assert_element("div.inventory_list")
         sb.assert_element('div:contains("Sauce Labs Backpack")')
+        sb.js_click("a#logout_sidebar_link")
+        sb.assert_element("div#login_button_container")
 ```
 
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/boilerplates/samples/sb_swag_test.py">examples/boilerplates/samples/sb_swag_test.py</a> for the full test.)
@@ -197,8 +208,11 @@ class MyTests:
 The pytest <code translate="no">request</code> fixture can be used to retrieve other pytest fixtures from within tests, such as the <code translate="no">sb</code> fixture. This allows you to have more control over when fixtures get initialized because the fixture no longer needs to be loaded at the very beginning of test methods. This is done by calling <code translate="no">request.getfixturevalue('sb')</code> from the test. Here's an example of using the pytest <code translate="no">request</code> fixture to load the <code translate="no">sb</code> fixture in a test method that does not use Python classes:
 
 ```python
+from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
+
 def test_request_sb_fixture(request):
-    sb = request.getfixturevalue('sb')
+    sb: BaseCase = request.getfixturevalue("sb")
     sb.open("https://seleniumbase.io/demo_page")
     sb.assert_text("SeleniumBase", "#myForm h2")
     sb.assert_element("input#myTextInput")
@@ -215,9 +229,12 @@ def test_request_sb_fixture(request):
 The pytest <code translate="no">request</code> fixture can also be used to get the <code translate="no">sb</code> fixture from inside a Python class. Here's an example of that:
 
 ```python
+from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
+
 class Test_Request_Fixture:
     def test_request_sb_fixture_in_class(self, request):
-        sb = request.getfixturevalue('sb')
+        sb: BaseCase = request.getfixturevalue("sb")
         sb.open("https://seleniumbase.io/demo_page")
         sb.assert_element("input#myTextInput")
         sb.type("#myTextarea", "Automated")
@@ -272,7 +289,6 @@ from seleniumbase import BaseCase
 from seleniumwire import webdriver  # Requires "pip install selenium-wire"
 BaseCase.main(__name__, __file__)
 
-
 class WireTestCase(BaseCase):
     def get_new_driver(self, *args, **kwargs):
         options = webdriver.ChromeOptions()
@@ -298,6 +314,8 @@ When you want to use SeleniumBase methods via the ``sb`` pytest fixture, but you
 ```python
 """Overriding the "sb" fixture to override the driver."""
 import pytest
+from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
 
 @pytest.fixture()
 def sb(request):
@@ -356,12 +374,12 @@ def sb(request):
             sb.tearDown()
             sb._needs_tearDown = False
 
-def test_override_fixture_no_class(sb):
+def test_override_fixture_no_class(sb: BaseCase):
     sb.open("https://seleniumbase.io/demo_page")
     sb.type("#myTextInput", "This is Automated")
 
 class TestOverride:
-    def test_override_fixture_inside_class(self, sb):
+    def test_override_fixture_inside_class(self, sb: BaseCase):
         sb.open("https://seleniumbase.io/demo_page")
         sb.type("#myTextInput", "This is Automated")
 ```
@@ -446,7 +464,6 @@ This format is similar to the English version with <code translate="no">BaseCase
 from seleniumbase.translate.chinese import 硒测试用例
 硒测试用例.main(__name__, __file__)
 
-
 class 我的测试类(硒测试用例):
     def test_例子1(self):
         self.开启("https://zh.wikipedia.org/wiki/")
@@ -483,7 +500,6 @@ This format is similar to the English version with <code translate="no">BaseCase
 from seleniumbase.translate.dutch import Testgeval
 Testgeval.main(__name__, __file__)
 
-
 class MijnTestklasse(Testgeval):
     def test_voorbeeld_1(self):
         self.openen("https://nl.wikipedia.org/wiki/Hoofdpagina")
@@ -513,7 +529,6 @@ This format is similar to the English version with <code translate="no">BaseCase
 ```python
 from seleniumbase.translate.french import CasDeBase
 CasDeBase.main(__name__, __file__)
-
 
 class MaClasseDeTest(CasDeBase):
     def test_exemple_1(self):
@@ -546,7 +561,6 @@ This format is similar to the English version with <code translate="no">BaseCase
 from seleniumbase.translate.italian import CasoDiProva
 CasoDiProva.main(__name__, __file__)
 
-
 class MiaClasseDiTest(CasoDiProva):
     def test_esempio_1(self):
         self.apri("https://it.wikipedia.org/wiki/")
@@ -576,7 +590,6 @@ This format is similar to the English version with <code translate="no">BaseCase
 ```python
 from seleniumbase.translate.japanese import セレニウムテストケース
 セレニウムテストケース.main(__name__, __file__)
-
 
 class 私のテストクラス(セレニウムテストケース):
     def test_例1(self):
@@ -609,7 +622,6 @@ This format is similar to the English version with <code translate="no">BaseCase
 from seleniumbase.translate.korean import 셀레늄_테스트_케이스
 셀레늄_테스트_케이스.main(__name__, __file__)
 
-
 class 테스트_클래스(셀레늄_테스트_케이스):
     def test_실시예_1(self):
         self.열기("https://ko.wikipedia.org/wiki/")
@@ -638,7 +650,6 @@ This format is similar to the English version with <code translate="no">BaseCase
 ```python
 from seleniumbase.translate.portuguese import CasoDeTeste
 CasoDeTeste.main(__name__, __file__)
-
 
 class MinhaClasseDeTeste(CasoDeTeste):
     def test_exemplo_1(self):
@@ -673,7 +684,6 @@ This format is similar to the English version with <code translate="no">BaseCase
 from seleniumbase.translate.russian import ТестНаСелен
 ТестНаСелен.main(__name__, __file__)
 
-
 class МойТестовыйКласс(ТестНаСелен):
     def test_пример_1(self):
         self.открыть("https://ru.wikipedia.org/wiki/")
@@ -703,7 +713,6 @@ This format is similar to the English version with <code translate="no">BaseCase
 ```python
 from seleniumbase.translate.spanish import CasoDePrueba
 CasoDePrueba.main(__name__, __file__)
-
 
 class MiClaseDePrueba(CasoDePrueba):
     def test_ejemplo_1(self):

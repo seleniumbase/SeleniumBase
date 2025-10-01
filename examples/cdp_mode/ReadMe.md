@@ -45,7 +45,7 @@
 
 That disconnects WebDriver from Chrome (which prevents detection), and gives you access to `sb.cdp` methods (which don't trigger anti-bot checks).
 
-Simple example: ([SeleniumBase/examples/cdp_mode/raw_gitlab.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_gitlab.py))
+Simple example from [SeleniumBase/examples/cdp_mode/raw_gitlab.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_gitlab.py):
 
 ```python
 from seleniumbase import SB
@@ -53,20 +53,19 @@ from seleniumbase import SB
 with SB(uc=True, test=True, locale="en") as sb:
     url = "https://gitlab.com/users/sign_in"
     sb.activate_cdp_mode(url)
-    sb.sleep(1)
+    sb.sleep(2.2)
     sb.uc_gui_click_captcha()
-    sb.sleep(2)
 ```
 
 <img src="https://seleniumbase.github.io/other/cf_sec.jpg" title="SeleniumBase" width="332"> <img src="https://seleniumbase.github.io/other/gitlab_bypass.png" title="SeleniumBase" width="288">
 
-(If the CAPTCHA wasn't bypassed automatically, then `sb.uc_gui_click_captcha()` gets the job done.)
+(If the CAPTCHA wasn't bypassed automatically when going to the URL, then `sb.uc_gui_click_captcha()` gets the job done with a mouse click from [PyAutoGUI](https://github.com/asweigart/pyautogui).)
 
-Note that `PyAutoGUI` is an optional dependency. If calling a method that uses it when not already installed, then `SeleniumBase` installs `PyAutoGUI` at run-time.
+ℹ️ Note that `PyAutoGUI` is an optional dependency. If calling a method that uses it when not already installed, then `SeleniumBase` installs `PyAutoGUI` at run-time.
 
 --------
 
-For some Cloudflare CAPTCHAs that appear within websites, you may need to use `sb.cdp.gui_click_element(selector)` instead (if the Turnstile wasn't bypassed automatically). Example: ([SeleniumBase/examples/cdp_mode/raw_planetmc.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_planetmc.py))
+You can also use `sb.cdp.gui_click_element(selector)` to click on elements using `PyAutoGUI`. (This is useful when clicking inside `#shadow-root`.) Example:
 
 ```python
 from seleniumbase import SB
@@ -86,17 +85,19 @@ Eg. `sb.cdp.gui_click_element("#turnstile-widget div")`
 
 <img src="https://seleniumbase.github.io/other/above_shadow.png" title="SeleniumBase" width="480">
 
+In most cases, `sb.uc_gui_click_captcha()` is good enough for CF Turnstiles without needing `sb.cdp.gui_click_element(selector)`. (See [SeleniumBase/examples/cdp_mode/raw_planetmc.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_planetmc.py))
+
 --------
 
 ### 🐙 Here are a few common `sb.cdp` methods:
 
 * `sb.cdp.click(selector)`  (Uses the CDP API to click)
-* `sb.cdp.click_if_visible(selector)`
+* `sb.cdp.click_if_visible(selector)`  (Click if visible)
 * `sb.cdp.gui_click_element(selector)`  (Uses `PyAutoGUI`)
-* `sb.cdp.type(selector, text)`
+* `sb.cdp.type(selector, text)`  (Type text into a selector)
 * `sb.cdp.press_keys(selector, text)`  (Human-speed `type`)
-* `sb.cdp.select_all(selector)`
-* `sb.cdp.get_text(selector)`
+* `sb.cdp.select_all(selector)`  (Returns matching elements)
+* `sb.cdp.get_text(selector)`  (Returns the element's text)
 
 Methods that start with `sb.cdp.gui` use `PyAutoGUI` for interaction.
 
@@ -161,18 +162,12 @@ with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     sb.sleep(2)
     sb.cdp.highlight_overlay("div.pokemon-ability-info")
     sb.sleep(2)
-    sb.cdp.click('a[href="https://www.pokemon.com/us/play-pokemon/"]')
-    sb.sleep(0.6)
-    sb.cdp.click('h3:contains("Find an Event")')
-    location = "Concord, MA, USA"
-    sb.cdp.type('input[data-testid="location-search"]', location)
-    sb.sleep(1.5)
-    sb.cdp.click("div.autocomplete-dropdown-container div.suggestion-item")
-    sb.sleep(0.6)
-    sb.cdp.click('img[alt="search-icon"]')
-    sb.sleep(2)
-    events = sb.cdp.select_all('div[data-testid="event-name"]')
-    print("*** Pokemon events near %s: ***" % location)
+    sb.cdp.open("https://events.pokemon.com/EventLocator/")
+    sb.sleep(3)
+    sb.cdp.click('button span:contains("Premier Events")')
+    sb.sleep(1)
+    events = sb.cdp.select_all('div[class="event-info"]')
+    print("*** Upcoming Premier Events for Pokémon: ***")
     for event in events:
         print("* " + event.text)
     sb.sleep(2)
@@ -371,6 +366,9 @@ sb.cdp.select(selector, timeout=None)
 sb.cdp.select_all(selector, timeout=None)
 sb.cdp.find_elements(selector, timeout=None)
 sb.cdp.find_visible_elements(selector, timeout=None)
+sb.cdp.click(selector, timeout=None)
+sb.cdp.click_if_visible(selector)
+sb.cdp.click_visible_elements(selector, limit=0)
 sb.cdp.click_nth_element(selector, number)
 sb.cdp.click_nth_visible_element(selector, number)
 sb.cdp.click_link(link_text)
@@ -391,10 +389,7 @@ sb.cdp.bring_active_window_to_front()
 sb.cdp.bring_to_front()
 sb.cdp.get_active_element()
 sb.cdp.get_active_element_css()
-sb.cdp.click(selector, timeout=None)
 sb.cdp.click_active_element()
-sb.cdp.click_if_visible(selector)
-sb.cdp.click_visible_elements(selector, limit=0)
 sb.cdp.mouse_click(selector, timeout=None)
 sb.cdp.nested_click(parent_selector, selector)
 sb.cdp.get_nested_element(parent_selector, selector)
@@ -488,6 +483,7 @@ sb.cdp.is_exact_text_visible(text, selector="body")
 sb.cdp.wait_for_text(text, selector="body", timeout=None)
 sb.cdp.wait_for_text_not_visible(text, selector="body", timeout=None)
 sb.cdp.wait_for_element_visible(selector, timeout=None)
+sb.cdp.wait_for_element(selector, timeout=None)
 sb.cdp.wait_for_element_not_visible(selector, timeout=None)
 sb.cdp.wait_for_element_absent(selector, timeout=None)
 sb.cdp.wait_for_any_of_elements_visible(*args, **kwargs)
@@ -524,9 +520,65 @@ sb.cdp.print_to_pdf(name, folder=None)
 sb.cdp.save_as_pdf(name, folder=None)
 ```
 
+ℹ️ When available, calling `sb.METHOD()` redirects to `sb.cdp.METHOD()` because regular SB methods automatically call their CDP Mode counterparts to maintain stealth when CDP Mode is active.
+
+--------
+
+### 🐙 <b translate="no">Pure CDP Mode</b> (<code translate="no">sb_cdp</code>)
+
+<b translate="no">Pure CDP Mode</b> doesn't use WebDriver for anything. The browser is launched using CDP, and all browser actions are performed using CDP (or <code>PyAutoGUI</code>). Initialization:
+
+```python
+from seleniumbase import sb_cdp
+
+sb = sb_cdp.Chrome(url=None, **kwargs)
+```
+
+<b translate="no">Pure CDP Mode</b> includes all methods from regular CDP Mode, except that they're called directly from <code>sb</code> instead of <code>sb.cdp</code>. Eg: <code>sb.gui_click_captcha()</code>. To quit a CDP-launched browser, use `sb.driver.stop()`.
+
+Basic example from [SeleniumBase/examples/cdp_mode/raw_cdp_turnstile.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_turnstile.py):
+
+```python
+from seleniumbase import sb_cdp
+
+url = "https://seleniumbase.io/apps/turnstile"
+sb = sb_cdp.Chrome(url)
+sb.gui_click_captcha()
+sb.sleep(2)
+sb.driver.stop()
+```
+
+Another example: ([SeleniumBase/examples/cdp_mode/raw_cdp_methods.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_methods.py))
+
+```python
+from seleniumbase import sb_cdp
+
+url = "https://seleniumbase.io/demo_page"
+sb = sb_cdp.Chrome(url)
+sb.press_keys("input", "Text")
+sb.highlight("button")
+sb.type("textarea", "Here are some words")
+sb.click("button")
+sb.set_value("input#mySlider", "100")
+sb.click_visible_elements("input.checkBoxClassB")
+sb.select_option_by_text("#mySelect", "Set to 75%")
+sb.gui_hover_and_click("#myDropdown", "#dropOption2")
+sb.gui_click_element("#checkBox1")
+sb.gui_drag_and_drop("img#logo", "div#drop2")
+sb.nested_click("iframe#myFrame3", ".fBox")
+sb.sleep(2)
+sb.driver.stop()
+```
+
+ℹ️ Even if you don't call `sb.driver.stop()`, the browser still quits after the script goes out-of-scope.
+
 --------
 
 ### 🐙 <b translate="no">CDP Mode</b> WebElement API / Methods
+
+After finding an element in CDP Mode, you can access `WebElement` methods:
+
+(Eg. After `element = sb.find_element(selector)`)
 
 ```python
 element.clear_input()
