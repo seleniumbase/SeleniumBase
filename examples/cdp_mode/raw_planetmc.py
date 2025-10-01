@@ -4,5 +4,5 @@ with SB(uc=True, test=True) as sb:
     url = "www.planetminecraft.com/account/sign_in/"
     sb.activate_cdp_mode(url)
     sb.sleep(2)
-    sb.cdp.gui_click_element("#turnstile-widget div")
+    sb.uc_gui_click_captcha()
     sb.sleep(2)
