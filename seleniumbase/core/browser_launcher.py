@@ -835,6 +835,7 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
     cdp.wait_for_text = CDPM.wait_for_text
     cdp.wait_for_text_not_visible = CDPM.wait_for_text_not_visible
     cdp.wait_for_element_visible = CDPM.wait_for_element_visible
+    cdp.wait_for_element = CDPM.wait_for_element
     cdp.wait_for_element_not_visible = CDPM.wait_for_element_not_visible
     cdp.wait_for_element_absent = CDPM.wait_for_element_absent
     cdp.wait_for_any_of_elements_visible = (
@@ -1365,14 +1366,16 @@ def _uc_gui_click_captcha(
                     frame = '[style="display: grid;"] div div'
                 elif (
                     driver.is_element_present('[name*="cf-turnstile-"]')
-                    and driver.is_element_present("[class*=spacer] + div div")
+                    and driver.is_element_present(
+                        ".spacer + div div:not([class])"
+                    )
                 ):
-                    frame = '[class*=spacer] + div div'
+                    frame = '.spacer + div div:not([class])'
                 elif (
                     driver.is_element_present('[name*="cf-turnstile-"]')
-                    and driver.is_element_present("div.spacer div")
+                    and driver.is_element_present(".spacer div:not([class])")
                 ):
-                    frame = "div.spacer div"
+                    frame = ".spacer div:not([class])"
                 elif (
                     driver.is_element_present('script[src*="challenges.c"]')
                     and driver.is_element_present(
@@ -1384,6 +1387,10 @@ def _uc_gui_click_captcha(
                     "div#turnstile-widget div:not([class])"
                 ):
                     frame = "div#turnstile-widget div:not([class])"
+                elif driver.is_element_present(
+                    "ngx-turnstile div:not([class])"
+                ):
+                    frame = "ngx-turnstile div:not([class])"
                 elif driver.is_element_present(
                     'form div:not([class]):has(input[name*="cf-turn"])'
                 ):
@@ -1404,6 +1411,14 @@ def _uc_gui_click_captcha(
                     frame = ".cf-turnstile-wrapper"
                 elif driver.is_element_present('[class="cf-turnstile"]'):
                     frame = '[class="cf-turnstile"]'
+                elif driver.is_element_present(
+                    '[id*="turnstile"] div:not([class])'
+                ):
+                    frame = '[id*="turnstile"] div:not([class])'
+                elif driver.is_element_present(
+                    '[class*="turnstile"] div:not([class])'
+                ):
+                    frame = '[class*="turnstile"] div:not([class])'
                 elif driver.is_element_present(
                     '[data-callback="onCaptchaSuccess"]'
                 ):
@@ -1455,9 +1470,11 @@ def _uc_gui_click_captcha(
                 else:
                     driver.execute_script(script)
             elif (
-                driver.is_element_present("form")
-                and driver.is_element_present(
-                    'form [id*="turnstile"] > div:not([class])'
+                driver.is_element_present(
+                    'form [id*="turnstile"] div:not([class])'
+                )
+                or driver.is_element_present(
+                    'form [class*="turnstile"] div:not([class])'
                 )
             ):
                 script = (
@@ -1465,7 +1482,30 @@ def _uc_gui_click_captcha(
                     'form [id*="turnstile"]');
                     var index = 0, length = $elements.length;
                     for(; index < length; index++){
+                    $elements[index].setAttribute('align', 'left');}
+                    var $elements = document.querySelectorAll(
+                    'form [class*="turnstile"]');
+                    var index = 0, length = $elements.length;
+                    for(; index < length; index++){
                     $elements[index].setAttribute('align', 'left');}"""
+                )
+                if __is_cdp_swap_needed(driver):
+                    driver.cdp.evaluate(script)
+                else:
+                    driver.execute_script(script)
+            elif (
+                driver.is_element_present(
+                    '[style*="text-align: center;"] div:not([class])'
+                )
+            ):
+                script = (
+                    """var $elements = document.querySelectorAll(
+                    '[style*="text-align: center;"]');
+                    var index = 0, length = $elements.length;
+                    for(; index < length; index++){
+                    the_style = $elements[index].getAttribute('style');
+                    new_style = the_style.replaceAll('center', 'left');
+                    $elements[index].setAttribute('style', new_style);}"""
                 )
                 if __is_cdp_swap_needed(driver):
                     driver.cdp.evaluate(script)
@@ -1690,9 +1730,9 @@ def _uc_gui_handle_captcha_(driver, frame="iframe", ctype=None):
                     frame = '[data-callback="onCaptchaSuccess"]'
                 elif (
                     driver.is_element_present('[name*="cf-turnstile-"]')
-                    and driver.is_element_present("div.spacer div")
+                    and driver.is_element_present(".spacer div:not([class])")
                 ):
-                    frame = "div.spacer div"
+                    frame = ".spacer div:not([class])"
                 elif (
                     driver.is_element_present('script[src*="challenges.c"]')
                     and driver.is_element_present(
