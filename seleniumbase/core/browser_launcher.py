@@ -228,6 +228,8 @@ def extend_driver(
     driver.wait_for_element = DM.wait_for_element
     driver.wait_for_element_visible = DM.wait_for_element_visible
     driver.wait_for_element_present = DM.wait_for_element_present
+    driver.wait_for_element_absent = DM.wait_for_element_absent
+    driver.wait_for_element_not_visible = DM.wait_for_element_not_visible
     driver.wait_for_selector = DM.wait_for_selector
     driver.wait_for_text = DM.wait_for_text
     driver.wait_for_exact_text = DM.wait_for_exact_text

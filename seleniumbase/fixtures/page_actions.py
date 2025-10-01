@@ -1108,6 +1108,14 @@ def wait_for_element_absent(
     timeout - the time to wait for elements in seconds
     original_selector - handle pre-converted ":contains(TEXT)" selector
     """
+    if __is_cdp_swap_needed(driver):
+        if page_utils.is_valid_by(by):
+            original_selector = selector
+        elif page_utils.is_valid_by(selector):
+            original_selector = by
+        selector, by = page_utils.recalculate_selector(original_selector, by)
+        driver.cdp.wait_for_element_absent(selector)
+        return True
     _reconnect_if_disconnected(driver)
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
@@ -1156,6 +1164,14 @@ def wait_for_element_not_visible(
     timeout - the time to wait for the element in seconds
     original_selector - handle pre-converted ":contains(TEXT)" selector
     """
+    if __is_cdp_swap_needed(driver):
+        if page_utils.is_valid_by(by):
+            original_selector = selector
+        elif page_utils.is_valid_by(selector):
+            original_selector = by
+        selector, by = page_utils.recalculate_selector(original_selector, by)
+        driver.cdp.wait_for_element_not_visible(selector)
+        return True
     _reconnect_if_disconnected(driver)
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)

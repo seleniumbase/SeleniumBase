@@ -137,6 +137,16 @@ class DriverMethods(WebDriver):
     def wait_for_element_present(self, *args, **kwargs):
         return page_actions.wait_for_selector(self.driver, *args, **kwargs)
 
+    def wait_for_element_absent(self, *args, **kwargs):
+        return page_actions.wait_for_element_absent(
+            self.driver, *args, **kwargs
+        )
+
+    def wait_for_element_not_visible(self, *args, **kwargs):
+        return page_actions.wait_for_element_not_visible(
+            self.driver, *args, **kwargs
+        )
+
     def wait_for_selector(self, *args, **kwargs):
         return page_actions.wait_for_selector(self.driver, *args, **kwargs)
 
