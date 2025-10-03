@@ -29,8 +29,20 @@ def pip_install(package, version=None):
             )
 
 
+def is_arm_linux():
+    """Returns True if machine is ARM Linux.
+    This will be useful once Google adds
+    support for ARM Linux ChromeDriver.
+    (Raspberry Pi uses ARM architecture.)"""
+    return (
+        platform.system() == "Linux"
+        and platform.machine() == "aarch64"
+    )
+
+
 def is_arm_mac():
-    """(M1 / M2 Macs use the ARM processor)"""
+    """Returns True if machine is ARM Mac.
+    (Eg. M1 / M2 Macs use ARM processors)"""
     return (
         "darwin" in sys.platform
         and (
