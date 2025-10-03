@@ -65,7 +65,7 @@
 
 --------
 
-<p align="left">📗 For performing a Google Search without hitting the "unusual traffic" page, you can use SeleniumBase UC Mode.<br />Here's <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_google.py">SeleniumBase/examples/raw_google.py</a>, which exports results into different formats (PDF, HTML, PNG):</p>
+<p align="left">📗 Here's a test script that performs a Google Search using SeleniumBase UC Mode:<br /><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_google.py">SeleniumBase/examples/raw_google.py</a> (Results are saved as PDF, HTML, and PNG)</p>
 
 ```python
 from seleniumbase import SB
@@ -89,7 +89,7 @@ with SB(test=True, uc=True) as sb:
 
 --------
 
-<p align="left">📗 Here's an example of bypassing Cloudflare's challenge page with UC Mode + CDP Mode: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_gitlab.py">SeleniumBase/examples/cdp_mode/raw_gitlab.py</a></p>
+<p align="left">📗 Here's a script that bypasses Cloudflare's challenge page with UC Mode + CDP Mode: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_gitlab.py">SeleniumBase/examples/cdp_mode/raw_gitlab.py</a></p>
 
 ```python
 from seleniumbase import SB
@@ -109,7 +109,7 @@ with SB(uc=True, test=True, locale="en") as sb:
 
 <img src="https://seleniumbase.github.io/other/cf_sec.jpg" title="SeleniumBase" width="332"> <img src="https://seleniumbase.github.io/other/gitlab_bypass.png" title="SeleniumBase" width="288">
 
-<p align="left">📙 You can also use SeleniumBase's pure CDP Mode, which doesn't use chromedriver, Selenium, or a Python context manager at all: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_gitlab.py">SeleniumBase/examples/cdp_mode/raw_cdp_gitlab.py</a></p>
+<p align="left">📙 There's also SeleniumBase's "Pure CDP Mode", which doesn't use WebDriver or Selenium at all: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_gitlab.py">SeleniumBase/examples/cdp_mode/raw_cdp_gitlab.py</a></p>
 
 ```python
 from seleniumbase import sb_cdp
@@ -123,7 +123,7 @@ sb.highlight('button:contains("Sign in")')
 sb.driver.stop()
 ```
 
-> (Due to a change in Chrome 137 where the --load-extension switch was removed, one limitation with this format is that you can't load extensions directly. The other formats weren't affected by this change.)
+> (Due to changes in Chrome 137 where the `--load-extension` switch was removed, you can't load extensions directly from this format.)
 
 --------
 
