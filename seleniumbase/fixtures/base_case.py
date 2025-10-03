@@ -5421,6 +5421,20 @@ class BaseCase(unittest.TestCase):
                 srt_actions[n][0] = "_skip"
         for n in range(len(srt_actions)):
             if (
+                (srt_actions[n][0] == "begin" or srt_actions[n][0] == "_url_")
+                and n > 1
+                and (
+                    srt_actions[n - 1][0] == "f_url"
+                    or srt_actions[n - 1][0] == "_url_"
+                )
+                and srt_actions[n][2] == srt_actions[n - 1][2]
+                and (
+                    int(srt_actions[n][3]) - int(srt_actions[n - 1][3]) < 4800
+                )
+            ):
+                srt_actions[n][0] = "_skip"
+        for n in range(len(srt_actions)):
+            if (
                 srt_actions[n][0] == "input"
                 and n > 2
                 and srt_actions[n - 1][0] == "js_cl"
