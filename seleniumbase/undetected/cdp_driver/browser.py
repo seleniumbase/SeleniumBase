@@ -350,7 +350,8 @@ class Browser:
             if _cdp_geolocation:
                 await connection.send(cdp.page.navigate("about:blank"))
                 await connection.set_geolocation(_cdp_geolocation)
-            # Use the tab to navigate to new url
+            # This part isn't needed now, but may be needed later
+            """
             if (
                 hasattr(sb_config, "_cdp_proxy")
                 and "@" in sb_config._cdp_proxy
@@ -360,17 +361,14 @@ class Browser:
                 username_and_password = sb_config._cdp_proxy.split("@")[0]
                 proxy_user = username_and_password.split(":")[0]
                 proxy_pass = username_and_password.split(":")[1]
-                await connection.set_auth(
-                    proxy_user, proxy_pass, self.tabs[0]
-                )
+                await connection.set_auth(proxy_user, proxy_pass, self.tabs[0])
                 time.sleep(0.25)
-            elif "auth" in kwargs and kwargs["auth"] and ":" in kwargs["auth"]:
+            """
+            if "auth" in kwargs and kwargs["auth"] and ":" in kwargs["auth"]:
                 username_and_password = kwargs["auth"]
                 proxy_user = username_and_password.split(":")[0]
                 proxy_pass = username_and_password.split(":")[1]
-                await connection.set_auth(
-                    proxy_user, proxy_pass, self.tabs[0]
-                )
+                await connection.set_auth(proxy_user, proxy_pass, self.tabs[0])
                 time.sleep(0.25)
             frame_id, loader_id, *_ = await connection.send(
                 cdp.page.navigate(url)

@@ -1393,6 +1393,17 @@ class CDPMethods():
             )
         )
 
+    def get_mfa_code(self, totp_key=None):
+        """Returns a time-based one-time password based on the Google
+        Authenticator algorithm for multi-factor authentication."""
+        return shared_utils.get_mfa_code(totp_key)
+
+    def enter_mfa_code(self, selector, totp_key=None, timeout=None):
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        mfa_code = self.get_mfa_code(totp_key)
+        self.type(selector, mfa_code + "\n", timeout=timeout)
+
     def set_locale(self, locale):
         """(Settings will take effect on the next page load)"""
         self.loop.run_until_complete(self.page.set_locale(locale))
@@ -1429,6 +1440,26 @@ class CDPMethods():
         )
         with suppress(Exception):
             self.loop.run_until_complete(self.page.evaluate(js_code))
+
+    def is_attribute_present(self, selector, attribute, value=None):
+        try:
+            element = self.find_element(selector, timeout=0.1)
+            found_value = element.get_attribute(attribute)
+            if found_value is None:
+                return False
+            if value is not None:
+                if found_value == value:
+                    return True
+                else:
+                    return False
+            else:
+                return True
+        except Exception:
+            return False
+
+    def is_online(self):
+        js_code = "navigator.onLine;"
+        return self.loop.run_until_complete(self.page.evaluate(js_code))
 
     def __make_sure_pyautogui_lock_is_writable(self):
         with suppress(Exception):

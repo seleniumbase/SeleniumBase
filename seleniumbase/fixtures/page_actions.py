@@ -193,6 +193,10 @@ def is_attribute_present(
     @Returns
     Boolean (is attribute present)
     """
+    if __is_cdp_swap_needed(driver):
+        return driver.cdp.is_attribute_present(
+            selector, attribute, value=value
+        )
     _reconnect_if_disconnected(driver)
     try:
         element = driver.find_element(by=by, value=selector)

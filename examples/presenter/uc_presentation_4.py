@@ -390,7 +390,7 @@ class UCPresentationClass(BaseCase):
             sb.assert_text("Username", '[for="user_login"]', timeout=3)
             sb.assert_element('label[for="user_login"]')
             sb.highlight('button:contains("Sign in")')
-            sb.highlight('h1:contains("GitLab.com")')
+            sb.highlight('h1:contains("GitLab")')
             sb.post_message("SeleniumBase wasn't detected", duration=8)
 
         self.create_presentation(theme="serif", transition="none")
@@ -528,6 +528,12 @@ class UCPresentationClass(BaseCase):
             required_text = "Catan"
             sb.cdp.press_keys('input[aria-label="Search"]', search + "\n")
             sb.sleep(3.8)
+            if sb.is_element_visible("#px-captcha"):
+                sb.cdp.gui_click_and_hold("#px-captcha", 12)
+                sb.sleep(3.2)
+                if sb.is_element_visible("#px-captcha"):
+                    sb.cdp.gui_click_and_hold("#px-captcha", 12)
+                    sb.sleep(3.2)
             sb.cdp.remove_elements('[data-testid="skyline-ad"]')
             print('*** Walmart Search for "%s":' % search)
             print('    (Results must contain "%s".)' % required_text)

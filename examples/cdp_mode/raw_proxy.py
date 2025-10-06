@@ -43,6 +43,7 @@ def main():
         if row.strip() != "":
             data.append(row.strip())
     print("\n".join(data).replace('\n"', ' "'))
+    sb.click_if_visible(pop_up)
     sb.sleep(3)
     sb.driver.stop()
 

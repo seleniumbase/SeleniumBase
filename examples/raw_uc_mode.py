@@ -8,5 +8,5 @@ with SB(uc=True, test=True) as sb:
     sb.assert_text("Username", '[for="user_login"]', timeout=3)
     sb.assert_element('label[for="user_login"]')
     sb.highlight('button:contains("Sign in")')
-    sb.highlight('h1:contains("GitLab.com")')
+    sb.highlight('h1:contains("GitLab")')
     sb.post_message("SeleniumBase wasn't detected", duration=4)

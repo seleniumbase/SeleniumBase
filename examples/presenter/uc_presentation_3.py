@@ -63,7 +63,7 @@ class UCPresentationClass(BaseCase):
                 sb.assert_text("Username", '[for="user_login"]', timeout=3)
                 sb.assert_element('[for="user_login"]')
                 sb.highlight('button:contains("Sign in")')
-                sb.highlight('h1:contains("GitLab.com")')
+                sb.highlight('h1:contains("GitLab")')
                 sb.post_message("SeleniumBase wasn't detected", duration=4)
 
         self.create_presentation(theme="serif", transition="none")
@@ -91,7 +91,7 @@ class UCPresentationClass(BaseCase):
                 '<mk-2>    sb.assert_element(\'[for="user_login"]\')</mk-2>\n'
                 '<mk-3>    sb.highlight(\'button:contains("Sign in")\')'
                 '</mk-3>\n'
-                '<mk-4>    sb.highlight(\'h1:contains("GitLab.com")\')'
+                '<mk-4>    sb.highlight(\'h1:contains("GitLab")\')'
                 '</mk-4>\n'
                 '<mk-5>    sb.post_message("SeleniumBase wasn\'t detected",'
                 ' duration=4)</mk-5>\n'

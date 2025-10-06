@@ -152,7 +152,8 @@ setup(
         'setuptools~=70.2;python_version<"3.10"',  # Newer ones had issues
         'setuptools>=80.9.0;python_version>="3.10"',
         'wheel>=0.45.1',
-        'attrs>=25.3.0',
+        'attrs~=25.3.0;python_version<"3.9"',
+        'attrs>=25.4.0;python_version>="3.9"',
         "certifi>=2025.10.5",
         "exceptiongroup>=1.3.0",
         'websockets~=13.1;python_version<"3.9"',

@@ -103,7 +103,7 @@ with SB(uc=True, test=True, locale="en") as sb:
     sb.assert_text("Username", '[for="user_login"]', timeout=3)
     sb.assert_element('label[for="user_login"]')
     sb.highlight('button:contains("Sign in")')
-    sb.highlight('h1:contains("GitLab.com")')
+    sb.highlight('h1:contains("GitLab")')
     sb.post_message("SeleniumBase wasn't detected", duration=4)
 ```
 
@@ -118,12 +118,10 @@ url = "https://gitlab.com/users/sign_in"
 sb = sb_cdp.Chrome(url)
 sb.sleep(2.5)
 sb.gui_click_captcha()
-sb.highlight('h1:contains("GitLab.com")')
+sb.highlight('h1:contains("GitLab")')
 sb.highlight('button:contains("Sign in")')
 sb.driver.stop()
 ```
-
-> (Due to changes in Chrome 137 where the `--load-extension` switch was removed, you can't load extensions directly from this format.)
 
 --------
 
