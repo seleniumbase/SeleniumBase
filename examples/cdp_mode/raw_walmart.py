@@ -12,6 +12,12 @@ with SB(uc=True, test=True, ad_block=True) as sb:
     required_text = "Catan"
     sb.cdp.press_keys('input[aria-label="Search"]', search + "\n")
     sb.sleep(3.8)
+    if sb.is_element_visible("#px-captcha"):
+        sb.cdp.gui_click_and_hold("#px-captcha", 12)
+        sb.sleep(3.2)
+        if sb.is_element_visible("#px-captcha"):
+            sb.cdp.gui_click_and_hold("#px-captcha", 12)
+            sb.sleep(3.2)
     sb.cdp.remove_elements('[data-testid="skyline-ad"]')
     print('*** Walmart Search for "%s":' % search)
     print('    (Results must contain "%s".)' % required_text)

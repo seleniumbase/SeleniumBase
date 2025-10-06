@@ -4,7 +4,9 @@ from seleniumbase import SB
 with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     url = "https://architectureofcities.com/roman-theaters"
     sb.activate_cdp_mode(url)
+    sb.sleep(0.5)
     sb.cdp.click_if_visible("#cn-close-notice")
+    sb.cdp.click_if_visible('[aria-label="Reject All"]')
     sb.cdp.click_if_visible('span:contains("Continue")')
     sb.sleep(1)
     print("*** " + sb.cdp.get_text("h1") + " ***")
