@@ -8510,33 +8510,9 @@ class BaseCase(unittest.TestCase):
 
     def get_mfa_code(self, totp_key=None):
         """Same as get_totp_code() and get_google_auth_password().
-        Returns a time-based one-time password based on the
-        Google Authenticator algorithm for multi-factor authentication.
-        If the "totp_key" is not specified, this method defaults
-        to using the one provided in [seleniumbase/config/settings.py].
-        Google Authenticator codes expire & change at 30-sec intervals.
-        If the fetched password expires in the next 1.2 seconds, waits
-        for a new one before returning it (may take up to 1.2 seconds).
-        See https://pyotp.readthedocs.io/en/latest/ for details."""
-        import pyotp
-
-        if not totp_key:
-            totp_key = settings.TOTP_KEY
-
-        epoch_interval = time.time() / 30.0
-        cycle_lifespan = float(epoch_interval) - int(epoch_interval)
-        if float(cycle_lifespan) > 0.96:
-            # Password expires in the next 1.2 seconds. Wait for a new one.
-            for i in range(30):
-                time.sleep(0.04)
-                epoch_interval = time.time() / 30.0
-                cycle_lifespan = float(epoch_interval) - int(epoch_interval)
-                if not float(cycle_lifespan) > 0.96:
-                    # The new password cycle has begun
-                    break
-
-        totp = pyotp.TOTP(totp_key)
-        return str(totp.now())
+        Returns a time-based one-time password based on the Google
+        Authenticator algorithm for multi-factor authentication."""
+        return shared_utils.get_mfa_code(totp_key)
 
     def enter_mfa_code(
         self, selector, totp_key=None, by="css selector", timeout=None
