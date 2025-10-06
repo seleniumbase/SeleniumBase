@@ -6,10 +6,10 @@ with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     sb.sleep(2.5)
     sb.cdp.click_if_visible('button[id*="Agree"]')
     sb.sleep(1.5)
-    sb.cdp.mouse_click('input[aria-label="Search"]')
+    sb.cdp.mouse_click('input[name="query"]')
     sb.sleep(1.5)
     search = "Nike Shoes"
-    sb.cdp.press_keys('input[aria-label="Search"]', search)
+    sb.cdp.press_keys('input[name="query"]', search)
     sb.sleep(2.5)
     sb.cdp.mouse_click('ul[id*="typeahead"] li div')
     sb.sleep(3.5)

@@ -153,7 +153,7 @@ setup(
         'setuptools>=80.9.0;python_version>="3.10"',
         'wheel>=0.45.1',
         'attrs>=25.3.0',
-        "certifi>=2025.8.3",
+        "certifi>=2025.10.5",
         "exceptiongroup>=1.3.0",
         'websockets~=13.1;python_version<"3.9"',
         'websockets>=15.0.1;python_version>="3.9"',

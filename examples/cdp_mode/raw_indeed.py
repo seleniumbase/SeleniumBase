@@ -3,7 +3,7 @@ from seleniumbase import SB
 with SB(uc=True, test=True) as sb:
     url = "https://www.indeed.com/companies/search"
     sb.activate_cdp_mode(url)
-    search_box = 'input[data-testid="company-search-box"]'
+    search_box = "input#company-search"
     if not sb.is_element_present(search_box):
         sb.sleep(2)
         sb.uc_gui_click_captcha()
