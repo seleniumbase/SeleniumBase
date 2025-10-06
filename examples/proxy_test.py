@@ -45,4 +45,5 @@ class ProxyTests(BaseCase):
             if row.strip() != "":
                 data.append(row.strip())
         print("\n".join(data).replace('\n"', ' "'))
+        self.click_if_visible(pop_up)
         self.sleep(3)
