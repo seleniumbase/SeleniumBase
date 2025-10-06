@@ -150,11 +150,6 @@ class Config:
             "--disable-renderer-backgrounding",
             "--disable-background-networking",
             "--disable-dev-shm-usage",
-            "--disable-features=IsolateOrigins,site-per-process,Translate,"
-            "InsecureDownloadWarnings,DownloadBubble,DownloadBubbleV2,"
-            "OptimizationTargetPrediction,OptimizationGuideModelDownloading,"
-            "SidePanelPinning,UserAgentClientHint,PrivacySandboxSettings4,"
-            "DisableLoadExtensionCommandLineSwitch",
         ]
 
     @property
@@ -202,7 +197,15 @@ class Config:
         # By the time it starts, the port is probably already taken.
         args = self._default_browser_args.copy()
         args += ["--user-data-dir=%s" % self.user_data_dir]
-        args += ["--disable-features=IsolateOrigins,site-per-process"]
+        args += [
+            "--disable-features=IsolateOrigins,site-per-process,Translate,"
+            "InsecureDownloadWarnings,DownloadBubble,DownloadBubbleV2,"
+            "OptimizationTargetPrediction,OptimizationGuideModelDownloading,"
+            "SidePanelPinning,UserAgentClientHint,PrivacySandboxSettings4,"
+            "DisableLoadExtensionCommandLineSwitch"
+        ]
+        if self.proxy:
+            args += ["--test-type"]
         args += ["--disable-session-crashed-bubble"]
         if self.expert:
             args += [

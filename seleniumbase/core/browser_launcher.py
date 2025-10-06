@@ -2664,6 +2664,8 @@ def _set_chrome_options(
             included_disabled_features.append(item)
     d_f_string = ",".join(included_disabled_features)
     chrome_options.add_argument("--disable-features=%s" % d_f_string)
+    if proxy_auth:
+        chrome_options.add_argument("--test-type")
     if (
         is_using_uc(undetectable, browser_name)
         and (
@@ -2681,7 +2683,8 @@ def _set_chrome_options(
         chrome_options.add_argument("--disable-popup-blocking")
         # Skip remaining options that trigger anti-bot services
         return chrome_options
-    chrome_options.add_argument("--test-type")
+    if not proxy_auth:
+        chrome_options.add_argument("--test-type")
     chrome_options.add_argument("--log-level=3")
     chrome_options.add_argument("--no-first-run")
     chrome_options.add_argument("--allow-insecure-localhost")
