@@ -1503,6 +1503,10 @@ class BaseCase(unittest.TestCase):
     ):
         """Returns True if the element attribute/value is found.
         If the value is not specified, the attribute only needs to exist."""
+        if self.__is_cdp_swap_needed():
+            return self.cdp.is_attribute_present(
+                selector, attribute, value=value
+            )
         self.wait_for_ready_state_complete()
         time.sleep(0.01)
         selector, by = self.__recalculate_selector(selector, by)
