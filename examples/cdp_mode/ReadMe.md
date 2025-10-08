@@ -189,14 +189,17 @@ from seleniumbase import SB
 with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     url = "https://www.hyatt.com/"
     sb.activate_cdp_mode(url)
-    sb.sleep(2.5)
-    sb.cdp.click_if_visible('button[aria-label="Close"]')
-    sb.cdp.click_if_visible("#onetrust-reject-all-handler")
-    sb.sleep(2)
+    sb.sleep(3.5)
+    sb.click_if_visible('button[aria-label="Close"]')
+    sb.click_if_visible("#onetrust-reject-all-handler")
+    sb.sleep(1)
     location = "Anaheim, CA, USA"
-    sb.cdp.type('input[data-id="location"]', location)
-    sb.cdp.click("button.quickbookSearchFormButton")
-    sb.sleep(5)
+    sb.type('input[id="search-term"]', location)
+    sb.sleep(1)
+    sb.click('li[data-js="suggestion"]')
+    sb.sleep(1)
+    sb.click("button.be-button-shop")
+    sb.sleep(6)
     card_info = 'div[data-booking-status="BOOKABLE"] [class*="HotelCard_info"]'
     hotels = sb.cdp.select_all(card_info)
     print("Hyatt Hotels in %s:" % location)
@@ -274,22 +277,21 @@ from seleniumbase import SB
 with SB(uc=True, test=True, ad_block=True) as sb:
     url = "https://www.walmart.com/"
     sb.activate_cdp_mode(url)
-    sb.sleep(2.5)
-    sb.cdp.click_if_visible('[data-automation-id*="close-mark"]')
-    sb.sleep(0.3)
-    sb.cdp.mouse_click('input[aria-label="Search"]')
+    sb.sleep(2.8)
+    sb.click('input[aria-label="Search"]')
     sb.sleep(1.2)
     search = "Settlers of Catan Board Game"
     required_text = "Catan"
-    sb.cdp.press_keys('input[aria-label="Search"]', search + "\n")
+    sb.press_keys('input[aria-label="Search"]', search + "\n")
     sb.sleep(3.8)
     if sb.is_element_visible("#px-captcha"):
-        sb.cdp.gui_click_and_hold("#px-captcha", 12)
-        sb.sleep(3.2)
+        sb.cdp.gui_click_and_hold("#px-captcha", 7.2)
+        sb.sleep(4.2)
         if sb.is_element_visible("#px-captcha"):
-            sb.cdp.gui_click_and_hold("#px-captcha", 12)
+            sb.cdp.gui_click_and_hold("#px-captcha", 4.2)
             sb.sleep(3.2)
     sb.cdp.remove_elements('[data-testid="skyline-ad"]')
+    sb.cdp.remove_elements('[data-testid="sba-container"]')
     print('*** Walmart Search for "%s":' % search)
     print('    (Results must contain "%s".)' % required_text)
     unique_item_text = []

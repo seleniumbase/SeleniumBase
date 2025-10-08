@@ -6,6 +6,6 @@ with SB(uc=True, test=True) as sb:
     sb.activate_cdp_mode(url)
     sb.sleep(2.2)
     sb.uc_gui_click_captcha()
-    sb.sleep(2.2)
+    sb.sleep(2.6)
     sb.uc_gui_click_captcha()
     sb.sleep(2)

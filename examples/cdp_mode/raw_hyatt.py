@@ -3,14 +3,17 @@ from seleniumbase import SB
 with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     url = "https://www.hyatt.com/"
     sb.activate_cdp_mode(url)
-    sb.sleep(2.5)
-    sb.cdp.click_if_visible('button[aria-label="Close"]')
-    sb.cdp.click_if_visible("#onetrust-reject-all-handler")
-    sb.sleep(2)
+    sb.sleep(3.5)
+    sb.click_if_visible('button[aria-label="Close"]')
+    sb.click_if_visible("#onetrust-reject-all-handler")
+    sb.sleep(1)
     location = "Anaheim, CA, USA"
-    sb.cdp.type('input[data-id="location"]', location)
-    sb.cdp.click("button.quickbookSearchFormButton")
-    sb.sleep(5)
+    sb.type('input[id="search-term"]', location)
+    sb.sleep(1)
+    sb.click('li[data-js="suggestion"]')
+    sb.sleep(1)
+    sb.click("button.be-button-shop")
+    sb.sleep(6)
     card_info = 'div[data-booking-status="BOOKABLE"] [class*="HotelCard_info"]'
     hotels = sb.cdp.select_all(card_info)
     print("Hyatt Hotels in %s:" % location)
