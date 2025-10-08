@@ -100,7 +100,7 @@ pytest test_swag_labs.py --cap-string='{"browserName":"chrome","name":"test1"}' 
 
 If you pass ``"*"`` into the ``"name"`` field of ``--cap-string``, the name will become the test identifier. Eg:
 
-```bash
+```zsh
 pytest my_first_test.py --cap-string='{"browserName":"chrome","name":"*"}' --server="127.0.0.1" --browser=chrome
 ```
 
