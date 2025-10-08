@@ -712,7 +712,10 @@ class CDPMethods():
         self.__slow_mode_pause_if_set()
         element = self.find_element(selector, timeout=timeout)
         element.scroll_into_view()
-        element.click()
+        if element.tag_name == "div" or element.tag_name == "input":
+            element.mouse_click()  # Simulated click (not PyAutoGUI)
+        else:
+            element.click()
         self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.wait())
 
