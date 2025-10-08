@@ -23,4 +23,4 @@ with SB(uc=True, test=True, locale="en") as sb:
             price = item.querySelector('div div span[aria-hidden="true"]')
             if price:
                 price_text = price.text
-            print("* %s (%s)" % (description.text, price_text))
+                print("* %s (%s)" % (description.text, price_text))
