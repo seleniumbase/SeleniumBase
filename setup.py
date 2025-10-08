@@ -193,7 +193,8 @@ setup(
         'trio>=0.31.0,<1;python_version>="3.9"',
         'trio-websocket~=0.12.2',
         'wsproto==1.2.0',
-        'websocket-client~=1.8.0',
+        'websocket-client~=1.8.0;python_version<"3.9"',
+        'websocket-client~=1.9.0;python_version>="3.9"',
         'selenium==4.27.1;python_version<"3.9"',
         'selenium==4.32.0;python_version>="3.9" and python_version<"3.10"',
         'selenium==4.36.0;python_version>="3.10"',
@@ -220,6 +221,7 @@ setup(
         "beautifulsoup4~=4.14.2",
         'pyotp==2.9.0',
         'python-xlib==0.33;platform_system=="Linux"',
+        'PyAutoGUI>=0.9.54;platform_system=="Linux"',
         'markdown-it-py==3.0.0;python_version<"3.10"',
         'markdown-it-py==4.0.0;python_version>="3.10"',
         'mdurl==0.1.2',
@@ -300,8 +302,9 @@ setup(
             "psutil==7.1.0",
         ],
         # pip install -e .[pyautogui]
+        # (Already a required dependency on Linux now.)
         "pyautogui": [
-            "PyAutoGUI==0.9.54",
+            'PyAutoGUI>=0.9.54;platform_system!="Linux"',
         ],
         # pip install -e .[selenium-stealth]
         "selenium-stealth": [
@@ -310,7 +313,7 @@ setup(
         # pip install -e .[selenium-wire]
         "selenium-wire": [
             'selenium-wire==5.1.0',
-            'pyOpenSSL==24.2.1',
+            'pyOpenSSL>=24.2.1',
             'pyparsing>=3.1.4',
             'Brotli==1.1.0',
             'blinker==1.7.0',  # Newer ones had issues
@@ -319,7 +322,7 @@ setup(
             'hyperframe==6.0.1',
             'kaitaistruct==0.10',
             'pyasn1==0.6.1',
-            'zstandard==0.23.0',
+            'zstandard>=0.23.0',
         ],
     },
     packages=[
