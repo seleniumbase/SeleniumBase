@@ -4317,8 +4317,8 @@ def get_local_driver(
                     sys.argv = sys_args  # Put back the original sys args
 
         # For Microsoft Edge (Chromium) version 80 or higher
-        Edge = webdriver.edge.webdriver.WebDriver
-        EdgeOptions = webdriver.edge.webdriver.Options
+        Edge = webdriver.Edge
+        EdgeOptions = webdriver.EdgeOptions
         if local_edgedriver and os.path.exists(local_edgedriver):
             try:
                 make_driver_executable_if_not(local_edgedriver)
