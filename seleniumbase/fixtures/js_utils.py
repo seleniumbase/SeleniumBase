@@ -29,6 +29,8 @@ def wait_for_ready_state_complete(driver, timeout=settings.LARGE_TIMEOUT):
     If the timeout is exceeded, the test will still continue
       because readyState == "interactive" may be good enough.
     (Previously, tests would fail immediately if exceeding the timeout.)"""
+    if hasattr(driver, "_swap_driver"):
+        return
     if hasattr(settings, "SKIP_JS_WAITS") and settings.SKIP_JS_WAITS:
         return
     start_ms = time.time() * 1000.0
@@ -54,8 +56,12 @@ def wait_for_ready_state_complete(driver, timeout=settings.LARGE_TIMEOUT):
 
 
 def execute_async_script(driver, script, timeout=settings.LARGE_TIMEOUT):
-    driver.set_script_timeout(timeout)
-    return driver.execute_async_script(script)
+    if hasattr(driver, "set_script_timeout"):
+        driver.set_script_timeout(timeout)
+    if hasattr(driver, "execute_async_script"):
+        return driver.execute_async_script(script)
+    else:
+        return None
 
 
 def wait_for_angularjs(driver, timeout=settings.LARGE_TIMEOUT, **kwargs):
@@ -937,7 +943,10 @@ def post_message(driver, message, msg_dur=None, style="info"):
         execute_script(driver, messenger_script)
     except TypeError as e:
         if (
-            shared_utils.is_cdp_swap_needed(driver)
+            (
+                shared_utils.is_cdp_swap_needed(driver)
+                or hasattr(driver, "_swap_driver")
+            )
             and "cannot unpack non-iterable" in str(e)
         ):
             pass

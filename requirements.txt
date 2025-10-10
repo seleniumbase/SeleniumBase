@@ -14,7 +14,7 @@ filelock~=3.16.1;python_version<"3.9"
 filelock~=3.19.1;python_version>="3.9" and python_version<"3.10"
 filelock>=3.20.0;python_version>="3.10"
 fasteners>=0.20
-mycdp>=1.2.0
+mycdp>=1.2.1
 pynose>=1.5.5
 platformdirs~=4.3.6;python_version<"3.9"
 platformdirs~=4.4.0;python_version>="3.9" and python_version<"3.10"
@@ -66,7 +66,8 @@ pytest-html==4.0.2
 pytest-metadata==3.1.1
 pytest-ordering==0.6
 pytest-rerunfailures==14.0;python_version<"3.9"
-pytest-rerunfailures==16.0.1;python_version>="3.9"
+pytest-rerunfailures==16.0.1;python_version>="3.9" and python_version<"3.10"
+pytest-rerunfailures==16.1;python_version>="3.10"
 pytest-xdist==3.6.1;python_version<"3.9"
 pytest-xdist==3.8.0;python_version>="3.9"
 parameterized==0.9.0

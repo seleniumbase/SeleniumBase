@@ -202,6 +202,7 @@ class Config:
             "InsecureDownloadWarnings,DownloadBubble,DownloadBubbleV2,"
             "OptimizationTargetPrediction,OptimizationGuideModelDownloading,"
             "SidePanelPinning,UserAgentClientHint,PrivacySandboxSettings4,"
+            "OptimizationHintsFetching,InterestFeedContentSuggestions,"
             "DisableLoadExtensionCommandLineSwitch"
         ]
         if self.proxy:
