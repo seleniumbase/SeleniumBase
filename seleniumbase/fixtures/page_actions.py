@@ -1528,10 +1528,10 @@ def save_page_source(driver, name, folder=None):
         page_source = driver.cdp.get_page_source()
     else:
         page_source = driver.page_source
-    html_file = codecs.open(html_file_path, "w+", "utf-8")
     rendered_source = log_helper.get_html_source_with_base_href(
         driver, page_source
     )
+    html_file = codecs.open(html_file_path, "w+", "utf-8")
     html_file.write(rendered_source)
     html_file.close()
 

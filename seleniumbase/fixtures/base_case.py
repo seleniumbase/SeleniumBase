@@ -9205,6 +9205,10 @@ class BaseCase(unittest.TestCase):
         """Same as self.switch_to_newest_window()"""
         self.switch_to_newest_window()
 
+    def save_as_html(self, name, folder=None):
+        """Same as self.save_page_source()"""
+        self.save_page_source(name, folder=folder)
+
     def input(
         self, selector, text, by="css selector", timeout=None, retry=False
     ):
@@ -9654,9 +9658,11 @@ class BaseCase(unittest.TestCase):
 
     def activate_messenger(self):
         self.__check_scope()
-        self._check_browser()
+        if not self.__is_cdp_swap_needed():
+            self._check_browser()
         js_utils.activate_messenger(self.driver)
-        self.wait_for_ready_state_complete()
+        if not self.__is_cdp_swap_needed():
+            self.wait_for_ready_state_complete()
 
     def set_messenger_theme(
         self, theme="default", location="default", max_messages="default"

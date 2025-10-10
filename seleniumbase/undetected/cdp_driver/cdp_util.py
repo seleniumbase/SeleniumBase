@@ -335,6 +335,8 @@ async def start(
             xvfb = True
         else:
             xvfb = False
+    if not hasattr(sb_config, "xvfb"):
+        sb_config.xvfb = xvfb
     if incognito is None:
         if "--incognito" in sys_argv:
             incognito = True

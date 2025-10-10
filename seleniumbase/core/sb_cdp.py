@@ -1024,6 +1024,9 @@ class CDPMethods():
             ).strip()
         return self.loop.run_until_complete(self.page.evaluate(expression))
 
+    def execute_script(self, expression):
+        return self.evaluate(expression)
+
     def js_dumps(self, obj_name):
         """Similar to evaluate(), but for dictionary results."""
         if obj_name.startswith("return "):
@@ -1407,6 +1410,64 @@ class CDPMethods():
         mfa_code = self.get_mfa_code(totp_key)
         self.type(selector, mfa_code + "\n", timeout=timeout)
 
+    def activate_messenger(self):
+        js_utils.activate_messenger(self)
+        self.__add_light_pause()
+
+    def set_messenger_theme(
+        self, theme="default", location="default", max_messages="default"
+    ):
+        """Sets a theme for posting messages.
+        Themes: ["flat", "future", "block", "air", "ice"]
+        Locations: ["top_left", "top_center", "top_right",
+                    "bottom_left", "bottom_center", "bottom_right"]
+        max_messages: The limit of concurrent messages to display."""
+        if not theme:
+            theme = "default"  # "flat"
+        if not location:
+            location = "default"  # "bottom_right"
+        if not max_messages:
+            max_messages = "default"  # "8"
+        else:
+            max_messages = str(max_messages)  # Value must be in string format
+        js_utils.set_messenger_theme(
+            self,
+            theme=theme,
+            location=location,
+            max_messages=max_messages,
+        )
+        self.__add_light_pause()
+
+    def post_message(self, message, duration=None, pause=True, style="info"):
+        """Post a message on the screen with Messenger.
+        Arguments:
+            message: The message to display.
+            duration: The time until the message vanishes. (Default: 2.55s)
+            pause: If True, the program waits until the message completes.
+            style: "info", "success", or "error"."""
+        driver = self.driver
+        if hasattr(driver, "cdp_base"):
+            driver = driver.cdp_base
+        if style not in ["info", "success", "error"]:
+            style = "info"
+        if not duration:
+            duration = settings.DEFAULT_MESSAGE_DURATION
+        if (
+            (
+                driver.config.headless
+                or (hasattr(sb_config, "xvfb") and sb_config.xvfb)
+            )
+            and float(duration) > 0.75
+        ):
+            duration = 0.75
+        try:
+            js_utils.post_message(self, message, duration, style=style)
+        except Exception:
+            print(" * %s message: %s" % (style.upper(), message))
+        if pause:
+            duration = float(duration) + 0.15
+            time.sleep(float(duration))
+
     def set_locale(self, locale):
         """(Settings will take effect on the next page load)"""
         self.loop.run_until_complete(self.page.set_locale(locale))
@@ -1510,7 +1571,10 @@ class CDPMethods():
                 except Exception:
                     if (
                         shared_utils.is_linux()
-                        and (not sb_config.headed or sb_config.xvfb)
+                        and (
+                            not sb_config.headed
+                            or (hasattr(sb_config, "xvfb") and sb_config.xvfb)
+                        )
                         and not driver.config.headless
                         and (
                             not hasattr(sb_config, "_virtual_display")
@@ -2610,6 +2674,40 @@ class CDPMethods():
     def scroll_down(self, amount=25):
         self.loop.run_until_complete(self.page.scroll_down(amount))
         self.loop.run_until_complete(self.page.wait())
+
+    def save_page_source(self, name, folder=None):
+        import codecs
+        from seleniumbase.core import log_helper
+        if not name.endswith(".html"):
+            name = name + ".html"
+        if folder:
+            abs_path = os.path.abspath(".")
+            file_path = os.path.join(abs_path, folder)
+            if not os.path.exists(file_path):
+                os.makedirs(file_path)
+            html_file_path = os.path.join(file_path, name)
+        else:
+            html_file_path = name
+        page_source = self.get_page_source()
+        last_page = self.get_current_url()
+        meta_charset = '<meta charset="utf-8">'
+        rendered_source = ""
+        if "://" in last_page:
+            base_href_html = log_helper.get_base_href_html(last_page)
+            if ' charset="' not in page_source:
+                rendered_source = "%s\n%s\n%s" % (
+                    base_href_html, meta_charset, page_source
+                )
+            else:
+                rendered_source = "%s\n%s" % (base_href_html, page_source)
+        else:
+            rendered_source = page_source
+        html_file = codecs.open(html_file_path, "w+", "utf-8")
+        html_file.write(rendered_source)
+        html_file.close()
+
+    def save_as_html(self, *args, **kwargs):
+        self.save_page_source(*args, **kwargs)
 
     def save_screenshot(self, name, folder=None, selector=None):
         filename = name
