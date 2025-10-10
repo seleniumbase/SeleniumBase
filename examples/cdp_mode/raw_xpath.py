@@ -1,4 +1,4 @@
-"""Test that CDP Mode can autodetect and use xpath selectors."""
+"""Test that CDP Mode can autodetect and use XPath selectors."""
 from seleniumbase import SB
 
 with SB(uc=True, test=True) as sb:

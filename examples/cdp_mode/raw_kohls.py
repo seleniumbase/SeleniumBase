@@ -3,7 +3,7 @@ from seleniumbase import SB
 with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     url = "https://www.kohls.com/"
     sb.activate_cdp_mode(url)
-    sb.sleep(2.5)
+    sb.sleep(2.6)
     search = "Mickey Mouse 100 friends teal pillow"
     required_text = "Mickey"
     sb.cdp.press_keys('input[name="search"]', search + "\n")
