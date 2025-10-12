@@ -689,7 +689,10 @@ def start_sync(*args, **kwargs) -> Browser:
 
 
 async def create_from_driver(driver) -> Browser:
-    """Create a Browser instance from a running driver instance."""
+    """Create a CDP Browser instance from a running UC driver.
+    This method is DEPRECATED in favor of activate_cdp_mode(),
+     which includes the option of switching between the modes,
+     and also properly handles configuration based on options."""
     from .config import Config
 
     conf = Config()
