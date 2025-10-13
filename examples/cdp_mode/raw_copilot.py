@@ -23,7 +23,7 @@ with SB(uc=True, test=True, guest=True) as sb:
     sb.sleep(3.5)
     stop_button = '[data-testid="stop-button"]'
     thumbs_up = 'button[data-testid*="-thumbs-up-"]'
-    sb.wait_for_element_absent(stop_button, timeout=45)
+    sb.wait_for_element_absent(stop_button, timeout=50)
     sb.wait_for_element(thumbs_up, timeout=20)
     sb.sleep(0.6)
     sb.click('button[data-testid*="scroll-to-bottom"]')
