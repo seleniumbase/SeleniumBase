@@ -53,13 +53,13 @@
 <br />
 </p>
 
-<p>SeleniumBase is the professional toolkit for web automation activities. Built for testing websites, bypassing CAPTCHAs, enhancing productivity, completing tasks, and scaling your business.</p>
+<p>SeleniumBase is used for automating browsers, testing websites, scraping data, and bypassing CAPTCHAs.</p>
 
 --------
 
 📚 Learn from [**over 200 examples** in the **SeleniumBase/examples/** folder](https://github.com/seleniumbase/SeleniumBase/tree/master/examples).
 
-🐙 Note that <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md"><b>UC Mode</b></a> / <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md"><b>CDP Mode</b></a> (Stealth Mode) have their own ReadMe files.
+🐙 Stealth modes: <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md"><b>UC Mode</b></a> and <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md"><b>CDP Mode</b></a> help you evade bot-detection.
 
 ℹ️ Most scripts run with raw <code translate="no"><b>python</b></code>, although some scripts use <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md">Syntax Formats</a> that expect <a href="https://docs.pytest.org/en/latest/how-to/usage.html" translate="no"><b>pytest</b></a> (a Python unit-testing framework included with SeleniumBase that can discover, collect, and run tests automatically).
 
