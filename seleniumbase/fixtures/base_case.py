@@ -114,9 +114,7 @@ class BaseCase(unittest.TestCase):
         self.driver = None
         self.environment = None
         self.env = None  # Add a shortened version of self.environment
-        self.version_list = [
-            int(i) for i in __version__.split(".") if i.isdigit()
-        ]
+        self.version_list = shared_utils.make_version_list(__version__)
         self.version_tuple = tuple(self.version_list)
         self.version_info = self.version_tuple
         self.time = time.time
@@ -14491,11 +14489,11 @@ class BaseCase(unittest.TestCase):
                 import pyautogui
                 with suppress(Exception):
                     use_pyautogui_ver = constants.PyAutoGUI.VER
-                    if pyautogui.__version__ != use_pyautogui_ver:
+                    u_pv = shared_utils.make_version_tuple(use_pyautogui_ver)
+                    pv = shared_utils.make_version_tuple(pyautogui.__version__)
+                    if pv < u_pv:
                         del pyautogui  # To get newer ver
-                        shared_utils.pip_install(
-                            "pyautogui", version=use_pyautogui_ver
-                        )
+                        shared_utils.pip_install("pyautogui", version="Latest")
                         import pyautogui
                 pyautogui_is_installed = True
             except Exception:
@@ -14504,9 +14502,7 @@ class BaseCase(unittest.TestCase):
                     "Installing now..."
                 )
                 print("\n" + message)
-                shared_utils.pip_install(
-                    "pyautogui", version=constants.PyAutoGUI.VER
-                )
+                shared_utils.pip_install("pyautogui", version="Latest")
                 import pyautogui
                 pyautogui_is_installed = True
             if (

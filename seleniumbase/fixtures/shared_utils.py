@@ -18,16 +18,35 @@ def pip_install(package, version=None):
     pip_install_lock = fasteners.InterProcessLock(
         constants.PipInstall.LOCKFILE
     )
+    upgrade_to_latest = False
+    if (
+        version
+        and ("U" in str(version).upper() or "L" in str(version).upper())
+    ):
+        # Upgrade to Latest when specified with "U" or "L"
+        upgrade_to_latest = True
     with pip_install_lock:
         if not version:
             subprocess.check_call(
                 [sys.executable, "-m", "pip", "install", package]
             )
-        else:
+        elif not upgrade_to_latest:
             package_and_version = package + "==" + str(version)
             subprocess.check_call(
                 [sys.executable, "-m", "pip", "install", package_and_version]
             )
+        else:
+            subprocess.check_call(
+                [sys.executable, "-m", "pip", "install", "-U", package]
+            )
+
+
+def make_version_list(version_str):
+    return [int(i) for i in version_str.split(".") if i.isdigit()]
+
+
+def make_version_tuple(version_str):
+    return tuple(make_version_list(version_str))
 
 
 def get_mfa_code(totp_key=None):
