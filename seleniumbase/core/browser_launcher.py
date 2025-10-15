@@ -985,17 +985,15 @@ def __install_pyautogui_if_missing():
         import pyautogui
         with suppress(Exception):
             use_pyautogui_ver = constants.PyAutoGUI.VER
-            if pyautogui.__version__ != use_pyautogui_ver:
-                del pyautogui
-                shared_utils.pip_install(
-                    "pyautogui", version=use_pyautogui_ver
-                )
+            u_pv = shared_utils.make_version_tuple(use_pyautogui_ver)
+            pv = shared_utils.make_version_tuple(pyautogui.__version__)
+            if pv < u_pv:
+                del pyautogui  # To get newer ver
+                shared_utils.pip_install("pyautogui", version="Latest")
                 import pyautogui
     except Exception:
         print("\nPyAutoGUI required! Installing now...")
-        shared_utils.pip_install(
-            "pyautogui", version=constants.PyAutoGUI.VER
-        )
+        shared_utils.pip_install("pyautogui", version="Latest")
         try:
             import pyautogui
         except Exception:

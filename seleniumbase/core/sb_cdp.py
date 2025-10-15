@@ -912,6 +912,12 @@ class CDPMethods():
         element.scroll_into_view()
         if text.endswith("\n") or text.endswith("\r"):
             text = text[:-1] + "\r\n"
+        elif (
+            element.tag_name == "textarea"
+            and "\n" in text
+            and "\r" not in text
+        ):
+            text = text.replace("\n", "\r")
         element.send_keys(text)
         self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.sleep(0.025))
@@ -927,6 +933,12 @@ class CDPMethods():
         if text.endswith("\n") or text.endswith("\r"):
             submit = True
             text = text[:-1]
+        elif (
+            element.tag_name == "textarea"
+            and "\n" in text
+            and "\r" not in text
+        ):
+            text = text.replace("\n", "\r")
         for key in text:
             element.send_keys(key)
             time.sleep(0.044)
@@ -947,6 +959,12 @@ class CDPMethods():
             element.clear_input()
         if text.endswith("\n") or text.endswith("\r"):
             text = text[:-1] + "\r\n"
+        elif (
+            element.tag_name == "textarea"
+            and "\n" in text
+            and "\r" not in text
+        ):
+            text = text.replace("\n", "\r")
         element.send_keys(text)
         self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.sleep(0.025))
@@ -1555,17 +1573,15 @@ class CDPMethods():
                 import pyautogui
                 with suppress(Exception):
                     use_pyautogui_ver = constants.PyAutoGUI.VER
-                    if pyautogui.__version__ != use_pyautogui_ver:
-                        del pyautogui
-                        shared_utils.pip_install(
-                            "pyautogui", version=use_pyautogui_ver
-                        )
+                    u_pv = shared_utils.make_version_tuple(use_pyautogui_ver)
+                    pv = shared_utils.make_version_tuple(pyautogui.__version__)
+                    if pv < u_pv:
+                        del pyautogui  # To get newer ver
+                        shared_utils.pip_install("pyautogui", version="Latest")
                         import pyautogui
             except Exception:
                 print("\nPyAutoGUI required! Installing now...")
-                shared_utils.pip_install(
-                    "pyautogui", version=constants.PyAutoGUI.VER
-                )
+                shared_utils.pip_install("pyautogui", version="Latest")
                 try:
                     import pyautogui
                 except Exception:

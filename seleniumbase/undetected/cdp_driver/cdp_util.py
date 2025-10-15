@@ -121,22 +121,26 @@ def __activate_virtual_display_as_needed(
                     import pyautogui
                     with suppress(Exception):
                         use_pyautogui_ver = constants.PyAutoGUI.VER
-                        if pyautogui.__version__ != use_pyautogui_ver:
+                        u_pv = shared_utils.make_version_tuple(
+                            use_pyautogui_ver
+                        )
+                        pv = shared_utils.make_version_tuple(
+                            pyautogui.__version__
+                        )
+                        if pv < u_pv:
                             del pyautogui  # To get newer ver
                             shared_utils.pip_install(
-                                "pyautogui", version=use_pyautogui_ver
+                                "pyautogui", version="Latest"
                             )
                             import pyautogui
                     pyautogui_is_installed = True
                 except Exception:
                     message = (
-                        "PyAutoGUI is required for UC Mode on Linux! "
+                        "PyAutoGUI is required for CDP Mode on Linux! "
                         "Installing now..."
                     )
                     print("\n" + message)
-                    shared_utils.pip_install(
-                        "pyautogui", version=constants.PyAutoGUI.VER
-                    )
+                    shared_utils.pip_install("pyautogui", version="Latest")
                     import pyautogui
                     pyautogui_is_installed = True
                 if (
