@@ -181,9 +181,9 @@ setup(
         'pyreadline3>=3.5.4;platform_system=="Windows"',
         "tabcompleter>=1.4.0",
         "pdbp>=1.7.1",
-        "idna==3.10",
+        "idna>=3.11",
         'chardet==5.2.0',
-        'charset-normalizer>=3.4.3,<4',
+        'charset-normalizer>=3.4.4,<4',
         'urllib3>=1.26.20,<2;python_version<"3.10"',
         'urllib3>=1.26.20,<2.6.0;python_version>="3.10"',
         'requests==2.32.4;python_version<"3.9"',
@@ -243,7 +243,8 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage>=7.6.1;python_version<"3.9"',
-            'coverage>=7.10.7;python_version>="3.9"',
+            'coverage>=7.10.7;python_version>="3.9" and python_version<"3.10"',
+            'coverage>=7.11.0;python_version>="3.10"',
             'pytest-cov>=5.0.0;python_version<"3.9"',
             'pytest-cov>=7.0.0;python_version>="3.9"',
         ],
@@ -286,7 +287,8 @@ setup(
         # (An optional library for image-processing.)
         "pillow": [
             'Pillow>=10.4.0;python_version<"3.9"',
-            'Pillow>=11.3.0;python_version>="3.9"',
+            'Pillow>=11.3.0;python_version>="3.9" and python_version<"3.10"',
+            'Pillow>=12.0.0;python_version>="3.10"',
         ],
         # pip install -e .[pip-system-certs]
         # (If you see [SSL: CERTIFICATE_VERIFY_FAILED], then get this.)
