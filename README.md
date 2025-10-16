@@ -53,7 +53,7 @@
 <br />
 </p>
 
-<p>SeleniumBase is used for automating browsers, testing websites, scraping data, and bypassing CAPTCHAs.</p>
+<p>SeleniumBase makes it easy to automate browsers, test websites, scrape data, and avoid bot-detection.</p>
 
 --------
 
