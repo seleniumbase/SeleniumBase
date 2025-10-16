@@ -53,7 +53,7 @@
 <br />
 </p>
 
-<p>SeleniumBase makes it easy to automate browsers, test websites, scrape data, and avoid bot-detection.</p>
+<p>SeleniumBase solves your toughest browser automation problems from testing websites to scraping data. There are special modes for avoiding bot-detection and bypassing CAPTCHAs. ⭐ Star us on GitHub! ⭐</p>
 
 --------
 
