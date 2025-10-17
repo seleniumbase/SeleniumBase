@@ -14,7 +14,7 @@
 <p align="center" class="hero__title"><b>Automate, test, and scrape the web — on your own terms.<br /></b></p>
 
 <p align="center"><a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=3399EE" alt="PyPI version" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/releases" target="_blank"><img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=22AAEE" alt="GitHub version" /></a> <a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a></p>
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"><img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/stargazers"><img src="https://img.shields.io/github/stars/seleniumbase/SeleniumBase?style=social"></a> <a href="https://discord.gg/EdhQTn3EyE" target="_blank"><img src="https://img.shields.io/discord/727927627830001734?color=7289DA&label=Discord&logo=discord&logoColor=white"/></a></p>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"><img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/stargazers"><img src="https://img.shields.io/github/stars/seleniumbase/SeleniumBase?style=social"></a> <a href="https://pepy.tech/projects/seleniumbase?timeRange=threeMonths&category=version&includeCIDownloads=true&granularity=daily&viewType=line&versions=*" target="_blank"><img src="https://static.pepy.tech/badge/seleniumbase" alt="SeleniumBase PyPI downloads" /></a> <a href="https://discord.gg/EdhQTn3EyE" target="_blank"><img src="https://img.shields.io/discord/727927627830001734?color=7289DA&label=Discord&logo=discord&logoColor=white"/></a></p>
 
 <p align="center">
 <a href="#python_installation">🚀 Start</a> |
@@ -54,7 +54,7 @@
 <br />
 </p>
 
-<p>SeleniumBase is a browser automation framework for the modern web. Whether you're new or experienced in Python, SeleniumBase makes it easy to get started. With special features like Stealth Mode (UC Mode / CDP Mode), you'll be evading bot-detection and bypassing CAPTCHAs in minutes.</p>
+<p>SeleniumBase is a browser automation framework for the modern web. Both new and experienced Python users alike can easily get started. With special stealth features like UC Mode and CDP Mode, you'll be evading bot-detection and bypassing CAPTCHAs in minutes.</p>
 
 --------
 
