@@ -2,7 +2,7 @@
 
 ## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) CDP Mode 🐙
 
-🐙 <b translate="no">SeleniumBase</b> <b translate="no">CDP Mode</b> (<a href="https://chromedevtools.github.io/devtools-protocol/" translate="no"><span translate="no">Chrome Devtools Protocol</span></a> Mode) is a special mode inside of <b><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md" translate="no"><span translate="no">SeleniumBase UC Mode</span></a></b> that lets bots appear human while controlling the browser with <b translate="no">CDP</b> (via <a href="https://github.com/mdmintz/MyCDP" translate="no"><span translate="no">MyCDP</span></a>). Although regular <b translate="no">UC Mode</b> can't perform <span translate="no">WebDriver</span> actions while the <code>driver</code> is disconnected from the browser, <b translate="no">CDP</b> can. <b translate="no">CDP Mode</b> can also be used independently of WebDriver via <b translate="no">Pure CDP Mode</b> (<code>sb_cdp</code>).
+🐙 <b translate="no">SeleniumBase</b> <b translate="no">CDP Mode</b> (<a href="https://chromedevtools.github.io/devtools-protocol/" translate="no"><span translate="no">Chrome Devtools Protocol</span></a> Mode) is a special mode inside of <b><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md" translate="no"><span translate="no">SeleniumBase UC Mode</span></a></b> that lets bots appear human while controlling the browser with <b translate="no">CDP</b> (via <a href="https://github.com/mdmintz/MyCDP" translate="no"><span translate="no">MyCDP</span></a>). Although regular <b translate="no">UC Mode</b> can't perform <span translate="no">WebDriver</span> actions while the <code>driver</code> is disconnected from the browser, <b translate="no">CDP</b> can. <b translate="no">CDP Mode</b> can also be used independently of WebDriver via <b><a href="#Pure_CDP_Mode" translate="no">Pure CDP Mode</a></b> (<code>sb_cdp</code>).
 
 --------
 
@@ -542,6 +542,8 @@ sb.cdp.save_as_pdf(name, folder=None)
 ℹ️ When available, calling `sb.METHOD()` redirects to `sb.cdp.METHOD()` because regular SB methods automatically call their CDP Mode counterparts to maintain stealth when CDP Mode is active.
 
 --------
+
+<a id="Pure_CDP_Mode"></a>
 
 ### 🐙 <b translate="no">Pure CDP Mode</b> (<code translate="no">sb_cdp</code>)
 
