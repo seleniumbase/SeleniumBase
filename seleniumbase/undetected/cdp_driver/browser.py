@@ -369,7 +369,8 @@ class Browser:
                 proxy_user = username_and_password.split(":")[0]
                 proxy_pass = username_and_password.split(":")[1]
                 await connection.set_auth(proxy_user, proxy_pass, self.tabs[0])
-                time.sleep(0.25)
+                time.sleep(0.22)
+            await connection.sleep(0.05)
             frame_id, loader_id, *_ = await connection.send(
                 cdp.page.navigate(url)
             )

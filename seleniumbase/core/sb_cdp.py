@@ -187,46 +187,23 @@ class CDPMethods():
         element with the given tag. (Eg: a, button, div, script, span)"""
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
-        self.__add_light_pause()
-        time_now = time.time()
-        self.assert_text(text, timeout=timeout)
-        spent = int(time.time() - time_now)
-        remaining = 1 + timeout - spent
         if tag_name:
-            self.assert_element(tag_name, timeout=remaining)
-        elements = self.loop.run_until_complete(
-            self.page.find_elements_by_text(text=text)
-        )
-        if tag_name:
-            tag_name = tag_name.lower().strip()
-        for element in elements:
-            if element and not tag_name:
-                element = self.__add_sync_methods(element)
-                return self.__add_sync_methods(element)
-            elif (
-                element
-                and tag_name in element.tag_name.lower()
-                and text.strip() in element.text
-            ):
-                element = self.__add_sync_methods(element)
-                return self.__add_sync_methods(element)
-            elif (
-                element
-                and element.parent
-                and tag_name in element.parent.tag_name.lower()
-                and text.strip() in element.parent.text
-            ):
-                element = self.__add_sync_methods(element.parent)
-                return self.__add_sync_methods(element)
-            elif (
-                element
-                and element.parent
-                and element.parent.parent
-                and tag_name in element.parent.parent.tag_name.lower()
-                and text.strip() in element.parent.parent.text
-            ):
-                element = self.__add_sync_methods(element.parent.parent)
-                return self.__add_sync_methods(element)
+            try:
+                return self.find_element(
+                    '%s:contains("%s")' % (tag_name, text), timeout=timeout
+                )
+            except Exception:
+                pass  # The exception will be raised later
+        else:
+            self.__add_light_pause()
+            self.assert_text(text, timeout=timeout)
+            elements = self.loop.run_until_complete(
+                self.page.find_elements_by_text(text=text)
+            )
+            for element in elements:
+                if element:
+                    element = self.__add_sync_methods(element)
+                    return self.__add_sync_methods(element)
         plural = "s"
         if timeout == 1:
             plural = ""
