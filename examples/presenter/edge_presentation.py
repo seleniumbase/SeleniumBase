@@ -2,16 +2,17 @@ from seleniumbase import BaseCase
 
 if __name__ == "__main__":
     from pytest import main
-    main([__file__, "--edge", "-s"])
+    main([__file__, "--edge", "-s", "--disable-csp"])
 
 
 class EdgePresentationClass(BaseCase):
     def test_presentation(self):
-        if not self.browser == "edge":
+        if not self.browser == "edge" or not self.disable_csp:
             self.driver.quit()
-            self.get_new_driver(browser="edge")
+            self.get_new_driver(browser="edge", disable_csp=True)
         self.demo_mode = False
         self.maximize_window()
+        self._output_file_saves = False
         self.create_presentation(theme="serif", transition="fade")
         self.add_slide(
             "<h3>A deep dive into:</h3>"
@@ -76,7 +77,7 @@ class EdgePresentationClass(BaseCase):
         if self.is_element_visible('button[data-bi-name="close"]'):
             self.click('button[data-bi-name="close"]')
             self.wait_for_element_not_visible('button[data-bi-name="close"]')
-        self.highlight("div.mainContainer")
+        self.highlight("h1#test-and-automation-in-microsoft-edge")
         self.create_tour(theme="driverjs")
         self.add_tour_step(
             "", "h1#test-and-automation-in-microsoft-edge", alignment="right"
@@ -119,30 +120,6 @@ class EdgePresentationClass(BaseCase):
         )
         self.play_tour()
         self.highlight('img[src*="microsoft-edge-version"]')
-
-        self.get_new_driver(browser="edge")
-        self.maximize_window()
-        self.open("edge://settings/help")
-        zoom_in = (
-            'img[srcset*="logo"] + div span:nth-of-type(2)'
-            '{zoom: 1.5;-moz-transform: scale(1.5);}'
-        )
-        self.add_css_style(zoom_in)
-        self.highlight('div[role="main"]')
-        self.highlight('img[srcset*="logo"]')
-        self.highlight('img[srcset*="logo"] + div span:nth-of-type(1)')
-        self.highlight(
-            'img[srcset*="logo"] + div span:nth-of-type(2)', loops=16
-        )
-        if self.is_element_visible('span[aria-live="assertive"]'):
-            self.highlight('span[aria-live="assertive"]', loops=8)
-        elif self.is_element_visible('a[href*="fwlink"]'):
-            self.highlight('a[href*="fwlink"]', loops=8)
-        self.highlight('a[href*="chromium"]')
-        self.highlight('a[href*="credits"]')
-        self.quit_extra_driver()
-
-        self.switch_to_default_driver()
         self.highlight('img[src*="microsoft-edge-driver-install"]', loops=8)
         self.highlight('p:contains("that matches your version")', loops=8)
 
@@ -164,25 +141,11 @@ class EdgePresentationClass(BaseCase):
         zoom_in = 'div.h1{zoom: 1.02;-moz-transform: scale(1.02);}'
         self.add_css_style(zoom_in)
         self.highlight("div.common-heading", loops=8)
-        self.create_tour(theme="driverjs")
-        self.add_tour_step(
-            "", "div.common-heading", alignment="left"
-        )
+        self.create_tour(theme="hopscotch")
+        self.add_tour_step("", "div.common-heading", alignment="right")
         self.play_tour()
-        self.highlight('div[data-fetch-key="block-web-driver:0"]', loops=12)
-        self.create_tour(theme="driverjs")
-        self.add_tour_step(
-            "", 'div[data-fetch-key="block-web-driver:0"]', alignment="top"
-        )
-        self.play_tour()
-        self.highlight('div[data-fetch-key="block-web-driver:1"]', loops=12)
-        self.create_tour(theme="driverjs")
-        self.add_tour_step(
-            "", 'div[data-fetch-key="block-web-driver:1"]', alignment="top"
-        )
-        self.play_tour()
-        self.highlight('section[data-section-id="installation"]', loops=12)
-        self.create_tour(theme="driverjs")
+
+        self.create_tour(theme="hopscotch")
         self.add_tour_step(
             "", "div.block-heading--sixtyforty", alignment="left"
         )
@@ -491,17 +454,12 @@ class EdgePresentationClass(BaseCase):
         self.sleep(0.25)
         self.get_new_driver(browser="edge", is_mobile=True)
         self.maximize_window()
-        self.open("https://www.skype.com/en/get-skype/")
-        self.assert_element('[aria-label="Microsoft"]')
-        self.assert_text("Download Skype", "h1")
-        self.highlight("div.appBannerContent")
-        self.highlight("h1")
-        self.assert_text("Skype for Mobile", "h2")
-        self.highlight("h2")
-        self.highlight("#get-skype-0")
-        self.highlight_click("span[data-dropdown-icon]")
-        self.highlight("#get-skype-0_android-download")
-        self.highlight('[data-bi-id*="ios"]')
+        self.open("https://www.roblox.com/")
+        self.assert_element("#download-the-app-container")
+        self.assert_text("Roblox for Android")
+        self.assert_text("Continue in App", "a.content-action-emphasis")
+        self.highlight('span:contains("Roblox for Android")', loops=8)
+        self.highlight("a.content-action-emphasis", loops=8)
         self.quit_extra_driver()
 
         self.create_presentation(theme="serif", transition="fade")
