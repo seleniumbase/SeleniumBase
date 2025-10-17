@@ -10173,7 +10173,7 @@ class BaseCase(unittest.TestCase):
         text = self.__get_type_checked_text(text)
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_cdp_swap_needed():
-            return self.cdp.find_element(selector, timeout=timeout)
+            return self.cdp.wait_for_text(text, selector, timeout=timeout)
         elif self.__is_shadow_selector(selector):
             return self.__wait_for_shadow_text_visible(text, selector, timeout)
         return page_actions.wait_for_text_visible(
@@ -10530,6 +10530,8 @@ class BaseCase(unittest.TestCase):
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        if self.__is_cdp_swap_needed():
+            return self.cdp.find_element_by_text(text=link_text, tag_name="a")
         return self.wait_for_element_visible(
             link_text, by="link text", timeout=timeout
         )
