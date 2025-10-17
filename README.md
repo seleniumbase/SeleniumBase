@@ -53,6 +53,8 @@
 <br />
 </p>
 
+<p>SeleniumBase is a high-end framework for web automation and testing. Built for handling tricky tasks, such as bypassing bot-detection and handling CAPTCHAs with <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md">CDP Mode</a> and special methods. SeleniumBase can enhance productivity, automate tedious browser actions, and help scale businesses.</p>
+
 --------
 
 📚 Learn from [**over 200 examples** in the **SeleniumBase/examples/** folder](https://github.com/seleniumbase/SeleniumBase/tree/master/examples).
@@ -325,7 +327,6 @@ pip install seleniumbase
 
 * (Add ``--upgrade`` OR ``-U`` to upgrade SeleniumBase.)
 * (Add ``--force-reinstall`` to upgrade indirect packages.)
-* (Use ``pip3`` if multiple versions of Python are present.)
 
 🔵 **How to install ``seleniumbase`` from a GitHub clone:**
 
@@ -399,10 +400,10 @@ pip install -e .
 <summary> ▶️ Here's sample output from a chromedriver download. (<b>click to expand</b>)</summary>
 
 ```zsh
-*** chromedriver to download = 131.0.6778.108 (Latest Stable) 
+*** chromedriver to download = 141.0.7390.78 (Latest Stable) 
 
 Downloading chromedriver-mac-arm64.zip from:
-https://storage.googleapis.com/chrome-for-testing-public/131.0.6778.108/mac-arm64/chromedriver-mac-arm64.zip ...
+https://storage.googleapis.com/chrome-for-testing-public/141.0.7390.78/mac-arm64/chromedriver-mac-arm64.zip ...
 Download Complete!
 
 Extracting ['chromedriver'] from chromedriver-mac-arm64.zip ...
@@ -412,8 +413,8 @@ The file [chromedriver] was saved to:
 ~/github/SeleniumBase/seleniumbase/drivers/
 chromedriver
 
-Making [chromedriver 131.0.6778.108] executable ...
-[chromedriver 131.0.6778.108] is now ready for use!
+Making [chromedriver 141.0.7390.78] executable ...
+[chromedriver 141.0.7390.78] is now ready for use!
 ```
 
 </details>

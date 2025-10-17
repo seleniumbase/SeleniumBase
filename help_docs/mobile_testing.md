@@ -6,13 +6,11 @@ Use ``--mobile`` to run SeleniumBase tests using Chrome's mobile device emulator
 
 <b>Here's an example mobile test:</b>
 
-[SeleniumBase/examples/test_skype_site.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_skype_site.py)
+[SeleniumBase/examples/test_roblox_mobile.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_roblox_mobile.py)
 
 ```zsh
-pytest test_skype_site.py --mobile
+pytest test_roblox_mobile.py --mobile
 ```
-
-[<img src="https://seleniumbase.github.io/cdn/gif/skype_mobile_test_2.gif" title="SeleniumBase Mobile Testing">](https://seleniumbase.github.io/cdn/gif/skype_mobile_test_2.gif)
 
 To configure Device Metrics, use:
 
@@ -68,17 +66,11 @@ from seleniumbase import Driver
 
 driver = Driver(mobile=True)
 try:
-    driver.open("https://www.skype.com/en/get-skype/")
-    driver.assert_element('[aria-label="Microsoft"]')
-    driver.assert_text("Download Skype", "h1")
-    driver.highlight("div.appBannerContent")
-    driver.highlight("h1")
-    driver.assert_text("Skype for Mobile", "h2")
-    driver.highlight("h2")
-    driver.highlight("#get-skype-0")
-    driver.highlight_click("span[data-dropdown-icon]")
-    driver.highlight("#get-skype-0_android-download")
-    driver.highlight('[data-bi-id*="ios"]')
+    driver.open("https://www.roblox.com/")
+    driver.assert_element("#download-the-app-container")
+    driver.assert_text("Roblox for Android")
+    driver.highlight('span:contains("Roblox for Android")', loops=8)
+    driver.highlight('span:contains("Continue in App")', loops=8)
 finally:
     driver.quit()
 ```
