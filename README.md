@@ -53,8 +53,6 @@
 <br />
 </p>
 
-<p>SeleniumBase solves browser automation problems such as testing websites and scraping data. There are special modes for avoiding bot-detection and bypassing CAPTCHAs. ⭐ Star us on GitHub! ⭐</p>
-
 --------
 
 📚 Learn from [**over 200 examples** in the **SeleniumBase/examples/** folder](https://github.com/seleniumbase/SeleniumBase/tree/master/examples).
