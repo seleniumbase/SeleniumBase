@@ -15,7 +15,6 @@ Examples:
 Output:
       Launches the SeleniumBase Case Plans Generator.
 """
-import codecs
 import colorama
 import os
 import subprocess
@@ -135,7 +134,7 @@ def generate_case_plan_boilerplates(
         file_name = case_id
         file_path = os.path.join(full_folder_path, file_name)
         if not os.path.exists(file_path):
-            out_file = codecs.open(file_path, "w+", "utf-8")
+            out_file = open(file_path, "w+", "utf-8")
             out_file.writelines("\r\n".join(data))
             out_file.close()
             new_plans += 1
@@ -316,7 +315,7 @@ def view_summary_of_existing_case_plans(root, tests):
     full_plan = plan_head
 
     file_path = "case_summary.md"
-    file = codecs.open(file_path, "w+", "utf-8")
+    file = open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(full_plan))
     file.close()
 

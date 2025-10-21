@@ -1,4 +1,3 @@
-import codecs
 import os
 import shutil
 import sys
@@ -298,7 +297,7 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
         with suppress(Exception):
             os.makedirs(test_logpath)
     with suppress(Exception):
-        log_file = codecs.open(basic_file_path, "w+", encoding="utf-8")
+        log_file = open(basic_file_path, "w+", encoding="utf-8")
         log_file.writelines("\r\n".join(data_to_save))
         log_file.close()
         shared_utils.make_writable(basic_file_path)
@@ -353,7 +352,7 @@ def log_skipped_test_data(test, test_logpath, driver, browser, reason):
     data_to_save.append("")
     file_path = os.path.join(test_logpath, "skip_reason.txt")
     with suppress(Exception):
-        log_file = codecs.open(file_path, "w+", encoding="utf-8")
+        log_file = open(file_path, "w+", encoding="utf-8")
         log_file.writelines("\r\n".join(data_to_save))
         log_file.close()
         shared_utils.make_writable(file_path)
@@ -388,7 +387,7 @@ def log_page_source(test_logpath, driver, source=None):
             os.makedirs(test_logpath)
     html_file_path = os.path.join(test_logpath, html_file_name)
     with suppress(Exception):
-        html_file = codecs.open(html_file_path, "w+", encoding="utf-8")
+        html_file = open(html_file_path, "w+", encoding="utf-8")
         html_file.write(page_source)
         html_file.close()
         shared_utils.make_writable(html_file_path)

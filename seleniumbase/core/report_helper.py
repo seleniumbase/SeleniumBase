@@ -1,4 +1,3 @@
-import codecs
 import os
 import shutil
 import sys
@@ -48,7 +47,7 @@ def save_test_failure_data(test, name, folder=None):
         failure_data_file_path = os.path.join(file_path, name)
     else:
         failure_data_file_path = name
-    failure_data_file = codecs.open(failure_data_file_path, "w+", "utf-8")
+    failure_data_file = open(failure_data_file_path, "w+", "utf-8")
     data_to_save = []
     if not hasattr(sb_config, "_report_test_id"):
         exc_message = "(Unknown Exception)"

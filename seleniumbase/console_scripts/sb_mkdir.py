@@ -18,7 +18,6 @@ Output:
     and Python boilerplates for setting up customized
     test frameworks.
 """
-import codecs
 import colorama
 import os
 import sys
@@ -114,7 +113,7 @@ def main():
     data.append(seleniumbase_req)
     data.append("")
     file_path = "%s/%s" % (dir_name, "requirements.txt")
-    file = codecs.open(file_path, "w+", "utf-8")
+    file = open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()
 
@@ -152,7 +151,7 @@ def main():
     data.append("    production: custom marker")
     data.append("")
     file_path = "%s/%s" % (dir_name, "pytest.ini")
-    file = codecs.open(file_path, "w+", "utf-8")
+    file = open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()
 
@@ -169,14 +168,14 @@ def main():
     data.append("show_skipped=false")
     data.append("show_timings=false")
     file_path = "%s/%s" % (dir_name, "setup.cfg")
-    file = codecs.open(file_path, "w+", "utf-8")
+    file = open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()
 
     data = []
     data.append("")
     file_path = "%s/%s" % (dir_name, "__init__.py")
-    file = codecs.open(file_path, "w+", "utf-8")
+    file = open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()
 
@@ -312,7 +311,7 @@ def main():
     data.append("temp_*/")
     data.append("node_modules")
     file_path = "%s/%s" % (dir_name, ".gitignore")
-    file = codecs.open(file_path, "w+", "utf-8")
+    file = open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()
 
@@ -324,7 +323,7 @@ def main():
         data.append("  ├── requirements.txt")
         data.append("  └── setup.cfg")
         file_path = "%s/%s" % (dir_name, "outline.rst")
-        file = codecs.open(file_path, "w+", "utf-8")
+        file = open(file_path, "w+", "utf-8")
         file.writelines("\r\n".join(data))
         file.close()
         os.system("sbase print %s -n" % file_path)
@@ -368,7 +367,7 @@ def main():
     data.append('        self.assert_element("div#login_button_container")')
     data.append("")
     file_path = "%s/%s" % (dir_name, "my_first_test.py")
-    file = codecs.open(file_path, "w+", "utf-8")
+    file = open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()
 
@@ -461,7 +460,7 @@ def main():
     data.append('        self.assert_text("SeleniumBase", "h2")')
     data.append("")
     file_path = "%s/%s" % (dir_name, "test_demo_site.py")
-    file = codecs.open(file_path, "w+", "utf-8")
+    file = open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()
 
@@ -500,7 +499,7 @@ def main():
     data.append('        self.assert_title_contains(title_text)')
     data.append("")
     file_path = "%s/%s" % (dir_name, "parameterized_test.py")
-    file = codecs.open(file_path, "w+", "utf-8")
+    file = open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()
 
@@ -510,7 +509,7 @@ def main():
     data = []
     data.append("")
     file_path = "%s/%s" % (dir_name_2, "__init__.py")
-    file = codecs.open(file_path, "w+", "utf-8")
+    file = open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()
 
@@ -545,7 +544,7 @@ def main():
     data.append("        pass")
     data.append("")
     file_path = "%s/%s" % (dir_name_2, "base_test_case.py")
-    file = codecs.open(file_path, "w+", "utf-8")
+    file = open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()
 
@@ -554,7 +553,7 @@ def main():
     data.append('    html = "html"')
     data.append("")
     file_path = "%s/%s" % (dir_name_2, "page_objects.py")
-    file = codecs.open(file_path, "w+", "utf-8")
+    file = open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()
 
@@ -570,7 +569,7 @@ def main():
     data.append("        self.assert_element(Page.html)")
     data.append("")
     file_path = "%s/%s" % (dir_name_2, "boilerplate_test.py")
-    file = codecs.open(file_path, "w+", "utf-8")
+    file = open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()
 
@@ -594,7 +593,7 @@ def main():
     data.append('        DataPage().add_input_text(self, "Goodbye!")')
     data.append("")
     file_path = "%s/%s" % (dir_name_2, "classic_obj_test.py")
-    file = codecs.open(file_path, "w+", "utf-8")
+    file = open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()
 
@@ -614,7 +613,7 @@ def main():
     data.append('        DataPage().add_input_text(sb, "Goodbye!")')
     data.append("")
     file_path = "%s/%s" % (dir_name_2, "sb_fixture_test.py")
-    file = codecs.open(file_path, "w+", "utf-8")
+    file = open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()
 
@@ -624,7 +623,7 @@ def main():
     data = []
     data.append("")
     file_path = "%s/%s" % (dir_name_3, "__init__.py")
-    file = codecs.open(file_path, "w+", "utf-8")
+    file = open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()
 
@@ -652,7 +651,7 @@ def main():
     )
     data.append("")
     file_path = "%s/%s" % (dir_name_3, "google_test.py")
-    file = codecs.open(file_path, "w+", "utf-8")
+    file = open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()
 
@@ -670,7 +669,7 @@ def main():
     data.append('    search_results = "div#center_col"')
     data.append("")
     file_path = "%s/%s" % (dir_name_3, "google_objects.py")
-    file = codecs.open(file_path, "w+", "utf-8")
+    file = open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()
 
@@ -702,7 +701,7 @@ def main():
     data.append('        self.assert_element("div#login_button_container")')
     data.append("")
     file_path = "%s/%s" % (dir_name_3, "swag_labs_test.py")
-    file = codecs.open(file_path, "w+", "utf-8")
+    file = open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()
 
@@ -729,7 +728,7 @@ def main():
     data.append('        sb.assert_element("div#login_button_container")')
     data.append("")
     file_path = "%s/%s" % (dir_name_3, "sb_swag_test.py")
-    file = codecs.open(file_path, "w+", "utf-8")
+    file = open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()
 
@@ -756,7 +755,7 @@ def main():
     data.append("          ├── sb_swag_test.py")
     data.append("          └── swag_labs_test.py")
     file_path = "%s/%s" % (dir_name, "outline.rst")
-    file = codecs.open(file_path, "w+", "utf-8")
+    file = open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()
     if " " not in file_path:

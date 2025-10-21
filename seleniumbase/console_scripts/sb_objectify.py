@@ -8,7 +8,6 @@ Output:
     have been replaced with variable names defined in
     "page_objects.py", supporting the Page Object Pattern.
 """
-import codecs
 import os
 import re
 import sys
@@ -136,7 +135,7 @@ def create_objects_file(selector_list_dict=None):
         data.append('    html = "html"')
         data.append("")
     file_path = PAGE_OBJECTS_FILE
-    file = codecs.open(file_path, "w+", "utf-8")
+    file = open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()
     if not selector_list_dict:
@@ -3189,7 +3188,7 @@ def main(shell_command):
     # Create SeleniumBase test file
     base_file_name = seleniumbase_file.split(".py")[0]
     converted_file_name = base_file_name + ".py"  # Change end to make a copy
-    out_file = codecs.open(converted_file_name, "w+", encoding="utf-8")
+    out_file = open(converted_file_name, "w+", encoding="utf-8")
     out_file.writelines(seleniumbase_code)
     out_file.close()
     print('\n>>> ["%s"] was updated!\n' % converted_file_name)

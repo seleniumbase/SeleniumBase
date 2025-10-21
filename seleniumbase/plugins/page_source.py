@@ -1,6 +1,5 @@
 """PageSource Plugin for SeleniumBase tests that run with pynose / nosetests"""
 import os
-import codecs
 from nose.plugins import Plugin
 from seleniumbase.config import settings
 from seleniumbase.core import log_helper
@@ -29,7 +28,7 @@ class PageSource(Plugin):
         if not os.path.exists(test_logpath):
             os.makedirs(test_logpath)
         html_file_name = os.path.join(test_logpath, self.logfile_name)
-        html_file = codecs.open(html_file_name, "w+", "utf-8")
+        html_file = open(html_file_name, "w+", "utf-8")
         rendered_source = log_helper.get_html_source_with_base_href(
             test.driver, page_source
         )
@@ -45,7 +44,7 @@ class PageSource(Plugin):
         if not os.path.exists(test_logpath):
             os.makedirs(test_logpath)
         html_file_name = os.path.join(test_logpath, self.logfile_name)
-        html_file = codecs.open(html_file_name, "w+", "utf-8")
+        html_file = open(html_file_name, "w+", "utf-8")
         rendered_source = log_helper.get_html_source_with_base_href(
             test.driver, page_source
         )

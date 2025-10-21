@@ -40,7 +40,6 @@ Output:
     BaseCase format supports Languages or Recorder Mode.
     UC Mode automatically uses English with SB() format.
 """
-import codecs
 import colorama
 import os
 import sys
@@ -413,7 +412,7 @@ def main():
                 continue
             new_data.append(line)
     data = new_data
-    file = codecs.open(file_path, "w+", "utf-8")
+    file = open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()
     if " " not in file_name:
