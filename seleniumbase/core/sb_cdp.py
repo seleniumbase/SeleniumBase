@@ -2669,7 +2669,6 @@ class CDPMethods():
         self.loop.run_until_complete(self.page.wait())
 
     def save_page_source(self, name, folder=None):
-        import codecs
         from seleniumbase.core import log_helper
         if not name.endswith(".html"):
             name = name + ".html"
@@ -2695,7 +2694,7 @@ class CDPMethods():
                 rendered_source = "%s\n%s" % (base_href_html, page_source)
         else:
             rendered_source = page_source
-        html_file = codecs.open(html_file_path, "w+", "utf-8")
+        html_file = open(html_file_path, "w+", "utf-8")
         html_file.write(rendered_source)
         html_file.close()
 

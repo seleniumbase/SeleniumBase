@@ -8,7 +8,6 @@ Usage:
 Output:
         [NEW_FILE_SB].py  (adds "_SB" to the original file name)
                           (the original file is kept intact)"""
-import codecs
 import re
 import sys
 from seleniumbase.fixtures import js_utils
@@ -894,7 +893,7 @@ def main():
     # Create SeleniumBase test file
     base_file_name = webdriver_python_file.split(".py")[0]
     converted_file_name = base_file_name + "_SB.py"
-    out_file = codecs.open(converted_file_name, "w+", encoding="utf-8")
+    out_file = open(converted_file_name, "w+", encoding="utf-8")
     out_file.writelines(seleniumbase_code)
     out_file.close()
     print(

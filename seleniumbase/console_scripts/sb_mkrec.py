@@ -29,7 +29,6 @@ Output:
     Creates a new SeleniumBase test using the Recorder.
     If the filename already exists, an error is raised.
 """
-import codecs
 import colorama
 import shutil
 import os
@@ -240,7 +239,7 @@ def main():
         d2.append("")
         data = d2
 
-    file = codecs.open(file_path, "w+", "utf-8")
+    file = open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()
     success = (

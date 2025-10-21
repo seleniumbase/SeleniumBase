@@ -22,7 +22,6 @@ Output:
     and use "serif" theme with "slide" transition.
     The slides can be used as a basic boilerplate.
 """
-import codecs
 import colorama
 import os
 import sys
@@ -273,7 +272,7 @@ def main():
                 continue
             new_data.append(line)
     data = new_data
-    file = codecs.open(file_path, "w+", "utf-8")
+    file = open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()
     if " " not in file_name:

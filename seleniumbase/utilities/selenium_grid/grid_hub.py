@@ -1,4 +1,3 @@
-import codecs
 import os
 import subprocess
 import sys
@@ -78,7 +77,7 @@ def main():
     data = []
     data.append(verbose)
     file_path = os.path.join(dir_path, "verbose_hub_server.dat")
-    file = codecs.open(file_path, "w+", "utf-8")
+    file = open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()
 

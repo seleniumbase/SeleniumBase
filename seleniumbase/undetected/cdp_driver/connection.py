@@ -520,8 +520,6 @@ class Connection(metaclass=CantTouchThis):
                     except BaseException:
                         logger.debug("NOT GOOD", exc_info=True)
                         continue
-                finally:
-                    continue
         for ed in enabled_domains:
             # Items still present at this point are unused and need removal.
             self.enabled_domains.remove(ed)

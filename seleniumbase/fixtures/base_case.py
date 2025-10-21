@@ -32,7 +32,6 @@ Improvements include making WebDriver more robust, reliable, and flexible.
 Page elements are given enough time to load before WebDriver acts on them.
 Code becomes greatly simplified and easier to maintain."""
 
-import codecs
 import colorama
 import fasteners
 import json
@@ -4683,7 +4682,7 @@ class BaseCase(unittest.TestCase):
         if not os.path.exists(file_path):
             os.makedirs(file_path)
         cookies_file_path = os.path.join(file_path, name)
-        cookies_file = codecs.open(cookies_file_path, "w+", encoding="utf-8")
+        cookies_file = open(cookies_file_path, "w+", encoding="utf-8")
         cookies_file.writelines(json_cookies)
         cookies_file.close()
 
@@ -5737,7 +5736,7 @@ class BaseCase(unittest.TestCase):
         extra_file_name = "__init__.py"
         extra_file_path = os.path.join(recordings_folder, extra_file_name)
         if not os.path.exists(extra_file_path):
-            out_file = codecs.open(extra_file_path, "w+", "utf-8")
+            out_file = open(extra_file_path, "w+", "utf-8")
             out_file.writelines("\r\n".join(data))
             out_file.close()
             sys.stdout.write("\nCreated recordings%s__init__.py" % os.sep)
@@ -5785,7 +5784,7 @@ class BaseCase(unittest.TestCase):
         extra_file_name = "pytest.ini"
         extra_file_path = os.path.join(recordings_folder, extra_file_name)
         if not os.path.exists(extra_file_path):
-            out_file = codecs.open(extra_file_path, "w+", "utf-8")
+            out_file = open(extra_file_path, "w+", "utf-8")
             out_file.writelines("\r\n".join(data))
             out_file.close()
             sys.stdout.write("\nCreated recordings%spytest.ini" % os.sep)
@@ -5806,7 +5805,7 @@ class BaseCase(unittest.TestCase):
         extra_file_name = "setup.cfg"
         extra_file_path = os.path.join(recordings_folder, extra_file_name)
         if not os.path.exists(extra_file_path):
-            out_file = codecs.open(extra_file_path, "w+", "utf-8")
+            out_file = open(extra_file_path, "w+", "utf-8")
             out_file.writelines("\r\n".join(data))
             out_file.close()
             sys.stdout.write("\nCreated recordings%ssetup.cfg" % os.sep)
@@ -5824,7 +5823,7 @@ class BaseCase(unittest.TestCase):
         elif context_filename:
             file_name = context_filename
         file_path = os.path.join(recordings_folder, file_name)
-        out_file = codecs.open(file_path, "w+", "utf-8")
+        out_file = open(file_path, "w+", "utf-8")
         out_file.writelines("\r\n".join(data))
         out_file.close()
         rec_message = ">>> RECORDING SAVED as: "
@@ -5926,7 +5925,7 @@ class BaseCase(unittest.TestCase):
             file_name = sb_config.behave_scenario.filename.replace(".", "_")
         file_name = file_name.split("/")[-1].split("\\")[-1] + "_rec.feature"
         file_path = os.path.join(features_folder, file_name)
-        out_file = codecs.open(file_path, "w+", "utf-8")
+        out_file = open(file_path, "w+", "utf-8")
         out_file.writelines("\r\n".join(data))
         out_file.close()
 
@@ -5964,7 +5963,7 @@ class BaseCase(unittest.TestCase):
         file_name = "__init__.py"
         file_path = os.path.join(features_folder, file_name)
         if not os.path.exists(file_path):
-            out_file = codecs.open(file_path, "w+", "utf-8")
+            out_file = open(file_path, "w+", "utf-8")
             out_file.writelines("\r\n".join(data))
             out_file.close()
             print("Created recordings/features/__init__.py")
@@ -5977,7 +5976,7 @@ class BaseCase(unittest.TestCase):
         file_name = "behave.ini"
         file_path = os.path.join(features_folder, file_name)
         if not os.path.exists(file_path):
-            out_file = codecs.open(file_path, "w+", "utf-8")
+            out_file = open(file_path, "w+", "utf-8")
             out_file.writelines("\r\n".join(data))
             out_file.close()
             print("Created recordings/features/behave.ini")
@@ -6016,7 +6015,7 @@ class BaseCase(unittest.TestCase):
         file_name = "environment.py"
         file_path = os.path.join(features_folder, file_name)
         if not os.path.exists(file_path):
-            out_file = codecs.open(file_path, "w+", "utf-8")
+            out_file = open(file_path, "w+", "utf-8")
             out_file.writelines("\r\n".join(data))
             out_file.close()
             print("Created recordings/features/environment.py")
@@ -6026,7 +6025,7 @@ class BaseCase(unittest.TestCase):
         file_name = "__init__.py"
         file_path = os.path.join(steps_folder, file_name)
         if not os.path.exists(file_path):
-            out_file = codecs.open(file_path, "w+", "utf-8")
+            out_file = open(file_path, "w+", "utf-8")
             out_file.writelines("\r\n".join(data))
             out_file.close()
             print("Created recordings/features/steps/__init__.py")
@@ -6037,7 +6036,7 @@ class BaseCase(unittest.TestCase):
         file_name = "imported.py"
         file_path = os.path.join(steps_folder, file_name)
         if not os.path.exists(file_path):
-            out_file = codecs.open(file_path, "w+", "utf-8")
+            out_file = open(file_path, "w+", "utf-8")
             out_file.writelines("\r\n".join(data))
             out_file.close()
             print("Created recordings/features/steps/imported.py")
@@ -11078,7 +11077,7 @@ class BaseCase(unittest.TestCase):
             return  # Skip the rest when deferred visual asserts are used
         the_html = visual_helper.get_sbs_html()
         file_path = os.path.join(test_logpath, constants.SideBySide.HTML_FILE)
-        out_file = codecs.open(file_path, "w+", encoding="utf-8")
+        out_file = open(file_path, "w+", encoding="utf-8")
         out_file.writelines(the_html)
         out_file.close()
 
@@ -11238,16 +11237,16 @@ class BaseCase(unittest.TestCase):
             self.save_screenshot(
                 baseline_png, visual_baseline_path, selector="body"
             )
-            out_file = codecs.open(page_url_file, "w+", encoding="utf-8")
+            out_file = open(page_url_file, "w+", encoding="utf-8")
             out_file.writelines(page_url)
             out_file.close()
-            out_file = codecs.open(level_1_file, "w+", encoding="utf-8")
+            out_file = open(level_1_file, "w+", encoding="utf-8")
             out_file.writelines(json.dumps(level_1))
             out_file.close()
-            out_file = codecs.open(level_2_file, "w+", encoding="utf-8")
+            out_file = open(level_2_file, "w+", encoding="utf-8")
             out_file.writelines(json.dumps(level_2))
             out_file.close()
-            out_file = codecs.open(level_3_file, "w+", encoding="utf-8")
+            out_file = open(level_3_file, "w+", encoding="utf-8")
             out_file.writelines(json.dumps(level_3))
             out_file.close()
 
@@ -11386,7 +11385,7 @@ class BaseCase(unittest.TestCase):
             alpha_n_d_name = "".join([x if x.isalnum() else "_" for x in name])
             side_by_side_name = "side_by_side_%s.html" % alpha_n_d_name
             file_path = os.path.join(test_logpath, side_by_side_name)
-            out_file = codecs.open(file_path, "w+", encoding="utf-8")
+            out_file = open(file_path, "w+", encoding="utf-8")
             out_file.writelines(the_html)
             out_file.close()
 
@@ -12071,7 +12070,7 @@ class BaseCase(unittest.TestCase):
             with suppress(Exception):
                 os.makedirs(saved_presentations_folder)
         file_path = os.path.join(saved_presentations_folder, filename)
-        out_file = codecs.open(file_path, "w+", encoding="utf-8")
+        out_file = open(file_path, "w+", encoding="utf-8")
         out_file.writelines(the_html)
         out_file.close()
         if self._output_file_saves:
@@ -12766,7 +12765,7 @@ class BaseCase(unittest.TestCase):
             with suppress(Exception):
                 os.makedirs(saved_charts_folder)
         file_path = os.path.join(saved_charts_folder, filename)
-        out_file = codecs.open(file_path, "w+", encoding="utf-8")
+        out_file = open(file_path, "w+", encoding="utf-8")
         out_file.writelines(the_html)
         out_file.close()
         if self._output_file_saves:
@@ -16048,7 +16047,7 @@ class BaseCase(unittest.TestCase):
         test_id = test_id.replace(".py::", ".").replace("::", ".")
         test_id = test_id.replace("/", ".").replace("\\", ".")
         test_id = test_id.replace(" ", "_")
-        # Linux filename length limit for `codecs.open(filename)` = 255
+        # Linux filename length limit for `open(filename)` = 255
         # 255 - len("latest_logs/") - len("/basic_test_info.txt") = 223
         if len(test_id) <= 223:
             return test_id
@@ -16326,7 +16325,7 @@ class BaseCase(unittest.TestCase):
                     dash_pie = json.dumps(sb_config._saved_dashboard_pie)
                     dash_pie_loc = constants.Dashboard.DASH_PIE
                     pie_path = os.path.join(abs_path, dash_pie_loc)
-                    pie_file = codecs.open(pie_path, "w+", encoding="utf-8")
+                    pie_file = open(pie_path, "w+", encoding="utf-8")
                     pie_file.writelines(dash_pie)
                     pie_file.close()
         DASH_PIE_PNG_1 = constants.Dashboard.get_dash_pie_1()
@@ -16486,7 +16485,7 @@ class BaseCase(unittest.TestCase):
         )
         abs_path = os.path.abspath(".")
         file_path = os.path.join(abs_path, "dashboard.html")
-        out_file = codecs.open(file_path, "w+", encoding="utf-8")
+        out_file = open(file_path, "w+", encoding="utf-8")
         out_file.writelines(the_html)
         out_file.close()
         sb_config._dash_html = the_html
@@ -16499,7 +16498,7 @@ class BaseCase(unittest.TestCase):
             dash_json = json.dumps((_results, _display_id, _rt, _tlp, d_stats))
             dash_json_loc = constants.Dashboard.DASH_JSON
             dash_jsonpath = os.path.join(abs_path, dash_json_loc)
-            dash_json_file = codecs.open(dash_jsonpath, "w+", encoding="utf-8")
+            dash_json_file = open(dash_jsonpath, "w+", encoding="utf-8")
             dash_json_file.writelines(dash_json)
             dash_json_file.close()
 

@@ -1,6 +1,5 @@
 """ For preparing the mkdocs-generated seleniumbase.io website. """
 
-import codecs
 import os
 import re
 from pathlib import Path
@@ -196,6 +195,6 @@ def main(*args, **kwargs):
                 )
             seleniumbase_lines.append(line)
         if changed:
-            out_file = codecs.open(readme_file, "w+", encoding="utf-8")
+            out_file = open(readme_file, "w+", encoding="utf-8")
             out_file.writelines("\r\n".join(seleniumbase_lines))
             out_file.close()

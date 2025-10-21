@@ -1,5 +1,4 @@
 """This module contains useful utility methods"""
-import codecs
 import fasteners
 import os
 import re
@@ -314,7 +313,7 @@ def _save_data_as(data, destination_folder, file_name):
         constants.MultiBrowser.FILE_IO_LOCK
     )
     with file_io_lock:
-        out_file = codecs.open(
+        out_file = open(
             os.path.join(destination_folder, file_name), "w+", encoding="utf-8"
         )
         out_file.writelines(data)
@@ -332,7 +331,7 @@ def _append_data_to_file(data, destination_folder, file_name):
                 existing_data = f.read()
             if not existing_data.split("\n")[-1] == "":
                 existing_data += "\n"
-        out_file = codecs.open(
+        out_file = open(
             os.path.join(destination_folder, file_name), "w+", encoding="utf-8"
         )
         out_file.writelines("%s%s" % (existing_data, data))

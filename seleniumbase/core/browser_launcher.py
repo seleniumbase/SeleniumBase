@@ -2006,14 +2006,12 @@ def _repair_edgedriver(edge_version):
 
 
 def _mark_driver_repaired():
-    import codecs
-
     abs_path = os.path.abspath(".")
     driver_repaired_lock = constants.MultiBrowser.DRIVER_REPAIRED
     file_path = os.path.join(abs_path, driver_repaired_lock)
     if not os.path.exists(DOWNLOADS_FOLDER):
         os.makedirs(DOWNLOADS_FOLDER)
-    out_file = codecs.open(file_path, "w+", encoding="utf-8")
+    out_file = open(file_path, "w+", encoding="utf-8")
     out_file.writelines("")
     out_file.close()
 

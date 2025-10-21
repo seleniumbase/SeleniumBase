@@ -1898,7 +1898,6 @@ def _get_test_ids_(the_item):
 
 
 def _create_dashboard_assets_():
-    import codecs
     from seleniumbase.js_code.live_js import live_js
     from seleniumbase.core.style_sheet import get_pytest_style
 
@@ -1916,7 +1915,7 @@ def _create_dashboard_assets_():
         if existing_pytest_style == get_pytest_style():
             add_pytest_style_css = False
     if add_pytest_style_css:
-        out_file = codecs.open(pytest_style_css, "w+", encoding="utf-8")
+        out_file = open(pytest_style_css, "w+", encoding="utf-8")
         out_file.writelines(get_pytest_style())
         out_file.close()
     live_js_file = os.path.join(assets_folder, "live.js")
@@ -1928,7 +1927,7 @@ def _create_dashboard_assets_():
         if existing_live_js == live_js:
             add_live_js_file = False
     if add_live_js_file:
-        out_file = codecs.open(live_js_file, "w+", encoding="utf-8")
+        out_file = open(live_js_file, "w+", encoding="utf-8")
         out_file.writelines(live_js)
         out_file.close()
 
