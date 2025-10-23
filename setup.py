@@ -9,7 +9,7 @@ this_dir = os.path.abspath(os.path.dirname(__file__))
 long_description = None
 total_description = None
 try:
-    with open(os.path.join(this_dir, "README.md"), "rb") as f:
+    with open(os.path.join(this_dir, "README.md"), mode="rb") as f:
         total_description = f.read().decode("utf-8")
     description_lines = total_description.split("\n")
     long_description_lines = []
@@ -21,7 +21,9 @@ except IOError:
     long_description = "A complete library for building end-to-end tests."
 about = {}
 # Get the package version from the seleniumbase/__version__.py file
-with open(os.path.join(this_dir, "seleniumbase", "__version__.py"), "rb") as f:
+with open(
+    os.path.join(this_dir, "seleniumbase", "__version__.py"), mode="rb"
+) as f:
     exec(f.read().decode("utf-8"), about)
 
 if sys.argv[-1] == "publish":
@@ -180,7 +182,7 @@ setup(
         'pygments>=2.19.2',
         'pyreadline3>=3.5.4;platform_system=="Windows"',
         "tabcompleter>=1.4.0",
-        "pdbp>=1.7.1",
+        "pdbp>=1.8.0",
         "idna>=3.11",
         'chardet==5.2.0',
         'charset-normalizer>=3.4.4,<4',

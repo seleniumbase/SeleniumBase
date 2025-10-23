@@ -19,7 +19,7 @@ FULL_DOWNLOAD_PATH = os.getcwd() + "/" + RENAMED_JAR_FILE
 def download_selenium_server():
     """Downloads the Selenium Server JAR file."""
     try:
-        local_file = open(JAR_FILE, "wb")
+        local_file = open(JAR_FILE, mode="wb")
         remote_file = urlopen(SELENIUM_JAR)
         print("Downloading the Selenium Server JAR file...\n")
         local_file.write(remote_file.read())

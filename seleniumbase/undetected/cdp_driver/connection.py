@@ -33,6 +33,7 @@ GLOBAL_DELAY = 0.005
 MAX_SIZE: int = 2**28
 PING_TIMEOUT: int = 1800  # 30 minutes
 TargetType = Union[cdp.target.TargetInfo, cdp.target.TargetID]
+logging.getLogger("asyncio").setLevel(logging.CRITICAL)
 logger = logging.getLogger("uc.connection")
 
 

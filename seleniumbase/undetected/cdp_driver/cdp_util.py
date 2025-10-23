@@ -554,11 +554,45 @@ async def start(
         ad_block_dir = os.path.join(DOWNLOADS_FOLDER, "ad_block")
         __unzip_to_new_folder(ad_block_zip, ad_block_dir)
         extension_dir = __add_chrome_ext_dir(extension_dir, ad_block_dir)
-    if (
-        "binary_location" in kwargs
-        and not browser_executable_path
-    ):
+    if "binary_location" in kwargs and not browser_executable_path:
         browser_executable_path = kwargs["binary_location"]
+    if not browser_executable_path:
+        browser = None
+        if "browser" in kwargs:
+            browser = kwargs["browser"]
+        if not browser and "--browser" in arg_join:
+            br_string = None
+            if "--browser=" in arg_join:
+                br_string = arg_join.split("--browser=")[1].split(" ")[0]
+            elif "--browser " in arg_join:
+                br_string = arg_join.split("--browser ")[1].split(" ")[0]
+            if br_string:
+                if br_string.startswith('"') and br_string.endswith('"'):
+                    br_string = proxy_string[1:-1]
+                elif br_string.startswith("'") and br_string.endswith("'"):
+                    br_string = proxy_string[1:-1]
+                browser = br_string
+        if not browser:
+            if "--edge" in sys_argv:
+                browser = "edge"
+            elif "--opera" in sys_argv:
+                browser = "opera"
+            elif "--brave" in sys_argv:
+                browser = "brave"
+            elif "--comet" in sys_argv:
+                browser = "comet"
+            elif "--atlas" in sys_argv:
+                browser = "atlas"
+            else:
+                browser = "chrome"
+        sb_config._cdp_browser = browser
+        if browser == "comet" or browser == "atlas":
+            incognito = False
+            guest = False
+        with suppress(Exception):
+            browser_binary = detect_b_ver.get_binary_location(browser)
+            if browser_binary and os.path.exists(browser_binary):
+                browser_executable_path = browser_binary
     if not config:
         config = Config(
             user_data_dir,
@@ -622,23 +656,8 @@ async def start(
 
 
 async def start_async(*args, **kwargs) -> Browser:
-    headless = False
-    binary_location = None
-    if "browser_executable_path" in kwargs:
-        binary_location = kwargs["browser_executable_path"]
-        if binary_location and isinstance(binary_location, str):
-            binary_location = binary_location.strip()
-    else:
-        binary_location = detect_b_ver.get_binary_location("google-chrome")
-        if binary_location and isinstance(binary_location, str):
-            binary_location = binary_location.strip()
-            if not os.path.exists(binary_location):
-                binary_location = None
-    if (
-        shared_utils.is_chrome_130_or_newer(binary_location)
-        and "user_data_dir" in kwargs
-        and kwargs["user_data_dir"]
-    ):
+    if "user_data_dir" in kwargs and kwargs["user_data_dir"]:
+        headless = False
         if "headless" in kwargs:
             headless = kwargs["headless"]
         decoy_args = kwargs
@@ -662,23 +681,8 @@ def start_sync(*args, **kwargs) -> Browser:
         loop = kwargs["loop"]
     else:
         loop = asyncio.new_event_loop()
-    headless = False
-    binary_location = None
-    if "browser_executable_path" in kwargs:
-        binary_location = kwargs["browser_executable_path"]
-        if binary_location and isinstance(binary_location, str):
-            binary_location = binary_location.strip()
-    else:
-        binary_location = detect_b_ver.get_binary_location("google-chrome")
-        if binary_location and isinstance(binary_location, str):
-            binary_location = binary_location.strip()
-            if not os.path.exists(binary_location):
-                binary_location = None
-    if (
-        shared_utils.is_chrome_130_or_newer(binary_location)
-        and "user_data_dir" in kwargs
-        and kwargs["user_data_dir"]
-    ):
+    if "user_data_dir" in kwargs and kwargs["user_data_dir"]:
+        headless = False
         if "headless" in kwargs:
             headless = kwargs["headless"]
         decoy_args = kwargs

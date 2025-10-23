@@ -2011,7 +2011,7 @@ def _mark_driver_repaired():
     file_path = os.path.join(abs_path, driver_repaired_lock)
     if not os.path.exists(DOWNLOADS_FOLDER):
         os.makedirs(DOWNLOADS_FOLDER)
-    out_file = open(file_path, "w+", encoding="utf-8")
+    out_file = open(file_path, mode="w+", encoding="utf-8")
     out_file.writelines("")
     out_file.close()
 
@@ -2396,6 +2396,19 @@ def _set_chrome_options(
         and not recorder_ext
         and (not extension_zip and not extension_dir)
     ):
+        if (
+            binary_location
+            and isinstance(binary_location, str)
+            and (
+                binary_location.lower().endswith("comet")
+                or binary_location.lower().endswith("comet.exe")
+                or binary_location.lower().endswith("atlas")
+                or binary_location.lower().endswith("atlas.exe")
+            )
+        ):
+            # AI browsers don't like Incognito / Guest Mode
+            incognito = False
+            guest_mode = False
         if incognito:
             # Use Chrome's Incognito Mode
             # Incognito Mode prevents Chrome extensions from loading,

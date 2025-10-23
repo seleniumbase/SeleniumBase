@@ -239,7 +239,7 @@ def main():
         d2.append("")
         data = d2
 
-    file = open(file_path, "w+", "utf-8")
+    file = open(file_path, mode="w+", encoding="utf-8")
     file.writelines("\r\n".join(data))
     file.close()
     success = (

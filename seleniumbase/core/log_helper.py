@@ -36,7 +36,7 @@ def log_screenshot(test_logpath, driver, screenshot=None, get=False):
             element = driver.find_element("tag name", "body")
             screenshot = element.screenshot_as_base64
         if screenshot != screenshot_warning:
-            with open(screenshot_path, "wb") as file:
+            with open(screenshot_path, mode="wb") as file:
                 file.write(screenshot)
             with suppress(Exception):
                 shared_utils.make_writable(screenshot_path)
@@ -297,7 +297,7 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
         with suppress(Exception):
             os.makedirs(test_logpath)
     with suppress(Exception):
-        log_file = open(basic_file_path, "w+", encoding="utf-8")
+        log_file = open(basic_file_path, mode="w+", encoding="utf-8")
         log_file.writelines("\r\n".join(data_to_save))
         log_file.close()
         shared_utils.make_writable(basic_file_path)
@@ -352,7 +352,7 @@ def log_skipped_test_data(test, test_logpath, driver, browser, reason):
     data_to_save.append("")
     file_path = os.path.join(test_logpath, "skip_reason.txt")
     with suppress(Exception):
-        log_file = open(file_path, "w+", encoding="utf-8")
+        log_file = open(file_path, mode="w+", encoding="utf-8")
         log_file.writelines("\r\n".join(data_to_save))
         log_file.close()
         shared_utils.make_writable(file_path)
@@ -387,7 +387,7 @@ def log_page_source(test_logpath, driver, source=None):
             os.makedirs(test_logpath)
     html_file_path = os.path.join(test_logpath, html_file_name)
     with suppress(Exception):
-        html_file = open(html_file_path, "w+", encoding="utf-8")
+        html_file = open(html_file_path, mode="w+", encoding="utf-8")
         html_file.write(page_source)
         html_file.close()
         shared_utils.make_writable(html_file_path)

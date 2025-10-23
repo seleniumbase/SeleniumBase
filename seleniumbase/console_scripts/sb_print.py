@@ -123,7 +123,7 @@ def main():
 
     all_code = None
     with open(
-        file_to_print, "r+", encoding="utf-8", errors="ignore"
+        file_to_print, mode="r+", encoding="utf-8", errors="ignore"
     ) as f:
         all_code = f.read()
     all_code = all_code.replace("\t", "    ")

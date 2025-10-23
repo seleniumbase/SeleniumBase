@@ -272,7 +272,7 @@ def main():
                 continue
             new_data.append(line)
     data = new_data
-    file = open(file_path, "w+", "utf-8")
+    file = open(file_path, mode="w+", encoding="utf-8")
     file.writelines("\r\n".join(data))
     file.close()
     if " " not in file_name:

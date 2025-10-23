@@ -34,10 +34,12 @@ class SeleniumBaseIOPage:
 
 class MyTests(BaseCase):
     def test_page_objects(self):
-        if self.headless and self._multithreaded:
+        if self.headless:
             self.open_if_not_url("about:blank")
-            print("\n  Skipping test in headless multi-threaded mode.")
-            self.skip("Skipping test in headless multi-threaded mode.")
+            print("\n  Skipping test in headless mode.")
+            self.skip("Skipping test in headless mode.")
+        if not self.undetectable:
+            self.get_new_driver(undetectable=True)
         search_term = "SeleniumBase.io Docs"
         expected_text = "SeleniumBase"
         GooglePage().go_to_google(self)
