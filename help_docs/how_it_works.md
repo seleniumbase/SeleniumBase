@@ -4,7 +4,7 @@
 
 <a id="how_seleniumbase_works"></a>
 
-👁️🔎 The primary [SeleniumBase syntax format](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md) works by extending [pytest](https://docs.pytest.org/en/latest/) as a direct plugin. SeleniumBase automatically spins up web browsers for tests (using [Selenium WebDriver](https://www.selenium.dev/documentation/webdriver/)), and then gives those tests access to the SeleniumBase libraries through the [BaseCase class](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py). Tests are also given access to [SeleniumBase command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md) and [SeleniumBase methods](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md), which provide additional functionality.
+👁️🔎 The primary [SeleniumBase syntax format](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md) works by extending [pytest](https://docs.pytest.org/en/latest/) as a direct plugin. SeleniumBase automatically spins up web browsers for tests, and then gives those tests access to the SeleniumBase libraries through the [BaseCase class](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py). Tests are also given access to [SeleniumBase command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md) and [SeleniumBase methods](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md).
 
 👁️🔎 ``pytest`` uses a feature called test discovery to automatically find and run Python methods that start with ``test_`` when those methods are located in Python files that start with ``test_`` or end with ``_test.py``.
 
@@ -50,7 +50,7 @@ BaseCase.main(__name__, __file__)
 
 class TestSimpleLogin(BaseCase):
     def test_simple_login(self):
-        self.open("https://seleniumbase.io/simple/login")
+        self.open("seleniumbase.io/simple/login")
         self.type("#username", "demo_user")
         self.type("#password", "secret_pass")
         self.click('a:contains("Sign in")')
@@ -80,7 +80,7 @@ from seleniumbase import Driver
 
 driver = Driver()
 try:
-    driver.get("https://seleniumbase.io/simple/login")
+    driver.open("seleniumbase.io/simple/login")
     driver.type("#username", "demo_user")
     driver.type("#password", "secret_pass")
     driver.click('a:contains("Sign in")')
