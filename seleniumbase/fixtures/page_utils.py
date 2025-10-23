@@ -109,10 +109,10 @@ def looks_like_a_page_url(url):
     navigate to the page if a URL is detected, but will instead call
     self.get_element(URL_AS_A_SELECTOR) if the input is not a URL."""
     return url.startswith((
-        "http:", "https:", "://", "about:", "blob:", "chrome:",
+        "http:", "https:", "://", "about:", "blob:", "chrome:", "opera:",
         "data:", "edge:", "file:", "view-source:", "chrome-search:",
         "chrome-extension:", "chrome-untrusted:", "isolated-app:",
-        "chrome-devtools:", "devtools:"
+        "chrome-devtools:", "devtools:", "brave:", "comet:", "atlas:"
     ))
 
 

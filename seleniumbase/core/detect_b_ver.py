@@ -40,6 +40,10 @@ class OSType(object):
 class ChromeType(object):
     GOOGLE = "google-chrome"
     MSEDGE = "edge"
+    OPERA = "opera"
+    BRAVE = "brave"
+    COMET = "comet"
+    ATLAS = "atlas"
 
 
 PATTERN = {
@@ -96,7 +100,9 @@ def linux_browser_apps_to_cmd(*apps):
     )
 
 
-def chrome_on_linux_path(chromium_ok=False):
+def chrome_on_linux_path(chromium_ok=False, browser_type=None):
+    if browser_type and browser_type != ChromeType.GOOGLE:
+        return ""
     if os_name() != OSType.LINUX:
         return ""
     paths = ["/bin/google-chrome", "/bin/google-chrome-stable"]
@@ -126,7 +132,9 @@ def chrome_on_linux_path(chromium_ok=False):
     return "/usr/bin/google-chrome"
 
 
-def edge_on_linux_path():
+def edge_on_linux_path(browser_type=None):
+    if browser_type and browser_type != ChromeType.MSEDGE:
+        return ""
     if os_name() != OSType.LINUX:
         return ""
     paths = os.environ["PATH"].split(os.pathsep)
@@ -143,7 +151,60 @@ def edge_on_linux_path():
     return "/usr/bin/microsoft-edge"
 
 
-def chrome_on_windows_path():
+def opera_on_linux_path(browser_type=None):
+    if browser_type and browser_type != ChromeType.OPERA:
+        return ""
+    if os_name() != OSType.LINUX:
+        return ""
+    paths = os.environ["PATH"].split(os.pathsep)
+    binaries = []
+    binaries.append("opera")
+    binaries.append("opera-stable")
+    for binary in binaries:
+        for path in paths:
+            full_path = os.path.join(path, binary)
+            if os.path.exists(full_path) and os.access(full_path, os.X_OK):
+                return full_path
+    return "/usr/bin/opera-stable"
+
+
+def brave_on_linux_path(browser_type=None):
+    if browser_type and browser_type != ChromeType.BRAVE:
+        return ""
+    if os_name() != OSType.LINUX:
+        return ""
+    paths = os.environ["PATH"].split(os.pathsep)
+    binaries = []
+    binaries.append("brave-browser")
+    binaries.append("brave")
+    binaries.append("brave-browser-stable")
+    for binary in binaries:
+        for path in paths:
+            full_path = os.path.join(path, binary)
+            if os.path.exists(full_path) and os.access(full_path, os.X_OK):
+                return full_path
+    return "/usr/bin/brave-browser"
+
+
+def comet_on_linux_path(browser_type=None):
+    if browser_type and browser_type != ChromeType.COMET:
+        return ""
+    if os_name() != OSType.LINUX:
+        return ""
+    return ""  # Comet Browser isn't supported on Linux yet
+
+
+def atlas_on_linux_path(browser_type=None):
+    if browser_type and browser_type != ChromeType.ATLAS:
+        return ""
+    if os_name() != OSType.LINUX:
+        return ""
+    return ""  # Atlas Browser isn't supported on Linux yet
+
+
+def chrome_on_windows_path(browser_type=None):
+    if browser_type and browser_type != ChromeType.GOOGLE:
+        return ""
     if os_name() != OSType.WIN:
         return ""
     candidates = []
@@ -171,7 +232,9 @@ def chrome_on_windows_path():
     return ""
 
 
-def edge_on_windows_path():
+def edge_on_windows_path(browser_type=None):
+    if browser_type and browser_type != ChromeType.MSEDGE:
+        return ""
     if os_name() != OSType.WIN:
         return ""
     candidates = []
@@ -199,6 +262,119 @@ def edge_on_windows_path():
     return ""
 
 
+def opera_on_windows_path(browser_type=None):
+    if browser_type and browser_type != ChromeType.OPERA:
+        return ""
+    if os_name() != OSType.WIN:
+        return ""
+    candidates = []
+    for item in map(
+        os.environ.get,
+        (
+            "PROGRAMFILES",
+            "PROGRAMFILES(X86)",
+            "LOCALAPPDATA",
+            "PROGRAMW6432",
+        ),
+    ):
+        for subitem in (
+            "Opera",
+            "Opera/Application",
+        ):
+            try:
+                candidates.append(os.sep.join((item, subitem, "launcher.exe")))
+            except TypeError:
+                pass
+    for candidate in candidates:
+        if os.path.exists(candidate) and os.access(candidate, os.X_OK):
+            return os.path.normpath(candidate)
+    return ""
+
+
+def brave_on_windows_path(browser_type=None):
+    if browser_type and browser_type != ChromeType.BRAVE:
+        return ""
+    if os_name() != OSType.WIN:
+        return ""
+    candidates = []
+    for item in map(
+        os.environ.get,
+        (
+            "PROGRAMFILES",
+            "PROGRAMFILES(X86)",
+            "LOCALAPPDATA",
+            "PROGRAMW6432",
+        ),
+    ):
+        for subitem in (
+            "BraveSoftware/Brave-Browser/Application",
+        ):
+            try:
+                candidates.append(os.sep.join((item, subitem, "brave.exe")))
+            except TypeError:
+                pass
+    for candidate in candidates:
+        if os.path.exists(candidate) and os.access(candidate, os.X_OK):
+            return os.path.normpath(candidate)
+    return ""
+
+
+def comet_on_windows_path(browser_type=None):
+    if browser_type and browser_type != ChromeType.COMET:
+        return ""
+    if os_name() != OSType.WIN:
+        return ""
+    candidates = []
+    for item in map(
+        os.environ.get,
+        (
+            "PROGRAMFILES",
+            "PROGRAMFILES(X86)",
+            "LOCALAPPDATA",
+            "PROGRAMW6432",
+        ),
+    ):
+        for subitem in (
+            "Comet/Application",
+        ):
+            try:
+                candidates.append(os.sep.join((item, subitem, "Comet.exe")))
+            except TypeError:
+                pass
+    for candidate in candidates:
+        if os.path.exists(candidate) and os.access(candidate, os.X_OK):
+            return os.path.normpath(candidate)
+    return ""
+
+
+def atlas_on_windows_path(browser_type=None):
+    if browser_type and browser_type != ChromeType.ATLAS:
+        return ""
+    if os_name() != OSType.WIN:
+        return ""
+    candidates = []
+    for item in map(
+        os.environ.get,
+        (
+            "PROGRAMFILES",
+            "PROGRAMFILES(X86)",
+            "LOCALAPPDATA",
+            "PROGRAMW6432",
+        ),
+    ):
+        for subitem in (
+            "Atlas/Application",
+        ):
+            try:
+                candidates.append(os.sep.join((item, subitem, "Atlas.exe")))
+            except TypeError:
+                pass
+    for candidate in candidates:
+        if os.path.exists(candidate) and os.access(candidate, os.X_OK):
+            return os.path.normpath(candidate)
+    return ""
+
+
 def windows_browser_apps_to_cmd(*apps):
     """Create analogue of browser --version command for windows."""
     powershell = determine_powershell()
@@ -211,18 +387,48 @@ def windows_browser_apps_to_cmd(*apps):
 
 def get_binary_location(browser_type, chromium_ok=False):
     """Return the full path of the browser binary."""
+    if browser_type.lower() == "chrome":
+        browser_type = "google-chrome"
+    elif browser_type.lower() == "msedge":
+        browser_type = "edge"
+    else:
+        browser_type = browser_type.lower()
     cmd_mapping = {
         ChromeType.GOOGLE: {
-            OSType.LINUX: chrome_on_linux_path(chromium_ok),
+            OSType.LINUX: chrome_on_linux_path(chromium_ok, browser_type),
             OSType.MAC: r"/Applications/Google Chrome.app"
                         r"/Contents/MacOS/Google Chrome",
-            OSType.WIN: chrome_on_windows_path(),
+            OSType.WIN: chrome_on_windows_path(browser_type),
         },
         ChromeType.MSEDGE: {
-            OSType.LINUX: edge_on_linux_path(),
+            OSType.LINUX: edge_on_linux_path(browser_type),
             OSType.MAC: r"/Applications/Microsoft Edge.app"
                         r"/Contents/MacOS/Microsoft Edge",
-            OSType.WIN: edge_on_windows_path(),
+            OSType.WIN: edge_on_windows_path(browser_type),
+        },
+        ChromeType.OPERA: {
+            OSType.LINUX: opera_on_linux_path(browser_type),
+            OSType.MAC: r"/Applications/Opera.app"
+                        r"/Contents/MacOS/Opera",
+            OSType.WIN: opera_on_windows_path(browser_type),
+        },
+        ChromeType.BRAVE: {
+            OSType.LINUX: brave_on_linux_path(browser_type),
+            OSType.MAC: r"/Applications/Brave Browser.app"
+                        r"/Contents/MacOS/Brave Browser",
+            OSType.WIN: brave_on_windows_path(browser_type),
+        },
+        ChromeType.COMET: {
+            OSType.LINUX: comet_on_linux_path(browser_type),
+            OSType.MAC: r"/Applications/Comet.app"
+                        r"/Contents/MacOS/Comet",
+            OSType.WIN: comet_on_windows_path(browser_type),
+        },
+        ChromeType.ATLAS: {
+            OSType.LINUX: atlas_on_linux_path(browser_type),
+            OSType.MAC: r"/Applications/Atlas.app"
+                        r"/Contents/MacOS/Atlas",
+            OSType.WIN: atlas_on_windows_path(browser_type),
         },
     }
     return cmd_mapping[browser_type][os_name()]

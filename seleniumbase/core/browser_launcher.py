@@ -2396,6 +2396,19 @@ def _set_chrome_options(
         and not recorder_ext
         and (not extension_zip and not extension_dir)
     ):
+        if (
+            binary_location
+            and isinstance(binary_location, str)
+            and (
+                binary_location.lower().endswith("comet")
+                or binary_location.lower().endswith("comet.exe")
+                or binary_location.lower().endswith("atlas")
+                or binary_location.lower().endswith("atlas.exe")
+            )
+        ):
+            # AI browsers don't like Incognito / Guest Mode
+            incognito = False
+            guest_mode = False
         if incognito:
             # Use Chrome's Incognito Mode
             # Incognito Mode prevents Chrome extensions from loading,

@@ -406,7 +406,14 @@ class ValidBinaries:
         "brave",
         "opera",
         "opera-stable",
+        "comet",
+        "comet-browser",
+        "comet-stable",
+        "atlas",
+        "atlas-browser",
+        "atlas-stable",
         "chrome.exe",  # WSL (Windows Subsystem for Linux)
+        "chromium.exe",  # WSL (Windows Subsystem for Linux)
     ]
     valid_edge_binaries_on_linux = [
         "microsoft-edge",
@@ -424,6 +431,8 @@ class ValidBinaries:
         "Google Chrome Dev",
         "Brave Browser",
         "Opera",
+        "Comet",
+        "Atlas",
     ]
     valid_edge_binaries_on_macos = [
         "Microsoft Edge",
@@ -434,6 +443,8 @@ class ValidBinaries:
         "chrome-headless-shell.exe",
         "brave.exe",
         "opera.exe",
+        "comet.exe",
+        "atlas.exe",
     ]
     valid_edge_binaries_on_windows = [
         "msedge.exe",
