@@ -1216,24 +1216,24 @@ def _create_dashboard_assets_():
     add_pytest_style_css = True
     if os.path.exists(pytest_style_css):
         existing_pytest_style = None
-        with open(pytest_style_css, "r") as f:
+        with open(pytest_style_css, mode="r") as f:
             existing_pytest_style = f.read()
         if existing_pytest_style == get_pytest_style():
             add_pytest_style_css = False
     if add_pytest_style_css:
-        out_file = open(pytest_style_css, "w+", encoding="utf-8")
+        out_file = open(pytest_style_css, mode="w+", encoding="utf-8")
         out_file.writelines(get_pytest_style())
         out_file.close()
     live_js_file = os.path.join(assets_folder, "live.js")
     add_live_js_file = True
     if os.path.exists(live_js_file):
         existing_live_js = None
-        with open(live_js_file, "r") as f:
+        with open(live_js_file, mode="r") as f:
             existing_live_js = f.read()
         if existing_live_js == live_js:
             add_live_js_file = False
     if add_live_js_file:
-        out_file = open(live_js_file, "w+", encoding="utf-8")
+        out_file = open(live_js_file, mode="w+", encoding="utf-8")
         out_file.writelines(live_js)
         out_file.close()
 
@@ -1306,7 +1306,7 @@ def _perform_behave_unconfigure_():
         # Part 1: Finalizing the dashboard / integrating html report
         if os.path.exists(dashboard_path):
             the_html_d = None
-            with open(dashboard_path, "r", encoding="utf-8") as f:
+            with open(dashboard_path, mode="r", encoding="utf-8") as f:
                 the_html_d = f.read()
             if sb_config._multithreaded and "-c" in sys.argv:
                 # Threads have "-c" in sys.argv, except for the last
@@ -1317,7 +1317,7 @@ def _perform_behave_unconfigure_():
                 if os.path.exists(pie_path):
                     import json
 
-                    with open(pie_path, "r") as f:
+                    with open(pie_path, mode="r") as f:
                         dash_pie = f.read().strip()
                     sb_config._saved_dashboard_pie = json.loads(dash_pie)
             # If the test run doesn't complete by itself, stop refresh
@@ -1326,7 +1326,7 @@ def _perform_behave_unconfigure_():
             the_html_d = the_html_d.replace(find_it_3, swap_with_3)
             the_html_d = the_html_d.replace(find_it_4, swap_with_4)
             the_html_d += stamp
-            with open(dashboard_path, "w", encoding="utf-8") as f:
+            with open(dashboard_path, mode="w", encoding="utf-8") as f:
                 f.write(the_html_d)  # Finalize the dashboard
     except KeyboardInterrupt:
         pass

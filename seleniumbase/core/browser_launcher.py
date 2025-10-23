@@ -2011,7 +2011,7 @@ def _mark_driver_repaired():
     file_path = os.path.join(abs_path, driver_repaired_lock)
     if not os.path.exists(DOWNLOADS_FOLDER):
         os.makedirs(DOWNLOADS_FOLDER)
-    out_file = open(file_path, "w+", encoding="utf-8")
+    out_file = open(file_path, mode="w+", encoding="utf-8")
     out_file.writelines("")
     out_file.close()
 

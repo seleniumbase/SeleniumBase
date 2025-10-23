@@ -25,7 +25,7 @@ class BasicTestInfo(Plugin):
         if not os.path.exists(test_logpath):
             os.makedirs(test_logpath)
         file_name = "%s/%s" % (test_logpath, self.logfile_name)
-        basic_info_file = open(file_name, "w+", "utf-8")
+        basic_info_file = open(file_name, mode="w+", encoding="utf-8")
         self.__log_test_error_data(basic_info_file, test, err, "Error")
         basic_info_file.close()
 
@@ -34,7 +34,7 @@ class BasicTestInfo(Plugin):
         if not os.path.exists(test_logpath):
             os.makedirs(test_logpath)
         file_name = "%s/%s" % (test_logpath, self.logfile_name)
-        basic_info_file = open(file_name, "w+", "utf-8")
+        basic_info_file = open(file_name, mode="w+", encoding="utf-8")
         self.__log_test_error_data(basic_info_file, test, err, "Error")
         basic_info_file.close()
 

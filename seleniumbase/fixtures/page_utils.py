@@ -304,7 +304,7 @@ def _download_file_to(file_url, destination_folder, new_file_name=None):
         constants.MultiBrowser.DOWNLOAD_FILE_LOCK
     )
     with download_file_lock:
-        with open(file_path, "wb") as code:
+        with open(file_path, mode="wb") as code:
             code.write(r.content)
 
 
@@ -314,7 +314,9 @@ def _save_data_as(data, destination_folder, file_name):
     )
     with file_io_lock:
         out_file = open(
-            os.path.join(destination_folder, file_name), "w+", encoding="utf-8"
+            os.path.join(destination_folder, file_name),
+            mode="w+",
+            encoding="utf-8",
         )
         out_file.writelines(data)
         out_file.close()
@@ -327,12 +329,16 @@ def _append_data_to_file(data, destination_folder, file_name):
     with file_io_lock:
         existing_data = ""
         if os.path.exists(os.path.join(destination_folder, file_name)):
-            with open(os.path.join(destination_folder, file_name), "r") as f:
+            with open(
+                os.path.join(destination_folder, file_name), mode="r"
+            ) as f:
                 existing_data = f.read()
             if not existing_data.split("\n")[-1] == "":
                 existing_data += "\n"
         out_file = open(
-            os.path.join(destination_folder, file_name), "w+", encoding="utf-8"
+            os.path.join(destination_folder, file_name),
+            mode="w+",
+            encoding="utf-8",
         )
         out_file.writelines("%s%s" % (existing_data, data))
         out_file.close()
@@ -345,7 +351,7 @@ def _get_file_data(folder, file_name):
     with file_io_lock:
         if not os.path.exists(os.path.join(folder, file_name)):
             raise Exception("File not found!")
-        with open(os.path.join(folder, file_name), "r") as f:
+        with open(os.path.join(folder, file_name), mode="r") as f:
             data = f.read()
         return data
 

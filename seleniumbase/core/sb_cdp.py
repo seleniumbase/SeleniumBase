@@ -2694,7 +2694,7 @@ class CDPMethods():
                 rendered_source = "%s\n%s" % (base_href_html, page_source)
         else:
             rendered_source = page_source
-        html_file = open(html_file_path, "w+", "utf-8")
+        html_file = open(html_file_path, mode="w+", encoding="utf-8")
         html_file.write(rendered_source)
         html_file.close()
 

@@ -117,7 +117,7 @@ def main(*args, **kwargs):
 
     for file_ in updated_files_to_process:
         readme_file = "./mkdocs_build/" + file_
-        with open(readme_file, "r", encoding="utf-8") as f:
+        with open(readme_file, mode="r", encoding="utf-8") as f:
             all_code = f.read()
         code_lines = all_code.split("\n")
 
@@ -195,6 +195,6 @@ def main(*args, **kwargs):
                 )
             seleniumbase_lines.append(line)
         if changed:
-            out_file = open(readme_file, "w+", encoding="utf-8")
+            out_file = open(readme_file, mode="w+", encoding="utf-8")
             out_file.writelines("\r\n".join(seleniumbase_lines))
             out_file.close()

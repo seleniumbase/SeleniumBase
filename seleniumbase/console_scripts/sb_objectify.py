@@ -135,7 +135,7 @@ def create_objects_file(selector_list_dict=None):
         data.append('    html = "html"')
         data.append("")
     file_path = PAGE_OBJECTS_FILE
-    file = open(file_path, "w+", "utf-8")
+    file = open(file_path, mode="w+", encoding="utf-8")
     file.writelines("\r\n".join(data))
     file.close()
     if not selector_list_dict:
@@ -149,7 +149,7 @@ def scan_objects_file():
         create_objects_file()
 
     page_selectors = {}
-    with open(PAGE_OBJECTS_FILE, "r", encoding="utf-8") as f:
+    with open(PAGE_OBJECTS_FILE, mode="r", encoding="utf-8") as f:
         all_code = f.read()
 
     var_names = []
@@ -3089,7 +3089,7 @@ def main(shell_command):
             "Expecting: %s\n" % (seleniumbase_file, expected_arg)
         )
 
-    with open(seleniumbase_file, "r", encoding="utf-8") as f:
+    with open(seleniumbase_file, mode="r", encoding="utf-8") as f:
         all_code = f.read()
     if "def test_" not in all_code:
         raise Exception(
@@ -3188,7 +3188,7 @@ def main(shell_command):
     # Create SeleniumBase test file
     base_file_name = seleniumbase_file.split(".py")[0]
     converted_file_name = base_file_name + ".py"  # Change end to make a copy
-    out_file = open(converted_file_name, "w+", encoding="utf-8")
+    out_file = open(converted_file_name, mode="w+", encoding="utf-8")
     out_file.writelines(seleniumbase_code)
     out_file.close()
     print('\n>>> ["%s"] was updated!\n' % converted_file_name)
