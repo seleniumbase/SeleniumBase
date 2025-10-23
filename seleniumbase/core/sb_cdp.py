@@ -1674,6 +1674,11 @@ class CDPMethods():
         import pyautogui
         pyautogui = self.__get_configured_pyautogui(pyautogui)
         screen_width, screen_height = pyautogui.size()
+        if (
+            hasattr(sb_config, "_cdp_browser")
+            and sb_config._cdp_browser == "opera"
+        ):
+            x = x + 55
         if x < 0 or y < 0 or x > screen_width or y > screen_height:
             raise Exception(
                 "PyAutoGUI cannot click on point (%s, %s)"
@@ -1931,6 +1936,12 @@ class CDPMethods():
         import pyautogui
         pyautogui = self.__get_configured_pyautogui(pyautogui)
         screen_width, screen_height = pyautogui.size()
+        if (
+            hasattr(sb_config, "_cdp_browser")
+            and sb_config._cdp_browser == "opera"
+        ):
+            x1 = x1 + 55
+            x2 = x2 + 55
         if x1 < 0 or y1 < 0 or x1 > screen_width or y1 > screen_height:
             raise Exception(
                 "PyAutoGUI cannot drag-drop from point (%s, %s)"
@@ -2022,6 +2033,11 @@ class CDPMethods():
         import pyautogui
         pyautogui = self.__get_configured_pyautogui(pyautogui)
         screen_width, screen_height = pyautogui.size()
+        if (
+            hasattr(sb_config, "_cdp_browser")
+            and sb_config._cdp_browser == "opera"
+        ):
+            x = x + 55
         if x < 0 or y < 0 or x > screen_width or y > screen_height:
             raise Exception(
                 "PyAutoGUI cannot hover on point (%s, %s)"
