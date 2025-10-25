@@ -1278,7 +1278,7 @@ def scroll_to_element(driver, element):
     try:
         screen_width = driver.get_window_size()["width"]
     except Exception:
-        screen_width = execute_script("return window.innerWidth;")
+        screen_width = execute_script(driver, "return window.innerWidth;")
     element_location_y = element_location_y - constants.Scroll.Y_OFFSET
     if element_location_y < 0:
         element_location_y = 0
@@ -1327,7 +1327,7 @@ def slow_scroll_to_element(driver, element, *args, **kwargs):
     try:
         screen_width = driver.get_window_size()["width"]
     except Exception:
-        screen_width = execute_script("return window.innerWidth;")
+        screen_width = execute_script(driver, "return window.innerWidth;")
     element_location_y = element_location_y - constants.Scroll.Y_OFFSET
     if element_location_y < 0:
         element_location_y = 0

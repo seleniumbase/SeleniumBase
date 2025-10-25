@@ -387,6 +387,20 @@ class ValidBrowsers:
         "ie",
         "safari",
         "remote",
+        "opera",
+        "brave",
+        "comet",
+        "atlas",
+    ]
+
+
+class ChromiumSubs:
+    # Chromium browsers that still use chromedriver
+    chromium_subs = [
+        "opera",
+        "brave",
+        "comet",
+        "atlas",
     ]
 
 
@@ -430,8 +444,12 @@ class ValidBinaries:
         "Google Chrome Beta",
         "Google Chrome Dev",
         "Brave Browser",
+        "Brave",
+        "Opera Browser",
         "Opera",
+        "Comet Browser",
         "Comet",
+        "Atlas Browser",
         "Atlas",
     ]
     valid_edge_binaries_on_macos = [

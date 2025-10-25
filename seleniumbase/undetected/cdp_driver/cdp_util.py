@@ -593,6 +593,20 @@ async def start(
             browser_binary = detect_b_ver.get_binary_location(browser)
             if browser_binary and os.path.exists(browser_binary):
                 browser_executable_path = browser_binary
+    else:
+        bin_loc = str(browser_executable_path).lower()
+        if bin_loc.endswith("opera") or bin_loc.endswith("opera.exe"):
+            sb_config._cdp_browser = "opera"
+        elif bin_loc.endswith("edge") or bin_loc.endswith("edge.exe"):
+            sb_config._cdp_browser = "edge"
+        elif bin_loc.endswith("brave") or bin_loc.endswith("brave.exe"):
+            sb_config._cdp_browser = "brave"
+        elif bin_loc.endswith("comet") or bin_loc.endswith("comet.exe"):
+            sb_config._cdp_browser = "comet"
+        elif bin_loc.endswith("atlas") or bin_loc.endswith("atlas.exe"):
+            sb_config._cdp_browser = "atlas"
+        else:
+            sb_config._cdp_browser = "chrome"
     if not config:
         config = Config(
             user_data_dir,

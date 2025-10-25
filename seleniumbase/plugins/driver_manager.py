@@ -239,6 +239,7 @@ def Driver(
     from seleniumbase import config as sb_config
     from seleniumbase.config import settings
     from seleniumbase.core import browser_launcher
+    from seleniumbase.core import detect_b_ver
     from seleniumbase.fixtures import constants
     from seleniumbase.fixtures import shared_utils
 
@@ -271,10 +272,37 @@ def Driver(
             )
     elif existing_runner:
         sb_config._context_of_runner = True
+    sb_config._browser_shortcut = None
+    sb_config._cdp_browser = None
+    sb_config._cdp_bin_loc = None
     browser_changes = 0
     browser_set = None
     browser_text = None
     browser_list = []
+    # Check if binary-location in options
+    bin_loc_in_options = False
+    if (
+        binary_location
+        and len(str(binary_location)) > 5
+        and os.path.exists(str(binary_location))
+    ):
+        bin_loc_in_options = True
+    else:
+        for arg in sys_argv:
+            if arg in ["--binary-location", "--binary_location", "--bl"]:
+                bin_loc_in_options = True
+    if (
+        browser
+        and browser in constants.ChromiumSubs.chromium_subs
+        and not bin_loc_in_options
+    ):
+        bin_loc = detect_b_ver.get_binary_location(browser)
+        if bin_loc and os.path.exists(bin_loc):
+            if browser in bin_loc.lower().split("/")[-1].split("\\")[-1]:
+                sb_config._cdp_browser = browser
+                sb_config._cdp_bin_loc = bin_loc
+                binary_location = bin_loc
+                bin_loc_in_options = True
     # As a shortcut, you can use "--edge" instead of "--browser=edge", etc,
     # but you can only specify one default browser for tests. (Default: chrome)
     if "--browser=chrome" in sys_argv or "--browser chrome" in sys_argv:
@@ -301,6 +329,46 @@ def Driver(
         browser_changes += 1
         browser_set = "remote"
         browser_list.append("--browser=remote")
+    if "--browser=opera" in sys_argv or "--browser opera" in sys_argv:
+        if not bin_loc_in_options:
+            bin_loc = detect_b_ver.get_binary_location("opera")
+            if os.path.exists(bin_loc):
+                browser_changes += 1
+                browser_set = "opera"
+                sb_config._browser_shortcut = "opera"
+                sb_config._cdp_browser = "opera"
+                sb_config._cdp_bin_loc = bin_loc
+                browser_list.append("--browser=opera")
+    if "--browser=brave" in sys_argv or "--browser brave" in sys_argv:
+        if not bin_loc_in_options:
+            bin_loc = detect_b_ver.get_binary_location("brave")
+            if os.path.exists(bin_loc):
+                browser_changes += 1
+                browser_set = "brave"
+                sb_config._browser_shortcut = "brave"
+                sb_config._cdp_browser = "brave"
+                sb_config._cdp_bin_loc = bin_loc
+                browser_list.append("--browser=brave")
+    if "--browser=comet" in sys_argv or "--browser comet" in sys_argv:
+        if not bin_loc_in_options:
+            bin_loc = detect_b_ver.get_binary_location("comet")
+            if os.path.exists(bin_loc):
+                browser_changes += 1
+                browser_set = "comet"
+                sb_config._browser_shortcut = "comet"
+                sb_config._cdp_browser = "comet"
+                sb_config._cdp_bin_loc = bin_loc
+                browser_list.append("--browser=comet")
+    if "--browser=atlas" in sys_argv or "--browser atlas" in sys_argv:
+        if not bin_loc_in_options:
+            bin_loc = detect_b_ver.get_binary_location("atlas")
+            if os.path.exists(bin_loc):
+                browser_changes += 1
+                browser_set = "atlas"
+                sb_config._browser_shortcut = "atlas"
+                sb_config._cdp_browser = "atlas"
+                sb_config._cdp_bin_loc = bin_loc
+                browser_list.append("--browser=atlas")
     browser_text = browser_set
     if "--chrome" in sys_argv and not browser_set == "chrome":
         browser_changes += 1
@@ -322,6 +390,46 @@ def Driver(
         browser_changes += 1
         browser_text = "safari"
         browser_list.append("--safari")
+    if "--opera" in sys_argv and not browser_set == "opera":
+        if not bin_loc_in_options:
+            bin_loc = detect_b_ver.get_binary_location("opera")
+            if os.path.exists(bin_loc):
+                browser_changes += 1
+                browser_text = "opera"
+                sb_config._browser_shortcut = "opera"
+                sb_config._cdp_browser = "opera"
+                sb_config._cdp_bin_loc = bin_loc
+                browser_list.append("--opera")
+    if "--brave" in sys_argv and not browser_set == "brave":
+        if not bin_loc_in_options:
+            bin_loc = detect_b_ver.get_binary_location("brave")
+            if os.path.exists(bin_loc):
+                browser_changes += 1
+                browser_text = "brave"
+                sb_config._browser_shortcut = "brave"
+                sb_config._cdp_browser = "brave"
+                sb_config._cdp_bin_loc = bin_loc
+                browser_list.append("--brave")
+    if "--comet" in sys_argv and not browser_set == "comet":
+        if not bin_loc_in_options:
+            bin_loc = detect_b_ver.get_binary_location("comet")
+            if os.path.exists(bin_loc):
+                browser_changes += 1
+                browser_text = "comet"
+                sb_config._browser_shortcut = "comet"
+                sb_config._cdp_browser = "comet"
+                sb_config._cdp_bin_loc = bin_loc
+                browser_list.append("--comet")
+    if "--atlas" in sys_argv and not browser_set == "atlas":
+        if not bin_loc_in_options:
+            bin_loc = detect_b_ver.get_binary_location("atlas")
+            if os.path.exists(bin_loc):
+                browser_changes += 1
+                browser_text = "atlas"
+                sb_config._browser_shortcut = "atlas"
+                sb_config._cdp_browser = "atlas"
+                sb_config._cdp_bin_loc = bin_loc
+                browser_list.append("--atlas")
     if browser_changes > 1:
         message = "\n\n  TOO MANY browser types were entered!"
         message += "\n  There were %s found:\n  >  %s" % (
@@ -345,6 +453,10 @@ def Driver(
             "Browser: {%s} is not a valid browser option. "
             "Valid options = {%s}" % (browser, valid_browsers)
         )
+    if sb_config._browser_shortcut:
+        browser = sb_config._browser_shortcut
+    if browser in constants.ChromiumSubs.chromium_subs:
+        browser = "chrome"  # Still uses chromedriver
     if headless is None:
         if "--headless" in sys_argv:
             headless = True
@@ -534,6 +646,8 @@ def Driver(
             count += 1
     user_agent = agent
     found_bl = None
+    if hasattr(sb_config, "_cdp_bin_loc") and sb_config._cdp_bin_loc:
+        binary_location = sb_config._cdp_bin_loc
     if binary_location is None and "--binary-location" in arg_join:
         count = 0
         for arg in sys_argv:

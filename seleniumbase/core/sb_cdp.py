@@ -1333,6 +1333,17 @@ class CDPMethods():
         x = window_rect["x"] + element_rect["x"]
         y = w_bottom_y - viewport_height + element_rect["y"]
         y_scroll_offset = window_rect["pageYOffset"]
+        if (
+            hasattr(sb_config, "_cdp_browser")
+            and sb_config._cdp_browser == "opera"
+        ):
+            # Handle special case where Opera side panel shifts coordinates
+            x_offset = window_rect["outerWidth"] - window_rect["innerWidth"]
+            if x_offset > 56:
+                x_offset = 56
+            elif x_offset < 22:
+                x_offset = 0
+            x = x + x_offset
         y = y - y_scroll_offset
         x = x + window_rect["scrollX"]
         y = y + window_rect["scrollY"]
@@ -1674,11 +1685,6 @@ class CDPMethods():
         import pyautogui
         pyautogui = self.__get_configured_pyautogui(pyautogui)
         screen_width, screen_height = pyautogui.size()
-        if (
-            hasattr(sb_config, "_cdp_browser")
-            and sb_config._cdp_browser == "opera"
-        ):
-            x = x + 55
         if x < 0 or y < 0 or x > screen_width or y > screen_height:
             raise Exception(
                 "PyAutoGUI cannot click on point (%s, %s)"
@@ -1731,8 +1737,8 @@ class CDPMethods():
                 self.__add_light_pause()
                 self.__set_window_rect(win_x, win_y, width, height)
                 self.__add_light_pause()
-                x = x * width_ratio
-                y = y * width_ratio
+                x = x * (width_ratio + 0.03)
+                y = y * (width_ratio - 0.03)
             self.bring_active_window_to_front()
             self.__gui_click_x_y(x, y, timeframe=timeframe, uc_lock=False)
 
@@ -1760,8 +1766,43 @@ class CDPMethods():
             return True
         return False
 
+    def _on_a_g_recaptcha_page(self):
+        time.sleep(0.042)
+        source = self.get_page_source()
+        if not source or len(source) < 400:
+            time.sleep(0.22)
+            source = self.get_page_source()
+        if (
+            'id="recaptcha-token"' in source
+            or 'title="reCAPTCHA"' in source
+        ):
+            return True
+        return False
+
+    def __gui_click_recaptcha(self):
+        selector = None
+        if self.is_element_visible('iframe[title="reCAPTCHA"]'):
+            selector = 'iframe[title="reCAPTCHA"]'
+        else:
+            return
+        with suppress(Exception):
+            time.sleep(0.08)
+            element_rect = self.get_gui_element_rect(selector, timeout=1)
+            e_x = element_rect["x"]
+            e_y = element_rect["y"]
+            x = e_x + 29
+            y = e_y + 35
+            sb_config._saved_cf_x_y = (x, y)
+            time.sleep(0.08)
+            self.gui_click_x_y(x, y)
+
     def gui_click_captcha(self):
-        if not self._on_a_cf_turnstile_page():
+        if self._on_a_cf_turnstile_page():
+            pass
+        elif self._on_a_g_recaptcha_page():
+            self.__gui_click_recaptcha()
+            return
+        else:
             return
         selector = None
         if (
@@ -1926,7 +1967,7 @@ class CDPMethods():
             if not shared_utils.is_windows():
                 y = e_y + 32
             else:
-                y = e_y + 22
+                y = e_y + 28
             sb_config._saved_cf_x_y = (x, y)
             time.sleep(0.08)
             self.gui_click_x_y(x, y)
@@ -1936,12 +1977,6 @@ class CDPMethods():
         import pyautogui
         pyautogui = self.__get_configured_pyautogui(pyautogui)
         screen_width, screen_height = pyautogui.size()
-        if (
-            hasattr(sb_config, "_cdp_browser")
-            and sb_config._cdp_browser == "opera"
-        ):
-            x1 = x1 + 55
-            x2 = x2 + 55
         if x1 < 0 or y1 < 0 or x1 > screen_width or y1 > screen_height:
             raise Exception(
                 "PyAutoGUI cannot drag-drop from point (%s, %s)"
@@ -2033,11 +2068,6 @@ class CDPMethods():
         import pyautogui
         pyautogui = self.__get_configured_pyautogui(pyautogui)
         screen_width, screen_height = pyautogui.size()
-        if (
-            hasattr(sb_config, "_cdp_browser")
-            and sb_config._cdp_browser == "opera"
-        ):
-            x = x + 55
         if x < 0 or y < 0 or x > screen_width or y > screen_height:
             raise Exception(
                 "PyAutoGUI cannot hover on point (%s, %s)"
@@ -2118,7 +2148,7 @@ class CDPMethods():
         if width > 0 and height > 0:
             x, y = self.get_gui_element_center(selector)
             self.bring_active_window_to_front()
-            self.__gui_hover_x_y(x, y, timeframe=timeframe)
+            self.__gui_hover_x_y(x, y, timeframe=timeframe, uc_lock=False)
             self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.wait())
 

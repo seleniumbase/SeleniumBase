@@ -282,7 +282,7 @@ def opera_on_windows_path(browser_type=None):
             "Opera/Application",
         ):
             try:
-                candidates.append(os.sep.join((item, subitem, "launcher.exe")))
+                candidates.append(os.sep.join((item, subitem, "opera.exe")))
             except TypeError:
                 pass
     for candidate in candidates:

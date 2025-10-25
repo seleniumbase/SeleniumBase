@@ -7,6 +7,7 @@ import time
 from contextlib import suppress
 from seleniumbase import config as sb_config
 from seleniumbase.config import settings
+from seleniumbase.core import detect_b_ver
 from seleniumbase.core import log_helper
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import shared_utils
@@ -28,6 +29,10 @@ def pytest_addoption(parser):
     --edge  (Shortcut for "--browser=edge".)
     --firefox  (Shortcut for "--browser=firefox".)
     --safari  (Shortcut for "--browser=safari".)
+    --opera  (Shortcut for "--browser=opera".)
+    --brave  (Shortcut for "--browser=brave".)
+    --comet  (Shortcut for "--browser=comet".)
+    --atlas  (Shortcut for "--browser=atlas".)
     --cft  (Shortcut for using `Chrome for Testing`)
     --chs  (Shortcut for using `Chrome-Headless-Shell`)
     --settings-file=FILE  (Override default SeleniumBase settings.)
@@ -185,6 +190,34 @@ def pytest_addoption(parser):
         dest="use_safari",
         default=False,
         help="""Shortcut for --browser=safari""",
+    )
+    parser.addoption(
+        "--opera",
+        action="store_true",
+        dest="use_opera",
+        default=False,
+        help="""Shortcut for --browser=opera""",
+    )
+    parser.addoption(
+        "--brave",
+        action="store_true",
+        dest="use_brave",
+        default=False,
+        help="""Shortcut for --browser=brave""",
+    )
+    parser.addoption(
+        "--comet",
+        action="store_true",
+        dest="use_comet",
+        default=False,
+        help="""Shortcut for --browser=comet""",
+    )
+    parser.addoption(
+        "--atlas",
+        action="store_true",
+        dest="use_atlas",
+        default=False,
+        help="""Shortcut for --browser=atlas""",
     )
     parser.addoption(
         "--cft",
@@ -1388,8 +1421,14 @@ def pytest_addoption(parser):
 
     arg_join = " ".join(sys_argv)
     sb_config._browser_shortcut = None
+    sb_config._cdp_browser = None
+    sb_config._cdp_bin_loc = None
     sb_config._vd_list = []
-
+    # Check if binary-location in options
+    bin_loc_in_options = False
+    for arg in sys_argv:
+        if arg in ["--binary-location", "--binary_location", "--bl"]:
+            bin_loc_in_options = True
     # SeleniumBase does not support pytest-timeout due to hanging browsers.
     for arg in sys_argv:
         if "--timeout=" in arg:
@@ -1465,6 +1504,46 @@ def pytest_addoption(parser):
         browser_changes += 1
         browser_set = "remote"
         browser_list.append("--browser=remote")
+    if "--browser=opera" in sys_argv or "--browser opera" in sys_argv:
+        if not bin_loc_in_options:
+            bin_loc = detect_b_ver.get_binary_location("opera")
+            if os.path.exists(bin_loc):
+                browser_changes += 1
+                browser_set = "opera"
+                sb_config._browser_shortcut = "opera"
+                sb_config._cdp_browser = "opera"
+                sb_config._cdp_bin_loc = bin_loc
+                browser_list.append("--browser=opera")
+    if "--browser=brave" in sys_argv or "--browser brave" in sys_argv:
+        if not bin_loc_in_options:
+            bin_loc = detect_b_ver.get_binary_location("brave")
+            if os.path.exists(bin_loc):
+                browser_changes += 1
+                browser_set = "brave"
+                sb_config._browser_shortcut = "brave"
+                sb_config._cdp_browser = "brave"
+                sb_config._cdp_bin_loc = bin_loc
+                browser_list.append("--browser=brave")
+    if "--browser=comet" in sys_argv or "--browser comet" in sys_argv:
+        if not bin_loc_in_options:
+            bin_loc = detect_b_ver.get_binary_location("comet")
+            if os.path.exists(bin_loc):
+                browser_changes += 1
+                browser_set = "comet"
+                sb_config._browser_shortcut = "comet"
+                sb_config._cdp_browser = "comet"
+                sb_config._cdp_bin_loc = bin_loc
+                browser_list.append("--browser=comet")
+    if "--browser=atlas" in sys_argv or "--browser atlas" in sys_argv:
+        if not bin_loc_in_options:
+            bin_loc = detect_b_ver.get_binary_location("atlas")
+            if os.path.exists(bin_loc):
+                browser_changes += 1
+                browser_set = "atlas"
+                sb_config._browser_shortcut = "atlas"
+                sb_config._cdp_browser = "atlas"
+                sb_config._cdp_bin_loc = bin_loc
+                browser_list.append("--browser=atlas")
     browser_text = browser_set
     if "--chrome" in sys_argv and not browser_set == "chrome":
         browser_changes += 1
@@ -1491,6 +1570,46 @@ def pytest_addoption(parser):
         browser_text = "safari"
         sb_config._browser_shortcut = "safari"
         browser_list.append("--safari")
+    if "--opera" in sys_argv and not browser_set == "opera":
+        if not bin_loc_in_options:
+            bin_loc = detect_b_ver.get_binary_location("opera")
+            if os.path.exists(bin_loc):
+                browser_changes += 1
+                browser_text = "opera"
+                sb_config._browser_shortcut = "opera"
+                sb_config._cdp_browser = "opera"
+                sb_config._cdp_bin_loc = bin_loc
+                browser_list.append("--opera")
+    if "--brave" in sys_argv and not browser_set == "brave":
+        if not bin_loc_in_options:
+            bin_loc = detect_b_ver.get_binary_location("brave")
+            if os.path.exists(bin_loc):
+                browser_changes += 1
+                browser_text = "brave"
+                sb_config._browser_shortcut = "brave"
+                sb_config._cdp_browser = "brave"
+                sb_config._cdp_bin_loc = bin_loc
+                browser_list.append("--brave")
+    if "--comet" in sys_argv and not browser_set == "comet":
+        if not bin_loc_in_options:
+            bin_loc = detect_b_ver.get_binary_location("comet")
+            if os.path.exists(bin_loc):
+                browser_changes += 1
+                browser_text = "comet"
+                sb_config._browser_shortcut = "comet"
+                sb_config._cdp_browser = "comet"
+                sb_config._cdp_bin_loc = bin_loc
+                browser_list.append("--comet")
+    if "--atlas" in sys_argv and not browser_set == "atlas":
+        if not bin_loc_in_options:
+            bin_loc = detect_b_ver.get_binary_location("atlas")
+            if os.path.exists(bin_loc):
+                browser_changes += 1
+                browser_text = "atlas"
+                sb_config._browser_shortcut = "atlas"
+                sb_config._cdp_browser = "atlas"
+                sb_config._cdp_bin_loc = bin_loc
+                browser_list.append("--atlas")
     if browser_changes > 1:
         message = "\n  TOO MANY browser types were entered!"
         message += "\n  There were %s found:\n  >  %s" % (
@@ -1525,7 +1644,7 @@ def pytest_addoption(parser):
         undetectable = True
     if (
         browser_changes == 1
-        and browser_text not in ["chrome"]
+        and browser_text not in ["chrome", "opera", "brave", "comet", "atlas"]
         and undetectable
     ):
         message = (
@@ -1557,6 +1676,8 @@ def pytest_configure(config):
     sb_config.browser = config.getoption("browser")
     if sb_config._browser_shortcut:
         sb_config.browser = sb_config._browser_shortcut
+    if sb_config.browser in constants.ChromiumSubs.chromium_subs:
+        sb_config.browser = "chrome"  # Still uses chromedriver
     sb_config.account = config.getoption("account")
     sb_config.data = config.getoption("data")
     sb_config.var1 = config.getoption("var1")
@@ -1591,6 +1712,8 @@ def pytest_configure(config):
     sb_config.extension_dir = config.getoption("extension_dir")
     sb_config.disable_features = config.getoption("disable_features")
     sb_config.binary_location = config.getoption("binary_location")
+    if hasattr(sb_config, "_cdp_bin_loc") and sb_config._cdp_bin_loc:
+        sb_config.binary_location = sb_config._cdp_bin_loc
     if config.getoption("use_cft") and not sb_config.binary_location:
         sb_config.binary_location = "cft"
     elif config.getoption("use_chs") and not sb_config.binary_location:

@@ -28,6 +28,10 @@ from seleniumbase import decorators
 from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
 from seleniumbase.drivers import cft_drivers  # chrome-for-testing
 from seleniumbase.drivers import chs_drivers  # chrome-headless-shell
+from seleniumbase.drivers import opera_drivers  # still uses chromedriver
+from seleniumbase.drivers import brave_drivers  # still uses chromedriver
+from seleniumbase.drivers import comet_drivers  # still uses chromedriver
+from seleniumbase.drivers import atlas_drivers  # still uses chromedriver
 from seleniumbase import extensions  # browser extensions storage folder
 from seleniumbase.config import settings
 from seleniumbase.core import detect_b_ver
@@ -44,6 +48,10 @@ urllib3.disable_warnings()
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 DRIVER_DIR_CFT = os.path.dirname(os.path.realpath(cft_drivers.__file__))
 DRIVER_DIR_CHS = os.path.dirname(os.path.realpath(chs_drivers.__file__))
+DRIVER_DIR_OPERA = os.path.dirname(os.path.realpath(opera_drivers.__file__))
+DRIVER_DIR_BRAVE = os.path.dirname(os.path.realpath(brave_drivers.__file__))
+DRIVER_DIR_COMET = os.path.dirname(os.path.realpath(comet_drivers.__file__))
+DRIVER_DIR_ATLAS = os.path.dirname(os.path.realpath(atlas_drivers.__file__))
 # Make sure that the SeleniumBase DRIVER_DIR is at the top of the System PATH
 # (Changes to the System PATH with os.environ only last during the test run)
 if not os.environ["PATH"].startswith(DRIVER_DIR):
@@ -1218,8 +1226,8 @@ def uc_gui_click_x_y(driver, x, y, timeframe=0.25):
             driver.cdp.minimize()
             driver.cdp.set_window_rect(win_x, win_y, width, height)
         if IS_WINDOWS:
-            x = x * width_ratio
-            y = y * width_ratio
+            x = x * (width_ratio + 0.03)
+            y = y * (width_ratio - 0.03)
             _uc_gui_click_x_y(driver, x, y, timeframe=timeframe, uc_lock=False)
             return
         with suppress(Exception):
@@ -1260,7 +1268,7 @@ def _uc_gui_click_captcha(
     ctype=None,
 ):
     cdp_mode_on_at_start = __is_cdp_swap_needed(driver)
-    if cdp_mode_on_at_start and (not ctype or ctype == "cf_t"):
+    if cdp_mode_on_at_start:
         return driver.cdp.gui_click_captcha()
     _on_a_captcha_page = None
     if ctype == "cf_t":
@@ -1950,6 +1958,15 @@ def get_valid_binary_names_for_browser(browser):
             raise Exception("Could not determine OS, or unsupported!")
     else:
         raise Exception("Invalid combination for OS browser binaries!")
+
+
+def _special_binary_exists(location, name):
+    filename = str(location).split("/")[-1].split("\\")[-1]
+    return (
+        location
+        and str(name).lower() in filename.lower()
+        and os.path.exists(location)
+    )
 
 
 def _repair_chromedriver(chrome_options, headless_options, mcv=None):
@@ -2960,6 +2977,14 @@ def get_driver(
         and sb_config.binary_location == "chs"
     ):
         driver_dir = DRIVER_DIR_CHS
+    if _special_binary_exists(binary_location, "opera"):
+        driver_dir = DRIVER_DIR_OPERA
+    if _special_binary_exists(binary_location, "brave"):
+        driver_dir = DRIVER_DIR_BRAVE
+    if _special_binary_exists(binary_location, "comet"):
+        driver_dir = DRIVER_DIR_COMET
+    if _special_binary_exists(binary_location, "atlas"):
+        driver_dir = DRIVER_DIR_ATLAS
     if (
         hasattr(sb_config, "settings")
         and hasattr(sb_config.settings, "NEW_DRIVER_DIR")
@@ -3919,6 +3944,18 @@ def get_local_driver(
     ):
         special_chrome = True
         driver_dir = DRIVER_DIR_CHS
+    if _special_binary_exists(binary_location, "opera"):
+        special_chrome = True
+        driver_dir = DRIVER_DIR_OPERA
+    if _special_binary_exists(binary_location, "brave"):
+        special_chrome = True
+        driver_dir = DRIVER_DIR_BRAVE
+    if _special_binary_exists(binary_location, "comet"):
+        special_chrome = True
+        driver_dir = DRIVER_DIR_COMET
+    if _special_binary_exists(binary_location, "atlas"):
+        special_chrome = True
+        driver_dir = DRIVER_DIR_ATLAS
     if (
         hasattr(sb_config, "settings")
         and hasattr(sb_config.settings, "NEW_DRIVER_DIR")
@@ -4756,6 +4793,27 @@ def get_local_driver(
         )
         return extend_driver(driver)
     elif browser_name == constants.Browser.GOOGLE_CHROME:
+        set_chromium = None
+        if _special_binary_exists(binary_location, "opera"):
+            set_chromium = "opera"
+            local_chromedriver = DRIVER_DIR_OPERA + "/chromedriver"
+            if IS_WINDOWS:
+                local_chromedriver = DRIVER_DIR_OPERA + "/chromedriver.exe"
+        if _special_binary_exists(binary_location, "brave"):
+            set_chromium = "brave"
+            local_chromedriver = DRIVER_DIR_BRAVE + "/chromedriver"
+            if IS_WINDOWS:
+                local_chromedriver = DRIVER_DIR_BRAVE + "/chromedriver.exe"
+        if _special_binary_exists(binary_location, "comet"):
+            set_chromium = "comet"
+            local_chromedriver = DRIVER_DIR_COMET + "/chromedriver"
+            if IS_WINDOWS:
+                local_chromedriver = DRIVER_DIR_COMET + "/chromedriver.exe"
+        if _special_binary_exists(binary_location, "atlas"):
+            set_chromium = "atlas"
+            local_chromedriver = DRIVER_DIR_ATLAS + "/chromedriver"
+            if IS_WINDOWS:
+                local_chromedriver = DRIVER_DIR_ATLAS + "/chromedriver.exe"
         try:
             chrome_options = _set_chrome_options(
                 browser_name,
@@ -4877,6 +4935,12 @@ def get_local_driver(
                 major_chrome_version = None
             if major_chrome_version:
                 use_version = major_chrome_version
+            if (
+                set_chromium == "opera"
+                and use_version.isnumeric()
+                and int(use_version) < 130
+            ):
+                use_version = "130"  # Special case
             ch_driver_version = None
             path_chromedriver = chromedriver_on_path()
             if os.path.exists(local_chromedriver):
@@ -4894,7 +4958,7 @@ def get_local_driver(
                         ch_driver_version = output
                         if driver_version == "keep":
                             driver_version = ch_driver_version
-            elif path_chromedriver:
+            elif path_chromedriver and not set_chromium:
                 try:
                     make_driver_executable_if_not(path_chromedriver)
                 except Exception as e:
