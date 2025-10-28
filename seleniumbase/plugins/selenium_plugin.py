@@ -1302,8 +1302,6 @@ class SeleniumBrowser(Plugin):
         if sb_config._browser_shortcut:
             self.options.browser = sb_config._browser_shortcut
             test.test.browser = sb_config._browser_shortcut
-        if test.test.browser in constants.ChromiumSubs.chromium_subs:
-            test.test.browser = "chrome"  # Still uses chromedriver
         test.test.cap_file = self.options.cap_file
         test.test.cap_string = self.options.cap_string
         test.test.headless = self.options.headless
@@ -1355,6 +1353,10 @@ class SeleniumBrowser(Plugin):
             test.test.headless = True
             test.test.headless1 = False
             test.test.headless2 = False
+        if test.test.browser in constants.ChromiumSubs.chromium_subs:
+            if not sb_config.binary_location:
+                test.test.browser = "chrome"  # Still uses chromedriver
+                sb_config._browser_shortcut = test.test.browser
         test.test.driver_version = self.options.driver_version
         test.test.page_load_strategy = self.options.page_load_strategy
         test.test.chromium_arg = self.options.chromium_arg

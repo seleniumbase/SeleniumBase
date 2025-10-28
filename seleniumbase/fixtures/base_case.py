@@ -4354,7 +4354,7 @@ class BaseCase(unittest.TestCase):
                 elif self.browser == "firefox":
                     try:
                         if self.maximize_option:
-                            self.driver.maximize_window()
+                            self.maximize_window()
                             self.wait_for_ready_state_complete()
                         else:
                             with suppress(Exception):
@@ -4364,7 +4364,7 @@ class BaseCase(unittest.TestCase):
                 elif self.browser == "safari":
                     if self.maximize_option:
                         try:
-                            self.driver.maximize_window()
+                            self.maximize_window()
                             self.wait_for_ready_state_complete()
                         except Exception:
                             pass  # Keep existing browser resolution
@@ -11408,7 +11408,13 @@ class BaseCase(unittest.TestCase):
 
     def __is_cdp_swap_needed(self):
         """If the driver is disconnected, use a CDP method when available."""
-        return shared_utils.is_cdp_swap_needed(self.driver)
+        cdp_swap_needed = shared_utils.is_cdp_swap_needed(self.driver)
+        if cdp_swap_needed:
+            if not self.cdp:
+                self.cdp = self.driver.cdp
+            return True
+        else:
+            return False
 
     ############
 
@@ -14001,7 +14007,7 @@ class BaseCase(unittest.TestCase):
             )
             raise Exception(message)
         except InvalidArgumentException:
-            if not self.browser == "chrome":
+            if not self.is_chromium():
                 raise
             chrome_version = self.driver.capabilities["browserVersion"]
             major_chrome_version = chrome_version.split(".")[0]
@@ -14616,7 +14622,7 @@ class BaseCase(unittest.TestCase):
                 try:
                     shadow_root = element.shadow_root
                 except Exception:
-                    if self.browser == "chrome":
+                    if self.is_chromium():
                         chrome_dict = self.driver.capabilities["chrome"]
                         chrome_dr_version = chrome_dict["chromedriverVersion"]
                         chromedriver_version = chrome_dr_version.split(" ")[0]

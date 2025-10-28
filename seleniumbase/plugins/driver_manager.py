@@ -455,8 +455,6 @@ def Driver(
         )
     if sb_config._browser_shortcut:
         browser = sb_config._browser_shortcut
-    if browser in constants.ChromiumSubs.chromium_subs:
-        browser = "chrome"  # Still uses chromedriver
     if headless is None:
         if "--headless" in sys_argv:
             headless = True
@@ -953,6 +951,10 @@ def Driver(
                     driver_version = None
                 break
             count += 1
+    if browser in constants.ChromiumSubs.chromium_subs:
+        if not binary_location:
+            browser = "chrome"  # Still uses chromedriver
+            sb_config._browser_shortcut = browser
     browser_name = browser
 
     # Launch a web browser
