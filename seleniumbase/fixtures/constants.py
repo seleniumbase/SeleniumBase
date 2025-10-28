@@ -264,16 +264,13 @@ class Reveal:
 
 
 class HighCharts:
+    LIB = "https://cdn.jsdelivr.net/npm/highcharts"
     VER = "10.3.3"
-    HC_CSS = "https://code.highcharts.com/%s/css/highcharts.css" % VER
-    HC_JS = "https://code.highcharts.com/%s/highcharts.js" % VER
-    EXPORTING_JS = "https://code.highcharts.com/%s/modules/exporting.js" % VER
-    EXPORT_DATA_JS = (
-        "https://code.highcharts.com/%s/modules/export-data.js" % VER
-    )
-    ACCESSIBILITY_JS = (
-        "https://code.highcharts.com/%s/modules/accessibility.js" % VER
-    )
+    HC_CSS = "%s@%s/css/highcharts.css" % (LIB, VER)
+    HC_JS = "%s@%s/highcharts.js" % (LIB, VER)
+    EXPORTING_JS = "%s@%s/modules/exporting.js" % (LIB, VER)
+    EXPORT_DATA_JS = "%s@%s/modules/export-data.js" % (LIB, VER)
+    ACCESSIBILITY_JS = "%s@%s/modules/accessibility.js" % (LIB, VER)
 
 
 class BootstrapTour:
