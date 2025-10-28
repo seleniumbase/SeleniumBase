@@ -307,7 +307,7 @@ setup(
         ],
         # pip install -e .[psutil]
         "psutil": [
-            "psutil==7.1.0",
+            "psutil==7.1.2",
         ],
         # pip install -e .[pyautogui]
         # (Already a required dependency on Linux now.)
