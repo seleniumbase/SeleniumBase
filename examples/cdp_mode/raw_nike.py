@@ -4,12 +4,13 @@ with SB(uc=True, test=True, locale="en", pls="none") as sb:
     url = "https://www.nike.com/"
     sb.activate_cdp_mode(url)
     sb.sleep(2.5)
-    sb.cdp.click('div[data-testid="user-tools-container"]')
+    sb.click('[data-testid="user-tools-container"] search')
     sb.sleep(1.5)
     search = "Nike Air Force 1"
-    sb.cdp.press_keys('input[type="search"]', search)
+    sb.press_keys('input[type="search"]', search)
     sb.sleep(4)
-    elements = sb.cdp.select_all('ul[data-testid*="products"] figure .details')
+    details = 'ul[data-testid*="products"] figure .details'
+    elements = sb.select_all(details)
     if elements:
         print('**** Found results for "%s": ****' % search)
     for element in elements:

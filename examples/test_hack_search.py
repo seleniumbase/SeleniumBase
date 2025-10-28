@@ -8,10 +8,9 @@ BaseCase.main(__name__, __file__)
 
 class HackingTests(BaseCase):
     def test_hack_search(self):
-        if self.headless:
+        if self.headless or self.browser != "chrome":
             self.open_if_not_url("about:blank")
-            print("\n  Skipping test in headless mode.")
-            self.skip('Skipping test in headless mode.')
+            self.skip('Skip test if headless or not chrome.')
         if not self.undetectable:
             self.get_new_driver(undetectable=True)
         self.open("https://google.com/ncr")
