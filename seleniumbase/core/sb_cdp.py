@@ -1029,12 +1029,19 @@ class CDPMethods():
         return self.loop.run_until_complete(self.page.js_dumps(obj_name))
 
     def maximize(self):
-        if self.get_window()[1].window_state.value == "maximized":
-            return
-        elif self.get_window()[1].window_state.value == "minimized":
-            self.loop.run_until_complete(self.page.maximize())
-            time.sleep(0.044)
-        return self.loop.run_until_complete(self.page.maximize())
+        try:
+            if self.get_window()[1].window_state.value == "maximized":
+                return
+            elif self.get_window()[1].window_state.value == "minimized":
+                self.loop.run_until_complete(self.page.maximize())
+                time.sleep(0.044)
+            return self.loop.run_until_complete(self.page.maximize())
+        except Exception:
+            with suppress(Exception):
+                width = self.evaluate("screen.availWidth;")
+                height = self.evaluate("screen.availHeight;")
+                self.__set_window_rect(0, 0, width, height)
+                return
 
     def minimize(self):
         if self.get_window()[1].window_state.value != "minimized":
@@ -1725,18 +1732,18 @@ class CDPMethods():
                 win_x = window_rect["x"]
                 win_y = window_rect["y"]
                 scr_width = pyautogui.size().width
-                self.maximize()
-                self.__add_light_pause()
-                win_width = self.get_window_size()["width"]
+                win_width = self.evaluate("screen.availWidth;")
                 width_ratio = round(float(scr_width) / float(win_width), 2)
                 width_ratio += 0.01
                 if width_ratio < 0.45 or width_ratio > 2.55:
                     width_ratio = 1.01
                 sb_config._saved_width_ratio = width_ratio
-                self.minimize()
-                self.__add_light_pause()
-                self.__set_window_rect(win_x, win_y, width, height)
-                self.__add_light_pause()
+                with suppress(Exception):
+                    self.get_window()  # If this fails, skip the rest
+                    self.minimize()
+                    self.__add_light_pause()
+                    self.__set_window_rect(win_x, win_y, width, height)
+                    self.__add_light_pause()
                 x = x * (width_ratio + 0.03)
                 y = y * (width_ratio - 0.03)
             self.bring_active_window_to_front()
@@ -2021,18 +2028,18 @@ class CDPMethods():
                 win_x = window_rect["x"]
                 win_y = window_rect["y"]
                 scr_width = pyautogui.size().width
-                self.maximize()
-                self.__add_light_pause()
-                win_width = self.get_window_size()["width"]
+                win_width = self.evaluate("screen.availWidth;")
                 width_ratio = round(float(scr_width) / float(win_width), 2)
                 width_ratio += 0.01
                 if width_ratio < 0.45 or width_ratio > 2.55:
                     width_ratio = 1.01
                 sb_config._saved_width_ratio = width_ratio
-                self.minimize()
-                self.__add_light_pause()
-                self.__set_window_rect(win_x, win_y, width, height)
-                self.__add_light_pause()
+                with suppress(Exception):
+                    self.get_window()  # If this fails, skip the rest
+                    self.minimize()
+                    self.__add_light_pause()
+                    self.__set_window_rect(win_x, win_y, width, height)
+                    self.__add_light_pause()
                 x1 = x1 * width_ratio
                 y1 = y1 * (width_ratio - 0.02)
                 x2 = x2 * width_ratio
@@ -2114,15 +2121,14 @@ class CDPMethods():
                     width_ratio = sb_config._saved_width_ratio
                 else:
                     scr_width = pyautogui.size().width
-                    self.maximize()
-                    self.__add_light_pause()
-                    win_width = self.get_window_size()["width"]
+                    win_width = self.evaluate("screen.availWidth;")
                     width_ratio = round(float(scr_width) / float(win_width), 2)
                     width_ratio += 0.01
                     if width_ratio < 0.45 or width_ratio > 2.55:
                         width_ratio = 1.01
                     sb_config._saved_width_ratio = width_ratio
-                self.__set_window_rect(win_x, win_y, width, height)
+                with suppress(Exception):
+                    self.__set_window_rect(win_x, win_y, width, height)
                 self.__add_light_pause()
                 self.bring_active_window_to_front()
             elif (

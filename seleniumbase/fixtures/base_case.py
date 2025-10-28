@@ -3577,8 +3577,17 @@ class BaseCase(unittest.TestCase):
             self.cdp.maximize()
             return
         self._check_browser()
-        self.driver.maximize_window()
+        try:
+            self.driver.maximize_window()
+        except Exception:
+            with suppress(Exception):
+                width = self.execute_script("return screen.availWidth;")
+                height = self.execute_script("return screen.availHeight;")
+                self.set_window_rect(0, 0, width, height)
         self.__demo_mode_pause_if_active(tiny=True)
+
+    def maximize(self):
+        self.maximize_window()
 
     def minimize_window(self):
         self.__check_scope()
@@ -3588,6 +3597,9 @@ class BaseCase(unittest.TestCase):
         self._check_browser()
         self.driver.minimize_window()
         self.__demo_mode_pause_if_active(tiny=True)
+
+    def minimize(self):
+        self.minimize_window()
 
     def reset_window_size(self):
         self.__check_scope()
@@ -4344,7 +4356,7 @@ class BaseCase(unittest.TestCase):
                 if self.is_chromium():
                     try:
                         if self.maximize_option:
-                            self.driver.maximize_window()
+                            self.maximize_window()
                             self.wait_for_ready_state_complete()
                         else:
                             pass  # Now handled in browser_launcher.py
