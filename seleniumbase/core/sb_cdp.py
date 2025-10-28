@@ -2700,6 +2700,13 @@ class CDPMethods():
             self.loop.run_until_complete(self.page.evaluate(js_code))
             self.loop.run_until_complete(self.page.wait())
 
+    def scroll_by_y(self, y):
+        y = int(y)
+        js_code = "window.scrollBy(0, %s);" % y
+        with suppress(Exception):
+            self.loop.run_until_complete(self.page.evaluate(js_code))
+            self.loop.run_until_complete(self.page.wait())
+
     def scroll_to_top(self):
         js_code = "window.scrollTo(0, 0);"
         with suppress(Exception):
@@ -2713,11 +2720,21 @@ class CDPMethods():
             self.loop.run_until_complete(self.page.wait())
 
     def scroll_up(self, amount=25):
-        self.loop.run_until_complete(self.page.scroll_up(amount))
+        """Scrolls up as a percentage of the page."""
+        try:
+            self.loop.run_until_complete(self.page.scroll_up(amount))
+        except Exception:
+            amount = self.get_window_size()["height"] * amount / 100
+            self.execute_script("window.scrollBy(0, -%s);" % amount)
         self.loop.run_until_complete(self.page.wait())
 
     def scroll_down(self, amount=25):
-        self.loop.run_until_complete(self.page.scroll_down(amount))
+        """Scrolls down as a percentage of the page."""
+        try:
+            self.loop.run_until_complete(self.page.scroll_down(amount))
+        except Exception:
+            amount = self.get_window_size()["height"] * amount / 100
+            self.execute_script("window.scrollBy(0, %s);" % amount)
         self.loop.run_until_complete(self.page.wait())
 
     def save_page_source(self, name, folder=None):

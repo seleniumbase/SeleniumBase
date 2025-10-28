@@ -6523,6 +6523,34 @@ class BaseCase(unittest.TestCase):
             self.execute_script(scroll_script)
             time.sleep(0.012)
 
+    def scroll_by_y(self, y):
+        """Scrolls page by y pixels."""
+        self.__check_scope()
+        y = int(y)
+        if self.__is_cdp_swap_needed():
+            self.cdp.scroll_by_y(y)
+            return
+        scroll_script = "window.scrollBy(0, %s);" % y
+        with suppress(Exception):
+            self.execute_script(scroll_script)
+            time.sleep(0.012)
+
+    def scroll_up(self, amount=25):
+        """Scrolls up as a percentage of the page."""
+        if self.__is_cdp_swap_needed():
+            self.cdp.scroll_up(amount)
+            return
+        amount = self.get_window_size()["height"] * amount / 100
+        self.execute_script("window.scrollBy(0, -%s);" % amount)
+
+    def scroll_down(self, amount=25):
+        """Scrolls down as a percentage of the page."""
+        if self.__is_cdp_swap_needed():
+            self.cdp.scroll_down(amount)
+            return
+        amount = self.get_window_size()["height"] * amount / 100
+        self.execute_script("window.scrollBy(0, %s);" % amount)
+
     def click_xpath(self, xpath):
         """Technically, self.click() automatically detects xpath selectors,
         so self.click_xpath() is just a longer name for the same action."""

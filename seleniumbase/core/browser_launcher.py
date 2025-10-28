@@ -898,6 +898,7 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
     cdp.assert_not_in = CDPM.assert_not_in
     cdp.scroll_into_view = CDPM.scroll_into_view
     cdp.scroll_to_y = CDPM.scroll_to_y
+    cdp.scroll_by_y = CDPM.scroll_by_y
     cdp.scroll_to_top = CDPM.scroll_to_top
     cdp.scroll_to_bottom = CDPM.scroll_to_bottom
     cdp.scroll_up = CDPM.scroll_up
