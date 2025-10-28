@@ -105,10 +105,22 @@ def chrome_on_linux_path(chromium_ok=False, browser_type=None):
         return ""
     if os_name() != OSType.LINUX:
         return ""
-    paths = ["/bin/google-chrome", "/bin/google-chrome-stable"]
+    paths = [
+        "/bin/google-chrome",
+        "/bin/google-chrome-stable",
+        "/usr/bin/google-chrome",
+        "/usr/bin/google-chrome-stable"
+    ]
     for path in paths:
-        if os.path.exists(path) and os.access(path, os.X_OK):
-            return path
+        try:
+            if (
+                os.path.exists(path)
+                and os.access(path, os.R_OK)
+                and os.access(path, os.X_OK)
+            ):
+                return path
+        except Exception:
+            pass
     paths = os.environ["PATH"].split(os.pathsep)
     binaries = []
     binaries.append("google-chrome")
@@ -122,13 +134,32 @@ def chrome_on_linux_path(chromium_ok=False, browser_type=None):
     for binary in binaries:
         for path in paths:
             full_path = os.path.join(path, binary)
-            if os.path.exists(full_path) and os.access(full_path, os.X_OK):
-                return full_path
+            try:
+                if (
+                    os.path.exists(full_path)
+                    and os.access(full_path, os.R_OK)
+                    and os.access(full_path, os.X_OK)
+                ):
+                    return full_path
+            except Exception:
+                pass
     if chromium_ok:
-        paths = ["/bin/chromium", "/bin/chromium-browser"]
+        paths = [
+            "/bin/chromium",
+            "/bin/chromium-browser",
+            "/usr/bin/chromium",
+            "/usr/bin/chromium-browser"
+        ]
         for path in paths:
-            if os.path.exists(path) and os.access(path, os.X_OK):
-                return path
+            try:
+                if (
+                    os.path.exists(path)
+                    and os.access(path, os.R_OK)
+                    and os.access(path, os.X_OK)
+                ):
+                    return path
+            except Exception:
+                pass
     return "/usr/bin/google-chrome"
 
 
