@@ -37,14 +37,12 @@ self.submit(selector, by="css selector")
 self.clear(selector, by="css selector", timeout=None)
 self.focus(selector, by="css selector", timeout=None)
 self.refresh()
-# Duplicates:
-# self.refresh_page(), self.reload_page(), self.reload()
+# Duplicates: self.refresh_page(), self.reload_page(), self.reload()
 self.get_current_url()
 self.get_origin()
 self.get_page_source()
 self.get_title()
-# Duplicates:
-# self.get_page_title()
+# Duplicates: self.get_page_title()
 self.get_user_agent()
 self.get_locale_code()
 self.go_back()
@@ -159,7 +157,9 @@ self.set_window_rect(x, y, width, height)
 self.set_window_size(width, height)
 self.set_window_position(x, y)
 self.maximize_window()
+# Duplicates: self.maximize()
 self.minimize_window()
+# Duplicates: self.minimize()
 self.reset_window_size()
 self.switch_to_frame(frame="iframe", timeout=None, invisible=False)
 self.switch_to_default_content()
@@ -168,23 +168,17 @@ with self.frame_switch(frame, timeout=None):
     # Indented Code Block for Context Manager (Must use "with")
 self.set_content_to_frame(frame, timeout=None)
 self.set_content_to_default(nested=False)
-# Duplicates:
-# self.set_content_to_default_content(nested=False)
+# Duplicates: self.set_content_to_default_content(nested=False)
 self.set_content_to_parent()
-# Duplicates:
-# self.set_content_to_parent_frame()
+# Duplicates: self.set_content_to_parent_frame()
 self.open_new_window(switch_to=True)
-# Duplicates:
-# self.open_new_tab(switch_to=True)
+# Duplicates: self.open_new_tab(switch_to=True)
 self.switch_to_window(window, timeout=None)
-# Duplicates:
-# self.switch_to_tab(tab, timeout=None)
+# Duplicates: self.switch_to_tab(tab, timeout=None)
 self.switch_to_default_window()
-# Duplicates:
-# self.switch_to_default_tab()
+# Duplicates: self.switch_to_default_tab()
 self.switch_to_newest_window()
-# Duplicates:
-# self.switch_to_newest_tab()
+# Duplicates: self.switch_to_newest_tab()
 self.get_new_driver(
     browser=None,
     headless=None,
@@ -252,13 +246,11 @@ self.save_data_to_logs(data, file_name=None)
 self.append_data_to_logs(data, file_name=None)
 self.save_page_source_to_logs(name=None)
 self.save_page_source(name, folder=None)
-# Duplicates:
-# self.save_as_html(name, folder=None)
+# Duplicates: self.save_as_html(name, folder=None)
 self.save_cookies(name="cookies.txt")
 self.load_cookies(name="cookies.txt", expiry=False)
 self.delete_all_cookies()
-# Duplicates:
-# self.clear_all_cookies()
+# Duplicates: self.clear_all_cookies()
 self.delete_saved_cookies(name="cookies.txt")
 self.get_saved_cookies(name="cookies.txt")
 self.get_cookie(name)
@@ -269,8 +261,7 @@ self.add_cookies(cookies, expiry=False)
 self.wait_for_ready_state_complete(timeout=None)
 self.wait_for_angularjs(timeout=None)
 self.sleep(seconds)
-# Duplicates:
-# self.wait(seconds)
+# Duplicates: self.wait(seconds)
 self.install_addon(xpi_file)
 self.activate_jquery()
 self.activate_demo_mode()
@@ -302,6 +293,10 @@ self.slow_scroll_to(selector, by="css selector", timeout=None)
 self.scroll_into_view(selector, by="css selector", timeout=None)
 self.scroll_to_top()
 self.scroll_to_bottom()
+self.scroll_to_y(y)
+self.scroll_by_y(y)
+self.scroll_up(amount=25)
+self.scroll_down(amount=25)
 self.click_xpath(xpath)
 self.js_click(selector, by="css selector", all_matches=False, timeout=None, scroll=True)
 self.js_click_if_present(selector, by="css selector", timeout=0)
@@ -316,8 +311,7 @@ self.show_elements(selector, by="css selector")
 self.remove_element(selector, by="css selector")
 self.remove_elements(selector, by="css selector")
 self.ad_block()
-# Duplicates:
-# self.block_ads()
+# Duplicates: self.block_ads()
 self.show_file_choosers()
 self.disable_beforeunload()
 self.get_domain_url(url)
@@ -345,8 +339,7 @@ self.save_data_as(data, file_name, destination_folder=None)
 self.append_data_to_file(data, file_name, destination_folder=None)
 self.get_file_data(file_name, folder=None)
 self.print_to_pdf(name, folder=None)
-# Duplicates:
-# self.save_as_pdf(name, folder=None)
+# Duplicates: self.save_as_pdf(name, folder=None)
 self.get_downloads_folder()
 self.get_browser_downloads_folder()
 self.get_downloaded_files(regex=None, browser=False)
@@ -355,8 +348,7 @@ self.get_data_from_downloaded_file(file, timeout=None, browser=False)
 self.is_downloaded_file_present(file, browser=False)
 self.is_downloaded_file_regex_present(regex, browser=False)
 self.delete_downloaded_file_if_present(file, browser=False)
-# Duplicates:
-# self.delete_downloaded_file(file, browser=False)
+# Duplicates: self.delete_downloaded_file(file, browser=False)
 self.assert_downloaded_file(file, timeout=None, browser=False)
 self.assert_downloaded_file_regex(regex, timeout=None, browser=False)
 self.assert_data_in_downloaded_file(data, file, timeout=None, browser=False)
@@ -423,16 +415,14 @@ self.set_local_storage_item(key, value)
 self.get_local_storage_item(key)
 self.remove_local_storage_item(key)
 self.clear_local_storage()
-# Duplicates:
-# self.delete_local_storage()
+# Duplicates: self.delete_local_storage()
 self.get_local_storage_keys()
 self.get_local_storage_items()
 self.set_session_storage_item(key, value)
 self.get_session_storage_item(key)
 self.remove_session_storage_item(key)
 self.clear_session_storage()
-# Duplicates:
-# self.delete_session_storage()
+# Duplicates: self.delete_session_storage()
 self.get_session_storage_keys()
 self.get_session_storage_items()
 
@@ -496,8 +486,7 @@ self.create_introjs_tour(name=None)
 self.set_introjs_colors(theme_color=None, hover_color=None)
 self.add_tour_step(message, selector=None, name=None, title=None, theme=None, alignment=None)
 self.play_tour(name=None, interval=0)
-# Duplicates:
-# self.start_tour(name=None, interval=0):
+# Duplicates: self.start_tour(name=None, interval=0):
 self.export_tour(name=None, filename="my_tour.js", url=None)
 
 ############
@@ -584,8 +573,7 @@ self.find_link_text(link_text, timeout=None)
 # self.wait_for_link_text(link_text, timeout=None)
 # self.wait_for_link_text_visible(link_text, timeout=None)
 self.assert_link_text(link_text, timeout=None)
-# Duplicates:
-# self.assert_link(link_text, timeout=None)
+# Duplicates: self.assert_link(link_text, timeout=None)
 
 ############
 
@@ -630,14 +618,11 @@ self.assert_attribute_not_present(
 ############
 
 self.accept_alert(timeout=None)
-# Duplicates:
-# self.wait_for_and_accept_alert(timeout=None)
+# Duplicates: self.wait_for_and_accept_alert(timeout=None)
 self.dismiss_alert(timeout=None)
-# Duplicates:
-# self.wait_for_and_dismiss_alert(timeout=None)
+# Duplicates: self.wait_for_and_dismiss_alert(timeout=None)
 self.switch_to_alert(timeout=None)
-# Duplicates:
-# self.wait_for_and_switch_to_alert(timeout=None)
+# Duplicates: self.wait_for_and_switch_to_alert(timeout=None)
 
 ############
 
@@ -678,8 +663,7 @@ self.deferred_check_window(
 #     name="default", level=0, baseline=False,
 #     check_domain=True, full_diff=False, fs=False)
 self.process_deferred_asserts(print_only=False)
-# Duplicates:
-# self.process_delayed_asserts(print_only=False)
+# Duplicates: self.process_delayed_asserts(print_only=False)
 
 ############
 

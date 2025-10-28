@@ -1676,8 +1676,23 @@ def pytest_configure(config):
     sb_config.browser = config.getoption("browser")
     if sb_config._browser_shortcut:
         sb_config.browser = sb_config._browser_shortcut
-    if sb_config.browser in constants.ChromiumSubs.chromium_subs:
-        sb_config.browser = "chrome"  # Still uses chromedriver
+    elif sys_argv == ["-c"]:  # Multithreading messes with args
+        if config.getoption("use_opera"):
+            bin_loc = detect_b_ver.get_binary_location("opera")
+            if bin_loc and os.path.exists(bin_loc):
+                sb_config.browser = "opera"
+        elif config.getoption("use_brave"):
+            bin_loc = detect_b_ver.get_binary_location("brave")
+            if bin_loc and os.path.exists(bin_loc):
+                sb_config.browser = "brave"
+        elif config.getoption("use_comet"):
+            bin_loc = detect_b_ver.get_binary_location("comet")
+            if bin_loc and os.path.exists(bin_loc):
+                sb_config.browser = "comet"
+        elif config.getoption("use_atlas"):
+            bin_loc = detect_b_ver.get_binary_location("atlas")
+            if bin_loc and os.path.exists(bin_loc):
+                sb_config.browser = "atlas"
     sb_config.account = config.getoption("account")
     sb_config.data = config.getoption("data")
     sb_config.var1 = config.getoption("var1")
@@ -1714,6 +1729,35 @@ def pytest_configure(config):
     sb_config.binary_location = config.getoption("binary_location")
     if hasattr(sb_config, "_cdp_bin_loc") and sb_config._cdp_bin_loc:
         sb_config.binary_location = sb_config._cdp_bin_loc
+    elif not sb_config.binary_location:
+        if (
+            config.getoption("use_opera")
+            or sb_config._browser_shortcut == "opera"
+        ):
+            bin_loc = detect_b_ver.get_binary_location("opera")
+            if bin_loc and os.path.exists(bin_loc):
+                sb_config.binary_location = bin_loc
+        elif (
+            config.getoption("use_brave")
+            or sb_config._browser_shortcut == "brave"
+        ):
+            bin_loc = detect_b_ver.get_binary_location("brave")
+            if bin_loc and os.path.exists(bin_loc):
+                sb_config.binary_location = bin_loc
+        elif (
+            config.getoption("use_comet")
+            or sb_config._browser_shortcut == "comet"
+        ):
+            bin_loc = detect_b_ver.get_binary_location("comet")
+            if bin_loc and os.path.exists(bin_loc):
+                sb_config.binary_location = bin_loc
+        elif (
+            config.getoption("use_atlas")
+            or sb_config._browser_shortcut == "atlas"
+        ):
+            bin_loc = detect_b_ver.get_binary_location("atlas")
+            if bin_loc and os.path.exists(bin_loc):
+                sb_config.binary_location = bin_loc
     if config.getoption("use_cft") and not sb_config.binary_location:
         sb_config.binary_location = "cft"
     elif config.getoption("use_chs") and not sb_config.binary_location:
@@ -1726,6 +1770,10 @@ def pytest_configure(config):
         sb_config.headless = True
         sb_config.headless1 = False
         sb_config.headless2 = False
+    if sb_config.browser in constants.ChromiumSubs.chromium_subs:
+        if not sb_config.binary_location:
+            sb_config.browser = "chrome"  # Still uses chromedriver
+            sb_config._browser_shortcut = sb_config.browser
     sb_config.driver_version = config.getoption("driver_version")
     sb_config.page_load_strategy = config.getoption("page_load_strategy")
     sb_config.with_testing_base = config.getoption("with_testing_base")

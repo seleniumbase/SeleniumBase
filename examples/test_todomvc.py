@@ -4,6 +4,15 @@ BaseCase.main(__name__, __file__)
 
 
 class TodoMVC(BaseCase):
+    def setUp(self):
+        super().setUp()
+        self.open_new_window()
+
+    def tearDown(self):
+        self.save_teardown_screenshot()
+        self.driver.close()
+        super().tearDown()
+
     @parameterized.expand([["jquery"], ["react"], ["vue"]])
     def test_todomvc(self, framework):
         self.open("https://todomvc.com/")

@@ -31,7 +31,7 @@ with SB(uc=True, test=True, locale="en", pls="none") as sb:
     sb.cdp.add_handler(mycdp.network.RequestWillBeSent, send_handler)
     sb.cdp.add_handler(mycdp.network.ResponseReceived, receive_handler)
     sb.sleep(2.5)
-    sb.cdp.click('div[data-testid="user-tools-container"]')
+    sb.cdp.click('[data-testid="user-tools-container"] search')
     sb.sleep(1.5)
     search = "Nike Air Force 1"
     sb.cdp.press_keys('input[type="search"]', search)

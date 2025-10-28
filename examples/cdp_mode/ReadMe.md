@@ -203,7 +203,7 @@ with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     card_info = 'div[data-booking-status="BOOKABLE"] [class*="HotelCard_info"]'
     hotels = sb.cdp.select_all(card_info)
     print("Hyatt Hotels in %s:" % location)
-    print("(" + sb.cdp.get_text("ul.b-color_text-white") + ")")
+    print("(" + sb.cdp.get_text('span[class*="summary_destination"]') + ")")
     if len(hotels) == 0:
         print("No availability over the selected dates!")
     for hotel in hotels:
@@ -331,12 +331,13 @@ with SB(uc=True, test=True, locale="en", pls="none") as sb:
     url = "https://www.nike.com/"
     sb.activate_cdp_mode(url)
     sb.sleep(2.5)
-    sb.cdp.click('div[data-testid="user-tools-container"]')
+    sb.click('[data-testid="user-tools-container"] search')
     sb.sleep(1.5)
     search = "Nike Air Force 1"
-    sb.cdp.press_keys('input[type="search"]', search)
+    sb.press_keys('input[type="search"]', search)
     sb.sleep(4)
-    elements = sb.cdp.select_all('ul[data-testid*="products"] figure .details')
+    details = 'ul[data-testid*="products"] figure .details'
+    elements = sb.select_all(details)
     if elements:
         print('**** Found results for "%s": ****' % search)
     for element in elements:
@@ -528,6 +529,7 @@ sb.cdp.assert_in(first, second)
 sb.cdp.assert_not_in(first, second)
 sb.cdp.scroll_into_view(selector)
 sb.cdp.scroll_to_y(y)
+sb.cdp.scroll_by_y(y)
 sb.cdp.scroll_to_top()
 sb.cdp.scroll_to_bottom()
 sb.cdp.scroll_up(amount=25)

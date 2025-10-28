@@ -26,7 +26,8 @@ with SB(uc=True, test=True, guest=True) as sb:
     sb.wait_for_element_absent(stop_button, timeout=50)
     sb.wait_for_element(thumbs_up, timeout=20)
     sb.sleep(0.6)
-    sb.click('button[data-testid*="scroll-to-bottom"]')
+    scroll = 'button[data-testid*="scroll-to-bottom"]'
+    sb.click_if_visible(scroll)
     sb.sleep(2.2)
     folder = "downloaded_files"
     file_name = "copilot_results.html"

@@ -1530,7 +1530,7 @@ def save_page_source(driver, name, folder=None):
     rendered_source = log_helper.get_html_source_with_base_href(
         driver, page_source
     )
-    html_file = open(html_file_path, "w+", "utf-8")
+    html_file = open(html_file_path, mode="w+", encoding="utf-8")
     html_file.write(rendered_source)
     html_file.close()
 

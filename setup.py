@@ -148,7 +148,7 @@ setup(
     python_requires=">=3.8",
     install_requires=[
         'pip>=25.0.1;python_version<"3.9"',
-        'pip>=25.2;python_version>="3.9"',
+        'pip>=25.3;python_version>="3.9"',
         'packaging>=25.0',
         'setuptools~=70.2;python_version<"3.10"',  # Newer ones had issues
         'setuptools>=80.9.0;python_version>="3.10"',
@@ -201,7 +201,7 @@ setup(
         'websocket-client~=1.9.0;python_version>="3.9"',
         'selenium==4.27.1;python_version<"3.9"',
         'selenium==4.32.0;python_version>="3.9" and python_version<"3.10"',
-        'selenium==4.37.0;python_version>="3.10"',
+        'selenium==4.38.0;python_version>="3.10"',
         'cssselect==1.2.0;python_version<"3.9"',
         'cssselect==1.3.0;python_version>="3.9"',
         "sortedcontainers==2.4.0",

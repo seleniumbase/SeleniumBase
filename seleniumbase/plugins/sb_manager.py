@@ -1132,8 +1132,6 @@ def SB(
     sb_config.browser = browser
     if sb_config._browser_shortcut:
         sb_config.browser = sb_config._browser_shortcut
-    if sb_config.browser in constants.ChromiumSubs.chromium_subs:
-        sb_config.browser = "chrome"  # Still uses chromedriver
     if not hasattr(sb_config, "is_behave"):
         sb_config.is_behave = False
     if not hasattr(sb_config, "is_pytest"):
@@ -1242,6 +1240,10 @@ def SB(
     sb_config.interval = interval
     sb_config.cap_file = cap_file
     sb_config.cap_string = cap_string
+    if sb_config.browser in constants.ChromiumSubs.chromium_subs:
+        if not sb_config.binary_location:
+            sb_config.browser = "chrome"  # Still uses chromedriver
+            sb_config._browser_shortcut = sb_config.browser
 
     sb = BaseCase()
     sb.with_testing_base = sb_config.with_testing_base

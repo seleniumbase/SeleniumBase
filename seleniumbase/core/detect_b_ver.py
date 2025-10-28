@@ -278,6 +278,7 @@ def opera_on_windows_path(browser_type=None):
         ),
     ):
         for subitem in (
+            "Programs/Opera",
             "Opera",
             "Opera/Application",
         ):
@@ -336,6 +337,7 @@ def comet_on_windows_path(browser_type=None):
     ):
         for subitem in (
             "Comet/Application",
+            "Programs/Comet",
         ):
             try:
                 candidates.append(os.sep.join((item, subitem, "Comet.exe")))
@@ -364,6 +366,7 @@ def atlas_on_windows_path(browser_type=None):
     ):
         for subitem in (
             "Atlas/Application",
+            "Programs/Atlas",
         ):
             try:
                 candidates.append(os.sep.join((item, subitem, "Atlas.exe")))

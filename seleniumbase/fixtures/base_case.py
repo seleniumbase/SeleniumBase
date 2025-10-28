@@ -3577,8 +3577,17 @@ class BaseCase(unittest.TestCase):
             self.cdp.maximize()
             return
         self._check_browser()
-        self.driver.maximize_window()
+        try:
+            self.driver.maximize_window()
+        except Exception:
+            with suppress(Exception):
+                width = self.execute_script("return screen.availWidth;")
+                height = self.execute_script("return screen.availHeight;")
+                self.set_window_rect(0, 0, width, height)
         self.__demo_mode_pause_if_active(tiny=True)
+
+    def maximize(self):
+        self.maximize_window()
 
     def minimize_window(self):
         self.__check_scope()
@@ -3588,6 +3597,9 @@ class BaseCase(unittest.TestCase):
         self._check_browser()
         self.driver.minimize_window()
         self.__demo_mode_pause_if_active(tiny=True)
+
+    def minimize(self):
+        self.minimize_window()
 
     def reset_window_size(self):
         self.__check_scope()
@@ -4344,7 +4356,7 @@ class BaseCase(unittest.TestCase):
                 if self.is_chromium():
                     try:
                         if self.maximize_option:
-                            self.driver.maximize_window()
+                            self.maximize_window()
                             self.wait_for_ready_state_complete()
                         else:
                             pass  # Now handled in browser_launcher.py
@@ -4354,7 +4366,7 @@ class BaseCase(unittest.TestCase):
                 elif self.browser == "firefox":
                     try:
                         if self.maximize_option:
-                            self.driver.maximize_window()
+                            self.maximize_window()
                             self.wait_for_ready_state_complete()
                         else:
                             with suppress(Exception):
@@ -4364,7 +4376,7 @@ class BaseCase(unittest.TestCase):
                 elif self.browser == "safari":
                     if self.maximize_option:
                         try:
-                            self.driver.maximize_window()
+                            self.maximize_window()
                             self.wait_for_ready_state_complete()
                         except Exception:
                             pass  # Keep existing browser resolution
@@ -6510,6 +6522,34 @@ class BaseCase(unittest.TestCase):
         with suppress(Exception):
             self.execute_script(scroll_script)
             time.sleep(0.012)
+
+    def scroll_by_y(self, y):
+        """Scrolls page by y pixels."""
+        self.__check_scope()
+        y = int(y)
+        if self.__is_cdp_swap_needed():
+            self.cdp.scroll_by_y(y)
+            return
+        scroll_script = "window.scrollBy(0, %s);" % y
+        with suppress(Exception):
+            self.execute_script(scroll_script)
+            time.sleep(0.012)
+
+    def scroll_up(self, amount=25):
+        """Scrolls up as a percentage of the page."""
+        if self.__is_cdp_swap_needed():
+            self.cdp.scroll_up(amount)
+            return
+        amount = self.get_window_size()["height"] * amount / 100
+        self.execute_script("window.scrollBy(0, -%s);" % amount)
+
+    def scroll_down(self, amount=25):
+        """Scrolls down as a percentage of the page."""
+        if self.__is_cdp_swap_needed():
+            self.cdp.scroll_down(amount)
+            return
+        amount = self.get_window_size()["height"] * amount / 100
+        self.execute_script("window.scrollBy(0, %s);" % amount)
 
     def click_xpath(self, xpath):
         """Technically, self.click() automatically detects xpath selectors,
@@ -11408,7 +11448,13 @@ class BaseCase(unittest.TestCase):
 
     def __is_cdp_swap_needed(self):
         """If the driver is disconnected, use a CDP method when available."""
-        return shared_utils.is_cdp_swap_needed(self.driver)
+        cdp_swap_needed = shared_utils.is_cdp_swap_needed(self.driver)
+        if cdp_swap_needed:
+            if not self.cdp:
+                self.cdp = self.driver.cdp
+            return True
+        else:
+            return False
 
     ############
 
@@ -14001,7 +14047,7 @@ class BaseCase(unittest.TestCase):
             )
             raise Exception(message)
         except InvalidArgumentException:
-            if not self.browser == "chrome":
+            if not self.is_chromium():
                 raise
             chrome_version = self.driver.capabilities["browserVersion"]
             major_chrome_version = chrome_version.split(".")[0]
@@ -14616,7 +14662,7 @@ class BaseCase(unittest.TestCase):
                 try:
                     shadow_root = element.shadow_root
                 except Exception:
-                    if self.browser == "chrome":
+                    if self.is_chromium():
                         chrome_dict = self.driver.capabilities["chrome"]
                         chrome_dr_version = chrome_dict["chromedriverVersion"]
                         chromedriver_version = chrome_dr_version.split(" ")[0]

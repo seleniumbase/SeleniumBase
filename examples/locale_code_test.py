@@ -12,8 +12,9 @@ class LocaleCodeTests(BaseCase):
             language_info = self.get_text(
                 "settings-ui::shadow "
                 "settings-main::shadow "
-                "settings-basic-page::shadow "
+                "settings-languages-page-index::shadow "
                 "settings-languages-page::shadow "
+                "settings-section "
                 "#languagesSection div.start div"
             )
             print("Language info (chrome://settings/languages):")

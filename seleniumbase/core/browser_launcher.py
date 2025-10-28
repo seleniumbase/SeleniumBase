@@ -551,6 +551,19 @@ def uc_open_with_tab(driver, url):
 
 def uc_open_with_reconnect(driver, url, reconnect_time=None):
     """Open a url, disconnect chromedriver, wait, and reconnect."""
+    if (
+        hasattr(sb_config, "_cdp_browser")
+        and sb_config._cdp_browser in ["comet", "opera", "atlas"]
+    ):
+        if not __is_cdp_swap_needed(driver):
+            if not driver.current_url.startswith(
+                ("about", "data", "chrome")
+            ):
+                driver.get("about:blank")
+            uc_activate_cdp_mode(driver, url)
+        else:
+            driver.cdp.open(url)
+        return
     url = shared_utils.fix_url_as_needed(url)
     if __is_cdp_swap_needed(driver):
         driver.cdp.get(url)
@@ -885,6 +898,7 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
     cdp.assert_not_in = CDPM.assert_not_in
     cdp.scroll_into_view = CDPM.scroll_into_view
     cdp.scroll_to_y = CDPM.scroll_to_y
+    cdp.scroll_by_y = CDPM.scroll_by_y
     cdp.scroll_to_top = CDPM.scroll_to_top
     cdp.scroll_to_bottom = CDPM.scroll_to_bottom
     cdp.scroll_up = CDPM.scroll_up
@@ -2979,12 +2993,16 @@ def get_driver(
         driver_dir = DRIVER_DIR_CHS
     if _special_binary_exists(binary_location, "opera"):
         driver_dir = DRIVER_DIR_OPERA
+        sb_config._cdp_browser = "opera"
     if _special_binary_exists(binary_location, "brave"):
         driver_dir = DRIVER_DIR_BRAVE
+        sb_config._cdp_browser = "brave"
     if _special_binary_exists(binary_location, "comet"):
         driver_dir = DRIVER_DIR_COMET
+        sb_config._cdp_browser = "comet"
     if _special_binary_exists(binary_location, "atlas"):
         driver_dir = DRIVER_DIR_ATLAS
+        sb_config._cdp_browser = "atlas"
     if (
         hasattr(sb_config, "settings")
         and hasattr(sb_config.settings, "NEW_DRIVER_DIR")
@@ -2997,6 +3015,8 @@ def get_driver(
             browser_name = browser
         else:
             browser_name = "chrome"  # The default if not specified
+    if browser_name in constants.ChromiumSubs.chromium_subs:
+        browser_name = "chrome"
     browser_name = browser_name.lower()
     if headless2 and browser_name == constants.Browser.FIREFOX:
         headless2 = False  # Only for Chromium
