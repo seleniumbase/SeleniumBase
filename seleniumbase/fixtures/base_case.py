@@ -5008,6 +5008,9 @@ class BaseCase(unittest.TestCase):
             self.get_new_driver(undetectable=True)
             self.driver.uc_open_with_cdp_mode(url, **kwargs)
         self.cdp = self.driver.cdp
+        if hasattr(self.cdp, "solve_captcha"):
+            self.solve_captcha = self.cdp.solve_captcha
+        self.undetectable = True
 
     def activate_recorder(self):
         """Activate Recorder Mode on the current tab/window.
@@ -11452,6 +11455,7 @@ class BaseCase(unittest.TestCase):
         if cdp_swap_needed:
             if not self.cdp:
                 self.cdp = self.driver.cdp
+                self.undetectable = True
             return True
         else:
             return False
@@ -13970,6 +13974,9 @@ class BaseCase(unittest.TestCase):
         timeout=None,
         center=None,
     ):
+        if self.__is_cdp_swap_needed():
+            self.cdp.click_with_offset(selector, x, y, center=center)
+            return
         self.wait_for_ready_state_complete()
         if self.__needs_minimum_wait():
             time.sleep(0.14)

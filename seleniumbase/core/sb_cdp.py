@@ -64,6 +64,11 @@ class CDPMethods():
         )
         element.highlight_overlay = lambda: self.__highlight_overlay(element)
         element.mouse_click = lambda: self.__mouse_click(element)
+        element.click_with_offset = (
+            lambda *args, **kwargs: self.__mouse_click_with_offset_async(
+                element, *args, **kwargs
+            )
+        )
         element.mouse_drag = (
             lambda destination: self.__mouse_drag(element, destination)
         )
@@ -447,6 +452,15 @@ class CDPMethods():
         self.loop.run_until_complete(self.page.wait())
         return result
 
+    def __mouse_click_with_offset_async(self, element, *args, **kwargs):
+        result = (
+            self.loop.run_until_complete(
+                element.mouse_click_with_offset_async(*args, **kwargs)
+            )
+        )
+        self.loop.run_until_complete(self.page.wait())
+        return result
+
     def __mouse_drag(self, element, destination):
         return (
             self.loop.run_until_complete(element.mouse_drag_async(destination))
@@ -689,10 +703,16 @@ class CDPMethods():
         self.__slow_mode_pause_if_set()
         element = self.find_element(selector, timeout=timeout)
         element.scroll_into_view()
-        if element.tag_name == "div" or element.tag_name == "input":
-            element.mouse_click()  # Simulated click (not PyAutoGUI)
+        tag_name = element.tag_name
+        if tag_name:
+            tag_name = tag_name.lower().strip()
+        if (
+            tag_name in ["a", "button", "canvas", "div", "input", "li", "span"]
+            and "contains(" not in selector
+        ):
+            element.mouse_click()  # Simulated click (NOT PyAutoGUI)
         else:
-            element.click()
+            element.click()  # Standard CDP click
         self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.wait())
 
@@ -738,7 +758,7 @@ class CDPMethods():
                     element.scroll_into_view()
                     element.click()
                     click_count += 1
-                    time.sleep(0.042)
+                    time.sleep(0.044)
                     self.__slow_mode_pause_if_set()
                     self.loop.run_until_complete(self.page.wait())
             except Exception:
@@ -1757,11 +1777,32 @@ class CDPMethods():
         self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.wait())
 
-    def _on_a_cf_turnstile_page(self):
-        time.sleep(0.042)
-        source = self.get_page_source()
+    def gui_click_with_offset(
+        self, selector, x, y, timeframe=0.25, center=False
+    ):
+        """Click an element at an {X,Y}-offset location.
+        {0,0} is the top-left corner of the element.
+        If center==True, {0,0} becomes the center of the element.
+        The timeframe is the time spent moving the mouse."""
+        if center:
+            px, py = self.get_gui_element_center(selector)
+            self.gui_click_x_y(px + x, py + y, timeframe=timeframe)
+        else:
+            element_rect = self.get_gui_element_rect(selector)
+            px = element_rect["x"]
+            py = element_rect["y"]
+            self.gui_click_x_y(px + x, py + y, timeframe=timeframe)
+
+    def click_with_offset(self, selector, x, y, center=False):
+        element = self.find_element(selector)
+        element.scroll_into_view()
+        element.click_with_offset(x=x, y=y, center=center)
+        self.__slow_mode_pause_if_set()
+        self.loop.run_until_complete(self.page.wait())
+
+    def _on_a_cf_turnstile_page(self, source=None):
         if not source or len(source) < 400:
-            time.sleep(0.22)
+            time.sleep(0.2)
             source = self.get_page_source()
         if (
             'data-callback="onCaptchaSuccess"' in source
@@ -1773,20 +1814,21 @@ class CDPMethods():
             return True
         return False
 
-    def _on_a_g_recaptcha_page(self):
-        time.sleep(0.042)
-        source = self.get_page_source()
+    def _on_a_g_recaptcha_page(self, source=None):
         if not source or len(source) < 400:
-            time.sleep(0.22)
+            time.sleep(0.2)
             source = self.get_page_source()
         if (
             'id="recaptcha-token"' in source
             or 'title="reCAPTCHA"' in source
         ):
             return True
+        elif "/recaptcha/api.js" in source:
+            time.sleep(1.6)  # Still loading
+            return True
         return False
 
-    def __gui_click_recaptcha(self):
+    def __gui_click_recaptcha(self, use_cdp=False):
         selector = None
         if self.is_element_visible('iframe[title="reCAPTCHA"]'):
             selector = 'iframe[title="reCAPTCHA"]'
@@ -1797,19 +1839,39 @@ class CDPMethods():
             element_rect = self.get_gui_element_rect(selector, timeout=1)
             e_x = element_rect["x"]
             e_y = element_rect["y"]
-            x = e_x + 29
-            y = e_y + 35
+            x_offset = 26
+            y_offset = 35
+            if shared_utils.is_windows():
+                x_offset = 29
+            x = e_x + x_offset
+            y = e_y + y_offset
             sb_config._saved_cf_x_y = (x, y)
             time.sleep(0.08)
-            self.gui_click_x_y(x, y)
+            if use_cdp:
+                self.sleep(0.03)
+                gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
+                with gui_lock:  # Prevent issues with multiple processes
+                    self.bring_active_window_to_front()
+                    time.sleep(0.056)
+                    self.click_with_offset(selector, x_offset, y_offset)
+                    time.sleep(0.056)
+            else:
+                self.gui_click_x_y(x, y)
+
+    def solve_captcha(self):
+        self.__click_captcha(use_cdp=True)
 
     def gui_click_captcha(self):
-        if self._on_a_cf_turnstile_page():
-            pass
-        elif self._on_a_g_recaptcha_page():
-            self.__gui_click_recaptcha()
+        self.__click_captcha(use_cdp=False)
+
+    def __click_captcha(self, use_cdp=False):
+        """Uses PyAutoGUI unless use_cdp == True"""
+        self.sleep(0.056)
+        source = self.get_page_source()
+        if self._on_a_g_recaptcha_page(source):
+            self.__gui_click_recaptcha(use_cdp)
             return
-        else:
+        elif not self._on_a_cf_turnstile_page(source):
             return
         selector = None
         if (
@@ -1970,14 +2032,24 @@ class CDPMethods():
             element_rect = self.get_gui_element_rect(selector, timeout=1)
             e_x = element_rect["x"]
             e_y = element_rect["y"]
-            x = e_x + 32
-            if not shared_utils.is_windows():
-                y = e_y + 32
-            else:
-                y = e_y + 28
+            x_offset = 32
+            y_offset = 32
+            if shared_utils.is_windows():
+                y_offset = 28
+            x = e_x + x_offset
+            y = e_y + y_offset
             sb_config._saved_cf_x_y = (x, y)
             time.sleep(0.08)
-            self.gui_click_x_y(x, y)
+            if use_cdp:
+                self.sleep(0.03)
+                gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
+                with gui_lock:  # Prevent issues with multiple processes
+                    self.bring_active_window_to_front()
+                    time.sleep(0.056)
+                    self.click_with_offset(selector, x_offset, y_offset)
+                    time.sleep(0.056)
+            else:
+                self.gui_click_x_y(x, y)
 
     def __gui_drag_drop(self, x1, y1, x2, y2, timeframe=0.25, uc_lock=False):
         self.__install_pyautogui_if_missing()

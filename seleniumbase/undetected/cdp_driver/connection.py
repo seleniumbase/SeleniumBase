@@ -7,7 +7,6 @@ import json
 import logging
 import sys
 import types
-from asyncio import iscoroutine, iscoroutinefunction
 from typing import (
     Optional,
     Generator,
@@ -666,8 +665,8 @@ class Listener:
                     for callback in callbacks:
                         try:
                             if (
-                                iscoroutinefunction(callback)
-                                or iscoroutine(callback)
+                                inspect.iscoroutinefunction(callback)
+                                or inspect.iscoroutine(callback)
                             ):
                                 try:
                                     await callback(event, self.connection)
