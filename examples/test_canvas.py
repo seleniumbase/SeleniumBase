@@ -4,8 +4,8 @@ BaseCase.main(__name__, __file__)
 
 
 class CanvasTests(BaseCase):
-    def get_pixel_colors(self):
-        # Return the RGB colors of the canvas element's top left pixel
+    def get_canvas_pixel_colors_at_top_left(self):
+        # Return the RGB colors of the canvas's top left pixel
         x = 0
         y = 0
         if self.browser == "safari":
@@ -41,9 +41,9 @@ class CanvasTests(BaseCase):
             self.skip("Skip this test in undetectable mode.")
         self.assert_title_contains("Canvas")
         self.highlight("canvas")
-        rgb = self.get_pixel_colors()
+        rgb = self.get_canvas_pixel_colors_at_top_left()
         self.assert_equal(rgb, [221, 242, 231])  # Looks greenish
         self.click_with_offset("canvas", 500, 350)
         self.highlight("canvas", loops=5)
-        rgb = self.get_pixel_colors()
+        rgb = self.get_canvas_pixel_colors_at_top_left()
         self.assert_equal(rgb, [39, 42, 56])  # Blue by hamburger

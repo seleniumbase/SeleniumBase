@@ -4,16 +4,16 @@ with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     url = "https://www.footlocker.com/"
     sb.activate_cdp_mode(url)
     sb.sleep(2.5)
-    sb.cdp.click_if_visible('button[id*="Agree"]')
+    sb.click_if_visible('button[id*="Agree"]')
     sb.sleep(1.5)
-    sb.cdp.mouse_click('input[name="query"]')
+    sb.click('input[name="query"]')
     sb.sleep(1.5)
     search = "Nike Shoes"
-    sb.cdp.press_keys('input[name="query"]', search)
+    sb.press_keys('input[name="query"]', search)
     sb.sleep(2.5)
-    sb.cdp.mouse_click('ul[id*="typeahead"] li div')
+    sb.click('ul[id*="typeahead"] li div')
     sb.sleep(3.5)
-    elements = sb.cdp.select_all("a.ProductCard-link")
+    elements = sb.select_all("a.ProductCard-link")
     if elements:
         print('**** Found results for "%s": ****' % search)
     for element in elements:

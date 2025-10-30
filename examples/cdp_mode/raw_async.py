@@ -57,10 +57,10 @@ if __name__ == "__main__":
     where_to = 'div[data-automation*="experiences"] input'
     button = 'button[data-automation*="experiences-search"]'
     sb.wait_for_text("Where to?")
-    sb.gui_click_element(where_to)
+    sb.click(where_to)
     sb.press_keys(where_to, location)
     sb.sleep(1)
-    sb.gui_click_element(button)
+    sb.click(button)
     sb.sleep(3)
     print(sb.get_title())
     print("************")
