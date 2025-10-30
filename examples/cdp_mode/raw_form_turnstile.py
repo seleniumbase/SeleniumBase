@@ -13,7 +13,7 @@ with SB(uc=True, test=True) as sb:
     sb.highlight_click('input[value="AR"] + span')
     sb.click('input[value="cc"] + span')
     sb.scroll_down(40)
-    sb.uc_gui_click_captcha()
+    sb.solve_captcha()
     sb.highlight("img#captcha-success", timeout=3)
     sb.highlight_click('button:contains("Request & Pay")')
     sb.highlight("img#submit-success")

@@ -356,7 +356,8 @@ class UCPresentationClass(BaseCase):
             url = "www.planetminecraft.com/account/sign_in/"
             sb.activate_cdp_mode(url)
             sb.sleep(2)
-            sb.cdp.gui_click_element("#turnstile-widget div")
+            sb.uc_gui_click_captcha()
+            sb.wait_for_element_absent("input[disabled]")
             sb.sleep(2)
 
         self.create_presentation(theme="serif", transition="none")
@@ -678,22 +679,23 @@ class UCPresentationClass(BaseCase):
             sb.activate_cdp_mode(url)
             sb.sleep(3.5)
             sb.click_if_visible('button[aria-label="Close"]')
+            sb.sleep(0.1)
             sb.click_if_visible("#onetrust-reject-all-handler")
-            sb.sleep(1)
+            sb.sleep(1.2)
             location = "Anaheim, CA, USA"
             sb.type('input[id="search-term"]', location)
-            sb.sleep(1)
+            sb.sleep(1.2)
             sb.click('li[data-js="suggestion"]')
-            sb.sleep(1)
+            sb.sleep(1.2)
             sb.click("button.be-button-shop")
             sb.sleep(6)
             card_info = (
                 'div[data-booking-status="BOOKABLE"] [class*="HotelCard_info"]'
             )
-            hotels = sb.cdp.select_all(card_info)
+            hotels = sb.select_all(card_info)
             destination_selector = 'span[class*="summary_destination"]'
             print("Hyatt Hotels in %s:" % location)
-            print("(" + sb.cdp.get_text(destination_selector) + ")")
+            print("(" + sb.get_text(destination_selector) + ")")
             if len(hotels) == 0:
                 print("No availability over the selected dates!")
             for hotel in hotels:
@@ -764,17 +766,19 @@ class UCPresentationClass(BaseCase):
             url = "https://www.priceline.com"
             sb.activate_cdp_mode(url)
             sb.sleep(2.5)
-            sb.cdp.click('input[name="endLocation"]')
-            sb.sleep(1)
-            location = "Portland, OR, USA"
+            sb.click('input[name="endLocation"]')
+            sb.sleep(1.2)
+            location = "Portland, Oregon, US"
             selection = "Oregon, United States"  # (Dropdown option)
-            sb.cdp.press_keys('input[name="endLocation"]', location)
-            sb.sleep(1)
-            sb.click_if_visible('input[name="endLocation"]')
-            sb.sleep(0.5)
-            sb.cdp.click(selection)
+            sb.press_keys('input[name="endLocation"]', location)
             sb.sleep(1.5)
-            sb.cdp.click('button[aria-label="Dismiss calendar"]')
+            sb.click_if_visible('input[name="endLocation"]')
+            sb.sleep(0.6)
+            sb.click(selection)
+            sb.sleep(1.5)
+            sb.click('button[aria-label="Dismiss calendar"]')
+            sb.sleep(0.5)
+            sb.click('button[data-testid="HOTELS_SUBMIT_BUTTON"]')
             sb.sleep(5.5)
             if len(sb.cdp.get_tabs()) > 1:
                 sb.cdp.close_active_tab()

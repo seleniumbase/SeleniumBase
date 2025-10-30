@@ -5,19 +5,20 @@ with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     sb.activate_cdp_mode(url)
     sb.sleep(3.5)
     sb.click_if_visible('button[aria-label="Close"]')
+    sb.sleep(0.1)
     sb.click_if_visible("#onetrust-reject-all-handler")
-    sb.sleep(1)
+    sb.sleep(1.2)
     location = "Anaheim, CA, USA"
     sb.type('input[id="search-term"]', location)
-    sb.sleep(1)
+    sb.sleep(1.2)
     sb.click('li[data-js="suggestion"]')
-    sb.sleep(1)
+    sb.sleep(1.2)
     sb.click("button.be-button-shop")
     sb.sleep(6)
     card_info = 'div[data-booking-status="BOOKABLE"] [class*="HotelCard_info"]'
-    hotels = sb.cdp.select_all(card_info)
+    hotels = sb.select_all(card_info)
     print("Hyatt Hotels in %s:" % location)
-    print("(" + sb.cdp.get_text('span[class*="summary_destination"]') + ")")
+    print("(" + sb.get_text('span[class*="summary_destination"]') + ")")
     if len(hotels) == 0:
         print("No availability over the selected dates!")
     for hotel in hotels:
