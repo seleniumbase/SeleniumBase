@@ -2,7 +2,7 @@
 
 ## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) 🐝 Behave test runner for SeleniumBase 🐝
 
-🐝 (Utilizes the [Behave BDD Python library](https://github.com/behave/behave). For more info, see the [Behave tutorial](https://behave.readthedocs.io/en/stable/tutorial.html) and read about [Behave's Gherkin model](https://behave.readthedocs.io/en/stable/gherkin.html).)
+🐝 (Utilizes the [Behave BDD Python library](https://github.com/behave/behave). For more info, see the [Behave tutorial](https://behave.readthedocs.io/en/stable/tutorial/) and read about [Behave's Gherkin model](https://behave.readthedocs.io/en/stable/gherkin/).)
 
 🐝 Behave examples with SeleniumBase: [SeleniumBase/examples/behave_bdd](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd)
 
