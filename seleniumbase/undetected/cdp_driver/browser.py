@@ -350,8 +350,7 @@ class Browser:
             if _cdp_geolocation:
                 await connection.send(cdp.page.navigate("about:blank"))
                 await connection.set_geolocation(_cdp_geolocation)
-            # This part isn't needed now, but may be needed later
-            """
+            # (The code below is for the Chrome 142 extension fix)
             if (
                 hasattr(sb_config, "_cdp_proxy")
                 and "@" in sb_config._cdp_proxy
@@ -363,7 +362,6 @@ class Browser:
                 proxy_pass = username_and_password.split(":")[1]
                 await connection.set_auth(proxy_user, proxy_pass, self.tabs[0])
                 time.sleep(0.25)
-            """
             if "auth" in kwargs and kwargs["auth"] and ":" in kwargs["auth"]:
                 username_and_password = kwargs["auth"]
                 proxy_user = username_and_password.split(":")[0]
@@ -375,12 +373,12 @@ class Browser:
                 cdp.page.navigate(url)
             )
             if _cdp_recorder:
-                pass  # (The code below was for the Chrome 137 extension fix)
-                '''from seleniumbase.js_code.recorder_js import recorder_js
+                # (The code below is for the Chrome 142 extension fix)
+                from seleniumbase.js_code.recorder_js import recorder_js
                 recorder_code = (
                     """window.onload = function() { %s };""" % recorder_js
                 )
-                await connection.send(cdp.runtime.evaluate(recorder_code))'''
+                await connection.send(cdp.runtime.evaluate(recorder_code))
             # Update the frame_id on the tab
             connection.frame_id = frame_id
             connection.browser = self

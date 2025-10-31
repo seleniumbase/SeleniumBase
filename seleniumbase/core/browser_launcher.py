@@ -293,7 +293,17 @@ def extend_driver(
         )
     if hasattr(driver, "proxy"):
         driver.set_wire_proxy = DM.set_wire_proxy
+    completed_loads = []
+    for ext_dir in sb_config._ext_dirs:
+        with suppress(Exception):
+            if ext_dir not in completed_loads:
+                completed_loads.append(ext_dir)
+                if not use_uc and os.path.exists(os.path.abspath(ext_dir)):
+                    driver.webextension.install(os.path.abspath(ext_dir))
     if proxy_auth:
+        with suppress(Exception):
+            if not use_uc and os.path.exists(proxy_helper.PROXY_DIR_PATH):
+                driver.webextension.install(proxy_helper.PROXY_DIR_PATH)
         # Proxy needs a moment to load in Manifest V3
         if use_uc:
             time.sleep(0.14)
@@ -2087,6 +2097,7 @@ def _add_chrome_proxy_extension(
     """Implementation of https://stackoverflow.com/a/35293284/7058266
     for https://stackoverflow.com/q/12848327/7058266
     (Run Selenium on a proxy server that requires authentication.)"""
+    zip_it = False
     args = " ".join(sys.argv)
     bypass_list = proxy_bypass_list
     if (
@@ -2467,13 +2478,27 @@ def _set_chrome_options(
         extension_zip_list = extension_zip.split(",")
         for extension_zip_item in extension_zip_list:
             abs_path = os.path.abspath(extension_zip_item)
-            chrome_options.add_extension(abs_path)
+            if os.path.exists(abs_path):
+                try:
+                    abs_path_dir = os.path.join(
+                        DOWNLOADS_FOLDER, abs_path.split(".")[0]
+                    )
+                    _unzip_to_new_folder(abs_path, abs_path_dir)
+                    chrome_options = add_chrome_ext_dir(
+                        chrome_options, abs_path_dir
+                    )
+                    sb_config._ext_dirs.append(abs_path_dir)
+                except Exception:
+                    with suppress(Exception):
+                        chrome_options.add_extension(abs_path)
     if extension_dir:
         # load-extension input can be a comma-separated list
         abs_path = (
             ",".join(os.path.abspath(p) for p in extension_dir.split(","))
         )
         chrome_options = add_chrome_ext_dir(chrome_options, abs_path)
+        for p in extension_dir.split(","):
+            sb_config._ext_dirs.append(os.path.abspath(p))
     if (
         page_load_strategy
         and page_load_strategy.lower() in ["eager", "none"]
@@ -2508,37 +2533,32 @@ def _set_chrome_options(
     if (settings.DISABLE_CSP_ON_CHROME or disable_csp) and not headless:
         # Headless Chrome does not support extensions, which are required
         # for disabling the Content Security Policy on Chrome.
-        if is_using_uc(undetectable, browser_name):
-            disable_csp_zip = DISABLE_CSP_ZIP_PATH
-            disable_csp_dir = os.path.join(DOWNLOADS_FOLDER, "disable_csp")
-            _unzip_to_new_folder(disable_csp_zip, disable_csp_dir)
-            chrome_options = add_chrome_ext_dir(
-                chrome_options, disable_csp_dir
-            )
-        else:
-            chrome_options = _add_chrome_disable_csp_extension(chrome_options)
+        disable_csp_zip = DISABLE_CSP_ZIP_PATH
+        disable_csp_dir = os.path.join(DOWNLOADS_FOLDER, "disable_csp")
+        _unzip_to_new_folder(disable_csp_zip, disable_csp_dir)
+        chrome_options = add_chrome_ext_dir(
+            chrome_options, disable_csp_dir
+        )
+        sb_config._ext_dirs.append(disable_csp_dir)
     if ad_block_on and not headless:
         # Headless Chrome does not support extensions.
-        if is_using_uc(undetectable, browser_name):
-            ad_block_zip = AD_BLOCK_ZIP_PATH
-            ad_block_dir = os.path.join(DOWNLOADS_FOLDER, "ad_block")
-            _unzip_to_new_folder(ad_block_zip, ad_block_dir)
-            chrome_options = add_chrome_ext_dir(chrome_options, ad_block_dir)
-        else:
-            chrome_options = _add_chrome_ad_block_extension(chrome_options)
+        ad_block_zip = AD_BLOCK_ZIP_PATH
+        ad_block_dir = os.path.join(DOWNLOADS_FOLDER, "ad_block")
+        _unzip_to_new_folder(ad_block_zip, ad_block_dir)
+        chrome_options = add_chrome_ext_dir(chrome_options, ad_block_dir)
+        sb_config._ext_dirs.append(ad_block_dir)
     if recorder_ext and not headless:
-        if is_using_uc(undetectable, browser_name):
-            recorder_zip = RECORDER_ZIP_PATH
-            recorder_dir = os.path.join(DOWNLOADS_FOLDER, "recorder")
-            _unzip_to_new_folder(recorder_zip, recorder_dir)
-            chrome_options = add_chrome_ext_dir(chrome_options, recorder_dir)
-        else:
-            chrome_options = _add_chrome_recorder_extension(chrome_options)
+        recorder_zip = RECORDER_ZIP_PATH
+        recorder_dir = os.path.join(DOWNLOADS_FOLDER, "recorder")
+        _unzip_to_new_folder(recorder_zip, recorder_dir)
+        chrome_options = add_chrome_ext_dir(chrome_options, recorder_dir)
+        sb_config._ext_dirs.append(recorder_dir)
     if chromium_arg and "sbase" in chromium_arg:
         sbase_ext_zip = SBASE_EXT_ZIP_PATH
         sbase_ext_dir = os.path.join(DOWNLOADS_FOLDER, "sbase_ext")
         _unzip_to_new_folder(sbase_ext_zip, sbase_ext_dir)
         chrome_options = add_chrome_ext_dir(chrome_options, sbase_ext_dir)
+        sb_config._ext_dirs.append(sbase_ext_dir)
     if proxy_string:
         if proxy_auth:
             zip_it = True
@@ -2724,6 +2744,10 @@ def _set_chrome_options(
     chrome_options.add_argument("--disable-features=%s" % d_f_string)
     if proxy_auth:
         chrome_options.add_argument("--test-type")
+    if proxy_auth or sb_config._ext_dirs:
+        if not is_using_uc(undetectable, browser_name):
+            chrome_options.enable_webextensions = True
+            chrome_options.enable_bidi = True
     if (
         is_using_uc(undetectable, browser_name)
         and (
@@ -2988,6 +3012,7 @@ def get_driver(
     device_pixel_ratio=None,
     browser=None,  # A duplicate of browser_name to avoid confusion
 ):
+    sb_config._ext_dirs = []
     driver_dir = DRIVER_DIR
     if (
         hasattr(sb_config, "binary_location")

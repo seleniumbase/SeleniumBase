@@ -79,7 +79,8 @@ class Config:
         if not browser_args:
             browser_args = []
         if not user_data_dir:
-            self._user_data_dir = temp_profile_dir()
+            self.user_data_dir = temp_profile_dir()
+            self._user_data_dir = self.user_data_dir
             self._custom_data_dir = False
         else:
             self.user_data_dir = user_data_dir
@@ -315,10 +316,13 @@ def find_chrome_executable(return_all=False):
         for item in os.environ.get("PATH").split(os.pathsep):
             for subitem in (
                 "google-chrome",
+                "google-chrome-stable",
+                "google-chrome-beta",
+                "google-chrome-dev",
+                "google-chrome-unstable",
+                "chrome",
                 "chromium",
                 "chromium-browser",
-                "chrome",
-                "google-chrome-stable",
             ):
                 candidates.append(os.sep.join((item, subitem)))
         if "darwin" in sys.platform:
@@ -347,7 +351,11 @@ def find_chrome_executable(return_all=False):
                     )
     rv = []
     for candidate in candidates:
-        if os.path.exists(candidate) and os.access(candidate, os.X_OK):
+        if (
+            os.path.exists(candidate)
+            and os.access(candidate, os.R_OK)
+            and os.access(candidate, os.X_OK)
+        ):
             logger.debug("%s is a valid candidate... " % candidate)
             rv.append(candidate)
         else:
