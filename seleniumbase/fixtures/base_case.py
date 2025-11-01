@@ -1293,8 +1293,11 @@ class BaseCase(unittest.TestCase):
         self.__check_scope()
         return self.execute_script("return window.location.origin;")
 
-    def get_page_source(self):
-        if self.__is_cdp_swap_needed():
+    def get_html(self, *args, **kwargs):
+        return self.get_page_source(*args, **kwargs)
+
+    def get_page_source(self, *args, **kwargs):
+        if self.__is_cdp_swap_needed(*args, **kwargs):
             return self.cdp.get_page_source()
         self.wait_for_ready_state_complete()
         if self.__needs_minimum_wait:

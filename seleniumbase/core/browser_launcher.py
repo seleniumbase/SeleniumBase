@@ -295,14 +295,14 @@ def extend_driver(
         driver.set_wire_proxy = DM.set_wire_proxy
     completed_loads = []
     for ext_dir in sb_config._ext_dirs:
-        with suppress(Exception):
-            if ext_dir not in completed_loads:
-                completed_loads.append(ext_dir)
-                if not use_uc and os.path.exists(os.path.abspath(ext_dir)):
-                    driver.webextension.install(os.path.abspath(ext_dir))
+        if ext_dir not in completed_loads:
+            completed_loads.append(ext_dir)
+            if not use_uc and os.path.exists(os.path.realpath(ext_dir)):
+                with suppress(Exception):
+                    driver.webextension.install(os.path.realpath(ext_dir))
     if proxy_auth:
-        with suppress(Exception):
-            if not use_uc and os.path.exists(proxy_helper.PROXY_DIR_PATH):
+        if not use_uc and os.path.exists(proxy_helper.PROXY_DIR_PATH):
+            with suppress(Exception):
                 driver.webextension.install(proxy_helper.PROXY_DIR_PATH)
         # Proxy needs a moment to load in Manifest V3
         if use_uc:
@@ -838,6 +838,7 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
     cdp.get_element_position = CDPM.get_element_position
     cdp.get_gui_element_rect = CDPM.get_gui_element_rect
     cdp.get_gui_element_center = CDPM.get_gui_element_center
+    cdp.get_html = CDPM.get_html
     cdp.get_page_source = CDPM.get_page_source
     cdp.get_user_agent = CDPM.get_user_agent
     cdp.get_cookie_string = CDPM.get_cookie_string
@@ -934,6 +935,7 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
     cdp.core = core_items
     cdp.loop = cdp.get_event_loop()
     driver.cdp = cdp
+    driver.solve_captcha = CDPM.solve_captcha
     driver._is_using_cdp = True
 
 
@@ -2477,7 +2479,7 @@ def _set_chrome_options(
         # Can be a comma-separated list of .ZIP or .CRX files
         extension_zip_list = extension_zip.split(",")
         for extension_zip_item in extension_zip_list:
-            abs_path = os.path.abspath(extension_zip_item)
+            abs_path = os.path.realpath(extension_zip_item)
             if os.path.exists(abs_path):
                 try:
                     abs_path_dir = os.path.join(
@@ -2494,11 +2496,11 @@ def _set_chrome_options(
     if extension_dir:
         # load-extension input can be a comma-separated list
         abs_path = (
-            ",".join(os.path.abspath(p) for p in extension_dir.split(","))
+            ",".join(os.path.realpath(p) for p in extension_dir.split(","))
         )
         chrome_options = add_chrome_ext_dir(chrome_options, abs_path)
         for p in extension_dir.split(","):
-            sb_config._ext_dirs.append(os.path.abspath(p))
+            sb_config._ext_dirs.append(os.path.realpath(p))
     if (
         page_load_strategy
         and page_load_strategy.lower() in ["eager", "none"]
@@ -2742,10 +2744,12 @@ def _set_chrome_options(
             included_disabled_features.append(item)
     d_f_string = ",".join(included_disabled_features)
     chrome_options.add_argument("--disable-features=%s" % d_f_string)
+    chrome_options.add_argument("--enable-unsafe-extension-debugging")
     if proxy_auth:
         chrome_options.add_argument("--test-type")
     if proxy_auth or sb_config._ext_dirs:
         if not is_using_uc(undetectable, browser_name):
+            chrome_options.add_argument("--remote-debugging-pipe")
             chrome_options.enable_webextensions = True
             chrome_options.enable_bidi = True
     if (
@@ -4577,12 +4581,12 @@ def get_local_driver(
             # Can be a comma-separated list of .ZIP or .CRX files
             extension_zip_list = extension_zip.split(",")
             for extension_zip_item in extension_zip_list:
-                abs_path = os.path.abspath(extension_zip_item)
+                abs_path = os.path.realpath(extension_zip_item)
                 edge_options.add_extension(abs_path)
         if extension_dir:
             # load-extension input can be a comma-separated list
             abs_path = (
-                ",".join(os.path.abspath(p) for p in extension_dir.split(","))
+                ",".join(os.path.realpath(p) for p in extension_dir.split(","))
             )
             edge_options = add_chrome_ext_dir(edge_options, abs_path)
         edge_options.add_argument("--disable-infobars")

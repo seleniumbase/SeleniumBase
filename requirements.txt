@@ -14,7 +14,7 @@ filelock~=3.16.1;python_version<"3.9"
 filelock~=3.19.1;python_version>="3.9" and python_version<"3.10"
 filelock>=3.20.0;python_version>="3.10"
 fasteners>=0.20
-mycdp>=1.2.1
+mycdp>=1.3.0
 pynose>=1.5.5
 platformdirs~=4.3.6;python_version<"3.9"
 platformdirs~=4.4.0;python_version>="3.9" and python_version<"3.10"
@@ -45,7 +45,8 @@ sniffio==1.3.1
 h11==0.16.0
 outcome==1.3.0.post0
 trio==0.27.0;python_version<"3.9"
-trio>=0.31.0,<1;python_version>="3.9"
+trio>=0.31.0,<1;python_version>="3.9" and python_version<"3.10"
+trio>=0.32.0,<1;python_version>="3.10"
 trio-websocket~=0.12.2
 wsproto==1.2.0
 websocket-client~=1.8.0;python_version<"3.9"
