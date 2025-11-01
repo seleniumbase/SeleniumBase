@@ -838,6 +838,7 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
     cdp.get_element_position = CDPM.get_element_position
     cdp.get_gui_element_rect = CDPM.get_gui_element_rect
     cdp.get_gui_element_center = CDPM.get_gui_element_center
+    cdp.get_html = CDPM.get_html
     cdp.get_page_source = CDPM.get_page_source
     cdp.get_user_agent = CDPM.get_user_agent
     cdp.get_cookie_string = CDPM.get_cookie_string
@@ -934,6 +935,7 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
     cdp.core = core_items
     cdp.loop = cdp.get_event_loop()
     driver.cdp = cdp
+    driver.solve_captcha = CDPM.solve_captcha
     driver._is_using_cdp = True
 
 

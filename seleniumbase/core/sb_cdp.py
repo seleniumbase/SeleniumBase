@@ -1185,7 +1185,14 @@ class CDPMethods():
             self.page.evaluate("window.location.origin")
         )
 
-    def get_page_source(self):
+    def get_html(self, include_shadow_dom=True):
+        return self.get_page_source(
+            include_shadow_dom=include_shadow_dom
+        )
+
+    def get_page_source(self, include_shadow_dom=True):
+        if include_shadow_dom:
+            return self.find_element("html").get_html()
         try:
             source = self.loop.run_until_complete(
                 self.page.evaluate("document.documentElement.outerHTML")

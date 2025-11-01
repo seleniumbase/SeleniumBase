@@ -130,6 +130,7 @@ class Config:
             "--no-default-browser-check",
             "--homepage=about:blank",
             "--no-pings",
+            "--enable-unsafe-extension-debugging",
             "--wm-window-animations-disabled",
             "--animation-duration-scale=0",
             "--enable-privacy-sandbox-ads-apis",

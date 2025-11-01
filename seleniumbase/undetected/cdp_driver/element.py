@@ -806,7 +806,10 @@ class Element:
 
     async def get_html_async(self):
         return await self._tab.send(
-            cdp.dom.get_outer_html(backend_node_id=self.backend_node_id)
+            cdp.dom.get_outer_html(
+                backend_node_id=self.backend_node_id,
+                include_shadow_dom=True,
+            )
         )
 
     @property

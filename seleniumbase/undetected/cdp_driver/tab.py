@@ -899,7 +899,10 @@ class Tab(Connection):
         """Gets the current page source content (html)"""
         doc: cdp.dom.Node = await self.send(cdp.dom.get_document(-1, True))
         return await self.send(
-            cdp.dom.get_outer_html(backend_node_id=doc.backend_node_id)
+            cdp.dom.get_outer_html(
+                backend_node_id=doc.backend_node_id,
+                include_shadow_dom=True,
+            )
         )
 
     async def maximize(self):
