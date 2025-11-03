@@ -182,7 +182,7 @@ setup(
         'pygments>=2.19.2',
         'pyreadline3>=3.5.4;platform_system=="Windows"',
         "tabcompleter>=1.4.0",
-        "pdbp>=1.8.0",
+        "pdbp>=1.8.1",
         "idna>=3.11",
         'chardet==5.2.0',
         'charset-normalizer>=3.4.4,<4',
