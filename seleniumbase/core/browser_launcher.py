@@ -3255,8 +3255,8 @@ def get_driver(
     proxy_pass = None
     proxy_scheme = "http"
     if proxy_string:
-        # (The code below was for the Chrome 137 extension fix)
-        # sb_config._cdp_proxy = proxy_string
+        # (The line below is for the Chrome 142 proxy auth fix)
+        sb_config._cdp_proxy = proxy_string
         username_and_password = None
         if "@" in proxy_string:
             # Format => username:password@hostname:port
