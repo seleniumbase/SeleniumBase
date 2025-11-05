@@ -85,14 +85,9 @@ jobs:
       run: |
         echo "def test_0(sb): pass" > verify_sb.py
         pytest verify_sb.py
-    - name: Run python raw_chatgpt.py --debug
+    - name: Run python examples/raw_google.py
       run: |
-        python raw_chatgpt.py --debug
-    - name: Run python raw_chatgpt_gha.py --debug
-      env:
-        proxy_1: ${{ secrets.PROXY_1 }}
-      run: |
-        python raw_chatgpt_gha.py
+        python examples/raw_google.py
     - name: Run python raw_ipify.py
       run: |
         python raw_ipify.py
