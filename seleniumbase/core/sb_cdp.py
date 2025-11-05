@@ -2,6 +2,7 @@
 import asyncio
 import fasteners
 import os
+import random
 import re
 import sys
 import time
@@ -479,7 +480,7 @@ class CDPMethods():
             text = text[:-1]
         for key in text:
             element.send_keys(key)
-            time.sleep(0.044)
+            time.sleep(float(0.042 + (random.random() / 110.0)))
         if submit:
             element.send_keys("\r\n")
             time.sleep(0.044)
@@ -938,7 +939,7 @@ class CDPMethods():
             text = text.replace("\n", "\r")
         for key in text:
             element.send_keys(key)
-            time.sleep(0.044)
+            time.sleep(float(0.042 + (random.random() / 110.0)))
         if submit:
             element.send_keys("\r\n")
             time.sleep(0.044)
@@ -1699,7 +1700,7 @@ class CDPMethods():
             self.__make_sure_pyautogui_lock_is_writable()
             for key in keys:
                 pyautogui.press(key)
-                time.sleep(0.044)
+                time.sleep(float(0.042 + (random.random() / 110.0)))
         self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.sleep(0.025))
 
