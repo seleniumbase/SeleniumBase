@@ -1,6 +1,6 @@
 from seleniumbase import SB
 
-with SB(uc=True, test=True, guest=True) as sb:
+with SB(uc=True, test=True, locale="en") as sb:
     url = "https://copilot.microsoft.com/"
     sb.activate_cdp_mode(url)
     textarea = "textarea#userInput"
