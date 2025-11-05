@@ -1,7 +1,7 @@
 from seleniumbase import sb_cdp
 
 url = "https://copilot.microsoft.com/"
-sb = sb_cdp.Chrome(url, locale="en", guest=True)
+sb = sb_cdp.Chrome(url, locale="en")
 textarea = "textarea#userInput"
 sb.wait_for_element(textarea)
 sb.sleep(1.5)

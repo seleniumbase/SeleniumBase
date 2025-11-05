@@ -352,11 +352,11 @@ class UCPresentationClass(BaseCase):
         )
         self.begin_presentation(filename="uc_presentation.html")
 
-        with SB(uc=True, test=True, locale="en") as sb:
+        with SB(uc=True, test=True) as sb:
             url = "www.planetminecraft.com/account/sign_in/"
             sb.activate_cdp_mode(url)
             sb.sleep(2)
-            sb.uc_gui_click_captcha()
+            sb.solve_captcha()
             sb.wait_for_element_absent("input[disabled]")
             sb.sleep(2)
 
@@ -371,8 +371,8 @@ class UCPresentationClass(BaseCase):
         with SB(uc=True, test=True, locale="en") as sb:
             url = "https://www.cloudflare.com/login"
             sb.activate_cdp_mode(url)
-            sb.sleep(3)
-            sb.uc_gui_click_captcha()
+            sb.sleep(3.5)
+            sb.solve_captcha()
             sb.sleep(2.5)
 
         self.create_presentation(theme="serif", transition="none")
@@ -387,12 +387,13 @@ class UCPresentationClass(BaseCase):
             url = "https://gitlab.com/users/sign_in"
             sb.activate_cdp_mode(url)
             sb.sleep(2)
-            sb.uc_gui_click_captcha()
+            sb.solve_captcha()
+            # (The rest is for testing and demo purposes)
             sb.assert_text("Username", '[for="user_login"]', timeout=3)
             sb.assert_element('label[for="user_login"]')
             sb.highlight('button:contains("Sign in")')
             sb.highlight('h1:contains("GitLab")')
-            sb.post_message("SeleniumBase wasn't detected", duration=8)
+            sb.post_message("SeleniumBase wasn't detected", duration=4)
 
         self.create_presentation(theme="serif", transition="none")
         self.add_slide(
@@ -404,7 +405,7 @@ class UCPresentationClass(BaseCase):
                 '<mk-3>    url = "https://gitlab.com/users/sign_in"</mk-3>\n'
                 "<mk-4>    sb.activate_cdp_mode(url)</mk-4>\n"
                 "<mk-5>    sb.sleep(2)</mk-5>\n"
-                "<mk-6>    sb.uc_gui_click_captcha()</mk-6>\n\n"
+                "<mk-6>    sb.solve_captcha()</mk-6>\n\n"
                 "<mk-7>    ...</mk-7>\n\n\n\n\n"
             ),
         )
@@ -417,7 +418,7 @@ class UCPresentationClass(BaseCase):
                 '    url = "https://gitlab.com/users/sign_in"\n'
                 "    sb.activate_cdp_mode(url)\n"
                 "    sb.sleep(2)\n"
-                "    sb.uc_gui_click_captcha()\n\n"
+                "    sb.solve_captcha()\n\n"
                 '<mk-1>    sb.assert_text("Username", \'[for="user_login"]\','
                 ' timeout=3)</mk-1>\n'
                 '<mk-2>    sb.assert_element(\'[for="user_login"]\')</mk-2>\n'
@@ -434,12 +435,12 @@ class UCPresentationClass(BaseCase):
         )
         self.begin_presentation(filename="uc_presentation.html")
 
-        with SB(uc=True, test=True, locale="en") as sb:
+        with SB(uc=True, test=True) as sb:
             url = "https://www.bing.com/turing/captcha/challenge"
             sb.activate_cdp_mode(url)
             sb.sleep(1)
-            sb.uc_gui_click_captcha()
-            sb.sleep(2.5)
+            sb.solve_captcha()
+            sb.sleep(2)
 
         self.create_presentation(theme="serif", transition="none")
         self.add_slide("<h2>Having fun yet?!?</h2>")
@@ -512,22 +513,21 @@ class UCPresentationClass(BaseCase):
         with SB(uc=True, test=True, ad_block=True) as sb:
             url = "https://www.walmart.com/"
             sb.activate_cdp_mode(url)
-            sb.sleep(2.5)
-            sb.cdp.click_if_visible('[data-automation-id*="close-mark"]')
-            sb.sleep(0.3)
-            sb.cdp.mouse_click('input[aria-label="Search"]')
+            sb.sleep(2.8)
+            sb.click('input[aria-label="Search"]')
             sb.sleep(1.2)
             search = "Settlers of Catan Board Game"
             required_text = "Catan"
-            sb.cdp.press_keys('input[aria-label="Search"]', search + "\n")
+            sb.press_keys('input[aria-label="Search"]', search + "\n")
             sb.sleep(3.8)
             if sb.is_element_visible("#px-captcha"):
-                sb.cdp.gui_click_and_hold("#px-captcha", 12)
+                sb.cdp.gui_click_and_hold("#px-captcha", 7.2)
                 sb.sleep(3.2)
                 if sb.is_element_visible("#px-captcha"):
-                    sb.cdp.gui_click_and_hold("#px-captcha", 12)
+                    sb.cdp.gui_click_and_hold("#px-captcha", 4.2)
                     sb.sleep(3.2)
-            sb.cdp.remove_elements('[data-testid="skyline-ad"]')
+            sb.remove_elements('[data-testid="skyline-ad"]')
+            sb.remove_elements('[data-testid="sba-container"]')
             print('*** Walmart Search for "%s":' % search)
             print('    (Results must contain "%s".)' % required_text)
             unique_item_text = []
@@ -570,24 +570,24 @@ class UCPresentationClass(BaseCase):
             sb.activate_cdp_mode(url)
             sb.sleep(2.5)
             sb.remove_element("div > div > article")
-            sb.cdp.scroll_into_view('input[type="search"]')
+            sb.scroll_into_view('input[type="search"]')
             close_btn = ".notification-alert-wrapper__close-button"
-            sb.cdp.click_if_visible(close_btn)
-            sb.cdp.click("input#search-suggestion-input")
+            sb.click_if_visible(close_btn)
+            sb.click("input#search-suggestion-input")
             sb.sleep(0.2)
             search = "Avocado Smoked Salmon"
             required_text = "Salmon"
-            sb.cdp.press_keys("input#search-suggestion-input", search)
+            sb.press_keys("input#search-suggestion-input", search)
             sb.sleep(0.8)
-            sb.cdp.click("#suggestion-0 a span")
+            sb.click("#suggestion-0 a span")
             sb.sleep(0.8)
-            sb.cdp.click_if_visible(close_btn)
-            sb.sleep(2.8)
+            sb.click_if_visible(close_btn)
+            sb.sleep(3.2)
             print('*** Albertsons Search for "%s":' % search)
             print('    (Results must contain "%s".)' % required_text)
             unique_item_text = []
             item_selector = 'a[href*="/meal-plans-recipes/shop/"]'
-            items = sb.cdp.find_elements(item_selector)
+            items = sb.find_elements(item_selector)
             for item in items:
                 sb.sleep(0.06)
                 if required_text in item.text:
@@ -610,34 +610,34 @@ class UCPresentationClass(BaseCase):
         with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
             url = "https://www.easyjet.com/en/"
             sb.activate_cdp_mode(url)
-            sb.sleep(2.5)
-            sb.cdp.click_if_visible("button#ensCloseBanner")
+            sb.sleep(2)
+            sb.click_if_visible("button#ensCloseBanner")
             sb.sleep(1.2)
-            sb.cdp.click('input[name="from"]')
+            sb.click('input[name="from"]')
             sb.sleep(1.2)
-            sb.cdp.type('input[name="from"]', "London")
+            sb.type('input[name="from"]', "London Gatwick")
             sb.sleep(0.6)
-            sb.cdp.click_if_visible("button#ensCloseBanner")
+            sb.click_if_visible("button#ensCloseBanner")
             sb.sleep(0.6)
-            sb.cdp.click('span[data-testid="airport-name"]')
+            sb.click('span[data-testid="airport-name"]')
             sb.sleep(1.2)
-            sb.cdp.type('input[name="to"]', "Venice")
+            sb.type('input[name="to"]', "Paris")
             sb.sleep(1.2)
-            sb.cdp.click('span[data-testid="airport-name"]')
+            sb.click('span[data-testid="airport-name"]')
             sb.sleep(1.2)
-            sb.cdp.click('input[name="when"]')
+            sb.click('input[name="when"]')
             sb.sleep(1.2)
             sb.cdp.click(
                 '[data-testid="month"]:last-of-type'
                 ' [aria-disabled="false"]'
             )
             sb.sleep(1.2)
-            sb.cdp.click(
+            sb.click(
                 '[data-testid="month"]:last-of-type'
                 ' [aria-disabled="false"]'
             )
             sb.sleep(1.2)
-            sb.cdp.click('button[data-testid="submit"]')
+            sb.click('button[data-testid="submit"]')
             sb.sleep(3.5)
             sb.connect()
             sb.sleep(4.2)
@@ -724,26 +724,26 @@ class UCPresentationClass(BaseCase):
             url = "https://www.bestwestern.com/en_US.html"
             sb.activate_cdp_mode(url)
             sb.sleep(2.5)
-            sb.cdp.click_if_visible(".onetrust-close-btn-handler")
+            sb.click_if_visible(".onetrust-close-btn-handler")
             sb.sleep(1)
-            sb.cdp.click("input#destination-input")
+            sb.click("input#destination-input")
             sb.sleep(2)
             location = "Palm Springs, CA, USA"
-            sb.cdp.press_keys("input#destination-input", location)
+            sb.press_keys("input#destination-input", location)
             sb.sleep(1)
-            sb.cdp.click("ul#google-suggestions li")
+            sb.click("ul#google-suggestions li")
             sb.sleep(1)
-            sb.cdp.click("button#btn-modify-stay-update")
+            sb.click("button#btn-modify-stay-update")
             sb.sleep(4)
-            sb.cdp.click("label#available-label")
+            sb.click("label#available-label")
             sb.sleep(2.5)
             print("Best Western Hotels in %s:" % location)
-            summary_details = sb.cdp.get_text("#summary-details-column")
+            summary_details = sb.get_text("#summary-details-column")
             dates = summary_details.split("DESTINATION")[-1]
             dates = dates.split(" CHECK-OUT")[0].strip() + " CHECK-OUT"
             dates = dates.replace("  ", " ")
             print("(Dates: %s)" % dates)
-            flip_cards = sb.cdp.select_all(".flipCard")
+            flip_cards = sb.select_all(".flipCard")
             for i, flip_card in enumerate(flip_cards):
                 hotel = flip_card.query_selector(".hotelName")
                 price = flip_card.query_selector(".priceSection")
@@ -865,17 +865,17 @@ class UCPresentationClass(BaseCase):
             url = "https://www.nordstrom.com/"
             sb.activate_cdp_mode(url)
             sb.sleep(2.2)
-            sb.cdp.click("input#keyword-search-input")
+            sb.click("input#keyword-search-input")
             sb.sleep(0.8)
             search = "cocktail dresses for women teal"
-            sb.cdp.press_keys("input#keyword-search-input", search + "\n")
+            sb.press_keys("input#keyword-search-input", search + "\n")
             sb.sleep(2.2)
-            for i in range(16):
-                sb.cdp.scroll_down(16)
-                sb.sleep(0.16)
-            print('\n\n*** Nordstrom Search for "%s":' % search)
+            for i in range(17):
+                sb.scroll_down(16)
+                sb.sleep(0.14)
+            print('*** Nordstrom Search for "%s":' % search)
             unique_item_text = []
-            items = sb.cdp.find_elements("article")
+            items = sb.find_elements("article")
             for item in items:
                 description = item.querySelector("article h3")
                 if description and description.text not in unique_item_text:

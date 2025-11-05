@@ -6,4 +6,3 @@ with SB(uc=True, test=True) as sb:
     sb.sleep(1)
     sb.solve_captcha()
     sb.sleep(2)
-    breakpoint()
