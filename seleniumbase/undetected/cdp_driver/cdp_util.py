@@ -548,6 +548,7 @@ async def start(
                 proxy_scheme,
             )
     if ad_block:
+        sb_config.ad_block_on = True
         incognito = False
         guest = False
         ad_block_zip = AD_BLOCK_ZIP_PATH
