@@ -6,5 +6,5 @@ with SB(uc=True, test=True, ad_block=True) as sb:
     sb.sleep(1)
     sb.cdp.flash("Test Results", duration=4)
     sb.sleep(1)
-    sb.cdp.assert_element('strong:contains("Normal")')
+    sb.assert_element('strong:contains("Normal")')
     sb.cdp.flash('strong:contains("Normal")', duration=4, pause=4)

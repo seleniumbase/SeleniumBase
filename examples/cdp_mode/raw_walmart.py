@@ -16,12 +16,12 @@ with SB(uc=True, test=True, ad_block=True) as sb:
         if sb.is_element_visible("#px-captcha"):
             sb.cdp.gui_click_and_hold("#px-captcha", 4.2)
             sb.sleep(3.2)
-    sb.cdp.remove_elements('[data-testid="skyline-ad"]')
-    sb.cdp.remove_elements('[data-testid="sba-container"]')
+    sb.remove_elements('[data-testid="skyline-ad"]')
+    sb.remove_elements('[data-testid="sba-container"]')
     print('*** Walmart Search for "%s":' % search)
     print('    (Results must contain "%s".)' % required_text)
     unique_item_text = []
-    items = sb.cdp.find_elements('div[data-testid="list-view"]')
+    items = sb.find_elements('div[data-testid="list-view"]')
     for item in items:
         if required_text in item.text:
             description = item.querySelector(

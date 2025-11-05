@@ -1,14 +1,9 @@
-"""SB Manager using UC Mode & PyAutoGUI for bypassing CAPTCHAs."""
+"""SB Manager using CDP Mode for bypassing CAPTCHAs."""
 from seleniumbase import SB
 
 with SB(uc=True, test=True, locale="en") as sb:
     url = "https://www.cloudflare.com/login"
-    sb.uc_open_with_reconnect(url, 5.5)
-    sb.uc_gui_handle_captcha()  # PyAutoGUI press Tab and Spacebar
-    sb.sleep(2.5)
-
-with SB(uc=True, test=True, locale="en") as sb:
-    url = "https://www.cloudflare.com/login"
-    sb.uc_open_with_reconnect(url, 5.5)
-    sb.uc_gui_click_captcha()  # PyAutoGUI click. (Linux needs it)
+    sb.activate_cdp_mode(url)
+    sb.sleep(3.5)
+    sb.solve_captcha()
     sb.sleep(2.5)

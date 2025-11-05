@@ -4,10 +4,11 @@ with SB(uc=True, test=True, incognito=True, locale="en") as sb:
     url = "https://ahrefs.com/website-authority-checker"
     input_field = 'input[placeholder="Enter domain"]'
     submit_button = 'span:contains("Check Authority")'
-    sb.uc_open_with_reconnect(url)  # The bot-check is later
+    sb.activate_cdp_mode(url)
     sb.type(input_field, "github.com/seleniumbase/SeleniumBase")
-    sb.uc_click(submit_button, reconnect_time=3.25)
-    sb.uc_gui_click_captcha()
+    sb.click(submit_button)
+    sb.sleep(2)
+    sb.solve_captcha()
     sb.wait_for_text_not_visible("Checking", timeout=15)
     sb.click_if_visible('button[data-cky-tag="close-button"]')
     sb.highlight('p:contains("github.com/seleniumbase/SeleniumBase")')

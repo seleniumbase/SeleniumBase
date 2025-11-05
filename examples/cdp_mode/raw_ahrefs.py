@@ -6,10 +6,10 @@ with SB(uc=True, test=True, incognito=True, locale="en") as sb:
     submit_button = 'span:contains("Check Authority")'
     sb.activate_cdp_mode(url)  # The bot-check is later
     sb.type(input_field, "github.com/seleniumbase/SeleniumBase")
-    sb.cdp.scroll_down(36)
+    sb.scroll_down(36)
     sb.click(submit_button)
     sb.sleep(1)
-    sb.uc_gui_click_captcha()
+    sb.solve_captcha()
     sb.sleep(3)
     sb.wait_for_text_not_visible("Checking", timeout=15)
     sb.click_if_visible('button[data-cky-tag="close-button"]')

@@ -23,7 +23,7 @@ with SB(uc=True, test=True, locale="en") as sb:
     print(sb.get_title())
     print("************")
     for i in range(8):
-        sb.cdp.scroll_down(50)
+        sb.scroll_down(50)
         sb.sleep(0.2)
     cards = sb.select_all('span[data-automation*="product-list-card"]')
     for card in cards:
