@@ -936,6 +936,7 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
     cdp.loop = cdp.get_event_loop()
     driver.cdp = cdp
     driver.solve_captcha = CDPM.solve_captcha
+    driver.find_element_by_text = CDPM.find_element_by_text
     driver._is_using_cdp = True
 
 
