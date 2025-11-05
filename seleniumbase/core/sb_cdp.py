@@ -1885,10 +1885,12 @@ class CDPMethods():
         """Uses PyAutoGUI unless use_cdp == True"""
         self.sleep(0.056)
         source = self.get_page_source()
-        if self._on_a_g_recaptcha_page(source):
+        if self._on_a_cf_turnstile_page(source):
+            pass
+        elif self._on_a_g_recaptcha_page(source):
             self.__gui_click_recaptcha(use_cdp)
             return
-        elif not self._on_a_cf_turnstile_page(source):
+        else:
             return
         selector = None
         if (
