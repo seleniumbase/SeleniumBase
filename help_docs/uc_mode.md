@@ -4,7 +4,7 @@
 
 👤 <b translate="no">SeleniumBase</b> <b translate="no">UC Mode</b> (Undetected-Chromedriver Mode) allows bots to appear human, which lets them evade detection from anti-bot services that try to block them or trigger CAPTCHAs on various websites.
 
-> #### (For the successor to default UC Mode, see **[CDP Mode 🐙](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md)**)
+> ### (For the successor to plain UC Mode, see **[CDP Mode 🐙](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md)**)
 
 ---
 
@@ -28,11 +28,7 @@
 
 ----
 
-👤 <b translate="no">UC Mode</b> is based on [undetected-chromedriver](https://github.com/ultrafunkamsterdam/undetected-chromedriver). <span translate="no">UC Mode</span> includes multiple updates, fixes, and improvements, such as:
-
-* Automatically changing user-agents to prevent detection.
-* Automatically setting various Chromium args as needed.
-* Has special `uc_*()` methods for bypassing CAPTCHAs.
+👤 <b translate="no">UC Mode</b> is based on [undetected-chromedriver](https://github.com/ultrafunkamsterdam/undetected-chromedriver). <span translate="no">UC Mode</span> includes multiple updates, fixes, and improvements, such as having special <code>uc_*()</code> methods for bypassing CAPTCHAs.
 
 👤 Here's a simple example with the <b><code translate="no">Driver</code></b> manager:
 
@@ -110,10 +106,10 @@ with SB(uc=True, test=True, incognito=True, locale="en") as sb:
     submit_button = 'span:contains("Check Authority")'
     sb.uc_open_with_reconnect(url)  # The bot-check is later
     sb.type(input_field, "github.com/seleniumbase/SeleniumBase")
-    sb.reconnect(0.1)
-    sb.uc_click(submit_button, reconnect_time=4)
+    sb.uc_click(submit_button, reconnect_time=3.25)
     sb.uc_gui_click_captcha()
-    sb.wait_for_text_not_visible("Checking", timeout=12)
+    sb.wait_for_text_not_visible("Checking", timeout=15)
+    sb.click_if_visible('button[data-cky-tag="close-button"]')
     sb.highlight('p:contains("github.com/seleniumbase/SeleniumBase")')
     sb.highlight('a:contains("Top 100 backlinks")')
     sb.set_messenger_theme(location="bottom_center")
@@ -121,20 +117,6 @@ with SB(uc=True, test=True, incognito=True, locale="en") as sb:
 ```
 
 <img src="https://seleniumbase.github.io/other/ahrefs_bypass.png" title="SeleniumBase" width="540">
-
-👤 Here, <b>the CAPTCHA appears after clicking to go to the sign-in screen</b>:
-
-```python
-from seleniumbase import SB
-
-with SB(uc=True, test=True, ad_block=True) as sb:
-    url = "https://www.thaiticketmajor.com/concert/"
-    sb.uc_open_with_reconnect(url, 6.111)
-    sb.uc_click("button.btn-signin", 4.1)
-    sb.uc_gui_click_captcha()
-```
-
-<img src="https://seleniumbase.github.io/other/ttm_bypass.png" title="SeleniumBase" width="540">
 
 --------
 
@@ -169,38 +151,25 @@ The 2nd <code translate="no">print()</code> should output <code translate="no">V
 
 ### 👤 Here are some examples that use UC Mode:
 * [SeleniumBase/examples/verify_undetected.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/verify_undetected.py)
-* [SeleniumBase/examples/raw_bing_captcha.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_bing_captcha.py)
+* [SeleniumBase/examples/raw_turnstile.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_turnstile.py)
+* [SeleniumBase/examples/raw_form_turnstile.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_form_turnstile.py)
 * [SeleniumBase/examples/raw_uc_mode.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_uc_mode.py)
-* [SeleniumBase/examples/raw_cf.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_cf.py)
+
+<img src="https://seleniumbase.github.io/other/cf_bypass.png" title="SeleniumBase" width="260">
 
 --------
 
 👤 Here's an example where <b><code translate="no">incognito=True</code> is needed for bypassing detection</b>:
-
-* [SeleniumBase/examples/raw_pixelscan.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_pixelscan.py)
 
 ```python
 from seleniumbase import SB
 
 with SB(uc=True, incognito=True, test=True) as sb:
     sb.driver.uc_open_with_reconnect("https://pixelscan.net/", 10)
-    sb.remove_elements("jdiv")  # Remove chat widgets
-    sb.highlight("span.text-success", loops=8)
-    sb.highlight(".bot-detection-context", loops=10, scroll=False)
     sb.sleep(2)
 ```
 
 <img src="https://seleniumbase.github.io/other/pixelscan.jpg" title="SeleniumBase" width="540">
-
---------
-
-### 👤 Here are some UC Mode examples that bypass CAPTCHAs when clicking is required:
-* [SeleniumBase/examples/raw_pyautogui.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_pyautogui.py)
-* [SeleniumBase/examples/raw_turnstile.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_turnstile.py)
-* [SeleniumBase/examples/raw_form_turnstile.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_form_turnstile.py)
-* [SeleniumBase/examples/uc_cdp_events.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/uc_cdp_events.py)
-
-<img src="https://seleniumbase.github.io/other/cf_bypass.png" title="SeleniumBase" width="260">
 
 --------
 
