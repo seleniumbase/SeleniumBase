@@ -6,7 +6,7 @@ with SB(uc=True, test=True, ad_block=True, pls="none") as sb:
     sb.activate_cdp_mode(url)
     sb.sleep(1.5)
     if not sb.is_element_visible('input[placeholder*="Search"]'):
-        sb.uc_gui_click_captcha()
+        sb.solve_captcha()
         sb.sleep(0.5)
     channel_name = "michaelmintz"
     channel_title = "Michael Mintz"

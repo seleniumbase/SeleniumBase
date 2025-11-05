@@ -1,12 +1,10 @@
 """Context Manager Test. Runs with "python". (pytest not needed)"""
 from seleniumbase import SB
 
-with SB(test=True, uc=True) as sb:
+with SB(uc=True, test=True) as sb:
     sb.open("https://google.com/ncr")
     sb.type('[name="q"]', "SeleniumBase on GitHub\n")
-    sb.click('a[href*="github.com/seleniumbase"]')
-    sb.highlight("div.Layout-main")
-    sb.highlight("div.Layout-sidebar")
+    sb.highlight('a[href*="github.com/seleniumbase"]')
     sb.sleep(0.5)
 
 with SB(test=True, rtf=True, demo=True) as sb:

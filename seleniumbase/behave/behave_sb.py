@@ -113,6 +113,7 @@ import sys
 from contextlib import suppress
 from seleniumbase import config as sb_config
 from seleniumbase.config import settings
+from seleniumbase.core import detect_b_ver
 from seleniumbase.core import download_helper
 from seleniumbase.core import log_helper
 from seleniumbase.core import proxy_helper
@@ -890,6 +891,13 @@ def get_configured_sb(context):
             "\nOnly ONE default browser is allowed!\n"
             "%s browsers were selected: %s" % (len(browsers), browsers)
         )
+    if sb.browser in ["opera", "brave", "comet", "atlas"]:
+        bin_loc = detect_b_ver.get_binary_location(sb.browser)
+        if bin_loc and os.path.exists(bin_loc):
+            sb_config._cdp_browser = sb.browser
+            sb_config._cdp_bin_loc = bin_loc
+            sb_config.binary_location = bin_loc
+            sb.binary_location = bin_loc
     # Recorder Mode can still optimize scripts in "-D headless2" mode.
     if sb.recorder_ext and sb.headless:
         sb.headless = False

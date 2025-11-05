@@ -2,7 +2,7 @@
 
 ## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) CDP Mode 🐙
 
-🐙 <b translate="no">SeleniumBase</b> <b translate="no">CDP Mode</b> (<a href="https://chromedevtools.github.io/devtools-protocol/" translate="no"><span translate="no">Chrome Devtools Protocol</span></a> Mode) is a special mode inside of <b><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md" translate="no"><span translate="no">SeleniumBase UC Mode</span></a></b> that lets bots appear human while controlling the browser with <b translate="no">CDP</b> (via <a href="https://github.com/mdmintz/MyCDP" translate="no"><span translate="no">MyCDP</span></a>). Although regular <b translate="no">UC Mode</b> can't perform <span translate="no">WebDriver</span> actions while the <code>driver</code> is disconnected from the browser, <b translate="no">CDP</b> can. <b translate="no">CDP Mode</b> can also be used independently of WebDriver via <b><a href="#Pure_CDP_Mode" translate="no">Pure CDP Mode</a></b> (<code>sb_cdp</code>).
+🐙 <b translate="no">SeleniumBase</b> <b translate="no">CDP Mode</b> is a stealth mode of SeleniumBase that uses the <a href="https://chromedevtools.github.io/devtools-protocol/" translate="no"><span translate="no">Chrome Devtools Protocol</span></a> (via <a href="https://github.com/mdmintz/MyCDP" translate="no"><span translate="no">MyCDP</span></a>) to control the web browser. <b translate="no">CDP Mode</b> can be used either as a subset of <b><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md" translate="no"><span translate="no">SeleniumBase UC Mode</span></a></b>, or via <b><a href="#Pure_CDP_Mode" translate="no">Pure CDP Mode</a></b> (<code>sb_cdp</code>), which doesn't use WebDriver at all, and has a slightly different setup.
 
 --------
 
@@ -21,7 +21,7 @@
 
 --------
 
-👤 <b translate="no">UC Mode</b> avoids bot-detection by first disconnecting WebDriver from the browser at strategic times, calling special <code>PyAutoGUI</code> methods to bypass CAPTCHAs (as needed), and finally reconnecting the <code>driver</code> afterwards so that WebDriver actions can be performed again. Although this approach works for bypassing simple CAPTCHAs, more flexibility is needed for bypassing bot-detection on websites with advanced protection. (That's where <b translate="no">CDP Mode</b> comes in.)
+👤 <b translate="no">UC Mode</b> avoids bot-detection by first disconnecting WebDriver from the browser at strategic times, calling special <code><a href="https://github.com/asweigart/pyautogui">PyAutoGUI</a></code> methods to bypass CAPTCHAs (as needed), and finally reconnecting the <code>driver</code> afterwards so that WebDriver actions can be performed again. Although this approach works for bypassing simple CAPTCHAs, more flexibility is needed for bypassing bot-detection on websites with advanced protection. (That's where <b translate="no">CDP Mode</b> comes in.)
 
 🐙 <b translate="no">CDP Mode</b> is based on <a href="https://github.com/HyperionGray/python-chrome-devtools-protocol" translate="no">python-cdp</a>, <a href="https://github.com/HyperionGray/trio-chrome-devtools-protocol" translate="no">trio-cdp</a>, and <a href="https://github.com/ultrafunkamsterdam/nodriver" translate="no">nodriver</a>. <code>trio-cdp</code> is an early implementation of <code>python-cdp</code>, and <code>nodriver</code> is a modern implementation of <code>python-cdp</code>. (Refactored <code>Python-CDP</code> code is imported from <a href="https://github.com/mdmintz/MyCDP" translate="no">MyCDP</a>.)
 
@@ -53,19 +53,17 @@ from seleniumbase import SB
 with SB(uc=True, test=True, locale="en") as sb:
     url = "https://gitlab.com/users/sign_in"
     sb.activate_cdp_mode(url)
-    sb.sleep(2.2)
-    sb.uc_gui_click_captcha()
+    sb.sleep(2)
+    sb.solve_captcha()
 ```
 
 <img src="https://seleniumbase.github.io/other/cf_sec.jpg" title="SeleniumBase" width="332"> <img src="https://seleniumbase.github.io/other/gitlab_bypass.png" title="SeleniumBase" width="288">
 
-(If the CAPTCHA wasn't bypassed automatically when going to the URL, then `sb.uc_gui_click_captcha()` gets the job done with a mouse click from [PyAutoGUI](https://github.com/asweigart/pyautogui).)
-
-ℹ️ Note that `PyAutoGUI` is an optional dependency. If calling a method that uses it when not already installed, then `SeleniumBase` installs `PyAutoGUI` at run-time.
+(If the CAPTCHA wasn't bypassed automatically when going to the URL, then `sb.solve_captcha()` gets the job done.)
 
 --------
 
-You can also use `sb.cdp.gui_click_element(selector)` to click on elements using `PyAutoGUI`. (This is useful when clicking inside `#shadow-root`.) Example:
+`sb.cdp.gui_click_element(selector)` lets you click on elements using `PyAutoGUI`. Example:
 
 ```python
 from seleniumbase import SB
@@ -86,7 +84,9 @@ Eg. `sb.cdp.gui_click_element("#turnstile-widget div")`
 
 <img src="https://seleniumbase.github.io/other/above_shadow.png" title="SeleniumBase" width="480">
 
-In most cases, `sb.uc_gui_click_captcha()` is good enough for CF Turnstiles without needing `sb.cdp.gui_click_element(selector)`. (See [SeleniumBase/examples/cdp_mode/raw_planetmc.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_planetmc.py))
+In most cases, `sb.solve_captcha()` is good enough for CF Turnstiles without needing `sb.cdp.gui_click_element(selector)`. (See [SeleniumBase/examples/cdp_mode/raw_planetmc.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_planetmc.py))
+
+ℹ️ Note that `PyAutoGUI` is an optional dependency. If calling a method that uses it when not already installed, then `SeleniumBase` installs `PyAutoGUI` at run-time.
 
 --------
 
@@ -94,6 +94,7 @@ In most cases, `sb.uc_gui_click_captcha()` is good enough for CF Turnstiles with
 
 * `sb.cdp.click(selector)`  (Uses the CDP API to click)
 * `sb.cdp.click_if_visible(selector)`  (Click if visible)
+* `sb.cdp.solve_captcha()`  (Uses CDP to click a CAPTCHA)
 * `sb.cdp.gui_click_element(selector)`  (Uses `PyAutoGUI`)
 * `sb.cdp.type(selector, text)`  (Type text into a selector)
 * `sb.cdp.press_keys(selector, text)`  (Human-speed `type`)
@@ -137,37 +138,37 @@ with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     url = "https://www.pokemon.com/us"
     sb.activate_cdp_mode(url)
     sb.sleep(3.2)
-    sb.cdp.click("button#onetrust-accept-btn-handler")
+    sb.click("button#onetrust-accept-btn-handler")
     sb.sleep(1.2)
-    sb.cdp.click("a span.icon_pokeball")
+    sb.click("a span.icon_pokeball")
     sb.sleep(2.5)
-    sb.cdp.click('b:contains("Show Advanced Search")')
+    sb.click('b:contains("Show Advanced Search")')
     sb.sleep(2.5)
-    sb.cdp.click('span[data-type="type"][data-value="electric"]')
+    sb.click('span[data-type="type"][data-value="electric"]')
     sb.sleep(0.5)
     sb.scroll_into_view("a#advSearch")
     sb.sleep(0.5)
-    sb.cdp.click("a#advSearch")
+    sb.click("a#advSearch")
     sb.sleep(1.2)
-    sb.cdp.click('img[src*="img/pokedex/detail/025.png"]')
-    sb.cdp.assert_text("Pikachu", 'div[class*="title"]')
-    sb.cdp.assert_element('img[alt="Pikachu"]')
-    sb.cdp.scroll_into_view("div.pokemon-ability-info")
+    sb.click('img[src*="img/pokedex/detail/025.png"]')
+    sb.assert_text("Pikachu", 'div[class*="title"]')
+    sb.assert_element('img[alt="Pikachu"]')
+    sb.scroll_into_view("div.pokemon-ability-info")
     sb.sleep(1.2)
     sb.cdp.flash('div[class*="title"]')
     sb.cdp.flash('img[alt="Pikachu"]')
     sb.cdp.flash("div.pokemon-ability-info")
-    name = sb.cdp.get_text("label.styled-select")
-    info = sb.cdp.get_text("div.version-descriptions p.active")
+    name = sb.get_text("label.styled-select")
+    info = sb.get_text("div.version-descriptions p.active")
     print("*** %s: ***\n* %s" % (name, info))
     sb.sleep(2)
     sb.cdp.highlight_overlay("div.pokemon-ability-info")
     sb.sleep(2)
-    sb.cdp.open("https://events.pokemon.com/EventLocator/")
+    sb.open("https://events.pokemon.com/EventLocator/")
     sb.sleep(2)
-    sb.cdp.click('span:contains("Championship")')
+    sb.click('span:contains("Championship")')
     sb.sleep(2)
-    events = sb.cdp.select_all("div.event-info__title")
+    events = sb.select_all("div.event-info__title")
     print("*** Pokémon Championship Events: ***")
     for event in events:
         print("* " + event.text)
@@ -202,9 +203,9 @@ with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     sb.click("button.be-button-shop")
     sb.sleep(6)
     card_info = 'div[data-booking-status="BOOKABLE"] [class*="HotelCard_info"]'
-    hotels = sb.cdp.select_all(card_info)
+    hotels = sb.select_all(card_info)
     print("Hyatt Hotels in %s:" % location)
-    print("(" + sb.cdp.get_text('span[class*="summary_destination"]') + ")")
+    print("(" + sb.get_text('span[class*="summary_destination"]') + ")")
     if len(hotels) == 0:
         print("No availability over the selected dates!")
     for hotel in hotels:
@@ -234,26 +235,26 @@ with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     url = "https://www.bestwestern.com/en_US.html"
     sb.activate_cdp_mode(url)
     sb.sleep(2.5)
-    sb.cdp.click_if_visible(".onetrust-close-btn-handler")
+    sb.click_if_visible(".onetrust-close-btn-handler")
     sb.sleep(1)
-    sb.cdp.click("input#destination-input")
+    sb.click("input#destination-input")
     sb.sleep(2)
     location = "Palm Springs, CA, USA"
-    sb.cdp.press_keys("input#destination-input", location)
+    sb.press_keys("input#destination-input", location)
     sb.sleep(1)
-    sb.cdp.click("ul#google-suggestions li")
+    sb.click("ul#google-suggestions li")
     sb.sleep(1)
-    sb.cdp.click("button#btn-modify-stay-update")
+    sb.click("button#btn-modify-stay-update")
     sb.sleep(4)
-    sb.cdp.click("label#available-label")
+    sb.click("label#available-label")
     sb.sleep(2.5)
     print("Best Western Hotels in %s:" % location)
-    summary_details = sb.cdp.get_text("#summary-details-column")
+    summary_details = sb.get_text("#summary-details-column")
     dates = summary_details.split("DESTINATION")[-1]
     dates = dates.split(" CHECK-OUT")[0].strip() + " CHECK-OUT"
     dates = dates.replace("  ", " ")
     print("(Dates: %s)" % dates)
-    flip_cards = sb.cdp.select_all(".flipCard")
+    flip_cards = sb.select_all(".flipCard")
     for i, flip_card in enumerate(flip_cards):
         hotel = flip_card.query_selector(".hotelName")
         price = flip_card.query_selector(".priceSection")
@@ -291,12 +292,12 @@ with SB(uc=True, test=True, ad_block=True) as sb:
         if sb.is_element_visible("#px-captcha"):
             sb.cdp.gui_click_and_hold("#px-captcha", 4.2)
             sb.sleep(3.2)
-    sb.cdp.remove_elements('[data-testid="skyline-ad"]')
-    sb.cdp.remove_elements('[data-testid="sba-container"]')
+    sb.remove_elements('[data-testid="skyline-ad"]')
+    sb.remove_elements('[data-testid="sba-container"]')
     print('*** Walmart Search for "%s":' % search)
     print('    (Results must contain "%s".)' % required_text)
     unique_item_text = []
-    items = sb.cdp.find_elements('div[data-testid="list-view"]')
+    items = sb.find_elements('div[data-testid="list-view"]')
     for item in items:
         if required_text in item.text:
             description = item.querySelector(
@@ -571,8 +572,10 @@ from seleniumbase import sb_cdp
 
 url = "https://seleniumbase.io/apps/turnstile"
 sb = sb_cdp.Chrome(url)
-sb.gui_click_captcha()
-sb.sleep(2)
+sb.solve_captcha()
+sb.assert_element("img#captcha-success")
+sb.set_messenger_theme(location="top_left")
+sb.post_message("SeleniumBase wasn't detected", duration=3)
 sb.driver.stop()
 ```
 
@@ -611,6 +614,7 @@ After finding an element in CDP Mode, you can access `WebElement` methods:
 ```python
 element.clear_input()
 element.click()
+element.click_with_offset(x, y, center=False)
 element.flash(duration=0.5, color="EE4488")
 element.focus()
 element.gui_click(timeframe=0.25)

@@ -66,17 +66,19 @@
 
 --------
 
-<p align="left">📗 Here's a test script that performs a Google Search using SeleniumBase UC Mode:<br /><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_google.py">SeleniumBase/examples/raw_google.py</a> (Results are saved as PDF, HTML, and PNG)</p>
+<p align="left">📗 This script performs a Google Search using SeleniumBase UC Mode + CDP Mode:<br /><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_google.py">SeleniumBase/examples/raw_google.py</a> (Results are saved as PDF, HTML, and PNG)</p>
 
 ```python
 from seleniumbase import SB
 
-with SB(test=True, uc=True) as sb:
-    sb.open("https://google.com/ncr")
+with SB(uc=True, test=True) as sb:
+    url = "https://google.com/ncr"
+    sb.activate_cdp_mode(url)
     sb.type('[title="Search"]', "SeleniumBase GitHub page")
     sb.click("div:not([jsname]) > * > input")
+    sb.sleep(2)
     print(sb.get_page_title())
-    sb.sleep(2)  # Wait for the "AI Overview" result
+    sb.sleep(1)  # Wait for the "AI Overview" result
     if sb.is_text_visible("Generating"):
         sb.wait_for_text("AI Overview")
     sb.save_as_pdf_to_logs()  # Saved to ./latest_logs/
@@ -98,8 +100,8 @@ from seleniumbase import SB
 with SB(uc=True, test=True, locale="en") as sb:
     url = "https://gitlab.com/users/sign_in"
     sb.activate_cdp_mode(url)
-    sb.sleep(2.2)
-    sb.uc_gui_click_captcha()
+    sb.sleep(2)
+    sb.solve_captcha()
     # (The rest is for testing and demo purposes)
     sb.assert_text("Username", '[for="user_login"]', timeout=3)
     sb.assert_element('label[for="user_login"]')
@@ -118,7 +120,7 @@ from seleniumbase import sb_cdp
 url = "https://gitlab.com/users/sign_in"
 sb = sb_cdp.Chrome(url)
 sb.sleep(2.5)
-sb.gui_click_captcha()
+sb.solve_captcha()
 sb.highlight('h1:contains("GitLab")')
 sb.highlight('button:contains("Sign in")')
 sb.driver.stop()

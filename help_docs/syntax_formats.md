@@ -864,12 +864,10 @@ Here's another example, which uses <code translate="no">test</code> mode:
 ```python
 from seleniumbase import SB
 
-with SB(test=True, uc=True) as sb:
+with SB(uc=True, test=True) as sb:
     sb.open("https://google.com/ncr")
     sb.type('[name="q"]', "SeleniumBase on GitHub\n")
-    sb.click('a[href*="github.com/seleniumbase"]')
-    sb.highlight("div.Layout-main")
-    sb.highlight("div.Layout-sidebar")
+    sb.highlight('a[href*="github.com/seleniumbase"]')
     sb.sleep(0.5)
 
 with SB(test=True, rtf=True, demo=True) as sb:
@@ -896,7 +894,7 @@ with SB(uc=True, test=True) as sb:
     url = "www.planetminecraft.com/account/sign_in/"
     sb.activate_cdp_mode(url)
     sb.sleep(2)
-    sb.uc_gui_click_captcha()
+    sb.solve_captcha()
     sb.wait_for_element_absent("input[disabled]")
     sb.sleep(2)
 ```

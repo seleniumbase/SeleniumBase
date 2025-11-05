@@ -16,10 +16,10 @@ sb.press_keys(textarea, query)
 sb.sleep(1.1)
 sb.click('button[data-testid="submit-button"]')
 sb.sleep(2.5)
-sb.gui_click_captcha()
-sb.sleep(2.5)
-sb.gui_click_captcha()
+sb.solve_captcha()
 sb.sleep(3.5)
+sb.solve_captcha()
+sb.sleep(2.5)
 stop_button = '[data-testid="stop-button"]'
 thumbs_up = 'button[data-testid*="-thumbs-up-"]'
 sb.wait_for_element_absent(stop_button, timeout=50)

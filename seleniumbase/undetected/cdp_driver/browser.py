@@ -293,6 +293,7 @@ class Browser:
             _cdp_platform = None
             _cdp_geolocation = None
             _cdp_recorder = None
+            _cdp_ad_block = None
             if (
                 hasattr(sb_config, "_cdp_timezone") and sb_config._cdp_timezone
             ):
@@ -311,6 +312,11 @@ class Browser:
                 and sb_config._cdp_geolocation
             ):
                 _cdp_geolocation = sb_config._cdp_geolocation
+            if (
+                hasattr(sb_config, "ad_block_on")
+                and sb_config.ad_block_on
+            ):
+                _cdp_ad_block = sb_config.ad_block_on
             if "timezone" in kwargs:
                 _cdp_timezone = kwargs["timezone"]
             elif "tzone" in kwargs:
@@ -347,6 +353,22 @@ class Browser:
                     accept_language=_cdp_locale,
                     platform=_cdp_platform,
                 )
+            if _cdp_ad_block:
+                await connection.send(cdp.page.navigate("about:blank"))
+                await connection.send(cdp.network.enable())
+                await connection.send(cdp.network.set_blocked_urls(
+                    urls=[
+                        "*googlesyndication.com*",
+                        "*googletagmanager.com*",
+                        "*google-analytics.com*",
+                        "*amazon-adsystem.com*",
+                        "*adsafeprotected.com*",
+                        "*doubleclick.net*",
+                        "*fastclick.net*",
+                        "*snigelweb.com*",
+                        "*2mdn.net*",
+                    ]
+                ))
             if _cdp_geolocation:
                 await connection.send(cdp.page.navigate("about:blank"))
                 await connection.set_geolocation(_cdp_geolocation)
