@@ -244,23 +244,7 @@ class Tab(Connection):
          Raise timeout exception when after this many seconds nothing is found.
         :type timeout: float,int
         """
-        loop = asyncio.get_running_loop()
-        start_time = loop.time()
-        selector = selector.strip()
-        item = None
-        try:
-            item = await self.query_selector(selector)
-        except (Exception, TypeError):
-            pass
-        while not item:
-            await self
-            item = await self.query_selector(selector)
-            if loop.time() - start_time > timeout:
-                raise asyncio.TimeoutError(
-                    "Time ran out while waiting for: {%s}" % selector
-                )
-            await self.sleep(0.5)
-        return item
+        return await self.wait_for(selector=selector, timeout=timeout)
 
     async def find_all(
         self,
@@ -333,6 +317,33 @@ class Tab(Connection):
             await self.sleep(0.5)
         return items
 
+    async def ad_block(self):
+        await self.send(cdp.page.navigate("about:blank"))
+        await self.send(cdp.network.enable())
+        await self.send(cdp.network.set_blocked_urls(
+            urls=[
+                "*cloudflareinsights.com*",
+                "*googlesyndication.com*",
+                "*googletagmanager.com*",
+                "*google-analytics.com*",
+                "*amazon-adsystem.com*",
+                "*adsafeprotected.com*",
+                "*casalemedia.com*",
+                "*doubleclick.net*",
+                "*admanmedia.com*",
+                "*fastclick.net*",
+                "*snigelweb.com*",
+                "*bidswitch.net*",
+                "*pubmatic.com*",
+                "*ad.turn.com*",
+                "*adnxs.com*",
+                "*openx.net*",
+                "*tapad.com*",
+                "*3lift.com*",
+                "*2mdn.net*",
+            ]
+        ))
+
     async def get(
         self,
         url="about:blank",
@@ -350,6 +361,9 @@ class Tab(Connection):
         :param new_window: open new window
         :return: Page
         """
+        _cdp_ad_block = None
+        if hasattr(sb_config, "ad_block_on") and sb_config.ad_block_on:
+            _cdp_ad_block = sb_config.ad_block_on
         if not self.browser:
             raise AttributeError(
                 "This page/tab has no browser attribute, "
@@ -357,6 +371,8 @@ class Tab(Connection):
             )
         if new_window and not new_tab:
             new_tab = True
+        if _cdp_ad_block:
+            await self.ad_block()
         if new_tab:
             if hasattr(sb_config, "incognito") and sb_config.incognito:
                 return await self.browser.get(
@@ -705,10 +721,12 @@ class Tab(Connection):
             raise ProtocolException(errors)
         if remote_object:
             if return_by_value:
-                if remote_object.value:
+                if remote_object.value is not None:
                     return remote_object.value
             else:
-                return remote_object, errors
+                if remote_object.deep_serialized_value is not None:
+                    return remote_object.deep_serialized_value.value
+        return None
 
     async def js_dumps(
         self, obj_name: str, return_by_value: Optional[bool] = True
@@ -1368,7 +1386,9 @@ class Tab(Connection):
         :param selector: css selector string
         :type selector: str
         """
-        return self.wait_for(text, selector, timeout)
+        return self.wait_for(
+            selector=selector, text=text, timeout=timeout
+        )
 
     def __eq__(self, other: Tab):
         try:

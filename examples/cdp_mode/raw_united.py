@@ -3,25 +3,29 @@ from seleniumbase import SB
 with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     url = "https://www.united.com/en/us"
     sb.activate_cdp_mode(url)
-    sb.sleep(2.5)
+    sb.sleep(2.6)
     origin_input = 'input[placeholder="Origin"]'
     origin = "New York, NY"
     destination_input = 'input[placeholder="Destination"]'
     destination = "Orlando, FL"
-    sb.cdp.gui_click_element(origin_input)
+    sb.click(origin_input)
     sb.sleep(0.5)
     sb.type(origin_input, origin)
     sb.sleep(1.2)
     sb.click('strong:contains("%s")' % origin)
-    sb.sleep(1.2)
-    sb.cdp.gui_click_element(destination_input)
+    sb.sleep(0.6)
+    sb.click_if_visible('button[class*="__close--"]')
+    sb.sleep(0.6)
+    sb.click(destination_input)
     sb.sleep(0.5)
     sb.type(destination_input, destination)
     sb.sleep(1.2)
     sb.click('strong:contains("%s")' % destination)
     sb.sleep(1.2)
     sb.click('button[aria-label="Find flights"]')
-    sb.sleep(6)
+    sb.sleep(4)
+    sb.click_if_visible('button[class*="__close--"]')
+    sb.sleep(2)
     flights = sb.find_elements('div[class*="CardContainer__block"]')
     print("**** Flights from %s to %s ****" % (origin, destination))
     print("    (" + sb.get_text("h2.atm-c-heading") + ")")

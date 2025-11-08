@@ -367,6 +367,7 @@ def comet_on_windows_path(browser_type=None):
         ),
     ):
         for subitem in (
+            "Perplexity/Comet/Application"
             "Comet/Application",
             "Programs/Comet",
         ):
@@ -396,6 +397,7 @@ def atlas_on_windows_path(browser_type=None):
         ),
     ):
         for subitem in (
+            "OpenAI/Atlas/Application"
             "Atlas/Application",
             "Programs/Atlas",
         ):

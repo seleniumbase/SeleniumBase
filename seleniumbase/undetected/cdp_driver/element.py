@@ -828,7 +828,7 @@ class Element:
         """
         with suppress(Exception):
             if self.node.node_name.lower() in ["input", "textarea"]:
-                input_node = self.node.shadow_roots[0].children[0].children[0]
+                input_node = self.node.shadow_roots[0].children[-1].children[0]
                 if input_node:
                     return input_node.node_value
         text_nodes = util.filter_recurse_all(
@@ -841,7 +841,7 @@ class Element:
         """Same as text(). Kept for backwards compatibility."""
         with suppress(Exception):
             if self.node.node_name.lower() in ["input", "textarea"]:
-                input_node = self.node.shadow_roots[0].children[0].children[0]
+                input_node = self.node.shadow_roots[0].children[-1].children[0]
                 if input_node:
                     return input_node.node_value
         text_nodes = util.filter_recurse_all(

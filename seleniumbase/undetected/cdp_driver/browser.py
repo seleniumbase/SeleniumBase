@@ -358,14 +358,24 @@ class Browser:
                 await connection.send(cdp.network.enable())
                 await connection.send(cdp.network.set_blocked_urls(
                     urls=[
+                        "*cloudflareinsights.com*",
                         "*googlesyndication.com*",
                         "*googletagmanager.com*",
                         "*google-analytics.com*",
                         "*amazon-adsystem.com*",
                         "*adsafeprotected.com*",
+                        "*casalemedia.com*",
                         "*doubleclick.net*",
+                        "*admanmedia.com*",
                         "*fastclick.net*",
                         "*snigelweb.com*",
+                        "*bidswitch.net*",
+                        "*pubmatic.com*",
+                        "*ad.turn.com*",
+                        "*adnxs.com*",
+                        "*openx.net*",
+                        "*tapad.com*",
+                        "*3lift.com*",
                         "*2mdn.net*",
                     ]
                 ))
