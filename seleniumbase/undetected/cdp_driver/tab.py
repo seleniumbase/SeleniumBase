@@ -705,8 +705,7 @@ class Tab(Connection):
             raise ProtocolException(errors)
         if remote_object:
             if return_by_value:
-                if remote_object.value:
-                    return remote_object.value
+                return remote_object.value
             else:
                 return remote_object, errors
 
@@ -1390,3 +1389,4 @@ class Tab(Connection):
             extra = f"[url: {self.target.url}]"
         s = f"<{type(self).__name__} [{self.target_id}] [{self.type_}] {extra}>"  # noqa
         return s
+
