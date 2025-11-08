@@ -139,7 +139,7 @@ with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     url = "https://www.pokemon.com/us"
     sb.activate_cdp_mode(url)
     sb.sleep(3.2)
-    sb.click("button#onetrust-accept-btn-handler")
+    sb.click_if_visible("button#onetrust-accept-btn-handler")
     sb.sleep(1.2)
     sb.click("a span.icon_pokeball")
     sb.sleep(2.5)
@@ -188,10 +188,10 @@ with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
 ```python
 from seleniumbase import SB
 
-with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
+with SB(uc=True, test=True, locale="en") as sb:
     url = "https://www.hyatt.com/"
     sb.activate_cdp_mode(url)
-    sb.sleep(3.5)
+    sb.sleep(3.8)
     sb.click_if_visible('button[aria-label="Close"]')
     sb.sleep(0.1)
     sb.click_if_visible("#onetrust-reject-all-handler")

@@ -4,7 +4,7 @@ with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     url = "https://www.pokemon.com/us"
     sb.activate_cdp_mode(url)
     sb.sleep(3.2)
-    sb.click("button#onetrust-accept-btn-handler")
+    sb.click_if_visible("button#onetrust-accept-btn-handler")
     sb.sleep(1.2)
     sb.click("a span.icon_pokeball")
     sb.sleep(2.5)
