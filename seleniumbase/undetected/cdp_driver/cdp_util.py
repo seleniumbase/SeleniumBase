@@ -102,7 +102,8 @@ def __activate_virtual_display_as_needed(
                     _xvfb_display.start()
                     if "DISPLAY" not in os.environ.keys():
                         print(
-                            "\nX11 display failed! Will use regular xvfb!"
+                            "\n  X11 display failed! Is Xvfb installed? "
+                            "\n  Try this: `sudo apt install -y xvfb`"
                         )
                         __activate_standard_virtual_display()
                     else:
