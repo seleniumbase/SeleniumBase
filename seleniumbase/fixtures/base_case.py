@@ -230,7 +230,8 @@ class BaseCase(unittest.TestCase):
         elif (
             hasattr(self.driver, "_is_using_uc")
             and self.driver._is_using_uc
-            and "@" in self.proxy_string
+            and hasattr(self.driver, "_is_using_auth")
+            and self.driver._is_using_auth
             and (
                 not hasattr(self.driver, "_is_using_cdp")
                 or not self.driver._is_using_cdp

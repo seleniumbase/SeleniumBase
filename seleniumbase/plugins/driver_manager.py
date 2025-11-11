@@ -742,7 +742,10 @@ def Driver(
         uc_cdp_events = True
     else:
         uc_cdp_events = False
-    if undetectable and browser != "chrome":
+    if (
+        undetectable
+        and browser not in ["chrome", "opera", "brave", "comet", "atlas"]
+    ):
         message = (
             '\n  Undetected-Chromedriver Mode ONLY supports Chrome!'
             '\n  ("uc=True" / "undetectable=True" / "--uc")'

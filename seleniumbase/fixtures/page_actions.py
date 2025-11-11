@@ -1756,6 +1756,28 @@ def open_url(driver, url):
     if __is_cdp_swap_needed(driver):
         driver.cdp.open(url)
         return
+    elif (
+        hasattr(driver, "_is_using_uc")
+        and driver._is_using_uc
+        and hasattr(driver, "_is_using_auth")
+        and driver._is_using_auth
+        and (
+            not hasattr(driver, "_is_using_cdp")
+            or not driver._is_using_cdp
+        )
+    ):
+        # Auth in UC Mode requires CDP Mode
+        driver.uc_activate_cdp_mode(url)
+        return
+    elif (
+        hasattr(driver, "_is_using_uc")
+        and driver._is_using_uc
+        and hasattr(driver, "_is_using_cdp")
+        and driver._is_using_cdp
+    ):
+        driver.disconnect()
+        driver.cdp.open(url)
+        return
     url = str(url).strip()  # Remove leading and trailing whitespace
     if not page_utils.looks_like_a_page_url(url):
         if page_utils.is_valid_url("https://" + url):
