@@ -12,7 +12,7 @@ with SB(uc=True, ad_block=True, test=True) as sb:
     sb.sleep(1.5)
     sb.click('a span:contains("%s")' % search_term)
     sb.sleep(3.5)
-    sb.cdp.click('button:contains("more")')
+    sb.click('button:contains("more")')
     sb.sleep(0.7)
     sb.click_if_visible('button[data-testid="modal-close"]')
     sb.sleep(0.7)

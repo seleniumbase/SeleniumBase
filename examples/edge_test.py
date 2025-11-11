@@ -1,9 +1,6 @@
 """This test is only for Microsoft Edge (Chromium)!"""
 from seleniumbase import BaseCase
-
-if __name__ == "__main__":
-    from pytest import main
-    main([__file__, "--edge", "-s"])
+BaseCase.main(__name__, __file__, "--edge")
 
 
 class EdgeTests(BaseCase):
@@ -18,14 +15,6 @@ class EdgeTests(BaseCase):
             print("\n  This test is NOT designed for Headless Mode!")
             self.skip('Do NOT use "--headless" with this test!')
         self.open("edge://settings/help")
-        self.highlight('div[role="main"]')
-        self.highlight('img[srcset*="logo"]')
-        self.assert_text("Microsoft Edge", 'img[srcset*="logo"] + div')
-        self.highlight('img[srcset*="logo"] + div span:nth-of-type(1)')
-        self.highlight('img[srcset*="logo"] + div span:nth-of-type(2)')
-        if self.is_element_visible('span[aria-live="assertive"]'):
-            self.highlight('span[aria-live="assertive"]', loops=8)
-        elif self.is_element_visible('a[href*="fwlink"]'):
-            self.highlight('a[href*="fwlink"]', loops=8)
-        self.highlight('a[href*="chromium"]')
-        self.highlight('a[href*="credits"]')
+        self.assert_element("app-shell")
+        self.assert_text("Microsoft Edge", "app-shell")
+        self.sleep(2)

@@ -12,18 +12,18 @@ class CDPNetworkBlockingTests(BaseCase):
         self.execute_cdp_cmd("Network.enable", {})
         self.execute_cdp_cmd(
             "Network.setBlockedURLs", {"urls": [
-                "*googlesyndication.com*",
-                "*googletagmanager.com*",
-                "*google-analytics.com*",
-                "*amazon-adsystem.com*",
-                "*adsafeprotected.com*",
-                "*doubleclick.net*",
-                "*fastclick.net*",
-                "*snigelweb.com*",
-                "*2mdn.net*",
+                "*.googlesyndication.com*",
+                "*.googletagmanager.com*",
+                "*.google-analytics.com*",
+                "*.amazon-adsystem.com*",
+                "*.adsafeprotected.com*",
+                "*.doubleclick.net*",
+                "*.fastclick.net*",
+                "*.snigelweb.com*",
+                "*.2mdn.net*",
             ]})
         self.open("https://www.w3schools.com/jquery/default.asp")
         source = self.get_page_source()
-        self.assert_true("doubleclick.net" not in source)
-        self.assert_true("google-analytics.com" not in source)
+        self.assert_false("doubleclick.net" in source)
+        self.assert_false("google-analytics.com" in source)
         self.post_message("Blocking was successful!")

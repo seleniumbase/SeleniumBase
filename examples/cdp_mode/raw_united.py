@@ -50,5 +50,5 @@ with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
                 full_prices.append("N/A")
         print("**** %s Prices:" % category)
         print(full_prices)
-    sb.cdp.scroll_down(50)
+    sb.scroll_down(50)
     sb.sleep(1.5)
