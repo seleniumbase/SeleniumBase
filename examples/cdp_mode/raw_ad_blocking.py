@@ -7,15 +7,15 @@ async def block_urls(tab):
     await tab.send(mycdp.network.enable())
     await tab.send(mycdp.network.set_blocked_urls(
         urls=[
-            "*googlesyndication.com*",
-            "*googletagmanager.com*",
-            "*google-analytics.com*",
-            "*amazon-adsystem.com*",
-            "*adsafeprotected.com*",
-            "*doubleclick.net*",
-            "*fastclick.net*",
-            "*snigelweb.com*",
-            "*2mdn.net*",
+            "*.googlesyndication.com*",
+            "*.googletagmanager.com*",
+            "*.google-analytics.com*",
+            "*.amazon-adsystem.com*",
+            "*.adsafeprotected.com*",
+            "*.doubleclick.net*",
+            "*.fastclick.net*",
+            "*.snigelweb.com*",
+            "*.2mdn.net*",
         ]
     ))
 

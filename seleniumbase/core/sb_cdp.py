@@ -1823,7 +1823,11 @@ class CDPMethods():
             time.sleep(0.2)
             source = self.get_page_source()
         if (
-            'data-callback="onCaptchaSuccess"' in source
+            (
+                'data-callback="onCaptchaSuccess"' in source
+                and 'title="reCAPTCHA"' not in source
+                and 'id="recaptcha-token"' not in source
+            )
             or "/challenge-platform/scripts/" in source
             or 'id="challenge-widget-' in source
             or "challenges.cloudf" in source
@@ -1833,16 +1837,21 @@ class CDPMethods():
         return False
 
     def _on_a_g_recaptcha_page(self, source=None):
-        if not source or len(source) < 400:
-            time.sleep(0.2)
-            source = self.get_page_source()
+        time.sleep(0.25)
+        self.loop.run_until_complete(self.page.wait(0.25))
+        source = self.get_page_source()
         if (
-            'id="recaptcha-token"' in source
-            or 'title="reCAPTCHA"' in source
+            (
+                'id="recaptcha-token"' in source
+                or 'title="reCAPTCHA"' in source
+            )
+            and self.is_element_visible('iframe[title="reCAPTCHA"]')
         ):
+            self.loop.run_until_complete(self.page.wait(0.1))
             return True
         elif "/recaptcha/api.js" in source:
             time.sleep(1.6)  # Still loading
+            self.loop.run_until_complete(self.page.wait(0.1))
             return True
         return False
 
@@ -1852,8 +1861,10 @@ class CDPMethods():
             selector = 'iframe[title="reCAPTCHA"]'
         else:
             return
+        time.sleep(0.25)
+        self.loop.run_until_complete(self.page.wait())
+        time.sleep(0.25)
         with suppress(Exception):
-            time.sleep(0.08)
             element_rect = self.get_gui_element_rect(selector, timeout=1)
             e_x = element_rect["x"]
             e_y = element_rect["y"]
@@ -1884,7 +1895,9 @@ class CDPMethods():
 
     def __click_captcha(self, use_cdp=False):
         """Uses PyAutoGUI unless use_cdp == True"""
-        self.sleep(0.056)
+        self.sleep(0.075)
+        self.loop.run_until_complete(self.page.wait())
+        self.sleep(0.025)
         source = self.get_page_source()
         if self._on_a_cf_turnstile_page(source):
             pass
@@ -1894,38 +1907,19 @@ class CDPMethods():
         else:
             return
         selector = None
-        if (
-            self.is_element_present('[name*="cf-turnstile-"]')
-            and self.is_element_present("#challenge-form div > div")
-        ):
+        if self.is_element_present('[class="cf-turnstile"]'):
+            selector = '[class="cf-turnstile"]'
+        elif self.is_element_present("#challenge-form div > div"):
             selector = "#challenge-form div > div"
-        elif (
-            self.is_element_present('[name*="cf-turnstile-"]')
-            and self.is_element_present(
-                '[style="display: grid;"] div div'
-            )
-        ):
+        elif self.is_element_present('[style="display: grid;"] div div'):
             selector = '[style="display: grid;"] div div'
-        elif (
-            self.is_element_present('[name*="cf-turnstile-"]')
-            and self.is_element_present("[class*=spacer] + div div")
-        ):
+        elif self.is_element_present("[class*=spacer] + div div"):
             selector = '[class*=spacer] + div div'
-        elif (
-            self.is_element_present('[name*="cf-turnstile-"]')
-            and self.is_element_present(".spacer div:not([class])")
-        ):
+        elif self.is_element_present(".spacer div:not([class])"):
             selector = ".spacer div:not([class])"
-        elif (
-            self.is_element_present('script[src*="challenges.c"]')
-            and self.is_element_present(
-                '[data-testid*="challenge-"] div'
-            )
-        ):
+        elif self.is_element_present('[data-testid*="challenge-"] div'):
             selector = '[data-testid*="challenge-"] div'
-        elif self.is_element_present(
-            "div#turnstile-widget div:not([class])"
-        ):
+        elif self.is_element_present("div#turnstile-widget div:not([class])"):
             selector = "div#turnstile-widget div:not([class])"
         elif self.is_element_present("ngx-turnstile div:not([class])"):
             selector = "ngx-turnstile div:not([class])"
@@ -1933,22 +1927,12 @@ class CDPMethods():
             'form div:not([class]):has(input[name*="cf-turn"])'
         ):
             selector = 'form div:not([class]):has(input[name*="cf-turn"])'
-        elif (
-            self.is_element_present('[src*="/turnstile/"]')
-            and self.is_element_present("form div:not(:has(*))")
-        ):
+        elif self.is_element_present("form div:not(:has(*))"):
             selector = "form div:not(:has(*))"
-        elif (
-            self.is_element_present('[src*="/turnstile/"]')
-            and self.is_element_present(
-                "body > div#check > div:not([class])"
-            )
-        ):
+        elif self.is_element_present("body > div#check > div:not([class])"):
             selector = "body > div#check > div:not([class])"
         elif self.is_element_present(".cf-turnstile-wrapper"):
             selector = ".cf-turnstile-wrapper"
-        elif self.is_element_present('[class="cf-turnstile"]'):
-            selector = '[class="cf-turnstile"]'
         elif self.is_element_present(
             '[id*="turnstile"] div:not([class])'
         ):
@@ -2048,7 +2032,7 @@ class CDPMethods():
                 self.loop.run_until_complete(self.page.evaluate(script))
                 self.loop.run_until_complete(self.page.wait())
         with suppress(Exception):
-            time.sleep(0.08)
+            time.sleep(0.05)
             element_rect = self.get_gui_element_rect(selector, timeout=1)
             e_x = element_rect["x"]
             e_y = element_rect["y"]
@@ -2059,15 +2043,17 @@ class CDPMethods():
             x = e_x + x_offset
             y = e_y + y_offset
             sb_config._saved_cf_x_y = (x, y)
-            time.sleep(0.08)
+            time.sleep(0.05)
+            if hasattr(sb_config, "_cdp_proxy") and sb_config._cdp_proxy:
+                time.sleep(0.22)  # CAPTCHA may load slower with proxy
             if use_cdp:
                 self.sleep(0.03)
                 gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
                 with gui_lock:  # Prevent issues with multiple processes
                     self.bring_active_window_to_front()
-                    time.sleep(0.056)
+                    time.sleep(0.05)
                     self.click_with_offset(selector, x_offset, y_offset)
-                    time.sleep(0.056)
+                    time.sleep(0.05)
             else:
                 self.gui_click_x_y(x, y)
 

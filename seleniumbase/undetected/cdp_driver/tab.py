@@ -317,33 +317,6 @@ class Tab(Connection):
             await self.sleep(0.5)
         return items
 
-    async def ad_block(self):
-        await self.send(cdp.page.navigate("about:blank"))
-        await self.send(cdp.network.enable())
-        await self.send(cdp.network.set_blocked_urls(
-            urls=[
-                "*cloudflareinsights.com*",
-                "*googlesyndication.com*",
-                "*googletagmanager.com*",
-                "*google-analytics.com*",
-                "*amazon-adsystem.com*",
-                "*adsafeprotected.com*",
-                "*casalemedia.com*",
-                "*doubleclick.net*",
-                "*admanmedia.com*",
-                "*fastclick.net*",
-                "*snigelweb.com*",
-                "*bidswitch.net*",
-                "*pubmatic.com*",
-                "*ad.turn.com*",
-                "*adnxs.com*",
-                "*openx.net*",
-                "*tapad.com*",
-                "*3lift.com*",
-                "*2mdn.net*",
-            ]
-        ))
-
     async def get(
         self,
         url="about:blank",
@@ -361,9 +334,6 @@ class Tab(Connection):
         :param new_window: open new window
         :return: Page
         """
-        _cdp_ad_block = None
-        if hasattr(sb_config, "ad_block_on") and sb_config.ad_block_on:
-            _cdp_ad_block = sb_config.ad_block_on
         if not self.browser:
             raise AttributeError(
                 "This page/tab has no browser attribute, "
@@ -371,8 +341,6 @@ class Tab(Connection):
             )
         if new_window and not new_tab:
             new_tab = True
-        if _cdp_ad_block:
-            await self.ad_block()
         if new_tab:
             if hasattr(sb_config, "incognito") and sb_config.incognito:
                 return await self.browser.get(

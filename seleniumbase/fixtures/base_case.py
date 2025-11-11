@@ -227,6 +227,28 @@ class BaseCase(unittest.TestCase):
         if self.__is_cdp_swap_needed():
             self.cdp.open(url)
             return
+        elif (
+            hasattr(self.driver, "_is_using_uc")
+            and self.driver._is_using_uc
+            and "@" in self.proxy_string
+            and (
+                not hasattr(self.driver, "_is_using_cdp")
+                or not self.driver._is_using_cdp
+            )
+        ):
+            # Auth in UC Mode requires CDP Mode
+            logging.info("UC Mode requires CDP Mode for auth. Activating now.")
+            self.activate_cdp_mode(url)
+            return
+        elif (
+            hasattr(self.driver, "_is_using_uc")
+            and self.driver._is_using_uc
+            and hasattr(self.driver, "_is_using_cdp")
+            and self.driver._is_using_cdp
+        ):
+            self.disconnect()
+            self.cdp.open(url)
+            return
         self._check_browser()
         if self.__needs_minimum_wait():
             time.sleep(0.04)
@@ -5005,7 +5027,7 @@ class BaseCase(unittest.TestCase):
                 self.driver.connect()
             current_url = self.get_current_url()
             if not current_url.startswith(("about", "data", "chrome")):
-                self.open("about:blank")
+                self.driver.get("about:blank")
             self.driver.uc_open_with_cdp_mode(url, **kwargs)
         else:
             self.get_new_driver(undetectable=True)
@@ -5015,6 +5037,13 @@ class BaseCase(unittest.TestCase):
             self.solve_captcha = self.cdp.solve_captcha
         if hasattr(self.cdp, "find_element_by_text"):
             self.find_element_by_text = self.cdp.find_element_by_text
+        if (
+            hasattr(sb_config, "_cdp_proxy")
+            and sb_config._cdp_proxy
+            and "@" in sb_config._cdp_proxy
+        ):
+            with suppress(Exception):
+                self.cdp.loop.run_until_complete(self.cdp.page.wait(0.25))
         self.undetectable = True
 
     def activate_recorder(self):
@@ -14527,7 +14556,8 @@ class BaseCase(unittest.TestCase):
                 sb_config._virtual_display = self._xvfb_display
                 if "DISPLAY" not in os.environ.keys():
                     print(
-                        "\nX11 display failed! Will use regular xvfb!"
+                        "\n  X11 display failed! Is Xvfb installed? "
+                        "\n  Try this: `sudo apt install -y xvfb`"
                     )
                     self.__activate_standard_virtual_display()
                 else:
@@ -14540,7 +14570,10 @@ class BaseCase(unittest.TestCase):
                     print("\n" + str(e.msg))
                 else:
                     print(e)
-                print("\nX11 display failed! Will use regular xvfb!")
+                print(
+                    "\n  X11 display failed! Is Xvfb installed? "
+                    "\n  Try this: `sudo apt install -y xvfb`"
+                )
                 self.__activate_standard_virtual_display()
                 return
             pyautogui_is_installed = False

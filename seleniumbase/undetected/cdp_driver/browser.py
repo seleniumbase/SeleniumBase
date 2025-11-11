@@ -251,6 +251,36 @@ class Browser:
             )
             self.targets.remove(current_tab)
 
+    async def set_auth(self, username, password, tab):
+        async def auth_challenge_handler(event: cdp.fetch.AuthRequired):
+            await tab.send(
+                cdp.fetch.continue_with_auth(
+                    request_id=event.request_id,
+                    auth_challenge_response=cdp.fetch.AuthChallengeResponse(
+                        response="ProvideCredentials",
+                        username=username,
+                        password=password,
+                    ),
+                )
+            )
+
+        async def req_paused(event: cdp.fetch.RequestPaused):
+            await tab.send(
+                cdp.fetch.continue_request(request_id=event.request_id)
+            )
+
+        tab.add_handler(
+            cdp.fetch.RequestPaused,
+            lambda event: asyncio.create_task(req_paused(event)),
+        )
+
+        tab.add_handler(
+            cdp.fetch.AuthRequired,
+            lambda event: asyncio.create_task(auth_challenge_handler(event)),
+        )
+
+        await tab.send(cdp.fetch.enable(handle_auth_requests=True))
+
     async def get(
         self,
         url="about:blank",
@@ -341,66 +371,74 @@ class Browser:
                 _cdp_geolocation = kwargs["geoloc"]
             if "recorder" in kwargs:
                 _cdp_recorder = kwargs["recorder"]
+            await connection.send(cdp.network.enable())
             if _cdp_timezone:
-                await connection.send(cdp.page.navigate("about:blank"))
                 await connection.set_timezone(_cdp_timezone)
             if _cdp_locale:
                 await connection.set_locale(_cdp_locale)
             if _cdp_user_agent or _cdp_locale or _cdp_platform:
-                await connection.send(cdp.page.navigate("about:blank"))
                 await connection.set_user_agent(
                     user_agent=_cdp_user_agent,
                     accept_language=_cdp_locale,
                     platform=_cdp_platform,
                 )
             if _cdp_ad_block:
-                await connection.send(cdp.page.navigate("about:blank"))
-                await connection.send(cdp.network.enable())
                 await connection.send(cdp.network.set_blocked_urls(
                     urls=[
-                        "*cloudflareinsights.com*",
-                        "*googlesyndication.com*",
-                        "*googletagmanager.com*",
-                        "*google-analytics.com*",
-                        "*amazon-adsystem.com*",
-                        "*adsafeprotected.com*",
-                        "*casalemedia.com*",
-                        "*doubleclick.net*",
-                        "*admanmedia.com*",
-                        "*fastclick.net*",
-                        "*snigelweb.com*",
-                        "*bidswitch.net*",
-                        "*pubmatic.com*",
-                        "*ad.turn.com*",
-                        "*adnxs.com*",
-                        "*openx.net*",
-                        "*tapad.com*",
-                        "*3lift.com*",
-                        "*2mdn.net*",
+                        "*.cloudflareinsights.com*",
+                        "*.googlesyndication.com*",
+                        "*.googletagmanager.com*",
+                        "*.google-analytics.com*",
+                        "*.amazon-adsystem.com*",
+                        "*.adsafeprotected.com*",
+                        "*.ads.linkedin.com*",
+                        "*.casalemedia.com*",
+                        "*.doubleclick.net*",
+                        "*.admanmedia.com*",
+                        "*.quantserve.com*",
+                        "*.fastclick.net*",
+                        "*.snigelweb.com*",
+                        "*.bidswitch.net*",
+                        "*.360yield.com*",
+                        "*.adthrive.com*",
+                        "*.pubmatic.com*",
+                        "*.id5-sync.com*",
+                        "*.dotomi.com*",
+                        "*.adsrvr.org*",
+                        "*.atmtd.com*",
+                        "*.liadm.com*",
+                        "*.loopme.me*",
+                        "*.adnxs.com*",
+                        "*.openx.net*",
+                        "*.tapad.com*",
+                        "*.3lift.com*",
+                        "*.turn.com*",
+                        "*.2mdn.net*",
+                        "*.cpx.to*",
+                        "*.ad.gt*",
                     ]
                 ))
             if _cdp_geolocation:
-                await connection.send(cdp.page.navigate("about:blank"))
                 await connection.set_geolocation(_cdp_geolocation)
             # (The code below is for the Chrome 142 extension fix)
             if (
                 hasattr(sb_config, "_cdp_proxy")
-                and "@" in sb_config._cdp_proxy
                 and sb_config._cdp_proxy
+                and "@" in sb_config._cdp_proxy
                 and "auth" not in kwargs
             ):
                 username_and_password = sb_config._cdp_proxy.split("@")[0]
                 proxy_user = username_and_password.split(":")[0]
                 proxy_pass = username_and_password.split(":")[1]
-                await connection.set_auth(proxy_user, proxy_pass, self.tabs[0])
+                await self.set_auth(proxy_user, proxy_pass, self.tabs[0])
                 time.sleep(0.25)
             if "auth" in kwargs and kwargs["auth"] and ":" in kwargs["auth"]:
                 username_and_password = kwargs["auth"]
                 proxy_user = username_and_password.split(":")[0]
                 proxy_pass = username_and_password.split(":")[1]
-                await connection.set_auth(proxy_user, proxy_pass, self.tabs[0])
-                time.sleep(0.22)
-            await connection.sleep(0.05)
+                await self.set_auth(proxy_user, proxy_pass, self.tabs[0])
+                time.sleep(0.25)
+            await connection.sleep(0.15)
             frame_id, loader_id, *_ = await connection.send(
                 cdp.page.navigate(url)
             )
@@ -415,6 +453,7 @@ class Browser:
             connection.frame_id = frame_id
             connection.browser = self
         await connection.sleep(0.25)
+        await self.wait(0.05)
         return connection
 
     async def start(self=None) -> Browser:
@@ -500,14 +539,23 @@ class Browser:
             else:
                 break
         if not self.info:
-            raise Exception(
-                (
-                    """
-                    --------------------------------
-                    Failed to connect to the browser
-                    --------------------------------
-                    """
+            chromium = "Chromium"
+            if hasattr(sb_config, "_cdp_browser") and sb_config._cdp_browser:
+                chromium = sb_config._cdp_browser
+                chromium = chromium[0].upper() + chromium[1:]
+            message = "Failed to connect to the browser"
+            if not exe or not os.path.exists(exe):
+                message = (
+                    "%s executable not found. Is it installed?" % chromium
                 )
+            dash_len = len(message)
+            dashes = "-" * dash_len
+            raise Exception(
+                """
+                %s
+                %s
+                %s
+                """ % (dashes, message, dashes)
             )
         self.connection = Connection(
             self.info.webSocketDebuggerUrl, _owner=self
