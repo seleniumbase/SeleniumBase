@@ -300,7 +300,9 @@ def extend_driver(
             if not use_uc and os.path.exists(os.path.realpath(ext_dir)):
                 with suppress(Exception):
                     driver.webextension.install(os.path.realpath(ext_dir))
+    driver._is_using_auth = False
     if proxy_auth:
+        driver._is_using_auth = True
         if not use_uc and os.path.exists(proxy_helper.PROXY_DIR_PATH):
             with suppress(Exception):
                 driver.webextension.install(proxy_helper.PROXY_DIR_PATH)
@@ -5786,6 +5788,7 @@ def get_local_driver(
                         )
                 driver.default_get = driver.get  # Save copy of original
                 driver.cdp = None  # Set a placeholder
+                driver._is_using_uc = False
                 driver._is_using_cdp = False
                 driver._is_connected = True
                 if uc_activated:
