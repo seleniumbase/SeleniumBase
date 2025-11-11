@@ -1825,8 +1825,8 @@ class CDPMethods():
         if (
             (
                 'data-callback="onCaptchaSuccess"' in source
-                and not 'title="reCAPTCHA"' in source
-                and not 'id="recaptcha-token" in source'
+                and 'title="reCAPTCHA"' not in source
+                and 'id="recaptcha-token"' not in source
             )
             or "/challenge-platform/scripts/" in source
             or 'id="challenge-widget-' in source
@@ -1837,10 +1837,9 @@ class CDPMethods():
         return False
 
     def _on_a_g_recaptcha_page(self, source=None):
-        if not source or len(source) < 400:
-            time.sleep(0.2)
-            source = self.get_page_source()
-        self.loop.run_until_complete(self.page.wait(0.1))
+        time.sleep(0.25)
+        self.loop.run_until_complete(self.page.wait(0.25))
+        source = self.get_page_source()
         if (
             (
                 'id="recaptcha-token"' in source
