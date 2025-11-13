@@ -159,9 +159,21 @@ def extend_driver(
     # Extend the driver with new methods
     driver.default_find_element = driver.find_element
     driver.default_find_elements = driver.find_elements
+    driver.default_add_cookie = driver.add_cookie
+    driver.default_get_cookie = driver.get_cookie
+    driver.default_delete_cookie = driver.delete_cookie
+    driver.default_back = driver.back
+    driver.default_forward = driver.forward
+    driver.default_refresh = driver.refresh
     DM = sb_driver.DriverMethods(driver)
     driver.find_element = DM.find_element
     driver.find_elements = DM.find_elements
+    driver.add_cookie = DM.add_cookie
+    driver.get_cookie = DM.get_cookie
+    driver.delete_cookie = DM.delete_cookie
+    driver.back = DM.back
+    driver.forward = DM.forward
+    driver.refresh = DM.refresh
     driver.locator = DM.locator
     page = types.SimpleNamespace()
     page.open = DM.open_url

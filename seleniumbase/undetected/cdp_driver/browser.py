@@ -430,14 +430,28 @@ class Browser:
                 username_and_password = sb_config._cdp_proxy.split("@")[0]
                 proxy_user = username_and_password.split(":")[0]
                 proxy_pass = username_and_password.split(":")[1]
-                await self.set_auth(proxy_user, proxy_pass, self.tabs[0])
-                time.sleep(0.25)
+                if (
+                    hasattr(self.main_tab, "_last_auth")
+                    and self.main_tab._last_auth == username_and_password
+                ):
+                    pass  # Auth was already set
+                else:
+                    self.main_tab._last_auth = username_and_password
+                    await self.set_auth(proxy_user, proxy_pass, self.tabs[0])
+                    time.sleep(0.25)
             if "auth" in kwargs and kwargs["auth"] and ":" in kwargs["auth"]:
                 username_and_password = kwargs["auth"]
                 proxy_user = username_and_password.split(":")[0]
                 proxy_pass = username_and_password.split(":")[1]
-                await self.set_auth(proxy_user, proxy_pass, self.tabs[0])
-                time.sleep(0.25)
+                if (
+                    hasattr(self.main_tab, "_last_auth")
+                    and self.main_tab._last_auth == username_and_password
+                ):
+                    pass  # Auth was already set
+                else:
+                    self.main_tab._last_auth = username_and_password
+                    await self.set_auth(proxy_user, proxy_pass, self.tabs[0])
+                    time.sleep(0.25)
             await connection.sleep(0.15)
             frame_id, loader_id, *_ = await connection.send(
                 cdp.page.navigate(url)

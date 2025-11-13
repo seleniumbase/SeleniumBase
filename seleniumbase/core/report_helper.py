@@ -111,7 +111,7 @@ def process_failures(test, test_count, duration):
         and test._outcome.errors
     ):
         try:
-            exc_message = test._outcome.errors[0][1][1]
+            exc_message = test._outcome.errors[-1][1][1]
         except Exception:
             exc_message = "(Unknown Exception)"
     else:

@@ -192,8 +192,8 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
         and test._outcome.errors
     ):
         try:
-            exc_message = test._outcome.errors[0][1][1]
-            traceback_address = test._outcome.errors[0][1][2]
+            exc_message = test._outcome.errors[-1][1][1]
+            traceback_address = test._outcome.errors[-1][1][2]
             traceback_list = traceback.format_list(
                 traceback.extract_tb(traceback_address)[1:]
             )

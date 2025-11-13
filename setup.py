@@ -214,7 +214,8 @@ setup(
         'pluggy==1.5.0;python_version<"3.9"',
         'pluggy==1.6.0;python_version>="3.9"',
         'pytest==8.3.5;python_version<"3.9"',
-        'pytest==8.4.2;python_version>="3.9"',
+        'pytest==8.4.2;python_version>="3.9" and python_version<"3.11"',
+        'pytest==9.0.1;python_version>="3.11"',
         "pytest-html==4.0.2",  # Newer ones had issues
         'pytest-metadata==3.1.1',
         "pytest-ordering==0.6",
