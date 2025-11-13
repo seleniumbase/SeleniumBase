@@ -2,8 +2,8 @@
 # Minimum Python version: 3.10 (for generating docs only)
 
 regex>=2025.11.3
-pymdown-extensions>=10.16.1
-pipdeptree>=2.29.0
+pymdown-extensions>=10.17.1
+pipdeptree>=2.30.0
 python-dateutil>=2.8.2
 Markdown==3.10
 click==8.3.0

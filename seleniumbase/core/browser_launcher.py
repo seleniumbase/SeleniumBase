@@ -1410,14 +1410,10 @@ def _uc_gui_click_captcha(
                     and driver.is_element_present("%s div" % frame)
                 ):
                     frame = "%s div" % frame
-                elif (
-                    driver.is_element_present('[name*="cf-turnstile-"]')
-                    and driver.is_element_present("#challenge-form div > div")
-                ):
+                elif driver.is_element_present("#challenge-form div > div"):
                     frame = "#challenge-form div > div"
                 elif (
-                    driver.is_element_present('[name*="cf-turnstile-"]')
-                    and driver.is_element_present(
+                    driver.is_element_present(
                         '[style="display: grid;"] div div'
                     )
                 ):
@@ -1430,13 +1426,11 @@ def _uc_gui_click_captcha(
                 ):
                     frame = '.spacer + div div:not([class])'
                 elif (
-                    driver.is_element_present('[name*="cf-turnstile-"]')
-                    and driver.is_element_present(".spacer div:not([class])")
+                    driver.is_element_present(".spacer div:not([class])")
                 ):
                     frame = ".spacer div:not([class])"
                 elif (
-                    driver.is_element_present('script[src*="challenges.c"]')
-                    and driver.is_element_present(
+                    driver.is_element_present(
                         '[data-testid*="challenge-"] div'
                     )
                 ):

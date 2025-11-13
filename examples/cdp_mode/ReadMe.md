@@ -45,6 +45,8 @@
 
 That disconnects WebDriver from Chrome (which prevents detection), and gives you access to `sb.cdp` methods (which don't trigger anti-bot checks).
 
+> (**New:** Calling **`sb.open(url)`** from UC Mode also activates CDP Mode now.)
+
 Simple example from [SeleniumBase/examples/cdp_mode/raw_gitlab.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_gitlab.py):
 
 ```python

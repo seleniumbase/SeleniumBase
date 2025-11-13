@@ -1918,26 +1918,16 @@ def pytest_configure(config):
         or " -n=" in arg_join
         or " -n" in arg_join
         or "-c" in sys_argv
-        or (
-            "addopts" in config.inicfg.keys()
-            and (
-                "-n=" in config.inicfg["addopts"]
-                or "-n " in config.inicfg["addopts"]
-                or "-n" in config.inicfg["addopts"]
-            )
-        )
+        or "-n=" in config.getini("addopts")
+        or "-n " in config.getini("addopts")
+        or "-n" in config.getini("addopts")
     ):
         sb_config._multithreaded = True
     if (
         "--html" in sys_argv
         or " --html=" in arg_join
-        or (
-            "addopts" in config.inicfg.keys()
-            and (
-                "--html=" in config.inicfg["addopts"]
-                or "--html " in config.inicfg["addopts"]
-            )
-        )
+        or "--html=" in config.getini("addopts")
+        or "--html " in config.getini("addopts")
     ):
         sb_config._using_html_report = True
         sb_config._html_report_name = config.getoption("htmlpath")
