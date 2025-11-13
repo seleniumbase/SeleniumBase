@@ -11,6 +11,11 @@ from seleniumbase.config import settings
 from seleniumbase.fixtures import js_utils
 
 
+python3_11_or_newer = False
+if sys.version_info >= (3, 11):
+    python3_11_or_newer = True
+
+
 class MasterQA(BaseCase):
     def setUp(self):
         self.check_count = 0
@@ -309,8 +314,17 @@ class MasterQA(BaseCase):
         if hasattr(sys, "last_traceback") and sys.last_traceback is not None:
             has_exception = True
         elif hasattr(self, "_outcome"):
-            if hasattr(self._outcome, "errors") and self._outcome.errors:
-                has_exception = True
+            if hasattr(self._outcome, "errors"):
+                if python3_11_or_newer:
+                    if (
+                        self._outcome.errors
+                        and self._outcome.errors[-1]
+                        and self._outcome.errors[-1][1]
+                    ):
+                        has_exception = True
+                else:
+                    if self._outcome.errors:
+                        has_exception = True
         else:
             has_exception = sys.exc_info()[1] is not None
         return has_exception

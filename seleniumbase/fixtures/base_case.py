@@ -15945,7 +15945,7 @@ class BaseCase(unittest.TestCase):
             and self._outcome.errors
         ):
             try:
-                exc_message = self._outcome.errors[0][1][1]
+                exc_message = self._outcome.errors[-1][1][1]
             except Exception:
                 exc_message = "(Unknown Exception)"
         else:
@@ -16093,8 +16093,16 @@ class BaseCase(unittest.TestCase):
             else:
                 return False
         elif hasattr(self, "_outcome") and hasattr(self._outcome, "errors"):
-            if self._outcome.errors:
-                has_exception = True
+            if python3_11_or_newer:
+                if (
+                    self._outcome.errors
+                    and self._outcome.errors[-1]
+                    and self._outcome.errors[-1][1]
+                ):
+                    has_exception = True
+            else:
+                if self._outcome.errors:
+                    has_exception = True
         else:
             has_exception = sys.exc_info()[1] is not None
         if self.__will_be_skipped and hasattr(self, "_using_sb_fixture"):
