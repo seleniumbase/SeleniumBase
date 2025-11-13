@@ -3969,8 +3969,23 @@ class BaseCase(unittest.TestCase):
 
     def open_new_window(self, switch_to=True):
         """Opens a new browser tab/window and switches to it by default."""
+        url = None
+        if self.__looks_like_a_page_url(str(switch_to)):
+            # Different API for CDP Mode: First arg is a `url`.
+            # (Also, don't break backwards compat for reg mode)
+            url = switch_to
+            switch_to = True
         if self.__is_cdp_swap_needed():
-            self.cdp.open_new_tab(switch_to=switch_to)
+            self.cdp.open_new_tab(url=url, switch_to=switch_to)
+            return
+        elif (
+            hasattr(self.driver, "_is_using_uc")
+            and self.driver._is_using_uc
+            and hasattr(self.driver, "_is_using_cdp")
+            and self.driver._is_using_cdp
+        ):
+            self.disconnect()
+            self.cdp.open_new_tab(url=url, switch_to=switch_to)
             return
         self.wait_for_ready_state_complete()
         if switch_to:
@@ -5040,9 +5055,8 @@ class BaseCase(unittest.TestCase):
         if hasattr(self.cdp, "find_element_by_text"):
             self.find_element_by_text = self.cdp.find_element_by_text
         if (
-            hasattr(sb_config, "_cdp_proxy")
-            and sb_config._cdp_proxy
-            and "@" in sb_config._cdp_proxy
+            hasattr(self.driver, "_is_using_auth")
+            and self.driver._is_using_auth
         ):
             with suppress(Exception):
                 self.cdp.loop.run_until_complete(self.cdp.page.wait(0.25))
@@ -6364,6 +6378,7 @@ class BaseCase(unittest.TestCase):
         By default, "html" will be used as the CSS Selector target.
         You can specify how many times in-a-row the action happens."""
         self.__check_scope()
+        self._check_browser()
         if times < 1:
             return
         element = self.wait_for_element_present(selector)
@@ -6386,6 +6401,7 @@ class BaseCase(unittest.TestCase):
         By default, "html" will be used as the CSS Selector target.
         You can specify how many times in-a-row the action happens."""
         self.__check_scope()
+        self._check_browser()
         if times < 1:
             return
         element = self.wait_for_element_present(selector)
@@ -6408,6 +6424,7 @@ class BaseCase(unittest.TestCase):
         By default, "html" will be used as the CSS Selector target.
         You can specify how many times in-a-row the action happens."""
         self.__check_scope()
+        self._check_browser()
         if times < 1:
             return
         element = self.wait_for_element_present(selector)
@@ -6430,6 +6447,7 @@ class BaseCase(unittest.TestCase):
         By default, "html" will be used as the CSS Selector target.
         You can specify how many times in-a-row the action happens."""
         self.__check_scope()
+        self._check_browser()
         if times < 1:
             return
         element = self.wait_for_element_present(selector)
@@ -8781,6 +8799,9 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_cdp_swap_needed():
+            self.cdp.set_value(selector, text)
+            return
         self.wait_for_ready_state_complete()
         element = page_actions.wait_for_element_present(
             self.driver, selector, by, timeout
@@ -8801,10 +8822,14 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
-        self.wait_for_ready_state_complete()
-        element = page_actions.wait_for_element_present(
-            self.driver, selector, by, timeout
-        )
+        element = None
+        if self.__is_cdp_swap_needed():
+            element = self.cdp.select(selector, timeout=timeout)
+        else:
+            self.wait_for_ready_state_complete()
+            element = page_actions.wait_for_element_present(
+                self.driver, selector, by, timeout
+            )
         if element.tag_name.lower() in ["input", "textarea"]:
             self.js_update_text(selector, text, by=by, timeout=timeout)
             return

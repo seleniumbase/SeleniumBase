@@ -12,6 +12,10 @@ from seleniumbase.fixtures import shared_utils
 class DriverMethods(WebDriver):
     def __init__(self, driver):
         self.driver = driver
+        if hasattr(driver, "session_id"):
+            self.session_id = driver.session_id
+        if hasattr(driver, "command_executor"):
+            self.command_executor = driver.command_executor
 
     def __is_cdp_swap_needed(self):
         """If the driver is disconnected, use a CDP method when available."""
@@ -36,6 +40,36 @@ class DriverMethods(WebDriver):
         else:
             value, by = page_utils.swap_selector_and_by_if_reversed(value, by)
         return self.driver.default_find_elements(by=by, value=value)
+
+    def add_cookie(self, *args, **kwargs):
+        page_actions._reconnect_if_disconnected(self.driver)
+        self.driver.default_add_cookie(*args, **kwargs)
+
+    def get_cookie(self, *args, **kwargs):
+        page_actions._reconnect_if_disconnected(self.driver)
+        self.driver.default_get_cookie(*args, **kwargs)
+
+    def delete_cookie(self, *args, **kwargs):
+        page_actions._reconnect_if_disconnected(self.driver)
+        self.driver.default_delete_cookie(*args, **kwargs)
+
+    def back(self):
+        if self.__is_cdp_swap_needed():
+            self.driver.cdp.go_back()
+            return
+        self.driver.default_back()
+
+    def forward(self):
+        if self.__is_cdp_swap_needed():
+            self.driver.cdp.go_forward()
+            return
+        self.driver.default_forward()
+
+    def refresh(self, *args, **kwargs):
+        if self.__is_cdp_swap_needed():
+            self.driver.cdp.refresh(*args, **kwargs)
+            return
+        self.driver.default_refresh()
 
     def locator(self, selector, by=None):
         if not by:

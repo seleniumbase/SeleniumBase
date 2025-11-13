@@ -713,7 +713,10 @@ class CDPMethods():
             tag_name in ["a", "button", "canvas", "div", "input", "li", "span"]
             and "contains(" not in selector
         ):
-            element.mouse_click()  # Simulated click (NOT PyAutoGUI)
+            try:
+                element.mouse_click()  # Simulated click (NOT PyAutoGUI)
+            except Exception:
+                element.click()  # Standard CDP click
         else:
             element.click()  # Standard CDP click
         self.__slow_mode_pause_if_set()
