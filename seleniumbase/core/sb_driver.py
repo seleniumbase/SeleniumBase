@@ -288,11 +288,8 @@ class DriverMethods(WebDriver):
                 selector = kwargs["selector"]
             else:
                 selector = args[0]
-            if ":contains(" not in selector:
-                self.driver.cdp.highlight(selector)
-                return
-            else:
-                self.driver.connect()
+            self.driver.cdp.highlight(selector)
+            return
         if "scroll" in kwargs:
             kwargs.pop("scroll")
         w_args = kwargs.copy()

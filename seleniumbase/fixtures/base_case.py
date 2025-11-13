@@ -230,15 +230,16 @@ class BaseCase(unittest.TestCase):
         elif (
             hasattr(self.driver, "_is_using_uc")
             and self.driver._is_using_uc
-            and hasattr(self.driver, "_is_using_auth")
-            and self.driver._is_using_auth
+            # and hasattr(self.driver, "_is_using_auth")
+            # and self.driver._is_using_auth
             and (
                 not hasattr(self.driver, "_is_using_cdp")
                 or not self.driver._is_using_cdp
             )
         ):
             # Auth in UC Mode requires CDP Mode
-            logging.info("UC Mode requires CDP Mode for auth. Activating now.")
+            # (and now we're always forcing it)
+            logging.info("open() in UC Mode now always activates CDP Mode.")
             self.activate_cdp_mode(url)
             return
         elif (
@@ -6313,7 +6314,12 @@ class BaseCase(unittest.TestCase):
         scroll - the option to scroll to the element first (Default: True)
         timeout - the time to wait for the element to appear """
         self.__check_scope()
-        if not self.__is_cdp_swap_needed():
+        if self.__is_cdp_swap_needed():
+            if page_utils.is_xpath_selector(selector):
+                if "contains(" in selector:
+                    self.cdp.highlight(selector)
+                    return
+        else:
             self._check_browser()
         self.__skip_if_esc()
         if isinstance(selector, WebElement):

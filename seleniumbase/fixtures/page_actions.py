@@ -1759,14 +1759,15 @@ def open_url(driver, url):
     elif (
         hasattr(driver, "_is_using_uc")
         and driver._is_using_uc
-        and hasattr(driver, "_is_using_auth")
-        and driver._is_using_auth
+        # and hasattr(driver, "_is_using_auth")
+        # and driver._is_using_auth
         and (
             not hasattr(driver, "_is_using_cdp")
             or not driver._is_using_cdp
         )
     ):
         # Auth in UC Mode requires CDP Mode
+        # (and now we're always forcing it)
         driver.uc_activate_cdp_mode(url)
         return
     elif (

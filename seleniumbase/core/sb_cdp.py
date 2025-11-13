@@ -1,6 +1,7 @@
 """Add CDP methods to extend the driver"""
 import asyncio
 import fasteners
+import mycdp
 import os
 import random
 import re
@@ -15,6 +16,7 @@ from seleniumbase.fixtures import js_utils
 from seleniumbase.fixtures import page_utils
 from seleniumbase.fixtures import shared_utils
 from seleniumbase.undetected.cdp_driver import cdp_util
+from seleniumbase.undetected.cdp_driver import tab as cdp_tab
 
 
 class CDPMethods():
@@ -1122,9 +1124,33 @@ class CDPMethods():
         self.switch_to_tab(-1)
 
     def open_new_tab(self, url=None, switch_to=True):
+        driver = self.driver
         if not isinstance(url, str):
             url = "about:blank"
-        self.loop.run_until_complete(self.page.get(url, new_tab=True))
+        if hasattr(driver, "cdp_base"):
+            self.loop.run_until_complete(self.page.get(url, new_tab=True))
+            if switch_to:
+                self.switch_to_newest_tab()
+            return
+
+        target_id = self.loop.run_until_complete(
+            self.page.send(mycdp.target.create_target(url))
+        )
+        found_target = None
+        targets = self.loop.run_until_complete(
+            self.page.send(mycdp.target.get_targets())
+        )
+        for target in targets:
+            if str(target_id) in str(target):
+                found_target = target
+                break
+        if found_target:
+            tab_url = driver.tabs[0].websocket_url
+            pre_tab_url = tab_url.split("/page/")[0] + "/page/"
+            new_tab_url = pre_tab_url + target_id
+            new_tab = cdp_tab.Tab(new_tab_url, found_target, driver)
+            driver.targets.append(new_tab)
+            driver.tabs.append(new_tab)
         if switch_to:
             self.switch_to_newest_tab()
 
