@@ -36,7 +36,7 @@ class MyTourClass(BaseCase):
         self.wait_for_element("#searchboxinput", timeout=20)
         self.wait_for_element("#minimap", timeout=20)
         self.wait_for_element("#zoom", timeout=20)
-        self.wait_for_element("#widget-zoom-out")
+        self.wait_for_element('[aria-label="Zoom out"]')
         self.wait_for_element('[jsaction*="minimap.main;"]')
         self.sleep(0.5)
 
@@ -62,10 +62,14 @@ class MyTourClass(BaseCase):
             alignment="right",
         )
         self.add_tour_step(
-            "Click here to zoom in.", "#widget-zoom-in", alignment="left"
+            "Click here to zoom in.",
+            '[aria-label="Zoom in"]',
+            alignment="left",
         )
         self.add_tour_step(
-            "Or click here to zoom out.", "#widget-zoom-out", alignment="left"
+            "Or click here to zoom out.",
+            '[aria-label="Zoom out"]',
+            alignment="left",
         )
         if self.is_element_visible('button[jsaction*="settings.open;"]'):
             self.add_tour_step(

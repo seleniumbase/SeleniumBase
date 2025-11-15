@@ -10,13 +10,13 @@ Example -->
 ```python
 from seleniumbase import SB
 
-with SB(uc=True) as sb:  # Many args! Eg. SB(browser="edge")
-    sb.open("https://google.com/ncr")
-    sb.type('[name="q"]', "SeleniumBase on GitHub\n")
-    sb.click('a[href*="github.com/seleniumbase"]')
-    sb.highlight("div.Layout-main")
-    sb.highlight("div.Layout-sidebar")
-    sb.sleep(0.5)
+with SB(uc=True, test=True) as sb:
+    url = "https://google.com/ncr"
+    sb.activate_cdp_mode(url)
+    sb.type('[title="Search"]', "SeleniumBase GitHub page")
+    sb.click("div:not([jsname]) > * > input")
+    sb.sleep(2)
+    print(sb.get_page_title())
 ```
 
 # (The browser exits automatically after the "with" block ends.)
@@ -144,14 +144,13 @@ def SB(
     .. code-block:: python
         from seleniumbase import SB
 
-        with SB() as sb:  # Many args! Eg. SB(browser="edge")
-            sb.open("https://google.com/ncr")
-            sb.type('[name="q"]', "SeleniumBase on GitHub")
-            sb.submit('[name="q"]')
-            sb.click('a[href*="github.com/seleniumbase"]')
-            sb.highlight("div.Layout-main")
-            sb.highlight("div.Layout-sidebar")
-            sb.sleep(0.5)
+        with SB(uc=True, test=True) as sb:
+            url = "https://google.com/ncr"
+            sb.activate_cdp_mode(url)
+            sb.type('[title="Search"]', "SeleniumBase GitHub page")
+            sb.click("div:not([jsname]) > * > input")
+            sb.sleep(2)
+            print(sb.get_page_title())
 
     Optional Parameters:
     --------------------

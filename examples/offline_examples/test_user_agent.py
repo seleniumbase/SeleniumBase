@@ -18,7 +18,8 @@ class OfflineTests(BaseCase):
         print("\n--------------------------")
         if not self.headless:
             self.open("chrome://version/")
-            self.highlight("#useragent", loops=8)
+            self.highlight("#useragent", loops=6)
+            self.sleep(0.8)
         try:
             self.execute_cdp_cmd(
                 "Network.setUserAgentOverride",

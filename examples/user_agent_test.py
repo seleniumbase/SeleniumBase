@@ -4,14 +4,10 @@ BaseCase.main(__name__, __file__)
 
 class UserAgentTests(BaseCase):
     def test_user_agent(self):
-        if self._multithreaded:
-            self.open_if_not_url("about:blank")
-            self.skip("Skipping test in multi-threaded mode.")
-        self.open("https://my-user-agent.com/")
-        zoom_in = "#ua_string{zoom: 1.8;-moz-transform: scale(1.8);}"
-        self.add_css_style(zoom_in)
-        self.highlight("#ua_string")
-        user_agent_detected = self.get_text("#ua_string")
+        self.open("data:text/html,<h1></h1>")
+        user_agent_detected = self.get_user_agent()
+        self.set_text_content("h1", user_agent_detected)
+        self.highlight("h1")
         original_user_agent = user_agent_detected
         if not self.user_agent:
             # Using the built-in user-agent string
@@ -39,12 +35,11 @@ class UserAgentTests(BaseCase):
                 },
             )
             self.open("about:blank")
-            self.sleep(0.05)  # Enough to see that the page was refreshed
-            self.open("https://my-user-agent.com/")
-            zoom_in = "#ua_string{zoom: 1.8;-moz-transform: scale(1.8);}"
-            self.add_css_style(zoom_in)
-            self.highlight("#ua_string")
-            user_agent_detected = self.get_text("#ua_string")
+            self.sleep(0.1)  # Enough to see that page was refreshed
+            self.open("data:text/html,<h1></h1>")
+            user_agent_detected = self.get_user_agent()
+            self.set_text_content("h1", user_agent_detected)
+            self.highlight("h1")
             print("\nUser-Agent override: %s" % user_agent_detected)
             if self.headed:
                 self.sleep(2.75)

@@ -3,7 +3,8 @@ from seleniumbase import SB
 
 with SB(uc=True, test=True) as sb:
     sb.open("https://google.com/ncr")
-    sb.type('[name="q"]', "SeleniumBase on GitHub\n")
+    sb.type('[name="q"]', "SeleniumBase on GitHub")
+    sb.click("div:not([jsname]) > * > input")
     sb.highlight('a[href*="github.com/seleniumbase"]')
     sb.sleep(0.5)
 

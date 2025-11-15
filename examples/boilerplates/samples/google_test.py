@@ -15,7 +15,7 @@ class GoogleTests(BaseCase):
             self.skip("Skipping test in headless mode.")
         if not self.undetectable:
             self.get_new_driver(undetectable=True)
-        self.open("https://google.com/ncr")
+        self.driver.get("https://google.com/ncr")
         self.assert_title_contains("Google")
         self.sleep(0.05)
         self.save_screenshot_to_logs()  # ("./latest_logs" folder)
