@@ -914,15 +914,16 @@ def set_messenger_theme(
         % (max_messages, messenger_location, theme)
     )
     try:
+        time.sleep(0.015)
         execute_script(driver, msg_style)
     except Exception:
-        time.sleep(0.03)
+        time.sleep(0.035)
         activate_messenger(driver)
-        time.sleep(0.15)
+        time.sleep(0.175)
         with suppress(Exception):
             execute_script(driver, msg_style)
-            time.sleep(0.02)
-    time.sleep(0.05)
+            time.sleep(0.035)
+    time.sleep(0.055)
 
 
 def post_message(driver, message, msg_dur=None, style="info"):
