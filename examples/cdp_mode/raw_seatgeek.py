@@ -1,6 +1,6 @@
 from seleniumbase import SB
 
-with SB(uc=True, test=True, guest=True) as sb:
+with SB(uc=True, test=True, ad_block=True) as sb:
     url = "https://seatgeek.com/"
     sb.activate_cdp_mode(url)
     input_field = 'input[name="search"]'

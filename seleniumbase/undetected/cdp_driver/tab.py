@@ -1064,7 +1064,7 @@ class Tab(Connection):
                     raise asyncio.TimeoutError(
                         "Time ran out while waiting for: {%s}" % selector
                     )
-                await self.sleep(0.5)
+                await self.sleep(0.068)
             return item
         if text:
             item = await self.find_element_by_text(text)
@@ -1074,7 +1074,7 @@ class Tab(Connection):
                     raise asyncio.TimeoutError(
                         "Time ran out while waiting for: {%s}" % text
                     )
-                await self.sleep(0.5)
+                await self.sleep(0.068)
             return item
 
     async def download_file(

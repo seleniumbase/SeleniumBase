@@ -240,14 +240,22 @@ class Base(Plugin):
         test.test.test_id = test.id()
         test.test.is_nosetest = True
         test.test.environment = self.options.environment
+        sb_config.environment = self.options.environment
         test.test.env = self.options.environment  # Add a shortened version
         test.test.account = self.options.account
+        sb_config.account = self.options.account
         test.test.data = self.options.data
+        sb_config.data = self.options.data
         test.test.var1 = self.options.var1
+        sb_config.var1 = self.options.var1
         test.test.var2 = self.options.var2
+        sb_config.var2 = self.options.var2
         test.test.var3 = self.options.var3
+        sb_config.var3 = self.options.var3
         test.test.variables = variables  # Already verified is a dictionary
+        sb_config.variables = variables
         test.test.settings_file = self.options.settings_file
+        sb_config.settings_file = self.options.settings_file
         test.test._final_debug = self.options.final_debug
         test.test.log_path = self.options.log_path
         if self.options.archive_downloads:

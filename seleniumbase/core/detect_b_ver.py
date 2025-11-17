@@ -360,19 +360,19 @@ def comet_on_windows_path(browser_type=None):
     for item in map(
         os.environ.get,
         (
+            "LOCALAPPDATA",
             "PROGRAMFILES",
             "PROGRAMFILES(X86)",
-            "LOCALAPPDATA",
             "PROGRAMW6432",
         ),
     ):
         for subitem in (
-            "Perplexity/Comet/Application"
+            "Perplexity/Comet/Application",
             "Comet/Application",
             "Programs/Comet",
         ):
             try:
-                candidates.append(os.sep.join((item, subitem, "Comet.exe")))
+                candidates.append(os.sep.join((item, subitem, "comet.exe")))
             except TypeError:
                 pass
     for candidate in candidates:
@@ -390,19 +390,19 @@ def atlas_on_windows_path(browser_type=None):
     for item in map(
         os.environ.get,
         (
+            "LOCALAPPDATA",
             "PROGRAMFILES",
             "PROGRAMFILES(X86)",
-            "LOCALAPPDATA",
             "PROGRAMW6432",
         ),
     ):
         for subitem in (
-            "OpenAI/Atlas/Application"
+            "OpenAI/Atlas/Application",
             "Atlas/Application",
             "Programs/Atlas",
         ):
             try:
-                candidates.append(os.sep.join((item, subitem, "Atlas.exe")))
+                candidates.append(os.sep.join((item, subitem, "atlas.exe")))
             except TypeError:
                 pass
     for candidate in candidates:

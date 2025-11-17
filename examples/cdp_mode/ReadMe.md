@@ -140,7 +140,7 @@ from seleniumbase import SB
 with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     url = "https://www.pokemon.com/us"
     sb.activate_cdp_mode(url)
-    sb.sleep(3.2)
+    sb.sleep(3.5)
     sb.click_if_visible("button#onetrust-accept-btn-handler")
     sb.sleep(1.2)
     sb.click("a span.icon_pokeball")
@@ -148,9 +148,9 @@ with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     sb.click('b:contains("Show Advanced Search")')
     sb.sleep(2.5)
     sb.click('span[data-type="type"][data-value="electric"]')
-    sb.sleep(0.5)
+    sb.sleep(0.7)
     sb.scroll_into_view("a#advSearch")
-    sb.sleep(0.5)
+    sb.sleep(0.7)
     sb.click("a#advSearch")
     sb.sleep(1.2)
     sb.click('img[src*="img/pokedex/detail/025.png"]')
@@ -234,10 +234,10 @@ with SB(uc=True, test=True, locale="en") as sb:
 ```python
 from seleniumbase import SB
 
-with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
+with SB(uc=True, test=True, locale="en", guest=True) as sb:
     url = "https://www.bestwestern.com/en_US.html"
     sb.activate_cdp_mode(url)
-    sb.sleep(2.5)
+    sb.sleep(3)
     sb.click_if_visible(".onetrust-close-btn-handler")
     sb.sleep(1)
     sb.click("input#destination-input")
