@@ -321,6 +321,7 @@ class Browser:
             _cdp_user_agent = ""
             _cdp_locale = None
             _cdp_platform = None
+            _cdp_disable_csp = None
             _cdp_geolocation = None
             _cdp_recorder = None
             _cdp_ad_block = None
@@ -365,13 +366,19 @@ class Browser:
                 _cdp_platform = kwargs["platform"]
             elif "plat" in kwargs:
                 _cdp_platform = kwargs["plat"]
+            if "disable_csp" in kwargs:
+                _cdp_disable_csp = kwargs["disable_csp"]
+            elif hasattr(sb_config, "disable_csp"):
+                _cdp_disable_csp = sb_config.disable_csp
             if "geolocation" in kwargs:
                 _cdp_geolocation = kwargs["geolocation"]
             elif "geoloc" in kwargs:
                 _cdp_geolocation = kwargs["geoloc"]
             if "recorder" in kwargs:
                 _cdp_recorder = kwargs["recorder"]
+            await connection.sleep(0.01)
             await connection.send(cdp.network.enable())
+            await connection.sleep(0.01)
             if _cdp_timezone:
                 await connection.set_timezone(_cdp_timezone)
             if _cdp_locale:
@@ -420,6 +427,8 @@ class Browser:
                 ))
             if _cdp_geolocation:
                 await connection.set_geolocation(_cdp_geolocation)
+            if _cdp_disable_csp:
+                await connection.send(cdp.page.set_bypass_csp(enabled=True))
             # (The code below is for the Chrome 142 extension fix)
             if (
                 hasattr(sb_config, "_cdp_proxy")

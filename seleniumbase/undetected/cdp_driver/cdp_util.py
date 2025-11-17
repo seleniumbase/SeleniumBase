@@ -281,6 +281,7 @@ async def start(
     proxy: Optional[str] = None,  # "host:port" or "user:pass@host:port"
     tzone: Optional[str] = None,  # Eg "America/New_York", "Asia/Kolkata"
     geoloc: Optional[list | tuple] = None,  # Eg (48.87645, 2.26340)
+    disable_csp: Optional[str] = None,  # Disable content security policy
     extension_dir: Optional[str] = None,  # Chrome extension directory
     **kwargs: Optional[dict],
 ) -> Browser:
@@ -357,6 +358,11 @@ async def start(
             ad_block = True
         else:
             ad_block = False
+    if disable_csp is None:
+        if "--disable-csp" in sys_argv or "--disable_csp" in sys_argv:
+            disable_csp = True
+        else:
+            disable_csp = False
     if xvfb_metrics is None and "--xvfb-metrics" in arg_join:
         x_m = xvfb_metrics
         count = 0
@@ -556,6 +562,8 @@ async def start(
         ad_block_dir = os.path.join(DOWNLOADS_FOLDER, "ad_block")
         __unzip_to_new_folder(ad_block_zip, ad_block_dir)
         extension_dir = __add_chrome_ext_dir(extension_dir, ad_block_dir)
+    if disable_csp:
+        sb_config.disable_csp = True
     if "binary_location" in kwargs and not browser_executable_path:
         browser_executable_path = kwargs["binary_location"]
     if not browser_executable_path:
