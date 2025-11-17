@@ -470,6 +470,12 @@ def uc_execute_cdp_cmd(driver, *args, **kwargs):
     return driver.default_execute_cdp_cmd(*args, **kwargs)
 
 
+def updated_get(driver, url):
+    if url and ":" not in url and "." in url:
+        url = "https:" + url
+    driver.default_get(url)
+
+
 def uc_special_open_if_cf(
     driver,
     url,
@@ -479,6 +485,8 @@ def uc_special_open_if_cf(
     device_height=None,
     device_pixel_ratio=None,
 ):
+    if url and ":" not in url and "." in url:
+        url = "https:" + url
     if url.startswith("http:") or url.startswith("https:"):
         special = False
         with suppress(Exception):
@@ -5938,6 +5946,8 @@ def get_local_driver(
                                 'Emulation.setDeviceMetricsOverride',
                                 set_device_metrics_override
                             )
+                else:
+                    driver.get = lambda url: updated_get(driver, url)
                 return extend_driver(
                     driver, proxy_auth, use_uc, recorder_ext
                 )
