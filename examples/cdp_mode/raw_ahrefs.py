@@ -8,7 +8,7 @@ with SB(uc=True, test=True, incognito=True, locale="en") as sb:
     sb.type(input_field, "github.com/seleniumbase/SeleniumBase")
     sb.scroll_down(36)
     sb.click(submit_button)
-    sb.sleep(1)
+    sb.sleep(2)
     sb.solve_captcha()
     sb.sleep(3)
     sb.wait_for_text_not_visible("Checking", timeout=15)
