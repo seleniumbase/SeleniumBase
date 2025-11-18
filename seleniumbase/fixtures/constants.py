@@ -446,6 +446,7 @@ class ValidBinaries:
         "Opera",
         "Comet Browser",
         "Comet",
+        "ChatGPT Atlas",
         "Atlas Browser",
         "Atlas",
     ]

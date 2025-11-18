@@ -462,8 +462,8 @@ def get_binary_location(browser_type, chromium_ok=False):
         },
         ChromeType.ATLAS: {
             OSType.LINUX: atlas_on_linux_path(browser_type),
-            OSType.MAC: r"/Applications/Atlas.app"
-                        r"/Contents/MacOS/Atlas",
+            OSType.MAC: r"/Applications/ChatGPT Atlas.app"
+                        r"/Contents/MacOS/ChatGPT Atlas",
             OSType.WIN: atlas_on_windows_path(browser_type),
         },
     }
