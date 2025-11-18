@@ -296,6 +296,7 @@ class Browser:
         :param new_window: Open new window
         :return: Page
         """
+        await asyncio.sleep(0.005)
         if url and ":" not in url:
             url = "https://" + url
         if new_tab or new_window:
@@ -307,7 +308,9 @@ class Browser:
             )
             connection: tab.Tab = next(
                 filter(
-                    lambda item: item.type_ == "page" and item.target_id == target_id,  # noqa
+                    lambda item: (
+                        item.type_ == "page" and item.target_id == target_id
+                    ),
                     self.targets,
                 )
             )
@@ -317,164 +320,166 @@ class Browser:
             connection: tab.Tab = next(
                 filter(lambda item: item.type_ == "page", self.targets)
             )
-            _cdp_timezone = None
-            _cdp_user_agent = ""
-            _cdp_locale = None
-            _cdp_platform = None
-            _cdp_disable_csp = None
-            _cdp_geolocation = None
-            _cdp_recorder = None
-            _cdp_ad_block = None
-            if (
-                hasattr(sb_config, "_cdp_timezone") and sb_config._cdp_timezone
-            ):
-                _cdp_timezone = sb_config._cdp_timezone
-            if (
-                hasattr(sb_config, "_cdp_user_agent")
-                and sb_config._cdp_user_agent
-            ):
-                _cdp_user_agent = sb_config._cdp_user_agent
-            if hasattr(sb_config, "_cdp_locale") and sb_config._cdp_locale:
-                _cdp_locale = sb_config._cdp_locale
-            if hasattr(sb_config, "_cdp_platform") and sb_config._cdp_platform:
-                _cdp_platform = sb_config._cdp_platform
-            if (
-                hasattr(sb_config, "_cdp_geolocation")
-                and sb_config._cdp_geolocation
-            ):
-                _cdp_geolocation = sb_config._cdp_geolocation
-            if (
-                hasattr(sb_config, "ad_block_on")
-                and sb_config.ad_block_on
-            ):
-                _cdp_ad_block = sb_config.ad_block_on
-            if "timezone" in kwargs:
-                _cdp_timezone = kwargs["timezone"]
-            elif "tzone" in kwargs:
-                _cdp_timezone = kwargs["tzone"]
-            if "user_agent" in kwargs:
-                _cdp_user_agent = kwargs["user_agent"]
-            elif "agent" in kwargs:
-                _cdp_user_agent = kwargs["agent"]
-            if "locale" in kwargs:
-                _cdp_locale = kwargs["locale"]
-            elif "lang" in kwargs:
-                _cdp_locale = kwargs["lang"]
-            elif "locale_code" in kwargs:
-                _cdp_locale = kwargs["locale_code"]
-            if "platform" in kwargs:
-                _cdp_platform = kwargs["platform"]
-            elif "plat" in kwargs:
-                _cdp_platform = kwargs["plat"]
-            if "disable_csp" in kwargs:
-                _cdp_disable_csp = kwargs["disable_csp"]
-            elif hasattr(sb_config, "disable_csp"):
-                _cdp_disable_csp = sb_config.disable_csp
-            if "geolocation" in kwargs:
-                _cdp_geolocation = kwargs["geolocation"]
-            elif "geoloc" in kwargs:
-                _cdp_geolocation = kwargs["geoloc"]
-            if "recorder" in kwargs:
-                _cdp_recorder = kwargs["recorder"]
-            await connection.sleep(0.01)
-            await connection.send(cdp.network.enable())
-            await connection.sleep(0.01)
-            if _cdp_timezone:
-                await connection.set_timezone(_cdp_timezone)
-            if _cdp_locale:
-                await connection.set_locale(_cdp_locale)
-            if _cdp_user_agent or _cdp_locale or _cdp_platform:
-                await connection.set_user_agent(
-                    user_agent=_cdp_user_agent,
-                    accept_language=_cdp_locale,
-                    platform=_cdp_platform,
-                )
-            if _cdp_ad_block:
-                await connection.send(cdp.network.set_blocked_urls(
-                    urls=[
-                        "*.cloudflareinsights.com*",
-                        "*.googlesyndication.com*",
-                        "*.googletagmanager.com*",
-                        "*.google-analytics.com*",
-                        "*.amazon-adsystem.com*",
-                        "*.adsafeprotected.com*",
-                        "*.ads.linkedin.com*",
-                        "*.casalemedia.com*",
-                        "*.doubleclick.net*",
-                        "*.admanmedia.com*",
-                        "*.quantserve.com*",
-                        "*.fastclick.net*",
-                        "*.snigelweb.com*",
-                        "*.bidswitch.net*",
-                        "*.360yield.com*",
-                        "*.adthrive.com*",
-                        "*.pubmatic.com*",
-                        "*.id5-sync.com*",
-                        "*.dotomi.com*",
-                        "*.adsrvr.org*",
-                        "*.atmtd.com*",
-                        "*.liadm.com*",
-                        "*.loopme.me*",
-                        "*.adnxs.com*",
-                        "*.openx.net*",
-                        "*.tapad.com*",
-                        "*.3lift.com*",
-                        "*.turn.com*",
-                        "*.2mdn.net*",
-                        "*.cpx.to*",
-                        "*.ad.gt*",
-                    ]
-                ))
-            if _cdp_geolocation:
-                await connection.set_geolocation(_cdp_geolocation)
-            if _cdp_disable_csp:
-                await connection.send(cdp.page.set_bypass_csp(enabled=True))
-            # (The code below is for the Chrome 142 extension fix)
-            if (
-                hasattr(sb_config, "_cdp_proxy")
-                and sb_config._cdp_proxy
-                and "@" in sb_config._cdp_proxy
-                and "auth" not in kwargs
-            ):
-                username_and_password = sb_config._cdp_proxy.split("@")[0]
-                proxy_user = username_and_password.split(":")[0]
-                proxy_pass = username_and_password.split(":")[1]
-                if (
-                    hasattr(self.main_tab, "_last_auth")
-                    and self.main_tab._last_auth == username_and_password
-                ):
-                    pass  # Auth was already set
-                else:
-                    self.main_tab._last_auth = username_and_password
-                    await self.set_auth(proxy_user, proxy_pass, self.tabs[0])
-                    time.sleep(0.25)
-            if "auth" in kwargs and kwargs["auth"] and ":" in kwargs["auth"]:
-                username_and_password = kwargs["auth"]
-                proxy_user = username_and_password.split(":")[0]
-                proxy_pass = username_and_password.split(":")[1]
-                if (
-                    hasattr(self.main_tab, "_last_auth")
-                    and self.main_tab._last_auth == username_and_password
-                ):
-                    pass  # Auth was already set
-                else:
-                    self.main_tab._last_auth = username_and_password
-                    await self.set_auth(proxy_user, proxy_pass, self.tabs[0])
-                    time.sleep(0.25)
-            await connection.sleep(0.15)
-            frame_id, loader_id, *_ = await connection.send(
-                cdp.page.navigate(url)
+            await connection.sleep(0.005)
+        _cdp_timezone = None
+        _cdp_user_agent = ""
+        _cdp_locale = None
+        _cdp_platform = None
+        _cdp_disable_csp = None
+        _cdp_geolocation = None
+        _cdp_recorder = None
+        _cdp_ad_block = None
+        if (
+            hasattr(sb_config, "_cdp_timezone") and sb_config._cdp_timezone
+        ):
+            _cdp_timezone = sb_config._cdp_timezone
+        if (
+            hasattr(sb_config, "_cdp_user_agent")
+            and sb_config._cdp_user_agent
+        ):
+            _cdp_user_agent = sb_config._cdp_user_agent
+        if hasattr(sb_config, "_cdp_locale") and sb_config._cdp_locale:
+            _cdp_locale = sb_config._cdp_locale
+        if hasattr(sb_config, "_cdp_platform") and sb_config._cdp_platform:
+            _cdp_platform = sb_config._cdp_platform
+        if (
+            hasattr(sb_config, "_cdp_geolocation")
+            and sb_config._cdp_geolocation
+        ):
+            _cdp_geolocation = sb_config._cdp_geolocation
+        if (
+            hasattr(sb_config, "ad_block_on")
+            and sb_config.ad_block_on
+        ):
+            _cdp_ad_block = sb_config.ad_block_on
+        if "timezone" in kwargs:
+            _cdp_timezone = kwargs["timezone"]
+        elif "tzone" in kwargs:
+            _cdp_timezone = kwargs["tzone"]
+        if "user_agent" in kwargs:
+            _cdp_user_agent = kwargs["user_agent"]
+        elif "agent" in kwargs:
+            _cdp_user_agent = kwargs["agent"]
+        if "locale" in kwargs:
+            _cdp_locale = kwargs["locale"]
+        elif "lang" in kwargs:
+            _cdp_locale = kwargs["lang"]
+        elif "locale_code" in kwargs:
+            _cdp_locale = kwargs["locale_code"]
+        if "platform" in kwargs:
+            _cdp_platform = kwargs["platform"]
+        elif "plat" in kwargs:
+            _cdp_platform = kwargs["plat"]
+        if "disable_csp" in kwargs:
+            _cdp_disable_csp = kwargs["disable_csp"]
+        elif hasattr(sb_config, "disable_csp"):
+            _cdp_disable_csp = sb_config.disable_csp
+        if "geolocation" in kwargs:
+            _cdp_geolocation = kwargs["geolocation"]
+        elif "geoloc" in kwargs:
+            _cdp_geolocation = kwargs["geoloc"]
+        if "recorder" in kwargs:
+            _cdp_recorder = kwargs["recorder"]
+        await connection.sleep(0.01)
+        await connection.send(cdp.network.enable())
+        await connection.sleep(0.01)
+        if _cdp_timezone:
+            await connection.set_timezone(_cdp_timezone)
+        if _cdp_locale:
+            await connection.set_locale(_cdp_locale)
+        if _cdp_user_agent or _cdp_locale or _cdp_platform:
+            await connection.set_user_agent(
+                user_agent=_cdp_user_agent,
+                accept_language=_cdp_locale,
+                platform=_cdp_platform,
             )
-            if _cdp_recorder:
-                # (The code below is for the Chrome 142 extension fix)
-                from seleniumbase.js_code.recorder_js import recorder_js
-                recorder_code = (
-                    """window.onload = function() { %s };""" % recorder_js
-                )
-                await connection.send(cdp.runtime.evaluate(recorder_code))
-            # Update the frame_id on the tab
-            connection.frame_id = frame_id
-            connection.browser = self
+        if _cdp_ad_block:
+            await connection.send(cdp.network.set_blocked_urls(
+                urls=[
+                    "*.cloudflareinsights.com*",
+                    "*.googlesyndication.com*",
+                    "*.googletagmanager.com*",
+                    "*.google-analytics.com*",
+                    "*.amazon-adsystem.com*",
+                    "*.adsafeprotected.com*",
+                    "*.ads.linkedin.com*",
+                    "*.casalemedia.com*",
+                    "*.doubleclick.net*",
+                    "*.admanmedia.com*",
+                    "*.quantserve.com*",
+                    "*.fastclick.net*",
+                    "*.snigelweb.com*",
+                    "*.bidswitch.net*",
+                    "*.360yield.com*",
+                    "*.adthrive.com*",
+                    "*.pubmatic.com*",
+                    "*.id5-sync.com*",
+                    "*.dotomi.com*",
+                    "*.adsrvr.org*",
+                    "*.atmtd.com*",
+                    "*.liadm.com*",
+                    "*.loopme.me*",
+                    "*.adnxs.com*",
+                    "*.openx.net*",
+                    "*.tapad.com*",
+                    "*.3lift.com*",
+                    "*.turn.com*",
+                    "*.2mdn.net*",
+                    "*.cpx.to*",
+                    "*.ad.gt*",
+                ]
+            ))
+        if _cdp_geolocation:
+            await connection.set_geolocation(_cdp_geolocation)
+        if _cdp_disable_csp:
+            await connection.send(cdp.page.set_bypass_csp(enabled=True))
+        # (The code below is for the Chrome 142 extension fix)
+        if (
+            hasattr(sb_config, "_cdp_proxy")
+            and sb_config._cdp_proxy
+            and "@" in sb_config._cdp_proxy
+            and "auth" not in kwargs
+        ):
+            username_and_password = sb_config._cdp_proxy.split("@")[0]
+            proxy_user = username_and_password.split(":")[0]
+            proxy_pass = username_and_password.split(":")[1]
+            if (
+                hasattr(self.main_tab, "_last_auth")
+                and self.main_tab._last_auth == username_and_password
+            ):
+                pass  # Auth was already set
+            else:
+                self.main_tab._last_auth = username_and_password
+                await self.set_auth(proxy_user, proxy_pass, self.tabs[0])
+                time.sleep(0.25)
+        if "auth" in kwargs and kwargs["auth"] and ":" in kwargs["auth"]:
+            username_and_password = kwargs["auth"]
+            proxy_user = username_and_password.split(":")[0]
+            proxy_pass = username_and_password.split(":")[1]
+            if (
+                hasattr(self.main_tab, "_last_auth")
+                and self.main_tab._last_auth == username_and_password
+            ):
+                pass  # Auth was already set
+            else:
+                self.main_tab._last_auth = username_and_password
+                await self.set_auth(proxy_user, proxy_pass, self.tabs[0])
+                time.sleep(0.25)
+        await connection.sleep(0.15)
+        frame_id, loader_id, *_ = await connection.send(
+            cdp.page.navigate(url)
+        )
+        if _cdp_recorder:
+            # (The code below is for the Chrome 142 extension fix)
+            from seleniumbase.js_code.recorder_js import recorder_js
+            recorder_code = (
+                """window.onload = function() { %s };""" % recorder_js
+            )
+            await connection.send(cdp.runtime.evaluate(recorder_code))
+        # Update the frame_id on the tab
+        connection.frame_id = frame_id
+        connection.browser = self
+        # Give settings time to take effect
         await connection.sleep(0.25)
         await self.wait(0.05)
         return connection
