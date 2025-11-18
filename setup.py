@@ -251,7 +251,7 @@ setup(
         "coverage": [
             'coverage>=7.6.1;python_version<"3.9"',
             'coverage>=7.10.7;python_version>="3.9" and python_version<"3.10"',
-            'coverage>=7.11.3;python_version>="3.10"',
+            'coverage>=7.12.0;python_version>="3.10"',
             'pytest-cov>=5.0.0;python_version<"3.9"',
             'pytest-cov>=7.0.0;python_version>="3.9"',
         ],
