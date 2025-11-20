@@ -469,13 +469,37 @@ class Browser:
         frame_id, loader_id, *_ = await connection.send(
             cdp.page.navigate(url)
         )
-        if _cdp_recorder:
+        major_browser_version = None
+        try:
+            major_browser_version = (
+                int(self.info["Browser"].split("/")[-1].split(".")[0])
+            )
+        except Exception:
+            pass
+        if (
+            _cdp_recorder
+            and (
+                not hasattr(sb_config, "browser")
+                or (
+                    sb_config.browser == "chrome"
+                    and (
+                        not major_browser_version
+                        or major_browser_version >= 142
+                    )
+                )
+            )
+        ):
             # (The code below is for the Chrome 142 extension fix)
             from seleniumbase.js_code.recorder_js import recorder_js
             recorder_code = (
                 """window.onload = function() { %s };""" % recorder_js
             )
-            await connection.send(cdp.runtime.evaluate(recorder_code))
+            await connection.send(
+                cdp.page.add_script_to_evaluate_on_new_document(recorder_code)
+            )
+            await connection.sleep(0.25)
+            await self.wait(0.05)
+            await connection.send(cdp.runtime.evaluate(recorder_js))
         # Update the frame_id on the tab
         connection.frame_id = frame_id
         connection.browser = self

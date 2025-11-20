@@ -5063,8 +5063,7 @@ class BaseCase(unittest.TestCase):
         self.undetectable = True
 
     def activate_recorder(self):
-        """Activate Recorder Mode on the current tab/window.
-        For persistent Recorder Mode, use the extension instead."""
+        """Activate Recorder Mode on the newest tab / window."""
         from seleniumbase.js_code.recorder_js import recorder_js
 
         if not self.is_chromium():
@@ -5077,7 +5076,7 @@ class BaseCase(unittest.TestCase):
                 "The %s Recorder is for Chromium only!\n"
                 "    (Supported browsers: Chrome and Edge)" % sc
             )
-        url = self.driver.current_url
+        url = self.get_current_url()
         if url.startswith(("data:", "about:", "chrome:", "edge:")):
             message = (
                 "The URL in Recorder-Mode cannot start with: "
@@ -5085,8 +5084,9 @@ class BaseCase(unittest.TestCase):
             )
             print("\n" + message)
             return
-        if self.recorder_ext:
+        if self.recorder_ext and not self.undetectable:
             return  # The Recorder extension is already active
+        self.switch_to_newest_tab()
         with suppress(Exception):
             recorder_on = self.get_session_storage_item("recorder_activated")
             if not recorder_on == "yes":

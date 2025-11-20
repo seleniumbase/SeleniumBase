@@ -84,6 +84,10 @@ def main():
     error_msg = None
     invalid_cmd = None
     use_edge = False
+    use_opera = False
+    use_brave = False
+    use_comet = False
+    use_atlas = False
     use_uc = False
     esc_end = False
     start_page = None
@@ -138,6 +142,14 @@ def main():
                 help_me = True
             elif option.lower() == "--edge":
                 use_edge = True
+            elif option.lower() == "--opera":
+                use_opera = True
+            elif option.lower() == "--brave":
+                use_brave = True
+            elif option.lower() == "--comet":
+                use_comet = True
+            elif option.lower() == "--atlas":
+                use_atlas = True
             elif option.lower() == "--ee":
                 esc_end = True
             elif option.lower() in ("--gui", "--headed"):
@@ -275,6 +287,14 @@ def main():
             )
     if use_edge:
         run_cmd += " --edge"
+    elif use_opera:
+        run_cmd += " --opera"
+    elif use_brave:
+        run_cmd += " --brave"
+    elif use_comet:
+        run_cmd += " --comet"
+    elif use_atlas:
+        run_cmd += " --atlas"
     if force_gui:
         run_cmd += " --gui"
     if use_uc:

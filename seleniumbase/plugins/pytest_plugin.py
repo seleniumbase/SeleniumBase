@@ -1622,10 +1622,12 @@ def pytest_addoption(parser):
     if (
         using_recorder
         and browser_changes == 1
-        and browser_text not in ["chrome", "edge"]
+        and browser_text not in [
+            "chrome", "edge", "opera", "brave", "comet", "atlas"
+        ]
     ):
         message = (
-            "\n  Recorder Mode ONLY supports Chrome and Edge!"
+            "\n  Recorder Mode ONLY supports Chromium browsers!"
             '\n  (Your browser choice was: "%s")\n' % browser_list[0]
         )
         raise Exception(message)
