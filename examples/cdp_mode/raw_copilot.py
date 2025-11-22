@@ -5,7 +5,7 @@ with SB(uc=True, test=True, locale="en") as sb:
     sb.activate_cdp_mode(url)
     textarea = "textarea#userInput"
     sb.wait_for_element(textarea)
-    sb.sleep(1.5)
+    sb.sleep(1.3)
     sb.click_if_visible('[aria-label="Dismiss"]')
     sb.sleep(0.5)
     sb.click('button[data-testid*="chat-mode-"]')
