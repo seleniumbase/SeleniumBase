@@ -115,7 +115,18 @@ class CDPMethods():
         driver = self.driver
         if hasattr(driver, "cdp_base"):
             driver = driver.cdp_base
-        self.loop.run_until_complete(self.page.get(url, **kwargs))
+        load_timeout = 60.0
+        wait_timeout = 30.0
+        if hasattr(sb_config, "_cdp_proxy") and sb_config._cdp_proxy:
+            load_timeout = 90.0
+            wait_timeout = 45.0
+        try:
+            task = self.page.get(url, **kwargs)
+            self.loop.run_until_complete(
+                asyncio.wait_for(task, timeout=load_timeout)
+            )
+        except asyncio.TimeoutError:
+            print("Timeout loading %s" % url)
         url_protocol = url.split(":")[0]
         safe_url = True
         if url_protocol not in ["about", "data", "chrome"]:
@@ -127,7 +138,14 @@ class CDPMethods():
         else:
             time.sleep(0.012)
         self.__slow_mode_pause_if_set()
-        self.loop.run_until_complete(self.page.wait())
+        try:
+            self.loop.run_until_complete(
+                asyncio.wait_for(self.page.wait(), timeout=wait_timeout)
+            )
+        except asyncio.TimeoutError:
+            pass
+        except Exception:
+            pass
 
     def open(self, url, **kwargs):
         self.get(url, **kwargs)
@@ -2909,4 +2927,15 @@ class Chrome(CDPMethods):
         driver = cdp_util.start_sync(**kwargs)
         loop = asyncio.new_event_loop()
         page = loop.run_until_complete(driver.get(url))
+        wait_timeout = 30.0
+        if hasattr(sb_config, "_cdp_proxy") and sb_config._cdp_proxy:
+            wait_timeout = 45.0
+        try:
+            loop.run_until_complete(
+                asyncio.wait_for(page.wait(), timeout=wait_timeout)
+            )
+        except asyncio.TimeoutError:
+            pass
+        except Exception:
+            pass
         super().__init__(loop, page, driver)
