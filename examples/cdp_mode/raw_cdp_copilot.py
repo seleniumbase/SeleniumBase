@@ -4,7 +4,7 @@ url = "https://copilot.microsoft.com/"
 sb = sb_cdp.Chrome(url, locale="en", guest=True)
 textarea = "textarea#userInput"
 sb.wait_for_element(textarea)
-sb.sleep(1.5)
+sb.sleep(1.3)
 sb.click_if_visible('[aria-label="Dismiss"]')
 sb.sleep(0.5)
 sb.click('button[data-testid*="chat-mode-"]')
