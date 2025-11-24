@@ -2313,6 +2313,22 @@ def _set_chrome_options(
     device_pixel_ratio,
 ):
     chrome_options = webdriver.ChromeOptions()
+    
+    # Chrome 142+ removed support for --load-extension
+    # If a user passes this flag, warn them instead of failing.
+    for arg in list(getattr(sb_config, "chrome_args", [])):
+        if "--load-extension" in arg:
+            warnings.warn(
+                "Chrome 142 and above no longer support '--load-extension'. "
+                "This argument will be ignored.",
+                UserWarning,
+            )
+            # Remove the unsupported argument
+            try:
+                sb_config.chrome_args.remove(arg)
+            except Exception:
+                pass
+
     if is_using_uc(undetectable, browser_name):
         from seleniumbase import undetected
         chrome_options = undetected.ChromeOptions()
