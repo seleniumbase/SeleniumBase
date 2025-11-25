@@ -31,7 +31,7 @@ def wait_for_ready_state_complete(driver, timeout=settings.LARGE_TIMEOUT):
     (Previously, tests would fail immediately if exceeding the timeout.)"""
     if hasattr(driver, "_swap_driver"):
         return
-    if hasattr(settings, "SKIP_JS_WAITS") and settings.SKIP_JS_WAITS:
+    if getattr(settings, "SKIP_JS_WAITS", None):
         return
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
@@ -65,13 +65,13 @@ def execute_async_script(driver, script, timeout=settings.LARGE_TIMEOUT):
 
 
 def wait_for_angularjs(driver, timeout=settings.LARGE_TIMEOUT, **kwargs):
-    if hasattr(settings, "SKIP_JS_WAITS") and settings.SKIP_JS_WAITS:
+    if getattr(settings, "SKIP_JS_WAITS", None):
         return
     with suppress(Exception):
         # This closes pop-up alerts
         execute_script(driver, "")
     if (
-        (hasattr(driver, "_is_using_uc") and driver._is_using_uc)
+        getattr(driver, "_is_using_uc", None)
         or not settings.WAIT_FOR_ANGULARJS
     ):
         wait_for_ready_state_complete(driver)
@@ -874,7 +874,7 @@ def set_messenger_theme(
         theme = "future"
     if location == "default":
         location = "bottom_right"
-        if hasattr(sb_config, "mobile_emulator") and sb_config.mobile_emulator:
+        if getattr(sb_config, "mobile_emulator", None):
             location = "top_center"
     if max_messages == "default":
         max_messages = "8"
@@ -978,7 +978,7 @@ def post_messenger_success_message(driver, message, msg_dur=None):
     with suppress(Exception):
         theme = "future"
         location = "bottom_right"
-        if hasattr(sb_config, "mobile_emulator") and sb_config.mobile_emulator:
+        if getattr(sb_config, "mobile_emulator", None):
             location = "top_right"
         set_messenger_theme(driver, theme=theme, location=location)
         post_message(driver, message, msg_dur, style="success")

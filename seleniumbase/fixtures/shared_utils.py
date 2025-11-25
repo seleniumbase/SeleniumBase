@@ -297,8 +297,7 @@ def __time_limit_exceeded(message):
 
 def check_if_time_limit_exceeded():
     if (
-        hasattr(sb_config, "time_limit")
-        and sb_config.time_limit
+        getattr(sb_config, "time_limit", None)
         and not sb_config.recorder_mode
     ):
         time_limit = sb_config.time_limit

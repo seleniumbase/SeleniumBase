@@ -1338,7 +1338,7 @@ class SeleniumBrowser(Plugin):
         test.test.extension_dir = self.options.extension_dir
         test.test.disable_features = self.options.disable_features
         test.test.binary_location = self.options.binary_location
-        if hasattr(sb_config, "_cdp_bin_loc") and sb_config._cdp_bin_loc:
+        if getattr(sb_config, "_cdp_bin_loc", None):
             test.test.binary_location = sb_config._cdp_bin_loc
         if self.options.use_cft and not test.test.binary_location:
             test.test.binary_location = "cft"
@@ -1515,10 +1515,7 @@ class SeleniumBrowser(Plugin):
 
     def finalize(self, result):
         """This runs after all tests have completed with nosetests."""
-        if (
-            (hasattr(sb_config, "multi_proxy") and not sb_config.multi_proxy)
-            or not hasattr(sb_config, "multi_proxy")
-        ):
+        if not getattr(sb_config, "multi_proxy", None):
             proxy_helper.remove_proxy_zip_if_present()
 
     def afterTest(self, test):
@@ -1536,8 +1533,7 @@ class SeleniumBrowser(Plugin):
             pass
         with suppress(Exception):
             if (
-                hasattr(self, "_xvfb_display")
-                and self._xvfb_display
+                getattr(self, "_xvfb_display", None)
                 and hasattr(self._xvfb_display, "stop")
             ):
                 self.headless_active = False
@@ -1545,8 +1541,7 @@ class SeleniumBrowser(Plugin):
                 self._xvfb_display.stop()
                 self._xvfb_display = None
             if (
-                hasattr(sb_config, "_virtual_display")
-                and sb_config._virtual_display
+                getattr(sb_config, "_virtual_display", None)
                 and hasattr(sb_config._virtual_display, "stop")
             ):
                 sb_config._virtual_display.stop()

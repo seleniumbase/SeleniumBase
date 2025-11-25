@@ -104,10 +104,7 @@ else:
 def log_d(message):
     """If setting sb_config.settings.HIDE_DRIVER_DOWNLOADS to True,
     output from driver downloads are logged instead of printed."""
-    if (
-        hasattr(settings, "HIDE_DRIVER_DOWNLOADS")
-        and settings.HIDE_DRIVER_DOWNLOADS
-    ):
+    if getattr(settings, "HIDE_DRIVER_DOWNLOADS", None):
         logging.debug(message)
     else:
         print(message)
@@ -959,8 +956,7 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
     driver.find_element_by_text = CDPM.find_element_by_text
     driver._is_using_cdp = True
     if (
-        hasattr(sb_config, "_cdp_proxy")
-        and sb_config._cdp_proxy
+        getattr(sb_config, "_cdp_proxy", None)
         and "@" in sb_config._cdp_proxy
     ):
         time.sleep(0.077)
@@ -1076,11 +1072,9 @@ def __install_pyautogui_if_missing():
                 xvfb_width = 1366
                 xvfb_height = 768
                 if (
-                    hasattr(sb_config, "_xvfb_width")
-                    and sb_config._xvfb_width
+                    getattr(sb_config, "_xvfb_width", None)
                     and isinstance(sb_config._xvfb_width, int)
-                    and hasattr(sb_config, "_xvfb_height")
-                    and sb_config._xvfb_height
+                    and getattr(sb_config, "_xvfb_height", None)
                     and isinstance(sb_config._xvfb_height, int)
                 ):
                     xvfb_width = sb_config._xvfb_width
@@ -1107,8 +1101,7 @@ def __install_pyautogui_if_missing():
                     sb_config._virtual_display = _xvfb_display
                     sb_config.headless_active = True
                     if (
-                        hasattr(sb_config, "reuse_session")
-                        and sb_config.reuse_session
+                        getattr(sb_config, "reuse_session", None)
                         and hasattr(sb_config, "_vd_list")
                         and isinstance(sb_config._vd_list, list)
                     ):
@@ -1245,10 +1238,7 @@ def uc_gui_click_x_y(driver, x, y, timeframe=0.25):
             connected = driver.is_connected()
             if (
                 not connected
-                and (
-                    not hasattr(sb_config, "_saved_width_ratio")
-                    or not sb_config._saved_width_ratio
-                )
+                and not getattr(sb_config, "_saved_width_ratio", None)
                 and not __is_cdp_swap_needed(driver)
             ):
                 driver.reconnect(0.1)
@@ -1898,8 +1888,7 @@ def _uc_gui_handle_captcha_(driver, frame="iframe", ctype=None):
                 driver.is_element_present(".footer .clearfix .ray-id")
                 or driver.is_element_present("script[data-cf-beacon]")
             )
-            and hasattr(sb_config, "_saved_cf_tab_count")
-            and sb_config._saved_cf_tab_count
+            and getattr(sb_config, "_saved_cf_tab_count", None)
             and not __is_cdp_swap_needed(driver)
         ):
             driver.uc_open_with_disconnect(driver.current_url, 3.8)
@@ -2535,8 +2524,7 @@ def _set_chrome_options(
         chrome_options.page_load_strategy = page_load_strategy.lower()
     elif (
         not page_load_strategy
-        and hasattr(settings, "PAGE_LOAD_STRATEGY")
-        and settings.PAGE_LOAD_STRATEGY
+        and getattr(settings, "PAGE_LOAD_STRATEGY", None)
         and settings.PAGE_LOAD_STRATEGY.lower() in ["eager", "none"]
     ):
         # Only change it if not "normal", which is the default.
@@ -3044,15 +3032,9 @@ def get_driver(
 ):
     sb_config._ext_dirs = []
     driver_dir = DRIVER_DIR
-    if (
-        hasattr(sb_config, "binary_location")
-        and sb_config.binary_location == "cft"
-    ):
+    if getattr(sb_config, "binary_location", None) == "cft":
         driver_dir = DRIVER_DIR_CFT
-    if (
-        hasattr(sb_config, "binary_location")
-        and sb_config.binary_location == "chs"
-    ):
+    if getattr(sb_config, "binary_location", None) == "chs":
         driver_dir = DRIVER_DIR_CHS
     if _special_binary_exists(binary_location, "opera"):
         driver_dir = DRIVER_DIR_OPERA
@@ -3068,8 +3050,7 @@ def get_driver(
         sb_config._cdp_browser = "atlas"
     if (
         hasattr(sb_config, "settings")
-        and hasattr(sb_config.settings, "NEW_DRIVER_DIR")
-        and sb_config.settings.NEW_DRIVER_DIR
+        and getattr(sb_config.settings, "NEW_DRIVER_DIR", None)
         and os.path.exists(sb_config.settings.NEW_DRIVER_DIR)
     ):
         driver_dir = sb_config.settings.NEW_DRIVER_DIR
@@ -4015,16 +3996,10 @@ def get_local_driver(
     downloads_path = DOWNLOADS_FOLDER
     driver_dir = DRIVER_DIR
     special_chrome = False
-    if (
-        hasattr(sb_config, "binary_location")
-        and sb_config.binary_location == "cft"
-    ):
+    if getattr(sb_config, "binary_location", None) == "cft":
         special_chrome = True
         driver_dir = DRIVER_DIR_CFT
-    if (
-        hasattr(sb_config, "binary_location")
-        and sb_config.binary_location == "chs"
-    ):
+    if getattr(sb_config, "binary_location", None) == "chs":
         special_chrome = True
         driver_dir = DRIVER_DIR_CHS
     if _special_binary_exists(binary_location, "opera"):
@@ -4041,8 +4016,7 @@ def get_local_driver(
         driver_dir = DRIVER_DIR_ATLAS
     if (
         hasattr(sb_config, "settings")
-        and hasattr(sb_config.settings, "NEW_DRIVER_DIR")
-        and sb_config.settings.NEW_DRIVER_DIR
+        and getattr(sb_config.settings, "NEW_DRIVER_DIR", None)
         and os.path.exists(sb_config.settings.NEW_DRIVER_DIR)
     ):
         driver_dir = sb_config.settings.NEW_DRIVER_DIR
@@ -4652,8 +4626,7 @@ def get_local_driver(
             edge_options.page_load_strategy = page_load_strategy.lower()
         elif (
             not page_load_strategy
-            and hasattr(settings, "PAGE_LOAD_STRATEGY")
-            and settings.PAGE_LOAD_STRATEGY
+            and getattr(settings, "PAGE_LOAD_STRATEGY", None)
             and settings.PAGE_LOAD_STRATEGY.lower() in ["eager", "none"]
         ):
             # Only change it if not "normal", which is the default.
@@ -4865,8 +4838,7 @@ def get_local_driver(
             options.page_load_strategy = page_load_strategy.lower()
         elif (
             not page_load_strategy
-            and hasattr(settings, "PAGE_LOAD_STRATEGY")
-            and settings.PAGE_LOAD_STRATEGY
+            and getattr(settings, "PAGE_LOAD_STRATEGY", None)
             and settings.PAGE_LOAD_STRATEGY.lower() in ["eager", "none"]
         ):
             # Only change it if not "normal", which is the default.
