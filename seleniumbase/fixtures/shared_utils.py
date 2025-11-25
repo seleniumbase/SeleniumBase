@@ -147,8 +147,7 @@ def fix_url_as_needed(url):
 
 def reconnect_if_disconnected(driver):
     if (
-        hasattr(driver, "_is_using_uc")
-        and driver._is_using_uc
+        getattr(driver, "_is_using_uc", None)
         and hasattr(driver, "is_connected")
         and not driver.is_connected()
     ):
@@ -298,8 +297,7 @@ def __time_limit_exceeded(message):
 
 def check_if_time_limit_exceeded():
     if (
-        hasattr(sb_config, "time_limit")
-        and sb_config.time_limit
+        getattr(sb_config, "time_limit", None)
         and not sb_config.recorder_mode
     ):
         time_limit = sb_config.time_limit

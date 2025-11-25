@@ -177,7 +177,7 @@ def requests_get_with_retry(url):
 
 
 def get_cft_known_good_versions():
-    if hasattr(sb_config, "cft_kgv_json") and sb_config.cft_kgv_json:
+    if getattr(sb_config, "cft_kgv_json", None):
         return sb_config.cft_kgv_json
     cft_ngv_url = (
         "https://googlechromelabs.github.io/"
@@ -188,7 +188,7 @@ def get_cft_known_good_versions():
 
 
 def get_cft_latest_versions_per_milestone():
-    if hasattr(sb_config, "cft_lvpm_json") and sb_config.cft_lvpm_json:
+    if getattr(sb_config, "cft_lvpm_json", None):
         return sb_config.cft_lvpm_json
     cft_lvpm_url = (
         "https://googlechromelabs.github.io/"
@@ -205,7 +205,7 @@ def get_cft_latest_version_from_milestone(milestone):
 
 def get_latest_chromedriver_version(channel="Stable"):
     try:
-        if hasattr(sb_config, "cft_lkgv_json") and sb_config.cft_lkgv_json:
+        if getattr(sb_config, "cft_lkgv_json", None):
             return sb_config.cft_lkgv_json["channels"][channel]["version"]
         req = requests_get(
             "https://googlechromelabs.github.io/"
@@ -239,10 +239,7 @@ def get_latest_canary_chromedriver_version():
 def log_d(message):
     """If setting sb_config.settings.HIDE_DRIVER_DOWNLOADS to True,
     output from driver downloads are logged instead of printed."""
-    if (
-        hasattr(sb_config.settings, "HIDE_DRIVER_DOWNLOADS")
-        and sb_config.settings.HIDE_DRIVER_DOWNLOADS
-    ):
+    if getattr(sb_config.settings, "HIDE_DRIVER_DOWNLOADS", None):
         logging.debug(message)
     else:
         print(message)
@@ -251,7 +248,7 @@ def log_d(message):
 def main(override=None, intel_for_uc=None, force_uc=None):
     if override:
         found_proxy = None
-        if hasattr(sb_config, "proxy_driver") and sb_config.proxy_driver:
+        if getattr(sb_config, "proxy_driver", None):
             if " --proxy=" in " ".join(sys.argv):
                 for arg in sys.argv:
                     if arg.startswith("--proxy="):
@@ -311,8 +308,7 @@ def main(override=None, intel_for_uc=None, force_uc=None):
     downloads_folder = DRIVER_DIR
     if (
         hasattr(sb_config, "settings")
-        and hasattr(sb_config.settings, "NEW_DRIVER_DIR")
-        and sb_config.settings.NEW_DRIVER_DIR
+        and getattr(sb_config.settings, "NEW_DRIVER_DIR", None)
         and os.path.exists(sb_config.settings.NEW_DRIVER_DIR)
     ):
         downloads_folder = sb_config.settings.NEW_DRIVER_DIR

@@ -25,7 +25,7 @@ def log_screenshot(test_logpath, driver, screenshot=None, get=False):
     screenshot_skipped = constants.Warnings.SCREENSHOT_SKIPPED
     screenshot_warning = constants.Warnings.SCREENSHOT_UNDEFINED
     if (
-        (hasattr(sb_config, "no_screenshot") and sb_config.no_screenshot)
+        getattr(sb_config, "no_screenshot", None)
         or screenshot == screenshot_skipped
     ):
         if get:
@@ -186,11 +186,7 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
     data_to_save.append(
         "--------------------------------------------------------------------"
     )
-    if (
-        hasattr(test, "_outcome")
-        and hasattr(test._outcome, "errors")
-        and test._outcome.errors
-    ):
+    if hasattr(test, "_outcome") and getattr(test._outcome, "errors", None):
         try:
             exc_message = test._outcome.errors[-1][1][1]
             traceback_address = test._outcome.errors[-1][1][2]
@@ -225,12 +221,11 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
         data_to_save.append("Exception: %s" % exc_message)
     else:
         traceback_message = None
-        if hasattr(test, "is_behave") and test.is_behave:
+        if getattr(test, "is_behave", None):
             if sb_config.behave_scenario.status.name == "failed":
                 if (
                     hasattr(sb_config, "behave_step")
-                    and hasattr(sb_config.behave_step, "error_message")
-                    and sb_config.behave_step.error_message
+                    and getattr(sb_config.behave_step, "error_message", None)
                 ):
                     traceback_message = sb_config.behave_step.error_message
         else:
@@ -262,7 +257,7 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
                 )
             else:
                 message = None
-                if hasattr(test, "is_behave") and test.is_behave:
+                if getattr(test, "is_behave", None):
                     message = "Behave step was not implemented or skipped!"
                 else:
                     message = "Traceback not found!"
@@ -281,7 +276,7 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
                 data_to_save.append("Exception: %s" % sb_config._excinfo_value)
         else:
             data_to_save.append("Traceback:\n  %s" % traceback_message)
-    if hasattr(test, "is_nosetest") and test.is_nosetest:
+    if getattr(test, "is_nosetest", None):
         # Also save the data for the report
         sb_config._report_test_id = test_id
         sb_config._report_fail_page = last_page
@@ -394,7 +389,7 @@ def log_page_source(test_logpath, driver, source=None):
 
 
 def get_test_id(test):
-    if hasattr(test, "is_behave") and test.is_behave:
+    if getattr(test, "is_behave", None):
         file_name = sb_config.behave_scenario.filename
         line_num = sb_config.behave_line_num
         scenario_name = sb_config.behave_scenario.name
@@ -402,7 +397,7 @@ def get_test_id(test):
             scenario_name = scenario_name.split(" -- @")[0]
         test_id = "%s:%s => %s" % (file_name, line_num, scenario_name)
         return test_id
-    elif hasattr(test, "is_context_manager") and test.is_context_manager:
+    elif getattr(test, "is_context_manager", None):
         filename = test.__class__.__module__.split(".")[-1] + ".py"
         classname = test.__class__.__name__
         methodname = test._testMethodName
@@ -412,7 +407,7 @@ def get_test_id(test):
 
             stack_base = traceback.format_stack()[0].split(", in ")[0]
             test_base = stack_base.split(", in ")[0].split(os.sep)[-1]
-            if hasattr(test, "cm_filename") and test.cm_filename:
+            if getattr(test, "cm_filename", None):
                 filename = test.cm_filename
             else:
                 filename = test_base.split('"')[0]

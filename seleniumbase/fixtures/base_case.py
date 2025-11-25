@@ -228,14 +228,9 @@ class BaseCase(unittest.TestCase):
             self.cdp.open(url)
             return
         elif (
-            hasattr(self.driver, "_is_using_uc")
-            and self.driver._is_using_uc
-            # and hasattr(self.driver, "_is_using_auth")
-            # and self.driver._is_using_auth
-            and (
-                not hasattr(self.driver, "_is_using_cdp")
-                or not self.driver._is_using_cdp
-            )
+            getattr(self.driver, "_is_using_uc", None)
+            # and getattr(self.driver, "_is_using_auth", None)
+            and not getattr(self.driver, "_is_using_cdp", None)
         ):
             # Auth in UC Mode requires CDP Mode
             # (and now we're always forcing it)
@@ -243,10 +238,8 @@ class BaseCase(unittest.TestCase):
             self.activate_cdp_mode(url)
             return
         elif (
-            hasattr(self.driver, "_is_using_uc")
-            and self.driver._is_using_uc
-            and hasattr(self.driver, "_is_using_cdp")
-            and self.driver._is_using_cdp
+            getattr(self.driver, "_is_using_uc", None)
+            and getattr(self.driver, "_is_using_cdp", None)
         ):
             self.disconnect()
             self.cdp.open(url)
@@ -1360,7 +1353,7 @@ class BaseCase(unittest.TestCase):
         if self.__is_cdp_swap_needed():
             self.cdp.go_back()
             return
-        if hasattr(self, "recorder_mode") and self.recorder_mode:
+        if getattr(self, "recorder_mode", None):
             self.save_recorded_actions()
         pre_action_url = None
         with suppress(Exception):
@@ -1388,7 +1381,7 @@ class BaseCase(unittest.TestCase):
         if self.__is_cdp_swap_needed():
             self.cdp.go_forward()
             return
-        if hasattr(self, "recorder_mode") and self.recorder_mode:
+        if getattr(self, "recorder_mode", None):
             self.save_recorded_actions()
         self.__last_page_load_url = None
         self.driver.forward()
@@ -3979,10 +3972,8 @@ class BaseCase(unittest.TestCase):
             self.cdp.open_new_tab(url=url, switch_to=switch_to)
             return
         elif (
-            hasattr(self.driver, "_is_using_uc")
-            and self.driver._is_using_uc
-            and hasattr(self.driver, "_is_using_cdp")
-            and self.driver._is_using_cdp
+            getattr(self.driver, "_is_using_uc", None)
+            and getattr(self.driver, "_is_using_cdp", None)
         ):
             self.disconnect()
             self.cdp.open_new_tab(url=url, switch_to=switch_to)
@@ -4895,7 +4886,7 @@ class BaseCase(unittest.TestCase):
             self.driver.add_cookie(cookie)
 
     def __set_esc_skip(self):
-        if hasattr(self, "esc_end") and self.esc_end:
+        if getattr(self, "esc_end", None):
             script = (
                 """document.onkeydown = function(evt) {
                     evt = evt || window.event;
@@ -4913,7 +4904,7 @@ class BaseCase(unittest.TestCase):
             self.execute_script(script)
 
     def __skip_if_esc(self):
-        if hasattr(self, "esc_end") and self.esc_end:
+        if getattr(self, "esc_end", None):
             if self.execute_script("return document.sb_esc_end;") == "yes":
                 self.skip()
 
@@ -4935,8 +4926,7 @@ class BaseCase(unittest.TestCase):
         self.__disable_beforeunload_as_needed()
         if (
             self.page_load_strategy == "none"
-            and hasattr(settings, "SKIP_JS_WAITS")
-            and settings.SKIP_JS_WAITS
+            and getattr(settings, "SKIP_JS_WAITS", None)
         ):
             time.sleep(0.01)
             if self.undetectable:
@@ -4957,10 +4947,7 @@ class BaseCase(unittest.TestCase):
 
     def sleep(self, seconds):
         self.__check_scope()
-        if (
-            not hasattr(sb_config, "time_limit")
-            or (hasattr(sb_config, "time_limit") and not sb_config.time_limit)
-        ):
+        if not getattr(sb_config, "time_limit", None):
             time.sleep(seconds)
         elif seconds < 0.4:
             shared_utils.check_if_time_limit_exceeded()
@@ -4975,11 +4962,7 @@ class BaseCase(unittest.TestCase):
                 if now_ms >= stop_ms:
                     break
                 time.sleep(0.2)
-        if (
-            self.recorder_mode
-            and hasattr(sb_config, "record_sleep")
-            and sb_config.record_sleep
-        ):
+        if self.recorder_mode and getattr(sb_config, "record_sleep", None):
             time_stamp = self.execute_script("return Date.now();")
             origin = self.get_origin()
             action = ["sleep", seconds, origin, time_stamp]
@@ -5037,7 +5020,7 @@ class BaseCase(unittest.TestCase):
 
     def activate_cdp_mode(self, url=None, **kwargs):
         """Activate CDP Mode with the URL and kwargs."""
-        if hasattr(self.driver, "_is_using_uc") and self.driver._is_using_uc:
+        if getattr(self.driver, "_is_using_uc", None):
             if self.__is_cdp_swap_needed():
                 return  # CDP Mode is already active
             if not self.is_connected():
@@ -5054,10 +5037,7 @@ class BaseCase(unittest.TestCase):
             self.solve_captcha = self.cdp.solve_captcha
         if hasattr(self.cdp, "find_element_by_text"):
             self.find_element_by_text = self.cdp.find_element_by_text
-        if (
-            hasattr(self.driver, "_is_using_auth")
-            and self.driver._is_using_auth
-        ):
+        if getattr(self.driver, "_is_using_auth", None):
             with suppress(Exception):
                 self.cdp.loop.run_until_complete(self.cdp.page.wait(0.25))
         self.undetectable = True
@@ -5709,14 +5689,13 @@ class BaseCase(unittest.TestCase):
         methodname = self._testMethodName
         context_filename = None
         if (
-            hasattr(sb_config, "is_context_manager")
-            and sb_config.is_context_manager
+            getattr(sb_config, "is_context_manager", None)
             and (filename == "base_case.py" or methodname == "runTest")
         ):
             import traceback
             stack_base = traceback.format_stack()[0].split(os.sep)[-1]
             test_base = stack_base.split(", in ")[0]
-            if hasattr(self, "cm_filename") and self.cm_filename:
+            if getattr(self, "cm_filename", None):
                 filename = self.cm_filename
             else:
                 filename = test_base.split('"')[0]
@@ -5733,7 +5712,7 @@ class BaseCase(unittest.TestCase):
                 classname = "MyTestClass"
             methodname = methodname.replace("[", "__").replace("]", "")
             methodname = re.sub(r"[\W]", "_", methodname)
-        if hasattr(self, "is_behave") and self.is_behave:
+        if getattr(self, "is_behave", None):
             classname = sb_config.behave_feature.name
             classname = classname.replace("/", " ").replace(" & ", " ")
             classname = re.sub(r"[^\w" + r"_ " + r"]", "", classname)
@@ -5881,7 +5860,7 @@ class BaseCase(unittest.TestCase):
             test_id = sb_config._test_id
             file_name = test_id.split("::")[0].split("/")[-1].split("\\")[-1]
             file_name = file_name.split(".py")[0] + "_rec.py"
-        if hasattr(self, "is_behave") and self.is_behave:
+        if getattr(self, "is_behave", None):
             file_name = sb_config.behave_scenario.filename.replace(".", "_")
             file_name = file_name.split("/")[-1].split("\\")[-1] + "_rec.py"
             file_name = file_name
@@ -5900,7 +5879,7 @@ class BaseCase(unittest.TestCase):
             if terminal_size > 30 and star_len > terminal_size:
                 star_len = terminal_size
         spc = "\n\n"
-        if hasattr(self, "rec_print") and self.rec_print:
+        if getattr(self, "rec_print", None):
             spc = ""
             sys.stdout.write("\nCreated recordings%s%s" % (os.sep, file_name))
             print()
@@ -5921,7 +5900,7 @@ class BaseCase(unittest.TestCase):
             rec_message = rec_message.replace(">>>", c2 + ">>>" + cr)
         print("%s%s%s%s%s\n%s" % (spc, rec_message, c1, file_path, cr, stars))
 
-        if hasattr(self, "rec_behave") and self.rec_behave:
+        if getattr(self, "rec_behave", None):
             # Also generate necessary behave-gherkin files.
             self.__process_recorded_behave_actions(srt_actions, colorama)
 
@@ -5932,7 +5911,7 @@ class BaseCase(unittest.TestCase):
         filename = self.__get_filename()
         feature_class = None
         scenario_test = None
-        if hasattr(self, "is_behave") and self.is_behave:
+        if getattr(self, "is_behave", None):
             feature_class = sb_config.behave_feature.name
             scenario_test = sb_config.behave_scenario.name
         else:
@@ -5986,7 +5965,7 @@ class BaseCase(unittest.TestCase):
                 os.makedirs(steps_folder)
 
         file_name = filename.split(".")[0]
-        if hasattr(self, "is_behave") and self.is_behave:
+        if getattr(self, "is_behave", None):
             file_name = sb_config.behave_scenario.filename.replace(".", "_")
         file_name = file_name.split("/")[-1].split("\\")[-1] + "_rec.feature"
         file_path = os.path.join(features_folder, file_name)
@@ -6003,7 +5982,7 @@ class BaseCase(unittest.TestCase):
             if terminal_size > 30 and star_len > terminal_size:
                 star_len = terminal_size
         spc = "\n"
-        if hasattr(self, "rec_print") and self.rec_print:
+        if getattr(self, "rec_print", None):
             spc = ""
             print()
             if " " not in file_path:
@@ -9021,7 +9000,7 @@ class BaseCase(unittest.TestCase):
                 self.__passed_then_skipped = True
             self.__will_be_skipped = True
             sb_config._results[test_id] = "Skipped"
-        if hasattr(self, "with_db_reporting") and self.with_db_reporting:
+        if getattr(self, "with_db_reporting", None):
             if self.is_pytest:
                 self.__skip_reason = reason
             else:
@@ -9718,7 +9697,7 @@ class BaseCase(unittest.TestCase):
         To force a print during multithreaded tests, use: "sys.stderr.write()".
         To print without the new-line character end, use: "sys.stdout.write()".
         """
-        if hasattr(sb_config, "_multithreaded") and sb_config._multithreaded:
+        if getattr(sb_config, "_multithreaded", None):
             if not isinstance(msg, str):
                 with suppress(Exception):
                     msg = str(msg)
@@ -13940,7 +13919,7 @@ class BaseCase(unittest.TestCase):
                simulateClick(someLink);"""
             % css_selector
         )
-        if hasattr(self, "recorder_mode") and self.recorder_mode:
+        if getattr(self, "recorder_mode", None):
             self.save_recorded_actions()
         try:
             self.execute_script(script)
@@ -13988,7 +13967,7 @@ class BaseCase(unittest.TestCase):
                var someLink = arguments[0];
                simulateClick(someLink);"""
         )
-        if hasattr(self, "recorder_mode") and self.recorder_mode:
+        if getattr(self, "recorder_mode", None):
             self.save_recorded_actions()
         try:
             self.execute_script(script, element)
@@ -14195,7 +14174,7 @@ class BaseCase(unittest.TestCase):
         selector = self.convert_to_css_selector(selector, by=by)
         selector = self.__make_css_match_first_element_only(selector)
         click_script = """jQuery('%s')[0].click();""" % selector
-        if hasattr(self, "recorder_mode") and self.recorder_mode:
+        if getattr(self, "recorder_mode", None):
             self.save_recorded_actions()
         self.safe_execute_script(click_script)
 
@@ -14351,8 +14330,7 @@ class BaseCase(unittest.TestCase):
     def __needs_minimum_wait(self):
         if (
             self.page_load_strategy == "none"
-            and hasattr(settings, "SKIP_JS_WAITS")
-            and settings.SKIP_JS_WAITS
+            and getattr(settings, "SKIP_JS_WAITS", None)
         ):
             return True
         else:
@@ -14684,10 +14662,7 @@ class BaseCase(unittest.TestCase):
 
     def __disable_beforeunload_as_needed(self):
         """Disables beforeunload as needed. Also resets frame_switch state."""
-        if (
-            hasattr(self, "_disable_beforeunload")
-            and self._disable_beforeunload
-        ):
+        if getattr(self, "_disable_beforeunload", None):
             self.disable_beforeunload()
         if self.recorder_mode:
             try:
@@ -15488,9 +15463,9 @@ class BaseCase(unittest.TestCase):
                 self.__skip_reason = None
                 self.testcase_manager.insert_testcase_data(data_payload)
                 self.case_start_time = int(time.time() * 1000.0)
-        elif hasattr(self, "is_behave") and self.is_behave:
+        elif getattr(self, "is_behave", None):
             self.__initialize_variables()
-        elif hasattr(self, "is_nosetest") and self.is_nosetest:
+        elif getattr(self, "is_nosetest", None):
             pass  # Setup performed in plugins for pynose
         else:
             # Pure Python run. (Eg. SB() and Driver() Managers)
@@ -15682,7 +15657,7 @@ class BaseCase(unittest.TestCase):
                 )
                 raise Exception(message)
 
-        if not hasattr(self, "is_nosetest") or not self.is_nosetest:
+        if not getattr(self, "is_nosetest", None):
             # Xvfb Virtual Display activation for Linux
             self.__activate_virtual_display_as_needed()
 
@@ -15858,10 +15833,7 @@ class BaseCase(unittest.TestCase):
         self.__last_page_screenshot_png is for all screenshot log files."""
         SCREENSHOT_SKIPPED = constants.Warnings.SCREENSHOT_SKIPPED
         SCREENSHOT_UNDEFINED = constants.Warnings.SCREENSHOT_UNDEFINED
-        if (
-            hasattr(self, "no_screenshot_after_test")
-            and self.no_screenshot_after_test
-        ):
+        if getattr(self, "no_screenshot_after_test", None):
             from seleniumbase.core import encoded_images
 
             NO_SCREENSHOT = encoded_images.get_no_screenshot_png()
@@ -15892,10 +15864,7 @@ class BaseCase(unittest.TestCase):
                         ignore_test_time_limit=True,
                     )
                 try:
-                    if (
-                        hasattr(settings, "SCREENSHOT_WITH_BACKGROUND")
-                        and settings.SCREENSHOT_WITH_BACKGROUND
-                    ):
+                    if getattr(settings, "SCREENSHOT_WITH_BACKGROUND", None):
                         self.__last_page_screenshot = (
                             self.driver.get_screenshot_as_base64()
                         )
@@ -15966,8 +15935,7 @@ class BaseCase(unittest.TestCase):
         exc_message = None
         if (
             hasattr(self, "_outcome")
-            and hasattr(self._outcome, "errors")
-            and self._outcome.errors
+            and getattr(self._outcome, "errors", None)
         ):
             try:
                 exc_message = self._outcome.errors[-1][1][1]
@@ -16055,8 +16023,7 @@ class BaseCase(unittest.TestCase):
     def __delay_driver_quit(self):
         delay_driver_quit = False
         if (
-            hasattr(self, "_using_sb_fixture")
-            and self._using_sb_fixture
+            getattr(self, "_using_sb_fixture", None)
             and "--pdb" in sys.argv
             and self.__has_exception()
             and len(self._drivers_list) == 1
@@ -16112,7 +16079,7 @@ class BaseCase(unittest.TestCase):
         has_exception = False
         if hasattr(sys, "last_traceback") and sys.last_traceback is not None:
             has_exception = True
-        elif hasattr(self, "is_context_manager") and self.is_context_manager:
+        elif getattr(self, "is_context_manager", None):
             if self.with_testing_base and self._has_failure:
                 return True
             else:
@@ -16136,7 +16103,7 @@ class BaseCase(unittest.TestCase):
 
     def __get_test_id(self):
         """The id used in various places such as the test log path."""
-        if hasattr(self, "is_behave") and self.is_behave:
+        if getattr(self, "is_behave", None):
             file_name = sb_config.behave_scenario.filename
             file_name = file_name.replace("/", ".").replace("\\", ".")
             scenario_name = sb_config.behave_scenario.name
@@ -16146,7 +16113,7 @@ class BaseCase(unittest.TestCase):
             scenario_name = scenario_name.replace(" ", "_")
             test_id = "%s.%s" % (file_name, scenario_name)
             return test_id
-        elif hasattr(self, "is_context_manager") and self.is_context_manager:
+        elif getattr(self, "is_context_manager", None):
             if hasattr(self, "_manager_saved_id"):
                 self.__saved_id = self._manager_saved_id
             if self.__saved_id:
@@ -16158,7 +16125,7 @@ class BaseCase(unittest.TestCase):
                 import traceback
                 stack_base = traceback.format_stack()[0].split(os.sep)[-1]
                 test_base = stack_base.split(", in ")[0]
-                if hasattr(self, "cm_filename") and self.cm_filename:
+                if getattr(self, "cm_filename", None):
                     filename = self.cm_filename
                 else:
                     filename = test_base.split('"')[0]
@@ -16173,7 +16140,7 @@ class BaseCase(unittest.TestCase):
         )
         if self._sb_test_identifier and len(str(self._sb_test_identifier)) > 6:
             test_id = self._sb_test_identifier
-        elif hasattr(self, "_using_sb_fixture") and self._using_sb_fixture:
+        elif getattr(self, "_using_sb_fixture", None):
             test_id = sb_config._latest_display_id
         test_id = test_id.replace(".py::", ".").replace("::", ".")
         test_id = test_id.replace("/", ".").replace("\\", ".")
@@ -16195,7 +16162,7 @@ class BaseCase(unittest.TestCase):
                 return full_name.split("] ")[0] + "]"
             else:
                 return full_name.split(" ")[0]
-        if hasattr(self, "is_behave") and self.is_behave:
+        if getattr(self, "is_behave", None):
             return self.__get_test_id()
         test_id = "%s.%s.%s" % (
             self.__class__.__module__.split(".")[-1],
@@ -16216,7 +16183,7 @@ class BaseCase(unittest.TestCase):
                 return full_name.split("] ")[0] + "]"
             else:
                 return full_name.split(" ")[0]
-        if hasattr(self, "is_behave") and self.is_behave:
+        if getattr(self, "is_behave", None):
             file_name = sb_config.behave_scenario.filename
             line_num = sb_config.behave_line_num
             scenario_name = sb_config.behave_scenario.name
@@ -16249,7 +16216,7 @@ class BaseCase(unittest.TestCase):
         if "PYTEST_CURRENT_TEST" in os.environ:
             test_id = os.environ["PYTEST_CURRENT_TEST"].split(" ")[0]
             filename = test_id.split("::")[0].split("/")[-1]
-        elif hasattr(self, "is_behave") and self.is_behave:
+        elif getattr(self, "is_behave", None):
             filename = sb_config.behave_scenario.filename
             filename = filename.split("/")[-1].split("\\")[-1]
         else:
@@ -16285,8 +16252,7 @@ class BaseCase(unittest.TestCase):
             sb_config._pdb_failure = True
         elif (
             self.is_pytest
-            and hasattr(sb_config, "_pdb_failure")
-            and sb_config._pdb_failure
+            and getattr(sb_config, "_pdb_failure", None)
             and not has_exception
         ):
             return  # Handle case where "pytest --pdb" marks failures as Passed
@@ -16680,7 +16646,7 @@ class BaseCase(unittest.TestCase):
             self.__check_scope()
         except Exception:
             return
-        if hasattr(self, "recorder_mode") and self.recorder_mode:
+        if getattr(self, "recorder_mode", None):
             # In case tearDown() leaves the origin, save actions first.
             self.save_recorded_actions()
         if (
@@ -16875,7 +16841,7 @@ class BaseCase(unittest.TestCase):
         if not hasattr(self, "_using_sb_fixture") and self.__called_teardown:
             # This test already called tearDown()
             return
-        if hasattr(self, "recorder_mode") and self.recorder_mode:
+        if getattr(self, "recorder_mode", None):
             page_actions._reconnect_if_disconnected(self.driver)
             try:
                 self.__process_recorded_actions()
@@ -17110,7 +17076,7 @@ class BaseCase(unittest.TestCase):
                     self.testcase_manager.update_testcase_log_url(data_payload)
         else:
             # (Pynose / Behave / Pure Python)
-            if hasattr(self, "is_behave") and self.is_behave:
+            if getattr(self, "is_behave", None):
                 if sb_config.behave_scenario.status.name == "failed":
                     has_exception = True
                     sb_config._has_exception = True
@@ -17170,8 +17136,8 @@ class BaseCase(unittest.TestCase):
                     self._last_page_url = self.get_current_url()
                 except Exception:
                     self._last_page_url = "(Error: Unknown URL)"
-            if hasattr(self, "is_behave") and self.is_behave and has_exception:
-                if hasattr(sb_config, "pdb_option") and sb_config.pdb_option:
+            if getattr(self, "is_behave", None) and has_exception:
+                if getattr(sb_config, "pdb_option", None):
                     if (
                         hasattr(sb_config, "behave_step")
                         and hasattr(sb_config.behave_step, "exc_traceback")
@@ -17179,24 +17145,14 @@ class BaseCase(unittest.TestCase):
                         self.__activate_behave_post_mortem_debug_mode()
             if self._final_debug:
                 self.__activate_debug_mode_in_teardown()
-            elif (
-                hasattr(sb_config, "_do_sb_post_mortem")
-                and sb_config._do_sb_post_mortem
-            ):
+            elif getattr(sb_config, "_do_sb_post_mortem", None):
                 self.__activate_sb_mgr_post_mortem_debug_mode()
-            elif (
-                hasattr(sb_config, "_do_sb_final_trace")
-                and sb_config._do_sb_final_trace
-            ):
+            elif getattr(sb_config, "_do_sb_final_trace", None):
                 self.__activate_debug_mode_in_teardown()
             # (Pynose / Behave / Pure Python) Close all open browser windows
             self.__quit_all_drivers()
         # Resume tearDown() for all test runners, (Pytest / Pynose / Behave)
-        if (
-            hasattr(self, "_xvfb_display")
-            and self._xvfb_display
-            and not self._reuse_session
-        ):
+        if getattr(self, "_xvfb_display", None) and not self._reuse_session:
             # Stop the Xvfb virtual display launched from BaseCase
             try:
                 if hasattr(self._xvfb_display, "stop"):
@@ -17208,16 +17164,9 @@ class BaseCase(unittest.TestCase):
             except Exception:
                 pass
         if (
-            hasattr(sb_config, "_virtual_display")
-            and sb_config._virtual_display
+            getattr(sb_config, "_virtual_display", None)
             and hasattr(sb_config._virtual_display, "stop")
-            and (
-                not hasattr(sb_config, "reuse_session")
-                or (
-                    hasattr(sb_config, "reuse_session")
-                    and not sb_config.reuse_session
-                )
-            )
+            and not getattr(sb_config, "reuse_session", None)
         ):
             # CDP Mode may launch a 2nd Xvfb virtual display
             try:

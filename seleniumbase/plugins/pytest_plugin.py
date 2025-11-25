@@ -1729,7 +1729,7 @@ def pytest_configure(config):
     sb_config.extension_dir = config.getoption("extension_dir")
     sb_config.disable_features = config.getoption("disable_features")
     sb_config.binary_location = config.getoption("binary_location")
-    if hasattr(sb_config, "_cdp_bin_loc") and sb_config._cdp_bin_loc:
+    if getattr(sb_config, "_cdp_bin_loc", None):
         sb_config.binary_location = sb_config._cdp_bin_loc
     elif not sb_config.binary_location:
         if (
@@ -2187,16 +2187,12 @@ def pytest_runtest_teardown(item):
                 self = item._testcase
                 with suppress(Exception):
                     if (
-                        hasattr(self, "driver")
-                        and self.driver
+                        getattr(self, "driver", None)
                         and "--pdb" not in sys_argv
                     ):
                         if not (is_windows or self.driver.service.process):
                             self.driver.quit()
-            elif (
-                hasattr(sb_config, "_sb_pdb_driver")
-                and sb_config._sb_pdb_driver
-            ):
+            elif getattr(sb_config, "_sb_pdb_driver", None):
                 with suppress(Exception):
                     if (
                         not is_windows
@@ -2206,32 +2202,18 @@ def pytest_runtest_teardown(item):
                         sb_config._sb_pdb_driver = None
         with suppress(Exception):
             if (
-                hasattr(self, "_xvfb_display")
-                and self._xvfb_display
+                getattr(self, "_xvfb_display", None)
                 and hasattr(self._xvfb_display, "stop")
-                and (
-                    not hasattr(sb_config, "reuse_session")
-                    or (
-                        hasattr(sb_config, "reuse_session")
-                        and not sb_config.reuse_session
-                    )
-                )
+                and not getattr(sb_config, "reuse_session", None)
             ):
                 self.headless_active = False
                 sb_config.headless_active = False
                 self._xvfb_display.stop()
                 self._xvfb_display = None
             if (
-                hasattr(sb_config, "_virtual_display")
-                and sb_config._virtual_display
+                getattr(sb_config, "_virtual_display", None)
                 and hasattr(sb_config._virtual_display, "stop")
-                and (
-                    not hasattr(sb_config, "reuse_session")
-                    or (
-                        hasattr(sb_config, "reuse_session")
-                        and not sb_config.reuse_session
-                    )
-                )
+                and not getattr(sb_config, "reuse_session", None)
             ):
                 sb_config._virtual_display.stop()
                 sb_config._virtual_display = None
@@ -2330,12 +2312,9 @@ def _perform_pytest_unconfigure_(config):
     else:
         start_time = reporter._session_start.time  # (pytest >= 8.4.0)
     duration = time.time() - start_time
-    if (
-        (hasattr(sb_config, "multi_proxy") and not sb_config.multi_proxy)
-        or not hasattr(sb_config, "multi_proxy")
-    ):
+    if not getattr(sb_config, "multi_proxy", None):
         proxy_helper.remove_proxy_zip_if_present()
-    if hasattr(sb_config, "reuse_session") and sb_config.reuse_session:
+    if getattr(sb_config, "reuse_session", None):
         # Close the shared browser session
         if sb_config.shared_driver:
             try:
@@ -2352,14 +2331,13 @@ def _perform_pytest_unconfigure_(config):
         sb_config.shared_driver = None
         with suppress(Exception):
             if (
-                hasattr(sb_config, "_virtual_display")
-                and sb_config._virtual_display
+                getattr(sb_config, "_virtual_display", None)
                 and hasattr(sb_config._virtual_display, "stop")
             ):
                 sb_config._virtual_display.stop()
                 sb_config._virtual_display = None
                 sb_config.headless_active = False
-            if hasattr(sb_config, "_vd_list") and sb_config._vd_list:
+            if getattr(sb_config, "_vd_list", None):
                 if isinstance(sb_config._vd_list, list):
                     for display in sb_config._vd_list:
                         if display:
@@ -2374,7 +2352,7 @@ def _perform_pytest_unconfigure_(config):
                 shared_utils.make_dir_files_writable("./assets/")
     log_helper.clear_empty_logs()
     # Dashboard post-processing: Disable time-based refresh and stamp complete
-    if not hasattr(sb_config, "dashboard") or not sb_config.dashboard:
+    if not getattr(sb_config, "dashboard", None):
         html_report_path = None
         the_html_r = None
         abs_path = os.path.abspath(".")
@@ -2679,11 +2657,11 @@ def pytest_unconfigure(config):
         )
     ):
         return
-    if hasattr(sb_config, "_multithreaded") and sb_config._multithreaded:
+    if getattr(sb_config, "_multithreaded", None):
         import fasteners
 
         dash_lock = fasteners.InterProcessLock(constants.Dashboard.LOCKFILE)
-        if hasattr(sb_config, "dashboard") and sb_config.dashboard:
+        if getattr(sb_config, "dashboard", None):
             # Multi-threaded tests with the Dashboard
             abs_path = os.path.abspath(".")
             dash_lock_file = constants.Dashboard.LOCKFILE

@@ -42,7 +42,7 @@ class DatabaseManager:
         db_user = settings.DB_USERNAME
         db_pass = settings.DB_PASSWORD
         db_schema = settings.DB_SCHEMA
-        if hasattr(sb_config, "settings_file") and sb_config.settings_file:
+        if getattr(sb_config, "settings_file", None):
             override = settings_parser.set_settings(sb_config.settings_file)
             if "DB_HOST" in override.keys():
                 db_server = override["DB_HOST"]

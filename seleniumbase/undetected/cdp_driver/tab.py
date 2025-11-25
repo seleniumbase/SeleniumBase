@@ -342,13 +342,19 @@ class Tab(Connection):
         if new_window and not new_tab:
             new_tab = True
         if new_tab:
-            if hasattr(sb_config, "incognito") and sb_config.incognito:
+            if (
+                getattr(sb_config, "incognito", None)
+                or (
+                    getattr(sb_config, "_cdp_browser", None)
+                    in ["comet", "atlas"]
+                )
+            ):
                 return await self.browser.get(
                     url, new_tab=False, new_window=True, **kwargs
                 )
             else:
                 return await self.browser.get(
-                    url, new_tab, new_window, **kwargs
+                    url, new_tab=True, new_window=False, **kwargs
                 )
         else:
             if not kwargs:

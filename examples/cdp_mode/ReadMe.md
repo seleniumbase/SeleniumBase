@@ -140,7 +140,7 @@ from seleniumbase import SB
 with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     url = "https://www.pokemon.com/us"
     sb.activate_cdp_mode(url)
-    sb.sleep(3.5)
+    sb.sleep(1.5)
     sb.click_if_visible("button#onetrust-accept-btn-handler")
     sb.sleep(1.2)
     sb.click("a span.icon_pokeball")
@@ -193,7 +193,7 @@ from seleniumbase import SB
 with SB(uc=True, test=True, locale="en") as sb:
     url = "https://www.hyatt.com/"
     sb.activate_cdp_mode(url)
-    sb.sleep(3.8)
+    sb.sleep(3.2)
     sb.click_if_visible('button[aria-label="Close"]')
     sb.sleep(0.1)
     sb.click_if_visible("#onetrust-reject-all-handler")
@@ -282,7 +282,11 @@ from seleniumbase import SB
 with SB(uc=True, test=True, ad_block=True) as sb:
     url = "https://www.walmart.com/"
     sb.activate_cdp_mode(url)
-    sb.sleep(2.8)
+    sb.sleep(1.8)
+    continue_button = 'button:contains("Continue shopping")'
+    if sb.is_element_visible(continue_button):
+        sb.cdp.gui_click_element(continue_button)
+        sb.sleep(0.6)
     sb.click('input[aria-label="Search"]')
     sb.sleep(1.2)
     search = "Settlers of Catan Board Game"

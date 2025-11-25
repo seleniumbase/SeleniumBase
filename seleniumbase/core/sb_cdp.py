@@ -1149,7 +1149,42 @@ class CDPMethods():
         if not isinstance(url, str):
             url = "about:blank"
         if hasattr(driver, "cdp_base"):
-            self.loop.run_until_complete(self.page.get(url, new_tab=True))
+            try:
+                self.loop.run_until_complete(self.page.get(url, new_tab=True))
+            except Exception:
+                original_targets = self.loop.run_until_complete(
+                    self.page.send(mycdp.target.get_targets())
+                )
+                tab_url = driver.cdp_base.tabs[0].websocket_url
+                if not self.driver.is_connected():
+                    self.driver.connect()
+                self.driver.open_new_tab()
+                targets = self.loop.run_until_complete(
+                    self.page.send(mycdp.target.get_targets())
+                )
+                new_targets = []
+                for target in targets:
+                    if target not in original_targets:
+                        new_targets.append(target)
+                if new_targets:
+                    found_target = new_targets[0]
+                    t_str = str(new_targets[0])
+                    target_id = (
+                        t_str.split("target_id=TargetID('")[-1].split("')")[0]
+                    )
+                    pre_tab_url = tab_url.split("/page/")[0] + "/page/"
+                    new_tab_url = pre_tab_url + target_id
+                    new_tab = cdp_tab.Tab(
+                        new_tab_url, found_target, driver.cdp_base
+                    )
+                    driver.cdp_base.targets.append(new_tab)
+                    driver.cdp_base.tabs.append(new_tab)
+                    self.driver.disconnect()
+                    self.switch_to_newest_tab()
+                    self.open(url)
+                    return
+                elif getattr(sb_config, "guest_mode", None):
+                    print("  open_new_tab() failed! (Known Guest Mode issue)")
             if switch_to:
                 self.switch_to_newest_tab()
             return
@@ -1157,14 +1192,17 @@ class CDPMethods():
         target_id = self.loop.run_until_complete(
             self.page.send(mycdp.target.create_target(url))
         )
+        if not target_id and getattr(sb_config, "guest_mode", None):
+            print("  open_new_tab() failed! (Known Guest Mode issue)")
         found_target = None
         targets = self.loop.run_until_complete(
             self.page.send(mycdp.target.get_targets())
         )
-        for target in targets:
-            if str(target_id) in str(target):
-                found_target = target
-                break
+        if target_id:
+            for target in targets:
+                if str(target_id) in str(target):
+                    found_target = target
+                    break
         if found_target:
             tab_url = driver.tabs[0].websocket_url
             pre_tab_url = tab_url.split("/page/")[0] + "/page/"
@@ -1875,7 +1913,7 @@ class CDPMethods():
                 and 'title="reCAPTCHA"' not in source
                 and 'id="recaptcha-token"' not in source
             )
-            or "/challenge-platform/scripts/" in source
+            or "/challenge-platform/h/b/" in source
             or 'id="challenge-widget-' in source
             or "challenges.cloudf" in source
             or "cf-turnstile-" in source

@@ -100,16 +100,12 @@ def process_failures(test, test_count, duration):
     bad_page_image = "failure_%s.png" % test_count
     bad_page_data = "failure_%s.txt" % test_count
     screenshot_path = os.path.join(LATEST_REPORT_DIR, bad_page_image)
-    if hasattr(test, "_last_page_screenshot") and test._last_page_screenshot:
+    if getattr(test, "_last_page_screenshot", None):
         with open(screenshot_path, mode="wb") as file:
             file.write(test._last_page_screenshot)
     save_test_failure_data(test, bad_page_data, folder=LATEST_REPORT_DIR)
     exc_message = None
-    if (
-        hasattr(test, "_outcome")
-        and hasattr(test._outcome, "errors")
-        and test._outcome.errors
-    ):
+    if hasattr(test, "_outcome") and getattr(test._outcome, "errors", None):
         try:
             exc_message = test._outcome.errors[-1][1][1]
         except Exception:
