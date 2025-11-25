@@ -329,28 +329,17 @@ class Browser:
         _cdp_geolocation = None
         _cdp_recorder = None
         _cdp_ad_block = None
-        if (
-            hasattr(sb_config, "_cdp_timezone") and sb_config._cdp_timezone
-        ):
+        if getattr(sb_config, "_cdp_timezone", None):
             _cdp_timezone = sb_config._cdp_timezone
-        if (
-            hasattr(sb_config, "_cdp_user_agent")
-            and sb_config._cdp_user_agent
-        ):
+        if getattr(sb_config, "_cdp_user_agent", None):
             _cdp_user_agent = sb_config._cdp_user_agent
-        if hasattr(sb_config, "_cdp_locale") and sb_config._cdp_locale:
+        if getattr(sb_config, "_cdp_locale", None):
             _cdp_locale = sb_config._cdp_locale
-        if hasattr(sb_config, "_cdp_platform") and sb_config._cdp_platform:
+        if getattr(sb_config, "_cdp_platform", None):
             _cdp_platform = sb_config._cdp_platform
-        if (
-            hasattr(sb_config, "_cdp_geolocation")
-            and sb_config._cdp_geolocation
-        ):
+        if getattr(sb_config, "_cdp_geolocation", None):
             _cdp_geolocation = sb_config._cdp_geolocation
-        if (
-            hasattr(sb_config, "ad_block_on")
-            and sb_config.ad_block_on
-        ):
+        if getattr(sb_config, "ad_block_on", None):
             _cdp_ad_block = sb_config.ad_block_on
         if "timezone" in kwargs:
             _cdp_timezone = kwargs["timezone"]
@@ -435,8 +424,7 @@ class Browser:
             await connection.send(cdp.page.set_bypass_csp(enabled=True))
         # (The code below is for the Chrome 142 extension fix)
         if (
-            hasattr(sb_config, "_cdp_proxy")
-            and sb_config._cdp_proxy
+            getattr(sb_config, "_cdp_proxy", None)
             and "@" in sb_config._cdp_proxy
             and "auth" not in kwargs
         ):
@@ -592,7 +580,7 @@ class Browser:
                 break
         if not self.info:
             chromium = "Chromium"
-            if hasattr(sb_config, "_cdp_browser") and sb_config._cdp_browser:
+            if getattr(sb_config, "_cdp_browser", None):
                 chromium = sb_config._cdp_browser
                 chromium = chromium[0].upper() + chromium[1:]
             message = "Failed to connect to the browser"
@@ -910,7 +898,7 @@ class CookieJar:
         """
         connection = None
         for _tab in self._browser.tabs:
-            if hasattr(_tab, "closed") and _tab.closed:
+            if getattr(_tab, "closed", None):
                 continue
             connection = _tab
             break
@@ -940,7 +928,7 @@ class CookieJar:
         """
         connection = None
         for _tab in self._browser.tabs:
-            if hasattr(_tab, "closed") and _tab.closed:
+            if getattr(_tab, "closed", None):
                 continue
             connection = _tab
             break
@@ -967,7 +955,7 @@ class CookieJar:
         save_path = pathlib.Path(file).resolve()
         connection = None
         for _tab in self._browser.tabs:
-            if hasattr(_tab, "closed") and _tab.closed:
+            if getattr(_tab, "closed", None):
                 continue
             connection = _tab
             break
@@ -1013,7 +1001,7 @@ class CookieJar:
         included_cookies = []
         connection = None
         for _tab in self._browser.tabs:
-            if hasattr(_tab, "closed") and _tab.closed:
+            if getattr(_tab, "closed", None):
                 continue
             connection = _tab
             break
@@ -1036,7 +1024,7 @@ class CookieJar:
         """
         connection = None
         for _tab in self._browser.tabs:
-            if hasattr(_tab, "closed") and _tab.closed:
+            if getattr(_tab, "closed", None):
                 continue
             connection = _tab
             break

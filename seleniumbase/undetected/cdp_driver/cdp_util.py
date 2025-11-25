@@ -617,6 +617,8 @@ async def start(
             sb_config._cdp_browser = "atlas"
         else:
             sb_config._cdp_browser = "chrome"
+    sb_config.incognito = incognito
+    sb_config.guest_mode = guest
     if not config:
         config = Config(
             user_data_dir,

@@ -1646,11 +1646,7 @@ def switch_to_frame(
 
 
 def __switch_to_window(driver, window_handle, uc_lock=True):
-    if (
-        hasattr(driver, "_is_using_uc")
-        and driver._is_using_uc
-        and uc_lock
-    ):
+    if getattr(driver, "_is_using_uc", None) and uc_lock:
         gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
         with gui_lock:
             driver.switch_to.window(window_handle)
@@ -1734,8 +1730,7 @@ def switch_to_window(
 
 def _reconnect_if_disconnected(driver):
     if (
-        hasattr(driver, "_is_using_uc")
-        and driver._is_using_uc
+        getattr(driver, "_is_using_uc", None)
         and hasattr(driver, "is_connected")
         and not driver.is_connected()
     ):
@@ -1757,24 +1752,17 @@ def open_url(driver, url):
         driver.cdp.open(url)
         return
     elif (
-        hasattr(driver, "_is_using_uc")
-        and driver._is_using_uc
-        # and hasattr(driver, "_is_using_auth")
-        # and driver._is_using_auth
-        and (
-            not hasattr(driver, "_is_using_cdp")
-            or not driver._is_using_cdp
-        )
+        getattr(driver, "_is_using_uc", None)
+        # and getattr(driver, "_is_using_auth", None)
+        and not getattr(driver, "_is_using_cdp", None)
     ):
         # Auth in UC Mode requires CDP Mode
         # (and now we're always forcing it)
         driver.uc_activate_cdp_mode(url)
         return
     elif (
-        hasattr(driver, "_is_using_uc")
-        and driver._is_using_uc
-        and hasattr(driver, "_is_using_cdp")
-        and driver._is_using_cdp
+        getattr(driver, "_is_using_uc", None)
+        and getattr(driver, "_is_using_cdp", None)
     ):
         driver.disconnect()
         driver.cdp.open(url)

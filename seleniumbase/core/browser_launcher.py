@@ -443,6 +443,7 @@ def has_captcha(text):
         "<title>403 Forbidden</title>" in text
         or "Permission Denied</title>" in text
         or 'id="challenge-error-text"' in text
+        or "/challenge-platform/h/b/" in text
         or "<title>Just a moment..." in text
         or 'action="/?__cf_chl_f_tk' in text
         or 'id="challenge-widget-' in text
@@ -450,7 +451,6 @@ def has_captcha(text):
         or 'class="g-recaptcha"' in text
         or 'content="Pixelscan"' in text
         or 'id="challenge-form"' in text
-        or "/challenge-platform" in text
         or "window._cf_chl_opt" in text
         or "/recaptcha/api.js" in text
         or "/turnstile/" in text
@@ -656,10 +656,8 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
         safe_url = False
 
     if (
-        hasattr(driver, "_is_using_cdp")
-        and driver._is_using_cdp
-        and hasattr(driver, "cdp")
-        and driver.cdp
+        getattr(driver, "_is_using_cdp", None)
+        and getattr(driver, "cdp", None)
         and hasattr(driver.cdp, "loop")
     ):
         # CDP Mode was already initialized
@@ -1042,7 +1040,7 @@ def uc_click(
 def verify_pyautogui_has_a_headed_browser(driver):
     """PyAutoGUI requires a headed browser so that it can
     focus on the correct element when performing actions."""
-    if hasattr(driver, "_is_hidden") and driver._is_hidden:
+    if getattr(driver, "_is_hidden", None):
         raise Exception(
             "PyAutoGUI can't be used in headless mode!"
         )
@@ -1142,8 +1140,7 @@ def get_configured_pyautogui(pyautogui_copy):
         and "DISPLAY" in os.environ.keys()
     ):
         if (
-            hasattr(sb_config, "_pyautogui_x11_display")
-            and sb_config._pyautogui_x11_display
+            getattr(sb_config, "_pyautogui_x11_display", None)
             and hasattr(pyautogui_copy._pyautogui_x11, "_display")
             and (
                 sb_config._pyautogui_x11_display
@@ -1300,8 +1297,12 @@ def uc_gui_click_x_y(driver, x, y, timeframe=0.25):
 def _on_a_cf_turnstile_page(driver):
     source = driver.get_page_source()
     if (
-        'data-callback="onCaptchaSuccess"' in source
-        or "/challenge-platform/scripts/" in source
+        (
+            'data-callback="onCaptchaSuccess"' in source
+            and 'title="reCAPTCHA"' not in source
+            and 'id="recaptcha-token"' not in source
+        )
+        or "/challenge-platform/h/b/" in source
         or 'id="challenge-widget-' in source
         or "challenges.cloudf" in source
         or "cf-turnstile-" in source

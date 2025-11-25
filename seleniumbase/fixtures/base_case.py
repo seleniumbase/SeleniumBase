@@ -228,14 +228,9 @@ class BaseCase(unittest.TestCase):
             self.cdp.open(url)
             return
         elif (
-            hasattr(self.driver, "_is_using_uc")
-            and self.driver._is_using_uc
-            # and hasattr(self.driver, "_is_using_auth")
-            # and self.driver._is_using_auth
-            and (
-                not hasattr(self.driver, "_is_using_cdp")
-                or not self.driver._is_using_cdp
-            )
+            getattr(self.driver, "_is_using_uc", None)
+            # and getattr(self.driver, "_is_using_auth", None)
+            and not getattr(self.driver, "_is_using_cdp", None)
         ):
             # Auth in UC Mode requires CDP Mode
             # (and now we're always forcing it)
@@ -243,10 +238,8 @@ class BaseCase(unittest.TestCase):
             self.activate_cdp_mode(url)
             return
         elif (
-            hasattr(self.driver, "_is_using_uc")
-            and self.driver._is_using_uc
-            and hasattr(self.driver, "_is_using_cdp")
-            and self.driver._is_using_cdp
+            getattr(self.driver, "_is_using_uc", None)
+            and getattr(self.driver, "_is_using_cdp", None)
         ):
             self.disconnect()
             self.cdp.open(url)
@@ -3979,10 +3972,8 @@ class BaseCase(unittest.TestCase):
             self.cdp.open_new_tab(url=url, switch_to=switch_to)
             return
         elif (
-            hasattr(self.driver, "_is_using_uc")
-            and self.driver._is_using_uc
-            and hasattr(self.driver, "_is_using_cdp")
-            and self.driver._is_using_cdp
+            getattr(self.driver, "_is_using_uc", None)
+            and getattr(self.driver, "_is_using_cdp", None)
         ):
             self.disconnect()
             self.cdp.open_new_tab(url=url, switch_to=switch_to)
@@ -5037,7 +5028,7 @@ class BaseCase(unittest.TestCase):
 
     def activate_cdp_mode(self, url=None, **kwargs):
         """Activate CDP Mode with the URL and kwargs."""
-        if hasattr(self.driver, "_is_using_uc") and self.driver._is_using_uc:
+        if getattr(self.driver, "_is_using_uc", None):
             if self.__is_cdp_swap_needed():
                 return  # CDP Mode is already active
             if not self.is_connected():
