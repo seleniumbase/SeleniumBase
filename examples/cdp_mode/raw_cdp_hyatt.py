@@ -2,7 +2,7 @@ from seleniumbase import sb_cdp
 
 url = "https://www.hyatt.com/"
 sb = sb_cdp.Chrome(url, locale="en", guest=True)
-sb.sleep(4.2)
+sb.sleep(3.6)
 sb.click_if_visible('button[aria-label="Close"]')
 sb.sleep(0.1)
 sb.click_if_visible("#onetrust-reject-all-handler")

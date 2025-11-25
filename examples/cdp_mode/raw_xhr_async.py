@@ -64,9 +64,9 @@ async def crawl():
 
     # Change url to something that makes ajax requests
     tab = await driver.get("https://learn.microsoft.com/en-us/")
-    time.sleep(2)
-    for i in range(20):
-        await tab.scroll_down(4)
+    time.sleep(1.5)
+    for i in range(18):
+        await tab.scroll_down(3)
         time.sleep(0.02)
 
     xhr_responses = await receiveXHR(tab, xhr_requests)
