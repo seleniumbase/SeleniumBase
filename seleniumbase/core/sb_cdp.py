@@ -2030,6 +2030,10 @@ class CDPMethods():
             '[data-callback="onCaptchaSuccess"]'
         ):
             selector = '[data-callback="onCaptchaSuccess"]'
+        elif self.is_element_present(
+            "div:not([class]) > div:not([class])"
+        ):
+            selector = "div:not([class]) > div:not([class])"
         else:
             return
         if not selector:

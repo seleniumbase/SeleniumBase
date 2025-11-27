@@ -123,7 +123,6 @@ class Config:
         self._default_browser_args = [
             "--window-size=%s,%s" % (start_width, start_height),
             "--window-position=%s,%s" % (start_x, start_y),
-            "--remote-allow-origins=*",
             "--no-first-run",
             "--no-service-autorun",
             "--disable-auto-reload",
@@ -138,8 +137,10 @@ class Config:
             '--simulate-outdated-no-au="Tue, 31 Dec 2099 23:59:59 GMT"',
             "--password-store=basic",
             "--deny-permission-prompts",
-            "--disable-infobars",
+            "--disable-application-cache",
+            "--test-type",
             "--disable-breakpad",
+            "--disable-setuid-sandbox",
             "--disable-prompt-on-repost",
             "--disable-password-generation",
             "--disable-ipc-flooding-protection",
@@ -149,8 +150,8 @@ class Config:
             "--disable-client-side-phishing-detection",
             "--disable-top-sites",
             "--disable-translate",
+            "--dns-prefetch-disable",
             "--disable-renderer-backgrounding",
-            "--disable-background-networking",
             "--disable-dev-shm-usage",
         ]
 
@@ -207,9 +208,6 @@ class Config:
             "OptimizationHintsFetching,InterestFeedContentSuggestions,"
             "DisableLoadExtensionCommandLineSwitch"
         ]
-        if self.proxy:
-            args += ["--test-type"]
-        args += ["--disable-session-crashed-bubble"]
         if self.expert:
             args += [
                 "--disable-web-security",
