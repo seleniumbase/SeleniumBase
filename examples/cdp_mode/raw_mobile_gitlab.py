@@ -1,0 +1,24 @@
+import mycdp
+from seleniumbase import SB
+
+with SB(uc=True, test=True) as sb:
+    url = "https://gitlab.com/users/sign_in"
+    sb.activate_cdp_mode()
+    tab = sb.cdp.get_active_tab()
+    loop = sb.cdp.get_event_loop()
+    loop.run_until_complete(
+        tab.send(
+            mycdp.emulation.set_device_metrics_override(
+                width=411, height=731, device_scale_factor=3, mobile=True
+            )
+        )
+    )
+    sb.open(url)
+    sb.sleep(2)
+    sb.solve_captcha()
+    # (The rest is for testing and demo purposes)
+    sb.assert_text("Username", '[for="user_login"]', timeout=3)
+    sb.assert_element('label[for="user_login"]')
+    sb.highlight('button:contains("Sign in")')
+    sb.highlight('h1:contains("GitLab")')
+    sb.post_message("SeleniumBase wasn't detected", duration=4)
