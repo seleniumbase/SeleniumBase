@@ -1486,6 +1486,10 @@ def _uc_gui_click_captcha(
                     '[data-callback="onCaptchaSuccess"]'
                 ):
                     frame = '[data-callback="onCaptchaSuccess"]'
+                elif driver.is_element_present(
+                    "div:not([class]) > div:not([class])"
+                ):
+                    frame = "div:not([class]) > div:not([class])"
                 else:
                     return
             if (
@@ -1829,6 +1833,10 @@ def _uc_gui_handle_captcha_(driver, frame="iframe", ctype=None):
                     frame = ".cf-turnstile-wrapper"
                 elif driver.is_element_present('[class="cf-turnstile"]'):
                     frame = '[class="cf-turnstile"]'
+                elif driver.is_element_present(
+                    "div:not([class]) > div:not([class])"
+                ):
+                    frame = "div:not([class]) > div:not([class])"
                 else:
                     return
         else:
@@ -3048,6 +3056,11 @@ def get_driver(
     if _special_binary_exists(binary_location, "atlas"):
         driver_dir = DRIVER_DIR_ATLAS
         sb_config._cdp_browser = "atlas"
+    if undetectable and mobile_emulator:
+        # For stealthy mobile mode, see the CDP Mode examples
+        # to learn how to properly configure it.
+        user_agent = None  # Undo the override
+        mobile_emulator = False  # Instead, set from CDP Mode
     if (
         hasattr(sb_config, "settings")
         and getattr(sb_config.settings, "NEW_DRIVER_DIR", None)

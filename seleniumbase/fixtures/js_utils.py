@@ -282,6 +282,18 @@ def safe_execute_script(driver, script):
     This method will load jQuery if it wasn't already loaded."""
     try:
         execute_script(driver, script)
+    except TypeError as e:
+        if (
+            (
+                shared_utils.is_cdp_swap_needed(driver)
+                or hasattr(driver, "_swap_driver")
+            )
+            and "cannot unpack non-iterable" in str(e)
+        ):
+            pass
+        else:
+            activate_jquery(driver)  # It's a good thing we can define it here
+            execute_script(driver, script)
     except Exception:
         # The likely reason this fails is because: "jQuery is not defined"
         activate_jquery(driver)  # It's a good thing we can define it here
@@ -1311,22 +1323,34 @@ def slow_scroll_to_element(driver, element, *args, **kwargs):
     element_location_y = None
     try:
         if shared_utils.is_cdp_swap_needed(driver):
-            element.get_position().y
+            element_location_y = element.get_position().y
         else:
             element_location_y = element.location["y"]
     except Exception:
-        element.location_once_scrolled_into_view
+        if shared_utils.is_cdp_swap_needed(driver):
+            element.scroll_into_view()
+        else:
+            element.location_once_scrolled_into_view
         return
     try:
-        element_location_x = element.location["x"]
+        if shared_utils.is_cdp_swap_needed(driver):
+            element_location_x = element.get_position().x
+        else:
+            element_location_x = element.location["x"]
     except Exception:
         element_location_x = 0
     try:
-        element_width = element.size["width"]
+        if shared_utils.is_cdp_swap_needed(driver):
+            element_width = element.get_position().width
+        else:
+            element_width = element.size["width"]
     except Exception:
         element_width = 0
     try:
-        screen_width = driver.get_window_size()["width"]
+        if shared_utils.is_cdp_swap_needed(driver):
+            screen_width = driver.cdp.get_window_size()["width"]
+        else:
+            screen_width = driver.get_window_size()["width"]
     except Exception:
         screen_width = execute_script(driver, "return window.innerWidth;")
     element_location_y = element_location_y - constants.Scroll.Y_OFFSET

@@ -10136,6 +10136,21 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         if self.__is_cdp_swap_needed():
+            if self.demo_mode:
+                selector, by = self.__recalculate_selector(
+                    selector, by, xp_ok=False
+                )
+                a_t = "ASSERT"
+                if self._language != "English":
+                    from seleniumbase.fixtures.words import SD
+
+                    a_t = SD.translate_assert(self._language)
+                messenger_post = "<b>%s %s</b>: %s" % (
+                    a_t, by.upper(), selector
+                )
+                self.__highlight_with_assert_success(
+                    messenger_post, selector, by
+                )
             self.cdp.assert_element(selector, timeout=timeout)
             return True
         if isinstance(selector, list):
@@ -10430,6 +10445,20 @@ class BaseCase(unittest.TestCase):
                         messenger_post, selector, by
                     )
         elif self.__is_cdp_swap_needed():
+            if self.demo_mode:
+                a_t = "ASSERT TEXT"
+                i_n = "in"
+                if self._language != "English":
+                    from seleniumbase.fixtures.words import SD
+
+                    a_t = SD.translate_assert_text(self._language)
+                    i_n = SD.translate_in(self._language)
+                messenger_post = "<b>%s</b>: {%s} %s %s: %s" % (
+                    a_t, text, i_n, by.upper(), selector
+                )
+                self.__highlight_with_assert_success(
+                    messenger_post, selector, by
+                )
             self.cdp.assert_text(text, selector, timeout=timeout)
             return True
         elif self.__is_shadow_selector(selector):
