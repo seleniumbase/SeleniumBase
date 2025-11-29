@@ -327,6 +327,7 @@ class Browser:
         _cdp_platform = None
         _cdp_disable_csp = None
         _cdp_geolocation = None
+        _cdp_mobile_mode = None
         _cdp_recorder = None
         _cdp_ad_block = None
         if getattr(sb_config, "_cdp_timezone", None):
@@ -339,8 +340,12 @@ class Browser:
             _cdp_platform = sb_config._cdp_platform
         if getattr(sb_config, "_cdp_geolocation", None):
             _cdp_geolocation = sb_config._cdp_geolocation
+        if getattr(sb_config, "_cdp_mobile_mode", None):
+            _cdp_mobile_mode = sb_config._cdp_mobile_mode
         if getattr(sb_config, "ad_block_on", None):
             _cdp_ad_block = sb_config.ad_block_on
+        if getattr(sb_config, "disable_csp", None):
+            _cdp_disable_csp = sb_config.disable_csp
         if "timezone" in kwargs:
             _cdp_timezone = kwargs["timezone"]
         elif "tzone" in kwargs:
@@ -361,12 +366,14 @@ class Browser:
             _cdp_platform = kwargs["plat"]
         if "disable_csp" in kwargs:
             _cdp_disable_csp = kwargs["disable_csp"]
-        elif hasattr(sb_config, "disable_csp"):
-            _cdp_disable_csp = sb_config.disable_csp
         if "geolocation" in kwargs:
             _cdp_geolocation = kwargs["geolocation"]
         elif "geoloc" in kwargs:
             _cdp_geolocation = kwargs["geoloc"]
+        if "ad_block" in kwargs:
+            _cdp_ad_block = kwargs["ad_block"]
+        if "mobile" in kwargs:
+            _cdp_mobile_mode = kwargs["mobile"]
         if "recorder" in kwargs:
             _cdp_recorder = kwargs["recorder"]
         await connection.sleep(0.01)
@@ -422,6 +429,12 @@ class Browser:
             await connection.set_geolocation(_cdp_geolocation)
         if _cdp_disable_csp:
             await connection.send(cdp.page.set_bypass_csp(enabled=True))
+        if _cdp_mobile_mode:
+            await connection.send(
+                cdp.emulation.set_device_metrics_override(
+                    width=412, height=732, device_scale_factor=3, mobile=True
+                )
+            )
         # (The code below is for the Chrome 142 extension fix)
         if (
             getattr(sb_config, "_cdp_proxy", None)

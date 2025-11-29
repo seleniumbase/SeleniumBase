@@ -625,7 +625,7 @@ def pytest_addoption(parser):
         help="""Designates the three device metrics of the mobile
                 emulator: CSS Width, CSS Height, and Pixel-Ratio.
                 Format: A comma-separated string with the 3 values.
-                Examples: "375,734,5" or "411,731,3" or "390,715,3"
+                Examples: "375,734,5" or "412,732,3" or "390,715,3"
                 Default: None. (Will use default values if None)""",
     )
     parser.addoption(

@@ -206,7 +206,8 @@ class Config:
             "OptimizationTargetPrediction,OptimizationGuideModelDownloading,"
             "SidePanelPinning,UserAgentClientHint,PrivacySandboxSettings4,"
             "OptimizationHintsFetching,InterestFeedContentSuggestions,"
-            "DisableLoadExtensionCommandLineSwitch"
+            "DisableLoadExtensionCommandLineSwitch,"
+            "WebAuthentication,PasskeyAuth"
         ]
         if self.expert:
             args += [

@@ -12,7 +12,7 @@
 
 ### Slack Notifications - [rtCamp/action-slack-notify](https://github.com/rtCamp/action-slack-notify) can be used to send notifications to Slack.
 
-**Usage:**
+<b>Usage:</b>
 * Create a slack integration webhook if you don't have one already.
 * Create a ``SLACK_WEBHOOK`` secret on your repository with the webhook token value.
 * For this particular action, ``SLACK_CHANNEL`` is an optional environment variable that defaults to the webhook token channel if not specified.

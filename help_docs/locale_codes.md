@@ -1,6 +1,6 @@
 <!-- SeleniumBase Docs -->
 
-## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Language Locale Codes
+<h2><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32"></a> Language Locale Codes</h2>
 
 You can specify a Language Locale Code to customize web pages on supported websites. With SeleniumBase, you can change the web browser's Locale on the command-line by doing this:
 
@@ -14,7 +14,7 @@ From the ``SB()`` and ``Driver()`` formats, you can also set the ``locale_code``
 locale_code="CODE"  # Example: SB(locale_code="en")
 ```
 
-<h3><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="25" /> List of Language Locale Codes:</h3>
+<h3><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="25"> List of Language Locale Codes:</h3>
 
 <table>
     <thead><tr><th>Language</th><th>Code</th></tr></thead>

@@ -1,6 +1,6 @@
 <!-- SeleniumBase Docs -->
 
-## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) 📑 Presenter 🎞️
+<h2><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32"></a> 📑 Presenter 🎞️</h2>
 
 <p>SeleniumBase Presenter (slide-maker) lets you use Python to generate HTML presentations.</p>
 
@@ -21,7 +21,7 @@ cd examples/presenter
 pytest my_presentation.py
 ```
 
-**Here's a presentation with a chart:**
+<b>Here's a presentation with a chart:</b>
 
 <a href="https://seleniumbase.github.io/other/core_presentation.html"><img width="428" src="https://seleniumbase.github.io/other/sb_core_areas.png" title="Screenshot"></a><br>
 
