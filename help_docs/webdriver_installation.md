@@ -1,6 +1,6 @@
 <!-- SeleniumBase Docs -->
 
-## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Installing webdrivers
+<h2><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32"></a> Installing webdrivers</h2>
 
 To run web automation, you need webdrivers for each browser you plan on using.  With SeleniumBase, drivers are downloaded automatically (as needed) into the SeleniumBase `drivers/` folder.
 
@@ -102,4 +102,4 @@ To use the binaries from there in SeleniumBase scripts, set the `binary_location
 
 --------
 
-[<img src="https://seleniumbase.github.io/cdn/img/sb_logo_b.png" title="SeleniumBase" width="280">](https://github.com/seleniumbase/SeleniumBase)
+<a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/sb_logo_b.png" title="SeleniumBase" width="280"></a>

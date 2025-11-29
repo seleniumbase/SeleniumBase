@@ -1,6 +1,6 @@
 <!-- SeleniumBase Docs -->
 
-## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) JS Package Manager and Code Generators
+<h2><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32"> JS Package Manager and Code Generators</h2>
 
 <h3>🕹️ SeleniumBase lets you load JavaScript packages from any CDN link into any website via Python.</h3>
 
@@ -130,6 +130,8 @@ pytest test_dialog_boxes.py
 <div>🕹️ Since packages are loaded directly from a CDN link, you won't need other package managers like NPM, Bower, or Yarn to get the packages that you need into the websites that you want.</div>
 
 --------
+
+<a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="220"></a>
 
 [<img src="https://seleniumbase.github.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="220">](https://github.com/seleniumbase/SeleniumBase/)
 

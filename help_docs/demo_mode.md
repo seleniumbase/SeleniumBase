@@ -1,6 +1,6 @@
 <!-- SeleniumBase Docs -->
 
-## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Demo Mode 🎦
+<h2><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32"></a> Demo Mode 🎦</h2>
 
 <p align="left"><img src="https://seleniumbase.github.io/cdn/gif/xkcd_vid.gif" width="480" alt="SeleniumBase Example" title="SeleniumBase Example" /></p>
 

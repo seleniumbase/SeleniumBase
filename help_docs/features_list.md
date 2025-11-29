@@ -5,7 +5,7 @@
 
 <a id="feature_list"></a>
 
-## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) SeleniumBase Features: 🏰
+<h2><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32"></a> SeleniumBase Features: 🏰</h2>
 
 * A powerful Python framework for browser automation and E2E UI testing.
 * Includes [Recorder Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md) for instantly generating browser tests in Python.
@@ -26,6 +26,7 @@
 * Can run tests with a customized browser user agent. (``--agent=USER_AGENT_STRING``)
 * Can set a Chromium User Data Directory/Profile to load. (``--user-data-dir=DIR``)
 * Can [avoid detection](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md) by sites that try to block Selenium. (``--undetected``/``--uc``)
+* Can [use CDP Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md) for advanced stealth abilities. (``activate_cdp_mode(url)``)
 * Can integrate with [selenium-wire](https://github.com/wkeeling/selenium-wire) for inspecting browser requests. (``--wire``)
 * Can load Chrome Extension ZIP files. (``--extension-zip=ZIP``)
 * Can load Chrome Extension folders. (``--extension-dir=DIR``)
@@ -57,4 +58,4 @@
 
 <p align="left"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/sb_logo_10.png" alt="SeleniumBase" title="SeleniumBase" width="240"></a></p>
 
-[<img src="https://seleniumbase.github.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="240">](https://seleniumbase.io/)
+<a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="240"></a>

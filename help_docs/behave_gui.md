@@ -1,6 +1,6 @@
 <!-- SeleniumBase Docs -->
 
-## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) SeleniumBase Behave GUI / Commander 🐝🎖️
+<h2><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32"></a> SeleniumBase Behave GUI / Commander 🐝🎖️</h2>
 
 🐝🎖️ The <b translate="no">SeleniumBase Behave GUI</b> lets you run <code translate="no">behave</code> scripts from a Desktop GUI.<br>
 

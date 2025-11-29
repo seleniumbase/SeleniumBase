@@ -1,6 +1,6 @@
 <!-- SeleniumBase Docs -->
 
-## [<img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) SeleniumBase Commander 🎖️
+<h2><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32"></a> SeleniumBase Commander 🎖️</h2>
 
 🎖️ <b translate="no">SeleniumBase Commander</b> lets you run <code translate="no">pytest</code> scripts from a Desktop GUI.<br>
 
