@@ -1,19 +1,8 @@
-import mycdp
 from seleniumbase import SB
 
-with SB(uc=True, test=True) as sb:
+with SB(uc=True, test=True, mobile=True) as sb:
     url = "https://gitlab.com/users/sign_in"
-    sb.activate_cdp_mode()
-    tab = sb.cdp.get_active_tab()
-    loop = sb.cdp.get_event_loop()
-    loop.run_until_complete(
-        tab.send(
-            mycdp.emulation.set_device_metrics_override(
-                width=412, height=732, device_scale_factor=3, mobile=True
-            )
-        )
-    )
-    sb.open(url)
+    sb.activate_cdp_mode(url)
     sb.sleep(2)
     sb.solve_captcha()
     # (The rest is for testing and demo purposes)

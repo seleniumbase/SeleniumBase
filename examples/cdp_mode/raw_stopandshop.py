@@ -1,7 +1,7 @@
 """Test Stop & Shop search. Non-US IPs might be blocked."""
 from seleniumbase import SB
 
-with SB(uc=True, test=True, guest=True, ad_block=True) as sb:
+with SB(uc=True, test=True, ad_block=True) as sb:
     url = "https://stopandshop.com/"
     sb.activate_cdp_mode(url)
     sb.sleep(2.6)

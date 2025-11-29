@@ -7,7 +7,7 @@ loop = sb.get_event_loop()
 loop.run_until_complete(
     tab.send(
         mycdp.emulation.set_device_metrics_override(
-            width=411, height=731, device_scale_factor=3, mobile=True
+            width=412, height=732, device_scale_factor=3, mobile=True
         )
     )
 )
