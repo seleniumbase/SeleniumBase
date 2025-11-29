@@ -445,11 +445,11 @@ def has_captcha(text):
         or 'action="/?__cf_chl_f_tk' in text
         or 'id="challenge-widget-' in text
         or 'src="chromedriver.js"' in text
+        or "com/recaptcha/api.js" in text
         or 'class="g-recaptcha"' in text
         or 'content="Pixelscan"' in text
         or 'id="challenge-form"' in text
         or "window._cf_chl_opt" in text
-        or "/recaptcha/api.js" in text
         or "/turnstile/" in text
     ):
         return True
@@ -694,6 +694,7 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
             xvfb=xvfb,
             xvfb_metrics=xvfb_metrics,
             browser_executable_path=binary_location,
+            mobile=getattr(sb_config, "_cdp_mobile_mode", None),
         )
     )
     loop.run_until_complete(driver.cdp_base.wait(0))
@@ -2761,6 +2762,8 @@ def _set_chrome_options(
     included_disabled_features.append("SidePanelPinning")
     included_disabled_features.append("UserAgentClientHint")
     included_disabled_features.append("DisableLoadExtensionCommandLineSwitch")
+    included_disabled_features.append("WebAuthentication")
+    included_disabled_features.append("PasskeyAuth")
     for item in extra_disabled_features:
         if item not in included_disabled_features:
             included_disabled_features.append(item)
@@ -3056,11 +3059,6 @@ def get_driver(
     if _special_binary_exists(binary_location, "atlas"):
         driver_dir = DRIVER_DIR_ATLAS
         sb_config._cdp_browser = "atlas"
-    if undetectable and mobile_emulator:
-        # For stealthy mobile mode, see the CDP Mode examples
-        # to learn how to properly configure it.
-        user_agent = None  # Undo the override
-        mobile_emulator = False  # Instead, set from CDP Mode
     if (
         hasattr(sb_config, "settings")
         and getattr(sb_config.settings, "NEW_DRIVER_DIR", None)
@@ -3075,6 +3073,23 @@ def get_driver(
     if browser_name in constants.ChromiumSubs.chromium_subs:
         browser_name = "chrome"
     browser_name = browser_name.lower()
+    if is_using_uc(undetectable, browser_name):
+        if ad_block_on:
+            sb_config.ad_block_on = True
+        else:
+            sb_config.ad_block_on = False
+        if disable_csp:
+            sb_config.disable_csp = True
+        else:
+            sb_config.disable_csp = False
+        if mobile_emulator:
+            # For stealthy mobile mode, see the CDP Mode examples
+            # to learn how to properly configure it.
+            user_agent = None  # Undo the override
+            mobile_emulator = False  # Instead, set from CDP Mode
+            sb_config._cdp_mobile_mode = True
+        else:
+            sb_config._cdp_mobile_mode = False
     if headless2 and browser_name == constants.Browser.FIREFOX:
         headless2 = False  # Only for Chromium
         headless = True

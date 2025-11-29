@@ -1922,8 +1922,8 @@ class CDPMethods():
         return False
 
     def _on_a_g_recaptcha_page(self, source=None):
-        time.sleep(0.25)
-        self.loop.run_until_complete(self.page.wait(0.25))
+        time.sleep(0.2)
+        self.loop.run_until_complete(self.page.wait(0.2))
         source = self.get_page_source()
         if (
             (
@@ -1934,7 +1934,7 @@ class CDPMethods():
         ):
             self.loop.run_until_complete(self.page.wait(0.1))
             return True
-        elif "/recaptcha/api.js" in source:
+        elif "com/recaptcha/api.js" in source:
             time.sleep(1.6)  # Still loading
             self.loop.run_until_complete(self.page.wait(0.1))
             return True
@@ -2330,6 +2330,9 @@ class CDPMethods():
         self.loop.run_until_complete(self.page.wait())
 
     def gui_hover_and_click(self, hover_selector, click_selector):
+        if getattr(sb_config, "_cdp_mobile_mode", None):
+            self.select(click_selector).click()
+            return
         gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
         with gui_lock:
             self.__make_sure_pyautogui_lock_is_writable()

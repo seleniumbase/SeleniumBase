@@ -281,6 +281,7 @@ async def start(
     proxy: Optional[str] = None,  # "host:port" or "user:pass@host:port"
     tzone: Optional[str] = None,  # Eg "America/New_York", "Asia/Kolkata"
     geoloc: Optional[list | tuple] = None,  # Eg (48.87645, 2.26340)
+    mobile: Optional[bool] = None,  # Use Mobile Mode with default args
     disable_csp: Optional[str] = None,  # Disable content security policy
     extension_dir: Optional[str] = None,  # Chrome extension directory
     **kwargs: Optional[dict],
@@ -353,6 +354,15 @@ async def start(
             guest = True
         else:
             guest = False
+    if mobile is None:
+        if "--mobile" in sys_argv:
+            mobile = True
+        else:
+            mobile = False
+    if mobile:
+        sb_config._cdp_mobile_mode = True
+    else:
+        sb_config._cdp_mobile_mode = False
     if ad_block is None:
         if "--ad-block" in sys_argv or "--ad_block" in sys_argv:
             ad_block = True

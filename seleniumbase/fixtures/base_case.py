@@ -15585,7 +15585,7 @@ class BaseCase(unittest.TestCase):
                 "Invalid input for Mobile Emulator device metrics!\n"
                 "Expecting a comma-separated string with integer values\n"
                 "for Width/Height, and an int or float for Pixel-Ratio.\n"
-                'Example: --metrics="411,731,3" '
+                'Example: --metrics="412,732,3" '
             )
             if len(metrics_list) != 3:
                 raise Exception(exception_string)
