@@ -1,9 +1,11 @@
 from seleniumbase import SB
 
-with SB(uc=True, test=True, ad_block=True) as sb:
+with SB(uc=True, test=True, incognito=True) as sb:
     url = "https://pixelscan.net/fingerprint-check"
     sb.activate_cdp_mode(url)
     sb.remove_element("#headerBanner")
+    sb.wait_for_element("pxlscn-dynamic-ad")
+    sb.sleep(0.5)
     sb.remove_elements("pxlscn-dynamic-ad")
     sb.sleep(2)
     sb.assert_text("No masking detected", "pxlscn-fingerprint-masking")
