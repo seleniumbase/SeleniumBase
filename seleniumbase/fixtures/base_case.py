@@ -7337,21 +7337,6 @@ class BaseCase(unittest.TestCase):
             with pip_find_lock:
                 with suppress(Exception):
                     shared_utils.make_writable(constants.PipInstall.FINDLOCK)
-                if sys.version_info < (3, 9):
-                    # Fix bug in newer cryptography for Python 3.7 and 3.8:
-                    # "pyo3_runtime.PanicException: Python API call failed"
-                    try:
-                        import cryptography
-                        if cryptography.__version__ != "39.0.2":
-                            del cryptography  # To get newer ver
-                            shared_utils.pip_install(
-                                "cryptography", version="39.0.2"
-                            )
-                            import cryptography
-                    except Exception:
-                        shared_utils.pip_install(
-                            "cryptography", version="39.0.2"
-                        )
                 try:
                     from pdfminer.high_level import extract_text
                 except Exception:
