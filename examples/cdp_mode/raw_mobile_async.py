@@ -8,7 +8,7 @@ from seleniumbase import decorators
 async def main():
     url = "https://gitlab.com/users/sign_in"
     driver = await cdp_driver.start_async()
-    await driver.main_tab.send(
+    await driver.page.send(
         mycdp.emulation.set_device_metrics_override(
             width=412, height=732, device_scale_factor=3, mobile=True
         )

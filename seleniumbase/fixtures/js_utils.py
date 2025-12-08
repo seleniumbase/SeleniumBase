@@ -211,6 +211,19 @@ def activate_jquery(driver):
         try:
             execute_script(driver, "jQuery('html');")
             return
+        except TypeError as e:
+            if (
+                (
+                    shared_utils.is_cdp_swap_needed(driver)
+                    or hasattr(driver, "_swap_driver")
+                )
+                and "cannot unpack non-iterable" in str(e)
+            ):
+                pass
+            else:
+                if x == 18:
+                    add_js_link(driver, jquery_js)
+                time.sleep(0.1)
         except Exception:
             if x == 18:
                 add_js_link(driver, jquery_js)

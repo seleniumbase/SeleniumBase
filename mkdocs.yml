@@ -10,7 +10,7 @@ edit_uri: ""
 site_dir: "site"
 docs_dir: "mkdocs_build"
 # Copyright
-copyright: Copyright &copy; 2014 - 2024 Michael Mintz
+copyright: Copyright &copy; 2014 - 2026 Michael Mintz
 # Extensions
 markdown_extensions:
   - admonition
@@ -101,6 +101,7 @@ nav:
   - 🎖️ GUI / Commander: help_docs/commander.md
   - 🔴 Recorder Mode: help_docs/recorder_mode.md
   - 📘 API Reference: help_docs/method_summary.md
+  - 📗 CDP Mode APIs: help_docs/cdp_mode_methods.md
   - Python Setup / Install:
     - 🐉 Get Python, pip, & git: help_docs/install_python_pip_git.md
     - ⚙️ Virtualenv Instructions: help_docs/virtualenv_instructions.md
@@ -117,6 +118,7 @@ nav:
   - Integrations:
     - 👤 UC Mode: help_docs/uc_mode.md
     - 🐙 CDP Mode: examples/cdp_mode/ReadMe.md
+    - 🎭 Stealthy Playwright: examples/cdp_mode/playwright/ReadMe.md
     - 🤖 GitHub CI: integrations/github/workflows/ReadMe.md
     - 🛂 MasterQA: seleniumbase/masterqa/ReadMe.md
     - 🗂️ Case Plans: help_docs/case_plans.md

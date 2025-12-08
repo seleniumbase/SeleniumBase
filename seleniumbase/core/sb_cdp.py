@@ -164,6 +164,44 @@ class CDPMethods():
     def get_event_loop(self):
         return self.loop
 
+    def get_rd_host(self):
+        """Returns the remote-debugging host (likely 127.0.0.1)"""
+        driver = self.driver
+        if hasattr(driver, "cdp_base"):
+            driver = driver.cdp_base
+        return driver.config.host
+
+    def get_rd_port(self):
+        """Returns the remote-debugging port (commonly 9222)"""
+        driver = self.driver
+        if hasattr(driver, "cdp_base"):
+            driver = driver.cdp_base
+        return driver.config.port
+
+    def get_rd_url(self):
+        """Returns the remote-debugging URL, which is used for
+        allowing the Playwright integration to launch stealthy,
+        and also applies nest-asyncio for nested event loops so
+        that SeleniumBase methods can be called from Playwright
+        without encountering event loop error messages such as:
+        Cannot run the event loop while another loop is running."""
+        import nest_asyncio
+        nest_asyncio.apply()
+        driver = self.driver
+        if hasattr(driver, "cdp_base"):
+            driver = driver.cdp_base
+        host = driver.config.host
+        port = driver.config.port
+        return f"http://{host}:{port}"
+
+    def get_endpoint_url(self):
+        """Same as get_rd_url(), which returns the remote-debugging URL."""
+        return self.get_rd_url()
+
+    def get_port(self):
+        """Same as get_rd_port(), which returns the remote-debugging port."""
+        return self.get_rd_port()
+
     def add_handler(self, event, handler):
         self.page.add_handler(event, handler)
 
@@ -1922,8 +1960,8 @@ class CDPMethods():
         return False
 
     def _on_a_g_recaptcha_page(self, source=None):
-        time.sleep(0.2)
-        self.loop.run_until_complete(self.page.wait(0.2))
+        time.sleep(0.4)
+        self.loop.run_until_complete(self.page.wait())
         source = self.get_page_source()
         if (
             (
@@ -1932,11 +1970,17 @@ class CDPMethods():
             )
             and self.is_element_visible('iframe[title="reCAPTCHA"]')
         ):
-            self.loop.run_until_complete(self.page.wait(0.1))
+            try:
+                self.loop.run_until_complete(self.page.wait(0.1))
+            except Exception:
+                time.sleep(0.1)
             return True
         elif "com/recaptcha/api.js" in source:
             time.sleep(1.6)  # Still loading
-            self.loop.run_until_complete(self.page.wait(0.1))
+            try:
+                self.loop.run_until_complete(self.page.wait(0.1))
+            except Exception:
+                time.sleep(0.1)
             return True
         return False
 
@@ -1975,7 +2019,12 @@ class CDPMethods():
     def solve_captcha(self):
         self.__click_captcha(use_cdp=True)
 
+    def click_captcha(self):
+        """Same as solve_captcha()"""
+        self.__click_captcha(use_cdp=True)
+
     def gui_click_captcha(self):
+        """Use PyAutoGUI to click the CAPTCHA"""
         self.__click_captcha(use_cdp=False)
 
     def __click_captcha(self, use_cdp=False):

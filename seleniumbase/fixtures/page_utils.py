@@ -293,12 +293,14 @@ def _print_unique_links_with_status_codes(page_url, soup):
         print(link, " -> ", status_code)
 
 
-def _download_file_to(file_url, destination_folder, new_file_name=None):
+def _download_file_to(
+    file_url, destination_folder, new_file_name=None, headers=None
+):
     if new_file_name:
         file_name = new_file_name
     else:
         file_name = file_url.split("/")[-1]
-    r = requests.get(file_url, timeout=5)
+    r = requests.get(file_url, headers=headers, timeout=5)
     file_path = os.path.join(destination_folder, file_name)
     download_file_lock = fasteners.InterProcessLock(
         constants.MultiBrowser.DOWNLOAD_FILE_LOCK

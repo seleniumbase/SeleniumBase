@@ -251,6 +251,23 @@ class Browser:
             )
             self.targets.remove(current_tab)
 
+    def get_rd_host(self):
+        return self.config.host
+
+    def get_rd_port(self):
+        return self.config.port
+
+    def get_rd_url(self):
+        host = self.config.host
+        port = self.config.port
+        return f"http://{host}:{port}"
+
+    def get_endpoint_url(self):
+        return self.get_rd_url()
+
+    def get_port(self):
+        return self.get_rd_port()
+
     async def set_auth(self, username, password, tab):
         async def auth_challenge_handler(event: cdp.fetch.AuthRequired):
             await tab.send(

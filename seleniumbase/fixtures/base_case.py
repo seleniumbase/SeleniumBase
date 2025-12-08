@@ -5035,6 +5035,8 @@ class BaseCase(unittest.TestCase):
         self.cdp = self.driver.cdp
         if hasattr(self.cdp, "solve_captcha"):
             self.solve_captcha = self.cdp.solve_captcha
+        if hasattr(self.cdp, "click_captcha"):
+            self.click_captcha = self.cdp.click_captcha
         if hasattr(self.cdp, "find_element_by_text"):
             self.find_element_by_text = self.cdp.find_element_by_text
         if getattr(self.driver, "_is_using_auth", None):
@@ -7335,21 +7337,6 @@ class BaseCase(unittest.TestCase):
             with pip_find_lock:
                 with suppress(Exception):
                     shared_utils.make_writable(constants.PipInstall.FINDLOCK)
-                if sys.version_info < (3, 9):
-                    # Fix bug in newer cryptography for Python 3.7 and 3.8:
-                    # "pyo3_runtime.PanicException: Python API call failed"
-                    try:
-                        import cryptography
-                        if cryptography.__version__ != "39.0.2":
-                            del cryptography  # To get newer ver
-                            shared_utils.pip_install(
-                                "cryptography", version="39.0.2"
-                            )
-                            import cryptography
-                    except Exception:
-                        shared_utils.pip_install(
-                            "cryptography", version="39.0.2"
-                        )
                 try:
                     from pdfminer.high_level import extract_text
                 except Exception:
@@ -7641,7 +7628,11 @@ class BaseCase(unittest.TestCase):
                 destination_folder = constants.Files.DOWNLOADS_FOLDER
             if not os.path.exists(destination_folder):
                 os.makedirs(destination_folder)
-        page_utils._download_file_to(file_url, destination_folder)
+        agent = self.get_user_agent()
+        headers = {"user-agent": agent}
+        page_utils._download_file_to(
+            file_url, destination_folder, headers=headers
+        )
         if self.recorder_mode and self.__current_url_is_recordable():
             if self.get_session_storage_item("pause_recorder") == "no":
                 time_stamp = self.execute_script("return Date.now();")
@@ -7665,8 +7656,10 @@ class BaseCase(unittest.TestCase):
                 destination_folder = constants.Files.DOWNLOADS_FOLDER
             if not os.path.exists(destination_folder):
                 os.makedirs(destination_folder)
+        agent = self.get_user_agent()
+        headers = {"user-agent": agent}
         page_utils._download_file_to(
-            file_url, destination_folder, new_file_name
+            file_url, destination_folder, new_file_name, headers=headers
         )
 
     def save_data_as(self, data, file_name, destination_folder=None):
