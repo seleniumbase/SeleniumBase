@@ -7628,7 +7628,11 @@ class BaseCase(unittest.TestCase):
                 destination_folder = constants.Files.DOWNLOADS_FOLDER
             if not os.path.exists(destination_folder):
                 os.makedirs(destination_folder)
-        page_utils._download_file_to(file_url, destination_folder)
+        agent = self.get_user_agent()
+        headers = {"user-agent": agent}
+        page_utils._download_file_to(
+            file_url, destination_folder, headers=headers
+        )
         if self.recorder_mode and self.__current_url_is_recordable():
             if self.get_session_storage_item("pause_recorder") == "no":
                 time_stamp = self.execute_script("return Date.now();")
@@ -7652,8 +7656,10 @@ class BaseCase(unittest.TestCase):
                 destination_folder = constants.Files.DOWNLOADS_FOLDER
             if not os.path.exists(destination_folder):
                 os.makedirs(destination_folder)
+        agent = self.get_user_agent()
+        headers = {"user-agent": agent}
         page_utils._download_file_to(
-            file_url, destination_folder, new_file_name
+            file_url, destination_folder, new_file_name, headers=headers
         )
 
     def save_data_as(self, data, file_name, destination_folder=None):
