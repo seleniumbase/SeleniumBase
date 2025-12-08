@@ -370,10 +370,15 @@ with SB(uc=True, test=True, locale="en", pls="none") as sb:
 
 ```python
 sb.cdp.get(url, **kwargs)
-sb.cdp.open(url, **kwargs)
+sb.cdp.open(url, **kwargs)  # Same as sb.cdp.get(url, **kwargs)
 sb.cdp.reload(ignore_cache=True, script_to_evaluate_on_load=None)
 sb.cdp.refresh(*args, **kwargs)
 sb.cdp.get_event_loop()
+sb.cdp.get_rd_host()  # Returns the remote-debugging host
+sb.cdp.get_rd_port()  # Returns the remote-debugging port
+sb.cdp.get_rd_url()  # Returns the remote-debugging URL
+sb.cdp.get_endpoint_url()  # Same as sb.cdp.get_rd_url()
+sb.cdp.get_port()  # Same as sb.cdp.get_rd_port()
 sb.cdp.add_handler(event, handler)
 sb.cdp.find_element(selector, best_match=False, timeout=None)
 sb.cdp.find(selector, best_match=False, timeout=None)
@@ -487,6 +492,7 @@ sb.cdp.set_attributes(selector, attribute, value)
 sb.cdp.is_attribute_present(selector, attribute, value=None)
 sb.cdp.is_online()
 sb.cdp.solve_captcha()
+sb.cdp.click_captcha()
 sb.cdp.gui_press_key(key)
 sb.cdp.gui_press_keys(keys)
 sb.cdp.gui_write(text)
@@ -609,6 +615,69 @@ sb.driver.stop()
 ```
 
 ℹ️ Even if you don't call `sb.driver.stop()`, the browser still quits after the script goes out-of-scope.
+
+--------
+
+### 🐙 <b translate="no">CDP Mode</b> Async API / Methods
+
+```python
+await get(url="about:blank")
+await open(url="about:blank")
+await find(text, best_match=False, timeout=10)  # `text` can be a selector
+await find_all(text, timeout=10)  # `text` can be a selector
+await select(selector, timeout=10)
+await select_all(selector, timeout=10, include_frames=False)
+await query_selector(selector)
+await query_selector_all(selector)
+await find_element_by_text(text, best_match=False)
+await find_elements_by_text(text)
+await reload(ignore_cache=True, script_to_evaluate_on_load=None)
+await evaluate(expression)
+await js_dumps(obj_name)
+await back()
+await forward()
+await get_window()
+await get_content()
+await maximize()
+await minimize()
+await fullscreen()
+await medimize()
+await set_window_size(left=0, top=0, width=1280, height=1024)
+await set_window_rect(left=0, top=0, width=1280, height=1024)
+await activate()
+await bring_to_front()
+await set_window_state(left=0, top=0, width=1280, height=720, state="normal")
+await get_navigation_history()
+await open_external_inspector()  # Open a separate browser for debugging
+await close()
+await scroll_down(amount=25)
+await scroll_up(amount=25)
+await wait_for(selector="", text="", timeout=10)
+await download_file(url, filename=None)
+await save_screenshot(filename="auto", format="png", full_page=False)
+await print_to_pdf(filename="auto")
+await set_download_path(path)
+await get_all_linked_sources()
+await get_all_urls(absolute=True)
+await get_html()
+await get_page_source()
+await is_element_present(selector)
+await is_element_visible(selector)
+await get_element_rect(selector, timeout=5)  # (relative to window)
+await get_window_rect()
+await get_gui_element_rect(selector, timeout=5)  # (relative to screen)
+await get_title()
+await send_keys(selector, text, timeout=5)
+await type(selector, text, timeout=5)
+await click(selector, timeout=5)
+await click_with_offset(selector, x, y, center=False, timeout=5)
+await solve_captcha()
+await click_captcha()  # Same as solve_captcha()
+await get_document()
+await get_flattened_document()
+await get_local_storage()
+await set_local_storage(items)
+```
 
 --------
 

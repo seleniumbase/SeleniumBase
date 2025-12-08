@@ -5035,6 +5035,8 @@ class BaseCase(unittest.TestCase):
         self.cdp = self.driver.cdp
         if hasattr(self.cdp, "solve_captcha"):
             self.solve_captcha = self.cdp.solve_captcha
+        if hasattr(self.cdp, "click_captcha"):
+            self.click_captcha = self.cdp.click_captcha
         if hasattr(self.cdp, "find_element_by_text"):
             self.find_element_by_text = self.cdp.find_element_by_text
         if getattr(self.driver, "_is_using_auth", None):
