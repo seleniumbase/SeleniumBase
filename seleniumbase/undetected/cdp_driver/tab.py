@@ -1458,6 +1458,9 @@ class Tab(Connection):
     async def get_title(self):
         return await self.evaluate("document.title")
 
+    async def get_current_url(self):
+        return await self.evaluate("window.location.href")
+
     async def send_keys(self, selector, text, timeout=5):
         element = await self.find(selector, timeout=timeout)
         await element.send_keys_async(text)
