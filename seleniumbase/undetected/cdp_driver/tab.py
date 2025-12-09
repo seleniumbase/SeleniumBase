@@ -371,7 +371,7 @@ class Tab(Connection):
                 return self
             else:
                 return await self.browser.get(
-                    url, new_tab, new_window, **kwargs
+                    url, new_tab=False, new_window=False, **kwargs
                 )
 
     async def open(self, url="about:blank"):

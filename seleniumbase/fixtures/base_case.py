@@ -221,11 +221,11 @@ class BaseCase(unittest.TestCase):
                 [sys.executable, "-m", "pytest", file, "-s", *all_args]
             )
 
-    def open(self, url):
+    def open(self, url, **kwargs):
         """Navigates the current browser window to the specified page."""
         self.__check_scope()
         if self.__is_cdp_swap_needed():
-            self.cdp.open(url)
+            self.cdp.open(url, **kwargs)
             return
         elif (
             getattr(self.driver, "_is_using_uc", None)
@@ -235,14 +235,14 @@ class BaseCase(unittest.TestCase):
             # Auth in UC Mode requires CDP Mode
             # (and now we're always forcing it)
             logging.info("open() in UC Mode now always activates CDP Mode.")
-            self.activate_cdp_mode(url)
+            self.activate_cdp_mode(url, **kwargs)
             return
         elif (
             getattr(self.driver, "_is_using_uc", None)
             and getattr(self.driver, "_is_using_cdp", None)
         ):
             self.disconnect()
-            self.cdp.open(url)
+            self.cdp.open(url, **kwargs)
             return
         self._check_browser()
         if self.__needs_minimum_wait():
@@ -3960,7 +3960,7 @@ class BaseCase(unittest.TestCase):
         Reverts self.set_content_to_frame()."""
         self.set_content_to_default(nested=True)
 
-    def open_new_window(self, switch_to=True):
+    def open_new_window(self, switch_to=True, **kwargs):
         """Opens a new browser tab/window and switches to it by default."""
         url = None
         if self.__looks_like_a_page_url(str(switch_to)):
@@ -3969,14 +3969,14 @@ class BaseCase(unittest.TestCase):
             url = switch_to
             switch_to = True
         if self.__is_cdp_swap_needed():
-            self.cdp.open_new_tab(url=url, switch_to=switch_to)
+            self.cdp.open_new_tab(url=url, switch_to=switch_to, **kwargs)
             return
         elif (
             getattr(self.driver, "_is_using_uc", None)
             and getattr(self.driver, "_is_using_cdp", None)
         ):
             self.disconnect()
-            self.cdp.open_new_tab(url=url, switch_to=switch_to)
+            self.cdp.open_new_tab(url=url, switch_to=switch_to, **kwargs)
             return
         self.wait_for_ready_state_complete()
         if switch_to:
@@ -9264,9 +9264,9 @@ class BaseCase(unittest.TestCase):
         """Same as self.refresh_page()"""
         self.refresh_page()
 
-    def open_new_tab(self, switch_to=True):
+    def open_new_tab(self, switch_to=True, **kwargs):
         """Same as self.open_new_window()"""
-        self.open_new_window(switch_to=switch_to)
+        self.open_new_window(switch_to=switch_to, **kwargs)
 
     def switch_to_tab(self, tab, timeout=None):
         """Same as self.switch_to_window()
