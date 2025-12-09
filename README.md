@@ -24,11 +24,11 @@
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/console_scripts/ReadMe.md">🌠 Scripts</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mobile_testing.md">📱 Mobile</a>
 <br />
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">📘 APIs</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md"> 🔠 Formats</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">📘 API</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md"> 🔠 Syntaxes</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md">🔴 Recorder</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">📊 Dashboard</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/locale_codes.md">🗾 Locales</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/locale_codes.md">🗾 Locale</a> |
 <a href="https://seleniumbase.io/devices/?url=seleniumbase.com">💻 Farm</a>
 <br />
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/commander.md">🎖️ GUI</a> |
@@ -39,18 +39,17 @@
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md">🌐 Grid</a>
 <br />
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/how_it_works.md">👁️ How</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/migration/raw_selenium">🚝 Migrate</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/case_plans.md">🗂️ CasePlans</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/boilerplates">♻️ Template</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">🧬 Hybrid</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/migration/raw_selenium">🚝 Migration</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md">🎭 Stealthy Playwright</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">🛂 MasterQA</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">🚎 Tours</a>
 <br />
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/github/workflows/ReadMe.md">🤖 CI/CD</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/js_package_manager.md">🕹️ JSMgr</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/translations.md">🌏 Translator</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/presenter/ReadMe.md">🎞️ Presenter</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/dialog_boxes/ReadMe.md">🛂 Dialog</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md">🖼️ Visual</a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md">🖼️ Visual</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/case_plans.md">🗂️ CPlans</a>
 <br />
 </p>
 
