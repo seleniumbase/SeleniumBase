@@ -21,31 +21,30 @@
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md">🏰 Features</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md">🎛️ Options</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">📚 Examples</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/console_scripts/ReadMe.md">🌠 Scripts</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/console_scripts/ReadMe.md">🪄 Scripts</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mobile_testing.md">📱 Mobile</a>
 <br />
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">📘 API</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md"> 🔠 Syntaxes</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">📘 The API</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md"> 🔠 SyntaxFormats</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md">🔴 Recorder</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">📊 Dashboard</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/locale_codes.md">🗾 Locale</a> |
-<a href="https://seleniumbase.io/devices/?url=seleniumbase.com">💻 Farm</a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/locale_codes.md">🗾 Locale</a>
 <br />
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/commander.md">🎖️ GUI</a> |
 <a href="https://seleniumbase.io/demo_page">📰 TestPage</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md">👤 UC Mode</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md">🐙 CDP Mode</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/ReadMe.md">📶 Charts</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md">🌐 Grid</a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/ReadMe.md">📶 Charts</a>  |
+<a href="https://seleniumbase.io/devices/?url=seleniumbase.com">🖥️ Farm</a>
 <br />
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/how_it_works.md">👁️ How</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/migration/raw_selenium">🚝 Migrate</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md">🎭 Stealthy Playwright Mode</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">🛂 M-QA</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/migration/raw_selenium">🚝 Migration</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md">🎭 Stealthy Playwright</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">🛂 MasterQA</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">🚎 Tours</a>
 <br />
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/github/workflows/ReadMe.md">🤖 CI/CD</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/js_package_manager.md">🕹️ JSMgr</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/js_package_manager.md">❇️ JSMgr</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/translations.md">🌏 Translator</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/presenter/ReadMe.md">🎞️ Presenter</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md">🖼️ Visual</a> |

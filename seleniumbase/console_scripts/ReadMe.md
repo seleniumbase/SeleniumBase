@@ -1,6 +1,6 @@
 <!-- SeleniumBase Docs -->
 
-<h2><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32"></a> Console Scripts 🌠</h2>
+<h2><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32"></a> Console Scripts 🪄</h2>
 
 🌟 SeleniumBase console scripts can do many things, such as downloading web drivers, creating test directories with config files, activating the SeleniumBase Recorder, launching the SeleniumBase Commander, translating tests into other languages, running a Selenium Grid, and more.
 

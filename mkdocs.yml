@@ -95,7 +95,7 @@ nav:
   - 🏰 List of Features: help_docs/features_list.md
   - 📚 Running Example Tests: examples/ReadMe.md
   - 🎛️ Command Line Options: help_docs/customizing_test_runs.md
-  - 🌠 Console Scripts: seleniumbase/console_scripts/ReadMe.md
+  - 🪄 Console Scripts: seleniumbase/console_scripts/ReadMe.md
   - 📊 Dashboard / Reports: examples/example_logs/ReadMe.md
   - 🔡 Syntax Formats: help_docs/syntax_formats.md
   - 🎖️ GUI / Commander: help_docs/commander.md
@@ -108,7 +108,7 @@ nav:
     - 🏄 Install SeleniumBase: help_docs/install.md
     - 👁️ How it Works: help_docs/how_it_works.md
   - JS Manager / JS Tools:
-    - 🕹️ Package Manager: help_docs/js_package_manager.md
+    - ❇️ JS Package Manager: help_docs/js_package_manager.md
     - 🎦 Demo Mode: help_docs/demo_mode.md
     - 🚎 Tour Maker: examples/tour_examples/ReadMe.md
     - 🛂 Dialog Boxes: examples/dialog_boxes/ReadMe.md

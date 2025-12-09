@@ -1,8 +1,8 @@
 <!-- SeleniumBase Docs -->
 
-<h2><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32"></a> Stealthy Playwright 🎭</h2>
+<h2><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32"></a> Stealthy Playwright Mode 🎭</h2>
 
-🎭 <b translate="no">Stealthy Playwright Mode</b> is a special mode of <b translate="no">SeleniumBase</b> that launches <a href="https://github.com/microsoft/playwright-python">Playwright</a> from <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md" translate="no">SeleniumBase CDP Mode</a> in order to grant <b translate="no">Playwright</b> new stealth features, such as the ability to click CAPTCHA checkboxes successfully.  <b translate="no">Playwright</b> uses <code>connect_over_cdp()</code> to attach itself onto an existing <b translate="no">SeleniumBase</b> session via the <code>remote-debugging-port</code>. From here, APIs of both frameworks can be used, giving you a hybrid approach that delivers the best experience of both worlds.
+🎭 <b translate="no">Stealthy Playwright Mode</b> is a subset of **[SeleniumBase CDP Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md)** that launches **[Playwright](https://github.com/microsoft/playwright-python)** from an existing <b translate="no">SeleniumBase</b> browser to make <span translate="no">Playwright</span> stealthy (for bypassing bot-detection).  <span translate="no">Playwright</span> uses <code><b>connect_over_cdp()</b></code> to attach itself onto an existing <span translate="no">SeleniumBase</span> session via the <code>remote-debugging-port</code>. From here, APIs of both frameworks can be used together.
 
 --------
 
@@ -138,4 +138,4 @@ For more examples, see [examples/cdp_mode/playwright](https://github.com/seleniu
 
 --------
 
-<a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.github.io/img/logo6.png" alt="SeleniumBase" title="SeleniumBase" width="100" /></a><img src="https://seleniumbase.github.io/other/playwright_logo.png" alt="Playwright" title="SeleniumBase" height="100">
+<a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.github.io/img/logo6.png" alt="SeleniumBase" title="SeleniumBase" width="100" /></a><img src="https://seleniumbase.github.io/other/playwright_logo.png" alt="Playwright" title="Playwright" width="161">
