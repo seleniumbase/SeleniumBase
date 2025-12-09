@@ -371,7 +371,7 @@ class Tab(Connection):
                 return self
             else:
                 return await self.browser.get(
-                    url, new_tab, new_window, **kwargs
+                    url, new_tab=False, new_window=False, **kwargs
                 )
 
     async def open(self, url="about:blank"):
@@ -1457,6 +1457,9 @@ class Tab(Connection):
 
     async def get_title(self):
         return await self.evaluate("document.title")
+
+    async def get_current_url(self):
+        return await self.evaluate("window.location.href")
 
     async def send_keys(self, selector, text, timeout=5):
         element = await self.find(selector, timeout=timeout)

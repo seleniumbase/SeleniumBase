@@ -333,11 +333,16 @@ class Browser:
             )
             connection.browser = self
         else:
-            # First tab from browser.tabs
-            connection: tab.Tab = next(
-                filter(lambda item: item.type_ == "page", self.targets)
-            )
-            await connection.sleep(0.005)
+            try:
+                # Most recently opened tab
+                connection = self.targets[-1]
+                await connection.sleep(0.005)
+            except Exception:
+                # First tab from browser.tabs
+                connection: tab.Tab = next(
+                    filter(lambda item: item.type_ == "page", self.targets)
+                )
+                await connection.sleep(0.005)
         _cdp_timezone = None
         _cdp_user_agent = ""
         _cdp_locale = None

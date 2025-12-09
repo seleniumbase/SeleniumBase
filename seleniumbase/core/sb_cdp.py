@@ -1182,13 +1182,15 @@ class CDPMethods():
     def switch_to_newest_window(self):
         self.switch_to_tab(-1)
 
-    def open_new_tab(self, url=None, switch_to=True):
+    def open_new_tab(self, url=None, switch_to=True, **kwargs):
         driver = self.driver
         if not isinstance(url, str):
             url = "about:blank"
         if hasattr(driver, "cdp_base"):
             try:
-                self.loop.run_until_complete(self.page.get(url, new_tab=True))
+                self.loop.run_until_complete(
+                    self.page.get(url, new_tab=True, **kwargs)
+                )
             except Exception:
                 original_targets = self.loop.run_until_complete(
                     self.page.send(mycdp.target.get_targets())

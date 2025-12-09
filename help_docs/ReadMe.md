@@ -35,6 +35,8 @@
 <a href="https://seleniumbase.io/help_docs/recorder_mode/">🔴 Recorder</a> |
 <a href="https://seleniumbase.io/devices/?url=seleniumbase.io">💻 Device Farm</a>
 <br />
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md">🎭 Stealthy Playwright Mode</a>
+<br />
 <a href="https://seleniumbase.io/examples/presenter/ReadMe/">🎞️ Slides</a> |
 <a href="https://seleniumbase.io/examples/chart_maker/ReadMe/">📶 Chart Maker</a>
 <br / >

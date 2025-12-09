@@ -18,6 +18,7 @@ async def main():
     links = await top_nav.query_selector_all_async("a")
     for nav_item in links:
         print(nav_item.text)
+    driver.stop()
 
 if __name__ == "__main__":
     # Call an async function with awaited methods

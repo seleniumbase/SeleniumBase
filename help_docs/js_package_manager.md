@@ -53,7 +53,7 @@ self.add_js_link(js_link)
 <p><div>🕹️ This example loads the <a href="https://introjs.com/">IntroJS</a> JavaScript library:</div></p>
 
 ```python
-self.add_js_link("https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/intro.min.js")
+self.add_js_link("https://cdn.jsdelivr.net/npm/intro.js@5.1.0/intro.min.js")
 ```
 
 <div>🕹️ You can load any JS package this way as long as you know the URL.</div>
@@ -132,8 +132,6 @@ pytest test_dialog_boxes.py
 --------
 
 <a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="220"></a>
-
-[<img src="https://seleniumbase.github.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="220">](https://github.com/seleniumbase/SeleniumBase/)
 
 <div>To learn more about SeleniumBase, check out the Docs Site:</div>
 <a href="https://seleniumbase.io">
