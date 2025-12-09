@@ -11,10 +11,8 @@ async def main(url):
     page = await driver.get(url)
     await page.set_window_rect(randint(4, 600), randint(8, 410), 860, 500)
     await page.sleep(0.5)
-    field = await page.select("input")
-    await field.send_keys_async("Text")
-    button = await page.select("button")
-    await button.click_async()
+    await page.type("input", "Text")
+    await page.click("button")
     await page.sleep(2)
     driver.stop()
 
