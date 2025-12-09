@@ -1026,23 +1026,23 @@ This format provides a pure CDP way of using SeleniumBase (without Selenium or a
 
 ```python
 import asyncio
-import time
 from seleniumbase import cdp_driver
 
 async def main():
-    url = "seleniumbase.io/simple/login"
-    driver = await cdp_driver.start_async(incognito=True)
-    page = await driver.get(url)
-    print(await page.evaluate("document.title"))
-    element = await page.select("#username")
-    await element.send_keys_async("demo_user")
-    element = await page.select("#password")
-    await element.send_keys_async("secret_pass")
-    element = await page.select("#log-in")
-    await element.click_async()
-    time.sleep(1)
+    url = "https://seleniumbase.io/simple/login"
+    driver = await cdp_driver.start_async()
+    page = await driver.get(url, lang="en")
+    print(await page.get_title())
+    await page.type("#username", "demo_user")
+    await page.type("#password", "secret_pass")
+    await page.click("#log-in")
+    print(await page.get_title())
     element = await page.select("h1")
     assert element.text == "Welcome!"
+    top_nav = await page.select("div.topnav")
+    links = await top_nav.query_selector_all_async("a")
+    for nav_item in links:
+        print(nav_item.text)
     driver.stop()
 
 if __name__ == "__main__":
@@ -1050,34 +1050,33 @@ if __name__ == "__main__":
     loop.run_until_complete(main())
 ```
 
-(See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_async.py">examples/cdp_mode/raw_async.py</a> for the test.)
+(See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_basic_async.py">examples/cdp_mode/raw_basic_async.py</a> for the test.)
 
 <a id="sb_sf_25"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 25. CDP driver (SB CDP Sync API. No Selenium)</h2>
 
-This format provides a pure CDP way of using SeleniumBase (without Selenium or a test runner). The expanded SB CDP Sync API is used. Here's an example:
+This format provides a pure CDP way of using SeleniumBase (without Selenium/WebDriver or a test runner). The expanded SB CDP Sync API is used. Here's an example:
 
 ```python
 from seleniumbase import sb_cdp
 
-@decorators.print_runtime("CDP Priceline Example")
 def main():
     url = "https://www.priceline.com/"
     sb = sb_cdp.Chrome(url, lang="en")
-    sb.sleep(2.5)
+    sb.sleep(2)
     sb.internalize_links()  # Don't open links in a new tab
     sb.click("#link_header_nav_experiences")
-    sb.sleep(3.5)
+    sb.sleep(3)
     sb.remove_elements("msm-cookie-banner")
-    sb.sleep(1.5)
+    sb.sleep(1)
     location = "Amsterdam"
     where_to = 'div[data-automation*="experiences"] input'
     button = 'button[data-automation*="experiences-search"]'
     sb.wait_for_text("Where to?")
-    sb.gui_click_element(where_to)
+    sb.click(where_to)
     sb.press_keys(where_to, location)
     sb.sleep(1)
-    sb.gui_click_element(button)
+    sb.click(button)
     sb.sleep(2)
     sb.click_if_visible('button[aria-label="Close"]')
     sb.sleep(1)
