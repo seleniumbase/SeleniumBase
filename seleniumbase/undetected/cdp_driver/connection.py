@@ -610,11 +610,11 @@ class Listener:
                 # Probably an event
                 try:
                     event = cdp.util.parse_json_event(message)
-                    event_tx = EventTransaction(event)
-                    if not self.connection.mapper:
-                        self.connection.__count__ = itertools.count(0)
-                    event_tx.id = next(self.connection.__count__)
-                    self.connection.mapper[event_tx.id] = event_tx
+                    # event_tx = EventTransaction(event)
+                    # if not self.connection.mapper:
+                    #     self.connection.__count__ = itertools.count(0)
+                    # event_tx.id = next(self.connection.__count__)
+                    # self.connection.mapper[event_tx.id] = event_tx
                 except Exception as e:
                     logger.info(
                         "%s: %s during parsing of json from event : %s"
@@ -639,12 +639,12 @@ class Listener:
                                 or inspect.iscoroutine(callback)
                             ):
                                 try:
-                                    await callback(event, self.connection)
+                                    asyncio.create_task(callback(event, self))
                                 except TypeError:
-                                    await callback(event)
+                                    asyncio.create_task(callback(event))
                             else:
                                 try:
-                                    callback(event, self.connection)
+                                    callback(event, self)
                                 except TypeError:
                                     callback(event)
                         except Exception as e:
