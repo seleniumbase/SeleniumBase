@@ -633,7 +633,7 @@ class Browser:
                 """ % (dashes, message, dashes)
             )
         self.connection = Connection(
-            self.info.webSocketDebuggerUrl, _owner=self
+            self.info.webSocketDebuggerUrl, browser=self
         )
         if self.config.autodiscover_targets:
             logger.info("Enabling autodiscover targets")
@@ -807,7 +807,7 @@ class Browser:
                             f"/{t.target_id}"
                         ),
                         target=t,
-                        _owner=self,
+                        browser=self,
                     )
                 )
         await asyncio.sleep(0)

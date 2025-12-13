@@ -184,13 +184,13 @@ class Connection(metaclass=CantTouchThis):
         self,
         websocket_url=None,
         target=None,
-        _owner=None,
+        browser=None,
         **kwargs,
     ):
         super().__init__()
         self._target = target
         self.__count__ = itertools.count(0)
-        self._owner = _owner
+        self.browser = browser
         self.websocket_url: str = websocket_url
         self.websocket = None
         self.mapper = {}
@@ -426,8 +426,8 @@ class Connection(metaclass=CantTouchThis):
         await self.aopen()
         if not self.websocket or self.websocket.state is State.CLOSED:
             return
-        if self._owner:
-            browser = self._owner
+        if self.browser:
+            browser = self.browser
             if browser.config:
                 if browser.config.expert:
                     await self._prepare_expert()

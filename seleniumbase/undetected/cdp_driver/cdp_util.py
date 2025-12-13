@@ -719,18 +719,6 @@ def start_sync(*args, **kwargs) -> Browser:
         loop = kwargs["loop"]
     else:
         loop = asyncio.new_event_loop()
-    if "user_data_dir" in kwargs and kwargs["user_data_dir"]:
-        headless = False
-        if "headless" in kwargs:
-            headless = kwargs["headless"]
-        decoy_args = kwargs
-        decoy_args["headless"] = True
-        driver = loop.run_until_complete(start(**decoy_args))
-        kwargs["headless"] = headless
-        kwargs["user_data_dir"] = driver.config.user_data_dir
-        time.sleep(0.2)
-        driver.stop()  # Due to Chrome-130, must stop & start
-        time.sleep(0.1)
     return loop.run_until_complete(start(*args, **kwargs))
 
 
