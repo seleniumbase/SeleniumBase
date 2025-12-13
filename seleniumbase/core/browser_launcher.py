@@ -2769,6 +2769,9 @@ def _set_chrome_options(
     included_disabled_features.append("SidePanelPinning")
     included_disabled_features.append("UserAgentClientHint")
     included_disabled_features.append("DisableLoadExtensionCommandLineSwitch")
+    included_disabled_features.append("Bluetooth")
+    included_disabled_features.append("WebBluetooth")
+    included_disabled_features.append("UnifiedWebBluetooth")
     included_disabled_features.append("WebAuthentication")
     included_disabled_features.append("PasskeyAuth")
     for item in extra_disabled_features:
@@ -4782,6 +4785,11 @@ def get_local_driver(
         included_disabled_features.append(
             "DisableLoadExtensionCommandLineSwitch"
         )
+        included_disabled_features.append("Bluetooth")
+        included_disabled_features.append("WebBluetooth")
+        included_disabled_features.append("UnifiedWebBluetooth")
+        included_disabled_features.append("WebAuthentication")
+        included_disabled_features.append("PasskeyAuth")
         for item in extra_disabled_features:
             if item not in included_disabled_features:
                 included_disabled_features.append(item)
