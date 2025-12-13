@@ -1,12 +1,12 @@
 from seleniumbase import SB
 
-with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
+with SB(uc=True, test=True, locale="en", incognito=True) as sb:
     url = "https://www.priceline.com"
     sb.activate_cdp_mode(url)
     sb.sleep(2.5)
     sb.click('input[name="endLocation"]')
     sb.sleep(1.2)
-    location = "Portland, Oregon, US"
+    location = "Portland, OR"
     selection = "Oregon, United States"  # (Dropdown option)
     sb.press_keys('input[name="endLocation"]', location)
     sb.sleep(1.5)

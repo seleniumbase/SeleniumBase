@@ -184,9 +184,13 @@ class CDPMethods():
         and also applies nest-asyncio for nested event loops so
         that SeleniumBase methods can be called from Playwright
         without encountering event loop error messages such as:
-        Cannot run the event loop while another loop is running."""
+        Cannot run the event loop while another loop is running.
+        Also sets an environment variable to hide this warning:
+        Deprecation: "url.parse() behavior is not standardized".
+        (github.com/microsoft/playwright-python/issues/3016)"""
         import nest_asyncio
         nest_asyncio.apply()
+        os.environ["NODE_NO_WARNINGS"] = "1"
         driver = self.driver
         if hasattr(driver, "cdp_base"):
             driver = driver.cdp_base

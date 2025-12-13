@@ -6,7 +6,7 @@ from seleniumbase import cdp_driver
 
 
 async def main():
-    url = "seleniumbase.io/simple/login"
+    url = "https://seleniumbase.io/simple/login"
     driver = await cdp_driver.start_async()
     page = await driver.get(url, lang="en")
     print(await page.get_title())

@@ -206,6 +206,7 @@ class Config:
             "OptimizationTargetPrediction,OptimizationGuideModelDownloading,"
             "SidePanelPinning,UserAgentClientHint,PrivacySandboxSettings4,"
             "OptimizationHintsFetching,InterestFeedContentSuggestions,"
+            "Bluetooth,WebBluetooth,UnifiedWebBluetooth,"
             "DisableLoadExtensionCommandLineSwitch,"
             "WebAuthentication,PasskeyAuth"
         ]

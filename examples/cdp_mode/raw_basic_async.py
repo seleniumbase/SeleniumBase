@@ -4,7 +4,7 @@ from seleniumbase import decorators
 
 
 async def main():
-    url = "seleniumbase.io/simple/login"
+    url = "https://seleniumbase.io/simple/login"
     driver = await cdp_driver.start_async()
     page = await driver.get(url, lang="en")
     print(await page.get_title())
@@ -21,7 +21,6 @@ async def main():
     driver.stop()
 
 if __name__ == "__main__":
-    # Call an async function with awaited methods
     loop = asyncio.new_event_loop()
     with decorators.print_runtime("raw_basic_async.py"):
         loop.run_until_complete(main())
