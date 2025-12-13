@@ -32,8 +32,8 @@
 <li><a href="#sb_sf_21"><strong>21. SeleniumBase SB (Python context manager)</strong></a></li>
 <li><a href="#sb_sf_22"><strong>22. The driver manager (via context manager)</strong></a></li>
 <li><a href="#sb_sf_23"><strong>23. The driver manager (via direct import)</strong></a></li>
-<li><a href="#sb_sf_24"><strong>24. CDP driver (async/await API. No Selenium)</strong></a></li>
-<li><a href="#sb_sf_25"><strong>25. CDP driver (SB CDP Sync API. No Selenium)</strong></a></li>
+<li><a href="#sb_sf_24"><strong>24. Pure CDP Mode (Async API. No Selenium)</strong></a></li>
+<li><a href="#sb_sf_25"><strong>25. Pure CDP Mode (Sync API. No Selenium)</strong></a></li>
 </ul>
 </blockquote>
 
@@ -1020,9 +1020,9 @@ The ``Driver()`` manager format can be used as a drop-in replacement for virtual
 When using the ``Driver()`` format, you may need to activate a Virtual Display on your own if you want to run headed tests in a headless Linux environment. (See https://github.com/mdmintz/sbVirtualDisplay for details.) One such example of this is using an authenticated proxy, which is configured via a Chrome extension that is generated at runtime. (Note that regular headless mode in Chrome doesn't support extensions.)
 
 <a id="sb_sf_24"></a>
-<h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 24. CDP driver (async/await API. No Selenium)</h2>
+<h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 24. Pure CDP Mode (Async API. No Selenium)</h2>
 
-This format provides a pure CDP way of using SeleniumBase (without Selenium or a test runner). The async/await API is used. Here's an example:
+This format provides a pure CDP way of using SeleniumBase (without Selenium/WebDriver or a test runner). The <code>async</code>/<code>await</code> API is used. Here's an example:
 
 ```python
 import asyncio
@@ -1053,9 +1053,33 @@ if __name__ == "__main__":
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_basic_async.py">examples/cdp_mode/raw_basic_async.py</a> for the test.)
 
 <a id="sb_sf_25"></a>
-<h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 25. CDP driver (SB CDP Sync API. No Selenium)</h2>
+<h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 25. Pure CDP Mode (Sync API. No Selenium)</h2>
 
-This format provides a pure CDP way of using SeleniumBase (without Selenium/WebDriver or a test runner). The expanded SB CDP Sync API is used. Here's an example:
+This format provides a pure CDP way of using SeleniumBase (without Selenium/WebDriver or a test runner). The expanded <code>sb_cdp</code> Sync API is used. Here's an example:
+
+```python
+from seleniumbase import sb_cdp
+
+url = "https://seleniumbase.io/simple/login"
+sb = sb_cdp.Chrome(url)
+sb.type("#username", "demo_user")
+sb.type("#password", "secret_pass")
+sb.click('a:contains("Sign in")')
+sb.assert_exact_text("Welcome!", "h1")
+sb.assert_element("img#image1")
+sb.highlight("#image1")
+top_nav = sb.find_element("div.topnav")
+links = top_nav.query_selector_all("a")
+for nav_item in links:
+    print(nav_item.text)
+sb.click_link("Sign out")
+sb.assert_text("signed out", "#top_message")
+sb.driver.stop()
+```
+
+(See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_basic_cdp.py">examples/cdp_mode/raw_basic_cdp.py</a> for the test.)
+
+Here's a Pure CDP Mode example that bypasses bot-detection to scrape data from a website:
 
 ```python
 from seleniumbase import sb_cdp
