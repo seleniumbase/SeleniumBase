@@ -10,7 +10,7 @@ with SB(uc=True, test=True, locale="en") as sb:
     sb.sleep(0.5)
     sb.click('button[data-testid*="chat-mode-"]')
     sb.sleep(1.1)
-    sb.click_if_visible('button[title="Think Deeper"]')
+    sb.click_if_visible('button[title^="Think"]')
     sb.sleep(1.1)
     query = "How to start automating with SeleniumBase?"
     sb.press_keys(textarea, query)
