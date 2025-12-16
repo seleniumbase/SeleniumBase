@@ -198,7 +198,7 @@ sb.cdp.print_to_pdf(name, folder=None)
 sb.cdp.save_as_pdf(name, folder=None)
 ```
 
-ℹ️ When available, calling `sb.METHOD()` redirects to `sb.cdp.METHOD()` because regular SB methods automatically call their CDP Mode counterparts to maintain stealth when CDP Mode is active.
+ℹ️ When available, calling `sb.METHOD()` redirects to `sb.cdp.METHOD()` when CDP Mode is active. From Pure CDP Mode, always call these methods with `sb.METHOD()` instead of `sb.cdp.METHOD()`.
 
 --------
 
