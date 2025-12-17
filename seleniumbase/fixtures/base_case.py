@@ -7464,27 +7464,42 @@ class BaseCase(unittest.TestCase):
             with suppress(Exception):
                 os.makedirs(folder)
 
-    def choose_file(
-        self, selector, file_path, by="css selector", timeout=None
-    ):
-        """This method is used to choose a file to upload to a website.
+    def choose_file(self, selector, file_path, by="css selector", timeout=None):
+        """This method is used to choose a file or files to upload to a website.
         It works by populating a file-chooser "input" field of type="file".
         A relative file_path will get converted into an absolute file_path.
+        Multiple file paths can be provided as a list, which will be newline-separated.
 
         Example usage:
-            self.choose_file('input[type="file"]', "my_dir/my_file.txt") """
+            self.choose_file('input[type="file"]', "my_dir/my_file.txt")
+            self.choose_file('input[type="file"]', ["file1.txt", "file2.txt"])"""
         self.__check_scope()
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
-        abs_path = os.path.abspath(file_path)
+
+        # Handle both single file path and list of file paths
+        if isinstance(file_path, (list, tuple)):
+            file_paths = list(file_path)
+        else:
+            file_paths = [file_path]
+
+        # Convert all file paths to absolute paths
+        abs_paths = [os.path.abspath(fp) for fp in file_paths]
+
+        # Convert any numeric paths to strings
+        abs_paths = [
+            str(fp) if isinstance(fp, (int, float)) else fp for fp in abs_paths
+        ]
+
+        # Join multiple file paths with a newline for send_keys()
+        abs_path = "\n".join(abs_paths)
+
         if self.__needs_minimum_wait():
             time.sleep(0.02)
-        element = self.wait_for_element_present(
-            selector, by=by, timeout=timeout
-        )
+        element = self.wait_for_element_present(selector, by=by, timeout=timeout)
         if self.__needs_minimum_wait():
             time.sleep(0.08)
         if self.is_element_visible(selector, by=by):
@@ -7511,8 +7526,6 @@ class BaseCase(unittest.TestCase):
                 sele_file_path = [selector, file_path]
                 action = ["chfil", sele_file_path, origin, time_stamp]
                 self.__extra_actions.append(action)
-        if isinstance(abs_path, (int, float)):
-            abs_path = str(abs_path)
         try:
             if self.browser == "safari":
                 try:
@@ -7524,9 +7537,7 @@ class BaseCase(unittest.TestCase):
         except (Stale_Exception, ENI_Exception):
             self.wait_for_ready_state_complete()
             time.sleep(0.16)
-            element = self.wait_for_element_present(
-                selector, by=by, timeout=timeout
-            )
+            element = self.wait_for_element_present(selector, by=by, timeout=timeout)
             if self.browser == "safari":
                 try:
                     element.send_keys(abs_path)
