@@ -7464,15 +7464,20 @@ class BaseCase(unittest.TestCase):
             with suppress(Exception):
                 os.makedirs(folder)
 
-    def choose_file(self, selector, file_path, by="css selector", timeout=None):
-        """This method is used to choose a file or files to upload to a website.
+    def choose_file(
+            self,
+            selector,
+            file_path,
+            by="css selector",
+            timeout=None):
+        """This method is used to choose a file(s) to upload to a website.
         It works by populating a file-chooser "input" field of type="file".
         A relative file_path will get converted into an absolute file_path.
-        Multiple file paths can be provided as a list, which will be newline-separated.
+        Multiple file paths can be provided as a list.
 
         Example usage:
-            self.choose_file('input[type="file"]', "my_dir/my_file.txt")
-            self.choose_file('input[type="file"]', ["file1.txt", "file2.txt"])"""
+            self.choose_file('input[type="file"]', "f1.txt")
+            self.choose_file('input[type="file"]', ["f1.txt", "f2.txt"])"""
         self.__check_scope()
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
@@ -7499,7 +7504,8 @@ class BaseCase(unittest.TestCase):
 
         if self.__needs_minimum_wait():
             time.sleep(0.02)
-        element = self.wait_for_element_present(selector, by=by, timeout=timeout)
+        element = self.wait_for_element_present(
+            selector, by=by, timeout=timeout)
         if self.__needs_minimum_wait():
             time.sleep(0.08)
         if self.is_element_visible(selector, by=by):
@@ -7537,7 +7543,8 @@ class BaseCase(unittest.TestCase):
         except (Stale_Exception, ENI_Exception):
             self.wait_for_ready_state_complete()
             time.sleep(0.16)
-            element = self.wait_for_element_present(selector, by=by, timeout=timeout)
+            element = self.wait_for_element_present(
+                selector, by=by, timeout=timeout)
             if self.browser == "safari":
                 try:
                     element.send_keys(abs_path)
