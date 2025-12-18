@@ -22,6 +22,7 @@ class SeleniumBrowser(Plugin):
     --brave  (Shortcut for "--browser=brave".)
     --comet  (Shortcut for "--browser=comet".)
     --atlas  (Shortcut for "--browser=atlas".)
+    --use-chromium  (Shortcut for using base `Chromium`)
     --cft  (Shortcut for using `Chrome for Testing`)
     --chs  (Shortcut for using `Chrome-Headless-Shell`)
     --user-data-dir=DIR  (Set the Chrome user data directory to use.)
@@ -179,6 +180,13 @@ class SeleniumBrowser(Plugin):
             dest="use_atlas",
             default=False,
             help="""Shortcut for --browser=atlas""",
+        )
+        parser.addoption(
+            "--use-chromium",
+            action="store_true",
+            dest="use_chromium",
+            default=False,
+            help="""Shortcut for using base `Chromium`""",
         )
         parser.addoption(
             "--cft",
@@ -1237,9 +1245,11 @@ class SeleniumBrowser(Plugin):
             raise Exception(message)
         if browser_text:
             browser = browser_text
-        if self.options.recorder_mode and browser not in ["chrome", "edge"]:
+        if self.options.recorder_mode and browser not in [
+            "chrome", "edge", "opera", "brave", "comet", "atlas", "chromium"
+        ]:
             message = (
-                "\n\n  Recorder Mode ONLY supports Chrome and Edge!"
+                "\n\n  Recorder Mode ONLY supports Chromium browsers!"
                 '\n  (Your browser choice was: "%s")\n' % browser
             )
             raise Exception(message)
@@ -1340,7 +1350,9 @@ class SeleniumBrowser(Plugin):
         test.test.binary_location = self.options.binary_location
         if getattr(sb_config, "_cdp_bin_loc", None):
             test.test.binary_location = sb_config._cdp_bin_loc
-        if self.options.use_cft and not test.test.binary_location:
+        if self.options.use_chromium and not test.test.binary_location:
+            test.test.binary_location = "_chromium_"
+        elif self.options.use_cft and not test.test.binary_location:
             test.test.binary_location = "cft"
         elif self.options.use_chs and not test.test.binary_location:
             test.test.binary_location = "chs"

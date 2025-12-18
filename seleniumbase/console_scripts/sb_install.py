@@ -19,6 +19,7 @@ Examples:
     sbase get chromedriver stable
     sbase get chromedriver beta
     sbase get chromedriver -p
+    sbase get chromium
     sbase get cft 131
     sbase get chs
 Output:
@@ -46,16 +47,21 @@ from seleniumbase import config as sb_config
 from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
 from seleniumbase.drivers import cft_drivers  # chrome-for-testing
 from seleniumbase.drivers import chs_drivers  # chrome-headless-shell
+from seleniumbase.drivers import chromium_drivers  # base chromium
 
 urllib3.disable_warnings()
 ARCH = platform.architecture()[0]
 IS_ARM_MAC = shared_utils.is_arm_mac()
 IS_MAC = shared_utils.is_mac()
+IS_ARM_LINUX = shared_utils.is_arm_linux()
 IS_LINUX = shared_utils.is_linux()
 IS_WINDOWS = shared_utils.is_windows()
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 DRIVER_DIR_CFT = os.path.dirname(os.path.realpath(cft_drivers.__file__))
 DRIVER_DIR_CHS = os.path.dirname(os.path.realpath(chs_drivers.__file__))
+DRIVER_DIR_CHROMIUM = os.path.dirname(
+    os.path.realpath(chromium_drivers.__file__)
+)
 LOCAL_PATH = "/usr/local/bin/"  # On Mac and Linux systems
 DEFAULT_CHROMEDRIVER_VERSION = "114.0.5735.90"  # (If can't find LATEST_STABLE)
 DEFAULT_GECKODRIVER_VERSION = "v0.36.0"
@@ -203,6 +209,59 @@ def get_cft_latest_version_from_milestone(milestone):
     return url_request.json()["milestones"][milestone]["version"]
 
 
+def get_chromium_channel_revision(platform_code, channel):
+    """Snapshots only exist for revisions where a build occurred.
+    Therefore, not all found revisions will lead to snapshots."""
+    platform_key = None
+    if platform_code in ["Mac_Arm", "Mac"]:
+        platform_key = "Mac"
+    elif platform_code in ["Linux_x64"]:
+        platform_key = "Linux"
+    elif platform_code in ["Win_x64"]:
+        platform_key = "Windows"
+    elif platform_code in ["Win"]:
+        platform_key = "Win32"
+    channel_key = None
+    if channel.lower() == "stable":
+        channel_key = "Stable"
+    elif channel.lower() == "beta":
+        channel_key = "Beta"
+    elif channel.lower() == "dev":
+        channel_key = "Dev"
+    elif channel.lower() == "canary":
+        channel_key = "Canary"
+    base_url = "https://chromiumdash.appspot.com/fetch_releases"
+    url = f"{base_url}?channel={channel_key}&platform={platform_key}&num=1"
+    url_request = requests_get_with_retry(url)
+    data = None
+    if url_request.ok:
+        data = url_request.text
+    else:
+        raise Exception("Could not determine Chromium revision!")
+    if data:
+        try:
+            import ast
+
+            result = ast.literal_eval(data)
+            revision = result[0]["chromium_main_branch_position"]
+            return str(revision)
+        except Exception:
+            return get_latest_chromedriver_version(platform_code)
+    else:
+        return get_latest_chromedriver_version(platform_code)
+
+
+def get_chromium_latest_revision(platform_code):
+    base_url = "https://storage.googleapis.com/chromium-browser-snapshots"
+    url = f"{base_url}/{platform_code}/LAST_CHANGE"
+    url_request = requests_get_with_retry(url)
+    if url_request.ok:
+        latest_revision = url_request.text
+    else:
+        raise Exception("Could not determine latest Chromium revision!")
+    return latest_revision
+
+
 def get_latest_chromedriver_version(channel="Stable"):
     try:
         if getattr(sb_config, "cft_lkgv_json", None):
@@ -274,6 +333,11 @@ def main(override=None, intel_for_uc=None, force_uc=None):
         elif override.startswith("iedriver "):
             extra = override.split("iedriver ")[1]
             sys.argv = ["seleniumbase", "get", "iedriver", extra]
+        elif override == "chromium":
+            sys.argv = ["seleniumbase", "get", "chromium"]
+        elif override.startswith("chromium "):
+            extra = override.split("chromium ")[1]
+            sys.argv = ["seleniumbase", "get", "chromium", extra]
         elif override == "cft":
             sys.argv = ["seleniumbase", "get", "cft"]
         elif override.startswith("cft "):
@@ -316,6 +380,8 @@ def main(override=None, intel_for_uc=None, force_uc=None):
         downloads_folder = DRIVER_DIR_CFT
     elif override == "chs" or name == "chs":
         downloads_folder = DRIVER_DIR_CHS
+    elif override == "chromium":
+        downloads_folder = DRIVER_DIR_CHROMIUM
     expected_contents = None
     platform_code = None
     copy_to_path = False
@@ -643,6 +709,31 @@ def main(override=None, intel_for_uc=None, force_uc=None):
             "https://storage.googleapis.com/chrome-for-testing-public/"
             "%s/%s/%s" % (use_version, platform_code, file_name)
         )
+    elif name == "chromium":
+        if IS_MAC:
+            if IS_ARM_MAC:
+                platform_code = "Mac_Arm"
+            else:
+                platform_code = "Mac"
+            file_name = "chrome-mac.zip"
+        elif IS_LINUX:
+            platform_code = "Linux_x64"
+            file_name = "chrome-linux.zip"
+        elif IS_WINDOWS:
+            if "64" in ARCH:
+                platform_code = "Win_x64"
+            else:
+                platform_code = "Win"
+            file_name = "chrome-win.zip"
+        revision = get_chromium_latest_revision(platform_code)
+        msg = c2 + "Chromium revision to download" + cr
+        p_version = c3 + revision + cr
+        log_d("\n*** %s = %s" % (msg, p_version))
+        download_url = (
+            "https://storage.googleapis.com/chromium-browser-snapshots/"
+            "%s/%s/%s" % (platform_code, revision, file_name)
+        )
+        downloads_folder = DRIVER_DIR_CHROMIUM
     elif name == "chrome-headless-shell" or name == "chs":
         set_version = None
         found_version = None
@@ -1003,12 +1094,12 @@ def main(override=None, intel_for_uc=None, force_uc=None):
     remote_file = requests_get_with_retry(download_url)
     with open(file_path, "wb") as file:
         file.write(remote_file.content)
-    log_d("%sDownload Complete!%s\n" % (c1, cr))
 
     if file_name.endswith(".zip"):
         zip_file_path = file_path
         zip_ref = zipfile.ZipFile(zip_file_path, "r")
         contents = zip_ref.namelist()
+        log_d("%sDownload Complete!%s\n" % (c1, cr))
         if (
             len(contents) >= 1
             and name in ["chromedriver", "uc_driver", "geckodriver"]
@@ -1249,6 +1340,48 @@ def main(override=None, intel_for_uc=None, force_uc=None):
                 "Chrome for Testing was saved inside:\n%s%s\n%s\n"
                 % (pr_base_path, pr_sep, pr_folder_name)
             )
+        elif name == "chromium":
+            # Zip file is valid. Proceed.
+            driver_path = None
+            driver_file = None
+            base_path = os.sep.join(zip_file_path.split(os.sep)[:-1])
+            folder_name = contents[0].split("/")[0]
+            folder_path = os.path.join(base_path, folder_name)
+            if IS_MAC or IS_LINUX:
+                if (
+                    "chromium" in folder_path
+                    and "drivers" in folder_path
+                    and os.path.exists(folder_path)
+                ):
+                    shutil.rmtree(folder_path)
+                subprocess.run(
+                    ["unzip", zip_file_path, "-d", downloads_folder]
+                )
+            elif IS_WINDOWS:
+                subprocess.run(
+                    [
+                        "powershell",
+                        "Expand-Archive",
+                        "-Path",
+                        zip_file_path,
+                        "-DestinationPath",
+                        downloads_folder,
+                        "-Force",
+                    ]
+                )
+            else:
+                zip_ref.extractall(downloads_folder)
+                zip_ref.close()
+            with suppress(Exception):
+                os.remove(zip_file_path)
+            log_d("%sUnzip Complete!%s\n" % (c2, cr))
+            pr_base_path = c3 + base_path + cr
+            pr_sep = c3 + os.sep + cr
+            pr_folder_name = c3 + folder_name + cr
+            log_d(
+                "Chromium was saved inside:\n%s%s\n%s\n"
+                % (pr_base_path, pr_sep, pr_folder_name)
+            )
         elif name == "chrome-headless-shell" or name == "chs":
             # Zip file is valid. Proceed.
             driver_path = None
@@ -1300,6 +1433,7 @@ def main(override=None, intel_for_uc=None, force_uc=None):
         tar = tarfile.open(file_path)
         contents = tar.getnames()
         if len(contents) == 1:
+            log_d("%sDownload Complete!%s\n" % (c1, cr))
             for f_name in contents:
                 # Remove existing version if exists
                 new_file = os.path.join(downloads_folder, str(f_name))
@@ -1337,6 +1471,7 @@ def main(override=None, intel_for_uc=None, force_uc=None):
     else:
         # Not a .zip file or a .tar.gz file. Just a direct download.
         if "Driver" in file_name or "driver" in file_name:
+            log_d("%sDownload Complete!%s\n" % (c1, cr))
             log_d("Making [%s] executable ..." % file_name)
             make_executable(file_path)
             log_d("%s[%s] is now ready for use!%s" % (c1, file_name, cr))

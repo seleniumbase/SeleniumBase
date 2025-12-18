@@ -284,6 +284,7 @@ async def start(
     mobile: Optional[bool] = None,  # Use Mobile Mode with default args
     disable_csp: Optional[str] = None,  # Disable content security policy
     extension_dir: Optional[str] = None,  # Chrome extension directory
+    use_chromium: Optional[str] = None,  # Use the base Chromium browser
     **kwargs: Optional[dict],
 ) -> Browser:
     """
@@ -499,6 +500,8 @@ async def start(
                 print("  Using default Chrome browser instead!")
                 bin_loc = None
             browser_executable_path = bin_loc
+        elif use_chromium or "--use-chromium" in arg_join:
+            browser_executable_path = "_chromium_"
     if proxy is None and "--proxy" in arg_join:
         proxy_string = None
         if "--proxy=" in arg_join:

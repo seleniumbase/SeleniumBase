@@ -152,6 +152,8 @@ def do_recording(file_name, url, overwrite_enabled, use_chrome, window):
             command += " --comet"
         elif "--atlas" in command_args:
             command += " --atlas"
+        elif "--use-chromium" in command_args:
+            command += " --use-chromium"
         if (
             "--uc" in command_args
             or "--cdp" in command_args

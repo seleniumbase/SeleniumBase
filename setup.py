@@ -329,6 +329,7 @@ setup(
         "seleniumbase.drivers.brave_drivers",
         "seleniumbase.drivers.comet_drivers",
         "seleniumbase.drivers.atlas_drivers",
+        "seleniumbase.drivers.chromium_drivers",
         "seleniumbase.extensions",
         "seleniumbase.fixtures",
         "seleniumbase.js_code",

@@ -88,6 +88,7 @@ def main():
     use_brave = False
     use_comet = False
     use_atlas = False
+    use_chromium = False
     use_uc = False
     esc_end = False
     start_page = None
@@ -150,6 +151,8 @@ def main():
                 use_comet = True
             elif option.lower() == "--atlas":
                 use_atlas = True
+            elif option.lower() == "--use-chromium":
+                use_chromium = True
             elif option.lower() == "--ee":
                 esc_end = True
             elif option.lower() in ("--gui", "--headed"):
@@ -295,6 +298,8 @@ def main():
         run_cmd += " --comet"
     elif use_atlas:
         run_cmd += " --atlas"
+    elif use_chromium:
+        run_cmd += " --use-chromium"
     if force_gui:
         run_cmd += " --gui"
     if use_uc:
