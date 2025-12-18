@@ -508,6 +508,20 @@ With the `SB()` and `Driver()` formats, the binary location is set via the `bina
 
 --------
 
+🎛️ To use the special `Chromium` binary:
+
+```zsh
+sbase get chromium
+```
+
+Then, run scripts with `--use-chromium` / `use_chromium=True`:
+
+```zsh
+pytest --use-chromium -n8 --dashboard --html=report.html -v --rs --headless
+```
+
+--------
+
 🎛️ To use the special `Chrome for Testing` binary:
 
 ```zsh
@@ -721,6 +735,7 @@ sjw=None  # Shortcut / Duplicate of "skip_js_waits".
 wfa=None  # Shortcut / Duplicate of "wait_for_angularjs".
 cft=None  # Use "Chrome for Testing"
 chs=None  # Use "Chrome-Headless-Shell"
+use_chromium=None  # Use base "Chromium"
 save_screenshot=None  # Save a screenshot at the end of each test.
 no_screenshot=None  # No screenshots saved unless tests directly ask it.
 page_load_strategy=None  # Set Chrome PLS to "normal", "eager", or "none".
@@ -816,6 +831,7 @@ server=None  # Shortcut / Duplicate of "servername".
 guest=None  # Shortcut / Duplicate of "guest_mode".
 wire=None  # Shortcut / Duplicate of "use_wire".
 pls=None  # Shortcut / Duplicate of "page_load_strategy".
+use_chromium=None  # Use base "Chromium"
 cft=None  # Use "Chrome for Testing"
 chs=None  # Use "Chrome-Headless-Shell"
 ```

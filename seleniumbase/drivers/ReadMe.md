@@ -39,12 +39,16 @@ sbase get edgedriver 115.0.1901.183
 🎛️ Use the `sbase get` command to download the `Chrome for Testing` and `Chrome-Headless-Shell` browser binaries. Example:
 
 ```zsh
+sbase get chromium  # (For base `Chromium`)
 sbase get cft  # (For `Chrome for Testing`)
 sbase get chs  # (For `Chrome-Headless-Shell`)
 ```
 
-Those commands download those binaries into the `seleniumbase/drivers` folder.
-To use the binaries from there in SeleniumBase scripts, set the `binary_location` to `cft` or `chs`.
+Those commands download those binaries into the `seleniumbase/drivers` folder. (There are subfolders, such as `cft_drivers`, `chs_drivers`, and `chromium_drivers`.)
+
+To use the base `Chromium` binary in SeleniumBase scripts, add `--use-chromium` on the command-line, or set `use_chromium=True` from within scripts.
+
+To use the `cft` or `chs` binaries in SeleniumBase scripts, set the `binary_location` to `cft` or `chs`, use `--cft` / `--chs` or set `cft=True` / `chs=True`.
 
 (Source: https://googlechromelabs.github.io/chrome-for-testing/)
 
