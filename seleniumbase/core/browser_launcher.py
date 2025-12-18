@@ -2747,6 +2747,7 @@ def _set_chrome_options(
         chrome_options.add_argument("--disable-renderer-backgrounding")
     chrome_options.add_argument("--disable-backgrounding-occluded-windows")
     chrome_options.add_argument("--disable-client-side-phishing-detection")
+    chrome_options.add_argument("--disable-device-discovery-notifications")
     chrome_options.add_argument("--disable-oopr-debug-crash-dump")
     chrome_options.add_argument("--disable-top-sites")
     chrome_options.add_argument("--ash-no-nudges")
