@@ -156,7 +156,7 @@ setup(
         'exceptiongroup>=1.3.1',
         'websockets>=15.0.1',
         'filelock~=3.19.1;python_version<"3.10"',
-        'filelock>=3.20.0;python_version>="3.10"',
+        'filelock>=3.20.1;python_version>="3.10"',
         'fasteners>=0.20',
         'mycdp>=1.3.2',
         'pynose>=1.5.5',
