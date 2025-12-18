@@ -68,6 +68,7 @@ sbase get chromedriver 114.0.5735.90
 sbase get chromedriver stable
 sbase get chromedriver beta
 sbase get chromedriver -p
+sbase get chromium
 sbase get cft 131
 sbase get chs
 ```

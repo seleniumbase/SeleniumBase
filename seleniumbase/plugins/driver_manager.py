@@ -140,6 +140,7 @@ def Driver(
     pls=None,  # Shortcut / Duplicate of "page_load_strategy".
     cft=None,  # Use "Chrome for Testing"
     chs=None,  # Use "Chrome-Headless-Shell"
+    use_chromium=None,  # Use base "Chromium"
 ) -> sb_driver.DriverMethods:
     """
     * SeleniumBase Driver as a Python Context Manager or a returnable object. *
@@ -665,11 +666,15 @@ def Driver(
             if arg.startswith("--bl="):
                 binary_location = arg.split("--bl=")[1]
                 break
-    if cft and not binary_location:
+    if use_chromium and not binary_location:
+        binary_location = "_chromium_"
+    elif cft and not binary_location:
         binary_location = "cft"
     elif chs and not binary_location:
         binary_location = "chs"
-    if "--cft" in sys_argv and not binary_location:
+    if "--use-chromium" in sys_argv and not binary_location:
+        binary_location = "_chromium_"
+    elif "--cft" in sys_argv and not binary_location:
         binary_location = "cft"
     elif "--chs" in sys_argv and not binary_location:
         binary_location = "chs"
@@ -747,7 +752,7 @@ def Driver(
         and browser not in ["chrome", "opera", "brave", "comet", "atlas"]
     ):
         message = (
-            '\n  Undetected-Chromedriver Mode ONLY supports Chrome!'
+            '\n  Undetected-Chromedriver Mode ONLY supports Chromium browsers!'
             '\n  ("uc=True" / "undetectable=True" / "--uc")'
             '\n  (Your browser choice was: "%s".)'
             '\n  (Will use "%s" without UC Mode.)\n' % (browser, browser)
@@ -778,7 +783,9 @@ def Driver(
     if headless2 and browser == "firefox":
         headless2 = False  # Only for Chromium browsers
         headless = True  # Firefox has regular headless
-    elif browser not in ["chrome", "edge"]:
+    elif browser not in [
+        "chrome", "edge", "opera", "brave", "comet", "atlas"
+    ]:
         headless2 = False  # Only for Chromium browsers
     if disable_csp is None:
         if (

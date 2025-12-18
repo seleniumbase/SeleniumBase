@@ -33,6 +33,7 @@ def pytest_addoption(parser):
     --brave  (Shortcut for "--browser=brave".)
     --comet  (Shortcut for "--browser=comet".)
     --atlas  (Shortcut for "--browser=atlas".)
+    --use-chromium  (Shortcut for using base `Chromium`)
     --cft  (Shortcut for using `Chrome for Testing`)
     --chs  (Shortcut for using `Chrome-Headless-Shell`)
     --settings-file=FILE  (Override default SeleniumBase settings.)
@@ -218,6 +219,13 @@ def pytest_addoption(parser):
         dest="use_atlas",
         default=False,
         help="""Shortcut for --browser=atlas""",
+    )
+    parser.addoption(
+        "--use-chromium",
+        action="store_true",
+        dest="use_chromium",
+        default=False,
+        help="""Shortcut for using base `Chromium`""",
     )
     parser.addoption(
         "--cft",
@@ -1623,7 +1631,7 @@ def pytest_addoption(parser):
         using_recorder
         and browser_changes == 1
         and browser_text not in [
-            "chrome", "edge", "opera", "brave", "comet", "atlas"
+            "chrome", "edge", "opera", "brave", "comet", "atlas", "chromium"
         ]
     ):
         message = (
@@ -1646,7 +1654,9 @@ def pytest_addoption(parser):
         undetectable = True
     if (
         browser_changes == 1
-        and browser_text not in ["chrome", "opera", "brave", "comet", "atlas"]
+        and browser_text not in [
+            "chrome", "opera", "brave", "comet", "atlas", "chromium"
+        ]
         and undetectable
     ):
         message = (
@@ -1714,7 +1724,11 @@ def pytest_configure(config):
     if sb_config.headless2 and sb_config.browser == "firefox":
         sb_config.headless2 = False  # Only for Chromium browsers
         sb_config.headless = True  # Firefox has regular headless
-    elif sb_config.browser not in ["chrome", "edge"]:
+    elif (
+        sb_config.browser not in [
+            "chrome", "edge", "opera", "brave", "comet", "atlas", "chromium"
+        ]
+    ):
         sb_config.headless2 = False  # Only for Chromium browsers
     sb_config.headed = config.getoption("headed")
     sb_config.xvfb = config.getoption("xvfb")
@@ -1760,7 +1774,9 @@ def pytest_configure(config):
             bin_loc = detect_b_ver.get_binary_location("atlas")
             if bin_loc and os.path.exists(bin_loc):
                 sb_config.binary_location = bin_loc
-    if config.getoption("use_cft") and not sb_config.binary_location:
+    if config.getoption("use_chromium") and not sb_config.binary_location:
+        sb_config.binary_location = "_chromium_"
+    elif config.getoption("use_cft") and not sb_config.binary_location:
         sb_config.binary_location = "cft"
     elif config.getoption("use_chs") and not sb_config.binary_location:
         sb_config.binary_location = "chs"

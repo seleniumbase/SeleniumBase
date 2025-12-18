@@ -7,6 +7,9 @@ import tempfile
 import zipfile
 from contextlib import suppress
 from seleniumbase.config import settings
+from seleniumbase.drivers import chromium_drivers
+from seleniumbase.fixtures import constants
+from seleniumbase.fixtures import shared_utils
 from typing import Union, List, Optional
 
 __all__ = [
@@ -23,6 +26,12 @@ is_posix = sys.platform.startswith(("darwin", "cygwin", "linux", "linux2"))
 
 PathLike = Union[str, pathlib.Path]
 AUTO = None
+IS_MAC = shared_utils.is_mac()
+IS_LINUX = shared_utils.is_linux()
+IS_WINDOWS = shared_utils.is_windows()
+CHROMIUM_DIR = os.path.dirname(
+    os.path.realpath(chromium_drivers.__file__)
+)
 
 
 class Config:
@@ -92,8 +101,51 @@ class Config:
                     os.makedirs(profile)
             with open(preferences_file, "w") as f:
                 f.write(preferences)
+        mock_keychain = False
         if not browser_executable_path:
             browser_executable_path = find_chrome_executable()
+        elif browser_executable_path == "_chromium_":
+            from filelock import FileLock
+            binary_folder = None
+            if IS_MAC:
+                binary_folder = "chrome-mac"
+            elif IS_LINUX:
+                binary_folder = "chrome-linux"
+            elif IS_WINDOWS:
+                binary_folder = "chrome-win"
+            binary_location = os.path.join(CHROMIUM_DIR, binary_folder)
+            gui_lock = FileLock(constants.MultiBrowser.DRIVER_FIXING_LOCK)
+            with gui_lock:
+                with suppress(Exception):
+                    shared_utils.make_writable(
+                        constants.MultiBrowser.DRIVER_FIXING_LOCK
+                    )
+                if not os.path.exists(binary_location):
+                    from seleniumbase.console_scripts import sb_install
+                    sys_args = sys.argv  # Save a copy of sys args
+                    sb_install.log_d("\nWarning: Chromium binary not found...")
+                    sb_install.main(override="chromium")
+                    sys.argv = sys_args  # Put back original args
+            binary_name = binary_location.split("/")[-1].split("\\")[-1]
+            if binary_name in ["chrome-mac"]:
+                binary_name = "Chromium"
+                binary_location += "/Chromium.app"
+                binary_location += "/Contents/MacOS/Chromium"
+            elif binary_name == "chrome-linux":
+                binary_name = "chrome"
+                binary_location += "/chrome"
+            elif binary_name in ["chrome-win"]:
+                binary_name = "chrome.exe"
+                binary_location += "\\chrome.exe"
+            if os.path.exists(binary_location):
+                mock_keychain = True
+                browser_executable_path = binary_location
+            else:
+                print(
+                    f"{binary_location} not found. "
+                    f"Defaulting to regular Chrome!"
+                )
+                browser_executable_path = find_chrome_executable()
         self._browser_args = browser_args
         self.browser_executable_path = browser_executable_path
         self.headless = headless
@@ -135,10 +187,10 @@ class Config:
             "--enable-privacy-sandbox-ads-apis",
             "--safebrowsing-disable-download-protection",
             '--simulate-outdated-no-au="Tue, 31 Dec 2099 23:59:59 GMT"',
-            "--password-store=basic",
             "--deny-permission-prompts",
             "--disable-application-cache",
             "--test-type",
+            "--ash-no-nudges",
             "--disable-breakpad",
             "--disable-setuid-sandbox",
             "--disable-prompt-on-repost",
@@ -154,6 +206,8 @@ class Config:
             "--disable-renderer-backgrounding",
             "--disable-dev-shm-usage",
         ]
+        if mock_keychain:
+            self._default_browser_args.append("--use-mock-keychain")
 
     @property
     def browser_args(self):

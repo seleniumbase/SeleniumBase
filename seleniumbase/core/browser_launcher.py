@@ -32,6 +32,7 @@ from seleniumbase.drivers import opera_drivers  # still uses chromedriver
 from seleniumbase.drivers import brave_drivers  # still uses chromedriver
 from seleniumbase.drivers import comet_drivers  # still uses chromedriver
 from seleniumbase.drivers import atlas_drivers  # still uses chromedriver
+from seleniumbase.drivers import chromium_drivers  # still uses chromedriver
 from seleniumbase import extensions  # browser extensions storage folder
 from seleniumbase.config import settings
 from seleniumbase.core import detect_b_ver
@@ -52,6 +53,9 @@ DRIVER_DIR_OPERA = os.path.dirname(os.path.realpath(opera_drivers.__file__))
 DRIVER_DIR_BRAVE = os.path.dirname(os.path.realpath(brave_drivers.__file__))
 DRIVER_DIR_COMET = os.path.dirname(os.path.realpath(comet_drivers.__file__))
 DRIVER_DIR_ATLAS = os.path.dirname(os.path.realpath(atlas_drivers.__file__))
+DRIVER_DIR_CHROMIUM = os.path.dirname(
+    os.path.realpath(chromium_drivers.__file__)
+)
 # Make sure that the SeleniumBase DRIVER_DIR is at the top of the System PATH
 # (Changes to the System PATH with os.environ only last during the test run)
 if not os.environ["PATH"].startswith(DRIVER_DIR):
@@ -3057,6 +3061,8 @@ def get_driver(
         driver_dir = DRIVER_DIR_CFT
     if getattr(sb_config, "binary_location", None) == "chs":
         driver_dir = DRIVER_DIR_CHS
+    if getattr(sb_config, "binary_location", None) == "_chromium_":
+        driver_dir = DRIVER_DIR_CHROMIUM
     if _special_binary_exists(binary_location, "opera"):
         driver_dir = DRIVER_DIR_OPERA
         sb_config._cdp_browser = "opera"
@@ -3120,6 +3126,51 @@ def get_driver(
             or browser_name == constants.Browser.EDGE
         )
     ):
+        if (
+            binary_location.lower() == "_chromium_"
+            and browser_name == constants.Browser.GOOGLE_CHROME
+        ):
+            binary_folder = None
+            if IS_MAC:
+                binary_folder = "chrome-mac"
+            elif IS_LINUX:
+                binary_folder = "chrome-linux"
+            elif IS_WINDOWS:
+                binary_folder = "chrome-win"
+            if binary_folder:
+                binary_location = os.path.join(driver_dir, binary_folder)
+                if not os.path.exists(binary_location):
+                    from seleniumbase.console_scripts import sb_install
+                    args = " ".join(sys.argv)
+                    if not (
+                        "-n" in sys.argv or " -n=" in args or args == "-c"
+                    ):
+                        # (Not multithreaded)
+                        sys_args = sys.argv  # Save a copy of current sys args
+                        log_d("\nWarning: Chromium binary not found...")
+                        try:
+                            sb_install.main(override="chromium")
+                        except Exception as e:
+                            log_d("\nWarning: Chrome download failed: %s" % e)
+                        sys.argv = sys_args  # Put back the original sys args
+                    else:
+                        chrome_fixing_lock = fasteners.InterProcessLock(
+                            constants.MultiBrowser.DRIVER_FIXING_LOCK
+                        )
+                        with chrome_fixing_lock:
+                            with suppress(Exception):
+                                shared_utils.make_writable(
+                                    constants.MultiBrowser.DRIVER_FIXING_LOCK
+                                )
+                            if not os.path.exists(binary_location):
+                                sys_args = sys.argv  # Save a copy of sys args
+                                log_d(
+                                    "\nWarning: Chromium binary not found..."
+                                )
+                                sb_install.main(override="chromium")
+                                sys.argv = sys_args  # Put back original args
+            else:
+                binary_location = None
         if (
             binary_location.lower() == "cft"
             and browser_name == constants.Browser.GOOGLE_CHROME
@@ -3257,10 +3308,23 @@ def get_driver(
                 binary_name = "Google Chrome for Testing"
                 binary_location += "/Google Chrome for Testing.app"
                 binary_location += "/Contents/MacOS/Google Chrome for Testing"
+            elif binary_name == "Chromium.app":
+                binary_name = "Chromium"
+                binary_location += "/Contents/MacOS/Chromium"
+            elif binary_name in ["chrome-mac"]:
+                binary_name = "Chromium"
+                binary_location += "/Chromium.app"
+                binary_location += "/Contents/MacOS/Chromium"
             elif binary_name == "chrome-linux64":
                 binary_name = "chrome"
                 binary_location += "/chrome"
+            elif binary_name == "chrome-linux":
+                binary_name = "chrome"
+                binary_location += "/chrome"
             elif binary_name in ["chrome-win32", "chrome-win64"]:
+                binary_name = "chrome.exe"
+                binary_location += "\\chrome.exe"
+            elif binary_name in ["chrome-win"]:
                 binary_name = "chrome.exe"
                 binary_location += "\\chrome.exe"
             elif binary_name in [
@@ -4034,6 +4098,9 @@ def get_local_driver(
     downloads_path = DOWNLOADS_FOLDER
     driver_dir = DRIVER_DIR
     special_chrome = False
+    if getattr(sb_config, "binary_location", None) == "_chromium_":
+        special_chrome = True
+        driver_dir = DRIVER_DIR_CHROMIUM
     if getattr(sb_config, "binary_location", None) == "cft":
         special_chrome = True
         driver_dir = DRIVER_DIR_CFT
@@ -4969,6 +5036,8 @@ def get_local_driver(
                 device_height,
                 device_pixel_ratio,
             )
+            if binary_location and "chromium_drivers" in binary_location:
+                chrome_options.add_argument("--use-mock-keychain")
             use_version = "latest"
             major_chrome_version = None
             saved_mcv = None

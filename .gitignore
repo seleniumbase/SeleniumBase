@@ -82,6 +82,16 @@ msedgedriver.exe
 operadriver.exe
 uc_driver.exe
 
+# Chromium Zip Files
+chrome-mac.zip
+chrome-linux.zip
+chrome-win.zip
+
+# Chromium folders
+chrome-mac
+chrome-linux
+chrome-win
+
 # Chrome for Testing Zip Files
 chrome-mac-arm64.zip
 chrome-mac-x64.zip
