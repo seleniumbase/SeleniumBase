@@ -3058,22 +3058,22 @@ def get_driver(
 ):
     sb_config._ext_dirs = []
     driver_dir = DRIVER_DIR
-    if getattr(sb_config, "binary_location", None) == "cft":
-        driver_dir = DRIVER_DIR_CFT
-    if getattr(sb_config, "binary_location", None) == "chs":
-        driver_dir = DRIVER_DIR_CHS
-    if getattr(sb_config, "binary_location", None) == "_chromium_":
+    if binary_location == "_chromium_":
         driver_dir = DRIVER_DIR_CHROMIUM
-    if _special_binary_exists(binary_location, "opera"):
+    elif binary_location == "cft":
+        driver_dir = DRIVER_DIR_CFT
+    elif binary_location == "chs":
+        driver_dir = DRIVER_DIR_CHS
+    elif _special_binary_exists(binary_location, "opera"):
         driver_dir = DRIVER_DIR_OPERA
         sb_config._cdp_browser = "opera"
-    if _special_binary_exists(binary_location, "brave"):
+    elif _special_binary_exists(binary_location, "brave"):
         driver_dir = DRIVER_DIR_BRAVE
         sb_config._cdp_browser = "brave"
-    if _special_binary_exists(binary_location, "comet"):
+    elif _special_binary_exists(binary_location, "comet"):
         driver_dir = DRIVER_DIR_COMET
         sb_config._cdp_browser = "comet"
-    if _special_binary_exists(binary_location, "atlas"):
+    elif _special_binary_exists(binary_location, "atlas"):
         driver_dir = DRIVER_DIR_ATLAS
         sb_config._cdp_browser = "atlas"
     if (
@@ -4099,27 +4099,31 @@ def get_local_driver(
     downloads_path = DOWNLOADS_FOLDER
     driver_dir = DRIVER_DIR
     special_chrome = False
-    if getattr(sb_config, "binary_location", None) == "_chromium_":
-        special_chrome = True
-        driver_dir = DRIVER_DIR_CHROMIUM
-    if getattr(sb_config, "binary_location", None) == "cft":
-        special_chrome = True
-        driver_dir = DRIVER_DIR_CFT
-    if getattr(sb_config, "binary_location", None) == "chs":
-        special_chrome = True
-        driver_dir = DRIVER_DIR_CHS
-    if _special_binary_exists(binary_location, "opera"):
-        special_chrome = True
-        driver_dir = DRIVER_DIR_OPERA
-    if _special_binary_exists(binary_location, "brave"):
-        special_chrome = True
-        driver_dir = DRIVER_DIR_BRAVE
-    if _special_binary_exists(binary_location, "comet"):
-        special_chrome = True
-        driver_dir = DRIVER_DIR_COMET
-    if _special_binary_exists(binary_location, "atlas"):
-        special_chrome = True
-        driver_dir = DRIVER_DIR_ATLAS
+    if binary_location:
+        if (
+            binary_location == "_chromium_"
+            or "chromium_drivers" in binary_location
+        ):
+            special_chrome = True
+            driver_dir = DRIVER_DIR_CHROMIUM
+        elif binary_location == "cft" or "cft_drivers" in binary_location:
+            special_chrome = True
+            driver_dir = DRIVER_DIR_CFT
+        elif binary_location == "chs" or "chs_drivers" in binary_location:
+            special_chrome = True
+            driver_dir = DRIVER_DIR_CHS
+        elif _special_binary_exists(binary_location, "opera"):
+            special_chrome = True
+            driver_dir = DRIVER_DIR_OPERA
+        elif _special_binary_exists(binary_location, "brave"):
+            special_chrome = True
+            driver_dir = DRIVER_DIR_BRAVE
+        elif _special_binary_exists(binary_location, "comet"):
+            special_chrome = True
+            driver_dir = DRIVER_DIR_COMET
+        elif _special_binary_exists(binary_location, "atlas"):
+            special_chrome = True
+            driver_dir = DRIVER_DIR_ATLAS
     if (
         hasattr(sb_config, "settings")
         and getattr(sb_config.settings, "NEW_DRIVER_DIR", None)
