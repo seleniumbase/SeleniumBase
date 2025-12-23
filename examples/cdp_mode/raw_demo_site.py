@@ -20,7 +20,7 @@ with SB(uc=True, test=True) as sb:
 
     # Hover & click a dropdown element and assert results
     sb.cdp.assert_text("Automation Practice", "h3")
-    sb.cdp.gui_hover_and_click("#myDropdown", "#dropOption2")
+    sb.cdp.hover_and_click("#myDropdown", "#dropOption2")
     sb.cdp.assert_text("Link Two Selected", "h3")
 
     # Click a button and then verify the expected results

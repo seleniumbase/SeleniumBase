@@ -29,7 +29,7 @@ with SB(uc=True, test=True) as sb:
     url = "https://seleniumbase.io/other/canvas"
     sb.activate_cdp_mode(url)
     sb.assert_title_contains("Canvas")
-    sb.cdp.gui_click_with_offset("canvas", 0, 0, center=True)
+    sb.cdp.click_with_offset("canvas", 0, 0, center=True)
     sb.sleep(1)
     sb.uc_gui_press_key("ENTER")
     sb.sleep(0.5)
