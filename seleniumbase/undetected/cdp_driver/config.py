@@ -207,6 +207,7 @@ class Config:
             "--disable-top-sites",
             "--disable-translate",
             "--dns-prefetch-disable",
+            "--disable-component-update",
             "--disable-renderer-backgrounding",
             "--disable-dev-shm-usage",
         ]
@@ -264,7 +265,7 @@ class Config:
             "OptimizationTargetPrediction,OptimizationGuideModelDownloading,"
             "SidePanelPinning,UserAgentClientHint,PrivacySandboxSettings4,"
             "OptimizationHintsFetching,InterestFeedContentSuggestions,"
-            "Bluetooth,WebBluetooth,UnifiedWebBluetooth,"
+            "Bluetooth,WebBluetooth,UnifiedWebBluetooth,ComponentUpdater,"
             "DisableLoadExtensionCommandLineSwitch,"
             "WebAuthentication,PasskeyAuth"
         ]

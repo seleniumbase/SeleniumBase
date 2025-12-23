@@ -2384,6 +2384,31 @@ class CDPMethods():
             self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.wait())
 
+    def hover_element(self, selector, timeframe=0.25):
+        element = self.select(selector)
+        gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
+        with gui_lock:
+            self.bring_active_window_to_front()
+            self.sleep(0.02)
+            element.mouse_move()
+            self.sleep(timeframe)
+
+    def hover_and_click(self, hover_selector, click_selector):
+        if getattr(sb_config, "_cdp_mobile_mode", None):
+            self.select(click_selector).click()
+            return
+        hover_element = self.select(hover_selector)
+        gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
+        with gui_lock:
+            self.bring_active_window_to_front()
+            self.sleep(0.02)
+            hover_element.mouse_move()
+            self.sleep(0.25)
+            try:
+                self.click(click_selector, timeout=0.5)
+            except Exception:
+                self.select(click_selector, timeout=2).click()
+
     def gui_hover_and_click(self, hover_selector, click_selector):
         if getattr(sb_config, "_cdp_mobile_mode", None):
             self.select(click_selector).click()

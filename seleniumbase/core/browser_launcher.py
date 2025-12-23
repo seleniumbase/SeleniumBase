@@ -846,6 +846,8 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
     cdp.gui_hover_x_y = CDPM.gui_hover_x_y
     cdp.gui_hover_element = CDPM.gui_hover_element
     cdp.gui_hover_and_click = CDPM.gui_hover_and_click
+    cdp.hover_element = CDPM.hover_element
+    cdp.hover_and_click = CDPM.hover_and_click
     cdp.internalize_links = CDPM.internalize_links
     cdp.open_new_window = CDPM.open_new_window
     cdp.switch_to_window = CDPM.switch_to_window
@@ -2736,6 +2738,7 @@ def _set_chrome_options(
     chrome_options.add_argument("--disable-save-password-bubble")
     chrome_options.add_argument("--disable-single-click-autofill")
     chrome_options.add_argument("--allow-file-access-from-files")
+    chrome_options.add_argument("--disable-component-update")
     chrome_options.add_argument("--disable-prompt-on-repost")
     chrome_options.add_argument("--dns-prefetch-disable")
     chrome_options.add_argument("--disable-translate")
@@ -2764,6 +2767,7 @@ def _set_chrome_options(
     included_disabled_features.append("OptimizationHints")
     included_disabled_features.append("OptimizationHintsFetching")
     included_disabled_features.append("Translate")
+    included_disabled_features.append("ComponentUpdater")
     included_disabled_features.append("OptimizationTargetPrediction")
     included_disabled_features.append("OptimizationGuideModelDownloading")
     included_disabled_features.append("DownloadBubble")
@@ -4789,6 +4793,7 @@ def get_local_driver(
         if devtools and not headless:
             edge_options.add_argument("--auto-open-devtools-for-tabs")
         edge_options.add_argument("--allow-file-access-from-files")
+        edge_options.add_argument("--disable-component-update")
         edge_options.add_argument("--allow-insecure-localhost")
         edge_options.add_argument("--allow-running-insecure-content")
         if user_agent:
@@ -4847,6 +4852,7 @@ def get_local_driver(
         included_disabled_features.append("OptimizationHints")
         included_disabled_features.append("OptimizationHintsFetching")
         included_disabled_features.append("Translate")
+        included_disabled_features.append("ComponentUpdater")
         included_disabled_features.append("OptimizationTargetPrediction")
         included_disabled_features.append("OptimizationGuideModelDownloading")
         included_disabled_features.append("InsecureDownloadWarnings")
