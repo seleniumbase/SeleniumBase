@@ -1637,14 +1637,14 @@ class BaseCase(unittest.TestCase):
     def click_link_text(self, link_text, timeout=None):
         """This method clicks link text on a page."""
         self.__check_scope()
-        if self.__is_cdp_swap_needed():
-            self.cdp.find_element(link_text, timeout=timeout).click()
-            return
-        self.__skip_if_esc()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        if self.__is_cdp_swap_needed():
+            self.cdp.find_element(link_text, timeout=timeout).click()
+            return
+        self.__skip_if_esc()
         link_text = self.__get_type_checked_text(link_text)
         if self.__is_cdp_swap_needed():
             self.cdp.click_link(link_text)
@@ -2717,7 +2717,7 @@ class BaseCase(unittest.TestCase):
         original_by = by
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_cdp_swap_needed():
-            self.cdp.gui_hover_element(selector)
+            self.cdp.hover_element(selector)
             return
         self.wait_for_element_visible(
             original_selector, by=original_by, timeout=timeout
@@ -2762,7 +2762,7 @@ class BaseCase(unittest.TestCase):
             click_selector, click_by
         )
         if self.__is_cdp_swap_needed():
-            self.cdp.gui_hover_and_click(hover_selector, click_selector)
+            self.cdp.hover_and_click(hover_selector, click_selector)
             return
         dropdown_element = self.wait_for_element_visible(
             original_selector, by=original_by, timeout=timeout
@@ -9291,81 +9291,42 @@ class BaseCase(unittest.TestCase):
         self, selector, text, by="css selector", timeout=None, retry=False
     ):
         """Same as self.update_text()"""
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        selector, by = self.__recalculate_selector(selector, by)
         self.update_text(selector, text, by=by, timeout=timeout, retry=retry)
 
     def fill(
         self, selector, text, by="css selector", timeout=None, retry=False
     ):
         """Same as self.update_text()"""
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        selector, by = self.__recalculate_selector(selector, by)
         self.update_text(selector, text, by=by, timeout=timeout, retry=retry)
 
     def write(
         self, selector, text, by="css selector", timeout=None, retry=False
     ):
         """Same as self.update_text()"""
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        selector, by = self.__recalculate_selector(selector, by)
         self.update_text(selector, text, by=by, timeout=timeout, retry=retry)
 
     def click_link(self, link_text, timeout=None):
         """Same as self.click_link_text()"""
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
         self.click_link_text(link_text, timeout=timeout)
 
     def click_partial_link(self, partial_link_text, timeout=None):
         """Same as self.click_partial_link_text()"""
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
         self.click_partial_link_text(partial_link_text, timeout=timeout)
 
     def right_click(self, selector, by="css selector", timeout=None):
         """Same as self.context_click()"""
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
         self.context_click(selector, by=by, timeout=timeout)
+
+    def hover_element(self, selector, by="css selector", timeout=None):
+        """Same as self.hover()"""
+        return self.hover(selector, by=by, timeout=timeout)
 
     def hover_on_element(self, selector, by="css selector", timeout=None):
         """Same as self.hover()"""
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
         return self.hover(selector, by=by, timeout=timeout)
 
     def hover_over_element(self, selector, by="css selector", timeout=None):
         """Same as self.hover()"""
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
         return self.hover(selector, by=by, timeout=timeout)
 
     def wait_for_element_visible(

@@ -501,8 +501,8 @@ class Element:
             logger.warning("Could not calculate box model for %s", self)
             return
         logger.debug("Clicking on location: %.2f, %.2f" % center)
-        await asyncio.gather(
-            self.flash_async(0.25),
+        asyncio.create_task(self.flash_async(0.25))
+        asyncio.create_task(
             self._tab.send(
                 cdp.input_.dispatch_mouse_event(
                     "mousePressed",
@@ -514,6 +514,8 @@ class Element:
                     click_count=1,
                 )
             ),
+        )
+        asyncio.create_task(
             self._tab.send(
                 cdp.input_.dispatch_mouse_event(
                     "mouseReleased",
@@ -558,11 +560,13 @@ class Element:
             logger.debug("Clicking on location: %.2f, %.2f" % center_pos)
         else:
             logger.debug("Clicking on location: %.2f, %.2f" % (x_pos, y_pos))
-        await asyncio.gather(
+        asyncio.create_task(
             self.flash_async(
-                x_offset=x_offset - int(width / 2),
-                y_offset=y_offset - int(height / 2),
+                x_offset=x_offset - (width / 2),
+                y_offset=y_offset - (height / 2),
             ),
+        )
+        asyncio.create_task(
             self._tab.send(
                 cdp.input_.dispatch_mouse_event(
                     "mousePressed",
@@ -573,7 +577,9 @@ class Element:
                     buttons=buttons,
                     click_count=1,
                 )
-            ),
+            )
+        )
+        asyncio.create_task(
             self._tab.send(
                 cdp.input_.dispatch_mouse_event(
                     "mouseReleased",
@@ -602,16 +608,13 @@ class Element:
             *center,
             self,
         )
-        await self._tab.send(
-            cdp.input_.dispatch_mouse_event(
-                "mouseMoved", x=center[0], y=center[1]
-            )
-        )
-        await self._tab.sleep(0.05)
-        await self._tab.send(
-            cdp.input_.dispatch_mouse_event(
-                "mouseReleased", x=center[0], y=center[1]
-            )
+        await asyncio.gather(
+            self._tab.send(
+                cdp.input_.dispatch_mouse_event(
+                    "mouseMoved", x=center[0], y=center[1]
+                )
+            ),
+            self._tab.sleep(0.05),
         )
 
     async def mouse_drag_async(
