@@ -768,10 +768,10 @@ class UCPresentationClass(BaseCase):
         )
         self.begin_presentation(filename="uc_presentation.html")
 
-        with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
+        with SB(uc=True, test=True, locale="en") as sb:
             url = "https://www.priceline.com"
             sb.activate_cdp_mode(url)
-            sb.sleep(2.5)
+            sb.sleep(1.8)
             sb.click('input[name="endLocation"]')
             sb.sleep(1.2)
             location = "Portland, Oregon, US"
@@ -785,7 +785,12 @@ class UCPresentationClass(BaseCase):
             sb.click('button[aria-label="Dismiss calendar"]')
             sb.sleep(0.5)
             sb.click('button[data-testid="HOTELS_SUBMIT_BUTTON"]')
-            sb.sleep(5.5)
+            sb.sleep(0.5)
+            if sb.is_element_visible('[aria-label="Close Modal"]'):
+                sb.click('[aria-label="Close Modal"]')
+                sb.sleep(0.5)
+                sb.click('button[data-testid="HOTELS_SUBMIT_BUTTON"]')
+            sb.sleep(4.8)
             if len(sb.cdp.get_tabs()) > 1:
                 sb.cdp.close_active_tab()
                 sb.cdp.switch_to_newest_tab()

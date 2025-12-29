@@ -207,7 +207,6 @@ class Config:
             "--disable-top-sites",
             "--disable-translate",
             "--dns-prefetch-disable",
-            "--disable-component-update",
             "--disable-renderer-backgrounding",
             "--disable-dev-shm-usage",
         ]
