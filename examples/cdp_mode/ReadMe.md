@@ -667,6 +667,8 @@ await tab.close()
 await tab.scroll_down(amount=25)
 await tab.scroll_up(amount=25)
 await tab.wait_for(selector="", text="", timeout=10)
+await tab.set_attributes(selector, attribute, value)
+await tab.internalize_links()
 await tab.download_file(url, filename=None)
 await tab.save_screenshot(
     filename="auto", format="png", full_page=False)
