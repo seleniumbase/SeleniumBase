@@ -1092,6 +1092,39 @@ class Tab(Connection):
                 await self.sleep(0.068)
             return item
 
+    async def set_attributes(self, selector, attribute, value):
+        """This method uses JavaScript to set/update a common attribute.
+        All matching selectors from querySelectorAll() are used.
+        Example => (Make all links on a website redirect to Google):
+        self.set_attributes("a", "href", "https://google.com")"""
+        attribute = re.escape(attribute)
+        attribute = js_utils.escape_quotes_if_needed(attribute)
+        value = re.escape(value)
+        value = js_utils.escape_quotes_if_needed(value)
+        if selector.startswith(("/", "./", "(")):
+            with suppress(Exception):
+                selector = js_utils.convert_to_css_selector(selector, "xpath")
+        css_selector = selector
+        css_selector = re.escape(css_selector)  # Add "\\" to special chars
+        css_selector = js_utils.escape_quotes_if_needed(css_selector)
+        js_code = (
+            """var $elements = document.querySelectorAll('%s');
+            var index = 0, length = $elements.length;
+            for(; index < length; index++){
+            $elements[index].setAttribute('%s','%s');}""" % (
+                css_selector,
+                attribute,
+                value,
+            )
+        )
+        with suppress(Exception):
+            await self.evaluate(js_code)
+
+    async def internalize_links(self):
+        """All `target="_blank"` links become `target="_self"`.
+        This prevents those links from opening in a new tab."""
+        await self.set_attributes('[target="_blank"]', "target", "_self")
+
     async def download_file(
         self, url: str, filename: Optional[PathLike] = None
     ):
@@ -1336,8 +1369,8 @@ class Tab(Connection):
             return True
         return False
 
-    async def __on_a_g_recaptcha_page(self, source=None):
-        await self.sleep(0.4)
+    async def __on_a_g_recaptcha_page(self, *args, **kwargs):
+        await self.sleep(0.4)  # reCAPTCHA may need a moment to appear
         source = await self.get_html()
         if (
             (

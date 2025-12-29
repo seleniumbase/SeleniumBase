@@ -372,7 +372,10 @@ class Element:
         arguments = [cdp.runtime.CallArgument(
             object_id=self._remote_object.object_id
         )]
-        await self.flash_async(0.25)
+        script = 'sessionStorage.getItem("pxsid") !== null;'
+        using_px = await self.tab.evaluate(script)
+        if not using_px:
+            await self.flash_async(0.25)
         await self._tab.send(
             cdp.runtime.call_function_on(
                 "(el) => el.click()",
@@ -501,7 +504,10 @@ class Element:
             logger.warning("Could not calculate box model for %s", self)
             return
         logger.debug("Clicking on location: %.2f, %.2f" % center)
-        asyncio.create_task(self.flash_async(0.25))
+        script = 'sessionStorage.getItem("pxsid") !== null;'
+        using_px = await self.tab.evaluate(script)
+        if not using_px:
+            asyncio.create_task(self.flash_async(0.25))
         asyncio.create_task(
             self._tab.send(
                 cdp.input_.dispatch_mouse_event(
@@ -560,12 +566,15 @@ class Element:
             logger.debug("Clicking on location: %.2f, %.2f" % center_pos)
         else:
             logger.debug("Clicking on location: %.2f, %.2f" % (x_pos, y_pos))
-        asyncio.create_task(
-            self.flash_async(
-                x_offset=x_offset - (width / 2),
-                y_offset=y_offset - (height / 2),
-            ),
-        )
+        script = 'sessionStorage.getItem("pxsid") !== null;'
+        using_px = await self.tab.evaluate(script)
+        if not using_px:
+            asyncio.create_task(
+                self.flash_async(
+                    x_offset=x_offset - (width / 2),
+                    y_offset=y_offset - (height / 2),
+                ),
+            )
         asyncio.create_task(
             self._tab.send(
                 cdp.input_.dispatch_mouse_event(

@@ -580,7 +580,7 @@ class Browser:
             )  # noqa
         exe = self.config.browser_executable_path
         params = self.config()
-        logger.info(
+        logger.debug(
             "Starting\n\texecutable :%s\n\narguments:\n%s",
             exe,
             "\n\t".join(params),
@@ -636,7 +636,7 @@ class Browser:
             self.info.webSocketDebuggerUrl, browser=self
         )
         if self.config.autodiscover_targets:
-            logger.info("Enabling autodiscover targets")
+            logger.debug("Enabling autodiscover targets")
             self.connection.handlers[cdp.target.TargetInfoChanged] = [
                 self._handle_target_update
             ]
@@ -863,7 +863,7 @@ class Browser:
         for _ in range(3):
             try:
                 self._process.terminate()
-                logger.info(
+                logger.debug(
                     "Terminated browser with pid %d successfully."
                     % self._process.pid
                 )
@@ -871,7 +871,7 @@ class Browser:
             except (Exception,):
                 try:
                     self._process.kill()
-                    logger.info(
+                    logger.debug(
                         "Killed browser with pid %d successfully."
                         % self._process.pid
                     )
@@ -880,14 +880,14 @@ class Browser:
                     try:
                         if hasattr(self, "browser_process_pid"):
                             os.kill(self._process_pid, 15)
-                            logger.info(
+                            logger.debug(
                                 "Killed browser with pid %d "
                                 "using signal 15 successfully."
                                 % self._process.pid
                             )
                             break
                     except (TypeError,):
-                        logger.info("typerror", exc_info=True)
+                        logger.info("TypeError", exc_info=True)
                         pass
                     except (PermissionError,):
                         logger.info(
@@ -896,7 +896,7 @@ class Browser:
                         )
                         pass
                     except (ProcessLookupError,):
-                        logger.info("Process lookup failure!")
+                        logger.info("ProcessLookupError")
                         pass
                     except (Exception,):
                         raise

@@ -1664,13 +1664,15 @@ class CDPMethods():
         css_selector = self.__convert_to_css_if_xpath(selector)
         css_selector = re.escape(css_selector)  # Add "\\" to special chars
         css_selector = js_utils.escape_quotes_if_needed(css_selector)
-        js_code = """var $elements = document.querySelectorAll('%s');
-                  var index = 0, length = $elements.length;
-                  for(; index < length; index++){
-                  $elements[index].setAttribute('%s','%s');}""" % (
-            css_selector,
-            attribute,
-            value,
+        js_code = (
+            """var $elements = document.querySelectorAll('%s');
+            var index = 0, length = $elements.length;
+            for(; index < length; index++){
+            $elements[index].setAttribute('%s','%s');}""" % (
+                css_selector,
+                attribute,
+                value,
+            )
         )
         with suppress(Exception):
             self.loop.run_until_complete(self.page.evaluate(js_code))
@@ -1965,8 +1967,8 @@ class CDPMethods():
             return True
         return False
 
-    def _on_a_g_recaptcha_page(self, source=None):
-        time.sleep(0.4)
+    def _on_a_g_recaptcha_page(self, *args, **kwargs):
+        time.sleep(0.4)  # reCAPTCHA may need a moment to appear
         self.loop.run_until_complete(self.page.wait())
         source = self.get_page_source()
         if (
