@@ -3446,6 +3446,46 @@ class BaseCase(unittest.TestCase):
             file_path = os.path.join(abs_path, html_file)
         self.open("file://" + file_path)
 
+    def evaluate(self, expression):
+        """Run a JavaScript expression and return the result."""
+        self.__check_scope()
+        if self.__is_cdp_swap_needed():
+            return self.cdp.evaluate(expression)
+        self._check_browser()
+        original_expression = expression
+        expression = expression.strip()
+        exp_list = expression.split("\n")
+        if exp_list and exp_list[-1].strip().startswith("return "):
+            expression = (
+                "\n".join(exp_list[0:-1]) + "\n"
+                + exp_list[-1].strip()[len("return "):]
+            ).strip()
+        evaluation = self.driver.execute_cdp_cmd(
+            "Runtime.evaluate",
+            {
+                "expression": expression
+            },
+        )
+        if "value" in evaluation["result"]:
+            return evaluation["result"]["value"]
+        elif evaluation["result"]["type"] == "undefined":
+            return None
+        elif "exceptionDetails" in evaluation:
+            raise Exception(evaluation["result"]["description"], expression)
+        elif evaluation["result"]["type"] == "object":
+            if "return " not in original_expression:
+                expression = "return " + original_expression.strip()
+            # Need to use execute_script() to return a WebDriver object.
+            # If this causes duplicate evaluation, don't use evaluate().
+            return self.execute_script(expression)
+        elif evaluation["result"]["type"] == "function":
+            return {}  # This is what sb.cdp.evaluate returns
+        elif "description" in evaluation["result"]:
+            # At this point, the description is the exception
+            raise Exception(evaluation["result"]["description"], expression)
+        else:  # Possibly an unhandled case if reached
+            return None
+
     def execute_script(self, script, *args, **kwargs):
         self.__check_scope()
         if self.__is_cdp_swap_needed():

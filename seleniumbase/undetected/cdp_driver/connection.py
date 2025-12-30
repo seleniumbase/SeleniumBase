@@ -639,12 +639,14 @@ class Listener:
                                 or inspect.iscoroutine(callback)
                             ):
                                 try:
-                                    asyncio.create_task(callback(event, self))
+                                    asyncio.create_task(
+                                        callback(event, self.connection)
+                                    )
                                 except TypeError:
                                     asyncio.create_task(callback(event))
                             else:
                                 try:
-                                    callback(event, self)
+                                    callback(event, self.connection)
                                 except TypeError:
                                     callback(event)
                         except Exception as e:

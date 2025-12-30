@@ -6011,8 +6011,18 @@ def get_local_driver(
                                     time.sleep(0.003)
                             driver.switch_to.window(driver.window_handles[0])
                             time.sleep(0.003)
-                            driver.connect()
-                            time.sleep(0.003)
+                            # seleniumbase/SeleniumBase/discussions/4190
+                            if getattr(sb_config, "skip_133_patch", None):
+                                # To skip the connect() patch for Chrome 133+:
+                                # from seleniumbase import config as sb_config
+                                # sb_config.skip_133_patch = True
+                                # (Do the above before launching the browser.)
+                                pass
+                            else:
+                                # This fixes an issue on Chrome 133+
+                                # (Some people might not need it though.)
+                                driver.connect()
+                                time.sleep(0.003)
                     if mobile_emulator:
                         uc_metrics = {}
                         if (

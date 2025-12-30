@@ -8,7 +8,7 @@ with SB(uc=True, test=True, locale="en") as sb:
     search_box = 'input[data-at="header-search-text"]'
     search = "The Land by Psagot Cabernet"
     if not sb.is_element_present(search_box):
-        sb.cdp.evaluate("window.location.reload();")
+        sb.evaluate("window.location.reload();")
         sb.sleep(1.8)
     sb.click_if_visible("#onetrust-close-btn-container button")
     sb.sleep(0.5)
