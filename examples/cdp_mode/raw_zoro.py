@@ -9,7 +9,7 @@ with SB(uc=True, test=True, locale="en") as sb:
     search = "Flir Thermal Camera"
     required_text = "Camera"
     if not sb.is_element_present(search_box):
-        sb.cdp.evaluate("window.location.reload();")
+        sb.evaluate("window.location.reload();")
         sb.sleep(1.2)
     sb.click(search_box)
     sb.sleep(1.2)

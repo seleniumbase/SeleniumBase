@@ -6,7 +6,7 @@ with SB(uc=True, test=True, locale="en") as sb:
     sb.open(url)
     sb.sleep(1.2)
     if not sb.is_element_present('[title="Locate Stores"]'):
-        sb.cdp.evaluate("window.location.reload();")
+        sb.evaluate("window.location.reload();")
         sb.sleep(1.2)
     category = "women"
     search = "Dresses"
