@@ -770,7 +770,9 @@ class CDPMethods():
         if tag_name:
             tag_name = tag_name.lower().strip()
         if (
-            tag_name in ["a", "button", "canvas", "div", "input", "li", "span"]
+            tag_name in [
+                "a", "button", "canvas", "div", "input", "li", "span", "label"
+            ]
             and "contains(" not in selector
         ):
             try:
