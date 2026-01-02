@@ -23,6 +23,62 @@ import os
 import sys
 
 
+def generate_github_actions_workflow(python_versions, browsers, os_versions):
+    python_list = [v.strip() for v in python_versions.split(",")]
+    browser_list = [b.strip() for b in browsers.split(",")]
+    os_list = [o.strip() for o in os_versions.split(",")]
+
+    workflow_lines = []
+    workflow_lines.append("name: SeleniumBase Tests")
+    workflow_lines.append("")
+    workflow_lines.append("on:")
+    workflow_lines.append("  push:")
+    workflow_lines.append("  pull_request:")
+    workflow_lines.append("")
+    workflow_lines.append("jobs:")
+    workflow_lines.append("  test:")
+    workflow_lines.append("    runs-on: ${{ matrix.os }}")
+    workflow_lines.append("    strategy:")
+    workflow_lines.append("      fail-fast: false")
+    workflow_lines.append("      matrix:")
+    workflow_lines.append("        python-version:")
+    for py_ver in python_list:
+        workflow_lines.append('          - "%s"' % py_ver)
+    workflow_lines.append("        browser:")
+    for browser in browser_list:
+        workflow_lines.append('          - "%s"' % browser)
+    workflow_lines.append("        os:")
+    for os_ver in os_list:
+        workflow_lines.append('          - "%s"' % os_ver)
+    workflow_lines.append("")
+    workflow_lines.append("    steps:")
+    workflow_lines.append("    - uses: actions/checkout@v3")
+    workflow_lines.append("    - name: Set up Python ${{ matrix.python-version }}")
+    workflow_lines.append("      uses: actions/setup-python@v4")
+    workflow_lines.append("      with:")
+    workflow_lines.append("        python-version: ${{ matrix.python-version }}")
+    workflow_lines.append("        cache: 'pip'")
+    workflow_lines.append("    - name: Install dependencies")
+    workflow_lines.append("      run: |")
+    workflow_lines.append("        python -m pip install --upgrade pip")
+    workflow_lines.append("        pip install -r requirements.txt")
+    workflow_lines.append("    - name: Run tests with ${{ matrix.browser }}")
+    workflow_lines.append("      run: pytest --browser=${{ matrix.browser }} --headless")
+    workflow_lines.append("    - name: Upload artifacts on failure")
+    workflow_lines.append("      if: failure()")
+    workflow_lines.append("      uses: actions/upload-artifact@v3")
+    workflow_lines.append("      with:")
+    workflow_lines.append("        name: test-artifacts-${{ matrix.os }}-${{ matrix.python-version }}-${{ matrix.browser }}")
+    workflow_lines.append("        path: |")
+    workflow_lines.append("          latest_logs/**")
+    workflow_lines.append("          logs/**")
+    workflow_lines.append("          archived_logs/**")
+    workflow_lines.append("          screenshots/**")
+    workflow_lines.append("")
+
+    return "\n".join(workflow_lines)
+
+
 def invalid_run_command(msg=None):
     exp = "  ** mkdir **\n\n"
     exp += "  Usage:\n"
@@ -30,8 +86,13 @@ def invalid_run_command(msg=None):
     exp += "     OR     sbase mkdir [DIRECTORY] [OPTIONS]\n"
     exp += "  Example:\n"
     exp += "     sbase mkdir ui_tests\n"
+    exp += "     sbase mkdir ui_tests --gha\n"
     exp += "  Options:\n"
     exp += "     -b / --basic  (Only config files. No tests added.)\n"
+    exp += "     --gha / --github-actions  (Generate GitHub Actions workflow)\n"
+    exp += "     --gha-browsers=BROWSERS  (Comma-separated browsers, default: chrome)\n"
+    exp += "     --gha-python=VERSIONS  (Comma-separated Python versions, default: 3.11)\n"
+    exp += "     --gha-os=OS_LIST  (Comma-separated OS list, default: ubuntu-latest)\n"
     exp += "  Output:\n"
     exp += "     Creates a new folder for running SBase scripts.\n"
     exp += "     The new folder contains default config files,\n"
@@ -59,6 +120,10 @@ def main():
         cr = colorama.Style.RESET_ALL
 
     basic = False
+    gha = False
+    gha_browsers = "chrome"
+    gha_python = "3.11"
+    gha_os = "ubuntu-latest"
     help_me = False
     error_msg = None
     invalid_cmd = None
@@ -84,11 +149,19 @@ def main():
     if len(command_args) >= 2:
         options = command_args[1:]
         for option in options:
-            option = option.lower()
-            if option == "-h" or option == "--help":
+            option_lower = option.lower()
+            if option_lower == "-h" or option_lower == "--help":
                 help_me = True
-            elif option == "-b" or option == "--basic":
+            elif option_lower == "-b" or option_lower == "--basic":
                 basic = True
+            elif option_lower == "--gha" or option_lower == "--github-actions":
+                gha = True
+            elif option_lower.startswith("--gha-browsers="):
+                gha_browsers = option[len("--gha-browsers="):]
+            elif option_lower.startswith("--gha-python="):
+                gha_python = option[len("--gha-python="):]
+            elif option_lower.startswith("--gha-os="):
+                gha_os = option[len("--gha-os="):]
             else:
                 invalid_cmd = "\n===> INVALID OPTION: >> %s <<\n" % option
                 invalid_cmd = invalid_cmd.replace(">> ", ">>" + c5 + " ")
@@ -320,6 +393,23 @@ def main():
     file = open(file_path, mode="w+", encoding="utf-8")
     file.writelines("\r\n".join(data))
     file.close()
+
+    if gha:
+        workflow_dir = "%s/.github/workflows" % dir_name
+        workflow_file = "%s/seleniumbase.yml" % workflow_dir
+        if os.path.exists(workflow_file):
+            error_msg = (
+                'Workflow file "%s" already exists!' % workflow_file
+            )
+            error_msg = c5 + "ERROR: " + error_msg + cr
+            invalid_run_command(error_msg)
+        os.makedirs(workflow_dir, exist_ok=True)
+        workflow_content = generate_github_actions_workflow(
+            gha_python, gha_browsers, gha_os
+        )
+        file = open(workflow_file, mode="w+", encoding="utf-8")
+        file.write(workflow_content)
+        file.close()
 
     if basic:
         data = []
