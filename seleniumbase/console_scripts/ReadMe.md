@@ -4,11 +4,11 @@
 
 🌟 SeleniumBase console scripts can do many things, such as downloading web drivers, creating test directories with config files, activating the SeleniumBase Recorder, launching the SeleniumBase Commander, translating tests into other languages, running a Selenium Grid, and more.
 
-* Usage: ``seleniumbase [COMMAND] [PARAMETERS]``
+- Usage: `seleniumbase [COMMAND] [PARAMETERS]`
 
-* (simplified): ``sbase [COMMAND] [PARAMETERS]``
+- (simplified): `sbase [COMMAND] [PARAMETERS]`
 
-* To list all commands: ``seleniumbase --help``
+- To list all commands: `seleniumbase --help`
 
 (<i>For running tests, [use <b>pytest</b> with SeleniumBase](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md).</i>)
 
@@ -50,14 +50,14 @@ COMMANDS:
 
 <h3>get / install</h3>
 
-* Usage:
+- Usage:
 
 ```zsh
 sbase get [DRIVER] [OPTIONS]
 sbase install [DRIVER] [OPTIONS]
 ```
 
-* Examples:
+- Examples:
 
 ```zsh
 sbase get chromedriver
@@ -73,41 +73,41 @@ sbase get cft 131
 sbase get chs
 ```
 
-(Drivers:  ``chromedriver``, ``cft``, ``uc_driver``,
-           ``edgedriver``, ``chs``, ``geckodriver``)
+(Drivers: `chromedriver`, `cft`, `uc_driver`,
+`edgedriver`, `chs`, `geckodriver`)
 
-(Options:  A specific driver version or major version integer.
-           If not set, the driver version matches the browser.
-           ``-p`` / ``--path``: Also copy to "/usr/local/bin".)
+(Options: A specific driver version or major version integer.
+If not set, the driver version matches the browser.
+`-p` / `--path`: Also copy to "/usr/local/bin".)
 
-* Output:
+- Output:
 
-Downloads the webdriver to ``seleniumbase/drivers/``
-(``chromedriver`` is required for Chrome automation)
-(``geckodriver`` is required for Firefox automation)
-(``edgedriver`` is required for MS__Edge automation)
+Downloads the webdriver to `seleniumbase/drivers/`
+(`chromedriver` is required for Chrome automation)
+(`geckodriver` is required for Firefox automation)
+(`edgedriver` is required for MS\_\_Edge automation)
 
 <h3>methods</h3>
 
-* Usage:
+- Usage:
 
 ```zsh
 sbase methods
 ```
 
-* Output:
+- Output:
 
 Displays common SeleniumBase Python methods.
 
 <h3>options</h3>
 
-* Usage:
+- Usage:
 
 ```zsh
 sbase options
 ```
 
-* Output:
+- Output:
 
 Displays common pytest command-line options
 that are available when using SeleniumBase.
@@ -168,13 +168,13 @@ For the full list of command-line options, type: "pytest --help".
 
 <h3>behave-options</h3>
 
-* Usage:
+- Usage:
 
 ```zsh
 sbase behave-options
 ```
 
-* Output:
+- Output:
 
 Displays common Behave command-line options
 that are available when using SeleniumBase.
@@ -226,7 +226,7 @@ For the full list of command-line options, type: "behave --help".
 
 <h3>gui / commander</h3>
 
-* Usage:
+- Usage:
 
 ```zsh
 sbase gui [OPTIONAL PATH or TEST FILE]
@@ -235,14 +235,14 @@ sbase commander [OPTIONAL PATH or TEST FILE]
 
 <h3>behave-gui</h3>
 
-* Usage:
+- Usage:
 
 ```zsh
 sbase behave-gui [OPTIONAL PATH or TEST FILE]
 sbase gui-behave [OPTIONAL PATH or TEST FILE]
 ```
 
-* Examples:
+- Examples:
 
 ```zsh
 sbase behave-gui
@@ -251,19 +251,19 @@ sbase behave-gui features/
 sbase behave-gui features/calculator.feature
 ```
 
-* Output:
+- Output:
 
 Launches SeleniumBase Commander / GUI for Behave.
 
 <h3>caseplans</h3>
 
-* Usage:
+- Usage:
 
 ```zsh
 sbase caseplans [OPTIONAL PATH or TEST FILE]
 ```
 
-* Examples:
+- Examples:
 
 ```zsh
 sbase caseplans
@@ -273,31 +273,44 @@ sbase caseplans test_suite.py
 sbase caseplans offline_examples/
 ```
 
-* Output:
+- Output:
 
 Launches the SeleniumBase Case Plans Generator.
 
 <h3>mkdir</h3>
 
-* Usage:
+- Usage:
 
 ```zsh
 sbase mkdir [DIRECTORY] [OPTIONS]
 ```
 
-* Example:
+- Example:
 
 ```zsh
 sbase mkdir ui_tests
 ```
 
-* Options:
+- Options:
 
 ```zsh
 -b / --basic  (Only config files. No tests added.)
+--gha / --github-actions  (Generate GitHub Actions workflow)
+--gha-browsers=BROWSERS  (Comma-separated browsers, default: chrome)
+--gha-python=VERSIONS  (Comma-separated Python versions, default: 3.11)
+--gha-os=OS_LIST  (Comma-separated OS list, default: ubuntu-latest)
 ```
 
-* Output:
+- Examples:
+
+```zsh
+sbase mkdir ui_tests
+sbase mkdir ui_tests --gha
+sbase mkdir ui_tests --gha --gha-browsers=chrome,firefox --gha-python=3.10,3.11,3.12
+sbase mkdir ui_tests --basic --gha
+```
+
+- Output:
 
 Creates a new folder for running SBase scripts.
 The new folder contains default config files,
@@ -329,7 +342,7 @@ ui_tests/
         └── swag_labs_test.py
 ```
 
-If running with the ``-b`` or ``--basic`` option:
+If running with the `-b` or `--basic` option:
 
 ```zsh
 ui_tests/
@@ -341,19 +354,19 @@ ui_tests/
 
 <h3>mkfile</h3>
 
-* Usage:
+- Usage:
 
 ```zsh
 sbase mkfile [FILE.py] [OPTIONS]
 ```
 
-* Example:
+- Example:
 
 ```zsh
 sbase mkfile new_test.py
 ```
 
-* Options:
+- Options:
 
 ```zsh
 --uc  (UC Mode boilerplate using SB context manager)
@@ -362,7 +375,7 @@ sbase mkfile new_test.py
 --url=URL  (Makes the test start on a specific page)
 ```
 
-* Language Options:
+- Language Options:
 
 ```zsh
 --en / --English    |    --zh / --Chinese
@@ -372,7 +385,7 @@ sbase mkfile new_test.py
 --ru / --Russian    |    --es / --Spanish
 ```
 
-* Syntax Formats:
+- Syntax Formats:
 
 ```zsh
 --bc / --basecase      (BaseCase class inheritance)
@@ -383,7 +396,7 @@ sbase mkfile new_test.py
 --dm / --driver-manager            (Driver manager)
 ```
 
-* Output:
+- Output:
 
 Creates a new SBase test file with boilerplate code.
 If the file already exists, an error is raised.
@@ -397,14 +410,14 @@ UC Mode automatically uses English with SB() format.
 
 <h3>mkrec / record / codegen</h3>
 
-* Usage:
+- Usage:
 
 ```zsh
 sbase mkrec [FILE.py] [OPTIONS]
 sbase codegen [FILE.py] [OPTIONS]
 ```
 
-* Examples:
+- Examples:
 
 ```zsh
 sbase mkrec new_test.py
@@ -413,7 +426,7 @@ sbase codegen new_test.py
 sbase codegen new_test.py --url=wikipedia.org
 ```
 
-* Options:
+- Options:
 
 ```zsh
 --url=URL  (Sets the initial start page URL.)
@@ -425,45 +438,45 @@ sbase codegen new_test.py --url=wikipedia.org
 --behave  (Also output Behave/Gherkin files.)
 ```
 
-* Output:
+- Output:
 
 Creates a new SeleniumBase test using the Recorder.
 If the filename already exists, an error is raised.
 
 <h3>recorder</h3>
 
-* Usage:
+- Usage:
 
 ```zsh
 sbase recorder [OPTIONS]
 ```
 
-* Options:
+- Options:
 
 ```zsh
 --uc / --undetected  (Use undetectable mode.)
 --behave  (Also output Behave/Gherkin files.)
 ```
 
-* Output:
+- Output:
 
 Launches the SeleniumBase Recorder Desktop App.
 
 <h3>mkpres</h3>
 
-* Usage:
+- Usage:
 
 ```zsh
 sbase mkpres [FILE.py] [LANG]
 ```
 
-* Example:
+- Example:
 
 ```zsh
 sbase mkpres new_presentation.py --en
 ```
 
-* Language Options:
+- Language Options:
 
 ```zsh
 --en / --English    |    --zh / --Chinese
@@ -473,7 +486,7 @@ sbase mkpres new_presentation.py --en
 --ru / --Russian    |    --es / --Spanish
 ```
 
-* Output:
+- Output:
 
 Creates a new presentation with 3 example slides.
 If the file already exists, an error is raised.
@@ -483,19 +496,19 @@ The slides can be used as a basic boilerplate.
 
 <h3>mkchart</h3>
 
-* Usage:
+- Usage:
 
 ```zsh
 sbase mkchart [FILE.py] [LANG]
 ```
 
-* Example:
+- Example:
 
 ```zsh
 sbase mkchart new_chart.py --en
 ```
 
-* Language Options:
+- Language Options:
 
 ```zsh
 --en / --English    |    --zh / --Chinese
@@ -505,7 +518,7 @@ sbase mkchart new_chart.py --en
 --ru / --Russian    |    --es / --Spanish
 ```
 
-* Output:
+- Output:
 
 Creates a new SeleniumBase chart presentation.
 If the file already exists, an error is raised.
@@ -515,32 +528,32 @@ The chart can be used as a basic boilerplate.
 
 <h3>print</h3>
 
-* Usage:
+- Usage:
 
 ```zsh
 sbase print [FILE] [OPTIONS]
 ```
 
-* Options:
+- Options:
 
 ```zsh
 -n (Add line Numbers to the rows)
 ```
 
-* Output:
+- Output:
 
 Prints the code/text of any file
 with syntax-highlighting.
 
 <h3>translate</h3>
 
-* Usage:
+- Usage:
 
 ```zsh
 sbase translate [SB_FILE.py] [LANGUAGE] [ACTION]
 ```
 
-* Languages:
+- Languages:
 
 ```zsh
 --en / --English    |    --zh / --Chinese
@@ -550,7 +563,7 @@ sbase translate [SB_FILE.py] [LANGUAGE] [ACTION]
 --ru / --Russian    |    --es / --Spanish
 ```
 
-* Actions:
+- Actions:
 
 ```zsh
 -p / --print  (Print translation output to the screen)
@@ -558,33 +571,33 @@ sbase translate [SB_FILE.py] [LANGUAGE] [ACTION]
 -c / --copy  (Copy the translation to a new ``.py`` file)
 ```
 
-* Options:
+- Options:
 
 ```zsh
 -n  (include line Numbers when using the Print action)
 ```
 
-* Output:
+- Output:
 
 Translates a SeleniumBase Python file into the language
 specified. Method calls and "import" lines get swapped.
 Both a language and an action must be specified.
-The ``-p`` action can be paired with one other action.
-When running with ``-c`` (or ``--copy``), the new file name
+The `-p` action can be paired with one other action.
+When running with `-c` (or `--copy`), the new file name
 will be the original name appended with an underscore
 plus the 2-letter language code of the new language.
 (Example: Translating "test_1.py" into Japanese with
-``-c`` will create a new file called "test_1_ja.py".)
+`-c` will create a new file called "test_1_ja.py".)
 
 <h3>extract-objects</h3>
 
-* Usage:
+- Usage:
 
 ```zsh
 sbase extract-objects [SB_FILE.py]
 ```
 
-* Output:
+- Output:
 
 Creates page objects based on selectors found in a
 seleniumbase Python file and saves those objects to the
@@ -592,19 +605,19 @@ seleniumbase Python file and saves those objects to the
 
 <h3>inject-objects</h3>
 
-* Usage:
+- Usage:
 
 ```zsh
 sbase inject-objects [SB_FILE.py] [OPTIONS]
 ```
 
-* Options:
+- Options:
 
 ```zsh
 -c / --comments  (Add object selectors to the comments.)
 ```
 
-* Output:
+- Output:
 
 Takes the page objects found in the "page_objects.py"
 file and uses those to replace matching selectors in
@@ -612,93 +625,93 @@ the selected seleniumbase Python file.
 
 <h3>objectify</h3>
 
-* Usage:
+- Usage:
 
 ```zsh
 sbase objectify [SB_FILE.py] [OPTIONS]
 ```
 
-* Options:
+- Options:
 
 ```zsh
 -c / --comments  (Add object selectors to the comments.)
 ```
 
-* Output:
+- Output:
 
 A modified version of the file where the selectors
 have been replaced with variable names defined in
 "page_objects.py", supporting the Page Object Pattern.
 (This has the same outcome as combining
-``extract-objects`` with ``inject-objects``)
+`extract-objects` with `inject-objects`)
 
 <h3>revert-objects</h3>
 
-* Usage:
+- Usage:
 
 ```zsh
 sbase revert-objects [SB_FILE.py] [OPTIONS]
 ```
 
-* Options:
+- Options:
 
 ```zsh
 -c / --comments  (Keep existing comments for the lines.)
 ```
 
-* Output:
+- Output:
 
-Reverts the changes made by ``seleniumbase objectify ...`` or
-``seleniumbase inject-objects ...`` when run against a
+Reverts the changes made by `seleniumbase objectify ...` or
+`seleniumbase inject-objects ...` when run against a
 seleniumbase Python file. Objects will get replaced by
 selectors stored in the "page_objects.py" file.
 
 <h3>convert</h3>
 
-* Usage:
+- Usage:
 
 ```zsh
 sbase convert [WEBDRIVER_UNITTEST_FILE.py]
 ```
 
-* Output:
+- Output:
 
 Converts a Selenium IDE exported WebDriver unittest
-file into a SeleniumBase file. Adds ``_SB`` to the
+file into a SeleniumBase file. Adds `_SB` to the
 new filename while keeping the original file intact.
 Works on both Selenium IDE & Katalon Recorder scripts.
 
 <h3>encrypt / obfuscate</h3>
 
-* Usage:
+- Usage:
 
-``sbase encrypt``  /  ``sbase obfuscate``
+`sbase encrypt` / `sbase obfuscate`
 
-* Output:
+- Output:
 
 Runs the password encryption/obfuscation tool.
 (Where you can enter a password to encrypt/obfuscate.)
 
 <h3>decrypt / unobfuscate</h3>
 
-* Usage:
+- Usage:
 
-``sbase decrypt``  /  ``sbase unobfuscate``
+`sbase decrypt` / `sbase unobfuscate`
 
-* Output:
+- Output:
 
 Runs the password decryption/unobfuscation tool.
 (Where you can enter an encrypted password to decrypt.)
 
 <h3>proxy</h3>
 
-* Usage:
+- Usage:
 
 ```zsh
 sbase proxy [OPTIONS]
 ```
 
-* Options:
+- Options:
 
 ```zsh
 --hostname=HOSTNAME  (Set `hostname`) (Default: `127.0.0.1`)
@@ -706,40 +719,40 @@ sbase proxy [OPTIONS]
 --help / -h      (Display available `proxy` options.)
 ```
 
-* Output:
+- Output:
 
 Launch a basic proxy server on the current machine.
-(Uses ``127.0.0.1:8899`` as the default address.)
+(Uses `127.0.0.1:8899` as the default address.)
 
 <h3>download</h3>
 
-* Usage:
+- Usage:
 
 ```zsh
 sbase download server
 ```
 
-* Output:
+- Output:
 
 Downloads the Selenium Server JAR file for Grid usage.
 (That JAR file is required when using a Selenium Grid)
 
 <h3>grid-hub</h3>
 
-* Usage:
+- Usage:
 
 ```zsh
 sbase grid-hub [start|stop|restart] [OPTIONS]
 ```
 
-* Options:
+- Options:
 
 ```zsh
 -v / --verbose  (Increases verbosity of logging output.)
 --timeout=TIMEOUT  (Close idle browser windows after TIMEOUT seconds.)
 ```
 
-* Output:
+- Output:
 
 Controls the Selenium Grid Hub server, which allows
 for running tests on multiple machines in parallel
@@ -749,25 +762,25 @@ You can start, restart, or stop the Grid Hub server.
 
 <h3>grid-node</h3>
 
-* Usage:
+- Usage:
 
 ```zsh
 sbase grid-node [start|stop|restart] [OPTIONS]
 ```
 
-* Options:
+- Options:
 
 ```zsh
 --hub=HUB_IP (Grid Hub IP Address. Default: `127.0.0.1`)
 -v / --verbose  (Increases verbosity of logging output.)
 ```
 
-* Output:
+- Output:
 
 Controls the Selenium Grid node, which serves as a
 worker machine for your Selenium Grid Hub server.
 You can start, restart, or stop the Grid node.
 
---------
+---
 
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/README.md"><img src="https://seleniumbase.github.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="290"></a>
