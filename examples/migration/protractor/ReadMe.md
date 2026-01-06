@@ -2,9 +2,9 @@
 
 🔵 The Protractor/Angular tests from [github.com/angular/protractor/tree/master/example](https://github.com/angular/protractor/tree/master/example) have been migrated to SeleniumBase and placed in this directory.
 
-🔵 Protractor tests that end in ``.spec.js`` will now end in ``_test.py`` for the conversion to SeleniumBase/Python format with pytest auto-discovery.
+🔵 Protractor tests that end in `.spec.js` will now end in `_test.py` for the conversion to SeleniumBase/Python format with pytest auto-discovery.
 
-✅ Here's a test run with ``pytest`` using ``--reuse-session`` mode and Chromium ``--guest`` mode:
+✅ Here's a test run with `pytest` using `--reuse-session` mode and Chromium `--guest` mode:
 
 ```zsh
 $ pytest --rs -v --guest
