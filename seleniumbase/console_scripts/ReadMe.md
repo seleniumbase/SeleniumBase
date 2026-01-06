@@ -4,11 +4,11 @@
 
 🌟 SeleniumBase console scripts can do many things, such as downloading web drivers, creating test directories with config files, activating the SeleniumBase Recorder, launching the SeleniumBase Commander, translating tests into other languages, running a Selenium Grid, and more.
 
-* Usage: ``seleniumbase [COMMAND] [PARAMETERS]``
+* Usage: `seleniumbase [COMMAND] [PARAMETERS]`
 
-* (simplified): ``sbase [COMMAND] [PARAMETERS]``
+* (simplified): `sbase [COMMAND] [PARAMETERS]`
 
-* To list all commands: ``seleniumbase --help``
+* To list all commands: `seleniumbase --help`
 
 (<i>For running tests, [use <b>pytest</b> with SeleniumBase](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md).</i>)
 
@@ -73,19 +73,20 @@ sbase get cft 131
 sbase get chs
 ```
 
-(Drivers:  ``chromedriver``, ``cft``, ``uc_driver``,
-           ``edgedriver``, ``chs``, ``geckodriver``)
+(Drivers:  `chromedriver`, `cft`, `uc_driver`,
+           `edgedriver`, `chs`, `geckodriver`)
 
 (Options:  A specific driver version or major version integer.
            If not set, the driver version matches the browser.
-           ``-p`` / ``--path``: Also copy to "/usr/local/bin".)
+           `-p` / `--path`: Also copy to "/usr/local/bin".)
 
 * Output:
 
-Downloads the webdriver to ``seleniumbase/drivers/``
-(``chromedriver`` is required for Chrome automation)
-(``geckodriver`` is required for Firefox automation)
-(``edgedriver`` is required for MS__Edge automation)
+Downloads the webdriver to `seleniumbase/drivers/`
+
+(`chromedriver` is required for Chrome automation)<br />
+(`geckodriver` is required for Firefox automation)<br />
+(`edgedriver` is required for Edge automation)
 
 <h3>methods</h3>
 
@@ -329,7 +330,7 @@ ui_tests/
         └── swag_labs_test.py
 ```
 
-If running with the ``-b`` or ``--basic`` option:
+If running with the `-b` or `--basic` option:
 
 ```zsh
 ui_tests/
@@ -555,7 +556,7 @@ sbase translate [SB_FILE.py] [LANGUAGE] [ACTION]
 ```zsh
 -p / --print  (Print translation output to the screen)
 -o / --overwrite  (Overwrite the file being translated)
--c / --copy  (Copy the translation to a new ``.py`` file)
+-c / --copy  (Copy the translation to a new `.py` file)
 ```
 
 * Options:
@@ -569,12 +570,12 @@ sbase translate [SB_FILE.py] [LANGUAGE] [ACTION]
 Translates a SeleniumBase Python file into the language
 specified. Method calls and "import" lines get swapped.
 Both a language and an action must be specified.
-The ``-p`` action can be paired with one other action.
-When running with ``-c`` (or ``--copy``), the new file name
+The `-p` action can be paired with one other action.
+When running with `-c` (or `--copy`), the new file name
 will be the original name appended with an underscore
 plus the 2-letter language code of the new language.
 (Example: Translating "test_1.py" into Japanese with
-``-c`` will create a new file called "test_1_ja.py".)
+`-c` will create a new file called "test_1_ja.py".)
 
 <h3>extract-objects</h3>
 
@@ -630,7 +631,7 @@ A modified version of the file where the selectors
 have been replaced with variable names defined in
 "page_objects.py", supporting the Page Object Pattern.
 (This has the same outcome as combining
-``extract-objects`` with ``inject-objects``)
+`extract-objects` with `inject-objects`)
 
 <h3>revert-objects</h3>
 
@@ -648,8 +649,8 @@ sbase revert-objects [SB_FILE.py] [OPTIONS]
 
 * Output:
 
-Reverts the changes made by ``seleniumbase objectify ...`` or
-``seleniumbase inject-objects ...`` when run against a
+Reverts the changes made by `seleniumbase objectify ...` or
+`seleniumbase inject-objects ...` when run against a
 seleniumbase Python file. Objects will get replaced by
 selectors stored in the "page_objects.py" file.
 
@@ -664,7 +665,7 @@ sbase convert [WEBDRIVER_UNITTEST_FILE.py]
 * Output:
 
 Converts a Selenium IDE exported WebDriver unittest
-file into a SeleniumBase file. Adds ``_SB`` to the
+file into a SeleniumBase file. Adds `_SB` to the
 new filename while keeping the original file intact.
 Works on both Selenium IDE & Katalon Recorder scripts.
 
@@ -672,7 +673,7 @@ Works on both Selenium IDE & Katalon Recorder scripts.
 
 * Usage:
 
-``sbase encrypt``  /  ``sbase obfuscate``
+`sbase encrypt`  /  `sbase obfuscate`
 
 * Output:
 
@@ -683,7 +684,7 @@ Runs the password encryption/obfuscation tool.
 
 * Usage:
 
-``sbase decrypt``  /  ``sbase unobfuscate``
+`sbase decrypt`  /  `sbase unobfuscate`
 
 * Output:
 
@@ -709,7 +710,7 @@ sbase proxy [OPTIONS]
 * Output:
 
 Launch a basic proxy server on the current machine.
-(Uses ``127.0.0.1:8899`` as the default address.)
+(Uses `127.0.0.1:8899` as the default address.)
 
 <h3>download</h3>
 
