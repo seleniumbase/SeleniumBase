@@ -103,11 +103,11 @@ pytest verify_undetected.py --uc
 pytest my_first_test.py --settings-file=custom_settings.py
 ```
 
-🎛️ You can interchange ``pytest`` with ``nosetests`` for most tests, but using ``pytest`` is recommended. (``chrome`` is the default browser if not specified.)
+🎛️ You can interchange `pytest` with `nosetests` for most tests, but using `pytest` is recommended. (`chrome` is the default browser if not specified.)
 
-🎛️ If you're using ``pytest`` for running tests outside of the SeleniumBase repo, you'll want a copy of [pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini) at the base of the new folder structure. If using ``nosetests``, the same applies for [setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/setup.cfg).
+🎛️ If you're using `pytest` for running tests outside of the SeleniumBase repo, you'll want a copy of [pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini) at the base of the new folder structure. If using `nosetests`, the same applies for [setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/setup.cfg).
 
-🎛️ Here are some useful command-line options that come with ``pytest``:
+🎛️ Here are some useful command-line options that come with `pytest`:
 
 ```zsh
 -v  # Verbose mode. Prints the full name of each test and shows more details.
@@ -124,7 +124,7 @@ pytest my_first_test.py --settings-file=custom_settings.py
 -m=MARKER  # Run tests with the specified pytest marker.
 ```
 
-🎛️ SeleniumBase provides additional ``pytest`` command-line options for tests:
+🎛️ SeleniumBase provides additional `pytest` command-line options for tests:
 
 ```zsh
 --browser=BROWSER  # (The web browser to use. Default: "chrome".)
@@ -232,7 +232,7 @@ pytest my_first_test.py --settings-file=custom_settings.py
 
 (For more details, see the full list of command-line options **[here](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/pytest_plugin.py)**.)
 
-🎛️ You can also view a list of popular ``pytest`` options for SeleniumBase by typing:
+🎛️ You can also view a list of popular `pytest` options for SeleniumBase by typing:
 
 ```zsh
 seleniumbase options
@@ -254,17 +254,17 @@ To see logging abilities, you can run a test suite that includes tests that fail
 pytest test_suite.py
 ```
 
-🔵 During test failures, logs and screenshots from the most recent test run will get saved to the ``latest_logs/`` folder. If ``--archive-logs`` is specified (or if ARCHIVE_EXISTING_LOGS is set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py)), test logs will also get archived to the ``archived_logs/`` folder. Otherwise, the log files will be cleaned out when the next test run begins (by default).
+🔵 During test failures, logs and screenshots from the most recent test run will get saved to the `latest_logs/` folder. If `--archive-logs` is specified (or if ARCHIVE_EXISTING_LOGS is set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py)), test logs will also get archived to the `archived_logs/` folder. Otherwise, the log files will be cleaned out when the next test run begins (by default).
 
 <h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> Demo Mode:</h3>
 
-🔵 If any test is moving too fast for your eyes to see what's going on, you can run it in **Demo Mode** by adding ``--demo`` on the command line, which pauses the browser briefly between actions, highlights page elements being acted on, and lets you know what test assertions are happening in real-time:
+🔵 If any test is moving too fast for your eyes to see what's going on, you can run it in **Demo Mode** by adding `--demo` on the command line, which pauses the browser briefly between actions, highlights page elements being acted on, and lets you know what test assertions are happening in real-time:
 
 ```zsh
 pytest my_first_test.py --demo
 ```
 
-🔵 You can override the default wait time by either updating [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) or by using ``--demo-sleep=NUM`` when using Demo Mode. (NOTE: If you use ``--demo-sleep=NUM`` without using ``--demo``, nothing will happen.)
+🔵 You can override the default wait time by either updating [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) or by using `--demo-sleep=NUM` when using Demo Mode. (NOTE: If you use `--demo-sleep=NUM` without using `--demo`, nothing will happen.)
 
 ```zsh
 pytest my_first_test.py --demo --demo-sleep=1.2
@@ -272,11 +272,11 @@ pytest my_first_test.py --demo --demo-sleep=1.2
 
 <h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> Passing additional data to tests:</h3>
 
-If you want to pass additional data from the command line to your tests, you can use ``--data=STRING``. Now inside your tests, you can use ``self.data`` to access that.
+If you want to pass additional data from the command line to your tests, you can use `--data=STRING`. Now inside your tests, you can use `self.data` to access that.
 
 <h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> Running tests multithreaded:</h3>
 
-To run ``pytest`` with multiple processes, add ``-n=NUM``, ``-n NUM``, or ``-nNUM`` on the command line, where ``NUM`` is the number of CPUs you want to use.
+To run `pytest` with multiple processes, add `-n=NUM`, `-n NUM`, or `-nNUM` on the command line, where `NUM` is the number of CPUs you want to use.
 
 ```zsh
 pytest -n=8
@@ -302,30 +302,30 @@ import pdb; pdb.set_trace()  # Debug Mode. n: next, c: continue, s: step, u: up,
 import pytest; pytest.set_trace()  # Debug Mode. n: next, c: continue, s: step, u: up, d: down.
 ```
 
-🔵 To pause an active test that throws an exception or error, (*and keep the browser window open while **Debug Mode** begins in the console*), add **``--pdb``** as a ``pytest`` option:
+🔵 To pause an active test that throws an exception or error, (*and keep the browser window open while **Debug Mode** begins in the console*), add **`--pdb`** as a `pytest` option:
 
 ```zsh
 pytest test_fail.py --pdb
 ```
 
-🔵 To start tests in Debug Mode, add **``--trace``** as a ``pytest`` option:
+🔵 To start tests in Debug Mode, add **`--trace`** as a `pytest` option:
 
 ```zsh
 pytest test_coffee_cart.py --trace
 ```
 
-(**``pdb``** commands: ``n``, ``c``, ``s``, ``u``, ``d`` => ``next``, ``continue``, ``step``, ``up``, ``down``).
+(**`pdb`** commands: `n`, `c`, `s`, `u`, `d` => `next`, `continue`, `step`, `up`, `down`).
 
 <h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> Combinations of options:</h3>
 
 🎛️ There are times when you'll want to combine various command-line options for added effect.
-For instance, the multi-process option, ``-n8``, can be customized by adding:
-``--dist=loadscope`` or ``--dist=loadfile`` to it.
+For instance, the multi-process option, `-n8`, can be customized by adding:
+`--dist=loadscope` or `--dist=loadfile` to it.
 There's more info on that here: [pytest-xdist](https://pypi.org/project/pytest-xdist/2.5.0/):
 
-* ``-n8 --dist=loadscope``: Tests are grouped by module for test functions and by class for test methods. Groups are distributed to available workers as whole units. This guarantees that all tests in a group run in the same process. This can be useful if you have expensive module-level or class-level fixtures. Grouping by class takes priority over grouping by module.
+* `-n8 --dist=loadscope`: Tests are grouped by module for test functions and by class for test methods. Groups are distributed to available workers as whole units. This guarantees that all tests in a group run in the same process. This can be useful if you have expensive module-level or class-level fixtures. Grouping by class takes priority over grouping by module.
 
-* ``-n8 --dist=loadfile``: Tests are grouped by their containing file. Groups are distributed to available workers as whole units. This guarantees that all tests in a file run in the same worker.
+* `-n8 --dist=loadfile`: Tests are grouped by their containing file. Groups are distributed to available workers as whole units. This guarantees that all tests in a file run in the same worker.
 
 <details>
 <summary> ▶️ <code translate="no">-n8 --dist=loadgroup</code> (<b>click to expand</b>)</summary>
@@ -379,7 +379,7 @@ That makes your tests run very quickly in headless mode.
 
 <h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> The SeleniumBase Dashboard:</h3>
 
-🔵 The ``--dashboard`` option for pytest generates a SeleniumBase Dashboard located at ``dashboard.html``, which updates automatically as tests run and produce results. Example:
+🔵 The `--dashboard` option for pytest generates a SeleniumBase Dashboard located at `dashboard.html`, which updates automatically as tests run and produce results. Example:
 
 ```zsh
 pytest --dashboard --rs --headless
@@ -387,13 +387,13 @@ pytest --dashboard --rs --headless
 
 <img src="https://seleniumbase.github.io/cdn/img/dashboard_1.png" alt="The SeleniumBase Dashboard" title="The SeleniumBase Dashboard" width="360" />
 
-🔵 Additionally, you can host your own SeleniumBase Dashboard Server on a port of your choice. Here's an example of that using Python 3's ``http.server``:
+🔵 Additionally, you can host your own SeleniumBase Dashboard Server on a port of your choice. Here's an example of that using Python 3's `http.server`:
 
 ```zsh
 python -m http.server 1948
 ```
 
-🔵 Now you can navigate to ``http://localhost:1948/dashboard.html`` in order to view the dashboard as a web app. This requires two different terminal windows: one for running the server, and another for running the tests, which should be run from the same directory. (Use <kbd>Ctrl+C</kbd> to stop the http server.)
+🔵 Now you can navigate to `http://localhost:1948/dashboard.html` in order to view the dashboard as a web app. This requires two different terminal windows: one for running the server, and another for running the tests, which should be run from the same directory. (Use <kbd>Ctrl+C</kbd> to stop the http server.)
 
 🔵 Here's a full example of what the SeleniumBase Dashboard may look like:
 
@@ -407,7 +407,7 @@ pytest test_suite.py --dashboard --rs --headless
 
 <h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> Pytest Reports:</h3>
 
-🔵 Using ``--html=report.html`` gives you a fancy report of the name specified after your test suite completes.
+🔵 Using `--html=report.html` gives you a fancy report of the name specified after your test suite completes.
 
 ```zsh
 pytest test_suite.py --html=report.html
@@ -415,7 +415,7 @@ pytest test_suite.py --html=report.html
 
 <img src="https://seleniumbase.github.io/cdn/img/html_report.png" alt="Example Pytest Report" title="Example Pytest Report" width="520" />
 
-🔵 When combining pytest html reports with SeleniumBase Dashboard usage, the pie chart from the Dashboard will get added to the html report. Additionally, if you set the html report URL to be the same as the Dashboard URL when also using the dashboard, (example: ``--dashboard --html=dashboard.html``), then the Dashboard will become an advanced html report when all the tests complete.
+🔵 When combining pytest html reports with SeleniumBase Dashboard usage, the pie chart from the Dashboard will get added to the html report. Additionally, if you set the html report URL to be the same as the Dashboard URL when also using the dashboard, (example: `--dashboard --html=dashboard.html`), then the Dashboard will become an advanced html report when all the tests complete.
 
 🔵 Here's an example of an upgraded html report:
 
@@ -427,7 +427,7 @@ pytest test_suite.py --dashboard --html=report.html
 
 If viewing pytest html reports in [Jenkins](https://www.jenkins.io/), you may need to [configure Jenkins settings](https://stackoverflow.com/a/46197356/7058266) for the html to render correctly. This is due to [Jenkins CSP changes](https://www.jenkins.io/doc/book/system-administration/security/configuring-content-security-policy/).
 
-You can also use ``--junit-xml=report.xml`` to get an xml report instead. Jenkins can use this file to display better reporting for your tests.
+You can also use `--junit-xml=report.xml` to get an xml report instead. Jenkins can use this file to display better reporting for your tests.
 
 ```zsh
 pytest test_suite.py --junit-xml=report.xml
@@ -437,7 +437,7 @@ pytest test_suite.py --junit-xml=report.xml
 
 <h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> Nosetest Reports:</h3>
 
-The ``--report`` option gives you a fancy report after your test suite completes.
+The `--report` option gives you a fancy report after your test suite completes.
 
 ```zsh
 nosetests test_suite.py --report
@@ -445,7 +445,7 @@ nosetests test_suite.py --report
 
 <img src="https://seleniumbase.github.io/cdn/img/nose_report.png" alt="Example Nosetest Report" title="Example Nosetest Report" width="320" />
 
-(NOTE: You can add ``--show_report`` to immediately display Nosetest reports after the test suite completes. Only use ``--show_report`` when running tests locally because it pauses the test run.)
+(NOTE: You can add `--show_report` to immediately display Nosetest reports after the test suite completes. Only use `--show_report` when running tests locally because it pauses the test run.)
 
 --------
 
@@ -474,16 +474,16 @@ pytest --driver-version=VER
 The `VER` in `--driver-version=VER` can be:
 * A major driver version. Eg. `117`. (milestone)
 * An exact driver version. Eg. `117.0.5938.92`.
-* ``"browser"`` (exact match on browser version)
-* ``"keep"`` (keep using the driver you already have)
-* ``"latest"`` / ``"stable"`` (latest stable version)
-* ``"previous"`` / ``"latest-1"`` (latest minus one)
-* ``"beta"`` (latest beta version)
-* ``"dev"`` (latest dev version)
-* ``"canary"`` (latest canary version)
-* ``"mlatest"`` (latest version for the milestone)
+* `"browser"` (exact match on browser version)
+* `"keep"` (keep using the driver you already have)
+* `"latest"` / `"stable"` (latest stable version)
+* `"previous"` / `"latest-1"` (latest minus one)
+* `"beta"` (latest beta version)
+* `"dev"` (latest dev version)
+* `"canary"` (latest canary version)
+* `"mlatest"` (latest version for the milestone)
 
-Note that different options could lead to the same result. (Eg. If you have the latest version of a browser for a milestone, then ``"browser"`` and ``"mlatest"`` should give you the same driver if the latest driver version for that milestone matches the browser version.)
+Note that different options could lead to the same result. (Eg. If you have the latest version of a browser for a milestone, then `"browser"` and `"mlatest"` should give you the same driver if the latest driver version for that milestone matches the browser version.)
 
 --------
 
@@ -575,7 +575,7 @@ pytest test_demo_site.py --server=USERNAME:KEY@ondemand.us-east-1.saucelabs.com 
 
 🌐 Or you can create your own Selenium Grid for test distribution. ([See this ReadMe for details](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md))
 
-🌐 To use a server on the ``https`` protocol, add ``--protocol=https``: (*Now automatic if the port is 443.*)
+🌐 To use a server on the `https` protocol, add `--protocol=https`: (*Now automatic if the port is 443.*)
 
 ```zsh
 pytest test_demo_site.py --protocol=https --server=IP_ADDRESS --port=PORT
@@ -585,7 +585,7 @@ pytest test_demo_site.py --protocol=https --server=IP_ADDRESS --port=PORT
 
 <h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> Using a Proxy Server:</h3>
 
-🌐 If you wish to use a proxy server for your browser tests (Chromium or Firefox), you can add ``--proxy=IP_ADDRESS:PORT`` as an argument on the command line.
+🌐 If you wish to use a proxy server for your browser tests (Chromium or Firefox), you can add `--proxy=IP_ADDRESS:PORT` as an argument on the command line.
 
 ```zsh
 pytest proxy_test.py --proxy=IP_ADDRESS:PORT
@@ -605,7 +605,7 @@ pytest proxy_test.py --proxy="socks4://IP_ADDRESS:PORT"
 pytest proxy_test.py --proxy="socks5://IP_ADDRESS:PORT"
 ```
 
-To make things easier, you can add your frequently-used proxies to PROXY_LIST in [proxy_list.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/proxy_list.py), and then use ``--proxy=KEY_FROM_PROXY_LIST`` to use the IP_ADDRESS:PORT of that key.
+To make things easier, you can add your frequently-used proxies to PROXY_LIST in [proxy_list.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/proxy_list.py), and then use `--proxy=KEY_FROM_PROXY_LIST` to use the IP_ADDRESS:PORT of that key.
 
 ```zsh
 pytest proxy_test.py --proxy=proxy1
@@ -615,7 +615,7 @@ pytest proxy_test.py --proxy=proxy1
 
 <h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> Changing the User-Agent:</h3>
 
-🔤 If you wish to change the User-Agent for your browser tests (Chrome and Firefox only), you can add ``--agent="USER-AGENT-STRING"`` as an argument on the command line.
+🔤 If you wish to change the User-Agent for your browser tests (Chrome and Firefox only), you can add `--agent="USER-AGENT-STRING"` as an argument on the command line.
 
 ```zsh
 pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1.7412.EU"
@@ -623,7 +623,7 @@ pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1
 
 <h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> Mobile Device Testing:</h3>
 
-📱 Use ``--mobile`` to quickly run your tests using Chrome's mobile device emulator with default values for device metrics (CSS Width, CSS Height, Pixel-Ratio) and a default value set for the user agent. To configure the mobile device metrics, use ``--metrics="CSS_Width,CSS_Height,Pixel_Ratio"`` to set those values. You'll also be able to set the user agent with ``--agent="USER-AGENT-STRING"`` (a default user agent will be used if not specified). To find real values for device metrics, [see this GitHub Gist](https://gist.github.com/sidferreira/3f5fad525e99b395d8bd882ee0fd9d00). For a list of available user agent strings, [check out this page](https://developers.whatismybrowser.com/useragents/explore/).
+📱 Use `--mobile` to quickly run your tests using Chrome's mobile device emulator with default values for device metrics (CSS Width, CSS Height, Pixel-Ratio) and a default value set for the user agent. To configure the mobile device metrics, use `--metrics="CSS_Width,CSS_Height,Pixel_Ratio"` to set those values. You'll also be able to set the user agent with `--agent="USER-AGENT-STRING"` (a default user agent will be used if not specified). To find real values for device metrics, [see this GitHub Gist](https://gist.github.com/sidferreira/3f5fad525e99b395d8bd882ee0fd9d00). For a list of available user agent strings, [check out this page](https://developers.whatismybrowser.com/useragents/explore/).
 
 ```zsh
 # Run tests using Chrome's mobile device emulator (default settings)

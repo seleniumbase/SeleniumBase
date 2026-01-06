@@ -21,6 +21,8 @@ understanding how it works and how to use it properly. If you feel that importan
 
 The SeleniumBase project welcomes meaningful contributions. Given the complexity of the project, it may be easier to open an issue for a change you want made than to try implementing the change yourself.
 
+Recently, we've been moving toward the policy discussed in https://github.com/readme/featured/how-open-is-open-source, which is: "Open-Source, not Open-Contribution". As the article states, even small contributions (via pull requests) typically require hours of time to properly test and validate. We're still grateful for community involvement and when folks report bugs or suggest features. With some special exceptions, this project is mainly closed to contribution (via pull requests).
+
 ## (A Note on Style Guide Rules)
 
 [flake8](https://github.com/PyCQA/flake8) is the law of the land. The only flake8 rule ignored is [W503](https://github.com/grantmcconnaughey/Flake8Rules/blob/master/_rules/W503.md). For more details on why W503 should be ignored, see [this explanation](https://peps.python.org/pep-0008/#should-a-line-break-before-or-after-a-binary-operator), or [this shorter explanation](https://github.com/PyCQA/flake8/issues/494) by Python expert [Anthony Sottile](https://github.com/asottile).

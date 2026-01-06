@@ -2,4 +2,6 @@
 
 ## See: [SeleniumBase/releases](https://github.com/seleniumbase/SeleniumBase/releases) 🗂️ 📋
 
-### (For CDP updates, see the [CDP Mode docs](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md))
+### (For CDP Mode, see the [CDP Mode docs](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md))
+
+### (For Stealthy Playwright, see the [Stealthy Playwright docs](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md))

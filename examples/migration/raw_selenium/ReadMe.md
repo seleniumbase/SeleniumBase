@@ -13,21 +13,21 @@ The five main examples in the [examples/migration/raw_selenium](https://github.c
 * [refined_raw.py](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/migration/raw_selenium/refined_raw.py)
 * [simple_sbase.py](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/migration/raw_selenium/simple_sbase.py)
 
-Each of these examples is structured as a test that can be run with ``pytest``. They all inherit ``unittest.TestCase`` either directly, or via ``seleniumbase.BaseCase``, which extends it. This provides automatically-called ``setUp()`` and ``tearDown()`` methods before and after each test.
+Each of these examples is structured as a test that can be run with `pytest`. They all inherit `unittest.TestCase` either directly, or via `seleniumbase.BaseCase`, which extends it. This provides automatically-called `setUp()` and `tearDown()` methods before and after each test.
 
 > These examples show the evolution of tests from raw Selenium to SeleniumBase. By understanding common progressions of Selenium engineers, you can avoid making the same mistakes as they did, and learn to write good tests efficiently without the long learning curve.
 
 * [flaky_messy_raw.py](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/migration/raw_selenium/flaky_messy_raw.py)
 
-This is common example of how newcomers to Selenium write tests (assuming they've already learned how to break out reusuable code into ``setUp()`` and ``tearDown()`` methods). It uses ``find_element()`` calls, which can lead to flaky tests because those calls fail if a page element is slow to load.
+This is common example of how newcomers to Selenium write tests (assuming they've already learned how to break out reusuable code into `setUp()` and `tearDown()` methods). It uses `find_element()` calls, which can lead to flaky tests because those calls fail if a page element is slow to load.
 
 * [long_messy_raw.py](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/migration/raw_selenium/long_messy_raw.py)
 
-At the next stage of learning, newcomers to Selenium realize that their tests are flaky, so they start replacing existing ``find_element()`` calls with ``WebDriverWait`` and internal Selenium ``expected_conditions`` methods, such as ``visibility_of_element_located`` and ``element_to_be_clickable``. This can result in long/messy tests that are unmaintainable if not written carefully.
+At the next stage of learning, newcomers to Selenium realize that their tests are flaky, so they start replacing existing `find_element()` calls with `WebDriverWait` and internal Selenium `expected_conditions` methods, such as `visibility_of_element_located` and `element_to_be_clickable`. This can result in long/messy tests that are unmaintainable if not written carefully.
 
 * [messy_raw.py](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/migration/raw_selenium/messy_raw.py)
 
-By this stage, newcomers to Selenium have evolved into legitimate test automation engineers. They have become better at writing reusable code, so they've broken down the long ``WebDriverWait`` and ``expected_conditions`` calls into shorter method calls, which are easier to read, but could still be improved on for better maintainability. Here, individual page actions are still written out as multiple lines of code, (or multiple method calls per line), which isn't efficient.
+By this stage, newcomers to Selenium have evolved into legitimate test automation engineers. They have become better at writing reusable code, so they've broken down the long `WebDriverWait` and `expected_conditions` calls into shorter method calls, which are easier to read, but could still be improved on for better maintainability. Here, individual page actions are still written out as multiple lines of code, (or multiple method calls per line), which isn't efficient.
 
 * [refined_raw.py](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/migration/raw_selenium/refined_raw.py)
 
@@ -35,7 +35,7 @@ By now, the test automation engineer has become an expert in breaking out code i
 
 * [simple_sbase.py](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/migration/raw_selenium/simple_sbase.py)
 
-With a complete test automation framework built, most of the hard work is already done for you. By importing ``BaseCase`` into your test classes, your tests gain access to all SeleniumBase methods, which can simplify your code. SeleniumBase also provides a lot of additional functionality that isn't included with raw Selenium.
+With a complete test automation framework built, most of the hard work is already done for you. By importing `BaseCase` into your test classes, your tests gain access to all SeleniumBase methods, which can simplify your code. SeleniumBase also provides a lot of additional functionality that isn't included with raw Selenium.
 
 
 ### 🔵 How is SeleniumBase different from raw Selenium?

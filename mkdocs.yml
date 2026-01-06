@@ -74,7 +74,6 @@ plugins:
         - SECURITY.md
         - examples/case_summary.md
         - examples/migration/raw_selenium/ReadMe.md
-        - help_docs/chinese.md
         - integrations/katalon/ReadMe.md
         - help_docs/ReadMe.md
         - help_docs/verify_webdriver.md
@@ -184,7 +183,6 @@ nav:
     - 🐝 Behave-BDD GUI App: help_docs/behave_gui.md
   - Languages:
     - 🌏 Translations: help_docs/translations.md
-    - 🐲 Chinese Docs: help_docs/chinese.md
     - 🗾 Locale Codes: help_docs/locale_codes.md
   - Other:
     - 📺 YouTube Link: https://www.youtube.com/playlist?list=PLp9uKicxkBc5UIlGi2BuE3aWC7JyXpD3m

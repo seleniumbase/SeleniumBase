@@ -4,11 +4,11 @@
 
 🌟 SeleniumBase console scripts can do many things, such as downloading web drivers, creating test directories with config files, activating the SeleniumBase Recorder, launching the SeleniumBase Commander, translating tests into other languages, running a Selenium Grid, and more.
 
-- Usage: `seleniumbase [COMMAND] [PARAMETERS]`
+* Usage: `seleniumbase [COMMAND] [PARAMETERS]`
 
-- (simplified): `sbase [COMMAND] [PARAMETERS]`
+* (simplified): `sbase [COMMAND] [PARAMETERS]`
 
-- To list all commands: `seleniumbase --help`
+* To list all commands: `seleniumbase --help`
 
 (<i>For running tests, [use <b>pytest</b> with SeleniumBase](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md).</i>)
 
@@ -73,19 +73,20 @@ sbase get cft 131
 sbase get chs
 ```
 
-(Drivers: `chromedriver`, `cft`, `uc_driver`,
-`edgedriver`, `chs`, `geckodriver`)
+(Drivers:  `chromedriver`, `cft`, `uc_driver`,
+           `edgedriver`, `chs`, `geckodriver`)
 
-(Options: A specific driver version or major version integer.
-If not set, the driver version matches the browser.
-`-p` / `--path`: Also copy to "/usr/local/bin".)
+(Options:  A specific driver version or major version integer.
+           If not set, the driver version matches the browser.
+           `-p` / `--path`: Also copy to "/usr/local/bin".)
 
 - Output:
 
 Downloads the webdriver to `seleniumbase/drivers/`
-(`chromedriver` is required for Chrome automation)
-(`geckodriver` is required for Firefox automation)
-(`edgedriver` is required for MS\_\_Edge automation)
+
+(`chromedriver` is required for Chrome automation)<br />
+(`geckodriver` is required for Firefox automation)<br />
+(`edgedriver` is required for Edge automation)
 
 <h3>methods</h3>
 
@@ -568,7 +569,7 @@ sbase translate [SB_FILE.py] [LANGUAGE] [ACTION]
 ```zsh
 -p / --print  (Print translation output to the screen)
 -o / --overwrite  (Overwrite the file being translated)
--c / --copy  (Copy the translation to a new ``.py`` file)
+-c / --copy  (Copy the translation to a new `.py` file)
 ```
 
 - Options:
@@ -685,7 +686,7 @@ Works on both Selenium IDE & Katalon Recorder scripts.
 
 - Usage:
 
-`sbase encrypt` / `sbase obfuscate`
+`sbase encrypt`  /  `sbase obfuscate`
 
 - Output:
 
@@ -696,7 +697,7 @@ Runs the password encryption/obfuscation tool.
 
 - Usage:
 
-`sbase decrypt` / `sbase unobfuscate`
+`sbase decrypt`  /  `sbase unobfuscate`
 
 - Output:
 
