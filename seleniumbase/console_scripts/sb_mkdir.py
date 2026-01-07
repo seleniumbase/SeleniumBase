@@ -503,6 +503,7 @@ def main():
     )
     data.append('        self.click(\'mark:contains("%s")\' % keyword)')
     data.append('        self.assert_title_contains(title_text)')
+    data.append('        self.save_screenshot_to_logs()')
     data.append("")
     file_path = "%s/%s" % (dir_name, "parameterized_test.py")
     file = open(file_path, mode="w+", encoding="utf-8")

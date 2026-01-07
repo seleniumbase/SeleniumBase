@@ -17,3 +17,4 @@ class SearchTests(BaseCase):
         self.type('input[aria-label="Search"]', search_term)
         self.click('mark:contains("%s")' % keyword)
         self.assert_title_contains(title_text)
+        self.save_screenshot_to_logs()
