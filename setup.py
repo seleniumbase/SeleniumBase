@@ -152,11 +152,11 @@ setup(
         'setuptools>=80.9.0;python_version>="3.10"',
         'wheel>=0.45.1',
         'attrs>=25.4.0',
-        'certifi>=2025.11.12',
+        'certifi>=2026.1.4',
         'exceptiongroup>=1.3.1',
         'websockets>=15.0.1',
         'filelock~=3.19.1;python_version<"3.10"',
-        'filelock>=3.20.1;python_version>="3.10"',
+        'filelock>=3.20.2;python_version>="3.10"',
         'fasteners>=0.20',
         'mycdp>=1.3.2',
         'pynose>=1.5.5',
@@ -268,7 +268,7 @@ setup(
         # (An optional library for image-processing.)
         "pillow": [
             'Pillow>=11.3.0;python_version<"3.10"',
-            'Pillow>=12.0.0;python_version>="3.10"',
+            'Pillow>=12.1.0;python_version>="3.10"',
         ],
         # pip install -e .[pip-system-certs]
         # (If you see [SSL: CERTIFICATE_VERIFY_FAILED], then get this.)
