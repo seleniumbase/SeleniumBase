@@ -259,7 +259,7 @@ setup(
         # (An optional library for parsing PDF files.)
         "pdfminer": [
             'pdfminer.six==20251107;python_version<"3.10"',
-            'pdfminer.six==20251230;python_version>="3.10"',
+            'pdfminer.six==20260107;python_version>="3.10"',
             'cryptography==46.0.3',
             'cffi==2.0.0',
             'pycparser==2.23',

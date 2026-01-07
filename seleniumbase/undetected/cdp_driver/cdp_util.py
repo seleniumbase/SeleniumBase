@@ -565,7 +565,11 @@ async def start(
                 platform_var = platform_var[1:-1]
     if IS_LINUX and not headless and not headed and not xvfb:
         xvfb = True  # The default setting on Linux
-    __activate_virtual_display_as_needed(headless, headed, xvfb, xvfb_metrics)
+    if not host or not port:
+        # The browser hasn't been launched yet. (May need a virtual display)
+        __activate_virtual_display_as_needed(
+            headless, headed, xvfb, xvfb_metrics
+        )
     if proxy and "@" in str(proxy):
         user_with_pass = proxy.split("@")[0]
         if ":" in user_with_pass:
