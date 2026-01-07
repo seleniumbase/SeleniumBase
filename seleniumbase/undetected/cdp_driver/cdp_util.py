@@ -51,12 +51,27 @@ def __activate_virtual_display_as_needed(
     headless, headed, xvfb, xvfb_metrics
 ):
     """This is only needed on Linux."""
+    reset_virtual_display = False
+    if IS_LINUX and (not headed or xvfb):
+        if (
+            not hasattr(sb_config, "_closed_connection_ids")
+            or not isinstance(sb_config._closed_connection_ids, list)
+        ):
+            sb_config._closed_connection_ids = []
+        if (
+            not hasattr(sb_config, "_xvfb_users")
+            or not isinstance(sb_config._xvfb_users, int)
+        ):
+            reset_virtual_display = True
+            sb_config._xvfb_users = 0
+        sb_config._xvfb_users += 1
     if (
         IS_LINUX
         and (not headed or xvfb)
         and (
             not hasattr(sb_config, "_virtual_display")
             or not sb_config._virtual_display
+            or reset_virtual_display
         )
     ):
         from sbvirtualdisplay import Display

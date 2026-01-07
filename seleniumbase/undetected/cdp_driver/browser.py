@@ -2,6 +2,7 @@
 from __future__ import annotations
 import asyncio
 import atexit
+import fasteners
 import http.cookiejar
 import json
 import logging
@@ -15,7 +16,10 @@ import urllib.parse
 import urllib.request
 import warnings
 from collections import defaultdict
+from contextlib import suppress
 from seleniumbase import config as sb_config
+from seleniumbase.fixtures import constants
+from seleniumbase.fixtures import shared_utils
 from typing import List, Optional, Set, Tuple, Union
 import mycdp as cdp
 from . import cdp_util as util
@@ -34,7 +38,7 @@ def get_registered_instances():
 def deconstruct_browser():
     for _ in __registered__instances__:
         if not _.stopped:
-            _.stop()
+            _.stop(deconstruct=True)
         for attempt in range(5):
             try:
                 if _.config and not _.config.uses_custom_data_dir:
@@ -732,8 +736,11 @@ class Browser:
         try:
             import mss
         except Exception:
-            from seleniumbase.fixtures import shared_utils
-            shared_utils.pip_install("mss")
+            pip_find_lock = fasteners.InterProcessLock(
+                constants.PipInstall.FINDLOCK
+            )
+            with pip_find_lock:  # Prevent issues with multiple processes
+                shared_utils.pip_install("mss")
             import mss
         m = mss.mss()
         screen, screen_width, screen_height = 3 * (None,)
@@ -842,11 +849,17 @@ class Browser:
                 else:
                     del self._i
 
-    def stop(self):
+    def stop(self, deconstruct=False):
+        if (
+            not hasattr(sb_config, "_closed_connection_ids")
+            or not isinstance(sb_config._closed_connection_ids, list)
+        ):
+            sb_config._closed_connection_ids = []
+        connection_id = None
+        with suppress(Exception):
+            connection_id = self.connection.websocket.id.hex
+        close_success = False
         try:
-            # asyncio.get_running_loop().create_task(
-            #     self.connection.send(cdp.browser.close())
-            # )
             if self.connection:
                 asyncio.get_event_loop().create_task(self.connection.aclose())
                 logger.debug(
@@ -855,19 +868,22 @@ class Browser:
         except RuntimeError:
             if self.connection:
                 try:
-                    # asyncio.run(self.connection.send(cdp.browser.close()))
                     asyncio.run(self.connection.aclose())
                     logger.debug("Closed the connection using asyncio.run()")
                 except Exception:
                     pass
         for _ in range(3):
             try:
-                self._process.terminate()
-                logger.debug(
-                    "Terminated browser with pid %d successfully."
-                    % self._process.pid
-                )
-                break
+                if connection_id not in sb_config._closed_connection_ids:
+                    self._process.terminate()
+                    logger.debug(
+                        "Terminated browser with pid %d successfully."
+                        % self._process.pid
+                    )
+                    if connection_id:
+                        sb_config._closed_connection_ids.append(connection_id)
+                        close_success = True
+                    break
             except (Exception,):
                 try:
                     self._process.kill()
@@ -902,6 +918,39 @@ class Browser:
                         raise
             self._process = None
             self._process_pid = None
+        if (
+            hasattr(sb_config, "_xvfb_users")
+            and isinstance(sb_config._xvfb_users, int)
+            and close_success
+            and hasattr(sb_config, "_virtual_display")
+            and sb_config._virtual_display
+        ):
+            sb_config._xvfb_users -= 1
+            if sb_config._xvfb_users < 0:
+                sb_config._xvfb_users = 0
+        if (
+            shared_utils.is_linux()
+            and (
+                hasattr(sb_config, "_virtual_display")
+                and sb_config._virtual_display
+                and hasattr(sb_config._virtual_display, "stop")
+            )
+            and sb_config._xvfb_users == 0
+        ):
+            try:
+                sb_config._virtual_display.stop()
+                sb_config._virtual_display = None
+                sb_config.headless_active = False
+            except AttributeError:
+                pass
+            except Exception:
+                pass
+        if (
+            deconstruct
+            and connection_id
+            and connection_id in sb_config._closed_connection_ids
+        ):
+            sb_config._closed_connection_ids.remove(connection_id)
 
     def quit(self):
         self.stop()
