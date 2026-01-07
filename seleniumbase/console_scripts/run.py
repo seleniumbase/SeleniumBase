@@ -248,6 +248,7 @@ def show_mkdir_usage():
     print("     sbase mkdir ui_tests")
     print("  Options:")
     print("     -b / --basic  (Only config files. No tests added.)")
+    print("     --gha  (Include GitHub Actions YML with defaults.)")
     print("  Output:")
     print("     Creates a new folder for running SBase scripts.")
     print("     The new folder contains default config files,")

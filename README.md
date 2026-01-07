@@ -831,6 +831,15 @@ ui_tests/
 
 Of those files, the `pytest.ini` config file is the most important, followed by a blank `__init__.py` file. There's also a `setup.cfg` file (for pynose). Finally, the `requirements.txt` file can be used to help you install seleniumbase into your environments (if it's not already installed).
 
+<b>ProTip™:</b> Add `--gha` to include a GitHub Actions `.yml` file with default settings:
+
+```zsh
+ui_tests/
+└── .github                    
+    └── workflows/             
+        └── python-package.yml
+```
+
 --------
 
 <h3><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" /> Log files from failed tests:</h3>

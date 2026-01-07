@@ -10,6 +10,7 @@ Example:
 
 Options:
     -b / --basic  (Only config files. No tests added.)
+    --gha  (Include GitHub Actions YML with defaults.)
 
 Output:
     Creates a new folder for running SBase scripts.
@@ -32,6 +33,7 @@ def invalid_run_command(msg=None):
     exp += "     sbase mkdir ui_tests\n"
     exp += "  Options:\n"
     exp += "     -b / --basic  (Only config files. No tests added.)\n"
+    exp += "     --gha  (Include GitHub Actions YML with defaults.)\n"
     exp += "  Output:\n"
     exp += "     Creates a new folder for running SBase scripts.\n"
     exp += "     The new folder contains default config files,\n"
@@ -58,6 +60,7 @@ def main():
         c7 = colorama.Fore.BLACK + colorama.Back.MAGENTA
         cr = colorama.Style.RESET_ALL
 
+    gha = False
     basic = False
     help_me = False
     error_msg = None
@@ -89,6 +92,8 @@ def main():
                 help_me = True
             elif option == "-b" or option == "--basic":
                 basic = True
+            elif option == "--gha":
+                gha = True
             else:
                 invalid_cmd = "\n===> INVALID OPTION: >> %s <<\n" % option
                 invalid_cmd = invalid_cmd.replace(">> ", ">>" + c5 + " ")
@@ -321,9 +326,69 @@ def main():
     file.writelines("\r\n".join(data))
     file.close()
 
+    if gha:
+        dir_name_b = dir_name + "/" + ".github"
+        os.mkdir(dir_name_b)
+        dir_name_c = dir_name_b + "/" + "workflows"
+        os.mkdir(dir_name_c)
+
+        data = []
+        data.append("name: CI build")
+        data.append("on:")
+        data.append("  push:")
+        data.append("    branches:")
+        data.append("  pull_request:")
+        data.append("    branches:")
+        data.append("  workflow_dispatch:")
+        data.append("    branches:")
+        data.append("jobs:")
+        data.append("  build:")
+        data.append("    env:")
+        data.append('      PY_COLORS: "1"')
+        data.append("    strategy:")
+        data.append("      fail-fast: false")
+        data.append("      max-parallel: 15")
+        data.append("      matrix:")
+        data.append("        os: [ubuntu-latest]")
+        data.append('        python-version: ["3.x"]')
+        data.append("    runs-on: ${{ matrix.os }}")
+        data.append("    steps:")
+        data.append("    - uses: actions/checkout@v6")
+        data.append("    - name: Set up Python ${{ matrix.python-version }}")
+        data.append("      uses: actions/setup-python@v6")
+        data.append("      with:")
+        data.append("        python-version: ${{ matrix.python-version }}")
+        data.append("    - name: Install dependencies")
+        data.append("      run: |")
+        data.append("        python -m pip install --upgrade pip")
+        data.append("        pip install -r requirements.txt")
+        data.append("    - name: Install Chrome")
+        data.append("      if: matrix.os == 'ubuntu-latest'")
+        data.append("      run: sudo apt install google-chrome-stable")
+        data.append("    - name: Download chromedriver")
+        data.append("      run: sbase get chromedriver")
+        data.append("    - name: Run pytest")
+        data.append("      run: pytest -v -s --rs --crumbs --reruns=1")
+        data.append("    - name: Upload artifacts")
+        data.append("      if: ${{ always() }}")
+        data.append("      uses: actions/upload-artifact@v6")
+        data.append("      with:")
+        data.append("        name: seleniumbase-artifacts")
+        data.append("        path: ./latest_logs/")
+        data.append("        if-no-files-found: ignore")
+        data.append("")
+        file_path = "%s/%s" % (dir_name_c, "python-package.yml")
+        file = open(file_path, mode="w+", encoding="utf-8")
+        file.writelines("\r\n".join(data))
+        file.close()
+
     if basic:
         data = []
         data.append("  %s/" % dir_name)
+        if gha:
+            data.append("  ├── .github")
+            data.append("  │   └── workflows/")
+            data.append("  │      └── python-package.yml")
         data.append("  ├── __init__.py")
         data.append("  ├── pytest.ini")
         data.append("  ├── requirements.txt")
@@ -741,6 +806,10 @@ def main():
 
     data = []
     data.append("  %s/" % dir_name)
+    if gha:
+        data.append("  ├── .github")
+        data.append("  │   └── workflows/")
+        data.append("  │      └── python-package.yml")
     data.append("  ├── __init__.py")
     data.append("  ├── my_first_test.py")
     data.append("  ├── parameterized_test.py")
