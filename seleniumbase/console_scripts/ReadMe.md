@@ -48,7 +48,7 @@ COMMANDS:
     Use "pytest" for running tests.
 ```
 
-<h3>get / install</h3>
+<h3><code>get</code> / <code>install</code></h3>
 
 * Usage:
 
@@ -73,12 +73,21 @@ sbase get cft 131
 sbase get chs
 ```
 
-(Drivers:  `chromedriver`, `cft`, `uc_driver`,
-           `edgedriver`, `chs`, `geckodriver`)
+* Drivers:
 
-(Options:  A specific driver version or major version integer.
-           If not set, the driver version matches the browser.
-           `-p` / `--path`: Also copy to "/usr/local/bin".)
+```zsh
+`chromedriver` , `cft`, `uc_driver`
+`edgedriver` , `chs` , `geckodriver`
+```
+
+* Options:
+
+```zsh
+NUM: A specific driver version or major version integer.
+     If not set, the driver version matches the browser.
+
+`-p` / `--path`: Also copy the driver to /usr/local/bin.
+```
 
 * Output:
 
@@ -88,7 +97,7 @@ Downloads the webdriver to `seleniumbase/drivers/`
 (`geckodriver` is required for Firefox automation)<br />
 (`edgedriver` is required for Edge automation)
 
-<h3>methods</h3>
+<h3><code>methods</code></h3>
 
 * Usage:
 
@@ -100,7 +109,7 @@ sbase methods
 
 Displays common SeleniumBase Python methods.
 
-<h3>options</h3>
+<h3><code>options</code></h3>
 
 * Usage:
 
@@ -167,7 +176,7 @@ that are available when using SeleniumBase.
 For the full list of command-line options, type: "pytest --help".
 ```
 
-<h3>behave-options</h3>
+<h3><code>behave-options</code></h3>
 
 * Usage:
 
@@ -225,7 +234,7 @@ that are available when using SeleniumBase.
 For the full list of command-line options, type: "behave --help".
 ```
 
-<h3>gui / commander</h3>
+<h3><code>gui</code> / <code>commander</code></h3>
 
 * Usage:
 
@@ -234,7 +243,7 @@ sbase gui [OPTIONAL PATH or TEST FILE]
 sbase commander [OPTIONAL PATH or TEST FILE]
 ```
 
-<h3>behave-gui</h3>
+<h3><code>behave-gui</code></h3>
 
 * Usage:
 
@@ -256,7 +265,7 @@ sbase behave-gui features/calculator.feature
 
 Launches SeleniumBase Commander / GUI for Behave.
 
-<h3>caseplans</h3>
+<h3><code>caseplans</code></h3>
 
 * Usage:
 
@@ -278,7 +287,7 @@ sbase caseplans offline_examples/
 
 Launches the SeleniumBase Case Plans Generator.
 
-<h3>mkdir</h3>
+<h3><code>mkdir</code></h3>
 
 * Usage:
 
@@ -350,7 +359,7 @@ ui_tests/
         └── python-package.yml
 ```
 
-<h3>mkfile</h3>
+<h3><code>mkfile</code></h3>
 
 * Usage:
 
@@ -406,7 +415,7 @@ option, only the "open" method is included. Only the
 BaseCase format supports Languages or Recorder Mode.
 UC Mode automatically uses English with SB() format.
 
-<h3>mkrec / record / codegen</h3>
+<h3><code>mkrec</code> / <code>record</code> / <code>codegen</code></h3>
 
 * Usage:
 
@@ -441,7 +450,7 @@ sbase codegen new_test.py --url=wikipedia.org
 Creates a new SeleniumBase test using the Recorder.
 If the filename already exists, an error is raised.
 
-<h3>recorder</h3>
+<h3><code>recorder</code></h3>
 
 * Usage:
 
@@ -460,7 +469,7 @@ sbase recorder [OPTIONS]
 
 Launches the SeleniumBase Recorder Desktop App.
 
-<h3>mkpres</h3>
+<h3><code>mkpres</code></h3>
 
 * Usage:
 
@@ -492,7 +501,7 @@ By default, the slides are written in English,
 and use "serif" theme with "slide" transition.
 The slides can be used as a basic boilerplate.
 
-<h3>mkchart</h3>
+<h3><code>mkchart</code></h3>
 
 * Usage:
 
@@ -524,7 +533,7 @@ By default, the slides are written in English,
 and use a "sky" theme with "slide" transition.
 The chart can be used as a basic boilerplate.
 
-<h3>print</h3>
+<h3><code>print</code></h3>
 
 * Usage:
 
@@ -543,7 +552,7 @@ sbase print [FILE] [OPTIONS]
 Prints the code/text of any file
 with syntax-highlighting.
 
-<h3>translate</h3>
+<h3><code>translate</code></h3>
 
 * Usage:
 
@@ -587,7 +596,7 @@ plus the 2-letter language code of the new language.
 (Example: Translating "test_1.py" into Japanese with
 `-c` will create a new file called "test_1_ja.py".)
 
-<h3>extract-objects</h3>
+<h3><code>extract-objects</code></h3>
 
 * Usage:
 
@@ -601,7 +610,7 @@ Creates page objects based on selectors found in a
 seleniumbase Python file and saves those objects to the
 "page_objects.py" file in the same folder as the tests.
 
-<h3>inject-objects</h3>
+<h3><code>inject-objects</code></h3>
 
 * Usage:
 
@@ -621,7 +630,7 @@ Takes the page objects found in the "page_objects.py"
 file and uses those to replace matching selectors in
 the selected seleniumbase Python file.
 
-<h3>objectify</h3>
+<h3><code>objectify</code></h3>
 
 * Usage:
 
@@ -643,7 +652,7 @@ have been replaced with variable names defined in
 (This has the same outcome as combining
 `extract-objects` with `inject-objects`)
 
-<h3>revert-objects</h3>
+<h3><code>revert-objects</code></h3>
 
 * Usage:
 
@@ -664,7 +673,7 @@ Reverts the changes made by `seleniumbase objectify ...` or
 seleniumbase Python file. Objects will get replaced by
 selectors stored in the "page_objects.py" file.
 
-<h3>convert</h3>
+<h3><code>convert</code></h3>
 
 * Usage:
 
@@ -679,7 +688,7 @@ file into a SeleniumBase file. Adds `_SB` to the
 new filename while keeping the original file intact.
 Works on both Selenium IDE & Katalon Recorder scripts.
 
-<h3>encrypt / obfuscate</h3>
+<h3><code>encrypt</code> / <code>obfuscate</code></h3>
 
 * Usage:
 
@@ -690,7 +699,7 @@ Works on both Selenium IDE & Katalon Recorder scripts.
 Runs the password encryption/obfuscation tool.
 (Where you can enter a password to encrypt/obfuscate.)
 
-<h3>decrypt / unobfuscate</h3>
+<h3><code>decrypt</code> / <code>unobfuscate</code></h3>
 
 * Usage:
 
@@ -701,7 +710,7 @@ Runs the password encryption/obfuscation tool.
 Runs the password decryption/unobfuscation tool.
 (Where you can enter an encrypted password to decrypt.)
 
-<h3>proxy</h3>
+<h3><code>proxy</code></h3>
 
 * Usage:
 
@@ -722,7 +731,7 @@ sbase proxy [OPTIONS]
 Launch a basic proxy server on the current machine.
 (Uses `127.0.0.1:8899` as the default address.)
 
-<h3>download</h3>
+<h3><code>download</code></h3>
 
 * Usage:
 
@@ -735,7 +744,7 @@ sbase download server
 Downloads the Selenium Server JAR file for Grid usage.
 (That JAR file is required when using a Selenium Grid)
 
-<h3>grid-hub</h3>
+<h3><code>grid-hub</code></h3>
 
 * Usage:
 
@@ -758,7 +767,7 @@ to speed up test runs and reduce the total time
 of test suite execution.
 You can start, restart, or stop the Grid Hub server.
 
-<h3>grid-node</h3>
+<h3><code>grid-node</code></h3>
 
 * Usage:
 
