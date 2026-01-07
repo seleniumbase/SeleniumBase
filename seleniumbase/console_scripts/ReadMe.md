@@ -296,6 +296,7 @@ sbase mkdir ui_tests
 
 ```zsh
 -b / --basic  (Only config files. No tests added.)
+--gha  (Include GitHub Actions YML with defaults.)
 ```
 
 * Output:
@@ -338,6 +339,15 @@ ui_tests/
 ├── pytest.ini
 ├── requirements.txt
 └── setup.cfg
+```
+
+If running with the `--gha` option, this is added:
+
+```zsh
+ui_tests/
+└── .github                    
+    └── workflows/             
+        └── python-package.yml
 ```
 
 <h3>mkfile</h3>
