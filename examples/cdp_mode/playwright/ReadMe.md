@@ -6,6 +6,11 @@
 
 --------
 
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=PnFD_gSmGUc"><img src="https://github.com/user-attachments/assets/4c9a12e3-0ae0-446b-b38f-2178827c8377" title="Steathy Playwright Mode on YouTube" width="320" /></a>
+<p>(<b><a href="https://www.youtube.com/watch?v=PnFD_gSmGUc">See Stealthy Playwright on YouTube! ▶️</a></b>)</p>
+
+--------
+
 ### 🎭 Getting started with <b translate="no">Stealthy Playwright Mode</b>:
 
 If `playwright` isn't already installed, then install it first:
