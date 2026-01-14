@@ -5245,6 +5245,15 @@ def get_local_driver(
                     or driver_version == "keep"
                 ):
                     browser_driver_close_match = True
+            one_off_chromium = False
+            if (
+                hasattr(sb_config, "binary_location")
+                and sb_config.binary_location == "_chromium_"
+            ):
+                with suppress(Exception):
+                    one_off_chromium_ver = int(use_version.split(".")[0]) - 1
+                    if one_off_chromium_ver == int(ch_driver_version):
+                        one_off_chromium = True
             # If not ARM MAC and need to use uc_driver (and it's missing),
             # and already have chromedriver with the correct version,
             # then copy chromedriver to uc_driver (and it'll get patched).
@@ -5276,12 +5285,16 @@ def get_local_driver(
                     and use_version != "latest"  # Browser version detected
                     and (ch_driver_version or not local_ch_exists)
                     and (
-                        use_version.split(".")[0] != ch_driver_version
+                        (
+                            use_version.split(".")[0] != ch_driver_version
+                            and not one_off_chromium
+                        )
                         or (
                             not local_ch_exists
                             and use_version.isnumeric()
                             and int(use_version) >= 115
                             and not browser_driver_close_match
+                            and not one_off_chromium
                         )
                     )
                 )
@@ -5289,12 +5302,14 @@ def get_local_driver(
                     use_uc
                     and use_version != "latest"  # Browser version detected
                     and uc_driver_version != use_version
+                    and not one_off_chromium
                 )
                 or (
                     full_ch_driver_version  # Also used for the uc_driver
                     and driver_version
                     and len(str(driver_version).split(".")) == 4
                     and full_ch_driver_version != driver_version
+                    and not one_off_chromium
                 )
             ):
                 # chromedriver download needed in the seleniumbase/drivers dir
