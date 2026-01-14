@@ -2425,6 +2425,7 @@ class BaseCase(unittest.TestCase):
                 self.wait_for_element_visible(
                     selector, by=by, timeout=timeout
                 )
+                self.sleep(0.2)
             if self.is_element_visible(selector, by=by):
                 self.click(selector, by=by)
 

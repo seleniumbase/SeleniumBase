@@ -794,8 +794,13 @@ class CDPMethods():
     def click_if_visible(self, selector, timeout=0):
         if self.is_element_visible(selector):
             with suppress(Exception):
+                self.click(selector, timeout=1)
+        else:
+            with suppress(Exception):
                 element = self.find_element(selector, timeout=timeout)
+                self.sleep(0.1)
                 element.scroll_into_view()
+                self.sleep(0.1)
                 element.click()
                 self.__slow_mode_pause_if_set()
                 self.loop.run_until_complete(self.page.wait())
