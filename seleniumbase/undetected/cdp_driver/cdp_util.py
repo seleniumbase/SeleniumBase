@@ -39,16 +39,15 @@ def __activate_standard_virtual_display():
     width = settings.HEADLESS_START_WIDTH
     height = settings.HEADLESS_START_HEIGHT
     with suppress(Exception):
-        _xvfb_display = Display(
-            visible=0, size=(width, height)
-        )
+        _xvfb_display = Display(visible=0, size=(width, height))
         _xvfb_display.start()
+        time.sleep(0.03)
         sb_config._virtual_display = _xvfb_display
         sb_config.headless_active = True
 
 
 def __activate_virtual_display_as_needed(
-    headless, headed, xvfb, xvfb_metrics
+    headless, headed, xvfb, xvfb_metrics, override_display=False
 ):
     """This is only needed on Linux."""
     reset_virtual_display = False
@@ -72,6 +71,7 @@ def __activate_virtual_display_as_needed(
             not hasattr(sb_config, "_virtual_display")
             or not sb_config._virtual_display
             or reset_virtual_display
+            or override_display
         )
     ):
         from sbvirtualdisplay import Display
@@ -109,6 +109,7 @@ def __activate_virtual_display_as_needed(
                         backend="xvfb",
                         use_xauth=True,
                     )
+                    time.sleep(0.05)
                     if "--debug-display" in sys.argv:
                         print(
                             "Starting VDisplay from cdp_util: (%s, %s)"
@@ -672,7 +673,12 @@ async def start(
     try:
         driver = await Browser.create(config)
     except Exception:
-        time.sleep(0.15)
+        time.sleep(0.12)
+        if not host or not port:
+            __activate_virtual_display_as_needed(
+                headless, headed, xvfb, xvfb_metrics, override_display=True
+            )
+            time.sleep(0.05)
         driver = await Browser.create(config)
     if proxy:
         sb_config._cdp_proxy = proxy
