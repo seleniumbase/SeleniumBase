@@ -1338,12 +1338,12 @@ def _uc_gui_click_captcha(
     _on_a_captcha_page = None
     if ctype == "cf_t":
         if not _on_a_cf_turnstile_page(driver):
-            return
+            return False
         else:
             _on_a_captcha_page = _on_a_cf_turnstile_page
     elif ctype == "g_rc":
         if not _on_a_g_recaptcha_page(driver):
-            return
+            return False
         else:
             _on_a_captcha_page = _on_a_g_recaptcha_page
     else:
@@ -1354,7 +1354,7 @@ def _uc_gui_click_captcha(
             ctype = "cf_t"
             _on_a_captcha_page = _on_a_cf_turnstile_page
         else:
-            return
+            return False
     install_pyautogui_if_missing(driver)
     import pyautogui
     pyautogui = get_configured_pyautogui(pyautogui)
@@ -1505,7 +1505,7 @@ def _uc_gui_click_captcha(
                 ):
                     frame = "div:not([class]) > div:not([class])"
                 else:
-                    return
+                    return False
             if (
                 driver.is_element_present("form")
                 and (
@@ -1605,9 +1605,9 @@ def _uc_gui_click_captcha(
                         if driver.is_connected():
                             driver.switch_to_frame("iframe")
                     else:
-                        return
+                        return False
             if not i_x or not i_y:
-                return
+                return False
         try:
             if ctype == "g_rc" and not driver.is_connected():
                 x = (i_x + 29) * width_ratio
@@ -1638,7 +1638,7 @@ def _uc_gui_click_captcha(
                 try:
                     driver.switch_to.default_content()
                 except Exception:
-                    return
+                    return False
         if x and y:
             sb_config._saved_cf_x_y = (x, y)
             if not __is_cdp_swap_needed(driver):
@@ -1652,7 +1652,7 @@ def _uc_gui_click_captcha(
                 _uc_gui_click_x_y(driver, x, y, timeframe=0.32)
                 if __is_cdp_swap_needed(driver):
                     time.sleep(float(constants.UC.RECONNECT_TIME) / 2.0)
-                    return
+                    return True
     reconnect_time = (float(constants.UC.RECONNECT_TIME) / 2.0) + 0.6
     if IS_LINUX:
         reconnect_time = constants.UC.RECONNECT_TIME + 0.2
@@ -1684,17 +1684,17 @@ def _uc_gui_click_captcha(
                     try:
                         driver.switch_to_frame("iframe")
                     except Exception:
-                        return
+                        return False
                 checkbox_success = None
                 if ctype == "cf_t":
                     checkbox_success = "#success-icon"
                 elif ctype == "g_rc":
                     checkbox_success = "span.recaptcha-checkbox-checked"
                 else:
-                    return  # If this line is reached, ctype wasn't set
+                    return False  # If line is reached, ctype wasn't set
                 if driver.is_element_visible("#success-icon"):
                     driver.switch_to.parent_frame(checkbox_success)
-                    return
+                    return True
             if blind:
                 driver.uc_open_with_disconnect(driver.get_current_url(), 3.8)
                 if __is_cdp_swap_needed(driver) and _on_a_captcha_page(driver):
@@ -1708,6 +1708,7 @@ def _uc_gui_click_captcha(
                     _uc_gui_click_x_y(driver, x, y, timeframe=0.32)
         if not cdp_mode_on_at_start:
             driver.reconnect(reconnect_time)
+    return True
 
 
 def uc_gui_click_captcha(driver, frame="iframe", retry=False, blind=False):
