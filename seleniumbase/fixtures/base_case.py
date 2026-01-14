@@ -2415,7 +2415,7 @@ class BaseCase(unittest.TestCase):
         If a "timeout" is provided, waits that long for the element
         to appear before giving up and returning without a click()."""
         if self.__is_cdp_swap_needed():
-            self.cdp.click_if_visible(selector)
+            self.cdp.click_if_visible(selector, timeout=timeout)
             return
         self.wait_for_ready_state_complete()
         if self.is_element_visible(selector, by=by):
@@ -2425,6 +2425,7 @@ class BaseCase(unittest.TestCase):
                 self.wait_for_element_visible(
                     selector, by=by, timeout=timeout
                 )
+                self.sleep(0.2)
             if self.is_element_visible(selector, by=by):
                 self.click(selector, by=by)
 

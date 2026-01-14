@@ -554,7 +554,15 @@ def main(override=None, intel_for_uc=None, force_uc=None):
                 else:
                     url_request = get_cft_latest_versions_per_milestone()
                 if not force_cft and url_request.ok:
-                    fver = get_cft_latest_version_from_milestone(use_version)
+                    try:
+                        fver = get_cft_latest_version_from_milestone(
+                            use_version
+                        )
+                    except KeyError:
+                        use_version = str(int(use_version) - 1)
+                        fver = get_cft_latest_version_from_milestone(
+                            use_version
+                        )
                     found_chromedriver = True
                     use_version = str(fver)
                     if use_version == latest_version:

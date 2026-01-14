@@ -1374,7 +1374,10 @@ def slow_scroll_to_element(driver, element, *args, **kwargs):
         element_location_x_fix = 0
     if element_location_x + element_width <= screen_width:
         element_location_x_fix = 0
-    distance = element_location_y - scroll_position
+    if shared_utils.is_cdp_swap_needed(driver):
+        distance = element_location_y
+    else:
+        distance = element_location_y - scroll_position
     if distance != 0:
         total_steps = int(abs(distance) / 50.0) + 2.0
         step_value = float(distance) / total_steps
@@ -1388,7 +1391,8 @@ def slow_scroll_to_element(driver, element, *args, **kwargs):
     scroll_script = "window.scrollTo(%s, %s);" % (
         element_location_x_fix, element_location_y
     )
-    execute_script(driver, scroll_script)
+    if not shared_utils.is_cdp_swap_needed(driver):
+        execute_script(driver, scroll_script)
     time.sleep(0.01)
     if distance > 430 or distance < -300:
         # Add small recovery time for long-distance slow-scrolling

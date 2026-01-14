@@ -791,11 +791,16 @@ class CDPMethods():
         self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.wait())
 
-    def click_if_visible(self, selector):
+    def click_if_visible(self, selector, timeout=0):
         if self.is_element_visible(selector):
             with suppress(Exception):
-                element = self.find_element(selector, timeout=0)
+                self.click(selector, timeout=1)
+        else:
+            with suppress(Exception):
+                element = self.find_element(selector, timeout=timeout)
+                self.sleep(0.1)
                 element.scroll_into_view()
+                self.sleep(0.1)
                 element.click()
                 self.__slow_mode_pause_if_set()
                 self.loop.run_until_complete(self.page.wait())
@@ -1969,6 +1974,12 @@ class CDPMethods():
             return True
         return False
 
+    def _on_an_incapsula_hcaptcha_page(self, *args, **kwargs):
+        self.loop.run_until_complete(self.page.wait())
+        if self.is_element_visible('iframe[src*="_Incapsula_Resource?"]'):
+            return True
+        return False
+
     def _on_a_g_recaptcha_page(self, *args, **kwargs):
         time.sleep(0.4)  # reCAPTCHA may need a moment to appear
         self.loop.run_until_complete(self.page.wait())
@@ -1999,20 +2010,34 @@ class CDPMethods():
         if self.is_element_visible('iframe[title="reCAPTCHA"]'):
             selector = 'iframe[title="reCAPTCHA"]'
         else:
-            return
+            return False
         time.sleep(0.25)
         self.loop.run_until_complete(self.page.wait())
         time.sleep(0.25)
         with suppress(Exception):
-            element_rect = self.get_gui_element_rect(selector, timeout=1)
+            element_rect = self.get_element_rect(selector, timeout=0.1)
             e_x = element_rect["x"]
             e_y = element_rect["y"]
+            window_rect = self.get_window_rect()
+            win_width = window_rect["innerWidth"]
+            win_height = window_rect["innerHeight"]
+            if (
+                e_x > 1040
+                and e_y > 640
+                and abs(win_width - e_x) < 110
+                and abs(win_height - e_y) < 110
+            ):
+                # Probably the invisible reCAPTCHA in the bottom right corner
+                return False
+            gui_element_rect = self.get_gui_element_rect(selector, timeout=1)
+            gui_e_x = gui_element_rect["x"]
+            gui_e_y = gui_element_rect["y"]
             x_offset = 26
             y_offset = 35
             if shared_utils.is_windows():
                 x_offset = 29
-            x = e_x + x_offset
-            y = e_y + y_offset
+            x = gui_e_x + x_offset
+            y = gui_e_y + y_offset
             sb_config._saved_cf_x_y = (x, y)
             time.sleep(0.08)
             if use_cdp:
@@ -2025,6 +2050,33 @@ class CDPMethods():
                     time.sleep(0.056)
             else:
                 self.gui_click_x_y(x, y)
+            return True
+        return False
+
+    def __cdp_click_incapsula_hcaptcha(self):
+        selector = None
+        if self.is_element_visible('iframe[src*="_Incapsula_Resource?"]'):
+            outer_selector = 'iframe[src*="_Incapsula_Resource?"]'
+            selector = "iframe[data-hcaptcha-widget-id]"
+            element = self.get_nested_element(outer_selector, selector)
+            if not element:
+                return False
+        else:
+            return False
+        time.sleep(0.05)
+        self.loop.run_until_complete(self.page.wait())
+        time.sleep(0.05)
+        x_offset = 30
+        y_offset = 36
+        gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
+        with gui_lock:  # Prevent issues with multiple processes
+            self.bring_active_window_to_front()
+            time.sleep(0.05)
+            with suppress(Exception):
+                element.click_with_offset(x_offset, y_offset)
+                time.sleep(0.2)
+                return True
+        return False
 
     def solve_captcha(self):
         self.__click_captcha(use_cdp=True)
@@ -2046,10 +2098,13 @@ class CDPMethods():
         if self._on_a_cf_turnstile_page(source):
             pass
         elif self._on_a_g_recaptcha_page(source):
-            self.__gui_click_recaptcha(use_cdp)
-            return
+            result = self.__gui_click_recaptcha(use_cdp)
+            return result
+        elif self._on_an_incapsula_hcaptcha_page():
+            result = self.__cdp_click_incapsula_hcaptcha()
+            return result
         else:
-            return
+            return False
         selector = None
         if self.is_element_present('[class="cf-turnstile"]'):
             selector = '[class="cf-turnstile"]'
@@ -2086,6 +2141,10 @@ class CDPMethods():
         ):
             selector = '[class*="turnstile"] div:not([class])'
         elif self.is_element_present(
+            "iframe[data-hcaptcha-widget-id]"
+        ):
+            selector = "iframe[data-hcaptcha-widget-id]"
+        elif self.is_element_present(
             '[data-callback="onCaptchaSuccess"]'
         ):
             selector = '[data-callback="onCaptchaSuccess"]'
@@ -2094,9 +2153,9 @@ class CDPMethods():
         ):
             selector = "div:not([class]) > div:not([class])"
         else:
-            return
+            return False
         if not selector:
-            return
+            return False
         if (
             self.is_element_present("form")
             and (
@@ -2204,6 +2263,8 @@ class CDPMethods():
                     time.sleep(0.05)
             else:
                 self.gui_click_x_y(x, y)
+            return True
+        return False
 
     def __gui_drag_drop(self, x1, y1, x2, y2, timeframe=0.25, uc_lock=False):
         self.__install_pyautogui_if_missing()
