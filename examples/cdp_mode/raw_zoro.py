@@ -16,14 +16,15 @@ with SB(uc=True, test=True, locale="en") as sb:
     sb.press_keys(search_box, search)
     sb.sleep(0.6)
     sb.click('button[data-za="searchButton"]')
-    sb.sleep(3.8)
+    sb.sleep(3.2)
+    sb.wait_for_element('[data-za="product-cards-list"]', timeout=5)
     print('*** Zoro Search for "%s":' % search)
     print('    (Results must contain "%s".)' % required_text)
     unique_item_text = []
-    items = sb.find_elements('div[data-za="search-product-card"]')
+    items = sb.find_elements('[data-za="search-product-card"]')
     for item in items:
         if required_text in item.text:
-            description = item.querySelector('div[data-za="product-title"]')
+            description = item.querySelector('[data-za="product-title"]')
             if description and description.text not in unique_item_text:
                 unique_item_text.append(description.text)
                 print("* " + description.text)
