@@ -795,15 +795,13 @@ class CDPMethods():
         if self.is_element_visible(selector):
             with suppress(Exception):
                 self.click(selector, timeout=1)
+        elif timeout == 0:
+            return
         else:
             with suppress(Exception):
-                element = self.find_element(selector, timeout=timeout)
-                self.sleep(0.1)
-                element.scroll_into_view()
-                self.sleep(0.1)
-                element.click()
-                self.__slow_mode_pause_if_set()
-                self.loop.run_until_complete(self.page.wait())
+                self.find_element(selector, timeout=timeout)
+                if self.is_element_visible(selector):
+                    self.click(selector, timeout=1)
 
     def click_visible_elements(self, selector, limit=0):
         """Finds all matching page elements and clicks visible ones in order.
@@ -2068,14 +2066,35 @@ class CDPMethods():
         time.sleep(0.05)
         x_offset = 30
         y_offset = 36
+        was_clicked = False
         gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
         with gui_lock:  # Prevent issues with multiple processes
             self.bring_active_window_to_front()
-            time.sleep(0.05)
+            time.sleep(0.056)
+            if "--debug" in sys.argv:
+                displayed_selector = "`%s`" % selector
+                if '"' not in selector:
+                    displayed_selector = '"%s"' % selector
+                elif "'" not in selector:
+                    displayed_selector = "'%s'" % selector
+                print(
+                    " <DEBUG> click_with_offset(%s, %s, %s)"
+                    % (displayed_selector, x_offset, y_offset)
+                )
             with suppress(Exception):
                 element.click_with_offset(x_offset, y_offset)
-                time.sleep(0.2)
-                return True
+                was_clicked = True
+                time.sleep(0.056)
+        if was_clicked:
+            # Wait a moment for the click to succeed
+            time.sleep(0.25)
+            self.__slow_mode_pause_if_set()
+            self.loop.run_until_complete(self.page.wait())
+            if "--debug" in sys.argv:
+                print(" <DEBUG> hCaptcha was clicked!")
+            return True
+        if "--debug" in sys.argv:
+            print(" <DEBUG> hCaptcha was NOT clicked!")
         return False
 
     def solve_captcha(self):

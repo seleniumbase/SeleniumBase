@@ -92,6 +92,7 @@ __all__ = ["BaseCase"]
 
 logging.getLogger("requests").setLevel(logging.ERROR)
 logging.getLogger("urllib3").setLevel(logging.ERROR)
+logging.getLogger("websocket").setLevel(logging.CRITICAL)
 urllib3.disable_warnings()
 LOGGER.setLevel(logging.WARNING)
 is_linux = shared_utils.is_linux()

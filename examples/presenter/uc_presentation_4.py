@@ -768,7 +768,9 @@ class UCPresentationClass(BaseCase):
         )
         self.begin_presentation(filename="uc_presentation.html")
 
-        with SB(uc=True, test=True, locale="en") as sb:
+        with SB(
+            uc=True, test=True, locale="en", guest=True, ad_block=True
+        ) as sb:
             url = "https://www.priceline.com"
             sb.activate_cdp_mode(url)
             sb.sleep(1.8)
@@ -777,19 +779,15 @@ class UCPresentationClass(BaseCase):
             location = "Portland, Oregon, US"
             selection = "Oregon, United States"  # (Dropdown option)
             sb.press_keys('input[name="endLocation"]', location)
-            sb.sleep(1.5)
+            sb.sleep(0.5)
             sb.click_if_visible('input[name="endLocation"]')
-            sb.sleep(0.6)
+            sb.sleep(0.5)
             sb.click(selection)
-            sb.sleep(1.5)
-            sb.click('button[aria-label="Dismiss calendar"]')
-            sb.sleep(0.5)
+            sb.scroll_down(25)
+            sb.click_if_visible('button[aria-label="Dismiss calendar"]')
+            sb.click_if_visible("div.sidebar-iframe-close")
+            sb.click_if_visible('div[aria-label="Close Modal"]')
             sb.click('button[data-testid="HOTELS_SUBMIT_BUTTON"]')
-            sb.sleep(0.5)
-            if sb.is_element_visible('[aria-label="Close Modal"]'):
-                sb.click('[aria-label="Close Modal"]')
-                sb.sleep(0.5)
-                sb.click('button[data-testid="HOTELS_SUBMIT_BUTTON"]')
             sb.sleep(4.8)
             if len(sb.cdp.get_tabs()) > 1:
                 sb.cdp.close_active_tab()

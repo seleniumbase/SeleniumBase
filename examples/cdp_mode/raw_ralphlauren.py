@@ -2,9 +2,8 @@ from seleniumbase import SB
 
 with SB(uc=True, test=True, locale="en") as sb:
     url = "https://www.ralphlauren.com.au/"
-    sb.activate_cdp_mode()
-    sb.open(url)
-    sb.sleep(1.2)
+    sb.activate_cdp_mode(url)
+    sb.sleep(1.6)
     if not sb.is_element_present('[title="Locate Stores"]'):
         sb.evaluate("window.location.reload();")
         sb.sleep(1.2)
@@ -15,8 +14,8 @@ with SB(uc=True, test=True, locale="en") as sb:
     sb.click('a:contains("%s")' % search)
     sb.sleep(3.8)
     for i in range(6):
-        sb.scroll_down(34)
-        sb.sleep(0.25)
+        sb.scroll_down(25)
+        sb.sleep(0.2)
     print('*** Ralph Lauren Search for "%s":' % search)
     unique_item_text = []
     items = sb.find_elements('div.product-data')
