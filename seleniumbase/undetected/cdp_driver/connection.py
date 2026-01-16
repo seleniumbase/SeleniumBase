@@ -593,10 +593,12 @@ class Listener:
                     "Connection listener exception "
                     "while reading websocket:\n%s", e
                 )
+                self.idle.set()
                 break
             if not self.running:
                 # If we have been cancelled or otherwise stopped running,
                 # then break this loop.
+                self.idle.set()
                 break
             self.idle.clear()  # Not "idle" anymore.
             message = json.loads(msg)
