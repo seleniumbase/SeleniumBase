@@ -182,7 +182,6 @@ class Browser:
         if self._process and self._process.returncode is None:
             return False
         return True
-        # return (self._process and self._process.returncode) or False
 
     async def wait(self, time: Union[float, int] = 1) -> Browser:
         """Wait for <time> seconds. Important to use,
@@ -436,6 +435,7 @@ class Browser:
                     "*.adthrive.com*",
                     "*.pubmatic.com*",
                     "*.id5-sync.com*",
+                    "*.moatads.com*",
                     "*.dotomi.com*",
                     "*.adsrvr.org*",
                     "*.atmtd.com*",
@@ -572,7 +572,7 @@ class Browser:
                     If you are sure about the browser executable,
                     set it using `browser_executable_path='{}` parameter."""
                     ).format(
-                        "/path/to/browser/executable"
+                        "/path/to/your/browser/executable"
                         if is_posix
                         else "c:/path/to/your/browser.exe"
                     )
@@ -592,8 +592,6 @@ class Browser:
         if not connect_existing:
             self._process: asyncio.subprocess.Process = (
                 await asyncio.create_subprocess_exec(
-                    # self.config.browser_executable_path,
-                    # *cmdparams,
                     exe,
                     *params,
                     stdin=asyncio.subprocess.PIPE,
@@ -602,19 +600,23 @@ class Browser:
                     close_fds=is_posix,
                 )
             )
+            await asyncio.sleep(0.05)
             self._process_pid = self._process.pid
+        await asyncio.sleep(0.05)
         self._http = HTTPApi((self.config.host, self.config.port))
+        await asyncio.sleep(0.05)
         get_registered_instances().add(self)
-        await asyncio.sleep(0.25)
-        for _ in range(5):
+        await asyncio.sleep(0.15)
+        for attempt in range(5):
             try:
                 self.info = ContraDict(
                     await self._http.get("version"), silent=True
                 )
             except (Exception,):
-                if _ == 4:
+                if attempt == 4:
                     logger.debug("Could not start", exc_info=True)
-                await self.sleep(0.5)
+                else:
+                    await self.sleep(0.5)
             else:
                 break
         if not self.info:

@@ -7,6 +7,7 @@ import json
 import logging
 import sys
 import types
+import warnings
 from typing import (
     Optional,
     Generator,
@@ -445,11 +446,17 @@ class Connection(metaclass=CantTouchThis):
             if not _is_update:
                 await self._register_handlers()
             await self.websocket.send(tx.message)
-            try:
-                return await tx
-            except ProtocolException as e:
-                e.message += f"\ncommand:{tx.method}\nparams:{tx.params}"
-                raise e
+            with warnings.catch_warnings():
+                warnings.filterwarnings(
+                    "ignore",
+                    message="coroutine .* was never awaited",
+                    category=RuntimeWarning,
+                )
+                try:
+                    return await tx
+                except ProtocolException as e:
+                    e.message += f"\ncommand:{tx.method}\nparams:{tx.params}"
+                    raise e
         except Exception:
             await self.aclose()
 
