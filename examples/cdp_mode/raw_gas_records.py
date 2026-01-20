@@ -8,10 +8,10 @@ with SB(uc=True, test=True) as sb:
         "/order-replacement-building-regulations-certificate/"
     )
     sb.activate_cdp_mode(url)
-    sb.sleep(0.5)
+    sb.sleep(0.6)
     sb.solve_captcha()
     sb.wait_for_element("#SearchTerm", timeout=5)
-    sb.sleep(2)
+    sb.sleep(1.4)
     allow_cookies = 'button:contains("Allow all cookies")'
     sb.click_if_visible(allow_cookies, timeout=2)
     sb.sleep(1)
