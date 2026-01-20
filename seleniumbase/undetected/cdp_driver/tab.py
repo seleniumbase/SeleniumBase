@@ -5,6 +5,7 @@ import datetime
 import logging
 import pathlib
 import re
+import sys
 import urllib.parse
 import warnings
 from contextlib import suppress
@@ -12,6 +13,7 @@ from filelock import FileLock
 from seleniumbase import config as sb_config
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import js_utils
+from seleniumbase.fixtures import page_utils
 from seleniumbase.fixtures import shared_utils
 from typing import Dict, List, Union, Optional, Tuple
 from . import browser as cdp_browser
@@ -1339,16 +1341,29 @@ class Tab(Connection):
             return False
 
     async def is_element_visible(self, selector):
-        try:
-            element = await self.select(selector, timeout=0.01)
-        except Exception:
-            return False
-        if not element:
-            return False
-        try:
-            position = await element.get_position_async()
-            return (position.width != 0 or position.height != 0)
-        except Exception:
+        if ":contains(" not in selector:
+            try:
+                element = await self.select(selector, timeout=0.01)
+            except Exception:
+                return False
+            if not element:
+                return False
+            try:
+                position = await element.get_position_async()
+                return (position.width != 0 or position.height != 0)
+            except Exception:
+                return False
+        else:
+            with suppress(Exception):
+                tag_name = selector.split(":contains(")[0].split(" ")[-1]
+                text = selector.split(":contains(")[1].split(")")[0][1:-1]
+                element = await self.select(tag_name, timeout=0.01)
+                if not element:
+                    raise Exception()
+                element = await self.find_element_by_text(text)
+                if not element:
+                    raise Exception()
+                return True
             return False
 
     async def __on_a_cf_turnstile_page(self, source=None):
@@ -1369,6 +1384,11 @@ class Tab(Connection):
             return True
         return False
 
+    async def __on_an_incapsula_hcaptcha_page(self, *args, **kwargs):
+        if await self.is_element_visible('iframe[src*="Incapsula_Resource?"]'):
+            return True
+        return False
+
     async def __on_a_g_recaptcha_page(self, *args, **kwargs):
         await self.sleep(0.4)  # reCAPTCHA may need a moment to appear
         source = await self.get_html()
@@ -1382,7 +1402,7 @@ class Tab(Connection):
             await self.sleep(0.1)
             return True
         elif "com/recaptcha/api.js" in source:
-            await self.sleep(1.6)  # Still loading
+            await self.sleep(1.2)  # Maybe still loading
             return True
         return False
 
@@ -1391,18 +1411,34 @@ class Tab(Connection):
         if await self.is_element_present('iframe[title="reCAPTCHA"]'):
             selector = 'iframe[title="reCAPTCHA"]'
         else:
-            return
+            return False
         await self.sleep(0.5)
         with suppress(Exception):
-            element_rect = await self.get_gui_element_rect(selector, timeout=1)
+            element_rect = await self.get_element_rect(selector, timeout=0.1)
             e_x = element_rect["x"]
             e_y = element_rect["y"]
+            window_rect = await self.get_window_rect()
+            win_width = window_rect["innerWidth"]
+            win_height = window_rect["innerHeight"]
+            if (
+                e_x > 1040
+                and e_y > 640
+                and abs(win_width - e_x) < 110
+                and abs(win_height - e_y) < 110
+            ):
+                # Probably the invisible reCAPTCHA in the bottom right corner
+                return False
+            gui_element_rect = await self.get_gui_element_rect(
+                selector, timeout=1
+            )
+            gui_e_x = gui_element_rect["x"]
+            gui_e_y = gui_element_rect["y"]
             x_offset = 26
             y_offset = 35
             if await asyncio.to_thread(shared_utils.is_windows):
                 x_offset = 29
-            x = e_x + x_offset
-            y = e_y + y_offset
+            x = gui_e_x + x_offset
+            y = gui_e_y + y_offset
             sb_config._saved_cf_x_y = (x, y)  # For debugging later
             await self.sleep(0.11)
             gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
@@ -1413,6 +1449,53 @@ class Tab(Connection):
                     selector, x_offset, y_offset, timeout=1
                 )
                 await self.sleep(0.22)
+            return True
+        return False
+
+    async def __cdp_click_incapsula_hcaptcha(self):
+        selector = None
+        if await self.is_element_visible('iframe[src*="Incapsula_Resource?"]'):
+            outer_selector = 'iframe[src*="Incapsula_Resource?"]'
+            selector = "iframe[data-hcaptcha-widget-id]"
+            outer_element = await self.find_element_by_text(outer_selector)
+            element = await outer_element.query_selector_async(selector)
+            if not element:
+                return False
+        else:
+            return False
+        await self.sleep(0.55)
+        x_offset = 30
+        y_offset = 36
+        was_clicked = False
+        gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
+        with gui_lock:  # Prevent issues with multiple processes
+            await self.bring_to_front()
+            await self.sleep(0.056)
+            if "--debug" in sys.argv:
+                displayed_selector = "`%s`" % selector
+                if '"' not in selector:
+                    displayed_selector = '"%s"' % selector
+                elif "'" not in selector:
+                    displayed_selector = "'%s'" % selector
+                print(
+                    " <DEBUG> click_with_offset(%s, %s, %s)"
+                    % (displayed_selector, x_offset, y_offset)
+                )
+            with suppress(Exception):
+                await element.mouse_click_with_offset_async(
+                    x=x_offset, y=y_offset, center=False
+                )
+                was_clicked = True
+                await self.sleep(0.075)
+        if was_clicked:
+            # Wait a moment for the click to succeed
+            await self.sleep(0.75)
+            if "--debug" in sys.argv:
+                print(" <DEBUG> hCaptcha was clicked!")
+            return True
+        if "--debug" in sys.argv:
+            print(" <DEBUG> hCaptcha was NOT clicked!")
+        return False
 
     async def get_element_rect(self, selector, timeout=5):
         element = await self.select(selector, timeout=timeout)
@@ -1505,6 +1588,25 @@ class Tab(Connection):
         element = await self.find(selector, timeout=timeout)
         await element.click_async()
 
+    async def click_if_visible(self, selector, timeout=0):
+        original_selector = selector
+        if (":contains(") in selector:
+            selector, _ = page_utils.recalculate_selector(
+                selector, by="css selector", xp_ok=True
+            )
+        if await self.is_element_visible(original_selector):
+            with suppress(Exception):
+                element = await self.find(selector, timeout=0.01)
+                await element.click_async()
+        elif timeout == 0:
+            return
+        else:
+            with suppress(Exception):
+                await self.find(selector, timeout=timeout)
+                if await self.is_element_visible(selector):
+                    element = await self.find(selector, timeout=0.01)
+                    await element.click_async()
+
     async def click_with_offset(self, selector, x, y, center=False, timeout=5):
         element = await self.find(selector, timeout=timeout)
         await element.scroll_into_view_async()
@@ -1516,10 +1618,13 @@ class Tab(Connection):
         if await self.__on_a_cf_turnstile_page(source):
             pass
         elif await self.__on_a_g_recaptcha_page(source):
-            await self.__gui_click_recaptcha()
-            return
+            result = await self.__gui_click_recaptcha()
+            return result
+        elif await self.__on_an_incapsula_hcaptcha_page():
+            result = await self.__cdp_click_incapsula_hcaptcha()
+            return result
         else:
-            return
+            return False
         selector = None
         if await self.is_element_present('[class="cf-turnstile"]'):
             selector = '[class="cf-turnstile"]'
@@ -1568,9 +1673,9 @@ class Tab(Connection):
         ):
             selector = "div:not([class]) > div:not([class])"
         else:
-            return
+            return False
         if not selector:
-            return
+            return False
         if (
             await self.is_element_present("form")
             and (
@@ -1670,6 +1775,8 @@ class Tab(Connection):
                     selector, x_offset, y_offset, timeout=1
                 )
                 await self.sleep(0.22)
+            return True
+        return False
 
     async def click_captcha(self):
         await self.solve_captcha()

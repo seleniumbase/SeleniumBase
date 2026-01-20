@@ -261,6 +261,12 @@ class Browser:
         return self.config.port
 
     def get_rd_url(self):
+        """Returns the remote-debugging URL, which is used for
+        allowing the Playwright integration to launch stealthy.
+        Also sets an environment variable to hide this warning:
+        Deprecation: "url.parse() behavior is not standardized".
+        (github.com/microsoft/playwright-python/issues/3016)"""
+        os.environ["NODE_NO_WARNINGS"] = "1"
         host = self.config.host
         port = self.config.port
         return f"http://{host}:{port}"
