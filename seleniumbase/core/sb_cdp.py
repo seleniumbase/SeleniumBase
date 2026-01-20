@@ -1995,7 +1995,7 @@ class CDPMethods():
                 time.sleep(0.1)
             return True
         elif "com/recaptcha/api.js" in source:
-            time.sleep(1.6)  # Still loading
+            time.sleep(1.2)  # Maybe still loading
             try:
                 self.loop.run_until_complete(self.page.wait(0.1))
             except Exception:
@@ -2084,10 +2084,10 @@ class CDPMethods():
             with suppress(Exception):
                 element.click_with_offset(x_offset, y_offset)
                 was_clicked = True
-                time.sleep(0.056)
+                time.sleep(0.075)
         if was_clicked:
             # Wait a moment for the click to succeed
-            time.sleep(0.25)
+            time.sleep(0.75)
             self.__slow_mode_pause_if_set()
             self.loop.run_until_complete(self.page.wait())
             if "--debug" in sys.argv:

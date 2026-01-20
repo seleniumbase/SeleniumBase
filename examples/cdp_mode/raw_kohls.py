@@ -2,7 +2,7 @@ from seleniumbase import SB
 
 with SB(uc=True, test=True, locale="en", incognito=True) as sb:
     url = "https://www.kohls.com/"
-    sb.activate_cdp_mode(url)
+    sb.activate_cdp_mode(url, ad_block=True)
     sb.sleep(2.6)
     search = "Mickey Mouse Blanket"
     req_1 = "Mickey"
