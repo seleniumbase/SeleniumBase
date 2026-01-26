@@ -147,10 +147,10 @@ setup(
     python_requires=">=3.9",
     install_requires=[
         'pip>=25.3',
-        'packaging>=25.0',
+        'packaging>=26.0',
         'setuptools~=70.2;python_version<"3.10"',  # Newer ones had issues
-        'setuptools>=80.9.0;python_version>="3.10"',
-        'wheel>=0.45.1',
+        'setuptools>=80.10.2;python_version>="3.10"',
+        'wheel>=0.46.3',
         'attrs>=25.4.0',
         'certifi>=2026.1.4',
         'exceptiongroup>=1.3.1',
@@ -211,7 +211,7 @@ setup(
         'pytest-xdist==3.8.0',
         'parameterized==0.9.0',
         'behave==1.2.6',  # Newer ones had issues
-        'soupsieve~=2.8.2',
+        'soupsieve~=2.8.3',
         'beautifulsoup4~=4.14.3',
         'pyotp==2.9.0',
         'python-xlib==0.33;platform_system=="Linux"',
@@ -219,7 +219,7 @@ setup(
         'markdown-it-py==3.0.0;python_version<"3.10"',
         'markdown-it-py==4.0.0;python_version>="3.10"',
         'mdurl==0.1.2',
-        'rich>=14.2.0,<15',
+        'rich>=14.3.1,<15',
     ],
     extras_require={
         # pip install -e .[allure]
@@ -234,7 +234,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage>=7.10.7;python_version<"3.10"',
-            'coverage>=7.13.1;python_version>="3.10"',
+            'coverage>=7.13.2;python_version>="3.10"',
             'pytest-cov>=7.0.0',
         ],
         # pip install -e .[flake8]
@@ -263,7 +263,8 @@ setup(
             'pdfminer.six==20260107;python_version>="3.10"',
             'cryptography==46.0.3',
             'cffi==2.0.0',
-            'pycparser==2.23',
+            'pycparser==2.23;python_version<"3.10"',
+            'pycparser==3.0;python_version>="3.10"',
         ],
         # pip install -e .[pillow]
         # (An optional library for image-processing.)
