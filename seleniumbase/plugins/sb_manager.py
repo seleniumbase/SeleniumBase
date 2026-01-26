@@ -875,7 +875,7 @@ def SB(
                 '\nExpecting a Python dictionary for "variables"!'
                 "\nEg. --variables=\"{'KEY1':'VALUE', 'KEY2':123}\""
             )
-    else:
+    elif not isinstance(variables, dict):
         variables = {}
     if disable_csp is None:
         if (
