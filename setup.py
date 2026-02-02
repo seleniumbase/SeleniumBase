@@ -146,7 +146,7 @@ setup(
     ],
     python_requires=">=3.9",
     install_requires=[
-        'pip>=25.3',
+        'pip>=26.0',
         'packaging>=26.0',
         'setuptools~=70.2;python_version<"3.10"',  # Newer ones had issues
         'setuptools>=80.10.2;python_version>="3.10"',
@@ -193,7 +193,8 @@ setup(
         'websocket-client~=1.9.0',
         'selenium==4.32.0;python_version<"3.10"',
         'selenium==4.40.0;python_version>="3.10"',
-        'cssselect==1.3.0',
+        'cssselect==1.3.0;python_version<"3.10"',
+        'cssselect>=1.4.0,<2;python_version>="3.10"',
         'nest-asyncio==1.6.0',
         'sortedcontainers==2.4.0',
         'execnet==2.1.1;python_version<"3.10"',
@@ -219,7 +220,7 @@ setup(
         'markdown-it-py==3.0.0;python_version<"3.10"',
         'markdown-it-py==4.0.0;python_version>="3.10"',
         'mdurl==0.1.2',
-        'rich>=14.3.1,<15',
+        'rich>=14.3.2,<15',
     ],
     extras_require={
         # pip install -e .[allure]
@@ -261,7 +262,7 @@ setup(
         "pdfminer": [
             'pdfminer.six==20251107;python_version<"3.10"',
             'pdfminer.six==20260107;python_version>="3.10"',
-            'cryptography==46.0.3',
+            'cryptography==46.0.4',
             'cffi==2.0.0',
             'pycparser==2.23;python_version<"3.10"',
             'pycparser==3.0;python_version>="3.10"',
@@ -287,11 +288,11 @@ setup(
         # pip install -e .[playwright]
         # (For the Playwright integration.)
         "playwright": [
-            "playwright>=1.56.0",
+            "playwright>=1.58.0",
         ],
         # pip install -e .[psutil]
         "psutil": [
-            "psutil>=7.1.3",
+            "psutil>=7.2.2",
         ],
         # pip install -e .[pyautogui]
         # (Already a required dependency on Linux now.)

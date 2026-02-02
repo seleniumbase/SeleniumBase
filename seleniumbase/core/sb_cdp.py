@@ -1974,7 +1974,10 @@ class CDPMethods():
 
     def _on_an_incapsula_hcaptcha_page(self, *args, **kwargs):
         self.loop.run_until_complete(self.page.wait())
-        if self.is_element_visible('iframe[src*="_Incapsula_Resource?"]'):
+        if (
+            self.is_element_visible('iframe[src*="_Incapsula_Resource?"]')
+            or self.is_element_visible("iframe[data-hcaptcha-widget-id]")
+        ):
             return True
         return False
 
@@ -2052,11 +2055,14 @@ class CDPMethods():
         return False
 
     def __cdp_click_incapsula_hcaptcha(self):
-        selector = None
+        selector = "iframe[data-hcaptcha-widget-id]"
         if self.is_element_visible('iframe[src*="_Incapsula_Resource?"]'):
             outer_selector = 'iframe[src*="_Incapsula_Resource?"]'
-            selector = "iframe[data-hcaptcha-widget-id]"
             element = self.get_nested_element(outer_selector, selector)
+            if not element:
+                return False
+        elif self.is_element_visible(selector):
+            element = self.select(selector, timeout=0.1)
             if not element:
                 return False
         else:

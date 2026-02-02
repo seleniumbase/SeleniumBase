@@ -26,7 +26,11 @@ with sync_playwright() as p:
         item = items.nth(i)
         if required_text in item.inner_text():
             description = item.locator('[data-automation-id="product-title"]')
-            if description and description.inner_text() not in unique_item:
+            if (
+                description
+                and description.is_visible()
+                and description.inner_text() not in unique_item
+            ):
                 unique_item.append(description.inner_text())
                 print("* " + description.inner_text())
                 price = item.locator('[data-automation-id="product-price"]')
