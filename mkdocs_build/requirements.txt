@@ -10,8 +10,8 @@ click==8.3.1
 ghp-import==2.1.0
 watchdog==6.0.0
 cairocffi==1.7.1
-pathspec==1.0.3
-Babel==2.17.0
+pathspec==1.0.4
+Babel==2.18.0
 paginate==0.5.7
 mkdocs==1.6.1
 mkdocs-material==9.6.23
