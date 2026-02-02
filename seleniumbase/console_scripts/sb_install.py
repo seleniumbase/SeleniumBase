@@ -1067,7 +1067,7 @@ def main(override=None, intel_for_uc=None, force_uc=None):
         zip_ref.extractall(downloads_folder)
         zip_ref.close()
         os.remove(zip_file_path)
-        shutil.copy3(driver_path, os.path.join(downloads_folder, filename))
+        shutil.copy2(driver_path, os.path.join(downloads_folder, filename))
         log_d("%sUnzip Complete!%s\n" % (c2, cr))
         to_remove = [
             "%s/%s/ruby_example/Gemfile" % (downloads_folder, h_ie_fn),
