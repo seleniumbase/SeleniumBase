@@ -599,6 +599,18 @@ async def start(
         sb_config.disable_csp = True
     if "binary_location" in kwargs and not browser_executable_path:
         browser_executable_path = kwargs["binary_location"]
+    if not user_data_dir and "--user-data-dir" in arg_join:
+        udd_string = None
+        if "--user-data-dir=" in arg_join:
+            udd_string = arg_join.split("--user-data-dir=")[1].split(" ")[0]
+        elif "--user-data-dir " in arg_join:
+            udd_string = arg_join.split("--user-data-dir ")[1].split(" ")[0]
+        if udd_string:
+            if udd_string.startswith('"') and udd_string.endswith('"'):
+                udd_string = udd_string[1:-1]
+            elif udd_string.startswith("'") and udd_string.endswith("'"):
+                udd_string = udd_string[1:-1]
+            user_data_dir = udd_string
     if not browser_executable_path:
         browser = None
         if "browser" in kwargs:
@@ -611,9 +623,9 @@ async def start(
                 br_string = arg_join.split("--browser ")[1].split(" ")[0]
             if br_string:
                 if br_string.startswith('"') and br_string.endswith('"'):
-                    br_string = proxy_string[1:-1]
+                    br_string = br_string[1:-1]
                 elif br_string.startswith("'") and br_string.endswith("'"):
-                    br_string = proxy_string[1:-1]
+                    br_string = br_string[1:-1]
                 browser = br_string
         if not browser:
             if "--edge" in sys_argv:
