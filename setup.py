@@ -146,10 +146,10 @@ setup(
     ],
     python_requires=">=3.9",
     install_requires=[
-        'pip>=26.0',
+        'pip>=26.0.1',
         'packaging>=26.0',
         'setuptools~=70.2;python_version<"3.10"',  # Newer ones had issues
-        'setuptools>=80.10.2;python_version>="3.10"',
+        'setuptools>=82.0.0;python_version>="3.10"',
         'wheel>=0.46.3',
         'attrs>=25.4.0',
         'certifi>=2026.1.4',
@@ -168,7 +168,7 @@ setup(
         'MarkupSafe>=3.0.3',
         "Jinja2>=3.1.6",
         "six>=1.17.0",
-        'parse>=1.20.2',
+        'parse>=1.21.0',
         'parse-type>=0.6.6',
         'colorama>=0.4.6',
         'pyyaml>=6.0.3',
@@ -235,7 +235,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage>=7.10.7;python_version<"3.10"',
-            'coverage>=7.13.2;python_version>="3.10"',
+            'coverage>=7.13.4;python_version>="3.10"',
             'pytest-cov>=7.0.0',
         ],
         # pip install -e .[flake8]
@@ -262,7 +262,7 @@ setup(
         "pdfminer": [
             'pdfminer.six==20251107;python_version<"3.10"',
             'pdfminer.six==20260107;python_version>="3.10"',
-            'cryptography==46.0.4',
+            'cryptography==46.0.5',
             'cffi==2.0.0',
             'pycparser==2.23;python_version<"3.10"',
             'pycparser==3.0;python_version>="3.10"',
@@ -271,7 +271,7 @@ setup(
         # (An optional library for image-processing.)
         "pillow": [
             'Pillow>=11.3.0;python_version<"3.10"',
-            'Pillow>=12.1.0;python_version>="3.10"',
+            'Pillow>=12.1.1;python_version>="3.10"',
         ],
         # pip install -e .[pip-system-certs]
         # (If you see [SSL: CERTIFICATE_VERIFY_FAILED], then get this.)
