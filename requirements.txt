@@ -1,7 +1,7 @@
-pip>=26.0
+pip>=26.0.1
 packaging>=26.0
 setuptools~=70.2;python_version<"3.10"
-setuptools>=80.10.2;python_version>="3.10"
+setuptools>=82.0.0;python_version>="3.10"
 wheel>=0.46.3
 attrs>=25.4.0
 certifi>=2026.1.4
@@ -20,7 +20,7 @@ sbvirtualdisplay>=1.4.0
 MarkupSafe>=3.0.3
 Jinja2>=3.1.6
 six>=1.17.0
-parse>=1.20.2
+parse>=1.21.0
 parse-type>=0.6.6
 colorama>=0.4.6
 pyyaml>=6.0.3
@@ -78,7 +78,7 @@ rich>=14.3.2,<15
 # ("pip install -r requirements.txt" also installs this, but "pip install -e ." won't.)
 
 coverage>=7.10.7;python_version<"3.10"
-coverage>=7.13.2;python_version>="3.10"
+coverage>=7.13.4;python_version>="3.10"
 pytest-cov>=7.0.0
 flake8==7.3.0
 mccabe==0.7.0

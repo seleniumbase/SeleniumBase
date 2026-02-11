@@ -5,7 +5,7 @@ regex>=2026.1.15
 pymdown-extensions>=10.20.1
 pipdeptree>=2.30.0
 python-dateutil>=2.8.2
-Markdown==3.10.1
+Markdown==3.10.2
 click==8.3.1
 ghp-import==2.1.0
 watchdog==6.0.0
