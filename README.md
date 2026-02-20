@@ -186,6 +186,16 @@ pytest test_demo_site.py
 
 --------
 
+<p align="left">📓 Here's a high-level stealthy architecture overview of SeleniumBase:</p>
+
+
+
+<img src="https://seleniumbase.github.io/other/sb_stealth.png" width="650" alt="High-Level Stealthy Architecture Overview" title="High-Level Stealthy Architecture Overview" />
+
+(For maximum stealth, use <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md">CDP Mode</a>, which is used by <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md">Stealthy Playwright Mode</a>)
+
+--------
+
 <p align="left"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/super_logo_sb3.png" alt="SeleniumBase" title="SeleniumBase" width="232" /></a></p>
 
 <blockquote>
