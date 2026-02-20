@@ -1501,9 +1501,12 @@ def _uc_gui_click_captcha(
                 ):
                     frame = '[data-callback="onCaptchaSuccess"]'
                 elif driver.is_element_present(
-                    "div:not([class]) > div:not([class])"
+                    "div:not([class]):not([id]) > div:not([class]):not([id])"
                 ):
-                    frame = "div:not([class]) > div:not([class])"
+                    frame = (
+                        "div:not([class]):not([id]) > "
+                        "div:not([class]):not([id])"
+                    )
                 else:
                     return False
             if (

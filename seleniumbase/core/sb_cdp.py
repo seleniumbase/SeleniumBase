@@ -1981,6 +1981,16 @@ class CDPMethods():
             return True
         return False
 
+    def _on_a_datadome_slider_page(self, *args, **kwargs):
+        self.loop.run_until_complete(self.page.wait())
+        if (
+            self.is_element_visible(
+                'body > iframe[src*="/geo.captcha-delivery.com/captcha/"]'
+            )
+        ):
+            return True
+        return False
+
     def _on_a_g_recaptcha_page(self, *args, **kwargs):
         time.sleep(0.4)  # reCAPTCHA may need a moment to appear
         self.loop.run_until_complete(self.page.wait())
@@ -2053,6 +2063,26 @@ class CDPMethods():
                 self.gui_click_x_y(x, y)
             return True
         return False
+
+    def __gui_slide_datadome_captcha(self):
+        iframe = 'body > iframe[src*="/geo.captcha-delivery.com/captcha/"]'
+        if not self.is_element_visible(iframe):
+            return False
+        src = self.get_attribute(iframe, "src")
+        tab = self.get_active_tab()
+        self.open_new_tab(url=src)
+        time.sleep(0.41)
+        self.loop.run_until_complete(self.page.wait())
+        time.sleep(0.25)
+        x1, y1 = self.get_gui_element_center("div.slider")
+        x2, y2 = self.get_gui_element_center("div.sliderTarget")
+        self.close_active_tab()
+        self.switch_to_tab(tab)
+        self.gui_drag_drop_points(x1, y1, x2, y2, timeframe=0.55)
+        time.sleep(0.25)
+        self.loop.run_until_complete(self.page.wait())
+        time.sleep(0.15)
+        return True
 
     def __cdp_click_incapsula_hcaptcha(self):
         selector = "iframe[data-hcaptcha-widget-id]"
@@ -2128,6 +2158,9 @@ class CDPMethods():
         elif self._on_an_incapsula_hcaptcha_page():
             result = self.__cdp_click_incapsula_hcaptcha()
             return result
+        elif self._on_a_datadome_slider_page():
+            result = self.__gui_slide_datadome_captcha()
+            return result
         else:
             return False
         selector = None
@@ -2174,9 +2207,11 @@ class CDPMethods():
         ):
             selector = '[data-callback="onCaptchaSuccess"]'
         elif self.is_element_present(
-            "div:not([class]) > div:not([class])"
+            "div:not([class]):not([id]) > div:not([class]):not([id])"
         ):
-            selector = "div:not([class]) > div:not([class])"
+            selector = (
+                "div:not([class]):not([id]) > div:not([class]):not([id])"
+            )
         else:
             return False
         if not selector:
