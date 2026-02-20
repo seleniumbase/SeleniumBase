@@ -1,8 +1,9 @@
 # SeleniumBase Docker Image
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONIOENCODING=UTF-8
+ENV DEBIAN_FRONTEND=noninteractive
 
 #======================
 # Locale Configuration
@@ -23,7 +24,8 @@ RUN locale-gen en_US.UTF-8
 #===========================
 # Fingerprint Configuration
 #===========================
-RUN apt install -y xvfb fonts-liberation fonts-noto-color-emoji libvulkan1 libnss3 libatk-bridge2.0-0 libcups2 libxcomposite1 libxrandr2 libgbm1 libpango-1.0-0 libcairo2 libasound2
+RUN apt-get update
+RUN apt install -y fonts-liberation fonts-noto-color-emoji libvulkan1 libnss3 libatk-bridge2.0-0 libcups2 libxcomposite1 libxrandr2 libgbm1 libpango-1.0-0 libcairo2
 RUN apt install -y fonts-freefont-ttf fonts-dejavu-core fonts-ubuntu fonts-roboto fonts-droid-fallback
 
 #======================
@@ -31,15 +33,12 @@ RUN apt install -y fonts-freefont-ttf fonts-dejavu-core fonts-ubuntu fonts-robot
 #======================
 RUN apt-get update
 RUN apt-get install -y \
-    fonts-liberation \
     fonts-liberation2 \
     fonts-font-awesome \
-    fonts-ubuntu \
     fonts-terminus \
     fonts-powerline \
     fonts-open-sans \
     fonts-mononoki \
-    fonts-roboto \
     fonts-lato
 
 #============================
@@ -47,25 +46,17 @@ RUN apt-get install -y \
 #============================
 RUN apt-get update
 RUN apt-get install -y \
-    libasound2 \
-    libatk-bridge2.0-0 \
     libatk1.0-0 \
     libatspi2.0-0 \
-    libcups2 \
     libdbus-1-3 \
     libdrm2 \
-    libgbm1 \
     libgtk-3-0 \
     libnspr4 \
-    libnss3 \
     libu2f-udev \
-    libvulkan1 \
     libwayland-client0 \
-    libxcomposite1 \
     libxdamage1 \
     libxfixes3 \
-    libxkbcommon0 \
-    libxrandr2
+    libxkbcommon0
 
 #==========================
 # Install useful utilities
@@ -96,13 +87,20 @@ RUN rm ./google-chrome-stable_current_amd64.deb
 #================
 # Install Python
 #================
+RUN apt-get update && apt-get install -y software-properties-common
+RUN add-apt-repository ppa:deadsnakes/ppa -y
 RUN apt-get update
-RUN apt-get install -y python3 python3-pip python3-setuptools python3-dev python3-tk
+RUN apt-get install -y python3.13 python3.13-venv python3.13-dev build-essential
+RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.13 1
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN python3.13 -m ensurepip --upgrade
+RUN python3.13 -m pip install --upgrade pip
+RUN apt-get update
+RUN apt-get install -y python3.13-tk python3.13-dev
 RUN alias python=python3
 RUN echo "alias python=python3" >> ~/.bashrc
-RUN apt-get -qy --no-install-recommends install python3.10
 RUN rm /usr/bin/python3
-RUN ln -s python3.10 /usr/bin/python3
+RUN ln -s python3.13 /usr/bin/python3
 
 #===============
 # Cleanup Lists
@@ -128,6 +126,8 @@ RUN pip install --upgrade pip setuptools wheel
 RUN cd /SeleniumBase && ls && pip install -r requirements.txt --upgrade
 RUN cd /SeleniumBase && pip install .
 RUN pip install pyautogui
+RUN pip install playwright
+RUN seleniumbase get chromium
 
 #=======================
 # Download chromedriver
