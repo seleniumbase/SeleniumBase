@@ -699,6 +699,7 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
             xvfb_metrics=xvfb_metrics,
             browser_executable_path=binary_location,
             mobile=getattr(sb_config, "_cdp_mobile_mode", None),
+            agent=getattr(sb_config, "_cdp_user_agent", None),
         )
     )
     loop.run_until_complete(driver.cdp_base.wait(0))
@@ -3109,6 +3110,7 @@ def get_driver(
         if mobile_emulator:
             # For stealthy mobile mode, see the CDP Mode examples
             # to learn how to properly configure it.
+            sb_config._cdp_user_agent = user_agent or constants.Mobile.AGENT
             user_agent = None  # Undo the override
             mobile_emulator = False  # Instead, set from CDP Mode
             sb_config._cdp_mobile_mode = True
