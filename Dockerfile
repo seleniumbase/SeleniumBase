@@ -46,14 +46,18 @@ RUN apt-get install -y \
 #============================
 RUN apt-get update
 RUN apt-get install -y \
+    dbus-x11 \
     libatk1.0-0 \
     libatspi2.0-0 \
     libdbus-1-3 \
     libdrm2 \
     libgtk-3-0 \
     libnspr4 \
+    libasound2t64 \
     libu2f-udev \
     libwayland-client0 \
+    libx11-6 \
+    libx11-xcb1 \
     libxdamage1 \
     libxfixes3 \
     libxkbcommon0
@@ -62,7 +66,7 @@ RUN apt-get install -y \
 # Install useful utilities
 #==========================
 RUN apt-get update
-RUN apt-get install -y xdg-utils ca-certificates
+RUN apt-get install -y xdg-utils ca-certificates x11vnc
 
 #=================================
 # Install Bash Command Line Tools
@@ -127,12 +131,19 @@ RUN cd /SeleniumBase && ls && pip install -r requirements.txt --upgrade
 RUN cd /SeleniumBase && pip install .
 RUN pip install pyautogui
 RUN pip install playwright
+RUN seleniumbase get cft
 RUN seleniumbase get chromium
 
 #=======================
 # Download chromedriver
 #=======================
 RUN seleniumbase get chromedriver --path
+
+#==============
+# Extra config
+#==============
+ENV DISPLAY=":99"
+RUN Xvfb :99 -screen 1 1920x1080x16 -nolisten tcp &
 
 #==========================================
 # Create entrypoint and grab example tests

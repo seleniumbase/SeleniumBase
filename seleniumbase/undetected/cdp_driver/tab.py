@@ -672,6 +672,24 @@ class Tab(Connection):
         """Get Navigation History"""
         return await self.send(cdp.page.get_navigation_history())
 
+    async def get_user_agent(self):
+        """Get User Agent String"""
+        return await self.evaluate("navigator.userAgent")
+
+    async def get_cookie_string(self):
+        """Get Cookie String"""
+        return await self.evaluate("document.cookie")
+
+    async def get_locale_code(self):
+        """Get Locale Code"""
+        return await self.evaluate(
+            "navigator.language || navigator.languages[0]"
+        )
+
+    async def is_online(self):
+        """Determine if connected to the Internet"""
+        return await self.evaluate("navigator.onLine")
+
     async def reload(
         self,
         ignore_cache: Optional[bool] = True,
@@ -1577,6 +1595,9 @@ class Tab(Connection):
     async def get_current_url(self):
         return await self.evaluate("window.location.href")
 
+    async def get_origin(self):
+        return await self.evaluate("window.location.origin")
+
     async def send_keys(self, selector, text, timeout=5):
         element = await self.find(selector, timeout=timeout)
         await element.send_keys_async(text)
@@ -1669,10 +1690,12 @@ class Tab(Connection):
         ):
             selector = '[data-callback="onCaptchaSuccess"]'
         elif await self.is_element_present(
-            "div:not([class]):not([id]) > div:not([class]):not([id])"
+            "div:not([class]):not([id]):not([aria-label]) > "
+            "div:not([class]):not([id]):not([aria-label])"
         ):
             selector = (
-                "div:not([class]):not([id]) > div:not([class]):not([id])"
+                "div:not([class]):not([id]):not([aria-label]) > "
+                "div:not([class]):not([id]):not([aria-label])"
             )
         else:
             return False
@@ -1761,7 +1784,7 @@ class Tab(Connection):
             element_rect = await self.get_gui_element_rect(selector, timeout=1)
             e_x = element_rect["x"]
             e_y = element_rect["y"]
-            x_offset = 32
+            x_offset = 28
             y_offset = 32
             if await asyncio.to_thread(shared_utils.is_windows):
                 y_offset = 28

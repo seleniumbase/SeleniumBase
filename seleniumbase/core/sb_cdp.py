@@ -2207,10 +2207,12 @@ class CDPMethods():
         ):
             selector = '[data-callback="onCaptchaSuccess"]'
         elif self.is_element_present(
-            "div:not([class]):not([id]) > div:not([class]):not([id])"
+            "div:not([class]):not([id]):not([aria-label]) > "
+            "div:not([class]):not([id]):not([aria-label])"
         ):
             selector = (
-                "div:not([class]):not([id]) > div:not([class]):not([id])"
+                "div:not([class]):not([id]):not([aria-label]) > "
+                "div:not([class]):not([id]):not([aria-label])"
             )
         else:
             return False
@@ -2303,7 +2305,7 @@ class CDPMethods():
             element_rect = self.get_gui_element_rect(selector, timeout=1)
             e_x = element_rect["x"]
             e_y = element_rect["y"]
-            x_offset = 32
+            x_offset = 28
             y_offset = 32
             if shared_utils.is_windows():
                 y_offset = 28

@@ -14,7 +14,7 @@ with sync_playwright() as p:
     query = "Playwright Python connect_over_cdp() sync example"
     page.fill("textarea#userInput", query)
     page.click('button[data-testid="submit-button"]')
-    sb.sleep(3)
+    sb.sleep(4)
     sb.solve_captcha()
     page.wait_for_selector('button[data-testid*="-thumbs-up"]')
     sb.sleep(4)

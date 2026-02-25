@@ -1,0 +1,17 @@
+.git/
+.gitignore
+.idea/
+.mypy_cache/
+.pytest_cache/
+.tox/
+.venv/
+.vscode/
+*.egg-info/
+*.log
+*.py[cod]
+__pycache__/
+build/
+dist/
+help_docs/
+node_modules/
+site/

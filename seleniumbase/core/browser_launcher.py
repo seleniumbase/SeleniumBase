@@ -1501,11 +1501,12 @@ def _uc_gui_click_captcha(
                 ):
                     frame = '[data-callback="onCaptchaSuccess"]'
                 elif driver.is_element_present(
-                    "div:not([class]):not([id]) > div:not([class]):not([id])"
+                    "div:not([class]):not([id]):not([aria-label]) > "
+                    "div:not([class]):not([id]):not([aria-label])"
                 ):
                     frame = (
-                        "div:not([class]):not([id]) > "
-                        "div:not([class]):not([id])"
+                        "div:not([class]):not([id]):not([aria-label]) > "
+                        "div:not([class]):not([id]):not([aria-label])"
                     )
                 else:
                     return False
@@ -1629,7 +1630,7 @@ def _uc_gui_click_captcha(
                 y = i_y + element.rect["y"] + (element.rect["height"] / 2.0)
                 y += 0.5
             else:
-                x = (i_x + 32) * width_ratio
+                x = (i_x + 28) * width_ratio
                 if not IS_WINDOWS:
                     y = (i_y + 32) * width_ratio
                 else:
