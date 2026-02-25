@@ -17,7 +17,7 @@ async def main():
         query = "Playwright Python connect_over_cdp() sync example"
         await page.fill("textarea#userInput", query)
         await page.click('button[data-testid="submit-button"]')
-        await driver.sleep(3)
+        await driver.sleep(4)
         await driver.solve_captcha()
         await page.wait_for_selector('button[data-testid*="-thumbs-up"]')
         await driver.sleep(4)

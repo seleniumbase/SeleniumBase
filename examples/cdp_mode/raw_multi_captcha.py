@@ -6,7 +6,7 @@ from seleniumbase import sb_cdp
 
 
 def main(url):
-    sb = sb_cdp.Chrome(url, lang="en")
+    sb = sb_cdp.Chrome(url, lang="en", incognito=True)
     sb.set_window_rect(randint(4, 680), randint(8, 380), 840, 520)
     sb.sleep(2)
     sb.gui_click_captcha()
