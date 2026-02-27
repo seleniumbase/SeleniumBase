@@ -7,13 +7,14 @@
 <meta property="og:image" content="https://seleniumbase.github.io/cdn/img/mac_sb_logo_5b.png" />
 <link rel="icon" href="https://seleniumbase.github.io/img/logo7.png" />
 
-<h1>SeleniumBase</h1>
+<h1><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32" /> SeleniumBase</h1>
 
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/super_logo_sb3.png" alt="SeleniumBase" title="SeleniumBase" width="350" /></a></p>
+<h3 align="center" class="hero__title"><b>Automate, test, and scrape the web — on your own terms.<br /></b></h3>
 
-<p align="center" class="hero__title"><b>Automate, test, and scrape the web — on your own terms.<br /></b></p>
+<p align="center"><a href="https://trendshift.io/repositories/12493" target="_blank"><img src="https://trendshift.io/api/badge/repositories/12493" alt="seleniumbase%2FSeleniumBase | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a></p>
 
-<p align="center"><a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=3399EE" alt="PyPI version" /></a> <a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"><img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a>  <a href="https://discord.gg/EdhQTn3EyE" target="_blank"><img src="https://img.shields.io/discord/727927627830001734?color=7289DA&label=Discord&logo=discord&logoColor=white"/></a></p>
+<p align="center"><a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=3399EE" alt="PyPI version" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/releases" target="_blank"><img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=22AAEE" alt="GitHub version" /></a> <a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a></p>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"><img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/stargazers"><img src="https://img.shields.io/github/stars/seleniumbase/SeleniumBase?style=social"></a> <a href="https://pepy.tech/projects/seleniumbase?timeRange=threeMonths&category=version&includeCIDownloads=true&granularity=daily&viewType=line&versions=*" target="_blank"><img src="https://static.pepy.tech/badge/seleniumbase" alt="SeleniumBase PyPI downloads" /></a> <a href="https://discord.gg/EdhQTn3EyE" target="_blank"><img src="https://img.shields.io/discord/727927627830001734?color=7289DA&label=Discord&logo=discord&logoColor=white"/></a></p>
 
 <p align="center">
 <a href="#python_installation">🚀 Start</a> |
@@ -51,7 +52,7 @@
 <br />
 </p>
 
-<p>SeleniumBase is a browser automation framework that empowers software teams to innovate faster and handle modern web challenges with ease. With stealth options like CDP Mode, you'll avoid the usual restrictions imposed by websites deploying bot-detection services.</p>
+<p><a href="https://github.com/seleniumbase/SeleniumBase/"><b translate="no">SeleniumBase</b></a> is an all-in-one Python framework designed to make browser automation, scraping, and testing significantly easier than using standard Selenium. With stealth options (eg. <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md"><b translate="no">CDP Mode</b></a>) you'll avoid the usual restrictions imposed by websites with bot-detection. Includes a feature that <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md"><b>makes <span translate="no">Playwright</span> stealthy</b>.</p>
 
 --------
 
@@ -59,7 +60,7 @@
 
 🐙 Stealth modes: <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md"><b>UC Mode</b></a> and <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md"><b>CDP Mode</b></a> can bypass bot-detection, solve CAPTCHAs, and call advanced methods from the <a href="https://chromedevtools.github.io/devtools-protocol/" translate="no">Chrome Devtools Protocol</a>.
 
-ℹ️ Many examples run with raw <code translate="no"><b>python</b></code>, although some use <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md">Syntax Formats</a> that expect <a href="https://docs.pytest.org/en/latest/how-to/usage.html" translate="no"><b>pytest</b></a> (a Python unit-testing framework included with SeleniumBase that can discover, collect, and run tests automatically).
+ℹ️ Many examples run with raw <code translate="no"><b>python</b></code>, although some <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md">Syntax Formats</a> expect <a href="https://docs.pytest.org/en/latest/how-to/usage.html" translate="no"><b>pytest</b></a> (a Python unit-testing framework included with SeleniumBase that can discover, collect, and run tests automatically).
 
 --------
 
@@ -1435,6 +1436,8 @@ pytest --reruns=1 --reruns-delay=1
 
 <p><div><b><a href="https://github.com/mdmintz">https://github.com/mdmintz</a></b></div></p>
 
-<div align="left"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/super_logo_sb3.png" title="SeleniumBase" width="320" /></a></div>
-<div align="left"><a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" title="SeleniumBase" /></a> <img src="https://views.whatilearened.today/views/github/seleniumbase/SeleniumBase.svg" width="98px" height="20px" alt="Views" /></div>
-<div align="left"><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://img.shields.io/badge/tested%20with-SeleniumBase-04C38E.svg" alt="Tested with SeleniumBase" /></a> <a href="https://discord.gg/EdhQTn3EyE" target="_blank"><img src="https://img.shields.io/discord/727927627830001734?color=7289DA&label=Discord&logo=discord&logoColor=white"/></a></div>
+<div><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/super_logo_sb3.png" title="SeleniumBase" width="310" /></a></div>
+<div><a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" title="SeleniumBase" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/stargazers"><img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=19A57B" title="Stargazers" /></a></div>
+<div><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://img.shields.io/badge/tested%20with-SeleniumBase-04C38E.svg" alt="Tested with SeleniumBase" /></a> <img src="https://views.whatilearened.today/views/github/seleniumbase/SeleniumBase.svg" width="98px" height="20px" alt="Views" /></div>
+<div align="left"></div>
+<div><a href="https://pepy.tech/projects/seleniumbase?timeRange=threeMonths&category=version&includeCIDownloads=true&granularity=daily&viewType=line&versions=*" target="_blank"><img src="https://static.pepy.tech/badge/seleniumbase" alt="SeleniumBase PyPI downloads" /></a> <a href="https://discord.gg/EdhQTn3EyE" target="_blank"><img src="https://img.shields.io/discord/727927627830001734?color=7289DA&label=Discord&logo=discord&logoColor=white"/></a></div>
