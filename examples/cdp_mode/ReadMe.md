@@ -4,7 +4,7 @@
 
 🐙 <b translate="no">SeleniumBase</b> <b translate="no">CDP Mode</b> is a stealth mode that uses the <a href="https://chromedevtools.github.io/devtools-protocol/" translate="no">Chrome Devtools Protocol</a> (via <a href="https://github.com/mdmintz/MyCDP" translate="no"><span translate="no">MyCDP</span></a>) to control the web browser. <b translate="no">CDP Mode</b> can be used as a subset of <b><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md" translate="no"><span translate="no">UC Mode</span></a></b>, or via <b><a href="#Pure_CDP_Mode" translate="no">Pure CDP Mode</a></b>, which has sync and async formats. From CDP Mode, you can make Playwright stealthy (<a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md">Stealthy Playwright Mode</a>).
 
-<img src="https://seleniumbase.github.io/other/sb_stealth.png" width="632" alt="High-Level Stealthy Architecture Overview" title="High-Level Stealthy Architecture Overview" />
+<img src="https://seleniumbase.github.io/other/sb_stealth.png" width="572" alt="High-Level Stealthy Architecture Overview" title="High-Level Stealthy Architecture Overview" />
 
 --------
 
