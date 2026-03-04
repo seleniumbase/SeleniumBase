@@ -4,9 +4,13 @@
 
 🐙 <b translate="no">SeleniumBase</b> <b translate="no">CDP Mode</b> is a stealth mode that uses the <a href="https://chromedevtools.github.io/devtools-protocol/" translate="no">Chrome Devtools Protocol</a> (via <a href="https://github.com/mdmintz/MyCDP" translate="no"><span translate="no">MyCDP</span></a>) to control the web browser. <b translate="no">CDP Mode</b> can be used as a subset of <b><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md" translate="no"><span translate="no">UC Mode</span></a></b>, or via <b><a href="#Pure_CDP_Mode" translate="no">Pure CDP Mode</a></b>, which has sync and async formats. From CDP Mode, you can make Playwright stealthy (<a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md">Stealthy Playwright Mode</a>).
 
-<img src="https://seleniumbase.github.io/other/sb_stealth.png" width="572" alt="High-Level Stealthy Architecture Overview" title="High-Level Stealthy Architecture Overview" />
+----
 
---------
+⚙️ This diagram shows the stealthy architecture with <b>CDP Mode</b>:
+
+<img src="https://seleniumbase.github.io/other/sb_stealth.png" width="585" alt="High-Level Stealthy Architecture Overview" title="High-Level Stealthy Architecture Overview" />
+
+----
 
 ### 🎞️ YouTube tutorials that cover CDP Mode:
 
@@ -15,17 +19,19 @@
 
 (See `examples/cdp_mode/` for up-to-date examples.)
 
---------
+----
 
 <!-- YouTube View --><a href="https://www.youtube.com/watch?v=vt2zsdiNh3U"><img src="https://github.com/user-attachments/assets/82ab2715-727e-4d09-9314-b8905795dc43" title="SeleniumBase on YouTube" width="320" /></a>
 <p>(<b><a href="https://www.youtube.com/watch?v=vt2zsdiNh3U">Watch "Hacking websites with CDP" on YouTube! ▶️</a></b>)</p>
 
---------
+----
 
 <!-- YouTube View --><a href="https://www.youtube.com/watch?v=gEZhTfaIxHQ"><img src="https://github.com/user-attachments/assets/656977e1-5d66-4d1c-9eec-0aaa41f6522f" title="SeleniumBase on YouTube" width="320" /></a>
 <p>(<b><a href="https://www.youtube.com/watch?v=gEZhTfaIxHQ">Watch "Web-Scraping with GitHub Actions" on YouTube! ▶️</a></b>)</p>
 
---------
+----
+
+ℹ️ Note the differences between <b>UC Mode</b> and <b>CDP Mode</b>:
 
 👤 <b translate="no">UC Mode</b>'s stealth is based on a modified chromedriver  (<code>uc_driver</code>) that avoids bot-detection by disconnecting and reconnecting WebDriver from the browser at strategic times. Due to advancements in anti-bot technology, more stealth was needed to bypass advanced bot-detection. (That's where <b translate="no">CDP Mode</b> comes in.)
 
@@ -38,13 +44,11 @@
 * Full access to call any advanced CDP library method.
 * Can be used to make the Playwright library stealthy.
 
---------
+----
 
-### 🐙 <b translate="no">CDP Mode</b> Usage:
+### 🐙 <b translate="no">CDP Mode</b> Usage (when used as a subset of UC Mode):
 
 * **`sb.activate_cdp_mode(url)`**
-
-> (Call that from a **UC Mode** script)
 
 That disconnects WebDriver from Chrome (which prevents detection), and gives you access to `sb.cdp` methods (which don't trigger anti-bot checks).
 
@@ -67,7 +71,7 @@ with SB(uc=True, test=True, locale="en") as sb:
 
 (If the CAPTCHA wasn't bypassed automatically when going to the URL, then `sb.solve_captcha()` gets the job done.)
 
---------
+----
 
 Here's another example that calls `sb.solve_captcha()`:
 ([SeleniumBase/examples/cdp_mode/raw_planetmc.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_planetmc.py))
@@ -88,13 +92,13 @@ with SB(uc=True, test=True, guest=True) as sb:
 
 In many cases, the CAPTCHA will be solved automatically without needing to call `solve_captcha()`.
 
---------
+----
 
 You can also use `PyAutoGUI` to click on elements with the mouse by calling `sb.cdp.gui_click_element(selector)`.
 
 ℹ️ Note that `PyAutoGUI` is an optional dependency. If calling a method that uses it when not already installed, then `SeleniumBase` installs `PyAutoGUI` at runtime.
 
---------
+----
 
 ### 🐙 Here are a few common `sb.cdp` methods:
 
@@ -127,7 +131,7 @@ To find out if WebDriver is connected or disconnected, call:
 
 <b>Note:</b> When <b translate="no">CDP Mode</b> is initialized from <b translate="no">UC Mode</b>, the WebDriver is disconnected from the browser. (The stealthy <b translate="no">CDP-Driver</b> takes over.)
 
---------
+----
 
 ### 🐙 <b translate="no">CDP Mode</b> examples ([SeleniumBase/examples/cdp_mode](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode))
 
@@ -371,7 +375,7 @@ with SB(uc=True, test=True, locale="en", pls="none") as sb:
 
 (<b>Note:</b> Some sites may IP-block you for 36 hours or more if they catch you using regular <span translate="no">Selenium WebDriver</span>. Be extra careful when creating and/or modifying automation scripts that run on them.)
 
---------
+----
 
 ### 🐙 <b translate="no">CDP Mode</b> API / Methods
 
@@ -571,7 +575,7 @@ sb.cdp.save_as_pdf(name, folder=None)
 
 ℹ️ When available, calling `sb.METHOD()` redirects to `sb.cdp.METHOD()` when CDP Mode is active. From Pure CDP Mode, always call these methods with `sb.METHOD()` instead of `sb.cdp.METHOD()`.
 
---------
+----
 
 <a id="Pure_CDP_Mode"></a>
 
@@ -625,7 +629,7 @@ sb.driver.stop()
 
 ℹ️ Even if you don't call `sb.driver.stop()`, the browser still quits after the script goes out-of-scope.
 
---------
+----
 
 ### 🐙 <b translate="no">CDP Mode</b> Async API / Methods
 
@@ -710,7 +714,7 @@ await tab.get_local_storage()
 await tab.set_local_storage(items)
 ```
 
---------
+----
 
 ### 🐙 <b translate="no">CDP Mode</b> WebElement API / Methods
 
@@ -750,7 +754,7 @@ element.get_attribute(attribute)
 element.get_parent()
 ```
 
---------
+----
 
 <img src="https://seleniumbase.github.io/cdn/img/sb_text_f.png" alt="SeleniumBase" title="SeleniumBase" align="center" width="335">
 
