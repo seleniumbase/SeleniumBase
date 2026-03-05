@@ -4,12 +4,13 @@
 
 <p align="left"><a align="center" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py"><img align="center" src="https://seleniumbase.github.io/cdn/img/sb_demo_page.png" alt="SeleniumBase Demo Page" width="420" /></a></p>
 
-* <b>SeleniumBase</b> tests are run with <b>pytest</b>.
+* <b>SeleniumBase</b> "tests" are run with <b>pytest</b>.
 * Chrome is the default browser if not specified.
 * Tests are structured using [25 unique syntax formats](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md).
-* Logs from test failures are saved to ``./latest_logs/``.
+* Logs from test failures are saved to `./latest_logs/`.
 * Tests can be run with [multiple command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md).
-* Examples can be found in: **[SeleniumBase/examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples)**.
+* Examples can be found in [SeleniumBase/examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples).
+* For stealthy examples, see [SeleniumBase/examples/cdp_mode/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode).
 
 (NOTE: Some example tests fail on purpose to demonstrate [logging features](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).)
 
@@ -19,7 +20,7 @@
 
 --------
 
-Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py): (Default option: ``--chrome``)
+Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py): (Default option: `--chrome`)
 
 ```zsh
 pytest my_first_test.py
@@ -47,7 +48,7 @@ pytest test_demo_site.py
 
 --------
 
-Run an example test in ``--demo`` mode: (highlight assertions)
+Run an example test in `--demo` mode: (highlight assertions)
 
 ```zsh
 pytest test_swag_labs.py --demo
@@ -77,7 +78,7 @@ pytest wordle_test.py
 
 --------
 
-Run an example test in ``--headless`` mode: (invisible browser)
+Run an example test in `--headless` mode: (invisible browser)
 
 ```zsh
 pytest my_first_test.py --headless
@@ -95,7 +96,7 @@ pytest test_swag_labs.py --mobile
 
 --------
 
-Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_xkcd.py) in ``--demo`` mode: (highlight assertions)
+Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_xkcd.py) in `--demo` mode: (highlight assertions)
 
 ```zsh
 pytest test_xkcd.py --demo
@@ -113,7 +114,7 @@ pytest test_suite.py -v
 
 --------
 
-Run a test suite using multiple parallel processes (``-n=NUM``):
+Run a test suite using multiple parallel processes (`-n=NUM`):
 
 ```zsh
 pytest test_suite.py -n=8
@@ -137,7 +138,7 @@ pytest test_suite.py --dashboard
 
 --------
 
-Run a test suite and generate a ``pytest`` report:
+Run a test suite and generate a `pytest` report:
 
 ```zsh
 pytest test_suite.py --html=report.html
@@ -145,7 +146,7 @@ pytest test_suite.py --html=report.html
 
 --------
 
-Run a [failing test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_fail.py): (See the ``latest_logs/`` folder for logs and screenshots)
+Run a [failing test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_fail.py): (See the `latest_logs/` folder for logs and screenshots)
 
 ```zsh
 pytest test_fail.py
@@ -153,17 +154,17 @@ pytest test_fail.py
 
 --------
 
-Run a failing test that activates ``pdb`` debug mode on failure:
+Run a failing test that activates `pdb` debug mode on failure:
 
 ```zsh
 pytest test_fail.py --pdb -s
 ```
 
-> (**``pdb``** commands: ``n``, ``c``, ``s``, ``u``, ``d`` => ``next``, ``continue``, ``step``, ``up``, ``down``)
+> (**`pdb`** commands: `n`, `c`, `s`, `u`, `d` => `next`, `continue`, `step`, `up`, `down`)
 
 --------
 
-Run a test suite that demonstrates the use of ``pytest`` markers:
+Run a test suite that demonstrates the use of `pytest` markers:
 
 ```zsh
 pytest -m marker_test_suite -v
@@ -179,7 +180,7 @@ pytest test_suite.py --rs
 
 --------
 
-Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/rate_limiting_test.py) demonstrating the ``rate_limited`` Python decorator:
+Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/rate_limiting_test.py) demonstrating the `rate_limited` Python decorator:
 
 ```zsh
 pytest rate_limiting_test.py
@@ -195,7 +196,7 @@ pytest upload_file_test.py
 
 --------
 
-🎖️  **SeleniumBase Commander** is a GUI for ``pytest``:
+🎖️  **SeleniumBase Commander** is a GUI for `pytest`:
 
 ```zsh
 sbase gui
@@ -205,7 +206,7 @@ sbase gui
 
 --------
 
-<b>SeleniumBase tests can also be run with ``pynose``:</b>
+<b>SeleniumBase tests can also be run with `pynose`:</b>
 
 ```zsh
 pynose my_first_test.py
@@ -213,7 +214,7 @@ pynose my_first_test.py
 
 --------
 
-Run an example test suite and generate a ``pynose`` test report:
+Run an example test suite and generate a `pynose` test report:
 
 ```zsh
 pynose test_suite.py --report --show-report
@@ -221,7 +222,7 @@ pynose test_suite.py --report --show-report
 
 --------
 
-Run an example test using a ``pynose`` configuration file:
+Run an example test using a `pynose` configuration file:
 
 ```zsh
 pynose my_first_test.py --config=example_config.cfg
