@@ -86,7 +86,7 @@ with SB(uc=True, test=True) as sb:
 
 > `python raw_google.py`
 
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_google.py"><img src="https://seleniumbase.github.io/cdn/img/google_sb_result.png" alt="SeleniumBase on Google" title="SeleniumBase on Google" width="480" /></a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_google.py"><img src="https://seleniumbase.github.io/cdn/img/google_sb_result.png" alt="SeleniumBase on Google" title="SeleniumBase on Google" width="538" /></a>
 
 --------
 
