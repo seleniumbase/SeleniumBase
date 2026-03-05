@@ -60,7 +60,7 @@
 
 📚 Example scripts & tests are located in [**SeleniumBase/examples/**](https://github.com/seleniumbase/SeleniumBase/tree/master/examples).
 
-👤 The stealthy examples are located in [**SeleniumBase/examples/cdp_mode/**](https://github.com/seleniumbase/SeleniumBase/tree/master/examples).
+👤 The stealthy examples are located in [**SeleniumBase/examples/cdp_mode/**](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode).
 
 --------
 
