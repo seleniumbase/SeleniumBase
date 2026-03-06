@@ -12,7 +12,7 @@
 
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/sb_logo_10t.png" alt="SeleniumBase" title="SeleniumBase" width="320" /></a></p>
 
-<p align="center" class="hero__title"><b>All-in-one Browser Automation Framework:<br />Web Crawling / Scraping / Testing / Stealth</b></p>
+<h3 align="center" class="hero__title"><b>Automation / Stealth / Scraping / Testing</b></h3>
 
 <p align="center"><a href="https://pepy.tech/projects/seleniumbase?timeRange=threeMonths&category=version&includeCIDownloads=true&granularity=daily&viewType=line&versions=*" target="_blank"><img src="https://static.pepy.tech/badge/seleniumbase" alt="SeleniumBase PyPI downloads" /></a> <a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=3399EE" alt="PyPI version" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"><img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a> <a href="https://discord.gg/EdhQTn3EyE" target="_blank"><img src="https://img.shields.io/discord/727927627830001734?color=7289DA&label=Discord&logo=discord&logoColor=white"/></a></p>
 <p align="center"></p>
@@ -53,11 +53,13 @@
 <br />
 </p>
 
-📊 <a href="https://github.com/seleniumbase/SeleniumBase/"><b translate="no">SeleniumBase</b></a> is a complete framework for browser automation, testing, and web-scraping with Python. Includes multiple advanced modes and tools.
+📊 <a href="https://github.com/seleniumbase/SeleniumBase/"><b translate="no">SeleniumBase</b></a> is a complete framework for browser automation, testing, and web-scraping with Python.
 
 🐙 Stealth modes: <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md">UC Mode</a> and <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md"><b>CDP Mode</b></a> can bypass bot-detection, solve CAPTCHAs, and call methods from the <a href="https://chromedevtools.github.io/devtools-protocol/" translate="no">Chrome Devtools Protocol</a>. Includes <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md"><b><span translate="no">Stealthy Playwright Mode</span></b></a>, which makes Playwright stealthy via CDP Mode.
 
-ℹ️ Some <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md">Syntax Formats</a> use <a href="https://docs.pytest.org/en/latest/how-to/usage.html" translate="no"><b>pytest</b></a> (a Python unit-testing framework included with SeleniumBase that can discover, collect, and run tests automatically).
+🔧  Includes advanced tools, such as a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md">Recorder</a> for generating tests, a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/commander.md">GUI</a> for running tests, and a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">Dashboard</a> for displaying results.
+
+ℹ️ Some <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md">Syntax Formats</a> use <a href="https://docs.pytest.org/en/latest/how-to/usage.html" translate="no">pytest</a> (a Python unit-testing framework included with SeleniumBase that can discover, collect, and run tests automatically).
 
 📚 Example scripts & tests are located in [**SeleniumBase/examples/**](https://github.com/seleniumbase/SeleniumBase/tree/master/examples).
 
@@ -73,21 +75,19 @@ from seleniumbase import SB
 with SB(uc=True, test=True) as sb:
     url = "https://google.com/ncr"
     sb.activate_cdp_mode(url)
-    sb.type('[title="Search"]', "SeleniumBase GitHub page")
-    sb.click("div:not([jsname]) > * > input")
-    sb.sleep(2)
+    sb.type('[name="q"]', "SeleniumBase GitHub page")
+    sb.click('[value="Google Search"]')
+    sb.sleep(4)  # The "AI Overview" sometimes loads
     print(sb.get_page_title())
-    sb.sleep(1)  # Wait for the "AI Overview" result
-    if sb.is_text_visible("Generating"):
-        sb.wait_for_text("AI Overview")
-    sb.save_as_pdf_to_logs()  # Saved to ./latest_logs/
+    sb.save_as_pdf_to_logs()
     sb.save_page_source_to_logs()
     sb.save_screenshot_to_logs()
+    print("Logs have been saved to: ./latest_logs/")
 ```
 
 > `python raw_google.py`
 
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_google.py"><img src="https://seleniumbase.github.io/cdn/img/google_sb_result.png" alt="SeleniumBase on Google" title="SeleniumBase on Google" width="538" /></a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_google.py"><img src="https://seleniumbase.github.io/cdn/img/google_sb_result.jpg" alt="SeleniumBase on Google" title="SeleniumBase on Google" width="580" /></a>
 
 --------
 
@@ -109,7 +109,7 @@ with SB(uc=True, test=True, locale="en") as sb:
     sb.post_message("SeleniumBase wasn't detected", duration=4)
 ```
 
-<img src="https://seleniumbase.github.io/other/cf_sec.jpg" title="SeleniumBase" width="332"> <img src="https://seleniumbase.github.io/other/gitlab_bypass.png" title="SeleniumBase" width="288">
+<img src="https://seleniumbase.github.io/other/cf_sec.jpg" title="SeleniumBase" width="344"> <img src="https://seleniumbase.github.io/other/gitlab_bypass.png" title="SeleniumBase" width="298">
 
 <p align="left">📙 There's also SeleniumBase's "Pure CDP Mode", which doesn't use WebDriver or Selenium at all: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_gitlab.py">SeleniumBase/examples/cdp_mode/raw_cdp_gitlab.py</a></p>
 
