@@ -13,8 +13,8 @@ from seleniumbase import SB
 with SB(uc=True, test=True) as sb:
     url = "https://google.com/ncr"
     sb.activate_cdp_mode(url)
-    sb.type('[title="Search"]', "SeleniumBase GitHub page")
-    sb.click("div:not([jsname]) > * > input")
+    sb.type('[name="q"]', "SeleniumBase GitHub page")
+    sb.click('[value="Google Search"]')
     sb.sleep(2)
     print(sb.get_page_title())
 ```
@@ -148,8 +148,8 @@ def SB(
         with SB(uc=True, test=True) as sb:
             url = "https://google.com/ncr"
             sb.activate_cdp_mode(url)
-            sb.type('[title="Search"]', "SeleniumBase GitHub page")
-            sb.click("div:not([jsname]) > * > input")
+            sb.type('[name="q"]', "SeleniumBase GitHub page")
+            sb.click('[value="Google Search"]')
             sb.sleep(2)
             print(sb.get_page_title())
 
