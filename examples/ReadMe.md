@@ -66,6 +66,14 @@ pytest test_coffee_cart.py --demo
 
 <img src="https://seleniumbase.github.io/cdn/gif/coffee_cart.gif" title="SeleniumBase Coffee App Example" alt="SeleniumBase Example" title="SeleniumBase Coffee App Example" />
 
+You can debug tests easily with the included `pdbp` (Pdb+) debugger:
+
+```zsh
+pytest test_coffee_cart.py --trace
+```
+
+<h3><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.github.io/cdn/gif/coffee_pdbp.gif" alt="SeleniumBase test with the pdbp debugger" title="SeleniumBase test with the pdbp debugger" /></a></h3>
+
 --------
 
 Run a [Wordle-solver example](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/wordle_test.py):
