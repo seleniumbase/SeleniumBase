@@ -9,8 +9,7 @@
 
 <h1>SeleniumBase</h1>
 
-
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/sb_logo_10t.png" alt="SeleniumBase" title="SeleniumBase" width="300" /></a></p>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/super_logo_sb3.png" alt="SeleniumBase" title="SeleniumBase" width="350" /></a></p>
 
 <p align="center" class="hero__title"><b>All-in-one Browser Automation Framework:<br />Web Crawling / Testing / Scraping / Stealth</b></p>
 
@@ -53,17 +52,15 @@
 <br />
 </p>
 
-📊 <a href="https://github.com/seleniumbase/SeleniumBase/"><b translate="no">SeleniumBase</b></a> is a complete framework for browser automation, testing, and web-scraping with Python. <a href="https://pepy.tech/projects/seleniumbase?timeRange=threeMonths&category=version&includeCIDownloads=true&granularity=daily&viewType=line&versions=*" target="_blank"><img src="https://static.pepy.tech/badge/seleniumbase" alt="SeleniumBase PyPI downloads" /></a>
+📊 <a href="https://github.com/seleniumbase/SeleniumBase/"><b translate="no">SeleniumBase</b></a> is a toolkit for web automation activities such as testing websites, scraping data, bypassing CAPTCHAs, and completing tedious tasks at scale with Python. <a href="https://pepy.tech/projects/seleniumbase?timeRange=threeMonths&category=version&includeCIDownloads=true&granularity=daily&viewType=line&versions=*" target="_blank"><img src="https://static.pepy.tech/badge/seleniumbase" alt="SeleniumBase PyPI downloads" /></a>
 
-🐙 Stealth modes: <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md">UC Mode</a> and <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md"><b>CDP Mode</b></a> can bypass bot-detection, solve CAPTCHAs, and call methods from the <a href="https://chromedevtools.github.io/devtools-protocol/" translate="no">Chrome Devtools Protocol</a>. Includes <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md"><b><span translate="no">Stealthy Playwright Mode</span></b></a>, which makes Playwright stealthy via CDP Mode.
+👤 Stealth modes: <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md">UC Mode</a> and <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md"><b>CDP Mode</b></a> can bypass bot-detection, solve CAPTCHAs, and call methods from the <a href="https://chromedevtools.github.io/devtools-protocol/" translate="no">Chrome Devtools Protocol</a>. Includes <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md"><b><span translate="no">Stealthy Playwright Mode</span></b></a>, which makes Playwright stealthy via CDP Mode.
 
-🔧  Includes advanced tools, such as a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md">Recorder</a> for generating tests, a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/commander.md">GUI</a> for running tests, and a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">Dashboard</a> for displaying results.
+🔴  Includes a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md">Recorder</a> that can generate tests, and a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">Dashboard</a> for displaying results. ("Tests" are run with <a href="https://docs.pytest.org/en/latest/how-to/usage.html" translate="no">pytest</a>.)
 
-ℹ️ Some <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md">Syntax Formats</a> use <a href="https://docs.pytest.org/en/latest/how-to/usage.html" translate="no">pytest</a> (a Python unit-testing framework included with SeleniumBase that can discover, collect, and run tests automatically).
+📚 Example scripts and tests are located in [**SeleniumBase/examples/**](https://github.com/seleniumbase/SeleniumBase/tree/master/examples).
 
-📚 Example scripts & tests are located in [**SeleniumBase/examples/**](https://github.com/seleniumbase/SeleniumBase/tree/master/examples).
-
-👤 The stealthy examples are located in [**SeleniumBase/examples/cdp_mode/**](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode).
+👤 Stealthy example scripts are located in [**SeleniumBase/examples/cdp_mode/**](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode).
 
 --------
 
