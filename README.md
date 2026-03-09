@@ -52,7 +52,7 @@
 <br />
 </p>
 
-📊 <a href="https://github.com/seleniumbase/SeleniumBase/"><b translate="no">SeleniumBase</b></a> is a complete framework for web automation,  testing, scraping, and stealth.
+📊 <a href="https://github.com/seleniumbase/SeleniumBase/"><b translate="no">SeleniumBase</b></a> is a complete framework for web automation,  testing, scraping, and stealth. Includes a <a href="https://docs.pytest.org/en/latest/how-to/usage.html">pytest</a> integration for customizing automation from the command-line.
 
 👤 Stealth modes: <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md">UC Mode</a> and <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md"><b>CDP Mode</b></a> can bypass bot-detection, solve CAPTCHAs, and call methods from the <a href="https://chromedevtools.github.io/devtools-protocol/" translate="no">Chrome Devtools Protocol</a>. Includes <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md"><b><span translate="no">Stealthy Playwright Mode</span></b></a>, which makes Playwright stealthy via CDP Mode.
 
