@@ -566,6 +566,8 @@ async def start(
                 platform_var = platform_var[1:-1]
     if IS_LINUX and not headless and not headed and not xvfb:
         xvfb = True  # The default setting on Linux
+    if port and not host:
+        host = "127.0.0.1"  # Assume localhost
     if not host or not port:
         # The browser hasn't been launched yet. (May need a virtual display)
         __activate_virtual_display_as_needed(
@@ -611,6 +613,8 @@ async def start(
             elif udd_string.startswith("'") and udd_string.endswith("'"):
                 udd_string = udd_string[1:-1]
             user_data_dir = udd_string
+    if user_data_dir:
+        user_data_dir = os.path.abspath(user_data_dir)
     if not browser_executable_path:
         browser = None
         if "browser" in kwargs:
