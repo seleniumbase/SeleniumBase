@@ -206,6 +206,11 @@ class CDPMethods():
         """Same as get_rd_port(), which returns the remote-debugging port."""
         return self.get_rd_port()
 
+    def get_websocket_url(self):
+        """Returns the websocket URL of the active tab.
+        The websocket URL starts with `ws://`."""
+        return self.get_active_tab().websocket_url
+
     def add_handler(self, event, handler):
         self.page.add_handler(event, handler)
 

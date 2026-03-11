@@ -133,31 +133,6 @@ class Transaction(asyncio.Future):
         return fmt
 
 
-class EventTransaction(Transaction):
-    event = None
-    value = None
-
-    def __init__(self, event_object):
-        try:
-            super().__init__(None)
-        except BaseException:
-            pass
-        self.set_result(event_object)
-        self.event = self.value = self.result()
-
-    def __repr__(self):
-        status = "finished"
-        success = False if self.exception() else True
-        event_object = self.result()
-        fmt = (
-            f"{self.__class__.__name__}\n\t"
-            f"event: {event_object.__class__.__module__}.{event_object.__class__.__name__}\n\t"  # noqa
-            f"status: {status}\n\t"
-            f"success: {success}>"
-        )
-        return fmt
-
-
 class CantTouchThis(type):
     def __setattr__(cls, attr, value):
         """:meta private:"""
@@ -619,11 +594,6 @@ class Listener:
                 # Probably an event
                 try:
                     event = cdp.util.parse_json_event(message)
-                    # event_tx = EventTransaction(event)
-                    # if not self.connection.mapper:
-                    #     self.connection.__count__ = itertools.count(0)
-                    # event_tx.id = next(self.connection.__count__)
-                    # self.connection.mapper[event_tx.id] = event_tx
                 except Exception as e:
                     logger.info(
                         "%s: %s during parsing of json from event : %s"

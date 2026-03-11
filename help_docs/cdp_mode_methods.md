@@ -17,6 +17,7 @@ sb.cdp.get_rd_port()  # Returns the remote-debugging port
 sb.cdp.get_rd_url()  # Returns the remote-debugging URL
 sb.cdp.get_endpoint_url()  # Same as sb.cdp.get_rd_url()
 sb.cdp.get_port()  # Same as sb.cdp.get_rd_port()
+sb.cdp.get_websocket_url()  # Returns the websocket URL
 sb.cdp.add_handler(event, handler)
 sb.cdp.find_element(selector, best_match=False, timeout=None)
 sb.cdp.find(selector, best_match=False, timeout=None)

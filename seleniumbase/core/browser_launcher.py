@@ -766,6 +766,7 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
     cdp.get_rd_port = CDPM.get_rd_port
     cdp.get_rd_url = CDPM.get_rd_url
     cdp.get_endpoint_url = CDPM.get_endpoint_url
+    cdp.get_websocket_url = CDPM.get_websocket_url
     cdp.get_port = CDPM.get_port
     cdp.find_element = CDPM.find_element
     cdp.find = CDPM.find_element
