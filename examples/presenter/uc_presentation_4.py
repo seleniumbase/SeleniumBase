@@ -537,7 +537,8 @@ class UCPresentationClass(BaseCase):
             print('*** Walmart Search for "%s":' % search)
             print('    (Results must contain "%s".)' % required_text)
             unique_item_text = []
-            items = sb.cdp.find_elements('div[data-testid="list-view"]')
+            sb.click_if_visible('[data-automation-id="sb-btn-close-mark"]')
+            items = sb.find_elements('[data-item-id]')
             for item in items:
                 if required_text in item.text:
                     description = item.querySelector(

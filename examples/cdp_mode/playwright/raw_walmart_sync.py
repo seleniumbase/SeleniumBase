@@ -9,7 +9,7 @@ with sync_playwright() as p:
     context = browser.contexts[0]
     page = context.pages[0]
     page.goto("https://www.walmart.com/")
-    sb.sleep(3)
+    sb.sleep(2.6)
     page.click('input[aria-label="Search"]')
     sb.sleep(1.4)
     search = "Settlers of Catan Board Game"
@@ -21,7 +21,8 @@ with sync_playwright() as p:
     print('*** Walmart Search for "%s":' % search)
     print('    (Results must contain "%s".)' % required_text)
     unique_item = []
-    items = page.locator('div[data-test-id="gpt-main"]')
+    sb.click_if_visible('[data-automation-id="sb-btn-close-mark"]')
+    items = page.locator('[data-item-id]')
     for i in range(items.count()):
         item = items.nth(i)
         if required_text in item.inner_text():

@@ -25,7 +25,8 @@ with SB(uc=True, test=True, ad_block=True) as sb:
     print('*** Walmart Search for "%s":' % search)
     print('    (Results must contain "%s".)' % required_text)
     unique_item_text = []
-    items = sb.find_elements('div[data-test-id="gpt-main"]')
+    sb.click_if_visible('[data-automation-id="sb-btn-close-mark"]')
+    items = sb.find_elements('[data-item-id]')
     for item in items:
         if required_text in item.text:
             description = item.querySelector(
