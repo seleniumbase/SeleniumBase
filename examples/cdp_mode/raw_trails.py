@@ -3,11 +3,13 @@ from seleniumbase import SB
 with SB(uc=True, ad_block=True, test=True) as sb:
     url = "https://www.alltrails.com/"
     sb.activate_cdp_mode(url)
-    sb.sleep(1)
+    sb.sleep(3.5)
     sb.click_if_visible("button.osano-cm-close")
     sb.sleep(0.5)
-    search_box = 'input[data-testid="homepage-search-box"]'
+    search_box = 'input[aria-describedby="search-instructions"]'
     search_term = "Thundering Brook Falls"
+    sb.wait_for_element(search_box)
+    sb.sleep(1.5)
     sb.type(search_box, search_term + " Trail")
     sb.sleep(1.5)
     sb.click('a span:contains("%s")' % search_term)

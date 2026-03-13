@@ -25,7 +25,7 @@ class TestGeolocation(BaseCase):
         self.execute_cdp_cmd(
             "Browser.grantPermissions",
             {
-                "origin": "https://www.openstreetmap.org/",
+                "origin": "https://www.randymajors.org/",
                 "permissions": ["geolocation"],
             },
         )
@@ -37,9 +37,10 @@ class TestGeolocation(BaseCase):
                 "accuracy": 100,
             },
         )
-        self.open("https://www.openstreetmap.org/")
-        self.click('a[aria-label="Show My Location"]')
-        self.assert_url_contains("48.876450/2.263400")
+        self.open("https://www.randymajors.org/what-time-zone-am-i-in")
+        self.ad_block()
+        self.assert_text("Paris, France", "#statecountrylabel")
+        self.assert_text("Central European Standard Time", "#currentlabel")
         self.save_screenshot_to_logs()
         if self.headed:
             self.sleep(4)
