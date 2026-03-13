@@ -233,11 +233,30 @@ class CDPMethods():
         try:
             if early_failure:
                 raise Exception("Failed!")
-            element = self.loop.run_until_complete(
-                self.page.find(
-                    selector, best_match=best_match, timeout=timeout
+            if (
+                "contains(" not in selector
+                and not page_utils.is_xpath_selector(selector)
+                and not re.findall(r"\.\s", selector)
+                and not re.findall(r"\.$", selector)
+                and not re.findall(r"#\s", selector)
+                and not re.findall(r"#$", selector)
+                and (
+                    selector in ["html", "body"]
+                    or "[" in selector
+                    or re.findall(r"\.\S", selector)
+                    or re.findall(r"#\S", selector)
+                    or " > " in selector
                 )
-            )
+            ):
+                element = self.loop.run_until_complete(
+                    self.page.select(selector, timeout=timeout)
+                )
+            else:
+                element = self.loop.run_until_complete(
+                    self.page.find(
+                        selector, best_match=best_match, timeout=timeout
+                    )
+                )
         except Exception:
             failure = True
             plural = "s"
@@ -375,8 +394,17 @@ class CDPMethods():
             timeout = settings.SMALL_TIMEOUT
         self.__add_light_pause()
         selector = self.__convert_to_css_if_xpath(selector)
+        if not self.is_element_present(selector):
+            self.sleep(1)
+            timeout = timeout - 1
+            if timeout < 1:
+                timeout = 1
+            try:
+                self.select(selector, timeout=timeout)
+            except Exception:
+                return []
         elements = self.loop.run_until_complete(
-            self.page.select_all(selector, timeout=timeout)
+            self.page.select_all(selector, timeout=0.1)
         )
         updated_elements = []
         for element in elements:
@@ -453,7 +481,7 @@ class CDPMethods():
         result = (
             self.loop.run_until_complete(element.click_async())
         )
-        self.loop.run_until_complete(self.page.wait())
+        self.loop.run_until_complete(self.page.wait(0.2))
         return result
 
     def __flash(self, element, *args, **kwargs):
@@ -506,7 +534,7 @@ class CDPMethods():
         if timeframe > 3:
             timeframe = 3
         self.gui_click_x_y(x, y, timeframe=timeframe)
-        return self.loop.run_until_complete(self.page.wait())
+        return self.loop.run_until_complete(self.page.wait(0.2))
 
     def __highlight_overlay(self, element):
         return (
@@ -517,7 +545,7 @@ class CDPMethods():
         result = (
             self.loop.run_until_complete(element.mouse_click_async())
         )
-        self.loop.run_until_complete(self.page.wait())
+        self.loop.run_until_complete(self.page.wait(0.2))
         return result
 
     def __mouse_click_with_offset_async(self, element, *args, **kwargs):
@@ -526,7 +554,7 @@ class CDPMethods():
                 element.mouse_click_with_offset_async(*args, **kwargs)
             )
         )
-        self.loop.run_until_complete(self.page.wait())
+        self.loop.run_until_complete(self.page.wait(0.2))
         return result
 
     def __mouse_drag(self, element, destination):
@@ -787,14 +815,14 @@ class CDPMethods():
         else:
             element.click()  # Standard CDP click
         self.__slow_mode_pause_if_set()
-        self.loop.run_until_complete(self.page.wait())
+        self.loop.run_until_complete(self.page.wait(0.2))
 
     def click_active_element(self):
         self.loop.run_until_complete(
             self.page.evaluate("document.activeElement.click()")
         )
         self.__slow_mode_pause_if_set()
-        self.loop.run_until_complete(self.page.wait())
+        self.loop.run_until_complete(self.page.wait(0.2))
 
     def click_if_visible(self, selector, timeout=0):
         if self.is_element_visible(selector):
@@ -836,7 +864,7 @@ class CDPMethods():
                     click_count += 1
                     time.sleep(0.044)
                     self.__slow_mode_pause_if_set()
-                    self.loop.run_until_complete(self.page.wait())
+                    self.loop.run_until_complete(self.page.wait(0.2))
             except Exception:
                 break
 
@@ -849,7 +877,7 @@ class CDPMethods():
         element.scroll_into_view()
         element.mouse_click()
         self.__slow_mode_pause_if_set()
-        self.loop.run_until_complete(self.page.wait())
+        self.loop.run_until_complete(self.page.wait(0.2))
 
     def nested_click(self, parent_selector, selector):
         """
@@ -859,7 +887,7 @@ class CDPMethods():
         element = self.find_element(parent_selector)
         element.query_selector(selector).mouse_click()
         self.__slow_mode_pause_if_set()
-        self.loop.run_until_complete(self.page.wait())
+        self.loop.run_until_complete(self.page.wait(0.2))
 
     def get_nested_element(self, parent_selector, selector):
         """(Can be used to find an element inside an iframe)"""
@@ -1924,7 +1952,7 @@ class CDPMethods():
         self.__add_light_pause()
         self.gui_click_x_y(x, y, timeframe=timeframe)
         self.__slow_mode_pause_if_set()
-        self.loop.run_until_complete(self.page.wait())
+        self.loop.run_until_complete(self.page.wait(0.2))
 
     def gui_click_with_offset(
         self, selector, x, y, timeframe=0.25, center=False
@@ -1957,7 +1985,7 @@ class CDPMethods():
             )
         element.click_with_offset(x=x, y=y, center=center)
         self.__slow_mode_pause_if_set()
-        self.loop.run_until_complete(self.page.wait())
+        self.loop.run_until_complete(self.page.wait(0.2))
 
     def _on_a_cf_turnstile_page(self, source=None):
         if not source or len(source) < 400:
@@ -1978,7 +2006,7 @@ class CDPMethods():
         return False
 
     def _on_an_incapsula_hcaptcha_page(self, *args, **kwargs):
-        self.loop.run_until_complete(self.page.wait())
+        self.loop.run_until_complete(self.page.wait(0.1))
         if (
             self.is_element_visible('iframe[src*="_Incapsula_Resource?"]')
             or self.is_element_visible("iframe[data-hcaptcha-widget-id]")
@@ -1987,7 +2015,7 @@ class CDPMethods():
         return False
 
     def _on_a_datadome_slider_page(self, *args, **kwargs):
-        self.loop.run_until_complete(self.page.wait())
+        self.loop.run_until_complete(self.page.wait(0.1))
         if (
             self.is_element_visible(
                 'body > iframe[src*="/geo.captcha-delivery.com/captcha/"]'
@@ -1998,7 +2026,7 @@ class CDPMethods():
 
     def _on_a_g_recaptcha_page(self, *args, **kwargs):
         time.sleep(0.4)  # reCAPTCHA may need a moment to appear
-        self.loop.run_until_complete(self.page.wait())
+        self.loop.run_until_complete(self.page.wait(0.1))
         source = self.get_page_source()
         if (
             (
@@ -2028,7 +2056,7 @@ class CDPMethods():
         else:
             return False
         time.sleep(0.25)
-        self.loop.run_until_complete(self.page.wait())
+        self.loop.run_until_complete(self.page.wait(0.1))
         time.sleep(0.25)
         with suppress(Exception):
             element_rect = self.get_element_rect(selector, timeout=0.1)
@@ -2077,7 +2105,7 @@ class CDPMethods():
         tab = self.get_active_tab()
         self.open_new_tab(url=src)
         time.sleep(0.41)
-        self.loop.run_until_complete(self.page.wait())
+        self.loop.run_until_complete(self.page.wait(0.1))
         time.sleep(0.25)
         x1, y1 = self.get_gui_element_center("div.slider")
         x2, y2 = self.get_gui_element_center("div.sliderTarget")
@@ -2085,7 +2113,7 @@ class CDPMethods():
         self.switch_to_tab(tab)
         self.gui_drag_drop_points(x1, y1, x2, y2, timeframe=0.55)
         time.sleep(0.25)
-        self.loop.run_until_complete(self.page.wait())
+        self.loop.run_until_complete(self.page.wait(0.2))
         time.sleep(0.15)
         return True
 
@@ -2103,7 +2131,7 @@ class CDPMethods():
         else:
             return False
         time.sleep(0.05)
-        self.loop.run_until_complete(self.page.wait())
+        self.loop.run_until_complete(self.page.wait(0.1))
         time.sleep(0.05)
         x_offset = 30
         y_offset = 36
@@ -2130,7 +2158,7 @@ class CDPMethods():
             # Wait a moment for the click to succeed
             time.sleep(0.75)
             self.__slow_mode_pause_if_set()
-            self.loop.run_until_complete(self.page.wait())
+            self.loop.run_until_complete(self.page.wait(0.1))
             if "--debug" in sys.argv:
                 print(" <DEBUG> hCaptcha was clicked!")
             return True
@@ -2152,7 +2180,7 @@ class CDPMethods():
     def __click_captcha(self, use_cdp=False):
         """Uses PyAutoGUI unless use_cdp == True"""
         self.sleep(0.075)
-        self.loop.run_until_complete(self.page.wait())
+        self.loop.run_until_complete(self.page.wait(0.1))
         self.sleep(0.025)
         source = self.get_page_source()
         if self._on_a_cf_turnstile_page(source):
@@ -2244,7 +2272,7 @@ class CDPMethods():
             )
             with suppress(Exception):
                 self.loop.run_until_complete(self.page.evaluate(script))
-                self.loop.run_until_complete(self.page.wait())
+                self.loop.run_until_complete(self.page.wait(0.1))
         elif (
             self.is_element_present("form")
             and (
@@ -2264,7 +2292,7 @@ class CDPMethods():
             )
             with suppress(Exception):
                 self.loop.run_until_complete(self.page.evaluate(script))
-                self.loop.run_until_complete(self.page.wait())
+                self.loop.run_until_complete(self.page.wait(0.1))
         elif (
             self.is_element_present(
                 'form [id*="turnstile"] div:not([class])'
@@ -2287,7 +2315,7 @@ class CDPMethods():
             )
             with suppress(Exception):
                 self.loop.run_until_complete(self.page.evaluate(script))
-                self.loop.run_until_complete(self.page.wait())
+                self.loop.run_until_complete(self.page.wait(0.1))
         elif (
             self.is_element_present(
                 '[style*="text-align: center;"] div:not([class])'
@@ -2304,7 +2332,7 @@ class CDPMethods():
             )
             with suppress(Exception):
                 self.loop.run_until_complete(self.page.evaluate(script))
-                self.loop.run_until_complete(self.page.wait())
+                self.loop.run_until_complete(self.page.wait(0.1))
         with suppress(Exception):
             time.sleep(0.05)
             element_rect = self.get_gui_element_rect(selector, timeout=1)
@@ -2407,7 +2435,7 @@ class CDPMethods():
                 x1, y1, x2, y2, timeframe=timeframe, uc_lock=False
             )
         self.__slow_mode_pause_if_set()
-        self.loop.run_until_complete(self.page.wait())
+        self.loop.run_until_complete(self.page.wait(0.2))
 
     def gui_drag_and_drop(self, drag_selector, drop_selector, timeframe=0.35):
         """Use PyAutoGUI to drag-and-drop from one selector to another.
@@ -2514,7 +2542,7 @@ class CDPMethods():
             self.bring_active_window_to_front()
             self.__gui_hover_x_y(x, y, timeframe=timeframe, uc_lock=False)
             self.__slow_mode_pause_if_set()
-        self.loop.run_until_complete(self.page.wait())
+        self.loop.run_until_complete(self.page.wait(0.1))
 
     def hover_element(self, selector, timeframe=0.25):
         element = self.select(selector)
@@ -3077,33 +3105,33 @@ class CDPMethods():
 
     def scroll_into_view(self, selector):
         self.find_element(selector).scroll_into_view()
-        self.loop.run_until_complete(self.page.wait())
+        self.loop.run_until_complete(self.page.wait(0.1))
 
     def scroll_to_y(self, y):
         y = int(y)
         js_code = "window.scrollTo(0, %s);" % y
         with suppress(Exception):
             self.loop.run_until_complete(self.page.evaluate(js_code))
-            self.loop.run_until_complete(self.page.wait())
+            self.loop.run_until_complete(self.page.wait(0.1))
 
     def scroll_by_y(self, y):
         y = int(y)
         js_code = "window.scrollBy(0, %s);" % y
         with suppress(Exception):
             self.loop.run_until_complete(self.page.evaluate(js_code))
-            self.loop.run_until_complete(self.page.wait())
+            self.loop.run_until_complete(self.page.wait(0.1))
 
     def scroll_to_top(self):
         js_code = "window.scrollTo(0, 0);"
         with suppress(Exception):
             self.loop.run_until_complete(self.page.evaluate(js_code))
-            self.loop.run_until_complete(self.page.wait())
+            self.loop.run_until_complete(self.page.wait(0.1))
 
     def scroll_to_bottom(self):
         js_code = "window.scrollTo(0, 10000);"
         with suppress(Exception):
             self.loop.run_until_complete(self.page.evaluate(js_code))
-            self.loop.run_until_complete(self.page.wait())
+            self.loop.run_until_complete(self.page.wait(0.1))
 
     def scroll_up(self, amount=25):
         """Scrolls up as a percentage of the page."""
@@ -3112,7 +3140,7 @@ class CDPMethods():
         except Exception:
             amount = self.get_window_size()["height"] * amount / 100
             self.execute_script("window.scrollBy(0, -%s);" % amount)
-        self.loop.run_until_complete(self.page.wait())
+        self.loop.run_until_complete(self.page.wait(0.1))
 
     def scroll_down(self, amount=25):
         """Scrolls down as a percentage of the page."""
@@ -3121,7 +3149,7 @@ class CDPMethods():
         except Exception:
             amount = self.get_window_size()["height"] * amount / 100
             self.execute_script("window.scrollBy(0, %s);" % amount)
-        self.loop.run_until_complete(self.page.wait())
+        self.loop.run_until_complete(self.page.wait(0.1))
 
     def save_page_source(self, name, folder=None):
         from seleniumbase.core import log_helper
