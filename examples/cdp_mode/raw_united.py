@@ -3,11 +3,13 @@ from seleniumbase import SB
 with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     url = "https://www.united.com/en/us"
     sb.activate_cdp_mode(url)
-    sb.sleep(2.6)
+    sb.sleep(3.5)
     origin_input = 'input[placeholder="Origin"]'
-    origin = "New York, NY"
+    origin = "JFK"
     destination_input = 'input[placeholder="Destination"]'
-    destination = "Orlando, FL"
+    destination = "MCO"
+    sb.wait_for_element(origin_input, timeout=20)
+    sb.sleep(0.5)
     sb.click(origin_input)
     sb.sleep(0.5)
     sb.type(origin_input, origin)
@@ -39,7 +41,7 @@ with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
         part_3 = flight.text.split(" Destination")[-1].split(" Aircraft")[0]
         parts = "%s - %s %s" % (part_1, part_2, part_3)
         print("* " + parts)
-    for category in ["ECONOMY", "ECONOMY-UNRESTRICTED"]:
+    for category in ["ECONOMY"]:
         prices = sb.find_elements('[aria-describedby="%s"]' % category)
         full_prices = []
         for item in prices:

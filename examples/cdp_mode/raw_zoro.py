@@ -24,7 +24,7 @@ with SB(uc=True, test=True, locale="en") as sb:
     items = sb.find_elements('[data-za="search-product-card"]')
     for item in items:
         if required_text in item.text:
-            description = item.querySelector('[data-za="product-title"]')
+            description = item.querySelector("h2")
             if description and description.text not in unique_item_text:
                 unique_item_text.append(description.text)
                 print("* " + description.text)
