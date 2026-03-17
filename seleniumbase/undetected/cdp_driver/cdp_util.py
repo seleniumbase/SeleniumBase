@@ -115,13 +115,22 @@ def __activate_virtual_display_as_needed(
                             "Starting VDisplay from cdp_util: (%s, %s)"
                             % (_xvfb_width, _xvfb_height)
                         )
-                    _xvfb_display.start()
+                    try:
+                        _xvfb_display.start()
+                    except Exception:
+                        time.sleep(0.03)
+                        _xvfb_display.start()
+                    time.sleep(0.03)
                     if "DISPLAY" not in os.environ.keys():
-                        print(
-                            "\n  X11 display failed! Is Xvfb installed? "
-                            "\n  Try this: `sudo apt install -y xvfb`"
-                        )
-                        __activate_standard_virtual_display()
+                        time.sleep(0.03)
+                        _xvfb_display.start()
+                        time.sleep(0.08)
+                        if "DISPLAY" not in os.environ.keys():
+                            print(
+                                "\n  X11 display failed! Is Xvfb installed? "
+                                "\n  Try this: `sudo apt install -y xvfb`"
+                            )
+                            __activate_standard_virtual_display()
                     else:
                         sb_config._virtual_display = _xvfb_display
                         sb_config.headless_active = True
@@ -781,15 +790,14 @@ async def create_from_driver(driver) -> Browser:
 
 
 def free_port() -> int:
-    """Determines a free port using sockets."""
+    """Find and return a free port number assigned by the OS."""
     import socket
 
-    free_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    free_socket.bind(("127.0.0.1", 0))
-    free_socket.listen(5)
-    port: int = free_socket.getsockname()[1]
-    free_socket.close()
-    return port
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        # Binding to port 0 lets the OS pick a free port
+        s.bind(("127.0.0.1", 0))
+        s.listen(5)
+        return s.getsockname()[1]
 
 
 def filter_recurse_all(

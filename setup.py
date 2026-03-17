@@ -159,7 +159,7 @@ setup(
         'filelock~=3.19.1;python_version<"3.10"',
         'filelock>=3.25.2;python_version>="3.10"',
         'fasteners>=0.20',
-        'mycdp>=1.3.4',
+        'mycdp>=1.3.6',
         'pynose>=1.5.5',
         'platformdirs~=4.4.0;python_version<"3.10"',
         'platformdirs>=4.9.4;python_version>="3.10"',
@@ -177,7 +177,7 @@ setup(
         'tabcompleter>=1.4.0',
         'pdbp>=1.8.2',
         'idna>=3.11',
-        'charset-normalizer>=3.4.5,<4',
+        'charset-normalizer>=3.4.6,<4',
         'urllib3>=1.26.20,<2;python_version<"3.10"',
         'urllib3>=1.26.20,<3;python_version>="3.10"',
         'requests~=2.32.5',
@@ -234,7 +234,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage>=7.10.7;python_version<"3.10"',
-            'coverage>=7.13.4;python_version>="3.10"',
+            'coverage>=7.13.5;python_version>="3.10"',
             'pytest-cov>=7.0.0',
         ],
         # pip install -e .[flake8]
