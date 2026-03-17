@@ -391,7 +391,7 @@ class CDPMethods():
 
     def select_all(self, selector, timeout=None):
         if not timeout:
-            timeout = settings.SMALL_TIMEOUT
+            timeout = settings.MINI_TIMEOUT
         self.__add_light_pause()
         selector = self.__convert_to_css_if_xpath(selector)
         if not self.is_element_present(selector):
@@ -414,12 +414,12 @@ class CDPMethods():
 
     def find_elements(self, selector, timeout=None):
         if not timeout:
-            timeout = settings.SMALL_TIMEOUT
+            timeout = settings.MINI_TIMEOUT
         return self.select_all(selector, timeout=timeout)
 
     def find_visible_elements(self, selector, timeout=None):
         if not timeout:
-            timeout = settings.SMALL_TIMEOUT
+            timeout = settings.MINI_TIMEOUT
         visible_elements = []
         elements = self.select_all(selector, timeout=timeout)
         for element in elements:

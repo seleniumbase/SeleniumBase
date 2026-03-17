@@ -39,14 +39,22 @@ def deconstruct_browser():
     for _ in __registered__instances__:
         if not _.stopped:
             _.stop(deconstruct=True)
-        for attempt in range(5):
+        max_attempts = 5
+        for attempt in range(max_attempts):
             try:
                 if _.config and not _.config.uses_custom_data_dir:
-                    shutil.rmtree(_.config.user_data_dir, ignore_errors=False)
+                    if os.path.exists(_.config.user_data_dir):
+                        shutil.rmtree(
+                            _.config.user_data_dir, ignore_errors=False
+                        )
+                    if not os.path.exists(_.config.user_data_dir):
+                        break
+                    else:
+                        time.sleep(0.12)
             except FileNotFoundError:
                 break
             except (PermissionError, OSError) as e:
-                if attempt == 4:
+                if attempt == max_attempts - 1:
                     logger.debug(
                         "Problem removing data dir %s\n"
                         "Consider checking whether it's there "
@@ -54,7 +62,7 @@ def deconstruct_browser():
                         % (_.config.user_data_dir, e)
                     )
                     break
-                time.sleep(0.15)
+                time.sleep(0.12)
                 continue
         logging.debug("Temp profile %s was removed." % _.config.user_data_dir)
 
@@ -207,7 +215,8 @@ class Browser:
             target_info = event.target_info
             current_tab = next(
                 filter(
-                    lambda item: item.target_id == target_info.target_id, self.targets  # noqa
+                    lambda item: item.target_id == target_info.target_id,
+                    self.targets,
                 )
             )
             current_target = current_tab.target
@@ -583,11 +592,11 @@ class Browser:
                         else "c:/path/to/your/browser.exe"
                     )
                 )
-        if getattr(self.config, "_extensions", None):  # noqa
+        if getattr(self.config, "_extensions", None):
             self.config.add_argument(
                 "--load-extension=%s"
                 % ",".join(str(_) for _ in self.config._extensions)
-            )  # noqa
+            )
         exe = self.config.browser_executable_path
         params = self.config()
         logger.debug(
@@ -613,16 +622,17 @@ class Browser:
         await asyncio.sleep(0.05)
         get_registered_instances().add(self)
         await asyncio.sleep(0.15)
-        for attempt in range(5):
+        max_attempts = 20
+        for attempt in range(max_attempts):
             try:
                 self.info = ContraDict(
                     await self._http.get("version"), silent=True
                 )
             except (Exception,):
-                if attempt == 4:
+                if attempt == max_attempts - 1:
                     logger.debug("Could not start", exc_info=True)
                 else:
-                    await self.sleep(0.5)
+                    await self.sleep(0.2)
             else:
                 break
         if not self.info:
@@ -644,9 +654,11 @@ class Browser:
                 %s
                 """ % (dashes, message, dashes)
             )
+        await asyncio.sleep(0.03)
         self.connection = Connection(
             self.info.webSocketDebuggerUrl, browser=self
         )
+        await asyncio.sleep(0.03)
         if self.config.autodiscover_targets:
             logger.debug("Enabling autodiscover targets")
             self.connection.handlers[cdp.target.TargetInfoChanged] = [
