@@ -1,14 +1,12 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True, ad_block=True) as sb:
-    url = "https://www.amazon.com"
+    url = "https://www.linkedin.com/company/selenium"
     sb.activate_cdp_mode(url)
     sb.sleep(2)
-    sb.click_if_visible('button[alt="Continue shopping"]')
-    sb.sleep(2)
-    sb.press_keys('input[role="searchbox"]', "TI-89\n")
-    sb.sleep(3)
-    for i in range(16):
+    sb.click_if_visible('button[aria-label="Dismiss"]')
+    sb.sleep(1)
+    for i in range(42):
         sb.cdp.scroll_down(16)
     print(sb.get_page_title())
     sb.save_as_pdf_to_logs()
