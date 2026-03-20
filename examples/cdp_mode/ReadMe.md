@@ -583,7 +583,7 @@ sb.cdp.save_as_pdf(name, folder=None)
 
 ### 🐙 <b translate="no">Pure CDP Mode</b> (<code translate="no">sb_cdp</code>)
 
-<b translate="no">Pure CDP Mode</b> doesn't use WebDriver for anything. The browser is launched using CDP, and all browser actions are performed using CDP (or <code>PyAutoGUI</code>). Initialization:
+In <b translate="no">Pure CDP Mode</b>, the browser is launched using CDP, and all browser actions are performed using CDP. WebDriver isn't available at all, but SeleniumBase can still use <code>PyAutoGUI</code> methods as needed. Pure CDP Mode initialization:
 
 ```python
 from seleniumbase import sb_cdp

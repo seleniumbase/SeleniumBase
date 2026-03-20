@@ -9,7 +9,7 @@
 
 <h1>SeleniumBase</h1>
 
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/nice_logo_5t.png" alt="SeleniumBase" title="SeleniumBase" width="344" /></a></p>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/nice_logo_8t.png" alt="SeleniumBase" title="SeleniumBase" width="424" /></a></p>
 
 <p align="center" class="hero__title"><b>All-in-one Browser Automation Framework:<br />Web Crawling / Testing / Scraping / Stealth</b></p>
 
@@ -52,17 +52,41 @@
 <br />
 </p>
 
-📊 <a href="https://github.com/seleniumbase/SeleniumBase/"><b translate="no">SeleniumBase</b></a> is a complete framework for browser automation activities. It supports <a href="https://docs.pytest.org/en/latest/how-to/usage.html">pytest</a>, which makes it easy to scale testing. Includes advanced tools for reporting, script-generation, JavaScript manipulation, and stealthy automation.
+📊 <a href="https://github.com/seleniumbase/SeleniumBase/"><b translate="no">SeleniumBase</b></a> is a complete framework for browser automation activities. It supports <a href="https://docs.pytest.org/en/latest/how-to/usage.html">pytest</a>, which makes it easy to scale testing. Includes advanced tools for reporting, script-generation, and stealthy automation.
 
-🐙 Stealth modes: <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md">UC Mode</a> and <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md"><b>CDP Mode</b></a> can bypass bot-detection, handle CAPTCHAs, and call methods from the <a href="https://chromedevtools.github.io/devtools-protocol/" translate="no">Chrome Devtools Protocol</a>. Includes <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md"><b><span translate="no">Stealthy Playwright Mode</span></b></a>, which makes Playwright stealthy via CDP Mode.
+🐙 Stealth modes: <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md">UC Mode</a> and <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md"><b>CDP Mode</b></a> can bypass bot-detection, handle CAPTCHAs, and call methods from the <a href="https://chromedevtools.github.io/devtools-protocol/" translate="no">Chrome Devtools Protocol</a>. CDP Mode includes <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md"><b><span translate="no">Stealthy Playwright Mode</span></b></a>, which makes Playwright stealthy.
 
-📚 Example scripts and tests are located in [**SeleniumBase/examples/**](https://github.com/seleniumbase/SeleniumBase/tree/master/examples).
+📚 Example scripts and tests are located in [**SeleniumBase/examples/**](https://github.com/seleniumbase/SeleniumBase/tree/master/examples). (Tests run with `pytest`)
 
 🥷 Stealthy example scripts are located in [**SeleniumBase/examples/cdp_mode/**](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode).
 
 --------
 
-<p align="left">📗 This script performs a Google Search using SeleniumBase UC Mode + CDP Mode:<br /><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_google.py">SeleniumBase/examples/raw_google.py</a> (Results are saved as PDF, HTML, and PNG)</p>
+<p align="left">📓 Here's the stealthy architecture overview:</p>
+
+<img src="https://seleniumbase.github.io/other/sb_stealth.png" width="585" alt="Stealthy architecture overview" title="Stealthy architecture overview" />
+
+(For maximum stealth, use <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md">CDP Mode</a>, which includes <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md">Stealthy Playwright</a>)
+
+--------
+
+Here's a [Pure CDP Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md#Pure_CDP_Mode) example of scraping Hacker News:
+
+```python
+from seleniumbase import sb_cdp
+
+url = "https://news.ycombinator.com/submitted?id=seleniumbase"
+sb = sb_cdp.Chrome(url)
+elements = sb.find_elements("span.titleline > a")
+for element in elements:
+    print("* " + element.text)
+```
+
+(From [SeleniumBase/examples/cdp_mode/raw_cdp_yc_news.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_yc_news.py))
+
+--------
+
+<p align="left">📗 Here's a Google Search with UC + CDP Mode:<br /><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_google.py">SeleniumBase/examples/raw_google.py</a> (Results are saved as PDF, HTML, and PNG)</p>
 
 ```python
 from seleniumbase import SB
@@ -82,7 +106,7 @@ with SB(uc=True, test=True) as sb:
 
 > `python raw_google.py`
 
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_google.py"><img src="https://seleniumbase.github.io/cdn/img/google_sb_result.jpg" alt="SeleniumBase on Google" title="SeleniumBase on Google" width="580" /></a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_google.py"><img src="https://seleniumbase.github.io/cdn/img/google_sb_result.jpg" alt="SeleniumBase on Google" title="SeleniumBase on Google" width="500" /></a>
 
 --------
 
@@ -106,7 +130,9 @@ with SB(uc=True, test=True, locale="en") as sb:
 
 <img src="https://seleniumbase.github.io/other/cf_sec.jpg" title="SeleniumBase" width="344"> <img src="https://seleniumbase.github.io/other/gitlab_bypass.png" title="SeleniumBase" width="298">
 
-<p align="left">📙 There's also SeleniumBase's "Pure CDP Mode", which doesn't use WebDriver or Selenium at all: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_gitlab.py">SeleniumBase/examples/cdp_mode/raw_cdp_gitlab.py</a></p>
+----
+
+<p align="left">📙 Here's a "Pure CDP Mode" example that handles a CAPTCHA page: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_gitlab.py">SeleniumBase/examples/cdp_mode/raw_cdp_gitlab.py</a></p>
 
 ```python
 from seleniumbase import sb_cdp
@@ -179,14 +205,6 @@ pytest test_demo_site.py
 > Easy to type, click, select, toggle, drag & drop, and more.
 
 (For more examples, see the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">SeleniumBase/examples/</a> folder.)
-
---------
-
-<p align="left">📓 Here's a high-level stealthy architecture overview of SeleniumBase:</p>
-
-<img src="https://seleniumbase.github.io/other/sb_stealth.png" width="585" alt="High-Level Stealthy Architecture Overview" title="High-Level Stealthy Architecture Overview" />
-
-(For maximum stealth, use <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md">CDP Mode</a>, which is used by <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md">Stealthy Playwright Mode</a>)
 
 --------
 
