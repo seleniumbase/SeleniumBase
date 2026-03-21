@@ -70,7 +70,7 @@
 
 --------
 
-Here's a [Pure CDP Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md#-pure-cdp-mode-sb_cdp) example of scraping Hacker News:
+<p align="left">📗 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_yc_news.py" target="_blank">This example</a> scrapes Hacker News listings with <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md#-pure-cdp-mode-sb_cdp">Pure CDP Mode</a>:
 
 ```python
 from seleniumbase import sb_cdp
@@ -82,11 +82,9 @@ for element in elements:
     print("* " + element.text)
 ```
 
-(From [SeleniumBase/examples/cdp_mode/raw_cdp_yc_news.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_yc_news.py))
-
 --------
 
-<p align="left">📗 Here's a Google Search with UC + CDP Mode:<br /><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_google.py">SeleniumBase/examples/raw_google.py</a> (Results are saved as PDF, HTML, and PNG)</p>
+<p align="left">📗 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_google.py" target="_blank">This example</a> saves Google Search results with UC + CDP Mode:<br />(Results are saved as PDF, HTML, and PNG files)</p>
 
 ```python
 from seleniumbase import SB
@@ -106,7 +104,7 @@ with SB(uc=True, test=True) as sb:
 
 --------
 
-<p align="left">📗 Here's a script that bypasses Cloudflare's challenge page with UC Mode + CDP Mode: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_gitlab.py">SeleniumBase/examples/cdp_mode/raw_gitlab.py</a></p>
+<p align="left">📗 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_gitlab.py" target="_blank">This example</a> bypasses Cloudflare's challenge page with UC + CDP Mode:
 
 ```python
 from seleniumbase import SB
@@ -128,7 +126,7 @@ with SB(uc=True, test=True, locale="en") as sb:
 
 ----
 
-<p align="left">📙 Here's a "Pure CDP Mode" example that handles a CAPTCHA page: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_gitlab.py">SeleniumBase/examples/cdp_mode/raw_cdp_gitlab.py</a></p>
+<p align="left">📗 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_gitlab.py" target="_blank">This example</a> handles a CAPTCHA page with Pure CDP Mode:
 
 ```python
 from seleniumbase import sb_cdp
@@ -144,7 +142,7 @@ sb.driver.stop()
 
 --------
 
-<p align="left">📗 Here's <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_get_swag.py">SeleniumBase/examples/test_get_swag.py</a>, which tests an e-commerce site:</p>
+<p align="left">📗 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_get_swag.py" target="_blank">This example</a> tests an e-commerce site with <code>pytest</code>:
 
 ```python
 from seleniumbase import BaseCase
@@ -172,11 +170,9 @@ class MyTestClass(BaseCase):
 
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_get_swag.py"><img src="https://seleniumbase.github.io/cdn/gif/fast_swag_2.gif" alt="SeleniumBase Test" width="480" /></a>
 
-> (The default browser is `--chrome` if not set.)
-
 --------
 
-<p align="left">📗 Here's <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_coffee_cart.py" target="_blank">SeleniumBase/examples/test_coffee_cart.py</a>, which verifies an e-commerce site:</p>
+<p align="left">📗 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_coffee_cart.py" target="_blank">This example</a> tests another e-commerce site with <code>pytest</code>:
 
 ```zsh
 pytest test_coffee_cart.py --demo
@@ -190,7 +186,7 @@ pytest test_coffee_cart.py --demo
 
 <a id="multiple_examples"></a>
 
-<p align="left">📗 Here's <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py" target="_blank">SeleniumBase/examples/test_demo_site.py</a>, which covers several actions:</p>
+<p align="left">📗 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py" target="_blank">This example</a> covers multiple actions with <code>pytest</code>:
 
 ```zsh
 pytest test_demo_site.py
