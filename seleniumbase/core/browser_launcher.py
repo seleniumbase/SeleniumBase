@@ -296,6 +296,7 @@ def extend_driver(
     driver.switch_to_tab = DM.switch_to_tab
     driver.switch_to_frame = DM.switch_to_frame
     driver.reset_window_size = DM.reset_window_size
+    driver.stop = driver.quit
     if recorder_ext:
         from seleniumbase.js_code.recorder_js import recorder_js
         recorder_code = (

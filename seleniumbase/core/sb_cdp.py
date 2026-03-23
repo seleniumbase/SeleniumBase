@@ -1335,7 +1335,7 @@ class CDPMethods():
     def get_window(self):
         return self.loop.run_until_complete(self.page.get_window())
 
-    def get_text(self, selector):
+    def get_text(self, selector="body"):
         return self.find_element(selector).text_all
 
     def get_title(self):
