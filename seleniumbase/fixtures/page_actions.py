@@ -2138,7 +2138,7 @@ def wait_for_non_empty_text(
 
 def get_text(
     driver,
-    selector,
+    selector="body",
     by="css selector",
     timeout=settings.LARGE_TIMEOUT
 ):
