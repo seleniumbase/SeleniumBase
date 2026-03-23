@@ -9,7 +9,7 @@ import sys
 import urllib.parse
 import warnings
 from contextlib import suppress
-from filelock import FileLock
+from filelock import AsyncFileLock
 from seleniumbase import config as sb_config
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import js_utils
@@ -1459,8 +1459,8 @@ class Tab(Connection):
             y = gui_e_y + y_offset
             sb_config._saved_cf_x_y = (x, y)  # For debugging later
             await self.sleep(0.11)
-            gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
-            with await asyncio.to_thread(gui_lock.acquire):
+            gui_lock = AsyncFileLock(constants.MultiBrowser.PYAUTOGUILOCK)
+            async with gui_lock:
                 await self.bring_to_front()
                 await self.sleep(0.05)
                 await self.click_with_offset(
@@ -1485,8 +1485,8 @@ class Tab(Connection):
         x_offset = 30
         y_offset = 36
         was_clicked = False
-        gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
-        with gui_lock:  # Prevent issues with multiple processes
+        gui_lock = AsyncFileLock(constants.MultiBrowser.PYAUTOGUILOCK)
+        async with gui_lock:
             await self.bring_to_front()
             await self.sleep(0.056)
             if "--debug" in sys.argv:
@@ -1792,8 +1792,8 @@ class Tab(Connection):
             y = e_y + y_offset
             sb_config._saved_cf_x_y = (x, y)  # For debugging later
             await self.sleep(0.11)
-            gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
-            with await asyncio.to_thread(gui_lock.acquire):
+            gui_lock = AsyncFileLock(constants.MultiBrowser.PYAUTOGUILOCK)
+            async with gui_lock:
                 await self.bring_to_front()
                 await self.sleep(0.05)
                 await self.click_with_offset(
