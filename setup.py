@@ -151,7 +151,7 @@ setup(
         'setuptools~=70.2;python_version<"3.10"',  # Newer ones had issues
         'setuptools>=82.0.1;python_version>="3.10"',
         'wheel>=0.46.3',
-        'attrs>=25.4.0',
+        'attrs>=26.1.0',
         'certifi>=2026.2.25',
         'exceptiongroup>=1.3.1',
         'websockets~=15.0.1;python_version<"3.10"',
@@ -159,7 +159,7 @@ setup(
         'filelock~=3.19.1;python_version<"3.10"',
         'filelock>=3.25.2;python_version>="3.10"',
         'fasteners>=0.20',
-        'mycdp>=1.3.6',
+        'mycdp>=1.3.7',
         'pynose>=1.5.5',
         'platformdirs~=4.4.0;python_version<"3.10"',
         'platformdirs>=4.9.4;python_version>="3.10"',
@@ -235,7 +235,7 @@ setup(
         "coverage": [
             'coverage>=7.10.7;python_version<"3.10"',
             'coverage>=7.13.5;python_version>="3.10"',
-            'pytest-cov>=7.0.0',
+            'pytest-cov>=7.1.0',
         ],
         # pip install -e .[flake8]
         # Usage: flake8
