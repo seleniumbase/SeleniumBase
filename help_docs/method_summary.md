@@ -90,14 +90,16 @@ self.find_elements(selector, by="css selector", limit=0)
 # Duplicates:
 # self.select_all(selector, by="css selector", limit=0)
 self.find_visible_elements(selector, by="css selector", limit=0)
-self.click_visible_elements(selector, by="css selector", limit=0, timeout=None)
-self.click_nth_visible_element(selector, number, by="css selector", timeout=None)
-self.click_if_visible(selector, by="css selector", timeout=0)
+self.click_visible_elements(
+    selector, by="css selector", limit=0, timeout=None, scroll=True)
+self.click_nth_visible_element(
+    selector, number, by="css selector", timeout=None, scroll=True)
+self.click_if_visible(selector, by="css selector", timeout=0, scroll=True)
 self.click_active_element()
 self.click_with_offset(
-    selector, x, y, by="css selector", mark=None, timeout=None, center=None)
+    selector, x, y, by="css selector", mark=None, timeout=None, center=None, scroll=True)
 self.double_click_with_offset(
-    selector, x, y, by="css selector", mark=None, timeout=None, center=None)
+    selector, x, y, by="css selector", mark=None, timeout=None, center=None, scroll=True)
 self.is_checked(selector, by="css selector", timeout=None)
 # Duplicates:
 # self.is_selected(selector, by="css selector", timeout=None)

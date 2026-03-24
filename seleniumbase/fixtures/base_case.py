@@ -411,7 +411,7 @@ class BaseCase(unittest.TestCase):
         original_by = by
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_cdp_swap_needed():
-            self.cdp.click(selector, timeout=timeout)
+            self.cdp.click(selector, timeout=timeout, scroll=scroll)
             return
         if delay and (type(delay) in [int, float]) and delay > 0:
             time.sleep(delay)
@@ -2254,7 +2254,7 @@ class BaseCase(unittest.TestCase):
         )
 
     def click_visible_elements(
-        self, selector, by="css selector", limit=0, timeout=None
+        self, selector, by="css selector", limit=0, timeout=None, scroll=True
     ):
         """Finds all matching page elements and clicks visible ones in order.
         If a click reloads or opens a new page, the clicking will stop.
@@ -2270,7 +2270,7 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_cdp_swap_needed():
-            self.cdp.click_visible_elements(selector, limit)
+            self.cdp.click_visible_elements(selector, limit, scroll=scroll)
             return
         self.wait_for_ready_state_complete()
         if self.__needs_minimum_wait():
@@ -2297,7 +2297,8 @@ class BaseCase(unittest.TestCase):
                 return
             try:
                 if element.is_displayed():
-                    self.__scroll_to_element(element)
+                    if scroll:
+                        self.__scroll_to_element(element)
                     if self.browser == "safari":
                         self.execute_script("arguments[0].click();", element)
                     else:
@@ -2311,7 +2312,8 @@ class BaseCase(unittest.TestCase):
                 time.sleep(0.12)
                 try:
                     if element.is_displayed():
-                        self.__scroll_to_element(element)
+                        if scroll:
+                            self.__scroll_to_element(element)
                         if self.browser == "safari":
                             self.execute_script(
                                 "arguments[0].click();", element
@@ -2348,7 +2350,7 @@ class BaseCase(unittest.TestCase):
             self.__switch_to_newest_window_if_not_blank()
 
     def click_nth_visible_element(
-        self, selector, number, by="css selector", timeout=None
+        self, selector, number, by="css selector", timeout=None, scroll=True
     ):
         """Finds all matching page elements and clicks the nth visible one.
         Example: self.click_nth_visible_element('[type="checkbox"]', 5)
@@ -2360,7 +2362,7 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_cdp_swap_needed():
-            self.cdp.click_nth_visible_element(selector, number)
+            self.cdp.click_nth_visible_element(selector, number, scroll=scroll)
             return
         self.wait_for_ready_state_complete()
         self.wait_for_element_present(selector, by=by, timeout=timeout)
@@ -2379,7 +2381,8 @@ class BaseCase(unittest.TestCase):
             pre_action_url = self.driver.current_url
         pre_window_count = len(self.driver.window_handles)
         try:
-            self.__scroll_to_element(element)
+            if scroll:
+                self.__scroll_to_element(element)
             self.__element_click(element)
         except (Stale_Exception, ENI_Exception, ECI_Exception):
             time.sleep(0.12)
@@ -2409,18 +2412,20 @@ class BaseCase(unittest.TestCase):
         ):
             self.__switch_to_newest_window_if_not_blank()
 
-    def click_if_visible(self, selector, by="css selector", timeout=0):
+    def click_if_visible(
+        self, selector, by="css selector", timeout=0, scroll=True
+    ):
         """If the page selector exists and is visible, clicks on the element.
         This method only clicks on the first matching element found.
         Use click_visible_elements() to click all matching elements.
         If a "timeout" is provided, waits that long for the element
         to appear before giving up and returning without a click()."""
         if self.__is_cdp_swap_needed():
-            self.cdp.click_if_visible(selector, timeout=timeout)
+            self.cdp.click_if_visible(selector, timeout=timeout, scroll=scroll)
             return
         self.wait_for_ready_state_complete()
         if self.is_element_visible(selector, by=by):
-            self.click(selector, by=by)
+            self.click(selector, by=by, scroll=scroll)
         elif timeout > 0:
             with suppress(Exception):
                 self.wait_for_element_visible(
@@ -2428,7 +2433,7 @@ class BaseCase(unittest.TestCase):
                 )
                 self.sleep(0.2)
             if self.is_element_visible(selector, by=by):
-                self.click(selector, by=by)
+                self.click(selector, by=by, scroll=scroll)
 
     def click_active_element(self):
         if self.__is_cdp_swap_needed():
@@ -2484,6 +2489,7 @@ class BaseCase(unittest.TestCase):
         mark=None,
         timeout=None,
         center=None,
+        scroll=True,
     ):
         """Click an element at an {X,Y}-offset location.
         {0,0} is the top-left corner of the element.
@@ -2500,6 +2506,7 @@ class BaseCase(unittest.TestCase):
             mark=mark,
             timeout=timeout,
             center=center,
+            scroll=scroll,
         )
 
     def double_click_with_offset(
@@ -2511,6 +2518,7 @@ class BaseCase(unittest.TestCase):
         mark=None,
         timeout=None,
         center=None,
+        scroll=True,
     ):
         """Double click an element at an {X,Y}-offset location.
         {0,0} is the top-left corner of the element.
@@ -2527,6 +2535,7 @@ class BaseCase(unittest.TestCase):
             mark=mark,
             timeout=timeout,
             center=center,
+            scroll=scroll,
         )
 
     def is_checked(self, selector, by="css selector", timeout=None):
@@ -14043,9 +14052,12 @@ class BaseCase(unittest.TestCase):
         mark=None,
         timeout=None,
         center=None,
+        scroll=True,
     ):
         if self.__is_cdp_swap_needed():
-            self.cdp.click_with_offset(selector, x, y, center=center)
+            self.cdp.click_with_offset(
+                selector, x, y, center=center, scroll=scroll
+            )
             return
         self.wait_for_ready_state_complete()
         if self.__needs_minimum_wait():
@@ -14061,9 +14073,13 @@ class BaseCase(unittest.TestCase):
         if self.demo_mode:
             self.__highlight(selector, by=by, loops=1)
         elif self.slow_mode:
-            self.__slow_scroll_to_element(element)
+            if scroll:
+                self.__slow_scroll_to_element(element)
+            else:
+                self.sleep(0.2)
         else:
-            self.__scroll_to_element(element, selector, by)
+            if scroll:
+                self.__scroll_to_element(element, selector, by)
         self.wait_for_ready_state_complete()
         if self.__needs_minimum_wait():
             time.sleep(0.03)

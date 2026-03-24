@@ -429,7 +429,7 @@ class CDPMethods():
                     visible_elements.append(element)
         return visible_elements
 
-    def click_nth_element(self, selector, number):
+    def click_nth_element(self, selector, number, scroll=True):
         elements = self.select_all(selector)
         if len(elements) < number:
             raise Exception(
@@ -440,10 +440,11 @@ class CDPMethods():
         if number < 0:
             number = 0
         element = elements[number]
-        element.scroll_into_view()
+        if scroll:
+            element.scroll_into_view()
         element.click()
 
-    def click_nth_visible_element(self, selector, number):
+    def click_nth_visible_element(self, selector, number, scroll=True):
         """Finds all matching page elements and clicks the nth visible one.
         Example: self.click_nth_visible_element('[type="checkbox"]', 5)
                 (Clicks the 5th visible checkbox on the page.)"""
@@ -457,7 +458,8 @@ class CDPMethods():
         if number < 0:
             number = 0
         element = elements[number]
-        element.scroll_into_view()
+        if scroll:
+            element.scroll_into_view()
         element.click()
 
     def click_link(self, link_text):
@@ -793,12 +795,13 @@ class CDPMethods():
         js_code = js_code.replace("return getBestSelector", "getBestSelector")
         return self.loop.run_until_complete(self.page.evaluate(js_code))
 
-    def click(self, selector, timeout=None):
+    def click(self, selector, timeout=None, scroll=True):
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
         self.__slow_mode_pause_if_set()
         element = self.find_element(selector, timeout=timeout)
-        element.scroll_into_view()
+        if scroll:
+            element.scroll_into_view()
         tag_name = element.tag_name
         if tag_name:
             tag_name = tag_name.lower().strip()
@@ -824,10 +827,10 @@ class CDPMethods():
         self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.wait(0.2))
 
-    def click_if_visible(self, selector, timeout=0):
+    def click_if_visible(self, selector, timeout=0, scroll=True):
         if self.is_element_visible(selector):
             with suppress(Exception):
-                self.click(selector, timeout=1)
+                self.click(selector, timeout=1, scroll=scroll)
         elif timeout == 0:
             return
         else:
@@ -836,7 +839,7 @@ class CDPMethods():
                 if self.is_element_visible(selector):
                     self.click(selector, timeout=1)
 
-    def click_visible_elements(self, selector, limit=0):
+    def click_visible_elements(self, selector, limit=0, scroll=True):
         """Finds all matching page elements and clicks visible ones in order.
         If a click reloads or opens a new page, the clicking will stop.
         If no matching elements appear, an Exception will be raised.
@@ -859,7 +862,8 @@ class CDPMethods():
                 except Exception:
                     continue
                 if (width != 0 or height != 0):
-                    element.scroll_into_view()
+                    if scroll:
+                        element.scroll_into_view()
                     element.click()
                     click_count += 1
                     time.sleep(0.044)
@@ -868,13 +872,14 @@ class CDPMethods():
             except Exception:
                 break
 
-    def mouse_click(self, selector, timeout=None):
+    def mouse_click(self, selector, timeout=None, scroll=True):
         """(Attempt simulating a mouse click)"""
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
         self.__slow_mode_pause_if_set()
         element = self.find_element(selector, timeout=timeout)
-        element.scroll_into_view()
+        if scroll:
+            element.scroll_into_view()
         element.mouse_click()
         self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.wait(0.2))
@@ -1970,9 +1975,10 @@ class CDPMethods():
             py = element_rect["y"]
             self.gui_click_x_y(px + x, py + y, timeframe=timeframe)
 
-    def click_with_offset(self, selector, x, y, center=False):
+    def click_with_offset(self, selector, x, y, center=False, scroll=True):
         element = self.find_element(selector)
-        element.scroll_into_view()
+        if scroll:
+            element.scroll_into_view()
         if "--debug" in sys.argv:
             displayed_selector = "`%s`" % selector
             if '"' not in selector:
