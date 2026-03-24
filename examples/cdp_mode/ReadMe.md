@@ -6,18 +6,16 @@
 
 ----
 
-⚙️ This diagram shows the stealthy architecture with <b>CDP Mode</b>:
+<h3 align="left">⚙️ Stealthy architecture flowchart:</h3>
 
-<img src="https://seleniumbase.github.io/other/sb_stealth.png" width="585" alt="High-Level Stealthy Architecture Overview" title="High-Level Stealthy Architecture Overview" />
+<img src="https://seleniumbase.github.io/other/sb_stealth.png" width="596" alt="Stealthy architecture flowchart" />
 
 ----
 
-### 🎞️ YouTube tutorials that cover CDP Mode:
+### 🎞️ YouTube videos about <b translate="no">CDP Mode</b>:
 
 <!-- YouTube View --><a href="https://www.youtube.com/watch?v=Mr90iQmNsKM"><img src="https://github.com/user-attachments/assets/91e7ff7b-d155-4ba9-b17b-b097825fcf42" title="SeleniumBase on YouTube" width="320" /></a>
 <p>(<b><a href="https://www.youtube.com/watch?v=Mr90iQmNsKM">Watch "Undetectable Automation 4" on YouTube! ▶️</a></b>)</p>
-
-(See `examples/cdp_mode/` for up-to-date examples.)
 
 ----
 
@@ -27,7 +25,7 @@
 ----
 
 <!-- YouTube View --><a href="https://www.youtube.com/watch?v=gEZhTfaIxHQ"><img src="https://github.com/user-attachments/assets/656977e1-5d66-4d1c-9eec-0aaa41f6522f" title="SeleniumBase on YouTube" width="320" /></a>
-<p>(<b><a href="https://www.youtube.com/watch?v=gEZhTfaIxHQ">Watch "Web-Scraping with GitHub Actions" on YouTube! ▶️</a></b>)</p>
+<p>(<b><a href="https://www.youtube.com/watch?v=gEZhTfaIxHQ">"Unlimited Free Web-Scraping with GitHub Actions" ▶️</a></b>)</p>
 
 ----
 

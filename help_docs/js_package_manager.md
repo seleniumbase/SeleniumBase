@@ -8,7 +8,7 @@
 
 🎦 (<a href="https://seleniumbase.io/help_docs/demo_mode/">Demo Mode</a>)
 
-🚎 (<a href="https://seleniumbase.io/examples/tour_examples/ReadMe/">Website Tours</a>)
+🚎 (<a href="https://seleniumbase.io/examples/tour_examples/ReadMe/">Tour Maker</a>)
 
 🎞️ (<a href="https://seleniumbase.io/examples/presenter/ReadMe/">Presentation Maker</a>)
 

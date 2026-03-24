@@ -92,20 +92,16 @@ def main(*args, **kwargs):
             files_to_process.append(os.path.join(scanned_dir, dir_))
 
     video_embed = (
-        '<figure class="wp-block-embed wp-block-embed-youtube is-type-video '
-        'is-provider-youtube"><div class="wp-block-embed__wrapper">'
-        '<div class="epyt-video-wrapper fluid-width-video-wrapper" '
-        'style="padding-top: 3px !important;"><iframe loading="lazy" '
-        'id="_ytid_36718" data-origwidth="1200" data-origheight="675" '
+        '<div style="text-align: left;"><iframe width="390" height="220" '
+        'loading="lazy" data-origwidth="1200" data-origheight="675" '
         'src="https://www.youtube.com/embed/yt_code?enablejsapi=1&amp;'
-        "origin=https://seleniumbase.io&amp;autoplay=0&amp;cc_load_policy=0"
-        "&amp;cc_lang_pref=&amp;iv_load_policy=1&amp;loop=0&amp;"
-        "modestbranding=1&amp;rel=0&amp;fs=1&amp;playsinline=0&amp;"
-        'autohide=2&amp;theme=dark&amp;color=red&amp;controls=1&amp;" '
-        'class="__youtube_prefs__ no-lazyload" title="YouTube player" '
-        'allow="autoplay; encrypted-media" allowfullscreen="" '
-        'data-no-lazy="1" data-skipgform_ajax_framebjll="">'
-        "</iframe></div></div></figure>"
+        'origin=https://seleniumbase.io&amp;autoplay=0&amp;'
+        'cc_load_policy=0&amp;cc_lang_pref=&amp;iv_load_policy=1&amp;'
+        'loop=0&amp;modestbranding=1&amp;rel=0&amp;fs=1&amp;'
+        'playsinline=0&amp;autohide=2&amp;theme=dark&amp;color=red&amp;'
+        'controls=1&amp;" class="__youtube_prefs__ no-lazyload" '
+        'title="YouTube player" allow="autoplay; encrypted-media" '
+        'allowfullscreen="" data-no-lazy="1"></iframe></div>'
     )
 
     updated_files_to_process = []

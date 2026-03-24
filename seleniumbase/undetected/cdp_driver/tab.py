@@ -1629,11 +1629,17 @@ class Tab(Connection):
                     await element.click_async()
 
     async def click_with_offset(self, selector, x, y, center=False, timeout=5):
+        """Click an element at an {X,Y}-offset location.
+        {0,0} is the top-left corner of the element.
+        This method is used to click on CAPTCHAs."""
         element = await self.find(selector, timeout=timeout)
         await element.scroll_into_view_async()
         await element.mouse_click_with_offset_async(x=x, y=y, center=center)
 
     async def solve_captcha(self):
+        """This method does a few things to click a CAPTCHA:
+        1. Checks to see if a CAPTCHA is on the current page.
+        2. If found, calls `click_with_offset(*)` to click it."""
         await self.sleep(0.11)
         source = await self.get_html()
         if await self.__on_a_cf_turnstile_page(source):

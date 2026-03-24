@@ -62,9 +62,9 @@
 
 --------
 
-<p align="left">📓 Here's the stealthy architecture overview:</p>
+<h3 align="left">⚙️ Stealthy architecture flowchart:</h3>
 
-<img src="https://seleniumbase.github.io/other/sb_stealth.png" width="596" alt="Stealthy architecture overview" />
+<img src="https://seleniumbase.github.io/other/sb_stealth.png" width="596" alt="Stealthy architecture flowchart" />
 
 (For maximum stealth, use <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md">CDP Mode</a>, which includes <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md">Stealthy Playwright Mode</a>)
 
@@ -80,6 +80,7 @@ sb = sb_cdp.Chrome(url)
 elements = sb.find_elements("span.titleline > a")
 for element in elements:
     print("* " + element.text)
+sb.driver.stop()
 ```
 
 --------
@@ -491,6 +492,7 @@ class MyTestClass(BaseCase):
 
 ```python
 self.open(url)  # Navigate the browser window to the URL.
+self.activate_cdp_mode()  # Activate CDP Mode from UC Mode.
 self.type(selector, text)  # Update the field with the text.
 self.click(selector)  # Click the element with the selector.
 self.click_link(link_text)  # Click the link containing text.
@@ -579,7 +581,7 @@ pytest [FILE_NAME.py]::[CLASS_NAME]::[METHOD_NAME]
 pynose [FILE_NAME.py]:[CLASS_NAME].[METHOD_NAME]
 ```
 
-<p>✅ No More Flaky Tests! SeleniumBase methods automatically wait for page elements to finish loading before interacting with them (<i>up to a timeout limit</i>). This means <b>you no longer need random <span><code translate="no">time.sleep()</code></span> statements</b> in your scripts.</p>
+<p>✅ No More Flaky Tests! SeleniumBase methods automatically wait for page elements to finish loading before interacting with them (<i>up to a timeout limit</i>).</p>
 <img src="https://img.shields.io/badge/Flaky%20Tests%3F-%20NO%21-11BBDD.svg" alt="NO MORE FLAKY TESTS!" />
 
 ✅ SeleniumBase supports all major browsers and operating systems:
