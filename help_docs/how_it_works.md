@@ -6,27 +6,27 @@
 
 👁️🔎 The primary [SeleniumBase syntax format](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md) works by extending [pytest](https://docs.pytest.org/en/latest/) as a direct plugin. SeleniumBase automatically spins up web browsers for tests, and then gives those tests access to the SeleniumBase libraries through the [BaseCase class](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py). Tests are also given access to [SeleniumBase command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md) and [SeleniumBase methods](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md).
 
-👁️🔎 ``pytest`` uses a feature called test discovery to automatically find and run Python methods that start with ``test_`` when those methods are located in Python files that start with ``test_`` or end with ``_test.py``.
+👁️🔎 `pytest` uses a feature called test discovery to automatically find and run Python methods that start with `test_` when those methods are located in Python files that start with `test_` or end with `_test.py`/`_tests.py`.
 
-👁️🔎 The primary [SeleniumBase syntax format](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md) starts by importing ``BaseCase``:
+👁️🔎 The primary [SeleniumBase syntax format](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md) starts by importing `BaseCase`:
 
 ```python
 from seleniumbase import BaseCase
 ```
 
-👁️🔎 This next line activates ``pytest`` when a file is called directly with ``python`` by accident:
+👁️🔎 This next line activates `pytest` when a file is called directly with `python` by accident:
 
 ```python
 BaseCase.main(__name__, __file__)
 ```
 
-👁️🔎 Classes can inherit ``BaseCase`` to gain SeleniumBase functionality:
+👁️🔎 Classes can inherit `BaseCase` to gain SeleniumBase functionality:
 
 ```python
 class MyTestClass(BaseCase):
 ```
 
-👁️🔎 Test methods inside ``BaseCase`` classes become SeleniumBase tests: (These tests automatically launch a web browser before starting, and quit the web browser after ending. Default settings can be changed via command-line options.)
+👁️🔎 Test methods inside `BaseCase` classes become SeleniumBase tests: (These tests automatically launch a web browser before starting, and quit the web browser after ending. Default settings can be changed via command-line options.)
 
 ```python
 class MyTestClass(BaseCase):
@@ -34,7 +34,7 @@ class MyTestClass(BaseCase):
         # ...
 ```
 
-👁️🔎 [SeleniumBase APIs](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md) can be called from tests via ``self``:
+👁️🔎 [SeleniumBase APIs](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md) can be called from tests via `self`:
 
 ```python
 class MyTestClass(BaseCase):
@@ -63,7 +63,7 @@ class TestSimpleLogin(BaseCase):
 
 (See the example, [test_simple_login.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_simple_login.py), for reference.)
 
-👁️🔎 Here are some examples of running tests with ``pytest``:
+👁️🔎 Here are some examples of running tests with `pytest`:
 
 ```zsh
 pytest test_mfa_login.py
@@ -101,22 +101,22 @@ finally:
 
 ### ✅ No More Flaky Tests!
 
-<p>SeleniumBase methods automatically wait for page elements to finish loading before interacting with them (<i>up to a timeout limit</i>). This means <b>you no longer need random <span><code>time.sleep()</code></span> statements</b> in your scripts.</p>
+<p>SeleniumBase methods automatically wait for page elements to finish loading before interacting with them (<i>up to a timeout limit</i>).</p>
 <img src="https://img.shields.io/badge/Flaky%20Tests%3F-%20NO%21-11BBDD.svg" alt="NO MORE FLAKY TESTS!" />
 
 **There are three layers of protection that provide reliability for tests using SeleniumBase:**
 
-* **(1)**: Selenium's default ``pageLoadStrategy`` is ``normal``: This strategy causes Selenium to wait for the full page to load, with HTML content and sub-resources downloaded and parsed.
+* **(1)**: Selenium's default `pageLoadStrategy` is `normal`: This strategy causes Selenium to wait for the full page to load, with HTML content and sub-resources downloaded and parsed.
 
-* **(2)**: SeleniumBase includes methods such as ``wait_for_ready_state_complete()``, which run inside other SeleniumBase methods to ensure that it's safe to proceed with the next command.
+* **(2)**: SeleniumBase includes methods such as `wait_for_ready_state_complete()`, which run inside other SeleniumBase methods to ensure that it's safe to proceed with the next command.
 
 * **(3)**: SeleniumBase methods automatically wait for elements to be visible and interactable before interacting with those elements.
 
 **If you want to speed up your tests and you think the third level of protection is enough by itself, you can use command-line options to remove the first, the second, or both of those first two levels of protection:**
 
-* ``--pls=none`` --> Set ``pageLoadStrategy`` to ``"none"``: This strategy causes Selenium to return immediately after the initial HTML content is fully received by the browser.
+* `--pls=none` --> Set `pageLoadStrategy` to "none": This strategy causes Selenium to return immediately after the initial HTML content is fully received by the browser.
 
-* ``--sjw`` --> Skip JS Waits, such as ``wait_for_ready_state_complete()``.
+* `--sjw` --> Skip JS Waits, such as `wait_for_ready_state_complete()`.
 
 --------
 

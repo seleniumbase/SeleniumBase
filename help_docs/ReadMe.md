@@ -1,6 +1,6 @@
 <!-- SeleniumBase Docs -->
 
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/sb_word_cloud.png" alt="SeleniumBase" title="SeleniumBase" width="330" /></a></p>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/sb_word_cloud.png" alt="SeleniumBase" title="SeleniumBase" width="340" /></a></p>
 
 <h2><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32"></a> Help Docs</h2>
 
@@ -157,6 +157,6 @@
 --------
 
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/">
-<img src="https://seleniumbase.github.io/img/sb_logo_10.png" alt="SeleniumBase" width="260" />
+<img src="https://seleniumbase.github.io/cdn/img/nice_logo_8t.png" alt="SeleniumBase" width="340" />
 </a></p>
 <!-- View on GitHub -->

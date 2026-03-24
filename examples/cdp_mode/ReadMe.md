@@ -6,18 +6,16 @@
 
 ----
 
-⚙️ This diagram shows the stealthy architecture with <b>CDP Mode</b>:
+<h3 align="left">⚙️ Stealthy architecture flowchart:</h3>
 
-<img src="https://seleniumbase.github.io/other/sb_stealth.png" width="585" alt="High-Level Stealthy Architecture Overview" title="High-Level Stealthy Architecture Overview" />
+<img src="https://seleniumbase.github.io/other/sb_stealth.png" width="596" alt="Stealthy architecture flowchart" />
 
 ----
 
-### 🎞️ YouTube tutorials that cover CDP Mode:
+### 🎞️ YouTube videos about <b translate="no">CDP Mode</b>:
 
 <!-- YouTube View --><a href="https://www.youtube.com/watch?v=Mr90iQmNsKM"><img src="https://github.com/user-attachments/assets/91e7ff7b-d155-4ba9-b17b-b097825fcf42" title="SeleniumBase on YouTube" width="320" /></a>
 <p>(<b><a href="https://www.youtube.com/watch?v=Mr90iQmNsKM">Watch "Undetectable Automation 4" on YouTube! ▶️</a></b>)</p>
-
-(See `examples/cdp_mode/` for up-to-date examples.)
 
 ----
 
@@ -27,7 +25,7 @@
 ----
 
 <!-- YouTube View --><a href="https://www.youtube.com/watch?v=gEZhTfaIxHQ"><img src="https://github.com/user-attachments/assets/656977e1-5d66-4d1c-9eec-0aaa41f6522f" title="SeleniumBase on YouTube" width="320" /></a>
-<p>(<b><a href="https://www.youtube.com/watch?v=gEZhTfaIxHQ">Watch "Web-Scraping with GitHub Actions" on YouTube! ▶️</a></b>)</p>
+<p>(<b><a href="https://www.youtube.com/watch?v=gEZhTfaIxHQ">"Unlimited Free Web-Scraping with GitHub Actions" ▶️</a></b>)</p>
 
 ----
 
@@ -403,12 +401,12 @@ sb.cdp.select(selector, timeout=None)
 sb.cdp.select_all(selector, timeout=None)
 sb.cdp.find_elements(selector, timeout=None)
 sb.cdp.find_visible_elements(selector, timeout=None)
-sb.cdp.click(selector, timeout=None)
-sb.cdp.click_if_visible(selector, timeout=0)
-sb.cdp.click_visible_elements(selector, limit=0)
-sb.cdp.click_nth_element(selector, number)
-sb.cdp.click_nth_visible_element(selector, number)
-sb.cdp.click_with_offset(selector, x, y, center=False)
+sb.cdp.click(selector, timeout=None, scroll=True)
+sb.cdp.click_if_visible(selector, timeout=0, scroll=True)
+sb.cdp.click_visible_elements(selector, limit=0, scroll=True)
+sb.cdp.click_nth_element(selector, number, scroll=True)
+sb.cdp.click_nth_visible_element(selector, number, scroll=True)
+sb.cdp.click_with_offset(selector, x, y, center=False, scroll=True)
 sb.cdp.click_link(link_text)
 sb.cdp.go_back()
 sb.cdp.go_forward()
@@ -428,7 +426,7 @@ sb.cdp.bring_to_front()
 sb.cdp.get_active_element()
 sb.cdp.get_active_element_css()
 sb.cdp.click_active_element()
-sb.cdp.mouse_click(selector, timeout=None)
+sb.cdp.mouse_click(selector, timeout=None, scroll=True)
 sb.cdp.nested_click(parent_selector, selector)
 sb.cdp.get_nested_element(parent_selector, selector)
 sb.cdp.select_option_by_text(dropdown_selector, option)

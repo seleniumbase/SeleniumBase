@@ -92,11 +92,13 @@ plugins:
 nav:
   - ✅ SeleniumBase README: README.md
   - 🏰 List of Features: help_docs/features_list.md
+  - 🐙 CDP Mode: examples/cdp_mode/ReadMe.md
+  - 🎭 Stealthy Playwright: examples/cdp_mode/playwright/ReadMe.md
   - 📚 Running Example Tests: examples/ReadMe.md
   - 🎛️ Command Line Options: help_docs/customizing_test_runs.md
   - 🪄 Console Scripts: seleniumbase/console_scripts/ReadMe.md
   - 📊 Dashboard / Reports: examples/example_logs/ReadMe.md
-  - 🔡 Syntax Formats: help_docs/syntax_formats.md
+  - 🔠 Syntax Formats: help_docs/syntax_formats.md
   - 🎖️ GUI / Commander: help_docs/commander.md
   - 🔴 Recorder Mode: help_docs/recorder_mode.md
   - 📘 API Reference: help_docs/method_summary.md
@@ -115,20 +117,19 @@ nav:
     - 📶 Chart Maker: examples/chart_maker/ReadMe.md
     - 🎞️ Presentation Maker: examples/presenter/ReadMe.md
   - Integrations:
+    - 🐳 Docker: integrations/docker/ReadMe.md
     - 👤 UC Mode: help_docs/uc_mode.md
-    - 🐙 CDP Mode: examples/cdp_mode/ReadMe.md
-    - 🎭 Stealthy Playwright: examples/cdp_mode/playwright/ReadMe.md
     - 🤖 GitHub CI: integrations/github/workflows/ReadMe.md
     - 🛂 MasterQA: seleniumbase/masterqa/ReadMe.md
     - 🗂️ Case Plans: help_docs/case_plans.md
     - 📱 Mobile Mode: help_docs/mobile_testing.md
     - 🌐 Selenium Grid: seleniumbase/utilities/selenium_grid/ReadMe.md
     - 🖼️ Visual Testing: examples/visual_testing/ReadMe.md
-    - 🕵️ The HTML Inspector: help_docs/html_inspector.md
     - 🤖 Azure Pipelines: integrations/azure/azure_pipelines/ReadMe.md
     - 🤖 Jenkins on Azure: integrations/azure/jenkins/ReadMe.md
     - 🤖 Jenkins on Google Cloud: integrations/google_cloud/ReadMe.md
-    - 🤖 NodeJS Test Runner: https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js
+    - 🕵️ The HTML Inspector: help_docs/html_inspector.md
+    - 🤖 NodeJS Test Runners: https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js
   - Presentations:
     - ✅ Core Presentation: https://seleniumbase.io/other/core_presentation.html
     - 🎞️ Presenter Demo: https://seleniumbase.io/other/presenter.html
@@ -169,7 +170,6 @@ nav:
     - 🔐 Decorators / Security: seleniumbase/common/ReadMe.md
     - 🗂️ Case Plans (examples): examples/case_summary.md
     - 🧭 Using Safari Driver: help_docs/using_safari_driver.md
-    - 🐳 Docker Start Guide: integrations/docker/ReadMe.md
     - 👤 Shadow DOM Support: help_docs/shadow_dom.md
     - 👥 macOS Hidden Files: help_docs/hidden_files_info.md
     - 🗄️ MySQL Instructions: help_docs/mysql_installation.md
