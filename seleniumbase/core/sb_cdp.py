@@ -66,6 +66,7 @@ class CDPMethods():
             lambda *args, **kwargs: self.__gui_click(element, *args, **kwargs)
         )
         element.highlight_overlay = lambda: self.__highlight_overlay(element)
+        element.is_in_viewport = lambda: self.__is_in_viewport(element)
         element.mouse_click = lambda: self.__mouse_click(element)
         element.click_with_offset = (
             lambda *args, **kwargs: self.__mouse_click_with_offset_async(
@@ -543,6 +544,11 @@ class CDPMethods():
             self.loop.run_until_complete(element.highlight_overlay_async())
         )
 
+    def __is_in_viewport(self, element):
+        return (
+            self.loop.run_until_complete(element.is_in_viewport_async())
+        )
+
     def __mouse_click(self, element):
         result = (
             self.loop.run_until_complete(element.mouse_click_async())
@@ -800,9 +806,9 @@ class CDPMethods():
             timeout = settings.SMALL_TIMEOUT
         self.__slow_mode_pause_if_set()
         element = self.find_element(selector, timeout=timeout)
-        if scroll:
-            element.scroll_into_view()
         tag_name = element.tag_name
+        current_url = self.get_current_url()
+
         if tag_name:
             tag_name = tag_name.lower().strip()
         if (
@@ -810,12 +816,24 @@ class CDPMethods():
                 "a", "button", "canvas", "div", "input", "li", "span", "label"
             ]
             and "contains(" not in selector
+            and "://google" not in current_url
+            and "://www.google" not in current_url
         ):
+            if scroll:
+                element.scroll_into_view()
             try:
                 element.mouse_click()  # Simulated click (NOT PyAutoGUI)
             except Exception:
                 element.click()  # Standard CDP click
         else:
+            if scroll:
+                if "contains(" in selector:
+                    element.scroll_into_view()
+                else:
+                    try:
+                        self.js_scroll_into_view(selector)
+                    except Exception:
+                        element.scroll_into_view()
             element.click()  # Standard CDP click
         self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.wait(0.2))
@@ -3108,6 +3126,17 @@ class CDPMethods():
     def assert_not_in(self, first, second):
         if first in second:
             raise AssertionError("%s is in %s" % (first, second))
+
+    def js_scroll_into_view(self, selector):
+        css_selector = self.__convert_to_css_if_xpath(selector)
+        css_selector = re.escape(css_selector)  # Add "\\" to special chars
+        css_selector = js_utils.escape_quotes_if_needed(css_selector)
+        js_code = (
+            "document.querySelector('%s')?.scrollIntoView();"
+            % css_selector
+        )
+        with suppress(Exception):
+            self.loop.run_until_complete(self.page.evaluate(js_code))
 
     def scroll_into_view(self, selector):
         self.find_element(selector).scroll_into_view()
