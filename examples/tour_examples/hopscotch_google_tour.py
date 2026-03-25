@@ -7,6 +7,7 @@ class MyTourClass(BaseCase):
         if not self.undetectable:
             self.get_new_driver(undetectable=True)
         self.open("https://google.com/ncr")
+        self.click_if_visible('button:contains("Accept all")')
         self.wait_for_element('[title="Search"]')
         self.hide_elements("iframe")
 
@@ -33,9 +34,9 @@ class MyTourClass(BaseCase):
         self.play_tour(interval=3)  # Tour automatically continues after 3 sec
 
         self.open("https://www.google.com/maps/@42.3591234,-71.0915634,15z")
-        self.wait_for_element("#searchboxinput", timeout=20)
-        self.wait_for_element("#minimap", timeout=20)
-        self.wait_for_element("#zoom", timeout=20)
+        self.wait_for_element('[name="q"]', timeout=20)
+        self.wait_for_element('[aria-label="Interactive map"]', timeout=20)
+        self.wait_for_element('[aria-label="Zoom in"]', timeout=20)
         self.wait_for_element('[aria-label="Zoom out"]')
         self.wait_for_element('[jsaction*="minimap.main;"]')
         self.sleep(0.5)

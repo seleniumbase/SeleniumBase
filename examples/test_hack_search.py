@@ -14,6 +14,7 @@ class HackingTests(BaseCase):
         if not self.undetectable:
             self.get_new_driver(undetectable=True)
         self.open("https://google.com/ncr")
+        self.click_if_visible('button:contains("Accept all")')
         self.hide_elements("iframe")
         self.assert_element('[title="Search"]')
         self.sleep(0.5)
@@ -25,6 +26,7 @@ class HackingTests(BaseCase):
         self.highlight("h1.b_logo", loops=8)
         source = self.get_page_source()
         self.assert_true("github.com/seleniumbase/SeleniumBase" in source)
+        self.internalize_links()
         self.click('a:contains("seleniumbase/SeleniumBase")')
         self.js_click('a[title="examples"]')
         self.highlight('#repo-content-turbo-frame')

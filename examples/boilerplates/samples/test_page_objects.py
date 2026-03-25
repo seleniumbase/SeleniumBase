@@ -6,6 +6,7 @@ BaseCase.main(__name__, __file__, "--uc")
 class GooglePage:
     def go_to_google(self, sb):
         sb.driver.get("https://google.com/ncr")
+        sb.click_if_visible('button:contains("Accept all")')
 
     def assert_google_title(self, sb):
         sb.assert_title_contains("Google")

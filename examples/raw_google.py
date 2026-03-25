@@ -3,6 +3,7 @@ from seleniumbase import SB
 with SB(uc=True, test=True) as sb:
     url = "https://google.com/ncr"
     sb.activate_cdp_mode(url)
+    sb.click_if_visible('button:contains("Accept all")')
     sb.type('[name="q"]', "SeleniumBase GitHub page")
     sb.click('[value="Google Search"]')
     sb.sleep(4)  # The "AI Overview" sometimes loads

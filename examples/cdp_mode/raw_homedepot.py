@@ -1,15 +1,17 @@
 from seleniumbase import SB
 
-with SB(uc=True, test=True, ad_block=True) as sb:
+with SB(uc=True, test=True, incognito=True) as sb:
     url = "https://www.homedepot.com/"
     sb.activate_cdp_mode(url)
-    sb.sleep(1.8)
+    sb.sleep(1.4)
+    sb.click_if_visible('[data-testid="CloseIcon"]', timeout=3)
+    sb.sleep(1.2)
     search_box = "input#typeahead-search-field-input"
     search = "Computer Chair"
     category = "Gaming Chairs"
     required_text = "Chair"
     sb.click(search_box)
-    sb.sleep(1.2)
+    sb.sleep(0.8)
     sb.press_keys(search_box, search)
     sb.sleep(0.6)
     sb.click("button#typeahead-search-icon-button")

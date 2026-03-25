@@ -3,6 +3,7 @@ from seleniumbase import SB
 
 with SB(uc=True, test=True) as sb:
     sb.open("https://google.com/ncr")
+    sb.click_if_visible('button:contains("Accept all")')
     sb.type('[name="q"]', "SeleniumBase on GitHub")
     sb.click('[value="Google Search"]')
     sb.highlight('a[href*="github.com/seleniumbase"]')

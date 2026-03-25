@@ -111,6 +111,7 @@ class MyTourClass(BaseCase):
         if not self.undetectable:
             self.get_new_driver(undetectable=True)
         self.open('https://google.com/ncr')
+        self.click_if_visible('button:contains("Accept all")')
         self.wait_for_element('input[title="Search"]')
         self.hide_elements("iframe")
 

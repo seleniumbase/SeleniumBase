@@ -712,6 +712,9 @@ def main():
     data.append("        if not self.undetectable:")
     data.append("            self.get_new_driver(undetectable=True)")
     data.append('        self.open("https://google.com/ncr")')
+    data.append(
+        "        sb.click_if_visible('button:contains(\"Accept all\")')"
+    )
     data.append('        self.assert_title_contains("Google")')
     data.append("        self.save_screenshot_to_logs()")
     data.append('        self.type(HomePage.search_box, "github.com")')
