@@ -5,11 +5,12 @@ BaseCase.main(__name__, __file__)
 class MyTourClass(BaseCase):
     def test_google_maps_tour(self):
         self.open("https://www.google.com/maps/@42.3591234,-71.0915634,15z")
-        self.wait_for_element("#searchboxinput", timeout=20)
-        self.wait_for_element("#minimap", timeout=20)
-        self.wait_for_element("#zoom", timeout=20)
+        self.wait_for_element('[name="q"]', timeout=20)
+        self.wait_for_element('[aria-label="Interactive map"]', timeout=20)
+        self.wait_for_element('[aria-label="Zoom in"]', timeout=20)
         self.wait_for_element('[aria-label="Zoom out"]')
         self.wait_for_element('[jsaction*="minimap.main;"]')
+        self.sleep(0.5)
 
         self.create_tour(theme="introjs")
         self.add_tour_step(

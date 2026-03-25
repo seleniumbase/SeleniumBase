@@ -226,7 +226,6 @@ class Tab(Connection):
         except (Exception, TypeError):
             pass
         while not item:
-            await self
             item = await self.find_element_by_text(
                 text, best_match, return_enclosing_element
             )

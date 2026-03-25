@@ -31,13 +31,11 @@ with SB(uc=True, test=True, locale="en", guest=True, pls="none") as sb:
         sb.sleep(0.6)
     sb.sleep(0.8)
     for y in range(1, 9):
-        sb.scroll_to_y(y * 400)
-        sb.sleep(0.5)
+        sb.scroll_to_y(y * 200)
+        sb.sleep(0.4)
     hotel_names = sb.find_elements('h3 div[class*="TitleName"]')
     if not hotel_names:
-        hotel_names = sb.find_elements(
-            'a[data-autobot-element-id*="HOTEL_NAME"]'
-        )
+        hotel_names = sb.find_elements("h3.antialiased")
     price_selector = '[class*="PriceWrap"] .relative > .items-center'
     if sb.is_element_visible(price_selector):
         hotel_prices = sb.find_elements(price_selector)
@@ -52,7 +50,6 @@ with SB(uc=True, test=True, locale="en", guest=True, pls="none") as sb:
             'span.text-priceSuper-heading4 + div > span'
         )
     print("Priceline Hotels in %s:" % location)
-    print(sb.get_text('[data-testid="POPOVER-DATE-PICKER"]'))
     if len(hotel_names) == 0:
         print("No availability over the selected dates!")
     count = 0

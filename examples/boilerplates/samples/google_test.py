@@ -16,6 +16,7 @@ class GoogleTests(BaseCase):
         if not self.undetectable:
             self.get_new_driver(undetectable=True)
         self.driver.get("https://google.com/ncr")
+        self.click_if_visible('button:contains("Accept all")')
         self.assert_title_contains("Google")
         self.sleep(0.05)
         self.save_screenshot_to_logs()  # ("./latest_logs" folder)

@@ -467,8 +467,8 @@ class Element:
                 raise Exception("Could not find position for %s " % self)
             pos = Position(quads[0])
             if abs:
-                scroll_y = (await self.tab.evaluate("window.scrollY")).value
-                scroll_x = (await self.tab.evaluate("window.scrollX")).value
+                scroll_y = (await self.tab.evaluate("window.scrollY"))
+                scroll_x = (await self.tab.evaluate("window.scrollX"))
                 abs_x = pos.left + scroll_x + (pos.width / 2)
                 abs_y = pos.top + scroll_y + (pos.height / 2)
                 pos.abs_x = abs_x
@@ -716,6 +716,31 @@ class Element:
                 button=cdp.input_.MouseButton("left"),
             )
         )
+
+    async def is_in_viewport_async(self):
+        try:
+            layout = await self.tab.send(
+                cdp.page.get_layout_metrics()
+            )
+            viewport = layout[4]
+            v_left = viewport.page_x
+            v_top = viewport.page_y
+            v_right = v_left + viewport.client_width
+            v_bottom = v_top + viewport.client_height
+            box = await self.tab.send(
+                cdp.dom.get_box_model(backend_node_id=self.backend_node_id)
+            )
+            quad = box.content
+            e_left = min(quad[0], quad[2], quad[4], quad[6])
+            e_top = min(quad[1], quad[3], quad[5], quad[7])
+            e_right = max(quad[0], quad[2], quad[4], quad[6])
+            e_bottom = max(quad[1], quad[3], quad[5], quad[7])
+            return (
+                e_left >= v_left and e_right <= v_right
+                and e_top >= v_top and e_bottom <= v_bottom
+            )
+        except Exception:
+            return False
 
     async def scroll_into_view_async(self):
         """Scrolls element into view."""

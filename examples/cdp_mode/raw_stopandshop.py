@@ -1,7 +1,7 @@
 """Test Stop & Shop search. Non-US IPs might be blocked."""
 from seleniumbase import SB
 
-with SB(uc=True, test=True, incognito=True) as sb:
+with SB(uc=True, test=True, guest=True) as sb:
     url = "https://stopandshop.com/"
     sb.activate_cdp_mode(url)
     sb.sleep(2.6)
@@ -9,6 +9,7 @@ with SB(uc=True, test=True, incognito=True) as sb:
         sb.refresh()
         sb.sleep(2.6)
         sb.wait_for_element("#brand-logo_link", timeout=3)
+    sb.click_if_visible("#optly-popup-refresh-btn")
     query = "Fresh Turkey"
     required_text = "Turkey"
     search_box = 'input[type="search"]'

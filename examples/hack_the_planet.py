@@ -58,6 +58,7 @@ class HackTests(BaseCase):
             self.highlight("#shelf-2_section span", loops=6, scroll=False)
 
         self.open("https://google.com/ncr")
+        self.click_if_visible('button:contains("Accept all")')
         self.hide_elements("iframe")
         if self.is_element_visible('a[href*="about.google"]'):
             self.set_text_content('a[href*="about.google"]', ayb)
@@ -191,7 +192,7 @@ class HackTests(BaseCase):
         self.highlight("h1.article_title", loops=5, scroll=False)
 
         self.open("https://kubernetes.io/")
-        self.set_text_content('nav a[href="/docs/"]', "ALL")
+        self.set_text_content('nav a[href="/docs/home/"]', "ALL")
         self.set_text_content('nav a[href="/blog/"]', "YOUR")
         self.set_text_content('nav a[href="/training/"]', "BASE")
         self.set_text_content('nav a[href="/careers/"]', "ARE")
@@ -202,7 +203,7 @@ class HackTests(BaseCase):
         if self.is_element_visible("h1"):
             self.set_text_content("h1", aybabtu)
         self.highlight("nav ul.navbar-nav", loops=3, scroll=False)
-        self.highlight('nav a[href="/docs/"]', loops=1, scroll=False)
+        self.highlight('nav a[href="/docs/home/"]', loops=1, scroll=False)
         self.highlight('nav a[href="/blog/"]', loops=1, scroll=False)
         self.highlight('nav a[href="/training/"]', loops=2, scroll=False)
         self.highlight('nav a[href="/careers/"]', loops=1, scroll=False)
