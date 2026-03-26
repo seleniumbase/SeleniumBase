@@ -9,10 +9,10 @@ with sync_playwright() as p:
     context = browser.contexts[0]
     page = context.pages[0]
     page.goto("https://gitlab.com/users/sign_in")
-    sb.sleep(3)
+    page.wait_for_timeout(3000)
     sb.solve_captcha()
-    sb.sleep(1)
+    page.wait_for_timeout(1000)
     page.locator('label[for="user_login"]').click()
     page.wait_for_selector('[data-testid="sign-in-button"]')
     page.locator("#user_login").fill("Username")
-    sb.sleep(2)
+    page.wait_for_timeout(2000)

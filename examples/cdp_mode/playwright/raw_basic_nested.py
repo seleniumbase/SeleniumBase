@@ -14,4 +14,4 @@ with SB(uc=True) as sb:
         page.fill("#password", "secret_pass")
         page.click("#log-in")
         page.wait_for_selector("h1")
-        sb.sleep(1)
+        page.wait_for_timeout(1000)

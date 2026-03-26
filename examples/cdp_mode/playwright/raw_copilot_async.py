@@ -13,16 +13,16 @@ async def main():
         page = context.pages[0]
         await page.goto("https://copilot.microsoft.com")
         await page.wait_for_selector("textarea#userInput")
-        await driver.sleep(1)
+        await page.wait_for_timeout(1000)
         query = "Playwright Python connect_over_cdp() sync example"
         await page.fill("textarea#userInput", query)
         await page.click('button[data-testid="submit-button"]')
-        await driver.sleep(4)
+        await page.wait_for_timeout(4000)
         await driver.solve_captcha()
         await page.wait_for_selector('button[data-testid*="-thumbs-up"]')
-        await driver.sleep(4)
+        await page.wait_for_timeout(4000)
         await page.click('button[data-testid*="scroll-to-bottom"]')
-        await driver.sleep(3)
+        await page.wait_for_timeout(3000)
         chat_results = '[data-testid="highlighted-chats"]'
         result = await page.locator(chat_results).inner_text()
         print(result.replace("\n\n", " \n"))

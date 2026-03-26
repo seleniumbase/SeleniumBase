@@ -12,7 +12,7 @@ with sync_playwright() as p:
     page.click('[data-testid="user-tools-container"] search')
     search = "Pegasus"
     page.fill('input[type="search"]', search)
-    sb.sleep(4)
+    page.wait_for_timeout(4000)
     details = 'ul[data-testid*="products"] figure .details'
     items = page.locator(details)
     if items:

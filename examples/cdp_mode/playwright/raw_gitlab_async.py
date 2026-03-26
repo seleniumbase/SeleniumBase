@@ -12,13 +12,13 @@ async def main():
         context = browser.contexts[0]
         page = context.pages[0]
         await page.goto("https://gitlab.com/users/sign_in")
-        await driver.sleep(3)
+        await page.wait_for_timeout(3000)
         await driver.solve_captcha()
-        await driver.sleep(1)
+        await page.wait_for_timeout(1000)
         await page.locator('label[for="user_login"]').click()
         await page.wait_for_selector('[data-testid="sign-in-button"]')
         await page.locator("#user_login").fill("Username")
-        await driver.sleep(2)
+        await page.wait_for_timeout(2000)
 
 
 if __name__ == "__main__":

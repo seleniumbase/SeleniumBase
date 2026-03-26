@@ -12,7 +12,7 @@ with sync_playwright() as p:
     url = f"https://www.reddit.com/r/webscraping/search/?q={search}"
     page.goto(url)
     sb.solve_captcha()  # Might not be needed
-    sb.sleep(1)
+    page.wait_for_timeout(1000)
     post_title = '[data-testid="post-title"]'
     page.wait_for_selector(post_title)
     for i in range(8):

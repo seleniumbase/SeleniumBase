@@ -12,9 +12,9 @@ async def main():
         context = browser.contexts[0]
         page = context.pages[0]
         await page.goto("https://www.bing.com/turing/captcha/challenge")
-        await driver.sleep(3)
+        await page.wait_for_timeout(2000)
         await driver.solve_captcha()
-        await driver.sleep(3)
+        await page.wait_for_timeout(2000)
 
 
 if __name__ == "__main__":

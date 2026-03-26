@@ -16,7 +16,7 @@ async def main():
         await page.fill("#password", "secret_pass")
         await page.click("#log-in")
         await page.wait_for_selector("h1")
-        await driver.sleep(1)
+        await page.wait_for_timeout(1000)
 
 
 if __name__ == "__main__":

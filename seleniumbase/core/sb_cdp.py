@@ -117,10 +117,10 @@ class CDPMethods():
         if hasattr(driver, "cdp_base"):
             driver = driver.cdp_base
         load_timeout = 60.0
-        wait_timeout = 30.0
+        wait_timeout = 50.0
         if hasattr(sb_config, "_cdp_proxy") and sb_config._cdp_proxy:
             load_timeout = 90.0
-            wait_timeout = 45.0
+            wait_timeout = 75.0
         try:
             task = self.page.get(url, **kwargs)
             self.loop.run_until_complete(
@@ -128,6 +128,10 @@ class CDPMethods():
             )
         except asyncio.TimeoutError:
             print("Timeout loading %s" % url)
+        except RuntimeError:
+            self.loop.run_until_complete(
+                self.page.get(url, **kwargs)
+            )
         url_protocol = url.split(":")[0]
         safe_url = True
         if url_protocol not in ["about", "data", "chrome"]:
@@ -1394,6 +1398,20 @@ class CDPMethods():
                 self.page.evaluate("document.documentElement.outerHTML")
             )
         return source
+
+    def get_beautiful_soup(self, source=None):
+        """BeautifulSoup is a toolkit for dissecting an HTML document
+        and extracting what you need. It's great for screen-scraping!
+        See: https://www.crummy.com/software/BeautifulSoup/bs4/doc/ """
+        from bs4 import BeautifulSoup
+
+        if not source:
+            with suppress(Exception):
+                self.wait_for_element_visible(
+                    "body", timeout=settings.MINI_TIMEOUT
+                )
+            source = self.get_page_source()
+        return BeautifulSoup(source, "html.parser")
 
     def get_user_agent(self):
         return self.loop.run_until_complete(

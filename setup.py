@@ -180,7 +180,8 @@ setup(
         'charset-normalizer>=3.4.6,<4',
         'urllib3>=1.26.20,<2;python_version<"3.10"',
         'urllib3>=1.26.20,<3;python_version>="3.10"',
-        'requests~=2.32.5',
+        'requests~=2.32.5;python_version<"3.10"',
+        'requests~=2.33.0;python_version>="3.10"',
         'sniffio==1.3.1',
         'h11==0.16.0',
         'outcome==1.3.0.post0',
@@ -261,7 +262,7 @@ setup(
         "pdfminer": [
             'pdfminer.six==20251107;python_version<"3.10"',
             'pdfminer.six==20260107;python_version>="3.10"',
-            'cryptography==46.0.5',
+            'cryptography==46.0.6',
             'cffi==2.0.0',
             'pycparser==2.23;python_version<"3.10"',
             'pycparser==3.0;python_version>="3.10"',
