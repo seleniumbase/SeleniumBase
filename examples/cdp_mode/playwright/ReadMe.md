@@ -2,7 +2,7 @@
 
 <h2><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32"></a> Stealthy Playwright Mode 🎭</h2>
 
-🎭 <b translate="no">Stealthy Playwright Mode</b> is a subset of **[SeleniumBase CDP Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md)** that launches **[Playwright](https://github.com/microsoft/playwright-python)** from an existing <b translate="no">SeleniumBase</b> browser to make <span translate="no">Playwright</span> stealthy (for bypassing bot-detection).  <span translate="no">Playwright</span> uses <code><b>connect_over_cdp()</b></code> to attach itself onto an existing <span translate="no">SeleniumBase</span> session via the <code>remote-debugging-port</code>. From here, APIs of both frameworks can be used together.
+🎭 <b translate="no">Stealthy Playwright Mode</b> is a subset of **[SeleniumBase CDP Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md)** where <span translate="no">**[Playwright](https://github.com/microsoft/playwright-python)**</span> calls <code><b>connect_over_cdp()</b></code> to attach itself onto a stealthy <span translate="no">SeleniumBase</span> browser session via the <code>remote-debugging-port</code>. This gives <span translate="no">Playwright</span> the ability to bypass bot-detection, and allows APIs of both frameworks to be used together.
 
 --------
 
@@ -13,19 +13,19 @@
 
 ### 🎭 Getting started with <b translate="no">Stealthy Playwright Mode</b>:
 
-🎭 If `playwright` isn't already installed, then install it first:
+If **`playwright`** isn't already installed, then install it first:
 
 ```zsh
 pip install playwright
 ```
 
-🎭 Stealthy Playwright Mode comes in 3 formats:
+**Stealthy Playwright Mode** comes in 3 formats:
 1. `sb_cdp` sync format
 2. `SB()` nested sync format
 3. `cdp_driver` async format
 
 
-#### 🎭  `sb_cdp` sync format (minimal boilerplate):
+### 🎭  `sb_cdp` sync format (minimal boilerplate):
 
 ```python
 from playwright.sync_api import sync_playwright
@@ -41,7 +41,7 @@ with sync_playwright() as p:
     page.goto("https://example.com")
 ```
 
-#### 🎭  `SB()` nested sync format (minimal boilerplate):
+### 🎭  `SB()` nested sync format (minimal boilerplate):
 
 ```python
 from playwright.sync_api import sync_playwright
@@ -58,7 +58,7 @@ with SB(uc=True) as sb:
         page.goto("https://example.com")
 ```
 
-#### 🎭 `cdp_driver` async format (minimal boilerplate):
+### 🎭 `cdp_driver` async format (minimal boilerplate):
 
 ```python
 import asyncio
