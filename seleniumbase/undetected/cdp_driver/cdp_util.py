@@ -31,6 +31,7 @@ DOWNLOADS_FOLDER = download_helper.get_downloads_folder()
 PROXY_DIR_LOCK = proxy_helper.PROXY_DIR_LOCK
 EXTENSIONS_DIR = os.path.dirname(os.path.realpath(extensions.__file__))
 AD_BLOCK_ZIP_PATH = os.path.join(EXTENSIONS_DIR, "ad_block.zip")
+DISABLE_CSP_ZIP_PATH = os.path.join(EXTENSIONS_DIR, "disable_csp.zip")
 T = typing.TypeVar("T")
 
 
@@ -598,16 +599,6 @@ async def start(
                 proxy_pass,
                 proxy_scheme,
             )
-    if ad_block:
-        sb_config.ad_block_on = True
-        incognito = False
-        guest = False
-        ad_block_zip = AD_BLOCK_ZIP_PATH
-        ad_block_dir = os.path.join(DOWNLOADS_FOLDER, "ad_block")
-        __unzip_to_new_folder(ad_block_zip, ad_block_dir)
-        extension_dir = __add_chrome_ext_dir(extension_dir, ad_block_dir)
-    if disable_csp:
-        sb_config.disable_csp = True
     if "binary_location" in kwargs and not browser_executable_path:
         browser_executable_path = kwargs["binary_location"]
     if not user_data_dir and "--user-data-dir" in arg_join:
@@ -624,8 +615,8 @@ async def start(
             user_data_dir = udd_string
     if user_data_dir:
         user_data_dir = os.path.abspath(user_data_dir)
+    browser = None
     if not browser_executable_path:
-        browser = None
         if "browser" in kwargs:
             browser = kwargs["browser"]
         if not browser and "--browser" in arg_join:
@@ -675,6 +666,23 @@ async def start(
             sb_config._cdp_browser = "atlas"
         else:
             sb_config._cdp_browser = "chrome"
+    if ad_block:
+        sb_config.ad_block_on = True
+        incognito = False
+        guest = False
+        ad_block_zip = AD_BLOCK_ZIP_PATH
+        ad_block_dir = os.path.join(DOWNLOADS_FOLDER, "ad_block")
+        __unzip_to_new_folder(ad_block_zip, ad_block_dir)
+        extension_dir = __add_chrome_ext_dir(extension_dir, ad_block_dir)
+    if disable_csp:
+        sb_config.disable_csp = True
+        if not incognito and not guest:
+            disable_csp_zip = DISABLE_CSP_ZIP_PATH
+            disable_csp_dir = os.path.join(DOWNLOADS_FOLDER, "disable_csp")
+            __unzip_to_new_folder(disable_csp_zip, disable_csp_dir)
+            extension_dir = __add_chrome_ext_dir(
+                extension_dir, disable_csp_dir
+            )
     sb_config.incognito = incognito
     sb_config.guest_mode = guest
     if not config:

@@ -872,6 +872,7 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
     cdp.get_gui_element_center = CDPM.get_gui_element_center
     cdp.get_html = CDPM.get_html
     cdp.get_page_source = CDPM.get_page_source
+    cdp.get_beautiful_soup = CDPM.get_beautiful_soup
     cdp.get_user_agent = CDPM.get_user_agent
     cdp.get_cookie_string = CDPM.get_cookie_string
     cdp.get_locale_code = CDPM.get_locale_code
