@@ -128,6 +128,10 @@ class CDPMethods():
             )
         except asyncio.TimeoutError:
             print("Timeout loading %s" % url)
+        except RuntimeError:
+            self.loop.run_until_complete(
+                self.page.get(url, **kwargs)
+            )
         url_protocol = url.split(":")[0]
         safe_url = True
         if url_protocol not in ["about", "data", "chrome"]:

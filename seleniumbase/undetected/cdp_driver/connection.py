@@ -305,20 +305,31 @@ class Connection(metaclass=CantTouchThis):
         await self.update_target()
         loop = asyncio.get_running_loop()
         start_time = loop.time()
-        try:
-            if isinstance(t, (int, float)):
-                await asyncio.wait_for(self.listener.idle.wait(), timeout=t)
-                while (loop.time() - start_time) < t:
-                    await asyncio.sleep(0.1)
-            else:
-                await self.listener.idle.wait()
-        except asyncio.TimeoutError:
-            if isinstance(t, (int, float)):
-                # Explicit time is given, which is now passed, so leave now.
-                return
-        except AttributeError:
-            # No listener created yet.
-            pass
+        with warnings.catch_warnings():
+            warnings.filterwarnings(
+                action="ignore",
+                category=RuntimeWarning,
+                message=".*coroutine.*",
+            )
+            try:
+                if isinstance(t, (int, float)):
+                    try:
+                        await asyncio.wait_for(
+                            self.listener.idle.wait(), timeout=t
+                        )
+                    except RuntimeError:
+                        await self.listener.idle.wait()
+                    while (loop.time() - start_time) < t:
+                        await asyncio.sleep(0.1)
+                else:
+                    await self.listener.idle.wait()
+            except asyncio.TimeoutError:
+                if isinstance(t, (int, float)):
+                    # Explicit time that's given has passed, so leave now.
+                    return
+            except AttributeError:
+                # No listener created yet.
+                pass
 
     async def set_locale(self, locale: Optional[str] = None):
         """Sets the Language Locale code via set_user_agent_override."""
@@ -423,9 +434,9 @@ class Connection(metaclass=CantTouchThis):
             await self.websocket.send(tx.message)
             with warnings.catch_warnings():
                 warnings.filterwarnings(
-                    "ignore",
-                    message="coroutine .* was never awaited",
+                    action="ignore",
                     category=RuntimeWarning,
+                    message=".*coroutine.*",
                 )
                 try:
                     return await tx
