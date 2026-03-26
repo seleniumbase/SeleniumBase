@@ -88,7 +88,9 @@ The `SB()` format requires WebDriver, therefore `chromedriver` will be downloade
 
 In the sync formats, `get_endpoint_url()` also applies `nest-asyncio` so that nested event loops are allowed. (Python doesn't allow nested event loops by default). Without this, you'd get the error: `"Cannot run the event loop while another loop is running"` when calling CDP Mode methods (such as `solve_captcha()`) from within the Playwright context manager. This `nest-asyncio` call is done behind-the-scenes so that users don't need to handle this on their own.
 
-Default timeout values are different between Playwright and SeleniumBase. For instance, a 30-second default timeout in a Playwright method might be 10 seconds in the equivalent SeleniumBase method. When specifying custom timeout values, Playwright uses milliseconds, whereas SeleniumBase uses seconds. Eg. `page.wait_for_timeout(500)` is the equivalent of `sb.sleep(0.5)`.
+Default timeout values are different between Playwright and SeleniumBase. For instance, a 30-second default timeout in a Playwright method might only be 10 seconds in the equivalent SeleniumBase method.
+
+When specifying custom timeout values, Playwright uses milliseconds, whereas SeleniumBase uses seconds. Eg. `page.wait_for_timeout(2000)` is the equivalent of `sb.sleep(2)`. Although adding random sleeps to a script is generally discouraged, it helps the automation look more human-like for stealth, and it can prevent exceeding rate limits that trigger a block when automation performs actions too quickly.
 
 Playwright's `:has-text()` selector is the equivalent of SeleniumBase's `:contains()` selector, except for one small difference: `:has-text()` isn't case-sensitive, but `:contains()` is.
 
