@@ -88,6 +88,12 @@ The `SB()` format requires WebDriver, therefore `chromedriver` will be downloade
 
 In the sync formats, `get_endpoint_url()` also applies `nest-asyncio` so that nested event loops are allowed. (Python doesn't allow nested event loops by default). Without this, you'd get the error: `"Cannot run the event loop while another loop is running"` when calling CDP Mode methods (such as `solve_captcha()`) from within the Playwright context manager. This `nest-asyncio` call is done behind-the-scenes so that users don't need to handle this on their own.
 
+Default timeout values are different between Playwright and SeleniumBase. For instance, a 30-second default timeout in a Playwright method might be 10 seconds in the equivalent SeleniumBase method. When specifying custom timeout values, Playwright uses milliseconds, whereas SeleniumBase uses seconds. Eg. `page.wait_for_timeout(500)` is the equivalent of `sb.sleep(0.5)`.
+
+Playwright's `:has-text()` selector is the equivalent of SeleniumBase's `:contains()` selector, except for one small difference: `:has-text()` isn't case-sensitive, but `:contains()` is.
+
+Unlike normal Playwright, you don't need to run `playwright install` before running Stealthy Playwright Mode scripts because the system Chrome will be used. There's also the option of setting `use_chromium=True` to use the unbranded Chromium browser instead, which still supports extensions.
+
 ### 🎭 <b translate="no">Stealthy Playwright Mode</b> examples:
 
 Here's an example that queries Microsoft Copilot:
@@ -105,16 +111,16 @@ with sync_playwright() as p:
     page = context.pages[0]
     page.goto("https://copilot.microsoft.com")
     page.wait_for_selector("textarea#userInput")
-    sb.sleep(1)
+    page.wait_for_timeout(1000)
     query = "Playwright Python connect_over_cdp() sync example"
     page.fill("textarea#userInput", query)
     page.click('button[data-testid="submit-button"]')
-    sb.sleep(3)
+    page.wait_for_timeout(4000)
     sb.solve_captcha()
     page.wait_for_selector('button[data-testid*="-thumbs-up"]')
-    sb.sleep(4)
+    page.wait_for_timeout(4000)
     page.click('button[data-testid*="scroll-to-bottom"]')
-    sb.sleep(3)
+    page.wait_for_timeout(3000)
     chat_results = '[data-testid="highlighted-chats"]'
     result = page.locator(chat_results).inner_text()
     print(result.replace("\n\n", " \n"))
@@ -134,9 +140,9 @@ with sync_playwright() as p:
     context = browser.contexts[0]
     page = context.pages[0]
     page.goto("https://www.bing.com/turing/captcha/challenge")
-    sb.sleep(3)
+    page.wait_for_timeout(2000)
     sb.solve_captcha()
-    sb.sleep(3)
+    page.wait_for_timeout(2000)
 ```
 
 --------
