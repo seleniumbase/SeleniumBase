@@ -13,19 +13,19 @@
 
 ### 🎭 Getting started with <b translate="no">Stealthy Playwright Mode</b>:
 
-If `playwright` isn't already installed, then install it first:
+🎭 If `playwright` isn't already installed, then install it first:
 
 ```zsh
 pip install playwright
 ```
 
-Stealthy Playwright Mode comes in 3 formats:
+🎭 Stealthy Playwright Mode comes in 3 formats:
 1. `sb_cdp` sync format
-2. `SB` nested sync format
+2. `SB()` nested sync format
 3. `cdp_driver` async format
 
 
-#### `sb_cdp` sync format (minimal boilerplate):
+#### 🎭  `sb_cdp` sync format (minimal boilerplate):
 
 ```python
 from playwright.sync_api import sync_playwright
@@ -41,7 +41,7 @@ with sync_playwright() as p:
     page.goto("https://example.com")
 ```
 
-#### `SB` nested sync format (minimal boilerplate):
+#### 🎭  `SB()` nested sync format (minimal boilerplate):
 
 ```python
 from playwright.sync_api import sync_playwright
@@ -58,7 +58,7 @@ with SB(uc=True) as sb:
         page.goto("https://example.com")
 ```
 
-#### `cdp_driver` async format (minimal boilerplate):
+#### 🎭 `cdp_driver` async format (minimal boilerplate):
 
 ```python
 import asyncio
@@ -80,25 +80,25 @@ if __name__ == "__main__":
     loop.run_until_complete(main())
 ```
 
+--------
+
 ### 🎭 <b translate="no">Stealthy Playwright Mode</b> details:
 
 The `sb_cdp` and `cdp_driver` formats don't use WebDriver at all, meaning that `chromedriver` isn't needed. From these two formats, Stealthy Playwright Mode can call [CDP Mode methods](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/cdp_mode_methods.md) and Playwright methods.
 
-The `SB()` format requires WebDriver, therefore `chromedriver` will be downloaded (as `uc_driver`) if the driver isn't already present on the local machine. The `SB()` format has access to Selenium WebDriver methods via [the SeleniumBase API](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md). Using Stealthy Playwright Mode from `SB()` grants access to all the APIs: Selenium, SeleniumBase, [UC Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md), [CDP Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md), and Playwright.
-
-In the sync formats, `get_endpoint_url()` also applies `nest-asyncio` so that nested event loops are allowed. (Python doesn't allow nested event loops by default). Without this, you'd get the error: `"Cannot run the event loop while another loop is running"` when calling CDP Mode methods (such as `solve_captcha()`) from within the Playwright context manager. This `nest-asyncio` call is done behind-the-scenes so that users don't need to handle this on their own.
+The `SB()` format requires WebDriver, therefore `chromedriver` will be downloaded, modified for stealth, and renamed as `uc_driver` if not already present. The `SB()` format has access to Selenium WebDriver methods via [the SeleniumBase API](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md). When using Stealthy Playwright Mode from the `SB()` format, all the APIs are accessible: Selenium, SeleniumBase, [UC Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md), [CDP Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md), and Playwright.
 
 Default timeout values are different between Playwright and SeleniumBase. For instance, a 30-second default timeout in a Playwright method might only be 10 seconds in the equivalent SeleniumBase method.
 
-When specifying custom timeout values, Playwright uses milliseconds, whereas SeleniumBase uses seconds. Eg. `page.wait_for_timeout(2000)` is the equivalent of `sb.sleep(2)`. Although adding random sleeps to a script is generally discouraged, it helps the automation look more human-like for stealth, and it can prevent exceeding rate limits that trigger a block when automation performs actions too quickly.
+When specifying custom timeout values, Playwright uses milliseconds, whereas SeleniumBase uses seconds. Eg. `page.wait_for_timeout(2000)` in Playwright is the equivalent of `sb.sleep(2)` in SeleniumBase.
 
-Playwright's `:has-text()` selector is the equivalent of SeleniumBase's `:contains()` selector, except for one small difference: `:has-text()` isn't case-sensitive, but `:contains()` is.
+Although hard sleeps are generally discouraged, they become a tactical tool in stealth mode because that extra waiting helps the automation look more human. Hard sleeps are used in multiple examples to prevent rate limits from being exceeded.
 
-Unlike normal Playwright, you don't need to run `playwright install` before running Stealthy Playwright Mode scripts because the system Chrome will be used. There's also the option of setting `use_chromium=True` to use the unbranded Chromium browser instead, which still supports extensions.
+--------
 
-### 🎭 <b translate="no">Stealthy Playwright Mode</b> examples:
+### 🎭 A few examples of <b translate="no">Stealthy Playwright Mode</b>:
 
-Here's an example that queries Microsoft Copilot:
+🎭 Here's an example that queries Microsoft Copilot:
 
 ```python
 from playwright.sync_api import sync_playwright
@@ -128,7 +128,9 @@ with sync_playwright() as p:
     print(result.replace("\n\n", " \n"))
 ```
 
-Here's an example that solves the Bing CAPTCHA:
+(From [examples/cdp_mode/playwright/raw_copilot_sync.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/raw_copilot_sync.py))
+
+🎭 Here's an example that solves the Bing CAPTCHA:
 
 ```python
 from playwright.sync_api import sync_playwright
@@ -146,6 +148,52 @@ with sync_playwright() as p:
     sb.solve_captcha()
     page.wait_for_timeout(2000)
 ```
+
+(From [examples/cdp_mode/playwright/raw_bing_cap_sync.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/raw_bing_cap_sync.py))
+
+#### 🎭 For all included examples, see [examples/cdp_mode/playwright](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode/playwright).
+
+--------
+
+### 🎭 Converting regular <b translate="no">Playwright</b> scripts to <b translate="no">Stealthy Playwright Mode</b>:
+
+If you have a regular Playwright script that looks like this:
+
+```python
+from playwright.sync_api import sync_playwright
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(channel="chrome", headless=False)
+    context = browser.new_context()
+    page = context.new_page()
+    page.goto("https://example.com")
+```
+
+Then the Stealthy Playwright Mode version of that would look like this:
+
+```python
+from playwright.sync_api import sync_playwright
+from seleniumbase import sb_cdp
+
+sb = sb_cdp.Chrome()
+endpoint_url = sb.get_endpoint_url()
+
+with sync_playwright() as p:
+    browser = p.chromium.connect_over_cdp(endpoint_url)
+    context = browser.contexts[0]
+    page = context.pages[0]
+    page.goto("https://example.com")
+```
+
+--------
+
+### 🎭 More details about <b translate="no">Stealthy Playwright Mode</b>:
+
+Stealthy Playwright Mode uses the system's Chrome browser by default. There's also the option of setting `use_chromium=True` to use the unbranded Chromium browser instead, which still supports extensions. (With regular Playwright, you would generally need to run `playwright install` to download a special version of Chrome before running Playwright scripts, unless you set `channel="chrome"` to use the system's Chrome browser instead.)
+
+Playwright's `:has-text()` selector is the equivalent of SeleniumBase's `:contains()` selector, except for one small difference: `:has-text()` isn't case-sensitive, but `:contains()` is.
+
+In the sync formats, `get_endpoint_url()` also applies `nest-asyncio` so that nested event loops are allowed. (Python doesn't allow nested event loops by default). Without this, you'd get the error: `"Cannot run the event loop while another loop is running"` when calling CDP Mode methods (such as `solve_captcha()`) from within the Playwright context manager. This `nest-asyncio` call is done behind-the-scenes so that users don't need to handle this on their own.
 
 --------
 
@@ -214,7 +262,13 @@ if __name__ == "__main__":
 
 --------
 
-For more examples, see [examples/cdp_mode/playwright](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode/playwright).
+#### 🎭 This flowchart shows how Stealthy Playwright Mode fits into CDP Mode:</h3>
+
+<img src="https://seleniumbase.github.io/other/sb_stealth.png" width="596" alt="Stealthy architecture flowchart" />
+
+(See the [**CDP Mode** ReadMe](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md) for more information about that.)
+
+#### 🎭 See [examples/cdp_mode/playwright](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode/playwright) for Stealthy Playwight Mode examples.
 
 --------
 
