@@ -18,21 +18,22 @@ async def main():
             "/order-replacement-building-regulations-certificate/"
         )
         await page.goto(url)
-        await tab.sleep(0.6)
+        await page.wait_for_timeout(600)
         await tab.solve_captcha()
         await page.wait_for_selector("#SearchTerm")
-        await tab.sleep(1.4)
+        await page.wait_for_timeout(2000)
         allow_cookies = 'button:contains("Allow all cookies")'
         await tab.click_if_visible(allow_cookies, timeout=2)
-        await tab.sleep(1)
+        await page.wait_for_timeout(1000)
         await page.fill("#SearchTerm", "Hydrogen")
+        await tab.click_if_visible(allow_cookies, timeout=1)
         await page.click("button.search-button")
-        await tab.sleep(3)
+        await page.wait_for_timeout(3000)
         results = await tab.query_selector_all("div.search-result")
         for result in results:
             print(result.text.replace(" " * 12, " ").strip() + "\n")
         await tab.scroll_down(50)
-        await tab.sleep(1)
+        await page.wait_for_timeout(1000)
 
 
 if __name__ == "__main__":

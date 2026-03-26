@@ -10,6 +10,6 @@ with SB(uc=True, locale="en") as sb:
         context = browser.contexts[0]
         page = context.pages[0]
         page.goto("https://www.bing.com/turing/captcha/challenge")
-        sb.sleep(3)
+        page.wait_for_timeout(2000)
         sb.solve_captcha()
-        sb.sleep(3)
+        page.wait_for_timeout(2000)

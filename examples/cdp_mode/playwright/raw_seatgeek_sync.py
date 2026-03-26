@@ -11,12 +11,13 @@ with sync_playwright() as p:
     page.goto("https://seatgeek.com/")
     input_field = 'input[name="search"]'
     page.wait_for_selector(input_field)
-    sb.sleep(1.6)
+    page.wait_for_timeout(1600)
     query = "Jerry Seinfeld"
-    sb.press_keys(input_field, query)
-    sb.sleep(1.6)
+    search_box = page.locator(input_field)
+    search_box.press_sequentially(query, delay=80)
+    page.wait_for_timeout(1600)
     page.click("li#active-result-item")
-    sb.sleep(4.2)
+    page.wait_for_timeout(4200)
     print('*** SeatGeek Search for "%s":' % query)
     items = page.locator('[data-testid="listing-item"]')
     for i in range(items.count()):

@@ -9,7 +9,8 @@ with sync_playwright() as p:
     context = browser.contexts[0]
     page = context.pages[0]
     page.goto("https://www.planetminecraft.com/account/sign_in/")
-    sb.sleep(2)
+    page.wait_for_timeout(2000)
     sb.solve_captcha()
-    sb.wait_for_element_absent("input[disabled]")
-    sb.sleep(2)
+    input_disabled = page.locator("input[disabled]")
+    input_disabled.wait_for(state="hidden", timeout=5000)
+    page.wait_for_timeout(2000)

@@ -9,6 +9,6 @@ with sync_playwright() as p:
     context = browser.contexts[0]
     page = context.pages[0]
     page.goto("https://www.cloudflare.com/login")
-    sb.sleep(3)
+    page.wait_for_timeout(4500)
     sb.solve_captcha()
-    sb.sleep(3)
+    page.wait_for_timeout(3000)

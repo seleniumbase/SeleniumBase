@@ -9,12 +9,13 @@ with sync_playwright() as p:
     context = browser.contexts[0]
     page = context.pages[0]
     page.goto("https://www.nordstrom.com/")
-    sb.sleep(2)
+    page.wait_for_timeout(2000)
     page.click("input#keyword-search-input")
-    sb.sleep(0.8)
+    page.wait_for_timeout(800)
     search = "cocktail dresses for women teal"
-    sb.press_keys("input#keyword-search-input", search + "\n")
-    sb.sleep(2.2)
+    search_box = page.locator("input#keyword-search-input")
+    search_box.press_sequentially(search + "\n", delay=80)
+    page.wait_for_timeout(2200)
     for i in range(17):
         sb.scroll_down(16)
         sb.sleep(0.14)
