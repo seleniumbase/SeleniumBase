@@ -23,7 +23,7 @@ pip install seleniumbase playwright
 
 ## 💻 Usage
 
-There are three primary ways to implement **Stealthy Playwright Mode**, depending on your project’s architecture and needs: `sb_cdp` sync, `SB()` nested sync, and `cdp_driver` async.
+There are three primary ways to implement **Stealthy Playwright Mode**, depending on your project’s architecture and needs: `sb_cdp` "sync", `SB()` "nested sync", and `cdp_driver` "async".
 
 ### 1. The lightweight "sync" format (`sb_cdp`)
 
@@ -60,7 +60,7 @@ with SB(uc=True) as sb:
         page.goto("https://example.com")
 ```
 
-### 3. The async format (`cdp_driver`)
+### 3. The "async" format (`cdp_driver`)
 
 Designed for modern asynchronous Python. This allows you to run multiple concurrent stealth sessions using `async/await` and Playwright's `async_api`.
 
