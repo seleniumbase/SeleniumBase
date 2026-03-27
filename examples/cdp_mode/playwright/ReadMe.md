@@ -11,21 +11,23 @@
 
 --------
 
-### 🎭 Getting started with <b translate="no">Stealthy Playwright Mode</b>:
+## 🛠️ Installation
 
-If **`playwright`** isn't already installed, then install it first:
+To use **Stealthy Playwright Mode**, simply install the necessary Python packages:
 
 ```zsh
-pip install playwright
+pip install seleniumbase playwright
 ```
 
-**Stealthy Playwright Mode** comes in 3 formats:
-1. `sb_cdp` sync format
-2. `SB()` nested sync format
-3. `cdp_driver` async format
+> **Note:** Just as standard Playwright can use `channel="chrome"` to bypass internal binary downloads, Stealthy Playwright Mode attaches to the system Chrome already managed and patched by SeleniumBase. This lets you skip the large `playwright install` step entirely.
 
+## 💻 Usage
 
-### 🎭  `sb_cdp` sync format (minimal boilerplate):
+There are three primary ways to implement **Stealthy Playwright Mode**, depending on your project’s architecture and needs: `sb_cdp` sync, `SB()` nested sync, and `cdp_driver` async.
+
+### 1. The lightweight "sync" format (`sb_cdp`)
+
+Ideal for standalone scripts that primarily use Playwright but need SeleniumBase's stealth and CAPTCHA-solving power without the overhead of WebDriver.
 
 ```python
 from playwright.sync_api import sync_playwright
@@ -36,12 +38,13 @@ endpoint_url = sb.get_endpoint_url()
 
 with sync_playwright() as p:
     browser = p.chromium.connect_over_cdp(endpoint_url)
-    context = browser.contexts[0]
-    page = context.pages[0]
+    page = browser.contexts[0].pages[0]
     page.goto("https://example.com")
 ```
 
-### 🎭  `SB()` nested sync format (minimal boilerplate):
+### 2. The full-suite "nested sync" format (`SB()`)
+
+Best for hybrid projects where you need to switch between Selenium WebDriver and Playwright APIs in the same session. This is for power users!
 
 ```python
 from playwright.sync_api import sync_playwright
@@ -53,12 +56,13 @@ with SB(uc=True) as sb:
 
     with sync_playwright() as p:
         browser = p.chromium.connect_over_cdp(endpoint_url)
-        context = browser.contexts[0]
-        page = context.pages[0]
+        page = browser.contexts[0].pages[0]
         page.goto("https://example.com")
 ```
 
-### 🎭 `cdp_driver` async format (minimal boilerplate):
+### 3. The async format (`cdp_driver`)
+
+Designed for modern asynchronous Python. This allows you to run multiple concurrent stealth sessions using `async/await` and Playwright's `async_api`.
 
 ```python
 import asyncio
@@ -71,14 +75,21 @@ async def main():
 
     async with async_playwright() as p:
         browser = await p.chromium.connect_over_cdp(endpoint_url)
-        context = browser.contexts[0]
-        page = context.pages[0]
+        page = browser.contexts[0].pages[0]
         await page.goto("https://example.com")
 
 if __name__ == "__main__":
     loop = asyncio.new_event_loop()
     loop.run_until_complete(main())
 ```
+
+### 💡 Key differences of the 3 stealthy formats:
+
+-   **`sb_cdp`**: Simplest setup. CDP launches a stealthy browser. (No WebDriver)
+    
+-   **`SB()`**: Maximum utility. Gives you the full range of APIs: WebDriver, CDP, and Playwright. (WebDriver launches a stealthy browser.)
+    
+-   **`cdp_driver`**: Best for performance. `asyncio` handles non-blocking tasks. CDP launches a stealthy browser. (No WebDriver)
 
 --------
 
@@ -109,8 +120,7 @@ endpoint_url = sb.get_endpoint_url()
 
 with sync_playwright() as p:
     browser = p.chromium.connect_over_cdp(endpoint_url)
-    context = browser.contexts[0]
-    page = context.pages[0]
+    page = browser.contexts[0].pages[0]
     page.goto("https://copilot.microsoft.com")
     page.wait_for_selector("textarea#userInput")
     page.wait_for_timeout(1000)
@@ -141,8 +151,7 @@ endpoint_url = sb.get_endpoint_url()
 
 with sync_playwright() as p:
     browser = p.chromium.connect_over_cdp(endpoint_url)
-    context = browser.contexts[0]
-    page = context.pages[0]
+    page = browser.contexts[0].pages[0]
     page.goto("https://www.bing.com/turing/captcha/challenge")
     page.wait_for_timeout(2000)
     sb.solve_captcha()
@@ -164,8 +173,7 @@ from playwright.sync_api import sync_playwright
 
 with sync_playwright() as p:
     browser = p.chromium.launch(channel="chrome", headless=False)
-    context = browser.new_context()
-    page = context.new_page()
+    page = browser.new_context().new_page()
     page.goto("https://example.com")
 ```
 
@@ -180,8 +188,7 @@ endpoint_url = sb.get_endpoint_url()
 
 with sync_playwright() as p:
     browser = p.chromium.connect_over_cdp(endpoint_url)
-    context = browser.contexts[0]
-    page = context.pages[0]
+    page = browser.contexts[0].pages[0]
     page.goto("https://example.com")
 ```
 
@@ -231,8 +238,7 @@ endpoint_url = sb.get_endpoint_url()
 
 with sync_playwright() as p:
     browser = p.chromium.connect_over_cdp(endpoint_url)
-    context = browser.contexts[0]
-    page = context.pages[0]
+    page = browser.contexts[0].pages[0]
     # ...
 ```
 (Fill in the `url` and the `proxy` details to complete the script.)
@@ -250,8 +256,7 @@ async def main():
 
     async with async_playwright() as p:
         browser = await p.chromium.connect_over_cdp(endpoint_url)
-        context = browser.contexts[0]
-        page = context.pages[0]
+        page = browser.contexts[0].pages[0]
         # ...
 
 if __name__ == "__main__":
