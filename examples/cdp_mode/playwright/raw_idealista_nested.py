@@ -12,8 +12,7 @@ with SB(uc=True, locale="es") as sb:
 
     with sync_playwright() as p:
         browser = p.chromium.connect_over_cdp(endpoint_url)
-        context = browser.contexts[0]
-        page = context.pages[0]
+        page = browser.contexts[0].pages[0]
         page.click("button#didomi-notice-agree-button")
         page.wait_for_timeout(1000)
         print("*** " + page.locator("h1").inner_text())

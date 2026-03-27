@@ -6,8 +6,7 @@ endpoint_url = sb.get_endpoint_url()
 
 with sync_playwright() as p:
     browser = p.chromium.connect_over_cdp(endpoint_url)
-    context = browser.contexts[0]
-    page = context.pages[0]
+    page = browser.contexts[0].pages[0]
     url = (
         "https://www.gassaferegister.co.uk/gas-safety"
         "/gas-safety-certificates-records/building-regulations-certificate"

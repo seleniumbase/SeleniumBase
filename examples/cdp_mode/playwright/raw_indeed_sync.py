@@ -7,8 +7,7 @@ endpoint_url = sb.get_endpoint_url()
 
 with sync_playwright() as p:
     browser = p.chromium.connect_over_cdp(endpoint_url)
-    context = browser.contexts[0]
-    page = context.pages[0]
+    page = browser.contexts[0].pages[0]
     search_box = "input#company-search"
     if page.locator(search_box).count() == 0:
         page.wait_for_timeout(2500)

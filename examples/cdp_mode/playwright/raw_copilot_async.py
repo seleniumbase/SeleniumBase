@@ -9,8 +9,7 @@ async def main():
 
     async with async_playwright() as p:
         browser = await p.chromium.connect_over_cdp(endpoint_url)
-        context = browser.contexts[0]
-        page = context.pages[0]
+        page = browser.contexts[0].pages[0]
         await page.goto("https://copilot.microsoft.com")
         await page.wait_for_selector("textarea#userInput")
         await page.wait_for_timeout(1000)
