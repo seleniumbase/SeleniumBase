@@ -2,7 +2,7 @@
 
 <h2><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32"></a> Stealthy Playwright Mode 🎭</h2>
 
-🎭 <b translate="no">Stealthy Playwright Mode</b> is a subset of **[SeleniumBase CDP Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md)** where <span translate="no">**[Playwright](https://github.com/microsoft/playwright-python)**</span> calls <code><b>connect_over_cdp()</b></code> to attach itself onto a stealthy <span translate="no">SeleniumBase</span> browser session via the <code>remote-debugging-port</code>. This gives <span translate="no">Playwright</span> the ability to bypass bot-detection, and allows APIs of both frameworks to be used together.
+🎭 <b translate="no">Stealthy Playwright Mode</b> enables <b translate="no">[Playwright](https://github.com/microsoft/playwright-python)</b> to attach to a stealthy **[SeleniumBase CDP Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md)** browser session. This lets <span translate="no">Playwright</span> bypass bot-detection while allowing APIs of both frameworks to work in tandem. Under the hood, Playwright calls <code><b>connect_over_cdp()</b></code> via the remote-debugging URL.
 
 --------
 
