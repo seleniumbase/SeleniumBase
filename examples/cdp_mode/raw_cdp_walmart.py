@@ -3,6 +3,10 @@ from seleniumbase import sb_cdp
 url = "https://www.walmart.com/"
 sb = sb_cdp.Chrome(url, locale="en", guest=True)
 sb.sleep(3)
+continue_button = 'button:contains("Continue shopping")'
+if sb.is_element_visible(continue_button):
+    sb.gui_click_element(continue_button)
+    sb.sleep(0.6)
 sb.click('input[aria-label="Search"]')
 sb.sleep(1.4)
 search = "Settlers of Catan Board Game"
