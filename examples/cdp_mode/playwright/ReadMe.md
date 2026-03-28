@@ -24,9 +24,9 @@ pip install seleniumbase playwright
 ## 💻 Usage
 
 **Stealthy Playwright Mode** comes in three different formats:
-* `sb_cdp` "sync" format
-* `SB()` "nested sync" format
-* `cdp_driver` "async" format
+1. `sb_cdp` "sync" format
+2. `SB()` "nested sync" format
+3. `cdp_driver` "async" format
 
 ### 1. The lightweight "sync" format (`sb_cdp`)
 
@@ -47,7 +47,7 @@ with sync_playwright() as p:
 
 ### 2. The full-suite "nested sync" format (`SB()`)
 
-Best for hybrid projects where you need to switch between Selenium WebDriver and Playwright APIs in the same session. This is for power users!
+Best for hybrid projects where you need to switch between WebDriver and Playwright APIs in the same session.
 
 ```python
 from playwright.sync_api import sync_playwright
@@ -93,6 +93,36 @@ if __name__ == "__main__":
 -   **`SB()`**: Maximum utility. Gives you the full range of APIs: WebDriver, CDP, and Playwright. (WebDriver launches a stealthy browser.)
     
 -   **`cdp_driver`**: Best for performance. `asyncio` handles non-blocking tasks. CDP launches a stealthy browser. (No WebDriver)
+
+--------
+
+### 🎭 Converting regular <b translate="no">Playwright</b> scripts to <b translate="no">Stealthy Playwright Mode</b>:
+
+If you have a regular Playwright script that looks like this:
+
+```python
+from playwright.sync_api import sync_playwright
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(channel="chrome", headless=False)
+    page = browser.new_context().new_page()
+    page.goto("https://example.com")
+```
+
+Then the Stealthy Playwright Mode version of that would look like this:
+
+```python
+from playwright.sync_api import sync_playwright
+from seleniumbase import sb_cdp
+
+sb = sb_cdp.Chrome()
+endpoint_url = sb.get_endpoint_url()
+
+with sync_playwright() as p:
+    browser = p.chromium.connect_over_cdp(endpoint_url)
+    page = browser.contexts[0].pages[0]
+    page.goto("https://example.com")
+```
 
 --------
 
@@ -164,36 +194,6 @@ with sync_playwright() as p:
 (From [examples/cdp_mode/playwright/raw_bing_cap_sync.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/raw_bing_cap_sync.py))
 
 #### 🎭 For all included examples, see [examples/cdp_mode/playwright](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode/playwright).
-
---------
-
-### 🎭 Converting regular <b translate="no">Playwright</b> scripts to <b translate="no">Stealthy Playwright Mode</b>:
-
-If you have a regular Playwright script that looks like this:
-
-```python
-from playwright.sync_api import sync_playwright
-
-with sync_playwright() as p:
-    browser = p.chromium.launch(channel="chrome", headless=False)
-    page = browser.new_context().new_page()
-    page.goto("https://example.com")
-```
-
-Then the Stealthy Playwright Mode version of that would look like this:
-
-```python
-from playwright.sync_api import sync_playwright
-from seleniumbase import sb_cdp
-
-sb = sb_cdp.Chrome()
-endpoint_url = sb.get_endpoint_url()
-
-with sync_playwright() as p:
-    browser = p.chromium.connect_over_cdp(endpoint_url)
-    page = browser.contexts[0].pages[0]
-    page.goto("https://example.com")
-```
 
 --------
 
