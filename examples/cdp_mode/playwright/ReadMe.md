@@ -2,7 +2,7 @@
 
 <h2><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32"></a> Stealthy Playwright Mode 🎭</h2>
 
-🎭 <b translate="no">Stealthy Playwright Mode</b> enables <b translate="no">[Playwright](https://github.com/microsoft/playwright-python)</b> to attach to a stealthy **[SeleniumBase CDP Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md)** browser session. This lets <span translate="no">Playwright</span> bypass bot-detection while allowing APIs of both frameworks to work in tandem. Under the hood, Playwright calls <code><b>connect_over_cdp()</b></code> via the remote-debugging URL.
+🎭 <b translate="no">Stealthy Playwright Mode</b> is a subset of **[SeleniumBase CDP Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md)** where  <b translate="no">[Playwright](https://github.com/microsoft/playwright-python)</b> attaches to a stealthy browser session via the remote-debugging URL. This lets <span translate="no">Playwright</span> bypass bot-detection while allowing APIs of both frameworks to work in tandem. Under the hood, Playwright calls <code><b>connect_over_cdp()</b></code> to achieve this stealth.
 
 --------
 
@@ -19,11 +19,14 @@ To use **Stealthy Playwright Mode**, simply install the necessary Python package
 pip install seleniumbase playwright
 ```
 
-> **Note:** Just as standard Playwright can use `channel="chrome"` to bypass internal binary downloads, Stealthy Playwright Mode attaches to the system Chrome already managed and patched by SeleniumBase. This lets you skip the large `playwright install` step entirely.
+> **Note:** Just as standard Playwright can use `channel="chrome"` to bypass internal binary downloads, Stealthy Playwright Mode achieves the same by attaching to the system Chrome browser launched by SeleniumBase. This lets you skip the large `playwright install` step entirely.
 
 ## 💻 Usage
 
-There are three primary ways to implement **Stealthy Playwright Mode**, depending on your project’s architecture and needs: `sb_cdp` "sync", `SB()` "nested sync", and `cdp_driver` "async".
+**Stealthy Playwright Mode** comes in three different formats:
+* `sb_cdp` "sync" format
+* `SB()` "nested sync" format
+* `cdp_driver` "async" format
 
 ### 1. The lightweight "sync" format (`sb_cdp`)
 
