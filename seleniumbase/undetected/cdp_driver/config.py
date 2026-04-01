@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 import pathlib
@@ -88,19 +89,19 @@ class Config:
         if not browser_args:
             browser_args = []
         if not user_data_dir:
-            self.user_data_dir = temp_profile_dir()
+            self.user_data_dir = temp_profile_dir(proxy=proxy)
             self._user_data_dir = self.user_data_dir
             self._custom_data_dir = False
         else:
             self.user_data_dir = user_data_dir
             profile = os.path.join(self.user_data_dir, "Default")
             preferences_file = os.path.join(profile, "Preferences")
-            preferences = get_default_preferences()
+            preferences = get_default_preferences(proxy=proxy)
             if not os.path.exists(profile):
                 with suppress(Exception):
                     os.makedirs(profile)
-            with open(preferences_file, "w") as f:
-                f.write(preferences)
+            with open(preferences_file, "w", encoding="utf-8") as f:
+                json.dump(preferences, f)
         mock_keychain = False
         if not browser_executable_path:
             browser_executable_path = find_chrome_executable()
@@ -343,25 +344,46 @@ def is_root():
         return ctypes.windll.shell32.IsUserAnAdmin() != 0
 
 
-def get_default_preferences():
-    return (
-        """{"credentials_enable_service": false,
-        "password_manager_enabled": false,
-        "password_manager_leak_detection": false}"""
-    )
+def get_default_preferences(proxy=None):
+    prefs = {
+        "profile": {
+            "password_manager_leak_detection": False,
+            "password_manager_enabled": False
+        },
+        "credentials_enable_service": False,
+        "omnibox-max-zero-suggest-matches": 0,
+        "omnibox-zero-suggest-prefetching": 0,
+        "omnibox-zero-suggest-prefetching-on-srp": 0,
+        "omnibox-zero-suggest-prefetching-on-web": 0,
+        "omnibox-zero-suggest-in-memory-caching": 0,
+        "local_discovery": {
+            "notifications_enabled": False
+        },
+        "autofill": {
+            "profile_enabled": False,
+            "credit_card_enabled": False
+        }
+    }
+    if proxy:
+        prefs["webrtc"] = {
+            "ip_handling_policy": "disable_non_proxied_udp",
+            "multiple_routes_enabled": False,
+            "nonproxied_udp_enabled": False
+        }
+    return prefs
 
 
-def temp_profile_dir():
+def temp_profile_dir(proxy=None):
     """Generate a temp dir (path)"""
     path = os.path.normpath(tempfile.mkdtemp(prefix="uc_"))
     profile = os.path.join(path, "Default")
     preferences_file = os.path.join(profile, "Preferences")
-    preferences = get_default_preferences()
+    preferences = get_default_preferences(proxy=proxy)
     if not os.path.exists(profile):
         with suppress(Exception):
             os.makedirs(profile)
-    with open(preferences_file, "w") as f:
-        f.write(preferences)
+    with open(preferences_file, "w", encoding="utf-8") as f:
+        json.dump(preferences, f)
     return path
 
 

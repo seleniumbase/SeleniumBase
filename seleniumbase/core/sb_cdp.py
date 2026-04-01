@@ -1068,7 +1068,11 @@ class CDPMethods():
         ):
             text = text.replace("\n", "\r")
         for key in text:
-            element.send_keys(key)
+            try:
+                element.send_keys(key)
+            except AttributeError:
+                element = self.select(selector, timeout=0.1)
+                element.send_keys(key)
             time.sleep(float(0.042 + (random.random() / 110.0)))
         if submit:
             element.send_keys("\r\n")
