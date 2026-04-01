@@ -67,14 +67,17 @@ class MessyRawSelenium(TestCase):
         self.wait_for_element_visible("div.inventory_list")
         element = self.wait_for_element_visible("span.title")
         self.assertEqual(element.text, "Products")
+
         self.wait_for_element_clickable('button[name*="backpack"]').click()
         self.wait_for_element_clickable("#shopping_cart_container a").click()
         element = self.wait_for_element_visible("span.title")
         self.assertEqual(element.text, "Your Cart")
         element = self.wait_for_element_visible("div.cart_item")
         self.assertIn("Backpack", element.text)
+
         self.wait_for_element_clickable("#remove-sauce-labs-backpack").click()
         self.wait_for_element_not_visible("div.cart_item")
+
         self.wait_for_element_clickable("#react-burger-menu-btn").click()
         self.wait_for_element_clickable("a#logout_sidebar_link").click()
         self.wait_for_element_visible("input#login-button")

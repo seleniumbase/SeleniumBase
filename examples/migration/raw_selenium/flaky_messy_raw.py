@@ -55,14 +55,17 @@ class FlakyMessyRawSelenium(TestCase):
         self.driver.find_element(by_css, "div.inventory_list")
         element = self.driver.find_element(by_css, "span.title")
         self.assertEqual(element.text, "Products")
+
         self.driver.find_element(by_css, 'button[name*="backpack"]').click()
         self.driver.find_element(by_css, "#shopping_cart_container a").click()
         element = self.driver.find_element(by_css, "span.title")
         self.assertEqual(element.text, "Your Cart")
         element = self.driver.find_element(by_css, "div.cart_item")
         self.assertIn("Backpack", element.text)
+
         self.driver.find_element(by_css, "#remove-sauce-labs-backpack").click()
         self.assertFalse(self.is_element_visible("div.cart_item"))
+
         self.driver.find_element(by_css, "#react-burger-menu-btn").click()
         self.driver.find_element(by_css, "a#logout_sidebar_link").click()
         self.driver.find_element(by_css, "input#login-button")
