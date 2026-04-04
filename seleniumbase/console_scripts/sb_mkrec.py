@@ -216,7 +216,7 @@ def main():
     data.append("        if self.recorder_ext:")
     data.append("            # When done recording actions,")
     data.append('            # type "c", and press [Enter].')
-    data.append("            import pdb; pdb.set_trace()")
+    data.append("            breakpoint()")
     data.append("")
 
     if esc_end:

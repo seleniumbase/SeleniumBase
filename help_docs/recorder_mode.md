@@ -36,7 +36,7 @@ pytest new_test.py --rec -q -s --url=wikipedia.org
    6             if self.recorder_ext:
    7                 # When done recording actions,
    8                 # type "c", and press [Enter].
-   9  ->             import pdb; pdb.set_trace()
+   9  ->             breakpoint()
  return None
 (Pdb+) c
 
@@ -80,7 +80,7 @@ The first command creates a boilerplate test with a breakpoint; the second comma
 ⏺️ You can also use the Recorder to add code to an existing test. To do that, you'll first need to create a breakpoint in your code to insert manual browser actions:
 
 ```python
-import pdb; pdb.set_trace()
+breakpoint()
 ```
 
 Now you'll be able to run your test with ``pytest``, and it will stop at the breakpoint for you to add in actions: (Press ``c`` and ``ENTER`` on the command-line to continue from the breakpoint.)

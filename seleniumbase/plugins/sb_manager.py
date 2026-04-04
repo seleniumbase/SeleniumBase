@@ -1408,9 +1408,7 @@ def SB(
     test_passed = True  # This can change later
     teardown_exception = None
     if "--trace" in sys_argv:
-        import pdb
-
-        pdb.set_trace()  # Debug Mode
+        breakpoint()  # Debug Mode
         # Type "s" and press [Enter] to step into "yield sb".
     try:
         yield sb

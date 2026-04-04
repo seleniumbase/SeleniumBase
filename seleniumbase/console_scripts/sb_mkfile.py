@@ -277,7 +277,7 @@ def main():
         data.append('        self.open("%s")' % url)
     else:
         data.append("        if self.recorder_ext and not self.xvfb:")
-        data.append("            import pdb; pdb.set_trace()")
+        data.append("            breakpoint()")
     if not basic and not recorder:
         data.append(
             '        self.type("input", "%s")' "  # selector, text" % goodbye

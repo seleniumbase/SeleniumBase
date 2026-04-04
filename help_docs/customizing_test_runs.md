@@ -294,12 +294,10 @@ pytest --reruns=1 --reruns-delay=1
 
 <h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> Debugging tests:</h3>
 
-🔵 You can use the following calls in your scripts to help you debug issues:
+🔵 Use `breakpoint()` in your scripts to help you debug issues:
 
 ```python
-import time; time.sleep(5)  # Makes the test wait and do nothing for 5 seconds.
-import pdb; pdb.set_trace()  # Debug Mode. n: next, c: continue, s: step, u: up, d: down.
-import pytest; pytest.set_trace()  # Debug Mode. n: next, c: continue, s: step, u: up, d: down.
+breakpoint()  # Debug Mode. n: next, c: continue, s: step, u: up, d: down.
 ```
 
 🔵 To pause an active test that throws an exception or error, (*and keep the browser window open while **Debug Mode** begins in the console*), add **`--pdb`** as a `pytest` option:

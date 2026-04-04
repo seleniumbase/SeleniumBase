@@ -617,8 +617,6 @@ import time; time.sleep(3)  # Do nothing for 3 seconds.
 🔵 **Debug Mode** with Python's built-in **[pdb](https://docs.python.org/3/library/pdb.html)** library helps you debug tests:
 
 ```python
-import pdb; pdb.set_trace()
-import pytest; pytest.set_trace()
 breakpoint()  # Shortcut for "import pdb; pdb.set_trace()"
 ```
 
