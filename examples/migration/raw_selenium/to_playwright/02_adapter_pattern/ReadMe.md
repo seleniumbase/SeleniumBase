@@ -55,7 +55,7 @@ class RawSeleniumAdapter(TestCase):
             )
         except Exception:
             raise Exception(
-                "Element {%s} was not visible after %s seconds!"
+                "Element (%s) was not visible after %s seconds!"
                 % (selector, timeout)
             )
 
@@ -68,7 +68,7 @@ class RawSeleniumAdapter(TestCase):
             )
         except Exception:
             raise Exception(
-                "Element {%s} was not visible/clickable after %s seconds!"
+                "Element (%s) was not visible/clickable after %s seconds!"
                 % (selector, timeout)
             )
 
@@ -81,7 +81,7 @@ class RawSeleniumAdapter(TestCase):
             )
         except Exception:
             raise Exception(
-                "Element {%s} was still visible after %s seconds!"
+                "Element (%s) was still visible after %s seconds!"
                 % (selector, timeout)
             )
 
