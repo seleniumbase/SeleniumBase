@@ -162,7 +162,7 @@ setup(
         'mycdp>=1.3.7',
         'pynose>=1.5.5',
         'platformdirs~=4.4.0;python_version<"3.10"',
-        'platformdirs>=4.9.4;python_version>="3.10"',
+        'platformdirs>=4.9.6;python_version>="3.10"',
         'typing-extensions>=4.15.0',
         'sbvirtualdisplay>=1.4.0',
         'MarkupSafe>=3.0.3',
@@ -177,7 +177,7 @@ setup(
         'tabcompleter>=1.4.0',
         'pdbp>=1.8.2',
         'idna>=3.11',
-        'charset-normalizer>=3.4.6,<4',
+        'charset-normalizer>=3.4.7,<4',
         'urllib3>=1.26.20,<2;python_version<"3.10"',
         'urllib3>=1.26.20,<3;python_version>="3.10"',
         'requests~=2.32.5;python_version<"3.10"',
@@ -192,10 +192,9 @@ setup(
         'wsproto~=1.3.2;python_version>="3.10"',
         'websocket-client~=1.9.0',
         'selenium==4.32.0;python_version<"3.10"',
-        'selenium==4.41.0;python_version>="3.10"',
+        'selenium==4.43.0;python_version>="3.10"',
         'cssselect==1.3.0;python_version<"3.10"',
         'cssselect>=1.4.0,<2;python_version>="3.10"',
-        'nest-asyncio==1.6.0',
         'sortedcontainers==2.4.0',
         'execnet==2.1.1;python_version<"3.10"',
         'execnet==2.1.2;python_version>="3.10"',
@@ -203,7 +202,7 @@ setup(
         'iniconfig==2.3.0;python_version>="3.10"',
         'pluggy==1.6.0',
         'pytest==8.4.2;python_version<"3.11"',
-        'pytest==9.0.2;python_version>="3.11"',
+        'pytest==9.0.3;python_version>="3.11"',
         'pytest-html==4.0.2',  # Newer ones had issues
         'pytest-metadata==3.1.1',
         'pytest-ordering==0.6',
@@ -262,7 +261,7 @@ setup(
         "pdfminer": [
             'pdfminer.six==20251107;python_version<"3.10"',
             'pdfminer.six==20260107;python_version>="3.10"',
-            'cryptography==46.0.6',
+            'cryptography==46.0.7',
             'cffi==2.0.0',
             'pycparser==2.23;python_version<"3.10"',
             'pycparser==3.0;python_version>="3.10"',
@@ -271,7 +270,7 @@ setup(
         # (An optional library for image-processing.)
         "pillow": [
             'Pillow>=11.3.0;python_version<"3.10"',
-            'Pillow>=12.1.1;python_version>="3.10"',
+            'Pillow>=12.2.0;python_version>="3.10"',
         ],
         # pip install -e .[pip-system-certs]
         # (If you see [SSL: CERTIFICATE_VERIFY_FAILED], then get this.)

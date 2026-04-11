@@ -1406,6 +1406,11 @@ class Tab(Connection):
             return True
         return False
 
+    async def __on_a_friendly_captcha_page(self, *args, **kwargs):
+        if await self.is_element_visible('iframe[data--frc-frame-id]'):
+            return True
+        return False
+
     async def __on_a_g_recaptcha_page(self, *args, **kwargs):
         await self.sleep(0.4)  # reCAPTCHA may need a moment to appear
         source = await self.get_html()
@@ -1512,6 +1517,46 @@ class Tab(Connection):
             return True
         if "--debug" in sys.argv:
             print(" <DEBUG> hCaptcha was NOT clicked!")
+        return False
+
+    async def __gui_click_friendly_captcha(self):
+        selector = 'iframe[data--frc-frame-id]'
+        if await self.is_element_visible('iframe[data--frc-frame-id]'):
+            element = await self.find_element_by_text(selector)
+        else:
+            return False
+        await self.sleep(0.55)
+        x_offset = 27
+        y_offset = 34
+        was_clicked = False
+        gui_lock = AsyncFileLock(constants.MultiBrowser.PYAUTOGUILOCK)
+        async with gui_lock:
+            await self.bring_to_front()
+            await self.sleep(0.056)
+            if "--debug" in sys.argv:
+                displayed_selector = "`%s`" % selector
+                if '"' not in selector:
+                    displayed_selector = '"%s"' % selector
+                elif "'" not in selector:
+                    displayed_selector = "'%s'" % selector
+                print(
+                    " <DEBUG> click_with_offset(%s, %s, %s)"
+                    % (displayed_selector, x_offset, y_offset)
+                )
+            with suppress(Exception):
+                await element.mouse_click_with_offset_async(
+                    x=x_offset, y=y_offset, center=False
+                )
+                was_clicked = True
+                await self.sleep(0.075)
+        if was_clicked:
+            # Wait a moment for the click to succeed
+            await self.sleep(0.75)
+            if "--debug" in sys.argv:
+                print(" <DEBUG> Friendly Captcha was clicked!")
+            return True
+        if "--debug" in sys.argv:
+            print(" <DEBUG> Friendly Captcha was NOT clicked!")
         return False
 
     async def get_element_rect(self, selector, timeout=5):
@@ -1648,6 +1693,9 @@ class Tab(Connection):
             return result
         elif await self.__on_an_incapsula_hcaptcha_page():
             result = await self.__cdp_click_incapsula_hcaptcha()
+            return result
+        elif await self.__on_a_friendly_captcha_page():
+            result = await self.__gui_click_friendly_captcha()
             return result
         else:
             return False
