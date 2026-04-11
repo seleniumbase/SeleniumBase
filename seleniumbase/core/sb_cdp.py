@@ -193,7 +193,7 @@ class CDPMethods():
         Also sets an environment variable to hide this warning:
         Deprecation: "url.parse() behavior is not standardized".
         (github.com/microsoft/playwright-python/issues/3016)"""
-        import nest_asyncio
+        from seleniumbase.core import nest_asyncio
         nest_asyncio.apply()
         os.environ["NODE_NO_WARNINGS"] = "1"
         driver = self.driver
@@ -400,7 +400,7 @@ class CDPMethods():
         self.__add_light_pause()
         selector = self.__convert_to_css_if_xpath(selector)
         if not self.is_element_present(selector):
-            self.sleep(1)
+            time.sleep(1)
             timeout = timeout - 1
             if timeout < 1:
                 timeout = 1
@@ -2061,12 +2061,18 @@ class CDPMethods():
         return False
 
     def _on_a_datadome_slider_page(self, *args, **kwargs):
-        self.loop.run_until_complete(self.page.wait(0.1))
+        self.loop.run_until_complete(self.page.wait(0.05))
         if (
             self.is_element_visible(
                 'body > iframe[src*="/geo.captcha-delivery.com/captcha/"]'
             )
         ):
+            return True
+        return False
+
+    def _on_a_friendly_captcha_page(self, *args, **kwargs):
+        self.loop.run_until_complete(self.page.wait(0.05))
+        if self.is_element_visible('iframe[data--frc-frame-id]'):
             return True
         return False
 
@@ -2131,7 +2137,7 @@ class CDPMethods():
             sb_config._saved_cf_x_y = (x, y)
             time.sleep(0.08)
             if use_cdp:
-                self.sleep(0.03)
+                time.sleep(0.03)
                 gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
                 with gui_lock:  # Prevent issues with multiple processes
                     self.bring_active_window_to_front()
@@ -2163,7 +2169,7 @@ class CDPMethods():
         time.sleep(0.15)
         return True
 
-    def __cdp_click_incapsula_hcaptcha(self):
+    def __cdp_click_incapsula_hcaptcha(self, use_cdp=True):
         selector = "iframe[data-hcaptcha-widget-id]"
         if self.is_element_visible('iframe[src*="_Incapsula_Resource?"]'):
             outer_selector = 'iframe[src*="_Incapsula_Resource?"]'
@@ -2212,6 +2218,56 @@ class CDPMethods():
             print(" <DEBUG> hCaptcha was NOT clicked!")
         return False
 
+    def __gui_click_friendly_captcha(self, use_cdp=False):
+        selector = 'iframe[data--frc-frame-id]'
+        if self.is_element_visible('iframe[data--frc-frame-id]'):
+            element = self.select('iframe[data--frc-frame-id]')
+        else:
+            return False
+        time.sleep(0.05)
+        self.loop.run_until_complete(self.page.wait(0.1))
+        time.sleep(0.05)
+        with suppress(Exception):
+            element_rect = self.get_element_rect(selector, timeout=0.1)
+            e_x = element_rect["x"]
+            e_y = element_rect["y"]
+            window_rect = self.get_window_rect()
+            win_width = window_rect["innerWidth"]
+            win_height = window_rect["innerHeight"]
+            if (
+                e_x > 1040
+                and e_y > 640
+                and abs(win_width - e_x) < 110
+                and abs(win_height - e_y) < 110
+            ):
+                return False
+            gui_element_rect = self.get_gui_element_rect(selector, timeout=1)
+            gui_e_x = gui_element_rect["x"]
+            gui_e_y = gui_element_rect["y"]
+            x_offset = 27
+            y_offset = 34
+            x = gui_e_x + x_offset
+            y = gui_e_y + y_offset
+            sb_config._saved_cf_x_y = (x, y)
+            time.sleep(0.08)
+            if use_cdp:
+                time.sleep(0.03)
+                gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
+                with gui_lock:  # Prevent issues with multiple processes
+                    self.bring_active_window_to_front()
+                    time.sleep(0.06)
+                    element.mouse_move()
+                    time.sleep(0.08)
+                    self.click_with_offset(selector, x_offset, y_offset)
+                    time.sleep(0.08)
+                    element.mouse_move()
+                    time.sleep(0.25)
+                return True
+            else:
+                self.gui_click_x_y(x, y)
+                return True
+        return False
+
     def solve_captcha(self):
         self.__click_captcha(use_cdp=True)
 
@@ -2225,9 +2281,9 @@ class CDPMethods():
 
     def __click_captcha(self, use_cdp=False):
         """Uses PyAutoGUI unless use_cdp == True"""
-        self.sleep(0.075)
+        time.sleep(0.075)
         self.loop.run_until_complete(self.page.wait(0.1))
-        self.sleep(0.025)
+        time.sleep(0.025)
         source = self.get_page_source()
         if self._on_a_cf_turnstile_page(source):
             pass
@@ -2239,6 +2295,9 @@ class CDPMethods():
             return result
         elif self._on_a_datadome_slider_page():
             result = self.__gui_slide_datadome_captcha()
+            return result
+        elif self._on_a_friendly_captcha_page():
+            result = self.__gui_click_friendly_captcha(use_cdp)
             return result
         else:
             return False
@@ -2395,7 +2454,7 @@ class CDPMethods():
             if hasattr(sb_config, "_cdp_proxy") and sb_config._cdp_proxy:
                 time.sleep(0.22)  # CAPTCHA may load slower with proxy
             if use_cdp:
-                self.sleep(0.03)
+                time.sleep(0.03)
                 gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
                 with gui_lock:  # Prevent issues with multiple processes
                     self.bring_active_window_to_front()
@@ -2595,9 +2654,9 @@ class CDPMethods():
         gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
         with gui_lock:
             self.bring_active_window_to_front()
-            self.sleep(0.02)
+            time.sleep(0.02)
             element.mouse_move()
-            self.sleep(timeframe)
+            time.sleep(timeframe)
 
     def hover_and_click(self, hover_selector, click_selector):
         if getattr(sb_config, "_cdp_mobile_mode", None):
@@ -2607,9 +2666,9 @@ class CDPMethods():
         gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
         with gui_lock:
             self.bring_active_window_to_front()
-            self.sleep(0.02)
+            time.sleep(0.02)
             hover_element.mouse_move()
-            self.sleep(0.25)
+            time.sleep(0.25)
             try:
                 self.click(click_selector, timeout=0.5)
             except Exception:

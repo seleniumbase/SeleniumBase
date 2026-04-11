@@ -35,6 +35,9 @@ PING_TIMEOUT: int = 1800  # 30 minutes
 TargetType = Union[cdp.target.TargetInfo, cdp.target.TargetID]
 logging.getLogger("asyncio").setLevel(logging.CRITICAL)
 logger = logging.getLogger("uc.connection")
+warnings.filterwarnings(
+    "ignore", category=RuntimeWarning, message=".*coroutine.*"
+)
 
 
 class ProtocolException(Exception):
