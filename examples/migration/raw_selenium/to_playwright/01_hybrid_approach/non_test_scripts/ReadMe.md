@@ -7,7 +7,7 @@ This folder contains examples for users who need to perform web automation **wit
 By using the hybrid approach seen in [raw_hybrid_script.py](./raw_hybrid_script.py), SeleniumBase has effectively bridged the gap between raw Selenium and Playwright in order to ease the migration process.
 
 ```python
-"""Hybrid Script Example"""
+"""Hybrid Script Example. Uses Selenium, Playwright, and SeleniumBase."""
 from playwright.sync_api import sync_playwright, expect
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC

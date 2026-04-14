@@ -1,5 +1,6 @@
 """
-Hybrid Fixture TestCase Example with Playwright Tracing.
+Hybrid Fixture Example with Playwright Tracing.
+Uses Selenium, Playwright, and SeleniumBase.
 Trace logs are saved to: `latest_logs/[MODULE.CLASS.METHOD]/trace.zip`
 To open Trace Viewer: `playwright show-trace [PATH_TO_LOGS]/trace.zip`
 """

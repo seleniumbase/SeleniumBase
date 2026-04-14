@@ -1,4 +1,4 @@
-"""Hybrid Script Example"""
+"""Hybrid Script Example. Uses Selenium, Playwright, and SeleniumBase."""
 from playwright.sync_api import sync_playwright, expect
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC

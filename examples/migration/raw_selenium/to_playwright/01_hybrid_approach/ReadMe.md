@@ -98,7 +98,7 @@ class RawSeleniumTestCase(TestCase):
 From here, instead of having to convert the entire script over to Playwright at once, you could swap out partitions to get to this:
 
 ```python
-"""Hybrid Fixture TestCase Example"""
+"""Hybrid Fixture Example. Uses Selenium, Playwright, and SeleniumBase."""
 from playwright.sync_api import sync_playwright, expect
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -163,7 +163,8 @@ Now that you've included Playwright in your script, you can utilize some of its 
 
 ```python
 """
-Hybrid Fixture TestCase Example with Playwright Tracing.
+Hybrid Fixture Example with Playwright Tracing.
+Uses Selenium, Playwright, and SeleniumBase.
 Trace logs are saved to: `latest_logs/[MODULE.CLASS.METHOD]/trace.zip`
 To open Trace Viewer: `playwright show-trace [PATH_TO_LOGS]/trace.zip`
 """
@@ -241,7 +242,7 @@ class HybridFixtureWithTracing(BaseCase):
 Note that this hybrid mode gives you some flexibility in how you structure your test class. You could do it without the `setUp()` and `tearDown()` methods by using a context manager for Playwright like this:
 
 ```python
-"""Hybrid TestCase Example"""
+"""Hybrid TestCase Example. Uses Selenium, Playwright, and SeleniumBase."""
 from playwright.sync_api import sync_playwright, expect
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
