@@ -2369,6 +2369,7 @@ def _set_chrome_options(
     prefs["profile.default_content_settings.popups"] = 0
     prefs["profile.managed_default_content_settings.popups"] = 0
     prefs["profile.default_content_setting_values.automatic_downloads"] = 1
+    prefs["NewTabPage.FooterVisible"] = False
     if locale_code:
         prefs["intl.accept_languages"] = locale_code
         sb_config._cdp_locale = locale_code
@@ -4875,6 +4876,12 @@ def get_local_driver(
         included_disabled_features.append("UnifiedWebBluetooth")
         included_disabled_features.append("WebAuthentication")
         included_disabled_features.append("PasskeyAuth")
+        included_disabled_features.append("msAutofillEdgeCoupons")
+        included_disabled_features.append("msShoppingTrigger")
+        included_disabled_features.append("msEdgeShoppingUI")
+        included_disabled_features.append("msEntityExtraction")
+        included_disabled_features.append("msEntityExtractionProactive")
+        included_disabled_features.append("msWebAssist")
         for item in extra_disabled_features:
             if item not in included_disabled_features:
                 included_disabled_features.append(item)
