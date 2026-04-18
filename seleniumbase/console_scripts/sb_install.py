@@ -1324,17 +1324,11 @@ def main(override=None, intel_for_uc=None, force_uc=None):
                     ["unzip", zip_file_path, "-d", downloads_folder]
                 )
             elif IS_WINDOWS:
-                subprocess.run(
-                    [
-                        "powershell",
-                        "Expand-Archive",
-                        "-Path",
-                        zip_file_path,
-                        "-DestinationPath",
-                        downloads_folder,
-                        "-Force",
-                    ]
+                cmd = (
+                    f'Expand-Archive -Path "{zip_file_path}" '
+                    f'-DestinationPath "{downloads_folder}" -Force'
                 )
+                subprocess.run(["powershell", "-Command", cmd])
             else:
                 zip_ref.extractall(downloads_folder)
                 zip_ref.close()
@@ -1366,17 +1360,11 @@ def main(override=None, intel_for_uc=None, force_uc=None):
                     ["unzip", zip_file_path, "-d", downloads_folder]
                 )
             elif IS_WINDOWS:
-                subprocess.run(
-                    [
-                        "powershell",
-                        "Expand-Archive",
-                        "-Path",
-                        zip_file_path,
-                        "-DestinationPath",
-                        downloads_folder,
-                        "-Force",
-                    ]
+                cmd = (
+                    f'Expand-Archive -Path "{zip_file_path}" '
+                    f'-DestinationPath "{downloads_folder}" -Force'
                 )
+                subprocess.run(["powershell", "-Command", cmd])
             else:
                 zip_ref.extractall(downloads_folder)
                 zip_ref.close()
@@ -1408,17 +1396,11 @@ def main(override=None, intel_for_uc=None, force_uc=None):
                     ["unzip", zip_file_path, "-d", downloads_folder]
                 )
             elif IS_WINDOWS:
-                subprocess.run(
-                    [
-                        "powershell",
-                        "Expand-Archive",
-                        "-Path",
-                        zip_file_path,
-                        "-DestinationPath",
-                        downloads_folder,
-                        "-Force",
-                    ]
+                cmd = (
+                    f'Expand-Archive -Path "{zip_file_path}" '
+                    f'-DestinationPath "{downloads_folder}" -Force'
                 )
+                subprocess.run(["powershell", "-Command", cmd])
             else:
                 zip_ref.extractall(downloads_folder)
                 zip_ref.close()
