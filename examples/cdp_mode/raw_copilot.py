@@ -18,16 +18,16 @@ with SB(uc=True, test=True, locale="en") as sb:
     seen_text = sb.get_text(textarea)
     if seen_text != query and seen_text in query:
         # When CAPTCHA appears while typing text
-        sb.sleep(1.1)
+        sb.sleep(1.2)
         sb.solve_captcha()
         sb.sleep(2.2)
         sb.type(textarea, "")
         sb.press_keys(textarea, query)
         sb.sleep(0.5)
     sb.click('button[data-testid="submit-button"]')
-    sb.sleep(2.5)
+    sb.sleep(4.2)
     sb.solve_captcha()
-    sb.sleep(3.5)
+    sb.sleep(2.8)
     sb.solve_captcha()
     sb.sleep(2.5)
     stop_button = '[data-testid="stop-button"]'

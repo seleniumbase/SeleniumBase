@@ -9,11 +9,12 @@ with sync_playwright() as p:
     page = browser.contexts[0].pages[0]
     page.goto("https://copilot.microsoft.com")
     page.wait_for_selector("textarea#userInput")
-    page.wait_for_timeout(1000)
+    page.wait_for_timeout(2000)
     query = "Playwright Python connect_over_cdp() sync example"
     page.fill("textarea#userInput", query)
+    page.wait_for_timeout(2000)
     page.click('button[data-testid="submit-button"]')
-    page.wait_for_timeout(4000)
+    sb.sleep(5.25)
     sb.solve_captcha()
     page.wait_for_selector('button[data-testid*="-thumbs-up"]')
     page.wait_for_timeout(4000)
