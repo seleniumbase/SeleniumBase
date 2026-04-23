@@ -18,7 +18,7 @@ with sync_playwright() as p:
     page.wait_for_selector("#SearchTerm")
     page.wait_for_timeout(2000)
     allow_cookies = 'button:contains("Allow all cookies")'
-    sb.click_if_visible(allow_cookies, timeout=2)
+    sb.click_if_visible(allow_cookies, timeout=3)
     page.wait_for_timeout(1000)
     page.fill("#SearchTerm", "Hydrogen")
     sb.click_if_visible(allow_cookies, timeout=1)

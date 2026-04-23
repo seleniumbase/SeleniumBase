@@ -13,9 +13,10 @@ with SB(uc=True, test=True) as sb:
     sb.wait_for_element("#SearchTerm", timeout=5)
     sb.sleep(1.4)
     allow_cookies = 'button:contains("Allow all cookies")'
-    sb.click_if_visible(allow_cookies, timeout=2)
+    sb.click_if_visible(allow_cookies, timeout=3)
     sb.sleep(1)
     sb.press_keys("#SearchTerm", "Hydrogen")
+    sb.click_if_visible(allow_cookies, timeout=1)
     sb.click("button.search-button")
     sb.sleep(3)
     results = sb.find_elements("div.search-result")

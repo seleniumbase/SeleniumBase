@@ -22,7 +22,7 @@ async def main():
         await page.wait_for_selector("#SearchTerm")
         await page.wait_for_timeout(2000)
         allow_cookies = 'button:contains("Allow all cookies")'
-        await tab.click_if_visible(allow_cookies, timeout=2)
+        await tab.click_if_visible(allow_cookies, timeout=3)
         await page.wait_for_timeout(1000)
         await page.fill("#SearchTerm", "Hydrogen")
         await tab.click_if_visible(allow_cookies, timeout=1)
