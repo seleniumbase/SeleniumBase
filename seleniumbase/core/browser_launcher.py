@@ -2777,6 +2777,8 @@ def _set_chrome_options(
     included_disabled_features.append("OptimizationHintsFetching")
     included_disabled_features.append("Translate")
     included_disabled_features.append("ComponentUpdater")
+    included_disabled_features.append("OmniboxUIFeedback")
+    included_disabled_features.append("OmniboxPopupShortcut")
     included_disabled_features.append("OptimizationTargetPrediction")
     included_disabled_features.append("OptimizationGuideModelDownloading")
     included_disabled_features.append("DownloadBubble")
