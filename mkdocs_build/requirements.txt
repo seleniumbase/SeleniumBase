@@ -6,11 +6,11 @@ pymdown-extensions>=10.21.2
 pipdeptree>=2.35.1
 python-dateutil>=2.8.2
 Markdown==3.10.2
-click==8.3.1
+click==8.3.3
 ghp-import==2.1.0
 watchdog==6.0.0
 cairocffi==1.7.1
-pathspec==1.0.4
+pathspec==1.1.1
 Babel==2.18.0
 paginate==0.5.7
 mkdocs==1.6.1

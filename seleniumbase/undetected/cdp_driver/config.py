@@ -267,6 +267,7 @@ class Config:
             "OptimizationHintsFetching,InterestFeedContentSuggestions,"
             "Bluetooth,WebBluetooth,UnifiedWebBluetooth,ComponentUpdater,"
             "DisableLoadExtensionCommandLineSwitch,"
+            "OmniboxUIFeedback,OmniboxPopupShortcut,"
             "WebAuthentication,PasskeyAuth"
         ]
         if self.expert:

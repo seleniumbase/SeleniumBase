@@ -146,18 +146,19 @@ setup(
     ],
     python_requires=">=3.9",
     install_requires=[
-        'pip>=26.0.1',
-        'packaging>=26.1',
+        'pip>=26.0.1;python_version<"3.10"',
+        'pip>=26.1;python_version>="3.10"',
+        'packaging>=26.2',
         'setuptools~=70.2;python_version<"3.10"',  # Newer ones had issues
         'setuptools>=82.0.1;python_version>="3.10"',
-        'wheel>=0.46.3',
+        'wheel>=0.47.0',
         'attrs>=26.1.0',
-        'certifi>=2026.2.25',
+        'certifi>=2026.4.22',
         'exceptiongroup>=1.3.1',
         'websockets~=15.0.1;python_version<"3.10"',
         'websockets>=16.0;python_version>="3.10"',
         'filelock~=3.19.1;python_version<"3.10"',
-        'filelock>=3.28.0;python_version>="3.10"',
+        'filelock>=3.29.0;python_version>="3.10"',
         'fasteners>=0.20',
         'mycdp>=1.3.7',
         'pynose>=1.5.5',
@@ -174,9 +175,9 @@ setup(
         'pyyaml>=6.0.3',
         'pygments>=2.20.0',
         'pyreadline3>=3.5.4;platform_system=="Windows"',
-        'tabcompleter>=1.4.0',
+        'tabcompleter>=1.4.1',
         'pdbp>=1.8.2',
-        'idna>=3.11',
+        'idna>=3.13',
         'charset-normalizer>=3.4.7,<4',
         'urllib3>=1.26.20,<2;python_version<"3.10"',
         'urllib3>=1.26.20,<3;python_version>="3.10"',
@@ -254,14 +255,14 @@ setup(
         # pip install -e .[mss]
         # (An optional library for tile_windows() in CDP Mode.)
         "mss": [
-            'mss==10.1.0',
+            'mss==10.2.0',
         ],
         # pip install -e .[pdfminer]
         # (An optional library for parsing PDF files.)
         "pdfminer": [
             'pdfminer.six==20251107;python_version<"3.10"',
             'pdfminer.six==20260107;python_version>="3.10"',
-            'cryptography==46.0.7',
+            'cryptography==47.0.0',
             'cffi==2.0.0',
             'pycparser==2.23;python_version<"3.10"',
             'pycparser==3.0;python_version>="3.10"',
