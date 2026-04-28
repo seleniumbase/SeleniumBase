@@ -5,7 +5,10 @@ with SB(uc=True, test=True, guest=True) as sb:
     sb.activate_cdp_mode(url)
     sb.sleep(2.5)
     sb.click_if_visible('button[data-close-button="true"]')
+    sb.sleep(0.3)
     print("*** " + sb.get_text('h2[data-e2e="user-bio"]'))
+    sb.click_if_visible('button:contains("Refresh")')
+    sb.sleep(0.3)
     for i in range(33):
         sb.scroll_by_y(33)
         sb.sleep(0.03)
