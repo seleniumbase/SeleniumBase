@@ -1706,6 +1706,9 @@ class Tab(Connection):
             selector = "#challenge-form div > div"
         elif await self.is_element_present('[style="display: grid;"] div div'):
             selector = '[style="display: grid;"] div div'
+            await self.sleep(0.025)
+            await self.set_attributes(selector, "style", "text-align: left;")
+            await self.sleep(0.025)
         elif await self.is_element_present("[class*=spacer] + div div"):
             selector = '[class*=spacer] + div div'
         elif await self.is_element_present(".spacer div:not([class])"):
@@ -1837,10 +1840,11 @@ class Tab(Connection):
             element_rect = await self.get_gui_element_rect(selector, timeout=1)
             e_x = element_rect["x"]
             e_y = element_rect["y"]
-            x_offset = 28
+            x_offset = 25
             y_offset = 32
             if await asyncio.to_thread(shared_utils.is_windows):
-                y_offset = 28
+                x_offset = 27
+                y_offset = 29
             x = e_x + x_offset
             y = e_y + y_offset
             sb_config._saved_cf_x_y = (x, y)  # For debugging later
