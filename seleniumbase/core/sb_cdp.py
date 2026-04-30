@@ -2308,6 +2308,9 @@ class CDPMethods():
             selector = "#challenge-form div > div"
         elif self.is_element_present('[style="display: grid;"] div div'):
             selector = '[style="display: grid;"] div div'
+            time.sleep(0.025)
+            self.set_attributes(selector, "style", "text-align: left;")
+            time.sleep(0.025)
         elif self.is_element_present("[class*=spacer] + div div"):
             selector = '[class*=spacer] + div div'
         elif self.is_element_present(".spacer div:not([class])"):
@@ -2443,10 +2446,11 @@ class CDPMethods():
             element_rect = self.get_gui_element_rect(selector, timeout=1)
             e_x = element_rect["x"]
             e_y = element_rect["y"]
-            x_offset = 28
+            x_offset = 25
             y_offset = 32
             if shared_utils.is_windows():
-                y_offset = 28
+                x_offset = 27
+                y_offset = 29
             x = e_x + x_offset
             y = e_y + y_offset
             sb_config._saved_cf_x_y = (x, y)
