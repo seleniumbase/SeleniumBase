@@ -1,16 +1,13 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True, locale="en", incognito=True) as sb:
-    url = "https://www.kohls.com/"
-    sb.activate_cdp_mode(url, ad_block=True)
-    sb.sleep(2.6)
     search = "Mickey Mouse Blanket"
     req_1 = "Mickey"
     req_2 = "Blanket"
-    if not sb.is_element_present('input[name="search"]'):
-        sb.refresh()
-        sb.sleep(2.6)
-    sb.press_keys('input[name="search"]', search + "\n")
+    s2 = "+".join(search.split(" "))
+    q = "?submit-search=web-regular&search=%s" % s2
+    url = "https://www.kohls.com/search.jsp%s" % q
+    sb.activate_cdp_mode(url, ad_block=True)
     sb.sleep(5)
     item_selector = 'div[data-testid*="wallet-wrapper"]'
     if not sb.is_element_present(item_selector):
