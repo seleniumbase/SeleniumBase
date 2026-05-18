@@ -75,8 +75,9 @@ setup(
     name="seleniumbase",
     version=about["__version__"],
     description=(
-        "Stealthy automation (via CDP Mode) that passes every bot detection "
-        "test with any Chromium browser you want. Includes a test framework."
+        "Stealthy Chromium automation that passes bot-detection via CDP Mode. "
+        "Includes CAPTCHA-Solving methods, E2E Testing, "
+        "and a native Playwright integration."
     ),
     long_description=long_description,
     long_description_content_type="text/markdown",
