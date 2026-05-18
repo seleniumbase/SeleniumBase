@@ -75,8 +75,8 @@ setup(
     name="seleniumbase",
     version=about["__version__"],
     description=(
-        "A framework for stealthy Chromium automation via CDP Mode. Includes "
-        "CAPTCHA-handling, E2E Testing, and a native Playwright integration."
+        "A framework for stealthy Chromium automation with CDP Mode. "
+        "Includes CAPTCHA-bypass, E2E Testing, and a Playwright integration."
     ),
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -109,12 +109,9 @@ setup(
         "sbase",
         "web-crawling",
         "web-scraping",
-        "scraping",
         "stealth",
         "chromium",
         "playwright",
-        "anti-detect",
-        "antidetect",
         "undetected",
         "bot-detection",
         "fingerprint",
