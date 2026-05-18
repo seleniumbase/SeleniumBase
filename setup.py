@@ -74,7 +74,10 @@ if sys.argv[-1] == "publish":
 setup(
     name="seleniumbase",
     version=about["__version__"],
-    description="A complete web automation framework for end-to-end testing.",
+    description=(
+        "Stealthy automation (via CDP Mode) that passes every bot detection "
+        "test with any Chromium browser you want. Includes a test framework."
+    ),
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/seleniumbase/SeleniumBase",
@@ -104,8 +107,23 @@ setup(
         "webdriver",
         "seleniumbase",
         "sbase",
-        "crawling",
+        "web-crawling",
+        "web-scraping",
         "scraping",
+        "stealth",
+        "chromium",
+        "playwright",
+        "anti-detect",
+        "antidetect",
+        "undetected",
+        "bot-detection",
+        "fingerprint",
+        "recaptcha",
+        "cloudflare",
+        "turnstile",
+        "datadome",
+        "captcha",
+        "headless",
     ],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
