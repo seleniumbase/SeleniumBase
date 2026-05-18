@@ -19,4 +19,4 @@ class DocsSiteTests(BaseCase):
         self.js_click('a[href$="/uc_mode/"]')
         self.assert_text("UC Mode", "h1")
         self.js_click('img[alt="logo"]')
-        self.assert_text("SeleniumBase", "h1")
+        self.assert_element('img[alt="SeleniumBase"]')
