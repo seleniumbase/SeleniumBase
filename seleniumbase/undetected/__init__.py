@@ -517,8 +517,12 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
             with suppress(Exception):
                 self.service.start()
         with suppress(Exception):
-            self.start_session()
-            time.sleep(0.0075)
+            already_quit = False
+            if hasattr(self, "_already_quit") and self._already_quit:
+                already_quit = True
+            if not already_quit:
+                self.start_session()
+                time.sleep(0.0075)
         with suppress(Exception):
             for window_handle in self.window_handles:
                 self.switch_to.window(window_handle)
@@ -559,6 +563,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         try:
             logger.debug("Terminating the UC browser")
             os.kill(self.browser_pid, 15)
+            self._already_quit = True
             if "linux" in sys.platform:
                 os.waitpid(self.browser_pid, 0)
                 time.sleep(0.02)

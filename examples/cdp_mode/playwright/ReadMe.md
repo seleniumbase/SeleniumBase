@@ -272,7 +272,7 @@ if __name__ == "__main__":
 
 #### 🎭 This flowchart shows how Stealthy Playwright Mode fits into CDP Mode:</h3>
 
-<img src="https://seleniumbase.github.io/other/sb_stealth.png" width="596" alt="Stealthy architecture flowchart" />
+<img src="https://seleniumbase.github.io/other/sb_architecture.png" width="596" alt="Stealthy architecture flowchart" />
 
 (See the [**CDP Mode** ReadMe](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md) for more information about that.)
 

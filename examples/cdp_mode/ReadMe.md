@@ -8,24 +8,15 @@
 
 <h3 align="left">⚙️ Stealthy architecture flowchart:</h3>
 
-<img src="https://seleniumbase.github.io/other/sb_stealth.png" width="596" alt="Stealthy architecture flowchart" />
+<img src="https://seleniumbase.github.io/other/sb_architecture.png" width="596" alt="Stealthy architecture flowchart" />
 
 ----
 
-### 🎞️ YouTube videos about <b translate="no">CDP Mode</b>:
+### 🎞️ <b translate="no">CDP Mode</b> on YouTube:
 
-<!-- YouTube View --><a href="https://www.youtube.com/watch?v=Mr90iQmNsKM"><img src="https://github.com/user-attachments/assets/91e7ff7b-d155-4ba9-b17b-b097825fcf42" title="SeleniumBase on YouTube" width="320" /></a>
-<p>(<b><a href="https://www.youtube.com/watch?v=Mr90iQmNsKM">Watch "Undetectable Automation 4" on YouTube! ▶️</a></b>)</p>
 
-----
-
-<!-- YouTube View --><a href="https://www.youtube.com/watch?v=vt2zsdiNh3U"><img src="https://github.com/user-attachments/assets/82ab2715-727e-4d09-9314-b8905795dc43" title="SeleniumBase on YouTube" width="320" /></a>
-<p>(<b><a href="https://www.youtube.com/watch?v=vt2zsdiNh3U">Watch "Hacking websites with CDP" on YouTube! ▶️</a></b>)</p>
-
-----
-
-<!-- YouTube View --><a href="https://www.youtube.com/watch?v=gEZhTfaIxHQ"><img src="https://github.com/user-attachments/assets/656977e1-5d66-4d1c-9eec-0aaa41f6522f" title="SeleniumBase on YouTube" width="320" /></a>
-<p>(<b><a href="https://www.youtube.com/watch?v=gEZhTfaIxHQ">"Unlimited Free Web-Scraping with GitHub Actions" ▶️</a></b>)</p>
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=R9HNsnbYh8o"><img src="https://github.com/user-attachments/assets/9d04fa89-44b0-4077-96d1-5b84f5a2e5fe" title="SeleniumBase on YouTube" width="420" /></a>
+<p>(<b><a href="https://www.youtube.com/watch?v=R9HNsnbYh8o">Watch "Undetectable Automation: 5th Edition" on YouTube! ▶️</a></b>)</p>
 
 ----
 
@@ -755,6 +746,28 @@ element.get_js_attributes()
 element.get_attribute(attribute)
 element.get_parent()
 ```
+
+----
+
+### 🎞️ YouTube videos about <b translate="no">CDP Mode</b>:
+
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=Mr90iQmNsKM"><img src="https://github.com/user-attachments/assets/91e7ff7b-d155-4ba9-b17b-b097825fcf42" title="SeleniumBase on YouTube" width="320" /></a>
+<p>(<b><a href="https://www.youtube.com/watch?v=Mr90iQmNsKM">Watch "Undetectable Automation 4" on YouTube! ▶️</a></b>)</p>
+
+----
+
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=R9HNsnbYh8o"><img src="https://github.com/user-attachments/assets/9d04fa89-44b0-4077-96d1-5b84f5a2e5fe" title="SeleniumBase on YouTube" width="320" /></a>
+<p>(<b><a href="https://www.youtube.com/watch?v=R9HNsnbYh8o">Watch "Undetectable Automation: 5th Edition" on YouTube! ▶️</a></b>)</p>
+
+----
+
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=vt2zsdiNh3U"><img src="https://github.com/user-attachments/assets/82ab2715-727e-4d09-9314-b8905795dc43" title="SeleniumBase on YouTube" width="320" /></a>
+<p>(<b><a href="https://www.youtube.com/watch?v=vt2zsdiNh3U">Watch "Hacking websites with CDP" on YouTube! ▶️</a></b>)</p>
+
+----
+
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=gEZhTfaIxHQ"><img src="https://github.com/user-attachments/assets/656977e1-5d66-4d1c-9eec-0aaa41f6522f" title="SeleniumBase on YouTube" width="320" /></a>
+<p>(<b><a href="https://www.youtube.com/watch?v=gEZhTfaIxHQ">"Unlimited Free Web-Scraping with GitHub Actions" ▶️</a></b>)</p>
 
 ----
 

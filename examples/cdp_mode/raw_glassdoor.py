@@ -15,7 +15,7 @@ with SB(uc=True, test=True, incognito=True) as sb:
     sb.sleep(0.5)
     sb.click('button[data-role-variant="primary"] span:contains("Search")')
     sb.sleep(2)
-    sb.click('[aria-label*="NASA"] img')
+    sb.click_if_visible('[aria-label*="NASA"] img')
     sb.sleep(2)
     print(sb.get_page_title())
     sb.save_as_pdf_to_logs()

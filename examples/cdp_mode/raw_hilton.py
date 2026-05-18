@@ -16,7 +16,7 @@ with SB(uc=True, test=True, locale="en") as sb:
     sb.sleep(1.2)
     sb.click('button[aria-current="date"]')
     sb.sleep(1.2)
-    sb.click('button[data-testid="shop-modal-done-cta"]')
+    sb.click('[role="dialog"] button.btn--solid')
     sb.sleep(1.5)
     sb.click('button[data-testid="search-submit-button"]')
     sb.sleep(6.5)

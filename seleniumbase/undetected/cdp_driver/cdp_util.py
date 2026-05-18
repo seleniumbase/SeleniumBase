@@ -311,6 +311,7 @@ async def start(
     disable_csp: Optional[str] = None,  # Disable content security policy
     extension_dir: Optional[str] = None,  # Chrome extension directory
     use_chromium: Optional[str] = None,  # Use the base Chromium browser
+    cft: Optional[str] = None,  # Use the Chrome-for-Testing browser
     **kwargs: Optional[dict],
 ) -> Browser:
     """
@@ -528,6 +529,8 @@ async def start(
             browser_executable_path = bin_loc
         elif use_chromium or "--use-chromium" in arg_join:
             browser_executable_path = "_chromium_"
+        elif cft or "--cft" in arg_join:
+            browser_executable_path = "_cft_"
     if proxy is None and "--proxy" in arg_join:
         proxy_string = None
         if "--proxy=" in arg_join:
