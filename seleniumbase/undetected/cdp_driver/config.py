@@ -2,12 +2,14 @@ import json
 import logging
 import os
 import pathlib
+import platform
 import secrets
 import sys
 import tempfile
 import zipfile
 from contextlib import suppress
 from seleniumbase.config import settings
+from seleniumbase.drivers import cft_drivers
 from seleniumbase.drivers import chromium_drivers
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import shared_utils
@@ -30,9 +32,8 @@ AUTO = None
 IS_MAC = shared_utils.is_mac()
 IS_LINUX = shared_utils.is_linux()
 IS_WINDOWS = shared_utils.is_windows()
-CHROMIUM_DIR = os.path.dirname(
-    os.path.realpath(chromium_drivers.__file__)
-)
+CFT_DIR = os.path.dirname(os.path.realpath(cft_drivers.__file__))
+CHROMIUM_DIR = os.path.dirname(os.path.realpath(chromium_drivers.__file__))
 
 
 class Config:
@@ -138,6 +139,53 @@ class Config:
             elif binary_name in ["chrome-win"]:
                 binary_name = "chrome.exe"
                 binary_location += "\\chrome.exe"
+            if os.path.exists(binary_location):
+                mock_keychain = True
+                browser_executable_path = binary_location
+            else:
+                print(
+                    f"{binary_location} not found. "
+                    f"Defaulting to regular Chrome!"
+                )
+                browser_executable_path = find_chrome_executable()
+        elif browser_executable_path == "_cft_":
+            from filelock import FileLock
+            binary_folder = None
+            if IS_MAC:
+                if shared_utils.is_arm_mac():
+                    binary_folder = "chrome-mac-arm64"
+                else:
+                    binary_folder = "chrome-mac-x64"
+            elif IS_LINUX:
+                binary_folder = "chrome-linux64"
+            elif IS_WINDOWS:
+                if "64" in platform.architecture()[0]:
+                    binary_folder = "chrome-win64"
+                else:
+                    binary_folder = "chrome-win32"
+            binary_location = os.path.join(CFT_DIR, binary_folder)
+            gui_lock = FileLock(constants.MultiBrowser.DRIVER_FIXING_LOCK)
+            with gui_lock:
+                with suppress(Exception):
+                    shared_utils.make_writable(
+                        constants.MultiBrowser.DRIVER_FIXING_LOCK
+                    )
+                if not os.path.exists(binary_location):
+                    from seleniumbase.console_scripts import sb_install
+                    sys_args = sys.argv  # Save a copy of sys args
+                    sb_install.log_d(
+                        "\nWarning: Chrome for Testing binary not found..."
+                    )
+                    sb_install.main(override="cft")
+                    sys.argv = sys_args  # Put back original args
+            binary_name = binary_location.split("/")[-1].split("\\")[-1]
+            if binary_name == "Google Chrome for Testing.app":
+                binary_name = "Google Chrome for Testing"
+                binary_location += "/Contents/MacOS/Google Chrome for Testing"
+            elif binary_name in ["chrome-mac-arm64", "chrome-mac-x64"]:
+                binary_name = "Google Chrome for Testing"
+                binary_location += "/Google Chrome for Testing.app"
+                binary_location += "/Contents/MacOS/Google Chrome for Testing"
             if os.path.exists(binary_location):
                 mock_keychain = True
                 browser_executable_path = binary_location

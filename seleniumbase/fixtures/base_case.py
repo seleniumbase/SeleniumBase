@@ -5082,6 +5082,14 @@ class BaseCase(unittest.TestCase):
             self.driver.uc_open_with_cdp_mode(url, **kwargs)
         else:
             self.get_new_driver(undetectable=True)
+            if self.browser == "edge":
+                raise Exception(
+                    'For stealth with Edge, use "Pure CDP Mode"! Eg:\n'
+                    '```python\n'
+                    'from seleniumbase import sb_cdp\n'
+                    'sb = sb_cdp.Chrome(url, browser="edge")\n'
+                    '```'
+                )
             self.driver.uc_open_with_cdp_mode(url, **kwargs)
         self.cdp = self.driver.cdp
         if hasattr(self.cdp, "solve_captcha"):
@@ -16893,6 +16901,11 @@ class BaseCase(unittest.TestCase):
             )
             raise Exception(message)
         # *** Start tearDown() officially ***
+        if hasattr(self.driver, "_already_quit") and self.driver._already_quit:
+            logging.warning(
+                " The driver was already quit in a mode"
+                " that quits the driver automatically."
+            )
         page_actions._reconnect_if_disconnected(self.driver)
         self.__slow_mode_pause_if_active()
         has_exception = self.__has_exception()
