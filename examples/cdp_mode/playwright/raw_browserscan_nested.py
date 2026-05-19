@@ -12,4 +12,5 @@ with SB(uc=True, locale="en", ad_block=True) as sb:
         page.wait_for_timeout(500)
         sb.cdp.flash("Test Results", duration=3, pause=1)
         sb.assert_element('strong:contains("Normal")')
+        print("Bot Not Detected")
         sb.cdp.flash('strong:contains("Normal")', duration=3, pause=2)

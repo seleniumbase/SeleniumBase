@@ -4,5 +4,5 @@ url = "https://www.browserscan.net/bot-detection"
 sb = sb_cdp.Chrome(url, locale="en", ad_block=True)
 sb.flash("Test Results", duration=3, pause=1)
 sb.assert_element('strong:contains("Normal")')
-print("Bot Not detected")
+print("Bot Not Detected")
 sb.flash('strong:contains("Normal")', duration=3, pause=2)

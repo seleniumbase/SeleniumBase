@@ -11,4 +11,5 @@ with sync_playwright() as p:
     page.wait_for_timeout(500)
     sb.flash("Test Results", duration=3, pause=1)
     sb.assert_element('strong:contains("Normal")')
+    print("Bot Not Detected")
     sb.flash('strong:contains("Normal")', duration=3, pause=2)
