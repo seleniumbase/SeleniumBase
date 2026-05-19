@@ -32,7 +32,7 @@
 <a href="https://seleniumbase.io/demo_page">📰 TestPage</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md">👤 UC Mode</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md">🐙 CDP Mode</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/ReadMe.md">📶 Charts</a>  |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/ReadMe.md">📶 Charts</a> |
 <a href="https://seleniumbase.io/devices/?url=seleniumbase.com">🖥️ Farm</a>
 <br />
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/how_it_works.md">👁️ How</a> |
@@ -56,7 +56,7 @@
 
 🥷 Stealthy CDP Mode examples are located in [./examples/cdp_mode/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode).
 
-🎭 Stealthy Playwright examples are located in [./examples/cdp_mode/playwright](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/).
+🎭 Stealthy Playwright examples are located in [./examples/cdp_mode/playwright/](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/).
 
 --------
 
@@ -77,7 +77,7 @@ url = "https://www.browserscan.net/bot-detection"
 sb = sb_cdp.Chrome(url, locale="en", ad_block=True)
 sb.flash("Test Results", duration=3, pause=1)
 sb.assert_element('strong:contains("Normal")')
-print("Bot Not detected")
+print("Bot Not Detected")
 sb.flash('strong:contains("Normal")', duration=3, pause=2)
 ```
 
