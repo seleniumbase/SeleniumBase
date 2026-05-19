@@ -23,13 +23,13 @@ class ProxyTests(BaseCase):
         self.highlight("h1")
         pop_up = '[role="dialog"] span.cursor-pointer'
         self.click_if_visible(pop_up)
-        self.highlight("#block-summary")
+        self.highlight("section#summary")
         self.click_if_visible(pop_up)
-        self.highlight("#block-geolocation")
+        self.highlight("section#geolocation")
         self.click_if_visible(pop_up)
         self.sleep(2)
         print("Displaying Host Info:")
-        text = self.get_text("#block-summary").split("Hosted domains")[0]
+        text = self.get_text("#summary").split("Hosted domains")[0]
         rows = text.split("\n")
         data = []
         for row in rows:
@@ -37,7 +37,7 @@ class ProxyTests(BaseCase):
                 data.append(row.strip())
         print("\n".join(data).replace('\n"', ' "'))
         print("\nDisplaying GeoLocation Info:")
-        text = self.get_text("#block-geolocation")
+        text = self.get_text("#geolocation")
         text = text.split("IP Geolocation data")[0]
         rows = text.split("\n")
         data = []

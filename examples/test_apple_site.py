@@ -19,7 +19,7 @@ class AppleTests(BaseCase):
                 self.get_new_driver(browser=self.browser, headless2=True)
         self.open("https://developer.apple.com/search/")
         title = "Testing with WebDriver in Safari"
-        self.type('[placeholder*="developer.apple.com"]', title + "\n")
+        self.type("input#searchField", title + "\n")
         self.click("link=%s" % title)
         self.assert_element("nav.documentation-nav")
         self.assert_text(title, "h1")

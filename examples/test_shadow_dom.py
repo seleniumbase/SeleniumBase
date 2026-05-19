@@ -50,8 +50,7 @@ class ShadowDomTests(BaseCase):
             " #clearSearch"
         )
         file_link = (
-            "downloads-manager::shadow #downloadsList"
-            " downloads-item::shadow #file-link"
+            "downloads-manager::shadow downloads-item::shadow #fileLink"
         )
         remove_button = (
             "downloads-manager::shadow #downloadsList"
