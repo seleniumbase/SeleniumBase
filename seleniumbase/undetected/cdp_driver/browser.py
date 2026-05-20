@@ -9,6 +9,7 @@ import logging
 import os
 import pathlib
 import pickle
+import psutil
 import re
 import shutil
 import time
@@ -262,6 +263,22 @@ class Browser:
                 % (self.targets.index(current_tab), current_tab)
             )
             self.targets.remove(current_tab)
+
+    def is_running(self):
+        """Check if the browser is still running."""
+        if not getattr(self, "_process_pid", None):
+            return False
+        # Not good enough: return psutil.pid_exists(self._process_pid)
+        try:
+            process = psutil.Process(self._process_pid)
+            # Check for PID recycling: Is this actually our process?
+            if hasattr(self, "_process_create_time"):
+                if process.create_time() != self._process_create_time:
+                    return False  # The PID was reused by a different process!
+            # If the process is a zombie, assume the browser isn't running
+            return process.status() != psutil.STATUS_ZOMBIE
+        except psutil.NoSuchProcess:
+            return False
 
     def get_rd_host(self):
         return self.config.host
@@ -617,6 +634,12 @@ class Browser:
             )
             await asyncio.sleep(0.05)
             self._process_pid = self._process.pid
+            try:
+                self._process_create_time = (
+                    psutil.Process(self._process_pid).create_time()
+                )
+            except psutil.NoSuchProcess:
+                self._process_create_time = None
         await asyncio.sleep(0.05)
         self._http = HTTPApi((self.config.host, self.config.port))
         await asyncio.sleep(0.05)

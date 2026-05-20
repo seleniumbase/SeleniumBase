@@ -12,6 +12,7 @@ sb.cdp.open(url, **kwargs)  # Same as sb.cdp.get(url, **kwargs)
 sb.cdp.reload(ignore_cache=True, script_to_evaluate_on_load=None)
 sb.cdp.refresh(*args, **kwargs)
 sb.cdp.get_event_loop()
+sb.cdp.is_running()
 sb.cdp.get_rd_host()  # Returns the remote-debugging host
 sb.cdp.get_rd_port()  # Returns the remote-debugging port
 sb.cdp.get_rd_url()  # Returns the remote-debugging URL
