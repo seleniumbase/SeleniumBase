@@ -8,18 +8,14 @@ endpoint_url = sb.get_endpoint_url()
 with sync_playwright() as p:
     browser = p.chromium.connect_over_cdp(endpoint_url)
     page = browser.contexts[0].pages[0]
-    page.wait_for_timeout(2800)
-    continue_button = 'button:has-text("Continue shopping")'
-    if page.locator(continue_button).count() > 0:
-        page.click(continue_button)
-    page.click('input[aria-label="Search"]')
-    page.wait_for_timeout(1800)
+    search_box = 'input[aria-label="Search"]'
     search = "Settlers of Catan Board Game"
     required_text = "Catan"
-    input_selector = 'input[aria-label="Search"]'
-    search_box = page.locator(input_selector)
-    search_box.press_sequentially(search + "\n", delay=80)
-    page.wait_for_timeout(3200)
+    page.wait_for_timeout(1800)
+    sb.click(search_box)
+    page.wait_for_timeout(1200)
+    sb.press_keys(search_box, search + "\n")
+    sb.sleep(3.8)
     sb.remove_elements('[data-testid="skyline-ad"]')
     sb.remove_elements('[data-testid="sba-container"]')
     print('*** Walmart Search for "%s":' % search)
