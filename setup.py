@@ -182,11 +182,12 @@ setup(
         'typing-extensions>=4.15.0',
         'sbvirtualdisplay>=1.4.0',
         'MarkupSafe>=3.0.3',
-        "Jinja2>=3.1.6",
-        "six>=1.17.0",
+        'Jinja2>=3.1.6',
+        'six>=1.17.0',
         'parse>=1.22.0',
         'parse-type>=0.6.6',
         'colorama>=0.4.6',
+        'psutil>=7.2.2',
         'pyyaml>=6.0.3',
         'pygments>=2.20.0',
         'pyreadline3>=3.5.4;platform_system=="Windows"',
@@ -303,11 +304,7 @@ setup(
         # pip install -e .[playwright]
         # (For the Playwright integration.)
         "playwright": [
-            "playwright>=1.58.0",
-        ],
-        # pip install -e .[psutil]
-        "psutil": [
-            "psutil>=7.2.2",
+            "playwright>=1.60.0",
         ],
         # pip install -e .[pyautogui]
         # (Already a required dependency on Linux now.)
