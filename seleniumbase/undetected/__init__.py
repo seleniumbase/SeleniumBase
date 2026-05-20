@@ -1,6 +1,7 @@
 import logging
 import os
 import re
+import psutil
 import requests
 import subprocess
 import sys
@@ -299,6 +300,13 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                         creationflags=creationflags,
                     )
                     self.browser_pid = browser.pid
+            self._process_pid = browser.pid
+            try:
+                self._process_create_time = (
+                    psutil.Process(self._process_pid).create_time()
+                )
+            except psutil.NoSuchProcess:
+                self._process_create_time = None
             service_ = None
             log_output = subprocess.PIPE
             if patch_driver:
@@ -391,6 +399,22 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                 )
             },
         )
+
+    def is_running(self):
+        """Check if the browser is still running."""
+        if not getattr(self, "_process_pid", None):
+            return False
+        # Not good enough: return psutil.pid_exists(self._process_pid)
+        try:
+            process = psutil.Process(self._process_pid)
+            # Check for PID recycling: Is this actually our process?
+            if hasattr(self, "_process_create_time"):
+                if process.create_time() != self._process_create_time:
+                    return False  # The PID was reused by a different process!
+            # If the process is a zombie, assume the browser isn't running
+            return process.status() != psutil.STATUS_ZOMBIE
+        except psutil.NoSuchProcess:
+            return False
 
     def remove_cdc_props_as_needed(self):
         cdc_props = self._get_cdc_props()
