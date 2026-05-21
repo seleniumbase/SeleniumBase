@@ -168,7 +168,7 @@ setup(
         'setuptools>=82.0.1;python_version>="3.10"',
         'wheel>=0.47.0',
         'attrs>=26.1.0',
-        'certifi>=2026.4.22',
+        'certifi>=2026.5.20',
         'exceptiongroup>=1.3.1',
         'websockets~=15.0.1;python_version<"3.10"',
         'websockets>=16.0;python_version>="3.10"',
@@ -304,7 +304,9 @@ setup(
         # pip install -e .[playwright]
         # (For the Playwright integration.)
         "playwright": [
-            "playwright>=1.60.0",
+            'playwright>=1.60.0',
+            'greenlet>=3.2.5;python_version<"3.10"',
+            'greenlet>=3.5.1;python_version>="3.10"',
         ],
         # pip install -e .[pyautogui]
         # (Already a required dependency on Linux now.)
