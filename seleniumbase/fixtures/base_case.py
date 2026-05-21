@@ -5096,8 +5096,32 @@ class BaseCase(unittest.TestCase):
             self.solve_captcha = self.cdp.solve_captcha
         if hasattr(self.cdp, "click_captcha"):
             self.click_captcha = self.cdp.click_captcha
+        if hasattr(self.cdp, "add_handler"):
+            self.add_handler = self.cdp.add_handler
+        if hasattr(self.cdp, "close_active_tab"):
+            self.close_active_tab = self.cdp.close_active_tab
         if hasattr(self.cdp, "find_element_by_text"):
             self.find_element_by_text = self.cdp.find_element_by_text
+        if hasattr(self.cdp, "flash"):
+            self.flash = self.cdp.flash
+        if hasattr(self.cdp, "get_active_tab"):
+            self.get_active_tab = self.cdp.get_active_tab
+        if hasattr(self.cdp, "get_endpoint_url"):
+            self.get_endpoint_url = self.cdp.get_endpoint_url
+        if hasattr(self.cdp, "get_event_loop"):
+            self.get_event_loop = self.cdp.get_event_loop
+        if hasattr(self.cdp, "get_tabs"):
+            self.get_tabs = self.cdp.get_tabs
+        if hasattr(self.cdp, "gui_click_and_hold"):
+            self.gui_click_and_hold = self.cdp.gui_click_and_hold
+        if hasattr(self.cdp, "gui_click_element"):
+            self.gui_click_element = self.cdp.gui_click_element
+        if hasattr(self.cdp, "gui_drag_and_drop"):
+            self.gui_drag_and_drop = self.cdp.gui_drag_and_drop
+        if hasattr(self.cdp, "gui_drag_drop_points"):
+            self.gui_drag_drop_points = self.cdp.gui_drag_drop_points
+        if hasattr(self.cdp, "highlight_overlay"):
+            self.highlight_overlay = self.cdp.highlight_overlay
         if getattr(self.driver, "_is_using_auth", None):
             with suppress(Exception):
                 self.cdp.loop.run_until_complete(self.cdp.page.wait(0.25))
@@ -8861,9 +8885,22 @@ class BaseCase(unittest.TestCase):
             element = page_actions.wait_for_element_present(
                 self.driver, selector, by, timeout
             )
-        if element.tag_name.lower() in ["input", "textarea"]:
-            self.js_update_text(selector, text, by=by, timeout=timeout)
-            return
+        try:
+            if element.tag_name.lower() in ["input", "textarea"]:
+                self.js_update_text(selector, text, by=by, timeout=timeout)
+                return
+        except (Stale_Exception, ENI_Exception):
+            time.sleep(0.16)
+            if self.__is_cdp_swap_needed():
+                element = self.cdp.select(selector, timeout=timeout)
+            else:
+                self.wait_for_ready_state_complete()
+                element = page_actions.wait_for_element_present(
+                    self.driver, selector, by, timeout
+                )
+            if element.tag_name.lower() in ["input", "textarea"]:
+                self.js_update_text(selector, text, by=by, timeout=timeout)
+                return
         original_selector = selector
         css_selector = self.convert_to_css_selector(selector, by=by)
         if scroll:
@@ -9340,6 +9377,9 @@ class BaseCase(unittest.TestCase):
 
     def switch_to_newest_tab(self):
         """Same as self.switch_to_newest_window()"""
+        if self.__is_cdp_swap_needed():
+            self.cdp.switch_to_newest_tab()
+            return
         self.switch_to_newest_window()
 
     def save_as_html(self, name, folder=None):
@@ -9976,6 +10016,8 @@ class BaseCase(unittest.TestCase):
         self, selector, by="css selector", timeout=None
     ):
         """Waits for an element to appear in the HTML of a page.
+        Returns the element once it exists in the HTML.
+        Raises an exception if the element doesn't come in time.
         The element does not need be visible (it may be hidden)."""
         self.__check_scope()
         if not timeout:
@@ -10021,6 +10063,19 @@ class BaseCase(unittest.TestCase):
         return page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout
         )
+
+    def select(self, selector, by="css selector", timeout=None):
+        """Returns the element once it appears in the HTML.
+        Raises an exception if the element doesn't come in time.
+        The element does not need be visible (it may be hidden).
+        If CDP Mode has been activated: Calls self.cdp.select().
+        Otherwise: Same as self.wait_for_element_present()."""
+        if self.__is_cdp_swap_needed():
+            return self.cdp.select(selector, timeout=timeout)
+        else:
+            return self.wait_for_element_present(
+                selector, by=by, timeout=timeout
+            )
 
     def get_element(self, selector, by="css selector", timeout=None):
         """Same as wait_for_element_present() - returns the element.

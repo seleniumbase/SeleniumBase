@@ -155,6 +155,9 @@ class CDPMethods():
     def open(self, url, **kwargs):
         self.get(url, **kwargs)
 
+    def goto(self, url, **kwargs):
+        self.get(url, **kwargs)
+
     def reload(self, ignore_cache=True, script_to_evaluate_on_load=None):
         self.loop.run_until_complete(
             self.page.reload(
@@ -2033,6 +2036,13 @@ class CDPMethods():
         self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.wait(0.2))
 
+    def quit(self):
+        """Quit the browser in the Pure CDP Mode Sync format."""
+        driver = self.driver
+        if hasattr(driver, "cdp_base"):
+            driver = driver.cdp_base
+        driver.quit()
+
     def _on_a_cf_turnstile_page(self, source=None):
         if not source or len(source) < 400:
             time.sleep(0.2)
@@ -2325,28 +2335,22 @@ class CDPMethods():
             'form div:not([class]):has(input[name*="cf-turn"])'
         ):
             selector = 'form div:not([class]):has(input[name*="cf-turn"])'
-        elif self.is_element_present("form div:not(:has(*))"):
-            selector = "form div:not(:has(*))"
         elif self.is_element_present("body > div#check > div:not([class])"):
             selector = "body > div#check > div:not([class])"
         elif self.is_element_present(".cf-turnstile-wrapper"):
             selector = ".cf-turnstile-wrapper"
-        elif self.is_element_present(
-            '[id*="turnstile"] div:not([class])'
-        ):
+        elif self.is_element_present('[id*="turnstile"] div:not([class])'):
             selector = '[id*="turnstile"] div:not([class])'
-        elif self.is_element_present(
-            '[class*="turnstile"] div:not([class])'
-        ):
+        elif self.is_element_present('[class*="turnstile"] div:not([class])'):
             selector = '[class*="turnstile"] div:not([class])'
-        elif self.is_element_present(
-            "iframe[data-hcaptcha-widget-id]"
-        ):
+        elif self.is_element_present("iframe[data-hcaptcha-widget-id]"):
             selector = "iframe[data-hcaptcha-widget-id]"
-        elif self.is_element_present(
-            '[data-callback="onCaptchaSuccess"]'
-        ):
+        elif self.is_element_present('[data-callback="onCaptchaSuccess"]'):
             selector = '[data-callback="onCaptchaSuccess"]'
+        elif self.is_element_present('[class*="captcha"] div:not([class])'):
+            selector = '[class*="captcha"] div:not([class])'
+        elif self.is_element_present("form div:not(:has(*))"):
+            selector = "form div:not(:has(*))"
         elif self.is_element_present(
             "div:not([class]):not([id]):not([aria-label]) > "
             "div:not([class]):not([id]):not([aria-label])"

@@ -41,6 +41,18 @@ class DriverMethods(WebDriver):
             value, by = page_utils.swap_selector_and_by_if_reversed(value, by)
         return self.driver.default_find_elements(by=by, value=value)
 
+    def select(self, *args, **kwargs):
+        if self.__is_cdp_swap_needed():
+            return self.driver.cdp.select(*args, **kwargs)
+        else:
+            return self.find_element(*args, **kwargs)
+
+    def select_all(self, *args, **kwargs):
+        if self.__is_cdp_swap_needed():
+            return self.driver.cdp.select_all(*args, **kwargs)
+        else:
+            return self.find_elements(*args, **kwargs)
+
     def add_cookie(self, *args, **kwargs):
         page_actions._reconnect_if_disconnected(self.driver)
         self.driver.default_add_cookie(*args, **kwargs)
@@ -371,6 +383,12 @@ class DriverMethods(WebDriver):
 
     def switch_to_window(self, *args, **kwargs):
         page_actions.switch_to_window(self.driver, *args, **kwargs)
+
+    def switch_to_newest_tab(self):
+        if self.__is_cdp_swap_needed():
+            self.driver.cdp.switch_to_newest_tab()
+            return
+        self.switch_to_newest_window()
 
     def switch_to_tab(self, *args, **kwargs):
         self.switch_to_window(*args, **kwargs)
