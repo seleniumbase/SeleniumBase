@@ -44,11 +44,11 @@ class MyTourClass(BaseCase):
         self.create_hopscotch_tour()
         self.add_tour_step("Welcome to Google Maps", title="SeleniumBase Tour")
         self.add_tour_step(
-            "The location goes here.", "#searchboxinput", title="Search Box"
+            "The location goes here.", '[name="q"]', title="Search Box"
         )
         self.add_tour_step(
             "Then click here to show it on the map.",
-            "#searchbox-searchbutton",
+            '[aria-label="Search"]',
             alignment="bottom",
         )
         self.add_tour_step(
