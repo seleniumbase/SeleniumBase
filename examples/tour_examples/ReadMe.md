@@ -1,12 +1,8 @@
 <!-- SeleniumBase Docs -->
 
-<h3 align="left"><img src="https://seleniumbase.github.io/cdn/img/g_maps_tour.png" alt="SeleniumBase Tour" width="340" /></h3>
-
 <h2><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32"></a> 🌏 Interactive Product Tours 🚎</h2>
 
-<p><b>Increase SaaS Product Adoption by 10x or more.</b></p>
-
-* SeleniumBase Tours utilize 5 JavaScript libraries for creating interactive walkthroughs on **any website**:
+SeleniumBase Tours utilize 5 JavaScript libraries for creating interactive walkthroughs on **any website**:
 
 > **[IntroJS](https://introjs.com/)**, **[Bootstrap Tour](http://bootstraptour.com/)**, **[DriverJS](https://kamranahmed.info/driver.js/)**, **[Shepherd](https://shepherdjs.dev/)**, and **[Hopscotch](https://linkedinattic.github.io/hopscotch/)**.
 
@@ -105,27 +101,105 @@ All methods have the optional ``name`` argument, which is only needed if you're 
 from seleniumbase import BaseCase
 BaseCase.main(__name__, __file__, "--uc")
 
-class MyTourClass(BaseCase):
 
+class MyTourClass(BaseCase):
     def test_google_tour(self):
         if not self.undetectable:
             self.get_new_driver(undetectable=True)
-        self.open('https://google.com/ncr')
+        self.open("https://google.com/ncr")
         self.click_if_visible('button:contains("Accept all")')
-        self.wait_for_element('input[title="Search"]')
+        self.wait_for_element('[title="Search"]')
         self.hide_elements("iframe")
 
+        # Create a website tour using the ShepherdJS library with "dark" theme
+        # Same as:  self.create_shepherd_tour(theme="dark")
         self.create_tour(theme="dark")
         self.add_tour_step("Welcome to Google!", title="SeleniumBase Tours")
         self.add_tour_step("Type in your query here.", '[title="Search"]')
         self.play_tour()
 
-        self.highlight_type('input[title="Search"]', "Google")
+        self.highlight_type('[title="Search"]', "Google")
         self.wait_for_element('[role="listbox"]')  # Wait for autocomplete
 
+        # Create a website tour using the ShepherdJS library with "light" theme
+        # Same as:  self.create_shepherd_tour(theme="light")
         self.create_tour(theme="light")
         self.add_tour_step("Then click to search.", '[value="Google Search"]')
         self.add_tour_step("Or press [ENTER] after entry.", '[title="Search"]')
+        self.play_tour()
+
+        self.highlight_type('[title="Search"]', "GitHub\n")
+        self.ad_block()
+        self.wait_for_element("#search")
+
+        # Create a website tour using the Bootstrap Tour JS library
+        # Same as:  self.create_bootstrap_tour()
+        self.create_tour(theme="bootstrap")
+        self.add_tour_step("3-second autoplay...")
+        self.add_tour_step("Here's the next tour:")
+        self.play_tour(interval=3)  # Tour automatically continues after 3 sec
+
+        self.open("https://www.google.com/maps/@42.3591234,-71.0915634,15z")
+        self.wait_for_element('[name="q"]', timeout=20)
+        self.wait_for_element('[aria-label="Interactive map"]', timeout=20)
+        self.wait_for_element('[aria-label="Zoom in"]', timeout=20)
+        self.wait_for_element('[aria-label="Zoom out"]')
+        self.wait_for_element('[jsaction*="minimap.main;"]')
+        self.sleep(0.5)
+
+        # Create a website tour using the IntroJS library
+        # Same as:  self.create_introjs_tour()
+        self.create_tour(theme="introjs")
+        self.add_tour_step("Welcome to Google Maps", title="SeleniumBase Tour")
+        self.add_tour_step(
+            "The location goes here.", '[name="q"]', title="Search Box"
+        )
+        self.add_tour_step(
+            "Then click here to show it on the map.",
+            '[aria-label="Search"]',
+            alignment="bottom",
+        )
+        self.add_tour_step(
+            "Or click here to get driving directions.",
+            'button[aria-label="Directions"]',
+            alignment="bottom",
+        )
+        self.add_tour_step(
+            "Use this button to switch to Satellite view.",
+            'button[jsaction*="minimap.main;"]',
+            alignment="right",
+        )
+        self.add_tour_step(
+            "Click here to zoom in.",
+            '[aria-label="Zoom in"]',
+            alignment="left",
+        )
+        self.add_tour_step(
+            "Or click here to zoom out.",
+            '[aria-label="Zoom out"]',
+            alignment="left",
+        )
+        if self.is_element_visible('button[jsaction*="settings.open;"]'):
+            self.add_tour_step(
+                "Use the Menu button to see more options.",
+                'button[jsaction*="settings.open;"]',
+                alignment="right",
+            )
+        elif self.is_element_visible('button[jsaction="navigationrail.more"]'):
+            self.add_tour_step(
+                "Use the Menu button to see more options.",
+                'button[jsaction="navigationrail.more"]',
+                alignment="right",
+            )
+        self.add_tour_step(
+            "Or click here to see more Google apps.",
+            '[aria-label="Google apps"]',
+            alignment="left",
+        )
+        self.add_tour_step(
+            "Thanks for using SeleniumBase Tours!", title="End of Guided Tour"
+        )
+        self.export_tour()  # The default name for exports is "my_tour.js"
         self.play_tour()
 ```
 

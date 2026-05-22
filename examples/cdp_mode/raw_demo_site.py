@@ -1,4 +1,4 @@
-"""Example of using various CDP Mode commands"""
+"""Example of using various CDP Mode commands via sb.cdp"""
 from seleniumbase import SB
 
 with SB(uc=True, test=True) as sb:

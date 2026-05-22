@@ -50,9 +50,40 @@
 <br />
 </p>
 
-🐙 <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md"><b>CDP Mode</b></a> bypasses bot-detection and handles CAPTCHAs by driving the browser directly through the <a href="https://chromedevtools.github.io/devtools-protocol/" translate="no">Chrome DevTools Protocol</a>. Includes <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md"><b><span translate="no">Stealthy Playwright Mode</span></b></a>, which extends these advanced anti-detection patches to Playwright scripts.
+🐙 <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md"><b>CDP Mode</b></a> <b>bypasses bot-detection</b> and handles CAPTCHAs with the <a href="https://chromedevtools.github.io/devtools-protocol/" translate="no">Chrome DevTools Protocol</a>. Includes <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md"><b><span translate="no">Stealthy Playwright Mode</span></b></a>, which extends CDP Mode's anti-detection to <b>Playwright</b> scripts. <b><code>sb.solve_captcha()</code></b> handles CAPTCHAs that aren't bypassed automatically.
 
-📚 The [SeleniumBase/examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder includes over 100 ready-to-run examples of E2E testing. Examples that start with `test_` or end with `_test.py`/`_tests.py` are specifically designed to run with `pytest`. Other examples run directly with raw `python` (those files generally start with `raw_` to avoid confusion).
+<b>Python sync version of SeleniumBase's CDP Mode: (<code>sb_cdp</code>)</b>
+
+```python
+from seleniumbase import sb_cdp
+
+sb = sb_cdp.Chrome()
+sb.open("https://demo.fingerprint.com/playground")
+sb.sleep(3)
+sb.driver.quit()
+```
+
+<b>Playwright can use SeleniumBase's stealth browser:</b>
+
+```python
+from playwright.sync_api import sync_playwright
+from seleniumbase import sb_cdp
+
+sb = sb_cdp.Chrome()
+endpoint_url = sb.get_endpoint_url()
+
+with sync_playwright() as p:
+    browser = p.chromium.connect_over_cdp(endpoint_url)
+    page = browser.contexts[0].pages[0]
+    page.goto("https://browserscan.net/bot-detection")
+
+sb.sleep(3)
+sb.driver.quit()
+```
+
+--------
+
+📚 The [SeleniumBase/examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder includes over 150 ready-to-run examples of E2E testing. Examples that start with `test_` or end with `_test.py`/`_tests.py` run with `pytest`. Other examples run directly with raw `python` (those generally start with `raw_` to avoid confusion).
 
 🥷 Stealthy CDP Mode examples are located in [./examples/cdp_mode/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode).
 
@@ -73,12 +104,12 @@
 ```python
 from seleniumbase import sb_cdp
 
-url = "https://www.browserscan.net/bot-detection"
-sb = sb_cdp.Chrome(url, locale="en", ad_block=True)
-sb.flash("Test Results", duration=3, pause=1)
+sb = sb_cdp.Chrome(locale="en", ad_block=True)
+sb.open("https://browserscan.net/bot-detection")
+sb.flash("Test Results", duration=1.5, pause=0.5)
 sb.assert_element('strong:contains("Normal")')
 print("Bot Not Detected")
-sb.flash('strong:contains("Normal")', duration=3, pause=2)
+sb.flash('strong:contains("Normal")', pause=1)
 ```
 
 <img src="https://seleniumbase.github.io/other/b_scan_results.jpg" width="628" alt="Stealthy architecture flowchart" />
@@ -95,14 +126,17 @@ endpoint_url = sb.get_endpoint_url()
 with sync_playwright() as p:
     browser = p.chromium.connect_over_cdp(endpoint_url)
     page = browser.contexts[0].pages[0]
-    page.goto("https://www.browserscan.net/bot-detection")
+    page.goto("https://browserscan.net/bot-detection")
     page.wait_for_timeout(500)
-    sb.flash("Test Results", duration=3, pause=1)
+    sb.flash("Test Results", duration=1.5, pause=0.5)
     sb.assert_element('strong:contains("Normal")')
-    sb.flash('strong:contains("Normal")', duration=3, pause=2)
+    print("Bot Not Detected")
+    sb.flash('strong:contains("Normal")', pause=1)
 ```
 
 --------
+
+<h3 align="left">🌐 CLI Options for Supported Chromium Browsers</h3>
 
 💡 You can set which Chromium browser to use via command-line options:
 

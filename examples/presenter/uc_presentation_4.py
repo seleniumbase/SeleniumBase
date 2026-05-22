@@ -475,28 +475,26 @@ class UCPresentationClass(BaseCase):
             sb.scroll_into_view("a#advSearch")
             sb.sleep(0.7)
             sb.click("a#advSearch")
-            sb.sleep(0.5)
-            sb.cdp.click("a#advSearch")
             sb.sleep(1.2)
-            sb.cdp.click('img[src*="img/pokedex/detail/025.png"]')
-            sb.cdp.assert_text("Pikachu", 'div[class*="title"]')
-            sb.cdp.assert_element('img[alt="Pikachu"]')
-            sb.cdp.scroll_into_view("div.pokemon-ability-info")
+            sb.click('img[src*="img/pokedex/detail/025.png"]')
+            sb.assert_text("Pikachu", 'div[class*="title"]')
+            sb.assert_element('img[alt="Pikachu"]')
+            sb.scroll_into_view("div.pokemon-ability-info")
             sb.sleep(1.2)
-            sb.cdp.flash('div[class*="title"]')
-            sb.cdp.flash('img[alt="Pikachu"]')
-            sb.cdp.flash("div.pokemon-ability-info")
-            name = sb.cdp.get_text("label.styled-select")
-            info = sb.cdp.get_text("div.version-descriptions p.active")
+            sb.flash('div[class*="title"]')
+            sb.flash('img[alt="Pikachu"]')
+            sb.flash("div.pokemon-ability-info")
+            name = sb.get_text("label.styled-select")
+            info = sb.get_text("div.version-descriptions p.active")
             print("*** %s: ***\n* %s" % (name, info))
             sb.sleep(2)
-            sb.cdp.highlight_overlay("div.pokemon-ability-info")
+            sb.highlight_overlay("div.pokemon-ability-info")
             sb.sleep(2)
-            sb.cdp.open("https://events.pokemon.com/EventLocator/")
+            sb.open("https://events.pokemon.com/EventLocator/")
             sb.sleep(2)
-            sb.cdp.click('span:contains("Championship")')
+            sb.click('span:contains("Championship")')
             sb.sleep(2)
-            events = sb.cdp.select_all("div.event-info__title")
+            events = sb.select_all("div.event-info__title")
             print("*** Pokémon Championship Events: ***")
             for event in events:
                 print("* " + event.text)
@@ -518,7 +516,7 @@ class UCPresentationClass(BaseCase):
             sb.sleep(1.8)
             continue_button = 'button:contains("Continue shopping")'
             if sb.is_element_visible(continue_button):
-                sb.cdp.gui_click_element(continue_button)
+                sb.gui_click_element(continue_button)
                 sb.sleep(0.6)
             sb.click('input[aria-label="Search"]')
             sb.sleep(1.2)
@@ -527,10 +525,10 @@ class UCPresentationClass(BaseCase):
             sb.press_keys('input[aria-label="Search"]', search + "\n")
             sb.sleep(3.8)
             if sb.is_element_visible("#px-captcha"):
-                sb.cdp.gui_click_and_hold("#px-captcha", 7.2)
+                sb.gui_click_and_hold("#px-captcha", 7.2)
                 sb.sleep(3.2)
                 if sb.is_element_visible("#px-captcha"):
-                    sb.cdp.gui_click_and_hold("#px-captcha", 4.2)
+                    sb.gui_click_and_hold("#px-captcha", 4.2)
                     sb.sleep(3.2)
             sb.remove_elements('[data-testid="skyline-ad"]')
             sb.remove_elements('[data-testid="sba-container"]')
@@ -617,37 +615,33 @@ class UCPresentationClass(BaseCase):
         with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
             url = "https://www.easyjet.com/en/"
             sb.activate_cdp_mode(url)
-            sb.sleep(2)
-            sb.click_if_visible("button#ensCloseBanner")
-            sb.sleep(1.2)
+            sb.sleep(1.5)
+            sb.click_if_visible("button#ensRejectAds", timeout=2)
+            sb.sleep(1)
             sb.click('input[name="from"]')
-            sb.sleep(1.2)
+            sb.sleep(1)
             sb.type('input[name="from"]', "London Gatwick")
-            sb.sleep(0.6)
-            sb.click_if_visible("button#ensCloseBanner")
-            sb.sleep(0.6)
+            sb.sleep(1)
             sb.click('span[data-testid="airport-name"]')
-            sb.sleep(1.2)
+            sb.sleep(1)
             sb.type('input[name="to"]', "Paris")
-            sb.sleep(1.2)
+            sb.sleep(1)
             sb.click('span[data-testid="airport-name"]')
-            sb.sleep(1.2)
+            sb.sleep(1)
             sb.click('input[name="when"]')
-            sb.sleep(1.2)
-            sb.cdp.click(
-                '[data-testid="month"]:last-of-type'
-                ' [aria-disabled="false"]'
-            )
-            sb.sleep(1.2)
+            sb.sleep(1)
             sb.click(
-                '[data-testid="month"]:last-of-type'
-                ' [aria-disabled="false"]'
+                '[data-testid="month"]:last-of-type [aria-disabled="false"]'
             )
-            sb.sleep(1.2)
+            sb.sleep(1)
+            sb.click(
+                '[data-testid="month"]:last-of-type [aria-disabled="false"]'
+            )
+            sb.sleep(1)
             sb.click('button[data-testid="submit"]')
-            sb.sleep(3.5)
+            sb.sleep(4)
             sb.connect()
-            sb.sleep(4.2)
+            sb.sleep(1)
             for window in sb.driver.window_handles:
                 sb.switch_to_window(window)
                 if "/buy/flights" in sb.get_current_url():
@@ -657,9 +651,7 @@ class UCPresentationClass(BaseCase):
             for day in days:
                 if not day.text.strip():
                     continue
-                print(
-                    "\n\n**** " + " ".join(day.text.split("\n")[0:2]) + " ****"
-                )
+                print("**** " + " ".join(day.text.split("\n")[0:2]) + " ****")
                 fares = day.find_elements(
                     "css selector", 'button[class*="flightDet"]'
                 )
@@ -793,9 +785,9 @@ class UCPresentationClass(BaseCase):
             sb.sleep(0.6)
             sb.click('form button[type="submit"]')
             sb.sleep(4.8)
-            if len(sb.cdp.get_tabs()) > 1:
-                sb.cdp.close_active_tab()
-                sb.cdp.switch_to_newest_tab()
+            if len(sb.get_tabs()) > 1:
+                sb.close_active_tab()
+                sb.switch_to_newest_tab()
                 sb.sleep(0.6)
             sb.sleep(0.8)
             for y in range(1, 9):

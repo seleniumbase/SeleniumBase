@@ -521,6 +521,7 @@ self.generate_traffic_chain(pages, loops=1)
 
 ############
 
+self.select(selector, by="css selector", timeout=None)
 self.get_element(selector, by="css selector", timeout=None)
 # Duplicates:
 # self.wait_for_selector(selector, by="css selector", timeout=None)
@@ -707,6 +708,7 @@ self.uc_gui_handle_captcha(frame="iframe")
 
 driver.default_get(url)  # Because driver.get(url) works differently in UC Mode
 driver.open(url)  # Like driver.get(), but allows partial URLs without protocol
+driver.goto(url)  # Same as driver.open(url)
 driver.click(selector)
 driver.click_link(link_text)
 driver.click_if_visible(selector)
@@ -722,6 +724,8 @@ driver.assert_text(text, selector)
 driver.assert_exact_text(text, selector)
 driver.find_element(selector)
 driver.find_elements(selector)
+driver.select(selector)
+driver.select_all(selector)
 driver.wait_for_element(selector)
 driver.wait_for_element_visible(selector)
 driver.wait_for_element_present(selector)
@@ -751,11 +755,10 @@ driver.get_parent(element)
 driver.get_current_url()
 driver.get_page_source()
 driver.get_title()
+driver.switch_to_newest_tab()
 driver.switch_to_frame(frame="iframe")
 driver.is_cdp_mode_active()
 driver.is_connected()  # UC / CDP Mode can disconnect WebDriver
-
-############
 
 # "driver"-specific methods added (or modified) by SeleniumBase for UC Mode:
 

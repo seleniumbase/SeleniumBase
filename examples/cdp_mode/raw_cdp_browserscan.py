@@ -1,8 +1,8 @@
 from seleniumbase import sb_cdp
 
-url = "https://www.browserscan.net/bot-detection"
-sb = sb_cdp.Chrome(url, locale="en", ad_block=True)
-sb.flash("Test Results", duration=3, pause=1)
+sb = sb_cdp.Chrome(locale="en", ad_block=True)
+sb.open("https://browserscan.net/bot-detection")
+sb.flash("Test Results", duration=1.5, pause=0.5)
 sb.assert_element('strong:contains("Normal")')
 print("Bot Not Detected")
-sb.flash('strong:contains("Normal")', duration=3, pause=2)
+sb.flash('strong:contains("Normal")', pause=1)

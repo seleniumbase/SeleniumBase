@@ -25,9 +25,9 @@ with SB(uc=True, test=True, locale="en", guest=True, pls="none") as sb:
     sb.sleep(0.6)
     sb.click('form button[type="submit"]')
     sb.sleep(4.8)
-    if len(sb.cdp.get_tabs()) > 1:
-        sb.cdp.close_active_tab()
-        sb.cdp.switch_to_newest_tab()
+    if len(sb.get_tabs()) > 1:
+        sb.close_active_tab()
+        sb.switch_to_newest_tab()
         sb.sleep(0.6)
     sb.sleep(0.8)
     for y in range(1, 9):

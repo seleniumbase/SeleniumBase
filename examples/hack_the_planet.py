@@ -85,7 +85,7 @@ class HackTests(BaseCase):
         self.highlight('a[href*="google.com/img"]', loops=3)
         self.highlight('form[role="search"]', loops=8)
 
-        self.open("https://github.com/features/actions")
+        self.open("https://github.com/solutions/use-case/devops")
         self.set_text_content("#hero-section-brand-heading", aybabtu)
         self.highlight("#hero-section-brand-heading", loops=14, scroll=False)
 
@@ -172,23 +172,12 @@ class HackTests(BaseCase):
             self.highlight("div.intro-title", loops=8, scroll=False)
             self.highlight("h4", loops=8, scroll=False)
 
-        self.open("https://slack.com/help/articles/204714258-Giphy-for-Slack")
+        self.open(
+            "https://slack.com/help/articles/204379773-Upload-a-Slack-icon"
+        )
         self.set_text_content("h1", aybabtu)
-        self.set_text_content('a[prettyslug="getting-started"]', "ALL")
-        self.set_text_content('a[prettyslug="using-slack"]', "YOUR")
-        self.set_text_content('a[prettyslug="your-profile"]', "BASE")
-        self.set_text_content('a[prettyslug="connect-tools"]', "ARE")
-        self.set_text_content('a[prettyslug="administration"]', "BELONG")
-        self.set_text_content('a[prettyslug*="tutorials"]', "TO US")
         self.set_text_content("h1.article_title", aybabtu)
         self.highlight("h1", loops=4, scroll=False)
-        self.highlight("div#global_menu", loops=2, scroll=False)
-        self.highlight('a[prettyslug*="g-started"]', loops=1, scroll=False)
-        self.highlight('a[prettyslug="using-slack"]', loops=1, scroll=False)
-        self.highlight('a[prettyslug="your-profile"]', loops=2, scroll=False)
-        self.highlight('a[prettyslug="connect-tools"]', loops=1, scroll=False)
-        self.highlight('a[prettyslug="administration"]', loops=1, scroll=False)
-        self.highlight('a[prettyslug*="tutorials"]', loops=2, scroll=False)
         self.highlight("h1.article_title", loops=5, scroll=False)
 
         self.open("https://kubernetes.io/")
@@ -198,8 +187,7 @@ class HackTests(BaseCase):
         self.set_text_content('nav a[href="/careers/"]', "ARE")
         self.set_text_content('nav a[href="/partners/"]', "BELONG")
         self.set_text_content('nav a[href="/community/"]', "TO")
-        self.set_text_content("nav #navbarDropdown", "US")
-        self.set_text_content("nav #navbarDropdownMenuLink", ".")
+        self.set_text_content("nav a.dropdown-toggle", "US")
         if self.is_element_visible("h1"):
             self.set_text_content("h1", aybabtu)
         self.highlight("nav ul.navbar-nav", loops=3, scroll=False)
@@ -209,7 +197,7 @@ class HackTests(BaseCase):
         self.highlight('nav a[href="/careers/"]', loops=1, scroll=False)
         self.highlight('nav a[href="/partners/"]', loops=1, scroll=False)
         self.highlight('nav a[href="/community/"]', loops=1, scroll=False)
-        self.highlight("nav #navbarDropdown", loops=2, scroll=False)
+        self.highlight("nav a.dropdown-toggle", loops=2, scroll=False)
         if self.is_element_visible("h1"):
             self.highlight("h1", loops=6, scroll=False)
 

@@ -8,8 +8,8 @@ with SB(uc=True, test=True) as sb:
         "(KHTML, like Gecko) Mobile Safari/537.36"
     )
     sb.activate_cdp_mode(agent=agent)
-    tab = sb.cdp.get_active_tab()
-    loop = sb.cdp.get_event_loop()
+    tab = sb.get_active_tab()
+    loop = sb.get_event_loop()
     loop.run_until_complete(
         tab.send(
             mycdp.emulation.set_device_metrics_override(

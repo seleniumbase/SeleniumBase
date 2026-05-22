@@ -154,14 +154,14 @@ with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     sb.assert_element('img[alt="Pikachu"]')
     sb.scroll_into_view("div.pokemon-ability-info")
     sb.sleep(1.2)
-    sb.cdp.flash('div[class*="title"]')
-    sb.cdp.flash('img[alt="Pikachu"]')
-    sb.cdp.flash("div.pokemon-ability-info")
+    sb.flash('div[class*="title"]')
+    sb.flash('img[alt="Pikachu"]')
+    sb.flash("div.pokemon-ability-info")
     name = sb.get_text("label.styled-select")
     info = sb.get_text("div.version-descriptions p.active")
     print("*** %s: ***\n* %s" % (name, info))
     sb.sleep(2)
-    sb.cdp.highlight_overlay("div.pokemon-ability-info")
+    sb.highlight_overlay("div.pokemon-ability-info")
     sb.sleep(2)
     sb.open("https://events.pokemon.com/EventLocator/")
     sb.sleep(2)
@@ -186,10 +186,10 @@ with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
 ```python
 from seleniumbase import SB
 
-with SB(uc=True, test=True, locale="en") as sb:
+with SB(uc=True, test=True, locale="en", guest=True) as sb:
     url = "https://www.hyatt.com/"
     sb.activate_cdp_mode(url)
-    sb.sleep(3.2)
+    sb.sleep(3.4)
     sb.click_if_visible('button[aria-label="Close"]')
     sb.sleep(0.1)
     sb.click_if_visible("#onetrust-reject-all-handler")
@@ -200,11 +200,11 @@ with SB(uc=True, test=True, locale="en") as sb:
     sb.click('li[data-js="suggestion"]')
     sb.sleep(0.6)
     sb.click_if_visible('button[aria-label="Close"]')
-    sb.sleep(0.6)
+    sb.sleep(0.8)
     sb.click("button.be-button-shop")
     sb.sleep(1)
     sb.click_if_visible('[label="Find Hotels"]')
-    sb.sleep(5)
+    sb.sleep(5.5)
     card_info = 'div[data-booking-status="BOOKABLE"] [class*="HotelCard_info"]'
     hotels = sb.select_all(card_info)
     print("Hyatt Hotels in %s:" % location)
@@ -285,7 +285,7 @@ with SB(uc=True, test=True, ad_block=True) as sb:
     sb.sleep(1.8)
     continue_button = 'button:contains("Continue shopping")'
     if sb.is_element_visible(continue_button):
-        sb.cdp.gui_click_element(continue_button)
+        sb.gui_click_element(continue_button)
         sb.sleep(0.6)
     sb.click('input[aria-label="Search"]')
     sb.sleep(1.2)
@@ -294,10 +294,10 @@ with SB(uc=True, test=True, ad_block=True) as sb:
     sb.press_keys('input[aria-label="Search"]', search + "\n")
     sb.sleep(3.8)
     if sb.is_element_visible("#px-captcha"):
-        sb.cdp.gui_click_and_hold("#px-captcha", 7.2)
+        sb.gui_click_and_hold("#px-captcha", 7.2)
         sb.sleep(4.2)
         if sb.is_element_visible("#px-captcha"):
-            sb.cdp.gui_click_and_hold("#px-captcha", 4.2)
+            sb.gui_click_and_hold("#px-captcha", 4.2)
             sb.sleep(3.2)
     sb.remove_elements('[data-testid="skyline-ad"]')
     sb.remove_elements('[data-testid="sba-container"]')

@@ -7,7 +7,7 @@ with SB(uc=True, test=True, ad_block=True) as sb:
     sb.click_if_visible('button[aria-label="Dismiss"]')
     sb.sleep(1)
     for i in range(42):
-        sb.cdp.scroll_down(16)
+        sb.scroll_down(16)
     print(sb.get_page_title())
     sb.save_as_pdf_to_logs()
     sb.save_page_source_to_logs()

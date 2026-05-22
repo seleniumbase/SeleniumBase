@@ -522,7 +522,7 @@ class UCPresentationClass(BaseCase):
                 '<mk-9>    sb.sleep(3)</mk-9>'
                 '\n'
                 '<mk-10>    for i in range(16):</mk-10>\n'
-                '<mk-11>        sb.cdp.scroll_down(16)</mk-11>\n'
+                '<mk-11>        sb.scroll_down(16)</mk-11>\n'
                 '<mk-12>    print(sb.get_page_title())</mk-12>\n'
                 '<mk-13>    sb.save_as_pdf_to_logs()</mk-13>\n'
                 '<mk-14>    sb.save_page_source_to_logs()</mk-14>\n'

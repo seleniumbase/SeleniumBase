@@ -6,7 +6,7 @@ with SB(uc=True, test=True, ad_block=True) as sb:
     sb.sleep(1.8)
     continue_button = 'button:contains("Continue shopping")'
     if sb.is_element_visible(continue_button):
-        sb.cdp.gui_click_element(continue_button)
+        sb.gui_click_element(continue_button)
         sb.sleep(0.6)
     sb.click('input[aria-label="Search"]')
     sb.sleep(1.2)
@@ -15,10 +15,10 @@ with SB(uc=True, test=True, ad_block=True) as sb:
     sb.press_keys('input[aria-label="Search"]', search + "\n")
     sb.sleep(3.8)
     if sb.is_element_visible("#px-captcha"):
-        sb.cdp.gui_click_and_hold("#px-captcha", 7.2)
+        sb.gui_click_and_hold("#px-captcha", 7.2)
         sb.sleep(4.2)
         if sb.is_element_visible("#px-captcha"):
-            sb.cdp.gui_click_and_hold("#px-captcha", 4.2)
+            sb.gui_click_and_hold("#px-captcha", 4.2)
             sb.sleep(3.2)
     sb.remove_elements('[data-testid="skyline-ad"]')
     sb.remove_elements('[data-testid="sba-container"]')

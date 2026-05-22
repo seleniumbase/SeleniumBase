@@ -176,8 +176,11 @@ def extend_driver(
     driver.forward = DM.forward
     driver.refresh = DM.refresh
     driver.locator = DM.locator
+    driver.select = DM.select
+    driver.select_all = DM.select_all
     page = types.SimpleNamespace()
     page.open = DM.open_url
+    page.goto = DM.open_url
     page.click = DM.click
     page.click_link = DM.click_link
     page.click_if_visible = DM.click_if_visible
@@ -210,6 +213,8 @@ def extend_driver(
     page.find_element = DM.find_element
     page.find_elements = DM.find_elements
     page.locator = DM.locator
+    page.select = DM.select
+    page.select_all = DM.select_all
     page.get_current_url = DM.get_current_url
     page.get_page_source = DM.get_page_source
     page.get_title = DM.get_title
@@ -231,6 +236,7 @@ def extend_driver(
     js.highlight = DM.highlight
     driver.js = js
     driver.open = DM.open_url
+    driver.goto = DM.open_url
     driver.click = DM.click
     driver.click_link = DM.click_link
     driver.click_if_visible = DM.click_if_visible
@@ -291,6 +297,7 @@ def extend_driver(
     driver.switch_to_default_window = DM.switch_to_default_window
     driver.switch_to_newest_window = DM.switch_to_newest_window
     driver.open_new_window = DM.open_new_window
+    driver.switch_to_newest_tab = DM.switch_to_newest_tab
     driver.open_new_tab = DM.open_new_tab
     driver.switch_to_window = DM.switch_to_window
     driver.switch_to_tab = DM.switch_to_tab
@@ -759,6 +766,7 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
     CDPM = sb_cdp.CDPMethods(loop, page, driver)
     cdp.get = CDPM.get
     cdp.open = CDPM.open
+    cdp.goto = CDPM.goto
     cdp.reload = CDPM.reload
     cdp.refresh = CDPM.refresh
     cdp.add_handler = CDPM.add_handler
@@ -972,6 +980,7 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
     driver.solve_captcha = CDPM.solve_captcha
     driver.click_captcha = CDPM.click_captcha
     driver.find_element_by_text = CDPM.find_element_by_text
+    driver.flash = CDPM.flash
     driver._is_using_cdp = True
     if (
         getattr(sb_config, "_cdp_proxy", None)

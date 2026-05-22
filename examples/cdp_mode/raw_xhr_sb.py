@@ -62,12 +62,12 @@ with SB(uc=True, test=True, locale="en") as sb:
     listenXHR(tab)
 
     # Change url to something that makes ajax requests
-    sb.cdp.open("https://learn.microsoft.com/en-us/")
+    sb.open("https://learn.microsoft.com/en-us/")
     time.sleep(1)
     for i in range(9):
-        sb.cdp.scroll_down(6)
+        sb.scroll_down(6)
 
-    loop = sb.cdp.get_event_loop()
+    loop = sb.get_event_loop()
     xhr_responses = loop.run_until_complete(receiveXHR(tab, xhr_requests))
     for response in xhr_responses:
         print(c1 + "*** ==> XHR Request URL <== ***" + cr)

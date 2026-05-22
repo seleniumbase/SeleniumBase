@@ -378,6 +378,9 @@ class Tab(Connection):
     async def open(self, url="about:blank"):
         return await self.get(url=url)
 
+    async def goto(self, url="about:blank"):
+        return await self.get(url=url)
+
     async def query_selector_all(
         self,
         selector: str,
@@ -1745,6 +1748,10 @@ class Tab(Connection):
             '[data-callback="onCaptchaSuccess"]'
         ):
             selector = '[data-callback="onCaptchaSuccess"]'
+        elif await self.is_element_present(
+            '[class*="captcha"] div:not([class])'
+        ):
+            selector = '[class*="captcha"] div:not([class])'
         elif await self.is_element_present(
             "div:not([class]):not([id]):not([aria-label]) > "
             "div:not([class]):not([id]):not([aria-label])"

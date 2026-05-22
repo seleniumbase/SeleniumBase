@@ -12,7 +12,7 @@ def get_canvas_pixel_colors_at_top_left(sb):
 
 
 with SB(uc=True, test=True) as sb:
-    # Testing sb.cdp.click_with_offset()
+    # Testing click_with_offset()
     url = "https://seleniumbase.io/canvas/"
     sb.activate_cdp_mode(url)
     sb.assert_title_contains("Canvas")
@@ -25,7 +25,7 @@ with SB(uc=True, test=True) as sb:
     sb.assert_equal(rgb, [39, 43, 56])  # Blue by hamburger
 
 with SB(uc=True, test=True) as sb:
-    # Testing sb.cdp.gui_click_with_offset()
+    # Testing gui_click_with_offset()
     url = "https://seleniumbase.io/other/canvas"
     sb.activate_cdp_mode(url)
     sb.assert_title_contains("Canvas")

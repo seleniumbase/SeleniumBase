@@ -8,7 +8,7 @@ with SB(uc=True, locale="es") as sb:
     sb.sleep(1)
     sb.solve_captcha()
     sb.sleep(2)
-    endpoint_url = sb.cdp.get_endpoint_url()
+    endpoint_url = sb.get_endpoint_url()
 
     with sync_playwright() as p:
         browser = p.chromium.connect_over_cdp(endpoint_url)
