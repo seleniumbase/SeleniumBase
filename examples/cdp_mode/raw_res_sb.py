@@ -27,8 +27,8 @@ async def receive_handler(event: mycdp.network.ResponseReceived):
 
 with SB(uc=True, test=True, locale="en") as sb:
     sb.activate_cdp_mode("about:blank")
-    sb.cdp.add_handler(mycdp.network.RequestWillBeSent, send_handler)
-    sb.cdp.add_handler(mycdp.network.ResponseReceived, receive_handler)
+    sb.add_handler(mycdp.network.RequestWillBeSent, send_handler)
+    sb.add_handler(mycdp.network.ResponseReceived, receive_handler)
     url = "https://seleniumbase.io/apps/calculator"
     sb.open(url)
     sb.sleep(1)
