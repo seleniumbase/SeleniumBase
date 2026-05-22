@@ -1,9 +1,9 @@
 from seleniumbase import SB
 
-with SB(uc=True, test=True, locale="en") as sb:
+with SB(uc=True, test=True, locale="en", guest=True) as sb:
     url = "https://www.hyatt.com/"
     sb.activate_cdp_mode(url)
-    sb.sleep(3.2)
+    sb.sleep(3.4)
     sb.click_if_visible('button[aria-label="Close"]')
     sb.sleep(0.1)
     sb.click_if_visible("#onetrust-reject-all-handler")
@@ -14,11 +14,11 @@ with SB(uc=True, test=True, locale="en") as sb:
     sb.click('li[data-js="suggestion"]')
     sb.sleep(0.6)
     sb.click_if_visible('button[aria-label="Close"]')
-    sb.sleep(0.6)
+    sb.sleep(0.8)
     sb.click("button.be-button-shop")
     sb.sleep(1)
     sb.click_if_visible('[label="Find Hotels"]')
-    sb.sleep(5)
+    sb.sleep(5.5)
     card_info = 'div[data-booking-status="BOOKABLE"] [class*="HotelCard_info"]'
     hotels = sb.select_all(card_info)
     print("Hyatt Hotels in %s:" % location)

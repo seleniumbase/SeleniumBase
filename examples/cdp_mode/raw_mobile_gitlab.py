@@ -4,8 +4,8 @@ from seleniumbase import SB
 with SB(uc=True, test=True) as sb:
     url = "https://gitlab.com/users/sign_in"
     sb.activate_cdp_mode()
-    tab = sb.cdp.get_active_tab()
-    loop = sb.cdp.get_event_loop()
+    tab = sb.get_active_tab()
+    loop = sb.get_event_loop()
     loop.run_until_complete(
         tab.send(
             mycdp.emulation.set_device_metrics_override(

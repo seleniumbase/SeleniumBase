@@ -25,7 +25,7 @@ async def request_paused_handler(event, tab):
 
 with SB(uc=True, test=True, locale="en") as sb:
     sb.activate_cdp_mode("about:blank")
-    sb.cdp.add_handler(mycdp.fetch.RequestPaused, request_paused_handler)
+    sb.add_handler(mycdp.fetch.RequestPaused, request_paused_handler)
     url = "https://gettyimages.com/photos/firefly-2003-nathan"
     sb.open(url)
-    sb.sleep(5)
+    sb.sleep(4)

@@ -28,8 +28,8 @@ async def receive_handler(event: mycdp.network.ResponseReceived):
 with SB(uc=True, test=True, locale="en", pls="none") as sb:
     url = "https://www.nike.com/"
     sb.activate_cdp_mode(url)
-    sb.cdp.add_handler(mycdp.network.RequestWillBeSent, send_handler)
-    sb.cdp.add_handler(mycdp.network.ResponseReceived, receive_handler)
+    sb.add_handler(mycdp.network.RequestWillBeSent, send_handler)
+    sb.add_handler(mycdp.network.ResponseReceived, receive_handler)
     sb.sleep(2.5)
     sb.click('[data-testid="user-tools-container"] search')
     sb.sleep(1.5)
@@ -41,4 +41,3 @@ with SB(uc=True, test=True, locale="en", pls="none") as sb:
         print('**** Found results for "%s": ****' % search)
     for element in elements:
         print("* " + element.text)
-    sb.sleep(2)

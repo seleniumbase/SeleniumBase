@@ -6,7 +6,7 @@ with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     sb.sleep(2.2)
     shadow_head = "div.main-content div"
     if sb.is_element_present(shadow_head):
-        sb.cdp.gui_click_element(shadow_head)
+        sb.gui_click_element(shadow_head)
         sb.sleep(1.5)
     sb.assert_text("Discover the world's scientific knowledge")
     sb.click_if_visible('button[aria-label="Close"]')

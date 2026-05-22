@@ -8,9 +8,9 @@ with SB(uc=True, test=True, ad_block=True) as sb:
     sb.sleep(1.6)
     query = "Jerry Seinfeld"
     sb.press_keys(input_field, query)
-    sb.sleep(1.6)
+    sb.sleep(1.8)
     sb.click("li#active-result-item")
-    sb.sleep(4.2)
+    sb.sleep(4.4)
     print('*** SeatGeek Search for "%s":' % query)
     item_selector = '[data-testid="listing-item"]'
     for item in sb.find_elements(item_selector):
