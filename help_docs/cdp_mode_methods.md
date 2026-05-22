@@ -9,6 +9,7 @@ Here's a list of SeleniumBase CDP Mode method definitions, which are defined in 
 ```python
 sb.cdp.get(url, **kwargs)
 sb.cdp.open(url, **kwargs)  # Same as sb.cdp.get(url, **kwargs)
+sb.cdp.goto(url, **kwargs)  # Same as sb.cdp.get(url, **kwargs)
 sb.cdp.reload(ignore_cache=True, script_to_evaluate_on_load=None)
 sb.cdp.refresh(*args, **kwargs)
 sb.cdp.get_event_loop()
@@ -276,7 +277,8 @@ Methods: (Sometimes `tab` is named `page` in examples)
 
 ```python
 await tab.get(url="about:blank")
-await tab.open(url="about:blank")
+await tab.open(url="about:blank")  # Same as tab.open()
+await tab.goto(url="about:blank")  # Same as tab.open()
 await tab.find(text, best_match=False, timeout=10)  # text can be selector
 await tab.find_all(text, timeout=10)  # text can be selector
 await tab.select(selector, timeout=10)
@@ -300,8 +302,7 @@ await tab.set_window_size(left=0, top=0, width=1280, height=1024)
 await tab.set_window_rect(left=0, top=0, width=1280, height=1024)
 await tab.activate()
 await tab.bring_to_front()
-await tab.set_window_state(
-    left=0, top=0, width=1280, height=720, state="normal")
+await tab.set_window_state(left=0, top=0, width=1280, height=720, state="normal")
 await tab.get_navigation_history()
 await tab.get_user_agent()
 await tab.get_cookie_string()
@@ -315,8 +316,7 @@ await tab.wait_for(selector="", text="", timeout=10)
 await tab.set_attributes(selector, attribute, value)
 await tab.internalize_links()
 await tab.download_file(url, filename=None)
-await tab.save_screenshot(
-    filename="auto", format="png", full_page=False)
+await tab.save_screenshot(filename="auto", format="png", full_page=False)
 await tab.print_to_pdf(filename="auto")
 await tab.set_download_path(path)
 await tab.get_all_linked_sources()
