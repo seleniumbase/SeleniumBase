@@ -131,16 +131,19 @@ nav:
     - 🕵️ The HTML Inspector: help_docs/html_inspector.md
     - 🤖 NodeJS Test Runners: https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js
   - Presentations:
+    - 🔰 Fundamentals Demo: https://seleniumbase.io/other/fundamentals.html
+    - 🥷 Undetectable Automation 5: https://seleniumbase.io/other/ua_presentation_5.html
+    - ⚙️ Python Virtual Envs: https://seleniumbase.io/other/py_virtual_envs.html
     - ✅ Core Presentation: https://seleniumbase.io/other/core_presentation.html
     - 🎞️ Presenter Demo: https://seleniumbase.io/other/presenter.html
     - 📊 Chart Maker Demo: https://seleniumbase.io/other/chart_presentation.html
-    - ⚙️ Python Virtual Envs: https://seleniumbase.io/other/py_virtual_envs.html
-    - 🔰 Fundamentals Demo: https://seleniumbase.io/other/fundamentals.html
   - Demo Pages:
     - 🍵 Coffee Cart (Test App): https://seleniumbase.io/coffee/
     - 📑 Demo Page (Test Page): https://seleniumbase.io/demo_page
     - 🔑 Simple App (Test Page): https://seleniumbase.io/simple/login
     - 🔑 MFA Login (Test App): https://seleniumbase.io/realworld/login
+    - 🔐 Anti-bot (Test Page): https://seleniumbase.io/antibot/login
+    - 🔐 Hobbit App (Test Page): https://seleniumbase.io/hobbit/login
     - 📝 TinyMCE (Test Page): https://seleniumbase.io/tinymce/
     - 🔢 Calculator (Test App): https://seleniumbase.io/apps/calculator
     - 📱 Device Farm (Virtual): https://seleniumbase.io/devices/
@@ -164,6 +167,7 @@ nav:
     - 🔐 reCAPTCHA v2 Test: https://seleniumbase.io/apps/recaptcha
     - 🔐 reCAPTCHA v2 on Form: https://seleniumbase.io/apps/form_recaptcha
     - 🔐 reCAPTCHA, invisible: https://seleniumbase.io/apps/invisible_recaptcha
+    - 🔑 Brotector CAPTCHA: https://seleniumbase.io/apps/brotector
   - Additional Help Docs:
     - 📑 Table of Contents: help_docs/ReadMe.md
     - 🖼️ How to handle iframes: help_docs/handling_iframes.md
