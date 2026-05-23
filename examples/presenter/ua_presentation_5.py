@@ -1,18 +1,40 @@
 # https://www.youtube.com/watch?v=R9HNsnbYh8o
+# https://seleniumbase.io/other/ua_presentation_5.html
 from seleniumbase import BaseCase
 BaseCase.main(__name__, __file__)
 
 
-class UCPresentationClass(BaseCase):
+class UA_Presentation_Class(BaseCase):
     def test_presentation_5(self):
         self.open("data:,")
         self.set_window_position(4, 40)
         self._output_file_saves = False
         self.create_presentation(theme="serif", transition="none")
-        self.add_slide("<h2>Press SPACE to continue!</h2>\n")
+        self.add_slide(
+            "<h2>Undetectable Automation:<br />5th Edition</h2>\n"
+            "<br /><hr /><br />"
+            "<h2>Press SPACE to continue!</h2>\n"
+        )
         self.add_slide(
             '<img src="https://seleniumbase.io/other/ua_title_5th.jpg"'
             ' width="100%">'
+        )
+        self.add_slide(
+            "<h3>Now on YouTube!</h3>\n"
+            "<hr />"
+            '<p><a href="https://youtube.com/watch?v=R9HNsnbYh8o" '
+            'target="_blank">'
+            'https://youtube.com/watch?v=R9HNsnbYh8o</a></p>\n'
+            '<a href="https://youtube.com/watch?v=R9HNsnbYh8o" '
+            'target="_blank">'
+            '<img src="https://seleniumbase.io/other/ua_5th_on_yt.jpg"'
+            ' width="54%"></a>'
+        )
+        self.add_slide(
+            '<a href="https://youtube.com/watch?v=R9HNsnbYh8o" '
+            'target="_blank">'
+            '<img src="https://seleniumbase.io/other/ua_5th_on_yt.jpg"'
+            ' width="80%"></a>'
         )
         self.add_slide(
             "<h4>This continues the series that started here...</h4>"
@@ -48,9 +70,8 @@ class UCPresentationClass(BaseCase):
             "<mk-5>✅ And many more!</mk-5><br /><br />"
         )
         self.add_slide(
-            "<p><b>Get ready for some serious hacking!</b></p>"
-            '<img src="https://seleniumbase.io/other/hackers_at_comp.jpg"'
-            ' width="80%">'
+            '<img src="https://seleniumbase.io/other/serious_hacking.jpg"'
+            ' width="75%">'
         )
         self.add_slide(
             "<br /><mk-0><b>Let's warm up with a few live demos<br />"
@@ -71,8 +92,10 @@ class UCPresentationClass(BaseCase):
         )
         self.add_slide(
             "<h4>This continues my Undetectable Automation series:</h4>"
+            '<a href="https://www.youtube.com/@MichaelMintz/videos" '
+            'target="_blank">'
             '<img src="https://seleniumbase.io/other/first_4_ua_titles.jpg"'
-            ' width="100%">'
+            ' width="100%"></a>'
         )
         self.add_slide(
             "<h4>That all started with...</h4>"
@@ -106,16 +129,19 @@ class UCPresentationClass(BaseCase):
         self.add_slide(
             "<mk-0>That led to the rise of CDP in order to bypass CAPTCHAs "
             " and bot-detection services again.</mk-0><hr />"
+            '<a href="https://chromedevtools.github.io/devtools-protocol/" '
+            'target="_blank">'
             '<img src="https://seleniumbase.io/other/cdp_logo.jpg"'
-            ' width="50%"><hr />'
+            ' width="50%"></a><hr />'
             "<h5><mk-1>(This was the focus the 4th Undetectable Automation "
             "video.)</mk-1></h5>"
         )
         self.add_slide(
             "<mk-0>Lots of changes have happened since the last<br />"
             "video in the Undetectable Automation series:</mk-0>"
+            '<a href="https://youtu.be/Mr90iQmNsKM" target="_blank">'
             '<img src="https://seleniumbase.io/other/uc4_title.jpg"'
-            ' width="80%">'
+            ' width="80%"></a>'
         )
         self.add_slide(
             "<h4><mk-0>Here are some advancements since then:"
@@ -199,12 +225,15 @@ class UCPresentationClass(BaseCase):
             "<br />a lot of that work for you...)</mk-0></h4>"
         )
         self.add_slide(
+            '<a href="https://github.com/seleniumbase/SeleniumBase" '
+            'target="_blank">'
             '<img src="https://seleniumbase.io/other/sb_github_page2.jpg"'
-            ' width="100%">'
+            ' width="100%"></a>'
         )
         self.add_slide(
+            '<a href="https://youtu.be/PnFD_gSmGUc" target="_blank">'
             '<img src="https://seleniumbase.io/other/stealthy_pw_yt.jpg"'
-            ' width="86%">'
+            ' width="86%"></a>'
         )
         self.add_slide(
             "<mk-0>Contrary to logical thinking,<br />"
@@ -215,6 +244,10 @@ class UCPresentationClass(BaseCase):
             ' width="38%"></p>'
             "<h5><mk-1>If that sounds confusing, "
             "note that JavaScript does not use Java.</mk-1></h5>"
+        )
+        self.add_slide(
+            '<img src="https://seleniumbase.io/other/javascript_vs_java.jpg"'
+            ' width="100%">'
         )
         self.add_slide(
             "<h4><mk-0>SeleniumBase CDP Mode comes in 3 formats:"
@@ -315,13 +348,15 @@ class UCPresentationClass(BaseCase):
         )
         self.add_slide(
             "<h4><mk-0>I have a full YouTube tutorial on that:</mk-0></h4>"
+            '<a href="https://youtu.be/gEZhTfaIxHQ" target="_blank">'
             '<img src="https://seleniumbase.io/other/web_scraping.jpg"'
-            ' width="100%">'
+            ' width="100%"></a>'
         )
         self.add_slide(
             "<h4><mk-0>Same story with stealthy Docker automation:</mk-0></h4>"
+            '<a href="https://youtu.be/DMKlh_-gdGs" target="_blank">'
             '<img src="https://seleniumbase.io/other/stealthy_docker.jpg"'
-            ' width="100%">'
+            ' width="100%"></a>'
         )
         self.add_slide(
             "<h4><mk-1>Note that Docker requires extra config to be stealthy!"
@@ -353,8 +388,10 @@ class UCPresentationClass(BaseCase):
         self.add_slide(
             "<h4><mk-0>The SeleniumBase <code>Dockerfile</code>"
             " has you covered:</mk-0></h4>"
+            '<a href="https://github.com/seleniumbase/SeleniumBase/'
+            'blob/master/Dockerfile" target="_blank">'
             '<img src="https://seleniumbase.io/other/sb_dockerfile.jpg"'
-            ' width="100%">'
+            ' width="100%"></a>'
         )
         self.add_slide(
             "<h4><mk-1>It would be a big mistake to think that you can<br />"
@@ -467,26 +504,26 @@ class UCPresentationClass(BaseCase):
             "<mk-3>✅ Random <code>sleep()</code> calls can help.</mk-3>"
         )
         self.add_slide(
-            "<h4>This is what happens when some anti-bots detect you:</h4>"
-            '<img src="https://seleniumbase.io/other/you_are_blocked.jpg"'
+            "<h4><mk-0>This may happen when some anti-bots detect you:</mk-0>"
+            '</h4><img src="https://seleniumbase.io/other/you_are_blocked.jpg"'
             ' width="90%">'
         )
         self.add_slide(
-            "<h4><mk-0>When that happens, your bot might not get a "
-            "chance to solve a CAPTCHA to prove its humanity.</mk-0></h4>"
+            "<h4><mk-0>If that happens, your bot might not get a chance<br />"
+            "to solve a CAPTCHA to prove its humanity.</mk-0></h4>"
             '<img src="https://seleniumbase.io/other/blocked_captchas.jpg"'
             ' width="70%">'
             "<h4><br /><mk-1>In other cases, your bot may face a challenge..."
             "</mk-1></h4>"
         )
         self.add_slide(
-            "<h4><mk-0>This is what happens when hCAPTCHA detects bots:"
+            "<h4><mk-0>This is what happens if hCAPTCHA detects bots:"
             "</mk-0></h4>"
             '<img src="https://seleniumbase.io/other/hcaptcha_puppy.jpg"'
             ' width="70%">'
         )
         self.add_slide(
-            "<h4><mk-0>This is what happens when reCAPTCHA detects bots:"
+            "<h4><mk-0>This is what happens if reCAPTCHA detects bots:"
             "</mk-0></h4>"
             '<img src="https://seleniumbase.io/other/recaptcha_v2b.png"'
             ' width="100%">'
@@ -494,8 +531,9 @@ class UCPresentationClass(BaseCase):
         self.add_slide(
             "<h4><mk-0>And this is what happens when Gandalf blocks you:"
             "</mk-0></h4>"
+            '<a href="https://seleniumbase.io/hobbit/login" target="_blank">'
             '<img src="https://seleniumbase.io/other/gandalf.jpg"'
-            ' width="90%">'
+            ' width="90%"></a>'
         )
         self.add_slide(
             "<h3><mk-0>Get ready for a web-scraping<br />"
@@ -626,8 +664,10 @@ class UCPresentationClass(BaseCase):
             "Lots of providers out there, like Bright Data.<br />"
             "(Bright Data blogs about SeleniumBase a lot.)</mk-0>"
             "</h5>"
+            '<a href="https://brightdata.com/blog?q=seleniumbase" '
+            'target="_blank">'
             '<img src="https://seleniumbase.io/other/bd_sb.jpg"'
-            ' width="75%">'
+            ' width="75%"></a>'
         )
         self.add_slide(
             "<h4><mk-0>You could also launch your own<br />"
@@ -682,32 +722,47 @@ class UCPresentationClass(BaseCase):
             ' width="80%">'
         )
         self.add_slide(
+            '<a href="https://chromedevtools.github.io/devtools-protocol/tot/'
+            'Fetch/#method-continueRequest" target="_blank">'
             '<img src="https://seleniumbase.io/other/cdp_con_req.jpg"'
-            ' width="100%">'
+            ' width="100%"></a>'
         )
         self.add_slide(
+            '<a href="https://github.com/mdmintz/MyCDP/blob/'
+            '6533a20511142092baaa08f392d5ae3ac18f43a3/mycdp/fetch.py#L287" '
+            'target="_blank">'
             '<img src="https://seleniumbase.io/other/mycdp_con_req.jpg"'
-            ' width="100%">'
+            ' width="100%"></a>'
         )
         self.add_slide(
+            '<a href="https://github.com/seleniumbase/SeleniumBase/blob/'
+            'master/examples/cdp_mode/raw_req_mod.py" target="_blank">'
             '<img src="https://seleniumbase.io/other/raw_req_mod.jpg"'
-            ' width="100%">'
+            ' width="100%"></a>'
         )
         self.add_slide(
             "<h3><mk-0>Time for a live demo of that...</mk-0></h3>"
             "<br /><mk-0>(Intercepting/modifying requests)</mk-0>"
         )
         self.add_slide(
+            '<a href="https://youtu.be/vt2zsdiNh3U" target="_blank">'
+            '<img src="https://seleniumbase.io/other/hacking_with_cdp.jpg"'
+            ' width="100%"></a>'
+        )
+        self.add_slide(
             "<mk-0>As you can see, SeleniumBase has all<br />"
             "the CDP features you're looking for.</mk-0><br />"
+            '<a href="https://github.com/seleniumbase/SeleniumBase" '
+            'target="_blank">'
             '<img src="https://seleniumbase.io/other/sbase_gh.jpg"'
-            ' width="80%">'
+            ' width="80%"></a>'
         )
         self.add_slide(
             "<mk-0>If you're looking for powerful multi-threading,<br />"
             "then <code>ThreadPoolExecutor</code> has you covered.</mk-0>"
+            '<a href="https://youtu.be/aF3ee0uTBm4" target="_blank">'
             '<img src="https://seleniumbase.io/other/threadpoolexecutor.jpg"'
-            ' width="100%">'
+            ' width="100%"></a>'
         )
         self.add_slide(
             "<h4><mk-0>Sometimes you can defeat CAPTCHAs in advance<br />"
@@ -721,8 +776,10 @@ class UCPresentationClass(BaseCase):
             "<h4><mk-0>Getting the <code>cf_clearance</code> cookie is easy:"
             "</mk-0></h4><mk-1>Just go to a CF-protected site and take it!"
             "</mk-1>"
+            '<a href="https://github.com/seleniumbase/SeleniumBase/blob/'
+            'master/examples/cdp_mode/raw_cf_clearance.py" target="_blank">'
             '<img src="https://seleniumbase.io/other/get_cf_clearance.jpg"'
-            ' width="90%">'
+            ' width="90%"></a>'
         )
         self.add_slide(
             "<h3><mk-0>"
@@ -733,15 +790,17 @@ class UCPresentationClass(BaseCase):
             "<h4><mk-0>For more info on stealthy mobile emulation,<br />"
             " check out the YouTube video on it:"
             "</mk-0></h4>"
+            '<a href="https://youtu.be/QcfNk_wYi7A" target="_blank">'
             '<img src="https://seleniumbase.io/other/stealthy_mobile.jpg"'
-            ' width="90%">'
+            ' width="90%"></a>'
         )
         self.add_slide(
             "<h4><mk-0>There's also a follow-up mobile video<br />"
             " that deals with changing the User Agent:"
             "</mk-0></h4>"
+            '<a href="https://youtu.be/WfAMalkiG_0" target="_blank">'
             '<img src="https://seleniumbase.io/other/user_agent_matters.jpg"'
-            ' width="90%">'
+            ' width="90%"></a>'
         )
         self.add_slide(
             "<p><mk-0>"
@@ -791,8 +850,9 @@ class UCPresentationClass(BaseCase):
             "<br /><br />"
         )
         self.add_slide(
+            '<a href="https://youtu.be/XQta2HrPWG8" target="_blank">'
             '<img src="https://seleniumbase.io/other/reddit_scraping.jpg"'
-            ' width="100%">'
+            ' width="100%"></a>'
         )
         self.add_slide(
             "<mk-0>reCAPTCHA comes in many flavors:</mk-0><br /><br />"
@@ -836,8 +896,8 @@ class UCPresentationClass(BaseCase):
             "</mk-1></p><br /><br />"
         )
         self.add_slide(
-            "<mk-0>Many websites are using an out-of-date reCAPTCHA:</mk-0>"
-            "<h5><br /></h5>"
+            "<mk-0>Many websites have an out-of-date reCAPTCHA:</mk-0>"
+            "<h5></h5>"
             '<img src="https://seleniumbase.io/other/pokemon_recaptcha.jpg"'
             ' width="80%">'
             "<h5><br />"
@@ -905,8 +965,10 @@ class UCPresentationClass(BaseCase):
             "<p><mk-0>"
             "Let's make a quick trip to the SeleniumBase repo:</mk-0>"
             "</p><hr />\n"
+            '<a href="https://github.com/seleniumbase/SeleniumBase" '
+            'target="_blank">'
             '<img src="https://seleniumbase.io/other/sbase_gh.jpg"'
-            ' width="80%">'
+            ' width="80%"></a>'
         )
         self.add_slide(
             "<mk-0>"
@@ -971,8 +1033,9 @@ class UCPresentationClass(BaseCase):
             'Can AI tools help you with web-scraping & CAPTCHA-bypass?'
             '</mk-1></h5>'
             "</mk-0></p><hr />"
+            '<a href="https://youtu.be/jBekzXHuwac" target="_blank">'
             '<img src="https://seleniumbase.io/other/can_ai_tools_help.jpg"'
-            ' width="68%"><hr />'
+            ' width="68%"></a><hr />'
             "<h5><mk-2>"
             '(Spoiler alert: It depends on which AI you ask!)'
             '</mk-2></h5>'
@@ -989,8 +1052,10 @@ class UCPresentationClass(BaseCase):
             "<hr /><br />"
             "<p><mk-1>SeleniumBase works well for web-scraping."
             "</mk-1></p>"
+            '<a href="https://github.com/seleniumbase/SeleniumBase" '
+            'target="_blank">'
             '<img src="https://seleniumbase.io/cdn/img/nice_logo_8t3.png"'
-            ' width="70%">'
+            ' width="70%"></a>'
         )
         self.add_slide(
             "<p><mk-0>"
@@ -1020,7 +1085,9 @@ class UCPresentationClass(BaseCase):
         )
         self.add_slide(
             "<div>🏁 <b>The End</b> 🏁</div>"
+            '<a href="https://github.com/seleniumbase/SeleniumBase" '
+            'target="_blank">'
             '<img src="https://seleniumbase.io/other/sb_github_page2.jpg"'
-            ' width="86%">'
+            ' width="86%"></a>'
         )
-        self.begin_presentation(filename="uc_presentation.html")
+        self.begin_presentation(filename="ua_presentation.html")
