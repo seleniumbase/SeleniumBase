@@ -7,11 +7,11 @@
 <meta property="og:image" content="https://seleniumbase.github.io/cdn/img/mac_sb_logo_5b.png" />
 <link rel="icon" href="https://seleniumbase.github.io/img/logo6.png" />
 
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/sb_logo_gemini_3.jpg" alt="SeleniumBase" width="520" /></a></p>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/nice_logo_8t.png" alt="SeleniumBase" width="424" /></a></p>
+
+<p align="center" class="hero__title"><b>All-in-one Browser Automation Framework:<br />Web Crawling / Testing / Scraping / Stealth</b></p>
 
 <p align="center"><a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=3399EE" alt="PyPI version" /></a> <a href="https://pepy.tech/projects/seleniumbase?timeRange=threeMonths&category=version&includeCIDownloads=true&granularity=daily&viewType=line&versions=*" target="_blank"><img src="https://static.pepy.tech/badge/seleniumbase" alt="SeleniumBase PyPI downloads" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" title="SeleniumBase" /></a> <a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"><img src="https://github.com/seleniumbase/SeleniumBase/workflows/Tests/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://www.youtube.com/@MichaelMintz"><img src="https://img.shields.io/youtube/channel/subscribers/UCSQElO8vQmNPuTgdd83BHdw?style=flat&logo=youtube&logoColor=white&label=YouTube%20Subscribers&color=red" alt="YouTube Subscribers"></a></p>
-
-<h3 align="center">Stealthy Chromium Automation and E2E Testing.</h3>
 
 <p align="center">
 <a href="#python_installation">🚀 Start</a> |
@@ -50,9 +50,11 @@
 </p>
 <hr />
 
-🐙 <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md"><b>CDP Mode</b></a> <b>bypasses bot-detection</b> with the <a href="https://chromedevtools.github.io/devtools-protocol/" translate="no">Chrome DevTools Protocol</a>.<br /><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md"><b><span translate="no">Stealthy Playwright Mode</span></b></a> extends CDP Mode to make <b>Playwright</b> stealthy.<br /><b><code>sb.solve_captcha()</code></b> <b>clicks CAPTCHAs</b> that aren't bypassed automatically.
+🐙 <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md"><b>CDP Mode</b></a> <b>bypasses bot-detection</b> with any Chromium-based browser.
 
-<b>📝 Python sync version of SeleniumBase's CDP Mode: (<code>sb_cdp</code>)</b>
+🎭 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md"><b><span translate="no">Stealthy Playwright Mode</span></b></a> extends CDP Mode's stealth to <b>Playwright</b>.
+
+<b>📝 Here's a Python example of SeleniumBase's CDP Mode using <code>sb_cdp</code>:</b>
 
 ```python
 from seleniumbase import sb_cdp
@@ -68,7 +70,7 @@ sb.quit()
 <br><em>BrowserScan Test Results: Normal (No bots detected)</em>
 </p>
 
-<b>🎭 Playwright can use SeleniumBase's stealth browser:</b>
+<b>🎭 Here's a Playwright example that uses SeleniumBase's stealth:</b>
 
 ```python
 from playwright.sync_api import sync_playwright
@@ -219,7 +221,9 @@ with SB(uc=True, test=True, locale="en") as sb:
     sb.post_message("SeleniumBase wasn't detected", duration=4)
 ```
 
-<img src="https://seleniumbase.github.io/other/cf_sec.jpg" alt="SeleniumBase" width="344"> <img src="https://seleniumbase.github.io/other/gitlab_bypass.png" alt="SeleniumBase" width="298">
+<img src="https://seleniumbase.github.io/other/cf_sec.jpg" alt="SeleniumBase" width="346"> <img src="https://seleniumbase.github.io/other/gitlab_bypass.png" alt="SeleniumBase" width="300">
+
+(<b><code>sb.solve_captcha()</code></b> <b>handles CAPTCHAs</b> that aren't bypassed automatically.)
 
 ----
 
@@ -264,7 +268,7 @@ class MyTestClass(BaseCase):
 
 > `pytest test_get_swag.py`
 
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_get_swag.py"><img src="https://seleniumbase.github.io/cdn/gif/fast_swag_2.gif" alt="SeleniumBase Test" width="480" /></a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_get_swag.py"><img src="https://seleniumbase.github.io/cdn/gif/fast_swag_2.gif" alt="SeleniumBase Test" width="500" /></a>
 
 --------
 
@@ -274,7 +278,7 @@ class MyTestClass(BaseCase):
 pytest test_coffee_cart.py --demo
 ```
 
-<p align="left"><a href="https://seleniumbase.io/coffee/" target="_blank"><img src="https://seleniumbase.github.io/cdn/gif/coffee_cart.gif" width="480" alt="SeleniumBase Coffee Cart Test" /></a></p>
+<p align="left"><a href="https://seleniumbase.io/coffee/" target="_blank"><img src="https://seleniumbase.github.io/cdn/gif/coffee_cart.gif" width="500" alt="SeleniumBase Coffee Cart Test" /></a></p>
 
 > <p>(<code translate="no">--demo</code> mode slows down tests and highlights actions)</p>
 
@@ -288,7 +292,7 @@ pytest test_coffee_cart.py --demo
 pytest test_demo_site.py
 ```
 
-<p align="left"><a href="https://seleniumbase.io/demo_page" target="_blank"><img src="https://seleniumbase.github.io/cdn/gif/demo_page_5.gif" width="480" alt="SeleniumBase Example" /></a></p>
+<p align="left"><a href="https://seleniumbase.io/demo_page" target="_blank"><img src="https://seleniumbase.github.io/cdn/gif/demo_page_5.gif" width="500" alt="SeleniumBase Example" /></a></p>
 
 > Easy to type, click, select, toggle, drag & drop, and more.
 
@@ -543,7 +547,7 @@ cd examples/
 pytest my_first_test.py
 ```
 
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py"><img src="https://seleniumbase.github.io/cdn/gif/fast_swag_2.gif" alt="SeleniumBase Test" width="480" /></a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py"><img src="https://seleniumbase.github.io/cdn/gif/fast_swag_2.gif" alt="SeleniumBase Test" width="500" /></a>
 
 <p align="left"><b>Here's the full code for <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py">my_first_test.py</a>:</b></p>
 
