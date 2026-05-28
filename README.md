@@ -54,6 +54,8 @@
 
 🎭 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md"><b><span translate="no">Stealthy Playwright Mode</span></b></a> extends CDP Mode's stealth to <b>Playwright</b>.
 
+<hr />
+
 <b>📝 Here's a Python example that uses <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md#-pure-cdp-mode-sb_cdp">Pure CDP Mode</a> (<code>sb_cdp</code>):</b>
 
 ```python
@@ -87,6 +89,8 @@ with sync_playwright() as p:
 sb.sleep(3)
 sb.quit()
 ```
+
+<hr />
 
 <p align="left"><b>📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_yc_news.py" target="_blank">This example</a> scrapes Hacker News listings:</b></p>
 
