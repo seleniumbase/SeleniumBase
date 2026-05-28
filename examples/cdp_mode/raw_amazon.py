@@ -8,8 +8,8 @@ with SB(uc=True, test=True, ad_block=True) as sb:
     sb.sleep(2)
     sb.press_keys('input[role="searchbox"]', "TI-89\n")
     sb.sleep(3)
-    for i in range(16):
-        sb.scroll_down(16)
+    for i in range(10):
+        sb.scroll_down(26)
     print(sb.get_page_title())
     sb.save_as_pdf_to_logs()
     sb.save_page_source_to_logs()
