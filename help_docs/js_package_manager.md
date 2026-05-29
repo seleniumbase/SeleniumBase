@@ -56,9 +56,7 @@ self.add_js_link(js_link)
 self.add_js_link("https://cdn.jsdelivr.net/npm/intro.js@5.1.0/intro.min.js")
 ```
 
-<div>🟨 You can load any JS package this way as long as you know the URL.</div>
-
-<p>🟨 If you're wondering how SeleniumBase does this, here's the full Python code from <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/js_utils.py">js_utils.py</a>, which uses WebDriver's <code>execute_script()</code> method for making JS calls after escaping quotes with backslashes as needed:</p>
+<p>🟨 If you're wondering how SeleniumBase does this, here's the code from <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/js_utils.py">js_utils.py</a> that loads JavaScript packages:</p>
 
 ```python
 def add_js_link(driver, js_link):
@@ -109,7 +107,7 @@ def add_css_link(driver, css_link):
     driver.execute_script(script_to_add_css % css_link)
 ```
 
-<div>🟨 Website tours are just one of the many uses of the JS Package Manager.</div>
+<div>🗺️ Website tours are just one of the many uses of the JS Package Manager.</div>
 <p><div>🛂 The following example shows the <a href="https://github.com/craftpip/jquery-confirm">JqueryConfirm</a> package loaded into a website for creating fancy dialog boxes:</div></p>
 
 <img src="https://seleniumbase.github.io/cdn/img/emoji_sports_dialog.png" alt="SeleniumBase" width="480" />
