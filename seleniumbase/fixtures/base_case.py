@@ -39,6 +39,7 @@ import logging
 import math
 import os
 import re
+import secrets
 import shutil
 import sys
 import textwrap
@@ -5102,8 +5103,6 @@ class BaseCase(unittest.TestCase):
             self.close_active_tab = self.cdp.close_active_tab
         if hasattr(self.cdp, "find_element_by_text"):
             self.find_element_by_text = self.cdp.find_element_by_text
-        if hasattr(self.cdp, "flash"):
-            self.flash = self.cdp.flash
         if hasattr(self.cdp, "get_active_tab"):
             self.get_active_tab = self.cdp.get_active_tab
         if hasattr(self.cdp, "get_endpoint_url"):
@@ -6207,6 +6206,86 @@ class BaseCase(unittest.TestCase):
             % selector
         )
         self.execute_script(script)
+
+    def flash(
+        self,
+        selector,  # The CSS Selector to flash
+        duration=1,  # (seconds) flash duration
+        color="44CC88",  # RGB hex color string
+        pause=0,  # (seconds) If 0, the next action starts during flash
+    ):
+        """Paint a quickly-vanishing dot over an element."""
+        if self.__is_cdp_swap_needed():
+            self.cdp.flash(
+                selector=selector,
+                duration=duration,
+                color=color,
+                pause=pause,
+            )
+            return
+        element = self.find_element(selector, timeout=settings.SMALL_TIMEOUT)
+        js_utils.scroll_to_element(self.driver, element)
+        try:
+            loc = element.location  # {'x': value, 'y': value}
+            size = element.size  # {'width': value, 'height': value}
+            center_x = loc["x"] + (size["width"] / 2)
+            center_y = loc["y"] + (size["height"] / 2)
+        except Exception:
+            return
+        style = (
+            "position:absolute;z-index:99999999;padding:0;margin:0;"
+            "left:{:.1f}px; top: {:.1f}px; opacity:0.7;"
+            "width:8px;height:8px;border-radius:50%;background:#{};"
+            "animation:show-pointer-ani {:.2f}s ease 1;"
+        ).format(
+            center_x - 4,  # -4 to account for the circle width
+            center_y - 4,  # -4 to account for the circle height
+            color,
+            duration,
+        )
+        script = (
+            """
+            (targetElement) => {{
+                for(let css of [...document.styleSheets]) {{
+                    try {{
+                        css.insertRule(`
+                        @keyframes show-pointer-ani {{
+                              0% {{ opacity: 1; transform: scale(2, 2); }}
+                              25% {{ transform: scale(5,5); }}
+                              50% {{ transform: scale(3, 3); }}
+                              75% {{ transform: scale(2,2); }}
+                              100% {{ transform: scale(1, 1); opacity: 0; }}
+                        }}`, css.cssRules.length);
+                        break;
+                    }} catch (e) {{
+                        console.log(e);
+                    }}
+                }};
+                var _d = document.createElement('div');
+                _d.style = `{0:s}`;
+                _d.id = `{1:s}`;
+                document.body.insertAdjacentElement('afterBegin', _d);
+                setTimeout(
+                    () => {{
+                        var el = document.getElementById('{1:s}');
+                        if(el) el.remove();
+                    }}, {2:d}
+                );
+            }}
+            """
+        ).format(
+            style,
+            f"flash-{secrets.token_hex(8)}",
+            int(duration * 1000),
+        )
+        try:
+            self.driver.execute_script(
+                f"({script})(arguments[0]);", element
+            )
+            if pause and isinstance(pause, (int, float)):
+                time.sleep(pause)
+        except Exception:
+            pass
 
     def highlight_click(
         self, selector, by="css selector", loops=3, scroll=True, timeout=None,

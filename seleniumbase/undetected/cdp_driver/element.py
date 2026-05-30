@@ -1019,11 +1019,11 @@ class Element:
                     try {{
                         css.insertRule(`
                         @keyframes show-pointer-ani {{
-                              0% {{ opacity: 1; transform: scale(2, 2);}}
-                              25% {{ transform: scale(5,5) }}
-                              50% {{ transform: scale(3, 3);}}
-                              75%: {{ transform: scale(2,2) }}
-                              100% {{ transform: scale(1, 1); opacity: 0;}}
+                              0% {{ opacity: 1; transform: scale(2, 2); }}
+                              25% {{ transform: scale(5,5); }}
+                              50% {{ transform: scale(3, 3); }}
+                              75% {{ transform: scale(2,2); }}
+                              100% {{ transform: scale(1, 1); opacity: 0; }}
                         }}`,css.cssRules.length);
                         break;
                     }} catch (e) {{

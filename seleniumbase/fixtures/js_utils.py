@@ -1285,6 +1285,20 @@ def get_scroll_distance_to_element(driver, element):
 
 
 def scroll_to_element(driver, element):
+    if driver.capabilities["browserName"].lower() == "firefox":
+        return __old_scroll_to_element(driver, element)
+    try:
+        driver.execute_script(
+            "arguments[0].scrollIntoViewIfNeeded(true);", element
+        )
+        return True
+    except Exception:
+        return __old_scroll_to_element(driver, element)
+
+
+def __old_scroll_to_element(driver, element):
+    # Firefox still needs this
+    # because it doesn't have scrollIntoViewIfNeeded()
     element_location_y = None
     element_location_x = None
     element_width = 0

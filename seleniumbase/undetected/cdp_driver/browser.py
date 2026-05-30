@@ -433,6 +433,7 @@ class Browser:
             _cdp_mobile_mode = kwargs["mobile"]
         if "recorder" in kwargs:
             _cdp_recorder = kwargs["recorder"]
+        headless = self.config.headless
         await connection.sleep(0.01)
         await connection.send(cdp.network.enable())
         await connection.sleep(0.01)
@@ -440,7 +441,14 @@ class Browser:
             await connection.set_timezone(_cdp_timezone)
         if _cdp_locale:
             await connection.set_locale(_cdp_locale)
-        if _cdp_user_agent or _cdp_locale or _cdp_platform:
+        if _cdp_user_agent or _cdp_locale or _cdp_platform or headless:
+            if (
+                (headless and not _cdp_user_agent)
+                or (_cdp_user_agent and "Headless" in _cdp_user_agent)
+            ):
+                agent = await self.main_tab.evaluate("navigator.userAgent")
+                if agent and "Headless" in agent:
+                    _cdp_user_agent = agent.replace("Headless", "")
             await connection.set_user_agent(
                 user_agent=_cdp_user_agent,
                 accept_language=_cdp_locale,

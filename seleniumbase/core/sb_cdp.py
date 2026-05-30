@@ -380,6 +380,7 @@ class CDPMethods():
         if (":contains(" in selector):
             return self.find_element(selector, timeout=timeout)
         failure = False
+        message = ""
         try:
             element = self.loop.run_until_complete(
                 self.page.select(selector, timeout=timeout)
@@ -2794,10 +2795,19 @@ class CDPMethods():
         stop_ms = start_ms + (timeout * 1000.0)
         text = text.strip()
         element = None
+        failure = False
+        message = ""
         try:
             element = self.find_element(selector, timeout=timeout)
         except Exception:
-            raise Exception("Element {%s} not found!" % selector)
+            failure = True
+            plural = "s"
+            if timeout == 1:
+                plural = ""
+            msg = "\n Element {%s} was not found after %s second%s!"
+            message = msg % (selector, timeout, plural)
+        if failure:
+            raise Exception(message)
         for i in range(int(timeout * 10)):
             with suppress(Exception):
                 element = self.find_element(selector, timeout=0.1)
@@ -2807,10 +2817,12 @@ class CDPMethods():
             if now_ms >= stop_ms:
                 break
             time.sleep(0.1)
-        raise Exception(
-            "Text {%s} not found in {%s}! Actual text: {%s}"
+        message = (
+            "Expected text substring {%s} for {%s} was not found!\n"
+            " (Actual text was {%s})"
             % (text, selector, element.text_all)
         )
+        raise Exception(message)
 
     def wait_for_text_not_visible(self, text, selector="body", timeout=None):
         if not timeout:
@@ -2836,10 +2848,19 @@ class CDPMethods():
     def wait_for_element_visible(self, selector, timeout=None):
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
+        failure = False
+        message = ""
         try:
             self.select(selector, timeout=timeout)
         except Exception:
-            raise Exception("Element {%s} was not found!" % selector)
+            failure = True
+            plural = "s"
+            if timeout == 1:
+                plural = ""
+            msg = "\n Element {%s} was not found after %s second%s!"
+            message = msg % (selector, timeout, plural)
+        if failure:
+            raise Exception(message)
         for i in range(30):
             if self.is_element_visible(selector):
                 return self.select(selector)
@@ -3047,10 +3068,19 @@ class CDPMethods():
         """Same as assert_element()"""
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
+        failure = False
+        message = ""
         try:
             self.select(selector, timeout=timeout)
         except Exception:
-            raise Exception("Element {%s} was not found!" % selector)
+            failure = True
+            plural = "s"
+            if timeout == 1:
+                plural = ""
+            msg = "\n Element {%s} was not found after %s second%s!"
+            message = msg % (selector, timeout, plural)
+        if failure:
+            raise Exception(message)
         for i in range(30):
             if self.is_element_visible(selector):
                 return True
@@ -3061,10 +3091,19 @@ class CDPMethods():
         """Assert element is present in the DOM. (Visibility NOT required)"""
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
+        failure = False
+        message = ""
         try:
             self.select(selector, timeout=timeout)
         except Exception:
-            raise Exception("Element {%s} was not found!" % selector)
+            failure = True
+            plural = "s"
+            if timeout == 1:
+                plural = ""
+            msg = "\n Element {%s} was not found after %s second%s!"
+            message = msg % (selector, timeout, plural)
+        if failure:
+            raise Exception(message)
         return True
 
     def assert_element_absent(self, selector, timeout=None):
@@ -3098,10 +3137,7 @@ class CDPMethods():
         error = (
             "Expected page title [%s] does not match the actual title [%s]!"
         )
-        try:
-            if expected != actual:
-                raise Exception(error % (expected, actual))
-        except Exception:
+        if expected != actual:
             time.sleep(2)
             actual = self.get_title().strip()
             if expected != actual:
@@ -3114,10 +3150,7 @@ class CDPMethods():
             "Expected title substring [%s] does not appear "
             "in the actual page title [%s]!"
         )
-        try:
-            if expected not in actual:
-                raise Exception(error % (expected, actual))
-        except Exception:
+        if expected not in actual:
             time.sleep(2)
             actual = self.get_title().strip()
             if expected not in actual:
@@ -3143,10 +3176,7 @@ class CDPMethods():
             "Expected URL substring [%s] does not appear "
             "in the full URL [%s]!"
         )
-        try:
-            if expected not in actual:
-                raise Exception(error % (expected, actual))
-        except Exception:
+        if expected not in actual:
             time.sleep(2)
             actual = self.get_current_url().strip()
             if expected not in actual:
@@ -3164,10 +3194,19 @@ class CDPMethods():
         stop_ms = start_ms + (timeout * 1000.0)
         text = text.strip()
         element = None
+        failure = False
+        message = ""
         try:
             element = self.select(selector, timeout=timeout)
         except Exception:
-            raise Exception("Element {%s} not found!" % selector)
+            failure = True
+            plural = "s"
+            if timeout == 1:
+                plural = ""
+            msg = "\n Element {%s} was not found after %s second%s!"
+            message = msg % (selector, timeout, plural)
+        if failure:
+            raise Exception(message)
         for i in range(int(timeout * 10)):
             with suppress(Exception):
                 element = self.select(selector, timeout=0.1)
@@ -3180,10 +3219,12 @@ class CDPMethods():
             if now_ms >= stop_ms:
                 break
             time.sleep(0.1)
-        raise Exception(
-            "Expected Text {%s}, is not equal to {%s} in {%s}!"
-            % (text, element.text_all, selector)
+        message = (
+            "Expected exact text {%s} for {%s} was not found! "
+            "(Actual text was {%s})"
+            % (text, selector, element.text_all)
         )
+        raise Exception(message)
 
     def assert_text_not_visible(self, text, selector="body", timeout=None):
         """Raises an exception if the text is still visible after timeout."""
