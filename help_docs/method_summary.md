@@ -277,6 +277,7 @@ self.activate_recorder()
 self.save_recorded_actions()
 self.bring_active_window_to_front()
 self.bring_to_front(selector, by="css selector")
+self.flash(selector, duration=1, color="44CC88", pause=0)
 self.highlight_click(selector, by="css selector", loops=3, scroll=True, timeout=None)
 self.highlight_type(selector, text, by="css selector", loops=3, scroll=True, timeout=None)
 # Duplicates:
