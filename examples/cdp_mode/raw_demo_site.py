@@ -2,8 +2,8 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True) as sb:
-    url = "https://seleniumbase.io/demo_page"
-    sb.activate_cdp_mode(url)
+    sb.activate_cdp_mode()
+    sb.open("https://seleniumbase.io/demo_page")
 
     # Assert various things
     sb.cdp.assert_title("Web Testing Page")

@@ -2,8 +2,8 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True) as sb:
-    url = "https://agents.moderationinterface.com"
-    sb.activate_cdp_mode(url)
+    sb.activate_cdp_mode()
+    sb.open("https://agents.moderationinterface.com")
     sb.sleep(3)
     if not sb.is_element_present("#login-submit"):
         sb.solve_captcha()

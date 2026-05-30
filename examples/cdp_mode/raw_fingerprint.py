@@ -1,8 +1,8 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True) as sb:
-    url = "https://demo.fingerprint.com/playground"
-    sb.activate_cdp_mode(url)
+    sb.activate_cdp_mode()
+    sb.open("https://demo.fingerprint.com/playground")
     sb.flash('a[href*="browser-bot-detection"]', duration=3, pause=1)
     bot_row_selector = 'table:contains("Bot") tr:nth-of-type(3)'
     print(sb.get_text(bot_row_selector))
