@@ -10,7 +10,7 @@ with SB(uc=True) as sb:  # SeleniumBase API
     sb.activate_cdp_mode()
     sb.reconnect()  # Reconnects WebDriver to use Selenium
     driver = sb.driver  # Selenium API
-    endpoint_url = sb.cdp.get_endpoint_url()
+    endpoint_url = sb.get_endpoint_url()
     with sync_playwright() as p:
         browser = p.chromium.connect_over_cdp(endpoint_url)
         page = browser.contexts[0].pages[0]  # Playwright API
