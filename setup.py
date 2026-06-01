@@ -162,7 +162,7 @@ setup(
     python_requires=">=3.9",
     install_requires=[
         'pip>=26.0.1;python_version<"3.10"',
-        'pip>=26.1.1;python_version>="3.10"',
+        'pip>=26.1.2;python_version>="3.10"',
         'packaging>=26.2',
         'setuptools~=70.2;python_version<"3.10"',  # Newer ones had issues
         'setuptools>=82.0.1;python_version>="3.10"',
