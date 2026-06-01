@@ -305,7 +305,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                 self._process_create_time = (
                     psutil.Process(self._process_pid).create_time()
                 )
-            except psutil.NoSuchProcess:
+            except (psutil.NoSuchProcess, PermissionError):
                 self._process_create_time = None
             service_ = None
             log_output = subprocess.PIPE
@@ -415,6 +415,8 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
             return process.status() != psutil.STATUS_ZOMBIE
         except psutil.NoSuchProcess:
             return False
+        except PermissionError:
+            return None
 
     def remove_cdc_props_as_needed(self):
         cdc_props = self._get_cdc_props()
