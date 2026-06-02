@@ -72,8 +72,8 @@ sb.quit()
 ```
 
 <p align="center">
-<img src="https://seleniumbase.github.io/cdn/img/results_normal.jpg" width="578" alt="BrowserScan Test Results: Normal">
-<br><em>(All BrowserScan bot-detection checks were passed successfully.)</em></br>
+<img src="https://seleniumbase.github.io/cdn/img/results_normal.jpg" width="588" alt="BrowserScan Test Results: Normal">
+<br><em>(All BrowserScan bot-detection tests passed successfully.)</em></br>
 </p>
 
 <b>🎭 Here's an example script that uses <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md"><span translate="no">Stealthy Playwright Mode</span></a>:</b><br />(Playwright connects to a stealthy SeleniumBase browser session.)
@@ -82,21 +82,24 @@ sb.quit()
 from playwright.sync_api import sync_playwright
 from seleniumbase import sb_cdp
 
-sb = sb_cdp.Chrome()
+sb = sb_cdp.Chrome(guest=True)
 endpoint_url = sb.get_endpoint_url()
 
 with sync_playwright() as p:
     browser = p.chromium.connect_over_cdp(endpoint_url)
     page = browser.contexts[0].pages[0]
-    page.goto("https://browserscan.net/bot-detection")
-
-sb.sleep(3)
-sb.quit()
+    page.goto("https://bot.sannysoft.com/")
+    page.wait_for_timeout(500)
 ```
+
+<p align="center">
+<img src="https://seleniumbase.github.io/other/sannysoft_success.jpg" width="470" alt="All Sannysoft tests passed successfully">
+<br><em>(All Sannysoft bot-detection tests passed successfully.)</em></br>
+</p>
 
 --------
 
-<b>**📝** The Browserscan example can be expanded into a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_browserscan.py">test demo</a>:</b><br />(Assertions added and a few elements highlighted with JavaScript)
+<b>**📝** The Browserscan example can be expanded into a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_browserscan.py">test demo</a>:</b><br />(Assertions added and elements highlighted with JavaScript.)
 
 ```python
 from seleniumbase import sb_cdp
