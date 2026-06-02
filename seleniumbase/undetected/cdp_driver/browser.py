@@ -279,7 +279,7 @@ class Browser:
             return process.status() != psutil.STATUS_ZOMBIE
         except psutil.NoSuchProcess:
             return False
-        except PermissionError:
+        except Exception:
             return None
 
     def get_rd_host(self):
@@ -650,7 +650,7 @@ class Browser:
                 self._process_create_time = (
                     psutil.Process(self._process_pid).create_time()
                 )
-            except (psutil.NoSuchProcess, PermissionError):
+            except Exception:
                 self._process_create_time = None
         await asyncio.sleep(0.05)
         self._http = HTTPApi((self.config.host, self.config.port))
