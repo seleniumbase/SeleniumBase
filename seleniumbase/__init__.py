@@ -3,7 +3,6 @@ import os
 import pdb
 import sys
 from contextlib import suppress
-from selenium import webdriver
 from seleniumbase.__version__ import __version__
 from seleniumbase.common import decorators  # noqa
 from seleniumbase.common import encryption  # noqa
@@ -45,13 +44,11 @@ if sys.version_info[0] < 3 and "pdbp" in locals():
         pdb.DefaultConfig.sticky_by_default = True
 colored_traceback.add_hook()
 os.environ["SE_AVOID_STATS"] = "true"  # Disable Selenium Manager stats
-webdriver.TouchActions = None  # Lifeline for past selenium-wire versions
 if sys.version_info >= (3, 10):
     collections.Callable = collections.abc.Callable  # Lifeline for nosetests
 del collections  # Undo "import collections" / Simplify "dir(seleniumbase)"
 del os  # Undo "import os" / Simplify "dir(seleniumbase)"
 del sys  # Undo "import sys" / Simplify "dir(seleniumbase)"
-del webdriver  # Undo "import webdriver" / Simplify "dir(seleniumbase)"
 
 version_list = [int(i) for i in __version__.split(".") if i.isdigit()]
 version_tuple = tuple(version_list)
