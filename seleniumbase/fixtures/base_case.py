@@ -5067,6 +5067,8 @@ class BaseCase(unittest.TestCase):
         """Activate CDP Mode with the URL and kwargs."""
         if getattr(self.driver, "_is_using_uc", None):
             if self.__is_cdp_swap_needed():
+                if url:
+                    self.cdp.open(url, **kwargs)
                 return  # CDP Mode is already active
             if not self.is_connected():
                 self.driver.connect()
