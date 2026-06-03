@@ -643,14 +643,12 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
     import asyncio
     from seleniumbase.undetected.cdp_driver import cdp_util
 
-    current_url = None
+    time.sleep(0.012)
     try:
-        current_url = driver.current_url
+        driver.disconnect()
     except Exception:
-        driver.connect()
-        current_url = driver.current_url
-    url_protocol = current_url.split(":")[0]
-    driver.disconnect()
+        time.sleep(0.012)
+        driver.disconnect()
 
     cdp_details = driver._get_cdp_details()
     cdp_host = cdp_details[1].split("://")[1].split(":")[0]
