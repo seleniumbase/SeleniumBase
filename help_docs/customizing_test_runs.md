@@ -224,7 +224,6 @@ pytest my_first_test.py --settings-file=custom_settings.py
 --screenshot  # (Save a screenshot at the end of each test.)
 --no-screenshot  # (No screenshots saved unless tests directly ask it.)
 --visual-baseline  # (Set the visual baseline for Visual/Layout tests.)
---wire  # (Use selenium-wire's webdriver for replacing selenium webdriver.)
 --external-pdf  # (Set Chromium "plugins.always_open_pdf_externally":True.)
 --timeout-multiplier=MULTIPLIER  # (Multiplies the default timeout values.)
 --list-fail-page  # (After each failing test, list the URL of the failure.)
@@ -691,7 +690,6 @@ binary_location=None  # Set path of the Chromium browser binary to use.
 driver_version=None  # Set the chromedriver or uc_driver version to use.
 skip_js_waits=None  # Skip JS Waits (readyState=="complete" and Angular).
 wait_for_angularjs=None  # Wait for AngularJS to load after some actions.
-use_wire=None  # Use selenium-wire's webdriver over selenium webdriver.
 external_pdf=None  # Set Chrome "plugins.always_open_pdf_externally":True.
 window_position=None  # Set the browser's starting window position: "X,Y"
 window_size=None  # Set the browser's starting window size: "Width,Height"
@@ -727,7 +725,6 @@ log_cdp=None  # Shortcut / Duplicate of "log_cdp_events".
 ad_block=None  # Shortcut / Duplicate of "ad_block_on".
 server=None  # Shortcut / Duplicate of "servername".
 guest=None  # Shortcut / Duplicate of "guest_mode".
-wire=None  # Shortcut / Duplicate of "use_wire".
 pls=None  # Shortcut / Duplicate of "page_load_strategy".
 sjw=None  # Shortcut / Duplicate of "skip_js_waits".
 wfa=None  # Shortcut / Duplicate of "wait_for_angularjs".
@@ -807,7 +804,6 @@ disable_features=None  # "F1,F2" (Disable Chrome features, ","-separated.)
 binary_location=None  # Set path of the Chromium browser binary to use.
 driver_version=None  # Set the chromedriver or uc_driver version to use.
 page_load_strategy=None  # Set Chrome PLS to "normal", "eager", or "none".
-use_wire=None  # Use selenium-wire's webdriver over selenium webdriver.
 external_pdf=None  # Set Chrome "plugins.always_open_pdf_externally":True.
 window_position=None  # Set the browser's starting window position: "X,Y"
 window_size=None  # Set the browser's starting window size: "Width,Height"
@@ -827,7 +823,6 @@ log_cdp=None  # Shortcut / Duplicate of "log_cdp_events".
 ad_block=None  # Shortcut / Duplicate of "ad_block_on".
 server=None  # Shortcut / Duplicate of "servername".
 guest=None  # Shortcut / Duplicate of "guest_mode".
-wire=None  # Shortcut / Duplicate of "use_wire".
 pls=None  # Shortcut / Duplicate of "page_load_strategy".
 use_chromium=None  # Use base "Chromium"
 cft=None  # Use "Chrome for Testing"

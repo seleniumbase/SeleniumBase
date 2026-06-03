@@ -128,7 +128,6 @@ def pytest_addoption(parser):
     --screenshot  (Save a screenshot at the end of each test.)
     --no-screenshot  (No screenshots saved unless tests directly ask it.)
     --visual-baseline  (Set the visual baseline for Visual/Layout tests.)
-    --wire  (Use selenium-wire's webdriver for replacing selenium webdriver.)
     --external-pdf  (Set Chromium "plugins.always_open_pdf_externally":True.)
     --timeout-multiplier=MULTIPLIER  (Multiplies the default timeout values.)
     --list-fail-page  (After each failing test, list the URL of the failure.)
@@ -1387,13 +1386,6 @@ def pytest_addoption(parser):
                 rebuild its files in the visual_baseline folder.""",
     )
     parser.addoption(
-        "--wire",
-        action="store_true",
-        dest="use_wire",
-        default=False,
-        help="""Use selenium-wire's webdriver for selenium webdriver.""",
-    )
-    parser.addoption(
         "--external_pdf",
         "--external-pdf",
         action="store_true",
@@ -1665,12 +1657,6 @@ def pytest_addoption(parser):
             '\n  (Your browser choice was: "%s")\n' % browser_list[0]
         )
         raise Exception(message)
-    if undetectable and "--wire" in sys_argv:
-        raise Exception(
-            "\n  SeleniumBase doesn't support mixing --uc with --wire mode!"
-            "\n  If you need both, override get_new_driver() from BaseCase:"
-            "\n  https://seleniumbase.io/help_docs/syntax_formats/#sb_sf_09\n"
-        )
 
 
 def pytest_configure(config):
@@ -1897,7 +1883,6 @@ def pytest_configure(config):
     sb_config.save_screenshot = config.getoption("save_screenshot")
     sb_config.no_screenshot = config.getoption("no_screenshot")
     sb_config.visual_baseline = config.getoption("visual_baseline")
-    sb_config.use_wire = config.getoption("use_wire")
     sb_config.external_pdf = config.getoption("external_pdf")
     sb_config.timeout_multiplier = config.getoption("timeout_multiplier")
     sb_config.list_fp = config.getoption("fail_page")

@@ -853,7 +853,6 @@ pytest test_coffee_cart.py --trace
 --screenshot  # (Save a screenshot at the end of each test.)
 --no-screenshot  # (No screenshots saved unless tests directly ask it.)
 --visual-baseline  # (Set the visual baseline for Visual/Layout tests.)
---wire  # (Use selenium-wire's webdriver for replacing selenium webdriver.)
 --external-pdf  # (Set Chromium "plugins.always_open_pdf_externally":True.)
 --timeout-multiplier=MULTIPLIER  # (Multiplies the default timeout values.)
 --list-fail-page  # (After each failing test, list the URL of the failure.)

@@ -82,7 +82,6 @@ def SB(
     driver_version=None,  # Set the chromedriver or uc_driver version to use.
     skip_js_waits=None,  # Skip JS Waits (readyState=="complete" and Angular).
     wait_for_angularjs=None,  # Wait for AngularJS to load after some actions.
-    use_wire=None,  # Use selenium-wire's webdriver over selenium webdriver.
     external_pdf=None,  # Set Chrome "plugins.always_open_pdf_externally":True.
     window_position=None,  # Set the browser's starting window position: "X,Y"
     window_size=None,  # Set the browser's starting window size: "Width,Height"
@@ -118,7 +117,6 @@ def SB(
     ad_block=None,  # Shortcut / Duplicate of "ad_block_on".
     server=None,  # Shortcut / Duplicate of "servername".
     guest=None,  # Shortcut / Duplicate of "guest_mode".
-    wire=None,  # Shortcut / Duplicate of "use_wire".
     pls=None,  # Shortcut / Duplicate of "page_load_strategy".
     sjw=None,  # Shortcut / Duplicate of "skip_js_waits".
     wfa=None,  # Shortcut / Duplicate of "wait_for_angularjs".
@@ -208,7 +206,6 @@ def SB(
     driver_version (str):  Set the chromedriver or uc_driver version to use.
     skip_js_waits (bool):  Skip JS Waits (readyState=="complete" and Angular).
     wait_for_angularjs (bool):  Wait for AngularJS to load after some actions.
-    use_wire (bool):  Use selenium-wire's webdriver over selenium webdriver.
     external_pdf (bool):  Set Chrome "plugins.always_open_pdf_externally":True.
     window_position (x,y):  Set the browser's starting window position: "X,Y"
     window_size (w,h):  Set the browser's starting window size: "Width,Height"
@@ -244,7 +241,6 @@ def SB(
     ad_block (bool):  Shortcut / Duplicate of "ad_block_on".
     server (str):  Shortcut / Duplicate of "servername".
     guest (bool):  Shortcut / Duplicate of "guest_mode".
-    wire (bool):  Shortcut / Duplicate of "use_wire".
     pls (str):  Shortcut / Duplicate of "page_load_strategy".
     sjw (bool):  Shortcut / Duplicate of "skip_js_waits".
     wfa (bool):  Shortcut / Duplicate of "wait_for_angularjs".
@@ -1030,15 +1026,6 @@ def SB(
             do_not_track = True
         else:
             do_not_track = False
-    if use_wire is None and wire is None:
-        if "--wire" in sys_argv:
-            use_wire = True
-        else:
-            use_wire = False
-    elif use_wire or wire:
-        use_wire = True
-    else:
-        use_wire = False
     if external_pdf is None:
         if "--external-pdf" in sys_argv or "--external_pdf" in sys_argv:
             external_pdf = True
@@ -1226,7 +1213,6 @@ def SB(
     sb_config.host_resolver_rules = host_resolver_rules
     sb_config.block_images = block_images
     sb_config.do_not_track = do_not_track
-    sb_config.use_wire = use_wire
     sb_config.external_pdf = external_pdf
     sb_config.remote_debug = remote_debug
     sb_config.settings_file = settings_file
@@ -1337,7 +1323,6 @@ def SB(
     sb.host_resolver_rules = sb_config.host_resolver_rules
     sb.block_images = sb_config.block_images
     sb.do_not_track = sb_config.do_not_track
-    sb.use_wire = sb_config.use_wire
     sb.external_pdf = sb_config.external_pdf
     sb.remote_debug = sb_config.remote_debug
     sb.settings_file = sb_config.settings_file

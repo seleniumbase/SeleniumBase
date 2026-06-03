@@ -346,12 +346,6 @@ class ProxyPy:
     VER = "2.4.3"
 
 
-class SeleniumWire:
-    # The version installed if selenium-wire is not installed
-    VER = "5.1.0"
-    BLINKER_VER = "1.7.0"  # The "blinker" dependency version
-
-
 class PyAutoGUI:
     # The version installed if PyAutoGUI is not installed
     VER = "0.9.54"

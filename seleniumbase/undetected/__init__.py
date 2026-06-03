@@ -84,7 +84,6 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
             If left as 0, a free port will be found.
 
         enable_cdp_events: (default: False)
-            This enables the handling of wire messages.
             When enabled, you can subscribe to CDP events by using:
 
                 driver.add_cdp_listener("Network.dataReceived", yourcallback)
