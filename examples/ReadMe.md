@@ -4,21 +4,20 @@
 
 <p align="left"><a align="center" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py"><img align="center" src="https://seleniumbase.github.io/cdn/img/sb_demo_page.png" alt="SeleniumBase Demo Page" width="420" /></a></p>
 
-* <b>SeleniumBase</b> "tests" are run with <b>pytest</b>.
+* Many <b>SeleniumBase</b> "tests" run with <b><code>pytest</code></b>.
 * Chrome is the default browser if not specified.
-* Tests are structured using [25 unique syntax formats](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md).
+* Tests are structured using [25 unique design patterns](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md).
 * Logs from test failures are saved to `./latest_logs/`.
 * Tests can be run with [multiple command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md).
 * Examples can be found in [SeleniumBase/examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples).
-* For stealthy examples, see [SeleniumBase/examples/cdp_mode/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode).
+* Stealthy CDP Mode examples: [SeleniumBase/examples/cdp_mode/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode).
+* Stealthy Playwright examples: [./examples/cdp_mode/playwright/](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md).
 
 (NOTE: Some example tests fail on purpose to demonstrate [logging features](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).)
 
 --------
 
-<h3><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" /> Example tests with run commands to help you get started:</h3>
-
---------
+<h3><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" /> Example tests with run commands:</h3>
 
 Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py): (Default option: `--chrome`)
 
