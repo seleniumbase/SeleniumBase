@@ -916,10 +916,13 @@ class Browser:
         close_success = False
         try:
             if self.connection:
-                asyncio.get_event_loop().create_task(self.connection.aclose())
-                logger.debug(
-                    "Closed connection using get_event_loop().create_task()"
-                )
+                loop = asyncio.get_running_loop()
+                if loop.is_running():
+                    loop.create_task(self.connection.aclose())
+                    logger.debug("Closed connection with create_task()")
+                else:
+                    loop.run_until_complete(self.connection.aclose())
+                    logger.debug("Closed connection with run_until_complete()")
         except RuntimeError:
             if self.connection:
                 try:
