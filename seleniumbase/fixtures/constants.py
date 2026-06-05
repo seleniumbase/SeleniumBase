@@ -145,6 +145,7 @@ class Report:
         if not hasattr(encoded_images, "REPORT_FAVICON"):
             encoded_images.REPORT_FAVICON = encoded_images.get_report_favicon()
         return encoded_images.REPORT_FAVICON
+    LOCKFILE = Files.DOWNLOADS_FOLDER + "/htmlreport.lock"
 
 
 class SideBySide:

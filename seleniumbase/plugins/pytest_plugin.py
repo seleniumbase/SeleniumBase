@@ -1661,6 +1661,8 @@ def pytest_addoption(parser):
 
 def pytest_configure(config):
     """This runs after command-line options have been parsed."""
+    global _pytest_config
+    _pytest_config = config
     sb_config.item_count = 0
     sb_config.item_count_passed = 0
     sb_config.item_count_failed = 0
@@ -2161,6 +2163,16 @@ def pytest_collection_finish(session):
                 )
         else:
             print("Dashboard: %s%s%s\n%s" % (c1, dash_url, cr, stars))
+    htmlpath = session.config.getoption("--html", default=None)
+    if htmlpath:
+        with suppress(Exception):
+            if getattr(sb_config, "_multithreaded", None):
+                from filelock import FileLock
+                dash_lock = FileLock(constants.Report.LOCKFILE)
+                with dash_lock:
+                    _fix_html_report(htmlpath)
+            else:
+                _fix_html_report(htmlpath)
 
 
 def pytest_runtest_setup(item):
@@ -2176,10 +2188,49 @@ def pytest_runtest_setup(item):
     sb_config._latest_display_id = display_id
 
 
+def pytest_runtest_logreport(report):
+    with suppress(Exception):
+        if _pytest_config:  # Global variable
+            htmlpath = _pytest_config.getoption("--html", default=None)
+            if htmlpath:
+                # The HTML report option is enabled
+                if report.when == "teardown":
+                    if getattr(sb_config, "_multithreaded", None):
+                        # Multi-threaded tests
+                        from filelock import FileLock
+                        dash_lock = FileLock(constants.Report.LOCKFILE)
+                        with dash_lock:
+                            _fix_html_report(htmlpath)
+                    else:
+                        # Single-threaded tests
+                        _fix_html_report(htmlpath)
+
+
+def _fix_html_report(report_path):
+    # (Only if there's a pytest-html report present)
+    with suppress(Exception):
+        abs_path = os.path.abspath(".")
+        html_report_path = os.path.join(abs_path, report_path)
+        if not os.path.exists(html_report_path):
+            return
+        the_html_r = None
+        with open(html_report_path, mode="r", encoding="utf-8") as f:
+            the_html_r = f.read()
+        if "page to ge the" not in the_html_r:
+            return  # The typo was already fixed
+        # Collapsible rows are trickier to select for copy/paste
+        the_html_r = the_html_r.replace(
+            "findAll('.collapsible", "//findAll('.collapsible"
+        )
+        # Fix typo in pytest-html 4.0.2
+        # (Later versions have a worse bug that prevents live updates)
+        the_html_r = the_html_r.replace("page to ge the", "page to get the")
+        with open(html_report_path, mode="w", encoding="utf-8") as f:
+            f.write(the_html_r)  # Update the HTML report
+
+
 def pytest_runtest_teardown(item):
-    """This runs after every test with pytest.
-    Make sure that webdriver and headless displays have exited.
-    (Has zero effect on tests using --reuse-session / --rs)"""
+    """This runs after every test with pytest."""
     if "--co" in sys_argv or "--collect-only" in sys_argv:
         return
     with suppress(Exception):
@@ -2308,10 +2359,7 @@ def _perform_pytest_unconfigure_(config):
 
     reporter = config.pluginmanager.get_plugin("terminalreporter")
     start_time = None
-    if hasattr(reporter, "_sessionstarttime"):
-        start_time = reporter._sessionstarttime  # (pytest < 8.4.0)
-    else:
-        start_time = reporter._session_start.time  # (pytest >= 8.4.0)
+    start_time = reporter._session_start.time  # (pytest >= 8.4.0)
     duration = time.time() - start_time
     if not getattr(sb_config, "multi_proxy", None):
         proxy_helper.remove_proxy_zip_if_present()
@@ -2648,13 +2696,10 @@ def pytest_unconfigure(config):
         return
     reporter = config.pluginmanager.get_plugin("terminalreporter")
     if (
-        not hasattr(reporter, "_sessionstarttime")
-        and (
-            not hasattr(reporter, "_session_start")
-            or (
-                hasattr(reporter, "_session_start")
-                and not hasattr(reporter._session_start, "time")
-            )
+        not hasattr(reporter, "_session_start")
+        or (
+            hasattr(reporter, "_session_start")
+            and not hasattr(reporter._session_start, "time")
         )
     ):
         return
