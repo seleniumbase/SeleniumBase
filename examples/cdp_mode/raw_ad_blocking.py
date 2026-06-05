@@ -1,3 +1,5 @@
+"""Test Ad-Blocking using mycdp.network.set_blocked_urls().
+tab.send() is the stealthy version of execute_cdp_cmd()."""
 import mycdp
 from seleniumbase import decorators
 from seleniumbase import sb_cdp
@@ -28,4 +30,4 @@ with decorators.print_runtime("raw_ad_blocking.py"):
     sb.assert_false("doubleclick.net" in source)
     sb.assert_false("google-analytics.com" in source)
     sb.post_message("Blocking was successful!")
-    sb.driver.quit()
+    sb.quit()

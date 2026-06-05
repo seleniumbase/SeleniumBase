@@ -145,6 +145,7 @@ class Report:
         if not hasattr(encoded_images, "REPORT_FAVICON"):
             encoded_images.REPORT_FAVICON = encoded_images.get_report_favicon()
         return encoded_images.REPORT_FAVICON
+    LOCKFILE = Files.DOWNLOADS_FOLDER + "/htmlreport.lock"
 
 
 class SideBySide:
@@ -344,12 +345,6 @@ class Tether:
 class ProxyPy:
     # The version installed if proxy.py is not installed
     VER = "2.4.3"
-
-
-class SeleniumWire:
-    # The version installed if selenium-wire is not installed
-    VER = "5.1.0"
-    BLINKER_VER = "1.7.0"  # The "blinker" dependency version
 
 
 class PyAutoGUI:

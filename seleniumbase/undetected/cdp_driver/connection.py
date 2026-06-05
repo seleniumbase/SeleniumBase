@@ -314,11 +314,15 @@ class Connection(metaclass=CantTouchThis):
             try:
                 if isinstance(t, (int, float)):
                     try:
+                        # Pass the coroutine directly to wait_for()
                         await asyncio.wait_for(
                             self.listener.idle.wait(), timeout=t
                         )
-                    except RuntimeError:
-                        await self.listener.idle.wait()
+                    except (RuntimeError, asyncio.TimeoutError):
+                        # If the wait_for() fails or errors out, just pass.
+                        # The wait_for() cancels the underlying coroutine.
+                        pass
+                    # Keep waiting until the absolute time 't' has elapsed
                     while (loop.time() - start_time) < t:
                         await asyncio.sleep(0.1)
                 else:

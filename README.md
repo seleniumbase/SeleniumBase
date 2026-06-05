@@ -507,10 +507,10 @@ pip install -e .
 <summary> ▶️ Here's sample output from a chromedriver download. (<b>click to expand</b>)</summary>
 
 ```zsh
-*** chromedriver to download = 148.0.7778.178 (Latest Stable)
+*** chromedriver to download = 149.0.7827.54 (Latest Stable)
 
 Downloading chromedriver-mac-arm64.zip from:
-https://storage.googleapis.com/chrome-for-testing-public/148.0.7778.178/mac-arm64/chromedriver-mac-arm64.zip ...
+https://storage.googleapis.com/chrome-for-testing-public/149.0.7827.54/mac-arm64/chromedriver-mac-arm64.zip ...
 Download Complete!
 
 Extracting ['chromedriver'] from chromedriver-mac-arm64.zip ...
@@ -520,8 +520,8 @@ The file [chromedriver] was saved to:
 ~/github/SeleniumBase/seleniumbase/drivers/
 chromedriver
 
-Making [chromedriver 148.0.7778.178] executable ...
-[chromedriver 148.0.7778.178] is now ready for use!
+Making [chromedriver 149.0.7827.54] executable ...
+[chromedriver 149.0.7827.54] is now ready for use!
 ```
 
 </details>
@@ -853,7 +853,6 @@ pytest test_coffee_cart.py --trace
 --screenshot  # (Save a screenshot at the end of each test.)
 --no-screenshot  # (No screenshots saved unless tests directly ask it.)
 --visual-baseline  # (Set the visual baseline for Visual/Layout tests.)
---wire  # (Use selenium-wire's webdriver for replacing selenium webdriver.)
 --external-pdf  # (Set Chromium "plugins.always_open_pdf_externally":True.)
 --timeout-multiplier=MULTIPLIER  # (Multiplies the default timeout values.)
 --list-fail-page  # (After each failing test, list the URL of the failure.)

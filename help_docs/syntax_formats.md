@@ -282,30 +282,6 @@ class OverrideDriverTest(BaseCase):
 
 (From <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_override_driver.py">examples/test_override_driver.py</a>)
 
-The above format lets you customize [selenium-wire](https://github.com/wkeeling/selenium-wire) for intercepting and inspecting requests and responses during SeleniumBase tests. Here's how a ``selenium-wire`` integration may look:
-
-```python
-from seleniumbase import BaseCase
-from seleniumwire import webdriver  # Requires "pip install selenium-wire"
-BaseCase.main(__name__, __file__)
-
-class WireTestCase(BaseCase):
-    def get_new_driver(self, *args, **kwargs):
-        options = webdriver.ChromeOptions()
-        options.add_experimental_option(
-            "excludeSwitches", ["enable-automation"]
-        )
-        options.add_experimental_option("useAutomationExtension", False)
-        return webdriver.Chrome(options=options)
-
-    def test_simple(self):
-        self.open("https://seleniumbase.io/demo_page")
-        for request in self.driver.requests:
-            print(request.url)
-```
-
-(NOTE: The ``selenium-wire`` integration is now included with ``seleniumbase``: Add ``--wire`` as a ``pytest`` command-line option to activate.)
-
 <a id="sb_sf_10"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 10. Overriding the driver via "sb" fixture</h2>
 
@@ -385,75 +361,6 @@ class TestOverride:
 ```
 
 (From <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_override_sb_fixture.py">examples/test_override_sb_fixture.py</a>)
-
-Here's how the [selenium-wire](https://github.com/wkeeling/selenium-wire) integration may look when overriding the ``sb`` pytest fixture to override the driver:
-
-```python
-import pytest
-
-@pytest.fixture()
-def sb(request):
-    import sys
-    from seleniumbase import BaseCase
-    from seleniumbase import config as sb_config
-    from seleniumwire import webdriver  # Requires "pip install selenium-wire"
-
-    class BaseClass(BaseCase):
-        def get_new_driver(self, *args, **kwargs):
-            options = webdriver.ChromeOptions()
-            if "linux" in sys.platform:
-                options.add_argument("--headless=new")
-            options.add_experimental_option(
-                "excludeSwitches", ["enable-automation"],
-            )
-            return webdriver.Chrome(options=options)
-
-        def setUp(self):
-            super().setUp()
-
-        def tearDown(self):
-            self.save_teardown_screenshot()  # On failure or "--screenshot"
-            super().tearDown()
-
-        def base_method(self):
-            pass
-
-    if request.cls:
-        request.cls.sb = BaseClass("base_method")
-        request.cls.sb.setUp()
-        request.cls.sb._needs_tearDown = True
-        request.cls.sb._using_sb_fixture = True
-        request.cls.sb._using_sb_fixture_class = True
-        sb_config._sb_node[request.node.nodeid] = request.cls.sb
-        yield request.cls.sb
-        if request.cls.sb._needs_tearDown:
-            request.cls.sb.tearDown()
-            request.cls.sb._needs_tearDown = False
-    else:
-        sb = BaseClass("base_method")
-        sb.setUp()
-        sb._needs_tearDown = True
-        sb._using_sb_fixture = True
-        sb._using_sb_fixture_no_class = True
-        sb_config._sb_node[request.node.nodeid] = sb
-        yield sb
-        if sb._needs_tearDown:
-            sb.tearDown()
-            sb._needs_tearDown = False
-
-def test_wire_with_no_class(sb):
-    sb.open("https://seleniumbase.io/demo_page")
-    for request in sb.driver.requests:
-        print(request.url)
-
-class TestWire:
-    def test_wire_inside_class(self, sb):
-        sb.open("https://seleniumbase.io/demo_page")
-        for request in sb.driver.requests:
-            print(request.url)
-```
-
-(NOTE: The ``selenium-wire`` integration is now included with ``seleniumbase``: Add ``--wire`` as a ``pytest`` command-line option to activate. If you need both ``--wire`` with ``--undetected`` modes together, you'll still need to override ``get_new_driver()``.)
 
 <a id="sb_sf_11"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 11. BaseCase with Chinese translations</h2>
@@ -962,36 +869,6 @@ finally:
 ```
 
 (From <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_driver_manager.py">examples/raw_driver_manager.py</a>)
-
-Here's how the [selenium-wire](https://github.com/wkeeling/selenium-wire) integration may look when using the ``Driver()`` format:
-
-```python
-from seleniumbase import Driver
-
-driver = Driver(wire=True, headless=True)
-try:
-    driver.get("https://wikipedia.org")
-    for request in driver.requests:
-        print(request.url)
-finally:
-    driver.quit()
-```
-
-Here's another `selenium-wire` example with the `Driver()` format:
-
-```python
-from seleniumbase import Driver
-
-def intercept_response(request, response):
-    print(request.headers)
-
-driver = Driver(wire=True)
-try:
-    driver.response_interceptor = intercept_response
-    driver.get("https://wikipedia.org")
-finally:
-    driver.quit()
-```
 
 Here's an example of basic login with the ``Driver()`` format:
 

@@ -1,3 +1,5 @@
+"""NOTE: This uses plain UC Mode, which was replaced by UC + CDP Mode.
+PyAutoGUI is installed automatically for uc_gui methods if not already."""
 from rich.pretty import pprint
 from seleniumbase import SB
 

@@ -116,7 +116,6 @@ def Driver(
     binary_location=None,  # Set path of the Chromium browser binary to use.
     driver_version=None,  # Set the chromedriver or uc_driver version to use.
     page_load_strategy=None,  # Set Chrome PLS to "normal", "eager", or "none".
-    use_wire=None,  # Use selenium-wire's webdriver over selenium webdriver.
     external_pdf=None,  # Set Chrome "plugins.always_open_pdf_externally":True.
     window_position=None,  # Set the browser's starting window position: "X,Y"
     window_size=None,  # Set the browser's starting window size: "Width,Height"
@@ -136,7 +135,6 @@ def Driver(
     ad_block=None,  # Shortcut / Duplicate of "ad_block_on".
     server=None,  # Shortcut / Duplicate of "servername".
     guest=None,  # Shortcut / Duplicate of "guest_mode".
-    wire=None,  # Shortcut / Duplicate of "use_wire".
     pls=None,  # Shortcut / Duplicate of "page_load_strategy".
     cft=None,  # Use "Chrome for Testing"
     chs=None,  # Use "Chrome-Headless-Shell"
@@ -214,7 +212,6 @@ def Driver(
     binary_location (str):  Set path of the Chromium browser binary to use.
     driver_version (str):  Set the chromedriver or uc_driver version to use.
     page_load_strategy (str):  Set Chrome PLS to "normal", "eager", or "none".
-    use_wire (bool):  Use selenium-wire's webdriver over selenium webdriver.
     external_pdf (bool):  Set Chrome "plugins.always_open_pdf_externally":True
     window_position (x,y):  Set the browser's starting window position: "X,Y"
     window_size (w,h):  Set the browser's starting window size: "Width,Height"
@@ -234,7 +231,6 @@ def Driver(
     ad_block (bool):  Shortcut / Duplicate of "ad_block_on".
     server (str):  Shortcut / Duplicate of "servername".
     guest (bool):  Shortcut / Duplicate of "guest_mode".
-    wire (bool):  Shortcut / Duplicate of "use_wire".
     pls (str):  Shortcut / Duplicate of "page_load_strategy".
     """
     from seleniumbase import config as sb_config
@@ -873,15 +869,6 @@ def Driver(
             do_not_track = True
         else:
             do_not_track = False
-    if use_wire is None and wire is None:
-        if "--wire" in sys_argv:
-            use_wire = True
-        else:
-            use_wire = False
-    elif use_wire or wire:
-        use_wire = True
-    else:
-        use_wire = False
     if external_pdf is None:
         if "--external-pdf" in sys_argv or "--external_pdf" in sys_argv:
             external_pdf = True
@@ -1019,7 +1006,6 @@ def Driver(
         binary_location=binary_location,
         driver_version=driver_version,
         page_load_strategy=page_load_strategy,
-        use_wire=use_wire,
         external_pdf=external_pdf,
         test_id=test_id,
         mobile_emulator=is_mobile,

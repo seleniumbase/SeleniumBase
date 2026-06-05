@@ -235,7 +235,6 @@ self.get_new_driver(
     binary_location=None,
     driver_version=None,
     page_load_strategy=None,
-    use_wire=None,
     external_pdf=None,
     is_mobile=None,
     d_width=None,
@@ -431,10 +430,6 @@ self.clear_session_storage()
 # Duplicates: self.delete_session_storage()
 self.get_session_storage_keys()
 self.get_session_storage_items()
-
-############
-
-self.set_wire_proxy(string)  # Requires "--wire"!
 
 ############
 

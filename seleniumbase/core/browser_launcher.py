@@ -312,8 +312,6 @@ def extend_driver(
         driver.execute_cdp_cmd(
             "Page.addScriptToEvaluateOnNewDocument", {"source": recorder_code}
         )
-    if hasattr(driver, "proxy"):
-        driver.set_wire_proxy = DM.set_wire_proxy
     completed_loads = []
     for ext_dir in sb_config._ext_dirs:
         if ext_dir not in completed_loads:
@@ -645,14 +643,12 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
     import asyncio
     from seleniumbase.undetected.cdp_driver import cdp_util
 
-    current_url = None
+    time.sleep(0.012)
     try:
-        current_url = driver.current_url
+        driver.disconnect()
     except Exception:
-        driver.connect()
-        current_url = driver.current_url
-    url_protocol = current_url.split(":")[0]
-    driver.disconnect()
+        time.sleep(0.012)
+        driver.disconnect()
 
     cdp_details = driver._get_cdp_details()
     cdp_host = cdp_details[1].split("://")[1].split(":")[0]
@@ -2334,7 +2330,6 @@ def _set_chrome_options(
     binary_location,
     driver_version,
     page_load_strategy,
-    use_wire,
     external_pdf,
     servername,
     mobile_emulator,
@@ -3071,7 +3066,6 @@ def get_driver(
     binary_location=None,
     driver_version=None,
     page_load_strategy=None,
-    use_wire=False,
     external_pdf=False,
     test_id=None,
     mobile_emulator=False,
@@ -3551,7 +3545,6 @@ def get_driver(
             binary_location,
             driver_version,
             page_load_strategy,
-            use_wire,
             external_pdf,
             test_id,
             mobile_emulator,
@@ -3610,7 +3603,6 @@ def get_driver(
             binary_location,
             driver_version,
             page_load_strategy,
-            use_wire,
             external_pdf,
             mobile_emulator,
             device_width,
@@ -3673,7 +3665,6 @@ def get_remote_driver(
     binary_location,
     driver_version,
     page_load_strategy,
-    use_wire,
     external_pdf,
     test_id,
     mobile_emulator,
@@ -3681,35 +3672,6 @@ def get_remote_driver(
     device_height,
     device_pixel_ratio,
 ):
-    if use_wire:
-        pip_find_lock = fasteners.InterProcessLock(
-            constants.PipInstall.FINDLOCK
-        )
-        with pip_find_lock:  # Prevent issues with multiple processes
-            with suppress(Exception):
-                shared_utils.make_writable(constants.PipInstall.FINDLOCK)
-            try:
-                from seleniumwire import webdriver
-                import blinker
-                with suppress(Exception):
-                    use_blinker_ver = constants.SeleniumWire.BLINKER_VER
-                    if blinker.__version__ != use_blinker_ver:
-                        shared_utils.pip_install(
-                            "blinker", version=use_blinker_ver
-                        )
-                del blinker
-            except Exception:
-                shared_utils.pip_install(
-                    "blinker", version=constants.SeleniumWire.BLINKER_VER
-                )
-                shared_utils.pip_install(
-                    "selenium-wire", version=constants.SeleniumWire.VER
-                )
-                from seleniumwire import webdriver
-            warnings.simplefilter("ignore", category=DeprecationWarning)
-    else:
-        from selenium import webdriver
-
     # Construct the address for connecting to a Selenium Grid
     if servername.startswith("https://"):
         protocol = "https"
@@ -3810,7 +3772,6 @@ def get_remote_driver(
             binary_location,
             driver_version,
             page_load_strategy,
-            use_wire,
             external_pdf,
             servername,
             mobile_emulator,
@@ -3987,7 +3948,6 @@ def get_remote_driver(
             binary_location,
             driver_version,
             page_load_strategy,
-            use_wire,
             external_pdf,
             servername,
             mobile_emulator,
@@ -4111,7 +4071,6 @@ def get_local_driver(
     binary_location,
     driver_version,
     page_load_strategy,
-    use_wire,
     external_pdf,
     mobile_emulator,
     device_width,
@@ -4170,35 +4129,6 @@ def get_local_driver(
         local_uc_driver = driver_dir + "/uc_driver.exe"
     b_path = binary_location
     use_uc = is_using_uc(undetectable, browser_name)
-    if use_wire:
-        pip_find_lock = fasteners.InterProcessLock(
-            constants.PipInstall.FINDLOCK
-        )
-        with pip_find_lock:  # Prevent issues with multiple processes
-            with suppress(Exception):
-                shared_utils.make_writable(constants.PipInstall.FINDLOCK)
-            try:
-                from seleniumwire import webdriver
-                import blinker
-                with suppress(Exception):
-                    use_blinker_ver = constants.SeleniumWire.BLINKER_VER
-                    if blinker.__version__ != use_blinker_ver:
-                        shared_utils.pip_install(
-                            "blinker", version=use_blinker_ver
-                        )
-                del blinker
-            except Exception:
-                shared_utils.pip_install(
-                    "blinker", version=constants.SeleniumWire.BLINKER_VER
-                )
-                shared_utils.pip_install(
-                    "selenium-wire", version=constants.SeleniumWire.VER
-                )
-                from seleniumwire import webdriver
-            warnings.simplefilter("ignore", category=DeprecationWarning)
-    else:
-        from selenium import webdriver
-
     if browser_name == constants.Browser.FIREFOX:
         firefox_options = _set_firefox_options(
             downloads_path,
@@ -5064,7 +4994,6 @@ def get_local_driver(
                 binary_location,
                 driver_version,
                 page_load_strategy,
-                use_wire,
                 external_pdf,
                 servername,
                 mobile_emulator,
@@ -5124,7 +5053,7 @@ def get_local_driver(
                         and major_chrome_version
                         and int(major_chrome_version) >= 117
                         and not use_uc
-                        and not (remote_debug or devtools or use_wire)
+                        and not (remote_debug or devtools)
                         and not (proxy_string or multi_proxy or proxy_pac_url)
                         and (not chromium_arg or "debug" not in chromium_arg)
                         and (not servername or servername == "localhost")
@@ -5632,7 +5561,6 @@ def get_local_driver(
                                         binary_location,
                                         driver_version,
                                         page_load_strategy,
-                                        use_wire,
                                         external_pdf,
                                         servername,
                                         mobile_emulator,
@@ -5888,7 +5816,6 @@ def get_local_driver(
                         binary_location,
                         driver_version,
                         page_load_strategy,
-                        use_wire,
                         external_pdf,
                         servername,
                         mobile_emulator,
@@ -6213,7 +6140,7 @@ def get_local_driver(
             elif extension_zip or extension_dir:
                 print("\nUnable to load extension while starting Chrome!\n")
                 raise
-            elif headless or headless2 or IS_LINUX or proxy_string or use_wire:
+            elif headless or headless2 or IS_LINUX or proxy_string:
                 raise
             # Try running without any options (bare bones Chrome launch)
             if local_chromedriver and os.path.exists(local_chromedriver):

@@ -409,26 +409,3 @@ class DriverMethods(WebDriver):
         width = settings.CHROME_START_WIDTH
         height = settings.CHROME_START_HEIGHT
         self.driver.set_window_rect(x, y, width, height)
-
-    def set_wire_proxy(self, string):
-        """Set a proxy server for selenium-wire mode ("--wire")
-        Examples:  (ONLY avilable if using selenium-wire mode!)
-        driver.set_wire_proxy("SERVER:PORT")
-        driver.set_wire_proxy("socks5://SERVER:PORT")
-        driver.set_wire_proxy("USERNAME:PASSWORD@SERVER:PORT")
-        """
-        the_http = "http"
-        the_https = "https"
-        if string.startswith("socks4://"):
-            the_http = "socks4"
-            the_https = "socks4"
-        elif string.startswith("socks5://"):
-            the_http = "socks5"
-            the_https = "socks5"
-        string = string.split("//")[-1]
-        if hasattr(self.driver, "proxy"):
-            self.driver.proxy = {
-                "http": "%s://%s" % (the_http, string),
-                "https": "%s://%s" % (the_https, string),
-                "no_proxy": "localhost,127.0.0.1",
-            }

@@ -142,6 +142,7 @@ setup(
         "Programming Language :: Python :: 3.12",
         "Programming Language :: Python :: 3.13",
         "Programming Language :: Python :: 3.14",
+        "Programming Language :: Python :: 3.15",
         "Topic :: Internet",
         "Topic :: Internet :: WWW/HTTP :: Browsers",
         "Topic :: Scientific/Engineering",
@@ -173,7 +174,7 @@ setup(
         'websockets~=15.0.1;python_version<"3.10"',
         'websockets>=16.0;python_version>="3.10"',
         'filelock~=3.19.1;python_version<"3.10"',
-        'filelock>=3.29.0;python_version>="3.10"',
+        'filelock>=3.29.1;python_version>="3.10"',
         'fasteners>=0.20',
         'mycdp>=1.3.7',
         'pynose>=1.5.5',
@@ -193,7 +194,7 @@ setup(
         'pyreadline3>=3.5.4;platform_system=="Windows"',
         'tabcompleter>=1.4.1',
         'pdbp>=1.8.2',
-        'idna>=3.17',
+        'idna>=3.18',
         'charset-normalizer>=3.4.7,<4',
         'urllib3>=1.26.20,<2;python_version<"3.10"',
         'urllib3>=2.7.0,<3;python_version>="3.10"',
@@ -243,9 +244,9 @@ setup(
         # Usage: pytest --alluredir=allure_results
         # Serve: allure serve allure_results
         "allure": [
-            'allure-pytest>=2.13.5',
-            'allure-python-commons>=2.13.5',
-            'allure-behave>=2.13.5',
+            'allure-pytest>=2.16.0',
+            'allure-python-commons>=2.16.0',
+            'allure-behave>=2.16.0',
         ],
         # pip install -e .[coverage]
         # Usage: coverage run -m pytest; coverage html; coverage report
@@ -261,12 +262,6 @@ setup(
             "mccabe==0.7.0",
             'pyflakes==3.4.0',
             'pycodestyle==2.14.0',
-        ],
-        # pip install -e .[ipdb]
-        # (Not needed for debugging anymore. SeleniumBase now includes "pdbp".)
-        "ipdb": [
-            "ipdb==0.13.13",
-            'ipython==7.34.0',
         ],
         # pip install -e .[mss]
         # (An optional library for tile_windows() in CDP Mode.)
@@ -293,7 +288,7 @@ setup(
         # (If you see [SSL: CERTIFICATE_VERIFY_FAILED], then get this.)
         # (May help those with corporate self-signed certs on Windows.)
         "pip-system-certs": [
-            'pip-system-certs==4.0;platform_system=="Windows"',
+            'pip-system-certs>=4.0;platform_system=="Windows"',
         ],
         # pip install -e .[proxy]
         # Usage: proxy
@@ -312,24 +307,6 @@ setup(
         # (Already a required dependency on Linux now.)
         "pyautogui": [
             'PyAutoGUI>=0.9.54;platform_system!="Linux"',
-        ],
-        # pip install -e .[selenium-stealth]
-        "selenium-stealth": [
-            'selenium-stealth==1.0.6',
-        ],
-        # pip install -e .[selenium-wire]
-        "selenium-wire": [
-            'selenium-wire==5.1.0',
-            'pyOpenSSL>=24.2.1',
-            'pyparsing>=3.1.4',
-            'Brotli==1.1.0',
-            'blinker==1.7.0',  # Newer ones had issues
-            'h2==4.1.0',
-            'hpack==4.0.0',
-            'hyperframe==6.0.1',
-            'kaitaistruct==0.10',
-            'pyasn1==0.6.1',
-            'zstandard>=0.23.0',
         ],
     },
     packages=[

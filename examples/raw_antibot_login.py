@@ -1,4 +1,6 @@
-"""UC Mode has PyAutoGUI methods for CAPTCHA-bypass."""
+"""UC Mode has PyAutoGUI methods for stealthy actions.
+PyAutoGUI gets installed automatically if not already.
+This old UC Mode code is made obsolete by CDP Mode."""
 from seleniumbase import SB
 
 with SB(uc=True, test=True) as sb:
@@ -7,7 +9,7 @@ with SB(uc=True, test=True) as sb:
     sb.uc_gui_write("\t" + "demo_user")
     sb.uc_gui_write("\t" + "secret_pass")
     sb.uc_gui_press_keys("\t" + " ")  # For Single-char keys
-    sb.sleep(1.5)
+    sb.sleep(1.4)
     sb.uc_gui_press_keys(["\t", "ENTER"])  # Multi-char keys
     sb.reconnect(1.8)
     sb.assert_text("Welcome!", "h1")

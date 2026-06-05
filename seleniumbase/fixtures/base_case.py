@@ -4115,7 +4115,6 @@ class BaseCase(unittest.TestCase):
         binary_location=None,
         driver_version=None,
         page_load_strategy=None,
-        use_wire=None,
         external_pdf=None,
         is_mobile=None,
         d_width=None,
@@ -4177,7 +4176,6 @@ class BaseCase(unittest.TestCase):
         binary_location - the path of the browser binary to use (Chromium)
         driver_version - the chromedriver or uc_driver version to force
         page_load_strategy - the option to change pageLoadStrategy (Chrome)
-        use_wire - Use selenium-wire webdriver instead of the selenium one
         external_pdf - "plugins.always_open_pdf_externally": True. (Chrome)
         is_mobile - the option to use the mobile emulator (Chrome-only)
         d_width - the device width of the mobile emulator (Chrome-only)
@@ -4210,7 +4208,7 @@ class BaseCase(unittest.TestCase):
                 " for examples!)"
                 % (browserstack_ref, sauce_labs_ref)
             )
-        shortcuts = ["dark", "guest", "locale", "mobile", "pls", "uc", "wire"]
+        shortcuts = ["dark", "guest", "locale", "mobile", "pls", "uc"]
         if kwargs:
             for key in kwargs.keys():
                 if key not in shortcuts:
@@ -4326,10 +4324,6 @@ class BaseCase(unittest.TestCase):
             page_load_strategy = self.page_load_strategy
         if "pls" in kwargs and not page_load_strategy:
             page_load_strategy = kwargs["pls"]
-        if use_wire is None:
-            use_wire = self.use_wire
-        if "wire" in kwargs and not use_wire:
-            use_wire = kwargs["wire"]
         if external_pdf is None:
             external_pdf = self.external_pdf
         test_id = self.__get_test_id()
@@ -4408,7 +4402,6 @@ class BaseCase(unittest.TestCase):
             binary_location=binary_location,
             driver_version=driver_version,
             page_load_strategy=page_load_strategy,
-            use_wire=use_wire,
             external_pdf=external_pdf,
             test_id=test_id,
             mobile_emulator=is_mobile,
@@ -5074,6 +5067,8 @@ class BaseCase(unittest.TestCase):
         """Activate CDP Mode with the URL and kwargs."""
         if getattr(self.driver, "_is_using_uc", None):
             if self.__is_cdp_swap_needed():
+                if url:
+                    self.cdp.open(url, **kwargs)
                 return  # CDP Mode is already active
             if not self.is_connected():
                 self.driver.connect()
@@ -9377,35 +9372,6 @@ class BaseCase(unittest.TestCase):
             "  items[k = ls.key(i)] = ls.getItem(k); "
             "return items;"
         )
-
-    ############
-
-    # Methods ONLY for the selenium-wire integration ("--wire")
-
-    def set_wire_proxy(self, string):
-        """Set a proxy server for selenium-wire mode ("--wire")
-        NOTE: This method ONLY works while using "--wire" mode!
-        Examples:
-            self.set_wire_proxy("SERVER:PORT")
-            self.set_wire_proxy("socks5://SERVER:PORT")
-            self.set_wire_proxy("USERNAME:PASSWORD@SERVER:PORT") """
-        if not string:
-            self.driver.proxy = {}
-            return
-        the_http = "http"
-        the_https = "https"
-        if string.startswith("socks4://"):
-            the_http = "socks4"
-            the_https = "socks4"
-        elif string.startswith("socks5://"):
-            the_http = "socks5"
-            the_https = "socks5"
-        string = string.split("//")[-1]
-        self.driver.proxy = {
-            "http": "%s://%s" % (the_http, string),
-            "https": "%s://%s" % (the_https, string),
-            "no_proxy": "localhost,127.0.0.1",
-        }
 
     ############
 
@@ -15553,7 +15519,6 @@ class BaseCase(unittest.TestCase):
             self.binary_location = sb_config.binary_location
             self.driver_version = sb_config.driver_version
             self.page_load_strategy = sb_config.page_load_strategy
-            self.use_wire = sb_config.use_wire
             self.external_pdf = sb_config.external_pdf
             self._final_debug = sb_config.final_debug
             self.window_position = sb_config.window_position
@@ -15937,7 +15902,6 @@ class BaseCase(unittest.TestCase):
                 binary_location=self.binary_location,
                 driver_version=self.driver_version,
                 page_load_strategy=self.page_load_strategy,
-                use_wire=self.use_wire,
                 external_pdf=self.external_pdf,
                 is_mobile=self.mobile_emulator,
                 d_width=self.__device_width,

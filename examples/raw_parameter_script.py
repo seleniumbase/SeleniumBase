@@ -82,7 +82,6 @@ if pure_python:
     sb._crumbs = False
     sb._final_debug = False
     sb.esc_end = False
-    sb.use_wire = False
     sb.enable_3d_apis = False
     sb.window_position = None
     sb.window_size = None

@@ -323,6 +323,7 @@ with SB(uc=True, test=True, ad_block=True) as sb:
                     price_text = price_text.split("current price ")[-1]
                     price_text = price_text.split(" ")[0]
                     print("  (" + price_text + ")")
+                    item.scroll_into_view()
 ```
 
 </details>
@@ -662,8 +663,7 @@ await tab.set_window_size(left=0, top=0, width=1280, height=1024)
 await tab.set_window_rect(left=0, top=0, width=1280, height=1024)
 await tab.activate()
 await tab.bring_to_front()
-await tab.set_window_state(
-    left=0, top=0, width=1280, height=720, state="normal")
+await tab.set_window_state(left=0, top=0, width=1280, height=720, state="normal")
 await tab.get_navigation_history()
 await tab.get_user_agent()
 await tab.get_cookie_string()
@@ -677,8 +677,7 @@ await tab.wait_for(selector="", text="", timeout=10)
 await tab.set_attributes(selector, attribute, value)
 await tab.internalize_links()
 await tab.download_file(url, filename=None)
-await tab.save_screenshot(
-    filename="auto", format="png", full_page=False)
+await tab.save_screenshot(filename="auto", format="png", full_page=False)
 await tab.print_to_pdf(filename="auto")
 await tab.set_download_path(path)
 await tab.get_all_linked_sources()

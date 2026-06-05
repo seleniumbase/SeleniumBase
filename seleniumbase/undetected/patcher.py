@@ -8,7 +8,6 @@ import sys
 import time
 import zipfile
 from contextlib import suppress
-from seleniumbase.console_scripts import sb_install
 from seleniumbase.fixtures import shared_utils
 
 logger = logging.getLogger(__name__)
@@ -111,6 +110,7 @@ class Patcher(object):
         if int(self.version_main) < 115:
             self.unzip_package(self.fetch_package())
         else:
+            from seleniumbase.console_scripts import sb_install
             sb_install.main(
                 override="chromedriver %s" % self.version_main,
                 intel_for_uc=shared_utils.is_arm_mac(),
@@ -131,6 +131,7 @@ class Patcher(object):
         path = path.upper()
         logger.debug("Getting release number from %s" % path)
         if self.version_main and int(self.version_main) > 114:
+            from seleniumbase.console_scripts import sb_install
             return (
                 sb_install.get_cft_latest_version_from_milestone(
                     str(self.version_main)
