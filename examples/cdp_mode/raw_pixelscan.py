@@ -1,6 +1,6 @@
 from seleniumbase import SB
 
-with SB(uc=True, test=True, incognito=True, ad_block=True) as sb:
+with SB(uc=True, test=True, guest=True, ad_block=True) as sb:
     url = "https://pixelscan.net/fingerprint-check"
     sb.activate_cdp_mode(url)
     sb.sleep(1)
@@ -14,3 +14,4 @@ with SB(uc=True, test=True, incognito=True, ad_block=True) as sb:
     sb.cdp.highlight("span.status-success")
     sb.cdp.highlight("pxlscn-fingerprint-masking p")
     sb.cdp.highlight("pxlscn-bot-detection p")
+    print("Bot Not Detected")

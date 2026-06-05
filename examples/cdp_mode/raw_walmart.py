@@ -44,3 +44,4 @@ with SB(uc=True, test=True, ad_block=True) as sb:
                     price_text = price_text.split("current price ")[-1]
                     price_text = price_text.split(" ")[0]
                     print("  (" + price_text + ")")
+                    item.scroll_into_view()

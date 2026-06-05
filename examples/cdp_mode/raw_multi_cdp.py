@@ -12,7 +12,7 @@ def main(url):
     sb.highlight("button")
     sb.click("button")
     sb.sleep(2)
-    sb.driver.quit()
+    sb.quit()
 
 
 if __name__ == "__main__":

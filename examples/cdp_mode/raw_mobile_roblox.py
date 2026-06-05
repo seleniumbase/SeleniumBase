@@ -1,3 +1,5 @@
+"""Test mobile emulation via mycdp.emulation.set_device_metrics_override().
+tab.send() is a stealthy version of Selenium's execute_cdp_cmd() method."""
 import mycdp
 from seleniumbase import SB
 

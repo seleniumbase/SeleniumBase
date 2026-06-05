@@ -1,4 +1,5 @@
-"""Using CDP Mode to bypass CAPTCHAs in different ways."""
+"""Using CDP Mode to bypass CAPTCHAs in different ways.
+PyAutoGUI is installed automatically if not already."""
 from seleniumbase import SB
 
 with SB(uc=True, test=True, guest=True) as sb:

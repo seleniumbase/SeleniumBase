@@ -43,4 +43,5 @@ for item in items:
                 price_text = price_text.split("current price ")[-1]
                 price_text = price_text.split(" ")[0]
                 print("  (" + price_text + ")")
+                item.scroll_into_view()
 sb.driver.stop()

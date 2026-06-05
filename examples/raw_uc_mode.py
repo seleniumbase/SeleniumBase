@@ -1,4 +1,7 @@
-"""SB Manager using UC Mode for evading bot-detection."""
+"""SB Manager using UC Mode for evading bot-detection.
+Note that plain UC Mode was replaced by the newer CDP Mode:
+Instead of uc_open_with_reconnect, use activate_cdp_mode().
+Instead of uc_gui_click_captcha(), use solve_captcha()."""
 from seleniumbase import SB
 
 with SB(uc=True, test=True) as sb:

@@ -1,7 +1,7 @@
 from seleniumbase import sb_cdp
 
-url = "https://seleniumbase.io/simple/login"
-sb = sb_cdp.Chrome(url)
+sb = sb_cdp.Chrome()
+sb.open("https://seleniumbase.io/simple/login")
 sb.type("#username", "demo_user")
 sb.type("#password", "secret_pass")
 sb.click('a:contains("Sign in")')
@@ -14,4 +14,4 @@ for nav_item in links:
     print(nav_item.text)
 sb.click_link("Sign out")
 sb.assert_text("signed out", "#top_message")
-sb.driver.stop()
+sb.quit()

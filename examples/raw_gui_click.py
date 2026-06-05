@@ -1,8 +1,11 @@
+"""CDP Mode for bypassing bot-detection & CAPTCHAs.
+Note: sb.uc_gui_click_captcha() requires PyAutoGUI,
+which is installed automatically if not already."""
 from seleniumbase import SB
 
 with SB(uc=True, test=True) as sb:
-    url = "seleniumbase.io/apps/form_turnstile"
-    sb.activate_cdp_mode(url)
+    sb.activate_cdp_mode()
+    sb.open("seleniumbase.io/apps/form_turnstile")
     sb.press_keys("#name", "SeleniumBase")
     sb.press_keys("#email", "test@test.test")
     sb.press_keys("#phone", "1-555-555-5555")
@@ -14,7 +17,7 @@ with SB(uc=True, test=True) as sb:
     sb.click('input[value="cc"] + span')
     sb.scroll_to('div[class*="cf-turnstile"]')
     sb.scroll_down(40)
-    sb.uc_gui_click_captcha()
+    sb.uc_gui_click_captcha()  # PyAutoGUI mouse click
     sb.highlight("img#captcha-success", timeout=3)
     sb.highlight_click('button:contains("Request & Pay")')
     sb.highlight("img#submit-success")
