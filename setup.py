@@ -18,7 +18,10 @@ try:
             long_description_lines.append(line)
     long_description = "\n".join(long_description_lines)
 except IOError:
-    long_description = "A complete library for building end-to-end tests."
+    long_description = (
+        "SeleniumBase is a framework for web crawling, scraping, and testing. "
+        "Supports pytest. CDP Mode adds stealth. Includes many tools."
+    )
 about = {}
 # Get the package version from the seleniumbase/__version__.py file
 with open(
@@ -75,8 +78,8 @@ setup(
     name="seleniumbase",
     version=about["__version__"],
     description=(
-        "A framework for stealthy Chromium automation with CDP Mode. "
-        "Includes CAPTCHA-bypass, E2E Testing, and a Playwright integration."
+        "SeleniumBase is a framework for web crawling, scraping, and testing. "
+        "Supports pytest. CDP Mode adds stealth. Includes many tools."
     ),
     long_description=long_description,
     long_description_content_type="text/markdown",
