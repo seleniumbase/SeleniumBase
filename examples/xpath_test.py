@@ -5,7 +5,7 @@ BaseCase.main(__name__, __file__)
 
 class XPathTests(BaseCase):
     def test_xpath(self):
-        self.open("https://seleniumbase.io/demo_page")
+        self.goto("https://seleniumbase.io/demo_page")
         self.assert_element('//h1[(text()="Demo Page")]')
         self.type('//*[@id="myTextInput"]', "XPath Test!")
         self.click('//button[starts-with(text(),"Click Me")]')

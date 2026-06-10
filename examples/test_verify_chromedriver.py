@@ -5,7 +5,7 @@ BaseCase.main(__name__, __file__)
 
 class ChromedriverTests(BaseCase):
     def test_fail_if_versions_dont_match(self):
-        self.open("about:blank")
+        self.goto("about:blank")
         if self.browser != "chrome":
             print("\n  This test is only for Chrome!")
             self.skip("This test is only for Chrome!")

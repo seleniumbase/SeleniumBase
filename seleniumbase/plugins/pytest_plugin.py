@@ -1137,7 +1137,7 @@ def pytest_addoption(parser):
                     self.driver.add_cdp_listener(
                         "*", lambda data: print(pformat(data))
                     )
-                    self.open(URL)""",
+                    self.goto(url)""",
     )
     parser.addoption(
         "--uc_subprocess",

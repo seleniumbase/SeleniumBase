@@ -17,7 +17,7 @@ def main():
         print(nav_item.text)
     sb.click_link("Sign out")
     sb.assert_text("signed out", "#top_message")
-    sb.driver.stop()
+    sb.quit()
 
 
 if __name__ == "__main__":

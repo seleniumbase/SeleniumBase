@@ -1,7 +1,7 @@
 from seleniumbase import DriverContext
 
 with DriverContext() as driver:
-    driver.open("seleniumbase.io/simple/login")
+    driver.goto("seleniumbase.io/simple/login")
     driver.type("#username", "demo_user")
     driver.type("#password", "secret_pass")
     driver.click('a:contains("Sign in")')

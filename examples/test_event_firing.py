@@ -29,9 +29,9 @@ class EventFiringTests(BaseCase):
     def test_event_firing_webdriver(self):
         self.driver = EventFiringWebDriver(self.driver, MyListener())
         print("\n* EventFiringWebDriver example *")
-        self.open("https://xkcd.com/1862/")
+        self.goto("https://xkcd.com/1862/")
         self.click("link=About")
-        self.open("https://xkcd.com/1820/")
+        self.goto("https://xkcd.com/1820/")
         self.assert_text("Security Advice", "#ctitle")
         self.click('a:contains("Next >")')
         self.assert_text("Incinerator", "#ctitle")

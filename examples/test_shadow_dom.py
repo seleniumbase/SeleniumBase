@@ -9,7 +9,7 @@ BaseCase.main(__name__, __file__)
 
 class ShadowDomTests(BaseCase):
     def download_tar_file_from_pypi(self, package):
-        self.open("https://pypi.org/project/%s/#files" % package)
+        self.goto("https://pypi.org/project/%s/#files" % package)
         pkg_header = self.get_text("h1.package-header__name").strip()
         pkg_name = pkg_header.replace(" ", "-")
         tar_file = pkg_name + ".tar.gz"
@@ -20,7 +20,7 @@ class ShadowDomTests(BaseCase):
 
     def test_shadow_dom(self):
         if not self.browser == "chrome" or self.headless or self.recorder_mode:
-            self.open_if_not_url("about:blank")
+            self.goto_if_not_url("about:blank")
             print("\n  Unsupported mode for this test.")
             self.skip("Unsupported mode for this test.")
 
@@ -31,7 +31,7 @@ class ShadowDomTests(BaseCase):
         self.assert_downloaded_file(file_name_2, browser=True)
 
         # Navigate to the Chrome downloads page.
-        self.open("chrome://downloads/")
+        self.goto("chrome://downloads/")
 
         # Shadow DOM selectors
         search_icon = (

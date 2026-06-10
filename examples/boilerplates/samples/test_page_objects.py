@@ -5,7 +5,7 @@ BaseCase.main(__name__, __file__, "--uc")
 
 class GooglePage:
     def go_to_google(self, sb):
-        sb.driver.get("https://google.com/ncr")
+        sb.goto("https://google.com/ncr")
         sb.click_if_visible('button:contains("Accept all")')
 
     def assert_google_title(self, sb):
@@ -19,8 +19,8 @@ class GooglePage:
 
     def do_search(self, sb, search_term):
         sb.sleep(0.05)
-        sb.click('[title="Search"]')
-        sb.type('[title="Search"]', search_term + "\n")
+        sb.type('[name="q"]', search_term)
+        sb.click('[value="Google Search"]')
 
     def click_search_result(self, sb, content):
         sb.click('a:contains("%s")' % content)
@@ -36,12 +36,12 @@ class SeleniumBaseIOPage:
 class MyTests(BaseCase):
     def test_page_objects(self):
         if self.headless:
-            self.open_if_not_url("about:blank")
+            self.goto_if_not_url("about:blank")
             print("\n  Skipping test in headless mode.")
             self.skip("Skipping test in headless mode.")
         if not self.undetectable:
             self.get_new_driver(undetectable=True)
-        search_term = "SeleniumBase.io Docs"
+        search_term = "site:seleniumbase.io Docs"
         expected_text = "SeleniumBase"
         GooglePage().go_to_google(self)
         GooglePage().assert_google_title(self)

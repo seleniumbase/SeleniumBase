@@ -4,7 +4,7 @@ from behave import step
 @step("Open the RealWorld Login Page")
 def go_to_realworld(context):
     sb = context.sb
-    context.sb.open("https://seleniumbase.io/realworld/login")
+    context.sb.goto("https://seleniumbase.io/realworld/login")
     sb.clear_session_storage()
 
 

@@ -1,7 +1,7 @@
 from seleniumbase import sb_cdp
 
 sb = sb_cdp.Chrome()
-sb.open("https://seleniumbase.io/simple/login")
+sb.goto("https://seleniumbase.io/simple/login")
 sb.type("#username", "demo_user")
 sb.type("#password", "secret_pass")
 sb.click('a:contains("Sign in")')

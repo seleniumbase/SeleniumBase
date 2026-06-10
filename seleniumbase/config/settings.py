@@ -70,7 +70,7 @@ SWITCH_TO_NEW_TABS_ON_CLICK = True
 These methods add global waits, such as self.wait_for_ready_state_complete(),
 which waits for document.readyState to be "complete" after browser actions.
 """
-# Called after self.open(URL), NOT driver.get(URL)
+# Called after self.goto(url), NOT driver.get(url)
 WAIT_FOR_RSC_ON_PAGE_LOADS = True
 # Called after self.click(selector), NOT element.click()
 WAIT_FOR_RSC_ON_CLICKS = False

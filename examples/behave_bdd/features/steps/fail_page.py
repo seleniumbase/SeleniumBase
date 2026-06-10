@@ -3,7 +3,7 @@ from behave import step
 
 @step("Open the Fail Page")
 def go_to_error_page(context):
-    context.sb.open("https://seleniumbase.io/error_page/")
+    context.sb.goto("https://seleniumbase.io/error_page/")
 
 
 @step("Fail test on purpose")

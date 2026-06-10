@@ -13,7 +13,7 @@ class HackTests(BaseCase):
         sb_dashboard_logo = "//seleniumbase.github.io/img/dash_pie_3.png"
         wiki = "https://en.wikipedia.org/wiki/All_your_base_are_belong_to_us"
 
-        self.open(wiki)
+        self.goto(wiki)
         self.click_if_visible('button[aria-label="Close"]')
         self.set_text_content("h1#firstHeading", aybabtu)
         self.set_text_content("#ca-history a", aybabtu)
@@ -32,7 +32,7 @@ class HackTests(BaseCase):
         self.highlight("img[src*=Ayb]", loops=10, scroll=False)
 
         if not self.headless:
-            self.open("https://www.apple.com/store")
+            self.goto("https://www.apple.com/store")
             self.set_text_content("div.rs-shop-subheader", aybabtu)
             self.set_text_content('#shelf-1 a[href*="mac"]', "ALL")
             self.set_text_content('#shelf-1 a[href*="iphone"]', "YOUR")
@@ -57,7 +57,7 @@ class HackTests(BaseCase):
             self.highlight("#shelf-2_section h2", loops=5, scroll=False)
             self.highlight("#shelf-2_section span", loops=6, scroll=False)
 
-        self.open("https://google.com/ncr")
+        self.goto("https://google.com/ncr")
         self.click_if_visible('button:contains("Accept all")')
         self.hide_elements("iframe")
         if self.is_element_visible('a[href*="about.google"]'):
@@ -85,11 +85,11 @@ class HackTests(BaseCase):
         self.highlight('a[href*="google.com/img"]', loops=3)
         self.highlight('form[role="search"]', loops=8)
 
-        self.open("https://github.com/solutions/use-case/devops")
+        self.goto("https://github.com/solutions/use-case/devops")
         self.set_text_content("#hero-section-brand-heading", aybabtu)
         self.highlight("#hero-section-brand-heading", loops=14, scroll=False)
 
-        self.open("https://dev.to/top/infinity")
+        self.goto("https://dev.to/top/infinity")
         self.click_if_visible('button[aria-label="Close campaign banner"]')
         self.click_if_visible('svg[aria-label="Close campaign banner"]')
         self.click_if_visible('button[id*="sponsorship-close-trigger"]')
@@ -130,7 +130,7 @@ class HackTests(BaseCase):
             self.highlight('main h2 a[id*="article"]', loops=7, scroll=False)
         self.highlight("section.crayons-card", loops=7, scroll=False)
 
-        self.open("https://store.steampowered.com/")
+        self.goto("https://store.steampowered.com/")
         self.set_text_content('a[href*="steamcommunity.com/"]', " ")
         self.set_text_content('div.content a[href*="/about/"]', " ")
         self.set_text_content('div.content a[href*="help.steam"]', aybabtu)
@@ -138,7 +138,7 @@ class HackTests(BaseCase):
         self.add_css_style(zoom_in)
         self.highlight('div.content a[href*="help.steam"]', loops=12)
 
-        self.open("https://xkcd.com/286/")
+        self.goto("https://xkcd.com/286/")
         self.set_text_content('a[href="/archive"]', "ALL")
         self.set_text_content('a[href*="what-if"]', "YOUR BASE")
         self.set_text_content('a[href*="/about"]', abtu)
@@ -161,18 +161,18 @@ class HackTests(BaseCase):
         self.highlight('a[rel="next"]', loops=3, scroll=False)
         self.highlight("#ctitle", loops=7, scroll=False)
 
-        self.open("https://www.nintendo.com/whatsnew/")
+        self.goto("https://www.nintendo.com/whatsnew/")
         self.set_text_content("main section h1", aybabtu)
         self.highlight("main section h1", loops=10, scroll=False)
 
         if not self.headless:
-            self.open("https://support.gog.com/hc/en-us?product=gog")
+            self.goto("https://support.gog.com/hc/en-us?product=gog")
             self.set_text_content("div.intro-title", aybabtu)
             self.set_text_content("h4", aybabtu)
             self.highlight("div.intro-title", loops=8, scroll=False)
             self.highlight("h4", loops=8, scroll=False)
 
-        self.open(
+        self.goto(
             "https://slack.com/help/articles/204379773-Upload-a-Slack-icon"
         )
         self.set_text_content("h1", aybabtu)
@@ -180,7 +180,7 @@ class HackTests(BaseCase):
         self.highlight("h1", loops=4, scroll=False)
         self.highlight("h1.article_title", loops=5, scroll=False)
 
-        self.open("https://kubernetes.io/")
+        self.goto("https://kubernetes.io/")
         self.set_text_content('nav a[href="/docs/home/"]', "ALL")
         self.set_text_content('nav a[href="/blog/"]', "YOUR")
         self.set_text_content('nav a[href="/training/"]', "BASE")
@@ -201,7 +201,7 @@ class HackTests(BaseCase):
         if self.is_element_visible("h1"):
             self.highlight("h1", loops=6, scroll=False)
 
-        self.open("https://www.selenium.dev/")
+        self.goto("https://www.selenium.dev/")
         if self.is_element_visible('button[data-dismiss="alert"] span'):
             self.js_click('button[data-dismiss="alert"] span', scroll=False)
         self.set_attributes("a.dropdown-toggle", "class", "nav-link")
@@ -229,7 +229,7 @@ class HackTests(BaseCase):
         self.highlight("div.mx-auto p", loops=6, scroll=False)
         self.highlight("h2", loops=8, scroll=False)
 
-        self.open("https://www.python.org/")
+        self.goto("https://www.python.org/")
         self.set_text_content('a[class="donate-button"]', ayb)
         self.set_text_content("#about a", "ALL")
         self.set_text_content("#downloads a", "YOUR")
@@ -248,11 +248,11 @@ class HackTests(BaseCase):
         self.highlight("#news a", loops=1, scroll=False)
         self.highlight("#events a", loops=2, scroll=False)
 
-        self.open("https://docs.pytest.org/")
+        self.goto("https://docs.pytest.org/")
         self.set_text_content("h1", "pytest: " + aybabtu)
         self.highlight("h1", loops=10, scroll=False)
 
-        self.open("https://wordpress.com/")
+        self.goto("https://wordpress.com/")
         zoom_out = "h1{zoom: 0.8;-moz-transform: scale(0.8);}"
         self.add_css_style(zoom_out)
         zoom_in = "a.wp-element-button{zoom: 1.4;-moz-transform: scale(1.4);}"
@@ -262,11 +262,11 @@ class HackTests(BaseCase):
         self.highlight("h1", loops=8, scroll=False)
         self.highlight("a.wp-element-button", loops=8, scroll=False)
 
-        self.open("https://seleniumbase.com/")
+        self.goto("https://seleniumbase.com/")
         self.set_text_content("h1", aybabtu)
         self.highlight("h1", loops=10, scroll=False)
 
-        self.open("https://pypi.org/")
+        self.goto("https://pypi.org/")
         self.set_text_content('a[href="/sponsors/"]', aybabtu)
         self.set_text_content("h1", aybabtu)
         self.set_value("input#search", aybabtu, scroll=False)
@@ -274,7 +274,7 @@ class HackTests(BaseCase):
         self.highlight("h1", loops=6, scroll=False)
         self.highlight("input#search", loops=8, scroll=False)
 
-        self.open("https://status.iboss.com/ibcloud/app/cloudStatus.html")
+        self.goto("https://status.iboss.com/ibcloud/app/cloudStatus.html")
         self.wait_for_element_clickable('div[translate*="cloudStatus"]')
         self.set_text_content('div[translate*="cloudStatus"]', ayb)
         self.set_text_content('div[translate*="maintenance"]', "ARE")
@@ -288,16 +288,16 @@ class HackTests(BaseCase):
         self.highlight('div[translate*="incident"]', loops=3)
         self.highlight("h1", loops=9, scroll=False)
 
-        self.open("https://git-scm.com/")
+        self.goto("https://git-scm.com/")
         self.set_text_content("span#tagline", aybabtu)
         self.highlight("span#tagline", loops=10, scroll=False)
 
-        self.open("https://pragprog.com/")
+        self.goto("https://pragprog.com/")
         self.set_text_content("header p", aybabtu)
         zoom_in = "header p{zoom: 1.35;-moz-transform: scale(1.35);}"
         self.add_css_style(zoom_in)
         self.highlight("header p", loops=10, scroll=False)
 
-        self.open("https://seleniumbase.io/")
+        self.goto("https://seleniumbase.io/")
         self.set_text_content("h1", aybabtu)
         self.highlight("h1", loops=10, scroll=False)

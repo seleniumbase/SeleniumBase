@@ -17,7 +17,7 @@ class PresentationWithChart(BaseCase):
                 "from seleniumbase import BaseCase\n\n"
                 "class TestMFALogin(BaseCase):\n\n"
                 "    def test_mfa_login(self):\n"
-                '        self.open("seleniumbase.io/realworld/login")\n'
+                '        self.goto("seleniumbase.io/realworld/login")\n'
                 '        self.type("#username", "demo_user")\n'
                 '        self.type("#password", "secret_pass")\n'
                 '        self.enter_mfa_code('

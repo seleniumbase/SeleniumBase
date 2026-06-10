@@ -10,7 +10,7 @@ class Test_UseFixtures:
             print("This test is for pytest only!")
             return
         sb: BaseCase = self.sb
-        sb.open("https://seleniumbase.io/realworld/login")
+        sb.goto("https://seleniumbase.io/realworld/login")
         sb.type("#username", "demo_user")
         sb.type("#password", "secret_pass")
         sb.enter_mfa_code("#totpcode", "GAXG2MTEOR3DMMDG")  # 6-digit

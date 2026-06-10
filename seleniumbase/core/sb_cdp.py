@@ -1298,7 +1298,7 @@ class CDPMethods():
                     driver.cdp_base.tabs.append(new_tab)
                     self.driver.disconnect()
                     self.switch_to_newest_tab()
-                    self.open(url)
+                    self.goto(url)
                     return
                 elif getattr(sb_config, "guest_mode", None):
                     print("  open_new_tab() failed! (Known Guest Mode issue)")

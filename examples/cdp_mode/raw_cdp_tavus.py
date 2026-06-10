@@ -1,7 +1,7 @@
 from seleniumbase import sb_cdp
 
 sb = sb_cdp.Chrome()
-sb.open("platform.tavus.io/auth/sign-in?is_developer=true")
+sb.goto("platform.tavus.io/auth/sign-in?is_developer=true")
 sb.sleep(3)
 sb.solve_captcha()
 sb.sleep(1)

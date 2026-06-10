@@ -1,7 +1,7 @@
 from seleniumbase import SB
 
 with SB() as sb:
-    sb.open("seleniumbase.io/simple/login")
+    sb.goto("seleniumbase.io/simple/login")
     sb.type("#username", "demo_user")
     sb.type("#password", "secret_pass")
     sb.click('a:contains("Sign in")')

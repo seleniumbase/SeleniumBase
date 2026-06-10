@@ -7,7 +7,7 @@ class SwagLabsTests(BaseCase):
     def login_to_swag_labs(self, username="standard_user"):
         """Login to Swag Labs and verify success."""
         url = "https://www.saucedemo.com"
-        self.open(url)
+        self.goto(url)
         self.wait_for_element("div.login_logo")
         if username not in self.get_text("#login_credentials"):
             self.fail("Invalid user for login: %s" % username)

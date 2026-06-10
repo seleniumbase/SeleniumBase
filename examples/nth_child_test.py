@@ -4,7 +4,7 @@ BaseCase.main(__name__, __file__)
 
 class NthChildSelectorTests(BaseCase):
     def test_locate_rows_with_colors(self):
-        self.open("https://xkcd.com/color/rgb/")
+        self.goto("https://xkcd.com/color/rgb/")
         tbody = "center > table tbody"
         if self.headed:
             self.demo_mode = True

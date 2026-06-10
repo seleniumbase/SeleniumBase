@@ -4,7 +4,7 @@ BaseCase.main(__name__, __file__)
 
 class TestSimpleLogin(BaseCase):
     def test_simple_login(self):
-        self.open("seleniumbase.io/simple/login")
+        self.goto("https://seleniumbase.io/simple/login")
         self.type("#username", "demo_user")
         self.type("#password", "secret_pass")
         self.click('a:contains("Sign in")')

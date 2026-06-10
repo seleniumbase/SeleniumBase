@@ -10,11 +10,11 @@ Here's a list of SeleniumBase method definitions, which are defined in **[base_c
 For backwards compatibility, older versions of method names have remained to keep older scripts working. *(E.g: wait_for_element_visible was shortened to wait_for_element and then to find_element.)*
 
 ```python
-self.open(url)
+self.goto(url)
 # Duplicates: self.open_url(url), self.visit(url), visit_url(url),
-#             self.goto(url), self.go_to(url)
+#             self.open(url), self.go_to(url)
 self.get(url)
-# If the url parameter is a URL: Perform self.open(url)
+# If the url parameter is a URL: Perform self.goto(url)
 # Otherwise: return self.get_element(URL_AS_A_SELECTOR)
 self.click(selector, by="css selector", timeout=None, delay=0, scroll=True)
 self.slow_click(selector, by="css selector", timeout=None)
@@ -48,8 +48,10 @@ self.get_user_agent()
 self.get_locale_code()
 self.go_back()
 self.go_forward()
-self.open_start_page()
-self.open_if_not_url(url)
+self.goto_start_page()
+# Duplicates: self.open_start_page()
+self.goto_if_not_url(url)
+# Duplicates: self.open_if_not_url()
 self.is_element_present(selector, by="css selector")
 self.is_element_visible(selector, by="css selector")
 self.is_element_clickable(selector, by="css selector")
@@ -703,8 +705,8 @@ self.uc_gui_handle_captcha(frame="iframe")
 # "driver"-specific methods added (or modified) by SeleniumBase
 
 driver.default_get(url)  # Because driver.get(url) works differently in UC Mode
-driver.open(url)  # Like driver.get(), but allows partial URLs without protocol
-driver.goto(url)  # Same as driver.open(url)
+driver.goto(url)  # Like driver.get(), but allows partial URLs without protocol
+driver.open(url)  # Same as driver.goto(url)
 driver.click(selector)
 driver.click_link(link_text)
 driver.click_if_visible(selector)

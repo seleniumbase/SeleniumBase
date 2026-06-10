@@ -23,4 +23,4 @@ for item in items:
         if price:
             price_text = price.text
             print("* %s (%s)" % (description.text, price_text))
-sb.driver.stop()
+sb.quit()

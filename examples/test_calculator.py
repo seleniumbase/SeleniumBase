@@ -5,7 +5,7 @@ BaseCase.main(__name__, __file__)
 
 class CalculatorTests(BaseCase):
     def test_6_times_7_plus_12_equals_54(self):
-        self.open("seleniumbase.io/apps/calculator")
+        self.goto("seleniumbase.io/apps/calculator")
         self.click('button[id="6"]')
         self.click("button#multiply")
         self.click('button[id="7"]')

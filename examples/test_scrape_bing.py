@@ -5,9 +5,9 @@ BaseCase.main(__name__, __file__)
 class ScrapeBingTests(BaseCase):
     def test_scrape_bing(self):
         if self._multithreaded:
-            self.open_if_not_url("about:blank")
+            self.goto_if_not_url("about:blank")
             self.skip("Skipping test in multi-threaded mode.")
-        self.open("www.bing.com/search?q=SeleniumBase+GitHub&qs=n&form=QBRE")
+        self.goto("www.bing.com/search?q=SeleniumBase+GitHub&qs=n&form=QBRE")
         self.wait_for_element("main h2 a")
         self.sleep(0.5)
         soup = self.get_beautiful_soup()

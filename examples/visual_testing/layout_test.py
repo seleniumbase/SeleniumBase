@@ -5,12 +5,12 @@ BaseCase.main(__name__, __file__)
 class VisualLayoutTests(BaseCase):
     def test_xkcd_layout_change(self):
         self.demo_mode = False  # (It would interfere with html comparisons)
-        self.open("https://xkcd.com/1424/")
+        self.goto("https://xkcd.com/1424/")
         print('\nCreating baseline in "visual_baseline" folder.')
         self.sleep(0.08)
         self.check_window(name="xkcd", baseline=True)
         # Go to a different comic
-        self.open("https://xkcd.com/1425/")
+        self.goto("https://xkcd.com/1425/")
         # Verify html tags match the baseline
         self.check_window(name="xkcd", level=1)
         # Verify html tags and attribute names match the baseline

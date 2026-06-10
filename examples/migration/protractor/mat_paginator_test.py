@@ -4,7 +4,7 @@ BaseCase.main(__name__, __file__)
 
 class AngularMaterialPaginatorTests(BaseCase):
     def test_pagination(self):
-        self.open("https://material.angular.io/components/paginator/examples")
+        self.goto("https://material.angular.io/components/paginator/examples")
         self.click_if_visible("button.mat-mdc-button")
         self.scroll_to("div.mat-mdc-paginator-page-size")
         # Set pagination to 5 items per page

@@ -13,12 +13,12 @@ def generate_sbase_code(srt_actions):
                 except Exception:
                     pass
             if '"' not in action[2]:
-                sb_actions.append('self.open("%s")' % action[2])
+                sb_actions.append('self.goto("%s")' % action[2])
             elif "'" not in action[2]:
-                sb_actions.append("self.open('%s')" % action[2])
+                sb_actions.append("self.goto('%s')" % action[2])
             else:
                 sb_actions.append(
-                    'self.open("%s")' % action[2].replace('"', '\\"')
+                    'self.goto("%s")' % action[2].replace('"', '\\"')
                 )
         elif action[0] == "f_url":
             if "%" in action[2]:
@@ -29,12 +29,12 @@ def generate_sbase_code(srt_actions):
                 except Exception:
                     pass
             if '"' not in action[2]:
-                sb_actions.append('self.open_if_not_url("%s")' % action[2])
+                sb_actions.append('self.goto_if_not_url("%s")' % action[2])
             elif "'" not in action[2]:
-                sb_actions.append("self.open_if_not_url('%s')" % action[2])
+                sb_actions.append("self.goto_if_not_url('%s')" % action[2])
             else:
                 sb_actions.append(
-                    'self.open_if_not_url("%s")'
+                    'self.goto_if_not_url("%s")'
                     % action[2].replace('"', '\\"')
                 )
         elif action[0] == "click":

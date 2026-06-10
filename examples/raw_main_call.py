@@ -1,13 +1,10 @@
-"""Can use "python" instead of using "pytest".
-Added pytest args will be included in the run.
-Example usage: "python raw_file_call.py"."""
 from seleniumbase import BaseCase
 BaseCase.main(__name__, __file__)
 
 
 class TinyMceTest(BaseCase):
     def test_tinymce(self):
-        self.open("https://seleniumbase.io/tinymce/")
+        self.goto("https://seleniumbase.io/tinymce/")
         self.wait_for_element("div.mce-container-body")
         self.click('span:contains("File")')
         self.click('span:contains("New document")')

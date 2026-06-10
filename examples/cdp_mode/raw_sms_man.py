@@ -2,7 +2,7 @@ from seleniumbase import SB
 
 with SB(uc=True, test=True) as sb:
     sb.activate_cdp_mode()
-    sb.open("https://sms-man.com/login")
+    sb.goto("https://sms-man.com/login")
     sb.sleep(3)
     if not sb.is_element_present('input[name="email"]'):
         sb.solve_captcha()

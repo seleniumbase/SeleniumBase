@@ -32,7 +32,7 @@ class PerformanceClass(BaseCase):
     def login_to_swag_labs(self):
         print()
         with decorators.print_runtime("Open Swag Labs"):
-            self.open("https://www.saucedemo.com")
+            self.goto("https://www.saucedemo.com")
         self.type("#user-name", "standard_user")
         self.type("#password", "secret_sauce\n")
 

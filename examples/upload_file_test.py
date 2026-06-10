@@ -6,7 +6,7 @@ BaseCase.main(__name__, __file__)
 
 class FileUploadButtonTests(BaseCase):
     def test_file_upload_button(self):
-        self.open("https://seleniumbase.io/w3schools/file_upload")
+        self.goto("https://seleniumbase.io/w3schools/file_upload")
         self.click("button#runbtn")
         self.switch_to_frame("iframeResult")
         zoom_in = 'input[type="file"]{zoom: 1.6;-moz-transform: scale(1.6);}'

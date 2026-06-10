@@ -4,7 +4,7 @@ BaseCase.main(__name__, __file__)
 
 class VisualLayoutTests(BaseCase):
     def test_python_home_layout_change(self):
-        self.open("https://python.org/")
+        self.goto("https://python.org/")
         print('\nCreating baseline in "visual_baseline" folder.')
         self.check_window(name="python_home", baseline=True)
         # Remove the "Donate" button

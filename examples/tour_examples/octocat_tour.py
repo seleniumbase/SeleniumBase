@@ -5,7 +5,7 @@ BaseCase.main(__name__, __file__)
 class MyTourClass(BaseCase):
     def test_octocat_tour(self):
         self.maximize_window()
-        self.open("https://seleniumbase.io/error_page/")
+        self.goto("https://seleniumbase.io/error_page/")
         self.wait_for_element("#parallax_octocat")
         self.create_tour(theme="bootstrap")
         self.add_tour_step("Welcome to the Octocat Tour!")

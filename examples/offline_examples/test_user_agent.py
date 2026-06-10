@@ -6,7 +6,7 @@ BaseCase.main(__name__, __file__)
 @pytest.mark.offline  # Can be run with: "pytest -m offline"
 class OfflineTests(BaseCase):
     def test_get_user_agent(self):
-        self.open("data:,")
+        self.goto("data:,")
         user_agent = self.get_user_agent()
         print('\nUser Agent = "%s"' % user_agent)
 
@@ -17,7 +17,7 @@ class OfflineTests(BaseCase):
             self.skip(msg)
         print("\n--------------------------")
         if not self.headless:
-            self.open("chrome://version/")
+            self.goto("chrome://version/")
             self.highlight("#useragent", loops=6)
             self.sleep(0.8)
         try:

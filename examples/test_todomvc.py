@@ -15,7 +15,7 @@ class TodoMVC(BaseCase):
 
     @parameterized.expand([["jquery"], ["react"], ["vue"]])
     def test_todomvc(self, framework):
-        self.open("https://todomvc.com/")
+        self.goto("https://todomvc.com/")
         self.clear_local_storage()
         self.click('a[href*="examples/%s/dist"]' % framework)
         self.assert_element("section.todoapp")

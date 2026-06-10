@@ -8,7 +8,7 @@ class TestGeolocation(BaseCase):
         if self.is_chromium() and not self._multithreaded:
             # Reset Permissions and GeolocationOverride
             try:
-                self.open("about:blank")
+                self.goto("about:blank")
                 self.execute_cdp_cmd("Emulation.setGeolocationOverride", {})
                 self.execute_cdp_cmd("Browser.resetPermissions", {})
             except Exception:
@@ -16,7 +16,7 @@ class TestGeolocation(BaseCase):
         super().tearDown()
 
     def test_geolocation(self):
-        self.open("about:blank")
+        self.goto("about:blank")
         if self._multithreaded:
             self.skip("Skipping test in multi-threaded mode.")
         if not self.is_chromium():
@@ -37,7 +37,7 @@ class TestGeolocation(BaseCase):
                 "accuracy": 100,
             },
         )
-        self.open("https://www.randymajors.org/what-time-zone-am-i-in")
+        self.goto("https://www.randymajors.org/what-time-zone-am-i-in")
         self.ad_block()
         self.assert_text("Paris, France", "#statecountrylabel")
         self.assert_text("Central European Standard Time", "#currentlabel")

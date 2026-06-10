@@ -12,7 +12,7 @@ class HybridTestCase(BaseCase):
         self.activate_cdp_mode()
         self.reconnect()  # Reconnects WebDriver to use Selenium
         driver = self.driver  # Selenium API
-        endpoint_url = self.cdp.get_endpoint_url()
+        endpoint_url = self.get_endpoint_url()
         with sync_playwright() as p:
             browser = p.chromium.connect_over_cdp(endpoint_url)
             page = browser.contexts[0].pages[0]  # Playwright API

@@ -85,7 +85,7 @@ class RawSeleniumAdapter(TestCase):
                 % (selector, timeout)
             )
 
-    def open(self, url):
+    def goto(self, url):
         self.driver.get(url)
 
     def click(self, selector, by="css selector", timeout=7):
@@ -118,7 +118,7 @@ class RawSeleniumAdapter(TestCase):
         self.wait_for_element_not_visible(selector, by=by, timeout=timeout)
 
     def test_add_item_to_cart(self):
-        self.open("https://www.saucedemo.com")
+        self.goto("https://www.saucedemo.com")
         self.type("#user-name", "standard_user")
         self.type("#password", "secret_sauce\n")
         self.assert_element("div.inventory_list")
@@ -170,7 +170,7 @@ class PlaywrightAdapter(TestCase):
         self.page.close()
         self.context.close()
 
-    def open(self, url):
+    def goto(self, url):
         self.page.goto(url)
 
     def click(self, selector, timeout=7):
@@ -204,7 +204,7 @@ class PlaywrightAdapter(TestCase):
         expect(self.page.locator(selector)).to_be_hidden(timeout=timeout)
 
     def test_add_item_to_cart(self):
-        self.open("https://www.saucedemo.com")
+        self.goto("https://www.saucedemo.com")
         self.type("#user-name", "standard_user")
         self.type("#password", "secret_sauce\n")
         self.assert_element("div.inventory_list")
@@ -275,7 +275,7 @@ class PlaywrightAdapterWithTracing(TestCase):
         self.page.close()
         self.context.close()
 
-    def open(self, url):
+    def goto(self, url):
         self.page.goto(url)
 
     def click(self, selector, timeout=7):
@@ -311,7 +311,7 @@ class PlaywrightAdapterWithTracing(TestCase):
         expect(self.page.locator(selector)).to_be_hidden(timeout=timeout)
 
     def test_add_item_to_cart(self):
-        self.open("https://www.saucedemo.com")
+        self.goto("https://www.saucedemo.com")
         self.type("#user-name", "standard_user")
         self.type("#password", "secret_sauce\n")
         self.assert_element("div.inventory_list")
@@ -345,8 +345,8 @@ class SeleniumBaseAdapter(TestCase):
     def tearDown(self):
         self.sb_context.__exit__(None, None, None)
 
-    def open(self, url):
-        self.sb.open(url)
+    def goto(self, url):
+        self.sb.goto(url)
 
     def click(self, selector, by="css selector", timeout=7):
         self.sb.click(selector=selector, by=by, timeout=timeout)
@@ -371,7 +371,7 @@ class SeleniumBaseAdapter(TestCase):
         self.sb.assert_element_not_visible(selector, by=by, timeout=timeout)
 
     def test_add_item_to_cart(self):
-        self.open("https://www.saucedemo.com")
+        self.goto("https://www.saucedemo.com")
         self.type("#user-name", "standard_user")
         self.type("#password", "secret_sauce\n")
         self.assert_element("div.inventory_list")
@@ -399,7 +399,7 @@ BaseCase.main(__name__, __file__)
 
 class SeleniumBaseTestCase(BaseCase):
     def test_add_item_to_cart(self):
-        self.open("https://www.saucedemo.com")
+        self.goto("https://www.saucedemo.com")
         self.type("#user-name", "standard_user")
         self.type("#password", "secret_sauce\n")
         self.assert_element("div.inventory_list")
@@ -433,7 +433,7 @@ To understand how the Adapter Pattern applies to browser automation, it helps to
 | Component | Role in the Pattern | Implementation in these Examples |
 | :--- | :--- | :--- |
 | **Client** | The consumer of the service. | The `test_add_item_to_cart()` method. |
-| **Target (Interface)** | The set of commands the Client uses. | Methods like `open()`, `click()`, `type()`, and `assert_element()`. |
+| **Target (Interface)** | The set of commands the Client uses. | Methods like `goto()`, `click()`, `type()`, and `assert_element()`. |
 | **Adapter** | The wrapper that translates commands. | Classes like `PlaywrightAdapter` or `SeleniumBaseAdapter`. |
 | **Adaptee** | The underlying "engine" being adapted. | The specific library (`playwright-python` or `selenium`). |
 

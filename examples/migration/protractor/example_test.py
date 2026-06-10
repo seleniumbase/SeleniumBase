@@ -4,12 +4,12 @@ BaseCase.main(__name__, __file__)
 
 class AngularJSHomePageTests(BaseCase):
     def test_greet_user(self):
-        self.open("http://www.angularjs.org")
+        self.goto("http://www.angularjs.org")
         self.type('[ng-model="yourName"]', "Julie")
         self.assert_exact_text("Hello Julie!", "h1.ng-binding")
 
     def test_todo_list(self):
-        self.open("http://www.angularjs.org")
+        self.goto("http://www.angularjs.org")
         todo_selector = '[ng-repeat="todo in todoList.todos"]'
         # Verify that the todos are listed
         self.wait_for_element(todo_selector)

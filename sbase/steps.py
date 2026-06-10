@@ -21,7 +21,7 @@ def normalize_text(text):
 @step('User goes to URL "{url}"')
 def open_url(context, url):
     sb = context.sb
-    sb.open(url)
+    sb.goto(url)
 
 
 @step("Click '{selector}'")

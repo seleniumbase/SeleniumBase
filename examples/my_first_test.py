@@ -5,7 +5,7 @@ BaseCase.main(__name__, __file__)
 
 class MyTestClass(BaseCase):
     def test_swag_labs(self):
-        self.open("https://www.saucedemo.com")
+        self.goto("https://www.saucedemo.com")
         self.type("#user-name", "standard_user")
         self.type("#password", "secret_sauce\n")
         self.assert_element("div.inventory_list")
@@ -73,8 +73,8 @@ class MyTestClass(BaseCase):
 # 4. There are duplicate method names that exist for the same method:
 #    (This makes it easier to switch over from other test frameworks.)
 #    Example:
-#    self.open() = self.visit() = self.open_url() = self.goto()
-#    self.type() = self.update_text() = self.input() = self.fill()
+#    self.goto() = self.open() = self.visit()
+#    self.type() = self.update_text() = self.fill()
 #    self.send_keys() = self.add_text()
 #    self.get_element() = self.wait_for_element_present()
 #    self.find_element() = self.wait_for_element_visible()
@@ -84,10 +84,10 @@ class MyTestClass(BaseCase):
 #    self.find_text() = self.wait_for_text_visible()
 #                     = self.wait_for_text()
 #    self.click_link("LinkText") = self.click("link=LinkText")
-#                            = self.click_link_text("LinkText")
-#                            = self.click('a:contains("LinkText")')
+#                                = self.click_link_text("LinkText")
+#                                = self.click('a:contains("LinkText")')
 #    * self.get(url) is SPECIAL: *
-#    If {url} is a valid URL, self.get() works just like self.open()
+#    If {url} is a valid URL, self.get() works just like self.goto()
 #    Otherwise {url} becomes a selector for calling self.get_element()
 #
 # 5. There's usually more than one way to do the same thing.
@@ -133,13 +133,13 @@ class MyTestClass(BaseCase):
 #        title = element.get_attribute("title")
 #    ]
 #
-# 6. self.assert_exact_text(TEXT) ignores leading and trailing
-#    whitespace in the TEXT assertion.
+# 6. self.assert_exact_text(text) ignores leading and trailing
+#    whitespace in the text assertion.
 #    So, self.assert_exact_text("Some Text") accepts [" Some Text "].
 #
-# 7. self.js_click(SELECTOR) can be used to click on hidden elements.
+# 7. self.js_click(selector) can be used to click on hidden elements.
 #
-# 8. self.open(URL) will automatically complete URLs missing a prefix.
+# 8. self.goto(url) will automatically complete URLs missing a prefix.
 #    Example: google.com will become https://google.com before opened.
 #
 # 9. For the full method list, see one of the following:

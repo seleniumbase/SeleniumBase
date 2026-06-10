@@ -44,4 +44,4 @@ for item in items:
                 price_text = price_text.split(" ")[0]
                 print("  (" + price_text + ")")
                 item.scroll_into_view()
-sb.driver.stop()
+sb.quit()

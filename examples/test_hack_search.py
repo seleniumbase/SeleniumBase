@@ -9,11 +9,11 @@ BaseCase.main(__name__, __file__)
 class HackingTests(BaseCase):
     def test_hack_search(self):
         if self.headless or self.browser != "chrome":
-            self.open_if_not_url("about:blank")
+            self.goto_if_not_url("about:blank")
             self.skip('Skip test if headless or not chrome.')
         if not self.undetectable:
             self.get_new_driver(undetectable=True)
-        self.open("https://google.com/ncr")
+        self.goto("https://google.com/ncr")
         self.click_if_visible('button:contains("Accept all")')
         self.hide_elements("iframe")
         self.assert_element('[title="Search"]')

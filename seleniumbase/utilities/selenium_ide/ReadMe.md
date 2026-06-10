@@ -101,7 +101,7 @@ from seleniumbase import BaseCase
 class Swag(BaseCase):
 
     def test_swag(self):
-        self.open('https://www.saucedemo.com/')
+        self.goto('https://www.saucedemo.com/')
         self.type('#user-name', 'standard_user')
         self.type('#password', 'secret_sauce')
         self.click('#login-button')

@@ -6,16 +6,16 @@ BaseCase.main(__name__, __file__)
 class ProxyTests(BaseCase):
     def test_proxy(self):
         if self.headless or self.recorder_mode or self.browser == "safari":
-            self.open_if_not_url("about:blank")
+            self.goto_if_not_url("about:blank")
             print("\n  Unsupported mode for this test.")
             self.skip("Unsupported mode for this test.")
         settings.SKIP_JS_WAITS = True
-        self.open("https://api.ipify.org/")
+        self.goto("https://api.ipify.org/")
         ip_address = self.get_text("body")
         if "ERR" in ip_address:
             raise Exception("Failed to determine IP Address!")
         print("\n\nMy IP Address = %s\n" % ip_address)
-        self.open("https://ipinfo.io/%s" % ip_address)
+        self.goto("https://ipinfo.io/%s" % ip_address)
         self.sleep(2)
         self.wait_for_text(ip_address, "h1", timeout=20)
         self.wait_for_element_present('[href="/signup"]')

@@ -1109,17 +1109,17 @@ class MD:
     md["activate_recorder"][8] = "активировать_RECORDER"
     md["activate_recorder"][9] = "activar_recorder"
 
-    md["open_if_not_url"] = ["*"] * num_langs
-    md["open_if_not_url"][0] = "open_if_not_url"
-    md["open_if_not_url"][1] = "开启如果不网址"
-    md["open_if_not_url"][2] = "openen_zo_niet_url"
-    md["open_if_not_url"][3] = "ouvrir_si_non_url"
-    md["open_if_not_url"][4] = "apri_se_non_url"
-    md["open_if_not_url"][5] = "URLでない場合は開く"
-    md["open_if_not_url"][6] = "URL_이_아닌_경우_열기"
-    md["open_if_not_url"][7] = "abrir_se_não_url"
-    md["open_if_not_url"][8] = "открыть_если_не_URL"
-    md["open_if_not_url"][9] = "abrir_que_no_url"
+    md["goto_if_not_url"] = ["*"] * num_langs
+    md["goto_if_not_url"][0] = "goto_if_not_url"
+    md["goto_if_not_url"][1] = "开启如果不网址"
+    md["goto_if_not_url"][2] = "openen_zo_niet_url"
+    md["goto_if_not_url"][3] = "ouvrir_si_non_url"
+    md["goto_if_not_url"][4] = "apri_se_non_url"
+    md["goto_if_not_url"][5] = "URLでない場合は開く"
+    md["goto_if_not_url"][6] = "URL_이_아닌_경우_열기"
+    md["goto_if_not_url"][7] = "abrir_se_não_url"
+    md["goto_if_not_url"][8] = "открыть_если_не_URL"
+    md["goto_if_not_url"][9] = "abrir_que_no_url"
 
     md["ad_block"] = ["*"] * num_langs
     md["ad_block"][0] = "ad_block"
@@ -1845,17 +1845,17 @@ class MD:
     md["get"][8] = "получить"
     md["get"][9] = "obtener"
 
-    md["visit"] = ["*"] * num_langs
-    md["visit"][0] = "visit"
-    md["visit"][1] = "访问"
-    md["visit"][2] = "bezoek"
-    md["visit"][3] = "visiter"
-    md["visit"][4] = "visita"
-    md["visit"][5] = "を訪問"
-    md["visit"][6] = "방문"
-    md["visit"][7] = "visitar"
-    md["visit"][8] = "посетить"
-    md["visit"][9] = "visita"
+    md["goto"] = ["*"] * num_langs
+    md["goto"][0] = "goto"
+    md["goto"][1] = "访问"
+    md["goto"][2] = "bezoek"
+    md["goto"][3] = "visiter"
+    md["goto"][4] = "visita"
+    md["goto"][5] = "を訪問"
+    md["goto"][6] = "방문"
+    md["goto"][7] = "visitar"
+    md["goto"][8] = "посетить"
+    md["goto"][9] = "visita"
 
     md["visit_url"] = ["*"] * num_langs
     md["visit_url"][0] = "visit_url"
@@ -2222,18 +2222,18 @@ class MD:
     md["fill"][8] = "введите"
     md["fill"][9] = "escriba"
 
-    # "goto" -> duplicate of "visit"
-    md["goto"] = ["*"] * num_langs
-    md["goto"][0] = "goto"
-    md["goto"][1] = "访问"
-    md["goto"][2] = "bezoek"
-    md["goto"][3] = "visiter"
-    md["goto"][4] = "visita"
-    md["goto"][5] = "を訪問"
-    md["goto"][6] = "방문"
-    md["goto"][7] = "visitar"
-    md["goto"][8] = "посетить"
-    md["goto"][9] = "visita"
+    # "visit" -> duplicate of "goto"
+    md["visit"] = ["*"] * num_langs
+    md["visit"][0] = "visit"
+    md["visit"][1] = "访问"
+    md["visit"][2] = "bezoek"
+    md["visit"][3] = "visiter"
+    md["visit"][4] = "visita"
+    md["visit"][5] = "を訪問"
+    md["visit"][6] = "방문"
+    md["visit"][7] = "visitar"
+    md["visit"][8] = "посетить"
+    md["visit"][9] = "visita"
 
     # "go_to" -> duplicate of "visit"
     md["go_to"] = ["*"] * num_langs
@@ -2286,6 +2286,19 @@ class MD:
     md["reload_page"][7] = "atualizar_a_página"
     md["reload_page"][8] = "обновить_страницу"
     md["reload_page"][9] = "actualizar_la_página"
+
+    # "open_if_not_url" -> duplicate of "goto_if_not_url"
+    md["open_if_not_url"] = ["*"] * num_langs
+    md["open_if_not_url"][0] = "open_if_not_url"
+    md["open_if_not_url"][1] = "开启如果不网址"
+    md["open_if_not_url"][2] = "openen_zo_niet_url"
+    md["open_if_not_url"][3] = "ouvrir_si_non_url"
+    md["open_if_not_url"][4] = "apri_se_non_url"
+    md["open_if_not_url"][5] = "URLでない場合は開く"
+    md["open_if_not_url"][6] = "URL_이_아닌_경우_열기"
+    md["open_if_not_url"][7] = "abrir_se_não_url"
+    md["open_if_not_url"][8] = "открыть_если_не_URL"
+    md["open_if_not_url"][9] = "abrir_que_no_url"
 
     # "open_new_tab" -> duplicate of "open_new_window"
     md["open_new_tab"] = ["*"] * num_langs

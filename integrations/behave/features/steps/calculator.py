@@ -3,7 +3,7 @@ from behave import step
 
 @step("Open the Calculator App")
 def go_to_calculator(context):
-    context.sb.open("https://seleniumbase.io/apps/calculator")
+    context.sb.goto("https://seleniumbase.io/apps/calculator")
 
 
 @step("Press C")

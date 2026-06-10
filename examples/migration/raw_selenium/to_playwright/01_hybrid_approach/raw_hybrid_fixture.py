@@ -12,7 +12,7 @@ class HybridFixture(BaseCase):
         super().setUp()
         self.activate_cdp_mode()
         self.reconnect()  # Reconnects WebDriver to use Selenium
-        endpoint_url = self.cdp.get_endpoint_url()
+        endpoint_url = self.get_endpoint_url()
         self.playwright = sync_playwright().start()
         browser = self.playwright.chromium.connect_over_cdp(endpoint_url)
         self.page = browser.contexts[0].pages[0]

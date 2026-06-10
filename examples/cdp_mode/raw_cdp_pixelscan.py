@@ -1,7 +1,7 @@
 from seleniumbase import sb_cdp
 
 sb = sb_cdp.Chrome(guest=True, ad_block=True)
-sb.open("https://pixelscan.net/fingerprint-check")
+sb.goto("https://pixelscan.net/fingerprint-check")
 sb.sleep(1)
 sb.wait_for_element("pxlscn-dynamic-ad")
 sb.sleep(0.5)

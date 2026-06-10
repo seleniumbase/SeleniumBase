@@ -3,7 +3,7 @@ from seleniumbase import SB
 with SB(uc=True, test=True, locale="en") as sb:
     url = "https://www.zoro.com/"
     sb.activate_cdp_mode()
-    sb.open(url)
+    sb.goto(url)
     sb.sleep(1.2)
     search_box = "input#searchInput"
     search = "Flir Thermal Camera"

@@ -52,7 +52,7 @@ BaseCase.main(__name__, __file__)
 
 class MyTestClass(BaseCase):
     def test_demo_site(self):
-        self.open("https://seleniumbase.io/demo_page")
+        self.goto("https://seleniumbase.io/demo_page")
         self.type("#myTextInput", "This is Automated")
         self.click("#myButton")
         self.assert_element("tbody#tbodyId")
@@ -123,7 +123,7 @@ from seleniumbase import BaseCase
 BaseCase.main(__name__, __file__)
 
 def test_sb_fixture_with_no_class(sb: BaseCase):
-    sb.open("seleniumbase.io/help_docs/install/")
+    sb.goto("seleniumbase.io/help_docs/install/")
     sb.type('input[aria-label="Search"]', "GUI Commander")
     sb.click('mark:contains("Commander")')
     sb.assert_title_contains("GUI / Commander")
@@ -142,7 +142,7 @@ BaseCase.main(__name__, __file__)
 
 class Test_SB_Fixture:
     def test_sb_fixture_inside_class(self, sb: BaseCase):
-        sb.open("seleniumbase.io/help_docs/install/")
+        sb.goto("seleniumbase.io/help_docs/install/")
         sb.type('input[aria-label="Search"]', "GUI Commander")
         sb.click('mark:contains("Commander")')
         sb.assert_title_contains("GUI / Commander")
@@ -161,7 +161,7 @@ BaseCase.main(__name__, __file__)
 
 class LoginPage:
     def login_to_swag_labs(self, sb: BaseCase, username):
-        sb.open("https://www.saucedemo.com")
+        sb.goto("https://www.saucedemo.com")
         sb.type("#user-name", username)
         sb.type("#password", "secret_sauce")
         sb.click('input[type="submit"]')
@@ -186,7 +186,7 @@ BaseCase.main(__name__, __file__)
 
 class LoginPage:
     def login_to_swag_labs(self, sb: BaseCase, username):
-        sb.open("https://www.saucedemo.com")
+        sb.goto("https://www.saucedemo.com")
         sb.type("#user-name", username)
         sb.type("#password", "secret_sauce")
         sb.click('input[type="submit"]')
@@ -213,7 +213,7 @@ BaseCase.main(__name__, __file__)
 
 def test_request_sb_fixture(request):
     sb: BaseCase = request.getfixturevalue("sb")
-    sb.open("https://seleniumbase.io/demo_page")
+    sb.goto("https://seleniumbase.io/demo_page")
     sb.assert_text("SeleniumBase", "#myForm h2")
     sb.assert_element("input#myTextInput")
     sb.type("#myTextarea", "This is me")
@@ -235,7 +235,7 @@ BaseCase.main(__name__, __file__)
 class Test_Request_Fixture:
     def test_request_sb_fixture_in_class(self, request):
         sb: BaseCase = request.getfixturevalue("sb")
-        sb.open("https://seleniumbase.io/demo_page")
+        sb.goto("https://seleniumbase.io/demo_page")
         sb.assert_element("input#myTextInput")
         sb.type("#myTextarea", "Automated")
         sb.assert_text("This Text is Green", "#pText")
@@ -276,7 +276,7 @@ class OverrideDriverTest(BaseCase):
         return webdriver.Chrome(options=options)
 
     def test_simple(self):
-        self.open("https://seleniumbase.io/demo_page")
+        self.goto("https://seleniumbase.io/demo_page")
         self.assert_text("Demo Page", "h1")
 ```
 
@@ -351,12 +351,12 @@ def sb(request):
             sb._needs_tearDown = False
 
 def test_override_fixture_no_class(sb: BaseCase):
-    sb.open("https://seleniumbase.io/demo_page")
+    sb.goto("https://seleniumbase.io/demo_page")
     sb.type("#myTextInput", "This is Automated")
 
 class TestOverride:
     def test_override_fixture_inside_class(self, sb: BaseCase):
-        sb.open("https://seleniumbase.io/demo_page")
+        sb.goto("https://seleniumbase.io/demo_page")
         sb.type("#myTextInput", "This is Automated")
 ```
 
@@ -732,7 +732,7 @@ from behave import step
 @step("Open the Swag Labs Login Page")
 def go_to_swag_labs(context):
     sb = context.sb
-    sb.open("https://www.saucedemo.com")
+    sb.goto("https://www.saucedemo.com")
     sb.clear_local_storage()
 
 @step("Login to Swag Labs with {user}")
@@ -753,7 +753,7 @@ This format provides a pure Python way of using SeleniumBase without a test runn
 from seleniumbase import SB
 
 with SB() as sb:
-    sb.open("seleniumbase.io/simple/login")
+    sb.goto("seleniumbase.io/simple/login")
     sb.type("#username", "demo_user")
     sb.type("#password", "secret_pass")
     sb.click('a:contains("Sign in")')
@@ -772,13 +772,13 @@ Here's another example, which uses <code translate="no">test</code> mode:
 from seleniumbase import SB
 
 with SB(uc=True, test=True) as sb:
-    sb.open("https://google.com/ncr")
+    sb.goto("https://google.com/ncr")
     sb.type('[name="q"]', "SeleniumBase on GitHub\n")
     sb.highlight('a[href*="github.com/seleniumbase"]')
     sb.sleep(0.5)
 
 with SB(test=True, rtf=True, demo=True) as sb:
-    sb.open("seleniumbase.github.io/demo_page")
+    sb.goto("seleniumbase.github.io/demo_page")
     sb.type("#myTextInput", "This is Automated")
     sb.assert_text("This is Automated", "#myTextInput")
     sb.assert_text("This Text is Green", "#pText")
@@ -818,18 +818,18 @@ This pure Python format gives you a raw <code translate="no">webdriver</code> in
 from seleniumbase import DriverContext
 
 with DriverContext() as driver:
-    driver.open("seleniumbase.io/")
+    driver.goto("seleniumbase.io/")
     driver.highlight('img[alt="SeleniumBase"]', loops=6)
 
 with DriverContext(browser="chrome", incognito=True) as driver:
-    driver.open("seleniumbase.io/apps/calculator")
+    driver.goto("seleniumbase.io/apps/calculator")
     driver.click('[id="4"]')
     driver.click('[id="2"]')
     driver.assert_text("42", "#output")
     driver.highlight("#output", loops=6)
 
 with DriverContext() as driver:
-    driver.open("seleniumbase.io/demo_page")
+    driver.goto("seleniumbase.io/demo_page")
     driver.highlight("h2")
     driver.type("#myTextInput", "Automation")
     driver.click("#checkBox1")
@@ -849,7 +849,7 @@ from seleniumbase import Driver
 
 driver = Driver()
 try:
-    driver.open("seleniumbase.io/demo_page")
+    driver.goto("seleniumbase.io/demo_page")
     driver.highlight("h2")
     driver.type("#myTextInput", "Automation")
     driver.click("#checkBox1")
@@ -859,7 +859,7 @@ finally:
 
 driver = Driver(browser="chrome", headless=False)
 try:
-    driver.open("seleniumbase.io/apps/calculator")
+    driver.goto("seleniumbase.io/apps/calculator")
     driver.click('[id="4"]')
     driver.click('[id="2"]')
     driver.assert_text("42", "#output")
@@ -877,7 +877,7 @@ from seleniumbase import Driver
 
 driver = Driver()
 try:
-    driver.open("seleniumbase.io/simple/login")
+    driver.goto("seleniumbase.io/simple/login")
     driver.type("#username", "demo_user")
     driver.type("#password", "secret_pass")
     driver.click('a:contains("Sign in")')
@@ -920,7 +920,7 @@ async def main():
     links = await top_nav.query_selector_all_async("a")
     for nav_item in links:
         print(nav_item.text)
-    driver.stop()
+    driver.quit()
 
 if __name__ == "__main__":
     loop = asyncio.new_event_loop()
@@ -951,7 +951,7 @@ for nav_item in links:
     print(nav_item.text)
 sb.click_link("Sign out")
 sb.assert_text("signed out", "#top_message")
-sb.driver.stop()
+sb.quit()
 ```
 
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_basic_cdp.py">examples/cdp_mode/raw_basic_cdp.py</a> for the test.)
@@ -989,7 +989,7 @@ def main():
     cards = sb.select_all('span[data-automation*="product-list-card"]')
     for card in cards:
         print("* %s" % card.text)
-    sb.driver.stop()
+    sb.quit()
 
 if __name__ == "__main__":
     main()

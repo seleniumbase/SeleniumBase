@@ -9,7 +9,7 @@ BaseCase.main(__name__, __file__)
 class DeferredAssertTests(BaseCase):
     @pytest.mark.expected_failure
     def test_deferred_asserts(self):
-        self.open("https://xkcd.com/993/")
+        self.goto("https://xkcd.com/993/")
         self.wait_for_element("#comic")
         print("\n(This test should fail)")
         self.deferred_assert_element('img[alt="Brand Identity"]')

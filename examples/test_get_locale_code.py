@@ -4,7 +4,7 @@ BaseCase.main(__name__, __file__)
 
 class LocaleTests(BaseCase):
     def test_get_locale_code(self):
-        self.open("about:blank")
+        self.goto("about:blank")
         locale_code = self.get_locale_code()
         message = '\nLocale Code = "%s"' % locale_code
         print(message)

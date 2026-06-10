@@ -12,12 +12,12 @@ class AppleTests(BaseCase):
                 self.get_new_driver(browser=self.browser, disable_csp=True)
         if self.headless:
             if self._multithreaded or self.undetectable or self.recorder_mode:
-                self.open_if_not_url("about:blank")
+                self.goto_if_not_url("about:blank")
                 print("\n  Unsupported mode for this test.")
                 self.skip("Unsupported mode for this test.")
             elif self.is_chromium():
                 self.get_new_driver(browser=self.browser, headless2=True)
-        self.open("https://developer.apple.com/search/")
+        self.goto("https://developer.apple.com/search/")
         title = "Testing with WebDriver in Safari"
         self.type("input#searchField", title + "\n")
         self.click("link=%s" % title)

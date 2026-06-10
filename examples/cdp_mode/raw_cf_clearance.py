@@ -19,4 +19,4 @@ if cf_cookie:
     print("cf_clearance cookie: %s" % cf_cookie.value)
 else:
     print("Didn't find the cf_clearance cookie!")
-sb.driver.stop()
+sb.quit()

@@ -5,7 +5,7 @@ BaseCase.main(__name__, __file__)
 
 class DataPage:
     def go_to_data_url(self, sb):
-        sb.open("data:text/html,<p>Hello!</p><input />")
+        sb.goto("data:text/html,<p>Hello!</p><input />")
 
     def add_input_text(self, sb, text):
         sb.type("input", text)

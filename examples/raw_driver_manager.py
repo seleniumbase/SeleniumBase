@@ -3,7 +3,7 @@ from seleniumbase import Driver
 
 driver = Driver()
 try:
-    driver.open("seleniumbase.io/demo_page")
+    driver.goto("seleniumbase.io/demo_page")
     driver.highlight("h2")
     driver.type("#myTextInput", "Automation")
     driver.click("#checkBox1")
@@ -13,7 +13,7 @@ finally:
 
 driver = Driver(browser="chrome", headless=False)
 try:
-    driver.open("seleniumbase.io/apps/calculator")
+    driver.goto("seleniumbase.io/apps/calculator")
     driver.click('[id="4"]')
     driver.click('[id="2"]')
     driver.assert_text("42", "#output")

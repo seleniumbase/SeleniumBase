@@ -13,7 +13,7 @@ with SB(uc=True, test=True) as sb:
             )
         )
     )
-    sb.open(url)
+    sb.goto(url)
     sb.sleep(2)
     sb.solve_captcha()
     # (The rest is for testing and demo purposes)

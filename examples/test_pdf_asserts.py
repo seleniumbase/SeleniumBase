@@ -4,7 +4,7 @@ BaseCase.main(__name__, __file__)
 
 class PdfAssertTests(BaseCase):
     def test_assert_pdf_text(self):
-        self.open("data:,")
+        self.goto("data:,")
         # Assert PDF contains the expected text on Page 1
         self.assert_pdf_text(
             "https://nostarch.com/download/Automate_the_Boring_Stuff_dTOC.pdf",

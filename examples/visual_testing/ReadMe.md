@@ -77,7 +77,7 @@ BaseCase.main(__name__, __file__)
 
 class VisualLayoutTest(BaseCase):
     def test_applitools_layout_change_failure(self):
-        self.open('https://applitools.com/helloworld?diff1')
+        self.goto('https://applitools.com/helloworld?diff1')
         print('\nCreating baseline in "visual_baseline" folder.')
         self.check_window(name="helloworld", baseline=True)
         # Click a button that changes the text of an element
@@ -111,7 +111,7 @@ BaseCase.main(__name__, __file__)
 
 class VisualLayoutTest(BaseCase):
     def test_python_home_layout_change_failure(self):
-        self.open('https://python.org/')
+        self.goto('https://python.org/')
         print('\nCreating baseline in "visual_baseline" folder.')
         self.check_window(name="python_home", baseline=True)
         # Remove the "Donate" button
@@ -148,7 +148,7 @@ BaseCase.main(__name__, __file__)
 
 class VisualLayoutTest(BaseCase):
     def test_xkcd_layout_change_failure(self):
-        self.open('https://xkcd.com/554/')
+        self.goto('https://xkcd.com/554/')
         print('\nCreating baseline in "visual_baseline" folder.')
         self.check_window(name="xkcd_554", baseline=True)
         # Change height: (83 -> 130) , Change width: (185 -> 120)

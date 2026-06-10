@@ -21,6 +21,6 @@ with SB(uc=True, test=True, ad_block=True) as sb:
         print("* " + result.text)
         print(item.querySelector("p").get_attribute("title"))
     for link in links:
-        sb.open(link)
+        sb.goto(link)
         sb.remove_elements("div.ad")
         sb.sleep(2)

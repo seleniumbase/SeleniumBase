@@ -8,7 +8,7 @@ BaseCase.main(__name__, __file__, "--uc")
 class UndetectedTest(BaseCase):
     def test_browser_is_undetected(self):
         self.activate_cdp_mode()  # If not UC Mode, then 2nd browser
-        self.open("https://gitlab.com/users/sign_in")
+        self.goto("https://gitlab.com/users/sign_in")
         self.sleep(2)
         self.solve_captcha()  # (Only runs when a CAPTCHA is visible)
         self.assert_text("Username", '[for="user_login"]', timeout=3)

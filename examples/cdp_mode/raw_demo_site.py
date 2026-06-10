@@ -3,7 +3,7 @@ from seleniumbase import SB
 
 with SB(uc=True, test=True) as sb:
     sb.activate_cdp_mode()
-    sb.open("https://seleniumbase.io/demo_page")
+    sb.cdp.goto("https://seleniumbase.io/demo_page")
 
     # Assert various things
     sb.cdp.assert_title("Web Testing Page")

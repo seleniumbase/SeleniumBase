@@ -4,7 +4,7 @@ BaseCase.main(__name__, __file__)
 
 class ChinesePdfTests(BaseCase):
     def test_chinese_pdf(self):
-        self.open("data:,")
+        self.goto("data:,")
         pdf = "https://seleniumbase.io/cdn/pdf/unittest_zh.pdf"
 
         # Get and print PDF text

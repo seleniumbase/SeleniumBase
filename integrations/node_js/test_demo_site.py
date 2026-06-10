@@ -5,7 +5,7 @@ BaseCase.main(__name__, __file__)
 class DemoSiteTests(BaseCase):
     def test_demo_site(self):
         # Open a web page in the active browser window
-        self.open("https://seleniumbase.io/demo_page")
+        self.goto("https://seleniumbase.io/demo_page")
 
         # Assert the title of the current web page
         self.assert_title("Web Testing Page")

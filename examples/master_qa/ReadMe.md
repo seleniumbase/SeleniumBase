@@ -13,12 +13,12 @@ from seleniumbase import MasterQA
 
 class MasterQATests(MasterQA):
     def test_masterqa(self):
-        self.open("https://xkcd.com/1700/")
+        self.goto("https://xkcd.com/1700/")
         self.verify("Do you see a webcomic?")
-        self.open("https://seleniumbase.io/demo_page")
+        self.goto("https://seleniumbase.io/demo_page")
         self.highlight('table')
         self.verify("Do you see elements in a table?")
-        self.open("https://seleniumbase.io/devices/")
+        self.goto("https://seleniumbase.io/devices/")
         self.highlight("div.mockup-wrapper")
         self.verify("Do you see 4 computer devices?")
 ```

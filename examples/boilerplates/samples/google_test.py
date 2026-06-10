@@ -10,18 +10,19 @@ except Exception:
 class GoogleTests(BaseCase):
     def test_google_dot_com(self):
         if self.headless:
-            self.open_if_not_url("about:blank")
+            self.goto_if_not_url("about:blank")
             print("\n  Skipping test in headless mode.")
             self.skip("Skipping test in headless mode.")
         if not self.undetectable:
             self.get_new_driver(undetectable=True)
-        self.driver.get("https://google.com/ncr")
+        self.goto("https://google.com/ncr")
         self.click_if_visible('button:contains("Accept all")')
         self.assert_title_contains("Google")
         self.sleep(0.05)
         self.save_screenshot_to_logs()  # ("./latest_logs" folder)
-        self.type(HomePage.search_box, "github.com")
+        self.type(HomePage.search_box, "GitHub")
         self.assert_element(HomePage.search_button)
         self.assert_element(HomePage.feeling_lucky_button)
         self.click(HomePage.search_button)
+        self.sleep(1)
         self.assert_text("github.com", ResultsPage.search_results)

@@ -153,10 +153,10 @@ class MyPresenterClass(BaseCase):
                 'from seleniumbase import BaseCase\n\n'
                 'class MyTestClass(BaseCase):\n\n'
                 '    def test_basics(self):\n'
-                '        self.open("https://store.xkcd.com/search")\n'
+                '        self.goto("https://store.xkcd.com/search")\n'
                 '        self.type(\'input[name="q"]\', "xkcd book\\n")\n'
                 '        self.assert_text("xkcd: volume 0", "h3")\n'
-                '        self.open("https://xkcd.com/353/")\n'
+                '        self.goto("https://xkcd.com/353/")\n'
                 '        self.assert_title("xkcd: Python")\n'
                 '        self.assert_element(\'img[alt="Python"]\')\n'
                 '        self.click(\'a[rel="license"]\')\n'
@@ -170,7 +170,7 @@ class MyPresenterClass(BaseCase):
                 'from seleniumbase import BaseCase\n\n'
                 '<mark>class MyTestClass(BaseCase):</mark>\n\n'
                 '    def test_basics(self):\n'
-                '        self.open("https://store.xkcd.com/search")\n'
+                '        self.goto("https://store.xkcd.com/search")\n'
                 '        self.type(\'input[name="q"]\', "xkcd book\\n")\n'
                 '        self.assert_text("xkcd: volume 0", "h3")'))
         self.add_slide(

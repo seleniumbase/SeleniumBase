@@ -52,7 +52,7 @@ class MyPresenterClass(BaseCase):
                 "BaseCase.main(__name__, __file__)\n\n"
                 "class MyTestClass(BaseCase):\n"
                 "    def test_basics(self):\n"
-                '        self.open("https://xkcd.com/353/")\n'
+                '        self.goto("https://xkcd.com/353/")\n'
                 '        self.assert_title("xkcd: Python")\n'
                 "        self.assert_element('img[alt=\"Python\"]')\n"
                 "        self.click('a[rel=\"license\"]')\n"
@@ -69,7 +69,7 @@ class MyPresenterClass(BaseCase):
                 "BaseCase.main(__name__, __file__)\n\n"
                 "<mark>class MyTestClass(BaseCase):</mark>\n"
                 "    def test_basics(self):\n"
-                '        self.open("https://xkcd.com/353/")\n'
+                '        self.goto("https://xkcd.com/353/")\n'
                 '        self.assert_title("xkcd: Python")\n'
                 "        self.assert_element('img[alt=\"Python\"]')\n"
                 "        self.click('a[rel=\"license\"]')\n"

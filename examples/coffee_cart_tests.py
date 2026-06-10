@@ -6,13 +6,13 @@ BaseCase.main(__name__, __file__)
 
 class CoffeeCartTests(BaseCase):
     def test_1_verify_nav_link_to_coffee_cart(self):
-        self.open("https://seleniumbase.io/help_docs/customizing_test_runs/")
+        self.goto("https://seleniumbase.io/help_docs/customizing_test_runs/")
         self.js_click('nav a:contains("Coffee Cart")')
         self.assert_title("Coffee Cart")
         self.assert_element('h4:contains("Espresso")')
 
     def test_buy_one_cappuccino(self):
-        self.open("https://seleniumbase.io/coffee/")
+        self.goto("https://seleniumbase.io/coffee/")
         self.assert_title("Coffee Cart")
         self.click('div[data-test="Cappuccino"]')
         self.assert_exact_text("cart (1)", 'a[aria-label="Cart page"]')
@@ -28,7 +28,7 @@ class CoffeeCartTests(BaseCase):
 
     @parameterized.expand([[False], [True]])
     def test_coffee_promo_with_preview(self, accept_promo):
-        self.open("https://seleniumbase.io/coffee/")
+        self.goto("https://seleniumbase.io/coffee/")
         self.assert_title("Coffee Cart")
         self.click('div[data-test="Espresso"]')
         self.click('div[data-test="Americano"]')
@@ -61,7 +61,7 @@ class CoffeeCartTests(BaseCase):
         self.assert_text("Thanks for your purchase.", "div#app div.success")
 
     def test_context_click_add_coffee(self):
-        self.open("https://seleniumbase.io/coffee/")
+        self.goto("https://seleniumbase.io/coffee/")
         self.assert_title("Coffee Cart")
         self.context_click('div[data-test="Espresso_Macchiato"]')
         self.click('form button:contains("Yes")')
@@ -75,7 +75,7 @@ class CoffeeCartTests(BaseCase):
         self.assert_text("Thanks for your purchase.", "div#app div.success")
 
     def test_remove_added_coffee(self):
-        self.open("https://seleniumbase.io/coffee/")
+        self.goto("https://seleniumbase.io/coffee/")
         self.assert_title("Coffee Cart")
         self.assert_exact_text("cart (0)", 'a[aria-label="Cart page"]')
         self.assert_exact_text("Total: $0.00", "button.pay")

@@ -2,7 +2,7 @@ from seleniumbase import SB
 
 with SB(uc=True, test=True) as sb:
     sb.activate_cdp_mode()
-    sb.open("https://seleniumbase.io/hobbit/login")
+    sb.goto("https://seleniumbase.io/hobbit/login")
     sb.click("button span#mySpan")
     sb.assert_text("Welcome to Middle Earth!", "h1")
     sb.set_messenger_theme(location="bottom_center")

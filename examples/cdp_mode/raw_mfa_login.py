@@ -1,7 +1,7 @@
 from seleniumbase import sb_cdp
 
 sb = sb_cdp.Chrome()
-sb.open("https://seleniumbase.io/realworld/login")
+sb.goto("https://seleniumbase.io/realworld/login")
 sb.type("#username", "demo_user")
 sb.type("#password", "secret_pass")
 sb.enter_mfa_code("#totpcode", "GAXG2MTEOR3DMMDG")

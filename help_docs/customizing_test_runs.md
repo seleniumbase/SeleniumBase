@@ -879,7 +879,7 @@ platform: Optional[str] = None  # Set the Platform. Eg: "MacIntel"
 
 Example: [SeleniumBase/examples/cdp_mode/raw_geolocation_sb.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_geolocation_sb.py)
 
-Note that if CDP Mode is already active, the options above can also be used when calling `sb.cdp.open()`. (The `url` arg is required in this case.)
+Note that if CDP Mode is already active, the options above can also be used when calling `sb.cdp.goto()`. (The `url` arg is required in this case.)
 
 --------
 

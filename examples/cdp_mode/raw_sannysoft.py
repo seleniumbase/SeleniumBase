@@ -2,7 +2,7 @@ from seleniumbase import SB
 
 with SB(uc=True, test=True) as sb:
     sb.activate_cdp_mode()
-    sb.open("https://bot.sannysoft.com/")
+    sb.goto("https://bot.sannysoft.com/")
     sb.flash("#user-agent-result.passed")
     sb.flash("#webdriver-result.passed")
     sb.flash("#advanced-webdriver-result.passed")

@@ -5,7 +5,7 @@ BaseCase.main(__name__, __file__)
 
 class TestConsoleLogging(BaseCase):
     def test_console_logging(self):
-        self.open("https://seleniumbase.io/demo_page")
+        self.goto("https://seleniumbase.io/demo_page")
         self.wait_for_element_visible("h2")
         self.start_recording_console_logs()
         self.console_log_string("Hello World!")

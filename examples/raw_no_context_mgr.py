@@ -3,7 +3,7 @@ from seleniumbase import SB
 
 sb_context = SB()
 sb = sb_context.__enter__()
-sb.open("data:text/html,<h1>Test Page</h1>")
+sb.goto("data:text/html,<h1>Test Page</h1>")
 sb.highlight("h1", loops=8)
 sb_context.__exit__(None, None, None)
 
@@ -11,6 +11,6 @@ sb_context.__exit__(None, None, None)
 from seleniumbase import SB
 
 with SB() as sb:
-    sb.open("data:text/html,<h1>Test Page</h1>")
+    sb.goto("data:text/html,<h1>Test Page</h1>")
     sb.highlight("h1", loops=8)
 """

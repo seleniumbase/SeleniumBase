@@ -14,7 +14,7 @@ def main(url):
     if not sb.is_element_visible("img#captcha-success"):
         sb.solve_captcha()
         sb.sleep(2.2)
-    sb.driver.stop()
+    sb.quit()
 
 
 if __name__ == "__main__":
