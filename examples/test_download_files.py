@@ -22,7 +22,7 @@ class DownloadTests(BaseCase):
             notes_data = f.read()
         self.assert_true(len(notes_data) > 100)  # Verify file not empty
         text = "Switching to nested frame fails with chrome/chromedriver 100"
-        self.assert_true(text in notes_data)  # Verify file has expected data
+        self.assert_in(text, notes_data)  # Verify file has expected data
 
     def test_download_files_from_pypi(self):
         self.goto("https://pypi.org/project/sbvirtualdisplay/#files")
