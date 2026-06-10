@@ -16551,15 +16551,33 @@ class BaseCase(unittest.TestCase):
             "%s</head>"
             % (DASH_PIE_PNG_1, auto_refresh_html, style)
         )
+        num_total = num_passed + num_failed + num_skipped + num_untested
         table_html = (
             "<div></div>"
-            '<table border="1px solid #e6e6e6;" width="100%;" padding: 5px;'
+            '<table style="margin: 0 auto; width: 50%%; border: 1px'
+            ' solid #e6e6f6; font-size: 14px; text-align: center;">'
+            '<thead id="results-table-head">'
+            '<tr style="background-color: #F7F7FD;">'
+            '<th style="background-color: #FFF8F8; color: #FF2222;">'
+            'Failed: %s</th>'
+            '<th style="background-color: #FEFEF9; color: #FFA500;">'
+            'Skipped: %s</th>'
+            '<th style="background-color: #F8FFF8; color: #12A212;">'
+            'Passed: %s</th>'
+            '<th style="background-color: #F9F9F9; color: #8C8C8C;">'
+            'Untested: %s</th>'
+            '<th style="background-color: #F4F4FF; color: #575792;">'
+            'Total: %s</th>'
+            "</tr></thead></table>"
+            "<p></p><div></div>"
+            '<table border="1px solid #e6e6e6;" width="100%%;" padding: 5px;'
             ' font-size="12px;" text-align="left;" id="results-table">'
             '<thead id="results-table-head">'
             '<tr style="background-color: #F7F7FD;">'
             '<th col="result">Result</th><th col="name">Test</th>'
             '<th col="duration">Duration</th><th col="links">Links</th>'
             "</tr></thead>"
+            % (num_failed, num_skipped, num_passed, num_untested, num_total)
         )
         the_failed = []
         the_skipped = []
