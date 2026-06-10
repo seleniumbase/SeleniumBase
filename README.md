@@ -1,8 +1,8 @@
 <!-- SeleniumBase Docs -->
 
 <meta property="og:site_name" content="SeleniumBase">
-<meta property="og:title" content="SeleniumBase: Stealthy Chromium Automation with Python; and E2E Testing." />
-<meta property="og:description" content="Stealthy Chromium Automation, including fast, easy, and reliable Web/UI testing with Python." />
+<meta property="og:title" content="SeleniumBase: Stealthy Chromium Automation and E2E Testing with Python." />
+<meta property="og:description" content="Stealthy Chromium Automation and E2E Testing with Python." />
 <meta property="og:keywords" content="Python, pytest, selenium, webdriver, testing, automation, seleniumbase, framework, dashboard, recorder, reports, screenshots, playwright, stealth, CAPTCHA">
 <meta property="og:image" content="https://seleniumbase.github.io/cdn/img/mac_sb_logo_5b.png" />
 <link rel="icon" href="https://seleniumbase.github.io/img/logo6.png" />
