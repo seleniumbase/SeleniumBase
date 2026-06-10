@@ -2,7 +2,7 @@
 
 |   |    |   |
 | - | -: | - |
-| 🔵 | 14 | Case Plans with customized tables |
+| 🔵 | 12 | Case Plans with customized tables |
 | ⭕ | 0 | Case Plans using boilerplate code |
 | 🚧 | 0 | Case Plans that are missing tables |
 
@@ -117,16 +117,6 @@
 </details>
 
 <details>
-<summary> 🔵 <code><b>visual_testing/layout_test.py::VisualLayoutTests::test_applitools_layout_change</b></code></summary>
-
-| # | Step Description | Expected Result |
-| - | ---------------- | --------------- |
-| 1 | Open https://applitools.com/helloworld?diff1. <br /> Call ``check_window()`` with ``baseline=True``. <br /> Click the button that changes the text of an element. <br /> Call ``check_window()`` three times for ``level=1``, ``level=2``, and ``level=3``. | No issues are detected because a text change should not affect ``check_window()`` |
-| 2 | Click the button that makes a hidden element visible. <br /> Call ``check_window()`` three times for ``level=1``, ``level=2``, and ``level=3``, but wrap the third call with ``self.assert_raises(Exception):``. | No exceptions are raised because the first two calls should pass and the third one was wrapped with ``self.assert_raises(Exception):``. |
-
-</details>
-
-<details>
 <summary> 🔵 <code><b>visual_testing/python_home_test.py::VisualLayoutTests::test_python_home_layout_change</b></code></summary>
 
 | # | Step Description | Expected Result |
@@ -143,16 +133,6 @@
 | - | ---------------- | --------------- |
 | 1 | Open https://python.org/. <br /> Call ``check_window()`` with ``baseline=True``. | |
 | 2 | Remove the ``Donate`` button using ``remove_element(SELECTOR)``. <br /> Call ``check_window()`` with ``level=3``. | The test fails because the ``Donate`` button was removed. <br /> A ``side_by_side.html`` file appears in the specific ``latest_logs/`` folder of the test. |
-
-</details>
-
-<details>
-<summary> 🔵 <code><b>visual_testing/test_layout_fail.py::VisualLayoutFailureTests::test_applitools_change</b></code></summary>
-
-| # | Step Description | Expected Result |
-| - | ---------------- | --------------- |
-| 1 | Open https://applitools.com/helloworld?diff1. <br /> Call ``check_window()`` with ``baseline=True``. | |
-| 2 | Click the button that makes a hidden element visible. <br /> Call ``check_window()`` with ``level=3``. | The test fails because the element attribute has changed. <br /> A ``side_by_side.html`` file appears in the specific ``latest_logs/`` folder of the test. |
 
 </details>
 
