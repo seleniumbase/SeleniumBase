@@ -793,6 +793,7 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
     cdp.grant_permissions = CDPM.grant_permissions
     cdp.grant_all_permissions = CDPM.grant_all_permissions
     cdp.reset_permissions = CDPM.reset_permissions
+    cdp.get_all_urls = CDPM.get_all_urls
     cdp.get_all_cookies = CDPM.get_all_cookies
     cdp.set_all_cookies = CDPM.set_all_cookies
     cdp.save_cookies = CDPM.save_cookies

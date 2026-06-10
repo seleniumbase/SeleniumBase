@@ -752,6 +752,18 @@ class CDPMethods():
             driver = driver.cdp_base
         return self.loop.run_until_complete(driver.reset_permissions())
 
+    def get_all_urls(self, absolute=True):
+        """
+        Convenience function that returns all links (a,link,img,script,meta).
+        :param absolute:
+         Try to build all the links in absolute form
+         instead of "as is", often relative.
+        :return: List of URLs.
+        """
+        return self.loop.run_until_complete(
+            self.page.get_all_urls(absolute=absolute)
+        )
+
     def get_all_cookies(self, *args, **kwargs):
         driver = self.driver
         if hasattr(driver, "cdp_base"):
