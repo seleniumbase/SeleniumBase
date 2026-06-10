@@ -230,7 +230,7 @@ setup(
         'parameterized==0.9.0',
         'behave==1.2.6',  # Newer ones had issues
         'soupsieve~=2.8.4',
-        'beautifulsoup4~=4.14.3',
+        'beautifulsoup4~=4.15.0',
         'pyotp==2.9.0',
         'python-xlib==0.33;platform_system=="Linux"',
         'PyAutoGUI>=0.9.54;platform_system=="Linux"',
@@ -273,7 +273,7 @@ setup(
         "pdfminer": [
             'pdfminer.six==20251107;python_version<"3.10"',
             'pdfminer.six==20260107;python_version>="3.10"',
-            'cryptography==48.0.0',
+            'cryptography==48.0.1',
             'cffi==2.0.0',
             'pycparser==2.23;python_version<"3.10"',
             'pycparser==3.0;python_version>="3.10"',

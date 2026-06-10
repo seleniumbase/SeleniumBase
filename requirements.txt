@@ -66,7 +66,7 @@ pytest-xdist==3.8.0
 parameterized==0.9.0
 behave==1.2.6
 soupsieve~=2.8.4
-beautifulsoup4~=4.14.3
+beautifulsoup4~=4.15.0
 pyotp==2.9.0
 python-xlib==0.33;platform_system=="Linux"
 PyAutoGUI>=0.9.54;platform_system=="Linux"
