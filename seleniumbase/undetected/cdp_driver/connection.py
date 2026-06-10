@@ -5,6 +5,7 @@ import inspect
 import itertools
 import json
 import logging
+import os
 import sys
 import types
 import warnings
@@ -19,6 +20,7 @@ from typing import (
 )
 import websockets
 from websockets.protocol import State
+from seleniumbase.fixtures import constants
 from . import cdp_util as util
 import mycdp as cdp
 import mycdp.network
@@ -334,6 +336,17 @@ class Connection(metaclass=CantTouchThis):
             except AttributeError:
                 # No listener created yet.
                 pass
+
+    async def set_downloads_folder(self, downloads_path):
+        if not downloads_path:
+            downloads_dir = constants.Files.DOWNLOADS_FOLDER
+            abs_path = os.path.abspath(".")
+            downloads_path = os.path.join(abs_path, downloads_dir)
+        await self.send(
+            cdp.browser.set_download_behavior(
+                behavior="allow", download_path=str(downloads_path)
+            )
+        )
 
     async def set_locale(self, locale: Optional[str] = None):
         """Sets the Language Locale code via set_user_agent_override."""
