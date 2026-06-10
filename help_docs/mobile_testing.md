@@ -2,7 +2,7 @@
 
 <h2><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32"></a> Mobile Mode / Mobile Testing</h2>
 
-Use ``--mobile`` to run SeleniumBase tests using Chrome's mobile device emulator with default values for Device Metrics and User-Agent.
+Use `--mobile` to run SeleniumBase tests using Chrome's mobile device emulator with default values for Device Metrics and User-Agent.
 
 <b>Here's an example mobile test:</b>
 
