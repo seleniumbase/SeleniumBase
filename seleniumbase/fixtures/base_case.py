@@ -5103,6 +5103,8 @@ class BaseCase(unittest.TestCase):
             self.find_element_by_text = self.cdp.find_element_by_text
         if hasattr(self.cdp, "get_active_tab"):
             self.get_active_tab = self.cdp.get_active_tab
+        if hasattr(self.cdp, "get_all_urls"):
+            self.get_all_urls = self.cdp.get_all_urls
         if hasattr(self.cdp, "get_endpoint_url"):
             self.get_endpoint_url = self.cdp.get_endpoint_url
         if hasattr(self.cdp, "get_event_loop"):

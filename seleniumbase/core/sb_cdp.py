@@ -752,6 +752,18 @@ class CDPMethods():
             driver = driver.cdp_base
         return self.loop.run_until_complete(driver.reset_permissions())
 
+    def get_all_urls(self, absolute=True):
+        """
+        Convenience function that returns all links (a,link,img,script,meta).
+        :param absolute:
+         Try to build all the links in absolute form
+         instead of "as is", often relative.
+        :return: List of URLs.
+        """
+        return self.loop.run_until_complete(
+            self.page.get_all_urls(absolute=absolute)
+        )
+
     def get_all_cookies(self, *args, **kwargs):
         driver = self.driver
         if hasattr(driver, "cdp_base"):
@@ -1724,6 +1736,80 @@ class CDPMethods():
         if pause:
             duration = float(duration) + 0.15
             time.sleep(float(duration))
+
+    def download_file(self, file_url):
+        """Download a file from a URL.
+        The default download location is: "./downloaded_files/"."""
+        self.loop.run_until_complete(
+            self.page.download_file(file_url)
+        )
+
+    def save_file_as(self, file_url, new_file_name):
+        """Download a file from a URL and rename it.
+        The default download location is: "./downloaded_files/"."""
+        self.loop.run_until_complete(
+            self.page.download_file(file_url, new_file_name)
+        )
+
+    def assert_downloaded_file(self, file, timeout=None):
+        """Asserts that the file exists in SeleniumBase's [Downloads Folder].
+        For browser click-initiated downloads, SeleniumBase will override
+            the system [Downloads Folder] to be "./downloaded_files/".
+        @Params
+        file - The filename of the downloaded file.
+        timeout - The time (seconds) to wait for the download to complete.
+        browser - If True, uses the path set by click-initiated downloads."""
+        downloads_folder = constants.Files.DOWNLOADS_FOLDER
+        abs_path = os.path.abspath(".")
+        downloads_path = os.path.join(abs_path, downloads_folder)
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        start_ms = time.time() * 1000.0
+        stop_ms = start_ms + (timeout * 1000.0)
+        downloaded_file_path = os.path.join(downloads_path, file)
+        found = False
+        for x in range(int(timeout)):
+            shared_utils.check_if_time_limit_exceeded()
+            try:
+                self.assert_true(
+                    os.path.exists(downloaded_file_path),
+                    "File [%s] was not found in the downloads folder [%s]!"
+                    % (file, downloads_path),
+                )
+                found = True
+                break
+            except Exception:
+                now_ms = time.time() * 1000.0
+                if now_ms >= stop_ms:
+                    break
+                time.sleep(1)
+        if not found and not os.path.exists(downloaded_file_path):
+            plural = "s"
+            if timeout == 1:
+                plural = ""
+            message = (
+                "File {%s} was not found in the downloads folder {%s} "
+                "after %s second%s! (Or the download didn't complete!)"
+                % (file, downloads_path, timeout, plural)
+            )
+            from seleniumbase.common.exceptions import NoSuchFileException
+            raise NoSuchFileException(message)
+
+    def get_path_of_downloaded_file(self, file):
+        """This assumes the default location of SeleniumBase downloads,
+        which is the "./downloaded_files/" folder where scripts run."""
+        downloads_folder = constants.Files.DOWNLOADS_FOLDER
+        abs_path = os.path.abspath(".")
+        downloads_path = os.path.join(abs_path, downloads_folder)
+        return os.path.join(downloads_path, file)
+
+    def set_download_path(self, path):
+        """Set a new download path for click-initiated downloads.
+        (For Pure CDP Mode sync format only! -> sb_cdp.)
+        The default download location is: "./downloaded_files/".
+        Convenience methods such as assert_downloaded_file(file)
+        will still expect the default location."""
+        self.loop.run_until_complete(self.page.set_download_path(path))
 
     def set_locale(self, locale):
         """(Settings will take effect on the next page load)"""
@@ -3233,13 +3319,23 @@ class CDPMethods():
         )
         return True
 
-    def assert_true(self, expression):
+    def assert_true(self, expression, msg=None):
         if not expression:
-            raise AssertionError("%s is not true" % expression)
+            if not msg:
+                raise AssertionError("%s is not true" % expression)
+            else:
+                raise AssertionError(
+                    "%s is not true. (%s)" % (expression, msg)
+                )
 
-    def assert_false(self, expression):
+    def assert_false(self, expression, msg=None):
         if expression:
-            raise AssertionError("%s is not false" % expression)
+            if not msg:
+                raise AssertionError("%s is not false" % expression)
+            else:
+                raise AssertionError(
+                    "%s is not false. (%s)" % (expression, msg)
+                )
 
     def assert_equal(self, first, second):
         if first != second:

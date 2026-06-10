@@ -380,6 +380,7 @@ class Browser:
                     filter(lambda item: item.type_ == "page", self.targets)
                 )
                 await connection.sleep(0.005)
+        _cdp_downloads_path = None
         _cdp_timezone = None
         _cdp_user_agent = ""
         _cdp_locale = None
@@ -389,6 +390,8 @@ class Browser:
         _cdp_mobile_mode = None
         _cdp_recorder = None
         _cdp_ad_block = None
+        if getattr(sb_config, "_cdp_downloads_path", None):
+            _cdp_downloads_path = sb_config._cdp_downloads_path
         if getattr(sb_config, "_cdp_timezone", None):
             _cdp_timezone = sb_config._cdp_timezone
         if getattr(sb_config, "_cdp_user_agent", None):
@@ -405,6 +408,8 @@ class Browser:
             _cdp_ad_block = sb_config.ad_block_on
         if getattr(sb_config, "disable_csp", None):
             _cdp_disable_csp = sb_config.disable_csp
+        if "downloads_path" in kwargs:
+            _cdp_downloads_path = kwargs["downloads_path"]
         if "timezone" in kwargs:
             _cdp_timezone = kwargs["timezone"]
         elif "tzone" in kwargs:
@@ -439,6 +444,7 @@ class Browser:
         await connection.sleep(0.01)
         await connection.send(cdp.network.enable())
         await connection.sleep(0.01)
+        await connection.set_downloads_folder(_cdp_downloads_path)
         if _cdp_timezone:
             await connection.set_timezone(_cdp_timezone)
         if _cdp_locale:

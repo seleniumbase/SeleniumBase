@@ -7,7 +7,6 @@ import pathlib
 import re
 import sys
 import urllib.parse
-import warnings
 from contextlib import suppress
 from filelock import AsyncFileLock
 from seleniumbase import config as sb_config
@@ -1154,52 +1153,40 @@ class Tab(Connection):
         Downloads the file by the given url.
         :param url: The URL of the file.
         :param filename: The name for the file.
-         If not specified, the name is composed from the url file name
+         If not specified, the name is composed from the url file name.
         """
-        if not self._download_behavior:
-            directory_path = pathlib.Path.cwd() / "downloads"
-            directory_path.mkdir(exist_ok=True)
-            await self.set_download_path(directory_path)
-
-            warnings.warn(
-                f"No download path set, so creating and using a default of "
-                f"{directory_path}"
-            )
         if not filename:
             filename = url.rsplit("/")[-1]
             filename = filename.split("?")[0]
         code = """
-         (elem) => {
-            async function _downloadFile(
-              imageSrc,
-              nameOfDownload,
-            ) {
-              const response = await fetch(imageSrc);
-              const blobImage = await response.blob();
-              const href = URL.createObjectURL(blobImage);
-              const anchorElement = document.createElement('a');
-              anchorElement.href = href;
-              anchorElement.download = nameOfDownload;
-              document.body.appendChild(anchorElement);
-              anchorElement.click();
-              setTimeout(() => {
-                document.body.removeChild(anchorElement);
-                window.URL.revokeObjectURL(href);
-                }, 500);
+            async function(elem, downloadUrl, nameOfDownload) {
+                const response = await fetch(downloadUrl);
+                const blobImage = await response.blob();
+                const href = URL.createObjectURL(blobImage);
+                const anchorElement = document.createElement('a');
+                anchorElement.href = href;
+                anchorElement.download = nameOfDownload;
+                document.body.appendChild(anchorElement);
+                anchorElement.click();
+                // Clean up the DOM and memory space safely after trigger
+                setTimeout(() => {
+                    document.body.removeChild(anchorElement);
+                    window.URL.revokeObjectURL(href);
+                }, 1000);
             }
-            _downloadFile('%s', '%s')
-            }
-            """ % (
-            url,
-            filename,
-        )
+        """
         body = (await self.query_selector_all("body"))[0]
         await body.update()
         await self.send(
             cdp.runtime.call_function_on(
-                code,
+                function_declaration=code,
                 object_id=body.object_id,
-                arguments=[cdp.runtime.CallArgument(object_id=body.object_id)],
+                arguments=[
+                    cdp.runtime.CallArgument(object_id=body.object_id),
+                    cdp.runtime.CallArgument(value=url),
+                    cdp.runtime.CallArgument(value=filename),
+                ],
+                await_promise=True,
             )
         )
 
@@ -1300,6 +1287,8 @@ class Tab(Connection):
         When not set, a default folder is used.
         :param path:
         """
+        with suppress(Exception):
+            path = pathlib.Path(path)
         await self.send(
             cdp.browser.set_download_behavior(
                 behavior="allow", download_path=str(path.resolve())

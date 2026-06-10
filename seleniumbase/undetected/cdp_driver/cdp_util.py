@@ -744,6 +744,8 @@ async def start(
         sb_config._cdp_user_agent = kwargs["user_agent"]
     else:
         sb_config._cdp_user_agent = None
+    if "downloads_path" in kwargs:
+        sb_config._cdp_downloads_path = kwargs["downloads_path"]
     if "platform" in kwargs:
         sb_config._cdp_platform = kwargs["platform"]
     elif "plat" in kwargs:

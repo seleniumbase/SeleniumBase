@@ -174,7 +174,7 @@ setup(
         'websockets~=15.0.1;python_version<"3.10"',
         'websockets>=16.0;python_version>="3.10"',
         'filelock~=3.19.1;python_version<"3.10"',
-        'filelock>=3.29.1;python_version>="3.10"',
+        'filelock>=3.29.3;python_version>="3.10"',
         'fasteners>=0.20',
         'mycdp>=1.3.7',
         'pynose>=1.5.5',
