@@ -3319,13 +3319,23 @@ class CDPMethods():
         )
         return True
 
-    def assert_true(self, expression):
+    def assert_true(self, expression, msg=None):
         if not expression:
-            raise AssertionError("%s is not true" % expression)
+            if not msg:
+                raise AssertionError("%s is not true" % expression)
+            else:
+                raise AssertionError(
+                    "%s is not true. (%s)" % (expression, msg)
+                )
 
-    def assert_false(self, expression):
+    def assert_false(self, expression, msg=None):
         if expression:
-            raise AssertionError("%s is not false" % expression)
+            if not msg:
+                raise AssertionError("%s is not false" % expression)
+            else:
+                raise AssertionError(
+                    "%s is not false. (%s)" % (expression, msg)
+                )
 
     def assert_equal(self, first, second):
         if first != second:
