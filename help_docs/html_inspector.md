@@ -14,11 +14,11 @@ BaseCase.main(__name__, __file__)
 
 class HtmlInspectorTests(BaseCase):
     def test_html_inspector(self):
-        self.open("https://xkcd.com/1144/")
+        self.goto("https://xkcd.com/1144/")
         self.inspect_html()
 ```
 
---------
+----
 
 ```zsh
 pytest test_inspect_html.py

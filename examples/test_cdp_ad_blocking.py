@@ -4,7 +4,7 @@ BaseCase.main(__name__, __file__)
 
 class CDPNetworkBlockingTests(BaseCase):
     def test_cdp_network_blocking(self):
-        self.open("about:blank")
+        self.goto("about:blank")
         if self._reuse_session or not self.is_chromium():
             message = "Skipping test if reusing session or not Chromium!"
             print(message)
@@ -22,7 +22,7 @@ class CDPNetworkBlockingTests(BaseCase):
                 "*.snigelweb.com*",
                 "*.2mdn.net*",
             ]})
-        self.open("https://www.w3schools.com/jquery/default.asp")
+        self.goto("https://www.w3schools.com/jquery/default.asp")
         source = self.get_page_source()
         self.assert_false("doubleclick.net" in source)
         self.assert_false("google-analytics.com" in source)

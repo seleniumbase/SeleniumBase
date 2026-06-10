@@ -9,12 +9,12 @@ BaseCase.main(__name__, __file__)
 
 class TabSwitchingTests(BaseCase):
     def test_switch_to_tabs(self):
-        self.open("about:blank")
+        self.goto("about:blank")
         self.get_new_driver()
-        self.open("data:text/html,<h1>Page A</h1>")
+        self.goto("data:text/html,<h1>Page A</h1>")
         self.assert_text("Page A")
         self.open_new_window()
-        self.open("data:text/html,<h1>Page B</h1>")
+        self.goto("data:text/html,<h1>Page B</h1>")
         self.assert_text("Page B")
         self.switch_to_window(0)
         self.assert_text("Page A")

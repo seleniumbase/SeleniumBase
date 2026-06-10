@@ -10,7 +10,7 @@ class CycleTests(BaseCase):
         This can all be performed by using a single command.
         The "\t" is the tab key. The "\n" is the RETURN key.
         """
-        self.open("seleniumbase.io/demo_page")
+        self.goto("seleniumbase.io/demo_page")
         self.assert_text("This Text is Green", "#pText")
         self.send_keys("html", "\t\t\t\t\n")
         self.assert_text("This Text is Purple", "#pText")

@@ -9,7 +9,7 @@ BaseCase.main(__name__, __file__)
 
 class UCPresentationClass(BaseCase):
     def test_presentation(self):
-        self.open("data:,")
+        self.goto("data:,")
         self._output_file_saves = False
         self.create_presentation(theme="beige", transition="fade")
         self.add_slide(

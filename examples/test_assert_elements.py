@@ -7,7 +7,7 @@ BaseCase.main(__name__, __file__)
 
 class ListAssertTests(BaseCase):
     def test_assert_list_of_elements(self):
-        self.open("https://seleniumbase.io/demo_page")
+        self.goto("https://seleniumbase.io/demo_page")
         self.assert_elements_present("head", "style", "script")
         self.assert_elements("h1", "h2", "h3")
         my_list = ["#myDropdown", "#myButton", "#mySlider"]

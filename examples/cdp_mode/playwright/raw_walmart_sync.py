@@ -2,7 +2,7 @@ from playwright.sync_api import sync_playwright
 from seleniumbase import sb_cdp
 
 sb = sb_cdp.Chrome(locale="en", guest=True)
-sb.open("https://www.walmart.com/")
+sb.goto("https://www.walmart.com/")
 endpoint_url = sb.get_endpoint_url()
 
 with sync_playwright() as p:

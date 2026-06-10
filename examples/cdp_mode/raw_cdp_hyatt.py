@@ -33,4 +33,4 @@ for hotel in hotels:
         if "Rates from : " in info:
             price = info.split("Rates from : ")[1].split(" Avg/Night")[0]
         print("* %s => %s" % (name, price))
-sb.driver.stop()
+sb.quit()

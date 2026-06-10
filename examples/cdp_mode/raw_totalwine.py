@@ -3,7 +3,7 @@ from seleniumbase import SB
 with SB(uc=True, test=True, locale="en") as sb:
     url = "https://www.totalwine.com/"
     sb.activate_cdp_mode()
-    sb.open(url)
+    sb.goto(url)
     sb.sleep(1.8)
     search_box = 'input[data-at="header-search-text"]'
     search = "The Land by Psagot Cabernet"

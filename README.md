@@ -66,7 +66,7 @@
 from seleniumbase import sb_cdp
 
 sb = sb_cdp.Chrome()
-sb.open("https://browserscan.net/bot-detection")
+sb.goto("https://browserscan.net/bot-detection")
 sb.sleep(3)
 sb.quit()
 ```
@@ -105,7 +105,7 @@ with sync_playwright() as p:
 from seleniumbase import sb_cdp
 
 sb = sb_cdp.Chrome(locale="en", ad_block=True)
-sb.open("https://browserscan.net/bot-detection")
+sb.goto("https://browserscan.net/bot-detection")
 sb.flash("Test Results", duration=1.5, pause=0.5)
 sb.assert_element('strong:contains("Normal")')
 print("Bot Not Detected")
@@ -242,7 +242,7 @@ BaseCase.main(__name__, __file__)  # Call pytest
 
 class MyTestClass(BaseCase):
     def test_swag_labs(self):
-        self.open("https://www.saucedemo.com")
+        self.goto("https://www.saucedemo.com")
         self.type("#user-name", "standard_user")
         self.type("#password", "secret_sauce\n")
         self.assert_element("div.inventory_list")
@@ -362,7 +362,7 @@ BaseCase.main(__name__, __file__)
 
 class TestSimpleLogin(BaseCase):
     def test_simple_login(self):
-        self.open("seleniumbase.io/simple/login")
+        self.goto("seleniumbase.io/simple/login")
         self.type("#username", "demo_user")
         self.type("#password", "secret_pass")
         self.click('a:contains("Sign in")')
@@ -379,7 +379,7 @@ class TestSimpleLogin(BaseCase):
 from seleniumbase import SB
 
 with SB() as sb:
-    sb.open("seleniumbase.io/simple/login")
+    sb.goto("seleniumbase.io/simple/login")
     sb.type("#username", "demo_user")
     sb.type("#password", "secret_pass")
     sb.click('a:contains("Sign in")')
@@ -397,7 +397,7 @@ from seleniumbase import Driver
 
 driver = Driver()
 try:
-    driver.open("seleniumbase.io/simple/login")
+    driver.goto("seleniumbase.io/simple/login")
     driver.type("#username", "demo_user")
     driver.type("#password", "secret_pass")
     driver.click('a:contains("Sign in")')
@@ -549,7 +549,7 @@ BaseCase.main(__name__, __file__)
 
 class MyTestClass(BaseCase):
     def test_swag_labs(self):
-        self.open("https://www.saucedemo.com")
+        self.goto("https://www.saucedemo.com")
         self.type("#user-name", "standard_user")
         self.type("#password", "secret_sauce\n")
         self.assert_element("div.inventory_list")
@@ -582,7 +582,8 @@ class MyTestClass(BaseCase):
 <h3><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" /> Here are some common SeleniumBase methods:</h3>
 
 ```python
-self.open(url)  # Navigate the browser window to the URL.
+self.goto(url)  # Navigate the browser window to the URL.
+self.open(url)  # Same as `self.goto(url)`
 self.activate_cdp_mode()  # Activate CDP Mode from UC Mode.
 self.type(selector, text)  # Update the field with the text.
 self.click(selector)  # Click the element with the selector.
@@ -958,7 +959,7 @@ BaseCase.main(__name__, __file__)
 class MyTestClass(BaseCase):
 
     def test_find_army_of_robots_on_xkcd_desert_island(self):
-        self.open("https://xkcd.com/731/")
+        self.goto("https://xkcd.com/731/")
         self.assert_element("div#ARMY_OF_ROBOTS", timeout=1)  # This should fail
 ```
 
@@ -1162,7 +1163,7 @@ pytest [YOUR_TEST_FILE.py] --with-db-reporting --with-s3-logging
 🔵 **Navigating to a web page: (and related commands)**
 
 ```python
-self.open("https://xkcd.com/378/")  # This method opens the specified page.
+self.goto("https://xkcd.com/378/")  # This method opens the specified page.
 
 self.go_back()  # This method navigates the browser to the previous page.
 
@@ -1299,7 +1300,7 @@ def is_there_a_cloaked_klingon_ship_on_this_page():
 
 ```python
 if self.is_text_visible("You Shall Not Pass!", "h1"):
-    self.open("https://www.youtube.com/watch?v=3xYXUeSmb-Y")
+    self.goto("https://www.youtube.com/watch?v=3xYXUeSmb-Y")
 ```
 
 <div></div>
@@ -1444,7 +1445,7 @@ self.execute_script("return jQuery('textarea')[2].value")  # Returns the css "va
 ```python
 start_page = "https://xkcd.com/465/"
 destination_page = "https://github.com/seleniumbase/SeleniumBase"
-self.open(start_page)
+self.goto(start_page)
 referral_link = '''<a class='analytics test' href='%s'>Free-Referral Button!</a>''' % destination_page
 self.execute_script('''document.body.innerHTML = \"%s\"''' % referral_link)
 self.click("a.analytics")  # Clicks the generated button
@@ -1464,7 +1465,7 @@ BaseCase.main(__name__, __file__)
 
 class DeferredAssertTests(BaseCase):
     def test_deferred_asserts(self):
-        self.open("https://xkcd.com/993/")
+        self.goto("https://xkcd.com/993/")
         self.wait_for_element("#comic")
         self.deferred_assert_element('img[alt="Brand Identity"]')
         self.deferred_assert_element('img[alt="Rocket Ship"]')  # Will Fail

@@ -6,7 +6,7 @@ BaseCase.main(__name__, __file__)
 
 class UA_Presentation_Class(BaseCase):
     def test_presentation_5(self):
-        self.open("data:,")
+        self.goto("data:,")
         self.set_window_position(4, 40)
         self._output_file_saves = False
         self.create_presentation(theme="serif", transition="none")
@@ -919,7 +919,7 @@ class UA_Presentation_Class(BaseCase):
         )
         self.add_slide(
             "<p><mk-0>"
-            "Note: Calling <code>open(url)</code> from UC Mode<br />"
+            "Note: Calling <code>goto(url)</code> from UC Mode<br />"
             "automatically activates CDP Mode now.</mk-0>"
             "</p><hr /><ul>\n"
             "<mk-1>This change was made because the original<br />"

@@ -4,7 +4,7 @@ BaseCase.main(__name__, __file__)
 
 class TestMFALogin(BaseCase):
     def test_mfa_login(self):
-        self.open("https://seleniumbase.io/realworld/login")
+        self.goto("https://seleniumbase.io/realworld/login")
         self.type("#username", "demo_user")
         self.type("#password", "secret_pass")
         self.enter_mfa_code("#totpcode", "GAXG2MTEOR3DMMDG")  # 6-digit

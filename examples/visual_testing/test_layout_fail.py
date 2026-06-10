@@ -5,7 +5,7 @@ BaseCase.main(__name__, __file__)
 
 class VisualLayout_FixtureTests:
     def test_python_home_change(self, sb):
-        sb.open("https://python.org/")
+        sb.goto("https://python.org/")
         print('\nCreating baseline in "visual_baseline" folder.')
         sb.check_window(name="python_home", baseline=True)
         # Remove the "Donate" button
@@ -16,7 +16,7 @@ class VisualLayout_FixtureTests:
 
 class VisualLayoutFailureTests(BaseCase):
     def test_xkcd_logo_change(self):
-        self.open("https://xkcd.com/554/")
+        self.goto("https://xkcd.com/554/")
         print('\nCreating baseline in "visual_baseline" folder.')
         self.check_window(name="xkcd_554", baseline=True)
         # Change height: (83 -> 110) , Change width: (185 -> 120)

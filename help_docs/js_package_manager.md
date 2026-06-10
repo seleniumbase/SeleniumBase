@@ -34,7 +34,7 @@ pytest maps_introjs_tour.py --interval=1
 <p>🗺️ Here is some tour code in Python from <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/maps_introjs_tour.py">maps_introjs_tour.py</a> that expands into a lot of JavaScript.</p>
 
 ```python
-self.open("https://www.google.com/maps/@42.3591234,-71.0915634,15z")
+self.goto("https://www.google.com/maps/@42.3591234,-71.0915634,15z")
 self.create_tour(theme="introjs")
 self.add_tour_step("Welcome to Google Maps!", title="SeleniumBase Tours")
 self.add_tour_step("Enter Location", "#searchboxinput", title="Search Box")

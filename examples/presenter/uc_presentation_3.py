@@ -8,10 +8,10 @@ BaseCase.main(__name__, __file__)
 
 class UCPresentationClass(BaseCase):
     def test_presentation_3(self):
-        self.open("data:,")
+        self.goto("data:,")
         self.set_window_position(4, 40)
         self._output_file_saves = False
-        self.open("https://seleniumbase.io/other/uc3_title.jpg")
+        self.goto("https://seleniumbase.io/other/uc3_title.jpg")
         self.create_presentation(theme="serif", transition="fade")
         self.add_slide(
             '<img src="https://seleniumbase.io/other/uc3_title.jpg"'
@@ -19,7 +19,7 @@ class UCPresentationClass(BaseCase):
         )
         self.begin_presentation(filename="uc_presentation.html")
 
-        self.open("https://seleniumbase.io/other/uc3_title.jpg")
+        self.goto("https://seleniumbase.io/other/uc3_title.jpg")
         self.sleep(2.5)
 
         self.create_presentation(theme="serif", transition="fade")
@@ -666,7 +666,7 @@ class UCPresentationClass(BaseCase):
         with suppress(Exception):
             with SB(test=True) as sb:
                 url = "https://seleniumbase.io/hobbit/login"
-                sb.open(url)
+                sb.goto(url)
                 sb.click_if_visible("button")
                 sb.assert_text("Gandalf blocked you!", "h1")
                 sb.click("img")

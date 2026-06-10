@@ -121,7 +121,7 @@ from behave import step
 @step("Open the Swag Labs Login Page")
 def go_to_swag_labs(context):
     sb = context.sb
-    sb.open("https://www.saucedemo.com")
+    sb.goto("https://www.saucedemo.com")
     sb.clear_local_storage()
 
 

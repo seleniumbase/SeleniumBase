@@ -5,7 +5,7 @@ from seleniumbase.translate.chinese import 硒测试用例
 
 class 我的测试类(硒测试用例):
     def test_例子1(self):
-        self.开启("https://zh.wikipedia.org/wiki/")
+        self.访问("https://zh.wikipedia.org/wiki/")
         self.断言标题("维基百科，自由的百科全书")
         self.断言元素('a[title="Wikipedia:关于"]')
         self.如果可见请单击('button[aria-label="关闭"]')

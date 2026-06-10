@@ -11,10 +11,10 @@ for url in urls:
     with SB(uc=True, test=True, mobile=True) as sb:
         sb.set_window_position(20, 54)
         sb.activate_cdp_mode()
-        sb.open(url)
+        sb.goto(url)
         sb.sleep(2)
         sb.get_new_driver()
         sb.set_window_position(550, 54)
         sb.activate_cdp_mode(agent=agent)
-        sb.open(url)
+        sb.goto(url)
         sb.sleep(8)

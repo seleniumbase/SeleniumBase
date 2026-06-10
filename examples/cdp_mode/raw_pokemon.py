@@ -30,7 +30,7 @@ with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     sb.sleep(2)
     sb.highlight_overlay("div.pokemon-ability-info")
     sb.sleep(2)
-    sb.open("https://events.pokemon.com/EventLocator/")
+    sb.goto("https://events.pokemon.com/EventLocator/")
     sb.sleep(2)
     sb.click('span:contains("Championship")')
     sb.sleep(2)

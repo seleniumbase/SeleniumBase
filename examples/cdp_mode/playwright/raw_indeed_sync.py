@@ -2,7 +2,7 @@ from playwright.sync_api import sync_playwright
 from seleniumbase import sb_cdp
 
 sb = sb_cdp.Chrome()
-sb.open("https://www.indeed.com/companies/search")
+sb.goto("https://www.indeed.com/companies/search")
 sb.sleep(2)
 sb.solve_captcha()
 sb.sleep(1)

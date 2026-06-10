@@ -5,7 +5,7 @@ BaseCase.main(__name__, __file__)
 
 class CoffeeCartTest(BaseCase):
     def test_coffee_cart(self):
-        self.open("https://seleniumbase.io/coffee/")
+        self.goto("https://seleniumbase.io/coffee/")
         self.assert_title("Coffee Cart")
         self.assert_element('button:contains("Total: $0.00")')
         self.click('div[data-sb="Cappuccino"]')

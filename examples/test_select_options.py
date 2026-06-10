@@ -4,7 +4,7 @@ BaseCase.main(__name__, __file__)
 
 class SelectTestClass(BaseCase):
     def test_base(self):
-        self.open("https://seleniumbase.io/demo_page")
+        self.goto("https://seleniumbase.io/demo_page")
 
         expected_option_texts = [
             "Set to 25%", "Set to 50%", "Set to 75%", "Set to 100%"

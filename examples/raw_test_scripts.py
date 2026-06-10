@@ -2,7 +2,7 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True) as sb:
-    sb.open("https://google.com/ncr")
+    sb.goto("https://google.com/ncr")
     sb.click_if_visible('button:contains("Accept all")')
     sb.type('[name="q"]', "SeleniumBase on GitHub")
     sb.click('[value="Google Search"]')
@@ -10,7 +10,7 @@ with SB(uc=True, test=True) as sb:
     sb.sleep(0.5)
 
 with SB(test=True, rtf=True, demo=True) as sb:
-    sb.open("seleniumbase.github.io/demo_page")
+    sb.goto("seleniumbase.github.io/demo_page")
     sb.type("#myTextInput", "This is Automated")
     sb.assert_text("This is Automated", "#myTextInput")
     sb.assert_text("This Text is Green", "#pText")

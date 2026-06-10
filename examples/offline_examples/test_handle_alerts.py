@@ -6,7 +6,7 @@ BaseCase.main(__name__, __file__)
 @pytest.mark.offline  # Can be run with: "pytest -m offline"
 class OfflineTests(BaseCase):
     def test_alerts(self):
-        self.open("data:,")
+        self.goto("data:,")
         self.execute_script('window.alert("ALERT!!!");')
         self.sleep(1)  # Not needed (Lets you see the alert pop up)
         self.accept_alert()

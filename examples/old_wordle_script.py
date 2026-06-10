@@ -81,7 +81,7 @@ class WordleTests(BaseCase):
         url = "https://www.nytimes.com/games/wordle/index.html"
         past_wordle = archive + date + "/" + url
         print("\n" + past_wordle)
-        self.open(past_wordle)
+        self.goto(past_wordle)
         self.wait_for_element("#wm-ipp-base")
         self.remove_elements("#wm-ipp-base")
         self.click("game-app::shadow game-modal::shadow game-icon")

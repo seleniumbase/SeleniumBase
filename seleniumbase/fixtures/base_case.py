@@ -16,15 +16,18 @@ Example Test:
 # --------------------------------------------------------------
 from seleniumbase import BaseCase
 BaseCase.main(__name__, __file__)
-class MyTestClass(BaseCase):
-    def test_anything(self):
-        # Write your code here. Example:
-        self.open("https://github.com/")
-        self.click('span[data-target*="inputButtonText"]')
-        self.type("input#query-builder-test", "SeleniumBase\n")
-        self.click('a[href="/seleniumbase/SeleniumBase"]')
-        self.assert_element("div.repository-content")
-        self.assert_text("SeleniumBase", "strong a")
+
+class TestSimpleLogin(BaseCase):
+    def test_simple_login(self):
+        self.goto("https://seleniumbase.io/simple/login")
+        self.type("#username", "demo_user")
+        self.type("#password", "secret_pass")
+        self.click('a:contains("Sign in")')
+        self.assert_exact_text("Welcome!", "h1")
+        self.assert_element("img#image1")
+        self.highlight("#image1")
+        self.click_link("Sign out")
+        self.assert_text("signed out", "#top_message")
 # --------------------------------------------------------------
 
 SeleniumBase methods expand and improve on existing WebDriver commands.
@@ -1278,19 +1281,19 @@ class BaseCase(unittest.TestCase):
                 pass
         self.__demo_mode_pause_if_active()
 
-    def refresh_page(self):
+    def refresh_page(self, *args, **kwargs):
         self.__check_scope()
         self.__last_page_load_url = None
         if self.__is_cdp_swap_needed():
-            self.cdp.reload()
+            self.cdp.reload(*args, **kwargs)
             return
         js_utils.clear_out_console_logs(self.driver)
         self.driver.refresh()
         self.wait_for_ready_state_complete()
 
-    def refresh(self):
-        """The shorter version of self.refresh_page()"""
-        self.refresh_page()
+    def refresh(self, *args, **kwargs):
+        """Same as self.refresh_page()"""
+        self.refresh_page(*args, **kwargs)
 
     def get_current_url(self):
         self.__check_scope()
@@ -9377,33 +9380,42 @@ class BaseCase(unittest.TestCase):
 
     # Duplicates (Avoids name confusion when migrating from other frameworks.)
 
-    def open_url(self, url):
-        """Same as self.open()"""
-        self.open(url)
+    def goto(self, url, **kwargs):
+        """Same as self.open(url)
+        Navigates the current browser window to the specified page."""
+        self.open(url, **kwargs)
 
-    def visit(self, url):
-        """Same as self.open()"""
-        self.open(url)
+    def go_to(self, url, **kwargs):
+        """Same as self.open(url)"""
+        self.open(url, **kwargs)
 
-    def visit_url(self, url):
-        """Same as self.open()"""
-        self.open(url)
+    def open_url(self, url, **kwargs):
+        """Same as self.open(url)"""
+        self.open(url, **kwargs)
 
-    def goto(self, url):
-        """Same as self.open()"""
-        self.open(url)
+    def visit(self, url, **kwargs):
+        """Same as self.open(url)"""
+        self.open(url, **kwargs)
 
-    def go_to(self, url):
-        """Same as self.open()"""
-        self.open(url)
+    def visit_url(self, url, **kwargs):
+        """Same as self.open(url)"""
+        self.open(url, **kwargs)
 
-    def reload(self):
+    def reload(self, *args, **kwargs):
         """Same as self.refresh_page()"""
-        self.refresh_page()
+        self.refresh_page(*args, **kwargs)
 
-    def reload_page(self):
+    def reload_page(self, *args, **kwargs):
         """Same as self.refresh_page()"""
-        self.refresh_page()
+        self.refresh_page(*args, **kwargs)
+
+    def goto_if_not_url(self, url):
+        """Same as self.open_if_not_url(url)"""
+        self.open_if_not_url(url)
+
+    def goto_start_page(self):
+        """Same as self.open_start_page()"""
+        self.open_start_page()
 
     def open_new_tab(self, switch_to=True, **kwargs):
         """Same as self.open_new_window()"""
@@ -16551,15 +16563,33 @@ class BaseCase(unittest.TestCase):
             "%s</head>"
             % (DASH_PIE_PNG_1, auto_refresh_html, style)
         )
+        num_total = num_passed + num_failed + num_skipped + num_untested
         table_html = (
             "<div></div>"
-            '<table border="1px solid #e6e6e6;" width="100%;" padding: 5px;'
+            '<table style="margin: 0 auto; width: 50%%; border: 1px'
+            ' solid #e6e6f6; font-size: 14px; text-align: center;">'
+            '<thead id="results-table-head">'
+            '<tr style="background-color: #F7F7FD;">'
+            '<th style="background-color: #FFF8F8; color: #FF2222;">'
+            'Failed: %s</th>'
+            '<th style="background-color: #FEFEF9; color: #FFA500;">'
+            'Skipped: %s</th>'
+            '<th style="background-color: #F8FFF8; color: #12A212;">'
+            'Passed: %s</th>'
+            '<th style="background-color: #F9F9F9; color: #8C8C8C;">'
+            'Untested: %s</th>'
+            '<th style="background-color: #F4F4FF; color: #575792;">'
+            'Total: %s</th>'
+            "</tr></thead></table>"
+            "<p></p><div></div>"
+            '<table border="1px solid #e6e6e6;" width="100%%;" padding: 5px;'
             ' font-size="12px;" text-align="left;" id="results-table">'
             '<thead id="results-table-head">'
             '<tr style="background-color: #F7F7FD;">'
             '<th col="result">Result</th><th col="name">Test</th>'
             '<th col="duration">Duration</th><th col="links">Links</th>'
             "</tr></thead>"
+            % (num_failed, num_skipped, num_passed, num_untested, num_total)
         )
         the_failed = []
         the_skipped = []

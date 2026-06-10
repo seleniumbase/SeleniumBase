@@ -413,7 +413,7 @@ def main():
     data.append("")
     data.append("class MyTestClass(BaseCase):")
     data.append("    def test_swag_labs(self):")
-    data.append('        self.open("https://www.saucedemo.com")')
+    data.append('        self.goto("https://www.saucedemo.com")')
     data.append('        self.type("#user-name", "standard_user")')
     data.append('        self.type("#password", "secret_sauce\\n")')
     data.append('        self.assert_element("div.inventory_list")')
@@ -449,7 +449,7 @@ def main():
     data.append("")
     data.append("class DemoSiteTests(BaseCase):")
     data.append("    def test_demo_site(self):")
-    data.append('        self.open("https://seleniumbase.io/demo_page.html")')
+    data.append('        self.goto("https://seleniumbase.io/demo_page.html")')
     data.append('        self.assert_title("Web Testing Page")')
     data.append('        self.assert_element("tbody#tbodyId")')
     data.append('        self.assert_text("Demo Page", "h1")')
@@ -561,7 +561,7 @@ def main():
         "self, search_term, keyword, title_text):"
     )
     data.append(
-        '        self.open("https://seleniumbase.io/help_docs/how_it_works/")'
+        '        self.goto("https://seleniumbase.io/help_docs/how_it_works/")'
     )
     data.append(
         '        self.type(\'[aria-label="Search"]\', search_term)'
@@ -652,7 +652,7 @@ def main():
     data.append("")
     data.append("class DataPage:")
     data.append("    def go_to_data_url(self, sb):")
-    data.append('        sb.open("data:text/html,<p>Hello!</p><input />")')
+    data.append('        sb.goto("data:text/html,<p>Hello!</p><input />")')
     data.append("")
     data.append("    def add_input_text(self, sb, text):")
     data.append('        sb.type("input", text)')
@@ -672,7 +672,7 @@ def main():
     data = []
     data.append("class DataPage:")
     data.append("    def go_to_data_url(self, sb):")
-    data.append('        sb.open("data:text/html,<p>Hello!</p><input />")')
+    data.append('        sb.goto("data:text/html,<p>Hello!</p><input />")')
     data.append("")
     data.append("    def add_input_text(self, sb, text):")
     data.append('        sb.type("input", text)')
@@ -711,16 +711,17 @@ def main():
     data.append('            self.skip("Skipping test in headless mode.")')
     data.append("        if not self.undetectable:")
     data.append("            self.get_new_driver(undetectable=True)")
-    data.append('        self.open("https://google.com/ncr")')
+    data.append('        self.goto("https://google.com/ncr")')
     data.append(
         "        sb.click_if_visible('button:contains(\"Accept all\")')"
     )
     data.append('        self.assert_title_contains("Google")')
     data.append("        self.save_screenshot_to_logs()")
-    data.append('        self.type(HomePage.search_box, "github.com")')
+    data.append('        self.type(HomePage.search_box, "GitHub")')
     data.append("        self.assert_element(HomePage.search_button)")
     data.append("        self.assert_element(HomePage.feeling_lucky_button)")
     data.append("        self.click(HomePage.search_button)")
+    data.append("        self.sleep(1)")
     data.append(
         '        self.assert_text("github.com", ResultsPage.search_results)'
     )
@@ -757,7 +758,7 @@ def main():
     data.append("")
     data.append("class LoginPage:")
     data.append("    def login_to_swag_labs(self, sb, username):")
-    data.append('        sb.open("https://www.saucedemo.com/")')
+    data.append('        sb.goto("https://www.saucedemo.com/")')
     data.append('        sb.type("#user-name", username)')
     data.append('        sb.type("#password", "secret_sauce")')
     data.append("        sb.click('input[type=\"submit\"]')")
@@ -786,7 +787,7 @@ def main():
     data.append("")
     data.append("class LoginPage:")
     data.append("    def login_to_swag_labs(self, sb, username):")
-    data.append('        sb.open("https://www.saucedemo.com/")')
+    data.append('        sb.goto("https://www.saucedemo.com/")')
     data.append('        sb.type("#user-name", username)')
     data.append('        sb.type("#password", "secret_sauce")')
     data.append("        sb.click('input[type=\"submit\"]')")

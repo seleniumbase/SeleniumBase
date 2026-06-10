@@ -23,8 +23,7 @@ class EdgePresentationClass(BaseCase):
         )
         self.begin_presentation(filename="edge_presentation.html")
         self.sleep(0.25)
-        self.open("data:,")
-        self.open("https://www.bostoncodecamp.com/CC34/Schedule/SessionGrid")
+        self.goto("https://www.bostoncodecamp.com/CC34/Schedule/SessionGrid")
         self.highlight("h2", loops=8)
         if self.is_element_visible('[data-sessionid="467776"]'):
             self.highlight('div[data-sessionid="467776"]', loops=10)
@@ -42,7 +41,7 @@ class EdgePresentationClass(BaseCase):
             )
             self.play_tour()
             self.sleep(0.25)
-        self.open("data:,")
+        self.goto("data:,")
         self.create_presentation(theme="beige", transition="fade")
         self.add_slide(
             "<p><b>About the presenter:</b></p>\n"
@@ -64,8 +63,7 @@ class EdgePresentationClass(BaseCase):
         )
         self.begin_presentation(filename="edge_presentation.html")
         self.sleep(0.25)
-        self.open("data:,")
-        self.open(
+        self.goto(
             "https://learn.microsoft.com/en-us/microsoft-edge/"
             "test-and-automation/test-and-automation"
         )
@@ -94,7 +92,7 @@ class EdgePresentationClass(BaseCase):
         )
         self.play_tour()
         self.highlight('a:contains("Use WebDriver to automate")')
-        self.open(
+        self.goto(
             "https://learn.microsoft.com/en-us/"
             "microsoft-edge/webdriver-chromium/?tabs=python"
         )
@@ -132,7 +130,7 @@ class EdgePresentationClass(BaseCase):
 
         self.get_new_driver(browser="edge", disable_csp=True)
         self.maximize_window()
-        self.open(
+        self.goto(
             "https://developer.microsoft.com/en-us/"
             "microsoft-edge/tools/webdriver/"
         )
@@ -200,7 +198,7 @@ class EdgePresentationClass(BaseCase):
         )
         self.play_tour()
         self.sleep(0.25)
-        self.open("data:,")
+        self.goto("data:,")
 
         self.create_presentation(theme="sky", transition="fade")
         self.add_slide(
@@ -368,7 +366,7 @@ class EdgePresentationClass(BaseCase):
             "BaseCase.main(__name__, __file__)\n\n"
             "class MyTestClass(BaseCase):\n"
             "    def test_basics(self):\n"
-            '        self.open("https://www.saucedemo.com")\n'
+            '        self.goto("https://www.saucedemo.com")\n'
             '        self.type("#user-name", "standard_user")\n'
             '        self.type("#password", "secret_sauce\\n")\n'
             '        self.assert_element("div.inventory_list")\n'
@@ -397,8 +395,7 @@ class EdgePresentationClass(BaseCase):
 
         self.get_new_driver(browser="edge")
         self.maximize_window()
-        self.open("data:,")
-        self.open("https://www.saucedemo.com")
+        self.goto("https://www.saucedemo.com")
         self.type("#user-name", "standard_user")
         self.type("#password", "secret_sauce\n")
         self.assert_element("div.inventory_list")
@@ -424,9 +421,8 @@ class EdgePresentationClass(BaseCase):
         self.sleep(0.25)
         self.get_new_driver(browser="edge")
         self.maximize_window()
-        self.open("data:,")
         self.demo_mode = True
-        self.open("https://www.saucedemo.com")
+        self.goto("https://www.saucedemo.com")
         self.type("#user-name", "standard_user")
         self.type("#password", "secret_sauce\n")
         self.assert_element("div.inventory_list")
@@ -454,7 +450,7 @@ class EdgePresentationClass(BaseCase):
         self.sleep(0.25)
         self.get_new_driver(browser="edge", is_mobile=True)
         self.maximize_window()
-        self.open("https://www.roblox.com/")
+        self.goto("https://www.roblox.com/")
         self.assert_element("#download-the-app-container")
         self.assert_text("Roblox for Android")
         self.assert_text("Continue in App", "a.content-action-emphasis")
@@ -472,7 +468,7 @@ class EdgePresentationClass(BaseCase):
         self.get_new_driver(browser="edge")
         self.maximize_window()
         self.demo_mode = True
-        self.open("https://seleniumbase.io/realworld/login")
+        self.goto("https://seleniumbase.io/realworld/login")
         self.type("#username", "demo_user")
         self.type("#password", "secret_pass")
         self.enter_mfa_code("#totpcode", "GAXG2MTEOR3DMMDG")  # 6-digit
@@ -496,7 +492,7 @@ class EdgePresentationClass(BaseCase):
         self.get_new_driver(browser="edge")
         self.maximize_window()
         self.demo_mode = True
-        self.open("https://seleniumbase.io/coffee/")
+        self.goto("https://seleniumbase.io/coffee/")
         self.assert_title("Coffee Cart")
         self.click('div[data-sb="Cappuccino"]')
         self.click('div[data-sb="Flat-White"]')
@@ -520,7 +516,7 @@ class EdgePresentationClass(BaseCase):
         self.sleep(0.25)
         self.get_new_driver(browser="edge")
         self.maximize_window()
-        self.open("https://seleniumbase.io/error_page/")
+        self.goto("https://seleniumbase.io/error_page/")
         self.highlight('img[alt="500 Error"]')
         self.highlight("img#parallax_octocat")
         self.highlight("#parallax_error_text")
@@ -535,7 +531,7 @@ class EdgePresentationClass(BaseCase):
         self.add_slide(
             "<h3>Common SeleniumBase methods:</h3><hr />",
             code=(
-                "self.open(url)  # Navigate the browser window to the URL.\n"
+                "self.goto(url)  # Navigate the browser window to the URL.\n"
                 "self.type(selector, text)  # Update field with the text.\n"
                 "self.click(selector)  # Click element with the selector.\n"
                 "self.click_link(link_text)  # Click link containing text.\n"

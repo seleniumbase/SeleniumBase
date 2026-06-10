@@ -45,7 +45,7 @@ class PlaywrightAdapterWithTracing(TestCase):
         self.page.close()
         self.context.close()
 
-    def open(self, url):
+    def goto(self, url):
         self.page.goto(url)
 
     def click(self, selector, timeout=7):
@@ -81,7 +81,7 @@ class PlaywrightAdapterWithTracing(TestCase):
         expect(self.page.locator(selector)).to_be_hidden(timeout=timeout)
 
     def test_add_item_to_cart(self):
-        self.open("https://www.saucedemo.com")
+        self.goto("https://www.saucedemo.com")
         self.type("#user-name", "standard_user")
         self.type("#password", "secret_sauce\n")
         self.assert_element("div.inventory_list")

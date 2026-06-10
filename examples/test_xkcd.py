@@ -4,7 +4,7 @@ BaseCase.main(__name__, __file__)
 
 class MyTestClass(BaseCase):
     def test_xkcd(self):
-        self.open("https://xkcd.com/353/")
+        self.goto("https://xkcd.com/353/")
         self.assert_title("xkcd: Python")
         self.assert_element('img[alt="Python"]')
         self.click('a[rel="license"]')

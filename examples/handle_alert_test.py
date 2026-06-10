@@ -4,7 +4,7 @@ BaseCase.main(__name__, __file__)
 
 class HandleAlertTests(BaseCase):
     def test_alerts(self):
-        self.open("about:blank")
+        self.goto("about:blank")
         self.execute_script('window.alert("ALERT!!!");')
         self.sleep(1)  # Not needed (Lets you see the alert pop up)
         self.assert_true(self.is_alert_present())

@@ -5,7 +5,7 @@ CasoDeTeste.main(__name__, __file__)
 
 class MinhaClasseDeTeste(CasoDeTeste):
     def test_exemplo_1(self):
-        self.abrir("https://pt.wikipedia.org/wiki/")
+        self.visitar("https://pt.wikipedia.org/wiki/")
         self.verificar_texto("Wikipédia")
         self.verificar_elemento('[title="Língua portuguesa"]')
         self.digitar("#searchform input", "João Pessoa")

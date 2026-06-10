@@ -19,7 +19,7 @@ with SB(uc=True, test=True) as sb:
             )
         )
     )
-    sb.open(url)
+    sb.goto(url)
     sb.assert_element("#download-the-app-container")
     sb.assert_text("Roblox for Android")
     sb.highlight('span:contains("Roblox for Android")', loops=8)

@@ -11,8 +11,8 @@ class SeleniumBaseAdapter(TestCase):
     def tearDown(self):
         self.sb_context.__exit__(None, None, None)
 
-    def open(self, url):
-        self.sb.open(url)
+    def goto(self, url):
+        self.sb.goto(url)
 
     def click(self, selector, by="css selector", timeout=7):
         self.sb.click(selector=selector, by=by, timeout=timeout)
@@ -37,7 +37,7 @@ class SeleniumBaseAdapter(TestCase):
         self.sb.assert_element_not_visible(selector, by=by, timeout=timeout)
 
     def test_add_item_to_cart(self):
-        self.open("https://www.saucedemo.com")
+        self.goto("https://www.saucedemo.com")
         self.type("#user-name", "standard_user")
         self.type("#password", "secret_sauce\n")
         self.assert_element("div.inventory_list")

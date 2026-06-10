@@ -104,7 +104,7 @@ class Recordings:
 
 
 class Dashboard:
-    TITLE = "SeleniumBase Dashboard ⚪"
+    TITLE = "SeleniumBase Dashboard 📊"
     # STYLE_CSS = "https://seleniumbase.io/cdn/css/pytest_style.css"
     STYLE_CSS = "assets/pytest_style.css"  # Generated before tests
     META_REFRESH_HTML = '<meta http-equiv="refresh" content="12">'

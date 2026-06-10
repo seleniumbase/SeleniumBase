@@ -4,7 +4,7 @@ BaseCase.main(__name__, __file__)
 
 class UserAgentTests(BaseCase):
     def test_user_agent(self):
-        self.open("data:text/html,<h1></h1>")
+        self.goto("data:text/html,<h1></h1>")
         user_agent_detected = self.get_user_agent()
         self.set_text_content("h1", user_agent_detected)
         self.highlight("h1")
@@ -34,9 +34,9 @@ class UserAgentTests(BaseCase):
                     "NF/6.0.1.15.4 NintendoBrowser/5.1.0.20393"
                 },
             )
-            self.open("about:blank")
+            self.goto("about:blank")
             self.sleep(0.1)  # Enough to see that page was refreshed
-            self.open("data:text/html,<h1></h1>")
+            self.goto("data:text/html,<h1></h1>")
             user_agent_detected = self.get_user_agent()
             self.set_text_content("h1", user_agent_detected)
             self.highlight("h1")

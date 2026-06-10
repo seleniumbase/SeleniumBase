@@ -27,5 +27,5 @@ with SB(uc=True, test=True, locale="en") as sb:
     sb.activate_cdp_mode("about:blank")
     sb.add_handler(mycdp.fetch.RequestPaused, request_paused_handler)
     url = "https://gettyimages.com/photos/firefly-2003-nathan"
-    sb.open(url)
+    sb.goto(url)
     sb.sleep(4)

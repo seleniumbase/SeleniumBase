@@ -21,7 +21,7 @@ class CanvasTests(BaseCase):
             return [color["0"], color["1"], color["2"]]
 
     def test_canvas_click_from_center(self):
-        self.open("https://seleniumbase.io/other/canvas")
+        self.goto("https://seleniumbase.io/other/canvas")
         self.assert_title_contains("Canvas")
         self.click_with_offset("canvas", 0, 0, mark=True, center=True)
         self.sleep(0.55)  # Not needed (Lets you see the alert pop up)
@@ -34,9 +34,9 @@ class CanvasTests(BaseCase):
             self.driver.quit()
 
     def test_click_with_offset(self):
-        self.open("https://seleniumbase.io/canvas/")
+        self.goto("https://seleniumbase.io/canvas/")
         if self.undetectable:
-            self.open_if_not_url("about:blank")
+            self.goto_if_not_url("about:blank")
             print("\n  Skip this test in undetectable mode.")
             self.skip("Skip this test in undetectable mode.")
         self.assert_title_contains("Canvas")

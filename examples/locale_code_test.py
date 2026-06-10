@@ -4,11 +4,11 @@ BaseCase.main(__name__, __file__)
 
 class LocaleCodeTests(BaseCase):
     def test_locale_code(self):
-        self.open("about:blank")
+        self.goto("about:blank")
         locale_code = self.get_locale_code()  # navigator.language
         print("\nYour Browser's Locale Code: %s" % locale_code)
         if self.browser == "chrome" and not self.headless:
-            self.open("chrome://settings/languages")
+            self.goto("chrome://settings/languages")
             language_info = self.get_text(
                 "settings-ui::shadow "
                 "settings-main::shadow "

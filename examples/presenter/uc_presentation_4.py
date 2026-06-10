@@ -7,7 +7,7 @@ BaseCase.main(__name__, __file__)
 
 class UCPresentationClass(BaseCase):
     def test_presentation_4(self):
-        self.open("data:,")
+        self.goto("data:,")
         self.set_window_position(4, 40)
         self._output_file_saves = False
         self.create_presentation(theme="serif", transition="fade")
@@ -23,7 +23,7 @@ class UCPresentationClass(BaseCase):
         self.begin_presentation(filename="uc_presentation.html")
 
         with suppress(Exception):
-            self.open("https://www.bostoncodecamp.com/CC37/info")
+            self.goto("https://www.bostoncodecamp.com/CC37/info")
             self.create_tour(theme="hopscotch")
             self.add_tour_step(
                 "<h2>Good Afternoon and Welcome!</h2>", 'h1.wow'
@@ -39,7 +39,7 @@ class UCPresentationClass(BaseCase):
             self.play_tour()
 
         with suppress(Exception):
-            self.open(
+            self.goto(
                 "https://www.bostoncodecamp.com/CC37/Schedule/SessionGrid"
             )
             self.highlight("h2", loops=8)
@@ -490,7 +490,7 @@ class UCPresentationClass(BaseCase):
             sb.sleep(2)
             sb.highlight_overlay("div.pokemon-ability-info")
             sb.sleep(2)
-            sb.open("https://events.pokemon.com/EventLocator/")
+            sb.goto("https://events.pokemon.com/EventLocator/")
             sb.sleep(2)
             sb.click('span:contains("Championship")')
             sb.sleep(2)

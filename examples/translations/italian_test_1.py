@@ -5,7 +5,7 @@ CasoDiProva.main(__name__, __file__)
 
 class MiaClasseDiTest(CasoDiProva):
     def test_esempio_1(self):
-        self.apri("https://it.wikipedia.org/wiki/")
+        self.visita("https://it.wikipedia.org/wiki/")
         self.verificare_testo("Wikipedia")
         self.verificare_elemento('a[title="Lingua italiana"]')
         self.digitare('input[name="search"]', "Pizza")

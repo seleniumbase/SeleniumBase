@@ -10,7 +10,7 @@ def launch_driver(url):
     seed(len(threading.enumerate()))  # Random seed for browser placement
     with SB() as sb:
         sb.set_window_rect(randint(4, 720), randint(8, 410), 700, 500)
-        sb.open(url=url)
+        sb.goto(url=url)
         if sb.is_element_visible("h1"):
             sb.highlight("h1", loops=9)
         else:

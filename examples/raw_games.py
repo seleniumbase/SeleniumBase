@@ -2,8 +2,8 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True, disable_csp=True) as sb:
-    url = "https://steamdb.info/"
-    sb.activate_cdp_mode(url)
+    sb.activate_cdp_mode()
+    sb.goto("https://steamdb.info/")
     sb.sleep(1)
     sb.click("a.header-login span")
     sb.sleep(2)

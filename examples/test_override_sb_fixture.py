@@ -69,7 +69,7 @@ def sb(request):
 
 
 def test_override_fixture_no_class(sb: BaseCase):
-    sb.open("https://seleniumbase.io/demo_page")
+    sb.goto("https://seleniumbase.io/demo_page")
     sb.type("#myTextInput", "This is Automated")
     sb.set_value("input#mySlider", "100")
     sb.select_option_by_text("#mySelect", "Set to 100%")
@@ -80,7 +80,7 @@ def test_override_fixture_no_class(sb: BaseCase):
 
 class TestOverride:
     def test_override_fixture_inside_class(self, sb: BaseCase):
-        sb.open("https://seleniumbase.io/demo_page")
+        sb.goto("https://seleniumbase.io/demo_page")
         sb.type("#myTextInput", "This is Automated")
         sb.set_value("input#mySlider", "100")
         sb.select_option_by_text("#mySelect", "Set to 100%")

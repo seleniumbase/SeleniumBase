@@ -1,7 +1,7 @@
 from seleniumbase import SB
 
 with SB(enable_3d_apis=True, test=True) as sb:
-    sb.open("threejs.org/examples/#webgl_animation_skinning_morph")
+    sb.goto("threejs.org/examples/#webgl_animation_skinning_morph")
     sb.switch_to_frame("iframe#viewer")
     sb.set_text_content("#info p", "Hi, I'm Michael Mintz")
     sb.add_css_style("#info p{zoom: 2.54}")

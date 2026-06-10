@@ -5,10 +5,10 @@ BaseCase.main(__name__, __file__)
 class GitHubTests(BaseCase):
     def test_github(self):
         if self.headless or self.page_load_strategy == "none":
-            self.open_if_not_url("about:blank")
+            self.goto_if_not_url("about:blank")
             print("\n  Unsupported mode for this test.")
             self.skip("Unsupported mode for this test.")
-        self.open("https://github.com/seleniumbase/SeleniumBase")
+        self.goto("https://github.com/seleniumbase/SeleniumBase")
         self.click_if_visible('[data-action="click:signup-prompt#dismiss"]')
         self.highlight('[class*="PageLayout-Content-"][data-width="large"]')
         self.highlight('[class*="PageLayout-PaneWrapper"]')

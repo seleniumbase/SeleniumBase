@@ -3,7 +3,7 @@ from seleniumbase import SB
 
 with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     sb.activate_cdp_mode()
-    sb.open("https://architectureofcities.com/roman-theaters")
+    sb.goto("https://architectureofcities.com/roman-theaters")
     sb.click_if_visible("#cn-close-notice")
     sb.click_if_visible('[aria-label="Reject All"]')
     sb.click_if_visible('span:contains("Continue")')

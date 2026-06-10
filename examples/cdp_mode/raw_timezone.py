@@ -27,7 +27,7 @@ def main():
     sb.add_handler(mycdp.fetch.RequestPaused, request_paused_handler)
     sb.remove_elements("#right-sidebar")
     sb.sleep(6)
-    sb.driver.stop()
+    sb.quit()
 
 
 if __name__ == "__main__":

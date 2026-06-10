@@ -22,7 +22,7 @@ class ImageTests(BaseCase):
     # @pytest.mark.run(order=1)
     def test_1_save_element_as_image_file(self):
         """Pull an image from a website and save it as a PNG file."""
-        self.open("https://xkcd.com/1117/")
+        self.goto("https://xkcd.com/1117/")
         selector = "#comic"
         file_name = "comic.png"
         folder = "images_exported"
@@ -34,7 +34,7 @@ class ImageTests(BaseCase):
     # @pytest.mark.run(order=2)
     def test_2_add_text_overlay_to_image(self):
         """Add a text overlay to an image."""
-        self.open("https://xkcd.com/1117/")
+        self.goto("https://xkcd.com/1117/")
         selector = "#comic"
         file_name = "image_overlay.png"
         folder = "images_exported"
@@ -49,7 +49,7 @@ class ImageTests(BaseCase):
     # @pytest.mark.run(order=3)
     def test_3_add_text_overlay_to_page_section(self):
         """Add a text overlay to a section of a page."""
-        self.open("https://xkcd.com/2200/")
+        self.goto("https://xkcd.com/2200/")
         selector = "#middleContainer"
         file_name = "section_overlay.png"
         folder = "images_exported"
@@ -69,7 +69,7 @@ class ImageTests(BaseCase):
     # @pytest.mark.run(order=4)
     def test_4_add_text_overlay_to_full_page(self):
         """Add a text overlay to a full page."""
-        self.open("https://xkcd.com/1922/")
+        self.goto("https://xkcd.com/1922/")
         self.remove_element("#bottom")
         selector = "body"
         file_name = "page_overlay.png"

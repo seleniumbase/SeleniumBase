@@ -2,7 +2,7 @@
 from seleniumbase import SB
 
 with SB(test=True) as sb:
-    sb.open("https://seleniumbase.io/antibot/login")
+    sb.goto("https://seleniumbase.io/antibot/login")
     sb.highlight("h4", loops=6)
     sb.type("#username", "demo_user")
     sb.type("#password", "secret_pass")

@@ -5,7 +5,7 @@ BaseCase.main(__name__, __file__)
 
 class GetCoffeeTest(BaseCase):
     def test_get_coffee(self):
-        self.open("https://seleniumbase.io/coffee/")
+        self.goto("https://seleniumbase.io/coffee/")
         self.assert_title("Coffee Cart")
         self.assert_exact_text("cart (0)", 'a[aria-label="Cart page"]')
         self.assert_element('div[data-sb="Mocha"]')

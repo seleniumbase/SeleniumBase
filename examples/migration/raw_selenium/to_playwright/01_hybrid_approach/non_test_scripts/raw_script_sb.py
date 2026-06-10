@@ -1,7 +1,7 @@
 from seleniumbase import SB
 
 with SB() as sb:
-    sb.open("https://www.saucedemo.com")
+    sb.goto("https://www.saucedemo.com")
     sb.type("#user-name", "standard_user")
     sb.type("#password", "secret_sauce\n")
     sb.assert_element("div.inventory_list")

@@ -5,7 +5,7 @@ BaseCase.main(__name__, __file__)
 
 class UCPresentationClass(BaseCase):
     def test_hacking_with_cdp(self):
-        self.open("data:,")
+        self.goto("data:,")
         self.set_window_position(4, 40)
         self._output_file_saves = False
         self.create_presentation(theme="serif", transition="none")

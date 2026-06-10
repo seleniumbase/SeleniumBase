@@ -7,9 +7,9 @@ BaseCase.main(__name__, __file__)
 class DownloadTests(BaseCase):
     def test_download_chromedriver_notes(self):
         if self._multithreaded:
-            self.open_if_not_url("about:blank")
+            self.goto_if_not_url("about:blank")
             self.skip("Skipping test in multi-threaded mode.")
-        self.open("https://chromedriver.chromium.org/downloads")
+        self.goto("https://chromedriver.chromium.org/downloads")
         notes_file = "notes.txt"
         notes_link = (
             "https://chromedriver.storage.googleapis.com"
@@ -25,7 +25,7 @@ class DownloadTests(BaseCase):
         self.assert_true(text in notes_data)  # Verify file has expected data
 
     def test_download_files_from_pypi(self):
-        self.open("https://pypi.org/project/sbvirtualdisplay/#files")
+        self.goto("https://pypi.org/project/sbvirtualdisplay/#files")
         self.assert_element("span#pip-command")
         self.assert_text("Download files", "div#files h2.page-title")
         self.assert_text("Download files", "a#files-tab")

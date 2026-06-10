@@ -6,10 +6,10 @@ class YouTubeSearchTests(BaseCase):
     def test_youtube_autocomplete_results(self):
         """Verify YouTube autocomplete search results."""
         if self.headless or self.browser == "safari":
-            self.open_if_not_url("about:blank")
+            self.goto_if_not_url("about:blank")
             print("\n  Unsupported mode for this test.")
             self.skip("Unsupported mode for this test.")
-        self.open("https://www.youtube.com/c/MichaelMintz")
+        self.goto("https://www.youtube.com/c/MichaelMintz")
         search_term = "seleniumbase"
         search_selector = 'input[name="search_query"]'
         results_selector = '[role="listbox"]'

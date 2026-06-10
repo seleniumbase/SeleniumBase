@@ -140,7 +140,7 @@ def main():
                 url = url.replace('/" + "/', "/")
             if "/' + '/" in url:
                 url = url.replace("/' + '/", "/")
-            command = """%sself.open(%s)""" % (whitespace, url)
+            command = """%sself.goto(%s)""" % (whitespace, url)
             seleniumbase_lines.append(command)
             continue
 
@@ -149,7 +149,7 @@ def main():
         if data:
             whitespace = data.group(1)
             url = data.group(2)
-            command = """%sself.open('%s')""" % (whitespace, url)
+            command = """%sself.goto('%s')""" % (whitespace, url)
             seleniumbase_lines.append(command)
             continue
 

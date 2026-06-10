@@ -9,7 +9,7 @@ if __name__ == "__main__":
 
 class TinyMceTest(BaseCase):
     def test_tinymce(self):
-        self.open("https://seleniumbase.io/tinymce/")
+        self.goto("https://seleniumbase.io/tinymce/")
         self.wait_for_element("div.mce-container-body")
         self.click('span:contains("File")')
         self.click('span:contains("New document")')

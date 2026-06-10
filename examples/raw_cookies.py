@@ -3,7 +3,7 @@ from seleniumbase import SB
 
 # Log in to Swag Labs and save cookies
 with SB(test=True) as sb:
-    sb.open("https://www.saucedemo.com")
+    sb.goto("https://www.saucedemo.com")
     sb.wait_for_element("div.login_logo")
     sb.type("#user-name", "standard_user")
     sb.type("#password", "secret_sauce")
@@ -13,7 +13,7 @@ with SB(test=True) as sb:
 
 # Load previously saved cookies to bypass login
 with SB(test=True) as sb:
-    sb.open("https://www.saucedemo.com")
+    sb.goto("https://www.saucedemo.com")
     sb.load_cookies(name="cookies.txt")
-    sb.open("https://www.saucedemo.com/inventory.html")
+    sb.goto("https://www.saucedemo.com/inventory.html")
     sb.highlight("div.inventory_list", loops=12)

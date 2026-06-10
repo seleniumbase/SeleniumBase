@@ -4,7 +4,7 @@ BaseCase.main(__name__, __file__)
 
 class DialogBoxTests(BaseCase):
     def test_dialog_boxes(self):
-        self.open("https://xkcd.com/1920/")
+        self.goto("https://xkcd.com/1920/")
         self.assert_element('img[alt="Emoji Sports"]')
         self.highlight("#comic img")
 
@@ -15,16 +15,16 @@ class DialogBoxTests(BaseCase):
         while choice != "STOP":
             choice = self.get_jqc_button_input(message, buttons)
             if choice == "Fencing":
-                self.open("https://xkcd.com/1424/")
+                self.goto("https://xkcd.com/1424/")
                 buttons.remove("Fencing")
             elif choice == "Football":
-                self.open("https://xkcd.com/1107/")
+                self.goto("https://xkcd.com/1107/")
                 buttons.remove("Football")
             elif choice == "Metaball":
-                self.open("https://xkcd.com/1507/")
+                self.goto("https://xkcd.com/1507/")
                 buttons.remove("Metaball")
             elif choice == "Go/Chess":
-                self.open("https://xkcd.com/1287/")
+                self.goto("https://xkcd.com/1287/")
                 buttons.remove("Go/Chess")
             else:
                 break
@@ -38,20 +38,20 @@ class DialogBoxTests(BaseCase):
                 buttons = [(btn_text_1, "green"), (btn_text_2, "purple")]
                 choice_2 = self.get_jqc_button_input(message, buttons)
                 if choice_2 == btn_text_2:
-                    self.open_if_not_url("https://xkcd.com/1287/")
+                    self.goto_if_not_url("https://xkcd.com/1287/")
                     message = "Brain sports count as sports!<br /><br />"
                     message += "Are you ready for more?"
                     self.get_jqc_button_input(message, ["Let's Go!"])
                 break
 
-        self.open("https://xkcd.com/1117/")
+        self.goto("https://xkcd.com/1117/")
         sb_banner_logo = "//seleniumbase.io/cdn/img/sb_logo_10.png"
         self.set_attributes("#news img", "src", sb_banner_logo)
         options = [("theme", "material"), ("width", "52%")]
         message = 'With one button, you can press "Enter/Return", "Y", or "1".'
         self.get_jqc_button_input(message, ["OK"], options)
 
-        self.open("https://xkcd.com/556/")
+        self.goto("https://xkcd.com/556/")
         self.set_attributes("#news img", "src", sb_banner_logo)
         options = [("theme", "bootstrap"), ("width", "52%")]
         message = 'If the lowercase button text is "yes" or "no", '
@@ -68,7 +68,7 @@ class DialogBoxTests(BaseCase):
             message += "You can learn more from SeleniumBase Docs..."
         choice = self.get_jqc_button_input(message, ["OK"], options)
 
-        self.open("https://seleniumbase.io")
+        self.goto("https://seleniumbase.io")
         self.set_jqc_theme("light", color="green", width="38%")
         message = "<b>This is the SeleniumBase Docs website!</b><br /><br />"
         message += "What would you like to search for?<br />"
@@ -85,7 +85,7 @@ class DialogBoxTests(BaseCase):
             self.set_jqc_theme("bootstrap", color="green", width="32%")
             self.get_jqc_button_input("You found search results!", ["OK"])
 
-        self.open("https://seleniumbase.io/help_docs/ReadMe/")
+        self.goto("https://seleniumbase.io/help_docs/ReadMe/")
         self.highlight("h1")
         self.slow_scroll_to('article p a[href*="/examples/ReadMe/"]')
         zoom_in = 'article p a[href*="/examples/ReadMe/"]{zoom: 1.8;}'
@@ -104,10 +104,10 @@ class DialogBoxTests(BaseCase):
         buttons = ["SeleniumBase.io", "Wikipedia.org"]
         text, choice = self.get_jqc_form_inputs(message, buttons)
         if choice == "SeleniumBase.io":
-            self.open("https://seleniumbase.io/")
+            self.goto("https://seleniumbase.io/")
             self.highlight_type('input[aria-label="Search"]', text + "\n")
         else:
-            self.open("https://en.wikipedia.org/wiki/Special:Search")
+            self.goto("https://en.wikipedia.org/wiki/Special:Search")
             self.highlight_type('input[id*="search"]', text)
             self.sleep(1)
             self.click("#searchform button")

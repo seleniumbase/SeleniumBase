@@ -5,7 +5,7 @@ Testgeval.main(__name__, __file__)
 
 class MijnTestklasse(Testgeval):
     def test_voorbeeld_1(self):
-        self.openen("https://nl.wikipedia.org/wiki/Hoofdpagina")
+        self.bezoek("https://nl.wikipedia.org/wiki/Hoofdpagina")
         self.controleren_element('a[title*="Welkom voor nieuwkomers"]')
         self.controleren_tekst("Welkom op Wikipedia", "td.hp-welkom")
         self.typ("#searchform input", "Stroopwafel")

@@ -23,13 +23,13 @@ pytest test_dialog_boxes.py
 <h4>Here's a code snippet from that:</h4>
 
 ```python
-self.open("https://xkcd.com/1920/")
+self.goto("https://xkcd.com/1920/")
 skip_button = ["SKIP", "red"]  # Can be a [text, color] list or tuple.
 buttons = ["Fencing", "Football", "Metaball", "Go/Chess", skip_button]
 message = "Choose a sport:"
 choice = self.get_jqc_button_input(message, buttons)
 if choice == "Fencing":
-    self.open("https://xkcd.com/1424/")
+    self.goto("https://xkcd.com/1424/")
 ```
 
 * You can create forms that include buttons and input fields.

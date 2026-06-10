@@ -184,7 +184,7 @@ def main():
                 syntax = "DriverContext"
             elif option == "--dm" or option == "--driver-manager":
                 syntax = "DriverManager"
-            elif option == "--uc":
+            elif option == "--uc" or option == "--cdp":
                 basic = True
                 language = "English"
                 syntax = "ContextManager"
@@ -274,7 +274,7 @@ def main():
     data.append("%s" % class_line)
     data.append("    def test_base(self):")
     if not recorder:
-        data.append('        self.open("%s")' % url)
+        data.append('        self.goto("%s")' % url)
     else:
         data.append("        if self.recorder_ext and not self.xvfb:")
         data.append("            breakpoint()")
@@ -296,7 +296,7 @@ def main():
     elif language == "English" and syntax == "PytestFixture":
         data = []
         data.append("def test_base(sb):")
-        data.append('    sb.open("data:text/html,<p>Hello<br><input>")')
+        data.append('    sb.goto("data:text/html,<p>Hello<br><input>")')
         if not basic:
             data.append('    sb.type("input", "Goodbye")  # selector, text')
             data.append('    sb.click("html body > p")  # selector')
@@ -308,7 +308,7 @@ def main():
         data = []
         data.append("class %s:" % class_name)
         data.append("    def test_base(self, sb):")
-        data.append('        sb.open("data:text/html,<p>Hello<br><input>")')
+        data.append('        sb.goto("data:text/html,<p>Hello<br><input>")')
         if not basic:
             data.append(
                 '        sb.type("input", "Goodbye")  # selector, text'
@@ -330,10 +330,10 @@ def main():
             data.append('with SB(browser="chrome") as sb:')
         if use_uc:
             data.append('    url = "%s"' % url)
-            data.append("    sb.uc_open_with_reconnect(url, 4)")
-            data.append("    sb.uc_gui_click_captcha()")
+            data.append("    sb.activate_cdp_mode(url)")
+            data.append("    sb.solve_captcha()")
         else:
-            data.append('    sb.open("%s")' % url)
+            data.append('    sb.goto("%s")' % url)
         if not basic:
             data.append('    sb.type("input", "Goodbye")  # selector, text')
             data.append('    sb.click("html body > p")  # selector')

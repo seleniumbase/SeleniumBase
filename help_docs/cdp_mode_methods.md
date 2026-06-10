@@ -220,7 +220,7 @@ from seleniumbase import sb_cdp
 sb = sb_cdp.Chrome(url=None, **kwargs)
 ```
 
-<b translate="no">Pure CDP Mode</b> includes all methods from regular CDP Mode, except that they're called directly from <code>sb</code> instead of <code>sb.cdp</code>. Eg: <code>sb.gui_click_captcha()</code>. To quit a CDP-launched browser, use `sb.driver.stop()`.
+<b translate="no">Pure CDP Mode</b> includes all methods from regular CDP Mode, except that they're called directly from <code>sb</code> instead of <code>sb.cdp</code>. Eg: <code>sb.gui_click_captcha()</code>. To quit a CDP-launched browser, use `sb.quit()`.
 
 Basic example from [SeleniumBase/examples/cdp_mode/raw_cdp_turnstile.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_turnstile.py):
 
@@ -233,7 +233,7 @@ sb.solve_captcha()
 sb.assert_element("img#captcha-success")
 sb.set_messenger_theme(location="top_left")
 sb.post_message("SeleniumBase wasn't detected", duration=3)
-sb.driver.stop()
+sb.quit()
 ```
 
 Another example: ([SeleniumBase/examples/cdp_mode/raw_cdp_methods.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_methods.py))
@@ -255,10 +255,10 @@ sb.gui_click_element("#checkBox1")
 sb.gui_drag_and_drop("img#logo", "div#drop2")
 sb.nested_click("iframe#myFrame3", ".fBox")
 sb.sleep(2)
-sb.driver.stop()
+sb.quit()
 ```
 
-ℹ️ Even if you don't call `sb.driver.stop()`, the browser still quits after the script goes out-of-scope.
+ℹ️ Even if you don't call `sb.quit()`, the browser still quits after the script goes out-of-scope.
 
 --------
 

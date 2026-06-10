@@ -11,11 +11,11 @@ class RateLimitingTests(BaseCase):
 
     def test_rate_limited_printing(self):
         if self._multithreaded or self.recorder_mode:
-            self.open_if_not_url("about:blank")
+            self.goto_if_not_url("about:blank")
             print("\n  Unsupported mode for this test.")
             self.skip("Unsupported mode for this test.")
         message = "Running rate-limited print() on the command line"
-        self.open("data:text/html,<p>%s</p>" % message)
+        self.goto("data:text/html,<p>%s</p>" % message)
         print("\n%s:" % message)
         for item in range(1, 11):
             self.print_item(item)

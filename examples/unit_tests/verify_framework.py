@@ -36,7 +36,7 @@ def test_basecase(pytester):
         from seleniumbase import BaseCase
         class MyTest(BaseCase):
             def test_basecase(self):
-                self.open("data:text/html,<p>Hello<br><input></p>")
+                self.goto("data:text/html,<p>Hello<br><input></p>")
                 self.assert_element("html > body")  # selector
                 self.assert_text("Hello", "body p")  # text, selector
                 self.type("input", "Goodbye")  # selector, text
@@ -70,7 +70,7 @@ def test_sb_fixture(pytester):
     pytester.makepyfile(
         """
         def test_sb_fixture(sb):
-            sb.open("data:text/html,<p>Hello<br><input></p>")
+            sb.goto("data:text/html,<p>Hello<br><input></p>")
             sb.assert_element("html > body")  # selector
             sb.assert_text("Hello", "body p")  # text, selector
             sb.type("input", "Goodbye")  # selector, text
@@ -86,7 +86,7 @@ def test_request_sb_fixture(pytester):
         """
         def test_request_sb_fixture(request):
             sb = request.getfixturevalue('sb')
-            sb.open("data:text/html,<p>Hello<br><input></p>")
+            sb.goto("data:text/html,<p>Hello<br><input></p>")
             sb.assert_element("html > body")  # selector
             sb.assert_text("Hello", "body p")  # text, selector
             sb.type("input", "Goodbye")  # selector, text

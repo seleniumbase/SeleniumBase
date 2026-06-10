@@ -13,7 +13,7 @@ url = "data:text/html,<h2>Hello</h2><p><input />&nbsp;<button>OK!</button></p>"
 class RepeatTests(BaseCase):
     @parameterized.expand([[]] * 2)
     def test_repeat_this_test_with_parameterized(self):
-        self.open(url)
+        self.goto(url)
         self.type("input", "SeleniumBase is fun")
         self.click('button:contains("OK!")')
         self.assert_text("Hello", "h2")
@@ -21,7 +21,7 @@ class RepeatTests(BaseCase):
 
 @pytest.mark.parametrize("", [[]] * 2)
 def test_repeat_this_test_with_pytest_parametrize(sb):
-    sb.open(url)
+    sb.goto(url)
     sb.type("input", "SeleniumBase is fun")
     sb.click('button:contains("OK!")')
     sb.assert_text("Hello", "h2")
@@ -30,7 +30,7 @@ def test_repeat_this_test_with_pytest_parametrize(sb):
 class RepeatTestsWithPytest:
     @pytest.mark.parametrize("", [[]] * 2)
     def test_repeat_test_with_pytest_parametrize(self, sb):
-        sb.open(url)
+        sb.goto(url)
         sb.type("input", "SeleniumBase is fun")
         sb.click('button:contains("OK!")')
         sb.assert_text("Hello", "h2")

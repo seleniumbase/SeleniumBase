@@ -41,7 +41,7 @@
 
 That disconnects WebDriver from Chrome (which prevents detection), and gives you access to `sb.cdp` methods (which don't trigger anti-bot checks).
 
-> (**New:** Calling **`sb.open(url)`** from UC Mode also activates CDP Mode now.)
+> (**New:** Calling **`sb.goto(url)`** from UC Mode also activates CDP Mode now.)
 
 Simple example from [SeleniumBase/examples/cdp_mode/raw_gitlab.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_gitlab.py):
 
@@ -163,7 +163,7 @@ with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     sb.sleep(2)
     sb.highlight_overlay("div.pokemon-ability-info")
     sb.sleep(2)
-    sb.open("https://events.pokemon.com/EventLocator/")
+    sb.goto("https://events.pokemon.com/EventLocator/")
     sb.sleep(2)
     sb.click('span:contains("Championship")')
     sb.sleep(2)
@@ -372,6 +372,7 @@ with SB(uc=True, test=True, locale="en", pls="none") as sb:
 
 ```python
 sb.cdp.get(url, **kwargs)
+sb.cdp.goto(url, **kwargs)  # Same as sb.cdp.get(url, **kwargs)
 sb.cdp.open(url, **kwargs)  # Same as sb.cdp.get(url, **kwargs)
 sb.cdp.reload(ignore_cache=True, script_to_evaluate_on_load=None)
 sb.cdp.refresh(*args, **kwargs)
@@ -582,7 +583,7 @@ from seleniumbase import sb_cdp
 sb = sb_cdp.Chrome(url)
 ```
 
-<b translate="no">Pure CDP Mode</b> includes all methods from regular CDP Mode, except that they're called directly from <code>sb</code> instead of <code>sb.cdp</code>. Eg: <code>sb.gui_click_captcha()</code>. To quit a CDP-launched browser, use `sb.driver.stop()`.
+<b translate="no">Pure CDP Mode</b> includes all methods from regular CDP Mode, except that they're called directly from <code>sb</code> instead of <code>sb.cdp</code>. Eg: <code>sb.gui_click_captcha()</code>. To quit a CDP-launched browser, use `sb.quit()`.
 
 Basic example from [SeleniumBase/examples/cdp_mode/raw_cdp_turnstile.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_turnstile.py):
 
@@ -595,7 +596,7 @@ sb.solve_captcha()
 sb.assert_element("img#captcha-success")
 sb.set_messenger_theme(location="top_left")
 sb.post_message("SeleniumBase wasn't detected", duration=3)
-sb.driver.stop()
+sb.quit()
 ```
 
 Another example: ([SeleniumBase/examples/cdp_mode/raw_cdp_methods.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_methods.py))
@@ -617,10 +618,10 @@ sb.gui_click_element("#checkBox1")
 sb.gui_drag_and_drop("img#logo", "div#drop2")
 sb.nested_click("iframe#myFrame3", ".fBox")
 sb.sleep(2)
-sb.driver.stop()
+sb.quit()
 ```
 
-ℹ️ Even if you don't call `sb.driver.stop()`, the browser still quits after the script goes out-of-scope.
+ℹ️ Even if you don't call `sb.quit()`, the browser still quits after the script goes out-of-scope.
 
 ----
 
@@ -639,7 +640,8 @@ Methods: (Sometimes `tab` is named `page` in examples)
 
 ```python
 await tab.get(url="about:blank")
-await tab.open(url="about:blank")
+await tab.goto(url="about:blank")  # Same as await tab.get(url)
+await tab.open(url="about:blank")  # Same as await tab.get(url)
 await tab.find(text, best_match=False, timeout=10)  # text can be selector
 await tab.find_all(text, timeout=10)  # text can be selector
 await tab.select(selector, timeout=10)

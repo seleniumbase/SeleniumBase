@@ -3,7 +3,7 @@ from seleniumbase import SB
 
 with SB(test=True) as sb:
     url = "https://seleniumbase.io/hobbit/login"
-    sb.open(url)
+    sb.goto(url)
     sb.click_if_visible("button")
     sb.assert_text("Gandalf blocked you!", "h1")
     sb.click("img")

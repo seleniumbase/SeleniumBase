@@ -5,7 +5,7 @@ from seleniumbase import SB
 
 with SB(uc=True, test=True) as sb:
     sb.activate_cdp_mode()
-    sb.open("seleniumbase.io/apps/form_turnstile")
+    sb.goto("seleniumbase.io/apps/form_turnstile")
     sb.press_keys("#name", "SeleniumBase")
     sb.press_keys("#email", "test@test.test")
     sb.press_keys("#phone", "1-555-555-5555")

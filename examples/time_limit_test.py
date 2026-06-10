@@ -10,7 +10,7 @@ class TimeLimitTests(BaseCase):
         """This test fails on purpose to show the runtime_limit() decorator
         for code blocks that run longer than the time limit specified."""
         print("\n(This test should fail)")
-        self.open("https://xkcd.com/2511")
+        self.goto("https://xkcd.com/2511")
         with decorators.runtime_limit(0.7):
             self.sleep(0.95)
 
@@ -24,5 +24,5 @@ class TimeLimitTests(BaseCase):
         Usage: (command-line) =>  --time-limit=SECONDS"""
         self.set_time_limit(2.2)  # Fail test if time exceeds 2.2 seconds
         print("\n(This test should fail)")
-        self.open("https://xkcd.com/1658")
+        self.goto("https://xkcd.com/1658")
         self.sleep(3)

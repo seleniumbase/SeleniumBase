@@ -5,12 +5,12 @@ BaseCase.main(__name__, __file__)
 class MultipleDriversTest(BaseCase):
     def test_multiple_drivers(self):
         if self.browser == "safari":
-            self.open_if_not_url("about:blank")
+            self.goto_if_not_url("about:blank")
             print("\n  Safari doesn't support multiple drivers.")
             self.skip("Safari doesn't support multiple drivers.")
-        self.open("data:text/html,<h1>Driver 1</h1>")
+        self.goto("data:text/html,<h1>Driver 1</h1>")
         driver2 = self.get_new_driver()
-        self.open("data:text/html,<h1>Driver 2</h1>")
+        self.goto("data:text/html,<h1>Driver 2</h1>")
         self.switch_to_default_driver()  # Driver 1
         self.highlight("h1")
         self.assert_text("Driver 1", "h1")

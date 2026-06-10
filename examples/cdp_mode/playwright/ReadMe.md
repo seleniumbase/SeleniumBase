@@ -215,15 +215,17 @@ To use an authenticated proxy in Stealthy Playwright Mode, **do these two things
 
 ⚠️ If any trouble with the above, set `use_chromium=True` so that you can use the base Chromium browser, which still allows extensions, unlike regular branded Chrome, which removed the `--load-extension` command-line switch. (*An extension is used to set the auth for the proxy, which is needed when CDP can't set the proxy alone, such as for navigation after the initial page load*).
 
-In the sync format, use `sb.open(url)` to open the url before connecting Playwright:
+In the sync format, use `sb.goto(url)` to open the url before connecting Playwright:
+
 ```python
 sb = sb_cdp.Chrome(use_chromium=True, proxy="user:pass@server:port")
-sb.open(url)
+sb.goto(url)
 endpoint_url = sb.get_endpoint_url()
 # ...
 ```
 
 In the async format, use, `driver.get(url)` to open the url before connecting Playwright:
+
 ```python
 driver = await cdp_driver.start_async(use_chromium=True, proxy="user:pass@server:port")
 await driver.get(url)
@@ -232,12 +234,13 @@ endpoint_url = driver.get_endpoint_url()
 ```
 
 Here's an example of using an authenticated proxy with Stealthy Playwright Mode:<br />(The URL is opened before attaching Playwright so that proxy settings take effect)
+
 ```python
 from playwright.sync_api import sync_playwright
 from seleniumbase import sb_cdp
 
 sb = sb_cdp.Chrome(use_chromium=True, proxy="user:pass@server:port")
-sb.open(url)
+sb.goto(url)
 endpoint_url = sb.get_endpoint_url()
 
 with sync_playwright() as p:
@@ -245,9 +248,11 @@ with sync_playwright() as p:
     page = browser.contexts[0].pages[0]
     # ...
 ```
+
 (Fill in the `url` and the `proxy` details to complete the script.)
 
 Here's the same thing for the `async` format:
+
 ```python
 import asyncio
 from playwright.async_api import async_playwright
@@ -267,6 +272,7 @@ if __name__ == "__main__":
     loop = asyncio.new_event_loop()
     loop.run_until_complete(main())
 ```
+
 (Fill in the `url` and the `proxy` details to complete the script.)
 
 --------

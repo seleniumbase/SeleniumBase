@@ -22,7 +22,7 @@ class OverrideDriverTest(BaseCase):
         return webdriver.Chrome(options=options)
 
     def test_driver_override(self):
-        self.open("https://seleniumbase.io/demo_page")
+        self.goto("https://seleniumbase.io/demo_page")
         self.type("#myTextInput", "This is Automated")
         self.set_value("input#mySlider", "100")
         self.select_option_by_text("#mySelect", "Set to 100%")

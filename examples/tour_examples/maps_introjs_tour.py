@@ -4,7 +4,7 @@ BaseCase.main(__name__, __file__)
 
 class MyTourClass(BaseCase):
     def test_google_maps_tour(self):
-        self.open("https://www.google.com/maps/@42.3591234,-71.0915634,15z")
+        self.goto("https://www.google.com/maps/@42.3591234,-71.0915634,15z")
         self.wait_for_element('[name="q"]', timeout=20)
         self.wait_for_element('[aria-label="Interactive map"]', timeout=20)
         self.wait_for_element('[aria-label="Zoom in"]', timeout=20)

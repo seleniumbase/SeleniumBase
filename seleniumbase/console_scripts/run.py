@@ -293,9 +293,9 @@ def show_mkfile_usage():
     print("     If the file already exists, an error is raised.")
     print("     By default, uses English with BaseCase inheritance,")
     print("     and creates a boilerplate with common SeleniumBase")
-    print('     methods: "open", "type", "click", "assert_element",')
+    print('     methods: "goto", "type", "click", "assert_element",')
     print('     and "assert_text". If using the basic boilerplate')
-    print('     option, only the "open" method is included. Only the')
+    print('     option, only the "goto" method is included. Only the')
     print("     BaseCase format supports Languages or Recorder Mode.")
     print("     UC Mode automatically uses English with SB() format.")
     print("")
@@ -737,7 +737,7 @@ def show_methods():
     print(line)
     print("")
     sbm = ""
-    sbm += "*.open(url) => Navigate the browser window to the URL.\n"
+    sbm += "*.goto(url) => Navigate the browser window to the URL.\n"
     sbm += "*.type(selector, text) => Update the field with the text.\n"
     sbm += "*.click(selector) => Click the element with the selector.\n"
     sbm += "*.click_link(link_text) => Click the link containing text.\n"

@@ -4,7 +4,7 @@ BaseCase.main(__name__, __file__)
 
 class PdfTests(BaseCase):
     def test_get_pdf_text(self):
-        self.open("data:,")
+        self.goto("data:,")
         pdf = (
             "https://nostarch.com/download/"
             "Automate_the_Boring_Stuff_sample_ch17.pdf"

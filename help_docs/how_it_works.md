@@ -39,7 +39,7 @@ class MyTestClass(BaseCase):
 ```python
 class MyTestClass(BaseCase):
     def test_abc(self):
-        self.open("https://example.com")
+        self.goto("https://example.com")
 ```
 
 👁️🔎 Here's what a full test might look like:
@@ -50,7 +50,7 @@ BaseCase.main(__name__, __file__)
 
 class TestSimpleLogin(BaseCase):
     def test_simple_login(self):
-        self.open("seleniumbase.io/simple/login")
+        self.goto("seleniumbase.io/simple/login")
         self.type("#username", "demo_user")
         self.type("#password", "secret_pass")
         self.click('a:contains("Sign in")')
@@ -80,7 +80,7 @@ from seleniumbase import Driver
 
 driver = Driver()
 try:
-    driver.open("seleniumbase.io/simple/login")
+    driver.goto("seleniumbase.io/simple/login")
     driver.type("#username", "demo_user")
     driver.type("#password", "secret_pass")
     driver.click('a:contains("Sign in")')

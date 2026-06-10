@@ -5,7 +5,7 @@ CasoDePrueba.main(__name__, __file__)
 
 class MiClaseDePrueba(CasoDePrueba):
     def test_ejemplo_1(self):
-        self.abrir("https://es.wikipedia.org/wiki/")
+        self.visita("https://es.wikipedia.org/wiki/")
         self.verificar_texto("Wikipedia")
         self.verificar_elemento('[title="Wikipedia:Bienvenidos"]')
         self.escriba('[name="search"]', "Parque de Atracciones Tibidabo")

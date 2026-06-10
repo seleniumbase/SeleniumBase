@@ -256,7 +256,7 @@ class MyTestClass(BaseCase):
                 "BaseCase.main(__name__, __file__)\n\n"
                 "class MyTestClass(BaseCase):\n"
                 "    def test_basics(self):\n"
-                '        self.open("https://www.saucedemo.com")\n'
+                '        self.goto("https://www.saucedemo.com")\n'
                 '        self.type("#user-name", "standard_user")\n'
                 '        self.type("#password", "secret_sauce\\n")\n'
                 '        self.assert_element("div.inventory_list")\n'
@@ -276,7 +276,7 @@ class MyTestClass(BaseCase):
         self.add_slide(
             "<h3>Common SeleniumBase methods:</h3><hr />",
             code=(
-                "self.open(url)  # Navigate the browser window to the URL.\n"
+                "self.goto(url)  # Navigate the browser window to the URL.\n"
                 "self.type(selector, text)  # Update field with the text.\n"
                 "self.click(selector)  # Click element with the selector.\n"
                 "self.click_link(link_text)  # Click link containing text.\n"

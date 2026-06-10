@@ -1,7 +1,7 @@
 from seleniumbase import sb_cdp
 
 sb = sb_cdp.Chrome()
-sb.open("https://bot.sannysoft.com/")
+sb.goto("https://bot.sannysoft.com/")
 sb.flash("#user-agent-result.passed")
 sb.flash("#webdriver-result.passed")
 sb.flash("#advanced-webdriver-result.passed")

@@ -5,7 +5,7 @@ import pytest
 @pytest.mark.offline
 def test_request_fixture(request):
     sb = request.getfixturevalue("sb")
-    sb.open("data:text/html,<p>Hello<br><input></p>")
+    sb.goto("data:text/html,<p>Hello<br><input></p>")
     sb.assert_element("html > body")
     sb.assert_text("Hello", "body p")
     sb.type("input", "Goodbye")
@@ -18,7 +18,7 @@ def test_request_fixture(request):
 class RequestTests:
     def test_request_fixture_in_class(self, request):
         sb = request.getfixturevalue("sb")
-        sb.open("data:text/html,<p>Hello<br><input></p>")
+        sb.goto("data:text/html,<p>Hello<br><input></p>")
         sb.assert_element("html > body")
         sb.assert_text("Hello", "body p")
         sb.type("input", "Goodbye")

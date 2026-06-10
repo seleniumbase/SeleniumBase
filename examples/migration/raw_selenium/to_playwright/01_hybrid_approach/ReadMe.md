@@ -358,7 +358,7 @@ BaseCase.main(__name__, __file__)
 
 class SeleniumBaseTestCase(BaseCase):
     def test_add_item_to_cart(self):
-        self.open("https://www.saucedemo.com")
+        self.goto("https://www.saucedemo.com")
         self.type("#user-name", "standard_user")
         self.type("#password", "secret_sauce\n")
         self.assert_element("div.inventory_list")

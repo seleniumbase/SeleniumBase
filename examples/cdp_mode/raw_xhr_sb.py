@@ -62,7 +62,7 @@ with SB(uc=True, test=True, locale="en") as sb:
     listenXHR(tab)
 
     # Change url to something that makes ajax requests
-    sb.open("https://learn.microsoft.com/en-us/")
+    sb.goto("https://learn.microsoft.com/en-us/")
     time.sleep(1)
     for i in range(9):
         sb.scroll_down(6)
