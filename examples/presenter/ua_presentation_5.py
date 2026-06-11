@@ -548,8 +548,8 @@ class UA_Presentation_Class(BaseCase):
                 "\n\n"
                 "<mk-2>with SB(uc=True, test=True, ad_block=True) as sb:"
                 "</mk-2>\n"
-                '<mk-3>    url = "https://www.amazon.com"</mk-3>\n'
-                "<mk-4>    sb.activate_cdp_mode(url)</mk-4>\n"
+                "<mk-3>    sb.activate_cdp_mode()</mk-3>\n"
+                '<mk-4>    sb.goto("https://www.amazon.com")</mk-4>\n'
                 "<mk-5>    sb.sleep(2)</mk-5>\n"
                 "<mk-6>    sb.click_if_visible('button"
                 "[alt=\"Continue shopping\"]')"
@@ -588,8 +588,8 @@ class UA_Presentation_Class(BaseCase):
                 '<mk-2>'
                 'with SB(uc=True, test=True, locale="en", pls="none") as sb:'
                 "</mk-2>\n"
-                '<mk-3>    url = "https://www.nike.com/"</mk-3>\n'
-                "<mk-4>    sb.activate_cdp_mode(url)</mk-4>\n"
+                '<mk-3>    sb.activate_cdp_mode()</mk-3>\n'
+                '<mk-4>    sb.goto("https://www.nike.com/")</mk-4>\n'
                 "<mk-5>    sb.sleep(2.5)</mk-5>\n"
                 "<mk-6>    "
                 'sb.click(\'[data-testid="user-tools-container"] search\')'
