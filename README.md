@@ -1,8 +1,8 @@
 <!-- SeleniumBase Docs -->
 
 <meta property="og:site_name" content="SeleniumBase">
-<meta property="og:title" content="SeleniumBase: Stealthy Chromium Automation and E2E Testing with Python." />
-<meta property="og:description" content="Stealthy Chromium Automation and E2E Testing with Python." />
+<meta property="og:title" content="SeleniumBase: Stealthy Chromium Automation with Python; and E2E Testing." />
+<meta property="og:description" content="Stealthy Chromium Automation, including fast, easy, and reliable Web/UI testing with Python." />
 <meta property="og:keywords" content="Python, pytest, selenium, webdriver, testing, automation, seleniumbase, framework, dashboard, recorder, reports, screenshots, playwright, stealth, CAPTCHA">
 <meta property="og:image" content="https://seleniumbase.github.io/cdn/img/mac_sb_logo_5b.png" />
 <link rel="icon" href="https://seleniumbase.github.io/img/logo6.png" />
@@ -120,8 +120,8 @@ sb.quit()
 ```python
 from seleniumbase import sb_cdp
 
-url = "https://news.ycombinator.com/submitted?id=seleniumbase"
-sb = sb_cdp.Chrome(url)
+sb = sb_cdp.Chrome()
+sb.goto("https://news.ycombinator.com/submitted?id=seleniumbase")
 elements = sb.find_elements("span.titleline > a")
 for element in elements:
     print("* " + element.text)
@@ -160,7 +160,7 @@ Google Chrome is the default browser. Only unbranded Chromium and Chrome-for-Tes
 The Chromium browser can also be set via method args, eg: `cft=True`, `use_chromium=True`, `browser="edge"`, `browser="brave"`, etc. Eg:
 
 ```python
-sb = sb_cdp.Chrome(url, use_chromium=True)
+sb = sb_cdp.Chrome(use_chromium=True)
 ```
 
 --------
@@ -218,12 +218,13 @@ with SB(uc=True, test=True, locale="en") as sb:
 ```python
 from seleniumbase import sb_cdp
 
-url = "https://gitlab.com/users/sign_in"
-sb = sb_cdp.Chrome(url, incognito=True)
+sb = sb_cdp.Chrome(incognito=True)
+sb.goto("https://gitlab.com/users/sign_in")
 sb.sleep(2)
 sb.solve_captcha()
 sb.highlight('h1:contains("GitLab")')
 sb.highlight('button:contains("Sign in")')
+sb.quit()
 ```
 
 --------
