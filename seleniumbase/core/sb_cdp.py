@@ -152,6 +152,17 @@ class CDPMethods():
         except Exception:
             pass
 
+    def activate_cdp_mode(self, url=None, **kwargs):
+        """If calling this method from here, then it was likely done
+        by accident because CDP Mode is already active at this point.
+        If URL, then navigate there with any kwargs that were passed.
+        If no URL (but kwargs are included) then refresh with kwargs.
+        If no URL and no kwargs either, then do nothing."""
+        if url:
+            self.get(url, **kwargs)
+        elif kwargs:
+            self.get(self.get_current_url(), **kwargs)
+
     def open(self, url, **kwargs):
         self.get(url, **kwargs)
 
@@ -1386,9 +1397,14 @@ class CDPMethods():
         return self.find_element(selector).text_all
 
     def get_title(self):
+        """Returns the title of the current web page."""
         return self.loop.run_until_complete(
             self.page.evaluate("document.title")
         )
+
+    def get_page_title(self):
+        """Same as get_title(), which returns the current page title."""
+        return self.get_title()
 
     def get_current_url(self):
         return self.loop.run_until_complete(
