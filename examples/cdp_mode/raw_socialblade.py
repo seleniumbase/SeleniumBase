@@ -2,8 +2,8 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True, ad_block=True, pls="none") as sb:
-    url = "https://socialblade.com/"
-    sb.activate_cdp_mode(url)
+    sb.activate_cdp_mode()
+    sb.goto("https://socialblade.com/")
     sb.sleep(1.5)
     if not sb.is_element_visible('input[placeholder*="Search"]'):
         sb.solve_captcha()

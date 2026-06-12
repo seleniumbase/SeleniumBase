@@ -1,8 +1,8 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True, locale="en", incognito=True) as sb:
-    url = "https://www.radwell.com/en-US/Search/Advanced/"
-    sb.activate_cdp_mode(url)
+    sb.activate_cdp_mode()
+    sb.goto("https://www.radwell.com/en-US/Search/Advanced/")
     sb.sleep(1)
     sb.press_keys("form#basicsearch input", "821C-PM-111DA-142")
     sb.click('[value="Search Icon"]')

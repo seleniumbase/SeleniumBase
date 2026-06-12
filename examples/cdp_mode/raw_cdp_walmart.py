@@ -1,7 +1,7 @@
 from seleniumbase import sb_cdp
 
-url = "https://www.walmart.com/"
-sb = sb_cdp.Chrome(url, locale="en", guest=True)
+sb = sb_cdp.Chrome(locale="en", guest=True)
+sb.goto("https://www.walmart.com/")
 sb.sleep(3)
 continue_button = 'button:contains("Continue shopping")'
 if sb.is_element_visible(continue_button):

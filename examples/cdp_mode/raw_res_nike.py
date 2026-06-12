@@ -26,8 +26,8 @@ async def receive_handler(event: mycdp.network.ResponseReceived):
 
 
 with SB(uc=True, test=True, locale="en", pls="none") as sb:
-    url = "https://www.nike.com/"
-    sb.activate_cdp_mode(url)
+    sb.activate_cdp_mode()
+    sb.goto("https://www.nike.com/")
     sb.add_handler(mycdp.network.RequestWillBeSent, send_handler)
     sb.add_handler(mycdp.network.ResponseReceived, receive_handler)
     sb.sleep(2.5)

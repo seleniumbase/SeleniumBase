@@ -1,8 +1,8 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True, locale="en") as sb:
-    url = "https://www.mouser.com/"
-    sb.activate_cdp_mode(url)
+    sb.activate_cdp_mode()
+    sb.goto("https://www.mouser.com/")
     sb.sleep(5)
     sb.press_keys('input[name="keyword"]', "FLUKE-TC01B 25HZ")
     sb.click('button[type="submit"]')

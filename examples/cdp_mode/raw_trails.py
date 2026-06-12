@@ -1,8 +1,8 @@
 from seleniumbase import SB
 
 with SB(uc=True, ad_block=True, test=True) as sb:
-    url = "https://www.alltrails.com/"
-    sb.activate_cdp_mode(url)
+    sb.activate_cdp_mode()
+    sb.goto("https://www.alltrails.com/")
     sb.sleep(3.5)
     sb.click_if_visible("button.osano-cm-close")
     sb.sleep(0.5)

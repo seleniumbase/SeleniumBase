@@ -1,7 +1,7 @@
 from seleniumbase import sb_cdp
 
-url = "https://www.nike.com/"
-sb = sb_cdp.Chrome(url)
+sb = sb_cdp.Chrome()
+sb.goto("https://www.nike.com/")
 sb.sleep(1.2)
 sb.click('[data-testid="user-tools-container"] search')
 sb.sleep(1)

@@ -1,8 +1,8 @@
 from seleniumbase import SB
 
-with SB(uc=True, test=True, locale="en") as sb:
-    url = "https://www.hilton.com/en/"
-    sb.activate_cdp_mode(url)
+with SB(uc=True, test=True, locale="en", use_chromium=True) as sb:
+    sb.activate_cdp_mode()
+    sb.goto("https://www.hilton.com/en/")
     sb.sleep(4.5)
     location = "Sunnyvale, CA, USA"
     location_input = "input#location-input"
@@ -16,7 +16,7 @@ with SB(uc=True, test=True, locale="en") as sb:
     sb.sleep(1.2)
     sb.click('button[aria-current="date"]')
     sb.sleep(1.2)
-    sb.click('[role="dialog"] button.btn--solid')
+    sb.click_if_visible('[role="dialog"] button.btn--solid')
     sb.sleep(1.5)
     sb.click('button[data-testid="search-submit-button"]')
     sb.sleep(6.5)

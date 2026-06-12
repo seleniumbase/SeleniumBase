@@ -1,8 +1,8 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True, ad_block=True) as sb:
-    url = "https://www.ticketmaster.com"
-    sb.activate_cdp_mode(url)
+    sb.activate_cdp_mode()
+    sb.goto("https://www.ticketmaster.com")
     input_field = 'input[name="q"]'
     sb.wait_for_element(input_field)
     sb.sleep(1.6)

@@ -1,9 +1,9 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
-    url = "https://www.easyjet.com/en/"
-    sb.activate_cdp_mode(url)
-    sb.sleep(1.5)
+    sb.activate_cdp_mode()
+    sb.goto("https://www.easyjet.com/en/")
+    sb.sleep(1.8)
     sb.click_if_visible("button#ensRejectAds", timeout=2)
     sb.sleep(1)
     sb.click('input[name="from"]')

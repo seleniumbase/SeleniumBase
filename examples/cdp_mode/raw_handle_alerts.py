@@ -2,8 +2,8 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True) as sb:
-    url = "https://the-internet.herokuapp.com/javascript_alerts"
-    sb.activate_cdp_mode(url)
+    sb.activate_cdp_mode()
+    sb.goto("https://the-internet.herokuapp.com/javascript_alerts")
     sb.click('button[onclick="jsAlert()"]')
     sb.sleep(1)
     sb.uc_gui_press_key("\n")  # Accept Alert

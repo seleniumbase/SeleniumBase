@@ -2,8 +2,8 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True) as sb:
-    url = "https://www.nvsilverflume.gov/home"
-    sb.activate_cdp_mode(url)
+    sb.activate_cdp_mode()
+    sb.goto("https://www.nvsilverflume.gov/home")
     sb.sleep(3)
     sb.click('a[href="/redirectToCenuity/be"]')
     sb.sleep(3.6)

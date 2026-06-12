@@ -7,8 +7,8 @@ proxy = None
 
 @decorators.print_runtime("CDP Proxy Example")
 def main():
-    url = "https://api.ipify.org/"
-    sb = sb_cdp.Chrome(url, lang="en", pls="none", proxy=proxy)
+    sb = sb_cdp.Chrome(lang="en", pls="none", proxy=proxy)
+    sb.goto("https://api.ipify.org/")
     ip_address = sb.get_text("body")
     if "ERR" in ip_address:
         raise Exception("Failed to determine IP Address!")

@@ -3,8 +3,8 @@ from seleniumbase import SB
 
 
 with SB(uc=True, test=True, locale="en") as sb:
-    url = "https://www.priceline.com/"
-    sb.activate_cdp_mode(url)
+    sb.activate_cdp_mode()
+    sb.goto("https://www.priceline.com/")
     sb.sleep(2.5)
     sb.internalize_links()  # Don't open links in a new tab
     sb.click_if_visible('[aria-label="Close Modal"]')

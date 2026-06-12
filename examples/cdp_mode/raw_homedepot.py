@@ -1,9 +1,9 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True, incognito=True) as sb:
-    url = "https://www.homedepot.com/"
-    sb.activate_cdp_mode(url)
-    sb.sleep(1.4)
+    sb.activate_cdp_mode()
+    sb.goto("https://www.homedepot.com/")
+    sb.sleep(1.5)
     sb.click_if_visible('[data-testid="CloseIcon"]', timeout=3)
     sb.sleep(1.2)
     search_box = "input#typeahead-search-field-input"

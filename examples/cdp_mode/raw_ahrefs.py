@@ -1,13 +1,12 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True, incognito=True, locale="en") as sb:
-    url = "https://ahrefs.com/website-authority-checker"
-    input_field = 'input[placeholder="Enter domain"]'
-    submit_button = 'span:contains("Check Authority")'
-    sb.activate_cdp_mode(url)  # The bot-check is later
-    sb.type(input_field, "github.com/seleniumbase/SeleniumBase")
+    sb.activate_cdp_mode()
+    sb.goto("https://ahrefs.com/website-authority-checker")
+    search_term = "github.com/seleniumbase/SeleniumBase"
+    sb.type('input[placeholder="Enter domain"]', search_term)
     sb.scroll_down(36)
-    sb.click(submit_button)
+    sb.click('span:contains("Check Authority")')
     sb.sleep(2)
     sb.solve_captcha()
     sb.sleep(3)

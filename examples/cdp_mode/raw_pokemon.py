@@ -1,8 +1,8 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
-    url = "https://www.pokemon.com/us"
-    sb.activate_cdp_mode(url)
+    sb.activate_cdp_mode()
+    sb.goto("https://www.pokemon.com/us")
     sb.sleep(1.5)
     sb.click_if_visible("button#onetrust-accept-btn-handler")
     sb.sleep(1.2)

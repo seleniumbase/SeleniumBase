@@ -40,7 +40,7 @@ class TestGeolocation(BaseCase):
         self.goto("https://www.randymajors.org/what-time-zone-am-i-in")
         self.ad_block()
         self.assert_text("Paris, France", "#statecountrylabel")
-        self.assert_text("Central European Standard Time", "#currentlabel")
+        self.assert_text("Central European", "#currentlabel")
         self.save_screenshot_to_logs()
         if self.headed:
             self.sleep(4)

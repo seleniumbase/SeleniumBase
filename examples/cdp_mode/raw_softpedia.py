@@ -1,8 +1,8 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True, ad_block=True) as sb:
-    url = "https://www.softpedia.com/"
-    sb.activate_cdp_mode(url)
+    sb.activate_cdp_mode()
+    sb.goto("https://www.softpedia.com/")
     search_box = 'input[name="search_term"]'
     search = "3D Model Lab"
     sb.click(search_box)

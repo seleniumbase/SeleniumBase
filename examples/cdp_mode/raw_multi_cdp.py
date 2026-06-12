@@ -6,7 +6,8 @@ from seleniumbase import sb_cdp
 
 
 def main(url):
-    sb = sb_cdp.Chrome(url, lang="en")
+    sb = sb_cdp.Chrome(lang="en")
+    sb.goto(url)
     sb.set_window_rect(randint(4, 680), randint(8, 380), 840, 520)
     sb.press_keys("input", "Text")
     sb.highlight("button")

@@ -1,8 +1,8 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True, locale="en", guest=True) as sb:
-    url = "https://www.bestwestern.com/en_US.html"
-    sb.activate_cdp_mode(url)
+    sb.activate_cdp_mode()
+    sb.goto("https://www.bestwestern.com/en_US.html")
     sb.sleep(3)
     sb.click_if_visible(".onetrust-close-btn-handler")
     sb.sleep(1)

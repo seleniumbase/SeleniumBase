@@ -1,8 +1,8 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True, incognito=True) as sb:
-    url = "https://secure.indeed.com/auth"
-    sb.activate_cdp_mode(url)
+    sb.activate_cdp_mode()
+    sb.goto("https://secure.indeed.com/auth")
     sb.sleep(2.2)
     if not sb.is_element_visible('input[type="email"]'):
         sb.solve_captcha()
