@@ -2,8 +2,8 @@ import re
 from seleniumbase import SB
 
 with SB(uc=True, test=True, locale="en", incognito=True) as sb:
-    url = "www.elal.com/flight-deals/en-us/flights-from-boston-to-tel-aviv"
-    sb.activate_cdp_mode(url)
+    sb.activate_cdp_mode()
+    sb.goto("www.elal.com/flight-deals/en-us/flights-from-boston-to-tel-aviv")
     sb.sleep(5)
     sb.click('button[data-att="search"]')
     sb.sleep(5)

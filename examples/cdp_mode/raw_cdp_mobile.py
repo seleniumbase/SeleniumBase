@@ -11,8 +11,7 @@ loop.run_until_complete(
         )
     )
 )
-url = "https://gitlab.com/users/sign_in"
-sb.goto(url)
+sb.goto("https://gitlab.com/users/sign_in")
 sb.sleep(2)
 sb.solve_captcha()
 # (The rest is for testing and demo purposes)

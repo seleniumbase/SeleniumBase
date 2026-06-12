@@ -1,9 +1,9 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True, ad_block=True) as sb:
-    url = "https://www.walmart.com/"
-    sb.activate_cdp_mode(url)
-    sb.sleep(1.8)
+    sb.activate_cdp_mode()
+    sb.goto("https://www.walmart.com/")
+    sb.sleep(2.2)
     continue_button = 'button:contains("Continue shopping")'
     if sb.is_element_visible(continue_button):
         sb.gui_click_element(continue_button)

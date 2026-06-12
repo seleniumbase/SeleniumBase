@@ -1,8 +1,8 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True, locale="en") as sb:
-    url = "https://gitlab.com/users/sign_in"
-    sb.activate_cdp_mode(url)
+    sb.activate_cdp_mode()
+    sb.goto("https://gitlab.com/users/sign_in")
     sb.sleep(2)
     sb.solve_captcha()
     # (The rest is for testing and demo purposes)

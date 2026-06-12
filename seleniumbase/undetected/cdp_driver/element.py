@@ -373,7 +373,9 @@ class Element:
             object_id=self._remote_object.object_id
         )]
         script = 'sessionStorage.getItem("pxsid") !== null;'
-        using_px = await self.tab.evaluate(script)
+        using_px = True
+        with suppress(Exception):
+            using_px = await self.tab.evaluate(script)
         if not using_px:
             await self.flash_async(0.25)
         await self._tab.send(
@@ -505,7 +507,9 @@ class Element:
             return
         logger.debug("Clicking on location: %.2f, %.2f" % center)
         script = 'sessionStorage.getItem("pxsid") !== null;'
-        using_px = await self.tab.evaluate(script)
+        using_px = True
+        with suppress(Exception):
+            using_px = await self.tab.evaluate(script)
         if not using_px:
             asyncio.create_task(self.flash_async(0.25))
         asyncio.create_task(
@@ -567,7 +571,9 @@ class Element:
         else:
             logger.debug("Clicking on location: %.2f, %.2f" % (x_pos, y_pos))
         script = 'sessionStorage.getItem("pxsid") !== null;'
-        using_px = await self.tab.evaluate(script)
+        using_px = True
+        with suppress(Exception):
+            using_px = await self.tab.evaluate(script)
         if not using_px:
             asyncio.create_task(
                 self.flash_async(

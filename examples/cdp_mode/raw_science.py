@@ -1,8 +1,8 @@
 from seleniumbase import SB
 
 with SB(uc=True, incognito=True, test=True) as sb:
-    url = "https://earth.esa.int/eogateway/search"
-    sb.activate_cdp_mode(url)
+    sb.activate_cdp_mode()
+    sb.goto("https://earth.esa.int/eogateway/search")
     sb.sleep(1)
     sb.click_if_visible('button:contains("Accept cookies")')
     for i in range(20):

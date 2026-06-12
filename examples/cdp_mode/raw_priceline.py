@@ -2,27 +2,32 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True, locale="en", guest=True, pls="none") as sb:
-    url = "https://www.priceline.com"
-    sb.activate_cdp_mode(url)
-    sb.sleep(2.6)
-    input_selector = '[name="endLocation"]'
+    sb.activate_cdp_mode()
+    sb.goto("https://www.priceline.com")
+    sb.sleep(3)
+    input_selector = 'input[name="endLocation"]'
     if not sb.is_element_present(input_selector):
         input_selector = "div.location-input input"
     sb.click(input_selector)
     sb.sleep(1.2)
     location = "Portland, OR"
     selection = "Oregon, United States"  # (Dropdown option)
-    sb.press_keys(input_selector, location)
-    sb.sleep(0.6)
+    sb.type(input_selector, location)
+    sb.sleep(0.5)
     sb.click(selection)
     sb.sleep(0.4)
     sb.scroll_down(25)
-    sb.sleep(0.4)
+    sb.sleep(0.2)
+    overlay_close = '[aria-label*="Overlay"] [title="Close"]'
     calendar_close = 'button[aria-label="Dismiss calendar"]'
     if not sb.is_element_visible(calendar_close):
         calendar_close = '[data-mode="range"] span.px-1'
+    sb.click_if_visible(overlay_close)
+    sb.sleep(0.3)
     sb.click(calendar_close)
-    sb.sleep(0.6)
+    sb.sleep(0.3)
+    sb.click_if_visible(overlay_close)
+    sb.sleep(0.3)
     sb.click('form button[type="submit"]')
     sb.sleep(4.8)
     if len(sb.get_tabs()) > 1:
@@ -33,30 +38,15 @@ with SB(uc=True, test=True, locale="en", guest=True, pls="none") as sb:
     for y in range(1, 9):
         sb.scroll_to_y(y * 200)
         sb.sleep(0.4)
-    hotel_names = sb.find_elements('h3 div[class*="TitleName"]')
-    if not hotel_names:
-        hotel_names = sb.find_elements("h3.antialiased")
-    price_selector = '[class*="PriceWrap"] .relative > .items-center'
-    if sb.is_element_visible(price_selector):
-        hotel_prices = sb.find_elements(price_selector)
-    elif sb.is_element_present(
-        '[font-size="12px"] + [font-size="20px"]'
-    ):
-        hotel_prices = sb.find_elements(
-            '[font-size="12px"] + [font-size="20px"]'
-        )
-    else:
-        hotel_prices = sb.find_elements(
-            'span.text-priceSuper-heading4 + div > span'
-        )
-    print("Priceline Hotels in %s:" % location)
-    if len(hotel_names) == 0:
-        print("No availability over the selected dates!")
+    hotels = sb.find_elements('div[data-vis-key*="content"]')
     count = 0
-    for i, hotel in enumerate(hotel_names):
-        if hotel_prices[i] and hotel_prices[i].text:
-            count += 1
-            hotel_price = "$" + hotel_prices[i].text
-            if hotel_price.startswith("$$ "):
-                hotel_price = hotel_price.replace("$$ ", "$")
-            print("* %s: %s => %s" % (count, hotel.text, hotel_price))
+    for hotel in hotels:
+        title = hotel.query_selector("h3")
+        if title:
+            price = hotel.query_selector(".text-heading4")
+            if price:
+                count += 1
+                price_text = price.text.replace(" ", "")
+                print("* %s: %s => %s" % (count, title.text, price_text))
+    if not count:
+        print("No availability over the selected dates!")

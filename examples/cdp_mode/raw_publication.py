@@ -1,8 +1,8 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
-    url = "https://www.researchgate.net/search/publication"
-    sb.activate_cdp_mode(url)
+    sb.activate_cdp_mode()
+    sb.goto("https://www.researchgate.net/search/publication")
     sb.sleep(2.2)
     shadow_head = "div.main-content div"
     if sb.is_element_present(shadow_head):

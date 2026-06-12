@@ -3,7 +3,8 @@ from seleniumbase import sb_cdp
 
 search = "reddit+scraper"
 url = f"https://www.reddit.com/r/webscraping/search/?q={search}"
-sb = sb_cdp.Chrome(url, use_chromium=True)
+sb = sb_cdp.Chrome(use_chromium=True)
+sb.goto(url)
 sb.solve_captcha()  # Might not be needed
 post_title = '[data-testid="post-title"]'
 sb.wait_for_element(post_title)

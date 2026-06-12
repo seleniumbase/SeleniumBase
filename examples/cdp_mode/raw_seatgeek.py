@@ -1,8 +1,8 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True, ad_block=True) as sb:
-    url = "https://seatgeek.com/"
-    sb.activate_cdp_mode(url)
+    sb.activate_cdp_mode()
+    sb.goto("https://seatgeek.com/")
     input_field = 'input[name="search"]'
     sb.wait_for_element(input_field)
     sb.sleep(1.6)

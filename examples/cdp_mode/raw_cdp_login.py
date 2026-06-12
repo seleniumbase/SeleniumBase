@@ -3,8 +3,8 @@ from seleniumbase import sb_cdp
 
 
 def main():
-    url = "https://seleniumbase.io/simple/login"
-    sb = sb_cdp.Chrome(url)
+    sb = sb_cdp.Chrome()
+    sb.goto("https://seleniumbase.io/simple/login")
     sb.type("#username", "demo_user")
     sb.type("#password", "secret_pass")
     sb.click('a:contains("Sign in")')

@@ -1,8 +1,8 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
-    url = "https://www.united.com/en/us"
-    sb.activate_cdp_mode(url)
+    sb.activate_cdp_mode()
+    sb.goto("https://www.united.com/en/us")
     sb.sleep(3.5)
     origin_input = 'input[placeholder="Origin"]'
     origin = "JFK"

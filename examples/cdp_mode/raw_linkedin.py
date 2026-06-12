@@ -1,10 +1,10 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True, ad_block=True) as sb:
-    url = "https://www.linkedin.com/company/selenium"
-    sb.activate_cdp_mode(url)
+    sb.activate_cdp_mode()
+    sb.goto("https://www.linkedin.com/company/selenium")
     sb.sleep(1)
-    sb.click_if_visible('button[aria-label="Dismiss"]')
+    sb.click_if_visible('button[aria-label="Dismiss"]', timeout=2)
     sb.sleep(0.5)
     for i in range(14):
         sb.scroll_down(48)

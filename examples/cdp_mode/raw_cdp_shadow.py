@@ -1,8 +1,8 @@
 """An example of displaying Shadow DOM inside HTML"""
 from seleniumbase import sb_cdp
 
-url = "https://seleniumbase.io/apps/turnstile"
-sb = sb_cdp.Chrome(url)
+sb = sb_cdp.Chrome()
+sb.goto("https://seleniumbase.io/apps/turnstile")
 element = sb.find_element("div.cf-turnstile div")
 html_with_shadow_dom = element.get_html()
 print(html_with_shadow_dom)

@@ -1,8 +1,8 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
-    url = "https://www.southwest.com/air/booking/"
-    sb.activate_cdp_mode(url)
+    sb.activate_cdp_mode()
+    sb.goto("https://www.southwest.com/air/booking/")
     sb.sleep(2.8)
     origin = "BOS"
     destination = "MDW"

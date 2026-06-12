@@ -5101,16 +5101,48 @@ class BaseCase(unittest.TestCase):
             self.close_active_tab = self.cdp.close_active_tab
         if hasattr(self.cdp, "find_element_by_text"):
             self.find_element_by_text = self.cdp.find_element_by_text
+        if hasattr(self.cdp, "find_elements_by_text"):
+            self.find_elements_by_text = self.cdp.find_elements_by_text
         if hasattr(self.cdp, "get_active_tab"):
             self.get_active_tab = self.cdp.get_active_tab
+        if hasattr(self.cdp, "get_all_cookies"):
+            self.get_all_cookies = self.cdp.get_all_cookies
         if hasattr(self.cdp, "get_all_urls"):
             self.get_all_urls = self.cdp.get_all_urls
+        if hasattr(self.cdp, "get_document"):
+            self.get_document = self.cdp.get_document
+        if hasattr(self.cdp, "get_element_attribute"):
+            self.get_element_attribute = self.cdp.get_element_attribute
+        if hasattr(self.cdp, "get_element_attributes"):
+            self.get_element_attributes = self.cdp.get_element_attributes
+        if hasattr(self.cdp, "get_element_html"):
+            self.get_element_html = self.cdp.get_element_html
         if hasattr(self.cdp, "get_endpoint_url"):
             self.get_endpoint_url = self.cdp.get_endpoint_url
         if hasattr(self.cdp, "get_event_loop"):
             self.get_event_loop = self.cdp.get_event_loop
+        if hasattr(self.cdp, "get_flattened_document"):
+            self.get_flattened_document = self.cdp.get_flattened_document
+        if hasattr(self.cdp, "get_navigation_history"):
+            self.get_navigation_history = self.cdp.get_navigation_history
+        if hasattr(self.cdp, "get_nested_element"):
+            self.get_nested_element = self.cdp.get_nested_element
+        if hasattr(self.cdp, "get_port"):
+            self.get_port = self.cdp.get_port
+        if hasattr(self.cdp, "get_rd_host"):
+            self.get_rd_host = self.cdp.get_rd_host
+        if hasattr(self.cdp, "get_rd_port"):
+            self.get_rd_port = self.cdp.get_rd_port
+        if hasattr(self.cdp, "get_rd_url"):
+            self.get_rd_url = self.cdp.get_rd_url
         if hasattr(self.cdp, "get_tabs"):
             self.get_tabs = self.cdp.get_tabs
+        if hasattr(self.cdp, "get_websocket_url"):
+            self.get_websocket_url = self.cdp.get_websocket_url
+        if hasattr(self.cdp, "grant_all_permissions"):
+            self.grant_all_permissions = self.cdp.grant_all_permissions
+        if hasattr(self.cdp, "grant_permissions"):
+            self.grant_permissions = self.cdp.grant_permissions
         if hasattr(self.cdp, "gui_click_and_hold"):
             self.gui_click_and_hold = self.cdp.gui_click_and_hold
         if hasattr(self.cdp, "gui_click_element"):
@@ -5121,6 +5153,26 @@ class BaseCase(unittest.TestCase):
             self.gui_drag_drop_points = self.cdp.gui_drag_drop_points
         if hasattr(self.cdp, "highlight_overlay"):
             self.highlight_overlay = self.cdp.highlight_overlay
+        if hasattr(self.cdp, "js_dumps"):
+            self.js_dumps = self.cdp.js_dumps
+        if hasattr(self.cdp, "js_scroll_into_view"):
+            self.js_scroll_into_view = self.cdp.js_scroll_into_view
+        if hasattr(self.cdp, "medimize"):
+            self.medimize = self.cdp.medimize
+        if hasattr(self.cdp, "mouse_click"):
+            self.mouse_click = self.cdp.mouse_click
+        if hasattr(self.cdp, "nested_click"):
+            self.nested_click = self.cdp.nested_click
+        if hasattr(self.cdp, "remove_from_dom"):
+            self.remove_from_dom = self.cdp.remove_from_dom
+        if hasattr(self.cdp, "reset_permissions"):
+            self.reset_permissions = self.cdp.reset_permissions
+        if hasattr(self.cdp, "set_all_cookies"):
+            self.set_all_cookies = self.cdp.set_all_cookies
+        if hasattr(self.cdp, "tile_windows"):
+            self.tile_windows = self.cdp.tile_windows
+        if hasattr(self.cdp, "get_window"):
+            self.get_window = self.cdp.get_window
         if getattr(self.driver, "_is_using_auth", None):
             with suppress(Exception):
                 self.cdp.loop.run_until_complete(self.cdp.page.wait(0.25))

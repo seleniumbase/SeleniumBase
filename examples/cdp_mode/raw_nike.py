@@ -1,8 +1,8 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True, locale="en", pls="none") as sb:
-    url = "https://www.nike.com/"
-    sb.activate_cdp_mode(url)
+    sb.activate_cdp_mode()
+    sb.goto("https://www.nike.com/")
     sb.sleep(2.5)
     sb.click('[data-testid="user-tools-container"] search')
     sb.sleep(1.5)

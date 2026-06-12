@@ -1,9 +1,9 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True, incognito=True) as sb:
-    url = "https://www.glassdoor.com/Reviews/index.htm"
-    sb.activate_cdp_mode(url)
-    sb.sleep(2.1)
+    sb.activate_cdp_mode()
+    sb.goto("https://www.glassdoor.com/Reviews/index.htm")
+    sb.sleep(2.2)
     sb.solve_captcha()
     sb.sleep(0.6)
     sb.highlight('[data-test="global-nav-glassdoor-logo"]')

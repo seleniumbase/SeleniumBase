@@ -3,8 +3,8 @@ sb.press_keys() is a slower sb.type() for human-like speed."""
 from seleniumbase import SB
 
 with SB(uc=True, test=True) as sb:
-    url = "https://seleniumbase.io/antibot/login"
-    sb.activate_cdp_mode(url)
+    sb.activate_cdp_mode()
+    sb.goto("https://seleniumbase.io/antibot/login")
     sb.press_keys("input#username", "demo_user")
     sb.type("input#password", "secret_pass")
     sb.click("button#myButton")

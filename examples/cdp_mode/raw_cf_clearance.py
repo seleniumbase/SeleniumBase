@@ -9,8 +9,8 @@ def get_cf_clearance_cookie(sb):
     return None
 
 
-url = "https://gitlab.com/users/sign_in"
-sb = sb_cdp.Chrome(url)
+sb = sb_cdp.Chrome()
+sb.goto("https://gitlab.com/users/sign_in")
 sb.sleep(3)  # Wait for CAPTCHA to load
 sb.solve_captcha()  # (Only if found)
 sb.sleep(2)  # Wait for CAPTCHA success

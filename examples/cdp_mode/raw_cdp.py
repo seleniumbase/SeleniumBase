@@ -5,8 +5,8 @@ from seleniumbase import sb_cdp
 
 @decorators.print_runtime("CDP Priceline Example")
 def main():
-    url = "https://www.priceline.com/"
-    sb = sb_cdp.Chrome(url, lang="en")
+    sb = sb_cdp.Chrome(lang="en")
+    sb.goto("https://www.priceline.com/")
     sb.sleep(2)
     sb.internalize_links()  # Don't open links in a new tab
     sb.click("#link_header_nav_experiences")
@@ -32,7 +32,7 @@ def main():
     cards = sb.select_all('span[data-automation*="product-list-card"]')
     for card in cards:
         print("* %s" % card.text)
-    sb.driver.stop()
+    sb.quit()
 
 
 if __name__ == "__main__":

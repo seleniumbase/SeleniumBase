@@ -1,7 +1,7 @@
 from seleniumbase import sb_cdp
 
-url = "https://seleniumbase.io/demo_page"
-sb = sb_cdp.Chrome(url)
+sb = sb_cdp.Chrome()
+sb.goto("https://seleniumbase.io/demo_page")
 sb.press_keys("input", "Text")
 sb.highlight("button")
 sb.type("textarea", "Here are some words")

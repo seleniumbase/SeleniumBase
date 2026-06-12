@@ -7,7 +7,8 @@ with SB(uc=True, test=True, locale="en", incognito=True) as sb:
     s2 = "+".join(search.split(" "))
     q = "?submit-search=web-regular&search=%s" % s2
     url = "https://www.kohls.com/search.jsp%s" % q
-    sb.activate_cdp_mode(url, ad_block=True)
+    sb.activate_cdp_mode(ad_block=True)
+    sb.goto(url)
     sb.sleep(5)
     item_selector = 'div[data-testid*="wallet-wrapper"]'
     if not sb.is_element_present(item_selector):

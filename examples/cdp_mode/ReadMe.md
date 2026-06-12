@@ -37,11 +37,11 @@
 
 ### 🐙 <b translate="no">CDP Mode</b> Usage (when used as a subset of UC Mode):
 
-* **`sb.activate_cdp_mode(url)`**
+* **`sb.activate_cdp_mode()` or `sb.activate_cdp_mode(url)`**
 
-That disconnects WebDriver from Chrome (which prevents detection), and gives you access to `sb.cdp` methods (which don't trigger anti-bot checks).
+That disconnects WebDriver from Chrome (which prevents detection), and gives you access to CDP Mode methods (which don't trigger anti-bot checks).
 
-> (**New:** Calling **`sb.goto(url)`** from UC Mode also activates CDP Mode now.)
+> (Calling **`sb.goto(url)`** from UC Mode also activates CDP Mode now.)
 
 Simple example from [SeleniumBase/examples/cdp_mode/raw_gitlab.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_gitlab.py):
 
@@ -49,8 +49,8 @@ Simple example from [SeleniumBase/examples/cdp_mode/raw_gitlab.py](https://githu
 from seleniumbase import SB
 
 with SB(uc=True, test=True, locale="en") as sb:
-    url = "https://gitlab.com/users/sign_in"
-    sb.activate_cdp_mode(url)
+    sb.activate_cdp_mode()
+    sb.goto("https://gitlab.com/users/sign_in")
     sb.sleep(2)
     sb.solve_captcha()
     sb.sleep(2)
@@ -58,7 +58,7 @@ with SB(uc=True, test=True, locale="en") as sb:
 
 <img src="https://seleniumbase.github.io/other/cf_sec.jpg" title="SeleniumBase" width="332"> <img src="https://seleniumbase.github.io/other/gitlab_bypass.png" title="SeleniumBase" width="288">
 
-(If the CAPTCHA wasn't bypassed automatically when going to the URL, then `sb.solve_captcha()` gets the job done.)
+(If the CAPTCHA wasn't bypassed automatically, then `sb.solve_captcha()` gets the job done.)
 
 ----
 
@@ -69,9 +69,9 @@ Here's another example that calls `sb.solve_captcha()`:
 from seleniumbase import SB
 
 with SB(uc=True, test=True, guest=True) as sb:
-    url = "www.planetminecraft.com/account/sign_in/"
-    sb.activate_cdp_mode(url)
-    sb.sleep(2)
+    sb.activate_cdp_mode()
+    sb.goto("www.planetminecraft.com/account/sign_in/")
+    sb.sleep(3)
     sb.solve_captcha()
     sb.wait_for_element_absent("input[disabled]")
     sb.sleep(2)
@@ -83,26 +83,24 @@ In many cases, the CAPTCHA will be solved automatically without needing to call 
 
 ----
 
-You can also use `PyAutoGUI` to click on elements with the mouse by calling `sb.cdp.gui_click_element(selector)`.
+You can also use `PyAutoGUI` to click on elements with the mouse by calling `sb.gui_click_element(selector)`. (The `PyAutoGUI` methods start with `gui`.)
 
-ℹ️ Note that `PyAutoGUI` is an optional dependency. If calling a method that uses it when not already installed, then `SeleniumBase` installs `PyAutoGUI` at runtime.
+ℹ️ Note that `PyAutoGUI` is an optional dependency. If calling a method that needs it when not already installed, then `SeleniumBase` installs `PyAutoGUI` at runtime.
 
 ----
 
-### 🐙 Here are a few common `sb.cdp` methods:
+### 🐙 Here are a few common CDP Mode methods:
 
-* `sb.cdp.click(selector)`  (Uses the CDP API to click)
-* `sb.cdp.click_if_visible(selector)`  (Click if visible)
-* `sb.cdp.solve_captcha()`  (Uses CDP to click a CAPTCHA)
-* `sb.cdp.gui_click_element(selector)`  (Uses `PyAutoGUI`)
-* `sb.cdp.type(selector, text)`  (Type text into a selector)
-* `sb.cdp.press_keys(selector, text)`  (Human-speed `type`)
-* `sb.cdp.select_all(selector)`  (Returns matching elements)
-* `sb.cdp.get_text(selector)`  (Returns the element's text)
+* `goto(url)`  (Navigate to the given URL)
+* `click(selector)`  (Uses the CDP API to click)
+* `click_if_visible(selector)`  (Click if visible)
+* `solve_captcha()`  (Uses CDP to click a CAPTCHA)
+* `type(selector, text)`  (Type text into a selector)
+* `press_keys(selector, text)`  (Human-speed `type`)
+* `select_all(selector)`  (Returns matching elements)
+* `get_text(selector)`  (Returns the element's text)
 
-Methods that start with `sb.cdp.gui` use `PyAutoGUI` for interaction.
-
-To use WebDriver methods again, call:
+To use WebDriver-only methods again, call:
 
 * **`sb.reconnect()`** or **`sb.connect()`**
 
@@ -112,13 +110,13 @@ To disconnect again, call:
 
 * **`sb.disconnect()`**
 
-While disconnected, if you call a WebDriver method, then <b translate="no">SeleniumBase</b> will attempt to use the <b translate="no">CDP Mode</b> version of that method (if available). For example, if you call `sb.click(selector)` instead of `sb.cdp.click(selector)`, then your WebDriver call will automatically be redirected to the <b translate="no">CDP Mode</b> version. Not all WebDriver methods have a matching <b translate="no">CDP Mode</b> method. In that scenario, calling a WebDriver method while disconnected could raise an error, or make WebDriver automatically reconnect first.
+While disconnected, if you call a WebDriver method, then <b translate="no">SeleniumBase</b> will attempt to use the <b translate="no">CDP Mode</b> version of that method (if available). For example, if you call `sb.click(selector)` instead of `sb.cdp.click(selector)`, then your WebDriver call will automatically redirect to the <b translate="no">CDP Mode</b> version. Not all WebDriver methods have a matching <b translate="no">CDP Mode</b> method. In that scenario, calling a WebDriver method while disconnected could raise an error, or make WebDriver automatically reconnect first.
 
 To find out if WebDriver is connected or disconnected, call:
 
 * **`sb.is_connected()`**
 
-<b>Note:</b> When <b translate="no">CDP Mode</b> is initialized from <b translate="no">UC Mode</b>, the WebDriver is disconnected from the browser. (The stealthy <b translate="no">CDP-Driver</b> takes over.)
+<b>Note:</b> When <b translate="no">CDP Mode</b> is initialized from <b translate="no">UC Mode</b>, the WebDriver is disconnected from the browser. (The stealthy <b translate="no">CDP Mode</b> takes over.)
 
 ----
 
@@ -134,8 +132,8 @@ To find out if WebDriver is connected or disconnected, call:
 from seleniumbase import SB
 
 with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
-    url = "https://www.pokemon.com/us"
-    sb.activate_cdp_mode(url)
+    sb.activate_cdp_mode()
+    sb.goto("https://www.pokemon.com/us")
     sb.sleep(1.5)
     sb.click_if_visible("button#onetrust-accept-btn-handler")
     sb.sleep(1.2)
@@ -187,9 +185,9 @@ with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
 from seleniumbase import SB
 
 with SB(uc=True, test=True, locale="en", guest=True) as sb:
-    url = "https://www.hyatt.com/"
-    sb.activate_cdp_mode(url)
-    sb.sleep(3.4)
+    sb.activate_cdp_mode()
+    sb.goto("https://www.hyatt.com/")
+    sb.sleep(3.6)
     sb.click_if_visible('button[aria-label="Close"]')
     sb.sleep(0.1)
     sb.click_if_visible("#onetrust-reject-all-handler")
@@ -235,8 +233,8 @@ with SB(uc=True, test=True, locale="en", guest=True) as sb:
 from seleniumbase import SB
 
 with SB(uc=True, test=True, locale="en", guest=True) as sb:
-    url = "https://www.bestwestern.com/en_US.html"
-    sb.activate_cdp_mode(url)
+    sb.activate_cdp_mode()
+    sb.goto("https://www.bestwestern.com/en_US.html")
     sb.sleep(3)
     sb.click_if_visible(".onetrust-close-btn-handler")
     sb.sleep(1)
@@ -280,9 +278,9 @@ with SB(uc=True, test=True, locale="en", guest=True) as sb:
 from seleniumbase import SB
 
 with SB(uc=True, test=True, ad_block=True) as sb:
-    url = "https://www.walmart.com/"
-    sb.activate_cdp_mode(url)
-    sb.sleep(1.8)
+    sb.activate_cdp_mode()
+    sb.goto("https://www.walmart.com/")
+    sb.sleep(2.2)
     continue_button = 'button:contains("Continue shopping")'
     if sb.is_element_visible(continue_button):
         sb.gui_click_element(continue_button)
@@ -339,8 +337,8 @@ with SB(uc=True, test=True, ad_block=True) as sb:
 from seleniumbase import SB
 
 with SB(uc=True, test=True, locale="en", pls="none") as sb:
-    url = "https://www.nike.com/"
-    sb.activate_cdp_mode(url)
+    sb.activate_cdp_mode()
+    sb.goto("https://www.nike.com/")
     sb.sleep(2.5)
     sb.click('[data-testid="user-tools-container"] search')
     sb.sleep(1.5)
@@ -371,209 +369,210 @@ with SB(uc=True, test=True, locale="en", pls="none") as sb:
 ### 🐙 <b translate="no">CDP Mode</b> API / Methods
 
 ```python
-sb.cdp.get(url, **kwargs)
-sb.cdp.goto(url, **kwargs)  # Same as sb.cdp.get(url, **kwargs)
-sb.cdp.open(url, **kwargs)  # Same as sb.cdp.get(url, **kwargs)
-sb.cdp.reload(ignore_cache=True, script_to_evaluate_on_load=None)
-sb.cdp.refresh(*args, **kwargs)
-sb.cdp.get_event_loop()
-sb.cdp.get_rd_host()  # Returns the remote-debugging host
-sb.cdp.get_rd_port()  # Returns the remote-debugging port
-sb.cdp.get_rd_url()  # Returns the remote-debugging URL
-sb.cdp.get_endpoint_url()  # Same as sb.cdp.get_rd_url()
-sb.cdp.get_port()  # Same as sb.cdp.get_rd_port()
-sb.cdp.get_websocket_url()  # Returns the websocket URL
-sb.cdp.add_handler(event, handler)
-sb.cdp.find_element(selector, best_match=False, timeout=None)
-sb.cdp.find(selector, best_match=False, timeout=None)
-sb.cdp.locator(selector, best_match=False, timeout=None)
-sb.cdp.find_element_by_text(text, tag_name=None, timeout=None)
-sb.cdp.find_all(selector, timeout=None)
-sb.cdp.find_elements_by_text(text, tag_name=None)
-sb.cdp.select(selector, timeout=None)
-sb.cdp.select_all(selector, timeout=None)
-sb.cdp.find_elements(selector, timeout=None)
-sb.cdp.find_visible_elements(selector, timeout=None)
-sb.cdp.click(selector, timeout=None, scroll=True)
-sb.cdp.click_if_visible(selector, timeout=0, scroll=True)
-sb.cdp.click_visible_elements(selector, limit=0, scroll=True)
-sb.cdp.click_nth_element(selector, number, scroll=True)
-sb.cdp.click_nth_visible_element(selector, number, scroll=True)
-sb.cdp.click_with_offset(selector, x, y, center=False, scroll=True)
-sb.cdp.click_link(link_text)
-sb.cdp.go_back()
-sb.cdp.go_forward()
-sb.cdp.get_navigation_history()
-sb.cdp.tile_windows(windows=None, max_columns=0)
-sb.cdp.grant_permissions(permissions, origin=None)
-sb.cdp.grant_all_permissions()
-sb.cdp.reset_permissions()
-sb.cdp.get_all_urls(absolute=True)
-sb.cdp.get_all_cookies(*args, **kwargs)
-sb.cdp.set_all_cookies(*args, **kwargs)
-sb.cdp.save_cookies(*args, **kwargs)
-sb.cdp.load_cookies(*args, **kwargs)
-sb.cdp.clear_cookies()
-sb.cdp.sleep(seconds)
-sb.cdp.bring_active_window_to_front()
-sb.cdp.bring_to_front()
-sb.cdp.get_active_element()
-sb.cdp.get_active_element_css()
-sb.cdp.click_active_element()
-sb.cdp.mouse_click(selector, timeout=None, scroll=True)
-sb.cdp.nested_click(parent_selector, selector)
-sb.cdp.get_nested_element(parent_selector, selector)
-sb.cdp.select_option_by_text(dropdown_selector, option)
-sb.cdp.select_option_by_index(dropdown_selector, option)
-sb.cdp.select_option_by_value(dropdown_selector, option)
-sb.cdp.flash(selector, duration=1, color="44CC88", pause=0)
-sb.cdp.highlight(selector)
-sb.cdp.focus(selector)
-sb.cdp.highlight_overlay(selector)
-sb.cdp.get_parent(element)
-sb.cdp.remove_element(selector)
-sb.cdp.remove_from_dom(selector)
-sb.cdp.remove_elements(selector)
-sb.cdp.send_keys(selector, text, timeout=None)
-sb.cdp.press_keys(selector, text, timeout=None)
-sb.cdp.type(selector, text, timeout=None)
-sb.cdp.set_value(selector, text, timeout=None)
-sb.cdp.clear_input(selector, timeout=None)
-sb.cdp.clear(selector, timeout=None)
-sb.cdp.submit(selector)
-sb.cdp.evaluate(expression)
-sb.cdp.execute_script(expression)
-sb.cdp.js_dumps(obj_name)
-sb.cdp.maximize()
-sb.cdp.minimize()
-sb.cdp.medimize()
-sb.cdp.set_window_rect(x, y, width, height)
-sb.cdp.reset_window_size()
-sb.cdp.open_new_window(url=None, switch_to=True)
-sb.cdp.switch_to_window(window)
-sb.cdp.switch_to_newest_window()
-sb.cdp.open_new_tab(url=None, switch_to=True)
-sb.cdp.switch_to_tab(tab)
-sb.cdp.switch_to_newest_tab()
-sb.cdp.close_active_tab()
-sb.cdp.get_active_tab()
-sb.cdp.get_tabs()
-sb.cdp.get_window()
-sb.cdp.get_text(selector="body")
-sb.cdp.get_title()
-sb.cdp.get_current_url()
-sb.cdp.get_origin()
-sb.cdp.get_html(include_shadow_dom=True)
-sb.cdp.get_page_source(include_shadow_dom=True)
-sb.cdp.get_beautiful_soup(source=None)
-sb.cdp.get_user_agent()
-sb.cdp.get_cookie_string()
-sb.cdp.get_locale_code()
-sb.cdp.get_local_storage_item(key)
-sb.cdp.get_session_storage_item(key)
-sb.cdp.get_screen_rect()
-sb.cdp.get_window_rect()
-sb.cdp.get_window_size()
-sb.cdp.get_window_position()
-sb.cdp.get_element_rect(selector, timeout=None)
-sb.cdp.get_element_size(selector, timeout=None)
-sb.cdp.get_element_position(selector, timeout=None)
-sb.cdp.get_gui_element_rect(selector, timeout=None)
-sb.cdp.get_gui_element_center(selector, timeout=None)
-sb.cdp.get_document()
-sb.cdp.get_flattened_document()
-sb.cdp.get_element_attributes(selector)
-sb.cdp.get_element_attribute(selector, attribute)
-sb.cdp.get_attribute(selector, attribute)
-sb.cdp.get_element_html(selector)
-sb.cdp.get_mfa_code(totp_key=None)
-sb.cdp.enter_mfa_code(selector, totp_key=None, timeout=None)
-sb.cdp.activate_messenger()
-sb.cdp.set_messenger_theme(theme="default", location="default")
-sb.cdp.post_message(message, duration=None, pause=True, style="info")
-sb.cdp.download_file(file_url)
-sb.cdp.save_file_as(file_url, new_file_name)
-sb.cdp.assert_downloaded_file(file, timeout=None)
-sb.cdp.get_path_of_downloaded_file(file)
-sb.cdp.set_download_path(path)
-sb.cdp.set_locale(locale)
-sb.cdp.set_local_storage_item(key, value)
-sb.cdp.set_session_storage_item(key, value)
-sb.cdp.set_attributes(selector, attribute, value)
-sb.cdp.is_attribute_present(selector, attribute, value=None)
-sb.cdp.is_online()
-sb.cdp.solve_captcha()
-sb.cdp.click_captcha()
-sb.cdp.gui_press_key(key)
-sb.cdp.gui_press_keys(keys)
-sb.cdp.gui_write(text)
-sb.cdp.gui_click_x_y(x, y, timeframe=0.25)
-sb.cdp.gui_click_element(selector, timeframe=0.25)
-sb.cdp.gui_click_with_offset(selector, x, y, timeframe=0.25, center=False)
-sb.cdp.gui_click_captcha()
-sb.cdp.gui_drag_drop_points(x1, y1, x2, y2, timeframe=0.35)
-sb.cdp.gui_drag_and_drop(drag_selector, drop_selector, timeframe=0.35)
-sb.cdp.gui_click_and_hold(selector, timeframe=0.35)
-sb.cdp.gui_hover_x_y(x, y)
-sb.cdp.gui_hover_element(selector)
-sb.cdp.gui_hover_and_click(hover_selector, click_selector)
-sb.cdp.hover_element(selector)
-sb.cdp.hover_and_click(hover_selector, click_selector)
-sb.cdp.internalize_links()
-sb.cdp.is_checked(selector)
-sb.cdp.is_selected(selector)
-sb.cdp.check_if_unchecked(selector)
-sb.cdp.select_if_unselected(selector)
-sb.cdp.uncheck_if_checked(selector)
-sb.cdp.unselect_if_selected(selector)
-sb.cdp.is_element_present(selector)
-sb.cdp.is_element_visible(selector)
-sb.cdp.is_text_visible(text, selector="body")
-sb.cdp.is_exact_text_visible(text, selector="body")
-sb.cdp.wait_for_text(text, selector="body", timeout=None)
-sb.cdp.wait_for_text_not_visible(text, selector="body", timeout=None)
-sb.cdp.wait_for_element_visible(selector, timeout=None)
-sb.cdp.wait_for_element(selector, timeout=None)
-sb.cdp.wait_for_element_not_visible(selector, timeout=None)
-sb.cdp.wait_for_element_absent(selector, timeout=None)
-sb.cdp.wait_for_any_of_elements_visible(*args, **kwargs)
-sb.cdp.wait_for_any_of_elements_present(*args, **kwargs)
-sb.cdp.assert_any_of_elements_visible(*args, **kwargs)
-sb.cdp.assert_any_of_elements_present(*args, **kwargs)
-sb.cdp.assert_element(selector, timeout=None)
-sb.cdp.assert_element_visible(selector, timeout=None)
-sb.cdp.assert_element_present(selector, timeout=None)
-sb.cdp.assert_element_absent(selector, timeout=None)
-sb.cdp.assert_element_not_visible(selector, timeout=None)
-sb.cdp.assert_element_attribute(selector, attribute, value=None)
-sb.cdp.assert_title(title)
-sb.cdp.assert_title_contains(substring)
-sb.cdp.assert_url(url)
-sb.cdp.assert_url_contains(substring)
-sb.cdp.assert_text(text, selector="html", timeout=None)
-sb.cdp.assert_exact_text(text, selector="html", timeout=None)
-sb.cdp.assert_text_not_visible(text, selector="body", timeout=None)
-sb.cdp.assert_true(expression, msg=None)
-sb.cdp.assert_false(expression, msg=None)
-sb.cdp.assert_equal(first, second)
-sb.cdp.assert_not_equal(first, second)
-sb.cdp.assert_in(first, second)
-sb.cdp.assert_not_in(first, second)
-sb.cdp.js_scroll_into_view(selector)
-sb.cdp.scroll_into_view(selector)
-sb.cdp.scroll_to_y(y)
-sb.cdp.scroll_to_top()
-sb.cdp.scroll_to_bottom()
-sb.cdp.scroll_up(amount=25)
-sb.cdp.scroll_down(amount=25)
-sb.cdp.save_page_source(name, folder=None)
-sb.cdp.save_as_html(name, folder=None)
-sb.cdp.save_screenshot(name, folder=None, selector=None)
-sb.cdp.print_to_pdf(name, folder=None)
-sb.cdp.save_as_pdf(name, folder=None)
+sb.get(url, **kwargs)
+sb.open(url, **kwargs)  # Same as sb.get(url, **kwargs) in CDP Mode
+sb.goto(url, **kwargs)  # Same as sb.get(url, **kwargs) in CDP Mode
+sb.reload(ignore_cache=True, script_to_evaluate_on_load=None)
+sb.refresh(*args, **kwargs)
+sb.get_event_loop()
+sb.get_rd_host()  # Returns the remote-debugging host
+sb.get_rd_port()  # Returns the remote-debugging port
+sb.get_rd_url()  # Returns the remote-debugging URL
+sb.get_endpoint_url()  # Same as sb.get_rd_url()
+sb.get_port()  # Same as sb.get_rd_port()
+sb.get_websocket_url()  # Returns the websocket URL
+sb.add_handler(event, handler)
+sb.find_element(selector, best_match=False, timeout=None)
+sb.find(selector, best_match=False, timeout=None)
+sb.locator(selector, best_match=False, timeout=None)
+sb.find_element_by_text(text, tag_name=None, timeout=None)
+sb.find_all(selector, timeout=None)
+sb.find_elements_by_text(text, tag_name=None)
+sb.select(selector, timeout=None)
+sb.select_all(selector, timeout=None)
+sb.find_elements(selector, timeout=None)
+sb.find_visible_elements(selector, timeout=None)
+sb.click(selector, timeout=None, scroll=True)
+sb.click_if_visible(selector, timeout=0, scroll=True)
+sb.click_visible_elements(selector, limit=0, scroll=True)
+sb.click_nth_element(selector, number, scroll=True)
+sb.click_nth_visible_element(selector, number, scroll=True)
+sb.click_with_offset(selector, x, y, center=False, scroll=True)
+sb.click_link(link_text)
+sb.go_back()
+sb.go_forward()
+sb.get_navigation_history()
+sb.tile_windows(windows=None, max_columns=0)
+sb.grant_permissions(permissions, origin=None)
+sb.grant_all_permissions()
+sb.reset_permissions()
+sb.get_all_urls(absolute=True)
+sb.get_all_cookies(*args, **kwargs)
+sb.set_all_cookies(*args, **kwargs)
+sb.save_cookies(*args, **kwargs)
+sb.load_cookies(*args, **kwargs)
+sb.clear_cookies()
+sb.sleep(seconds)
+sb.bring_active_window_to_front()
+sb.bring_to_front()
+sb.get_active_element()
+sb.get_active_element_css()
+sb.click_active_element()
+sb.mouse_click(selector, timeout=None, scroll=True)
+sb.nested_click(parent_selector, selector)
+sb.get_nested_element(parent_selector, selector)
+sb.select_option_by_text(dropdown_selector, option)
+sb.select_option_by_index(dropdown_selector, option)
+sb.select_option_by_value(dropdown_selector, option)
+sb.flash(selector, duration=1, color="44CC88", pause=0)
+sb.highlight(selector)
+sb.focus(selector)
+sb.highlight_overlay(selector)
+sb.get_parent(element)
+sb.remove_element(selector)
+sb.remove_from_dom(selector)
+sb.remove_elements(selector)
+sb.send_keys(selector, text, timeout=None)
+sb.press_keys(selector, text, timeout=None)
+sb.type(selector, text, timeout=None)
+sb.set_value(selector, text, timeout=None)
+sb.clear_input(selector, timeout=None)
+sb.clear(selector, timeout=None)
+sb.submit(selector)
+sb.evaluate(expression)
+sb.execute_script(expression)
+sb.js_dumps(obj_name)
+sb.maximize()
+sb.minimize()
+sb.medimize()
+sb.set_window_rect(x, y, width, height)
+sb.reset_window_size()
+sb.open_new_window(url=None, switch_to=True)
+sb.switch_to_window(window)
+sb.switch_to_newest_window()
+sb.open_new_tab(url=None, switch_to=True)
+sb.switch_to_tab(tab)
+sb.switch_to_newest_tab()
+sb.close_active_tab()
+sb.get_active_tab()
+sb.get_tabs()
+sb.get_window()
+sb.get_text(selector="body")
+sb.get_title()
+sb.get_current_url()
+sb.get_origin()
+sb.get_html(include_shadow_dom=True)
+sb.get_page_source(include_shadow_dom=True)
+sb.get_beautiful_soup(source=None)
+sb.get_user_agent()
+sb.get_cookie_string()
+sb.get_locale_code()
+sb.get_local_storage_item(key)
+sb.get_session_storage_item(key)
+sb.get_screen_rect()
+sb.get_window_rect()
+sb.get_window_size()
+sb.get_window_position()
+sb.get_element_rect(selector, timeout=None)
+sb.get_element_size(selector, timeout=None)
+sb.get_element_position(selector, timeout=None)
+sb.get_gui_element_rect(selector, timeout=None)
+sb.get_gui_element_center(selector, timeout=None)
+sb.get_document()
+sb.get_flattened_document()
+sb.get_element_attributes(selector)
+sb.get_element_attribute(selector, attribute)
+sb.get_attribute(selector, attribute)
+sb.get_element_html(selector)
+sb.get_mfa_code(totp_key=None)
+sb.enter_mfa_code(selector, totp_key=None, timeout=None)
+sb.activate_messenger()
+sb.set_messenger_theme(theme="default", location="default")
+sb.post_message(message, duration=None, pause=True, style="info")
+sb.download_file(file_url)
+sb.save_file_as(file_url, new_file_name)
+sb.assert_downloaded_file(file, timeout=None)
+sb.get_path_of_downloaded_file(file)
+sb.set_download_path(path)
+sb.set_locale(locale)
+sb.set_local_storage_item(key, value)
+sb.set_session_storage_item(key, value)
+sb.set_attributes(selector, attribute, value)
+sb.is_attribute_present(selector, attribute, value=None)
+sb.is_online()
+sb.solve_captcha()
+sb.click_captcha()
+sb.gui_press_key(key)
+sb.gui_press_keys(keys)
+sb.gui_write(text)
+sb.gui_click_x_y(x, y, timeframe=0.25)
+sb.gui_click_element(selector, timeframe=0.25)
+sb.gui_click_with_offset(selector, x, y, timeframe=0.25, center=False)
+sb.gui_click_captcha()
+sb.gui_drag_drop_points(x1, y1, x2, y2, timeframe=0.35)
+sb.gui_drag_and_drop(drag_selector, drop_selector, timeframe=0.35)
+sb.gui_click_and_hold(selector, timeframe=0.35)
+sb.gui_hover_x_y(x, y)
+sb.gui_hover_element(selector)
+sb.gui_hover_and_click(hover_selector, click_selector)
+sb.hover_element(selector)
+sb.hover_and_click(hover_selector, click_selector)
+sb.internalize_links()
+sb.is_checked(selector)
+sb.is_selected(selector)
+sb.check_if_unchecked(selector)
+sb.select_if_unselected(selector)
+sb.uncheck_if_checked(selector)
+sb.unselect_if_selected(selector)
+sb.is_element_present(selector)
+sb.is_element_visible(selector)
+sb.is_text_visible(text, selector="body")
+sb.is_exact_text_visible(text, selector="body")
+sb.wait_for_text(text, selector="body", timeout=None)
+sb.wait_for_text_not_visible(text, selector="body", timeout=None)
+sb.wait_for_element_visible(selector, timeout=None)
+sb.wait_for_element(selector, timeout=None)
+sb.wait_for_element_not_visible(selector, timeout=None)
+sb.wait_for_element_absent(selector, timeout=None)
+sb.wait_for_any_of_elements_visible(*args, **kwargs)
+sb.wait_for_any_of_elements_present(*args, **kwargs)
+sb.assert_any_of_elements_visible(*args, **kwargs)
+sb.assert_any_of_elements_present(*args, **kwargs)
+sb.assert_element(selector, timeout=None)
+sb.assert_element_visible(selector, timeout=None)
+sb.assert_element_present(selector, timeout=None)
+sb.assert_element_absent(selector, timeout=None)
+sb.assert_element_not_visible(selector, timeout=None)
+sb.assert_element_attribute(selector, attribute, value=None)
+sb.assert_title(title)
+sb.assert_title_contains(substring)
+sb.assert_url(url)
+sb.assert_url_contains(substring)
+sb.assert_text(text, selector="html", timeout=None)
+sb.assert_exact_text(text, selector="html", timeout=None)
+sb.assert_text_not_visible(text, selector="body", timeout=None)
+sb.assert_true(expression, msg=None)
+sb.assert_false(expression, msg=None)
+sb.assert_equal(first, second)
+sb.assert_not_equal(first, second)
+sb.assert_in(first, second)
+sb.assert_not_in(first, second)
+sb.js_scroll_into_view(selector)
+sb.scroll_into_view(selector)
+sb.scroll_to_y(y)
+sb.scroll_to_top()
+sb.scroll_to_bottom()
+sb.scroll_up(amount=25)
+sb.scroll_down(amount=25)
+sb.save_page_source(name, folder=None)
+sb.save_as_html(name, folder=None)
+sb.save_screenshot(name, folder=None, selector=None)
+sb.print_to_pdf(name, folder=None)
+sb.save_as_pdf(name, folder=None)
+sb.quit()  # (Pure CDP Mode only: `sb_cdp`)
 ```
 
-ℹ️ When available, calling `sb.METHOD()` redirects to `sb.cdp.METHOD()` when CDP Mode is active. From Pure CDP Mode, always call these methods with `sb.METHOD()` instead of `sb.cdp.METHOD()`.
+ℹ️ When available, calling `sb.METHOD()` redirects to `sb.cdp.METHOD()` from UC + CDP Mode.
 
 ----
 
@@ -581,23 +580,34 @@ sb.cdp.save_as_pdf(name, folder=None)
 
 ### 🐙 <b translate="no">Pure CDP Mode</b> (<code translate="no">sb_cdp</code>)
 
-In <b translate="no">Pure CDP Mode</b>, the browser is launched using CDP, and browser actions are performed using CDP. WebDriver isn't available at all, but SeleniumBase can still call <code>PyAutoGUI</code> methods when CDP isn't enough. Here's how to initialize Pure CDP Mode:
+In <b translate="no">Pure CDP Mode</b>, the browser is launched using CDP, and all browser actions are performed using CDP. WebDriver isn't available at all, but SeleniumBase can still call <code>PyAutoGUI</code> methods when CDP isn't enough.
+
+🐙 Here's how to initialize Pure CDP Mode with a starting URL:
 
 ```python
 from seleniumbase import sb_cdp
 
-sb = sb_cdp.Chrome(url)
+sb = sb_cdp.Chrome(URL)
 ```
 
-<b translate="no">Pure CDP Mode</b> includes all methods from regular CDP Mode, except that they're called directly from <code>sb</code> instead of <code>sb.cdp</code>. Eg: <code>sb.gui_click_captcha()</code>. To quit a CDP-launched browser, use `sb.quit()`.
+🐙 You can also initialize Pure CDP Mode and set the URL later:
+
+```python
+from seleniumbase import sb_cdp
+
+sb = sb_cdp.Chrome()
+sb.goto(URL)
+```
+
+<b translate="no">Pure CDP Mode</b> includes all methods from regular CDP Mode. To quit a Pure CDP Mode browser before Python goes out-of-scope, use `sb.quit()`.
 
 Basic example from [SeleniumBase/examples/cdp_mode/raw_cdp_turnstile.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_turnstile.py):
 
 ```python
 from seleniumbase import sb_cdp
 
-url = "https://seleniumbase.io/apps/turnstile"
-sb = sb_cdp.Chrome(url)
+sb = sb_cdp.Chrome()
+sb.goto("https://seleniumbase.io/apps/turnstile")
 sb.solve_captcha()
 sb.assert_element("img#captcha-success")
 sb.set_messenger_theme(location="top_left")
@@ -610,8 +620,8 @@ Another example: ([SeleniumBase/examples/cdp_mode/raw_cdp_methods.py](https://gi
 ```python
 from seleniumbase import sb_cdp
 
-url = "https://seleniumbase.io/demo_page"
-sb = sb_cdp.Chrome(url)
+sb = sb_cdp.Chrome()
+sb.goto("https://seleniumbase.io/demo_page")
 sb.press_keys("input", "Text")
 sb.highlight("button")
 sb.type("textarea", "Here are some words")
@@ -639,78 +649,78 @@ Initialization:
 from seleniumbase import cdp_driver
 
 driver = await cdp_driver.start_async()
-tab = await driver.get(url, **kwargs)
+page = await driver.get(url, **kwargs)
 ```
 
-Methods: (Sometimes `tab` is named `page` in examples)
+Methods: (Sometimes `page` is named  `tab` in examples where `page` is already taken.)
 
 ```python
-await tab.get(url="about:blank")
-await tab.goto(url="about:blank")  # Same as await tab.get(url)
-await tab.open(url="about:blank")  # Same as await tab.get(url)
-await tab.find(text, best_match=False, timeout=10)  # text can be selector
-await tab.find_all(text, timeout=10)  # text can be selector
-await tab.select(selector, timeout=10)
-await tab.select_all(selector, timeout=10, include_frames=False)
-await tab.query_selector(selector)
-await tab.query_selector_all(selector)
-await tab.find_element_by_text(text, best_match=False)
-await tab.find_elements_by_text(text)
-await tab.reload(ignore_cache=True, script_to_evaluate_on_load=None)
-await tab.evaluate(expression)
-await tab.js_dumps(obj_name)
-await tab.back()
-await tab.forward()
-await tab.get_window()
-await tab.get_content()
-await tab.maximize()
-await tab.minimize()
-await tab.fullscreen()
-await tab.medimize()
-await tab.set_window_size(left=0, top=0, width=1280, height=1024)
-await tab.set_window_rect(left=0, top=0, width=1280, height=1024)
-await tab.activate()
-await tab.bring_to_front()
-await tab.set_window_state(left=0, top=0, width=1280, height=720, state="normal")
-await tab.get_navigation_history()
-await tab.get_user_agent()
-await tab.get_cookie_string()
-await tab.get_locale_code()
-await tab.is_online()
-await tab.open_external_inspector()  # Open separate browser for debugging
-await tab.close()
-await tab.scroll_down(amount=25)
-await tab.scroll_up(amount=25)
-await tab.wait_for(selector="", text="", timeout=10)
-await tab.set_attributes(selector, attribute, value)
-await tab.internalize_links()
-await tab.download_file(url, filename=None)
-await tab.save_screenshot(filename="auto", format="png", full_page=False)
-await tab.print_to_pdf(filename="auto")
-await tab.set_download_path(path)
-await tab.get_all_linked_sources()
-await tab.get_all_urls(absolute=True)
-await tab.get_html()
-await tab.get_page_source()
-await tab.is_element_present(selector)
-await tab.is_element_visible(selector)
-await tab.get_element_rect(selector, timeout=5)  # (window-based)
-await tab.get_window_rect()
-await tab.get_gui_element_rect(selector, timeout=5)  # (screen-based)
-await tab.get_title()
-await tab.get_current_url()
-await tab.get_origin()
-await tab.send_keys(selector, text, timeout=5)
-await tab.type(selector, text, timeout=5)
-await tab.click(selector, timeout=5)
-await tab.click_if_visible(selector, timeout=0)
-await tab.click_with_offset(selector, x, y, center=False, timeout=5)
-await tab.solve_captcha()
-await tab.click_captcha()  # Same as solve_captcha()
-await tab.get_document()
-await tab.get_flattened_document()
-await tab.get_local_storage()
-await tab.set_local_storage(items)
+await page.get(url="about:blank")
+await page.open(url="about:blank")  # Same as await page.get(url) in CDP Mode
+await page.goto(url="about:blank")  # Same as await page.get(url) in CDP Mode
+await page.find(text, best_match=False, timeout=10)  # text can be selector
+await page.find_all(text, timeout=10)  # text can be selector
+await page.select(selector, timeout=10)
+await page.select_all(selector, timeout=10, include_frames=False)
+await page.query_selector(selector)
+await page.query_selector_all(selector)
+await page.find_element_by_text(text, best_match=False)
+await page.find_elements_by_text(text)
+await page.send_keys(selector, text, timeout=5)
+await page.type(selector, text, timeout=5)
+await page.click(selector, timeout=5)
+await page.click_if_visible(selector, timeout=0)
+await page.click_with_offset(selector, x, y, center=False, timeout=5)
+await page.solve_captcha()
+await page.click_captcha()  # Same as solve_captcha()
+await page.reload(ignore_cache=True, script_to_evaluate_on_load=None)
+await page.evaluate(expression)
+await page.js_dumps(obj_name)
+await page.back()
+await page.forward()
+await page.get_window()
+await page.get_content()
+await page.maximize()
+await page.minimize()
+await page.fullscreen()
+await page.medimize()
+await page.set_window_size(left=0, top=0, width=1280, height=1024)
+await page.set_window_rect(left=0, top=0, width=1280, height=1024)
+await page.activate()
+await page.bring_to_front()
+await page.set_window_state(left=0, top=0, width=1280, height=720, state="normal")
+await page.get_navigation_history()
+await page.get_user_agent()
+await page.get_cookie_string()
+await page.get_locale_code()
+await page.is_element_present(selector)
+await page.is_element_visible(selector)
+await page.is_online()
+await page.open_external_inspector()  # Open separate browser for debugging
+await page.close()
+await page.scroll_down(amount=25)
+await page.scroll_up(amount=25)
+await page.wait_for(selector="", text="", timeout=10)
+await page.set_attributes(selector, attribute, value)
+await page.internalize_links()
+await page.download_file(url, filename=None)
+await page.save_screenshot(filename="auto", format="png", full_page=False)
+await page.print_to_pdf(filename="auto")
+await page.set_download_path(path)
+await page.get_all_linked_sources()
+await page.get_all_urls(absolute=True)
+await page.get_html()
+await page.get_page_source()
+await page.get_element_rect(selector, timeout=5)  # (window-based)
+await page.get_window_rect()
+await page.get_gui_element_rect(selector, timeout=5)  # (screen-based)
+await page.get_title()
+await page.get_current_url()
+await page.get_origin()
+await page.get_document()
+await page.get_flattened_document()
+await page.get_local_storage()
+await page.set_local_storage(items)
 ```
 
 ----

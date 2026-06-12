@@ -1,8 +1,8 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True, locale="en") as sb:
-    url = "https://www.albertsons.com/recipes/"
-    sb.activate_cdp_mode(url)
+    sb.activate_cdp_mode()
+    sb.goto("https://www.albertsons.com/recipes/")
     sb.sleep(2.5)
     sb.remove_element("div > div > article")
     sb.scroll_into_view('input[type="search"]')

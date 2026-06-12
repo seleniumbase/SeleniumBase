@@ -1,9 +1,9 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True, locale="en", guest=True) as sb:
-    url = "https://www.hyatt.com/"
-    sb.activate_cdp_mode(url)
-    sb.sleep(3.4)
+    sb.activate_cdp_mode()
+    sb.goto("https://www.hyatt.com/")
+    sb.sleep(3.6)
     sb.click_if_visible('button[aria-label="Close"]')
     sb.sleep(0.1)
     sb.click_if_visible("#onetrust-reject-all-handler")
