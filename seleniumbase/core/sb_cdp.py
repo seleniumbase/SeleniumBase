@@ -3338,7 +3338,7 @@ class CDPMethods():
     def assert_true(self, expression, msg=None):
         if not expression:
             if not msg:
-                raise AssertionError("%s is not true" % expression)
+                raise AssertionError("%s is not true." % expression)
             else:
                 raise AssertionError(
                     "%s is not true. (%s)" % (expression, msg)
@@ -3347,27 +3347,48 @@ class CDPMethods():
     def assert_false(self, expression, msg=None):
         if expression:
             if not msg:
-                raise AssertionError("%s is not false" % expression)
+                raise AssertionError("%s is not false." % expression)
             else:
                 raise AssertionError(
                     "%s is not false. (%s)" % (expression, msg)
                 )
 
-    def assert_equal(self, first, second):
+    def assert_equal(self, first, second, msg=None):
         if first != second:
-            raise AssertionError("%s is not equal to %s" % (first, second))
+            if not msg:
+                raise AssertionError(
+                    "%s is not equal to %s." % (first, second)
+                )
+            else:
+                raise AssertionError(
+                    "%s is not equal to %s. (%s)" % (first, second, msg))
 
-    def assert_not_equal(self, first, second):
+    def assert_not_equal(self, first, second, msg=None):
         if first == second:
-            raise AssertionError("%s is equal to %s" % (first, second))
+            if not msg:
+                raise AssertionError("%s is equal to %s." % (first, second))
+            else:
+                raise AssertionError(
+                    "%s is equal to %s. (%s)" % (first, second, msg)
+                )
 
-    def assert_in(self, first, second):
+    def assert_in(self, first, second, msg=None):
         if first not in second:
-            raise AssertionError("%s is not in %s" % (first, second))
+            if not msg:
+                raise AssertionError("%s is not in %s." % (first, second))
+            else:
+                raise AssertionError(
+                    "%s is not in %s. (%s)" % (first, second, msg)
+                )
 
-    def assert_not_in(self, first, second):
+    def assert_not_in(self, first, second, msg=None):
         if first in second:
-            raise AssertionError("%s is in %s" % (first, second))
+            if not msg:
+                raise AssertionError("%s is in %s." % (first, second))
+            else:
+                raise AssertionError(
+                    "%s is in %s. (%s)" % (first, second, msg)
+                )
 
     def js_scroll_into_view(self, selector):
         css_selector = self.__convert_to_css_if_xpath(selector)
