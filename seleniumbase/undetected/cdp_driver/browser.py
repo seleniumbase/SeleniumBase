@@ -501,6 +501,9 @@ class Browser:
                     "*.ad.gt*",
                 ]
             ))
+            time.sleep(0.02)
+            self.wait(0.02)
+            await connection.sleep(0.03)
         if _cdp_geolocation:
             await connection.set_geolocation(_cdp_geolocation)
         if _cdp_disable_csp:

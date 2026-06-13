@@ -176,7 +176,7 @@ setup(
         'filelock~=3.19.1;python_version<"3.10"',
         'filelock>=3.29.3;python_version>="3.10"',
         'fasteners>=0.20',
-        'mycdp>=1.3.7',
+        'mycdp>=1.4.0',
         'pynose>=1.5.5',
         'platformdirs~=4.4.0;python_version<"3.10"',
         'platformdirs>=4.10.0;python_version>="3.10"',
@@ -273,7 +273,7 @@ setup(
         "pdfminer": [
             'pdfminer.six==20251107;python_version<"3.10"',
             'pdfminer.six==20260107;python_version>="3.10"',
-            'cryptography==48.0.1',
+            'cryptography==49.0.0',
             'cffi==2.0.0',
             'pycparser==2.23;python_version<"3.10"',
             'pycparser==3.0;python_version>="3.10"',
