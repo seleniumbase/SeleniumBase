@@ -8,11 +8,11 @@ with SB(uc=True, test=True, locale="en", guest=True, pls="none") as sb:
     input_selector = 'input[name="endLocation"]'
     if not sb.is_element_present(input_selector):
         input_selector = "div.location-input input"
-    sb.click(input_selector)
-    sb.sleep(1.2)
+    sb.mouse_click(input_selector)
+    sb.sleep(0.5)
     location = "Portland, OR"
     selection = "Oregon, United States"  # (Dropdown option)
-    sb.type(input_selector, location)
+    sb.press_keys(input_selector, location)
     sb.sleep(0.5)
     sb.click(selection)
     sb.sleep(0.4)
