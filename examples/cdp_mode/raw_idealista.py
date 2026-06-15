@@ -1,4 +1,5 @@
-"""(Bypasses the DataDome slider CAPTCHA)"""
+"""An example that bypasses the DataDome Slider CAPTCHA.
+(PyAutoGUI is installed at runtime if not yet installed.)"""
 from seleniumbase import SB
 
 with SB(uc=True, test=True, locale="es") as sb:
