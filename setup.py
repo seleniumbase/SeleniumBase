@@ -174,7 +174,7 @@ setup(
         'websockets~=15.0.1;python_version<"3.10"',
         'websockets>=16.0;python_version>="3.10"',
         'filelock~=3.19.1;python_version<"3.10"',
-        'filelock>=3.29.3;python_version>="3.10"',
+        'filelock>=3.29.4;python_version>="3.10"',
         'fasteners>=0.20',
         'mycdp>=1.4.0',
         'pynose>=1.5.5',
@@ -220,7 +220,7 @@ setup(
         'iniconfig==2.3.0;python_version>="3.10"',
         'pluggy==1.6.0',
         'pytest==8.4.2;python_version<"3.11"',
-        'pytest==9.0.3;python_version>="3.11"',
+        'pytest==9.1.0;python_version>="3.11"',
         'pytest-html==4.0.2',  # Newer ones had issues
         'pytest-metadata==3.1.1',
         'pytest-ordering==0.6',
@@ -231,7 +231,7 @@ setup(
         'behave==1.2.6',  # Newer ones had issues
         'soupsieve~=2.8.4',
         'beautifulsoup4~=4.15.0',
-        'pyotp==2.9.0',
+        'pyotp~=2.10.0',
         'python-xlib==0.33;platform_system=="Linux"',
         'PyAutoGUI>=0.9.54;platform_system=="Linux"',
         'markdown-it-py==3.0.0;python_version<"3.10"',
