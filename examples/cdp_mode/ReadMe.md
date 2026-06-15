@@ -291,12 +291,6 @@ with SB(uc=True, test=True, ad_block=True) as sb:
     required_text = "Catan"
     sb.press_keys('input[aria-label="Search"]', search + "\n")
     sb.sleep(3.8)
-    if sb.is_element_visible("#px-captcha"):
-        sb.gui_click_and_hold("#px-captcha", 7.2)
-        sb.sleep(4.2)
-        if sb.is_element_visible("#px-captcha"):
-            sb.gui_click_and_hold("#px-captcha", 4.2)
-            sb.sleep(3.2)
     sb.remove_elements('[data-testid="skyline-ad"]')
     sb.remove_elements('[data-testid="sba-container"]')
     print('*** Walmart Search for "%s":' % search)
