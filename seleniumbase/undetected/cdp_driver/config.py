@@ -250,6 +250,7 @@ class Config:
             "--disable-ipc-flooding-protection",
             "--disable-background-timer-throttling",
             "--disable-search-engine-choice-screen",
+            "--disable-background-networking",
             "--disable-backgrounding-occluded-windows",
             "--disable-client-side-phishing-detection",
             "--disable-device-discovery-notifications",
@@ -314,9 +315,9 @@ class Config:
             "SidePanelPinning,UserAgentClientHint,PrivacySandboxSettings4,"
             "OptimizationHintsFetching,InterestFeedContentSuggestions,"
             "Bluetooth,WebBluetooth,UnifiedWebBluetooth,ComponentUpdater,"
-            "DisableLoadExtensionCommandLineSwitch,"
-            "OmniboxUIFeedback,OmniboxPopupShortcut,"
-            "WebAuthentication,PasskeyAuth"
+            "DisableLoadExtensionCommandLineSwitch,WebAuthentication,"
+            "OmniboxUIFeedback,OmniboxPopupShortcut,PasskeyAuth,"
+            "MediaRouter,DialMediaRouteProvider,WebRtcHideLocalIpsWithMdns"
         ]
         if self.expert:
             args += [

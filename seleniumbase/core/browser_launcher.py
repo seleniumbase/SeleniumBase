@@ -2763,6 +2763,7 @@ def _set_chrome_options(
         chrome_options.add_argument("--disable-3d-apis")
     if headless or headless2 or is_using_uc(undetectable, browser_name):
         chrome_options.add_argument("--disable-renderer-backgrounding")
+    chrome_options.add_argument("--disable-background-networking")
     chrome_options.add_argument("--disable-backgrounding-occluded-windows")
     chrome_options.add_argument("--disable-client-side-phishing-detection")
     chrome_options.add_argument("--disable-device-discovery-notifications")
@@ -2799,14 +2800,19 @@ def _set_chrome_options(
     included_disabled_features.append("UnifiedWebBluetooth")
     included_disabled_features.append("WebAuthentication")
     included_disabled_features.append("PasskeyAuth")
+    included_disabled_features.append("MediaRouter")
+    included_disabled_features.append("DialMediaRouteProvider")
+    included_disabled_features.append("WebRtcHideLocalIpsWithMdns")
+    if is_using_uc(undetectable, browser_name):
+        included_disabled_features.append("IsolateOrigins")
+        included_disabled_features.append("site-per-process")
     for item in extra_disabled_features:
         if item not in included_disabled_features:
             included_disabled_features.append(item)
     d_f_string = ",".join(included_disabled_features)
     chrome_options.add_argument("--disable-features=%s" % d_f_string)
     chrome_options.add_argument("--enable-unsafe-extension-debugging")
-    if proxy_string:
-        chrome_options.add_argument("--test-type")
+    chrome_options.add_argument("--test-type")
     if proxy_auth or sb_config._ext_dirs:
         if not is_using_uc(undetectable, browser_name):
             chrome_options.add_argument("--remote-debugging-pipe")
@@ -2824,13 +2830,12 @@ def _set_chrome_options(
         chrome_options.add_argument("--animation-duration-scale=0")
         chrome_options.add_argument("--wm-window-animations-disabled")
         chrome_options.add_argument("--enable-privacy-sandbox-ads-apis")
+        chrome_options.add_argument("--disable-auto-reload")
         chrome_options.add_argument("--disable-background-timer-throttling")
         # Prevent new tabs opened by Selenium from being blocked:
         chrome_options.add_argument("--disable-popup-blocking")
         # Skip remaining options that trigger anti-bot services
         return chrome_options
-    if not proxy_string:
-        chrome_options.add_argument("--test-type")
     chrome_options.add_argument("--log-level=3")
     chrome_options.add_argument("--no-first-run")
     chrome_options.add_argument("--allow-insecure-localhost")
