@@ -1,3 +1,5 @@
+"""An example of bypassing bot-detection on Southwest.com.
+(PyAutoGUI is installed at runtime if it's not installed.)"""
 from seleniumbase import SB
 
 with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
