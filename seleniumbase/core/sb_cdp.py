@@ -1,4 +1,4 @@
-"""Add CDP methods to extend the driver"""
+"""The CDP Mode API (sync format), which wraps the async format."""
 import asyncio
 import fasteners
 import mycdp
@@ -2035,7 +2035,7 @@ class CDPMethods():
         self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.sleep(0.025))
 
-    def __gui_click_x_y(self, x, y, timeframe=0.25, uc_lock=False):
+    def __gui_click_x_y(self, x, y, timeframe=0.27, uc_lock=False):
         self.__install_pyautogui_if_missing()
         import pyautogui
         pyautogui = self.__get_configured_pyautogui(pyautogui)
@@ -2065,7 +2065,7 @@ class CDPMethods():
                 print(" <DEBUG> pyautogui.click(%s, %s)" % (x, y))
             pyautogui.click(x=x, y=y)
 
-    def gui_click_x_y(self, x, y, timeframe=0.25):
+    def gui_click_x_y(self, x, y, timeframe=0.27):
         gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
         with gui_lock:  # Prevent issues with multiple processes
             self.__make_sure_pyautogui_lock_is_writable()
@@ -2097,7 +2097,7 @@ class CDPMethods():
             self.bring_active_window_to_front()
             self.__gui_click_x_y(x, y, timeframe=timeframe, uc_lock=False)
 
-    def gui_click_element(self, selector, timeframe=0.25):
+    def gui_click_element(self, selector, timeframe=0.27):
         self.__slow_mode_pause_if_set()
         x, y = self.get_gui_element_center(selector)
         self.__add_light_pause()
@@ -2106,7 +2106,7 @@ class CDPMethods():
         self.loop.run_until_complete(self.page.wait(0.2))
 
     def gui_click_with_offset(
-        self, selector, x, y, timeframe=0.25, center=False
+        self, selector, x, y, timeframe=0.27, center=False
     ):
         """Click an element at an {X,Y}-offset location.
         {0,0} is the top-left corner of the element.
@@ -2577,7 +2577,7 @@ class CDPMethods():
             return True
         return False
 
-    def __gui_drag_drop(self, x1, y1, x2, y2, timeframe=0.25, uc_lock=False):
+    def __gui_drag_drop(self, x1, y1, x2, y2, timeframe=0.27, uc_lock=False):
         self.__install_pyautogui_if_missing()
         import pyautogui
         pyautogui = self.__get_configured_pyautogui(pyautogui)
@@ -2672,7 +2672,11 @@ class CDPMethods():
         self.__add_light_pause()
         self.gui_drag_drop_points(x, y, x, y, timeframe=timeframe)
 
-    def __gui_hover_x_y(self, x, y, timeframe=0.25, uc_lock=False):
+    def gui_move_to_element(self, selector, timeframe=0.27):
+        """Same as gui_hover_element()"""
+        return self.gui_hover_element(selector, timeframe=timeframe)
+
+    def __gui_hover_x_y(self, x, y, timeframe=0.27, uc_lock=False):
         self.__install_pyautogui_if_missing()
         import pyautogui
         pyautogui = self.__get_configured_pyautogui(pyautogui)
@@ -2697,7 +2701,7 @@ class CDPMethods():
             pyautogui.moveTo(x, y, timeframe, pyautogui.easeOutQuad)
             time.sleep(0.056)
 
-    def gui_hover_x_y(self, x, y, timeframe=0.25):
+    def gui_hover_x_y(self, x, y, timeframe=0.27):
         gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
         with gui_lock:  # Prevent issues with multiple processes
             self.__install_pyautogui_if_missing()
@@ -2748,7 +2752,12 @@ class CDPMethods():
             self.bring_active_window_to_front()
             self.__gui_hover_x_y(x, y, timeframe=timeframe, uc_lock=False)
 
-    def gui_hover_element(self, selector, timeframe=0.25):
+    def gui_hover_element(self, selector, timeframe=0.27):
+        try:
+            self.__verify_pyautogui_has_a_headed_browser()
+        except Exception:
+            self.hover_element(selector, timeframe=timeframe)
+            return
         self.__slow_mode_pause_if_set()
         element_rect = self.get_gui_element_rect(selector)
         width = element_rect["width"]
@@ -2760,7 +2769,7 @@ class CDPMethods():
             self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.wait(0.1))
 
-    def hover_element(self, selector, timeframe=0.25):
+    def hover_element(self, selector, timeframe=0.27):
         element = self.select(selector)
         gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
         with gui_lock:

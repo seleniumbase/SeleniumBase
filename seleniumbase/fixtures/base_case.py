@@ -5151,6 +5151,14 @@ class BaseCase(unittest.TestCase):
             self.gui_drag_and_drop = self.cdp.gui_drag_and_drop
         if hasattr(self.cdp, "gui_drag_drop_points"):
             self.gui_drag_drop_points = self.cdp.gui_drag_drop_points
+        if hasattr(self.cdp, "gui_hover_and_click"):
+            self.gui_hover_and_click = self.cdp.gui_hover_and_click
+        if hasattr(self.cdp, "gui_hover_element"):
+            self.gui_hover_element = self.cdp.gui_hover_element
+        if hasattr(self.cdp, "gui_hover_x_y"):
+            self.gui_hover_x_y = self.cdp.gui_hover_x_y
+        if hasattr(self.cdp, "gui_move_to_element"):
+            self.gui_move_to_element = self.cdp.gui_move_to_element
         if hasattr(self.cdp, "highlight_overlay"):
             self.highlight_overlay = self.cdp.highlight_overlay
         if hasattr(self.cdp, "js_dumps"):
