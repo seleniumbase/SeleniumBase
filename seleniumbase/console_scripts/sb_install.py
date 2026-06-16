@@ -734,6 +734,26 @@ def main(override=None, intel_for_uc=None, force_uc=None):
                 platform_code = "Win"
             file_name = "chrome-win.zip"
         revision = get_chromium_latest_revision(platform_code)
+        arg_join = " ".join(sys.argv)
+        if "--revision" in arg_join:
+            rev_str = None
+            if "--revision=" in arg_join:
+                rev_str = arg_join.split("--revision=")[1].split(" ")[0]
+            elif "--revision " in arg_join:
+                rev_str = arg_join.split("--revision ")[1].split(" ")[0]
+            if rev_str:
+                if rev_str.startswith('"') and rev_str.endswith('"'):
+                    rev_str = rev_str[1:-1]
+                elif rev_str.startswith("'") and rev_str.endswith("'"):
+                    rev_str = rev_str[1:-1]
+                with suppress(Exception):
+                    if int(rev_str) > 1000000:
+                        revision = rev_str
+                    else:
+                        print(
+                            "Invalid revision number! Defaulting to %s!"
+                            % revision
+                        )
         msg = c2 + "Chromium revision to download" + cr
         p_version = c3 + revision + cr
         log_d("\n*** %s = %s" % (msg, p_version))
