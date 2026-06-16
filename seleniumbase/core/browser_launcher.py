@@ -2779,7 +2779,6 @@ def _set_chrome_options(
     chrome_options.add_argument("--disable-domain-reliability")
     chrome_options.add_argument("--disable-breakpad")
     included_disabled_features = []
-    included_disabled_features.append("OptimizationHints")
     included_disabled_features.append("OptimizationHintsFetching")
     included_disabled_features.append("Translate")
     included_disabled_features.append("ComponentUpdater")
@@ -4803,7 +4802,6 @@ def get_local_driver(
         edge_options.add_argument("--disable-domain-reliability")
         edge_options.add_argument("--disable-breakpad")
         included_disabled_features = []
-        included_disabled_features.append("OptimizationHints")
         included_disabled_features.append("OptimizationHintsFetching")
         included_disabled_features.append("Translate")
         included_disabled_features.append("ComponentUpdater")
