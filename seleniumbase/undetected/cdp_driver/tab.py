@@ -1626,7 +1626,11 @@ class Tab(Connection):
         return ({"height": e_height, "width": e_width, "x": x, "y": y})
 
     async def get_title(self):
-        return await self.evaluate("document.title")
+        try:
+            return await self.evaluate("document.title")
+        except (Exception, TypeError):
+            await self.sleep(0.068)
+            return await self.evaluate("document.title")
 
     async def get_current_url(self):
         return await self.evaluate("window.location.href")
