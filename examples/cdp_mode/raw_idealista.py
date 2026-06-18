@@ -8,7 +8,7 @@ with SB(uc=True, test=True, locale="es") as sb:
     sb.sleep(1.5)
     sb.solve_captcha()
     sb.sleep(2)
-    sb.click("button#didomi-notice-agree-button")
+    sb.click_if_visible("button#didomi-notice-agree-button", timeout=3)
     print("*** " + sb.get_text("h1"))
     items = sb.find_elements("div.item-info-container")
     for item in items:
