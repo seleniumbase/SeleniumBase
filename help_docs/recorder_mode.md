@@ -9,7 +9,7 @@
 
 ⏺️ Recorder Mode can be activated from the command-line interface or the desktop Recorder App. To launch the desktop app, run: `sbase recorder`:
 
-<img src="https://seleniumbase.github.io/cdn/img/recorder_desktop_4.png" title="SeleniumBase Recorder App" width="340">
+<img src="https://seleniumbase.github.io/cdn/img/recorder_desktop_5.png" title="SeleniumBase Recorder App" width="340">
 
 ⏺️ To make a new recording from the command-line interface, use `sbase mkrec`:
 

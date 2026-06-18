@@ -246,7 +246,7 @@ def create_tkinter_gui():
     default_file_name = "new_recording.py"
     window = tk.Tk()
     window.title("SeleniumBase Recorder App")
-    window.geometry("344x564")
+    window.geometry("344x560")
     my_font = ("TkDefaultFont", 11)
     frame = tk.Frame(window)
     frame.pack()
@@ -255,7 +255,7 @@ def create_tkinter_gui():
     label = tk.Label(window, text="Enter filename to save recording as:")
     label.pack(pady=(20, 0.2))
     entry = tk.Entry(window, textvariable=fname)
-    entry.config(width=21)
+    entry.config(width=22)
     entry.pack(pady=(0.6, 0.2))
     cbx = tk.IntVar()
     chk = tk.Checkbutton(window, text="Overwrite existing files", variable=cbx)
@@ -294,13 +294,13 @@ def create_tkinter_gui():
     options_list = ["Google Chrome"]
     options_list.append("Chromium Browser")
     if shared_utils.is_windows():
-        options_list.append("MS Edge  (No Stealth)")
+        options_list.append("MS Edge (No Stealth)")
         br_order["edge"] = br_count
         br_count += 1
     else:
         with suppress(Exception):
             if os.path.exists(detect_b_ver.get_binary_location("edge")):
-                options_list.append("MS Edge  (No Stealth)")
+                options_list.append("MS Edge (No Stealth)")
                 br_order["edge"] = br_count
                 br_count += 1
     with suppress(Exception):
@@ -372,14 +372,14 @@ def create_tkinter_gui():
     else:
         frx.set(options_list[0])
     question_menu = tk.OptionMenu(window, frx, *options_list)
-    question_menu.config(width=18)
+    question_menu.config(width=21)
     question_menu.pack(pady=(0.6, 0.2))
 
     url = tk.StringVar()
     label = tk.Label(window, text="Enter a URL to start recording on:")
     label.pack(pady=(20, 0.2))
     entry = tk.Entry(window, textvariable=url)
-    entry.config(width=23)
+    entry.config(width=24)
     entry.pack()
     entry.focus()
     entry.bind(
@@ -425,7 +425,7 @@ def create_tkinter_gui():
         ),
     ).pack(pady=0.2)
     label = tk.Label(window, text="Playback recording (Normal Mode):")
-    label.pack(pady=(18, 0))
+    label.pack(pady=(17, 0))
 
     style.configure(
         "Playback.TButton",
@@ -441,13 +441,13 @@ def create_tkinter_gui():
         command=lambda: do_playback(fname.get(), brx.get(), window),
     ).pack(pady=0.2)
     label = tk.Label(window, text="Playback recording (Demo Mode):")
-    label.pack(pady=(14, 0))
+    label.pack(pady=(13, 0))
     try:
         style.configure(
             "PlaybackDemo.TButton",
             foreground="teal",
             font=("TkDefaultFont", 11, "bold"),
-            width="16",
+            width="18",
             padding=(4, 3, 4, 1)
         )
         ttk.Button(
