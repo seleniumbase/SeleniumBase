@@ -180,6 +180,30 @@ class CDPMethods():
     def refresh(self, *args, **kwargs):
         self.reload(*args, **kwargs)
 
+    def goto_if_not_url(self, url):
+        """Opens the url in the browser if it's not the current url (*).
+        Parameters tagged on by search engines are ignored for this method.
+        Eg. If the current url is:
+            * https://www.bing.com/search?q=SeleniumBase&source=hp
+            And the url privided by this method call is:
+            * https://www.bing.com/search?q=SeleniumBase
+            Then the urls will be considered the same,
+            and no open() action will be performed.
+        This method is primarily used by Recorder Mode script generation,
+        where both clicks and opens are recorded. So if a click() action
+        leads to an goto() action, then the script generator will attempt
+        to convert the goto() action into goto_if_not_url() so that the
+        same page isn't opened again if the user is already on the page."""
+        current_url = self.get_current_url()
+        if current_url != url:
+            if (
+                "?q=" not in current_url
+                or "&" not in current_url
+                or current_url.find("?q=") >= current_url.find("&")
+                or current_url.split("&")[0] != url
+            ):
+                self.goto(url)
+
     def get_event_loop(self):
         return self.loop
 

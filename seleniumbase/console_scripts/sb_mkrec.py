@@ -96,6 +96,8 @@ def main():
     use_colors = True
     force_gui = False
     rec_behave = False
+    rec_sb_mgr = False
+    rec_sb_cdp = False
 
     sys_executable = sys.executable
     if " " in sys_executable:
@@ -164,6 +166,10 @@ def main():
                 use_uc = True
             elif option.lower() in ("--rec-behave", "--behave", "--gherkin"):
                 rec_behave = True
+            elif option.lower() in ("--rec-sb-mgr"):
+                rec_sb_mgr = True
+            elif option.lower() in ("--rec-sb-cdp"):
+                rec_sb_cdp = True
             elif option.lower().startswith("--url="):
                 start_page = option[len("--url="):]
             elif option.lower() == "--url":
@@ -306,6 +312,10 @@ def main():
         run_cmd += " --uc"
     if rec_behave:
         run_cmd += " --rec-behave"
+    if rec_sb_mgr:
+        run_cmd += " --rec-sb-mgr"
+    if rec_sb_cdp:
+        run_cmd += " --rec-sb-cdp"
     print(run_cmd)
     os.system(run_cmd)
     if os.path.exists(file_path):

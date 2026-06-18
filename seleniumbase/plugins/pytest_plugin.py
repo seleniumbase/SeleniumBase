@@ -96,6 +96,8 @@ def pytest_addoption(parser):
     --verify-delay=SECONDS  (The delay before MasterQA verification checks.)
     --ee / --esc-end  (Lets the user end the current test via the ESC key.)
     --recorder  (Enables the Recorder for turning browser actions into code.)
+    --rec-sb-mgr  (A Recorder Mode that generates SB() context manager code.)
+    --rec-sb-cdp  (A Recorder Mode that generates Pure CDP Mode sb_cdp code.)
     --rec-behave  (Same as Recorder Mode, but also generates behave-gherkin.)
     --rec-sleep  (If the Recorder is enabled, also records self.sleep calls.)
     --rec-print  (If the Recorder is enabled, prints output after tests end.)
@@ -1010,6 +1012,24 @@ def pytest_addoption(parser):
                 into SeleniumBase scripts.""",
     )
     parser.addoption(
+        "--rec-sb-mgr",
+        action="store_true",
+        dest="rec_sb_mgr",
+        default=False,
+        help="""Not only enables the SeleniumBase Recorder,
+                but also saves recorded actions into the
+                context manager format.""",
+    )
+    parser.addoption(
+        "--rec-sb-cdp",
+        action="store_true",
+        dest="rec_sb_cdp",
+        default=False,
+        help="""Not only enables the SeleniumBase Recorder,
+                but also saves recorded actions into the
+                Pure CDP Mode sb_cdp sync format.""",
+    )
+    parser.addoption(
         "--rec-behave",
         "--rec-gherkin",
         action="store_true",
@@ -1831,18 +1851,21 @@ def pytest_configure(config):
     sb_config.esc_end = config.getoption("esc_end")
     sb_config.recorder_mode = config.getoption("recorder_mode")
     sb_config.recorder_ext = config.getoption("recorder_mode")  # Again
+    sb_config.rec_sb_mgr = config.getoption("rec_sb_mgr")
+    sb_config.rec_sb_cdp = config.getoption("rec_sb_cdp")
     sb_config.rec_behave = config.getoption("rec_behave")
     sb_config.rec_print = config.getoption("rec_print")
     sb_config.record_sleep = config.getoption("record_sleep")
-    if sb_config.rec_print and not sb_config.recorder_mode:
-        sb_config.recorder_mode = True
-        sb_config.recorder_ext = True
-    elif sb_config.rec_behave and not sb_config.recorder_mode:
-        sb_config.recorder_mode = True
-        sb_config.recorder_ext = True
-    elif sb_config.record_sleep and not sb_config.recorder_mode:
-        sb_config.recorder_mode = True
-        sb_config.recorder_ext = True
+    if not sb_config.recorder_mode:
+        if (
+            sb_config.record_sleep
+            or sb_config.rec_print
+            or sb_config.rec_behave
+            or sb_config.rec_sb_mgr
+            or sb_config.rec_sb_cdp
+        ):
+            sb_config.recorder_mode = True
+            sb_config.recorder_ext = True
     sb_config.disable_cookies = config.getoption("disable_cookies")
     sb_config.disable_js = config.getoption("disable_js")
     sb_config.disable_csp = config.getoption("disable_csp")

@@ -834,6 +834,8 @@ def show_options():
     op += "--help / -h  (Display list of all available pytest options.)\n"
     op += "--ftrace / --final-trace  (Enter Debug Mode after tests end.)\n"
     op += "--recorder / --rec  (Save browser actions as Python scripts.)\n"
+    op += "--rec-sb-mgr  (Save Recorder actions as SB() context manager.)\n"
+    op += "--rec-sb-cdp  (Save Recorder actions as Pure CDP Mode sb_cdp.)\n"
     op += "--rec-behave / --rec-gherkin  (Save actions as Gherkin code.)\n"
     op += "--rec-print  (Display recorded scripts when they are created.)\n"
     op += "--save-screenshot  (Save a screenshot at the end of each test.)\n"

@@ -92,6 +92,8 @@ def SB(
     xvfb_metrics=None,  # Set Xvfb display size on Linux: "Width,Height".
     start_page=None,  # The starting URL for the web browser when tests begin.
     rec_print=None,  # If Recorder is enabled, prints output after tests end.
+    rec_sb_mgr=None,  # Recorder Mode that generates SB() context manager code.
+    rec_sb_cdp=None,  # Recorder Mode that generates Pure CDP Mode sb_cdp code.
     rec_behave=None,  # Like Recorder Mode, but also generates behave-gherkin.
     record_sleep=None,  # If Recorder enabled, also records self.sleep calls.
     data=None,  # Extra test data. Access with "self.data" in tests.
@@ -216,6 +218,8 @@ def SB(
     xvfb_metrics (w,h):  Set Xvfb display size on Linux: "Width,Height".
     start_page (str):  The starting URL for the web browser when tests begin.
     rec_print (bool):  If Recorder is enabled, prints output after tests end.
+    rec_sb_mgr (bool):  Recorder Mode that generates SB() context manager code.
+    rec_sb_cdp (bool):  Recorder Mode that generates Pure CDP Mode sb_cdp code.
     rec_behave (bool):  Like Recorder Mode, but also generates behave-gherkin.
     record_sleep (bool):  If Recorder enabled, also records self.sleep calls.
     data (str):  Extra test data. Access with "self.data" in tests.
@@ -733,6 +737,16 @@ def SB(
             rec_print = True
         else:
             rec_print = False
+    if rec_sb_mgr is None:
+        if "--rec-sb-mgr" in sys_argv:
+            rec_sb_mgr = True
+        else:
+            rec_sb_mgr = False
+    if rec_sb_cdp is None:
+        if "--rec-sb-cdp" in sys_argv:
+            rec_sb_cdp = True
+        else:
+            rec_sb_cdp = False
     if rec_behave is None:
         if "--rec-behave" in sys_argv:
             rec_behave = True
@@ -837,15 +851,16 @@ def SB(
         headless2 = False  # Only for Chromium browsers
     if not headless and not headless2:
         headed = True
-    if rec_print and not recorder_mode:
-        recorder_mode = True
-        recorder_ext = True
-    elif rec_behave and not recorder_mode:
-        recorder_mode = True
-        recorder_ext = True
-    elif record_sleep and not recorder_mode:
-        recorder_mode = True
-        recorder_ext = True
+    if not recorder_mode:
+        if (
+            record_sleep
+            or rec_print
+            or rec_behave
+            or rec_sb_mgr
+            or rec_sb_cdp
+        ):
+            recorder_mode = True
+            recorder_ext = True
     if recorder_mode and headless:
         headless = False
         headless1 = False
@@ -1200,6 +1215,8 @@ def SB(
     sb_config.recorder_mode = recorder_mode
     sb_config.recorder_ext = recorder_ext
     sb_config.record_sleep = record_sleep
+    sb_config.rec_sb_mgr = rec_sb_mgr
+    sb_config.rec_sb_cdp = rec_sb_cdp
     sb_config.rec_behave = rec_behave
     sb_config.rec_print = rec_print
     sb_config.report_on = False
@@ -1310,6 +1327,8 @@ def SB(
     sb.recorder_mode = sb_config.recorder_mode
     sb.recorder_ext = sb_config.recorder_ext
     sb.record_sleep = sb_config.record_sleep
+    sb.rec_sb_mgr = sb_config.rec_sb_mgr
+    sb.rec_sb_cdp = sb_config.rec_sb_cdp
     sb.rec_behave = sb_config.rec_behave
     sb.rec_print = sb_config.rec_print
     sb.report_on = sb_config.report_on

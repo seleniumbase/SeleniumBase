@@ -761,6 +761,7 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
     cdp.goto = CDPM.goto
     cdp.reload = CDPM.reload
     cdp.refresh = CDPM.refresh
+    cdp.goto_if_not_url = CDPM.goto_if_not_url
     cdp.add_handler = CDPM.add_handler
     cdp.get_event_loop = CDPM.get_event_loop
     cdp.get_rd_host = CDPM.get_rd_host
