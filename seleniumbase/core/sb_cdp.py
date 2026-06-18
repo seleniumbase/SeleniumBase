@@ -2300,6 +2300,10 @@ class CDPMethods():
         x2, y2 = self.get_gui_element_center("div.sliderTarget")
         self.close_active_tab()
         self.switch_to_tab(tab)
+        if shared_utils.is_windows():
+            time.sleep(0.48)
+            self.loop.run_until_complete(self.page.wait(0.1))
+        x2 = x2 + 22.5  # Overshoot drop to maximize compatibility
         self.gui_drag_drop_points(x1, y1, x2, y2, timeframe=0.55)
         time.sleep(0.25)
         self.loop.run_until_complete(self.page.wait(0.2))
