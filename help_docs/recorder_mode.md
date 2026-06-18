@@ -7,17 +7,17 @@
 
 🔴 <b>SeleniumBase Recorder Mode</b> lets you record & export browser actions into test automation scripts.<br>
 
-<img src="https://seleniumbase.github.io/cdn/img/sb_recorder_notification.png" title="SeleniumBase" width="380">
+⏺️ Recorder Mode can be activated from the command-line interface or the desktop Recorder App. To launch the desktop app, run: `sbase recorder`:
 
-⏺️ Recorder Mode can be activated from the command-line interface or the Recorder Desktop App.
+<img src="https://seleniumbase.github.io/cdn/img/recorder_desktop_4.png" title="SeleniumBase Recorder App" width="340">
 
-⏺️ To make a new recording from the command-line interface, use `sbase mkrec`, `sbase codegen`, or `sbase record`:
+⏺️ To make a new recording from the command-line interface, use `sbase mkrec`:
 
 ```zsh
 sbase mkrec TEST_NAME.py --url=URL
 ```
 
-If the file already exists, you'll get an error. If no URL is provided, you'll start on a blank page and will need to navigate somewhere for the Recorder to activate. (The Recorder captures events on URLs that start with `https`, `http`, or `file`.) The command above runs an empty test that stops at a breakpoint so that you can perform manual browser actions for the Recorder. When you have finished recording, type "`c`" on the command-line and press `[ENTER]` to continue from the breakpoint. The test will complete and a file called `TEST_NAME_rec.py` will be automatically created in the `./recordings` folder. That file will get copied back to the original folder with the name you gave it. (You can run with Edge instead of Chrome by adding `--edge` to the command above. For headed Linux machines, add `--gui` to prevent the default headless mode on Linux.)
+If the file already exists, you'll get an error. If no URL is provided, you'll start on a blank page and will need to navigate somewhere for the Recorder to activate. (The Recorder captures events on URLs that start with `https`, `http`, or `file`.) The command above runs an empty test that stops at a breakpoint so that you can perform manual browser actions for the Recorder. When you have finished recording, type "`c`" on the command-line and press `[ENTER]` to continue from the breakpoint. The test will complete and a file called `TEST_NAME_rec.py` will be automatically created in the `./recordings` folder. That file will get copied back to the original folder with the name you gave it. (For headed Linux machines, add `--gui` to prevent the default headless mode on Linux.)
 
 Example:
 
@@ -55,7 +55,7 @@ sbase recorder
 * Starting the SeleniumBase Recorder Desktop App...
 ```
 
-<img src="https://seleniumbase.github.io/cdn/img/recorder_desktop_2.png" title="SeleniumBase" width="340">
+<img src="https://seleniumbase.github.io/cdn/img/sb_recorder_notification.png" title="SeleniumBase Recorder Notification" width="380">
 
 ⏺️ While a recording is in progress, you can press the `[ESC]` key to pause the Recorder. To resume the recording, you can hit the `[~`]` key, which is located directly below the `[ESC]` key on most keyboards.
 
@@ -115,7 +115,7 @@ pytest TEST_NAME.py --trace --rec -s
 
 ⏺️ Additionally, the SeleniumBase <code>self.goto(URL)</code> method will also open a new tab for you in Recorder Mode if the domain/origin is different from the current URL. If you need to navigate to a different domain/origin from within the same tab, call <code>self.save_recorded_actions()</code> first, which saves the recorded data for later. When a recorded test completes, SeleniumBase scans the sessionStorage data of all open browser tabs for generating the completed script.
 
-⏺️ As an alternative to activating Recorder Mode with the <code>--rec</code> command-line arg, you can also call <code>self.activate_recorder()</code> from your tests. Using the Recorder this way is only useful for tests that stay on the same URL. This is because the standard Recorder Mode functions as a Chrome extension and persists wherever the browser goes. (This version only stays on the page where called.)
+⏺️ As an alternative to activating Recorder Mode with the <code>\-\-rec</code> command-line arg, you can also call <code>self.activate_recorder()</code> from your tests. Using the Recorder this way is only useful for tests that stay on the same URL. This is because the standard Recorder Mode functions as a Chrome extension and persists wherever the browser goes. (This version only stays on the page where called.)
 
 ⏺️ (Note that <b>same domain/origin</b> is not the same as <b>same URL</b>. Example: <a href="https://xkcd.com/353/" target="_blank">https://xkcd.com/353</a> and <a href="https://xkcd.com/1537/" target="_blank">https://xkcd.com/1537</a> are two different URLs with the <b>same domain/origin</b>. That means both URLs share the same sessionStorage, and that changes persist to different URLs of the same domain/origin. If you want to find out a website's origin during a test, just call: <code>self.get_origin()</code>, which returns the value of <code>window.location.origin</code> from the browser's console.)
 

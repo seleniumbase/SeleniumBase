@@ -153,6 +153,8 @@ that are available when using SeleniumBase.
 --help / -h  (Display list of all available pytest options.)
 --final-debug  (Enter Final Debug Mode after each test ends.)
 --recorder / --rec  (Save browser actions as Python scripts.)
+--rec-sb-mgr  (Save Recorder actions as SB() context manager.)
+--rec-sb-cdp  (Save Recorder actions as Pure CDP Mode sb_cdp.)
 --rec-behave / --rec-gherkin  (Save actions as Gherkin code.)
 --rec-print  (Display recorded scripts when they are created.)
 --save-screenshot  (Save a screenshot at the end of each test.)

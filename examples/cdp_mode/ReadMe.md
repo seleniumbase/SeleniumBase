@@ -367,6 +367,7 @@ sb.get(url, **kwargs)
 sb.open(url, **kwargs)  # Same as sb.get(url, **kwargs) in CDP Mode
 sb.goto(url, **kwargs)  # Same as sb.get(url, **kwargs) in CDP Mode
 sb.reload(ignore_cache=True, script_to_evaluate_on_load=None)
+sb.goto_if_not_url(url)
 sb.refresh(*args, **kwargs)
 sb.get_event_loop()
 sb.get_rd_host()  # Returns the remote-debugging host

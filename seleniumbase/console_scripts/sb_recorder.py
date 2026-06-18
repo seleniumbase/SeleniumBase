@@ -20,7 +20,10 @@ import os
 import subprocess
 import sys
 import tkinter as tk
+from tkinter import ttk
+from contextlib import suppress
 from seleniumbase import config as sb_config
+from seleniumbase.core import detect_b_ver
 from seleniumbase.fixtures import page_utils
 from seleniumbase.fixtures import shared_utils
 from tkinter import messagebox
@@ -76,7 +79,15 @@ def file_name_error(file_name):
     return error_msg
 
 
-def do_recording(file_name, url, overwrite_enabled, use_chrome, window):
+def do_recording(
+    file_name,
+    url,
+    overwrite_enabled,
+    brx,
+    ucb,
+    output_format,
+    window,
+):
     poll = None
     if sb_config.rec_subprocess_used:
         poll = sb_config.rec_subprocess_p.poll()
@@ -101,7 +112,13 @@ def do_recording(file_name, url, overwrite_enabled, use_chrome, window):
     if not page_utils.is_valid_url(url):
         if page_utils.is_valid_url("https://" + url):
             url = "https://" + url
-    if not page_utils.is_valid_url(url):
+    if "edge" in brx.lower() and ucb:
+        messagebox.showwarning(
+            "Invalid selection",
+            "MS Edge cannot be combined with UC Mode "
+            "because it uses msedgedriver, not chromedriver!",
+        )
+    elif not page_utils.is_valid_url(url):
         messagebox.showwarning(
             "Invalid URL", "Enter a valid URL! (Eg. seleniumbase.io)"
         )
@@ -121,13 +138,12 @@ def do_recording(file_name, url, overwrite_enabled, use_chrome, window):
             else:
                 os.remove(file_name)
         add_on = ""
-        command_args = sys.argv[2:]
-        if (
-            "--rec-behave" in command_args
-            or "--behave" in command_args
-            or "--gherkin" in command_args
-        ):
+        if "Behave" in output_format:
             add_on = " --rec-behave"
+        elif "SB()" in output_format:
+            add_on = " --rec-sb-mgr"
+        elif "sb_cdp" in output_format:
+            add_on = " --rec-sb-cdp"
         command = (
             "%s -m seleniumbase mkrec %s --url=%s --gui"
             % (sys_executable, file_name, url)
@@ -142,25 +158,21 @@ def do_recording(file_name, url, overwrite_enabled, use_chrome, window):
                 "%s -m seleniumbase mkrec %s --url='%s' --gui"
                 % (sys_executable, file_name, url)
             )
-        if not use_chrome:
+        if "edge" in brx.lower():
             command += " --edge"
-        elif "--opera" in command_args:
+        elif "opera" in brx.lower():
             command += " --opera"
-        elif "--brave" in command_args:
+        elif "brave" in brx.lower():
             command += " --brave"
-        elif "--comet" in command_args:
+        elif "comet" in brx.lower():
             command += " --comet"
-        elif "--atlas" in command_args:
+        elif "atlas" in brx.lower():
             command += " --atlas"
-        elif "--use-chromium" in command_args:
+        elif "chromium" in brx.lower():
             command += " --use-chromium"
-        if (
-            "--uc" in command_args
-            or "--cdp" in command_args
-            or "--undetected" in command_args
-            or "--undetectable" in command_args
-        ):
+        if ucb:
             command += " --uc"
+        command_args = sys.argv[2:]
         if "--ee" in command_args:
             command += " --ee"
         command += add_on
@@ -175,7 +187,7 @@ def do_recording(file_name, url, overwrite_enabled, use_chrome, window):
         send_window_to_front(window)
 
 
-def do_playback(file_name, use_chrome, window, demo_mode=False):
+def do_playback(file_name, brx, window, demo_mode=False):
     file_name = file_name.strip()
     error_msg = file_name_error(file_name)
     if error_msg:
@@ -189,11 +201,22 @@ def do_playback(file_name, use_chrome, window, demo_mode=False):
             'File "%s" does not exist in the current directory!' % file_name,
         )
         return
-    command = "%s -m pytest %s -q -s" % (sys_executable, file_name)
+    # command = "%s -m pytest %s -q -s" % (sys_executable, file_name)
+    command = "%s %s -q -s" % (sys_executable, file_name)
     if shared_utils.is_linux():
         command += " --gui"
-    if not use_chrome:
+    if "edge" in brx.lower():
         command += " --edge"
+    elif "opera" in brx.lower():
+        command += " --opera"
+    elif "brave" in brx.lower():
+        command += " --brave"
+    elif "comet" in brx.lower():
+        command += " --comet"
+    elif "atlas" in brx.lower():
+        command += " --atlas"
+    elif "chromium" in brx.lower():
+        command += " --use-chromium"
     if demo_mode:
         command += " --demo"
     command_args = sys.argv[2:]
@@ -223,100 +246,233 @@ def create_tkinter_gui():
     default_file_name = "new_recording.py"
     window = tk.Tk()
     window.title("SeleniumBase Recorder App")
-    window.geometry("344x388")
+    window.geometry("344x564")
+    my_font = ("TkDefaultFont", 11)
     frame = tk.Frame(window)
     frame.pack()
 
-    tk.Label(window, text="").pack()
     fname = tk.StringVar(value=default_file_name)
-    tk.Label(window, text="Enter filename to save recording as:").pack()
+    label = tk.Label(window, text="Enter filename to save recording as:")
+    label.pack(pady=(20, 0.2))
     entry = tk.Entry(window, textvariable=fname)
-    entry.pack()
+    entry.config(width=21)
+    entry.pack(pady=(0.6, 0.2))
     cbx = tk.IntVar()
     chk = tk.Checkbutton(window, text="Overwrite existing files", variable=cbx)
     chk.pack()
     chk.select()
     use_stealth = False
+    use_behave = False
+    use_sb_mgr = False
+    use_sb_cdp = False
+    use_atlas = False
     command_args = sys.argv[2:]
     if (
         "--uc" in command_args
         or "--cdp" in command_args
+        or "--stealth" in command_args
         or "--undetected" in command_args
         or "--undetectable" in command_args
     ):
         use_stealth = True
-    browser_display = "Use Chrome over Edge"
-    if "--opera" in command_args:
-        browser_display = "Use Opera over Edge"
-    elif "--brave" in command_args:
-        browser_display = "Use Brave over Edge"
-    elif "--comet" in command_args:
-        browser_display = "Use Comet over Edge"
-    elif "--atlas" in command_args:
-        browser_display = "Use Atlas over Edge"
-    cbb = tk.IntVar()
-    if not use_stealth:
-        chkb = tk.Checkbutton(window, text=browser_display, variable=cbb)
-        chkb.pack()
-        if "--edge" not in command_args:
-            chkb.select()
+    if (
+        "--rec-behave" in command_args
+        or "--behave" in command_args
+        or "--gherkin" in command_args
+    ):
+        use_behave = True
+    if "--rec-sb-mgr" in command_args:
+        use_sb_mgr = True
+    if "--rec-sb-cdp" in command_args:
+        use_sb_cdp = True
+    if "--atlas" in command_args:
+        use_atlas = True
+
+    tk.Label(window, text="\nSelect a web browser to use:").pack()
+    br_count = 2
+    br_order = {"chrome": 0, "chromium": 1}
+    options_list = ["Google Chrome"]
+    options_list.append("Chromium Browser")
+    if shared_utils.is_windows():
+        options_list.append("MS Edge  (No Stealth)")
+        br_order["edge"] = br_count
+        br_count += 1
     else:
-        chkb = tk.Checkbutton(
-            window, text="Stealthy Chrome Mode", variable=cbb
-        )
-        chkb.pack()
+        with suppress(Exception):
+            if os.path.exists(detect_b_ver.get_binary_location("edge")):
+                options_list.append("MS Edge  (No Stealth)")
+                br_order["edge"] = br_count
+                br_count += 1
+    with suppress(Exception):
+        if os.path.exists(detect_b_ver.get_binary_location("opera")):
+            options_list.append("Opera Browser")
+            br_order["opera"] = br_count
+            br_count += 1
+    with suppress(Exception):
+        if os.path.exists(detect_b_ver.get_binary_location("brave")):
+            options_list.append("Brave Browser")
+            br_order["brave"] = br_count
+            br_count += 1
+    with suppress(Exception):
+        if os.path.exists(detect_b_ver.get_binary_location("comet")):
+            options_list.append("Comet Browser")
+            br_order["comet"] = br_count
+            br_count += 1
+    if use_atlas:
+        with suppress(Exception):
+            if os.path.exists(detect_b_ver.get_binary_location("atlas")):
+                options_list.append("Atlas Browser")
+                br_order["atlas"] = br_count
+                br_count += 1
+    brx = tk.StringVar(window)
+    if "--use-chromium" in command_args or "--chromium" in command_args:
+        brx.set(options_list[1])
+    elif (
+        "--edge" in command_args
+        and "edge" in br_order
+    ):
+        brx.set(options_list[2])
+        use_stealth = False
+    elif "--opera" in command_args and "opera" in br_order:
+        brx.set(options_list[br_order["opera"]])
+    elif "--brave" in command_args and "brave" in br_order:
+        brx.set(options_list[br_order["brave"]])
+    elif "--comet" in command_args and "comet" in br_order:
+        brx.set(options_list[br_order["comet"]])
+    elif "--atlas" in command_args and "atlas" in br_order:
+        brx.set(options_list[br_order["atlas"]])
+    else:
+        brx.set(options_list[0])
+    question_menu = tk.OptionMenu(window, brx, *options_list)
+    question_menu.config(width=16)
+    question_menu.pack(pady=(0.6, 0.2))
+
+    ucb = tk.IntVar()
+    chkb = tk.Checkbutton(
+        window, text="Stealth Mode / UC + CDP Mode", variable=ucb
+    )
+    chkb.pack(pady=(0.4, 0.4))
+    if use_stealth:
         chkb.select()
-        chkb.config(state=tk.DISABLED)
-    tk.Label(window, text="").pack()
+        # chkb.config(state=tk.DISABLED)
+
+    tk.Label(window, text="\nSelect an output format to use:").pack()
+    options_list = ["pytest format / BaseCase"]
+    options_list.append("Context Manager / SB()")
+    options_list.append("Pure CDP Mode / sb_cdp")
+    if use_behave:
+        options_list.append("BehaveBDD Gherkin File")
+    frx = tk.StringVar(window)
+    if use_behave and not use_sb_mgr and not use_sb_cdp:
+        frx.set(options_list[3])
+    elif use_sb_mgr:
+        frx.set(options_list[1])
+    elif use_sb_cdp:
+        frx.set(options_list[2])
+    else:
+        frx.set(options_list[0])
+    question_menu = tk.OptionMenu(window, frx, *options_list)
+    question_menu.config(width=18)
+    question_menu.pack(pady=(0.6, 0.2))
+
     url = tk.StringVar()
-    tk.Label(window, text="Enter the URL to start recording on:").pack()
+    label = tk.Label(window, text="Enter a URL to start recording on:")
+    label.pack(pady=(20, 0.2))
     entry = tk.Entry(window, textvariable=url)
+    entry.config(width=23)
     entry.pack()
     entry.focus()
     entry.bind(
         "<Return>",
         (
             lambda _: do_recording(
-                fname.get(), url.get(), cbx.get(), cbb.get(), window
+                fname.get(),
+                url.get(),
+                cbx.get(),
+                brx.get(),
+                ucb.get(),
+                frx.get(),
+                window,
             )
         ),
     )
-    tk.Button(
+    # Automatically set focus on URL field when clicking back into the app
+    window.bind(
+        "<FocusIn>", lambda event: entry.focus_set()
+        if event.widget == window
+        else None
+    )
+    style = ttk.Style()
+    style.configure(
+        "Record.TButton",
+        foreground="red",
+        font=("TkDefaultFont", 12, "bold"),
+        width="8",
+        padding=(4, 3, 4, 1)
+    )
+    ttk.Button(
         window,
         text="Record",
-        fg="red",
+        style="Record.TButton",
         command=lambda: do_recording(
-            fname.get(), url.get(), cbx.get(), cbb.get(), window
+            fname.get(),
+            url.get(),
+            cbx.get(),
+            brx.get(),
+            ucb.get(),
+            frx.get(),
+            window,
         ),
-    ).pack()
-    tk.Label(window, text="").pack()
-    tk.Label(window, text="Playback recording (Normal Mode):").pack()
-    tk.Button(
+    ).pack(pady=0.2)
+    label = tk.Label(window, text="Playback recording (Normal Mode):")
+    label.pack(pady=(18, 0))
+
+    style.configure(
+        "Playback.TButton",
+        foreground="green",
+        font=("TkDefaultFont", 11, "bold"),
+        width="8",
+        padding=(4, 3, 4, 1)
+    )
+    ttk.Button(
         window,
         text="Playback",
-        fg="green",
-        command=lambda: do_playback(fname.get(), cbb.get(), window),
-    ).pack()
-    tk.Label(window, text="").pack()
-    tk.Label(window, text="Playback recording (Demo Mode):").pack()
+        style="Playback.TButton",
+        command=lambda: do_playback(fname.get(), brx.get(), window),
+    ).pack(pady=0.2)
+    label = tk.Label(window, text="Playback recording (Demo Mode):")
+    label.pack(pady=(14, 0))
     try:
-        tk.Button(
+        style.configure(
+            "PlaybackDemo.TButton",
+            foreground="teal",
+            font=("TkDefaultFont", 11, "bold"),
+            width="16",
+            padding=(4, 3, 4, 1)
+        )
+        ttk.Button(
             window,
             text="Playback (Demo Mode)",
-            fg="teal",
+            style="PlaybackDemo.TButton",
             command=lambda: do_playback(
-                fname.get(), cbb.get(), window, demo_mode=True
+                fname.get(), brx.get(), window, demo_mode=True
             ),
-        ).pack()
+        ).pack(pady=0.2)
     except Exception:
-        tk.Button(
+        style.configure(
+            "PlaybackDemo.TButton",
+            foreground="blue",
+            font=("TkDefaultFont", 11, "bold"),
+            padding=(4, 3, 4, 1)
+        )
+        ttk.Button(
             window,
             text="Playback (Demo Mode)",
-            fg="blue",
+            style="PlaybackDemo.TButton",
             command=lambda: do_playback(
-                fname.get(), cbb.get(), window, demo_mode=True
+                fname.get(), brx.get(), window, demo_mode=True
             ),
-        ).pack()
+        ).pack(pady=0.2)
 
     # Bring form window to front
     send_window_to_front(window)
@@ -328,6 +484,13 @@ def create_tkinter_gui():
     decoy.deiconify()
     decoy.destroy()
     # Start tkinter
+    for widget in window.winfo_children():
+        if isinstance(
+            widget, (tk.Label, tk.Entry, tk.Checkbutton, tk.OptionMenu)
+        ):
+            widget.configure(font=my_font)
+    window.deiconify()  # Force the OS to redraw it actively on top
+    window.focus_force()  # Force keyboard focus into the entry fields
     window.mainloop()
     end_program()
 

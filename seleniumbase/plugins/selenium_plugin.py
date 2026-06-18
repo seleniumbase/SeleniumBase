@@ -75,6 +75,8 @@ class SeleniumBrowser(Plugin):
     --verify-delay=SECONDS  (The delay before MasterQA verification checks.)
     --ee / --esc-end  (Lets the user end the current test via the ESC key.)
     --recorder  (Enables the Recorder for turning browser actions into code.)
+    --rec-sb-mgr  (A Recorder Mode that generates SB() context manager code.)
+    --rec-sb-cdp  (A Recorder Mode that generates Pure CDP Mode sb_cdp code.)
     --rec-behave  (Same as Recorder Mode, but also generates behave-gherkin.)
     --rec-sleep  (If the Recorder is enabled, also records self.sleep calls.)
     --rec-print  (If the Recorder is enabled, prints output after tests end.)
@@ -730,6 +732,24 @@ class SeleniumBrowser(Plugin):
             help="""Using this enables the SeleniumBase Recorder,
                     which records browser actions for converting
                     into SeleniumBase scripts.""",
+        )
+        parser.addoption(
+            "--rec-sb-mgr",
+            action="store_true",
+            dest="rec_sb_mgr",
+            default=False,
+            help="""Not only enables the SeleniumBase Recorder,
+                    but also saves recorded actions into the
+                    context manager format.""",
+        )
+        parser.addoption(
+            "--rec-sb-cdp",
+            action="store_true",
+            dest="rec_sb_cdp",
+            default=False,
+            help="""Not only enables the SeleniumBase Recorder,
+                    but also saves recorded actions into the
+                    Pure CDP Mode sb_cdp sync format.""",
         )
         parser.addoption(
             "--rec-behave",
@@ -1388,18 +1408,21 @@ class SeleniumBrowser(Plugin):
         test.test.esc_end = self.options.esc_end
         test.test.recorder_mode = self.options.recorder_mode
         test.test.recorder_ext = self.options.recorder_mode  # Again
+        test.test.rec_sb_mgr = self.options.rec_sb_mgr
+        test.test.rec_sb_cdp = self.options.rec_sb_cdp
         test.test.rec_behave = self.options.rec_behave
         test.test.rec_print = self.options.rec_print
         test.test.record_sleep = self.options.record_sleep
-        if self.options.rec_print:
-            test.test.recorder_mode = True
-            test.test.recorder_ext = True
-        elif self.options.rec_behave:
-            test.test.recorder_mode = True
-            test.test.recorder_ext = True
-        elif self.options.record_sleep:
-            test.test.recorder_mode = True
-            test.test.recorder_ext = True
+        if not self.options.recorder_mode:
+            if (
+                self.options.record_sleep
+                or self.options.rec_print
+                or self.options.rec_behave
+                or self.options.rec_sb_mgr
+                or self.options.rec_sb_cdp
+            ):
+                test.test.recorder_mode = True
+                test.test.recorder_ext = True
         test.test.disable_cookies = self.options.disable_cookies
         test.test.disable_js = self.options.disable_js
         test.test.disable_csp = self.options.disable_csp

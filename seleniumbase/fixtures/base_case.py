@@ -1435,8 +1435,8 @@ class BaseCase(unittest.TestCase):
             and no open() action will be performed.
         This method is primarily used by Recorder Mode script generation,
         where both clicks and opens are recorded. So if a click() action
-        leads to an open() action, then the script generator will attempt
-        to convert the open() action into open_if_not_url() so that the
+        leads to an goto() action, then the script generator will attempt
+        to convert the goto() action into goto_if_not_url() so that the
         same page isn't opened again if the user is already on the page."""
         self.__check_scope()
         current_url = self.get_current_url()
@@ -5929,120 +5929,323 @@ class BaseCase(unittest.TestCase):
             out_file.close()
             sys.stdout.write("\nCreated recordings%s__init__.py" % os.sep)
 
-        data = []
-        data.append("[pytest]")
-        data.append("addopts = --capture=no -p no:cacheprovider")
-        data.append("norecursedirs = .* build dist recordings temp assets")
-        data.append("filterwarnings =")
-        data.append("    ignore::pytest.PytestWarning")
-        data.append("    ignore:.*U.*mode is deprecated:DeprecationWarning")
-        data.append("junit_family = legacy")
-        data.append("python_files =")
-        data.append("    test_*.py ")
-        data.append("    *_test.py ")
-        data.append("    *_tests.py")
-        data.append("    *_suite.py")
-        data.append("    *_feature.py")
-        data.append("    *_test_rec.py")
-        data.append("    *_feature_rec.py")
-        data.append("python_classes = Test* *Test* *Test *Tests *Suite")
-        data.append("python_functions = test_*")
-        data.append("markers =")
-        data.append("    marker1: custom marker")
-        data.append("    marker2: custom marker")
-        data.append("    marker3: custom marker")
-        data.append("    marker_test_suite: custom marker")
-        data.append("    expected_failure: custom marker")
-        data.append("    local: custom marker")
-        data.append("    remote: custom marker")
-        data.append("    offline: custom marker")
-        data.append("    develop: custom marker")
-        data.append("    qa: custom marker")
-        data.append("    ci: custom marker")
-        data.append("    e2e: custom marker")
-        data.append("    ready: custom marker")
-        data.append("    smoke: custom marker")
-        data.append("    deploy: custom marker")
-        data.append("    active: custom marker")
-        data.append("    master: custom marker")
-        data.append("    release: custom marker")
-        data.append("    staging: custom marker")
-        data.append("    production: custom marker")
-        data.append("")
-        extra_file_name = "pytest.ini"
-        extra_file_path = os.path.join(recordings_folder, extra_file_name)
-        if not os.path.exists(extra_file_path):
-            out_file = open(extra_file_path, mode="w+", encoding="utf-8")
+        if (
+            not getattr(self, "rec_sb_mgr", None)
+            and not getattr(self, "rec_sb_cdp", None)
+        ):
+            data = []
+            data.append("[pytest]")
+            data.append("addopts = --capture=no -p no:cacheprovider")
+            data.append("norecursedirs = .* build dist recordings temp assets")
+            data.append("filterwarnings =")
+            data.append("    ignore::pytest.PytestWarning")
+            data.append(
+                "    ignore:.*U.*mode is deprecated:DeprecationWarning"
+            )
+            data.append("junit_family = legacy")
+            data.append("python_files =")
+            data.append("    test_*.py ")
+            data.append("    *_test.py ")
+            data.append("    *_tests.py")
+            data.append("    *_suite.py")
+            data.append("    *_feature.py")
+            data.append("    *_test_rec.py")
+            data.append("    *_feature_rec.py")
+            data.append("python_classes = Test* *Test* *Test *Tests *Suite")
+            data.append("python_functions = test_*")
+            data.append("markers =")
+            data.append("    marker1: custom marker")
+            data.append("    marker2: custom marker")
+            data.append("    marker3: custom marker")
+            data.append("    marker_test_suite: custom marker")
+            data.append("    expected_failure: custom marker")
+            data.append("    local: custom marker")
+            data.append("    remote: custom marker")
+            data.append("    offline: custom marker")
+            data.append("    develop: custom marker")
+            data.append("    qa: custom marker")
+            data.append("    ci: custom marker")
+            data.append("    e2e: custom marker")
+            data.append("    ready: custom marker")
+            data.append("    smoke: custom marker")
+            data.append("    deploy: custom marker")
+            data.append("    active: custom marker")
+            data.append("    master: custom marker")
+            data.append("    release: custom marker")
+            data.append("    staging: custom marker")
+            data.append("    production: custom marker")
+            data.append("")
+            extra_file_name = "pytest.ini"
+            extra_file_path = os.path.join(recordings_folder, extra_file_name)
+            if not os.path.exists(extra_file_path):
+                out_file = open(extra_file_path, mode="w+", encoding="utf-8")
+                out_file.writelines("\r\n".join(data))
+                out_file.close()
+                sys.stdout.write("\nCreated recordings%spytest.ini" % os.sep)
+
+            data = []
+            data.append("[flake8]")
+            data.append("exclude=recordings,temp")
+            data.append("ignore=W503")
+            data.append("")
+            data.append("[nosetests]")
+            data.append("nocapture=1")
+            data.append("logging-level=INFO")
+            data.append("")
+            data.append("[behave]")
+            data.append("show_skipped=false")
+            data.append("show_timings=false")
+            data.append("")
+            extra_file_name = "setup.cfg"
+            extra_file_path = os.path.join(recordings_folder, extra_file_name)
+            if not os.path.exists(extra_file_path):
+                out_file = open(extra_file_path, mode="w+", encoding="utf-8")
+                out_file.writelines("\r\n".join(data))
+                out_file.close()
+                sys.stdout.write("\nCreated recordings%ssetup.cfg" % os.sep)
+
+            data = saved_data
+            file_name = self.__class__.__module__.split(".")[-1] + "_rec.py"
+            if hasattr(self, "_using_sb_fixture"):
+                test_id = sb_config._test_id
+                file_name = (
+                    test_id.split("::")[0].split("/")[-1].split("\\")[-1]
+                )
+                file_name = file_name.split(".py")[0] + "_rec.py"
+            if getattr(self, "is_behave", None):
+                file_name = (
+                    sb_config.behave_scenario.filename.replace(".", "_")
+                )
+                file_name = (
+                    file_name.split("/")[-1].split("\\")[-1] + "_rec.py"
+                )
+                file_name = file_name
+            elif context_filename:
+                file_name = context_filename
+            file_path = os.path.join(recordings_folder, file_name)
+            out_file = open(file_path, mode="w+", encoding="utf-8")
             out_file.writelines("\r\n".join(data))
             out_file.close()
-            sys.stdout.write("\nCreated recordings%spytest.ini" % os.sep)
-
-        data = []
-        data.append("[flake8]")
-        data.append("exclude=recordings,temp")
-        data.append("ignore=W503")
-        data.append("")
-        data.append("[nosetests]")
-        data.append("nocapture=1")
-        data.append("logging-level=INFO")
-        data.append("")
-        data.append("[behave]")
-        data.append("show_skipped=false")
-        data.append("show_timings=false")
-        data.append("")
-        extra_file_name = "setup.cfg"
-        extra_file_path = os.path.join(recordings_folder, extra_file_name)
-        if not os.path.exists(extra_file_path):
-            out_file = open(extra_file_path, mode="w+", encoding="utf-8")
-            out_file.writelines("\r\n".join(data))
-            out_file.close()
-            sys.stdout.write("\nCreated recordings%ssetup.cfg" % os.sep)
-
-        data = saved_data
-        file_name = self.__class__.__module__.split(".")[-1] + "_rec.py"
-        if hasattr(self, "_using_sb_fixture"):
-            test_id = sb_config._test_id
-            file_name = test_id.split("::")[0].split("/")[-1].split("\\")[-1]
-            file_name = file_name.split(".py")[0] + "_rec.py"
-        if getattr(self, "is_behave", None):
-            file_name = sb_config.behave_scenario.filename.replace(".", "_")
-            file_name = file_name.split("/")[-1].split("\\")[-1] + "_rec.py"
-            file_name = file_name
-        elif context_filename:
-            file_name = context_filename
-        file_path = os.path.join(recordings_folder, file_name)
-        out_file = open(file_path, mode="w+", encoding="utf-8")
-        out_file.writelines("\r\n".join(data))
-        out_file.close()
-        rec_message = ">>> RECORDING SAVED as: "
-        if not new_file:
-            rec_message = ">>> RECORDING ADDED to: "
-        star_len = len(rec_message) + len(file_path)
-        with suppress(Exception):
-            terminal_size = os.get_terminal_size().columns
-            if terminal_size > 30 and star_len > terminal_size:
-                star_len = terminal_size
-        spc = "\n\n"
-        if getattr(self, "rec_print", None):
-            spc = ""
-            sys.stdout.write("\nCreated recordings%s%s" % (os.sep, file_name))
-            print()
-            if " " not in file_path:
-                os.system("sbase print %s -n" % file_path)
-            elif '"' not in file_path:
-                os.system('sbase print "%s" -n' % file_path)
+            rec_message = ">>> RECORDING SAVED as: "
+            if not new_file:
+                rec_message = ">>> RECORDING ADDED to: "
+            star_len = len(rec_message) + len(file_path)
+            with suppress(Exception):
+                terminal_size = os.get_terminal_size().columns
+                if terminal_size > 30 and star_len > terminal_size:
+                    star_len = terminal_size
+            spc = "\n\n"
+            if getattr(self, "rec_print", None):
+                spc = ""
+                sys.stdout.write(
+                    "\nCreated recordings%s%s" % (os.sep, file_name)
+                )
+                print()
+                if " " not in file_path:
+                    os.system("sbase print %s -n" % file_path)
+                elif '"' not in file_path:
+                    os.system('sbase print "%s" -n' % file_path)
+                else:
+                    os.system("sbase print '%s' -n" % file_path)
+            stars = "*" * star_len
+            c1 = ""
+            c2 = ""
+            cr = ""
+            if not is_linux:
+                c1 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
+                c2 = colorama.Fore.LIGHTRED_EX + colorama.Back.LIGHTYELLOW_EX
+                cr = colorama.Style.RESET_ALL
+                rec_message = rec_message.replace(">>>", c2 + ">>>" + cr)
+            print(
+                "%s%s%s%s%s\n%s" % (spc, rec_message, c1, file_path, cr, stars)
+            )
+        elif getattr(self, "rec_sb_mgr", None):
+            new_file = False
+            data = []
+            if filename not in sb_config._sb_mgr_recorded_actions:
+                new_file = True
+                sb_config._sb_mgr_recorded_actions[filename] = []
+                data.append("from seleniumbase import SB")
+                data.append("")
             else:
-                os.system("sbase print '%s' -n" % file_path)
-        stars = "*" * star_len
-        c1 = ""
-        c2 = ""
-        cr = ""
-        if not is_linux:
-            c1 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
-            c2 = colorama.Fore.LIGHTRED_EX + colorama.Back.LIGHTYELLOW_EX
-            cr = colorama.Style.RESET_ALL
-            rec_message = rec_message.replace(">>>", c2 + ">>>" + cr)
-        print("%s%s%s%s%s\n%s" % (spc, rec_message, c1, file_path, cr, stars))
+                data = sb_config._sb_mgr_recorded_actions[filename]
+            if "--uc" in sys.argv:
+                data.append('with SB(uc=True) as sb:')
+            else:
+                data.append("with SB() as sb:")
+            if len(sb_actions) > 0:
+                if "--uc" in sys.argv:
+                    data.append("    sb.activate_cdp_mode()")
+                for action in sb_actions:
+                    action = action.replace("self.", "sb.")
+                    if "--uc" in sys.argv:
+                        action = action.replace(
+                            "sb.type(", "sb.press_keys("
+                        )
+                    data.append("    " + action)
+            else:
+                data.append("    pass")
+            data.append("")
+            sb_config._sb_mgr_recorded_actions[filename] = data
+            saved_data = data
+
+            recordings_folder = constants.Recordings.SAVED_FOLDER
+            if recordings_folder.endswith("/"):
+                recordings_folder = recordings_folder[:-1]
+            if not os.path.exists(recordings_folder):
+                with suppress(Exception):
+                    os.makedirs(recordings_folder)
+                    sys.stdout.write("\nCreated recordings%s" % os.sep)
+
+            data = saved_data
+            file_name = self.__class__.__module__.split(".")[-1] + "_rec.py"
+            if hasattr(self, "_using_sb_fixture"):
+                test_id = sb_config._test_id
+                file_name = (
+                    test_id.split("::")[0].split("/")[-1].split("\\")[-1]
+                )
+                file_name = file_name.split(".py")[0] + "_rec.py"
+            if getattr(self, "is_behave", None):
+                file_name = (
+                    sb_config.behave_scenario.filename.replace(".", "_")
+                )
+                file_name = (
+                    file_name.split("/")[-1].split("\\")[-1] + "_rec.py"
+                )
+                file_name = file_name
+            elif context_filename:
+                file_name = context_filename
+            file_path = os.path.join(recordings_folder, file_name)
+            out_file = open(file_path, mode="w+", encoding="utf-8")
+            out_file.writelines("\r\n".join(data))
+            out_file.close()
+            rec_message = ">>> RECORDING SAVED as: "
+            if not new_file:
+                rec_message = ">>> RECORDING ADDED to: "
+            star_len = len(rec_message) + len(file_path)
+            with suppress(Exception):
+                terminal_size = os.get_terminal_size().columns
+                if terminal_size > 30 and star_len > terminal_size:
+                    star_len = terminal_size
+            spc = "\n\n"
+            if getattr(self, "rec_print", None):
+                spc = ""
+                sys.stdout.write(
+                    "\nCreated recordings%s%s" % (os.sep, file_name)
+                )
+                print()
+                if " " not in file_path:
+                    os.system("sbase print %s -n" % file_path)
+                elif '"' not in file_path:
+                    os.system('sbase print "%s" -n' % file_path)
+                else:
+                    os.system("sbase print '%s' -n" % file_path)
+            stars = "*" * star_len
+            c1 = ""
+            c2 = ""
+            cr = ""
+            if not is_linux:
+                c1 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
+                c2 = colorama.Fore.LIGHTRED_EX + colorama.Back.LIGHTYELLOW_EX
+                cr = colorama.Style.RESET_ALL
+                rec_message = rec_message.replace(">>>", c2 + ">>>" + cr)
+            print(
+                "%s%s%s%s%s\n%s" % (spc, rec_message, c1, file_path, cr, stars)
+            )
+        else:  # rec_sb_cdp
+            from seleniumbase.core.sb_cdp import CDPMethods
+            new_file = False
+            data = []
+            if filename not in sb_config._sb_mgr_recorded_actions:
+                new_file = True
+                sb_config._sb_mgr_recorded_actions[filename] = []
+                data.append("from seleniumbase import sb_cdp")
+                data.append("")
+            else:
+                data = sb_config._sb_mgr_recorded_actions[filename]
+            data.append("sb = sb_cdp.Chrome()")
+            for action in sb_actions:
+                action = action.replace("self.", "sb.")
+                action = action.replace(
+                    "sb.type(", "sb.press_keys("
+                )
+                action = action.replace(
+                    "sb.drag_and_drop(", "sb.gui_drag_and_drop("
+                )
+                if "sb." in action:
+                    method_name = action.split("sb.")[1].split("(")[0]
+                    if hasattr(CDPMethods, method_name):
+                        data.append(action)
+                    else:
+                        data.append("# %s" % action)
+            data.append("sb.quit()")
+            data.append("")
+            sb_config._sb_mgr_recorded_actions[filename] = data
+            saved_data = data
+
+            recordings_folder = constants.Recordings.SAVED_FOLDER
+            if recordings_folder.endswith("/"):
+                recordings_folder = recordings_folder[:-1]
+            if not os.path.exists(recordings_folder):
+                with suppress(Exception):
+                    os.makedirs(recordings_folder)
+                    sys.stdout.write("\nCreated recordings%s" % os.sep)
+
+            data = saved_data
+            file_name = self.__class__.__module__.split(".")[-1] + "_rec.py"
+            if hasattr(self, "_using_sb_fixture"):
+                test_id = sb_config._test_id
+                file_name = (
+                    test_id.split("::")[0].split("/")[-1].split("\\")[-1]
+                )
+                file_name = file_name.split(".py")[0] + "_rec.py"
+            if getattr(self, "is_behave", None):
+                file_name = (
+                    sb_config.behave_scenario.filename.replace(".", "_")
+                )
+                file_name = (
+                    file_name.split("/")[-1].split("\\")[-1] + "_rec.py"
+                )
+                file_name = file_name
+            elif context_filename:
+                file_name = context_filename
+            file_path = os.path.join(recordings_folder, file_name)
+            out_file = open(file_path, mode="w+", encoding="utf-8")
+            out_file.writelines("\r\n".join(data))
+            out_file.close()
+            rec_message = ">>> RECORDING SAVED as: "
+            if not new_file:
+                rec_message = ">>> RECORDING ADDED to: "
+            star_len = len(rec_message) + len(file_path)
+            with suppress(Exception):
+                terminal_size = os.get_terminal_size().columns
+                if terminal_size > 30 and star_len > terminal_size:
+                    star_len = terminal_size
+            spc = "\n\n"
+            if getattr(self, "rec_print", None):
+                spc = ""
+                sys.stdout.write(
+                    "\nCreated recordings%s%s" % (os.sep, file_name)
+                )
+                print()
+                if " " not in file_path:
+                    os.system("sbase print %s -n" % file_path)
+                elif '"' not in file_path:
+                    os.system('sbase print "%s" -n' % file_path)
+                else:
+                    os.system("sbase print '%s' -n" % file_path)
+            stars = "*" * star_len
+            c1 = ""
+            c2 = ""
+            cr = ""
+            if not is_linux:
+                c1 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
+                c2 = colorama.Fore.LIGHTRED_EX + colorama.Back.LIGHTYELLOW_EX
+                cr = colorama.Style.RESET_ALL
+                rec_message = rec_message.replace(">>>", c2 + ">>>" + cr)
+            print(
+                "%s%s%s%s%s\n%s" % (spc, rec_message, c1, file_path, cr, stars)
+            )
 
         if getattr(self, "rec_behave", None):
             # Also generate necessary behave-gherkin files.
@@ -15544,16 +15747,19 @@ class BaseCase(unittest.TestCase):
             self.recorder_ext = sb_config.recorder_mode
             self.rec_print = sb_config.rec_print
             self.rec_behave = sb_config.rec_behave
+            self.rec_sb_mgr = sb_config.rec_sb_mgr
+            self.rec_sb_cdp = sb_config.rec_sb_cdp
             self.record_sleep = sb_config.record_sleep
-            if self.rec_print and not self.recorder_mode:
-                self.recorder_mode = True
-                self.recorder_ext = True
-            elif self.rec_behave and not self.recorder_mode:
-                self.recorder_mode = True
-                self.recorder_ext = True
-            elif self.record_sleep and not self.recorder_mode:
-                self.recorder_mode = True
-                self.recorder_ext = True
+            if not self.recorder_mode:
+                if (
+                    self.record_sleep
+                    or self.rec_print
+                    or self.rec_behave
+                    or self.rec_sb_mgr
+                    or self.rec_sb_cdp
+                ):
+                    self.recorder_mode = True
+                    self.recorder_ext = True
             self.disable_cookies = sb_config.disable_cookies
             self.disable_js = sb_config.disable_js
             self.disable_csp = sb_config.disable_csp
@@ -15696,6 +15902,8 @@ class BaseCase(unittest.TestCase):
         if not hasattr(sb_config, "_recorded_actions"):
             # Only filled when Recorder Mode is enabled
             sb_config._recorded_actions = {}
+            sb_config._sb_mgr_recorded_actions = {}
+            sb_config._sb_cdp_recorded_actions = {}
             sb_config._behave_recorded_actions = {}
 
         if not hasattr(settings, "SWITCH_TO_NEW_TABS_ON_CLICK"):
