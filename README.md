@@ -823,6 +823,8 @@ pytest test_coffee_cart.py --trace
 --verify-delay=SECONDS  # (The delay before MasterQA verification checks.)
 --ee | --esc-end  # (Lets the user end the current test via the ESC key.)
 --recorder  # (Enables the Recorder for turning browser actions into code.)
+--rec-sb-mgr  # (A Recorder Mode that generates SB() context manager code.)
+--rec-sb-cdp  # (A Recorder Mode that generates Pure CDP Mode sb_cdp code.)
 --rec-behave  # (Same as Recorder Mode, but also generates behave-gherkin.)
 --rec-sleep  # (If the Recorder is enabled, also records self.sleep calls.)
 --rec-print  # (If the Recorder is enabled, prints output after tests end.)
