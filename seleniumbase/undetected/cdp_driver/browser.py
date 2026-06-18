@@ -12,6 +12,7 @@ import pickle
 import psutil
 import re
 import shutil
+import sys
 import time
 import urllib.parse
 import urllib.request
@@ -1018,6 +1019,24 @@ class Browser:
             and connection_id in sb_config._closed_connection_ids
         ):
             sb_config._closed_connection_ids.remove(connection_id)
+        if shared_utils.is_windows():
+            default_unraisablehook = sys.unraisablehook
+
+            def silence_pipe_destruction_errors(unraisable):
+                exc_type = unraisable.exc_type
+                exc_value = unraisable.exc_value
+                if (
+                    exc_type is ValueError
+                    and "I/O operation on closed pipe" in str(exc_value)
+                ):
+                    return
+                default_unraisablehook(unraisable)
+
+            sys.unraisablehook = silence_pipe_destruction_errors
+            # Automatically restore Python's default behavior at program exit
+            atexit.register(
+                lambda: setattr(sys, "unraisablehook", default_unraisablehook)
+            )
 
     def quit(self):
         self.stop()
