@@ -764,14 +764,8 @@ async def start_async(*args, **kwargs) -> Browser:
 
 
 def start_sync(*args, **kwargs) -> Browser:
-    loop = None
-    if (
-        "loop" in kwargs
-        and kwargs["loop"]
-        and hasattr(kwargs["loop"], "create_task")
-    ):
-        loop = kwargs["loop"]
-    else:
+    loop = kwargs.pop("loop", None)
+    if not (loop and hasattr(loop, "create_task")):
         loop = asyncio.new_event_loop()
     return loop.run_until_complete(start(*args, **kwargs))
 

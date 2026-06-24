@@ -133,12 +133,10 @@ from seleniumbase import SB
 
 with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     sb.activate_cdp_mode()
-    sb.goto("https://www.pokemon.com/us")
+    sb.goto("https://www.pokemon.com/us/pokedex")
     sb.sleep(1.5)
     sb.click_if_visible("button#onetrust-accept-btn-handler")
-    sb.sleep(1.2)
-    sb.click("a span.icon_pokeball")
-    sb.sleep(2.5)
+    sb.sleep(1.5)
     sb.click('b:contains("Show Advanced Search")')
     sb.sleep(2.5)
     sb.click('span[data-type="type"][data-value="electric"]')
