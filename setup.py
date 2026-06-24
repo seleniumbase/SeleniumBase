@@ -220,7 +220,7 @@ setup(
         'iniconfig==2.3.0;python_version>="3.10"',
         'pluggy==1.6.0',
         'pytest==8.4.2;python_version<"3.11"',
-        'pytest==9.1.0;python_version>="3.11"',
+        'pytest==9.1.1;python_version>="3.11"',
         'pytest-html==4.0.2',  # Newer ones had issues
         'pytest-metadata==3.1.1',
         'pytest-ordering==0.6',
@@ -252,7 +252,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage>=7.10.7;python_version<"3.10"',
-            'coverage>=7.14.1;python_version>="3.10"',
+            'coverage>=7.14.3;python_version>="3.10"',
             'pytest-cov>=7.1.0',
         ],
         # pip install -e .[flake8]
