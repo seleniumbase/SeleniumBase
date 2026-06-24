@@ -25,7 +25,7 @@ __all__ = [
 ]
 
 logger = logging.getLogger(__name__)
-is_posix = sys.platform.startswith(("darwin", "cygwin", "linux", "linux2"))
+is_posix = sys.platform.startswith(("darwin", "cygwin", "linux"))
 
 PathLike = Union[str, pathlib.Path]
 AUTO = None

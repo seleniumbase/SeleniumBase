@@ -372,12 +372,17 @@ class Element:
         arguments = [cdp.runtime.CallArgument(
             object_id=self._remote_object.object_id
         )]
-        script = 'sessionStorage.getItem("pxsid") !== null;'
+        # The next part may be getting detected. Comment-out for now.
+        '''script1 = 'sessionStorage.getItem("pxsid") !== null;'
+        script2 = 'sessionStorage.getItem("PIM-SESSION-ID") !== null;'
         using_px = True
+        using_pim = True
         with suppress(Exception):
-            using_px = await self.tab.evaluate(script)
-        if not using_px:
-            await self.flash_async(0.25)
+            using_px = await self.tab.evaluate(script1)
+        with suppress(Exception):
+            using_pim = await self.tab.evaluate(script2)
+        if not using_px and not using_pim:
+            await self.flash_async(0.25)'''
         await self._tab.send(
             cdp.runtime.call_function_on(
                 "(el) => el.click()",
@@ -506,12 +511,17 @@ class Element:
             logger.warning("Could not calculate box model for %s", self)
             return
         logger.debug("Clicking on location: %.2f, %.2f" % center)
-        script = 'sessionStorage.getItem("pxsid") !== null;'
+        # The next part may be getting detected. Comment-out for now.
+        '''script1 = 'sessionStorage.getItem("pxsid") !== null;'
+        script2 = 'sessionStorage.getItem("PIM-SESSION-ID") !== null;'
         using_px = True
+        using_pim = True
         with suppress(Exception):
-            using_px = await self.tab.evaluate(script)
-        if not using_px:
-            asyncio.create_task(self.flash_async(0.25))
+            using_px = await self.tab.evaluate(script1)
+        with suppress(Exception):
+            using_pim = await self.tab.evaluate(script2)
+        if not using_px and not using_pim:
+            asyncio.create_task(self.flash_async(0.25))'''
         asyncio.create_task(
             self._tab.send(
                 cdp.input_.dispatch_mouse_event(
@@ -570,11 +580,15 @@ class Element:
             logger.debug("Clicking on location: %.2f, %.2f" % center_pos)
         else:
             logger.debug("Clicking on location: %.2f, %.2f" % (x_pos, y_pos))
-        script = 'sessionStorage.getItem("pxsid") !== null;'
+        script1 = 'sessionStorage.getItem("pxsid") !== null;'
+        script2 = 'sessionStorage.getItem("PIM-SESSION-ID") !== null;'
         using_px = True
+        using_pim = True
         with suppress(Exception):
-            using_px = await self.tab.evaluate(script)
-        if not using_px:
+            using_px = await self.tab.evaluate(script1)
+        with suppress(Exception):
+            using_pim = await self.tab.evaluate(script2)
+        if not using_px and not using_pim:
             asyncio.create_task(
                 self.flash_async(
                     x_offset=x_offset - (width / 2),

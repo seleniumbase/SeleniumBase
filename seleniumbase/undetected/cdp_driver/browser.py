@@ -50,23 +50,29 @@ def deconstruct_browser():
                             _.config.user_data_dir, ignore_errors=False
                         )
                     if not os.path.exists(_.config.user_data_dir):
+                        logger.debug(
+                            "Temp profile %s was removed."
+                            % _.config.user_data_dir
+                        )
                         break
                     else:
                         time.sleep(0.12)
             except FileNotFoundError:
+                logger.debug(
+                    "Temp profile %s was removed." % _.config.user_data_dir
+                )
                 break
             except (PermissionError, OSError) as e:
                 if attempt == max_attempts - 1:
                     logger.debug(
-                        "Problem removing data dir %s\n"
+                        "Problem removing data dir %s.\n"
                         "Consider checking whether it's there "
-                        "and remove it by hand\nerror: %s"
+                        "and remove it by hand.\nError: %s"
                         % (_.config.user_data_dir, e)
                     )
                     break
                 time.sleep(0.12)
                 continue
-        logging.debug("Temp profile %s was removed." % _.config.user_data_dir)
 
 
 class Browser:
@@ -940,10 +946,12 @@ class Browser:
                     logger.debug("Closed the connection using asyncio.run()")
                 except Exception:
                     pass
+        procs = []
         for _ in range(3):
             try:
                 if connection_id not in sb_config._closed_connection_ids:
                     self._process.terminate()
+                    procs.append(psutil.Process(self._process.pid))
                     logger.debug(
                         "Terminated browser with pid %d successfully."
                         % self._process.pid
@@ -955,20 +963,33 @@ class Browser:
             except (Exception,):
                 try:
                     self._process.kill()
+                    procs.append(psutil.Process(self._process.pid))
                     logger.debug(
                         "Killed browser with pid %d successfully."
                         % self._process.pid
                     )
+                    if connection_id:
+                        sb_config._closed_connection_ids.append(connection_id)
+                        close_success = True
                     break
                 except (Exception,):
                     try:
-                        if hasattr(self, "browser_process_pid"):
+                        if hasattr(self, "_process_pid") and self._process_pid:
                             os.kill(self._process_pid, 15)
+                            try:
+                                procs.append(psutil.Process(self._process_pid))
+                            except Exception:
+                                pass
                             logger.debug(
                                 "Killed browser with pid %d "
                                 "using signal 15 successfully."
-                                % self._process.pid
+                                % self._process_pid
                             )
+                            if connection_id:
+                                sb_config._closed_connection_ids.append(
+                                    connection_id
+                                )
+                                close_success = True
                             break
                     except (TypeError,):
                         logger.info("TypeError", exc_info=True)
@@ -976,16 +997,33 @@ class Browser:
                     except (PermissionError,):
                         logger.info(
                             "Browser already stopped, "
-                            "or no permission to kill. Skip."
+                            "or no permission to kill."
                         )
                         pass
                     except (ProcessLookupError,):
                         logger.info("ProcessLookupError")
-                        pass
+                        break
                     except (Exception,):
                         raise
-            self._process = None
-            self._process_pid = None
+        self._process = None
+        self._process_pid = None
+        if procs:
+            with suppress(Exception):
+                gone, alive = psutil.wait_procs(procs, timeout=0.8)
+                for p in gone:
+                    logger.debug("Process has been terminated: %d." % p.pid)
+                for p in alive:
+                    logger.debug("Process is still alive: %d." % p.pid)
+        if self.config.user_data_dir and not self.config.uses_custom_data_dir:
+            for _ in range(3):
+                try:
+                    time.sleep(0.005)
+                    if os.path.exists(self.config.user_data_dir):
+                        time.sleep(0.005)
+                        shutil.rmtree(self.config.user_data_dir)
+                    break
+                except Exception:
+                    time.sleep(0.12)
         if (
             hasattr(sb_config, "_xvfb_users")
             and isinstance(sb_config._xvfb_users, int)
@@ -1025,18 +1063,33 @@ class Browser:
             def silence_pipe_destruction_errors(unraisable):
                 exc_type = unraisable.exc_type
                 exc_value = unraisable.exc_value
+                exc_value_str = str(exc_value) if exc_value else ""
                 if (
                     exc_type is ValueError
-                    and "I/O operation on closed pipe" in str(exc_value)
+                    and "I/O operation on closed pipe" in exc_value_str
+                ):
+                    return
+                if (
+                    exc_type is RuntimeError
+                    and "Event loop is closed" in exc_value_str
                 ):
                     return
                 default_unraisablehook(unraisable)
 
             sys.unraisablehook = silence_pipe_destruction_errors
             # Automatically restore Python's default behavior at program exit
-            atexit.register(
-                lambda: setattr(sys, "unraisablehook", default_unraisablehook)
-            )
+            # (Looks like this isn't needed, but I'm saving it for reference)
+            # atexit.register(
+            #     lambda: setattr(
+            #         sys, "unraisablehook", default_unraisablehook
+            #     )
+            # )
+
+        # Custom user_data_dirs should be saved while temp ones are removed
+        if os.path.exists("%s" % self.config.user_data_dir):
+            logger.debug("%s still exists." % self.config.user_data_dir)
+        else:
+            logger.debug("%s was removed." % self.config.user_data_dir)
 
     def quit(self):
         self.stop()

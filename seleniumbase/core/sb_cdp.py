@@ -2163,6 +2163,10 @@ class CDPMethods():
         self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.wait(0.2))
 
+    def stop(self):
+        """Same as quit()"""
+        self.quit()
+
     def quit(self):
         """Quit the browser in the Pure CDP Mode Sync format."""
         driver = self.driver
@@ -3544,8 +3548,9 @@ class Chrome(CDPMethods):
     def __init__(self, url=None, **kwargs):
         if not url:
             url = "about:blank"
-        driver = cdp_util.start_sync(**kwargs)
         loop = asyncio.new_event_loop()
+        kwargs["loop"] = loop
+        driver = cdp_util.start_sync(**kwargs)
         page = loop.run_until_complete(driver.get(url))
         wait_timeout = 30.0
         if hasattr(sb_config, "_cdp_proxy") and sb_config._cdp_proxy:
