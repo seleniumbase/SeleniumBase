@@ -2308,6 +2308,8 @@ class CDPMethods():
             time.sleep(0.48)
             self.loop.run_until_complete(self.page.wait(0.1))
         x2 = x2 + 22.5  # Overshoot drop to maximize compatibility
+        y1 = y1 + 3
+        y2 = y2 + 3
         self.gui_drag_drop_points(x1, y1, x2, y2, timeframe=0.55)
         time.sleep(0.25)
         self.loop.run_until_complete(self.page.wait(0.2))

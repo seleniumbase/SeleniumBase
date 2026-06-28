@@ -668,7 +668,10 @@ def Driver(
         binary_location = "cft"
     elif chs and not binary_location:
         binary_location = "chs"
-    if "--use-chromium" in sys_argv and not binary_location:
+    if (
+        ("--use-chromium" in sys_argv and not binary_location)
+        or ("--chromium" in sys_argv and not binary_location)
+    ):
         binary_location = "_chromium_"
     elif "--cft" in sys_argv and not binary_location:
         binary_location = "cft"

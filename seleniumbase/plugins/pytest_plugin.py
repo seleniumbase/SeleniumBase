@@ -33,7 +33,7 @@ def pytest_addoption(parser):
     --brave  (Shortcut for "--browser=brave".)
     --comet  (Shortcut for "--browser=comet".)
     --atlas  (Shortcut for "--browser=atlas".)
-    --use-chromium  (Shortcut for using base `Chromium`)
+    --chromium  (Shortcut for using base `Chromium`)
     --cft  (Shortcut for using `Chrome for Testing`)
     --chs  (Shortcut for using `Chrome-Headless-Shell`)
     --settings-file=FILE  (Override default SeleniumBase settings.)
@@ -223,6 +223,7 @@ def pytest_addoption(parser):
     )
     parser.addoption(
         "--use-chromium",
+        "--chromium",
         action="store_true",
         dest="use_chromium",
         default=False,

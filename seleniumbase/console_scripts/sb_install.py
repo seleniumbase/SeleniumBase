@@ -14,13 +14,14 @@ Examples:
     sbase get chromedriver
     sbase get geckodriver
     sbase get edgedriver
-    sbase get chromedriver 114
-    sbase get chromedriver 114.0.5735.90
+    sbase get chromedriver 149
+    sbase get chromedriver 149.0.7827.115
     sbase get chromedriver stable
     sbase get chromedriver beta
     sbase get chromedriver -p
     sbase get chromium
-    sbase get cft 131
+    sbase get chromium --revision=1639046
+    sbase get cft 149
     sbase get chs
 Output:
     Downloads the webdriver to seleniumbase/drivers/

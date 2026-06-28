@@ -527,7 +527,11 @@ async def start(
                 print("  Using default Chrome browser instead!")
                 bin_loc = None
             browser_executable_path = bin_loc
-        elif use_chromium or "--use-chromium" in arg_join:
+        elif (
+            use_chromium
+            or "--use-chromium" in arg_join
+            or "--chromium" in sys_argv
+        ):
             browser_executable_path = "_chromium_"
         elif cft or "--cft" in arg_join:
             browser_executable_path = "_cft_"

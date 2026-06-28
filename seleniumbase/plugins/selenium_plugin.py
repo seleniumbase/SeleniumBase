@@ -22,7 +22,7 @@ class SeleniumBrowser(Plugin):
     --brave  (Shortcut for "--browser=brave".)
     --comet  (Shortcut for "--browser=comet".)
     --atlas  (Shortcut for "--browser=atlas".)
-    --use-chromium  (Shortcut for using base `Chromium`)
+    --chromium  (Shortcut for using base `Chromium`)
     --cft  (Shortcut for using `Chrome for Testing`)
     --chs  (Shortcut for using `Chrome-Headless-Shell`)
     --user-data-dir=DIR  (Set the Chrome user data directory to use.)
@@ -184,6 +184,7 @@ class SeleniumBrowser(Plugin):
         )
         parser.addoption(
             "--use-chromium",
+            "--chromium",
             action="store_true",
             dest="use_chromium",
             default=False,
