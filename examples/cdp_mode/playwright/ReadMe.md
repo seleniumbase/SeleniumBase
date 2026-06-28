@@ -82,8 +82,7 @@ async def main():
         await page.goto("https://example.com")
 
 if __name__ == "__main__":
-    loop = asyncio.new_event_loop()
-    loop.run_until_complete(main())
+    asyncio.run(main())
 ```
 
 ### 💡 Key differences of the 3 stealthy formats:
@@ -269,8 +268,7 @@ async def main():
         # ...
 
 if __name__ == "__main__":
-    loop = asyncio.new_event_loop()
-    loop.run_until_complete(main())
+    asyncio.run(main())
 ```
 
 (Fill in the `url` and the `proxy` details to complete the script.)
