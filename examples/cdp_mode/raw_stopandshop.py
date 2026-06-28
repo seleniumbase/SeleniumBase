@@ -4,11 +4,9 @@ from seleniumbase import SB
 with SB(uc=True, test=True, guest=True) as sb:
     sb.activate_cdp_mode()
     sb.goto("https://stopandshop.com/")
-    sb.sleep(2.8)
-    if not sb.is_element_present("#brand-logo_link"):
-        sb.refresh()
-        sb.sleep(2.6)
-        sb.wait_for_element("#brand-logo_link", timeout=3)
+    sb.sleep(1.6)
+    sb.solve_captcha()
+    sb.sleep(1.8)
     sb.click_if_visible("#optly-popup-refresh-btn")
     query = "Fresh Turkey"
     required_text = "Turkey"

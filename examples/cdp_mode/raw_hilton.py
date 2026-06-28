@@ -8,9 +8,9 @@ with SB(uc=True, test=True, locale="en", use_chromium=True) as sb:
     location_input = "input#location-input"
     sb.wait_for_element(location_input)
     sb.sleep(1.2)
-    sb.click("input#location-input")
+    sb.click(location_input)
     sb.sleep(1.2)
-    sb.press_keys("input#location-input", location)
+    sb.press_keys(location_input, location)
     sb.sleep(2)
     sb.click('span:contains("Check-in")')
     sb.sleep(1.2)

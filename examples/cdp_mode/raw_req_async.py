@@ -42,8 +42,7 @@ class RequestPausedTest():
 @decorators.print_runtime("RequestPausedTest")
 def main():
     test = RequestPausedTest()
-    loop = asyncio.new_event_loop()
-    loop.run_until_complete(test.start_test())
+    asyncio.run(test.start_test())
 
 
 if __name__ == "__main__":

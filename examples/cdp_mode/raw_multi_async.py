@@ -17,9 +17,8 @@ async def main(url):
     driver.stop()
 
 
-def set_up_loop(url):
-    loop = asyncio.new_event_loop()
-    loop.run_until_complete(main(url))
+def run_main(url):
+    asyncio.run(main(url))
 
 
 if __name__ == "__main__":
@@ -27,4 +26,4 @@ if __name__ == "__main__":
     with decorators.print_runtime("raw_multi_async.py"):
         with ThreadPoolExecutor(max_workers=len(urls)) as executor:
             for url in urls:
-                executor.submit(set_up_loop, url)
+                executor.submit(run_main, url)
