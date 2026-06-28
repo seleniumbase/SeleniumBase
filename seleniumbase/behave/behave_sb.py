@@ -492,8 +492,11 @@ def get_configured_sb(context):
             sb.binary_location = binary_location
             sb_config.binary_location = binary_location
             continue
-        # Handle: -D use-chromium
-        if low_key in ["use-chromium"] and not sb_config.binary_location:
+        # Handle: -D use-chromium / chromium
+        if (
+            low_key in ["use-chromium", "chromium"]
+            and not sb_config.binary_location
+        ):
             binary_location = "_chromium_"
             sb.binary_location = binary_location
             sb_config.binary_location = binary_location

@@ -25,6 +25,5 @@ async def main():
     driver.stop()
 
 if __name__ == "__main__":
-    loop = asyncio.new_event_loop()
     with decorators.print_runtime("raw_mobile_async.py"):
-        loop.run_until_complete(main())
+        asyncio.run(main())

@@ -6,9 +6,7 @@ with SB(uc=True, test=True, locale="en", guest=True, pls="none") as sb:
     sb.activate_cdp_mode()
     sb.goto("https://www.priceline.com")
     sb.sleep(3)
-    input_selector = 'input[name="endLocation"]'
-    if not sb.is_element_present(input_selector):
-        input_selector = "div.location-input input"
+    input_selector = "div.location-input input"
     sb.gui_hover_element(input_selector)
     sb.mouse_click(input_selector)
     location = "Portland, OR"

@@ -149,7 +149,7 @@ for element in elements:
 <p>💡 You can set the Chromium browser to use via command line parameters:</p>
 
 ```zsh
-python SCRIPT.py --use-chromium  # Use the unbranded Chromium browser
+python SCRIPT.py --chromium  # Use the unbranded Chromium browser
 python SCRIPT.py --cft  # Use Chrome-for-testing
 python SCRIPT.py --edge  # Use Microsoft Edge
 python SCRIPT.py --brave  # Use Brave browser

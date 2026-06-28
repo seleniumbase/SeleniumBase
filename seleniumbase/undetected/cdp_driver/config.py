@@ -195,6 +195,8 @@ class Config:
                     f"Defaulting to regular Chrome!"
                 )
                 browser_executable_path = find_chrome_executable()
+        elif "Chromium.app" in browser_executable_path:
+            mock_keychain = True
         self._browser_args = browser_args
         self.browser_executable_path = browser_executable_path
         self.headless = headless

@@ -5012,7 +5012,10 @@ def get_local_driver(
                 device_height,
                 device_pixel_ratio,
             )
-            if binary_location and "chromium_drivers" in binary_location:
+            if (
+                (binary_location and "chromium_drivers" in binary_location)
+                or (binary_location and "Chromium.app" in binary_location)
+            ):
                 chrome_options.add_argument("--use-mock-keychain")
             use_version = "latest"
             major_chrome_version = None
