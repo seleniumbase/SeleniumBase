@@ -139,6 +139,8 @@ def get_proxy_info():
                     protocol = "https"
                 elif "socks4" in proxy_string:
                     protocol = "socks4"
+                elif "socks5h" in proxy_string:
+                    protocol = "socks5h"
                 elif "socks5" in proxy_string:
                     protocol = "socks5"
                 proxy_string = proxy_helper.validate_proxy_string(proxy_string)

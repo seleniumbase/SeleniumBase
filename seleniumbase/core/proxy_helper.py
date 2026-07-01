@@ -177,6 +177,8 @@ def validate_proxy_string(proxy_string, keep_scheme=False):
         proxy_scheme = "https"
     elif proxy_string.startswith("socks4://"):
         proxy_scheme = "socks4"
+    elif proxy_string.startswith("socks5h://"):
+        proxy_scheme = "socks5h"
     elif proxy_string.startswith("socks5://"):
         proxy_scheme = "socks5"
     valid = False
@@ -189,8 +191,10 @@ def validate_proxy_string(proxy_string, keep_scheme=False):
         elif proxy_string.startswith("https://"):
             proxy_string = proxy_string.split("https://")[1]
         elif "://" in proxy_string:
-            if not proxy_string.startswith("socks4://") and not (
-                proxy_string.startswith("socks5://")
+            if (
+                not proxy_string.startswith("socks4://")
+                and not proxy_string.startswith("socks5://")
+                and not proxy_string.startswith("socks5h://")
             ):
                 proxy_string = proxy_string.split("://")[1]
         chunks = proxy_string.split(":")
@@ -201,13 +205,9 @@ def validate_proxy_string(proxy_string, keep_scheme=False):
         elif len(chunks) == 3:
             if re.match(r"^\d+$", chunks[2]):
                 if page_utils.is_valid_url("http:" + ":".join(chunks[1:])):
-                    if chunks[0] == "http":
-                        valid = True
-                    elif chunks[0] == "https":
-                        valid = True
-                    elif chunks[0] == "socks4":
-                        valid = True
-                    elif chunks[0] == "socks5":
+                    if chunks[0] in [
+                        "http", "https", "socks4", "socks5", "socks5h"
+                    ]:
                         valid = True
     else:
         proxy_string = val_ip.group()
