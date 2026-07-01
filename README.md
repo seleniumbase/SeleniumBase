@@ -763,6 +763,7 @@ pytest test_coffee_cart.py --trace
 --brave  # (Shortcut for "--browser=brave".)
 --comet  # (Shortcut for "--browser=comet".)
 --atlas  # (Shortcut for "--browser=atlas".)
+--chromium  # (Shortcut for using base `Chromium`)
 --settings-file=FILE  # (Override default SeleniumBase settings.)
 --env=ENV  # (Set the test env. Access with "self.env" in tests.)
 --account=STR  # (Set account. Access with "self.account" in tests.)

@@ -2,20 +2,25 @@
 Downloads the specified webdriver to "seleniumbase/drivers/"
 
 Usage:
-    sbase get {chromedriver|geckodriver|edgedriver|
-               iedriver|uc_driver|cft|chs} [OPTIONS]
+    seleniumbase install [DRIVER/BINARY] [OPTIONS]
+    OR: seleniumbase get [DRIVER/BINARY] [OPTIONS]
+    OR:    sbase install [DRIVER/BINARY] [OPTIONS]
+    OR:        sbase get [DRIVER/BINARY] [OPTIONS]
+        (Drivers:  chromedriver, uc_driver,
+                   edgedriver, geckodriver)
+        (Binaries:   cft, chs, chromium)
 Options:
-    VERSION         Specify the version.
-                    Tries to detect the needed version.
-                    If using chromedriver or edgedriver,
-                    you can use the major version integer.
-    -p OR --path    Also copy the driver to /usr/local/bin
+         VERSION  Driver/binary version to download.
+                   (Otherwise detects the version)
+      --revision  The Chromium revision to download.
+                   (Otherwise downloads the latest)
+    -p OR --path  Also copy driver to /usr/local/bin
 Examples:
     sbase get chromedriver
     sbase get geckodriver
     sbase get edgedriver
     sbase get chromedriver 149
-    sbase get chromedriver 149.0.7827.115
+    sbase get chromedriver 149.0.7827.155
     sbase get chromedriver stable
     sbase get chromedriver beta
     sbase get chromedriver -p
@@ -24,10 +29,12 @@ Examples:
     sbase get cft 149
     sbase get chs
 Output:
-    Downloads the webdriver to seleniumbase/drivers/
-    (chromedriver is required for Chrome automation)
-    (geckodriver is required for Firefox automation)
-    (edgedriver is required for MS__Edge automation)
+    Downloads driver/binary to seleniumbase/drivers/
+    (chromedriver is for Selenium Chrome automation)
+    (geckodriver is for Selenium Firefox automation)
+    (edgedriver is for Selenium MS__Edge automation)
+    (cft is for the `Chrome for Testing` binary exe)
+    (chs is for the `Chrome-Headless-Shell` binary.)
 """
 import colorama
 import logging

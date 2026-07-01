@@ -48,9 +48,9 @@ class 私のテストクラス(セレニウムテストケース):
 ```
 
 <a id="translation_api"></a>
-<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Translation API 🈺</h2>
+<h2><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32" /> Translation API 🈺</h2>
 
-You can use SeleniumBase to selectively translate the method names of any test from one language to another with the console scripts interface. Additionally, the ``import`` line at the top of the Python file will change to import the new ``BaseCase``. Example: ``BaseCase`` becomes ``CasoDeTeste`` when a test is translated into Portuguese.
+You can use SeleniumBase to selectively translate the method names of any test from one language to another with the console scripts interface. Additionally, the `import` line at the top of the Python file will change to import the new `BaseCase`. Example: `BaseCase` becomes `CasoDeTeste` when a test is translated into Portuguese.
 
 ```zsh
 seleniumbase translate
@@ -61,19 +61,19 @@ seleniumbase translate
 seleniumbase translate [SB_FILE.py] [LANGUAGE] [ACTION]
 
 * Languages:
-``--en`` / ``--English``  |  ``--zh`` / ``--Chinese``
-``--nl`` / ``--Dutch``    |  ``--fr`` / ``--French``
-``--it`` / ``--Italian``  |  ``--ja`` / ``--Japanese``
-``--ko`` / ``--Korean``   |  ``--pt`` / ``--Portuguese``
-``--ru`` / ``--Russian``  |  ``--es`` / ``--Spanish``
+`--en` / `--English`  |  `--zh` / `--Chinese`
+`--nl` / `--Dutch`    |  `--fr` / `--French`
+`--it` / `--Italian`  |  `--ja` / `--Japanese`
+`--ko` / `--Korean`   |  `--pt` / `--Portuguese`
+`--ru` / `--Russian`  |  `--es` / `--Spanish`
 
 * Actions:
-``-p`` / ``--print``  (Print translation output to the screen)
-``-o`` / ``--overwrite``  (Overwrite the file being translated)
-``-c`` / ``--copy``  (Copy the translation to a new ``.py`` file)
+`-p` / `--print`  (Print translation output to the screen)
+`-o` / `--overwrite`  (Overwrite the file being translated)
+`-c` / `--copy`  (Copy the translation to a new `.py` file)
 
 * Options:
-``-n``  (include line Numbers when using the Print action)
+`-n`  (include line Numbers when using the Print action)
 
 * Examples:
 Translate test_1.py into Chinese and only print the output:
@@ -85,14 +85,14 @@ Translate test_3.py into Dutch and make a copy of the file:
 
 * Output:
 Translates a SeleniumBase Python file into the language
-specified. Method calls and ``import`` lines get swapped.
+specified. Method calls and `import` lines get swapped.
 Both a language and an action must be specified.
-The ``-p`` action can be paired with one other action.
-When running with ``-c`` (or ``--copy``) the new file name
+The `-p` action can be paired with one other action.
+When running with `-c` (or `--copy`) the new file name
 will be the original name appended with an underscore
 plus the 2-letter language code of the new language.
-(Example: Translating ``test_1.py`` into Japanese with
-``-c`` will create a new file called ``test_1_ja.py``.)
+(Example: Translating `test_1.py` into Japanese with
+`-c` will create a new file called `test_1_ja.py`.)
 ```
 
 --------

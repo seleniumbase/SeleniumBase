@@ -132,6 +132,11 @@ pytest my_first_test.py --settings-file=custom_settings.py
 --edge  # (Shortcut for "--browser=edge".)
 --firefox  # (Shortcut for "--browser=firefox".)
 --safari  # (Shortcut for "--browser=safari".)
+--opera  # (Shortcut for "--browser=opera".)
+--brave  # (Shortcut for "--browser=brave".)
+--comet  # (Shortcut for "--browser=comet".)
+--atlas  # (Shortcut for "--browser=atlas".)
+--chromium  # (Shortcut for using base `Chromium`)
 --settings-file=FILE  # (Override default SeleniumBase settings.)
 --env=ENV  # (Set the test env. Access with "self.env" in tests.)
 --account=STR  # (Set account. Access with "self.account" in tests.)
@@ -462,7 +467,7 @@ Visit <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_doc
 
 <h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> Changing the default driver version:</h3>
 
-🔵 By default, SeleniumBase will make sure that the major driver version matches the major browser version for Chromium tests. (Eg. If Chrome `117.X` is installed and you have chromedriver `117.X`, then nothing happens, but if you had chromedriver `116.X` instead, then SeleniumBase would download chromedriver `117.X` to match the browser version.)
+🔵 By default, SeleniumBase will make sure that the major driver version matches the major browser version for Chromium tests. (Eg. If Chrome `149.X` is installed and you have chromedriver `149.X`, then nothing happens, but if you had chromedriver `148.X` instead, then SeleniumBase would download chromedriver `149.X` to match the browser version.)
 
 🎛️ To change this default behavior, you can use:
 
@@ -471,8 +476,8 @@ pytest --driver-version=VER
 ```
 
 The `VER` in `--driver-version=VER` can be:
-* A major driver version. Eg. `117`. (milestone)
-* An exact driver version. Eg. `117.0.5938.92`.
+* A major driver version. Eg. `149`. (milestone)
+* An exact driver version. Eg. `149.0.7827.155`.
 * `"browser"` (exact match on browser version)
 * `"keep"` (keep using the driver you already have)
 * `"latest"` / `"stable"` (latest stable version)
@@ -513,10 +518,10 @@ With the `SB()` and `Driver()` formats, the binary location is set via the `bina
 sbase get chromium
 ```
 
-Then, run scripts with `--use-chromium` / `use_chromium=True`:
+Then, run scripts with `--chromium` / `use_chromium=True`:
 
 ```zsh
-pytest --use-chromium -n8 --dashboard --html=report.html -v --rs --headless
+pytest --chromium -n8 --dashboard --html=report.html -v --rs --headless
 ```
 
 --------
