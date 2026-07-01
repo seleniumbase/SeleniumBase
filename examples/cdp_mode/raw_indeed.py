@@ -3,13 +3,13 @@ from seleniumbase import SB
 with SB(uc=True, test=True) as sb:
     sb.activate_cdp_mode()
     sb.goto("https://www.indeed.com/companies/search")
-    sb.sleep(2)
+    sb.sleep(0.8)
     sb.solve_captcha()
-    sb.sleep(1)
+    sb.sleep(0.8)
     search_box = "input#company-search"
     if not sb.is_element_present(search_box):
         sb.solve_captcha()
-        sb.sleep(1)
+        sb.sleep(0.8)
     company = "NASA Jet Propulsion Laboratory"
     sb.click(search_box)
     sb.sleep(0.1)

@@ -301,7 +301,7 @@ setup(
         "playwright": [
             'playwright>=1.60.0',
             'greenlet>=3.2.5;python_version<"3.10"',
-            'greenlet>=3.5.1;python_version>="3.10"',
+            'greenlet>=3.5.3;python_version>="3.10"',
         ],
         # pip install -e .[pyautogui]
         # (Already a required dependency on Linux now.)

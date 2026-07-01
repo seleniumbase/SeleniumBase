@@ -7776,15 +7776,30 @@ class BaseCase(unittest.TestCase):
         file_path = None
         if page_utils.is_valid_url(pdf):
             downloads_folder = download_helper.get_downloads_folder()
-            if nav:
-                if self.get_current_url() != pdf:
-                    self.open(pdf)
             file_name = pdf.split("/")[-1]
             file_path = os.path.join(downloads_folder, file_name)
-            if not os.path.exists(file_path):
-                self.download_file(pdf)
-            elif override:
-                self.download_file(pdf)
+            if nav and not self.external_pdf:
+                self.open(pdf)
+            if (self.undetectable and self.external_pdf):
+                just_opened = False
+                if (
+                    self.get_current_url() != pdf
+                    and not os.path.exists(
+                        os.path.join(downloads_folder, file_name)
+                    )
+                ):
+                    just_opened = True
+                    self.open(pdf)
+                if self.external_pdf:
+                    self.assert_downloaded_file(file_name, timeout=10)
+                elif self.undetectable and just_opened:
+                    self.sleep(3)
+                    self.save_as_pdf(file_name, folder=downloads_folder)
+                else:
+                    self.save_as_pdf(file_name, folder=downloads_folder)
+            else:
+                if not os.path.exists(file_path) or override:
+                    self.download_file(pdf)
         else:
             if not os.path.exists(pdf):
                 raise Exception("%s is not a valid URL or file path!" % pdf)

@@ -2,9 +2,9 @@
 
 <h2><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32"></a> Verifying that web drivers are installed</h2>
 
-On newer versions of SeleniumBase, the driver is automatically downloaded to the ``seleniumbase/drivers`` folder as needed, and does not need to be on the System Path when running tests.
+When using SeleniumBase, the driver is automatically downloaded to the `seleniumbase/drivers` folder as needed, and doesn't need to be on the System Path when running tests.
 
-Drivers can be manually downloaded to the ``seleniumbase/drivers`` folder with commands such as:
+Drivers can also be manually downloaded to the `seleniumbase/drivers` folder with commands such as:
 
 ```zsh
 sbase get chromedriver
@@ -22,7 +22,7 @@ If you want to check that you have the correct driver installed on your System P
 sbase get chromedriver --path
 ```
 
-(The above ``--path`` addition is for Linux/Mac only, which uses ``/usr/local/bin/``. The "Path" is different on Windows, and you'll need to manually copy the driver to your System Path, which is defined in the Control Panel's System Environment Variables.)
+(The above `--path` addition is for Linux/Mac only, which uses `/usr/local/bin/`. The "Path" is different on Windows, and you'll need to manually copy the driver to your System Path, which is defined in the Control Panel's System Environment Variables.)
 
 *You can verify that the correct drivers exist on your System Path by checking inside a Python command prompt.*
 

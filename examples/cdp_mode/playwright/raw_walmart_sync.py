@@ -33,7 +33,7 @@ with sync_playwright() as p:
     items = page.locator('[data-item-id]')
     for i in range(items.count()):
         item = items.nth(i)
-        if required_text in item.inner_text():
+        if required_text.lower() in item.inner_text().lower():
             description = item.locator('[data-automation-id="product-title"]')
             if (
                 description

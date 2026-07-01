@@ -21,7 +21,7 @@ unique_item_text = []
 sb.click_if_visible('[data-automation-id="sb-btn-close-mark"]')
 items = sb.find_elements('[data-item-id]')
 for item in items:
-    if required_text in item.text:
+    if required_text.lower() in item.text.lower():
         description = item.querySelector(
             '[data-automation-id="product-title"]'
         )

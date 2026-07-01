@@ -530,7 +530,7 @@ class UCPresentationClass(BaseCase):
             sb.click_if_visible('[data-automation-id="sb-btn-close-mark"]')
             items = sb.find_elements('[data-item-id]')
             for item in items:
-                if required_text in item.text:
+                if required_text.lower() in item.text.lower():
                     description = item.querySelector(
                         '[data-automation-id="product-title"]'
                     )
@@ -763,13 +763,12 @@ class UCPresentationClass(BaseCase):
             sb.activate_cdp_mode()
             sb.goto("https://www.priceline.com")
             sb.sleep(3)
-            input_selector = 'input[name="endLocation"]'
-            if not sb.is_element_present(input_selector):
-                input_selector = "div.location-input input"
+            input_selector = "div.location-input input"
+            sb.gui_hover_element(input_selector)
             sb.mouse_click(input_selector)
-            sb.sleep(0.5)
             location = "Portland, OR"
             selection = "Oregon, United States"  # (Dropdown option)
+            sb.gui_hover_element(input_selector)
             sb.press_keys(input_selector, location)
             sb.sleep(0.5)
             sb.click(selection)

@@ -44,7 +44,7 @@
 
 In this format, (which is used by most of the tests in the <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples">SeleniumBase examples folder</a>), <code translate="no">BaseCase</code> is imported at the top of a Python file, followed by a Python class inheriting <code translate="no">BaseCase</code>. Then, any test method defined in that class automatically gains access to SeleniumBase methods, including the <code translate="no">setUp()</code> and <code translate="no">tearDown()</code> methods that are automatically called for opening and closing web browsers at the start and end of tests.
 
-To run a test of this format, use **``pytest``** or ``pynose``. Adding ``BaseCase.main(__name__, __file__)`` enables ``python`` to run ``pytest`` on your file indirectly. Here's an example:
+To run a test of this format, use **`pytest`** or `pynose`. Adding `BaseCase.main(__name__, __file__)` enables `python` to run `pytest` on your file indirectly. Here's an example:
 
 ```python
 from seleniumbase import BaseCase
@@ -64,7 +64,7 @@ class MyTestClass(BaseCase):
 
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py">examples/test_demo_site.py</a> for the full test.)
 
-Using ``BaseCase`` inheritance is a great starting point for anyone learning SeleniumBase, and it follows good object-oriented programming principles.
+Using `BaseCase` inheritance is a great starting point for anyone learning SeleniumBase, and it follows good object-oriented programming principles.
 
 <a id="sb_sf_02"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 2. BaseCase subclass inheritance</h2>
@@ -285,7 +285,7 @@ class OverrideDriverTest(BaseCase):
 <a id="sb_sf_10"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 10. Overriding the driver via "sb" fixture</h2>
 
-When you want to use SeleniumBase methods via the ``sb`` pytest fixture, but you want total freedom to control how you spin up your web browsers, this is the format you want. Although SeleniumBase gives you plenty of command-line options to change how your browsers are launched, this format gives you more control when the existing options aren't enough.
+When you want to use SeleniumBase methods via the `sb` pytest fixture, but you want total freedom to control how you spin up your web browsers, this is the format you want. Although SeleniumBase gives you plenty of command-line options to change how your browsers are launched, this format gives you more control when the existing options aren't enough.
 
 ```python
 """Overriding the "sb" fixture to override the driver."""
@@ -645,7 +645,7 @@ class MiClaseDePrueba(CasoDePrueba):
 <a id="sb_sf_20"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 20. Gherkin syntax with "behave" BDD runner</h2>
 
-With [Behave's BDD Gherkin format](https://behave.readthedocs.io/en/stable/gherkin.html), you can use natural language to write tests that work with SeleniumBase methods. Behave tests are run by calling ``behave`` on the command-line. This requires some special files in a specific directory structure. Here's an example of that structure:
+With [Behave's BDD Gherkin format](https://behave.readthedocs.io/en/stable/gherkin.html), you can use natural language to write tests that work with SeleniumBase methods. Behave tests are run by calling `behave` on the command-line. This requires some special files in a specific directory structure. Here's an example of that structure:
 
 ```zsh
 features/
@@ -659,7 +659,7 @@ features/
     └── step_file.py
 ```
 
-A ``*.feature`` file might look like this:
+A `*.feature` file might look like this:
 
 ```gherkin
 Feature: SeleniumBase scenarios for the RealWorld App
@@ -681,7 +681,7 @@ Feature: SeleniumBase scenarios for the RealWorld App
 
 (From <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/features/realworld.feature">examples/behave_bdd/features/realworld.feature</a>)
 
-You'll need the ``environment.py`` file for tests to work. Here it is:
+You'll need the `environment.py` file for tests to work. Here it is:
 
 ```python
 from seleniumbase import BaseCase
@@ -699,15 +699,15 @@ from seleniumbase.behave.behave_sb import after_all  # noqa
 
 (From <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/features/environment.py">examples/behave_bdd/features/environment.py</a>)
 
-Inside that file, you can use ``BaseCase`` (or a subclass) for the inherited class.
+Inside that file, you can use `BaseCase` (or a subclass) for the inherited class.
 
-For your ``behave`` tests to have access to SeleniumBase Behave steps, you can create an ``imported.py`` file with the following line:
+For your `behave` tests to have access to SeleniumBase Behave steps, you can create an `imported.py` file with the following line:
 
 ```python
 from seleniumbase.behave import steps  # noqa
 ```
 
-That will allow you to use lines like this in your ``*.feature`` files:
+That will allow you to use lines like this in your `*.feature` files:
 
 ```gherkin
 Feature: SeleniumBase scenarios for the RealWorld App
@@ -724,7 +724,7 @@ Feature: SeleniumBase scenarios for the RealWorld App
     And Save screenshot to logs
 ```
 
-You can also create your own step files (Eg. ``step_file.py``):
+You can also create your own step files (Eg. `step_file.py`):
 
 ```python
 from behave import step
@@ -841,7 +841,7 @@ with DriverContext() as driver:
 <a id="sb_sf_23"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 23. The driver manager (via direct import)</h2>
 
-Another way of running Selenium tests with pure ``python`` (as opposed to using ``pytest`` or ``pynose``) is by using this format, which bypasses [BaseCase](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py) methods while still giving you a flexible driver with a manager. SeleniumBase includes helper files such as [page_actions.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/page_actions.py), which may help you get around some of the limitations of bypassing ``BaseCase``. Here's an example:
+Another way of running Selenium tests with pure `python` (as opposed to using `pytest` or `pynose`) is by using this format, which bypasses [BaseCase](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py) methods while still giving you a flexible driver with a manager. SeleniumBase includes helper files such as [page_actions.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/page_actions.py), which may help you get around some of the limitations of bypassing `BaseCase`. Here's an example:
 
 ```python
 """Driver() example. (Runs with "python")."""
@@ -870,7 +870,7 @@ finally:
 
 (From <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_driver_manager.py">examples/raw_driver_manager.py</a>)
 
-Here's an example of basic login with the ``Driver()`` format:
+Here's an example of basic login with the `Driver()` format:
 
 ```python
 from seleniumbase import Driver
@@ -892,9 +892,12 @@ finally:
 
 (From <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_login_driver.py">examples/raw_login_driver.py</a>)
 
-The ``Driver()`` manager format can be used as a drop-in replacement for virtually every Python/selenium framework, as it uses the raw ``driver`` instance for handling commands. The ``Driver()`` method simplifies the work of managing drivers with optimal settings, and it can be configured with multiple args. The ``Driver()`` also accepts command-line options (such as ``python --headless``) so that you don't need to modify your tests directly to use different settings. These command-line options only take effect if the associated method args remain unset (or set to ``None``) for the specified options.
+The `Driver()` manager format can be used as a drop-in replacement for virtually every Python/selenium framework, as it uses the raw `driver` instance for handling commands. The `Driver()` method simplifies the work of managing drivers with optimal settings, and it can be configured with multiple args. The `Driver()` also accepts command-line options (such as `python --headless`) so that you don't need to modify your tests directly to use different settings. These command-line options only take effect if the associated method args remain unset (or set to `None`) for the specified options.
 
-When using the ``Driver()`` format, you may need to activate a Virtual Display on your own if you want to run headed tests in a headless Linux environment. (See https://github.com/mdmintz/sbVirtualDisplay for details.) One such example of this is using an authenticated proxy, which is configured via a Chrome extension that is generated at runtime. (Note that regular headless mode in Chrome doesn't support extensions.)
+When using the `Driver()` format, you may need to activate a Virtual Display on your own if you want to run headed tests in a headless Linux environment. (See https://github.com/mdmintz/sbVirtualDisplay for details.) One such example of this is using an authenticated proxy, which is configured via a Chrome extension that is generated at runtime. (Note that regular headless mode in Chrome doesn't support extensions.)
+
+Set `uc=True` in order to make the `driver` stealthy:
+`driver = Driver(uc=True)`
 
 <a id="sb_sf_24"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 24. Pure CDP Mode (Async API. No Selenium)</h2>

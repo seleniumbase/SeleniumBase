@@ -340,6 +340,8 @@ def requests_get(url, proxy_string=None):
             protocol = "https"
         elif "socks4" in proxy_string:
             protocol = "socks4"
+        elif "socks5h" in proxy_string:
+            protocol = "socks5h"
         elif "socks5" in proxy_string:
             protocol = "socks5"
         proxies = {protocol: proxy_string}
@@ -2901,7 +2903,9 @@ def _set_firefox_options(
         socks_ver = 0
         chunks = proxy_string.split(":")
         if len(chunks) == 3 and (
-            chunks[0] == "socks4" or chunks[0] == "socks5"
+            chunks[0] == "socks4"
+            or chunks[0] == "socks5"
+            or chunks[0] == "socks5h"
         ):
             socks_proxy = True
             socks_ver = int(chunks[0][5])

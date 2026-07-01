@@ -2,20 +2,25 @@
 Downloads the specified webdriver to "seleniumbase/drivers/"
 
 Usage:
-    sbase get {chromedriver|geckodriver|edgedriver|
-               iedriver|uc_driver|cft|chs} [OPTIONS]
+    seleniumbase install [DRIVER/BINARY] [OPTIONS]
+    OR: seleniumbase get [DRIVER/BINARY] [OPTIONS]
+    OR:    sbase install [DRIVER/BINARY] [OPTIONS]
+    OR:        sbase get [DRIVER/BINARY] [OPTIONS]
+        (Drivers:  chromedriver, uc_driver,
+                   edgedriver, geckodriver)
+        (Binaries:   cft, chs, chromium)
 Options:
-    VERSION         Specify the version.
-                    Tries to detect the needed version.
-                    If using chromedriver or edgedriver,
-                    you can use the major version integer.
-    -p OR --path    Also copy the driver to /usr/local/bin
+         VERSION  Driver/binary version to download.
+                   (Otherwise detects the version)
+      --revision  The Chromium revision to download.
+                   (Otherwise downloads the latest)
+    -p OR --path  Also copy driver to /usr/local/bin
 Examples:
     sbase get chromedriver
     sbase get geckodriver
     sbase get edgedriver
     sbase get chromedriver 149
-    sbase get chromedriver 149.0.7827.115
+    sbase get chromedriver 149.0.7827.155
     sbase get chromedriver stable
     sbase get chromedriver beta
     sbase get chromedriver -p
@@ -24,10 +29,12 @@ Examples:
     sbase get cft 149
     sbase get chs
 Output:
-    Downloads the webdriver to seleniumbase/drivers/
-    (chromedriver is required for Chrome automation)
-    (geckodriver is required for Firefox automation)
-    (edgedriver is required for MS__Edge automation)
+    Downloads driver/binary to seleniumbase/drivers/
+    (chromedriver is for Selenium Chrome automation)
+    (geckodriver is for Selenium Firefox automation)
+    (edgedriver is for Selenium MS__Edge automation)
+    (cft is for the `Chrome for Testing` binary exe)
+    (chs is for the `Chrome-Headless-Shell` binary.)
 """
 import colorama
 import logging
@@ -71,38 +78,40 @@ DEFAULT_EDGEDRIVER_VERSION = "115.0.1901.183"  # (If can't find LATEST_STABLE)
 
 def invalid_run_command():
     exp = "  ** get / install **\n\n"
-    exp += "  Usage:\n"
-    exp += "     seleniumbase install [DRIVER_NAME] [OPTIONS]\n"
-    exp += "     OR     sbase install [DRIVER_NAME] [OPTIONS]\n"
-    exp += "     OR  seleniumbase get [DRIVER_NAME] [OPTIONS]\n"
-    exp += "     OR         sbase get [DRIVER_NAME] [OPTIONS]\n"
-    exp += "         (Drivers: chromedriver, cft, uc_driver,\n"
-    exp += "                   edgedriver, chs, geckodriver)\n"
-    exp += "  Options:\n"
-    exp += "     VERSION    Specify the version.\n"
-    exp += "                Tries to detect the needed version.\n"
-    exp += "                If using chromedriver or edgedriver,\n"
-    exp += "                you can use the major version integer.\n"
-    exp += "\n"
-    exp += "     -p OR --path   Also copy the driver to /usr/local/bin\n"
-    exp += "  Examples:\n"
-    exp += "     sbase get chromedriver\n"
-    exp += "     sbase get geckodriver\n"
-    exp += "     sbase get edgedriver\n"
-    exp += "     sbase get chromedriver 114\n"
-    exp += "     sbase get chromedriver 114.0.5735.90\n"
-    exp += "     sbase get chromedriver stable\n"
-    exp += "     sbase get chromedriver beta\n"
-    exp += "     sbase get chromedriver -p\n"
-    exp += "     sbase get cft 131\n"
-    exp += "     sbase get chs\n"
-    exp += "  Output:\n"
-    exp += "     Downloads the webdriver to seleniumbase/drivers/\n"
-    exp += "     (chromedriver is required for Chrome automation)\n"
-    exp += "     (geckodriver is required for Firefox automation)\n"
-    exp += "     (edgedriver is required for MS__Edge automation)\n"
-    exp += "     (cft is for the `Chrome for Testing` binary exe)\n"
-    exp += "     (chs is for the `Chrome-Headless-Shell` binary.)\n"
+    exp += "Usage:\n"
+    exp += "    seleniumbase install [DRIVER/BINARY] [OPTIONS]\n"
+    exp += "    OR     sbase install [DRIVER/BINARY] [OPTIONS]\n"
+    exp += "    OR  seleniumbase get [DRIVER/BINARY] [OPTIONS]\n"
+    exp += "    OR         sbase get [DRIVER/BINARY] [OPTIONS]\n"
+    exp += "        (Drivers:  chromedriver, uc_driver,\n"
+    exp += "                   edgedriver, geckodriver)\n"
+    exp += "        (Binaries:   cft, chs, chromium)\n"
+    exp += "Options:\n"
+    exp += "         VERSION  Driver/binary version to download.\n"
+    exp += "                   (Otherwise detects the version)\n"
+    exp += "      --revision  The Chromium revision to download.\n"
+    exp += "                   (Otherwise downloads the latest)\n"
+    exp += "    -p OR --path  Also copy driver to /usr/local/bin\n"
+    exp += "Examples:\n"
+    exp += "    sbase get chromedriver\n"
+    exp += "    sbase get geckodriver\n"
+    exp += "    sbase get edgedriver\n"
+    exp += "    sbase get chromedriver 149\n"
+    exp += "    sbase get chromedriver 149.0.7827.155\n"
+    exp += "    sbase get chromedriver stable\n"
+    exp += "    sbase get chromedriver beta\n"
+    exp += "    sbase get chromedriver -p\n"
+    exp += "    sbase get chromium\n"
+    exp += "    sbase get chromium --revision=1639046\n"
+    exp += "    sbase get cft 149\n"
+    exp += "    sbase get chs\n"
+    exp += "Output:\n"
+    exp += "    Downloads driver/binary to seleniumbase/drivers/\n"
+    exp += "    (chromedriver is for Selenium Chrome automation)\n"
+    exp += "    (geckodriver is for Selenium Firefox automation)\n"
+    exp += "    (edgedriver is for Selenium MS__Edge automation)\n"
+    exp += "    (cft is for the `Chrome for Testing` binary exe)\n"
+    exp += "    (chs is for the `Chrome-Headless-Shell` binary.)\n"
     print("")
     raise Exception("%s\n\n%s" % (constants.Warnings.INVALID_RUN_COMMAND, exp))
 
@@ -139,6 +148,8 @@ def get_proxy_info():
                     protocol = "https"
                 elif "socks4" in proxy_string:
                     protocol = "socks4"
+                elif "socks5h" in proxy_string:
+                    protocol = "socks5h"
                 elif "socks5" in proxy_string:
                     protocol = "socks5"
                 proxy_string = proxy_helper.validate_proxy_string(proxy_string)

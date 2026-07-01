@@ -27,27 +27,25 @@ logger = logging.getLogger(__name__)
 
 class Tab(Connection):
     """
-    :ref:`tab` is the controlling mechanism/connection to a 'target',
-    for most of us 'target' can be read as 'tab'. However it could also
-    be an iframe, serviceworker or background script for example,
-    although there isn't much to control for those.
-    If you open a new window by using
-        :py:meth:`browser.get(..., new_window=True)`
-    Your url will open a new window. This window is a 'tab'.
+    :ref:`tab` is the controlling mechanism/connection to a `target`.
+    The `target` can be read as a `tab`, however, it could also
+    be an iframe, a serviceworker, or a background script (for example).
+    If you open a new window by using `browser.get(..., new_window=True)`,
+    your URL will open a new window. This window is a `tab`.
     When you browse to another page, the tab will be the same (browser view).
-    It's important to keep some reference to tab objects, in case you're
+    It's important to keep some reference to tab objects in case you're
     done interacting with elements and want to operate on the page level again.
 
     Custom CDP commands
     ---------------------------
     Tab object provide many useful and often-used methods. It is also possible
-    to utilize the included cdp classes to to something totally custom.
+    to utilize the included CDP classes to to something totally custom.
 
-    The cdp package is a set of so-called "domains" with each having methods,
+    The CDP package is a set of so-called "domains" with each having methods,
     events and types.
-    To send a cdp method, for example :py:obj:`cdp.page.navigate`,
-    you'll have to check whether the method accepts any parameters
-    and whether they are required or not.
+    To send a CDP method, for example `cdp.page.navigate`,
+    you'll have to check whether the method accepts any
+    parameters and whether they are required or not.
 
     You can use:
 
@@ -936,7 +934,7 @@ class Tab(Connection):
         return await self.set_window_state(state="minimize")
 
     async def fullscreen(self):
-        """Minimize page/tab/window"""
+        """Fullscreen page/tab/window"""
         return await self.set_window_state(state="fullscreen")
 
     async def medimize(self):
