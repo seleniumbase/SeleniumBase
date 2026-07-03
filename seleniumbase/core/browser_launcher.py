@@ -5157,6 +5157,13 @@ def get_local_driver(
                     sb_config.multi_proxy = True
                 if uc_driver_version and driver_version == "keep":
                     driver_version = uc_driver_version
+            if (
+                hasattr(sb_config, "_cdp_browser")
+                and sb_config._cdp_browser == "opera"
+            ):
+                use_version = "132"
+                if use_uc:
+                    use_version = "144"
             use_version = find_chromedriver_version_to_use(
                 use_version, driver_version
             )
