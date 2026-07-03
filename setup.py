@@ -174,13 +174,13 @@ setup(
         'websockets~=15.0.1;python_version<"3.10"',
         'websockets>=16.0;python_version>="3.10"',
         'filelock~=3.19.1;python_version<"3.10"',
-        'filelock>=3.29.4;python_version>="3.10"',
+        'filelock>=3.29.5;python_version>="3.10"',
         'fasteners>=0.20',
         'mycdp>=1.4.0',
         'pynose>=1.5.5',
         'platformdirs~=4.4.0;python_version<"3.10"',
         'platformdirs>=4.10.0;python_version>="3.10"',
-        'typing-extensions>=4.15.0',
+        'typing-extensions>=4.16.0',
         'sbvirtualdisplay>=1.4.0',
         'MarkupSafe>=3.0.3',
         'Jinja2>=3.1.6',
@@ -225,7 +225,8 @@ setup(
         'pytest-metadata==3.1.1',
         'pytest-ordering==0.6',
         'pytest-rerunfailures==16.0.1;python_version<"3.10"',
-        'pytest-rerunfailures==16.3;python_version>="3.10"',
+        'pytest-rerunfailures==16.3;python_version=="3.10"',
+        'pytest-rerunfailures==16.4;python_version>="3.11"',
         'pytest-xdist==3.8.0',
         'parameterized==0.9.0',
         'behave==1.2.6',  # Newer ones had issues
@@ -252,7 +253,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage>=7.10.7;python_version<"3.10"',
-            'coverage>=7.14.3;python_version>="3.10"',
+            'coverage>=7.15.0;python_version>="3.10"',
             'pytest-cov>=7.1.0',
         ],
         # pip install -e .[flake8]
@@ -282,7 +283,7 @@ setup(
         # (An optional library for image-processing.)
         "pillow": [
             'Pillow>=11.3.0;python_version<"3.10"',
-            'Pillow>=12.2.0;python_version>="3.10"',
+            'Pillow>=12.3.0;python_version>="3.10"',
         ],
         # pip install -e .[pip-system-certs]
         # (If you see [SSL: CERTIFICATE_VERIFY_FAILED], then get this.)

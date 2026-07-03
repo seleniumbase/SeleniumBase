@@ -2816,7 +2816,13 @@ def _set_chrome_options(
     d_f_string = ",".join(included_disabled_features)
     chrome_options.add_argument("--disable-features=%s" % d_f_string)
     chrome_options.add_argument("--enable-unsafe-extension-debugging")
-    chrome_options.add_argument("--test-type")
+    if (
+        hasattr(sb_config, "_cdp_browser")
+        and sb_config._cdp_browser == "brave"
+    ):
+        pass  # Looks like "--test-type" breaks Brave now
+    else:
+        chrome_options.add_argument("--test-type")
     if proxy_auth or sb_config._ext_dirs:
         if not is_using_uc(undetectable, browser_name):
             chrome_options.add_argument("--remote-debugging-pipe")
@@ -3120,6 +3126,11 @@ def get_driver(
     if browser_name in constants.ChromiumSubs.chromium_subs:
         browser_name = "chrome"
     browser_name = browser_name.lower()
+    if (
+        hasattr(sb_config, "_cdp_browser")
+        and sb_config._cdp_browser == "brave"
+    ):
+        undetectable = True
     if is_using_uc(undetectable, browser_name):
         if ad_block_on:
             sb_config.ad_block_on = True
@@ -5146,6 +5157,13 @@ def get_local_driver(
                     sb_config.multi_proxy = True
                 if uc_driver_version and driver_version == "keep":
                     driver_version = uc_driver_version
+            if (
+                hasattr(sb_config, "_cdp_browser")
+                and sb_config._cdp_browser == "opera"
+            ):
+                use_version = "132"
+                if use_uc:
+                    use_version = "144"
             use_version = find_chromedriver_version_to_use(
                 use_version, driver_version
             )

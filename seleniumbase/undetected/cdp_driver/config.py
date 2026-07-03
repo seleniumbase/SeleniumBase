@@ -8,6 +8,7 @@ import sys
 import tempfile
 import zipfile
 from contextlib import suppress
+from seleniumbase import config as sb_config
 from seleniumbase.config import settings
 from seleniumbase.drivers import cft_drivers
 from seleniumbase.drivers import chromium_drivers
@@ -238,12 +239,10 @@ class Config:
             "--enable-privacy-sandbox-ads-apis",
             "--safebrowsing-disable-download-protection",
             '--simulate-outdated-no-au="Tue, 31 Dec 2099 23:59:59 GMT"',
-            "--test-type",
             "--ash-no-nudges",
             "--password-store=basic",
             "--deny-permission-prompts",
             "--disable-breakpad",
-            "--disable-setuid-sandbox",
             "--disable-prompt-on-repost",
             "--disable-application-cache",
             "--disable-password-generation",
@@ -262,6 +261,15 @@ class Config:
             "--disable-renderer-backgrounding",
             "--disable-dev-shm-usage",
         ]
+        if (
+            hasattr(sb_config, "_cdp_browser")
+            and sb_config._cdp_browser == "brave"
+        ):
+            pass  # Looks like "--test-type" breaks Brave now
+        else:
+            self._default_browser_args.append("--test-type")
+        if IS_LINUX:
+            self._default_browser_args.append("--disable-setuid-sandbox")
         if mock_keychain:
             self._default_browser_args.append("--use-mock-keychain")
 
