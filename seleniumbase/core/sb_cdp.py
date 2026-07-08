@@ -3446,33 +3446,33 @@ class CDPMethods():
 
     def scroll_into_view(self, selector):
         self.find_element(selector).scroll_into_view()
-        self.loop.run_until_complete(self.page.wait(0.1))
+        self.loop.run_until_complete(self.page.wait(0.05))
 
     def scroll_to_y(self, y):
         y = int(y)
         js_code = "window.scrollTo(0, %s);" % y
         with suppress(Exception):
             self.loop.run_until_complete(self.page.evaluate(js_code))
-            self.loop.run_until_complete(self.page.wait(0.1))
+            self.loop.run_until_complete(self.page.wait(0.05))
 
     def scroll_by_y(self, y):
         y = int(y)
         js_code = "window.scrollBy(0, %s);" % y
         with suppress(Exception):
             self.loop.run_until_complete(self.page.evaluate(js_code))
-            self.loop.run_until_complete(self.page.wait(0.1))
+            self.loop.run_until_complete(self.page.wait(0.05))
 
     def scroll_to_top(self):
         js_code = "window.scrollTo(0, 0);"
         with suppress(Exception):
             self.loop.run_until_complete(self.page.evaluate(js_code))
-            self.loop.run_until_complete(self.page.wait(0.1))
+            self.loop.run_until_complete(self.page.wait(0.05))
 
     def scroll_to_bottom(self):
         js_code = "window.scrollTo(0, 10000);"
         with suppress(Exception):
             self.loop.run_until_complete(self.page.evaluate(js_code))
-            self.loop.run_until_complete(self.page.wait(0.1))
+            self.loop.run_until_complete(self.page.wait(0.05))
 
     def scroll_up(self, amount=25):
         """Scrolls up as a percentage of the page."""
@@ -3481,7 +3481,7 @@ class CDPMethods():
         except Exception:
             amount = self.get_window_size()["height"] * amount / 100
             self.execute_script("window.scrollBy(0, -%s);" % amount)
-        self.loop.run_until_complete(self.page.wait(0.1))
+        self.loop.run_until_complete(self.page.wait(0.05))
 
     def scroll_down(self, amount=25):
         """Scrolls down as a percentage of the page."""
@@ -3490,7 +3490,7 @@ class CDPMethods():
         except Exception:
             amount = self.get_window_size()["height"] * amount / 100
             self.execute_script("window.scrollBy(0, %s);" % amount)
-        self.loop.run_until_complete(self.page.wait(0.1))
+        self.loop.run_until_complete(self.page.wait(0.05))
 
     def save_page_source(self, name, folder=None):
         from seleniumbase.core import log_helper
