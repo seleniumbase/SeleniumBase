@@ -9,9 +9,6 @@ with SB(uc=True, test=True, locale="en") as sb:
     search = "cocktail dresses for women teal"
     sb.press_keys("input#keyword-search-input", search + "\n")
     sb.sleep(2.2)
-    for i in range(17):
-        sb.scroll_down(16)
-        sb.sleep(0.14)
     print('*** Nordstrom Search for "%s":' % search)
     unique_item_text = []
     items = sb.find_elements("article")
@@ -24,3 +21,4 @@ with SB(uc=True, test=True, locale="en") as sb:
             if price:
                 price_text = price.text
                 print("* %s (%s)" % (description.text, price_text))
+                sb.scroll_down(16)

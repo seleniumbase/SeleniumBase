@@ -9,13 +9,17 @@ with SB(uc=True, test=True, locale="en", guest=True) as sb:
         sb.sleep(2.2)
     print("*** Ralph Lauren Search for Dresses:")
     unique_item_text = []
-    items = sb.find_elements('div.product-data')
+    soup = sb.get_beautiful_soup()
+    items = soup.select('div.product-data')
     for item in items:
-        description = item.query_selector("a.name-link")
-        if description and description.text not in unique_item_text:
-            unique_item_text.append(description.text)
-            print("* " + description.text)
-            price = item.query_selector('span[title="Price"]')
-            if price:
-                print("  (" + price.text.replace("   ", " ") + ")")
-                item.scroll_into_view()
+        description_element = item.select_one("a.name-link")
+        if description_element:
+            description_text = description_element.get_text(strip=True)
+            if description_text not in unique_item_text:
+                unique_item_text.append(description_text)
+                print(f"* {description_text}")
+                price_element = item.select_one('span[title="Price"]')
+                if price_element:
+                    price_text = " ".join(price_element.get_text().split())
+                    print(f"  ({price_text})")
+                    sb.scroll_down(20)
