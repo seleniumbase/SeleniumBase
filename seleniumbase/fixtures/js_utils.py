@@ -855,7 +855,10 @@ def activate_messenger(driver):
 
     if not is_jquery_activated(driver):
         add_js_link(driver, jquery_js)
-        wait_for_jquery_active(driver, timeout=1.1)
+        if hasattr(sb_config, "_cdp_launched") and sb_config._cdp_launched:
+            time.sleep(0.1)
+        else:
+            wait_for_jquery_active(driver, timeout=1.1)
     add_css_link(driver, messenger_css)
     add_css_link(driver, msgr_theme_flat_css)
     add_css_link(driver, msgr_theme_future_css)

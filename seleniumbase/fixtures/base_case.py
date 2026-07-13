@@ -7543,15 +7543,18 @@ class BaseCase(unittest.TestCase):
         """BeautifulSoup is a toolkit for dissecting an HTML document
         and extracting what you need. It's great for screen-scraping!
         See: https://www.crummy.com/software/BeautifulSoup/bs4/doc/ """
-        from bs4 import BeautifulSoup
+        if self.__is_cdp_swap_needed():
+            return self.cdp.get_beautiful_soup(source=source)
+        else:
+            from bs4 import BeautifulSoup
 
-        if not source:
-            with suppress(Exception):
-                self.wait_for_element_visible(
-                    "body", timeout=settings.MINI_TIMEOUT
-                )
-            source = self.get_page_source()
-        return BeautifulSoup(source, "html.parser")
+            if not source:
+                with suppress(Exception):
+                    self.wait_for_element_visible(
+                        "body", timeout=settings.MINI_TIMEOUT
+                    )
+                source = self.get_page_source()
+            return BeautifulSoup(source, "html.parser")
 
     def get_unique_links(self):
         """Get all unique links in the html of the page source.
@@ -9722,6 +9725,10 @@ class BaseCase(unittest.TestCase):
     def save_as_html(self, name, folder=None):
         """Same as self.save_page_source()"""
         self.save_page_source(name, folder=folder)
+
+    def save_as_html_to_logs(self, name=None):
+        """Same as save_page_source_to_logs()."""
+        self.save_page_source_to_logs(name=name)
 
     def input(
         self, selector, text, by="css selector", timeout=None, retry=False
