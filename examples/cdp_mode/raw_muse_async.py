@@ -7,11 +7,11 @@ async def main():
     url = "https://muse.jhu.edu/verify"
     driver = await cdp_driver.start_async(guest=True)
     page = await driver.get(url)
-    await page.sleep(2.5)
+    await page.sleep(1.2)
     await page.solve_captcha()
     await page.sleep(4)
     await page.find('#search_input')
-    await page.sleep(3)
+    await page.sleep(2.5)
 
 if __name__ == "__main__":
     asyncio.run(main())

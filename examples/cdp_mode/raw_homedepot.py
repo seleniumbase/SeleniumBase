@@ -17,20 +17,26 @@ with SB(uc=True, test=True, guest=True) as sb:
     sb.click("button#typeahead-search-icon-button")
     sb.sleep(3.8)
     sb.click('a[aria-label="%s"]' % category)
-    sb.sleep(3.2)
+    sb.sleep(3.8)
     print('*** Home Depot Search for "%s":' % search)
     print('    (Results must contain "%s".)' % required_text)
     unique_item_text = []
-    items = sb.find_elements('div[data-testid="product-pod"]')
+    product_pod = 'div[data-testid="product-pod"]'
+    sb.wait_for_element(product_pod)
+    soup = sb.get_beautiful_soup()
+    items = soup.select(product_pod)
     for item in items:
-        if required_text in item.text:
-            description = item.querySelector(
+        item_text = item.get_text()
+        if required_text in item_text:
+            description = item.select_one(
                 'span[data-testid="attribute-product-label"]'
             )
-            if description and description.text not in unique_item_text:
-                unique_item_text.append(description.text)
-                print("* " + description.text)
-                price = item.querySelector('[class*="sm:sui-text-4xl"]')
-                if price:
-                    price_text = "$%s" % price.text
-                    print("  (" + price_text + ")")
+            if description:
+                description_text = description.get_text(strip=True)
+                if description_text not in unique_item_text:
+                    unique_item_text.append(description_text)
+                    print("* " + description_text)
+                    price = item.select_one('[class*="sm:sui-text-4xl"]')
+                    if price:
+                        price_text = "$%s" % price.get_text(strip=True)
+                        print("   (" + price_text + ")")

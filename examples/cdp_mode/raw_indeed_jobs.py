@@ -8,7 +8,7 @@ with SB(uc=True, test=True, use_chromium=True, incognito=True) as sb:
     sb.click('button[type="submit"]')
     sb.sleep(3.6)
     items = sb.find_visible_elements('[data-testid*="jobcard"]')
-    print('*** %s:' % search)
+    print('*** Indeed search for "%s":' % search)
     for i, item in enumerate(items):
         print(f"* <====== {i + 1} ======>")
         print(item.text)

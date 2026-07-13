@@ -17,6 +17,8 @@ async def block_urls(tab):
             "*.doubleclick.net*",
             "*.fastclick.net*",
             "*.snigelweb.com*",
+            "*.viously.com*",
+            "*.flashb.id*",
             "*.2mdn.net*",
         ]
     ))
@@ -27,7 +29,13 @@ with decorators.print_runtime("raw_ad_blocking.py"):
     loop.run_until_complete(block_urls(sb.get_active_tab()))
     sb.goto("https://www.w3schools.com/jquery/default.asp")
     source = sb.get_page_source()
-    sb.assert_false("doubleclick.net" in source)
-    sb.assert_false("google-analytics.com" in source)
+    try:
+        sb.assert_false("doubleclick.net" in source)
+        sb.assert_false("google-analytics.com" in source)
+    except Exception:
+        sb.refresh()
+        source = sb.get_page_source()
+        sb.assert_false("doubleclick.net" in source)
+        sb.assert_false("google-analytics.com" in source)
     sb.post_message("Blocking was successful!")
     sb.quit()

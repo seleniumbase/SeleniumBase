@@ -15,9 +15,6 @@ with sync_playwright() as p:
     search_box = page.locator("input#keyword-search-input")
     search_box.press_sequentially(search + "\n", delay=80)
     page.wait_for_timeout(2200)
-    for i in range(17):
-        sb.scroll_down(16)
-        sb.sleep(0.14)
     print('*** Nordstrom Search for "%s":' % search)
     unique_item_text = []
     items = sb.find_elements("article")
@@ -30,3 +27,4 @@ with sync_playwright() as p:
             if price:
                 price_text = price.text
                 print("* %s (%s)" % (description.text, price_text))
+                item.flash(color="44CC88")
