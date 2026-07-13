@@ -19,15 +19,20 @@ with SB(uc=True, test=True, locale="en") as sb:
     sb.sleep(3.2)
     sb.wait_for_element('[data-za="product-cards-list"]', timeout=5)
     print('*** Zoro Search for "%s":' % search)
-    print('    (Results must contain "%s".)' % required_text)
+    print('    (Results must contain "%s")' % required_text)
     unique_item_text = []
-    items = sb.find_elements('[data-za="search-product-card"]')
+    soup = sb.get_beautiful_soup()
+    items = soup.select('[data-za="search-product-card"]')
     for item in items:
-        if required_text in item.text:
-            description = item.querySelector("h2")
-            if description and description.text not in unique_item_text:
-                unique_item_text.append(description.text)
-                print("* " + description.text)
-                price = item.querySelector("div.price-main")
-                if price:
-                    print("  (" + price.text + ")")
+        item_text = item.get_text()
+        if required_text.lower() in item_text.lower():
+            description_element = item.select_one("h2")
+            if description_element:
+                description_text = description_element.get_text(strip=True)
+                if description_text.lower() not in unique_item_text:
+                    unique_item_text.append(description_text.lower())
+                    print("* " + description_text)
+                    price_element = item.select_one("div.price-main")
+                    if price_element:
+                        price_text = " ".join(price_element.get_text().split())
+                        print("  (" + price_text + ")")

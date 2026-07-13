@@ -172,9 +172,9 @@ setup(
         'certifi>=2026.6.17',
         'exceptiongroup>=1.3.1',
         'websockets~=15.0.1;python_version<"3.10"',
-        'websockets>=16.0;python_version>="3.10"',
+        'websockets>=16.1;python_version>="3.10"',
         'filelock~=3.19.1;python_version<"3.10"',
-        'filelock>=3.29.6;python_version>="3.10"',
+        'filelock>=3.29.7;python_version>="3.10"',
         'fasteners>=0.20',
         'mycdp>=1.4.0',
         'pynose>=1.5.5',
@@ -210,7 +210,7 @@ setup(
         'wsproto~=1.3.2;python_version>="3.10"',
         'websocket-client~=1.9.0',
         'selenium==4.32.0;python_version<"3.10"',
-        'selenium==4.45.0;python_version>="3.10"',
+        'selenium==4.46.0;python_version>="3.10"',
         'cssselect==1.3.0;python_version<"3.10"',
         'cssselect>=1.4.0,<2;python_version>="3.10"',
         'sortedcontainers==2.4.0',
@@ -253,7 +253,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage>=7.10.7;python_version<"3.10"',
-            'coverage>=7.15.0;python_version>="3.10"',
+            'coverage>=7.15.1;python_version>="3.10"',
             'pytest-cov>=7.1.0',
         ],
         # pip install -e .[flake8]

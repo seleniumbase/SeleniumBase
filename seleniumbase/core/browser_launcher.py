@@ -966,6 +966,12 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
     cdp.save_screenshot = CDPM.save_screenshot
     cdp.print_to_pdf = CDPM.print_to_pdf
     cdp.save_as_pdf = CDPM.save_as_pdf
+    cdp.save_as_pdf_to_logs = CDPM.save_as_pdf_to_logs
+    cdp.save_screenshot_to_logs = CDPM.save_screenshot_to_logs
+    cdp.save_page_source_to_logs = CDPM.save_page_source_to_logs
+    cdp.save_as_html_to_logs = CDPM.save_as_html_to_logs
+    cdp.save_data_to_logs = CDPM.save_data_to_logs
+    cdp.append_data_to_logs = CDPM.append_data_to_logs
     cdp.page = page  # async world
     cdp.driver = driver.cdp_base  # async world
     cdp.tab = cdp.page  # shortcut (original)
@@ -3093,6 +3099,7 @@ def get_driver(
     browser=None,  # A duplicate of browser_name to avoid confusion
 ):
     sb_config._ext_dirs = []
+    sb_config._cdp_launched = False
     driver_dir = DRIVER_DIR
     if binary_location == "_chromium_":
         driver_dir = DRIVER_DIR_CHROMIUM

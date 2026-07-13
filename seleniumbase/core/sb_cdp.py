@@ -7,6 +7,7 @@ import random
 import re
 import sys
 import time
+import traceback
 from contextlib import suppress
 from filelock import FileLock
 from seleniumbase import config as sb_config
@@ -24,6 +25,19 @@ class CDPMethods():
         self.loop = loop
         self.page = page
         self.driver = driver
+        self.__initialize_variables()
+
+    def __initialize_variables(self):
+        self.__page_source_count = 0
+        self.__screenshot_count = 0
+        self.__saved_pdf_count = 0
+        self.__logs_data_count = 0
+        self.__last_data_file = None
+        # Set variables that may be useful to developers
+        self.log_path = constants.Logs.LATEST
+        self.log_abspath = os.path.abspath(self.log_path)
+        self.data_path = os.path.join(self.log_path, self.__get_script_id())
+        self.data_abspath = os.path.abspath(self.data_path)
 
     def _swap_driver(self, driver):
         self.driver = driver
@@ -169,7 +183,7 @@ class CDPMethods():
     def goto(self, url, **kwargs):
         self.get(url, **kwargs)
 
-    def reload(self, ignore_cache=True, script_to_evaluate_on_load=None):
+    def reload(self, ignore_cache=False, script_to_evaluate_on_load=None):
         self.loop.run_until_complete(
             self.page.reload(
                 ignore_cache=ignore_cache,
@@ -3522,8 +3536,9 @@ class CDPMethods():
         html_file.write(rendered_source)
         html_file.close()
 
-    def save_as_html(self, *args, **kwargs):
-        self.save_page_source(*args, **kwargs)
+    def save_as_html(self, name, folder=None):
+        """Same as self.save_page_source()"""
+        self.save_page_source(name, folder=folder)
 
     def save_screenshot(self, name, folder=None, selector=None):
         filename = name
@@ -3545,9 +3560,151 @@ class CDPMethods():
     def save_as_pdf(self, *args, **kwargs):
         self.print_to_pdf(*args, **kwargs)
 
+    def save_as_pdf_to_logs(self, name=None):
+        """Saves the page as a PDF to the "latest_logs/" folder.
+        Naming is automatic:
+            If NO NAME provided: "_1_PDF.pdf", "_2_PDF.pdf", etc.
+            If NAME IS provided, then: "_1_name.pdf", "_2_name.pdf", etc."""
+        script_logpath = os.path.join(self.log_path, self.__get_script_id())
+        self.__create_log_path_as_needed(script_logpath)
+        if name:
+            name = str(name)
+        self.__saved_pdf_count += 1
+        if not name or len(name) == 0:
+            name = "_%s_PDF.pdf" % self.__saved_pdf_count
+        else:
+            pre_name = "_%s_" % self.__saved_pdf_count
+            if len(name) >= 4 and name[-4:].lower() == ".pdf":
+                name = name[:-4]
+                if len(name) == 0:
+                    name = "PDF"
+            name = "%s%s.pdf" % (pre_name, name)
+        sb_config._has_logs = True
+        return self.print_to_pdf(name, folder=script_logpath)
+
+    def save_screenshot_to_logs(self, name=None, selector=None):
+        """Saves a screenshot of the current page to the "latest_logs/" folder.
+        Naming is automatic:
+            If NO NAME provided: "_1_screenshot.png", "_2_screenshot.png", etc.
+            If NAME IS provided, it becomes: "_1_name.png", "_2_name.png", etc.
+        The screenshot will include the entire page unless a selector is given.
+        If a provided selector is not found, then takes a full-page screenshot.
+        The screenshot will be in PNG format."""
+        script_logpath = os.path.join(self.log_path, self.__get_script_id())
+        self.__create_log_path_as_needed(script_logpath)
+        if name:
+            name = str(name)
+        self.__screenshot_count += 1
+        if not name or len(name) == 0:
+            name = "_%s_screenshot.png" % self.__screenshot_count
+        else:
+            pre_name = "_%s_" % self.__screenshot_count
+            if len(name) >= 4 and name[-4:].lower() == ".png":
+                name = name[:-4]
+                if len(name) == 0:
+                    name = "screenshot"
+            name = "%s%s.png" % (pre_name, name)
+        if selector:
+            if self.is_element_present(selector):
+                return self.save_screenshot(
+                    name, folder=script_logpath, selector=selector
+                )
+        sb_config._has_logs = True
+        return self.save_screenshot(name, folder=script_logpath)
+
+    def save_page_source_to_logs(self, name=None):
+        """Saves the page HTML to the "latest_logs/" folder.
+        Naming is automatic:
+            If NO NAME provided: "_1_source.html", "_2_source.html", etc.
+            If NAME IS provided, then: "_1_name.html", "_2_name.html", etc."""
+        script_logpath = os.path.join(self.log_path, self.__get_script_id())
+        self.__create_log_path_as_needed(script_logpath)
+        if name:
+            name = str(name)
+        self.__page_source_count += 1
+        if not name or len(name) == 0:
+            name = "_%s_source.html" % self.__page_source_count
+        else:
+            pre_name = "_%s_" % self.__page_source_count
+            if len(name) >= 4 and name[-4:].lower() == ".html":
+                name = name[:-4]
+                if len(name) == 0:
+                    name = "source"
+            name = "%s%s.html" % (pre_name, name)
+        sb_config._has_logs = True
+        return self.save_page_source(name, folder=script_logpath)
+
+    def save_as_html_to_logs(self, name=None):
+        """Same as save_page_source_to_logs()."""
+        self.save_page_source_to_logs(name=name)
+
+    def save_data_to_logs(self, data, file_name=None):
+        """Saves data to the "latest_logs/" data folder of the current script.
+        If no file_name, file_name becomes: "data_1.txt", "data_2.txt", etc.
+        Useful variables for getting the "latest_logs/" or script data folders:
+            self.log_path OR self.log_abspath  (For the top-level folder)
+            self.data_path OR self.data_abspath  (Individual script folders)
+        If a file_name is given with no extension, adds ".txt" to the end."""
+        script_logpath = os.path.join(self.log_path, self.__get_script_id())
+        self.__create_log_path_as_needed(script_logpath)
+        if file_name:
+            file_name = str(file_name)
+        if not file_name or len(file_name) == 0:
+            self.__logs_data_count += 1
+            file_name = "data_%s.txt" % self.__logs_data_count
+        elif "." not in file_name:
+            file_name = "%s.txt" % file_name
+        self.__last_data_file = file_name
+        sb_config._has_logs = True
+        destination_folder = script_logpath
+        page_utils._save_data_as(data, destination_folder, file_name)
+
+    def append_data_to_logs(self, data, file_name=None):
+        """Saves data to the "latest_logs/" folder of the current script.
+        If no file_name, file_name becomes the last data file used in
+            save_data_to_logs() or append_data_to_logs().
+        If neither method was called before, creates "data_1.txt"."""
+        script_logpath = os.path.join(self.log_path, self.__get_script_id())
+        self.__create_log_path_as_needed(script_logpath)
+        if file_name:
+            file_name = str(file_name)
+        if (not file_name or len(file_name) == 0) and self.__last_data_file:
+            file_name = self.__last_data_file
+        elif not file_name or len(file_name) == 0:
+            if self.__logs_data_count == 0:
+                self.__logs_data_count += 1
+            file_name = "data_%s.txt" % self.__logs_data_count
+        elif "." not in file_name:
+            file_name = "%s.txt" % file_name
+        self.__last_data_file = file_name
+        sb_config._has_logs = True
+        destination_folder = script_logpath
+        page_utils._append_data_to_file(data, destination_folder, file_name)
+
+    def __get_script_id(self):
+        if hasattr(sb_config, "_cdp_saved_id") and sb_config._cdp_saved_id:
+            return sb_config._cdp_saved_id
+        else:
+            stack_base = traceback.format_stack()[0].split(", in ")[0]
+            test_base = stack_base.split(os.sep)[-1]
+            return test_base.split('"')[0]
+
+    def __create_log_path_as_needed(self, script_logpath):
+        if not os.path.exists(script_logpath):
+            try:
+                os.makedirs(script_logpath)
+            except Exception:
+                pass
+
 
 class Chrome(CDPMethods):
     def __init__(self, url=None, **kwargs):
+        stack_base = traceback.format_stack()[0].split(", in ")[0]
+        test_base = stack_base.split(os.sep)[-1]
+        filename = test_base.split('"')[0]
+        linename = ".line_" + test_base.split(", line ")[-1]
+        context_id = filename.split(".")[0] + linename
+        sb_config._cdp_saved_id = context_id
         if not url:
             url = "about:blank"
         loop = asyncio.new_event_loop()

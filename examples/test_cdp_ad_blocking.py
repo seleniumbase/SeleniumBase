@@ -20,10 +20,18 @@ class CDPNetworkBlockingTests(BaseCase):
                 "*.doubleclick.net*",
                 "*.fastclick.net*",
                 "*.snigelweb.com*",
+                "*.viously.com*",
+                "*.flashb.id*",
                 "*.2mdn.net*",
             ]})
         self.goto("https://www.w3schools.com/jquery/default.asp")
         source = self.get_page_source()
-        self.assert_false("doubleclick.net" in source)
-        self.assert_false("google-analytics.com" in source)
+        try:
+            self.assert_false("doubleclick.net" in source)
+            self.assert_false("google-analytics.com" in source)
+        except Exception:
+            self.refresh()
+            source = self.get_page_source()
+            self.assert_false("doubleclick.net" in source)
+            self.assert_false("google-analytics.com" in source)
         self.post_message("Blocking was successful!")

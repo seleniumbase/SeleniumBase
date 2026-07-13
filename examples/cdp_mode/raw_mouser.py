@@ -1,15 +1,20 @@
 from seleniumbase import SB
 
-with SB(uc=True, test=True, locale="en") as sb:
+with SB(uc=True, test=True, guest=True) as sb:
     sb.activate_cdp_mode()
     sb.goto("https://www.mouser.com/")
-    sb.sleep(5)
-    sb.press_keys('input[name="keyword"]', "FLUKE-TC01B 25HZ")
+    search_box = 'input[name="keyword"]'
+    sb.sleep(1.6)
+    sb.solve_captcha()
+    sb.sleep(1.8)
+    sb.wait_for_element(search_box)
+    sb.sleep(1.2)
+    sb.press_keys(search_box, "FLUKE-TC01B 25HZ")
+    sb.sleep(1.2)
     sb.click('button[type="submit"]')
-    sb.sleep(2)
-    sb.highlight("h1")
-    sb.highlight("span#spnDescription")
-    sb.highlight("td.ext-price-col")
-    print(sb.get_text("h1"))
-    print(sb.get_text("span#spnDescription"))
-    print(sb.get_text("td.ext-price-col"))
+    sb.sleep(3.2)
+    sb.wait_for_element("span#spnDescription")
+    soup = sb.get_beautiful_soup()
+    print(soup.select_one("h1").get_text(strip=True))
+    print(soup.select_one("span#spnDescription").get_text(strip=True))
+    print(soup.select_one("td.ext-price-col").get_text(strip=True))

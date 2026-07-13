@@ -20,5 +20,5 @@ for item in items:
         if price:
             price_text = price.text
             print("* %s (%s)" % (description.text, price_text))
-            sb.scroll_down(16)
+            item.flash(color="44CC88")
 sb.quit()

@@ -760,6 +760,7 @@ async def start(
         sb_config._cdp_platform = None
     driver.page = driver.main_tab
     driver.solve_captcha = driver.page.solve_captcha
+    sb_config._cdp_launched = True
     return driver
 
 
