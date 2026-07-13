@@ -691,12 +691,12 @@ class Tab(Connection):
 
     async def reload(
         self,
-        ignore_cache: Optional[bool] = True,
+        ignore_cache: Optional[bool] = False,
         script_to_evaluate_on_load: Optional[str] = None,
     ):
         """
         Reloads the page
-        :param ignore_cache: When set to True (default),
+        :param ignore_cache: When set to True,
          it ignores cache, and re-downloads the items.
         :param script_to_evaluate_on_load: Script to run on load.
         """
