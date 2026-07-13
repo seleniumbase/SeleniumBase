@@ -10,7 +10,7 @@ Here's a list of SeleniumBase CDP Mode method definitions, which are defined in 
 sb.get(url, **kwargs)
 sb.open(url, **kwargs)  # Same as sb.get(url, **kwargs) in CDP Mode
 sb.goto(url, **kwargs)  # Same as sb.get(url, **kwargs) in CDP Mode
-sb.reload(ignore_cache=True, script_to_evaluate_on_load=None)
+sb.reload(ignore_cache=False, script_to_evaluate_on_load=None)
 sb.refresh(*args, **kwargs)
 sb.goto_if_not_url(url)
 sb.get_event_loop()
@@ -209,6 +209,12 @@ sb.save_as_html(name, folder=None)
 sb.save_screenshot(name, folder=None, selector=None)
 sb.print_to_pdf(name, folder=None)
 sb.save_as_pdf(name, folder=None)
+sb.save_as_pdf_to_logs(name=None)
+sb.save_screenshot_to_logs(name=None, selector=None)
+sb.save_page_source_to_logs(name=None)
+sb.save_as_html_to_logs(name=None)
+sb.save_data_to_logs(data, file_name=None)
+sb.append_data_to_logs(data, file_name=None)
 sb.quit()  # (Pure CDP Mode only: `sb_cdp`)
 ```
 
