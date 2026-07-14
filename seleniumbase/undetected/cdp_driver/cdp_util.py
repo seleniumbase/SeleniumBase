@@ -606,6 +606,8 @@ async def start(
                 proxy_pass,
                 proxy_scheme,
             )
+    elif proxy:
+        proxy = proxy_helper.validate_proxy_string(proxy_string)
     if "binary_location" in kwargs and not browser_executable_path:
         browser_executable_path = kwargs["binary_location"]
     if not user_data_dir and "--user-data-dir" in arg_join:
