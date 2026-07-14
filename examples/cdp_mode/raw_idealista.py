@@ -13,5 +13,5 @@ with SB(uc=True, test=True, locale="es") as sb:
     items = sb.find_elements("div.item-info-container")
     for item in items:
         item.flash(color="44CC88")
-        print(item.querySelector("a.item-link").text)
-        print(item.querySelector("span.item-price").text)
+        print(item.query_selector("a.item-link").text)
+        print(item.query_selector("span.item-price").text)

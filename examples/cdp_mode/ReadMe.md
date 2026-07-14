@@ -298,13 +298,13 @@ with SB(uc=True, test=True, ad_block=True) as sb:
     items = sb.find_elements('[data-item-id]')
     for item in items:
         if required_text.lower() in item.text.lower():
-            description = item.querySelector(
+            description = item.query_selector(
                 '[data-automation-id="product-title"]'
             )
             if description and description.text not in unique_item_text:
                 unique_item_text.append(description.text)
                 print("* " + description.text)
-                price = item.querySelector(
+                price = item.query_selector(
                     '[data-automation-id="product-price"]'
                 )
                 if price:

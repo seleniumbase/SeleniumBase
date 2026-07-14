@@ -12,11 +12,11 @@ print('*** Nordstrom Search for "%s":' % search)
 unique_item_text = []
 items = sb.find_elements("article")
 for item in items:
-    description = item.querySelector("article h3")
+    description = item.query_selector("article h3")
     if description and description.text not in unique_item_text:
         unique_item_text.append(description.text)
         price_text = ""
-        price = item.querySelector('div div span[aria-hidden="true"]')
+        price = item.query_selector('div div span[aria-hidden="true"]')
         if price:
             price_text = price.text
             print("* %s (%s)" % (description.text, price_text))

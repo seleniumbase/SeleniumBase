@@ -7,6 +7,7 @@ with SB(uc=True, test=True) as sb:
     sb.cdp.goto("https://seleniumbase.io/demo_page")
     sb.cdp.highlight('//input[@id="myTextInput"]')
     sb.cdp.type('//*[@id="myTextInput"]', "XPath Test!")
+    sb.cdp.type('//input[@name="text" or @name="preText2"]', "Xpath Here!")
     sb.cdp.sleep(0.5)
     sb.cdp.highlight('//button[contains(text(),"(Green)")]')
     sb.cdp.click('//button[starts-with(text(),"Click Me")]')

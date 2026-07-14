@@ -531,7 +531,7 @@ class UCPresentationClass(BaseCase):
             items = sb.find_elements('[data-item-id]')
             for item in items:
                 if required_text.lower() in item.text.lower():
-                    description = item.querySelector(
+                    description = item.query_selector(
                         '[data-automation-id="product-title"]'
                     )
                     if (
@@ -540,7 +540,7 @@ class UCPresentationClass(BaseCase):
                     ):
                         unique_item_text.append(description.text)
                         print("* " + description.text)
-                        price = item.querySelector(
+                        price = item.query_selector(
                             '[data-automation-id="product-price"]'
                         )
                         if price:
@@ -879,11 +879,11 @@ class UCPresentationClass(BaseCase):
             unique_item_text = []
             items = sb.find_elements("article")
             for item in items:
-                description = item.querySelector("article h3")
+                description = item.query_selector("article h3")
                 if description and description.text not in unique_item_text:
                     unique_item_text.append(description.text)
                     price_text = ""
-                    price = item.querySelector(
+                    price = item.query_selector(
                         'div div span[aria-hidden="true"]'
                     )
                     if price:

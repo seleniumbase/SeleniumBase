@@ -16,10 +16,10 @@ with SB(uc=True, test=True, ad_block=True) as sb:
     sb.wait_for_element(item_container)
     items = sb.find_elements(item_container)
     for item in items:
-        result = item.querySelector("h4 a")
+        result = item.query_selector("h4 a")
         links.append(result.get_attribute("href"))
         print("* " + result.text)
-        print(item.querySelector("p").get_attribute("title"))
+        print(item.query_selector("p").get_attribute("title"))
     for link in links:
         sb.goto(link)
         sb.remove_elements("div.ad")
