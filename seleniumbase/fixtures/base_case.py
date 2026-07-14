@@ -301,7 +301,15 @@ class BaseCase(unittest.TestCase):
                 shared_utils.check_if_time_limit_exceeded()
                 self._check_browser()
                 time.sleep(0.8)
-                self.driver.get(url)
+                try:
+                    self.driver.get(url)
+                except Exception as e2:
+                    if "ERR_CONNECTION_RESET" in e2.msg and self.proxy_string:
+                        message = "ERR_CONNECTION_RESET: "
+                        message += "Invalid proxy and/or Internet unreachable!"
+                        raise ProxyConnectionException(message)
+                    else:
+                        raise
             elif (
                 "ERR_INTERNET_DISCONNECTED" in e.msg
                 or "neterror?e=dnsNotFound" in e.msg
@@ -355,6 +363,10 @@ class BaseCase(unittest.TestCase):
                 logging.debug("Invalid session id. Will open new browser.")
                 self.driver = self.get_new_driver()
                 self.driver.get(url)
+            elif "ERR_TUNNEL_CONNECTION_FAILED" in e.msg and self.proxy_string:
+                message = "ERR_CONNECTION_RESET: "
+                message += "Bad proxy and/or Internet unreachable!"
+                raise ProxyConnectionException(message)
             else:
                 raise
         try:
