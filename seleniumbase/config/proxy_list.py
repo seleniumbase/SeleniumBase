@@ -16,16 +16,14 @@ Example proxies in PROXY_LIST below are not guaranteed to be active or secure.
 If you don't already have a proxy server to connect to,
 you can try finding one from one of following sites:
 * https://www.sslproxies.org/
-* https://bit.ly/36GtZa1
 * https://www.us-proxy.org/
 * https://hidemy.name/en/proxy-list/
-* http://free-proxy.cz/en/proxylist/country/all/https/ping/all
 """
 
 PROXY_LIST = {
-    "example1": "98.8.195.160:443",  # (Example) - set your own proxy here
-    "example2": "200.174.198.86:8888",  # (Example)
-    "example3": "socks5://184.178.172.5:15303",  # (Example)
+    "example1": "65.109.191.98:3080",  # (Example) - set your own proxy here
+    "example2": "157.254.194.57:1080",  # (Example)
+    "example3": "socks4://142.54.228.193:4145",  # (Example)
     "proxy1": None,
     "proxy2": None,
     "proxy3": None,
