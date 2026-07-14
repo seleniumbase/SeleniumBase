@@ -2219,7 +2219,8 @@ class CDPMethods():
         self.loop.run_until_complete(self.page.wait(0.05))
         if (
             self.is_element_visible(
-                'body > iframe[src*="/geo.captcha-delivery.com/captcha/"]'
+                'body > iframe[src*="/geo.captcha-delivery.com/captcha/"], '
+                'body > iframe[src*="/geo.captcha-delivery.com/interstitial/"]'
             )
         ):
             return True
@@ -2305,14 +2306,18 @@ class CDPMethods():
         return False
 
     def __gui_slide_datadome_captcha(self):
-        iframe = 'body > iframe[src*="/geo.captcha-delivery.com/captcha/"]'
+        iframe = (
+            'body > iframe[src*="/geo.captcha-delivery.com/captcha/"], '
+            'body > iframe[src*="/geo.captcha-delivery.com/interstitial/"]'
+        )
         if not self.is_element_visible(iframe):
             return False
         src = self.get_attribute(iframe, "src")
         tab = self.get_active_tab()
+        time.sleep(0.05)
         self.open_new_tab(url=src)
-        time.sleep(0.41)
-        self.loop.run_until_complete(self.page.wait(0.1))
+        time.sleep(0.42)
+        self.loop.run_until_complete(self.page.wait(0.12))
         time.sleep(0.25)
         x1, y1 = self.get_gui_element_center("div.slider")
         x2, y2 = self.get_gui_element_center("div.sliderTarget")

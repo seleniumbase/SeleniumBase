@@ -17,11 +17,11 @@ unique_item_text = []
 items = sb.find_elements('[data-test="product-details"]')
 for item in items:
     if required_text.lower() in item.text.lower():
-        description = item.querySelector('a[data-test*="Card/title"]')
+        description = item.query_selector('a[data-test*="Card/title"]')
         if description and description.text not in unique_item_text:
             unique_item_text.append(description.text)
             print("* " + description.text)
-            price = item.querySelector('[data-test="current-price"]')
+            price = item.query_selector('[data-test="current-price"]')
             if price:
                 print("  (" + price.text + ")")
                 item.scroll_into_view()

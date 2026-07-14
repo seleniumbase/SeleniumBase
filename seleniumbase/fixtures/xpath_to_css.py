@@ -188,6 +188,25 @@ def convert_xpath_to_css(xpath):
         s_val2 = data.group(5)
         return '%s[%s="%s"][%s="%s"]' % (s_tag, s_atr1, s_val1, s_atr2, s_val2)
 
+    # Find instance of: //tag[@attribute1='value1' or @attribute2='value2']
+    # This tracks single/double quotes and maps them to comma-separated CSS.
+    data = re.match(
+        r"^\s*//([\w\-*]*)\s*\[\s*@?([\w\-:]+)\s*=\s*[\"']([^\"']*)[\"']\s+"
+        r"or\s+@?([\w\-:]+)\s*=\s*[\"']([^\"']*)[\"']\s*\]",
+        xpath,
+    )
+    if data:
+        s_tag = data.group(1)
+        if s_tag == "*":
+            s_tag = ""
+        s_atr1 = data.group(2)
+        s_val1 = data.group(3)
+        s_atr2 = data.group(4)
+        s_val2 = data.group(5)
+        return '%s[%s="%s"], %s[%s="%s"]' % (
+            s_tag, s_atr1, s_val1, s_tag, s_atr2, s_val2
+        )
+
     # **** End of handling special xpath edge cases instantly ****
 
     if xpath[0] != '"' and xpath[-1] != '"' and xpath.count('"') % 2 == 0:

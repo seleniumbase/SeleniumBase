@@ -22,13 +22,13 @@ sb.click_if_visible('[data-automation-id="sb-btn-close-mark"]')
 items = sb.find_elements('[data-item-id]')
 for item in items:
     if required_text.lower() in item.text.lower():
-        description = item.querySelector(
+        description = item.query_selector(
             '[data-automation-id="product-title"]'
         )
         if description and description.text not in unique_item_text:
             unique_item_text.append(description.text)
             print("* " + description.text)
-            price = item.querySelector(
+            price = item.query_selector(
                 '[data-automation-id="product-price"]'
             )
             if price:
