@@ -363,13 +363,13 @@ class UCPresentationClass(BaseCase):
         self.create_presentation(theme="serif", transition="none")
         self.add_slide(
             "<h3>Up next...</h3><hr /><br /><br /><h4><mk-0><code>"
-            "cloudflare.com/login"
+            "wsform.com/demo/"
             "</code></mk-0></h4><br /><br /><br /><br />"
         )
         self.begin_presentation(filename="uc_presentation.html")
 
         with SB(uc=True, test=True, locale="en") as sb:
-            url = "https://www.cloudflare.com/login"
+            url = "https://wsform.com/demo/"
             sb.activate_cdp_mode(url)
             sb.sleep(3.5)
             sb.solve_captcha()
