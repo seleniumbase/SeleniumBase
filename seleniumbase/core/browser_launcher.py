@@ -2410,11 +2410,10 @@ def _set_chrome_options(
         }
         app_state = "printing.print_preview_sticky_settings.appState"
         prefs[app_state] = json.dumps(pdf_settings)
-    if proxy_string or proxy_pac_url:
-        # Implementation of https://stackoverflow.com/q/65705775/7058266
-        prefs["webrtc.ip_handling_policy"] = "disable_non_proxied_udp"
-        prefs["webrtc.multiple_routes_enabled"] = False
-        prefs["webrtc.nonproxied_udp_enabled"] = False
+    # Implementation of https://stackoverflow.com/q/65705775/7058266
+    prefs["webrtc.ip_handling_policy"] = "disable_non_proxied_udp"
+    prefs["webrtc.multiple_routes_enabled"] = False
+    prefs["webrtc.nonproxied_udp_enabled"] = False
     chrome_options.add_experimental_option("prefs", prefs)
     if enable_sync:
         chrome_options.add_experimental_option(
