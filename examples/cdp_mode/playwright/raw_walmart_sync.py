@@ -27,9 +27,8 @@ with sync_playwright() as p:
     page.wait_for_timeout(1200)
     page.wait_for_selector('[data-item-id]', timeout=10000)
     page.wait_for_timeout(600)
-    for i in range(17):
+    for i in range(10):
         sb.scroll_down(16)
-        sb.sleep(0.05)
     items = page.locator('[data-item-id]')
     for i in range(items.count()):
         item = items.nth(i)

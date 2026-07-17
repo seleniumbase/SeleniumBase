@@ -2,12 +2,12 @@ from playwright.sync_api import sync_playwright
 from seleniumbase import sb_cdp
 
 sb = sb_cdp.Chrome(locale="en", ad_block=True)
+sb.goto("https://www.footlocker.com/")
 endpoint_url = sb.get_endpoint_url()
 
 with sync_playwright() as p:
     browser = p.chromium.connect_over_cdp(endpoint_url)
     page = browser.contexts[0].pages[0]
-    page.goto("https://www.footlocker.com/")
     input_field = 'input[name="query"]'
     page.wait_for_selector(input_field)
     sb.sleep(1.5)
@@ -16,7 +16,7 @@ with sync_playwright() as p:
     page.click(input_field)
     sb.sleep(0.5)
     search = "Nike Shoes"
-    sb.press_keys(input_field, search)
+    page.type(input_field, search)
     sb.sleep(1.2)
     page.click('ul[id*="typeahead"] li div')
     sb.sleep(3.5)
