@@ -350,7 +350,7 @@ class Tab(Connection):
                 getattr(sb_config, "incognito", None)
                 or (
                     getattr(sb_config, "_cdp_browser", None)
-                    in ["comet", "atlas"]
+                    in ["comet"]
                 )
             ):
                 return await self.browser.get(

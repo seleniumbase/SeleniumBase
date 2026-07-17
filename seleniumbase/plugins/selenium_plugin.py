@@ -21,7 +21,6 @@ class SeleniumBrowser(Plugin):
     --opera  (Shortcut for "--browser=opera".)
     --brave  (Shortcut for "--browser=brave".)
     --comet  (Shortcut for "--browser=comet".)
-    --atlas  (Shortcut for "--browser=atlas".)
     --chromium  (Shortcut for using base `Chromium`)
     --cft  (Shortcut for using `Chrome for Testing`)
     --chs  (Shortcut for using `Chrome-Headless-Shell`)
@@ -174,13 +173,6 @@ class SeleniumBrowser(Plugin):
             dest="use_comet",
             default=False,
             help="""Shortcut for --browser=comet""",
-        )
-        parser.addoption(
-            "--atlas",
-            action="store_true",
-            dest="use_atlas",
-            default=False,
-            help="""Shortcut for --browser=atlas""",
         )
         parser.addoption(
             "--use-chromium",
@@ -1171,16 +1163,6 @@ class SeleniumBrowser(Plugin):
                     sb_config._cdp_browser = "comet"
                     sb_config._cdp_bin_loc = bin_loc
                     browser_list.append("--browser=comet")
-        if "--browser=atlas" in sys_argv or "--browser atlas" in sys_argv:
-            if not bin_loc_in_options:
-                bin_loc = detect_b_ver.get_binary_location("atlas")
-                if os.path.exists(bin_loc):
-                    browser_changes += 1
-                    browser_set = "atlas"
-                    sb_config._browser_shortcut = "atlas"
-                    sb_config._cdp_browser = "atlas"
-                    sb_config._cdp_bin_loc = bin_loc
-                    browser_list.append("--browser=atlas")
         browser_text = browser_set
         if "--chrome" in sys_argv and not browser_set == "chrome":
             browser_changes += 1
@@ -1237,16 +1219,6 @@ class SeleniumBrowser(Plugin):
                     sb_config._cdp_browser = "comet"
                     sb_config._cdp_bin_loc = bin_loc
                     browser_list.append("--comet")
-        if "--atlas" in sys_argv and not browser_set == "atlas":
-            if not bin_loc_in_options:
-                bin_loc = detect_b_ver.get_binary_location("atlas")
-                if os.path.exists(bin_loc):
-                    browser_changes += 1
-                    browser_text = "atlas"
-                    sb_config._browser_shortcut = "atlas"
-                    sb_config._cdp_browser = "atlas"
-                    sb_config._cdp_bin_loc = bin_loc
-                    browser_list.append("--atlas")
         if browser_changes > 1:
             message = "\n\n  TOO MANY browser types were entered!"
             message += "\n  There were %s found:\n  >  %s" % (
@@ -1259,7 +1231,7 @@ class SeleniumBrowser(Plugin):
         if browser_text:
             browser = browser_text
         if self.options.recorder_mode and browser not in [
-            "chrome", "edge", "opera", "brave", "comet", "atlas", "chromium"
+            "chrome", "edge", "opera", "brave", "comet", "chromium"
         ]:
             message = (
                 "\n\n  Recorder Mode ONLY supports Chromium browsers!"

@@ -43,7 +43,6 @@ class ChromeType(object):
     OPERA = "opera"
     BRAVE = "brave"
     COMET = "comet"
-    ATLAS = "atlas"
 
 
 PATTERN = {
@@ -225,14 +224,6 @@ def comet_on_linux_path(browser_type=None):
     return ""  # Comet Browser isn't supported on Linux yet
 
 
-def atlas_on_linux_path(browser_type=None):
-    if browser_type and browser_type != ChromeType.ATLAS:
-        return ""
-    if os_name() != OSType.LINUX:
-        return ""
-    return ""  # Atlas Browser isn't supported on Linux yet
-
-
 def chrome_on_windows_path(browser_type=None):
     if browser_type and browser_type != ChromeType.GOOGLE:
         return ""
@@ -381,36 +372,6 @@ def comet_on_windows_path(browser_type=None):
     return ""
 
 
-def atlas_on_windows_path(browser_type=None):
-    if browser_type and browser_type != ChromeType.ATLAS:
-        return ""
-    if os_name() != OSType.WIN:
-        return ""
-    candidates = []
-    for item in map(
-        os.environ.get,
-        (
-            "LOCALAPPDATA",
-            "PROGRAMFILES",
-            "PROGRAMFILES(X86)",
-            "PROGRAMW6432",
-        ),
-    ):
-        for subitem in (
-            "OpenAI/Atlas/Application",
-            "Atlas/Application",
-            "Programs/Atlas",
-        ):
-            try:
-                candidates.append(os.sep.join((item, subitem, "atlas.exe")))
-            except TypeError:
-                pass
-    for candidate in candidates:
-        if os.path.exists(candidate) and os.access(candidate, os.X_OK):
-            return os.path.normpath(candidate)
-    return ""
-
-
 def windows_browser_apps_to_cmd(*apps):
     """Create analogue of browser --version command for windows."""
     powershell = determine_powershell()
@@ -459,12 +420,6 @@ def get_binary_location(browser_type, chromium_ok=False):
             OSType.MAC: r"/Applications/Comet.app"
                         r"/Contents/MacOS/Comet",
             OSType.WIN: comet_on_windows_path(browser_type),
-        },
-        ChromeType.ATLAS: {
-            OSType.LINUX: atlas_on_linux_path(browser_type),
-            OSType.MAC: r"/Applications/ChatGPT Atlas.app"
-                        r"/Contents/MacOS/ChatGPT Atlas",
-            OSType.WIN: atlas_on_windows_path(browser_type),
         },
     }
     return cmd_mapping[browser_type][os_name()]

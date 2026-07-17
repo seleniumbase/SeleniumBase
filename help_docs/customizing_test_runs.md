@@ -135,7 +135,6 @@ pytest my_first_test.py --settings-file=custom_settings.py
 --opera  # (Shortcut for "--browser=opera".)
 --brave  # (Shortcut for "--browser=brave".)
 --comet  # (Shortcut for "--browser=comet".)
---atlas  # (Shortcut for "--browser=atlas".)
 --chromium  # (Shortcut for using base `Chromium`)
 --settings-file=FILE  # (Override default SeleniumBase settings.)
 --env=ENV  # (Set the test env. Access with "self.env" in tests.)

@@ -894,7 +894,7 @@ def get_configured_sb(context):
             "\nOnly ONE default browser is allowed!\n"
             "%s browsers were selected: %s" % (len(browsers), browsers)
         )
-    if sb.browser in ["opera", "brave", "comet", "atlas"]:
+    if sb.browser in ["opera", "brave", "comet"]:
         bin_loc = detect_b_ver.get_binary_location(sb.browser)
         if bin_loc and os.path.exists(bin_loc):
             sb_config._cdp_browser = sb.browser

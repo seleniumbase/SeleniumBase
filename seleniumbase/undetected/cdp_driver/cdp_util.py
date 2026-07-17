@@ -649,12 +649,10 @@ async def start(
                 browser = "brave"
             elif "--comet" in sys_argv:
                 browser = "comet"
-            elif "--atlas" in sys_argv:
-                browser = "atlas"
             else:
                 browser = "chrome"
         sb_config._cdp_browser = browser
-        if browser == "comet" or browser == "atlas":
+        if browser == "comet":
             incognito = False
             guest = False
         with suppress(Exception):
@@ -671,8 +669,6 @@ async def start(
             sb_config._cdp_browser = "brave"
         elif bin_loc.endswith("comet") or bin_loc.endswith("comet.exe"):
             sb_config._cdp_browser = "comet"
-        elif bin_loc.endswith("atlas") or bin_loc.endswith("atlas.exe"):
-            sb_config._cdp_browser = "atlas"
         else:
             sb_config._cdp_browser = "chrome"
     if ad_block:

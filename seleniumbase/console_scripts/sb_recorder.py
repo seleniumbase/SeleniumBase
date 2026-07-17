@@ -166,8 +166,6 @@ def do_recording(
             command += " --brave"
         elif "comet" in brx.lower():
             command += " --comet"
-        elif "atlas" in brx.lower():
-            command += " --atlas"
         elif "chromium" in brx.lower():
             command += " --use-chromium"
         if ucb:
@@ -213,8 +211,6 @@ def do_playback(file_name, brx, window, demo_mode=False):
         command += " --brave"
     elif "comet" in brx.lower():
         command += " --comet"
-    elif "atlas" in brx.lower():
-        command += " --atlas"
     elif "chromium" in brx.lower():
         command += " --use-chromium"
     if demo_mode:
@@ -265,7 +261,6 @@ def create_tkinter_gui():
     use_behave = False
     use_sb_mgr = False
     use_sb_cdp = False
-    use_atlas = False
     command_args = sys.argv[2:]
     if (
         "--uc" in command_args
@@ -285,8 +280,6 @@ def create_tkinter_gui():
         use_sb_mgr = True
     if "--rec-sb-cdp" in command_args:
         use_sb_cdp = True
-    if "--atlas" in command_args:
-        use_atlas = True
 
     tk.Label(window, text="\nSelect a web browser to use:").pack()
     br_count = 2
@@ -318,12 +311,6 @@ def create_tkinter_gui():
             options_list.append("Comet Browser")
             br_order["comet"] = br_count
             br_count += 1
-    if use_atlas:
-        with suppress(Exception):
-            if os.path.exists(detect_b_ver.get_binary_location("atlas")):
-                options_list.append("Atlas Browser")
-                br_order["atlas"] = br_count
-                br_count += 1
     brx = tk.StringVar(window)
     if "--use-chromium" in command_args or "--chromium" in command_args:
         brx.set(options_list[1])
@@ -339,8 +326,6 @@ def create_tkinter_gui():
         brx.set(options_list[br_order["brave"]])
     elif "--comet" in command_args and "comet" in br_order:
         brx.set(options_list[br_order["comet"]])
-    elif "--atlas" in command_args and "atlas" in br_order:
-        brx.set(options_list[br_order["atlas"]])
     else:
         brx.set(options_list[0])
     question_menu = tk.OptionMenu(window, brx, *options_list)
