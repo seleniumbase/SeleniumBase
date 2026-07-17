@@ -27,7 +27,6 @@ from seleniumbase.drivers import chs_drivers  # chrome-headless-shell
 from seleniumbase.drivers import opera_drivers  # still uses chromedriver
 from seleniumbase.drivers import brave_drivers  # still uses chromedriver
 from seleniumbase.drivers import comet_drivers  # still uses chromedriver
-from seleniumbase.drivers import atlas_drivers  # still uses chromedriver
 from seleniumbase.drivers import chromium_drivers  # still uses chromedriver
 from seleniumbase import extensions  # browser extensions storage folder
 from seleniumbase.config import settings
@@ -48,7 +47,6 @@ DRIVER_DIR_CHS = os.path.dirname(os.path.realpath(chs_drivers.__file__))
 DRIVER_DIR_OPERA = os.path.dirname(os.path.realpath(opera_drivers.__file__))
 DRIVER_DIR_BRAVE = os.path.dirname(os.path.realpath(brave_drivers.__file__))
 DRIVER_DIR_COMET = os.path.dirname(os.path.realpath(comet_drivers.__file__))
-DRIVER_DIR_ATLAS = os.path.dirname(os.path.realpath(atlas_drivers.__file__))
 DRIVER_DIR_CHROMIUM = os.path.dirname(
     os.path.realpath(chromium_drivers.__file__)
 )
@@ -590,7 +588,7 @@ def uc_open_with_reconnect(driver, url, reconnect_time=None):
     """Open a url, disconnect chromedriver, wait, and reconnect."""
     if (
         hasattr(sb_config, "_cdp_browser")
-        and sb_config._cdp_browser in ["comet", "opera", "atlas"]
+        and sb_config._cdp_browser in ["comet", "opera"]
     ):
         if not __is_cdp_swap_needed(driver):
             if not driver.current_url.startswith(
@@ -2410,11 +2408,10 @@ def _set_chrome_options(
         }
         app_state = "printing.print_preview_sticky_settings.appState"
         prefs[app_state] = json.dumps(pdf_settings)
-    if proxy_string or proxy_pac_url:
-        # Implementation of https://stackoverflow.com/q/65705775/7058266
-        prefs["webrtc.ip_handling_policy"] = "disable_non_proxied_udp"
-        prefs["webrtc.multiple_routes_enabled"] = False
-        prefs["webrtc.nonproxied_udp_enabled"] = False
+    # Implementation of https://stackoverflow.com/q/65705775/7058266
+    prefs["webrtc.ip_handling_policy"] = "disable_non_proxied_udp"
+    prefs["webrtc.multiple_routes_enabled"] = False
+    prefs["webrtc.nonproxied_udp_enabled"] = False
     chrome_options.add_experimental_option("prefs", prefs)
     if enable_sync:
         chrome_options.add_experimental_option(
@@ -2512,8 +2509,6 @@ def _set_chrome_options(
             and (
                 binary_location.lower().endswith("comet")
                 or binary_location.lower().endswith("comet.exe")
-                or binary_location.lower().endswith("atlas")
-                or binary_location.lower().endswith("atlas.exe")
             )
         ):
             # AI browsers don't like Incognito / Guest Mode
@@ -3116,9 +3111,6 @@ def get_driver(
     elif _special_binary_exists(binary_location, "comet"):
         driver_dir = DRIVER_DIR_COMET
         sb_config._cdp_browser = "comet"
-    elif _special_binary_exists(binary_location, "atlas"):
-        driver_dir = DRIVER_DIR_ATLAS
-        sb_config._cdp_browser = "atlas"
     if (
         hasattr(sb_config, "settings")
         and getattr(sb_config.settings, "NEW_DRIVER_DIR", None)
@@ -4135,9 +4127,6 @@ def get_local_driver(
         elif _special_binary_exists(binary_location, "comet"):
             special_chrome = True
             driver_dir = DRIVER_DIR_COMET
-        elif _special_binary_exists(binary_location, "atlas"):
-            special_chrome = True
-            driver_dir = DRIVER_DIR_ATLAS
     if (
         hasattr(sb_config, "settings")
         and getattr(sb_config.settings, "NEW_DRIVER_DIR", None)
@@ -4973,11 +4962,6 @@ def get_local_driver(
             local_chromedriver = DRIVER_DIR_COMET + "/chromedriver"
             if IS_WINDOWS:
                 local_chromedriver = DRIVER_DIR_COMET + "/chromedriver.exe"
-        if _special_binary_exists(binary_location, "atlas"):
-            set_chromium = "atlas"
-            local_chromedriver = DRIVER_DIR_ATLAS + "/chromedriver"
-            if IS_WINDOWS:
-                local_chromedriver = DRIVER_DIR_ATLAS + "/chromedriver.exe"
         try:
             chrome_options = _set_chrome_options(
                 browser_name,

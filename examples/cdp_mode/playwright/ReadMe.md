@@ -2,7 +2,7 @@
 
 <h2><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32"></a> Stealthy Playwright Mode 🎭</h2>
 
-🎭 <b translate="no">Stealthy Playwright Mode</b> is a subset of **[SeleniumBase CDP Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md)** where  <b translate="no">[Playwright](https://github.com/microsoft/playwright-python)</b> attaches to a stealthy browser session via the remote-debugging URL. This lets <span translate="no">Playwright</span> bypass bot-detection while allowing APIs of both frameworks to work in tandem. Under the hood, Playwright calls <code><b>connect_over_cdp()</b></code> to achieve this stealth.
+🎭 <b translate="no">Stealthy Playwright Mode</b> is a subset of **[SeleniumBase CDP Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md)** where <b translate="no">[playwright-python](https://github.com/microsoft/playwright-python)</b> attaches to a stealthy browser session via the remote-debugging URL. This lets <span translate="no">Playwright</span> bypass bot-detection while allowing APIs of both frameworks to work in tandem. Under the hood, Playwright achieves stealth via <code><b>connect_over_cdp()</b></code>.
 
 --------
 
@@ -127,51 +127,88 @@ with sync_playwright() as p:
 
 ### 🎭 <b translate="no">Stealthy Playwright Mode</b> details:
 
-The `sb_cdp` and `cdp_driver` formats don't use WebDriver at all, meaning that `chromedriver` isn't needed. From these two formats, Stealthy Playwright Mode can call [CDP Mode methods](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/cdp_mode_methods.md) and Playwright methods.
+ℹ️ The `sb_cdp` and `cdp_driver` formats don't use WebDriver at all, meaning that `chromedriver` isn't needed. From these two formats, Stealthy Playwright Mode can call [CDP Mode methods](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/cdp_mode_methods.md) and Playwright methods.
 
-The `SB()` format requires WebDriver, therefore `chromedriver` will be downloaded, modified for stealth, and renamed as `uc_driver` if not already present. The `SB()` format has access to Selenium WebDriver methods via [the SeleniumBase API](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md). When using Stealthy Playwright Mode from the `SB()` format, all the APIs are accessible: Selenium, SeleniumBase, [UC Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md), [CDP Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md), and Playwright.
+ℹ️ The `SB()` format requires WebDriver, therefore `chromedriver` will be downloaded, modified for stealth, and renamed as `uc_driver` if not already present. The `SB()` format has access to Selenium WebDriver methods via [the SeleniumBase API](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md). When using Stealthy Playwright Mode from the `SB()` format, all the APIs are accessible: Selenium, SeleniumBase, [UC Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md), [CDP Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md), and Playwright.
 
-Default timeout values are different between Playwright and SeleniumBase. For instance, a 30-second default timeout in a Playwright method might only be 10 seconds in the equivalent SeleniumBase method.
+ℹ️ Default timeout values are different between Playwright and SeleniumBase. For instance, a 30-second default timeout in a Playwright method might only be 10 seconds in the equivalent SeleniumBase method.
 
-When specifying custom timeout values, Playwright uses milliseconds, whereas SeleniumBase uses seconds. Eg. `page.wait_for_timeout(2000)` in Playwright is the equivalent of `sb.sleep(2)` in SeleniumBase.
+ℹ️ When specifying custom timeout values, Playwright uses milliseconds, whereas SeleniumBase uses seconds. Eg. `page.wait_for_timeout(2000)` in Playwright is the equivalent of `sb.sleep(2)` in SeleniumBase.
 
-Although hard sleeps are generally discouraged, they become a tactical tool in stealth mode because that extra waiting helps the automation look more human. Hard sleeps are used in multiple examples to prevent rate limits from being exceeded.
+ℹ️ Although hard sleeps are generally discouraged, they become a tactical tool in stealth mode because that extra waiting helps the automation look more human. Hard sleeps are used in multiple examples to prevent rate limits from being exceeded.
+
+🌠 For additional stealth, use `sb.goto(URL)` instead of `page.goto(URL)`.
 
 --------
 
 ### 🎭 A few examples of <b translate="no">Stealthy Playwright Mode</b>:
 
-🎭 Here's an example that queries Microsoft Copilot:
+🎭 Here's an example that searches SeatGeek:
 
 ```python
 from playwright.sync_api import sync_playwright
 from seleniumbase import sb_cdp
 
-sb = sb_cdp.Chrome()
+sb = sb_cdp.Chrome(locale="en", ad_block=True)
+sb.goto("https://seatgeek.com/")
 endpoint_url = sb.get_endpoint_url()
 
 with sync_playwright() as p:
     browser = p.chromium.connect_over_cdp(endpoint_url)
     page = browser.contexts[0].pages[0]
-    page.goto("https://copilot.microsoft.com")
-    page.wait_for_selector("textarea#userInput")
-    page.wait_for_timeout(2000)
-    query = "Playwright Python connect_over_cdp() sync example"
-    page.fill("textarea#userInput", query)
-    page.wait_for_timeout(2000)
-    page.click('button[data-testid="submit-button"]')
-    sb.sleep(5.25)
-    sb.solve_captcha()
-    page.wait_for_selector('button[data-testid*="-thumbs-up"]')
-    page.wait_for_timeout(4000)
-    page.click('button[data-testid*="scroll-to-bottom"]')
-    page.wait_for_timeout(3000)
-    chat_results = '[data-testid="highlighted-chats"]'
-    result = page.locator(chat_results).inner_text()
-    print(result.replace("\n\n", " \n"))
+    input_field = 'input[name="search"]'
+    page.wait_for_selector(input_field)
+    page.wait_for_timeout(1600)
+    query = "Jerry Seinfeld"
+    search_box = page.locator(input_field)
+    search_box.press_sequentially(query, delay=80)
+    page.wait_for_timeout(1600)
+    page.click("li#active-result-item")
+    page.wait_for_timeout(4200)
+    print('*** SeatGeek Search for "%s":' % query)
+    items = page.locator('[data-testid="listing-item"]')
+    for i in range(items.count()):
+        item_text = items.nth(i).inner_text()
+        print(item_text.replace("\n\n", "\n"))
 ```
 
-(From [examples/cdp_mode/playwright/raw_copilot_sync.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/raw_copilot_sync.py))
+(From [examples/cdp_mode/playwright/raw_seatgeek_sync.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/raw_seatgeek_sync.py))
+
+🎭 Here's an example that searches Foot Locker:
+
+```python
+from playwright.sync_api import sync_playwright
+from seleniumbase import sb_cdp
+
+sb = sb_cdp.Chrome(locale="en", ad_block=True)
+sb.goto("https://www.footlocker.com/")
+endpoint_url = sb.get_endpoint_url()
+
+with sync_playwright() as p:
+    browser = p.chromium.connect_over_cdp(endpoint_url)
+    page = browser.contexts[0].pages[0]
+    input_field = 'input[name="query"]'
+    page.wait_for_selector(input_field)
+    sb.sleep(1.5)
+    sb.click_if_visible('button[id*="Agree"]')
+    sb.sleep(1.2)
+    page.click(input_field)
+    sb.sleep(0.5)
+    search = "Nike Shoes"
+    page.type(input_field, search)
+    sb.sleep(1.2)
+    page.click('ul[id*="typeahead"] li div')
+    sb.sleep(3.5)
+    elements = sb.select_all("a.ProductCard-link")
+    if elements:
+        print('**** Found results for "%s": ****' % search)
+    for element in elements:
+        print("------------------ >>>")
+        print("* " + element.text)
+    sb.sleep(2)
+```
+
+(From [examples/cdp_mode/playwright/raw_footlocker_sync.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/raw_footlocker_sync.py))
 
 🎭 Here's an example that solves the Bing CAPTCHA:
 

@@ -356,16 +356,6 @@ def Driver(
                 sb_config._cdp_browser = "comet"
                 sb_config._cdp_bin_loc = bin_loc
                 browser_list.append("--browser=comet")
-    if "--browser=atlas" in sys_argv or "--browser atlas" in sys_argv:
-        if not bin_loc_in_options:
-            bin_loc = detect_b_ver.get_binary_location("atlas")
-            if os.path.exists(bin_loc):
-                browser_changes += 1
-                browser_set = "atlas"
-                sb_config._browser_shortcut = "atlas"
-                sb_config._cdp_browser = "atlas"
-                sb_config._cdp_bin_loc = bin_loc
-                browser_list.append("--browser=atlas")
     browser_text = browser_set
     if "--chrome" in sys_argv and not browser_set == "chrome":
         browser_changes += 1
@@ -417,16 +407,6 @@ def Driver(
                 sb_config._cdp_browser = "comet"
                 sb_config._cdp_bin_loc = bin_loc
                 browser_list.append("--comet")
-    if "--atlas" in sys_argv and not browser_set == "atlas":
-        if not bin_loc_in_options:
-            bin_loc = detect_b_ver.get_binary_location("atlas")
-            if os.path.exists(bin_loc):
-                browser_changes += 1
-                browser_text = "atlas"
-                sb_config._browser_shortcut = "atlas"
-                sb_config._cdp_browser = "atlas"
-                sb_config._cdp_bin_loc = bin_loc
-                browser_list.append("--atlas")
     if browser_changes > 1:
         message = "\n\n  TOO MANY browser types were entered!"
         message += "\n  There were %s found:\n  >  %s" % (
@@ -748,7 +728,7 @@ def Driver(
         uc_cdp_events = False
     if (
         undetectable
-        and browser not in ["chrome", "opera", "brave", "comet", "atlas"]
+        and browser not in ["chrome", "opera", "brave", "comet"]
     ):
         message = (
             '\n  Undetected-Chromedriver Mode ONLY supports Chromium browsers!'
@@ -782,9 +762,7 @@ def Driver(
     if headless2 and browser == "firefox":
         headless2 = False  # Only for Chromium browsers
         headless = True  # Firefox has regular headless
-    elif browser not in [
-        "chrome", "edge", "opera", "brave", "comet", "atlas"
-    ]:
+    elif browser not in ["chrome", "edge", "opera", "brave", "comet"]:
         headless2 = False  # Only for Chromium browsers
     if disable_csp is None:
         if (

@@ -382,7 +382,6 @@ class ValidBrowsers:
         "opera",
         "brave",
         "comet",
-        "atlas",
     ]
 
 
@@ -392,7 +391,6 @@ class ChromiumSubs:
         "opera",
         "brave",
         "comet",
-        "atlas",
     ]
 
 
@@ -415,9 +413,6 @@ class ValidBinaries:
         "comet",
         "comet-browser",
         "comet-stable",
-        "atlas",
-        "atlas-browser",
-        "atlas-stable",
         "chrome.exe",  # WSL (Windows Subsystem for Linux)
         "chromium.exe",  # WSL (Windows Subsystem for Linux)
     ]
@@ -441,9 +436,6 @@ class ValidBinaries:
         "Opera",
         "Comet Browser",
         "Comet",
-        "ChatGPT Atlas",
-        "Atlas Browser",
-        "Atlas",
     ]
     valid_edge_binaries_on_macos = [
         "Microsoft Edge",
@@ -455,7 +447,6 @@ class ValidBinaries:
         "brave.exe",
         "opera.exe",
         "comet.exe",
-        "atlas.exe",
     ]
     valid_edge_binaries_on_windows = [
         "msedge.exe",

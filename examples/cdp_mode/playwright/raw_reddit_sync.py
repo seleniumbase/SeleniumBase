@@ -9,7 +9,7 @@ with sync_playwright() as p:
     page = browser.contexts[0].pages[0]
     search = "reddit+scraper"
     url = f"https://www.reddit.com/r/webscraping/search/?q={search}"
-    page.goto(url)
+    sb.goto(url)
     sb.solve_captcha()  # Might not be needed
     page.wait_for_timeout(1000)
     post_title = '[data-testid="post-title"]'

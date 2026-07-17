@@ -112,7 +112,7 @@ def looks_like_a_page_url(url):
         "http:", "https:", "://", "about:", "blob:", "chrome:", "opera:",
         "data:", "edge:", "file:", "view-source:", "chrome-search:",
         "chrome-extension:", "chrome-untrusted:", "isolated-app:",
-        "chrome-devtools:", "devtools:", "brave:", "comet:", "atlas:"
+        "chrome-devtools:", "devtools:", "brave:", "comet:"
     ))
 
 

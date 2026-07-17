@@ -174,7 +174,7 @@ setup(
         'websockets~=15.0.1;python_version<"3.10"',
         'websockets>=16.1;python_version>="3.10"',
         'filelock~=3.19.1;python_version<"3.10"',
-        'filelock>=3.29.7;python_version>="3.10"',
+        'filelock>=3.30.3;python_version>="3.10"',
         'fasteners>=0.20',
         'mycdp>=1.4.0',
         'pynose>=1.5.5',
@@ -253,7 +253,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage>=7.10.7;python_version<"3.10"',
-            'coverage>=7.15.1;python_version>="3.10"',
+            'coverage>=7.15.2;python_version>="3.10"',
             'pytest-cov>=7.1.0',
         ],
         # pip install -e .[flake8]
@@ -325,7 +325,6 @@ setup(
         "seleniumbase.drivers.opera_drivers",
         "seleniumbase.drivers.brave_drivers",
         "seleniumbase.drivers.comet_drivers",
-        "seleniumbase.drivers.atlas_drivers",
         "seleniumbase.drivers.chromium_drivers",
         "seleniumbase.extensions",
         "seleniumbase.fixtures",
