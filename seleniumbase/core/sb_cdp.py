@@ -882,7 +882,16 @@ class CDPMethods():
             tag_name = tag_name.lower().strip()
         if (
             tag_name in [
-                "a", "button", "canvas", "div", "input", "li", "span", "label"
+                "a",
+                "button",
+                "canvas",
+                "div",
+                "input",
+                "label",
+                "li",
+                "path",
+                "span",
+                "svg",
             ]
             and "contains(" not in selector
             and "://google" not in current_url
@@ -1047,11 +1056,14 @@ class CDPMethods():
         if pause and isinstance(pause, (int, float)):
             time.sleep(pause)
 
-    def highlight(self, selector):
+    def highlight(self, selector, scroll=True, timeout=None):
         """Highlight an element with multi-colors."""
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
         selector = self.__convert_to_css_if_xpath(selector)
-        element = self.find_element(selector)
-        element.scroll_into_view()
+        element = self.find_element(selector, timeout=timeout)
+        if scroll:
+            element.scroll_into_view()
         x_offset = self.__get_x_scroll_offset()
         y_offset = self.__get_y_scroll_offset()
         element.flash(0.46, "44CC88", x_offset, y_offset)
@@ -1063,8 +1075,10 @@ class CDPMethods():
         element.flash(0.30, "44CC88", x_offset, y_offset)
         time.sleep(0.30)
 
-    def focus(self, selector):
-        element = self.find_element(selector)
+    def focus(self, selector, timeout=None):
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        element = self.find_element(selector, timeout=timeout)
         element.scroll_into_view()
         element.focus()
 
@@ -1431,8 +1445,10 @@ class CDPMethods():
     def get_window(self):
         return self.loop.run_until_complete(self.page.get_window())
 
-    def get_text(self, selector="body"):
-        return self.find_element(selector).text_all
+    def get_text(self, selector="body", timeout=None):
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        return self.find_element(selector, timeout=timeout).text_all
 
     def get_title(self):
         """Returns the title of the current web page."""
@@ -1710,10 +1726,12 @@ class CDPMethods():
         If the attribute doesn't exist: Returns None."""
         return self.find_element(selector).get_attribute(attribute)
 
-    def get_element_html(self, selector):
+    def get_element_html(self, selector, timeout=None):
         """Find an element and return the outerHTML."""
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
         selector = self.__convert_to_css_if_xpath(selector)
-        self.find_element(selector)
+        self.find_element(selector, timeout=timeout)
         self.__add_light_pause()
         return self.loop.run_until_complete(
             self.page.evaluate(
