@@ -1264,7 +1264,7 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_cdp_swap_needed():
-            self.cdp.focus(selector)
+            self.cdp.focus(selector, scroll=True, timeout=timeout)
             return
         element = self.wait_for_element_present(
             selector, by=by, timeout=timeout
@@ -1902,7 +1902,7 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_cdp_swap_needed():
-            return self.cdp.get_text(selector)
+            return self.cdp.get_text(selector, timeout=timeout)
         if self.__is_shadow_selector(selector):
             return self.__get_shadow_text(selector, timeout)
         self.wait_for_ready_state_complete()
@@ -6749,7 +6749,9 @@ class BaseCase(unittest.TestCase):
         if self.__is_cdp_swap_needed():
             if page_utils.is_xpath_selector(selector):
                 if "contains(" in selector:
-                    self.cdp.highlight(selector)
+                    self.cdp.highlight(
+                        selector, scroll=scroll, timeout=timeout
+                    )
                     return
         else:
             self._check_browser()
