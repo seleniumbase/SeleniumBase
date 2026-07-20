@@ -12,9 +12,9 @@ with sync_playwright() as p:
     page.wait_for_selector(input_field)
     sb.sleep(1.5)
     sb.click_if_visible('button[id*="Agree"]')
-    sb.sleep(1.2)
+    sb.sleep(0.6)
     page.click(input_field)
-    sb.sleep(0.5)
+    sb.sleep(0.6)
     search = "Nike Shoes"
     page.type(input_field, search)
     sb.sleep(1.2)

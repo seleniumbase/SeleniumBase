@@ -3,8 +3,8 @@ from seleniumbase import sb_cdp
 sb = sb_cdp.Chrome()
 sb.goto("https://www.clearcotelabs.com/audit")
 sb.click('button:contains("Run the audit")')
-sb.sleep(5)
-sb.assert_element("div.text-emerald-700", timeout=6)
+sb.sleep(6)
+sb.assert_element("div.text-emerald-700", timeout=8)
 try:
     sb.assert_text("100", "div.text-emerald-700", timeout=5)
     sb.highlight('div.text-emerald-700:contains("100")')

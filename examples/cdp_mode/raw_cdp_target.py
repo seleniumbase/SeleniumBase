@@ -14,14 +14,18 @@ sb.sleep(2.5)
 print('*** Target Search for "%s":' % search)
 print('    (Results must contain "%s".)' % required_text)
 unique_item_text = []
-items = sb.find_elements('[data-test="product-details"]')
+items = sb.find_elements(
+    '[data-test*="ProductListing"], [data-test="product-details"]'
+)
 for item in items:
     if required_text.lower() in item.text.lower():
-        description = item.query_selector('a[data-test*="Card/title"]')
+        description = item.query_selector('h3, a[data-test*="Card/title"]')
         if description and description.text not in unique_item_text:
             unique_item_text.append(description.text)
             print("* " + description.text)
-            price = item.query_selector('[data-test="current-price"]')
+            price = item.query_selector(
+                '[style*="weight: 700;"], [data-test="current-price"]'
+            )
             if price:
                 print("  (" + price.text + ")")
                 item.scroll_into_view()
