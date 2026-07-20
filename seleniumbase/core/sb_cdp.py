@@ -876,8 +876,6 @@ class CDPMethods():
         self.__slow_mode_pause_if_set()
         element = self.find_element(selector, timeout=timeout)
         tag_name = element.tag_name
-        current_url = self.get_current_url()
-
         if tag_name:
             tag_name = tag_name.lower().strip()
         if (
@@ -894,8 +892,6 @@ class CDPMethods():
                 "svg",
             ]
             and "contains(" not in selector
-            and "://google" not in current_url
-            and "://www.google" not in current_url
         ):
             if scroll:
                 element.scroll_into_view()
@@ -909,9 +905,10 @@ class CDPMethods():
                     element.scroll_into_view()
                 else:
                     try:
-                        self.js_scroll_into_view(selector)
-                    except Exception:
                         element.scroll_into_view()
+                    except Exception:
+                        with suppress(Exception):
+                            self.js_scroll_into_view(selector)
             element.click()  # Standard CDP click
         self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.wait(0.2))

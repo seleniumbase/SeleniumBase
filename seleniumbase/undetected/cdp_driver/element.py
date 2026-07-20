@@ -389,7 +389,7 @@ class Element:
                 object_id=self._remote_object.object_id,
                 arguments=arguments,
                 await_promise=True,
-                user_gesture=True,
+                user_gesture=False,
                 return_by_value=True,
             )
         )
