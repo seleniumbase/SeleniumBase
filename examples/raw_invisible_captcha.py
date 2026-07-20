@@ -1,6 +1,6 @@
 from seleniumbase import SB
 
-with SB(uc=True, test=True, guest=True) as sb:
+with SB(uc=True, test=True) as sb:
     sb.activate_cdp_mode()
     sb.goto("https://seleniumbase.io/apps/invisible_recaptcha")
     sb.sleep(1)

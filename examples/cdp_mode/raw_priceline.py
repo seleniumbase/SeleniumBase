@@ -35,18 +35,19 @@ with SB(uc=True, test=True, locale="en", guest=True, pls="none") as sb:
         sb.switch_to_newest_tab()
         sb.sleep(0.6)
     sb.sleep(0.8)
-    for y in range(1, 9):
-        sb.scroll_to_y(y * 200)
-        sb.sleep(0.4)
-    hotels = sb.find_elements('div[data-vis-key*="content"]')
+    titles = []
     count = 0
-    for hotel in hotels:
-        title = hotel.query_selector("h3")
-        if title:
-            price = hotel.query_selector(".text-heading4")
-            if price:
-                count += 1
-                price_text = price.text.replace(" ", "")
-                print("* %s: %s => %s" % (count, title.text, price_text))
+    for y in range(1, 10):
+        sb.scroll_to_y(y * 500)
+        hotels = sb.find_elements('div[data-vis-key*="content"]')
+        for hotel in hotels:
+            title = hotel.query_selector("h3")
+            if title and title not in titles:
+                titles.append(title)
+                price = hotel.query_selector(".text-heading4")
+                if price:
+                    count += 1
+                    price_text = price.text.replace(" ", "")
+                    print("* %s: %s => %s" % (count, title.text, price_text))
     if not count:
         print("No availability over the selected dates!")
