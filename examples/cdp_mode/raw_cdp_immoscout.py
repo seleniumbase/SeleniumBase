@@ -2,7 +2,7 @@
 (PyAutoGUI is installed at runtime if not yet installed.)"""
 from seleniumbase import sb_cdp
 
-sb = sb_cdp.Chrome(use_chromium=True, locale="en")
+sb = sb_cdp.Chrome(locale="en")
 sb.goto("https://www.immoscout24.ch/en/real-estate/rent")
 sb.sleep(1.6)
 sb.solve_captcha()
