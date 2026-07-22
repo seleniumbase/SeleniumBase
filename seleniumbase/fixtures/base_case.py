@@ -5109,6 +5109,8 @@ class BaseCase(unittest.TestCase):
             self.click_captcha = self.cdp.click_captcha
         if hasattr(self.cdp, "add_handler"):
             self.add_handler = self.cdp.add_handler
+        if hasattr(self.cdp, "clear_input"):
+            self.clear_input = self.cdp.clear_input
         if hasattr(self.cdp, "close_active_tab"):
             self.close_active_tab = self.cdp.close_active_tab
         if hasattr(self.cdp, "find_element_by_text"):

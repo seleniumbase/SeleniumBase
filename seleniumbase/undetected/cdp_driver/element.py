@@ -2,6 +2,7 @@ from __future__ import annotations
 import asyncio
 import logging
 import pathlib
+import random
 import secrets
 import typing
 from contextlib import suppress
@@ -522,29 +523,37 @@ class Element:
             using_pim = await self.tab.evaluate(script2)
         if not using_px and not using_pim:
             asyncio.create_task(self.flash_async(0.25))'''
+        with suppress(Exception):
+            await self.mouse_move_async()
+            await asyncio.sleep(random.uniform(0.003, 0.005))
+        x = center[0] + random.uniform(-0.8, 0.8)
+        y = center[1] + random.uniform(-0.8, 0.8)
         asyncio.create_task(
             self._tab.send(
                 cdp.input_.dispatch_mouse_event(
                     "mousePressed",
-                    x=center[0],
-                    y=center[1],
+                    x=x,
+                    y=y,
                     modifiers=modifiers,
                     button=cdp.input_.MouseButton(button),
                     buttons=buttons,
                     click_count=1,
+                    force=0.5,
                 )
             ),
         )
+        await asyncio.sleep(random.uniform(0.011, 0.015))
         asyncio.create_task(
             self._tab.send(
                 cdp.input_.dispatch_mouse_event(
                     "mouseReleased",
-                    x=center[0],
-                    y=center[1],
+                    x=x + random.uniform(-0.12, 0.12),
+                    y=y + random.uniform(-0.12, 0.12),
                     modifiers=modifiers,
                     button=cdp.input_.MouseButton(button),
                     buttons=buttons,
                     click_count=1,
+                    force=0.0,
                 )
             ),
         )
@@ -580,6 +589,9 @@ class Element:
             logger.debug("Clicking on location: %.2f, %.2f" % center_pos)
         else:
             logger.debug("Clicking on location: %.2f, %.2f" % (x_pos, y_pos))
+        with suppress(Exception):
+            await self.mouse_move_async()
+            await asyncio.sleep(random.uniform(0.003, 0.005))
         script1 = 'sessionStorage.getItem("pxsid") !== null;'
         script2 = 'sessionStorage.getItem("PIM-SESSION-ID") !== null;'
         using_px = True
@@ -605,6 +617,7 @@ class Element:
                     button=cdp.input_.MouseButton(button),
                     buttons=buttons,
                     click_count=1,
+                    force=0.5,
                 )
             )
         )
@@ -618,6 +631,7 @@ class Element:
                     button=cdp.input_.MouseButton(button),
                     buttons=buttons,
                     click_count=1,
+                    force=0.0,
                 )
             ),
         )
@@ -884,6 +898,7 @@ class Element:
                     )
                 )
             # 4. Trigger keyup DOM event
+            await asyncio.sleep(random.uniform(0.011, 0.015))
             await self._tab.send(
                 cdp.input_.dispatch_key_event(
                     type_="keyUp",

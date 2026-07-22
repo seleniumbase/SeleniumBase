@@ -3,7 +3,7 @@ from seleniumbase import SB
 with SB(uc=True, test=True, locale="en", use_chromium=True) as sb:
     sb.activate_cdp_mode()
     sb.goto("https://www.hilton.com/en/")
-    sb.sleep(4.5)
+    sb.sleep(4.2)
     location = "Sunnyvale, CA, USA"
     location_input = "input#location-input"
     sb.wait_for_element(location_input)
@@ -17,9 +17,9 @@ with SB(uc=True, test=True, locale="en", use_chromium=True) as sb:
     sb.click('button[aria-current="date"]')
     sb.sleep(1.2)
     sb.click_if_visible('[role="dialog"] button.btn--solid')
-    sb.sleep(1.5)
+    sb.sleep(1.4)
     sb.click('button[data-testid="search-submit-button"]')
-    sb.sleep(6.5)
+    sb.sleep(6.4)
     sb.reconnect()
     for window in sb.driver.window_handles:
         sb.switch_to_window(window)

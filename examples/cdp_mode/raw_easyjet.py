@@ -6,9 +6,11 @@ with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     sb.sleep(1.8)
     sb.click_if_visible("button#ensRejectAds", timeout=2)
     sb.sleep(1)
-    sb.click('input[name="from"]')
+    input_from = 'input[name="from"]'
+    sb.click(input_from)
     sb.sleep(1)
-    sb.press_keys('input[name="from"]', "London Gatwick")
+    sb.clear(input_from)
+    sb.press_keys(input_from, "London Gatwick")
     sb.sleep(1)
     sb.click('span[data-testid="airport-name"]')
     sb.sleep(1)
