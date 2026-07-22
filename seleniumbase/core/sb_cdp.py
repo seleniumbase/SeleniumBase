@@ -1170,6 +1170,10 @@ class CDPMethods():
         self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.sleep(0.025))
 
+    def clear(self, selector, timeout=None):
+        """Same as clear_input(), which clears the text field."""
+        self.clear_input(selector=selector, timeout=timeout)
+
     def set_value(self, selector, text, timeout=None):
         """Similar to send_keys(), but clears the text field first."""
         if not timeout:
