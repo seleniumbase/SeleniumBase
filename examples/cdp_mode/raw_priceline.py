@@ -1,5 +1,4 @@
-"""An example of bypassing PerimeterX detection on Priceline.
-(PyAutoGUI is installed at runtime if it's not installed.)"""
+"""An example of bypassing PerimeterX detection on Priceline."""
 from seleniumbase import SB
 
 with SB(uc=True, test=True, locale="en", guest=True, pls="none") as sb:
@@ -7,11 +6,9 @@ with SB(uc=True, test=True, locale="en", guest=True, pls="none") as sb:
     sb.goto("https://www.priceline.com")
     sb.sleep(3)
     input_selector = "div.location-input input"
-    sb.gui_hover_element(input_selector)
-    sb.mouse_click(input_selector)
+    sb.click(input_selector)
     location = "Portland, OR"
     selection = "Oregon, United States"  # (Dropdown option)
-    sb.gui_hover_element(input_selector)
     sb.press_keys(input_selector, location)
     sb.sleep(0.5)
     sb.click(selection)

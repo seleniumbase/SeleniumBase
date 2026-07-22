@@ -2,6 +2,11 @@ from seleniumbase import sb_cdp
 
 sb = sb_cdp.Chrome()
 sb.goto("https://www.clearcotelabs.com/audit")
+sb.click('button[aria-label="Marker 1"]')
+sb.click('button[aria-label="Marker 2"]')
+sb.click('button[aria-label="Marker 3"]')
+sb.press_keys("input", "audit")
+sb.select_option_by_text("select", "Mouse")
 sb.click('button:contains("Run the audit")')
 sb.sleep(6)
 sb.assert_element("div.text-emerald-700", timeout=8)

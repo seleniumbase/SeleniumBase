@@ -9,8 +9,8 @@ with SB(uc=True, test=True, ad_block=True) as sb:
     close_2 = 'button[data-testid="close-button"]'
     sb.click_if_visible("%s, %s" % (close_1, close_2))
     query = "Compare Playwright to SeleniumBase in under 178 words"
-    sb.press_keys("#prompt-textarea", query)
-    sb.click('button[data-testid="send-button"]')
+    sb.press_keys("#prompt-textarea, #mobile-composer-prompt", query)
+    sb.click('button[data-testid="send-button"], button[aria-label*="Send"]')
     print('*** Input for ChatGPT: ***\n"%s"' % query)
     sb.sleep(3)
     with suppress(Exception):
@@ -18,7 +18,10 @@ with SB(uc=True, test=True, ad_block=True) as sb:
         sb.wait_for_element_not_visible(
             'button[data-testid="stop-button"]', timeout=20
         )
-    chat = sb.find_element('[data-message-author-role="assistant"] .markdown')
+    chat = sb.find_element(
+        '[data-message-author-role="assistant"] .markdown, '
+        '[data-assistant-markdown]'
+    )
     soup = sb.get_beautiful_soup(chat.get_html()).text.strip()
     soup = soup.replace("\n\n\n", "\n\n")
     print("*** Response from ChatGPT: ***\n%s" % soup)
