@@ -500,7 +500,10 @@ class CDPMethods():
         element = elements[number]
         if scroll:
             element.scroll_into_view()
-        element.click()
+        try:
+            element.mouse_click()  # Simulated click (NO PyAutoGUI)
+        except Exception:
+            element.click()  # Standard CDP click (Can be detected)
 
     def click_nth_visible_element(self, selector, number, scroll=True):
         """Finds all matching page elements and clicks the nth visible one.
@@ -518,7 +521,10 @@ class CDPMethods():
         element = elements[number]
         if scroll:
             element.scroll_into_view()
-        element.click()
+        try:
+            element.mouse_click()  # Simulated click (NO PyAutoGUI)
+        except Exception:
+            element.click()  # Standard CDP click (Can be detected)
 
     def click_link(self, link_text):
         self.find_elements_by_text(link_text, "a")[0].click()
@@ -875,41 +881,12 @@ class CDPMethods():
             timeout = settings.SMALL_TIMEOUT
         self.__slow_mode_pause_if_set()
         element = self.find_element(selector, timeout=timeout)
-        tag_name = element.tag_name
-        if tag_name:
-            tag_name = tag_name.lower().strip()
-        if (
-            tag_name in [
-                "a",
-                "button",
-                "canvas",
-                "div",
-                "input",
-                "label",
-                "li",
-                "path",
-                "span",
-                "svg",
-            ]
-            and "contains(" not in selector
-        ):
-            if scroll:
-                element.scroll_into_view()
-            try:
-                element.mouse_click()  # Simulated click (NOT PyAutoGUI)
-            except Exception:
-                element.click()  # Standard CDP click
-        else:
-            if scroll:
-                if "contains(" in selector:
-                    element.scroll_into_view()
-                else:
-                    try:
-                        element.scroll_into_view()
-                    except Exception:
-                        with suppress(Exception):
-                            self.js_scroll_into_view(selector)
-            element.click()  # Standard CDP click
+        if scroll:
+            element.scroll_into_view()
+        try:
+            element.mouse_click()  # Simulated click (NO PyAutoGUI)
+        except Exception:
+            element.click()  # Standard CDP click (Can be detected)
         self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.wait(0.2))
 
@@ -957,7 +934,10 @@ class CDPMethods():
                 if (width != 0 or height != 0):
                     if scroll:
                         element.scroll_into_view()
-                    element.click()
+                    try:
+                        element.mouse_click()  # Simulated click (NO PyAutoGUI)
+                    except Exception:
+                        element.click()  # Standard CDP click (Can be detected)
                     click_count += 1
                     time.sleep(0.044)
                     self.__slow_mode_pause_if_set()
@@ -998,7 +978,10 @@ class CDPMethods():
         options = element.query_selector_all("option")
         for found_option in options:
             if found_option.text.strip() == option.strip():
-                found_option.select_option()
+                try:
+                    self.type(dropdown_selector, option)
+                except Exception:
+                    found_option.select_option()
                 return
         raise Exception(
             "Unable to find text option {%s} in dropdown {%s}!"

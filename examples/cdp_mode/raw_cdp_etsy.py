@@ -10,6 +10,7 @@ sb.sleep(1)
 sb.click('button[aria-label="Search"]')
 sb.sleep(2)
 sb.click_if_visible('button[aria-label="Ok"]')
+sb.sleep(1)
 soup = sb.get_beautiful_soup()
 items = soup.select("div.v2-listing-card__info")
 num = 0

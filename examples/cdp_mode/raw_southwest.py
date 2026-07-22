@@ -6,8 +6,8 @@ with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
     sb.activate_cdp_mode()
     sb.goto("https://www.southwest.com/air/booking/")
     sb.sleep(2.8)
-    origin = "BOS"
-    destination = "MDW"
+    origin = "DEN"
+    destination = "LAX"
     sb.click_if_visible("button#onetrust-accept-btn-handler")
     sb.sleep(0.5)
     sb.gui_click_element("input#originationAirportCode")

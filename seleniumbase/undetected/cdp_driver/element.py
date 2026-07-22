@@ -786,19 +786,112 @@ class Element:
     async def send_keys_async(self, text: str):
         """
         Send text to an input field, or any other html element.
-        Hint: If you ever get stuck where using py:meth:`~click`
-        does not work, sending the keystroke \\n or \\r\\n
+        Hint: If you ever get stuck where using `~click()`
+        does not work, sending the keystroke \n or \r\n
         or a spacebar works wonders!
         :param text: text to send
         :return: None
         """
+        if self.tag_name.lower() == "textarea" and text.endswith("\r\n"):
+            text = text[0:-1]
         await self.apply("(elem) => elem.focus()")
-        [
+        # Map non-alphanumeric symbols to the correct CDP virtual key code.
+        # Prevents collisions with control keys. Eg. ord('.') = 46 = VK_DELETE.
+        SYMBOL_MAP = {
+            ".": ("Period", 190),
+            ",": ("Comma", 188),
+            "-": ("Minus", 189),
+            "=": ("Equal", 187),
+            "/": ("Slash", 191),
+            "\\": ("Backslash", 220),
+            ";": ("Semicolon", 186),
+            "'": ("Quote", 222),
+            "`": ("Backquote", 192),
+            "[": ("BracketLeft", 219),
+            "]": ("BracketRight", 221),
+            "!": ("Digit1", 49),
+            "@": ("Digit2", 50),
+            "#": ("Digit3", 51),
+            "$": ("Digit4", 52),
+            "%": ("Digit5", 53),
+            "^": ("Digit6", 54),
+            "&": ("Digit7", 55),
+            "*": ("Digit8", 56),
+            "(": ("Digit9", 57),
+            ")": ("Digit0", 48),
+            "_": ("Minus", 189),
+            "+": ("Equal", 187),
+            "{": ("BracketLeft", 219),
+            "}": ("BracketRight", 221),
+            "|": ("Backslash", 220),
+            ":": ("Semicolon", 186),
+            '"': ("Quote", 222),
+            "<": ("Comma", 188),
+            ">": ("Period", 190),
+            "?": ("Slash", 191),
+            "~": ("Backquote", 192),
+        }
+        for char in text:
+            # 1. Map character to its DOM key attributes
+            if char in ("\r", "\n"):
+                key = "Enter"
+                code = "Enter"
+                vk = 13
+                text_val = "\r"
+            elif char == "\t":
+                key = "Tab"
+                code = "Tab"
+                vk = 9
+                text_val = ""
+            elif char == " ":
+                key = " "
+                code = "Space"
+                vk = 32
+                text_val = " "
+            else:
+                key = char
+                text_val = char
+                if char.isalpha():
+                    code = f"Key{char.upper()}"
+                    vk = ord(char.upper())
+                elif char.isdigit():
+                    code = f"Digit{char}"
+                    vk = ord(char)
+                elif char in SYMBOL_MAP:
+                    code, vk = SYMBOL_MAP[char]
+                else:
+                    code = ""
+                    vk = 0
+            # 2. Trigger keydown DOM event WITHOUT inserting text
             await self._tab.send(
-                cdp.input_.dispatch_key_event("char", text=char)
+                cdp.input_.dispatch_key_event(
+                    type_="rawKeyDown",
+                    key=key,
+                    code=code,
+                    windows_virtual_key_code=vk,
+                )
             )
-            for char in list(text)
-        ]
+            # 3. Trigger keypress DOM event AND insert text
+            if text_val:
+                await self._tab.send(
+                    cdp.input_.dispatch_key_event(
+                        type_="char",
+                        key=key,
+                        code=code,
+                        text=text_val,
+                        unmodified_text=text_val,
+                        windows_virtual_key_code=vk,
+                    )
+                )
+            # 4. Trigger keyup DOM event
+            await self._tab.send(
+                cdp.input_.dispatch_key_event(
+                    type_="keyUp",
+                    key=key,
+                    code=code,
+                    windows_virtual_key_code=vk,
+                )
+            )
 
     async def send_file_async(self, *file_paths: PathLike):
         """
