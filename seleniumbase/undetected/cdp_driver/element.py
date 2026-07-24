@@ -494,7 +494,7 @@ class Element:
         button: str = "left",
         buttons: typing.Optional[int] = 1,
         modifiers: typing.Optional[int] = 0,
-        hold: bool = False,
+        timeframe: float = 0.0,
     ):
         """
         Native click (on element).
@@ -542,13 +542,31 @@ class Element:
                 )
             ),
         )
-        await asyncio.sleep(random.uniform(0.011, 0.015))
+        if not timeframe or timeframe <= 0:
+            # If 0 (or less), hold for a small amount of time
+            await asyncio.sleep(random.uniform(0.0126, 0.0152))
+            x += random.uniform(-0.12, 0.12)
+            y += random.uniform(-0.12, 0.12)
+        else:
+            end_time = asyncio.get_running_loop().time() + timeframe
+            while asyncio.get_running_loop().time() < end_time:
+                await self._tab.send(
+                    cdp.input_.dispatch_mouse_event(
+                        type_="mouseMoved",
+                        x=x + random.uniform(-0.12, 0.12),
+                        y=y + random.uniform(-0.12, 0.12),
+                        button=cdp.input_.MouseButton(button),
+                        buttons=buttons,
+                        force=0.5,
+                    )
+                )
+            await asyncio.sleep(random.uniform(0.120, 0.280))
         asyncio.create_task(
             self._tab.send(
                 cdp.input_.dispatch_mouse_event(
                     "mouseReleased",
-                    x=x + random.uniform(-0.12, 0.12),
-                    y=y + random.uniform(-0.12, 0.12),
+                    x=x,
+                    y=y,
                     modifiers=modifiers,
                     button=cdp.input_.MouseButton(button),
                     buttons=buttons,

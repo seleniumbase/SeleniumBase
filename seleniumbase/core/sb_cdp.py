@@ -87,6 +87,11 @@ class CDPMethods():
                 element, *args, **kwargs
             )
         )
+        element.click_and_hold = (
+            lambda *args, **kwargs: (
+                self.__mouse_click_and_hold(element, *args, **kwargs)
+            )
+        )
         element.mouse_drag = (
             lambda destination: self.__mouse_drag(element, destination)
         )
@@ -612,9 +617,20 @@ class CDPMethods():
             self.loop.run_until_complete(element.is_in_viewport_async())
         )
 
-    def __mouse_click(self, element):
+    def __mouse_click(self, element, timeframe=0):
         result = (
-            self.loop.run_until_complete(element.mouse_click_async())
+            self.loop.run_until_complete(
+                element.mouse_click_async(timeframe=timeframe)
+            )
+        )
+        self.loop.run_until_complete(self.page.wait(0.2))
+        return result
+
+    def __mouse_click_and_hold(self, element, timeframe=2):
+        result = (
+            self.loop.run_until_complete(
+                element.mouse_click_async(timeframe=timeframe)
+            )
         )
         self.loop.run_until_complete(self.page.wait(0.2))
         return result
@@ -945,8 +961,20 @@ class CDPMethods():
             except Exception:
                 break
 
+    def click_and_hold(self, selector, timeout=None, scroll=True, timeframe=2):
+        """(Simulate a mouse click & hold)"""
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        self.__slow_mode_pause_if_set()
+        element = self.find_element(selector, timeout=timeout)
+        if scroll:
+            element.scroll_into_view()
+        element.click_and_hold(timeframe)
+        self.__slow_mode_pause_if_set()
+        self.loop.run_until_complete(self.page.wait(0.2))
+
     def mouse_click(self, selector, timeout=None, scroll=True):
-        """(Attempt simulating a mouse click)"""
+        """(Simulate a mouse click)"""
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
         self.__slow_mode_pause_if_set()
