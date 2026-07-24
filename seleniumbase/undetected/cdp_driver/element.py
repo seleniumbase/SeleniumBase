@@ -15,8 +15,10 @@ import mycdp.dom
 import mycdp.overlay
 import mycdp.page
 import mycdp.runtime
+from seleniumbase.fixtures import shared_utils
 
 logger = logging.getLogger(__name__)
+IS_LINUX = shared_utils.is_linux()
 if typing.TYPE_CHECKING:
     from .tab import Tab
 
@@ -525,9 +527,9 @@ class Element:
             asyncio.create_task(self.flash_async(0.25))'''
         with suppress(Exception):
             await self.mouse_move_async()
-            await asyncio.sleep(random.uniform(0.003, 0.005))
-        x = center[0] + random.uniform(-0.8, 0.8)
-        y = center[1] + random.uniform(-0.8, 0.8)
+            await asyncio.sleep(random.uniform(0.0035, 0.0048))
+        x = center[0] + random.uniform(-0.85, 0.85)
+        y = center[1] + random.uniform(-0.85, 0.85)
         asyncio.create_task(
             self._tab.send(
                 cdp.input_.dispatch_mouse_event(
@@ -609,7 +611,7 @@ class Element:
             logger.debug("Clicking on location: %.2f, %.2f" % (x_pos, y_pos))
         with suppress(Exception):
             await self.mouse_move_async()
-            await asyncio.sleep(random.uniform(0.003, 0.005))
+            await asyncio.sleep(random.uniform(0.0035, 0.0048))
         script1 = 'sessionStorage.getItem("pxsid") !== null;'
         script2 = 'sessionStorage.getItem("PIM-SESSION-ID") !== null;'
         using_px = True
@@ -827,6 +829,20 @@ class Element:
         if self.tag_name.lower() == "textarea" and text.endswith("\r\n"):
             text = text[0:-1]
         await self.apply("(elem) => elem.focus()")
+        if (
+            IS_LINUX
+            and not (
+                self.tag_name.lower() == "textarea"
+                and text.endswith("\r") or text.endswith("\n")
+            )
+        ):
+            [
+                await self._tab.send(
+                    cdp.input_.dispatch_key_event(type_="char", text=char)
+                )
+                for char in list(text)
+            ]
+            return
         # Map non-alphanumeric symbols to the correct CDP virtual key code.
         # Prevents collisions with control keys. Eg. ord('.') = 46 = VK_DELETE.
         SYMBOL_MAP = {
@@ -916,7 +932,7 @@ class Element:
                     )
                 )
             # 4. Trigger keyup DOM event
-            await asyncio.sleep(random.uniform(0.011, 0.015))
+            await asyncio.sleep(random.uniform(0.0126, 0.0152))
             await self._tab.send(
                 cdp.input_.dispatch_key_event(
                     type_="keyUp",

@@ -662,7 +662,7 @@ class CDPMethods():
             text = text[:-1]
         for key in text:
             element.send_keys(key)
-            time.sleep(float(0.042 + (random.random() / 110.0)))
+            time.sleep(float(0.0422 + (random.random() / 112.0)))
         if submit:
             element.send_keys("\r\n")
             time.sleep(0.044)
@@ -1160,7 +1160,7 @@ class CDPMethods():
             except AttributeError:
                 element = self.select(selector, timeout=0.1)
                 element.send_keys(key)
-            time.sleep(float(0.042 + (random.random() / 110.0)))
+            time.sleep(float(0.0422 + (random.random() / 112.0)))
         if submit:
             element.send_keys("\r\n")
             time.sleep(0.044)
@@ -2088,7 +2088,7 @@ class CDPMethods():
             self.__make_sure_pyautogui_lock_is_writable()
             for key in keys:
                 pyautogui.press(key)
-                time.sleep(float(0.042 + (random.random() / 110.0)))
+                time.sleep(float(0.0422 + (random.random() / 112.0)))
         self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.sleep(0.025))
 
@@ -2216,6 +2216,15 @@ class CDPMethods():
         driver = self.driver
         if hasattr(driver, "cdp_base"):
             driver = driver.cdp_base
+        if (
+            self.driver.config.uses_custom_data_dir
+            and shared_utils.is_windows()
+        ):
+            # Let Windows save the session to a custom use_data_dir
+            self.loop.run_until_complete(
+                driver.connection.send(mycdp.browser.close())
+            )
+            time.sleep(0.3)
         driver.quit()
 
     def _on_a_cf_turnstile_page(self, source=None):

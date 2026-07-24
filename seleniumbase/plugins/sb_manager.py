@@ -1489,7 +1489,9 @@ def SB(
                     and hasattr(driver.cdp, "loop")
                 ):
                     asyncio.set_event_loop(driver.cdp.loop)
-                    tasks = [tab.aclose() for tab in driver.cdp.get_tabs()]
+                    tasks = []
+                    for tab in driver.cdp.get_tabs():
+                        tasks.append(tab.aclose())
                     tasks.append(driver.cdp.driver.connection.aclose())
                     driver.cdp.loop.run_until_complete(asyncio.gather(*tasks))
                     driver.cdp.loop.close()
