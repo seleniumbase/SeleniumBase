@@ -15,8 +15,10 @@ import mycdp.dom
 import mycdp.overlay
 import mycdp.page
 import mycdp.runtime
+from seleniumbase.fixtures import shared_utils
 
 logger = logging.getLogger(__name__)
+IS_LINUX = shared_utils.is_linux()
 if typing.TYPE_CHECKING:
     from .tab import Tab
 
@@ -494,7 +496,7 @@ class Element:
         button: str = "left",
         buttons: typing.Optional[int] = 1,
         modifiers: typing.Optional[int] = 0,
-        hold: bool = False,
+        timeframe: float = 0.0,
     ):
         """
         Native click (on element).
@@ -525,9 +527,9 @@ class Element:
             asyncio.create_task(self.flash_async(0.25))'''
         with suppress(Exception):
             await self.mouse_move_async()
-            await asyncio.sleep(random.uniform(0.003, 0.005))
-        x = center[0] + random.uniform(-0.8, 0.8)
-        y = center[1] + random.uniform(-0.8, 0.8)
+            await asyncio.sleep(random.uniform(0.0035, 0.0048))
+        x = center[0] + random.uniform(-0.85, 0.85)
+        y = center[1] + random.uniform(-0.85, 0.85)
         asyncio.create_task(
             self._tab.send(
                 cdp.input_.dispatch_mouse_event(
@@ -542,13 +544,31 @@ class Element:
                 )
             ),
         )
-        await asyncio.sleep(random.uniform(0.011, 0.015))
+        if not timeframe or timeframe <= 0:
+            # If 0 (or less), hold for a small amount of time
+            await asyncio.sleep(random.uniform(0.0126, 0.0152))
+            x += random.uniform(-0.12, 0.12)
+            y += random.uniform(-0.12, 0.12)
+        else:
+            end_time = asyncio.get_running_loop().time() + timeframe
+            while asyncio.get_running_loop().time() < end_time:
+                await self._tab.send(
+                    cdp.input_.dispatch_mouse_event(
+                        type_="mouseMoved",
+                        x=x + random.uniform(-0.12, 0.12),
+                        y=y + random.uniform(-0.12, 0.12),
+                        button=cdp.input_.MouseButton(button),
+                        buttons=buttons,
+                        force=0.5,
+                    )
+                )
+            await asyncio.sleep(random.uniform(0.120, 0.280))
         asyncio.create_task(
             self._tab.send(
                 cdp.input_.dispatch_mouse_event(
                     "mouseReleased",
-                    x=x + random.uniform(-0.12, 0.12),
-                    y=y + random.uniform(-0.12, 0.12),
+                    x=x,
+                    y=y,
                     modifiers=modifiers,
                     button=cdp.input_.MouseButton(button),
                     buttons=buttons,
@@ -591,7 +611,7 @@ class Element:
             logger.debug("Clicking on location: %.2f, %.2f" % (x_pos, y_pos))
         with suppress(Exception):
             await self.mouse_move_async()
-            await asyncio.sleep(random.uniform(0.003, 0.005))
+            await asyncio.sleep(random.uniform(0.0035, 0.0048))
         script1 = 'sessionStorage.getItem("pxsid") !== null;'
         script2 = 'sessionStorage.getItem("PIM-SESSION-ID") !== null;'
         using_px = True
@@ -809,6 +829,20 @@ class Element:
         if self.tag_name.lower() == "textarea" and text.endswith("\r\n"):
             text = text[0:-1]
         await self.apply("(elem) => elem.focus()")
+        if (
+            IS_LINUX
+            and not (
+                self.tag_name.lower() == "textarea"
+                and text.endswith("\r") or text.endswith("\n")
+            )
+        ):
+            [
+                await self._tab.send(
+                    cdp.input_.dispatch_key_event(type_="char", text=char)
+                )
+                for char in list(text)
+            ]
+            return
         # Map non-alphanumeric symbols to the correct CDP virtual key code.
         # Prevents collisions with control keys. Eg. ord('.') = 46 = VK_DELETE.
         SYMBOL_MAP = {
@@ -898,7 +932,7 @@ class Element:
                     )
                 )
             # 4. Trigger keyup DOM event
-            await asyncio.sleep(random.uniform(0.011, 0.015))
+            await asyncio.sleep(random.uniform(0.0126, 0.0152))
             await self._tab.send(
                 cdp.input_.dispatch_key_event(
                     type_="keyUp",
