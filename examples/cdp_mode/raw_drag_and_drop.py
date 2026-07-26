@@ -4,7 +4,7 @@ with SB(uc=True, test=True, incognito=True) as sb:
     sb.activate_cdp_mode()
     sb.goto("https://seleniumbase.io/other/drag_and_drop")
     sb.assert_element_not_visible("#div1 img#drag1")
-    sb.gui_drag_and_drop("#drag1", "#div1")
+    sb.drag_and_drop("#drag1", "#div1")
     sb.assert_element("#div1 img#drag1")
     sb.sleep(1)
 
