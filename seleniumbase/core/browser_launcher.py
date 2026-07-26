@@ -807,6 +807,7 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
     cdp.click_visible_elements = CDPM.click_visible_elements
     cdp.click_with_offset = CDPM.click_with_offset
     cdp.click_and_hold = CDPM.click_and_hold
+    cdp.drag_and_drop = CDPM.drag_and_drop
     cdp.mouse_click = CDPM.mouse_click
     cdp.get_parent = CDPM.get_parent
     cdp.remove_element = CDPM.remove_element

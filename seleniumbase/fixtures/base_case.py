@@ -2998,7 +2998,7 @@ class BaseCase(unittest.TestCase):
             drop_selector, drop_by
         )
         if self.__is_cdp_swap_needed():
-            self.cdp.gui_drag_and_drop(drag_selector, drop_selector)
+            self.cdp.drag_and_drop(drag_selector, drop_selector)
             return
         drag_element = self.wait_for_element_clickable(
             drag_selector, by=drag_by, timeout=timeout
