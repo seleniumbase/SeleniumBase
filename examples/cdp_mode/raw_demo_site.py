@@ -61,7 +61,7 @@ with SB(uc=True, test=True) as sb:
 
     # Verify Drag and Drop
     sb.assert_element_not_visible("div#drop2 img#logo")
-    sb.gui_drag_and_drop("img#logo", "div#drop2")
+    sb.drag_and_drop("img#logo", "div#drop2")
     sb.assert_element("div#drop2 img#logo")
 
     # Click inside an iframe and test highlighting
