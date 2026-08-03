@@ -1,6 +1,6 @@
 from seleniumbase import SB
 
-with SB(uc=True, test=True, locale="en", incognito=True) as sb:
+with SB(uc=True, test=True, locale="en") as sb:
     search = "Mickey Mouse Blanket"
     req_1 = "Mickey"
     req_2 = "Blanket"

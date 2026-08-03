@@ -23,7 +23,7 @@
 <a href="https://seleniumbase.io/help_docs/syntax_formats/">🔠 Syntax Formats</a> |
 <a href="https://seleniumbase.io/integrations/github/workflows/ReadMe/">🤖 CI/CD</a>
 <br />
-<a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/boilerplates">♻️ Boilerplates</a> |
+<a href="https://seleniumbase.io/help_docs/boilerplates/">♻️ Boilerplates</a> |
 <a href="https://seleniumbase.io/help_docs/locale_codes/">🗾 Locale Codes</a>
 <br />
 <a href="https://seleniumbase.io/help_docs/js_package_manager/">🟨 JS Manager</a> |
@@ -35,15 +35,15 @@
 <a href="https://seleniumbase.io/help_docs/recorder_mode/">🔴 Recorder</a> |
 <a href="https://seleniumbase.io/devices/?url=seleniumbase.io">🖥️ Device Farm</a>
 <br />
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md">🎭 Stealthy Playwright Mode</a>
+<a href="https://seleniumbase.io/examples/cdp_mode/playwright/ReadMe/">🎭 Stealthy Playwright Mode</a>
 <br />
 <a href="https://seleniumbase.io/examples/presenter/ReadMe/">🎞️ Slides</a> |
 <a href="https://seleniumbase.io/examples/chart_maker/ReadMe/">📶 Chart Maker</a>
 <br / >
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/commander.md">🎖️ GUI</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md">👤 UC Mode</a>
+<a href="https://seleniumbase.io/help_docs/commander/">🎖️ GUI</a> |
+<a href="https://seleniumbase.io/help_docs/uc_mode/">👤 UC Mode</a>
 <br / >
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/cdp_mode_methods.md">📘 Stealth API</a>
+<a href="https://seleniumbase.io/help_docs/cdp_mode_methods/">📘 Stealth API</a>
 <br />
 <a href="https://seleniumbase.io/examples/cdp_mode/ReadMe/">🐙 CDP Mode</a>
 </p>
