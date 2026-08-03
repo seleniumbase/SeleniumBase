@@ -163,7 +163,7 @@ setup(
     python_requires=">=3.9",
     install_requires=[
         'pip>=26.0.1;python_version<"3.10"',
-        'pip>=26.1.2;python_version>="3.10"',
+        'pip>=26.2;python_version>="3.10"',
         'packaging>=26.2',
         'setuptools~=70.2;python_version<"3.10"',  # Newer ones had issues
         'setuptools>=83.0.0;python_version>="3.10"',
@@ -172,9 +172,10 @@ setup(
         'certifi>=2026.7.22',
         'exceptiongroup>=1.3.1',
         'websockets~=15.0.1;python_version<"3.10"',
-        'websockets>=16.1.1;python_version>="3.10"',
+        'websockets~=16.1.1;python_version=="3.10"',
+        'websockets>=17.0.1;python_version>="3.11"',
         'filelock~=3.19.1;python_version<"3.10"',
-        'filelock>=3.32.0;python_version>="3.10"',
+        'filelock>=3.32.2;python_version>="3.10"',
         'fasteners>=0.20',
         'mycdp>=1.4.0',
         'pynose>=1.5.5',
@@ -212,7 +213,7 @@ setup(
         'selenium==4.32.0;python_version<"3.10"',
         'selenium==4.46.0;python_version>="3.10"',
         'cssselect==1.3.0;python_version<"3.10"',
-        'cssselect>=1.4.0,<2;python_version>="3.10"',
+        'cssselect>=1.5.0,<2;python_version>="3.10"',
         'sortedcontainers==2.4.0',
         'execnet==2.1.1;python_version<"3.10"',
         'execnet==2.1.2;python_version>="3.10"',
@@ -254,7 +255,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage>=7.10.7;python_version<"3.10"',
-            'coverage>=7.15.2;python_version>="3.10"',
+            'coverage>=7.15.3;python_version>="3.10"',
             'pytest-cov>=7.1.0',
         ],
         # pip install -e .[flake8]
@@ -275,7 +276,7 @@ setup(
         "pdfminer": [
             'pdfminer.six==20251107;python_version<"3.10"',
             'pdfminer.six==20260107;python_version>="3.10"',
-            'cryptography==49.0.0',
+            'cryptography==50.0.0',
             'cffi==2.0.0;python_version<"3.10"',
             'cffi==2.1.0;python_version>="3.10"',
             'pycparser==2.23;python_version<"3.10"',
@@ -303,7 +304,7 @@ setup(
         # (For the Playwright integration.)
         "playwright": [
             'playwright>=1.60.0;python_version<"3.10"',
-            'playwright>=1.61.0;python_version>="3.10"',
+            'playwright>=1.62.0;python_version>="3.10"',
             'greenlet>=3.2.5;python_version<"3.10"',
             'greenlet>=3.5.4;python_version>="3.10"',
         ],
