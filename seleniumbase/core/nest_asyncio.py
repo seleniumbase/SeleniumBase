@@ -115,6 +115,84 @@ def _patch_asyncio(*, error_on_mispatched=False):
     asyncio.Future = asyncio.futures._CFuture = asyncio.futures.Future = (
         asyncio.futures._PyFuture
     )
+
+    # -----------------------------------------------------------------
+    # Python 3.14+ FIX: Hybrid Task Visibility.
+    # Playwright background loops natively run _CTasks.
+    # Patched loops run _PyTasks.
+    # We must keep both environments synchronized and visible to current_task()
+    if sys.version_info >= (3, 14, 0):
+        _c_current_task = asyncio.current_task
+        _c_all_tasks = asyncio.all_tasks
+        _c_swap_current_task = (
+            getattr(asyncio.tasks, "_swap_current_task", None)
+        )
+
+        def _patched_current_task(loop=None):
+            # 1. Check C-level state (finds Playwright / Extension tasks)
+            t = _c_current_task(loop)
+            if t is not None:
+                return t
+            # 2. Check pure-Python state (finds patched nest_asyncio tasks)
+            if hasattr(asyncio.tasks, "_py_current_task"):
+                return asyncio.tasks._py_current_task(loop)
+            return None
+
+        def _patched_all_tasks(loop=None):
+            tasks = _c_all_tasks(loop) or set()
+            if hasattr(asyncio.tasks, "_py_all_tasks"):
+                tasks.update(asyncio.tasks._py_all_tasks(loop) or set())
+            return tasks
+
+        def _patched_swap_current_task(loop, task):
+            old_c = None
+            if _c_swap_current_task is not None:
+                try:
+                    old_c = _c_swap_current_task(loop, None)
+                except (KeyError, RuntimeError):
+                    pass
+
+            old_py = None
+            if hasattr(asyncio.tasks, "_py_swap_current_task"):
+                try:
+                    old_py = asyncio.tasks._py_swap_current_task(loop, None)
+                except (KeyError, RuntimeError):
+                    pass
+
+            if task is not None:
+                if _c_swap_current_task is not None:
+                    try:
+                        _c_swap_current_task(loop, task)
+                    except (TypeError, ValueError):
+                        pass
+                if hasattr(asyncio.tasks, "_py_swap_current_task"):
+                    try:
+                        asyncio.tasks._py_swap_current_task(loop, task)
+                    except (TypeError, ValueError):
+                        pass
+
+            return old_c or old_py
+
+        asyncio.tasks.current_task = _patched_current_task
+        asyncio.current_task = _patched_current_task
+        asyncio.tasks.all_tasks = _patched_all_tasks
+        asyncio.all_tasks = _patched_all_tasks
+        if _c_swap_current_task is not None:
+            asyncio.tasks._swap_current_task = _patched_swap_current_task
+
+        for func in (
+            "_enter_task",
+            "_leave_task",
+            "_register_task",
+            "_unregister_task",
+            "_register_eager_task",
+            "_unregister_eager_task",
+        ):
+            py_func = f"_py{func}"
+            if hasattr(asyncio.tasks, py_func):
+                setattr(asyncio.tasks, func, getattr(asyncio.tasks, py_func))
+    # -----------------------------------------------------------------
+
     asyncio.get_event_loop = _get_event_loop
     events._get_event_loop = events.get_event_loop = asyncio.get_event_loop
     asyncio.run = run
