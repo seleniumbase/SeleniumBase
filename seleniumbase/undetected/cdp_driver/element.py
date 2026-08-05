@@ -527,7 +527,7 @@ class Element:
             asyncio.create_task(self.flash_async(0.25))'''
         with suppress(Exception):
             await self.mouse_move_async()
-            await asyncio.sleep(random.uniform(0.0035, 0.0048))
+            await asyncio.sleep(random.uniform(0.0036, 0.0046))
         x = center[0] + random.uniform(-0.85, 0.85)
         y = center[1] + random.uniform(-0.85, 0.85)
         asyncio.create_task(
@@ -546,7 +546,7 @@ class Element:
         )
         if not timeframe or timeframe <= 0:
             # If 0 (or less), hold for a small amount of time
-            await asyncio.sleep(random.uniform(0.0126, 0.0152))
+            await asyncio.sleep(random.uniform(0.0142, 0.0152))
             x += random.uniform(-0.12, 0.12)
             y += random.uniform(-0.12, 0.12)
         else:
