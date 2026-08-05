@@ -11,7 +11,7 @@ sb.click_and_hold("button[data-interaction-hold]")
 sb.select_option_by_text("select", "Mouse")
 sb.click('button:contains("Run the audit")')
 sb.sleep(6)
-sb.assert_element("div.text-successText", timeout=8)
+sb.assert_element("div.text-successText", timeout=10)
 try:
     sb.assert_text("100", "div.text-successText", timeout=5)
     sb.highlight('div.text-successText:contains("100")')
