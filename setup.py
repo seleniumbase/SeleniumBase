@@ -163,8 +163,8 @@ setup(
     python_requires=">=3.9",
     install_requires=[
         'pip>=26.0.1;python_version<"3.10"',
-        'pip>=26.2;python_version>="3.10"',
-        'packaging>=26.2',
+        'pip>=26.2.1;python_version>="3.10"',
+        'packaging>=26.3',
         'setuptools~=70.2;python_version<"3.10"',  # Newer ones had issues
         'setuptools>=83.0.0;python_version>="3.10"',
         'wheel>=0.47.0',
@@ -278,7 +278,7 @@ setup(
             'pdfminer.six==20260107;python_version>="3.10"',
             'cryptography==50.0.0',
             'cffi==2.0.0;python_version<"3.10"',
-            'cffi==2.1.0;python_version>="3.10"',
+            'cffi==2.1.1;python_version>="3.10"',
             'pycparser==2.23;python_version<"3.10"',
             'pycparser==3.0;python_version>="3.10"',
         ],
