@@ -29,7 +29,7 @@ class DownloadTests(BaseCase):
         self.assert_element("span#pip-command")
         self.assert_text("Download files", "div#files h2.page-title")
         self.assert_text("Download files", "a#files-tab")
-        pkg_header = self.get_text("h1.package-header__name").strip()
+        pkg_header = self.get_text('h1[class*="header__name"]').strip()
         pkg_name = pkg_header.replace(" ", "-")
         whl_file = pkg_name + "-py3-none-any.whl"
         tar_gz_file = pkg_name + ".tar.gz"

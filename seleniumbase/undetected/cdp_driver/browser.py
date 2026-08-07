@@ -656,9 +656,9 @@ class Browser:
                 await asyncio.create_subprocess_exec(
                     exe,
                     *params,
-                    stdin=asyncio.subprocess.PIPE,
-                    stdout=asyncio.subprocess.PIPE,
-                    stderr=asyncio.subprocess.PIPE,
+                    stdin=asyncio.subprocess.DEVNULL,
+                    stdout=asyncio.subprocess.DEVNULL,
+                    stderr=asyncio.subprocess.DEVNULL,
                     close_fds=is_posix,
                 )
             )
@@ -934,7 +934,22 @@ class Browser:
         close_success = False
         try:
             if self.connection:
-                loop = asyncio.get_running_loop()
+                loop = None
+                for obj in (self, self.connection, getattr(
+                    self.connection, "websocket", None)
+                ):
+                    if hasattr(obj, "loop"):
+                        loop = obj.loop
+                        break
+                    if hasattr(obj, "_loop"):
+                        loop = obj._loop
+                        break
+                if not loop:
+                    with suppress(Exception):
+                        loop = asyncio.get_event_loop_policy().get_event_loop()
+                if not loop:
+                    with suppress(Exception):
+                        loop = asyncio.get_event_loop()
                 if loop.is_running():
                     loop.create_task(self.connection.aclose())
                     logger.debug("Closed connection with create_task()")
@@ -952,8 +967,9 @@ class Browser:
         for _ in range(3):
             try:
                 if connection_id not in sb_config._closed_connection_ids:
+                    the_proc = psutil.Process(self._process.pid)
                     self._process.terminate()
-                    procs.append(psutil.Process(self._process.pid))
+                    procs.append(the_proc)
                     logger.debug(
                         "Terminated browser with pid %d successfully."
                         % self._process.pid
@@ -964,8 +980,9 @@ class Browser:
                     break
             except (Exception,):
                 try:
+                    the_proc = psutil.Process(self._process.pid)
                     self._process.kill()
-                    procs.append(psutil.Process(self._process.pid))
+                    procs.append(the_proc)
                     logger.debug(
                         "Killed browser with pid %d successfully."
                         % self._process.pid
@@ -1016,6 +1033,27 @@ class Browser:
                     logger.debug("Process has been terminated: %d." % p.pid)
                 for p in alive:
                     logger.debug("Process is still alive: %d." % p.pid)
+        if "loop" in locals() and loop and not loop.is_closed():
+            with suppress(Exception):
+                if not loop.is_running():
+                    # Time to flush websocket closes and child watcher signals
+                    loop.run_until_complete(asyncio.sleep(0.05))
+                    # Cancel lingering tasks
+                    pending = [
+                        t for t in asyncio.all_tasks(loop) if not t.done()
+                    ]
+                    for task in pending:
+                        task.cancel()
+                    if pending:
+                        loop.run_until_complete(
+                            asyncio.gather(*pending, return_exceptions=True)
+                        )
+                    # Shutdown and close
+                    loop.run_until_complete(loop.shutdown_asyncgens())
+                    loop.close()
+                    # Clear the closed loop from the thread policy
+                    # so future tests get a fresh loop
+                    asyncio.set_event_loop(asyncio.new_event_loop())
         if self.config.user_data_dir and not self.config.uses_custom_data_dir:
             for _ in range(3):
                 try:

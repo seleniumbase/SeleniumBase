@@ -232,7 +232,7 @@ setup(
         'parameterized==0.9.0',
         'behave==1.2.6',  # Newer ones had issues
         'soupsieve~=2.8.4;python_version<"3.10"',
-        'soupsieve~=2.9.1;python_version>="3.10"',
+        'soupsieve~=2.9.2;python_version>="3.10"',
         'beautifulsoup4~=4.15.0',
         'pyotp~=2.10.0',
         'python-xlib==0.33;platform_system=="Linux"',
@@ -255,7 +255,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage>=7.10.7;python_version<"3.10"',
-            'coverage>=7.15.3;python_version>="3.10"',
+            'coverage>=7.15.4;python_version>="3.10"',
             'pytest-cov>=7.1.0',
         ],
         # pip install -e .[flake8]

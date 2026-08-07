@@ -292,14 +292,15 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                     )
                     browser = subprocess.Popen(
                         [options.binary_location, *options.arguments],
-                        stdin=subprocess.PIPE,
-                        stdout=subprocess.PIPE,
-                        stderr=subprocess.PIPE,
+                        stdin=subprocess.DEVNULL,
+                        stdout=subprocess.DEVNULL,
+                        stderr=subprocess.DEVNULL,
                         close_fds=IS_POSIX,
                         creationflags=creationflags,
                     )
                     self.browser_pid = browser.pid
-            self._process_pid = browser.pid
+                    self.browser_process = browser
+            self._process_pid = self.browser_pid
             try:
                 self._process_create_time = (
                     psutil.Process(self._process_pid).create_time()
@@ -307,7 +308,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
             except Exception:
                 self._process_create_time = None
             service_ = None
-            log_output = subprocess.PIPE
+            log_output = subprocess.DEVNULL
             if patch_driver:
                 service_ = selenium.webdriver.chrome.service.Service(
                     executable_path=self.patcher.executable_path,
@@ -328,6 +329,16 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                 setattr(service_, "creation_flags", creationflags)
             try:
                 super().__init__(options=options, service=service_)
+                if (
+                    hasattr(self, "service")
+                    and getattr(self.service, "process", None)
+                ):
+                    self._service_process = self.service.process
+                    if (
+                        self._service_process.stdin
+                        and not self._service_process.stdin.closed
+                    ):
+                        self._service_process.stdin.close()
             except OSError as e:
                 if IS_MAC and "Bad CPU type in executable" in str(e):
                     print(str(e))
@@ -665,6 +676,16 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
                 super().quit()
         with suppress(Exception):
             self.quit()
+        with suppress(Exception):
+            if hasattr(self, "_service_process") and self._service_process:
+                if self._service_process.poll() is None:
+                    self._service_process.kill()
+                self._service_process.wait(timeout=1)
+        with suppress(Exception):
+            if hasattr(self, "browser_process") and self.browser_process:
+                if self.browser_process.poll() is None:
+                    self.browser_process.kill()
+                self.browser_process.wait(timeout=1)
 
     def __enter__(self):
         return self
