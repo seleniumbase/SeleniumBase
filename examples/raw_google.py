@@ -4,7 +4,7 @@ with SB(uc=True, test=True) as sb:
     sb.activate_cdp_mode()
     sb.goto("https://google.com/ncr")
     sb.click_if_visible('button:contains("Accept all")')
-    sb.press_keys('[name="q"]', "SeleniumBase GitHub page")
+    sb.type('[name="q"]', "SeleniumBase GitHub page")
     sb.click('[value="Google Search"]')
     sb.sleep(4)  # The "AI Overview" sometimes loads
     print(sb.get_page_title())
