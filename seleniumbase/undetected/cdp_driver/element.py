@@ -528,8 +528,8 @@ class Element:
         with suppress(Exception):
             await self.mouse_move_async()
             await asyncio.sleep(random.uniform(0.0036, 0.0046))
-        x = center[0] + random.uniform(-0.85, 0.85)
-        y = center[1] + random.uniform(-0.85, 0.85)
+        x = center[0] + random.uniform(-0.875, 0.875)
+        y = center[1] + random.uniform(-0.875, 0.875)
         asyncio.create_task(
             self._tab.send(
                 cdp.input_.dispatch_mouse_event(
@@ -546,23 +546,23 @@ class Element:
         )
         if not timeframe or timeframe <= 0:
             # If 0 (or less), hold for a small amount of time
-            await asyncio.sleep(random.uniform(0.0142, 0.0152))
-            x += random.uniform(-0.12, 0.12)
-            y += random.uniform(-0.12, 0.12)
+            await asyncio.sleep(random.uniform(0.015, 0.016))
+            x += random.uniform(-0.115, 0.115)
+            y += random.uniform(-0.115, 0.115)
         else:
             end_time = asyncio.get_running_loop().time() + timeframe
             while asyncio.get_running_loop().time() < end_time:
                 await self._tab.send(
                     cdp.input_.dispatch_mouse_event(
                         type_="mouseMoved",
-                        x=x + random.uniform(-0.12, 0.12),
-                        y=y + random.uniform(-0.12, 0.12),
+                        x=x + random.uniform(-0.115, 0.115),
+                        y=y + random.uniform(-0.115, 0.115),
                         button=cdp.input_.MouseButton(button),
                         buttons=buttons,
                         force=0.5,
                     )
                 )
-            await asyncio.sleep(random.uniform(0.120, 0.280))
+            await asyncio.sleep(random.uniform(0.15, 0.25))
         asyncio.create_task(
             self._tab.send(
                 cdp.input_.dispatch_mouse_event(
@@ -919,6 +919,7 @@ class Element:
                     windows_virtual_key_code=vk,
                 )
             )
+            await asyncio.sleep(random.uniform(0.002, 0.003))
             # 3. Trigger keypress DOM event AND insert text
             if text_val:
                 await self._tab.send(
@@ -932,7 +933,7 @@ class Element:
                     )
                 )
             # 4. Trigger keyup DOM event
-            await asyncio.sleep(random.uniform(0.0126, 0.0152))
+            await asyncio.sleep(random.uniform(0.011, 0.014))
             await self._tab.send(
                 cdp.input_.dispatch_key_event(
                     type_="keyUp",
