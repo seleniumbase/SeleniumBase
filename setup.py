@@ -166,7 +166,7 @@ setup(
         'pip>=26.2.1;python_version>="3.10"',
         'packaging>=26.3',
         'setuptools~=70.2;python_version<"3.10"',  # Newer ones had issues
-        'setuptools>=83.0.0;python_version>="3.10"',
+        'setuptools>=84.0.0;python_version>="3.10"',
         'wheel>=0.47.0',
         'attrs>=26.1.0',
         'certifi>=2026.7.22',
@@ -180,7 +180,7 @@ setup(
         'mycdp>=1.4.0',
         'pynose>=1.5.5',
         'platformdirs~=4.4.0;python_version<"3.10"',
-        'platformdirs>=4.11.0;python_version>="3.10"',
+        'platformdirs>=4.11.2;python_version>="3.10"',
         'typing-extensions>=4.16.0',
         'sbvirtualdisplay>=1.4.0',
         'MarkupSafe>=3.0.3',
