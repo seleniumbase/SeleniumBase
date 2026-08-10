@@ -950,6 +950,8 @@ class Browser:
                 if not loop:
                     with suppress(Exception):
                         loop = asyncio.get_event_loop()
+                if loop.is_closed():
+                    return
                 if loop.is_running():
                     loop.create_task(self.connection.aclose())
                     logger.debug("Closed connection with create_task()")
