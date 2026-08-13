@@ -11,7 +11,7 @@
 
 <p align="center" class="hero__title"><b>All-in-one Browser Automation Framework:<br />Web Crawling / Testing / Scraping / Stealth</b></p>
 
-<p align="center"><a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=3399EE" alt="PyPI version" /></a> <a href="https://pepy.tech/projects/seleniumbase?timeRange=threeMonths&category=version&includeCIDownloads=true&granularity=daily&viewType=line&versions=*" target="_blank"><img src="https://static.pepy.tech/badge/seleniumbase" alt="SeleniumBase PyPI downloads" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" title="SeleniumBase" /></a> <a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"><img src="https://github.com/seleniumbase/SeleniumBase/workflows/Tests/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://www.youtube.com/@MichaelMintz"><img src="https://img.shields.io/badge/docs-MichaelMintz-FF1111.svg?style=flat&logo=YouTube&logoColor=white&label=YouTube" alt="YouTube Channel" /></a></p>
+<p align="center"><a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=3399EE" alt="PyPI version" /></a> <a href="https://pepy.tech/projects/seleniumbase?timeRange=threeMonths&category=version&includeCIDownloads=true&granularity=daily&viewType=line&versions=*" target="_blank"><img src="https://static.pepy.tech/badge/seleniumbase" alt="SeleniumBase PyPI downloads" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" title="SeleniumBase" /></a> <a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"><img src="https://github.com/seleniumbase/SeleniumBase/workflows/Tests/badge.svg" alt="SeleniumBase GitHub Actions" /></a></p>
 
 <p align="center">
 <a href="#python_installation">🚀 Start</a> |
@@ -49,13 +49,17 @@
 <br />
 </p>
 
+<p align="center"><a href="https://www.youtube.com/@MichaelMintz"><img src="https://img.shields.io/badge/docs-MichaelMintz-FF1111.svg?style=flat&logo=YouTube&logoColor=white&label=YouTube" alt="YouTube Channel" /></a> (<a href="https://www.youtube.com/@MichaelMintz">SeleniumBase Tutorials</a>)</p>
+
 --------
 
 <ul>
 <li>🐙 <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md"><b>CDP Mode</b></a> <b>bypasses bot-detection with Chromium-based browsers.</b></li>
 <li>🎭 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md"><b><span translate="no">Stealthy Playwright Mode</span></b></a> <b>extends CDP Mode's stealth to Playwright.</b></li>
-<li><b><code>pip install seleniumbase</code></b> for the main framework.</li>
-<li><b><code>pip install playwright</code></b> for the Playwright integration.</li>
+</ul>
+<ul>
+<li><code>pip install seleniumbase</code> or <code>uv add seleniumbase</code> (main framework).</li>
+<li><code>pip install playwright</code> or <code>uv add playwright</code> (optional integration).</li>
 </ul>
 
 --------
@@ -425,9 +429,7 @@ finally:
 <a id="install_seleniumbase"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" /> Install SeleniumBase:</h2>
 
-**You can install `seleniumbase` from [PyPI](https://pypi.org/project/seleniumbase/) or [GitHub](https://github.com/seleniumbase/SeleniumBase):**
-
-🔵 **How to install `seleniumbase` from PyPI:**
+🔵 **How to install `seleniumbase` from [PyPI](https://pypi.org/project/seleniumbase/) using `pip`:**
 
 ```zsh
 pip install seleniumbase
