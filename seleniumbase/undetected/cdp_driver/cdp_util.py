@@ -8,6 +8,7 @@ import sys
 import time
 import types
 import typing
+from collections.abc import Callable, Generator
 from contextlib import suppress
 from seleniumbase import config as sb_config
 from seleniumbase import extensions
@@ -17,7 +18,6 @@ from seleniumbase.core import download_helper
 from seleniumbase.core import proxy_helper
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import shared_utils
-from typing import Optional, List, Union, Callable
 from .element import Element
 from .browser import Browser
 from .browser import PathLike
@@ -286,33 +286,33 @@ def __add_chrome_proxy_extension(
 
 
 async def start(
-    config: Optional[Config] = None,
+    config: Config | None = None,
     *,
-    user_data_dir: Optional[PathLike] = None,
-    headless: Optional[bool] = None,
-    incognito: Optional[bool] = None,
-    guest: Optional[bool] = None,
-    browser_executable_path: Optional[PathLike] = None,
-    browser_args: Optional[List[str]] = None,
-    xvfb_metrics: Optional[List[str]] = None,  # "Width,Height" for Linux
-    ad_block: Optional[bool] = None,
-    sandbox: Optional[bool] = True,
-    lang: Optional[str] = None,  # Set the Language Locale Code
-    host: Optional[str] = None,  # Chrome remote-debugging-host
-    port: Optional[int] = None,  # Chrome remote-debugging-port
-    xvfb: Optional[int] = None,  # Use a special virtual display on Linux
-    headed: Optional[bool] = None,  # Override default Xvfb mode on Linux
-    expert: Optional[bool] = None,  # Open up closed Shadow-root elements
-    agent: Optional[str] = None,  # Set the user-agent string
-    proxy: Optional[str] = None,  # "host:port" or "user:pass@host:port"
-    tzone: Optional[str] = None,  # Eg "America/New_York", "Asia/Kolkata"
-    geoloc: Optional[list | tuple] = None,  # Eg (48.87645, 2.26340)
-    mobile: Optional[bool] = None,  # Use Mobile Mode with default args
-    disable_csp: Optional[str] = None,  # Disable content security policy
-    extension_dir: Optional[str] = None,  # Chrome extension directory
-    use_chromium: Optional[str] = None,  # Use the base Chromium browser
-    cft: Optional[str] = None,  # Use the Chrome-for-Testing browser
-    **kwargs: Optional[dict],
+    user_data_dir: PathLike | None = None,
+    headless: bool | None = None,
+    incognito: bool | None = None,
+    guest: bool | None = None,
+    browser_executable_path: PathLike | None = None,
+    browser_args: list[str] | None = None,
+    xvfb_metrics: list[str] | None = None,  # "Width,Height" for Linux
+    ad_block: bool | None = None,
+    sandbox: bool | None = True,
+    lang: str | None = None,  # Set the Language Locale Code
+    host: str | None = None,  # Chrome remote-debugging-host
+    port: int | None = None,  # Chrome remote-debugging-port
+    xvfb: int | None = None,  # Use a special virtual display on Linux
+    headed: bool | None = None,  # Override default Xvfb mode on Linux
+    expert: bool | None = None,  # Open up closed Shadow-root elements
+    agent: str | None = None,  # Set the user-agent string
+    proxy: str | None = None,  # "host:port" or "user:pass@host:port"
+    tzone: str | None = None,  # Eg "America/New_York", "Asia/Kolkata"
+    geoloc: list | tuple | None = None,  # Eg [48.87645, 2.26340]
+    mobile: bool | None = None,  # Use Mobile Mode with default args
+    disable_csp: str | None = None,  # Disable content security policy
+    extension_dir: str | None = None,  # Chrome extension directory
+    use_chromium: str | None = None,  # Use the base Chromium browser
+    cft: str | None = None,  # Use the Chrome-for-Testing browser
+    **kwargs: dict | None,
 ) -> Browser:
     """
     Helper function to launch a browser. It accepts several keyword parameters.
@@ -330,7 +330,7 @@ async def start(
     :type browser_executable_path: PathLike
     :param browser_args:
      ["--some-chromeparam=somevalue", "some-other-param=someval"]
-    :type browser_args: List[str]
+    :type browser_args: list[str]
     :param sandbox: Default True, but when set to False it adds --no-sandbox
      to the params, also when using linux under a root user,
      it adds False automatically (else Chrome won't start).
@@ -812,7 +812,7 @@ def free_port() -> int:
 
 def filter_recurse_all(
     doc: T, predicate: Callable[[cdp.dom.Node, Element], bool]
-) -> List[T]:
+) -> list[T]:
     """
     Test each child using predicate(child),
     and return all children for which predicate(child) == True
@@ -864,7 +864,7 @@ def filter_recurse(
 
 def circle(
     x, y=None, radius=10, num=10, dir=0
-) -> typing.Generator[typing.Tuple[float, float], None, None]:
+) -> Generator[tuple[float, float], None, None]:
     """
     A generator will calculate coordinates around a circle.
     :param x: start x position
@@ -910,7 +910,7 @@ def remove_from_tree(tree: cdp.dom.Node, node: cdp.dom.Node) -> cdp.dom.Node:
 
 
 async def html_from_tree(
-    tree: Union[cdp.dom.Node, Element], target: Tab
+    tree: cdp.dom.Node | Element, target: Tab
 ):
     if not hasattr(tree, "children"):
         raise TypeError("Object should have a .children attribute!")
@@ -931,7 +931,7 @@ async def html_from_tree(
 
 def compare_target_info(
     info1: cdp.target.TargetInfo, info2: cdp.target.TargetInfo
-) -> List[typing.Tuple[str, typing.Any, typing.Any]]:
+) -> list[tuple[str, typing.Any, typing.Any]]:
     """
     When logging mode is set to debug, browser object will log when target info
     is changed. To provide more meaningful log messages,
@@ -953,7 +953,7 @@ def loop():
     return loop
 
 
-def cdp_get_module(domain: Union[str, types.ModuleType]):
+def cdp_get_module(domain: str | types.ModuleType):
     """
     Get cdp module by given string.
     :param domain:

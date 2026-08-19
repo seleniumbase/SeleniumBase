@@ -15,6 +15,7 @@ import mycdp.dom
 import mycdp.overlay
 import mycdp.page
 import mycdp.runtime
+from seleniumbase import config as sb_config
 from seleniumbase.fixtures import shared_utils
 
 logger = logging.getLogger(__name__)
@@ -25,8 +26,8 @@ if typing.TYPE_CHECKING:
 
 def create(
     node: cdp.dom.Node,
-    tab: Tab, tree:
-    typing.Optional[cdp.dom.Node] = None
+    tab: Tab,
+    tree: cdp.dom.Node | None = None
 ):
     """
     Factory for Elements.
@@ -309,7 +310,7 @@ class Element:
         return self._attrs
 
     @property
-    def parent(self) -> typing.Union[Element, None]:
+    def parent(self) -> Element | None:
         """Get the parent element (node) of current element (node)."""
         if not self.tree:
             raise RuntimeError(
@@ -324,7 +325,7 @@ class Element:
         return parent_element
 
     @property
-    def children(self) -> typing.Union[typing.List[Element], str]:
+    def children(self) -> list[Element] | str:
         """
         Returns the element's children.
         Those children also have a children property
@@ -436,7 +437,7 @@ class Element:
         self._remote_object = await self._tab.send(
             cdp.dom.resolve_node(backend_node_id=self.backend_node_id)
         )
-        result: typing.Tuple[cdp.runtime.RemoteObject, typing.Any] = (
+        result: tuple[cdp.runtime.RemoteObject, typing.Any] = (
             await self._tab.send(
                 cdp.runtime.call_function_on(
                     js_function,
@@ -474,7 +475,10 @@ class Element:
                 )
             )
             if not quads:
-                raise Exception("Could not find position for %s " % self)
+                # return Position([0, 0, 0, 0, 0, 0, 0, 0])
+                raise Exception(
+                    "Could not find position for %s." % self.node_name
+                )
             pos = Position(quads[0])
             if abs:
                 scroll_y = (await self.tab.evaluate("window.scrollY"))
@@ -488,14 +492,14 @@ class Element:
             logger.debug(
                 "No content quads for %s. "
                 "Mostly caused by element which is not 'in plain sight'."
-                % self
+                % self.node_name
             )
 
     async def mouse_click_async(
         self,
         button: str = "left",
-        buttons: typing.Optional[int] = 1,
-        modifiers: typing.Optional[int] = 0,
+        buttons: int | None = 1,
+        modifiers: int | None = 0,
         timeframe: float = 0.0,
     ):
         """
@@ -580,12 +584,12 @@ class Element:
 
     async def mouse_click_with_offset_async(
         self,
-        x: typing.Union[float, int],
-        y: typing.Union[float, int],
+        x: float | int,
+        y: float | int,
         center: bool = False,
         button: str = "left",
-        buttons: typing.Optional[int] = 1,
-        modifiers: typing.Optional[int] = 0,
+        buttons: int | None = 1,
+        modifiers: int | None = 0,
     ):
         x_offset = int(x)
         y_offset = int(y)
@@ -682,7 +686,7 @@ class Element:
 
     async def mouse_drag_async(
         self,
-        destination: typing.Union[Element, typing.Tuple[int, int]],
+        destination: Element | tuple[int, int],
         relative: bool = False,
         steps: int = 1,
     ):
@@ -817,7 +821,7 @@ class Element:
             logger.debug("Could not clear element field: %s", e)
         return
 
-    async def send_keys_async(self, text: str):
+    async def send_keys_async(self, text: str, add_delay: bool = False):
         """
         Send text to an input field, or any other html element.
         Hint: If you ever get stuck where using `~click()`
@@ -828,21 +832,39 @@ class Element:
         """
         if self.tag_name.lower() == "textarea" and text.endswith("\r\n"):
             text = text[0:-1]
+        elif text.endswith("\r\n"):
+            text = text[0:-2] + "\n"
         await self.apply("(elem) => elem.focus()")
         if (
-            IS_LINUX
-            and not (
-                self.tag_name.lower() == "textarea"
-                and text.endswith("\r") or text.endswith("\n")
-            )
+            hasattr(sb_config, "_use_new_send_keys")
+            and sb_config._use_new_send_keys
         ):
-            [
-                await self._tab.send(
-                    cdp.input_.dispatch_key_event(type_="char", text=char)
-                )
-                for char in list(text)
-            ]
+            # Force the new send_keys method on Linux,
+            # which may need the old version for stealth.
+            # (Usage: sb_config._use_new_send_keys = True)
+            # **EXPERIMENTAL**
+            await self.__new_send_keys_async(text, add_delay)
             return
+        if IS_LINUX:
+            for char in text:
+                if not (
+                    self.tag_name.lower() == "textarea"
+                    and char.endswith("\r") or char.endswith("\n")
+                ):
+                    await self._tab.send(
+                        cdp.input_.dispatch_key_event(type_="char", text=char)
+                    )
+                    if add_delay:
+                        await asyncio.sleep(
+                            float(0.04 + (random.random() / 110.0))
+                        )
+                else:
+                    await self.__new_send_keys_async(char, add_delay)
+            return
+        await self.__new_send_keys_async(text, add_delay)
+
+    async def __new_send_keys_async(self, text: str, add_delay: bool = False):
+        """A helper method for send_keys_async()"""
         # Map non-alphanumeric symbols to the correct CDP virtual key code.
         # Prevents collisions with control keys. Eg. ord('.') = 46 = VK_DELETE.
         SYMBOL_MAP = {
@@ -942,6 +964,8 @@ class Element:
                     windows_virtual_key_code=vk,
                 )
             )
+            if add_delay:
+                await asyncio.sleep(float(0.04 + (random.random() / 110.0)))
 
     async def send_file_async(self, *file_paths: PathLike):
         """
@@ -1061,9 +1085,9 @@ class Element:
 
     async def save_screenshot_async(
         self,
-        filename: typing.Optional[PathLike] = "auto",
-        format: typing.Optional[str] = "png",
-        scale: typing.Optional[typing.Union[int, float]] = 1,
+        filename: PathLike | None = "auto",
+        format: str | None = "png",
+        scale: int | float | None = 1,
     ):
         """
         Saves a screenshot of this element (only).
@@ -1138,10 +1162,10 @@ class Element:
 
     async def flash_async(
         self,
-        duration: typing.Union[float, int] = 0.5,
-        color: typing.Optional[str] = "EE4488",
-        x_offset: typing.Union[float, int] = 0,
-        y_offset: typing.Union[float, int] = 0,
+        duration: float | int = 0.5,
+        color: str | None = "EE4488",
+        x_offset: float | int = 0,
+        y_offset: float | int = 0,
     ):
         """
         Displays for a short time a red dot on the element.
@@ -1250,9 +1274,9 @@ class Element:
 
     async def record_video_async(
         self,
-        filename: typing.Optional[str] = None,
-        folder: typing.Optional[str] = None,
-        duration: typing.Optional[typing.Union[int, float]] = None,
+        filename: str | None = None,
+        folder: str | None = None,
+        duration: int | float | None = None,
     ):
         """
         Experimental option.

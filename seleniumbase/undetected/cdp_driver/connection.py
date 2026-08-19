@@ -9,19 +9,12 @@ import os
 import sys
 import types
 import warnings
-from typing import (
-    Optional,
-    Generator,
-    Union,
-    Awaitable,
-    Callable,
-    Any,
-    TypeVar,
-)
 import websockets
 from websockets.protocol import State
 from seleniumbase.fixtures import constants
 from . import cdp_util as util
+from collections.abc import Awaitable, Callable, Generator
+from typing import Any, TypeVar
 import mycdp as cdp
 import mycdp.network
 import mycdp.page
@@ -34,7 +27,7 @@ T = TypeVar("T")
 GLOBAL_DELAY = 0.005
 MAX_SIZE: int = 2**28
 PING_TIMEOUT: int = 1800  # 30 minutes
-TargetType = Union[cdp.target.TargetInfo, cdp.target.TargetID]
+TargetType = cdp.target.TargetInfo | cdp.target.TargetID
 logging.getLogger("asyncio").setLevel(logging.CRITICAL)
 logger = logging.getLogger("uc.connection")
 
@@ -200,8 +193,8 @@ class Connection(metaclass=CantTouchThis):
 
     def add_handler(
         self,
-        event_type_or_domain: Union[type, types.ModuleType],
-        handler: Union[Callable, Awaitable],
+        event_type_or_domain: type | types.ModuleType,
+        handler: Callable | Awaitable,
     ):
         """
         Add a handler for given event.
@@ -282,7 +275,7 @@ class Connection(metaclass=CantTouchThis):
                 "\n❌ Closed websocket connection to %s", self.websocket_url
             )
 
-    async def sleep(self, t: Union[int, float] = 0.25):
+    async def sleep(self, t: int | float = 0.25):
         await self.update_target()
         await asyncio.sleep(t)
 
@@ -297,7 +290,7 @@ class Connection(metaclass=CantTouchThis):
         """
         asyncio.ensure_future(self.send(cdp_obj))
 
-    async def wait(self, t: Union[int, float] = None):
+    async def wait(self, t: int | float = None):
         """
         Waits until the event listener reports idle
         (no new events received in certain timespan).
@@ -348,20 +341,20 @@ class Connection(metaclass=CantTouchThis):
             )
         )
 
-    async def set_locale(self, locale: Optional[str] = None):
+    async def set_locale(self, locale: str | None = None):
         """Sets the Language Locale code via set_user_agent_override."""
         await self.set_user_agent(user_agent="", accept_language=locale)
         await self.send(cdp.emulation.set_locale_override(locale))
 
-    async def set_timezone(self, timezone: Optional[str] = None):
+    async def set_timezone(self, timezone: str | None = None):
         """Sets the Timezone via set_timezone_override."""
         await self.send(cdp.emulation.set_timezone_override(timezone))
 
     async def set_user_agent(
         self,
-        user_agent: Optional[str] = "",
-        accept_language: Optional[str] = None,
-        platform: Optional[str] = None,  # navigator.platform
+        user_agent: str | None = "",
+        accept_language: str | None = None,
+        platform: str | None = None,  # navigator.platform
     ):
         """Sets the User Agent via set_user_agent_override."""
         if not user_agent:
@@ -372,7 +365,7 @@ class Connection(metaclass=CantTouchThis):
             platform=platform,
         ))
 
-    async def set_geolocation(self, geolocation: Optional[tuple] = None):
+    async def set_geolocation(self, geolocation: tuple | None = None):
         """Sets the User Agent via set_geolocation_override."""
         await self.send(cdp.browser.set_permission(
             permission={"name": "geolocation"}, setting="granted"
@@ -560,7 +553,7 @@ class Listener:
         return self._time_before_considered_idle
 
     @time_before_considered_idle.setter
-    def time_before_considered_idle(self, seconds: Union[int, float]):
+    def time_before_considered_idle(self, seconds: int | float):
         self._time_before_considered_idle = seconds
 
     async def cancel(self):

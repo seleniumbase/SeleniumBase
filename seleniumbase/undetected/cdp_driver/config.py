@@ -1,3 +1,4 @@
+from __future__ import annotations
 import json
 import logging
 import os
@@ -14,7 +15,6 @@ from seleniumbase.drivers import cft_drivers
 from seleniumbase.drivers import chromium_drivers
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import shared_utils
-from typing import Union, List, Optional
 
 __all__ = [
     "Config",
@@ -28,7 +28,7 @@ __all__ = [
 logger = logging.getLogger(__name__)
 is_posix = sys.platform.startswith(("darwin", "cygwin", "linux"))
 
-PathLike = Union[str, pathlib.Path]
+PathLike = str | pathlib.Path
 AUTO = None
 IS_MAC = shared_utils.is_mac()
 IS_LINUX = shared_utils.is_linux()
@@ -42,19 +42,19 @@ class Config:
 
     def __init__(
         self,
-        user_data_dir: Optional[PathLike] = AUTO,
-        headless: Optional[bool] = False,
-        incognito: Optional[bool] = False,
-        guest: Optional[bool] = False,
-        browser_executable_path: Optional[PathLike] = AUTO,
-        browser_args: Optional[List[str]] = AUTO,
-        sandbox: Optional[bool] = True,
-        lang: Optional[str] = "en-US",
+        user_data_dir: PathLike | None = AUTO,
+        headless: bool | None = False,
+        incognito: bool | None = False,
+        guest: bool | None = False,
+        browser_executable_path: PathLike | None = AUTO,
+        browser_args: list[str] | None = AUTO,
+        sandbox: bool | None = True,
+        lang: str | None = "en-US",
         host: str = AUTO,
         port: int = AUTO,
         expert: bool = AUTO,
-        proxy: Optional[str] = None,
-        extension_dir: Optional[str] = None,
+        proxy: str | None = None,
+        extension_dir: str | None = None,
         **kwargs: dict,
     ):
         """
