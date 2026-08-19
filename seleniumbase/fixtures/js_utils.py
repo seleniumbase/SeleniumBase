@@ -56,12 +56,16 @@ def wait_for_ready_state_complete(driver, timeout=settings.LARGE_TIMEOUT):
 
 
 def execute_async_script(driver, script, timeout=settings.LARGE_TIMEOUT):
-    if hasattr(driver, "set_script_timeout"):
-        driver.set_script_timeout(timeout)
-    if hasattr(driver, "execute_async_script"):
-        return driver.execute_async_script(script)
-    else:
-        return None
+    try:
+        if hasattr(driver, "set_script_timeout"):
+            driver.set_script_timeout(timeout)
+        if hasattr(driver, "execute_async_script"):
+            return driver.execute_async_script(script)
+        else:
+            return None
+    finally:
+        if hasattr(driver, "set_script_timeout"):
+            driver.set_script_timeout(30)  # Restore default
 
 
 def wait_for_angularjs(driver, timeout=settings.LARGE_TIMEOUT, **kwargs):
@@ -103,8 +107,6 @@ def wait_for_angularjs(driver, timeout=settings.LARGE_TIMEOUT, **kwargs):
     }
     with suppress(Exception):
         execute_async_script(driver, script, timeout=timeout)
-    if hasattr(driver, "set_script_timeout"):
-        driver.set_script_timeout(30)  # Restore default
 
 
 def convert_to_css_selector(selector, by=By.CSS_SELECTOR):
