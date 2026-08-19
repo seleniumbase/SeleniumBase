@@ -159,27 +159,22 @@ setup(
         "Topic :: Software Development :: Testing :: Traffic Generation",
         "Topic :: Utilities",
     ],
-    python_requires=">=3.9",
+    python_requires=">=3.10",
     install_requires=[
-        'pip>=26.0.1;python_version<"3.10"',
-        'pip>=26.2.1;python_version>="3.10"',
+        'pip>=26.2.1',
         'packaging>=26.3',
-        'setuptools~=70.2;python_version<"3.10"',  # Newer ones had issues
-        'setuptools>=84.0.0;python_version>="3.10"',
-        'wheel>=0.47.0',
+        'setuptools>=84.0.0',
+        'wheel>=0.48.0',
         'attrs>=26.1.0',
         'certifi>=2026.7.22',
         'exceptiongroup>=1.3.1',
-        'websockets~=15.0.1;python_version<"3.10"',
         'websockets~=16.1.1;python_version=="3.10"',
-        'websockets>=17.0.1;python_version>="3.11"',
-        'filelock~=3.19.1;python_version<"3.10"',
-        'filelock>=3.32.2;python_version>="3.10"',
+        'websockets>=16.1.1;python_version>="3.11"',
+        'filelock>=3.32.3',
         'fasteners>=0.20',
         'mycdp>=1.4.0',
         'pynose>=1.5.5',
-        'platformdirs~=4.4.0;python_version<"3.10"',
-        'platformdirs>=4.11.2;python_version>="3.10"',
+        'platformdirs>=4.11.3',
         'typing-extensions>=4.16.0',
         'sbvirtualdisplay>=1.4.0',
         'MarkupSafe>=3.0.3',
@@ -190,54 +185,43 @@ setup(
         'colorama>=0.4.6',
         'psutil>=7.2.2',
         'pyyaml>=6.0.3',
-        'pygments>=2.20.0',
+        'pygments>=2.20.1',
         'pyreadline3>=3.5.4;platform_system=="Windows"',
         'tabcompleter>=1.4.1',
         'pdbp>=1.8.2',
-        'idna>=3.18',
-        'charset-normalizer>=3.4.9,<4',
-        'urllib3>=1.26.20,<2;python_version<"3.10"',
-        'urllib3>=2.7.0,<3;python_version>="3.10"',
-        'requests~=2.32.5;python_version<"3.10"',
-        'requests~=2.34.2;python_version>="3.10"',
+        'idna>=3.19',
+        'charset-normalizer>=3.5.1,<4',
+        'urllib3>=2.7.0,<3',
+        'requests~=2.34.2',
         'sniffio==1.3.1',
         'h11==0.16.0',
         'outcome==1.3.0.post0',
-        'trio>=0.31.0,<1;python_version<"3.10"',
-        'trio>=0.33.0,<1;python_version>="3.10"',
+        'trio>=0.34.0,<1',
         'trio-websocket~=0.12.2',
-        'wsproto==1.2.0;python_version<"3.10"',
-        'wsproto~=1.3.2;python_version>="3.10"',
+        'wsproto~=1.3.2',
         'websocket-client~=1.9.0',
-        'selenium==4.32.0;python_version<"3.10"',
-        'selenium==4.46.0;python_version>="3.10"',
-        'cssselect==1.3.0;python_version<"3.10"',
-        'cssselect>=1.5.0,<2;python_version>="3.10"',
+        'selenium==4.47.0',
+        'cssselect>=1.5.0,<2',
         'sortedcontainers==2.4.0',
-        'execnet==2.1.1;python_version<"3.10"',
-        'execnet==2.1.2;python_version>="3.10"',
-        'iniconfig==2.1.0;python_version<"3.10"',
-        'iniconfig==2.3.0;python_version>="3.10"',
+        'execnet==2.1.2',
+        'iniconfig==2.3.0',
         'pluggy==1.6.0',
         'pytest==8.4.2;python_version<"3.11"',
         'pytest==9.1.1;python_version>="3.11"',
         'pytest-html==4.0.2',  # Newer ones had issues
         'pytest-metadata==3.1.1',
         'pytest-ordering==0.6',
-        'pytest-rerunfailures==16.0.1;python_version<"3.10"',
         'pytest-rerunfailures==16.3;python_version=="3.10"',
-        'pytest-rerunfailures==16.4;python_version>="3.11"',
+        'pytest-rerunfailures==16.6;python_version>="3.11"',
         'pytest-xdist==3.8.0',
         'parameterized==0.9.0',
         'behave==1.2.6',  # Newer ones had issues
-        'soupsieve~=2.8.4;python_version<"3.10"',
-        'soupsieve~=2.9.2;python_version>="3.10"',
+        'soupsieve~=2.9.2',
         'beautifulsoup4~=4.15.0',
         'pyotp~=2.10.0',
         'python-xlib==0.33;platform_system=="Linux"',
         'PyAutoGUI>=0.9.54;platform_system=="Linux"',
-        'markdown-it-py==3.0.0;python_version<"3.10"',
-        'markdown-it-py==4.2.0;python_version>="3.10"',
+        'markdown-it-py==4.2.0',
         'mdurl==0.1.2',
         'rich>=15.0.0,<16',
     ],
@@ -253,15 +237,14 @@ setup(
         # pip install -e .[coverage]
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
-            'coverage>=7.10.7;python_version<"3.10"',
-            'coverage>=7.15.4;python_version>="3.10"',
+            'coverage>=7.15.4',
             'pytest-cov>=7.1.0',
         ],
         # pip install -e .[flake8]
         # Usage: flake8
         "flake8": [
             'flake8==7.3.0',
-            "mccabe==0.7.0",
+            'mccabe==0.7.0',
             'pyflakes==3.4.0',
             'pycodestyle==2.14.0',
         ],
@@ -273,19 +256,15 @@ setup(
         # pip install -e .[pdfminer]
         # (An optional library for parsing PDF files.)
         "pdfminer": [
-            'pdfminer.six==20251107;python_version<"3.10"',
-            'pdfminer.six==20260107;python_version>="3.10"',
+            'pdfminer.six==20260107',
             'cryptography==50.0.0',
-            'cffi==2.0.0;python_version<"3.10"',
-            'cffi==2.1.1;python_version>="3.10"',
-            'pycparser==2.23;python_version<"3.10"',
-            'pycparser==3.0;python_version>="3.10"',
+            'cffi==2.1.1',
+            'pycparser==3.0',
         ],
         # pip install -e .[pillow]
         # (An optional library for image-processing.)
         "pillow": [
-            'Pillow>=11.3.0;python_version<"3.10"',
-            'Pillow>=12.3.0;python_version>="3.10"',
+            'Pillow>=12.3.0',
         ],
         # pip install -e .[pip-system-certs]
         # (If you see [SSL: CERTIFICATE_VERIFY_FAILED], then get this.)
@@ -297,15 +276,14 @@ setup(
         # Usage: proxy
         # (That starts a proxy server on "127.0.0.1:8899".)
         "proxy": [
-            "proxy.py==2.4.3",  # 2.4.4 did not have "Listening on ..."
+            'proxy.py==2.4.3',  # 2.4.4 did not have "Listening on ..."
         ],
         # pip install -e .[playwright]
         # (For the Playwright integration.)
         "playwright": [
-            'playwright>=1.60.0;python_version<"3.10"',
-            'playwright>=1.62.0;python_version>="3.10"',
-            'greenlet>=3.2.5;python_version<"3.10"',
-            'greenlet>=3.5.4;python_version>="3.10"',
+            'playwright>=1.62.0',
+            'greenlet>=3.5.5',
+            'pyee>=13.0.1',
         ],
         # pip install -e .[pyautogui]
         # (Already a required dependency on Linux now.)
