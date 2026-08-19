@@ -22,7 +22,6 @@ from contextlib import suppress
 from seleniumbase import config as sb_config
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import shared_utils
-from typing import List, Optional, Set, Tuple, Union
 import mycdp as cdp
 from . import cdp_util as util
 from . import tab
@@ -116,7 +115,7 @@ class Browser:
         incognito: bool = False,
         guest: bool = False,
         browser_executable_path: PathLike = None,
-        browser_args: List[str] = None,
+        browser_args: list[str] = None,
         sandbox: bool = True,
         host: str = None,
         port: int = None,
@@ -160,7 +159,7 @@ class Browser:
                 )
             )
         self.config = config
-        self.targets: List = []
+        self.targets: list = []
         self.info = None
         self._target = None
         self._process = None
@@ -182,7 +181,7 @@ class Browser:
         )[0]
 
     @property
-    def tabs(self) -> List[tab.Tab]:
+    def tabs(self) -> list[tab.Tab]:
         """Returns the current targets which are of type "page"."""
         tabs = filter(lambda item: item.type_ == "page", self.targets)
         return list(tabs)
@@ -199,7 +198,7 @@ class Browser:
             return False
         return True
 
-    async def wait(self, time: Union[float, int] = 1) -> Browser:
+    async def wait(self, time: float | int = 1) -> Browser:
         """Wait for <time> seconds. Important to use,
         especially in between page navigation.
         :param time:
@@ -210,12 +209,12 @@ class Browser:
     """Alias for wait"""
     async def _handle_target_update(
         self,
-        event: Union[
-            cdp.target.TargetInfoChanged,
-            cdp.target.TargetDestroyed,
-            cdp.target.TargetCreated,
-            cdp.target.TargetCrashed,
-        ],
+        event: (
+            cdp.target.TargetInfoChanged
+            | cdp.target.TargetDestroyed
+            | cdp.target.TargetCreated
+            | cdp.target.TargetCrashed
+        ),
     ):
         """This is an internal handler which updates the targets
         when Chrome emits the corresponding event."""
@@ -735,8 +734,8 @@ class Browser:
 
     async def grant_permissions(
         self,
-        permissions: List[str] | str,
-        origin: Optional[str] = None,
+        permissions: list[str] | str,
+        origin: str | None = None,
     ):
         """Grant specific permissions to the current window.
         Applies to all origins if no origin is specified."""
@@ -863,14 +862,14 @@ class Browser:
                     continue
         return grid
 
-    async def _get_targets(self) -> List[cdp.target.TargetInfo]:
+    async def _get_targets(self) -> list[cdp.target.TargetInfo]:
         info = await self.connection.send(
             cdp.target.get_targets(), _is_update=True
         )
         return info
 
     async def update_targets(self):
-        targets: List[cdp.target.TargetInfo]
+        targets: list[cdp.target.TargetInfo]
         targets = await self._get_targets()
         for t in targets:
             for existing_tab in self.targets:
@@ -1144,7 +1143,7 @@ class Browser:
         pass
 
 
-__registered__instances__: Set[Browser] = set()
+__registered__instances__: set[Browser] = set()
 
 
 class CookieJar:
@@ -1153,7 +1152,7 @@ class CookieJar:
 
     async def get_all(
         self, requests_cookie_format: bool = False
-    ) -> List[Union[cdp.network.Cookie, "http.cookiejar.Cookie"]]:
+    ) -> list[cdp.network.Cookie | http.cookiejar.Cookie]:
         """
         Get all cookies.
         :param requests_cookie_format: when True,
@@ -1186,7 +1185,7 @@ class CookieJar:
             ]
         return cookies
 
-    async def set_all(self, cookies: List[cdp.network.CookieParam]):
+    async def set_all(self, cookies: list[cdp.network.CookieParam]):
         """
         Set cookies.
         :param cookies: List of cookies
@@ -1301,7 +1300,7 @@ class CookieJar:
 
 
 class HTTPApi:
-    def __init__(self, addr: Tuple[str, int]):
+    def __init__(self, addr: tuple[str, int]):
         self.host, self.port = addr
         self.api = "http://%s:%d" % (self.host, self.port)
 

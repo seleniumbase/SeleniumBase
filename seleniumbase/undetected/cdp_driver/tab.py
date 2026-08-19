@@ -14,7 +14,6 @@ from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import js_utils
 from seleniumbase.fixtures import page_utils
 from seleniumbase.fixtures import shared_utils
-from typing import Dict, List, Union, Optional, Tuple
 from . import browser as cdp_browser
 from . import element
 from . import cdp_util as util
@@ -129,13 +128,13 @@ class Tab(Connection):
     and contains all domains/actions/events you can act upon.
     """
     browser: cdp_browser.Browser
-    _download_behavior: List[str] = None
+    _download_behavior: list[str] = None
 
     def __init__(
         self,
         websocket_url: str,
         target: cdp.target.TargetInfo,
-        browser: Optional["cdp_browser.Browser"] = None,
+        browser: cdp_browser.Browser | None = None,
         **kwargs,
     ):
         super().__init__(websocket_url, target, browser, **kwargs)
@@ -180,7 +179,7 @@ class Tab(Connection):
         text: str,
         best_match: bool = False,
         return_enclosing_element: bool = True,
-        timeout: Union[int, float] = 10,
+        timeout: int | float = 10,
     ):
         """
         Find single element by text.
@@ -236,7 +235,7 @@ class Tab(Connection):
     async def select(
         self,
         selector: str,
-        timeout: Union[int, float] = 10,
+        timeout: int | float = 10,
     ) -> element.Element:
         """
         Find a single element by css selector.
@@ -253,8 +252,8 @@ class Tab(Connection):
     async def find_all(
         self,
         text: str,
-        timeout: Union[int, float] = 10,
-    ) -> List[element.Element]:
+        timeout: int | float = 10,
+    ) -> list[element.Element]:
         """
         Find multiple elements by text.
         Can also be used to wait for such elements to appear.
@@ -286,9 +285,9 @@ class Tab(Connection):
     async def select_all(
         self,
         selector: str,
-        timeout: Union[int, float] = 10,
+        timeout: int | float = 10,
         include_frames=False,
-    ) -> List[element.Element]:
+    ) -> list[element.Element]:
         """
         Find multiple elements by CSS Selector.
         Can also be used to wait for such elements to appear.
@@ -381,7 +380,7 @@ class Tab(Connection):
     async def query_selector_all(
         self,
         selector: str,
-        _node: Optional[Union[cdp.dom.Node, "element.Element"]] = None,
+        _node: cdp.dom.Node | element.Element | None = None,
     ):
         """
         Equivalent of JavaScript "document.querySelectorAll".
@@ -435,7 +434,7 @@ class Tab(Connection):
     async def query_selector(
         self,
         selector: str,
-        _node: Optional[Union[cdp.dom.Node, element.Element]] = None,
+        _node: cdp.dom.Node | element.Element | None = None,
     ):
         """
         Find a single element based on a CSS Selector string.
@@ -481,7 +480,7 @@ class Tab(Connection):
     async def find_elements_by_text(
         self,
         text: str,
-    ) -> List[element.Element]:
+    ) -> list[element.Element]:
         """
         Returns element which match the given text.
         Note: This may (or will) also return any other element
@@ -567,9 +566,9 @@ class Tab(Connection):
     async def find_element_by_text(
         self,
         text: str,
-        best_match: Optional[bool] = False,
-        return_enclosing_element: Optional[bool] = True,
-    ) -> Union[element.Element, None]:
+        best_match: bool | None = False,
+        return_enclosing_element: bool | None = True,
+    ) -> element.Element | None:
         """
         Finds and returns the first element containing <text>, or best match.
         :param text:
@@ -691,8 +690,8 @@ class Tab(Connection):
 
     async def reload(
         self,
-        ignore_cache: Optional[bool] = False,
-        script_to_evaluate_on_load: Optional[str] = None,
+        ignore_cache: bool | None = False,
+        script_to_evaluate_on_load: str | None = None,
     ):
         """
         Reloads the page
@@ -731,11 +730,10 @@ class Tab(Connection):
         return None
 
     async def js_dumps(
-        self, obj_name: str, return_by_value: Optional[bool] = True
-    ) -> Union[
-        Dict,
-        Tuple[cdp.runtime.RemoteObject, cdp.runtime.ExceptionDetails],
-    ]:
+        self,
+        obj_name: str,
+        return_by_value: bool | None = True,
+    ) -> dict | tuple[cdp.runtime.RemoteObject, cdp.runtime.ExceptionDetails]:
         """
         Dump Given js object with its properties and values as a dict.
         Note: Complex objects might not be serializable,
@@ -906,7 +904,7 @@ class Tab(Connection):
             await self.aclose()
             await asyncio.sleep(0.1)
 
-    async def get_window(self) -> Tuple[
+    async def get_window(self) -> tuple[
         cdp.browser.WindowID, cdp.browser.Bounds
     ]:
         """Get the window Bounds"""
@@ -1072,9 +1070,9 @@ class Tab(Connection):
 
     async def wait_for(
         self,
-        selector: Optional[str] = "",
-        text: Optional[str] = "",
-        timeout: Optional[Union[int, float]] = 10,
+        selector: str | None = "",
+        text: str | None = "",
+        timeout: int | float | None = 10,
     ) -> element.Element:
         """
         Variant on query_selector_all and find_elements_by_text.
@@ -1145,7 +1143,7 @@ class Tab(Connection):
         await self.set_attributes('[target="_blank"]', "target", "_self")
 
     async def download_file(
-        self, url: str, filename: Optional[PathLike] = None
+        self, url: str, filename: PathLike | None = None
     ):
         """
         Downloads the file by the given url.
@@ -1190,9 +1188,9 @@ class Tab(Connection):
 
     async def save_screenshot(
         self,
-        filename: Optional[PathLike] = "auto",
-        format: Optional[str] = "png",
-        full_page: Optional[bool] = False,
+        filename: PathLike | None = "auto",
+        format: str | None = "png",
+        full_page: bool | None = False,
     ) -> str:
         """
         Saves a screenshot of the page.
@@ -1247,7 +1245,7 @@ class Tab(Connection):
 
     async def print_to_pdf(
         self,
-        filename: Optional[PathLike] = "auto",
+        filename: PathLike | None = "auto",
     ) -> str:
         """
         Saves a webpage as a PDF.
@@ -1294,14 +1292,14 @@ class Tab(Connection):
         )
         self._download_behavior = ["allow", str(path.resolve())]
 
-    async def get_all_linked_sources(self) -> List["element.Element"]:
+    async def get_all_linked_sources(self) -> list["element.Element"]:
         """Get all elements of tag: link, a, img, scripts meta, video, audio"""
         all_assets = await self.query_selector_all(
             selector="a,link,img,script,meta"
         )
         return [element.create(asset, self) for asset in all_assets]
 
-    async def get_all_urls(self, absolute=True) -> List[str]:
+    async def get_all_urls(self, absolute=True) -> list[str]:
         """
         Convenience function, which returns all links (a,link,img,script,meta).
         :param absolute:
@@ -1915,9 +1913,9 @@ class Tab(Connection):
 
     def __call__(
         self,
-        text: Optional[str] = "",
-        selector: Optional[str] = "",
-        timeout: Optional[Union[int, float]] = 10,
+        text: str | None = "",
+        selector: str | None = "",
+        timeout: int | float | None = 10,
     ):
         """
         Alias to query_selector_all or find_elements_by_text,

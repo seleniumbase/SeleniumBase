@@ -116,7 +116,9 @@ class CDPMethods():
         element.send_file = (
             lambda *file_paths: self.__send_file(element, *file_paths)
         )
-        element.send_keys = lambda text: self.__send_keys(element, text)
+        element.send_keys = lambda text, **kwargs: self.__send_keys(
+            element, text, **kwargs
+        )
         element.set_text = lambda value: self.__set_text(element, value)
         element.set_value = lambda value: self.__set_value(element, value)
         element.type = lambda text: self.__type(element, text)
@@ -721,9 +723,11 @@ class CDPMethods():
             self.loop.run_until_complete(element.send_file_async(*file_paths))
         )
 
-    def __send_keys(self, element, text):
+    def __send_keys(self, element, text, **kwargs):
         return (
-            self.loop.run_until_complete(element.send_keys_async(text))
+            self.loop.run_until_complete(
+                element.send_keys_async(text, **kwargs)
+            )
         )
 
     def __set_text(self, element, value):
@@ -1270,26 +1274,7 @@ class CDPMethods():
         self.__slow_mode_pause_if_set()
         element = self.select(selector, timeout=timeout)
         element.scroll_into_view()
-        submit = False
-        if text.endswith("\n") or text.endswith("\r"):
-            submit = True
-            text = text[:-1]
-        elif (
-            element.tag_name == "textarea"
-            and "\n" in text
-            and "\r" not in text
-        ):
-            text = text.replace("\n", "\r")
-        for key in text:
-            try:
-                element.send_keys(key)
-            except AttributeError:
-                element = self.select(selector, timeout=0.1)
-                element.send_keys(key)
-            time.sleep(float(0.0422 + (random.random() / 112.0)))
-        if submit:
-            element.send_keys("\r\n")
-            time.sleep(0.044)
+        element.send_keys(text, add_delay=True)
         self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.sleep(0.025))
 
@@ -1367,18 +1352,18 @@ class CDPMethods():
         self.loop.run_until_complete(self.page.sleep(0.025))
 
     def submit(self, selector):
-        submit_script = (
-            """elm = document.querySelector('%s');
-            const event = new KeyboardEvent("keydown", {
-                key: "Enter",
-                keyCode: 13,
-                code: "Enter",
-                which: 13,
-                bubbles: true
-            });
-            elm.dispatchEvent(event);""" % selector
-        )
-        self.loop.run_until_complete(self.page.evaluate(submit_script))
+        element = self.find_element(selector, timeout=1)
+        try:
+            element.press_keys("\n")
+        except Exception:
+            submit_script = (
+                """
+                const el = document.querySelector('%s');
+                const form = el.form ?? el.closest('form');
+                form.requestSubmit();
+                """ % selector
+            )
+            self.loop.run_until_complete(self.page.evaluate(submit_script))
 
     def evaluate(self, expression):
         """Run a JavaScript expression and return the result."""
