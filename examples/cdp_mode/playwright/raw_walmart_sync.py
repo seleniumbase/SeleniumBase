@@ -40,11 +40,10 @@ with sync_playwright() as p:
                 and description.inner_text() not in unique_item
             ):
                 unique_item.append(description.inner_text())
+                print("* " + description.inner_text())
                 price = item.locator('[data-automation-id="product-price"]')
                 if price.count() > 0:
-                    print("* " + description.inner_text())
-                    price_text = price.inner_text()
-                    price_text = price_text.split("current price Now ")[-1]
+                    price_text = price.inner_text().strip()
                     price_text = price_text.split("current price ")[-1]
-                    price_text = price_text.split(" ")[0]
+                    price_text = price_text.replace("\n", " ")
                     print("  (" + price_text + ")")

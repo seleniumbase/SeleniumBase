@@ -32,10 +32,8 @@ for item in items:
                 '[data-automation-id="product-price"]'
             )
             if price:
-                price_text = price.text
-                price_text = price_text.split("current price Now ")[-1]
+                price_text = price.text.strip()
                 price_text = price_text.split("current price ")[-1]
-                price_text = price_text.split(" ")[0]
                 print("  (" + price_text + ")")
-                item.scroll_into_view()
+            item.scroll_into_view()
 sb.quit()
