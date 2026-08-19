@@ -659,8 +659,8 @@ def main(override=None, intel_for_uc=None, force_uc=None):
             else:
                 not_latest = c5 + "(" + c4 + "Legacy Version" + c5 + ")" + cr
                 p_version = p_version + " " + not_latest
-            msg = c2 + "chromedriver to download" + cr
-            log_d("\n*** %s = %s" % (msg, p_version))
+            msg = c2 + "chromedriver" + cr
+            log_d("\n*** Getting %s %s" % (msg, p_version))
         else:
             raise Exception("Could not find chromedriver to download!\n")
         if not get_latest:
@@ -704,9 +704,9 @@ def main(override=None, intel_for_uc=None, force_uc=None):
             use_version = found_version
         if not use_version:
             use_version = get_cft_latest_version_from_milestone(major_version)
-        msg = c2 + "Chrome for Testing to download" + cr
+        msg = c2 + "Chrome for Testing" + cr
         p_version = c3 + use_version + cr
-        log_d("\n*** %s = %s" % (msg, p_version))
+        log_d("\n*** Getting %s %s" % (msg, p_version))
         if IS_MAC:
             if IS_ARM_MAC:
                 platform_code = "mac-arm64"
@@ -813,9 +813,9 @@ def main(override=None, intel_for_uc=None, force_uc=None):
             use_version = found_version
         if not use_version:
             use_version = get_cft_latest_version_from_milestone(major_version)
-        msg = c2 + "Chrome-Headless-Shell to download" + cr
+        msg = c2 + "Chrome-Headless-Shell" + cr
         p_version = c3 + use_version + cr
-        log_d("\n*** %s = %s" % (msg, p_version))
+        log_d("\n*** Getting %s %s" % (msg, p_version))
         if IS_MAC:
             if IS_ARM_MAC:
                 platform_code = "mac-arm64"
@@ -892,9 +892,9 @@ def main(override=None, intel_for_uc=None, force_uc=None):
         if not found_geckodriver:
             url_request = requests_get(download_url)
         if found_geckodriver or url_request.ok:
-            msg = c2 + "geckodriver to download" + cr
+            msg = c2 + "geckodriver" + cr
             p_version = c3 + use_version + cr
-            log_d("\n*** %s = %s" % (msg, p_version))
+            log_d("\n*** Getting %s %s" % (msg, p_version))
         else:
             raise Exception(
                 "\nCould not find the specified geckodriver "
@@ -999,9 +999,9 @@ def main(override=None, intel_for_uc=None, force_uc=None):
                 raise Exception(
                     "Could not find version [%s] of EdgeDriver!" % use_version
                 )
-        msg = c2 + "edgedriver to download" + cr
+        msg = c2 + "edgedriver" + cr
         p_version = c3 + use_version + cr
-        log_d("\n*** %s = %s" % (msg, p_version))
+        log_d("\n*** Getting %s %s" % (msg, p_version))
     elif name == "iedriver":
         full_version = "4.14.0"
         use_version = full_version
@@ -1029,9 +1029,9 @@ def main(override=None, intel_for_uc=None, force_uc=None):
         url_request = requests_get_with_retry(headless_ie_url)
         if url_request.ok:
             headless_ie_exists = True
-            msg = c2 + "HeadlessIEDriver to download" + cr
+            msg = c2 + "HeadlessIEDriver" + cr
             p_version = c3 + headless_ie_version + cr
-            log_d("\n*** %s = %s" % (msg, p_version))
+            log_d("\n*** Getting %s %s" % (msg, p_version))
     else:
         invalid_run_command()
 
@@ -1095,7 +1095,7 @@ def main(override=None, intel_for_uc=None, force_uc=None):
                     os.remove(new_file)
         if not driver_file or not driver_path or not filename:
             raise Exception("headless_ie_selenium.exe missing from Zip file!")
-        log_d("Extracting %s from %s ..." % (filename, headless_ie_file_name))
+        log_d("Extracting %s from %s:" % (filename, headless_ie_file_name))
         zip_ref.extractall(downloads_folder)
         zip_ref.close()
         os.remove(zip_file_path)
@@ -1120,13 +1120,12 @@ def main(override=None, intel_for_uc=None, force_uc=None):
             os.rmdir(os.path.join(downloads_folder, h_ie_fn))
         driver_path = os.path.join(downloads_folder, filename)
         log_d(
-            "The file [%s] was saved to:\n%s%s%s\n"
+            "['%s'] was saved to:\n%s%s%s\n"
             % (filename, c3, driver_path, cr)
         )
-        log_d("Making [%s %s] executable ..." % (driver_file, use_version))
         make_executable(driver_path)
         log_d(
-            "%s[%s %s] is now ready for use!%s"
+            "%s[%s %s] is ready for use!%s"
             % (c1, driver_file, use_version, cr)
         )
 
@@ -1180,7 +1179,7 @@ def main(override=None, intel_for_uc=None, force_uc=None):
                         os.remove(new_file)  # Technically the old file now
             if driver_contents:
                 contents = driver_contents
-            log_d("Extracting %s from %s ..." % (contents, file_name))
+            log_d("Extracting %s from %s:" % (contents, file_name))
             if name == "uc_driver":
                 f_name = "uc_driver"
                 new_file = os.path.join(downloads_folder, f_name)
@@ -1232,11 +1231,10 @@ def main(override=None, intel_for_uc=None, force_uc=None):
                 d_folder = os.sep.join(pr_file.split(os.sep)[:-1]) + os.sep
                 d_file = pr_file.split(os.sep)[-1]
                 d_ff = c3 + d_folder + cr + "\n" + c3 + d_file + cr
-                log_d("The file [%s] was saved to:\n%s\n" % (f_name, d_ff))
-                log_d("Making [%s %s] executable ..." % (f_name, use_version))
+                log_d("['%s'] was saved to:\n%s\n" % (f_name, d_ff))
                 make_executable(new_file)
                 log_d(
-                    "%s[%s %s] is now ready for use!%s" %
+                    "%s[%s %s] is ready for use!%s" %
                     (c1, f_name, use_version, cr)
                 )
                 if copy_to_path and os.path.exists(LOCAL_PATH):
@@ -1301,7 +1299,7 @@ def main(override=None, intel_for_uc=None, force_uc=None):
                 if str_name == "IEDriverServer.exe":
                     raise Exception("IEDriverServer missing from Zip file!")
                 raise Exception("msedgedriver missing from Zip file!")
-            log_d("Extracting %s from %s ..." % (contents, file_name))
+            log_d("Extracting %s from %s:" % (contents, file_name))
             zip_ref.extractall(downloads_folder)
             zip_ref.close()
             os.remove(zip_file_path)
@@ -1323,13 +1321,12 @@ def main(override=None, intel_for_uc=None, force_uc=None):
             pr_sep = c3 + os.sep + cr
             pr_driver_file = c3 + driver_file + cr
             log_d(
-                "The file [%s] was saved to:\n%s%s\n%s\n"
+                "['%s'] was saved to:\n%s%s\n%s\n"
                 % (driver_file, pr_driver_base, pr_sep, pr_driver_file)
             )
-            log_d("Making [%s %s] executable ..." % (driver_file, use_version))
             make_executable(driver_path)
             log_d(
-                "%s[%s %s] is now ready for use!%s"
+                "%s[%s %s] is ready for use!%s"
                 % (c1, driver_file, use_version, cr)
             )
             if copy_to_path and os.path.exists(LOCAL_PATH):
@@ -1462,7 +1459,7 @@ def main(override=None, intel_for_uc=None, force_uc=None):
                 if "Driver" in new_file or "driver" in new_file:
                     if os.path.exists(new_file):
                         os.remove(new_file)  # Technically the old file now
-            log_d("Extracting %s from %s ..." % (contents, file_name))
+            log_d("Extracting %s from %s:" % (contents, file_name))
             if sys.version_info < (3, 12):
                 tar.extractall(downloads_folder)
             else:
@@ -1473,11 +1470,10 @@ def main(override=None, intel_for_uc=None, force_uc=None):
             for f_name in contents:
                 new_file = os.path.join(downloads_folder, str(f_name))
                 pr_file = c3 + new_file + cr
-                log_d("The file [%s] was saved to:\n%s\n" % (f_name, pr_file))
-                log_d("Making [%s %s] executable ..." % (f_name, use_version))
+                log_d("['%s'] was saved to:\n%s\n" % (f_name, pr_file))
                 make_executable(new_file)
                 log_d(
-                    "%s[%s %s] is now ready for use!%s"
+                    "%s[%s %s] is ready for use!%s"
                     % (c1, f_name, use_version, cr)
                 )
                 if copy_to_path and os.path.exists(LOCAL_PATH):
@@ -1494,9 +1490,8 @@ def main(override=None, intel_for_uc=None, force_uc=None):
         # Not a .zip file or a .tar.gz file. Just a direct download.
         if "Driver" in file_name or "driver" in file_name:
             log_d("%sDownload Complete!%s\n" % (c1, cr))
-            log_d("Making [%s] executable ..." % file_name)
             make_executable(file_path)
-            log_d("%s[%s] is now ready for use!%s" % (c1, file_name, cr))
+            log_d("%s[%s] is ready for use!%s" % (c1, file_name, cr))
             log_d("Location of [%s]:\n%s\n" % (file_name, file_path))
 
 
