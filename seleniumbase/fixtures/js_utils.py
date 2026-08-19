@@ -103,6 +103,8 @@ def wait_for_angularjs(driver, timeout=settings.LARGE_TIMEOUT, **kwargs):
     }
     with suppress(Exception):
         execute_async_script(driver, script, timeout=timeout)
+    if hasattr(driver, "set_script_timeout"):
+        driver.set_script_timeout(30)  # Restore default
 
 
 def convert_to_css_selector(selector, by=By.CSS_SELECTOR):
