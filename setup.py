@@ -1,5 +1,5 @@
 """Setup steps for installing SeleniumBase dependencies and plugins.
-(Uses selenium 4.x and is compatible with Python 3.9+)"""
+(Uses selenium 4.x and is compatible with Python 3.10+)"""
 from setuptools import setup, find_packages  # noqa: F401
 import os
 import sys
@@ -136,7 +136,6 @@ setup(
         "Operating System :: POSIX :: Linux",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
