@@ -1,22 +1,20 @@
-# mcp_servers
+# `seleniumbase-mcp`
 
-Exposes [SeleniumBase](https://github.com/seleniumbase/SeleniumBase) browser automation as tools over the [Model Context Protocol](https://modelcontextprotocol.io), so any
-MCP client can drive a real browser.
+Exposes [SeleniumBase](https://github.com/seleniumbase/SeleniumBase)'s stealthy browser automation abilities as tools
+over the [Model Context Protocol](https://modelcontextprotocol.io), so any MCP client can drive real browsers.
 
 This folder has a single server, `server.py`, built on SeleniumBase's
-[Pure CDP Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/cdp_mode_methods.md)
-(`seleniumbase.sb_cdp.Chrome`) — the browser is driven entirely over the
-Chrome DevTools Protocol, no WebDriver in the loop at all, which makes it
-SeleniumBase's stealthiest mode and includes captcha-solving. That's the
-mode most people reaching for browser automation from an MCP client
-actually want, so it's the one MCP server included in this repo.
+[Pure CDP Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/cdp_mode_methods.md) (`seleniumbase.sb_cdp.Chrome`).
+The browser is driven entirely over the Chrome DevTools Protocol,
+and there is no WebDriver in the loop at all, which makes it
+SeleniumBase's stealthiest mode. (CAPTCHA-solving included!)
+Stealth is what most people want from a browser automation MCP client.
 
 Other SeleniumBase automation styles — `Driver()` (WebDriver-based) and
 `SB()` (broadest API, including UC Mode stealth, MFA codes, file
-downloads) — have their own MCP servers too, just not here. They live in
-[seleniumbase/seleniumbase-mcp](https://github.com/seleniumbase/seleniumbase-mcp)
-as a separate repo, to keep this one simple and unambiguous: one server,
-one name, one obvious thing it does.
+downloads) — have their own MCP servers too, just not here.
+They live in [seleniumbase/seleniumbase-mcp](https://github.com/seleniumbase/seleniumbase-mcp) as a separate repo,
+to keep this one simple and unambiguous.
 
 Defaults to `headless=False` — the browser window is visible unless you
 pass `headless=True` when starting a session.
