@@ -170,7 +170,7 @@ setup(
         'exceptiongroup>=1.3.1',
         'websockets~=16.1.1;python_version=="3.10"',
         'websockets>=16.1.1;python_version>="3.11"',
-        'filelock>=3.32.3',
+        'filelock>=3.32.4',
         'fasteners>=0.20',
         'mycdp>=1.4.0',
         'pynose>=1.5.5',
