@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "seleniumbase-mcp": {
+      "type": "stdio",
+      "command": "seleniumbase-mcp",
+      "args": []
+    }
+  }
+}
