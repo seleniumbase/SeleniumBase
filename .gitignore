@@ -41,6 +41,7 @@ pip-selfcheck.json
 ipython.1.gz
 nosetests.1
 .noseids
+uv.lock
 
 # Installer logs
 pip-log.txt
