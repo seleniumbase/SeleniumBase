@@ -1,0 +1,31 @@
+[project]
+name = "seleniumbase-mcp"
+version = "1.0.0dev0"
+description = "MCP server exposing SeleniumBase CDP Mode as tools for MCP clients."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+dependencies = [
+    "mcp[cli]>=2.0.0,<3.0.0",
+    "seleniumbase",
+]
+
+# This folder lives inside the SeleniumBase repo itself. The line below
+# tells `uv sync` / `uv run` (run from inside this folder) to resolve
+# "seleniumbase" from the local checkout one directory up, in editable
+# mode, instead of fetching a release from PyPI.
+[tool.uv.sources]
+seleniumbase = { path = "..", editable = true }
+
+[build-system]
+requires = ["setuptools>=70.2.0", "wheel>=0.44.0"]
+build-backend = "setuptools.build_meta"
+
+[project.scripts]
+seleniumbase-mcp = "server:main"
+
+[tool.setuptools]
+py-modules = ["server"]
+
+[tool.setuptools.exclude-package-data]
+"*" = [".venv*", "build*", "dist*", "uv.lock"]
