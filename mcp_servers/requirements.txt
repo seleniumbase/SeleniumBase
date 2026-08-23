@@ -1,0 +1,7 @@
+mcp[cli]>=2.0.0,<3.0.0
+-e ..
+
+# `-e ..` installs SeleniumBase itself from the repo root (one directory
+# up) in editable mode, since this folder lives inside the SeleniumBase
+# repo — this gives you the local checkout rather than a pinned PyPI
+# release. Run from inside this folder: pip install -r requirements.txt

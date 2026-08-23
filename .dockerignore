@@ -10,8 +10,12 @@
 *.log
 *.py[cod]
 __pycache__/
+downloaded_files/
 build/
 dist/
 help_docs/
+mkdocs_build/
 node_modules/
 site/
+venv/
+uv.lock

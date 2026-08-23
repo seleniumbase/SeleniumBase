@@ -170,7 +170,7 @@ setup(
         'exceptiongroup>=1.3.1',
         'websockets~=16.1.1;python_version=="3.10"',
         'websockets>=16.1.1;python_version>="3.11"',
-        'filelock>=3.32.3',
+        'filelock>=3.32.4',
         'fasteners>=0.20',
         'mycdp>=1.4.0',
         'pynose>=1.5.5',
@@ -248,6 +248,12 @@ setup(
             'pyflakes==3.4.0',
             'pycodestyle==2.14.0',
         ],
+        # pip install -e .[mcp]
+        # (Adds the "seleniumbase-mcp" console script: An MCP server that
+        #  exposes SeleniumBase's Pure CDP Mode as tools for MCP clients)
+        "mcp": [
+            "mcp[cli]>=2.0.0,<3.0.0",
+        ],
         # pip install -e .[mss]
         # (An optional library for tile_windows() in CDP Mode.)
         "mss": [
@@ -290,10 +296,17 @@ setup(
         "pyautogui": [
             'PyAutoGUI>=0.9.54;platform_system!="Linux"',
         ],
+        # pip install -e .[uv]
+        # Required for local MCP server debugging with:
+        #     mcp dev server.py
+        "uv": [
+            "uv>=0.12.5"
+        ],
     },
     packages=[
         "seleniumbase",
         "sbase",
+        "mcp_servers",
         "seleniumbase.behave",
         "seleniumbase.common",
         "seleniumbase.config",
@@ -324,6 +337,7 @@ setup(
         "console_scripts": [
             "seleniumbase = seleniumbase.console_scripts.run:main",
             "sbase = seleniumbase.console_scripts.run:main",  # Simplified name
+            "seleniumbase-mcp = mcp_servers.server:main",  # Requires [mcp]
         ],
         "nose.plugins": [
             "base_plugin = seleniumbase.plugins.base_plugin:Base",
