@@ -20,7 +20,7 @@ immediately to a plain dict (tag, text, html) rather than returning a handle.
 If you need to act on a *specific* one of several matching elements, use
 click_nth_element / click_nth_visible_element rather than find + click.
 """
-
+from __future__ import annotations
 import atexit
 import sys
 from typing import Any
