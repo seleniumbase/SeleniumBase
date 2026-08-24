@@ -19,6 +19,7 @@ from selenium.common.exceptions import InvalidSessionIdException
 from selenium.common.exceptions import SessionNotCreatedException
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.common import utils as common_utils
+from selenium.webdriver.remote.client_config import ClientConfig
 from seleniumbase import config as sb_config
 from seleniumbase import decorators
 from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
@@ -3719,6 +3720,12 @@ def get_remote_driver(
             address += "wd/hub"
         else:
             address += "/wd/hub"
+    client_config = None
+    if settings.REMOTE_WEBDRIVER_TIMEOUT:
+        client_config = ClientConfig(
+            remote_server_addr=address,
+            timeout=settings.REMOTE_WEBDRIVER_TIMEOUT,
+        )
     downloads_path = DOWNLOADS_FOLDER
     desired_caps = {}
     extra_caps = {}
@@ -3845,6 +3852,7 @@ def get_remote_driver(
                 chrome_options.set_capability(key, ext_caps[key])
         driver = webdriver.Remote(
             command_executor=address,
+            client_config=client_config,
             options=chrome_options,
         )
         return extend_driver(driver)
@@ -3910,6 +3918,7 @@ def get_remote_driver(
                 firefox_options.set_capability(key, ext_caps[key])
         driver = webdriver.Remote(
             command_executor=address,
+            client_config=client_config,
             options=firefox_options,
         )
         return extend_driver(driver)
@@ -3919,6 +3928,7 @@ def get_remote_driver(
         remote_options.set_capability("cloud:options", desired_caps)
         driver = webdriver.Remote(
             command_executor=address,
+            client_config=client_config,
             options=remote_options,
         )
         return extend_driver(driver)
@@ -4018,6 +4028,7 @@ def get_remote_driver(
                 edge_options.set_capability(key, ext_caps[key])
         driver = webdriver.Remote(
             command_executor=address,
+            client_config=client_config,
             options=edge_options,
         )
         return extend_driver(driver)
@@ -4027,6 +4038,7 @@ def get_remote_driver(
         remote_options.set_capability("cloud:options", desired_caps)
         driver = webdriver.Remote(
             command_executor=address,
+            client_config=client_config,
             options=remote_options,
         )
         return extend_driver(driver)
@@ -4039,6 +4051,7 @@ def get_remote_driver(
             remote_options.set_capability("bstack:options", desired_caps)
         driver = webdriver.Remote(
             command_executor=address,
+            client_config=client_config,
             options=remote_options,
         )
         return extend_driver(driver)

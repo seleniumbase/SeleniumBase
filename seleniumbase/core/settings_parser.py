@@ -73,6 +73,8 @@ def set_settings(settings_file):
             settings.EXTREME_TIMEOUT = override_settings[key]
         elif key == "PAGE_LOAD_TIMEOUT":
             settings.PAGE_LOAD_TIMEOUT = override_settings[key]
+        elif key == "REMOTE_WEBDRIVER_TIMEOUT":
+            settings.REMOTE_WEBDRIVER_TIMEOUT = override_settings[key]
         elif key == "ARCHIVE_EXISTING_LOGS":
             settings.ARCHIVE_EXISTING_LOGS = override_settings[key]
         elif key == "ARCHIVE_EXISTING_DOWNLOADS":
