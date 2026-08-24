@@ -239,7 +239,10 @@ class BaseCase(unittest.TestCase):
         ):
             # Auth in UC Mode requires CDP Mode
             # (and now we're always forcing it)
-            logging.info("open() in UC Mode now always activates CDP Mode.")
+            logging.debug(
+                "Opening a URL from UC Mode now activates CDP Mode."
+                " To prevent this, call sb.driver.get(url) instead."
+            )
             self.activate_cdp_mode(url, **kwargs)
             return
         elif (

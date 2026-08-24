@@ -1,3 +1,5 @@
+<!-- SeleniumBase Docs -->
+
 # `seleniumbase-mcp`
 
 ### The [SeleniumBase](https://github.com/seleniumbase/SeleniumBase) MCP server provides stealthy browser automation over the [Model Context Protocol](https://modelcontextprotocol.io) for MCP clients.

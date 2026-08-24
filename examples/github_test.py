@@ -1,10 +1,10 @@
 from seleniumbase import BaseCase
-BaseCase.main(__name__, __file__)
+BaseCase.main(__name__, __file__, "--uc")
 
 
 class GitHubTests(BaseCase):
     def test_github(self):
-        if self.headless or self.page_load_strategy == "none":
+        if self.headless or not self.undetectable:
             self.goto_if_not_url("about:blank")
             print("\n  Unsupported mode for this test.")
             self.skip("Unsupported mode for this test.")

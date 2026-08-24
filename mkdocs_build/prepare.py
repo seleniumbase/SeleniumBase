@@ -84,6 +84,7 @@ def main(*args, **kwargs):
     scanned_dir_list.append("examples/example_logs")
     scanned_dir_list.append("examples/tour_examples")
     scanned_dir_list.append("examples/visual_testing")
+    scanned_dir_list.append("mcp_servers")
     scanned_dir_list.append("integrations/google_cloud")
     scanned_dir_list.append("seleniumbase/console_scripts")
     scanned_dir_list.append("examples/migration/raw_selenium")

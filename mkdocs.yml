@@ -102,6 +102,7 @@ nav:
   - 🔴 Recorder Mode: help_docs/recorder_mode.md
   - 📗 API Reference: help_docs/method_summary.md
   - 📘 CDP Mode APIs: help_docs/cdp_mode_methods.md
+  - 🤖 MCP Integration: mcp_servers/README.md
   - Python Setup / Install:
     - 🐉 Get Python, pip, & git: help_docs/install_python_pip_git.md
     - ⚙️ Virtualenv Instructions: help_docs/virtualenv_instructions.md

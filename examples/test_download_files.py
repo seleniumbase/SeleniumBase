@@ -1,7 +1,7 @@
 """Use SeleniumBase to download files and verify."""
 import math
 from seleniumbase import BaseCase
-BaseCase.main(__name__, __file__)
+BaseCase.main(__name__, __file__, "--uc")
 
 
 class DownloadTests(BaseCase):
@@ -25,6 +25,9 @@ class DownloadTests(BaseCase):
         self.assert_in(text, notes_data)  # Verify file has expected data
 
     def test_download_files_from_pypi(self):
+        if self._multithreaded or not self.undetectable:
+            self.goto_if_not_url("about:blank")
+            self.skip("Skipping test in multi-threaded mode.")
         self.goto("https://pypi.org/project/sbvirtualdisplay/#files")
         self.assert_element("span#pip-command")
         self.assert_text("Download files", "div#files h2.page-title")
