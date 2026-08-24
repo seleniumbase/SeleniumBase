@@ -43,7 +43,7 @@
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">🚎 Tours</a>
 <br />
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/mcp_servers/">🤖 MCP</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/js_package_manager.md">🟨 JS-Mgr</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/js_package_manager.md">🟨 JS Mgr</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/translations.md">🌏 Translator</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/presenter/ReadMe.md">🎞️ Presenter</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md">🖼️ Visual</a> |
@@ -60,6 +60,10 @@
 <ul>
 <li><code><b>pip install seleniumbase</b></code> for the main framework. (Or use <code>uv add</code>)</li>
 <li><code><b>pip install playwright</b></code> for the optional integration. (Or use <code>uv add</code>)</li>
+</ul>
+
+<ul>
+<li><b>🤖 For the <code>seleniumbase-mcp</code> MCP server, <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/mcp_servers/">see the MCP ReadMe</a>.</b></li>
 </ul>
 
 --------
