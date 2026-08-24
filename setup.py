@@ -174,7 +174,7 @@ setup(
         'fasteners>=0.20',
         'mycdp>=1.4.0',
         'pynose>=1.5.5',
-        'platformdirs>=4.11.3',
+        'platformdirs>=4.11.4',
         'typing-extensions>=4.16.0',
         'sbvirtualdisplay>=1.4.0',
         'MarkupSafe>=3.0.3',
