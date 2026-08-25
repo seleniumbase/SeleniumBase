@@ -23,6 +23,14 @@ EXTREME_TIMEOUT = 30
 # In global Selenium settings, this value is set to 300 seconds by default.
 PAGE_LOAD_TIMEOUT = 120
 
+# Default client-side timeout (in seconds) for each HTTP request that a
+# Remote WebDriver client sends to a Selenium server / Selenium Grid.
+# When set to None, requests have no client-side timeout, which means
+# a WebDriver command can block forever if a grid node dies mid-session.
+# If used, set this higher than PAGE_LOAD_TIMEOUT, and higher than the
+# time a new-session request may wait in your grid's session queue.
+REMOTE_WEBDRIVER_TIMEOUT = None
+
 # Default page load strategy.
 # ["normal", "eager", "none"]
 # Selenium default = "normal"
