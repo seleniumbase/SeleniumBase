@@ -1299,6 +1299,20 @@ class CDPMethods():
         self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.sleep(0.025))
 
+    def fast_type(self, selector, text, timeout=None):
+        """Similar to send_keys(), but presses keys really fast.
+        (Don't use if going for stealth. This is just for speed.)"""
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        self.__slow_mode_pause_if_set()
+        element = self.select(selector, timeout=timeout)
+        element.scroll_into_view()
+        with suppress(Exception):
+            element.clear_input()
+        element.send_keys(text, fast=True)
+        self.__slow_mode_pause_if_set()
+        self.loop.run_until_complete(self.page.sleep(0.025))
+
     def clear_input(self, selector, timeout=None):
         if not timeout:
             timeout = settings.SMALL_TIMEOUT

@@ -823,6 +823,7 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
     cdp.send_keys = CDPM.send_keys
     cdp.press_keys = CDPM.press_keys
     cdp.type = CDPM.type
+    cdp.fast_type = CDPM.fast_type
     cdp.clear_input = CDPM.clear_input
     cdp.clear = CDPM.clear_input
     cdp.set_value = CDPM.set_value

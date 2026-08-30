@@ -1634,12 +1634,15 @@ class Tab(Connection):
     async def get_origin(self):
         return await self.evaluate("window.location.origin")
 
-    async def send_keys(self, selector, text, timeout=5):
+    async def send_keys(self, selector, text, timeout=5, fast=False):
         element = await self.find(selector, timeout=timeout)
-        await element.send_keys_async(text)
+        await element.send_keys_async(text, fast=fast)
 
     async def type(self, selector, text, timeout=5):
         await self.send_keys(selector, text, timeout=timeout)
+
+    async def fast_type(self, selector, text, timeout=5):
+        await self.send_keys(selector, text, timeout=timeout, fast=True)
 
     async def click(self, selector, timeout=5):
         element = await self.find(selector, timeout=timeout)

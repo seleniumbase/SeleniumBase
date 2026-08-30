@@ -821,7 +821,9 @@ class Element:
             logger.debug("Could not clear element field: %s", e)
         return
 
-    async def send_keys_async(self, text: str, add_delay: bool = False):
+    async def send_keys_async(
+        self, text: str, add_delay: bool = False, fast: bool = False
+    ):
         """
         Send text to an input field, or any other html element.
         Hint: If you ever get stuck where using `~click()`
@@ -843,7 +845,7 @@ class Element:
             # which may need the old version for stealth.
             # (Usage: sb_config._use_new_send_keys = True)
             # **EXPERIMENTAL**
-            await self.__new_send_keys_async(text, add_delay)
+            await self.__new_send_keys_async(text, add_delay, fast=fast)
             return
         if IS_LINUX:
             for char in text:
@@ -859,11 +861,15 @@ class Element:
                             float(0.04 + (random.random() / 110.0))
                         )
                 else:
-                    await self.__new_send_keys_async(char, add_delay)
+                    await self.__new_send_keys_async(
+                        char, add_delay, fast=fast
+                    )
             return
-        await self.__new_send_keys_async(text, add_delay)
+        await self.__new_send_keys_async(text, add_delay, fast=fast)
 
-    async def __new_send_keys_async(self, text: str, add_delay: bool = False):
+    async def __new_send_keys_async(
+        self, text: str, add_delay: bool = False, fast: bool = False
+    ):
         """A helper method for send_keys_async()"""
         # Map non-alphanumeric symbols to the correct CDP virtual key code.
         # Prevents collisions with control keys. Eg. ord('.') = 46 = VK_DELETE.
@@ -941,7 +947,8 @@ class Element:
                     windows_virtual_key_code=vk,
                 )
             )
-            await asyncio.sleep(random.uniform(0.002, 0.003))
+            if not fast:
+                await asyncio.sleep(random.uniform(0.002, 0.003))
             # 3. Trigger keypress DOM event AND insert text
             if text_val:
                 await self._tab.send(
@@ -955,7 +962,8 @@ class Element:
                     )
                 )
             # 4. Trigger keyup DOM event
-            await asyncio.sleep(random.uniform(0.011, 0.014))
+            if not fast:
+                await asyncio.sleep(random.uniform(0.011, 0.014))
             await self._tab.send(
                 cdp.input_.dispatch_key_event(
                     type_="keyUp",
@@ -964,7 +972,7 @@ class Element:
                     windows_virtual_key_code=vk,
                 )
             )
-            if add_delay:
+            if add_delay and not fast:
                 await asyncio.sleep(float(0.04 + (random.random() / 110.0)))
 
     async def send_file_async(self, *file_paths: PathLike):
