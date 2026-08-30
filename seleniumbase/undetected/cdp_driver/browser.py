@@ -149,8 +149,9 @@ class Browser:
         Constructor. To create a instance, use :py:meth:`Browser.create(...)`
         :param config:
         """
+        self._main_loop = None
         try:
-            asyncio.get_running_loop()
+            self._main_loop = asyncio.get_running_loop()
         except RuntimeError:
             raise RuntimeError(
                 "{0} objects of this class are created "
@@ -933,7 +934,14 @@ class Browser:
         close_success = False
         try:
             if self.connection:
-                loop = None
+                if (
+                    hasattr(self, "_main_loop")
+                    and self._main_loop
+                    and self._main_loop.is_running()
+                ):
+                    loop = self._main_loop
+                else:
+                    loop = asyncio.get_event_loop()
                 for obj in (self, self.connection, getattr(
                     self.connection, "websocket", None)
                 ):
@@ -946,9 +954,6 @@ class Browser:
                 if not loop:
                     with suppress(Exception):
                         loop = asyncio.get_event_loop_policy().get_event_loop()
-                if not loop:
-                    with suppress(Exception):
-                        loop = asyncio.get_event_loop()
                 if loop.is_closed():
                     return
                 if loop.is_running():
