@@ -398,6 +398,16 @@ class Tab(Connection):
             if _node.node_name == "IFRAME":
                 doc = _node.content_document
         node_ids = []
+        if page_utils.is_xpath_selector(selector):
+            logger.debug(
+                "CDP.DOM.querySelectorAll() doesn't support XPath!\n"
+                "The unsupported selector: %s" % selector
+            )
+        elif ":contains(" in selector:
+            logger.debug(
+                "CDP.DOM.querySelectorAll() doesn't support :contains()!\n"
+                "The unsupported selector: %s" % selector
+            )
         try:
             node_ids = await self.send(
                 cdp.dom.query_selector_all(doc.node_id, selector)
