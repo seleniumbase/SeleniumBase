@@ -53,6 +53,95 @@ class DriverMethods(WebDriver):
         else:
             return self.find_elements(*args, **kwargs)
 
+    def __select_option(self, selector, option, option_by="text"):
+        from selenium.webdriver.support.ui import Select
+        element = self.find_element(selector)
+        if option_by == "index":
+            try:
+                Select(element).select_by_index(option)
+            except Exception:
+                msg = (
+                    "Element {%s} has no selectable index option {%s}!"
+                    % (selector, option)
+                )
+                page_actions.timeout_exception("NoSuchOptionException", msg)
+        elif option_by == "value":
+            try:
+                Select(element).select_by_value(option)
+            except Exception:
+                msg = (
+                    "Element {%s} has no selectable value option {%s}!"
+                    % (selector, option)
+                )
+                page_actions.timeout_exception("NoSuchOptionException", msg)
+        else:  # option_by="text" (or typo for option_by)
+            try:
+                Select(element).select_by_visible_text(option)
+            except Exception:
+                msg = (
+                    "Element {%s} has no selectable text option {%s}!"
+                    % (selector, option)
+                )
+                page_actions.timeout_exception("NoSuchOptionException", msg)
+        return element
+
+    def select_option_by_text(self, *args, **kwargs):
+        if self.__is_cdp_swap_needed():
+            return self.driver.cdp.select_option_by_text(*args, **kwargs)
+        selector = None
+        if "selector" in kwargs:
+            selector = kwargs["selector"]
+        elif "dropdown_selector" in kwargs:
+            selector = kwargs["dropdown_selector"]
+        else:
+            selector = args[0]
+        option = None
+        if "option" in kwargs:
+            option = kwargs["option"]
+        elif "text" in kwargs:
+            option = kwargs["text"]
+        else:
+            option = args[1]
+        return self.__select_option(selector, option, option_by="text")
+
+    def select_option_by_index(self, *args, **kwargs):
+        if self.__is_cdp_swap_needed():
+            return self.driver.cdp.select_option_by_index(*args, **kwargs)
+        selector = None
+        if "selector" in kwargs:
+            selector = kwargs["selector"]
+        elif "dropdown_selector" in kwargs:
+            selector = kwargs["dropdown_selector"]
+        else:
+            selector = args[0]
+        option = None
+        if "option" in kwargs:
+            option = kwargs["option"]
+        elif "index" in kwargs:
+            option = kwargs["index"]
+        else:
+            option = args[1]
+        return self.__select_option(selector, option, option_by="index")
+
+    def select_option_by_value(self, *args, **kwargs):
+        if self.__is_cdp_swap_needed():
+            return self.driver.cdp.select_option_by_value(*args, **kwargs)
+        selector = None
+        if "selector" in kwargs:
+            selector = kwargs["selector"]
+        elif "dropdown_selector" in kwargs:
+            selector = kwargs["dropdown_selector"]
+        else:
+            selector = args[0]
+        option = None
+        if "option" in kwargs:
+            option = kwargs["option"]
+        elif "value" in kwargs:
+            option = kwargs["value"]
+        else:
+            option = args[1]
+        return self.__select_option(selector, option, option_by="value")
+
     def add_cookie(self, *args, **kwargs):
         page_actions._reconnect_if_disconnected(self.driver)
         self.driver.default_add_cookie(*args, **kwargs)

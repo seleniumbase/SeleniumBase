@@ -173,6 +173,9 @@ def extend_driver(
     driver.locator = DM.locator
     driver.select = DM.select
     driver.select_all = DM.select_all
+    driver.select_option_by_text = DM.select_option_by_text
+    driver.select_option_by_index = DM.select_option_by_index
+    driver.select_option_by_value = DM.select_option_by_value
     page = types.SimpleNamespace()
     page.open = DM.open_url
     page.goto = DM.open_url
@@ -210,6 +213,9 @@ def extend_driver(
     page.locator = DM.locator
     page.select = DM.select
     page.select_all = DM.select_all
+    page.select_option_by_text = DM.select_option_by_text
+    page.select_option_by_index = DM.select_option_by_index
+    page.select_option_by_value = DM.select_option_by_value
     page.get_current_url = DM.get_current_url
     page.get_page_source = DM.get_page_source
     page.get_title = DM.get_title
