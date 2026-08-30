@@ -3173,6 +3173,24 @@ class CDPMethods():
             % (text, selector, timeout, plural)
         )
 
+    def wait_for_element_present(self, selector, timeout=None):
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        failure = False
+        message = ""
+        try:
+            self.select(selector, timeout=timeout)
+        except Exception:
+            failure = True
+            plural = "s"
+            if timeout == 1:
+                plural = ""
+            msg = "\n Element {%s} was not found after %s second%s!"
+            message = msg % (selector, timeout, plural)
+        if failure:
+            raise Exception(message)
+        return self.select(selector)
+
     def wait_for_element_visible(self, selector, timeout=None):
         if not timeout:
             timeout = settings.SMALL_TIMEOUT

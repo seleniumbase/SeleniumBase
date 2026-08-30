@@ -930,6 +930,7 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
     cdp.is_exact_text_visible = CDPM.is_exact_text_visible
     cdp.wait_for_text = CDPM.wait_for_text
     cdp.wait_for_text_not_visible = CDPM.wait_for_text_not_visible
+    cdp.wait_for_element_present = CDPM.wait_for_element_present
     cdp.wait_for_element_visible = CDPM.wait_for_element_visible
     cdp.wait_for_element = CDPM.wait_for_element
     cdp.wait_for_element_not_visible = CDPM.wait_for_element_not_visible
