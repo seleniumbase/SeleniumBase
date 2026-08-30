@@ -2,7 +2,7 @@ from seleniumbase import sb_cdp
 
 sb = sb_cdp.Chrome(guest=True, ad_block=True)
 sb.goto("https://pixelscan.net/fingerprint-check")
-sb.remove_element("div.header-ad")
+sb.remove_element("div.header-promo")
 sb.remove_element("pxlscn-dynamic-ad")
 sb.sleep(1.8)
 sb.assert_text("No automated behavior", "pxlscn-bot-detection")
