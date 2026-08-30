@@ -1299,6 +1299,20 @@ class CDPMethods():
         self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.sleep(0.025))
 
+    def fast_type(self, selector, text, timeout=None):
+        """Similar to send_keys(), but presses keys really fast.
+        (Don't use if going for stealth. This is just for speed.)"""
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        self.__slow_mode_pause_if_set()
+        element = self.select(selector, timeout=timeout)
+        element.scroll_into_view()
+        with suppress(Exception):
+            element.clear_input()
+        element.send_keys(text, fast=True)
+        self.__slow_mode_pause_if_set()
+        self.loop.run_until_complete(self.page.sleep(0.025))
+
     def clear_input(self, selector, timeout=None):
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -3158,6 +3172,24 @@ class CDPMethods():
             "Text {%s} in {%s} was still visible after %s second%s!"
             % (text, selector, timeout, plural)
         )
+
+    def wait_for_element_present(self, selector, timeout=None):
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        failure = False
+        message = ""
+        try:
+            self.select(selector, timeout=timeout)
+        except Exception:
+            failure = True
+            plural = "s"
+            if timeout == 1:
+                plural = ""
+            msg = "\n Element {%s} was not found after %s second%s!"
+            message = msg % (selector, timeout, plural)
+        if failure:
+            raise Exception(message)
+        return self.select(selector)
 
     def wait_for_element_visible(self, selector, timeout=None):
         if not timeout:

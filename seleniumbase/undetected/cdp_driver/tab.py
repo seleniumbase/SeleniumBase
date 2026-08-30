@@ -398,6 +398,16 @@ class Tab(Connection):
             if _node.node_name == "IFRAME":
                 doc = _node.content_document
         node_ids = []
+        if page_utils.is_xpath_selector(selector):
+            logger.debug(
+                "CDP.DOM.querySelectorAll() doesn't support XPath!\n"
+                "The unsupported selector: %s" % selector
+            )
+        elif ":contains(" in selector:
+            logger.debug(
+                "CDP.DOM.querySelectorAll() doesn't support :contains()!\n"
+                "The unsupported selector: %s" % selector
+            )
         try:
             node_ids = await self.send(
                 cdp.dom.query_selector_all(doc.node_id, selector)
@@ -1634,12 +1644,15 @@ class Tab(Connection):
     async def get_origin(self):
         return await self.evaluate("window.location.origin")
 
-    async def send_keys(self, selector, text, timeout=5):
+    async def send_keys(self, selector, text, timeout=5, fast=False):
         element = await self.find(selector, timeout=timeout)
-        await element.send_keys_async(text)
+        await element.send_keys_async(text, fast=fast)
 
     async def type(self, selector, text, timeout=5):
         await self.send_keys(selector, text, timeout=timeout)
+
+    async def fast_type(self, selector, text, timeout=5):
+        await self.send_keys(selector, text, timeout=timeout, fast=True)
 
     async def click(self, selector, timeout=5):
         element = await self.find(selector, timeout=timeout)

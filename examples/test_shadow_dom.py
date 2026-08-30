@@ -10,7 +10,7 @@ BaseCase.main(__name__, __file__)
 class ShadowDomTests(BaseCase):
     def download_tar_file_from_pypi(self, package):
         self.goto("https://pypi.org/project/%s/#files" % package)
-        pkg_header = self.get_text("h1.package-header__name").strip()
+        pkg_header = self.get_text('h1[class*="header__name"]').strip()
         pkg_name = pkg_header.replace(" ", "-")
         tar_file = pkg_name + ".tar.gz"
         tar_selector = 'div#files a[href$="%s"]' % tar_file

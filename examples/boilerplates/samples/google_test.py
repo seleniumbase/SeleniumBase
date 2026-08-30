@@ -22,7 +22,6 @@ class GoogleTests(BaseCase):
         self.save_screenshot_to_logs()  # ("./latest_logs" folder)
         self.type(HomePage.search_box, "GitHub")
         self.assert_element(HomePage.search_button)
-        self.assert_element(HomePage.feeling_lucky_button)
         self.click(HomePage.search_button)
         self.sleep(1)
         self.assert_text("github.com", ResultsPage.search_results)

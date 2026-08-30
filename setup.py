@@ -174,7 +174,7 @@ setup(
         'fasteners>=0.20',
         'mycdp>=1.4.0',
         'pynose>=1.5.5',
-        'platformdirs>=4.11.4',
+        'platformdirs>=4.11.5',
         'typing-extensions>=4.16.0',
         'sbvirtualdisplay>=1.4.0',
         'MarkupSafe>=3.0.3',
@@ -199,8 +199,8 @@ setup(
         'trio>=0.34.0,<1',
         'trio-websocket~=0.12.2',
         'wsproto~=1.3.2',
-        'websocket-client~=1.9.0',
-        'selenium==4.47.0',
+        'websocket-client~=1.9.1',
+        'selenium==4.48.0',
         'cssselect>=1.5.0,<2',
         'sortedcontainers==2.4.0',
         'execnet==2.1.2',
@@ -237,7 +237,7 @@ setup(
         # pip install -e .[coverage]
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
-            'coverage>=7.15.4',
+            'coverage>=7.16.0',
             'pytest-cov>=7.1.0',
         ],
         # pip install -e .[flake8]
@@ -252,7 +252,7 @@ setup(
         # (Adds the "seleniumbase-mcp" console script: An MCP server that
         #  exposes SeleniumBase's Pure CDP Mode as tools for MCP clients)
         "mcp": [
-            "mcp[cli]>=2.0.0,<3.0.0",
+            "mcp[cli]>=2.1.1,<3.0.0",
         ],
         # pip install -e .[mss]
         # (An optional library for tile_windows() in CDP Mode.)
@@ -263,7 +263,7 @@ setup(
         # (An optional library for parsing PDF files.)
         "pdfminer": [
             'pdfminer.six==20260107',
-            'cryptography==50.0.0',
+            'cryptography==50.0.1',
             'cffi==2.1.1',
             'pycparser==3.0',
         ],
