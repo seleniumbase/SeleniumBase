@@ -42,7 +42,9 @@ if sys.argv[-1] == "publish":
             sys.exit()
         print("\n*** Checking code health with flake8:\n")
         os.system("python -m pip install 'flake8==7.3.0'")
-        flake8_status = os.system("flake8 --exclude=recordings,temp")
+        flake8_status = os.system(
+            "flake8 --exclude=recordings,temp,venv,.venv"
+        )
         if flake8_status != 0:
             print("\nERROR! Fix flake8 issues before publishing to PyPI!\n")
             sys.exit()
@@ -101,6 +103,8 @@ setup(
     maintainer="Michael Mintz",
     license="MIT",
     keywords=[
+        "cdp",
+        "mcp",
         "pytest",
         "selenium",
         "framework",
@@ -117,10 +121,9 @@ setup(
         "playwright",
         "anti-detection",
         "captcha-bypass",
-        "fingerprint",
-        "recaptcha",
-        "turnstile",
-        "headless",
+        "ai-agent",
+        "llm-tools",
+        "model-context-protocol",
     ],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
