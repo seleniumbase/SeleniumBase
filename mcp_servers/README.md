@@ -87,7 +87,37 @@ The location of `claude_desktop_config.json` depends on your system:
 - macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
 - Windows: `%APPDATA%\Claude\claude_desktop_config.json`
 
-Restart Claude Desktop. You should see a 🔨 tools icon indicating the server connected, with tools like `start_browser`, `navigate`, `click`, etc. available.
+Restart Claude Desktop. You should see a 🔨 tools icon indicating the server connected, with the following MCP tools available through the tools interface:
+
+* `start_browser`
+* `close_browser`
+* `browser_status`
+* `navigate`
+* `navigate_history`
+* `get_page_info`
+* `find_elements`
+* `get_page_content`
+* `get_attributes`
+* `check_state`
+* `get_all_urls`
+* `click`
+* `hover`
+* `drag_and_drop`
+* `fill_input`
+* `select_option`
+* `element_action`
+* `wait_for`
+* `assert_that`
+* `manage_cookies`
+* `manage_storage`
+* `scroll`
+* `manage_window`
+* `manage_tabs`
+* `solve_captcha`
+* `save_output`
+* `run_javascript`
+* `wait_seconds`
+* `get_user_agent`
 
 ## 4. Connect it to Claude Code
 
@@ -123,19 +153,21 @@ claude mcp add seleniumbase-mcp -- uv run seleniumbase-mcp
 
 ## Tools exposed
 
-| Group             | Examples                                                                                                                                          |
+Tools here are grouped around a shared `selector` convention: `selector` args accept a CSS selector, or visible text (e.g. `a:contains("Sign in")`). Several near-identical one-off tools (e.g. separate click/wait/cookie/storage variants) have been consolidated into a single tool with a `mode`/`action`/`state`/`check` parameter, so there are fewer near-neighbor tools to disambiguate between while every underlying capability stays available.
+
+| Group             | Tool(s)                                                                                                                                          |
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Session           | `start_browser(url, headless, incognito, guest, proxy, ad_block)`, `close_browser`                                                                |
-| Navigation        | `navigate`, `reload_page`, `go_back`/`go_forward`, `get_current_url`, `get_title`                                                                 |
-| Finding & reading | `find_element_info`, `find_all_info`, `get_text`, `get_html_source`, `get_element_attribute(s)`, `is_element_present/visible`                     |
-| Interacting       | `click`, `click_if_visible`, `click_visible_elements`, `type_text`, `send_keys`, `set_value`, `select_option_by_text/value/index`, `nested_click` |
-| Waiting           | `wait_for_element_present`, `wait_for_element_visible/not_visible/absent`, `wait_for_text`                                                        |
-| Assertions        | `assert_element`, `assert_text`, `assert_exact_text`, `assert_title`, `assert_url(_contains)`                                                     |
-| Cookies & storage | `get_all_cookies`, `save_cookies`/`load_cookies`, `get/set_local_storage_item`, `get/set_session_storage_item`                                    |
-| Scrolling         | `scroll_into_view`, `scroll_to_top/bottom`, `scroll_up/down`                                                                                      |
-| Tabs & windows    | `open_new_tab`, `switch_to_tab`/`switch_to_newest_tab`, `close_active_tab`, `maximize`/`minimize`, `get/set_window_rect`                          |
-| Captcha           | `solve_captcha`                                                                                                                                   |
-| Output            | `save_screenshot`, `save_page_source`, `save_as_pdf`, `evaluate` (run JS)                                                                         |
+| Session           | `start_browser(url, headless, use_chromium, browser_executable_path, incognito, guest, ad_block, proxy)`, `close_browser`, `browser_status`      |
+| Navigation        | `navigate`, `navigate_history(action: back/forward/reload)`, `get_page_info` (url, title, origin, history in one call)                            |
+| Finding & reading | `find_elements(selector, timeout, include_html)`, `get_page_content(selector, as_html, include_shadow_dom)`, `get_attributes`, `check_state(check: present/visible/count/text_visible)`, `get_all_urls` |
+| Interacting       | `click(selector, nth, all_matches, only_if_visible, parent_selector, timeout, scroll)`, `hover(selector, then_click_selector)`, `drag_and_drop`, `fill_input(mode: type/append/set_value/fast_type/clear)`, `select_option(by: text/value/index)`, `element_action(action: focus/highlight/scroll_into_view)` |
+| Waiting           | `wait_for(state: present/visible/not_visible/absent, text)`                                                                                        |
+| Assertions        | `assert_that(check: element_present/element_visible/text/title/url/url_contains)`                                                                  |
+| Cookies & storage | `manage_cookies(action: get_all/clear/save/load)`, `manage_storage(storage: local/session, action: get/set)`                                       |
+| Scrolling         | `scroll(direction: up/down/top/bottom, amount)`                                                                                                    |
+| Windows & tabs    | `manage_window(action: get_rect/set_rect/maximize/minimize)`, `manage_tabs(action: list/open/switch/switch_newest/close_active)`                   |
+| Captcha           | `solve_captcha`                                                                                                                                    |
+| Output & misc     | `save_output(format: screenshot/html/pdf)`, `run_javascript`, `wait_seconds`, `get_user_agent`                                                     |
 
 ## Design notes / things to adapt for your use case
 
@@ -143,14 +175,14 @@ claude mcp add seleniumbase-mcp -- uv run seleniumbase-mcp
 
 - **Blocking calls.** SeleniumBase's calls are synchronous and will block the server while a page loads or an element is waited on. For a single-user local tool this is fine; for a multi-client server you'd want to run them in a thread pool via `asyncio.to_thread`.
 
-- **Errors surface as tool errors.** If a selector isn't found or an assertion fails, `sb_cdp.Chrome` raises an exception, which the MCP SDK turns into a tool error the client sees and can react to (e.g. by waiting longer or trying a different selector).
+- **Errors surface as descriptive strings.** Every tool (aside from session-lifecycle tools, which handle their own errors) is wrapped by a `handle_sb_errors` decorator: if a selector isn't found or an assertion fails, `sb_cdp.Chrome` raises an exception, and the decorator catches it and returns a string like `Error in click: NoSuchElementException - ...` instead of a raw tool error. This lets the calling agent read the failure and self-correct (e.g. by waiting longer or trying a different selector) rather than just seeing an opaque tool-call failure.
 
-- **Elements don't cross the wire as handles.** In native CDP Mode, `find_element()` returns a live object with its own methods (`el.click()`, `el.get_html()`, ...). MCP tools can only return JSON-serializable data, so `find_element_info`/`find_all_info` resolve the element immediately to a plain dict (`tag_name`, `text`, `html`) instead of returning a handle you could call further methods on. If you need to act on one of several matches, use `click_nth_element` (acts by position) rather than "find, then click" as two separate steps.
+- **Elements don't cross the wire as handles.** In native CDP Mode, `find_element()` returns a live object with its own methods (`el.click()`, `el.get_html()`, ...). MCP tools can only return JSON-serializable data, so `find_elements` resolves each match immediately to a plain dict (`tag_name`, `text`, and optionally `html`) instead of returning a handle you could call further methods on. If you need to act on one of several matches, use `click(selector, nth=...)` (acts by position) rather than "find, then click" as two separate steps.
 
 - **CAPTCHA-solving.** `solve_captcha` handles supported challenge types (e.g. Cloudflare Turnstile).
 
-- **Security.** `evaluate` runs arbitrary JS and this server can drive a real browser to real sites — don't expose it over an untrusted network transport; stdio + local trust (the default here) is the safe setup.
+- **Security.** `run_javascript` runs arbitrary JS, and `manage_storage` can expose authentication/session secrets; `manage_cookies` and `save_output` accept filenames/folders that can touch the filesystem. This server can also drive a real browser to real sites — don't expose it over an untrusted network transport; stdio + local trust (the default here) is the safe setup.
 
 ## Extending
 
-Adding a tool is just adding a `@mcp.tool()`-decorated function that calls the matching `sb_cdp.Chrome` method — SeleniumBase has methods for file uploads, drag-and-drop, hovering, network conditions, and more that aren't wrapped above yet.
+Adding a tool is just adding a `@mcp.tool()`-decorated function (wrapped in `handle_sb_errors`) that calls the matching `sb_cdp.Chrome` method — SeleniumBase has methods for file uploads, network conditions, and more that aren't wrapped above yet.
