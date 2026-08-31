@@ -3,7 +3,7 @@
 
 regex>=2026.8.31
 pymdown-extensions>=10.21.3
-pipdeptree>=4.2.2
+pipdeptree>=4.2.3
 python-dateutil>=2.8.2
 click>=8.5.0
 Markdown==3.10.3

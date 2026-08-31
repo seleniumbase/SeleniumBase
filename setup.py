@@ -42,7 +42,9 @@ if sys.argv[-1] == "publish":
             sys.exit()
         print("\n*** Checking code health with flake8:\n")
         os.system("python -m pip install 'flake8==7.3.0'")
-        flake8_status = os.system("flake8 --exclude=recordings,temp")
+        flake8_status = os.system(
+            "flake8 --exclude=recordings,temp,venv,.venv"
+        )
         if flake8_status != 0:
             print("\nERROR! Fix flake8 issues before publishing to PyPI!\n")
             sys.exit()
@@ -101,6 +103,8 @@ setup(
     maintainer="Michael Mintz",
     license="MIT",
     keywords=[
+        "cdp",
+        "mcp",
         "pytest",
         "selenium",
         "framework",
@@ -117,10 +121,9 @@ setup(
         "playwright",
         "anti-detection",
         "captcha-bypass",
-        "fingerprint",
-        "recaptcha",
-        "turnstile",
-        "headless",
+        "ai-agent",
+        "llm-tools",
+        "model-context-protocol",
     ],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
@@ -170,7 +173,7 @@ setup(
         'exceptiongroup>=1.3.1',
         'websockets~=16.1.1;python_version=="3.10"',
         'websockets>=16.1.1;python_version>="3.11"',
-        'filelock>=3.32.4',
+        'filelock>=3.32.5',
         'fasteners>=0.20',
         'mycdp>=1.4.0',
         'pynose>=1.5.5',
@@ -199,7 +202,7 @@ setup(
         'trio>=0.34.0,<1',
         'trio-websocket~=0.12.2',
         'wsproto~=1.3.2',
-        'websocket-client~=1.9.1',
+        'websocket-client~=1.9.2',
         'selenium==4.48.0',
         'cssselect>=1.5.0,<2',
         'sortedcontainers==2.4.0',

@@ -143,7 +143,12 @@ def start_browser(
 
 @mcp.tool()
 def close_browser() -> str:
-    """Close the browser and end the session."""
+    """Close the browser and end the session.
+    This tool should be called after you have finished using the browser
+    so that you can conclude the session and free up any resources that
+    were being used by Chrome/Chromium. If you need to perform more
+    browser actions after using this tool, then you'll need to use the
+    'start_browser' tool again in order to begin a new browser session."""
     global _sb
     if _sb is None:
         return "No browser session was running."
@@ -157,7 +162,12 @@ def close_browser() -> str:
 
 @mcp.tool()
 def browser_status() -> dict:
-    """Return whether a browser session is currently active."""
+    """Return whether a browser session is currently active, along with
+    the URL and title of the current page if the browser session is active.
+    This tool can be used for debugging, as well as for gathering basic
+    info on the current page. For instance, if a click action navigates
+    the browser window to a new page, you can use this tool to find out
+    the URL/title of the new page that the browser window navigated to."""
     if _sb is None:
         return {"running": False}
 
@@ -182,12 +192,13 @@ def browser_status() -> dict:
 @handle_sb_errors
 def navigate(url: str) -> str:
     """Navigate to the given URL in the web browser.
-    If the URL doesn't start with a protocol (eg: `https://`),
-      then `https://` is automatically prefixed in before navigation.
+    If the URL doesn't start with a protocol (eg: "https://"),
+        then "https://"" is automatically prefixed in before navigation.
+        (eg: "seleniumbase.io" becomes "https://seleniumbase.io")
     Waits until the initial HTML document is fully parsed and loaded.
     New pages visited will show up in browser navigation history.
     If the URL is invalid or the page can't load due to an issue,
-      then the corresponding errors will be raised."""
+        then the corresponding errors will be raised."""
     _get_sb().get(url)
     return f"Navigated to {url}"
 
@@ -197,9 +208,31 @@ def navigate(url: str) -> str:
 def navigate_history(
     action: Literal["back", "forward", "reload"] = "back",
 ) -> str:
-    """Move within browser navigation history, or reload the current page.
+    """Navigate through the current browser history or reload the current page.
+    Use this tool to move backward or forward through pages already visited in
+    the current browser session, or to reload the current page when its latest
+    content should be fetched again. This is useful for returning to a
+    previously visited page, retracing browser navigation, recovering from
+    accidental navigation, or refreshing page content.
     Args:
-        action: 'back', 'forward', or 'reload' (reloads ignoring cache).
+        action: The browser navigation operation to perform:
+            - "back": Navigate to the previous page in the browser history.
+              Has no effect if there is no previous history entry.
+            - "forward": Navigate to the next page in the browser history.
+              Has no effect if there is no forward history entry.
+            - "reload": Reload the current page while ignoring the browser
+              cache, forcing the page resources to be fetched again.
+    Returns:
+        A confirmation message describing the navigation operation that was
+        performed.
+    Notes:
+        These operations modify the current browser page and may trigger page
+        loads, redirects, or other navigation events. After navigation, use
+        page-information or page-content tools when you need to verify the
+        resulting URL, title, or page state.
+        "back" and "forward" operate on the browser's existing navigation
+        history; they do not navigate to an arbitrary URL. "reload" stays on
+        the current page but bypasses the browser cache.
     """
     sb = _get_sb()
     if action == "back":
@@ -220,7 +253,22 @@ def navigate_history(
 @mcp.tool()
 @handle_sb_errors
 def get_page_info() -> dict | str:
-    """Get the current URL, title, origin, & navigation history in one call."""
+    """Get comprehensive information about the current browser page.
+    Returns the current URL, document title, origin, and navigation history.
+    Use this tool after navigation or page interactions when you need to verify
+    where the browser is currently located, identify the loaded page, determine
+    the site's origin, or inspect how the browser reached the current page.
+    Returns:
+        A dictionary containing:
+        - url: The current page URL, including the path and query string.
+        - title: The current document title.
+        - origin: The page origin (scheme, host, and port), useful for
+          identifying the current website or comparing cross-origin navigation.
+        - history: The browser's navigation history, useful for understanding
+          the sequence of pages visited during the current session.
+    This is a read-only operation and does not navigate, reload, or modify
+    the current page.
+    """
     sb = _get_sb()
     return {
         "url": sb.get_current_url(),
@@ -238,15 +286,14 @@ def get_page_info() -> dict | str:
 @handle_sb_errors
 def find_elements(
     selector: str,
-    timeout: int | None = 7,
+    timeout: int | float | None = 7,
     include_html: bool = False,
 ) -> dict | str:
     """Find element(s) matching a CSS selector or visible text, and return
     their tag name, text, and outer HTML (optional).
     Args:
-        selector: CSS selector, or text to search for (CDP mode can match
-            elements by visible text as well as by selector, e.g.
-            'a:contains("Sign in")').
+        selector: CSS selector, or text to search for (CDP Mode can match
+            elements by selector or visible text, eg. 'a:contains("Sign in")').
         timeout: Seconds to wait for at least one match to appear.
         include_html: Whether to include the html with each matching element.
     Returns a dict with 'count' (total matches found) and 'matches' (a list
@@ -286,6 +333,7 @@ def get_page_content(
     include_shadow_dom: bool = True,
 ) -> str:
     """Get the visible text or HTML of an element, or of the whole page.
+    You can optionally include any shadow-root elements (default: True).
     Args:
         selector: Element to read from. Omit (or pass None) to read the
             whole page instead of one element.
@@ -306,7 +354,10 @@ def get_page_content(
 @handle_sb_errors
 def get_attributes(selector: str, attribute: str | None = None) -> Any:
     """Get one attribute's value from an element, or all of its attributes
-    as a dict if `attribute` isn't given."""
+    as a dict if `attribute` isn't given.
+    Args:
+        selector: The CSS selector of the element to get the attribute from.
+        attribute: The HTML attribute of the element that you want to get."""
     sb = _get_sb()
     if attribute:
         return sb.get_element_attribute(selector, attribute)
@@ -353,9 +404,13 @@ def check_state(
 
 @mcp.tool()
 @handle_sb_errors
-def get_all_urls(absolute: bool = True) -> list[str] | str:
-    """Get all linked URLs (a, link, img, script, meta) on the page."""
-    return _get_sb().get_all_urls(absolute=absolute)
+def get_all_urls() -> list[str] | str:
+    """Get a list of all linked URLs (a, link, img, script, meta) on the page.
+    The full URL with the prefix will be returned for each item in the list.
+    Eg: `["https://seleniumbase.io", "https://seleniumbase.com"]`.
+    Depending on the element, the URL could be obtained via "href" or "src".
+    This is useful for web-crawlers when looking for more links to crawl."""
+    return _get_sb().get_all_urls()
 
 
 # ---------------------------------------------------------------------------
@@ -370,7 +425,7 @@ def click(
     all_matches: bool = False,
     only_if_visible: bool = False,
     parent_selector: str | None = None,
-    timeout: int | None = 7,
+    timeout: int | float | None = 7,
     scroll: bool = True,
 ) -> str:
     """Click an element matched by a CSS selector, or by visible text
@@ -417,6 +472,8 @@ def hover(selector: str, then_click_selector: str | None = None) -> str:
     """Simulate a mouse hover over an element,
     optionally then clicking a second element that the hover reveals
     (e.g. an item in a dropdown menu).
+    This is useful when clicking an item in a dropdown menu that requires
+    a hover action for the dropdown list of options to appear.
     Args:
         selector: Element to hover over.
         then_click_selector: If given, click this element after hovering.
@@ -432,7 +489,14 @@ def hover(selector: str, then_click_selector: str | None = None) -> str:
 @mcp.tool()
 @handle_sb_errors
 def drag_and_drop(source_selector: str, target_selector: str) -> str:
-    """Drag an element and drop it onto another element."""
+    """Drag a "draggable" element and drop it onto another element
+    by simulating mouse actions via the Chrome DevTools Protocol (CDP).
+    `source_selector` and `target_selector` should be CSS selectors.
+    A wide range of events are simulated to get the most natural
+    drag-and-drop effect, which include "pointerdown", "mousedown",
+    "dragstart", "dragenter", "dragover", "drop", "dragend", "mouseup",
+    and "pointerup", in that specific order.
+    """
     _get_sb().drag_and_drop(source_selector, target_selector)
     return f"Dragged {source_selector} onto {target_selector}"
 
@@ -449,7 +513,7 @@ def fill_input(
         "fast_type",
         "clear",
     ] = "type",
-    timeout: int | None = 7,
+    timeout: int | float | None = 7,
 ) -> str:
     """Set the value of an input, textarea, or contenteditable element.
     If no `timeout` given (0 or None), then SeleniumBase uses 7 seconds.
@@ -523,6 +587,16 @@ def element_action(
         action: 'focus' (move keyboard focus to it), 'highlight' (briefly
             flash it using JavaScript — useful for narrating actions
             on a visible/headed browser), or 'scroll_into_view'.
+    The "focus" action is useful when an element isn't fully interactable
+        until the element is in focus.
+    The "highlight" action is mainly for debugging and demoing purposes.
+        It briefly changes the border color of an element so that a human
+        watching the web browser can have their attention be called to
+        that specific element being highlighted. This "highlight" action
+        briefly slows the automation during the action. This action may
+        also reduce stealth on some websites, which may be undesirable.
+    The "scroll_into_view" action scrolls the page to the element if the
+        element is not currently in view at the current scroll position.
     """
     sb = _get_sb()
     if action == "focus":
@@ -549,7 +623,7 @@ def wait_for(
     state: Literal["present", "visible", "not_visible", "absent"] = "visible",
     selector: str | None = None,
     text: str | None = None,
-    timeout: int | None = 7,
+    timeout: int | float | None = 7,
 ) -> str:
     """Wait for an element or text to reach a given state before returning.
     If no `timeout` given (0 or None), then SeleniumBase uses 7 seconds.
@@ -599,7 +673,7 @@ def assert_that(
     selector: str | None = None,
     expected: str | None = None,
     exact: bool = False,
-    timeout: int | None = 7,
+    timeout: int | float | None = 7,
 ) -> str:
     """Assert a condition about the page or an element. Raises an exception
     (surfaced back as an error string) if the assertion fails within the
@@ -659,14 +733,49 @@ def assert_that(
 @handle_sb_errors
 def manage_cookies(
     action: Literal["get_all", "clear", "save", "load"] = "get_all",
-    filename: str = "cookies.txt"
+    filename: str = "cookies.txt",
 ) -> Any:
-    """Get, clear, save, or load browser cookies.
+    """Manage cookies for the current browser session.
+    Use this tool to inspect, clear, save, or restore browser cookies. Cookie
+    management is useful for inspecting session state, preserving login
+    sessions between browser runs, restoring previously saved sessions, or
+    resetting website state during testing.
     Args:
-        action: 'get_all', 'clear', 'save' (to `filename`), or 'load'
-            (from `filename`).
-    SECURITY: `filename` can potentially expose filesystem operations
-        to an MCP client. Existing files could get overwritten via 'save'.
+        action: The cookie operation to perform:
+            - "get_all": Return all cookies currently available to the browser,
+              including cookie attributes such as name, value, domain, path,
+              expiry, and security flags.
+            - "clear": Delete all cookies from the current browser session.
+              Useful for resetting authentication and website state.
+            - "save": Save the current browser cookies to `filename` so they
+              can be restored in a later browser session. The file may be
+              created or overwritten.
+            - "load": Load cookies from `filename` into the current browser
+              session. Useful for restoring previously saved authentication or
+              session state.
+        filename: Path used by the "save" and "load" actions. Defaults to
+            "cookies.txt". This argument is ignored for "get_all" and "clear".
+            The path is passed to SeleniumBase's cookie persistence methods.
+    Returns:
+        "get_all": The current browser cookies.
+        "clear": A confirmation message after cookies are cleared.
+        "save": A confirmation message containing the destination filename.
+        "load": A confirmation message containing the source filename.
+    Security:
+        Cookie data can contain sensitive authentication credentials, session
+        identifiers, and other private information. Only inspect, save, load,
+        or share cookies when explicitly authorized.
+        `filename` can access the filesystem available to the MCP server.
+        Use only trusted and authorized file paths. The "save" action may
+        overwrite an existing file, so avoid unintended or sensitive
+        destinations.
+    Notes:
+        Cookies belong to the current browser session. Loading previously
+        saved cookies does not guarantee that a login session will be
+        restored because cookies may be expired, invalidated, domain-specific,
+        or dependent on other browser state. Navigate to the appropriate
+        website before loading cookies when the browser must associate them
+        with a particular domain.
     """
     sb = _get_sb()
     if action == "get_all":
@@ -696,10 +805,19 @@ def manage_storage(
 ) -> Any:
     """Get or set a key in the page's localStorage or sessionStorage.
     Args:
-        storage: 'local' or 'session'.
+        key: The localStorage or sessionStorage key to use.
+        value: The value to set when using 'set' as the `action`.
+        storage: 'local' (localStorage) or 'session' (sessionStorage).
         action: 'get' or 'set'. ('set' requires `value`).
-    WARNING: This tool can expose authentication/session secrets.
-        Only use against trusted sites and MCP clients.
+    Use this tool for managing localStorage and/or sessionStorage.
+    Storage is managed via the simple JavaScript calls listed below:
+        `localStorage.getItem(key)`
+        `sessionStorage.getItem(key)`
+        `localStorage.setItem(key, value)`
+        `sessionStorage.setItem(key, value)`
+    WARNING: This tool can expose authentication/session secrets that
+        are are stored in localStorage/sessionStorage on the site.
+        Only use against trusted sites and with trusted MCP clients.
     """
     sb = _get_sb()
     if action not in ("get", "set"):
@@ -729,10 +847,15 @@ def scroll(
     direction: Literal["up", "down", "top", "bottom"] = "down",
     amount: int = 25,
 ) -> str:
-    """Scroll the page.
+    """Scroll the page by the given amount or to the location given.
     Args:
         direction: 'up' or 'down' (relative, by `amount`), 'top', or 'bottom'.
         amount: Relative scroll distance; only used for 'up'/'down'.
+    When scrolling with `direction` 'up' or 'down', the `amount` represents
+    a percentage of the window height. (Eg. 'down' with `amount` 25 means
+    scroll the page down by 25% of the current window height.) If setting the
+    `direction` to 'top' or 'bottom', then the 'amount' value is ignored. 'top'
+    scrolls to the top of the page. 'bottom' scrolls to the bottom of the page.
     """
     sb = _get_sb()
     if direction == "up":
@@ -773,6 +896,15 @@ def manage_window(
     Args:
         action: 'get_rect', 'set_rect' (requires x, y, width, height),
             'maximize', or 'minimize'.
+        x: The x position on screen for the 'set_rect' `action` only.
+        y: The y position on screen for the 'set_rect' `action` only.
+        width: The window width for the 'set_rect' `action` only.
+        height: The window height for the 'set_rect' `action` only.
+    The 'get_rect' action returns the coordinates of the browser window.
+    The 'set_rect' action lets you set new coordinates for the browser window.
+    The 'maximize' action maximizes the current browser window.
+    The 'minimize' action minimizes the current browser window.
+    The Chrome DevTools Protocol (CDP) is used to change the window state.
     """
     sb = _get_sb()
     if action == "get_rect":
@@ -817,6 +949,12 @@ def manage_tabs(
         url: Used with action='open'.
         tab_index: Used with action='switch'; the index as returned by 'list'.
         switch_to: Used with action='open'; whether to switch to the new tab.
+    Since performing browser actions (such as clicking on a link) can open new
+    tabs, it is important to keep track of any new tabs opened so that you can
+    switch to the new tab as needed (or close the active tab). Additionally,
+    you may want to open a new tab yourself if you need to use multiple tabs
+    within the same browser session. Listing tabs with the 'list' `action` is
+    important so that your 'tab_index' for switching tabs is not out-of-range.
     """
     sb = _get_sb()
     if action == "list":
@@ -864,9 +1002,24 @@ def manage_tabs(
 @mcp.tool()
 @handle_sb_errors
 def solve_captcha() -> str:
-    """Attempt to solve a CAPTCHA (e.g. Cloudflare Turnstile) on the page."""
+    """Attempt to solve a CAPTCHA (e.g. Cloudflare Turnstile) on the page.
+    This tool uses the Chrome DevTools Protocol (CDP) in order to perform
+    a click (with offset) in order to click the checkbox that's located
+    in various CAPTCHAs such as Cloudflare Turnstile, reCAPTCHA, and the
+    FriendlyCaptcha. Since this click is performed with CDP, it is much
+    stealthier than JavaScript clicks that set 'isTrusted' to False.
+    Since many of these CAPTCHAs are generally located inside shadow-root
+    elements, it is not straightforward to determine if the click succeeded.
+    Therefore, this tool will only state that it attempted to solve a
+    CAPTCHA, rather than state the result. Since solving a Cloudflare
+    Turnstile CAPTCHA often results in a "cf_clearance" cookie appearing
+    within browser cookies, a follow-up to this tool could involve using
+    the 'manage_cookies' tool to see if that "cf_clearance" cookie appeared
+    after using this method to solve that CAPTCHA. To determine if there's
+    a CAPTCHA on the page before using this tool, you could first use the
+    'get_page_content' tool to inspect the page HTML for any CAPTCHAs."""
     _get_sb().solve_captcha()
-    return "Attempted captcha solve."
+    return "Attempted CAPTCHA solve."
 
 
 # ---------------------------------------------------------------------------
@@ -889,8 +1042,14 @@ def save_output(
     If 'screenshot' format, then the page is saved as a PNG (.png) file.
     If 'html' format, then the page source is saved to an HTML (.html) file.
     If 'pdf' format, then the page is saved as a PDF (.pdf) file.
+    This method is useful for creating artifacts as a result of scraping data
+    from websites. This is especially important for saving results and data
+    to your local machine for further processing. (For example, if this MCP
+    server is being used for automated testing, then if this server finds a
+    bug on a website, then it can save all the details to the local machine
+    using any of this tool's supported formats: "screenshot", "html", "pdf".)
     SECURITY: `filename`/`folder` can potentially expose filesystem operations
-        to an MCP client. Existing files could get overwritten with the save.
+        to an MCP client. Existing files could get overwritten during a save.
     """
     sb = _get_sb()
     if format == "screenshot":
@@ -915,6 +1074,11 @@ def save_output(
 def run_javascript(expression: str) -> Any:
     """Evaluate a JavaScript expression in the page context and return the
     result. This method can run any arbitrary JavaScript on any visited site.
+    JavaScript evaluation is handled by the 'Runtime.evaluate' function of the
+    Chrome DevTools Protocol (CDP). When CDP's `Runtime.evaluate` function is
+    called, it also sets these optional parameters: 'returnByValue' to True,
+    'userGesture' to True, 'allowUnsafeEvalBlockedByCSP' to True, and
+    'awaitPromise' to True. See the Chrome DevTools Protocol docs for details.
     SECURITY: This provides unrestricted JavaScript execution in the browser
     context. Only expose this MCP server to trusted clients."""
     return _get_sb().evaluate(expression)
@@ -922,8 +1086,11 @@ def run_javascript(expression: str) -> Any:
 
 @mcp.tool()
 @handle_sb_errors
-def wait_seconds(seconds: float) -> str:
-    """Pause execution for a number of seconds."""
+def wait_seconds(seconds: int | float) -> str:
+    """Pause script execution for a duration of seconds (int or float).
+    All this does is call Python `time.sleep(seconds)` in the backend.
+    It is blocking behavior - no actions are performed while waiting.
+    Don't use this if you need to call other tools during the wait."""
     _get_sb().sleep(seconds)
     return f"Waited {seconds}s"
 
