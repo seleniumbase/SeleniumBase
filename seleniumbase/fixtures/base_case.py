@@ -4058,11 +4058,17 @@ class BaseCase(unittest.TestCase):
     def open_new_window(self, switch_to=True, **kwargs):
         """Opens a new browser tab/window and switches to it by default."""
         url = None
-        if self.__looks_like_a_page_url(str(switch_to)):
+        if "." in str(switch_to):
             # Different API for CDP Mode: First arg is a `url`.
             # (Also, don't break backwards compat for reg mode)
             url = switch_to
             switch_to = True
+        if url and not page_utils.is_valid_url(url):
+            new_url = "https://" + url
+            if not page_utils.is_valid_url(new_url):
+                raise Exception(f"Invalid URL: {url}")
+            else:
+                url = new_url
         if self.__is_cdp_swap_needed():
             self.cdp.open_new_tab(url=url, switch_to=switch_to, **kwargs)
             return
