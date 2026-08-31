@@ -1475,6 +1475,12 @@ class CDPMethods():
         driver = self.driver
         if not isinstance(url, str):
             url = "about:blank"
+        if url and not page_utils.is_valid_url(url):
+            new_url = "https://" + url
+            if not page_utils.is_valid_url(new_url):
+                raise Exception(f"Invalid URL: {url}")
+            else:
+                url = new_url
         if hasattr(driver, "cdp_base"):
             try:
                 self.loop.run_until_complete(
