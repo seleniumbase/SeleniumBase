@@ -54,7 +54,7 @@ if sys.argv[-1] == "publish":
         print("\n*** Installing build: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'build'")
         print("\n*** Installing pkginfo: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install 'pkginfo'")
+        os.system("python -m pip install --upgrade 'pkginfo'")
         print("\n*** Installing readme-renderer: *** (For PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'readme-renderer'")
         print("\n*** Installing jaraco.classes: *** (For PyPI uploads)\n")
