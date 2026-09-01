@@ -827,14 +827,27 @@ class CDPMethods():
             driver = driver.cdp_base
         return self.loop.run_until_complete(driver.reset_permissions())
 
-    def get_all_urls(self, absolute=True):
+    def get_all_urls(self, absolute=True, selector=None):
         """
-        Convenience function that returns all links (a,link,img,script,meta).
+        Convenience function that returns all links (a,link,img,script).
         :param absolute:
          Try to build all the links in absolute form
          instead of "as is", often relative.
+        :param selector:
+         Optionally provide a selector to get the HTML from,
+         instead of the entire page.
         :return: List of URLs.
         """
+        if isinstance(absolute, str) and selector is None:
+            # The `selector` is usually first, so the user may get confused.
+            # Therefore, if first arg is string, it's probably the selector.
+            selector = absolute
+            absolute = True
+        if selector:
+            html = self.find_element(selector).get_html()
+            soup = self.get_beautiful_soup(html)
+            page_url = self.get_current_url()
+            return page_utils._get_unique_links(page_url, soup)
         return self.loop.run_until_complete(
             self.page.get_all_urls(absolute=absolute)
         )

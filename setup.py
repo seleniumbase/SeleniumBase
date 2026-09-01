@@ -303,7 +303,7 @@ setup(
         # Required for local MCP server debugging with:
         #     mcp dev server.py
         "uv": [
-            "uv>=0.12.5"
+            "uv>=0.12.8"
         ],
     },
     packages=[

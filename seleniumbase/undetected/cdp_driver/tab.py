@@ -1303,15 +1303,15 @@ class Tab(Connection):
         self._download_behavior = ["allow", str(path.resolve())]
 
     async def get_all_linked_sources(self) -> list["element.Element"]:
-        """Get all elements of tag: link, a, img, scripts meta, video, audio"""
+        """Get all elements of tag: link, a, img, script"""
         all_assets = await self.query_selector_all(
-            selector="a,link,img,script,meta"
+            selector="a,link,img,script"
         )
         return [element.create(asset, self) for asset in all_assets]
 
     async def get_all_urls(self, absolute=True) -> list[str]:
         """
-        Convenience function, which returns all links (a,link,img,script,meta).
+        Convenience function, which returns all links (a,link,img,script).
         :param absolute:
          Try to build all the links in absolute form
          instead of "as is", often relative.
@@ -1321,7 +1321,7 @@ class Tab(Connection):
 
         res = []
         all_assets = await self.query_selector_all(
-            selector="a,link,img,script,meta"
+            selector="a,link,img,script"
         )
         for asset in all_assets:
             if not absolute:
