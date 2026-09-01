@@ -32,14 +32,8 @@ Tool-selection philosophy:
 - Use wait_for when the agent needs to wait for a condition to become true.
 - Use assert_that when the agent needs to verify an expected condition and
   treat failure as an assertion error.
-- Use click/fill_input/select_option/hover/act_on_element for interactions.
-
-Note on elements: CDP-mode element objects (from find_element/find_all) are
-live handles with their own methods (.click(), .get_html(), ...) that can't
-cross the MCP boundary as stateful objects. Tools here resolve elements
-immediately to plain dicts (tag, text, html) rather than returning handles.
-To act on one of several matches, use click(selector, nth=...) rather than
-find + click.
+- Use click/fill_input/select_option/hover_with_action/focus_on for
+  interactions and element positioning.
 """
 from __future__ import annotations
 import atexit
@@ -708,54 +702,84 @@ def click(
 
 @mcp.tool()
 @handle_sb_errors
-def hover(
-    selector: str,
-    then_click_selector: str | None = None,
+def hover_with_action(
+    selector1: str,
+    selector2: str | None = None,
+    action: Literal[
+        "none",
+        "click",
+        "drag_and_drop",
+    ] = "none",
 ) -> str:
-    """Hover over an element, optionally clicking an element revealed by hover.
+    """Hover over an element, optionally click another element, or drag-&-drop.
 
-    Use this for menus, dropdowns, tooltips, or other interfaces where an
-    element must first be hovered before its target becomes available.
+    Use this tool for hover interactions, hover-triggered menus, and
+    drag-and-drop operations.
 
     Args:
-        selector: Element to hover over.
-        then_click_selector: Optional element to click after the hover.
-            Useful for a submenu item or dropdown option revealed by hover.
+        selector1:
+            The primary element selector.
+
+            For action="none", this is the element to hover over.
+
+            For action="click", this is the element to hover over before
+            clicking selector2.
+
+            For action="drag_and_drop", this is the draggable source element.
+
+        selector2:
+            The secondary element selector.
+
+            Required for action="click", where it identifies the element
+            revealed or targeted after hovering selector1.
+
+            Required for action="drag_and_drop", where it identifies the
+            destination/drop target.
+
+            Not used for action="none".
+
+        action:
+            - "none": Hover over selector1 only.
+            - "click": Hover over selector1, then click selector2.
+            - "drag_and_drop": Drag selector1 and drop it onto selector2.
 
     Returns:
-        A confirmation describing the hover/click operation.
+        A confirmation describing the performed operation.
+
+    Tool selection:
+        - Simple hover -> action="none".
+        - Hover over one element and then click another -> action="click".
+        - Drag one element onto another -> action="drag_and_drop".
+
+    Notes:
+        For action="click", selector1 is the hover target and selector2 is
+        the click target.
+
+        For action="drag_and_drop", selector1 is the source and selector2
+        is the destination.
     """
     sb = _get_sb()
 
-    if then_click_selector:
-        sb.hover_and_click(selector, then_click_selector)
-        return f"Hovered {selector} and clicked {then_click_selector}"
+    if action == "none":
+        sb.hover_element(selector1)
+        return f"Hovered {selector1}"
 
-    sb.hover_element(selector)
-    return f"Hovered {selector}"
+    if action == "click":
+        if selector2 is None:
+            return "Error: action='click' requires selector2."
+        sb.hover_and_click(selector1, selector2)
+        return f"Hovered {selector1} and clicked {selector2}"
 
+    if action == "drag_and_drop":
+        if selector2 is None:
+            return "Error: action='drag_and_drop' requires selector2."
+        sb.drag_and_drop(selector1, selector2)
+        return f"Dragged {selector1} onto {selector2}"
 
-@mcp.tool()
-@handle_sb_errors
-def drag_and_drop(
-    source_selector: str,
-    target_selector: str,
-) -> str:
-    """Drag a draggable element and drop it onto another element.
-
-    Drag-and-drop is performed through SeleniumBase's CDP browser controls,
-    simulating the pointer and mouse events expected by web applications.
-
-    Args:
-        source_selector: CSS selector identifying the draggable source.
-        target_selector: CSS selector identifying the drop target.
-
-    The simulated interaction includes events such as pointerdown,
-    mousedown, dragstart, dragenter, dragover, drop, dragend, mouseup, and
-    pointerup.
-    """
-    _get_sb().drag_and_drop(source_selector, target_selector)
-    return f"Dragged {source_selector} onto {target_selector}"
+    return (
+        f"Error: unknown action '{action}'. "
+        "Use 'none', 'click', or 'drag_and_drop'."
+    )
 
 
 @mcp.tool()
@@ -860,50 +884,52 @@ def select_option(
 
 @mcp.tool()
 @handle_sb_errors
-def act_on_element(
+def focus_on(
     selector: str,
     action: Literal[
+        "scroll_to_element",
         "focus",
         "highlight",
-        "scroll_into_view",
-    ] = "focus",
+    ] = "scroll_to_element",
 ) -> str:
-    """Perform a non-click positioning or debugging action on an element.
+    """Scroll to, focus, or highlight an element.
 
-    Use this tool when an element needs to be focused, highlighted for human
-    observation/debugging, or scrolled into the viewport.
+    Use this tool when an element needs to be brought into view, focused for
+    keyboard interaction, or highlighted for debugging/demonstration.
 
     This tool does NOT click, type into, select from, hover over, or otherwise
     activate the element.
 
     Args:
         selector: CSS selector or SeleniumBase selector identifying the target.
+
         action:
+            - "scroll_to_element": Scroll the page until the element is in
+              the current viewport. This is the default action.
             - "focus": Move keyboard focus to the element.
             - "highlight": Temporarily highlight the element for debugging or
               demonstration. This can affect timing and may reduce stealth.
-            - "scroll_into_view": Scroll the page until the element is in the
-              current viewport.
 
     Tool selection:
+        - Bring an element into view -> use focus_on with the default action.
+        - Focus an element -> use focus_on(action="focus").
+        - Highlight element for debugging -> use focus_on(action="highlight").
         - Click -> use click.
         - Type into a form control -> use fill_input.
-        - Hover -> use hover.
-        - Focus, highlight, or scroll without activating -> use
-          act_on_element.
+        - Hover -> use hover_with_action.
     """
     sb = _get_sb()
 
-    if action == "focus":
+    if action == "scroll_to_element":
+        sb.scroll_into_view(selector)
+    elif action == "focus":
         sb.find_element(selector).focus()
     elif action == "highlight":
         sb.highlight(selector)
-    elif action == "scroll_into_view":
-        sb.scroll_into_view(selector)
     else:
         return (
             f"Error: unknown action '{action}'. "
-            "Use 'focus', 'highlight', or 'scroll_into_view'."
+            "Use 'scroll_to_element', 'focus', or 'highlight'."
         )
 
     return f"{action} done for {selector}"
@@ -1221,8 +1247,8 @@ def scroll(
             up/down scrolling. For example, amount=25 scrolls approximately
             one quarter of the viewport height.
 
-    Use act_on_element(action="scroll_into_view") when the goal is to reveal
-    a specific element rather than scroll the page by a relative amount.
+    Use focus_on(action="scroll_to_element") when the goal is to reveal a
+    specific element rather than scroll the page by a relative amount.
     """
     sb = _get_sb()
 

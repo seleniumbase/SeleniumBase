@@ -99,11 +99,10 @@ Restart Claude Desktop. You should see a 🔨 tools icon indicating the server c
 * `get_attributes`
 * `check_state`
 * `click`
-* `hover`
-* `drag_and_drop`
+* `hover_with_action`
 * `fill_input`
 * `select_option`
-* `act_on_element`
+* `focus_on`
 * `wait_for`
 * `assert_that`
 * `manage_cookies`
@@ -150,14 +149,14 @@ claude mcp add seleniumbase-mcp -- uv run seleniumbase-mcp
 
 ## Tools exposed
 
-Tools here are grouped around a shared `selector` convention: `selector` args accept a CSS selector, or visible text (e.g. `a:contains("Sign in")`). Several near-identical one-off tools (e.g. separate click/wait/cookie/storage variants) have been consolidated into a single tool with a `mode`/`action`/`state`/`check` parameter, so there are fewer near-neighbor tools to disambiguate between while every underlying capability stays available.
+Tools here are grouped around a shared `selector` convention: `selector` args accept a CSS selector, or visible text (e.g. `a:contains("Sign in")`). Several near-identical one-off tools (e.g. separate click/hover/drag/wait/cookie/storage variants) have been consolidated into a single tool with a `mode`/`action`/`state`/`check` parameter, so there are fewer near-neighbor tools to disambiguate between while every underlying capability stays available.
 
 | Group             | Tool(s)                                                                                                                                          |
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Session           | `start_browser(url, headless, use_chromium, browser_executable_path, incognito, guest, ad_block, proxy)`, `close_browser`                        |
 | Navigation        | `navigate`, `navigate_history(action: back/forward/reload)`, `get_page_info` (running status, url, title, origin, user agent, history in one call) |
 | Finding & reading | `find_elements(selector, timeout, include_html)`, `get_content(selector, output_format: text/html/urls, include_shadow_dom)`, `get_attributes`, `check_state(check: present/visible/count/text_visible)` |
-| Interacting       | `click(selector, nth, all_matches, only_if_visible, parent_selector, timeout, scroll)`, `hover(selector, then_click_selector)`, `drag_and_drop`, `fill_input(mode: type/append/set_value/fast_type/clear)`, `select_option(by: text/value/index)`, `act_on_element(action: focus/highlight/scroll_into_view)` |
+| Interacting       | `click(selector, nth, all_matches, only_if_visible, parent_selector, timeout, scroll)`, `hover_with_action(selector1, selector2, action: none/click/drag_and_drop)`, `fill_input(mode: type/append/set_value/fast_type/clear)`, `select_option(by: text/value/index)`, `focus_on(action: scroll_to_element/focus/highlight)` |
 | Waiting           | `wait_for(state: present/visible/not_visible/absent, text)`                                                                                        |
 | Assertions        | `assert_that(check: element_present/element_visible/text/title/url/url_contains)`                                                                  |
 | Cookies & storage | `manage_cookies(action: get_all/clear/save/load)`, `manage_storage(storage: local/session, action: get/set)`                                       |
@@ -173,6 +172,14 @@ Tools here are grouped around a shared `selector` convention: `selector` args ac
 - **Blocking calls.** SeleniumBase's calls are synchronous and will block the server while a page loads or an element is waited on. For a single-user local tool this is fine; for a multi-client server you'd want to run them in a thread pool via `asyncio.to_thread`.
 
 - **Errors surface as descriptive strings.** Every tool (aside from session-lifecycle tools, which handle their own errors) is wrapped by a `handle_sb_errors` decorator: if a selector isn't found or an assertion fails, `sb_cdp.Chrome` raises an exception, and the decorator catches it and returns a string like `Error in click: NoSuchElementException - ...` instead of a raw tool error. This lets the calling agent read the failure and self-correct (e.g. by waiting longer or trying a different selector) rather than just seeing an opaque tool-call failure.
+
+- **No standalone session-status tool.** There is no separate `browser_status`-style tool. `get_page_info` doubles as the status check: it returns `{"running": False}` (optionally with an `error` field) when there's no active session or the session errors out, and full page metadata (`running: True`, `url`, `title`, `origin`, `user_agent`, `history`) otherwise.
+
+- **Content reading is consolidated into one tool.** `get_content` replaces what used to be three separate reads: page/element text, page/element HTML, and page-linked URLs. Pick the mode with `output_format` (`"text"`, `"html"`, or `"urls"`) rather than calling a dedicated `get_page_content` or `get_all_urls` tool — those no longer exist. Likewise, there's no standalone `get_user_agent` tool anymore; the User-Agent string is one of the fields returned by `get_page_info`.
+
+- **Hover, click-after-hover, and drag-and-drop share one tool.** `hover_with_action(selector1, selector2, action)` replaces the earlier separate `hover` and `drag_and_drop` tools. `action="none"` hovers `selector1` only; `action="click"` hovers `selector1` then clicks `selector2` (useful for dropdown/submenu items revealed by hovering); `action="drag_and_drop"` drags `selector1` onto `selector2`. (`selector2` is required when `action` is `"click"` or `"drag_and_drop"`.)
+
+- **Non-activating element actions are `focus_on`.** What used to be `act_on_element` is now `focus_on(selector, action)`, with actions `scroll_to_element` (the default), `focus`, and `highlight` — note the default action changed from focusing the element to scrolling it into view. None of these actions click, type into, select from, or otherwise activate the element; use `click`, `fill_input`, `select_option`, or `hover_with_action` for that.
 
 - **Elements don't cross the wire as handles.** In native CDP Mode, `find_element()` returns a live object with its own methods (`el.click()`, `el.get_html()`, ...). MCP tools can only return JSON-serializable data, so `find_elements` resolves each match immediately to a plain dict (`tag_name`, `text`, and optionally `html`) instead of returning a handle you could call further methods on. If you need to act on one of several matches, use `click(selector, nth=...)` (acts by position) rather than "find, then click" as two separate steps.
 
