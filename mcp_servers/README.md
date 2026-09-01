@@ -8,7 +8,7 @@ This server, (located in `server.py`), uses SeleniumBase's [Pure CDP Mode](https
 
 Other SeleniumBase automation styles, (such as `Driver()` and `SB()`),  have their own MCP servers in [seleniumbase/seleniumbase-mcp](https://github.com/seleniumbase/seleniumbase-mcp).
 
-Defaults to `headless=False`. Use `headless=True` when starting a session for headless mode, which may be less stealthy.
+`headless` defaults to `None` in `start_browser`, which resolves to headless on Linux (typical for server/container environments) and headed on Windows/macOS. Pass `headless=True` or `headless=False` explicitly to override this for any OS; headless mode may be less stealthy.
 
 ## 1. Install
 
@@ -91,21 +91,19 @@ Restart Claude Desktop. You should see a 🔨 tools icon indicating the server c
 
 * `start_browser`
 * `close_browser`
-* `browser_status`
 * `navigate`
 * `navigate_history`
 * `get_page_info`
 * `find_elements`
-* `get_page_content`
+* `get_content`
 * `get_attributes`
 * `check_state`
-* `get_all_urls`
 * `click`
 * `hover`
 * `drag_and_drop`
 * `fill_input`
 * `select_option`
-* `element_action`
+* `act_on_element`
 * `wait_for`
 * `assert_that`
 * `manage_cookies`
@@ -117,7 +115,6 @@ Restart Claude Desktop. You should see a 🔨 tools icon indicating the server c
 * `save_output`
 * `run_javascript`
 * `wait_seconds`
-* `get_user_agent`
 
 ## 4. Connect it to Claude Code
 
@@ -157,17 +154,17 @@ Tools here are grouped around a shared `selector` convention: `selector` args ac
 
 | Group             | Tool(s)                                                                                                                                          |
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Session           | `start_browser(url, headless, use_chromium, browser_executable_path, incognito, guest, ad_block, proxy)`, `close_browser`, `browser_status`      |
-| Navigation        | `navigate`, `navigate_history(action: back/forward/reload)`, `get_page_info` (url, title, origin, history in one call)                            |
-| Finding & reading | `find_elements(selector, timeout, include_html)`, `get_page_content(selector, as_html, include_shadow_dom)`, `get_attributes`, `check_state(check: present/visible/count/text_visible)`, `get_all_urls` |
-| Interacting       | `click(selector, nth, all_matches, only_if_visible, parent_selector, timeout, scroll)`, `hover(selector, then_click_selector)`, `drag_and_drop`, `fill_input(mode: type/append/set_value/fast_type/clear)`, `select_option(by: text/value/index)`, `element_action(action: focus/highlight/scroll_into_view)` |
+| Session           | `start_browser(url, headless, use_chromium, browser_executable_path, incognito, guest, ad_block, proxy)`, `close_browser`                        |
+| Navigation        | `navigate`, `navigate_history(action: back/forward/reload)`, `get_page_info` (running status, url, title, origin, user agent, history in one call) |
+| Finding & reading | `find_elements(selector, timeout, include_html)`, `get_content(selector, output_format: text/html/urls, include_shadow_dom)`, `get_attributes`, `check_state(check: present/visible/count/text_visible)` |
+| Interacting       | `click(selector, nth, all_matches, only_if_visible, parent_selector, timeout, scroll)`, `hover(selector, then_click_selector)`, `drag_and_drop`, `fill_input(mode: type/append/set_value/fast_type/clear)`, `select_option(by: text/value/index)`, `act_on_element(action: focus/highlight/scroll_into_view)` |
 | Waiting           | `wait_for(state: present/visible/not_visible/absent, text)`                                                                                        |
 | Assertions        | `assert_that(check: element_present/element_visible/text/title/url/url_contains)`                                                                  |
 | Cookies & storage | `manage_cookies(action: get_all/clear/save/load)`, `manage_storage(storage: local/session, action: get/set)`                                       |
 | Scrolling         | `scroll(direction: up/down/top/bottom, amount)`                                                                                                    |
 | Windows & tabs    | `manage_window(action: get_rect/set_rect/maximize/minimize)`, `manage_tabs(action: list/open/switch/switch_newest/close_active)`                   |
 | Captcha           | `solve_captcha`                                                                                                                                    |
-| Output & misc     | `save_output(format: screenshot/html/pdf)`, `run_javascript`, `wait_seconds`, `get_user_agent`                                                     |
+| Output & misc     | `save_output(format: screenshot/html/pdf)`, `run_javascript`, `wait_seconds`                                                                        |
 
 ## Design notes / things to adapt for your use case
 
