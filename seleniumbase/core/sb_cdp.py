@@ -1280,6 +1280,26 @@ class CDPMethods():
         self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.sleep(0.025))
 
+    def fast_keys(self, selector, text, timeout=None):
+        """Similar to send_keys(), but presses keys at full speed.
+        This method DOES NOT clear the text field before pressing."""
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        self.__slow_mode_pause_if_set()
+        element = self.select(selector, timeout=timeout)
+        element.scroll_into_view()
+        if text.endswith("\n") or text.endswith("\r"):
+            text = text[:-1] + "\r\n"
+        elif (
+            element.tag_name == "textarea"
+            and "\n" in text
+            and "\r" not in text
+        ):
+            text = text.replace("\n", "\r")
+        element.send_keys(text, fast=True)
+        self.__slow_mode_pause_if_set()
+        self.loop.run_until_complete(self.page.sleep(0.025))
+
     def press_keys(self, selector, text, timeout=None):
         """Similar to send_keys(), but presses keys at human speed."""
         if not timeout:
@@ -1313,7 +1333,8 @@ class CDPMethods():
         self.loop.run_until_complete(self.page.sleep(0.025))
 
     def fast_type(self, selector, text, timeout=None):
-        """Similar to send_keys(), but presses keys really fast.
+        """Similar to type(), but presses keys at full speed.
+        This method clears the text field before typing.
         (Don't use if going for stealth. This is just for speed.)"""
         if not timeout:
             timeout = settings.SMALL_TIMEOUT

@@ -821,6 +821,7 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
     cdp.remove_from_dom = CDPM.remove_from_dom
     cdp.remove_elements = CDPM.remove_elements
     cdp.send_keys = CDPM.send_keys
+    cdp.fast_keys = CDPM.fast_keys
     cdp.press_keys = CDPM.press_keys
     cdp.type = CDPM.type
     cdp.fast_type = CDPM.fast_type
