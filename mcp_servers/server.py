@@ -23,12 +23,11 @@ access to the underlying browser-automation capabilities without
 having to choose between multiple near-identical tools.
 
 Tool-selection philosophy:
-- Use get_page_info for browser/page metadata such as URL, title, origin,
-  and navigation history.
+- Use get_page_info for browser/page metadata such as URL, title, or origin.
 - Use get_content for reading visible text or HTML.
 - Use find_elements for discovering and inspecting multiple matching
   elements as structured data.
-- Use check_state for an immediate, non-waiting state check.
+- Use check_for_condition for an immediate, non-waiting state check.
 - Use wait_for when the agent needs to wait for a condition to become true.
 - Use assert_condition when the agent needs to verify an expected condition
   and treat failure as an assertion error.
@@ -205,18 +204,33 @@ def start_browser(
             f"(url={url!r}, headless={effective_headless}, "
             f"use_chromium={use_chromium})"
         )
-    except Exception as e:
-        if _sb is not None:
-            try:
-                _sb.quit()
-            except Exception:
-                pass
-            _sb = None
-
-        return (
-            f"Error starting browser: "
-            f"{e.__class__.__name__} - {str(e).strip()}"
-        )
+    except Exception:
+        # Retry once if the first launch attempt fails.
+        # (A retry helped when testing on Glama's MCP Inspector.)
+        try:
+            if _sb is not None:
+                try:
+                    _sb.quit()
+                except Exception:
+                    pass
+                _sb = None
+            _sb = sb_cdp.Chrome(url, **kwargs)
+            return (
+                f"Started Pure CDP Mode browser "
+                f"(url={url!r}, headless={effective_headless}, "
+                f"use_chromium={use_chromium})"
+            )
+        except Exception as e:
+            if _sb is not None:
+                try:
+                    _sb.quit()
+                except Exception:
+                    pass
+                _sb = None
+            return (
+                f"Error starting browser: "
+                f"{e.__class__.__name__} - {str(e).strip()}"
+            )
 
 
 @mcp.tool()
@@ -268,14 +282,12 @@ def get_page_info() -> dict | str:
         - title: The current document title.
         - origin: The current page origin (scheme, host, and port).
         - user_agent: The browser's current User-Agent string.
-        - history: The browser navigation history for the current session.
 
     Tool selection:
-        - Need URL, title, origin, User-Agent, or navigation history ->
-          use get_page_info.
+        - Need URL, title, origin, or User-Agent -> use get_page_info.
         - Need visible page text or HTML -> use get_content.
         - Need information about matching elements -> use find_elements.
-        - Need an immediate state check -> use check_state.
+        - Need an immediate state check -> use check_for_condition.
         - Need to wait for a condition -> use wait_for.
         - Need to verify an expected condition -> use assert_condition.
 
@@ -296,7 +308,6 @@ def get_page_info() -> dict | str:
             "title": _sb.get_title(),
             "origin": _sb.get_origin(),
             "user_agent": _sb.get_user_agent(),
-            "history": _sb.get_navigation_history(),
         }
     except Exception as e:
         return {
@@ -436,7 +447,7 @@ def find_elements(
           use get_content.
         - Need to click one of several matches -> use click with nth.
         - Need to know whether an element is present/visible ->
-          use check_state.
+          use check_for_condition.
 
     Note:
         Element handles cannot be persisted across MCP calls. If you find
@@ -512,15 +523,14 @@ def get_content(
         URLs before navigating to them.
 
     Tool selection:
-        - Need URL, title, origin, User-Agent, or navigation history ->
-          use get_page_info.
+        - Need URL, title, origin, or User-Agent -> use get_page_info.
         - Need visible text -> use output_format="text".
         - Need page or element HTML -> use output_format="html".
         - Need URLs from the page or an element -> use output_format="urls".
         - Need structured information about matching elements ->
           use find_elements.
         - Need to check whether an element is present or visible ->
-          use check_state.
+          use check_for_condition.
         - Need to wait for content to appear -> use wait_for.
     """
     sb = _get_sb()
@@ -568,7 +578,7 @@ def get_attributes(
         - Need to discover multiple matching elements or inspect their text ->
           use 'find_elements'.
         - Need visible text or HTML content -> use 'get_content'.
-        - Need to check presence or visibility -> use 'check_state'.
+        - Need to check presence or visibility -> use 'check_for_condition'.
 
     This is a read-only operation and does not modify the element.
     """
@@ -582,7 +592,7 @@ def get_attributes(
 
 @mcp.tool()
 @handle_sb_errors
-def check_state(
+def check_for_condition(
     check: Literal["present", "visible", "count", "text_visible"] = "visible",
     selector: str = "body",
     text: str | None = None,
@@ -610,7 +620,7 @@ def check_state(
         count. Missing elements do not cause an exception for these checks.
 
     Tool selection:
-        - Immediate yes/no/count observation -> use check_state.
+        - Immediate yes/no/count observation -> use check_for_condition.
         - Wait until a state becomes true/false -> use wait_for.
         - Verify an expected condition and fail when it is not met ->
           use assert_condition.
@@ -970,8 +980,9 @@ def wait_for(
     Use this tool when the page is dynamic and an automation step must wait
     for a condition before continuing.
 
-    Unlike check_state, this tool intentionally waits. Unlike assert_condition,
-    its purpose is synchronization rather than validating a test expectation.
+    Unlike check_for_condition, this tool intentionally waits.
+    Unlike assert_condition, its purpose is synchronization
+    rather than validating a test expectation.
 
     Args:
         state:
@@ -990,7 +1001,7 @@ def wait_for(
         A confirmation when the requested condition is reached.
 
     Tool selection:
-        - Check current state immediately -> use check_state.
+        - Check current state immediately -> use check_for_condition.
         - Wait for a state/content transition -> use wait_for.
         - Verify an expected value/condition -> use assert_condition.
     """
@@ -1038,9 +1049,10 @@ def assert_condition(
 ) -> str:
     """Verify an expected browser condition and fail when it is not met.
 
-    Use this tool for explicit verification. Unlike check_state, which simply
-    reports the current state, assert_condition treats a failed expectation
-    as an error. Unlike wait_for, URL/title checks do not wait.
+    Use this tool for explicit verification. Unlike check_for_condition,
+    which simply reports True or False on the current state,
+    assert_condition treats a failed expectation as an error.
+    Unlike wait_for, URL/title checks do not wait.
 
     Args:
         check:
@@ -1067,7 +1079,7 @@ def assert_condition(
         fails; the MCP error wrapper converts it to a descriptive result.
 
     Tool selection:
-        - Just inspect current state -> use check_state.
+        - Just inspect current state -> use check_for_condition.
         - Wait for a condition to become true -> use wait_for.
         - Verify that an expected condition is true -> use assert_condition.
     """
@@ -1201,6 +1213,24 @@ def manage_storage(
 ) -> Any:
     """Get or set a key in localStorage or sessionStorage.
 
+    Use this tool when the browser workflow needs to inspect or modify
+    JavaScript Web Storage belonging to the current page origin.
+
+    Tool selection:
+        - Need localStorage/sessionStorage -> use this tool.
+        - Need cookies or authentication cookies -> use manage_cookies.
+        - Need arbitrary JavaScript or storage operations not covered here ->
+          use run_javascript.
+        - Need visible page content or HTML -> use get_content.
+        - Need an element's HTML attributes -> use get_attributes.
+
+    When not to use:
+        - Do not use this tool for HTTP cookies; use manage_cookies instead.
+        - Do not use this tool for arbitrary page JavaScript;
+          use run_javascript when a higher-level tool is insufficient.
+        - Do not use this tool to inspect values from another origin;
+          storage is scoped to the current page origin.
+
     Args:
         key: Storage key to read or modify.
         value: Value to store when action="set". Required for set.
@@ -1219,27 +1249,6 @@ def manage_storage(
         Storage belongs to the current page origin. Values from one website
         are not generally available to another origin.
     """
-    sb = _get_sb()
-
-    if action not in ("get", "set"):
-        return "Error: action must be 'get' or 'set'."
-
-    if action == "set" and value is None:
-        return "Error: value is required when action='set'."
-
-    if storage == "local":
-        if action == "get":
-            return sb.get_local_storage_item(key)
-        sb.set_local_storage_item(key, value)
-        return f"Set localStorage[{key!r}]"
-
-    if storage == "session":
-        if action == "get":
-            return sb.get_session_storage_item(key)
-        sb.set_session_storage_item(key, value)
-        return f"Set sessionStorage[{key!r}]"
-
-    return f"Error: unknown storage '{storage}'. Use 'local' or 'session'."
 
 
 # ---------------------------------------------------------------------------
@@ -1453,8 +1462,8 @@ def solve_captcha() -> str:
         1. Inspect the page with get_content when you need to determine
            whether CAPTCHA-related controls are present.
         2. Call solve_captcha to attempt the interaction.
-        3. Use get_page_info, get_content, check_state, or manage_cookies
-           to inspect resulting page/session state.
+        3. Use get_page_info, get_content, check_for_condition,
+           or manage_cookies to inspect resulting page/session state.
 
     Returns:
         A message confirming that the CAPTCHA interaction was attempted, not
@@ -1521,22 +1530,51 @@ def save_output(
 @mcp.tool()
 @handle_sb_errors
 def run_javascript(expression: str) -> Any:
-    """Evaluate arbitrary JavaScript in the current page context.
+    """Evaluate a JavaScript expression in the current page context.
 
     Use this only when the required browser operation cannot be accomplished
     through the higher-level SeleniumBase tools.
 
-    The expression is evaluated through the Chrome DevTools Protocol
-    Runtime.evaluate mechanism. Promise results are awaited and values are
-    returned by value.
+    The expression is evaluated through Chrome DevTools Protocol
+    Runtime.evaluate in the currently active page. It executes with access
+    to the page's JavaScript context, including DOM APIs, browser storage,
+    and other same-origin page resources available to JavaScript.
+
+    Tool selection:
+        - Prefer click, type_text, select_option, hover_with_action,
+          focus_on, scroll, and other higher-level tools for normal browser
+          interactions.
+        - Prefer get_content, get_attributes, and find_elements for reading
+          page content or element information.
+        - Prefer manage_storage for ordinary localStorage/sessionStorage
+          reads and writes.
+        - Prefer manage_cookies for browser cookie operations.
+        - Use this tool when a required operation needs arbitrary JavaScript
+          that the higher-level tools do not expose.
 
     Args:
-        expression: JavaScript expression to evaluate in the current page
-            context.
+        expression: A JavaScript expression or executable JavaScript code
+            evaluated in the current page. It may reference standard browser
+            globals such as document and window and may use DOM APIs.
+
+            Examples:
+                - "document.title"
+                - "document.querySelector('button')?.textContent"
+                - "localStorage.getItem('theme')"
+                - "document.body.classList.contains('dark')"
+                - "document.querySelector('#slider').value = '50'"
+
+            The expression should produce a value when a result is needed.
+            JavaScript that returns a Promise is supported and its resolved
+            value is returned.
 
     Returns:
-        The JavaScript evaluation result when it can be represented across
-        the MCP boundary.
+        The JavaScript evaluation result when it can be serialized and
+        returned across the MCP boundary. Primitive values, arrays, plain
+        objects, and null are generally suitable return values. DOM objects,
+        functions, symbols, and other non-serializable JavaScript values may
+        not be returned directly; extract the needed property or convert the
+        value to a serializable form first.
 
     Security:
         This provides unrestricted JavaScript execution in the current browser
