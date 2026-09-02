@@ -185,6 +185,9 @@ def validate_proxy_string(proxy_string, keep_scheme=False):
     val_ip = re.match(
         r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+$", proxy_string
     )
+    HOSTNAME_PATTERN = (
+        re.compile(r"^[a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?$")
+    )
     if not val_ip:
         if proxy_string.startswith("http://"):
             proxy_string = proxy_string.split("http://")[1]
@@ -200,7 +203,10 @@ def validate_proxy_string(proxy_string, keep_scheme=False):
         chunks = proxy_string.split(":")
         if len(chunks) == 2:
             if re.match(r"^\d+$", chunks[1]):
-                if page_utils.is_valid_url("http://" + proxy_string):
+                if (
+                    page_utils.is_valid_url("http://" + proxy_string)
+                    or HOSTNAME_PATTERN.match(chunks[0])
+                ):
                     valid = True
         elif len(chunks) == 3:
             if re.match(r"^\d+$", chunks[2]):
