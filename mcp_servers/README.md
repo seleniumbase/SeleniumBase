@@ -97,7 +97,7 @@ Restart Claude Desktop. You should see a 🔨 tools icon indicating the server c
 * `find_elements`
 * `get_content`
 * `get_attributes`
-* `check_state`
+* `check_for_condition`
 * `click`
 * `hover_with_action`
 * `type_text`
@@ -155,7 +155,7 @@ Tools here are grouped around a shared `selector` convention: `selector` args ac
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Session           | `start_browser(url, headless, use_chromium, browser_executable_path, incognito, guest, ad_block, proxy)`, `close_browser`                        |
 | Navigation        | `navigate`, `navigate_history(action: back/forward/reload)`, `get_page_info` (running status, url, title, origin, user agent, history in one call) |
-| Finding & reading | `find_elements(selector, timeout, include_html)`, `get_content(selector, output_format: text/html/urls, include_shadow_dom)`, `get_attributes`, `check_state(check: present/visible/count/text_visible)` |
+| Finding & reading | `find_elements(selector, timeout, include_html)`, `get_content(selector, output_format: text/html/urls, include_shadow_dom)`, `get_attributes`, `check_for_condition(check: present/visible/count/text_visible)` |
 | Interacting       | `click(selector, nth, all_matches, only_if_visible, parent_selector, timeout, scroll)`, `hover_with_action(selector1, selector2, action: none/click/drag_and_drop)`, `type_text(mode: fill_input/append/fast_type/set_value/clear_only)`, `select_option(by: text/value/index)`, `focus_on(action: scroll_to_element/focus/highlight)` |
 | Waiting           | `wait_for(state: present/visible/not_visible/absent, text)`                                                                                        |
 | Assertions        | `assert_condition(check: element_present/element_visible/text_visible/title/url/url_contains)`                                                     |
