@@ -100,11 +100,11 @@ Restart Claude Desktop. You should see a 🔨 tools icon indicating the server c
 * `check_state`
 * `click`
 * `hover_with_action`
-* `fill_input`
+* `type_text`
 * `select_option`
 * `focus_on`
 * `wait_for`
-* `assert_that`
+* `assert_condition`
 * `manage_cookies`
 * `manage_storage`
 * `scroll`
@@ -156,9 +156,9 @@ Tools here are grouped around a shared `selector` convention: `selector` args ac
 | Session           | `start_browser(url, headless, use_chromium, browser_executable_path, incognito, guest, ad_block, proxy)`, `close_browser`                        |
 | Navigation        | `navigate`, `navigate_history(action: back/forward/reload)`, `get_page_info` (running status, url, title, origin, user agent, history in one call) |
 | Finding & reading | `find_elements(selector, timeout, include_html)`, `get_content(selector, output_format: text/html/urls, include_shadow_dom)`, `get_attributes`, `check_state(check: present/visible/count/text_visible)` |
-| Interacting       | `click(selector, nth, all_matches, only_if_visible, parent_selector, timeout, scroll)`, `hover_with_action(selector1, selector2, action: none/click/drag_and_drop)`, `fill_input(mode: type/append/set_value/fast_type/clear)`, `select_option(by: text/value/index)`, `focus_on(action: scroll_to_element/focus/highlight)` |
+| Interacting       | `click(selector, nth, all_matches, only_if_visible, parent_selector, timeout, scroll)`, `hover_with_action(selector1, selector2, action: none/click/drag_and_drop)`, `type_text(mode: fill_input/append/fast_type/set_value/clear_only)`, `select_option(by: text/value/index)`, `focus_on(action: scroll_to_element/focus/highlight)` |
 | Waiting           | `wait_for(state: present/visible/not_visible/absent, text)`                                                                                        |
-| Assertions        | `assert_that(check: element_present/element_visible/text/title/url/url_contains)`                                                                  |
+| Assertions        | `assert_condition(check: element_present/element_visible/text_visible/title/url/url_contains)`                                                     |
 | Cookies & storage | `manage_cookies(action: get_all/clear/save/load)`, `manage_storage(storage: local/session, action: get/set)`                                       |
 | Scrolling         | `scroll(direction: up/down/top/bottom, amount)`                                                                                                    |
 | Windows & tabs    | `manage_window(action: get_rect/set_rect/maximize/minimize)`, `manage_tabs(action: list/open/switch/switch_newest/close_active)`                   |
@@ -179,7 +179,7 @@ Tools here are grouped around a shared `selector` convention: `selector` args ac
 
 - **Hover, click-after-hover, and drag-and-drop share one tool.** `hover_with_action(selector1, selector2, action)` replaces the earlier separate `hover` and `drag_and_drop` tools. `action="none"` hovers `selector1` only; `action="click"` hovers `selector1` then clicks `selector2` (useful for dropdown/submenu items revealed by hovering); `action="drag_and_drop"` drags `selector1` onto `selector2`. (`selector2` is required when `action` is `"click"` or `"drag_and_drop"`.)
 
-- **Non-activating element actions are `focus_on`.** What used to be `act_on_element` is now `focus_on(selector, action)`, with actions `scroll_to_element` (the default), `focus`, and `highlight` — note the default action changed from focusing the element to scrolling it into view. None of these actions click, type into, select from, or otherwise activate the element; use `click`, `fill_input`, `select_option`, or `hover_with_action` for that.
+- **Non-activating element actions are `focus_on`.** What used to be `act_on_element` is now `focus_on(selector, action)`, with actions `scroll_to_element` (the default), `focus`, and `highlight` — note the default action changed from focusing the element to scrolling it into view. None of these actions click, type into, select from, or otherwise activate the element; use `click`, `type_text`, `select_option`, or `hover_with_action` for that.
 
 - **Elements don't cross the wire as handles.** In native CDP Mode, `find_element()` returns a live object with its own methods (`el.click()`, `el.get_html()`, ...). MCP tools can only return JSON-serializable data, so `find_elements` resolves each match immediately to a plain dict (`tag_name`, `text`, and optionally `html`) instead of returning a handle you could call further methods on. If you need to act on one of several matches, use `click(selector, nth=...)` (acts by position) rather than "find, then click" as two separate steps.
 

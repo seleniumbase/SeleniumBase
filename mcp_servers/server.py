@@ -30,9 +30,9 @@ Tool-selection philosophy:
   elements as structured data.
 - Use check_state for an immediate, non-waiting state check.
 - Use wait_for when the agent needs to wait for a condition to become true.
-- Use assert_that when the agent needs to verify an expected condition and
-  treat failure as an assertion error.
-- Use click/fill_input/select_option/hover_with_action/focus_on for
+- Use assert_condition when the agent needs to verify an expected condition
+  and treat failure as an assertion error.
+- Use click/type_text/select_option/hover_with_action/focus_on for
   interactions and element positioning.
 """
 from __future__ import annotations
@@ -93,7 +93,7 @@ def start_browser(
     """Launch a persistent SeleniumBase Pure CDP Mode browser session.
 
     This must be called before browser interaction tools such as navigate,
-    get_content, click, fill_input, or find_elements. The same browser
+    get_content, click, type_text, or find_elements. The same browser
     session remains active across subsequent MCP tool calls until
     close_browser is called or the server process exits.
 
@@ -277,7 +277,7 @@ def get_page_info() -> dict | str:
         - Need information about matching elements -> use find_elements.
         - Need an immediate state check -> use check_state.
         - Need to wait for a condition -> use wait_for.
-        - Need to verify an expected condition -> use assert_that.
+        - Need to verify an expected condition -> use assert_condition.
 
     Unlike a dedicated browser-status tool, get_page_info is the single
     source of browser/page metadata. If no browser session is active, it
@@ -549,15 +549,26 @@ def get_attributes(
 ) -> Any:
     """Read HTML attributes from a matching element.
 
+    Use this tool when you need the value of one or more HTML attributes
+    such as href, src, value, class, id, name, type, aria-label, or data-*.
+
     Args:
         selector: CSS selector or SeleniumBase text-matching selector for
             the target element.
         attribute: Specific HTML attribute to retrieve. When omitted, return
-            all available attributes as a dictionary.
+            all HTML attributes of the element as a dictionary.
 
     Returns:
         The requested attribute value, or a dictionary containing all
-        attributes when attribute is omitted.
+        HTML attributes of the element when attribute is omitted.
+
+    Tool selection:
+        - Need one or more HTML attribute values from a specific element ->
+          use this tool.
+        - Need to discover multiple matching elements or inspect their text ->
+          use 'find_elements'.
+        - Need visible text or HTML content -> use 'get_content'.
+        - Need to check presence or visibility -> use 'check_state'.
 
     This is a read-only operation and does not modify the element.
     """
@@ -580,7 +591,7 @@ def check_state(
 
     Use this tool when you need an observation of the current state and do
     NOT want to wait for a condition. For waiting behavior, use wait_for.
-    For an expectation that should fail as an assertion, use assert_that.
+    For an expectation that should fail as an assertion, use assert_condition.
 
     Args:
         check:
@@ -602,7 +613,7 @@ def check_state(
         - Immediate yes/no/count observation -> use check_state.
         - Wait until a state becomes true/false -> use wait_for.
         - Verify an expected condition and fail when it is not met ->
-          use assert_that.
+          use assert_condition.
 
     Note:
         Except for count's short lookup, this tool does not wait for elements
@@ -784,62 +795,64 @@ def hover_with_action(
 
 @mcp.tool()
 @handle_sb_errors
-def fill_input(
+def type_text(
     selector: str,
     text: str = "",
     mode: Literal[
-        "type",
+        "fill_input",
         "append",
-        "set_value",
         "fast_type",
-        "clear",
-    ] = "type",
+        "set_value",
+        "clear_only",
+    ] = "fill_input",
     timeout: int | float | None = 7,
 ) -> str:
-    """Enter, append, directly set, or clear text in a form control.
+    """Fill, append, fast-type, directly set, or clear a form control.
 
     Use this tool for input elements, textareas, and contenteditable elements.
 
     Args:
         selector: CSS selector or SeleniumBase selector identifying the
             input, textarea, or contenteditable element.
-        text: Text to enter or set. Ignored when mode="clear".
+        text: Text to enter or set. Not used when mode="clear_only".
         mode:
-            - "type": Clear the field and type text normally.
-            - "append": Keep the existing value and send text as keystrokes.
+            - "fill_input": Clear the field and then type text normally.
+            - "append": Keep the existing value and add text as keystrokes.
+            - "fast_type": Clear the field and type text without pauses.
             - "set_value": Set the value directly and immediately. This can
               be useful for fast form filling but does not simulate normal
-              key events.
-            - "fast_type": Clear the field and type text quickly.
-            - "clear": Empty the field; text is ignored.
+              key events. It can also be used to handle input sliders,
+              e.g. 'input[type="range"]'.
+            - "clear_only": Empty the text field; text is ignored.
         timeout: Maximum seconds to wait for the target element.
 
     Tool selection:
-        - Normal human-like text entry -> mode="type".
-        - Add text without clearing -> mode="append".
-        - Directly set a value -> mode="set_value".
-        - Fast typing -> mode="fast_type".
-        - Empty a field -> mode="clear".
+        - Normal text entry to replace existing text -> mode="fill_input".
+        - Add text without clearing the field first -> mode="append".
+        - Fast typing to replace existing text -> mode="fast_type".
+        - Directly set a value (e.g. input slider) -> mode="set_value".
+        - Empty a field of all text -> mode="clear_only".
     """
     sb = _get_sb()
 
-    if mode == "type":
+    if mode == "fill_input":
         sb.type(selector, text, timeout=timeout)
     elif mode == "append":
         sb.send_keys(selector, text, timeout=timeout)
-    elif mode == "set_value":
-        sb.set_value(selector, text, timeout=timeout)
     elif mode == "fast_type":
         sb.fast_type(selector, text, timeout=timeout)
-    elif mode == "clear":
+    elif mode == "set_value":
+        sb.set_value(selector, text, timeout=timeout)
+    elif mode == "clear_only":
         sb.clear_input(selector, timeout=timeout)
     else:
         return (
             f"Error: unknown mode '{mode}'. "
-            "Use 'type', 'append', 'set_value', 'fast_type', or 'clear'."
+            "Use 'fill_input', 'append', 'fast_type', "
+            "'set_value', or 'clear_only'."
         )
 
-    return f"fill_input(mode={mode!r}) done for {selector}"
+    return f"type_text(mode={mode!r}) done for {selector}"
 
 
 @mcp.tool()
@@ -915,7 +928,7 @@ def focus_on(
         - Focus an element -> use focus_on(action="focus").
         - Highlight element for debugging -> use focus_on(action="highlight").
         - Click -> use click.
-        - Type into a form control -> use fill_input.
+        - Type text into a text field -> use type_text.
         - Hover -> use hover_with_action.
     """
     sb = _get_sb()
@@ -957,7 +970,7 @@ def wait_for(
     Use this tool when the page is dynamic and an automation step must wait
     for a condition before continuing.
 
-    Unlike check_state, this tool intentionally waits. Unlike assert_that,
+    Unlike check_state, this tool intentionally waits. Unlike assert_condition,
     its purpose is synchronization rather than validating a test expectation.
 
     Args:
@@ -979,7 +992,7 @@ def wait_for(
     Tool selection:
         - Check current state immediately -> use check_state.
         - Wait for a state/content transition -> use wait_for.
-        - Verify an expected value/condition -> use assert_that.
+        - Verify an expected value/condition -> use assert_condition.
     """
     sb = _get_sb()
 
@@ -1009,11 +1022,11 @@ def wait_for(
 
 @mcp.tool()
 @handle_sb_errors
-def assert_that(
+def assert_condition(
     check: Literal[
         "element_present",
         "element_visible",
-        "text",
+        "text_visible",
         "title",
         "url",
         "url_contains",
@@ -1026,23 +1039,24 @@ def assert_that(
     """Verify an expected browser condition and fail when it is not met.
 
     Use this tool for explicit verification. Unlike check_state, which simply
-    reports the current state, assert_that treats a failed expectation as an
-    error. Unlike wait_for, URL/title checks do not wait.
+    reports the current state, assert_condition treats a failed expectation
+    as an error. Unlike wait_for, URL/title checks do not wait.
 
     Args:
         check:
             - "element_present": Verify selector identifies a present element.
             - "element_visible": Verify selector identifies a visible element.
-            - "text": Verify expected text within selector, or within the
-              whole HTML document when selector is omitted.
+            - "text_visible": Verify expected text is visible within selector,
+              or within the whole HTML document when selector is omitted.
             - "title": Verify the exact page title.
             - "url": Verify the exact current URL.
             - "url_contains": Verify that the current URL contains expected.
         selector: Element selector for element_present, element_visible, and
-            text checks.
-        expected: Expected text/title/URL value for text, title, url, and
-            url_contains.
-        exact: For check="text", require exact text rather than a substring.
+            text_visible checks.
+        expected: Expected text/title/URL value for text_visible, title, url,
+            and url_contains.
+        exact: For check="text_visible", require exact text
+            rather than a substring.
         timeout: Maximum seconds to wait for element/text checks.
 
     Returns:
@@ -1055,14 +1069,16 @@ def assert_that(
     Tool selection:
         - Just inspect current state -> use check_state.
         - Wait for a condition to become true -> use wait_for.
-        - Verify that an expected condition is true -> use assert_that.
+        - Verify that an expected condition is true -> use assert_condition.
     """
     sb = _get_sb()
 
     if check in ("element_present", "element_visible") and selector is None:
         return f"Error: check='{check}' requires value for `selector`."
 
-    if check in ("text", "title", "url", "url_contains") and expected is None:
+    if check in (
+        "text_visible", "title", "url", "url_contains"
+    ) and expected is None:
         return f"Error: check='{check}' requires value for `expected`."
 
     if check == "element_present":
@@ -1073,13 +1089,13 @@ def assert_that(
         sb.assert_element_visible(selector, timeout=timeout)
         return f"Confirmed {selector} is visible."
 
-    if check == "text":
+    if check == "text_visible":
         target = selector or "html"
         if exact:
             sb.assert_exact_text(expected, target, timeout=timeout)
         else:
             sb.assert_text(expected, target, timeout=timeout)
-        return f"Confirmed text in {target}."
+        return f"Confirmed visible text {expected} in {target}."
 
     if check == "title":
         sb.assert_title(expected)
@@ -1095,7 +1111,8 @@ def assert_that(
 
     return (
         f"Error: unknown check '{check}'. Use 'element_present', "
-        f"'element_visible', 'text', 'title', 'url', or 'url_contains'."
+        "'element_visible', 'text_visible', 'title', 'url', "
+        "or 'url_contains'."
     )
 
 
