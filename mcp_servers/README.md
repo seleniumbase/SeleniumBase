@@ -92,12 +92,12 @@ Restart Claude Desktop. You should see a 🔨 tools icon indicating the server c
 * `start_browser`
 * `close_browser`
 * `navigate`
-* `navigate_history`
+* `manage_history`
 * `get_page_info`
 * `find_elements`
 * `get_content`
 * `get_attributes`
-* `check_for_condition`
+* `check_condition`
 * `click`
 * `hover_with_action`
 * `type_text`
@@ -154,8 +154,8 @@ Tools here are grouped around a shared `selector` convention: `selector` args ac
 | Group             | Tool(s)                                                                                                                                          |
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Session           | `start_browser(url, headless, use_chromium, browser_executable_path, incognito, guest, ad_block, proxy)`, `close_browser`                        |
-| Navigation        | `navigate`, `navigate_history(action: back/forward/reload)`, `get_page_info` (running status, url, title, origin, user agent, history in one call) |
-| Finding & reading | `find_elements(selector, timeout, include_html)`, `get_content(selector, output_format: text/html/urls, include_shadow_dom)`, `get_attributes`, `check_for_condition(check: present/visible/count/text_visible)` |
+| Navigation        | `navigate`, `manage_history(action: back/forward/reload/list)`, `get_page_info` (running status, url, title, origin, user agent in one call)      |
+| Finding & reading | `find_elements(selector, timeout, include_html)`, `get_content(selector, output_format: text/html/urls, include_shadow_dom)`, `get_attributes`, `check_condition(check: present/visible, text)` |
 | Interacting       | `click(selector, nth, all_matches, only_if_visible, parent_selector, timeout, scroll)`, `hover_with_action(selector1, selector2, action: none/click/drag_and_drop)`, `type_text(mode: fill_input/append/fast_type/set_value/clear_only)`, `select_option(by: text/value/index)`, `focus_on(action: scroll_to_element/focus/highlight)` |
 | Waiting           | `wait_for(state: present/visible/not_visible/absent, text)`                                                                                        |
 | Assertions        | `assert_condition(check: element_present/element_visible/text_visible/title/url/url_contains)`                                                     |
@@ -171,11 +171,19 @@ Tools here are grouped around a shared `selector` convention: `selector` args ac
 
 - **Blocking calls.** SeleniumBase's calls are synchronous and will block the server while a page loads or an element is waited on. For a single-user local tool this is fine; for a multi-client server you'd want to run them in a thread pool via `asyncio.to_thread`.
 
+- **`start_browser` retries once before failing.** If the first launch attempt raises, it's retried once automatically before returning an error. This was added after seeing occasional first-attempt failures when testing against Glama's MCP Inspector; it costs nothing on the common case where the first launch already succeeds.
+
 - **Errors surface as descriptive strings.** Every tool (aside from session-lifecycle tools, which handle their own errors) is wrapped by a `handle_sb_errors` decorator: if a selector isn't found or an assertion fails, `sb_cdp.Chrome` raises an exception, and the decorator catches it and returns a string like `Error in click: NoSuchElementException - ...` instead of a raw tool error. This lets the calling agent read the failure and self-correct (e.g. by waiting longer or trying a different selector) rather than just seeing an opaque tool-call failure.
 
-- **No standalone session-status tool.** There is no separate `browser_status`-style tool. `get_page_info` doubles as the status check: it returns `{"running": False}` (optionally with an `error` field) when there's no active session or the session errors out, and full page metadata (`running: True`, `url`, `title`, `origin`, `user_agent`, `history`) otherwise.
+- **No standalone session-status tool.** There is no separate `browser_status`-style tool. `get_page_info` doubles as the status check: it returns `{"running": False}` (optionally with an `error` field) when there's no active session or the session errors out, and page metadata (`running: True`, `url`, `title`, `origin`, `user_agent`) otherwise. `get_page_info` does not include navigation history — that lives on `manage_history(action="list")` instead (see below).
+
+- **Navigation and history live in one tool: `manage_history`.** What used to be `navigate_history` is now `manage_history`, and it gained a fourth action: `"list"`, which returns the browser's navigation history as `{"position": <0-indexed current entry>, "entries": [...]}`, where each entry has `id`, `url`, `user_typed_url`, `title`, and `transition_type`. `"back"`, `"forward"`, and `"reload"` behave as before. This is the only way to retrieve navigation history now — `get_page_info` doesn't return it.
 
 - **Content reading is consolidated into one tool.** `get_content` replaces what used to be three separate reads: page/element text, page/element HTML, and page-linked URLs. Pick the mode with `output_format` (`"text"`, `"html"`, or `"urls"`) rather than calling a dedicated `get_page_content` or `get_all_urls` tool — those no longer exist. Likewise, there's no standalone `get_user_agent` tool anymore; the User-Agent string is one of the fields returned by `get_page_info`.
+
+- **`check_condition` is deliberately narrow.** Its `check` parameter only accepts `"present"` or `"visible"` — there's no built-in `"count"` check anymore; call `find_elements` and read the returned `count` field instead. Passing `text` checks whether that text is visible within `selector` and takes priority over `check` when both are given — so `check_condition(text="Sign in")` behaves differently from `check_condition(check="visible")`, not as two variants of the same check. Note that an empty string for `text` (or for `wait_for`'s `selector`/`text`) is treated as not provided, since both tools now branch on truthiness rather than on `is not None`.
+
+- **`find_elements` defaults to a fast, non-raising lookup.** Its default `timeout` is 0.5 seconds (not 7, unlike most other tools here), and a failed lookup returns `{}` instead of raising — there is no error string on a miss, just an empty dict. Pass a longer `timeout` explicitly if the elements you're looking for may still be loading.
 
 - **Hover, click-after-hover, and drag-and-drop share one tool.** `hover_with_action(selector1, selector2, action)` replaces the earlier separate `hover` and `drag_and_drop` tools. `action="none"` hovers `selector1` only; `action="click"` hovers `selector1` then clicks `selector2` (useful for dropdown/submenu items revealed by hovering); `action="drag_and_drop"` drags `selector1` onto `selector2`. (`selector2` is required when `action` is `"click"` or `"drag_and_drop"`.)
 

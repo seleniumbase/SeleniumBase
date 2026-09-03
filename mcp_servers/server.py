@@ -27,7 +27,7 @@ Tool-selection philosophy:
 - Use get_content for reading visible text or HTML.
 - Use find_elements for discovering and inspecting multiple matching
   elements as structured data.
-- Use check_for_condition for an immediate, non-waiting state check.
+- Use check_condition for an immediate, non-waiting state check.
 - Use wait_for when the agent needs to wait for a condition to become true.
 - Use assert_condition when the agent needs to verify an expected condition
   and treat failure as an assertion error.
@@ -287,7 +287,7 @@ def get_page_info() -> dict | str:
         - Need URL, title, origin, or User-Agent -> use get_page_info.
         - Need visible page text or HTML -> use get_content.
         - Need information about matching elements -> use find_elements.
-        - Need an immediate state check -> use check_for_condition.
+        - Need an immediate state check -> use check_condition.
         - Need to wait for a condition -> use wait_for.
         - Need to verify an expected condition -> use assert_condition.
 
@@ -345,9 +345,9 @@ def navigate(url: str) -> str:
 
     Tool selection:
         - Go to a new URL -> use navigate.
-        - Return to the previous page -> use navigate_history(action="back").
-        - Go forward in history -> use navigate_history(action="forward").
-        - Refresh the current page -> use navigate_history(action="reload").
+        - Return to the previous page -> use manage_history(action="back").
+        - Go forward in history -> use manage_history(action="forward").
+        - Refresh the current page -> use manage_history(action="reload").
     """
     _get_sb().get(url)
     return f"Navigated to {url}"
@@ -355,35 +355,42 @@ def navigate(url: str) -> str:
 
 @mcp.tool()
 @handle_sb_errors
-def navigate_history(
-    action: Literal["back", "forward", "reload"] = "back",
-) -> str:
-    """Navigate through the current browser history or reload the page.
+def manage_history(
+    action: Literal["back", "forward", "reload", "list"] = "list",
+) -> str | dict[str, Any]:
+    """Navigate through the current browser history, reload the current page,
+    or list the current browser history.
 
-    Use this tool only for navigation relative to the current browser
-    history. Use navigate when going to an arbitrary URL.
+    Use this tool for navigation relative to the current browser
+    history or for displaying the current browser history.
+    Use the 'navigate' tool when going to an arbitrary URL.
 
     Args:
         action:
-            - "back": Navigate to the previous history entry. Has no useful
-              effect when there is no previous history entry.
-            - "forward": Navigate to the next history entry. Has no useful
-              effect when there is no forward history entry.
+            - "back": Navigate to the previous history entry.
+              Has no useful effect when there is no previous history entry.
+            - "forward": Navigate to the next history entry.
+              Has no useful effect when there is no forward history entry.
             - "reload": Reload the current page while ignoring the browser
               cache so page resources are fetched again.
+            - "list": Return a tuple containing the current location in
+              history (0-indexed) and the full navigation-history list.
 
     Returns:
-        A confirmation message describing the operation performed.
+        A confirmation message describing the operation performed for
+        navigation actions, or, for "list", a tuple containing the current
+        history location (0-indexed) and the full navigation-history list.
 
     Notes:
         These operations can trigger page loads, redirects, and other
-        navigation events. Use get_page_info afterward when you need to
-        verify the resulting URL or title.
+        navigation events. Use the 'get_page_info' tool afterward
+        when you need to verify the resulting URL or title.
 
     Tool selection:
         - Arbitrary destination URL -> use navigate.
         - Previous/next browser history entry -> use this tool.
         - Refresh current page -> use this tool with action="reload".
+        - List current history -> use this tool with action="list".
     """
     sb = _get_sb()
 
@@ -399,9 +406,25 @@ def navigate_history(
         sb.reload(ignore_cache=True)
         return "Page reloaded."
 
+    if action == "list":
+        position, entries = sb.get_navigation_history()
+        return {
+            "position": position,
+            "entries": [
+                {
+                    "id": entry.id_,
+                    "url": entry.url,
+                    "user_typed_url": entry.user_typed_url,
+                    "title": entry.title,
+                    "transition_type": entry.transition_type.value,
+                }
+                for entry in entries
+            ],
+        }
+
     return (
         f"Error: unknown action '{action}'. "
-        "Use 'back', 'forward', or 'reload'."
+        "Use 'back', 'forward', 'reload', or 'list'."
     )
 
 
@@ -413,7 +436,7 @@ def navigate_history(
 @handle_sb_errors
 def find_elements(
     selector: str,
-    timeout: int | float | None = 7,
+    timeout: float = 0.5,
     include_html: bool = False,
 ) -> dict | str:
     """Find matching elements and return structured element information.
@@ -429,16 +452,17 @@ def find_elements(
         selector: CSS selector, or a SeleniumBase selector that can match
             visible text. Examples include "button", ".login-link", or
             'a:contains("Sign in")'.
-        timeout: Maximum number of seconds to wait for matching elements.
-            Defaults to 7 seconds.
+        timeout: Maximum number of seconds to wait for matching elements
+            to be found. (Defaults to 0.5 seconds.)
         include_html: If True, include each matching element's outer HTML.
-            If False, return only tag name and text.
+            If False, return only tag name and text. (Defaults to False.)
 
     Returns:
         A dictionary containing:
         - count: Number of matching elements found.
         - matches: A list of element dictionaries containing tag_name and
           text, plus html when include_html=True.
+        If there are no matching elements, returns an empty dictionary.
 
     Tool selection:
         - Need structured information about matching elements ->
@@ -447,7 +471,7 @@ def find_elements(
           use get_content.
         - Need to click one of several matches -> use click with nth.
         - Need to know whether an element is present/visible ->
-          use check_for_condition.
+          use check_condition.
 
     Note:
         Element handles cannot be persisted across MCP calls. If you find
@@ -455,29 +479,32 @@ def find_elements(
         appropriate interaction tool.
     """
     sb = _get_sb()
-    els = sb.find_all(selector, timeout=timeout)
+    try:
+        elements = sb.find_all(selector, timeout=timeout)
+    except Exception:
+        return {}
 
     if include_html:
         return {
-            "count": len(els),
+            "count": len(elements),
             "matches": [
                 {
-                    "tag_name": e.tag_name,
-                    "text": e.text,
-                    "html": e.get_html(),
+                    "tag_name": element.tag_name,
+                    "text": element.text,
+                    "html": element.get_html(),
                 }
-                for e in els
+                for element in elements
             ],
         }
 
     return {
-        "count": len(els),
+        "count": len(elements),
         "matches": [
             {
-                "tag_name": e.tag_name,
-                "text": e.text,
+                "tag_name": element.tag_name,
+                "text": element.text,
             }
-            for e in els
+            for element in elements
         ],
     }
 
@@ -529,8 +556,7 @@ def get_content(
         - Need URLs from the page or an element -> use output_format="urls".
         - Need structured information about matching elements ->
           use find_elements.
-        - Need to check whether an element is present or visible ->
-          use check_for_condition.
+        - Need to check element presence/visibility -> use check_condition.
         - Need to wait for content to appear -> use wait_for.
     """
     sb = _get_sb()
@@ -578,58 +604,78 @@ def get_attributes(
         - Need to discover multiple matching elements or inspect their text ->
           use 'find_elements'.
         - Need visible text or HTML content -> use 'get_content'.
-        - Need to check presence or visibility -> use 'check_for_condition'.
+        - Need to check element presence/visibility -> use 'check_condition'.
 
     This is a read-only operation and does not modify the element.
     """
     sb = _get_sb()
 
     if attribute:
-        return sb.get_element_attribute(selector, attribute)
+        return sb.get_attribute(selector, attribute)
 
     return sb.get_element_attributes(selector)
 
 
 @mcp.tool()
 @handle_sb_errors
-def check_for_condition(
-    check: Literal["present", "visible", "count", "text_visible"] = "visible",
+def check_condition(
+    check: Literal["present", "visible"] = "visible",
     selector: str = "body",
     text: str | None = None,
 ) -> Any:
-    """Immediately inspect the current state of an element or page.
+    """Check the current state of an element or text without waiting
+    for the condition to become true.
 
-    Use this tool when you need an observation of the current state and do
-    NOT want to wait for a condition. For waiting behavior, use wait_for.
-    For an expectation that should fail as an assertion, use assert_condition.
+    Use this tool when you need an immediate boolean observation of the current
+    page state. Use wait_for when the condition may become true later and the
+    workflow should wait for it. Use assert_condition when the condition is an
+    expected requirement and failure should be treated as an assertion error.
 
     Args:
         check:
-            - "present": Return whether at least one matching element exists.
-            - "visible": Return whether the matching element is visible.
-            - "count": Return the number of matching elements. This check may
-              wait up to 1 second for a match.
-            - "text_visible": Return whether the specified text is visible
-              within the selected element. Requires text.
-        selector: CSS selector or SeleniumBase selector for the element.
-            Defaults to "body".
-        text: Text to check when check="text_visible".
+            The element state to inspect when text is not provided:
+            - "present": Return True when at least one matching element exists.
+            - "visible": Return True when the matching element is visible.
+            Defaults to "visible".
+            `check` is ignored when `text` is provided.
+
+        selector:
+            CSS selector or SeleniumBase selector identifying the element to
+            inspect. Defaults to "body". When `text` is provided, this also
+            identifies the element whose visible text is checked.
+
+        text:
+            Optional text to check for visibility within `selector`. When
+            provided, this takes precedence over `check`; the tool checks text
+            visibility instead of element presence or visibility. Use this when
+            the question is "Is this text currently visible?" rather than
+            whether the element itself is present or visible.
 
     Returns:
-        A boolean for present/visible/text_visible, or an integer count for
-        count. Missing elements do not cause an exception for these checks.
+        True or False indicating whether the requested condition is currently
+        satisfied. Missing elements return False rather than raising an
+        exception.
 
     Tool selection:
-        - Immediate yes/no/count observation -> use check_for_condition.
-        - Wait until a state becomes true/false -> use wait_for.
+        - Immediate boolean observation -> use check_condition.
+        - Wait for an element or text condition to become true/false ->
+          use wait_for.
         - Verify an expected condition and fail when it is not met ->
           use assert_condition.
+        - Need the number or details of matching elements -> use find_elements.
+        - Need to read the actual page or element content -> use get_content.
 
-    Note:
-        Except for count's short lookup, this tool does not wait for elements
-        to appear. Use wait_for when page timing matters.
+    Notes:
+        This tool does not intentionally wait for elements or text to appear.
+        It is intended for checking the current state only. If page timing or
+        asynchronous loading matters, use wait_for instead.
+
+        When `text` is provided, `check` is ignored.
     """
     sb = _get_sb()
+
+    if text:
+        return sb.is_text_visible(text, selector)
 
     if check == "present":
         return sb.is_element_present(selector)
@@ -637,20 +683,7 @@ def check_for_condition(
     if check == "visible":
         return sb.is_element_visible(selector)
 
-    if check == "count":
-        return len(sb.find_elements(selector, timeout=1))
-
-    if check == "text_visible":
-        if text is None:
-            return (
-                "Error: The 'text_visible' check requires value for 'text'."
-            )
-        return sb.is_text_visible(text, selector)
-
-    return (
-        f"Error: unknown check '{check}'. "
-        "Use 'present', 'visible', 'count', or 'text_visible'."
-    )
+    return f"Error: unknown check '{check}'. Use 'present' or 'visible'."
 
 
 # ---------------------------------------------------------------------------
@@ -665,7 +698,7 @@ def click(
     all_matches: bool = False,
     only_if_visible: bool = False,
     parent_selector: str | None = None,
-    timeout: int | float | None = 7,
+    timeout: float = 7,
     scroll: bool = True,
 ) -> str:
     """Click one or more elements matching a selector.
@@ -815,7 +848,7 @@ def type_text(
         "set_value",
         "clear_only",
     ] = "fill_input",
-    timeout: int | float | None = 7,
+    timeout: float = 7,
 ) -> str:
     """Fill, append, fast-type, directly set, or clear a form control.
 
@@ -973,14 +1006,18 @@ def wait_for(
     ] = "visible",
     selector: str | None = None,
     text: str | None = None,
-    timeout: int | float | None = 7,
+    timeout: float = 7,
 ) -> str:
     """Wait until an element or text reaches a requested state.
+
+    When `text` is provided, a `state` of 'present' or 'visible' both wait
+    for the text to appear within the selector, and a `state` of 'not_visible'
+    or 'absent' both wait for the text to be absent from the selector.
 
     Use this tool when the page is dynamic and an automation step must wait
     for a condition before continuing.
 
-    Unlike check_for_condition, this tool intentionally waits.
+    Unlike check_condition, this tool intentionally waits.
     Unlike assert_condition, its purpose is synchronization
     rather than validating a test expectation.
 
@@ -990,29 +1027,38 @@ def wait_for(
             - "visible": Wait until the matching element is visible.
             - "not_visible": Wait until the matching element is not visible.
             - "absent": Wait until the matching element no longer exists.
-              Ignored when text is provided.
+            (This is handled differently when text is provided.)
         selector: CSS selector or SeleniumBase selector for the element.
             Required unless text is supplied.
-        text: If supplied, wait for this text to appear within selector
-            (or within "body" when selector is omitted).
-        timeout: Maximum seconds to wait. Defaults to 7 seconds.
+        text: If supplied and is not None, a `state` of 'present' or 'visible'
+            both wait for the text to appear within the selector, and a `state`
+            of 'not_visible' or 'absent' both wait for the text to be absent
+            from the selector (or within "body" when selector is omitted).
+        timeout: Maximum seconds to wait for the requested state to be true.
+            (Defaults to 7 seconds.)
 
     Returns:
         A confirmation when the requested condition is reached.
 
     Tool selection:
-        - Check current state immediately -> use check_for_condition.
+        - Check current state immediately -> use check_condition.
         - Wait for a state/content transition -> use wait_for.
         - Verify an expected value/condition -> use assert_condition.
     """
     sb = _get_sb()
 
-    if selector is None and text is None:
-        return "Error: `selector` and `text` cannot both be None."
+    if not selector and not text:
+        return "Error: `selector` and `text` cannot both be empty."
 
-    if text is not None:
-        sb.wait_for_text(text, selector or "body", timeout=timeout)
-        return f"Text '{text}' appeared in {selector or 'body'}."
+    if text:
+        if state == "present" or state == "visible":
+            sb.wait_for_text(text, selector or "body", timeout=timeout)
+            return f"Text '{text}' found in element {selector or 'body'}."
+        if state == "absent" or state == "not_visible":
+            sb.wait_for_text_not_visible(
+                text, selector or "body", timeout=timeout
+            )
+            return f"Text '{text}' not found in element {selector or 'body'}."
 
     if state == "present":
         sb.wait_for_element_present(selector, timeout=timeout)
@@ -1045,14 +1091,14 @@ def assert_condition(
     selector: str | None = None,
     expected: str | None = None,
     exact: bool = False,
-    timeout: int | float | None = 7,
+    timeout: float = 7,
 ) -> str:
     """Verify an expected browser condition and fail when it is not met.
 
-    Use this tool for explicit verification. Unlike check_for_condition,
+    Use this tool for explicit verification. Unlike check_condition,
     which simply reports True or False on the current state,
     assert_condition treats a failed expectation as an error.
-    Unlike wait_for, URL/title checks do not wait.
+    (Note that URL/title checks do not wait for the 'timeout'.)
 
     Args:
         check:
@@ -1070,6 +1116,7 @@ def assert_condition(
         exact: For check="text_visible", require exact text
             rather than a substring.
         timeout: Maximum seconds to wait for element/text checks.
+            (Ignored for title and URL checks.)
 
     Returns:
         A confirmation when the expectation passes.
@@ -1079,7 +1126,7 @@ def assert_condition(
         fails; the MCP error wrapper converts it to a descriptive result.
 
     Tool selection:
-        - Just inspect current state -> use check_for_condition.
+        - Just inspect current state -> use check_condition.
         - Wait for a condition to become true -> use wait_for.
         - Verify that an expected condition is true -> use assert_condition.
     """
@@ -1249,6 +1296,27 @@ def manage_storage(
         Storage belongs to the current page origin. Values from one website
         are not generally available to another origin.
     """
+    sb = _get_sb()
+
+    if action not in ("get", "set"):
+        return "Error: action must be 'get' or 'set'."
+
+    if action == "set" and value is None:
+        return "Error: value is required when action='set'."
+
+    if storage == "local":
+        if action == "get":
+            return sb.get_local_storage_item(key)
+        sb.set_local_storage_item(key, value)
+        return f"Set localStorage[{key!r}]"
+
+    if storage == "session":
+        if action == "get":
+            return sb.get_session_storage_item(key)
+        sb.set_session_storage_item(key, value)
+        return f"Set sessionStorage[{key!r}]"
+
+    return f"Error: unknown storage '{storage}'. Use 'local' or 'session'."
 
 
 # ---------------------------------------------------------------------------
@@ -1280,19 +1348,21 @@ def scroll(
 
     if direction == "up":
         sb.scroll_up(amount=amount)
+        return f"Scrolled up by {amount}%."
     elif direction == "down":
         sb.scroll_down(amount=amount)
+        return f"Scrolled down by {amount}%."
     elif direction == "top":
         sb.scroll_to_top()
+        return "Scrolled to the top."
     elif direction == "bottom":
         sb.scroll_to_bottom()
+        return "Scrolled to the bottom."
     else:
         return (
             f"Error: unknown direction '{direction}'. "
             "Use 'up', 'down', 'top', or 'bottom'."
         )
-
-    return f"Scrolled {direction}."
 
 
 # ---------------------------------------------------------------------------
@@ -1371,7 +1441,7 @@ def manage_tabs(
     """List, open, switch between, or close browser tabs.
 
     Use this tool for tab management. Browser navigation within the current
-    tab belongs to navigate and navigate_history.
+    tab belongs to navigate and manage_history.
 
     Args:
         action:
@@ -1462,7 +1532,7 @@ def solve_captcha() -> str:
         1. Inspect the page with get_content when you need to determine
            whether CAPTCHA-related controls are present.
         2. Call solve_captcha to attempt the interaction.
-        3. Use get_page_info, get_content, check_for_condition,
+        3. Use get_page_info, get_content, check_condition,
            or manage_cookies to inspect resulting page/session state.
 
     Returns:
@@ -1587,7 +1657,7 @@ def run_javascript(expression: str) -> Any:
 
 @mcp.tool()
 @handle_sb_errors
-def wait_seconds(seconds: int | float) -> str:
+def wait_seconds(seconds: float) -> str:
     """Block the MCP server for a fixed number of seconds.
 
     This is a low-level timing tool. It performs no browser action while
