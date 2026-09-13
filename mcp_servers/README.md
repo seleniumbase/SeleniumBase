@@ -91,19 +91,19 @@ Restart Claude Desktop. You should see a 🔨 tools icon indicating the server c
 
 * `start_browser`
 * `close_browser`
-* `goto_url`
+* `open_url`
 * `manage_history`
 * `get_page_info`
 * `find_elements`
 * `get_content`
 * `get_attributes`
-* `check_condition`
+* `check_if_condition`
 * `click_element`
 * `hover_action`
 * `type_text`
 * `select_option`
 * `focus_element`
-* `wait_for`
+* `wait_for_condition`
 * `assert_condition`
 * `manage_cookies`
 * `manage_storage`
@@ -156,15 +156,15 @@ Most tools accept a `selector` argument. Behavior varies slightly by tool, so ch
 
 ## Tools exposed
 
-Tools here are grouped around a shared `selector` convention. Several near-identical one-off tools (e.g. separate click/hover/drag/wait/cookie/storage variants) have been consolidated into a single tool with a `mode`/`action`/`state`/`check` parameter, so there are fewer near-neighbor tools to disambiguate between while every underlying capability stays available. Tool names also follow a verb+object convention (`click_element`, `focus_element`, `scroll_page`, `save_page`, `goto_url`) rather than bare verbs, so a tool's name signals what it acts on without needing to read its description.
+Tools here are grouped around a shared `selector` convention. Several near-identical one-off tools (e.g. separate click/hover/drag/wait/cookie/storage variants) have been consolidated into a single tool with a `mode`/`action`/`state`/`check` parameter, so there are fewer near-neighbor tools to disambiguate between while every underlying capability stays available. Tool names also follow a verb+object convention (`click_element`, `focus_element`, `scroll_page`, `save_page`, `open_url`) rather than bare verbs, so a tool's name signals what it acts on without needing to read its description.
 
 | Group             | Tool(s)                                                                                                                                            |
 | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------  |
 | Session           | `start_browser(url, headless, use_chromium, browser_executable_path, incognito, guest, ad_block, proxy)`, `close_browser`                          |
-| Navigation        | `goto_url`, `manage_history(action: back/forward/reload/list)`, `get_page_info` (running status, url, title, origin, user agent in one call)       |
-| Finding & reading | `find_elements(selector, timeout, include_html)`, `get_content(selector, output_format: text/html/urls, timeout)`, `get_attributes(selector, attribute, timeout)`, `check_condition(check: present/visible, text)` |
+| Navigation        | `open_url`, `manage_history(action: back/forward/reload/list)`, `get_page_info` (running status, url, title, origin, user agent in one call)       |
+| Finding & reading | `find_elements(selector, timeout, include_html)`, `get_content(selector, output_format: text/html/urls, timeout)`, `get_attributes(selector, attribute, timeout)`, `check_if_condition(check: present/visible, text)` |
 | Interacting       | `click_element(selector, nth, all_matches, only_if_visible, parent_selector, timeout, scroll)`, `hover_action(selector1, selector2, action: hover/hover_and_click/drag_and_drop)`, `type_text(mode: fill_input/append/fast_type/set_value/clear_only)`, `select_option(by: text/value/index)`, `focus_element(action: scroll_to_element/focus/highlight, timeout)` |
-| Waiting           | `wait_for(state: present/visible/not_visible/absent/seconds_passed, text)`                                                                         |
+| Waiting           | `wait_for_condition(state: present/visible/not_visible/absent/seconds_passed, text)`                                                               |
 | Assertions        | `assert_condition(check: element_present/element_visible/text_visible/title/url/url_contains)`                                                     |
 | Cookies & storage | `manage_cookies(action: get_all/clear/save/load)`, `manage_storage(storage: local/session, action: get/set)`                                       |
 | Scrolling         | `scroll_page(direction: up/down/top/bottom, amount)`                                                                                                |
@@ -180,27 +180,11 @@ Tools here are grouped around a shared `selector` convention. Several near-ident
 
 - **`start_browser` retries once before failing.** If the first launch attempt raises, it's retried once automatically before returning an error. This was added after seeing occasional first-attempt failures when testing against Glama's MCP Inspector; it costs nothing on the common case where the first launch already succeeds.
 
-- **Several tools were renamed from bare verbs to verb+object names.** `navigate` → `goto_url`, `click` → `click_element`, `focus` → `focus_element`, `scroll` → `scroll_page`, `save_output` → `save_page`. Behavior is unchanged in every case — these are pure renames for clarity, so a tool's name alone signals what it acts on (a page, an element, a URL) instead of reading as a generic action that could apply to anything.
-
 - **Two error-handling paths, by design.** Most failures (a selector isn't found, an assertion fails, an invalid `action`/`mode`/`check` value is passed) are caught by the `handle_sb_errors` decorator and returned as a descriptive string, e.g. `Error in click_element: NoSuchElementException - ...`, so the calling agent can read the failure and self-correct. There's one deliberate exception: calling any tool other than `start_browser`/`close_browser` when no browser session is running raises `ToolError` (via the shared `_get_sb()` helper) instead of returning a string. `handle_sb_errors` explicitly re-raises `ToolError` rather than catching it, so this surfaces to the MCP client as a real tool-call error (`is_error=True`), not as ordinary text the agent has to pattern-match on. `start_browser` and `close_browser` handle their own lifecycle errors directly (e.g. "already running", a failed `quit()`) and also return strings rather than raising.
-
-- **No standalone session-status tool.** There is no separate `browser_status`-style tool. `get_page_info` doubles as the status check: it returns `{"running": False}` (optionally with an `error` field) when there's no active session or the session errors out, and page metadata (`running: True`, `url`, `title`, `origin`, `user_agent`) otherwise. `get_page_info` does not include navigation history — that lives on `manage_history(action="list")` instead (see below).
-
-- **Navigation and history live in one tool: `manage_history`.** What used to be `navigate_history` is now `manage_history`, and it gained a fourth action: `"list"`, which returns the browser's navigation history as `{"position": <0-indexed current entry>, "entries": [...]}`, where each entry has `id`, `url`, `user_typed_url`, `title`, and `transition_type`. `"back"`, `"forward"`, and `"reload"` behave as before. This is the only way to retrieve navigation history now — `get_page_info` doesn't return it. Use `goto_url` for navigating to an arbitrary URL rather than moving through existing history.
-
-- **`get_content` always reads from an element, not the whole document.** `selector` now defaults to `"body"` rather than `None`/whole-page, and there's no `include_shadow_dom` option anymore — `get_content` no longer calls `get_page_source` at all. `output_format="html"` returns a single element's outer HTML (`get_element_html`), and `output_format="urls"` returns URLs discovered within that element (`get_all_urls(selector=...)`), rather than the full raw page source including shadow roots. If you need the complete page source (shadow DOM included), that capability isn't exposed by any tool here currently. `get_content` also gained a `timeout` parameter (default 5s) for waiting on the target element.
-
-- **`get_attributes` and `focus_element` now take a `timeout`.** Both default to 5 seconds and wait for the target element the same way most other interaction tools do; previously neither exposed a timeout.
-
-- **`check_condition` is deliberately narrow.** Its `check` parameter only accepts `"present"` or `"visible"` — there's no built-in `"count"` check anymore; call `find_elements` and read the returned `count` field instead. Passing `text` checks whether that text is visible within `selector` and takes priority over `check` when both are given — so `check_condition(text="Sign in")` behaves differently from `check_condition(check="visible")`, not as two variants of the same check. Note that an empty string for `text` (or for `wait_for`'s `selector`/`text`) is treated as not provided, since both tools now branch on truthiness rather than on `is not None`.
 
 - **`find_elements` catches its own lookup failures.** Its default `timeout` is 0.5 seconds (not 5, unlike most other tools here). A failed or empty lookup never raises: no matches returns `{"count": 0, "matches": []}`, and an actual lookup error (e.g. an unsupported selector) returns `{"count": 0, "matches": [], "error": "<details>"}` — the error lives inside the returned dict rather than surfacing as a top-level string from `handle_sb_errors`. Pass a longer `timeout` explicitly if the elements you're looking for may still be loading.
 
-- **`wait_seconds` was folded into `wait_for`.** There's no standalone `wait_seconds` tool anymore. Use `wait_for(state="seconds_passed", timeout=<seconds>)` instead — it ignores `selector`/`text` and blocks for the full `timeout` duration. All other `wait_for` states behave as before.
-
-- **Hover, click-after-hover, and drag-and-drop share one tool.** `hover_action(selector1, selector2, action)` replaces the earlier separate `hover` and `drag_and_drop` tools. `action="hover"` (the default) hovers `selector1` only; `action="hover_and_click"` hovers `selector1` then clicks `selector2` (useful for dropdown/submenu items revealed by hovering); `action="drag_and_drop"` drags `selector1` onto `selector2`. (`selector2` is required when `action` is `"hover_and_click"` or `"drag_and_drop"`.) Note the action names themselves changed from an earlier `none`/`click`/`drag_and_drop` scheme — `"hover"` replaces `"none"` as the default/simple-hover value, and `"hover_and_click"` replaces the bare `"click"` to avoid confusion with the unrelated `click_element` tool.
-
-- **Non-activating element actions are `focus_element`.** What used to be `act_on_element` (then `focus`) is now `focus_element(selector, action, timeout)`, with actions `scroll_to_element` (the default), `focus`, and `highlight` — note the default action is scrolling the element into view, not focusing it. None of these actions click, type into, select from, or otherwise activate the element; use `click_element`, `type_text`, `select_option`, or `hover_action` for that.
+- **Hover, hover-and-click, and drag-and-drop share one tool.** In `hover_action(selector1, selector2, action)`, `action="hover"` (the default) hovers `selector1` only; `action="hover_and_click"` hovers `selector1` then clicks `selector2` (useful for dropdown/submenu items revealed by hovering); `action="drag_and_drop"` drags `selector1` onto `selector2`. (`selector2` is required when `action` is `"hover_and_click"` or `"drag_and_drop"`.)
 
 - **`scroll_page`'s `amount` isn't capped at 100.** Relative up/down scrolling by more than 100% of the viewport height is allowed (e.g. `amount=200` scrolls roughly two viewport heights); negative amounts are rejected for `"up"`/`"down"`.
 

@@ -3034,8 +3034,10 @@ class CDPMethods():
             self.__slow_mode_pause_if_set()
         self.loop.run_until_complete(self.page.wait(0.1))
 
-    def hover_element(self, selector, timeframe=0.27):
-        element = self.select(selector)
+    def hover_element(self, selector, timeframe=0.27, timeout=None):
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        element = self.select(selector, timeout=timeout)
         gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
         with gui_lock:
             self.bring_active_window_to_front()
@@ -3043,11 +3045,13 @@ class CDPMethods():
             element.mouse_move()
             time.sleep(timeframe)
 
-    def hover_and_click(self, hover_selector, click_selector):
+    def hover_and_click(self, hover_selector, click_selector, timeout=None):
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
         if getattr(sb_config, "_cdp_mobile_mode", None):
-            self.select(click_selector).click()
+            self.select(click_selector, timeout=timeout).click()
             return
-        hover_element = self.select(hover_selector)
+        hover_element = self.select(hover_selector, timeout=timeout)
         gui_lock = FileLock(constants.MultiBrowser.PYAUTOGUILOCK)
         with gui_lock:
             self.bring_active_window_to_front()

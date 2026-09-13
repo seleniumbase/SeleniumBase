@@ -34,14 +34,15 @@ having to choose between multiple near-identical tools.
 
 Tool-selection philosophy:
 - Use 'start_browser'/'close_browser' for opening/quitting the web browser.
-- Use 'goto_url'/'manage_history' for browser navigation and history
+- Use 'open_url'/'manage_history' for browser navigation and history
   inspection.
 - Use 'get_page_info' for reading browser/page metadata such as URL/title.
 - Use 'get_content'/'get_attributes' for reading text, HTML, or attributes.
 - Use 'find_elements' for discovering and inspecting multiple matching
   elements as structured data.
-- Use 'check_condition' for an immediate, non-waiting state check.
-- Use 'wait_for' when the agent needs to wait for a condition to become true.
+- Use 'check_if_condition' for an immediate, non-waiting state check.
+- Use 'wait_for_condition' when the agent needs to wait for a condition
+  to become true.
 - Use 'assert_condition' when the agent needs to verify an expected condition
   and treat failure as an assertion error.
 - Use 'click_element'/'type_text'/'select_option' for standard page
@@ -111,7 +112,7 @@ def start_browser(
 ) -> str:
     """Launch a persistent SeleniumBase Pure CDP Mode browser session.
 
-    Call this before using browser interaction tools such as goto_url,
+    Call this before using browser interaction tools such as open_url,
     get_content, click_element, type_text, or find_elements. The same browser
     session remains active across subsequent MCP tool calls until
     close_browser is called or the server process exits.
@@ -303,8 +304,8 @@ def get_page_info() -> dict[str, Any]:
         - Need URL, title, origin, or User-Agent -> use get_page_info.
         - Need visible page text or HTML -> use get_content.
         - Need information about matching elements -> use find_elements.
-        - Need an immediate state check -> use check_condition.
-        - Need to wait for a condition -> use wait_for.
+        - Need an immediate state check -> use check_if_condition.
+        - Need to wait for a condition -> use wait_for_condition.
         - Need to verify an expected condition -> use assert_condition.
 
     Unlike a dedicated browser-status tool, get_page_info is the single
@@ -338,8 +339,8 @@ def get_page_info() -> dict[str, Any]:
 
 @mcp.tool()
 @handle_sb_errors
-def goto_url(url: str) -> str:
-    """Navigate the current browser tab to a URL.
+def open_url(url: str) -> str:
+    """Navigate the current browser tab to the URL provided.
 
     Use this when the browser needs to visit a new URL rather than move
     through its existing back/forward history.
@@ -350,17 +351,18 @@ def goto_url(url: str) -> str:
 
     Navigation waits for the browser's navigation operation to complete
     before returning. Dynamic content may still be loading;
-    use wait_for when synchronization is required.
+    use wait_for_condition when synchronization is required.
+    If there's an error, that gets propagated through @handle_sb_errors.
 
     Args:
-        url: Destination URL. May be a complete URL such as
-            "https://example.com" or a hostname such as "example.com".
+        url: The destination URL. May be a complete URL such as
+            "https://example.com", or a hostname such as "example.com".
 
     Returns:
-        A confirmation message containing the requested URL.
+        A confirmation message containing the requested URL if successful.
 
     Tool selection:
-        - Go to a new URL -> use goto_url.
+        - Navigate to a new URL -> use open_url.
         - Return to the previous page -> use manage_history(action="back").
         - Go forward in history -> use manage_history(action="forward").
         - Refresh the current page -> use manage_history(action="reload").
@@ -379,7 +381,7 @@ def manage_history(
 
     Use 'back' or 'forward' for history navigation, 'reload' to refresh
     while bypassing the cache, or 'list' to inspect history.
-    Use 'goto_url' for navigation to an arbitrary URL.
+    Use 'open_url' for navigation to an arbitrary URL.
 
     Args:
         action:
@@ -477,7 +479,7 @@ def find_elements(
           use get_content.
         - Need to click one of several matches -> use click_element with nth.
         - Need to know whether an element is present/visible ->
-          use check_condition.
+          use check_if_condition.
 
     Notes:
         Element handles cannot be persisted across MCP calls. If you find
@@ -542,8 +544,8 @@ def get_content(
         - Need visible text, html, or URLs on a page -> use get_content.
         - Need structured information about matching elements ->
           use find_elements.
-        - Need to check element presence/visibility -> use check_condition.
-        - Need to wait for content to appear -> use wait_for.
+        - Need to check element presence/visibility -> use check_if_condition.
+        - Need to wait for content to appear -> use wait_for_condition.
 
     If there's no matching element found within the timeout,
         then @handle_sb_errors returns details from the exception raised.
@@ -592,7 +594,8 @@ def get_attributes(
         - Need to discover multiple matching elements or inspect their text ->
           use 'find_elements'.
         - Need visible text or HTML content -> use 'get_content'.
-        - Need to check element presence/visibility -> use 'check_condition'.
+        - Need to check element presence/visibility ->
+          use 'check_if_condition'.
 
     This is a read-only operation.
 
@@ -609,7 +612,7 @@ def get_attributes(
 
 @mcp.tool()
 @handle_sb_errors
-def check_condition(
+def check_if_condition(
     check: Literal["present", "visible"] = "visible",
     selector: str = "body",
     text: str | None = None,
@@ -618,9 +621,10 @@ def check_condition(
     for the condition to become true.
 
     Use this tool when you need an immediate boolean observation of the current
-    page state. Use wait_for when the condition may become true later and the
-    workflow should wait for it. Use assert_condition when the condition is an
-    expected requirement and failure should be treated as an assertion error.
+    page state. Use wait_for_condition when the condition may become true later
+    and the workflow should wait for it. Use assert_condition when the
+    condition is an expected requirement and failure should be treated as an
+    assertion error.
 
     Args:
         check:
@@ -645,8 +649,8 @@ def check_condition(
         exception. If there's an error, returns a string with error details.
 
     Tool selection:
-        - Immediate boolean observation -> use check_condition.
-        - Wait for a state/content transition -> use wait_for.
+        - Immediate boolean observation -> use check_if_condition.
+        - Wait for a state/content transition -> use wait_for_condition.
         - Verify an expected condition -> use assert_condition.
         - Need element details of matching elements -> use find_elements.
         - Need to read page or element content -> use get_content.
@@ -654,7 +658,7 @@ def check_condition(
     Notes:
         This tool does not intentionally wait for elements or text to appear.
         It is intended for checking the current state only. If page timing or
-        asynchronous loading matters, use wait_for instead.
+        asynchronous loading matters, use wait_for_condition instead.
 
         When `text` is provided, `check` is ignored.
     """
@@ -709,7 +713,7 @@ def click_element(
             clicks; do not use them with `all_matches=True`.
 
         nth: 1-based occurrence to click when multiple elements match.
-            Must be >= 1. Takes precedence over `all_matches`,
+            Must be >= 1 if provided. Takes precedence over `all_matches`,
             `only_if_visible`, and `parent_selector`.
 
         all_matches: If True, click every currently visible matching element
@@ -744,7 +748,7 @@ def click_element(
     """
     sb = _get_sb()
 
-    if nth is not None:
+    if nth:
         if nth < 1:
             return "Error: nth must be >= 1."
         sb.click_nth_element(selector, nth, scroll=scroll)
@@ -769,9 +773,10 @@ def click_element(
 @mcp.tool()
 @handle_sb_errors
 def hover_action(
-    selector1: str,
-    selector2: str | None = None,
+    selector: str,
+    secondary_selector: str | None = None,
     action: Literal["hover", "hover_and_click", "drag_and_drop"] = "hover",
+    timeout: float = 5,
 ) -> str:
     """Hover over an element, optionally click another, or drag-and-drop.
 
@@ -779,51 +784,67 @@ def hover_action(
     drag-and-drop operations.
 
     Args:
-        selector1:
+        selector:
             The primary element selector.
             For action="hover", this is the element to hover over.
             For action="hover_and_click", this is the element to hover over
-            before clicking selector2.
+            before clicking 'secondary_selector'.
             For action="drag_and_drop", this is the draggable source element.
 
-        selector2:
+        secondary_selector:
             The secondary element selector.
             Required for action="hover_and_click", where it identifies
-            the element revealed or targeted after hovering selector1.
+            the element to click after hovering 'selector'.
             Required for action="drag_and_drop", where it identifies the
             destination/drop target.
             Not used for action="hover".
 
         action:
-            - "hover": Hover over selector1 only.
-            - "hover_and_click": Hover over selector1, then click selector2.
-            - "drag_and_drop": Drag selector1 and drop it onto selector2.
+            - "hover": Hover over 'selector' only.
+            - "hover_and_click": Hover over 'selector', then click
+              'secondary_selector' after a short moment has passed.
+            - "drag_and_drop": Drag 'selector' and drop it onto
+              'secondary_selector'.
+
+        timeout: Maximum seconds to wait for 'selector'.
+            For drag_and_drop, the same timeout applies to secondary_selector.
+            For hover_and_click, SeleniumBase uses its own short wait for
+            secondary_selector; this parameter does not extend that secondary
+            wait.
 
     Returns:
-        A confirmation message describing the performed operation.
+        A confirmation message describing the performed operation's result.
 
-    Tool selection:
-        - Simple hover -> action="hover".
-        - Hover over one element and click another -> action="hover_and_click".
-        - Drag one element onto another -> action="drag_and_drop".
+    Errors:
+        If a required element cannot be found or interacted with within the
+        applicable wait period, or if an error occurs during the action, the
+        resulting exception message is returned through @handle_sb_errors.
+
     """
     sb = _get_sb()
 
+    if timeout < 0:
+        return "Error: timeout must be >= 0."
+
     if action == "hover":
-        sb.hover_element(selector1)
-        return f"Hovered {selector1}"
+        sb.hover_element(selector, timeout=timeout)
+        return f"Hovered {selector}"
 
     if action == "hover_and_click":
-        if selector2 is None:
-            return "Error: action='click' requires selector2."
-        sb.hover_and_click(selector1, selector2)
-        return f"Hovered {selector1} and clicked {selector2}"
+        if not secondary_selector:
+            return (
+                "Error: action='hover_and_click' requires secondary_selector."
+            )
+        sb.hover_and_click(selector, secondary_selector, timeout=timeout)
+        return f"Hovered {selector} and clicked {secondary_selector}"
 
     if action == "drag_and_drop":
-        if selector2 is None:
-            return "Error: action='drag_and_drop' requires selector2."
-        sb.drag_and_drop(selector1, selector2)
-        return f"Dragged {selector1} onto {selector2}"
+        if not secondary_selector:
+            return (
+                "Error: action='drag_and_drop' requires secondary_selector."
+            )
+        sb.drag_and_drop(selector, secondary_selector, timeout=timeout)
+        return f"Dragged {selector} onto {secondary_selector}"
 
     return (
         f"Error: unknown action '{action}'. "
@@ -998,7 +1019,7 @@ def focus_element(
 
 @mcp.tool()
 @handle_sb_errors
-def wait_for(
+def wait_for_condition(
     state: Literal[
         "present",
         "visible",
@@ -1017,7 +1038,7 @@ def wait_for(
     condition is met or the timeout expires. It does not intentionally scroll,
     click, or otherwise modify the page while waiting.
 
-    Use check_condition to inspect the current state without waiting.
+    Use check_if_condition to inspect the current state without waiting.
     Use assert_condition to verify an expected condition rather than
     synchronize with a changing page.
 
@@ -1056,8 +1077,8 @@ def wait_for(
         the tool returns the error produced by its error handler.
 
     Tool selection:
-        - Inspect current state immediately -> check_condition.
-        - Wait for a state change -> wait_for.
+        - Inspect current state immediately -> check_if_condition.
+        - Wait for a state change -> wait_for_condition.
         - Verify an expectation -> assert_condition.
     """
     sb = _get_sb()
@@ -1132,10 +1153,10 @@ def assert_condition(
     handled by `handle_sb_errors` and returned as a descriptive tool error;
     it is not reported as a successful result.
 
-    Unlike check_condition, this tool does not merely return whether a
+    Unlike check_if_condition, this tool does not merely return whether a
     condition is true: a failed expectation is an error.
-    Unlike wait_for, its purpose is to verify an expectation, not merely
-    synchronize with a changing page.
+    Unlike wait_for_condition, its purpose is to verify an expectation,
+    not merely synchronize with a changing page.
 
     Args:
         check:
@@ -1169,8 +1190,8 @@ def assert_condition(
         instead of a success message.
 
     Tool selection:
-        - Inspect a condition without failing -> check_condition.
-        - Wait for a condition to become true -> wait_for.
+        - Inspect a condition without failing -> check_if_condition.
+        - Wait for a condition to become true -> wait_for_condition.
         - Verify that an expected condition is true -> assert_condition.
     """
     sb = _get_sb()
@@ -1499,7 +1520,7 @@ def manage_tabs(
     """Manage browser tabs, including opening new ones.
 
     Use this for listing, opening, switching, or closing tabs.
-    Use `goto_url` and `manage_history` for navigation within the active tab.
+    Use `open_url` and `manage_history` for navigation within the active tab.
 
     Args:
         action:
@@ -1596,7 +1617,7 @@ def solve_captcha() -> str:
         1. Inspect the webpage with get_content when you need to
            determine whether CAPTCHA-related controls are present.
         2. Call solve_captcha to attempt the CAPTCHA interaction.
-        3. Use get_page_info, get_content, check_condition,
+        3. Use get_page_info, get_content, check_if_condition,
            or manage_cookies to inspect resulting page/session state.
 
     Returns:
