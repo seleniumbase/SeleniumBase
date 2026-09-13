@@ -2772,7 +2772,7 @@ class BaseCase(unittest.TestCase):
         original_by = by
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_cdp_swap_needed():
-            self.cdp.hover_element(selector)
+            self.cdp.hover_element(selector, timeout=timeout)
             return
         self.wait_for_element_visible(
             original_selector, by=original_by, timeout=timeout
@@ -2817,7 +2817,9 @@ class BaseCase(unittest.TestCase):
             click_selector, click_by
         )
         if self.__is_cdp_swap_needed():
-            self.cdp.hover_and_click(hover_selector, click_selector)
+            self.cdp.hover_and_click(
+                hover_selector, click_selector, timeout=timeout
+            )
             return
         dropdown_element = self.wait_for_element_visible(
             original_selector, by=original_by, timeout=timeout
