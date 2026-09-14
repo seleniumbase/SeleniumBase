@@ -700,11 +700,11 @@ def click_element(
     parent element.
 
     Selection behavior:
-    - `nth` is 1-based and takes precedence over every other click mode.
-    - Otherwise, `all_matches=True` clicks every currently visible match.
-    - Otherwise, `only_if_visible=True` clicks only if a match is visible.
-    - Otherwise, `parent_selector` scopes the click to a nested element.
-    - With none of the above, performs a normal SeleniumBase click.
+        - `nth` is 1-based and takes precedence over every other click mode.
+        - Otherwise, `all_matches=True` clicks every currently visible match.
+        - Otherwise, `only_if_visible=True` clicks only if a match is visible.
+        - Otherwise, `parent_selector` scopes the click to a nested element.
+        - With none of the above, performs a normal SeleniumBase click.
 
     Args:
         selector: CSS selector, XPath selector, or supported SeleniumBase
@@ -720,8 +720,8 @@ def click_element(
             in order of appearance. Ignored when `nth` is provided. Use only
             when multiple clicks are intentionally desired, such as for
             clicking all the checkboxes in a section of a webpage.
-            If a click induces page navigation, then subsequent clicks are
-            cancelled.
+            If any of the click actions induces page navigation, then
+            subsequent clicks are cancelled without any exceptions raised.
 
         only_if_visible: If True, click only when the target is already
             visible; do not wait for it to become visible.
@@ -737,14 +737,23 @@ def click_element(
             indexed click. Default: True.
 
     Examples:
-        - Click one element: `click_element("button.submit")`
-        - Click the 2nd matching element: `click_element("button", nth=2)`
-        - Click all visible matches:
-          `click_element(".dismiss", all_matches=True)`
-        - Click only if already visible:
-          `click_element("#menu", only_if_visible=True)`
-        - Click inside a container:
-          `click_element(".item", parent_selector="#result")`
+        - Click the first button: `click_element("button")`
+        - Click the 2nd button: `click_element("button", nth=2)`
+        - Click all checkboxes:
+          `click_element('input[type="checkbox"]', all_matches=True)`
+        - Click the first visible link:
+          `click_element("a", only_if_visible=True)`
+        - Click the first button that's inside the first iframe:
+          `click_element("button", parent_selector="iframe")`
+
+    Error behavior:
+        With the exception of using 'only_if_visible=True', if there's no
+        matching element found within the timeout, then @handle_sb_errors
+        returns details from the exception raised.
+
+    When not to use:
+        - Do not use this tool if you need to hover an element first before
+          clicking; use hover_action with action="hover_and_click" instead.
     """
     sb = _get_sb()
 
@@ -815,11 +824,15 @@ def hover_action(
     Returns:
         A confirmation message describing the performed operation's result.
 
-    Errors:
+    Error behavior:
         If a required element cannot be found or interacted with within the
         applicable wait period, or if an error occurs during the action, the
         resulting exception message is returned through @handle_sb_errors.
+        Failing actions such as failed hover_and_click will raise exceptions.
 
+    When not to use:
+        - Do not use this tool to click if you don't need to hover an element
+          before clicking another; use 'click' instead.
     """
     sb = _get_sb()
 
@@ -1410,11 +1423,14 @@ def scroll_page(
             up/down scrolling. For example, amount=25 scrolls approximately
             one quarter of the viewport height.
 
-    Values greater than 100 for `amount` are allowed.
-    For example, 200 means approximately two viewport heights.
+    Notes:
+        Values greater than 100 for `amount` are allowed.
+        For example, 200 means approximately two viewport heights.
 
-    Use focus_element(action="scroll_to_element") when the goal is to reveal
-    a specific element rather than scroll the page by a relative amount.
+    Tool selection:
+        - Need to reveal a specific element ->
+          use 'focus_element' with action="scroll_to_element".
+        - Need to scroll the page by a relative amount -> use 'scroll_page'.
     """
     sb = _get_sb()
 
@@ -1475,8 +1491,9 @@ def manage_window(
 
         height: Window height for "set_rect".
 
-    Use this tool for browser-window geometry and state.
-    Use `manage_tabs` for switching between browser tabs.
+    Notes:
+        Use this tool for browser-window geometry and state.
+        Use `manage_tabs` for switching between browser tabs.
     """
     sb = _get_sb()
 
@@ -1507,12 +1524,12 @@ def manage_window(
 @handle_sb_errors
 def manage_tabs(
     action: Literal[
-        "list",
-        "open",
-        "switch",
-        "switch_newest",
-        "close_active",
-    ] = "list",
+        "list_tabs",
+        "open_new_tab",
+        "switch_to_tab",
+        "switch_to_newest_tab",
+        "close_active_tab",
+    ] = "list_tabs",
     url: str | None = None,
     tab_index: int | None = None,
     switch_to: bool = True,
@@ -1524,25 +1541,34 @@ def manage_tabs(
 
     Args:
         action:
-            - "list": Return each tab's index, URL, and title.
-              Use this to find the tab_index for "switch".
-            - "open": Open a new tab, optionally navigating it to `url`.
-            - "switch": Switch to the tab at tab_index from "list".
-            - "switch_newest": Switch to the newest tab.
-            - "close_active": Close the active tab.
+            - "list_tabs": Return each tab's index, URL, and title.
+              Use this to find the tab_index for "switch_to_tab".
+            - "open_new_tab": Open a new tab, optionally navigating to `url`.
+            - "switch_to_tab": Switch to the tab at tab_index from "list_tabs".
+            - "switch_to_newest_tab": Switch to the newest tab.
+            - "close_active_tab": Close the active tab. This action must be
+              followed by a 'manage_tabs' action that switches to a new
+              tab, such as "switch_to_tab" or "switch_to_newest_tab".
 
-        url: URL for "open".
+        url: URL for "open_new_tab". If not provided, "about:blank" is used.
 
-        tab_index: Tab index from "list" for "switch".
+        tab_index: Tab index from "list_tabs" that is only used for the
+            "switch_to_tab" action.)
 
-        switch_to: For "open", switch to the new tab when True.
+        switch_to: If using "open_new_tab", switch to the new tab when True.
 
-    Tab indexes are session-relative and may change after tabs are opened or
-    closed. Use "list" to get current indexes before switching by index.
+    Notes:
+        Tab indexes are session-relative and may change after tabs are opened
+        or closed. Use "list_tabs" to get current indexes before switching
+        by index.
+
+    Error behavior:
+        If there's an error during any of the tab actions, then
+        @handle_sb_errors will propagate the exception as an error message.
     """
     sb = _get_sb()
 
-    if action == "list":
+    if action == "list_tabs":
         tabs = sb.get_tabs()
         return [
             {
@@ -1553,11 +1579,13 @@ def manage_tabs(
             for i, t in enumerate(tabs)
         ]
 
-    if action == "open":
+    if action == "open_new_tab":
+        if not url:
+            url = "about:blank"
         sb.open_new_tab(url=url, switch_to=switch_to)
         return f"Opened new tab (url={url!r}, switch_to={switch_to})"
 
-    if action == "switch":
+    if action == "switch_to_tab":
         if tab_index is None:
             return (
                 "Error: action='switch' requires tab_index "
@@ -1575,17 +1603,17 @@ def manage_tabs(
         sb.switch_to_tab(tabs[tab_index])
         return f"Switched to tab {tab_index}"
 
-    if action == "switch_newest":
+    if action == "switch_to_newest_tab":
         sb.switch_to_newest_tab()
         return "Switched to newest tab."
 
-    if action == "close_active":
+    if action == "close_active_tab":
         sb.close_active_tab()
         return "Closed active tab."
 
     return (
-        f"Error: unknown action '{action}'. Use 'list', 'open', 'switch', "
-        f"'switch_newest', or 'close_active'."
+        f"Error: unknown action '{action}'. Use 'list_tabs', 'open_new_tab', "
+        f"'switch_to_tab', 'switch_to_newest_tab', or 'close_active_tab'."
     )
 
 
@@ -1601,12 +1629,12 @@ def solve_captcha() -> str:
 
     This tool attempts to interact with CAPTCHA controls such as Cloudflare
     Turnstile, reCAPTCHA, hCaptcha, DataDome Slider, or FriendlyCaptcha via
-    the Chrome DevTools Protocol (CDP), which is stealthier than JavaScript
-    actions because CDP actions can avoid triggering `isTrusted: false`.
+    the Chrome DevTools Protocol (CDP), which is usually stealthier than
+    JavaScript because CDP actions can avoid triggering `isTrusted: false`.
 
     This tool automatically detects the coordinates of CAPTCHA checkboxes
     for determining the correct location to perform the click. If no CAPTCHA
-    is detected on the current page, then no click action is performed.
+    is detected on the current page, then no click action is attempted.
 
     The tool does not guarantee that the CAPTCHA was solved. Some CAPTCHA
     controls are embedded inside shadow DOM or otherwise do not expose an
@@ -1616,13 +1644,13 @@ def solve_captcha() -> str:
     Tool workflow:
         1. Inspect the webpage with get_content when you need to
            determine whether CAPTCHA-related controls are present.
-        2. Call solve_captcha to attempt the CAPTCHA interaction.
-        3. Use get_page_info, get_content, check_if_condition,
-           or manage_cookies to inspect resulting page/session state.
+        2. Call 'solve_captcha' to attempt the CAPTCHA interaction.
+        3. Use 'get_page_info', 'get_content', 'check_if_condition',
+           or 'manage_cookies' to inspect resulting page/session state.
 
     Returns:
         A message confirming that the CAPTCHA interaction was attempted.
-        (There's no guarantee that the CAPTCHA challenge was solved.)
+        The message is the same for both successful and failed attempts.
     """
     sb = _get_sb()
     sb.solve_captcha()
