@@ -168,7 +168,7 @@ Tools here are grouped around a shared `selector` convention. Several near-ident
 | Assertions        | `assert_condition(check: element_present/element_visible/text_visible/title/url/url_contains)`                                                     |
 | Cookies & storage | `manage_cookies(action: get_all/clear/save/load)`, `manage_storage(storage: local/session, action: get/set)`                                       |
 | Scrolling         | `scroll_page(direction: up/down/top/bottom, amount)`                                                                                                |
-| Windows & tabs    | `manage_window(action: get_rect/set_rect/maximize/minimize)`, `manage_tabs(action: list/open/switch/switch_newest/close_active)`                   |
+| Windows & tabs    | `manage_window(action: get_rect/set_rect/maximize/minimize)`, `manage_tabs(action: list_tabs/open_new_tab/switch_to_tab/switch_to_newest_tab/close_active_tab)`                   |
 | Captcha           | `solve_captcha`                                                                                                                                    |
 | Output & misc     | `save_page(format: screenshot/html/pdf)`, `run_javascript`                                                                                          |
 
