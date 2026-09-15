@@ -51,6 +51,17 @@ Tool-selection philosophy:
 - Use 'focus_element' for element positioning and visual focus.
 - Use 'solve_captcha' for clicking the checkbox of a CAPTCHA on the page.
 - Use 'save_page' for saving page output as a PNG, a PDF, or an HTML file.
+
+Tool annotations:
+Where a tool has one consistent behavior, it declares MCP tool annotations
+(title + read_only_hint/destructive_hint/idempotent_hint/open_world_hint)
+so clients can make informed UX/confirmation decisions without calling it.
+Several tools here consolidate multiple related actions behind a single
+`action`/`mode` parameter (e.g. manage_cookies: get_all/clear/save/load).
+Where those actions genuinely differ in kind -- some read-only, some
+destructive, some writing to disk -- no single annotation value would be
+honest for the whole tool, so annotations are intentionally omitted for
+those (title is still provided). See the per-tool comments below.
 """
 from __future__ import annotations
 import atexit
@@ -59,6 +70,7 @@ from functools import wraps
 from typing import Any, Literal
 from mcp.server import MCPServer
 from mcp.server.mcpserver.exceptions import ToolError
+from mcp.types import ToolAnnotations
 from seleniumbase import sb_cdp
 
 mcp = MCPServer("seleniumbase-mcp")
@@ -99,7 +111,17 @@ def handle_sb_errors(func):
 # Session lifecycle
 # ---------------------------------------------------------------------------
 
-@mcp.tool()
+@mcp.tool(
+    title="Start Browser",
+    annotations=ToolAnnotations(
+        # Single, consistent behavior: launches (or no-ops if already
+        # running) a persistent browser session.
+        read_only_hint=False,
+        destructive_hint=False,
+        idempotent_hint=True,  # No-ops with the same message if already up.
+        open_world_hint=True,  # Launches a real browser onto the open web.
+    ),
+)
 def start_browser(
     url: str | None = None,
     headless: Literal[False, True, None] = None,
@@ -245,7 +267,17 @@ def start_browser(
             )
 
 
-@mcp.tool()
+@mcp.tool(
+    title="Close Browser",
+    annotations=ToolAnnotations(
+        # Single, consistent behavior: Ends the persistent browser session
+        # (or no-ops if already stopped).
+        read_only_hint=False,
+        idempotent_hint=True,  # Once closed, repeated calls have no further
+        # effect.
+        open_world_hint=False,  # Local teardown of a server-owned resource.
+    ),
+)
 def close_browser() -> str:
     """Close the active browser session and release browser resources.
 
@@ -278,7 +310,15 @@ def close_browser() -> str:
 # Page information
 # ---------------------------------------------------------------------------
 
-@mcp.tool()
+@mcp.tool(
+    title="Get Page Info",
+    annotations=ToolAnnotations(
+        read_only_hint=True,
+        destructive_hint=False,
+        idempotent_hint=True,
+        open_world_hint=True,
+    ),
+)
 @handle_sb_errors
 def get_page_info() -> dict[str, Any]:
     """Get current browser session and page metadata.
@@ -287,7 +327,7 @@ def get_page_info() -> dict[str, Any]:
     is after navigation, clicks, form submissions, redirects, reloads, or
     tab switches.
 
-    This is a READ-ONLY metadata operation. It does not inspect arbitrary
+    This is a read-only metadata operation: It does not inspect arbitrary
     page content, find elements, check visibility, wait for conditions, or
     assert expected values.
 
@@ -337,7 +377,15 @@ def get_page_info() -> dict[str, Any]:
 # Navigation
 # ---------------------------------------------------------------------------
 
-@mcp.tool()
+@mcp.tool(
+    title="Open URL",
+    annotations=ToolAnnotations(
+        read_only_hint=False,
+        destructive_hint=False,
+        idempotent_hint=False,
+        open_world_hint=True,
+    ),
+)
 @handle_sb_errors
 def open_url(url: str) -> str:
     """Navigate the current browser tab to the URL provided.
@@ -372,15 +420,18 @@ def open_url(url: str) -> str:
     return f"Navigated to {url}"
 
 
-@mcp.tool()
+@mcp.tool(title="Manage History")
+# Annotations intentionally omitted: 'list' is a pure read, while
+# 'back'/'forward'/'reload' each navigate and modify browser state -- no
+# single read_only_hint value would be accurate for the whole tool.
 @handle_sb_errors
 def manage_history(
     action: Literal["back", "forward", "reload", "list"] = "list",
 ) -> str | dict[str, Any]:
     """Manage or inspect the current browser tab's navigation history.
 
-    Use 'back' or 'forward' for history navigation, 'reload' to refresh
-    while bypassing the cache, or 'list' to inspect history.
+    Use "back", "forward", or "reload" actions for history navigation.
+    Use "list" to inspect history. (This one is read-only.)
     Use 'open_url' for navigation to an arbitrary URL.
 
     Args:
@@ -391,7 +442,7 @@ def manage_history(
             - "list": Return the current history position and entries.
 
     Navigation actions can trigger page loads or redirects.
-    Use get_page_info afterward to verify the resulting URL or title.
+    Use 'get_page_info' afterward to verify the resulting URL or title.
     """
     sb = _get_sb()
 
@@ -433,7 +484,15 @@ def manage_history(
 # Finding & reading
 # ---------------------------------------------------------------------------
 
-@mcp.tool()
+@mcp.tool(
+    title="Find Elements",
+    annotations=ToolAnnotations(
+        read_only_hint=True,
+        destructive_hint=False,
+        idempotent_hint=True,
+        open_world_hint=True,
+    ),
+)
 @handle_sb_errors
 def find_elements(
     selector: str,
@@ -514,7 +573,15 @@ def find_elements(
     }
 
 
-@mcp.tool()
+@mcp.tool(
+    title="Get Content",
+    annotations=ToolAnnotations(
+        read_only_hint=True,
+        destructive_hint=False,
+        idempotent_hint=True,
+        open_world_hint=True,
+    ),
+)
 @handle_sb_errors
 def get_content(
     selector: str = "body",
@@ -567,18 +634,24 @@ def get_content(
     )
 
 
-@mcp.tool()
+@mcp.tool(
+    title="Get Attributes",
+    annotations=ToolAnnotations(
+        read_only_hint=True,
+        destructive_hint=False,
+        idempotent_hint=True,
+        open_world_hint=True,
+    ),
+)
 @handle_sb_errors
 def get_attributes(
     selector: str,
     attribute: str | None = None,
     timeout: float = 5,
 ) -> str | dict[str, Any] | None:
-    """Read HTML attributes from the first matching element.
-
-    Use this tool when you need the value of a specific HTML attribute,
-    or all HTML attributes of an element. Attributes could be something
-    such as href, src, value, class, id, name, type, aria-label, etc.
+    """Get a specific HTML attribute (or all attributes) from the
+    first-matching element. Examples of possible attributes include
+    href, src, value, class, id, name, type, aria-label, etc.
 
     Args:
         selector: CSS selector or SeleniumBase-supported XPath selector.
@@ -597,7 +670,8 @@ def get_attributes(
         - Need to check element presence/visibility ->
           use 'check_if_condition'.
 
-    This is a read-only operation.
+    This is a read-only operation: It finds elements to get the requested data,
+        but it does not make any modifications to those elements.
 
     If there's no matching element found within the timeout,
         then @handle_sb_errors returns details from the exception raised.
@@ -610,7 +684,15 @@ def get_attributes(
     return sb.get_element_attributes(selector, timeout=timeout)
 
 
-@mcp.tool()
+@mcp.tool(
+    title="Check Condition",
+    annotations=ToolAnnotations(
+        read_only_hint=True,
+        destructive_hint=False,
+        idempotent_hint=True,
+        open_world_hint=True,
+    ),
+)
 @handle_sb_errors
 def check_if_condition(
     check: Literal["present", "visible"] = "visible",
@@ -659,8 +741,6 @@ def check_if_condition(
         This tool does not intentionally wait for elements or text to appear.
         It is intended for checking the current state only. If page timing or
         asynchronous loading matters, use wait_for_condition instead.
-
-        When `text` is provided, `check` is ignored.
     """
     sb = _get_sb()
 
@@ -682,7 +762,20 @@ def check_if_condition(
 # Interacting with elements
 # ---------------------------------------------------------------------------
 
-@mcp.tool()
+@mcp.tool(
+    title="Click Element",
+    annotations=ToolAnnotations(
+        # These settings are consistent across all click modes. The tool
+        # always performs a browser interaction, regardless of which matching
+        # element(s) are selected.
+        read_only_hint=False,  # Clicking can modify browser/page state.
+        destructive_hint=False,  # The generic click operation is not
+        # inherently destructive; the target may be.
+        idempotent_hint=False,  # Repeating a click can produce a different
+        # result or trigger another action.
+        open_world_hint=True,  # The tool operates on external webpages.
+    ),
+)
 @handle_sb_errors
 def click_element(
     selector: str,
@@ -699,12 +792,12 @@ def click_element(
     clicking all visible matches, conditional clicks, or clicks scoped to a
     parent element.
 
-    Selection behavior:
-        - `nth` is 1-based and takes precedence over every other click mode.
-        - Otherwise, `all_matches=True` clicks every currently visible match.
-        - Otherwise, `only_if_visible=True` clicks only if a match is visible.
-        - Otherwise, `parent_selector` scopes the click to a nested element.
-        - With none of the above, performs a normal SeleniumBase click.
+    Selection behavior and priority:
+        `nth` is 1-based and takes precedence over every other click mode.
+        Otherwise, `all_matches=True` clicks every currently visible match.
+        Otherwise, `only_if_visible=True` clicks only if a match is visible.
+        Otherwise, `parent_selector` scopes the click to a nested element.
+        If none of the above are set, then a regular click is performed.
 
     Args:
         selector: CSS selector, XPath selector, or supported SeleniumBase
@@ -779,7 +872,11 @@ def click_element(
     return f"Clicked {selector}"
 
 
-@mcp.tool()
+@mcp.tool(title="Hover / Click / Drag")
+# Annotations intentionally omitted: 'hover' alone is a near-harmless
+# observation-adjacent action, while 'hover_and_click' and 'drag_and_drop'
+# can modify or reorder page/data state (like click_element) -- no single
+# destructive_hint value would be accurate for the whole tool.
 @handle_sb_errors
 def hover_action(
     selector: str,
@@ -865,7 +962,19 @@ def hover_action(
     )
 
 
-@mcp.tool()
+@mcp.tool(
+    title="Type Text",
+    annotations=ToolAnnotations(
+        # idempotent_hint is deliberately omitted: fill_input/set_value/
+        # clear_only converge to the same end state on repeat calls, but
+        # mode="append" compounds text on each call, so no single value
+        # would be accurate for every mode.
+        read_only_hint=False,
+        destructive_hint=False,
+        open_world_hint=True,  # Since "\n" can perform the "Enter" action,
+        # which includes form submissions.
+    ),
+)
 @handle_sb_errors
 def type_text(
     selector: str,
@@ -935,7 +1044,17 @@ def type_text(
     return f"type_text(mode={mode!r}) done for {selector}"
 
 
-@mcp.tool()
+@mcp.tool(
+    title="Select Option",
+    annotations=ToolAnnotations(
+        read_only_hint=False,
+        destructive_hint=False,
+        idempotent_hint=False,  # Selecting an option can trigger arbitrary
+        # page-side behavior/events.
+        open_world_hint=True,  # Selecting an option can change browser
+        # state and can trigger arbitrary page-side behavior.
+    ),
+)
 @handle_sb_errors
 def select_option(
     dropdown_selector: str,
@@ -977,7 +1096,13 @@ def select_option(
     return f"Selected ({by}={value!r}) in {dropdown_selector}"
 
 
-@mcp.tool()
+@mcp.tool(
+    title="Focus Element",
+    annotations=ToolAnnotations(
+        read_only_hint=False,
+        destructive_hint=False,
+    ),
+)
 @handle_sb_errors
 def focus_element(
     selector: str,
@@ -1030,7 +1155,17 @@ def focus_element(
 # Waiting & assertions
 # ---------------------------------------------------------------------------
 
-@mcp.tool()
+@mcp.tool(
+    title="Wait For Condition",
+    annotations=ToolAnnotations(
+        # Consistent across every state: This tool only observes/blocks,
+        # and it never modifies the page itself.
+        read_only_hint=True,
+        destructive_hint=False,
+        idempotent_hint=True,
+        open_world_hint=False,
+    ),
+)
 @handle_sb_errors
 def wait_for_condition(
     state: Literal[
@@ -1138,7 +1273,17 @@ def wait_for_condition(
     return f"Element {selector} reached state '{state}'."
 
 
-@mcp.tool()
+@mcp.tool(
+    title="Assert Condition",
+    annotations=ToolAnnotations(
+        # Consistent across every check: Purely a verification/read
+        # operation, and never modifies the page.
+        read_only_hint=True,
+        destructive_hint=False,
+        idempotent_hint=True,
+        open_world_hint=False,
+    ),
+)
 @handle_sb_errors
 def assert_condition(
     check: Literal[
@@ -1256,7 +1401,11 @@ def assert_condition(
 # Cookies & storage
 # ---------------------------------------------------------------------------
 
-@mcp.tool()
+@mcp.tool(title="Manage Cookies")
+# Annotations intentionally omitted: 'get_all' is a pure read, 'clear' is
+# destructive, and 'save'/'load' are file/session I/O -- no single
+# read_only_hint or destructive_hint value would be accurate for the whole
+# tool.
 @handle_sb_errors
 def manage_cookies(
     action: Literal["get_all", "clear", "save", "load"] = "get_all",
@@ -1328,7 +1477,10 @@ def manage_cookies(
     )
 
 
-@mcp.tool()
+@mcp.tool(title="Manage Storage")
+# Annotations intentionally omitted: 'get' is a pure read while 'set'
+# modifies storage -- no single read_only_hint value would be accurate
+# for the whole tool.
 @handle_sb_errors
 def manage_storage(
     key: str,
@@ -1404,7 +1556,20 @@ def manage_storage(
 # Scrolling
 # ---------------------------------------------------------------------------
 
-@mcp.tool()
+@mcp.tool(
+    title="Scroll Page",
+    annotations=ToolAnnotations(
+        # Consistent across up/down/top/bottom: a harmless, local,
+        # non-destructive scroll-position change.
+        # idempotent_hint is deliberately omitted: 'top'/'bottom' are
+        # idempotent (repeating lands you in the same place), but 'up'/
+        # 'down' compound with each call, so no single value would be
+        # accurate for every direction.
+        read_only_hint=False,
+        destructive_hint=False,
+        open_world_hint=False,
+    ),
+)
 @handle_sb_errors
 def scroll_page(
     direction: Literal["up", "down", "top", "bottom"] = "down",
@@ -1460,7 +1625,10 @@ def scroll_page(
 # Windows & tabs
 # ---------------------------------------------------------------------------
 
-@mcp.tool()
+@mcp.tool(title="Manage Window")
+# Annotations intentionally omitted: 'get_rect' is a pure read while
+# 'set_rect'/'maximize'/'minimize' modify window state -- no single
+# read_only_hint value would be accurate for the whole tool.
 @handle_sb_errors
 def manage_window(
     action: Literal[
@@ -1520,7 +1688,11 @@ def manage_window(
     )
 
 
-@mcp.tool()
+@mcp.tool(title="Manage Tabs")
+# Annotations intentionally omitted: 'list_tabs' is a pure read while
+# 'open_new_tab'/'switch_to_tab'/'switch_to_newest_tab' modify state and
+# 'close_active_tab' is destructive -- no single read_only_hint or
+# destructive_hint value would be accurate for the whole tool.
 @handle_sb_errors
 def manage_tabs(
     action: Literal[
@@ -1621,7 +1793,16 @@ def manage_tabs(
 # Captcha solving
 # ---------------------------------------------------------------------------
 
-@mcp.tool()
+@mcp.tool(
+    title="Solve CAPTCHA",
+    annotations=ToolAnnotations(
+        read_only_hint=False,
+        destructive_hint=False,
+        idempotent_hint=False,  # A 2nd attempt on an already-handled or
+        # rotated CAPTCHA widget isn't guaranteed to be a no-op.
+        open_world_hint=True,  # Interacts with a 3rd-party CAPTCHA widget.
+    ),
+)
 @handle_sb_errors
 def solve_captcha() -> str:
     """Attempt a SeleniumBase CDP-based CAPTCHA interaction, such as clicking
@@ -1661,7 +1842,17 @@ def solve_captcha() -> str:
 # Output & misc
 # ---------------------------------------------------------------------------
 
-@mcp.tool()
+@mcp.tool(
+    title="Save Page",
+    annotations=ToolAnnotations(
+        # Consistent across screenshot/html/pdf: All three read the current
+        # (unmodified) page and write a new local file, which may silently
+        # overwrite an existing file of the same name.
+        read_only_hint=False,
+        idempotent_hint=False,
+        open_world_hint=False,
+    ),
+)
 @handle_sb_errors
 def save_page(
     format: Literal["screenshot", "html", "pdf"] = "screenshot",
@@ -1741,7 +1932,12 @@ def save_page(
     return f"Saved {format} as {name}"
 
 
-@mcp.tool()
+@mcp.tool(title="Run JavaScript")
+# Annotations intentionally omitted: arbitrary JavaScript can read, write,
+# navigate, or destroy data, or do nothing at all -- no annotation value
+# would be more informative than the MCP spec's own conservative defaults
+# for an unannotated tool (not read-only, potentially destructive,
+# non-idempotent, open-world).
 @handle_sb_errors
 def run_javascript(expression: str) -> Any:
     """Evaluate a JavaScript expression in the current page context.
