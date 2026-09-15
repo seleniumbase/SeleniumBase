@@ -26,7 +26,7 @@ sb.goto("https://pypi.org/project/sbvirtualdisplay/#files")
 sb.assert_element("span#pip-command")
 sb.assert_text("Download files", "div#files h2.page-title")
 sb.assert_text("Download files", "a#files-tab")
-pkg_header = sb.get_text("h1.package-header__name").strip()
+pkg_header = sb.get_text('h1[class*="header__name"]').strip()
 pkg_name = pkg_header.replace(" ", "-")
 whl_file = pkg_name + "-py3-none-any.whl"
 tar_gz_file = pkg_name + ".tar.gz"

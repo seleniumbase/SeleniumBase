@@ -12,5 +12,4 @@ with SB(uc=True, test=True, use_chromium=True, incognito=True) as sb:
     for i, item in enumerate(items):
         print(f"* <====== {i + 1} ======>")
         print(item.text)
-        item.scroll_into_view()
     print(f"*** {len(items)} total items found!")
