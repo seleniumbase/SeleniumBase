@@ -222,14 +222,15 @@ class Tab(Connection):
         except (Exception, TypeError):
             pass
         while not item:
-            item = await self.find_element_by_text(
-                text, best_match, return_enclosing_element
-            )
             if loop.time() - start_time > timeout:
                 raise asyncio.TimeoutError(
                     "Time ran out while waiting for: {%s}" % text
                 )
+            await self
             await self.sleep(0.5)
+            item = await self.find_element_by_text(
+                text, best_match, return_enclosing_element
+            )
         return item
 
     async def select(
@@ -273,13 +274,13 @@ class Tab(Connection):
         except (Exception, TypeError):
             pass
         while not items:
-            await self
-            items = await self.find_elements_by_text(text)
             if loop.time() - now > timeout:
                 raise asyncio.TimeoutError(
                     "Time ran out while waiting for: {%s}" % text
                 )
+            await self
             await self.sleep(0.5)
+            items = await self.find_elements_by_text(text)
         return items
 
     async def select_all(
@@ -311,13 +312,13 @@ class Tab(Connection):
                 items.extend(await fr.query_selector_all(selector))
         items.extend(await self.query_selector_all(selector))
         while not items:
-            await self
-            items = await self.query_selector_all(selector)
             if loop.time() - now > timeout:
                 raise asyncio.TimeoutError(
                     "Time ran out while waiting for: {%s}" % selector
                 )
+            await self
             await self.sleep(0.5)
+            items = await self.query_selector_all(selector)
         return items
 
     async def get(
@@ -1098,25 +1099,32 @@ class Tab(Connection):
         """
         loop = asyncio.get_running_loop()
         now = loop.time()
+        item = None
         if selector:
-            item = await self.query_selector(selector)
-            while not item:
+            with suppress(Exception):
                 item = await self.query_selector(selector)
+            while not item:
                 if loop.time() - now > timeout:
                     raise asyncio.TimeoutError(
                         "Time ran out while waiting for: {%s}" % selector
                     )
+                await self
                 await self.sleep(0.068)
+                with suppress(Exception):
+                    item = await self.query_selector(selector)
             return item
         if text:
-            item = await self.find_element_by_text(text)
-            while not item:
+            with suppress(Exception):
                 item = await self.find_element_by_text(text)
+            while not item:
                 if loop.time() - now > timeout:
                     raise asyncio.TimeoutError(
                         "Time ran out while waiting for: {%s}" % text
                     )
+                await self
                 await self.sleep(0.068)
+                with suppress(Exception):
+                    item = await self.find_element_by_text(text)
             return item
 
     async def set_attributes(self, selector, attribute, value):
