@@ -25,7 +25,7 @@ RUN locale-gen en_US.UTF-8
 # Fingerprint Configuration
 #===========================
 RUN apt-get update
-RUN apt install -y fonts-liberation fonts-noto-color-emoji libvulkan1 libnss3 libatk-bridge2.0-0 libcups2 libxcomposite1 libxrandr2 libgbm1 libpango-1.0-0 libcairo2
+RUN apt install -y fonts-noto-color-emoji libvulkan1 libnss3 libatk-bridge2.0-0 libcups2 libxcomposite1 libxrandr2 libgbm1 libpango-1.0-0 libcairo2
 RUN apt install -y fonts-freefont-ttf fonts-dejavu-core fonts-ubuntu fonts-roboto fonts-droid-fallback
 
 #======================
@@ -33,6 +33,7 @@ RUN apt install -y fonts-freefont-ttf fonts-dejavu-core fonts-ubuntu fonts-robot
 #======================
 RUN apt-get update
 RUN apt-get install -y \
+    fonts-clear-sans \
     fonts-liberation2 \
     fonts-font-awesome \
     fonts-terminus \
@@ -125,7 +126,16 @@ COPY MANIFEST.in /SeleniumBase/MANIFEST.in
 COPY pytest.ini /SeleniumBase/pytest.ini
 COPY setup.cfg /SeleniumBase/setup.cfg
 COPY virtualenv_install.sh /SeleniumBase/virtualenv_install.sh
+COPY mcp_servers /SeleniumBase/mcp_servers/
+COPY README.md /SeleniumBase/README.md
+COPY pyproject.toml /SeleniumBase/pyproject.toml
+COPY LICENSE /SeleniumBase/LICENSE
 RUN find . -name '*.pyc' -delete
+RUN echo '#!/bin/sh' > /usr/local/bin/pip \
+    && echo 'exec python3.13 -m pip "$@"' >> /usr/local/bin/pip \
+    && chmod +x /usr/local/bin/pip \
+    && pip --version
+ENV PIP_BREAK_SYSTEM_PACKAGES=1
 RUN pip install --upgrade pip setuptools wheel
 RUN cd /SeleniumBase && ls && pip install -r requirements.txt --upgrade
 RUN cd /SeleniumBase && pip install .

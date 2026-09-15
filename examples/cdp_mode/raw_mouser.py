@@ -3,7 +3,7 @@ from seleniumbase import SB
 with SB(uc=True, test=True, guest=True) as sb:
     sb.activate_cdp_mode()
     sb.goto("https://www.mouser.com/")
-    search_box = 'input[name="keyword"]'
+    search_box = 'input[data-testid="global-search"]'
     sb.sleep(1.6)
     sb.solve_captcha()
     sb.sleep(1.8)
@@ -11,7 +11,7 @@ with SB(uc=True, test=True, guest=True) as sb:
     sb.sleep(1.2)
     sb.press_keys(search_box, "FLUKE-TC01B 25HZ")
     sb.sleep(1.2)
-    sb.click('button[type="submit"]')
+    sb.click('a[id*="search-option"]')
     sb.sleep(3.2)
     sb.wait_for_element("span#spnDescription")
     soup = sb.get_beautiful_soup()

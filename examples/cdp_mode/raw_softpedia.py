@@ -23,4 +23,3 @@ with SB(uc=True, test=True, ad_block=True) as sb:
     for link in links:
         sb.goto(link)
         sb.remove_elements("div.ad")
-        sb.sleep(2)
