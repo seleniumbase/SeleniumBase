@@ -588,10 +588,7 @@ def get_content(
     output_format: Literal["text", "html", "urls"] = "text",
     timeout: float = 5,
 ) -> str | list[str]:
-    """Read visible text, HTML, or discovered URLs from the selected element.
-
-    Use this tool when you need to get actual page content or URL information
-    rather than page metadata.
+    """Get visible text, HTML, or discovered URLs from the selected element.
 
     Args:
         selector: CSS selector or SeleniumBase-supported XPath selector.
@@ -669,9 +666,6 @@ def get_attributes(
         - Need visible text or HTML content -> use 'get_content'.
         - Need to check element presence/visibility ->
           use 'check_if_condition'.
-
-    This is a read-only operation: It finds elements to get the requested data,
-        but it does not make any modifications to those elements.
 
     If there's no matching element found within the timeout,
         then @handle_sb_errors returns details from the exception raised.
@@ -1625,10 +1619,18 @@ def scroll_page(
 # Windows & tabs
 # ---------------------------------------------------------------------------
 
-@mcp.tool(title="Manage Window")
-# Annotations intentionally omitted: 'get_rect' is a pure read while
-# 'set_rect'/'maximize'/'minimize' modify window state -- no single
-# read_only_hint value would be accurate for the whole tool.
+@mcp.tool(
+    title="Manage Window",
+    annotations=ToolAnnotations(
+        destructive_hint=False,
+        idempotent_hint=True,
+        open_world_hint=False,
+    ),
+)
+# The 'read_only_hint' annotation has been intentionally omitted:
+# 'get_rect' is a pure read while
+# 'set_rect'/'maximize'/'minimize' modify window state.
+# There's no single 'read_only_hint' value that's accurate for the whole tool.
 @handle_sb_errors
 def manage_window(
     action: Literal[
@@ -1808,10 +1810,8 @@ def solve_captcha() -> str:
     """Attempt a SeleniumBase CDP-based CAPTCHA interaction, such as clicking
     a CAPTCHA checkbox, or performing a drag/drop action on a slider CAPTCHA.
 
-    This tool attempts to interact with CAPTCHA controls such as Cloudflare
-    Turnstile, reCAPTCHA, hCaptcha, DataDome Slider, or FriendlyCaptcha via
-    the Chrome DevTools Protocol (CDP), which is usually stealthier than
-    JavaScript because CDP actions can avoid triggering `isTrusted: false`.
+    Supported CAPTCHAs include: Cloudflare Turnstile, reCAPTCHA, hCaptcha,
+    DataDome Slider, and FriendlyCaptcha.
 
     This tool automatically detects the coordinates of CAPTCHA checkboxes
     for determining the correct location to perform the click. If no CAPTCHA
@@ -1830,8 +1830,13 @@ def solve_captcha() -> str:
            or 'manage_cookies' to inspect resulting page/session state.
 
     Returns:
-        A message confirming that the CAPTCHA interaction was attempted.
+        A confirmation message of the CAPTCHA interaction.
         The message is the same for both successful and failed attempts.
+
+    Notes:
+        Clicking with the Chrome DevTools Protocol (CDP) is generally
+        stealthier than clicking with JavaScript because CDP actions
+        can avoid triggering `isTrusted: false`.
     """
     sb = _get_sb()
     sb.solve_captcha()
