@@ -3,7 +3,7 @@
   "name": "io.github.seleniumbase/seleniumbase",
   "title": "SeleniumBase MCP",
   "description": "Stealthy browser automation, testing, and web-scraping via CDP Mode.",
-  "version": "4.54.6",
+  "version": "4.54.7",
   "repository": {
     "url": "https://github.com/seleniumbase/SeleniumBase",
     "source": "github"
@@ -13,7 +13,7 @@
     {
       "registryType": "pypi",
       "identifier": "seleniumbase",
-      "version": "4.54.6",
+      "version": "4.54.7",
       "transport": {
         "type": "stdio"
       },
