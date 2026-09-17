@@ -334,7 +334,7 @@ def get_configured_sb(context):
             continue
         # Handle: -D locale-code=CODE / locale_code=CODE / locale=CODE
         if low_key in ["locale-code", "locale_code", "locale"]:
-            sb.start_page = userdata[key]
+            sb.locale_code = userdata[key]
             continue
         # Handle: -D pdb / ipdb
         if low_key in ["pdb", "ipdb"]:
@@ -881,7 +881,7 @@ def get_configured_sb(context):
             sb.cap_file = cap_file
             continue
         # Handle: -D cap-string=STRING / cap_string=STRING
-        if low_key == "cap_string":
+        if low_key in ["cap-string", "cap_string"]:
             cap_string = userdata[key]
             if cap_string == "true":
                 cap_string = sb.cap_string  # revert to default
