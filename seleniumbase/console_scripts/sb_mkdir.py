@@ -69,15 +69,17 @@ def main():
 
     command_args = sys.argv[2:]
     dir_name = command_args[0]
+    if dir_name:
+        dir_name = str(dir_name)
     if dir_name == "-h" or dir_name == "--help":
         invalid_run_command("help")
-    elif len(str(dir_name)) < 2:
+    elif len(dir_name) < 2:
         error_msg = "Directory name length must be at least 2 characters long!"
-    elif "/" in str(dir_name) or "\\" in str(dir_name):
+    elif any(sep in dir_name for sep in ("/", "\\")):
         error_msg = 'Directory name must not include slashes ("/", "\\")!'
     elif dir_name.startswith("-"):
         error_msg = 'Directory name cannot start with "-"!'
-    elif os.path.exists(os.getcwd() + "/" + dir_name):
+    elif os.path.exists(os.path.join(os.getcwd(), dir_name)):
         error_msg = (
             'Directory "%s" already exists in this directory!' % dir_name
         )
@@ -118,7 +120,7 @@ def main():
         pass
     data.append(seleniumbase_req)
     data.append("")
-    file_path = "%s/%s" % (dir_name, "requirements.txt")
+    file_path = os.path.join(dir_name, "requirements.txt")
     file = open(file_path, mode="w+", encoding="utf-8")
     file.writelines("\r\n".join(data))
     file.close()
@@ -156,7 +158,7 @@ def main():
     data.append("    staging: custom marker")
     data.append("    production: custom marker")
     data.append("")
-    file_path = "%s/%s" % (dir_name, "pytest.ini")
+    file_path = os.path.join(dir_name, "pytest.ini")
     file = open(file_path, mode="w+", encoding="utf-8")
     file.writelines("\r\n".join(data))
     file.close()
@@ -173,14 +175,14 @@ def main():
     data.append("[behave]")
     data.append("show_skipped=false")
     data.append("show_timings=false")
-    file_path = "%s/%s" % (dir_name, "setup.cfg")
+    file_path = os.path.join(dir_name, "setup.cfg")
     file = open(file_path, mode="w+", encoding="utf-8")
     file.writelines("\r\n".join(data))
     file.close()
 
     data = []
     data.append("")
-    file_path = "%s/%s" % (dir_name, "__init__.py")
+    file_path = os.path.join(dir_name, "__init__.py")
     file = open(file_path, mode="w+", encoding="utf-8")
     file.writelines("\r\n".join(data))
     file.close()
@@ -322,15 +324,15 @@ def main():
     data.append("temp")
     data.append("temp_*/")
     data.append("node_modules")
-    file_path = "%s/%s" % (dir_name, ".gitignore")
+    file_path = os.path.join(dir_name, ".gitignore")
     file = open(file_path, mode="w+", encoding="utf-8")
     file.writelines("\r\n".join(data))
     file.close()
 
     if gha:
-        dir_name_b = dir_name + "/" + ".github"
+        dir_name_b = os.path.join(dir_name, ".github")
         os.mkdir(dir_name_b)
-        dir_name_c = dir_name_b + "/" + "workflows"
+        dir_name_c = os.path.join(dir_name_b, "workflows")
         os.mkdir(dir_name_c)
 
         data = []
@@ -378,7 +380,7 @@ def main():
         data.append("        path: ./latest_logs/")
         data.append("        if-no-files-found: ignore")
         data.append("")
-        file_path = "%s/%s" % (dir_name_c, "python-package.yml")
+        file_path = os.path.join(dir_name_c, "python-package.yml")
         file = open(file_path, mode="w+", encoding="utf-8")
         file.writelines("\r\n".join(data))
         file.close()
@@ -440,7 +442,7 @@ def main():
     data.append('        self.js_click("a#logout_sidebar_link")')
     data.append('        self.assert_element("div#login_button_container")')
     data.append("")
-    file_path = "%s/%s" % (dir_name, "my_first_test.py")
+    file_path = os.path.join(dir_name, "my_first_test.py")
     file = open(file_path, mode="w+", encoding="utf-8")
     file.writelines("\r\n".join(data))
     file.close()
@@ -533,7 +535,7 @@ def main():
     data.append('        self.type("input", "Have a Nice Day!")')
     data.append('        self.assert_text("SeleniumBase", "h2")')
     data.append("")
-    file_path = "%s/%s" % (dir_name, "test_demo_site.py")
+    file_path = os.path.join(dir_name, "test_demo_site.py")
     file = open(file_path, mode="w+", encoding="utf-8")
     file.writelines("\r\n".join(data))
     file.close()
@@ -573,17 +575,17 @@ def main():
     data.append('        self.assert_title_contains(title_text)')
     data.append('        self.save_screenshot_to_logs()')
     data.append("")
-    file_path = "%s/%s" % (dir_name, "parameterized_test.py")
+    file_path = os.path.join(dir_name, "parameterized_test.py")
     file = open(file_path, mode="w+", encoding="utf-8")
     file.writelines("\r\n".join(data))
     file.close()
 
-    dir_name_2 = dir_name + "/" + "boilerplates"
+    dir_name_2 = os.path.join(dir_name, "boilerplates")
     os.mkdir(dir_name_2)
 
     data = []
     data.append("")
-    file_path = "%s/%s" % (dir_name_2, "__init__.py")
+    file_path = os.path.join(dir_name_2, "__init__.py")
     file = open(file_path, mode="w+", encoding="utf-8")
     file.writelines("\r\n".join(data))
     file.close()
@@ -618,7 +620,7 @@ def main():
     data.append("        # <<< Placeholder. Add your code here. >>>")
     data.append("        pass")
     data.append("")
-    file_path = "%s/%s" % (dir_name_2, "base_test_case.py")
+    file_path = os.path.join(dir_name_2, "base_test_case.py")
     file = open(file_path, mode="w+", encoding="utf-8")
     file.writelines("\r\n".join(data))
     file.close()
@@ -627,7 +629,7 @@ def main():
     data.append("class Page(object):")
     data.append('    html = "html"')
     data.append("")
-    file_path = "%s/%s" % (dir_name_2, "page_objects.py")
+    file_path = os.path.join(dir_name_2, "page_objects.py")
     file = open(file_path, mode="w+", encoding="utf-8")
     file.writelines("\r\n".join(data))
     file.close()
@@ -643,7 +645,7 @@ def main():
     data.append("        self.example_method()")
     data.append("        self.assert_element(Page.html)")
     data.append("")
-    file_path = "%s/%s" % (dir_name_2, "boilerplate_test.py")
+    file_path = os.path.join(dir_name_2, "boilerplate_test.py")
     file = open(file_path, mode="w+", encoding="utf-8")
     file.writelines("\r\n".join(data))
     file.close()
@@ -667,7 +669,7 @@ def main():
     data.append('        self.assert_text("Hello!", "p")')
     data.append('        DataPage().add_input_text(self, "Goodbye!")')
     data.append("")
-    file_path = "%s/%s" % (dir_name_2, "classic_obj_test.py")
+    file_path = os.path.join(dir_name_2, "classic_obj_test.py")
     file = open(file_path, mode="w+", encoding="utf-8")
     file.writelines("\r\n".join(data))
     file.close()
@@ -687,17 +689,17 @@ def main():
     data.append('        sb.assert_text("Hello!", "p")')
     data.append('        DataPage().add_input_text(sb, "Goodbye!")')
     data.append("")
-    file_path = "%s/%s" % (dir_name_2, "sb_fixture_test.py")
+    file_path = os.path.join(dir_name_2, "sb_fixture_test.py")
     file = open(file_path, mode="w+", encoding="utf-8")
     file.writelines("\r\n".join(data))
     file.close()
 
-    dir_name_3 = dir_name_2 + "/" + "samples"
+    dir_name_3 = os.path.join(dir_name_2, "samples")
     os.mkdir(dir_name_3)
 
     data = []
     data.append("")
-    file_path = "%s/%s" % (dir_name_3, "__init__.py")
+    file_path = os.path.join(dir_name_3, "__init__.py")
     file = open(file_path, mode="w+", encoding="utf-8")
     file.writelines("\r\n".join(data))
     file.close()
@@ -716,9 +718,10 @@ def main():
     data.append("            self.get_new_driver(undetectable=True)")
     data.append('        self.goto("https://google.com/ncr")')
     data.append(
-        "        sb.click_if_visible('button:contains(\"Accept all\")')"
+        "        self.click_if_visible('button:contains(\"Accept all\")')"
     )
     data.append('        self.assert_title_contains("Google")')
+    data.append("        self.sleep(0.05)")
     data.append("        self.save_screenshot_to_logs()")
     data.append('        self.type(HomePage.search_box, "GitHub")')
     data.append("        self.assert_element(HomePage.search_button)")
@@ -729,7 +732,7 @@ def main():
         '        self.assert_text("github.com", ResultsPage.search_results)'
     )
     data.append("")
-    file_path = "%s/%s" % (dir_name_3, "google_test.py")
+    file_path = os.path.join(dir_name_3, "google_test.py")
     file = open(file_path, mode="w+", encoding="utf-8")
     file.writelines("\r\n".join(data))
     file.close()
@@ -737,7 +740,7 @@ def main():
     data = []
     data.append("class HomePage(object):")
     data.append("    dialog_box = '[role=\"dialog\"] div'")
-    data.append("    search_box = '[title=\"Search\"]'")
+    data.append("    search_box = '[name=\"q\"]'")
     data.append("    search_button = 'input[value=\"Google Search\"]'")
     data.append(
         '    feeling_lucky_button = """input[value="I\'m Feeling Lucky"]"""'
@@ -747,7 +750,7 @@ def main():
     data.append("class ResultsPage(object):")
     data.append('    search_results = "div#center_col"')
     data.append("")
-    file_path = "%s/%s" % (dir_name_3, "google_objects.py")
+    file_path = os.path.join(dir_name_3, "google_objects.py")
     file = open(file_path, mode="w+", encoding="utf-8")
     file.writelines("\r\n".join(data))
     file.close()
@@ -779,7 +782,7 @@ def main():
     data.append('        self.js_click("a#logout_sidebar_link")')
     data.append('        self.assert_element("div#login_button_container")')
     data.append("")
-    file_path = "%s/%s" % (dir_name_3, "swag_labs_test.py")
+    file_path = os.path.join(dir_name_3, "swag_labs_test.py")
     file = open(file_path, mode="w+", encoding="utf-8")
     file.writelines("\r\n".join(data))
     file.close()
@@ -806,7 +809,7 @@ def main():
     data.append('        sb.js_click("a#logout_sidebar_link")')
     data.append('        sb.assert_element("div#login_button_container")')
     data.append("")
-    file_path = "%s/%s" % (dir_name_3, "sb_swag_test.py")
+    file_path = os.path.join(dir_name_3, "sb_swag_test.py")
     file = open(file_path, mode="w+", encoding="utf-8")
     file.writelines("\r\n".join(data))
     file.close()

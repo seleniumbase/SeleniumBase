@@ -74,15 +74,17 @@ def main():
 
     command_args = sys.argv[2:]
     file_name = command_args[0]
+    if file_name:
+        file_name = str(file_name)
     if file_name == "-h" or file_name == "--help":
         invalid_run_command("help")
     elif not file_name.endswith(".py"):
         error_msg = 'File name must end with ".py"!'
-    elif "*" in file_name or len(str(file_name)) < 4:
+    elif "*" in file_name or len(file_name) < 4:
         error_msg = "Invalid file name!"
     elif file_name.startswith("-"):
         error_msg = 'File name cannot start with "-"!'
-    elif "/" in str(file_name) or "\\" in str(file_name):
+    elif any(sep in file_name for sep in ("/", "\\")):
         error_msg = "File must be created in the current directory!"
     elif os.path.exists(os.getcwd() + "/" + file_name):
         error_msg = 'File "%s" already exists in this directory!' % file_name

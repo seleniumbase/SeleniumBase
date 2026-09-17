@@ -117,7 +117,7 @@ def main():
         error_msg = "Invalid file name!"
     elif file_name.startswith("-"):
         error_msg = 'File name cannot start with "-"!'
-    elif "/" in str(file_name) or "\\" in str(file_name):
+    elif any(sep in str(file_name) for sep in ("/", "\\")):
         error_msg = "File must be created in the current directory!"
     elif file_name == "abc.py":
         error_msg = '"abc.py" is a reserved Python module! Use another name!'
