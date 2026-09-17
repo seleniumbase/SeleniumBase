@@ -937,7 +937,8 @@ class BaseCase(unittest.TestCase):
             if self.__needs_minimum_wait():
                 time.sleep(0.04)
         try:
-            element.clear()  # May need https://stackoverflow.com/a/50691625
+            with suppress(Exception):
+                element.clear()  # View https://stackoverflow.com/a/50691625
             backspaces = Keys.BACK_SPACE * 42  # Is the answer to everything
             element.send_keys(backspaces)  # In case autocomplete keeps text
         except (Stale_Exception, ENI_Exception):
