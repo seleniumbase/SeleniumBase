@@ -1134,14 +1134,19 @@ def _get_test_ids_():
 def dashboard_pre_processing():
     import subprocess
 
-    command_args = sys.argv[1:]
-    command_string = " ".join(command_args)
-    command_string = command_string.replace("--quiet", "")
-    command_string = command_string.replace("-q", "")
+    # Safely filter out --quiet and -q without shell string joining
+    command_args = [
+        arg for arg in sys.argv[1:] if arg not in ("--quiet", "-q")
+    ]
+
+    # Construct a explicit argument list without shell=True
+    cmd = ["behave", "-d"] + command_args + ["--show-source"]
+
     proc = subprocess.Popen(
-        "behave -d %s --show-source" % command_string,
+        cmd,
         stdout=subprocess.PIPE,
-        shell=True,
+        stderr=subprocess.PIPE,
+        shell=False,
     )
     (output, error) = proc.communicate()
     filename_count = 0

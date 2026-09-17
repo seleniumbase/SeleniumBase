@@ -24,6 +24,7 @@ Output:
 """
 import colorama
 import os
+import subprocess
 import sys
 
 
@@ -275,12 +276,10 @@ def main():
     file = open(file_path, mode="w+", encoding="utf-8")
     file.writelines("\r\n".join(data))
     file.close()
-    if " " not in file_name:
-        os.system("sbase print %s -n" % file_name)
-    elif '"' not in file_name:
-        os.system('sbase print "%s" -n' % file_name)
-    else:
-        os.system("sbase print '%s' -n" % file_name)
+
+    print_cmd = ["sbase", "print", file_name, "-n"]
+    subprocess.run(print_cmd)
+
     success = (
         "\n" + c1 + '* Presentation: "' + file_name + '" was created! *'
         "" + cr + "\n"

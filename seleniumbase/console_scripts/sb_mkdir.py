@@ -21,6 +21,7 @@ Output:
 """
 import colorama
 import os
+import subprocess
 import sys
 
 
@@ -393,12 +394,14 @@ def main():
         data.append("  ├── pytest.ini")
         data.append("  ├── requirements.txt")
         data.append("  └── setup.cfg")
-        file_path = "%s/%s" % (dir_name, "outline.rst")
+        file_path = os.path.join(dir_name, "outline.rst")
         file = open(file_path, mode="w+", encoding="utf-8")
         file.writelines("\r\n".join(data))
         file.close()
-        os.system("sbase print %s -n" % file_path)
+
+        subprocess.run(["sbase", "print", file_path, "-n"])
         os.remove(file_path)
+
         success = (
             "\n" + c1 + '* Directory "' + dir_name + '" was created '
             "with config files! *" + cr + "\n"
@@ -834,16 +837,12 @@ def main():
     data.append("          ├── google_test.py")
     data.append("          ├── sb_swag_test.py")
     data.append("          └── swag_labs_test.py")
-    file_path = "%s/%s" % (dir_name, "outline.rst")
+    file_path = os.path.join(dir_name, "outline.rst")
     file = open(file_path, mode="w+", encoding="utf-8")
     file.writelines("\r\n".join(data))
     file.close()
-    if " " not in file_path:
-        os.system("sbase print %s -n" % file_path)
-    elif '"' not in file_path:
-        os.system('sbase print "%s" -n' % file_path)
-    else:
-        os.system("sbase print '%s' -n" % file_path)
+
+    subprocess.run(["sbase", "print", file_path, "-n"])
     os.remove(file_path)
 
     success = (
