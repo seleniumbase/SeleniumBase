@@ -652,6 +652,7 @@ def get_attributes(
 
     Args:
         selector: CSS selector or SeleniumBase-supported XPath selector.
+            If multiple elements match, then only the first one is used.
 
         attribute: Specific HTML attribute to retrieve. When omitted, returns
             all HTML attributes of the matching element as a dictionary.
@@ -1057,6 +1058,8 @@ def select_option(
 ) -> str:
     """Select an option from an HTML <select> dropdown.
 
+    Changing a dropdown selection can trigger additional events on a page.
+
     Args:
         dropdown_selector: CSS selector identifying the <select> element.
 
@@ -1445,8 +1448,11 @@ def manage_cookies(
     Notes:
         Loading saved cookies does not guarantee restoration of a login.
         Cookies may be expired, invalidated, domain/path restricted, or
-        dependent on other browser state. Navigate to the relevant site when
-        necessary so the browser has the appropriate origin for the cookies.
+        dependent on other browser state.
+
+    When not to use:
+        - Do not use this tool to load cookies if the cookie origin does
+          not match the origin of the current page.
     """
     sb = _get_sb()
 
@@ -1800,45 +1806,38 @@ def manage_tabs(
     annotations=ToolAnnotations(
         read_only_hint=False,
         destructive_hint=False,
-        idempotent_hint=False,  # A 2nd attempt on an already-handled or
-        # rotated CAPTCHA widget isn't guaranteed to be a no-op.
+        idempotent_hint=False,  # Re-attempting an already-handled or
+        # rotated CAPTCHA is not a no-op.
         open_world_hint=True,  # Interacts with a 3rd-party CAPTCHA widget.
     ),
 )
 @handle_sb_errors
 def solve_captcha() -> str:
-    """Perform a SeleniumBase CDP-based CAPTCHA interaction, such as clicking
-    a CAPTCHA checkbox, or performing a drag/drop action on a slider CAPTCHA.
+    """Attempts a SeleniumBase CDP interaction (click or drag/drop) to solve
+    detectable CAPTCHAs on the current page.
 
-    Supported CAPTCHAs include: Cloudflare Turnstile, reCAPTCHA, hCaptcha,
-    DataDome Slider, and FriendlyCaptcha.
-
-    This tool automatically detects the location of CAPTCHA checkboxes
-    for the click action. If none of the supported CAPTCHAs are detected
-    on the current page, then no click action is attempted.
-
-    The tool does not guarantee that the CAPTCHA gets solved. Some CAPTCHA
-    controls are embedded inside shadow DOM or otherwise do not expose an
-    easy success signal. A successful attempt may result in changes to page
-    state or browser cookies.
+    Supported CAPTCHAs:
+    - CF Turnstile, reCAPTCHA, hCaptcha, DataDome Slider, FriendlyCaptcha
 
     Tool workflow:
-        1. Inspect the webpage with get_content when you need to
-           determine whether CAPTCHA-related controls are present.
-        2. Call 'solve_captcha' to attempt the CAPTCHA interaction.
-        3. Use 'get_page_info', 'get_content', 'check_if_condition', or
-           'manage_cookies' to inspect the resulting page/session state
-           to determine whether the interaction appears to have succeeded.
+    1. Inspect page structure (e.g., via `get_content`) to verify that a
+       CAPTCHA is present.
+    2. Call `solve_captcha` if there's a CAPTCHA. (No-op if no CAPTCHA.)
+    3. Verify success via `get_page_info`, `get_content`, or `manage_cookies`.
+
+    Notes:
+        This tool does not guarantee that the CAPTCHA gets solved.
+        A successful attempt may result in changes to page state and cookies.
+
+    Tool Selection:
+    - Use `solve_captcha` specifically for automated CAPTCHA widget
+      interactions.
+    - Use `click_element` for standard visible elements.
+    - Use `hover_action` (action="hover_and_click") to reveal and
+      click targets.
 
     Returns:
-        A message indicating that the CAPTCHA interaction was attempted.
-
-    Tool selection:
-        - Need to interact with one of the supported CAPTCHAs ->
-          use solve_captcha.
-        - Need to hover an element in order to click another ->
-          use hover_action with action="hover_and_click".
-        - Need to click a specific visible element -> use click_element.
+        A confirmation message indicating that the attempt was initiated.
     """
     sb = _get_sb()
     sb.solve_captcha()
