@@ -334,7 +334,7 @@ def get_configured_sb(context):
             continue
         # Handle: -D locale-code=CODE / locale_code=CODE / locale=CODE
         if low_key in ["locale-code", "locale_code", "locale"]:
-            sb.start_page = userdata[key]
+            sb.locale_code = userdata[key]
             continue
         # Handle: -D pdb / ipdb
         if low_key in ["pdb", "ipdb"]:
@@ -881,7 +881,7 @@ def get_configured_sb(context):
             sb.cap_file = cap_file
             continue
         # Handle: -D cap-string=STRING / cap_string=STRING
-        if low_key == "cap_string":
+        if low_key in ["cap-string", "cap_string"]:
             cap_string = userdata[key]
             if cap_string == "true":
                 cap_string = sb.cap_string  # revert to default
@@ -1134,14 +1134,19 @@ def _get_test_ids_():
 def dashboard_pre_processing():
     import subprocess
 
-    command_args = sys.argv[1:]
-    command_string = " ".join(command_args)
-    command_string = command_string.replace("--quiet", "")
-    command_string = command_string.replace("-q", "")
+    # Safely filter out --quiet and -q without shell string joining
+    command_args = [
+        arg for arg in sys.argv[1:] if arg not in ("--quiet", "-q")
+    ]
+
+    # Construct a explicit argument list without shell=True
+    cmd = ["behave", "-d"] + command_args + ["--show-source"]
+
     proc = subprocess.Popen(
-        "behave -d %s --show-source" % command_string,
+        cmd,
         stdout=subprocess.PIPE,
-        shell=True,
+        stderr=subprocess.PIPE,
+        shell=False,
     )
     (output, error) = proc.communicate()
     filename_count = 0

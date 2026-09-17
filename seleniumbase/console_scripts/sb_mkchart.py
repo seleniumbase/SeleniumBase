@@ -24,6 +24,7 @@ Output:
 """
 import colorama
 import os
+import subprocess
 import sys
 
 
@@ -73,15 +74,17 @@ def main():
 
     command_args = sys.argv[2:]
     file_name = command_args[0]
+    if file_name:
+        file_name = str(file_name)
     if file_name == "-h" or file_name == "--help":
         invalid_run_command("help")
     elif not file_name.endswith(".py"):
         error_msg = 'File name must end with ".py"!'
-    elif "*" in file_name or len(str(file_name)) < 4:
+    elif "*" in file_name or len(file_name) < 4:
         error_msg = "Invalid file name!"
     elif file_name.startswith("-"):
         error_msg = 'File name cannot start with "-"!'
-    elif "/" in str(file_name) or "\\" in str(file_name):
+    elif any(sep in file_name for sep in ("/", "\\")):
         error_msg = "File must be created in the current directory!"
     elif os.path.exists(os.getcwd() + "/" + file_name):
         error_msg = 'File "%s" already exists in this directory!' % file_name
@@ -256,12 +259,10 @@ def main():
     file = open(file_path, mode="w+", encoding="utf-8")
     file.writelines("\r\n".join(data))
     file.close()
-    if " " not in file_name:
-        os.system("sbase print %s -n" % file_name)
-    elif '"' not in file_name:
-        os.system('sbase print "%s" -n' % file_name)
-    else:
-        os.system("sbase print '%s' -n" % file_name)
+
+    print_cmd = ["sbase", "print", file_name, "-n"]
+    subprocess.run(print_cmd)
+
     success = (
         "\n" + c1 + '* Chart Presentation: "' + file_name + '" was created! *'
         "" + cr + "\n"

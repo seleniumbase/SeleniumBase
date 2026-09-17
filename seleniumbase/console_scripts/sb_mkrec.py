@@ -32,6 +32,7 @@ Output:
 import colorama
 import shutil
 import os
+import subprocess
 import sys
 
 
@@ -116,7 +117,7 @@ def main():
         error_msg = "Invalid file name!"
     elif file_name.startswith("-"):
         error_msg = 'File name cannot start with "-"!'
-    elif "/" in str(file_name) or "\\" in str(file_name):
+    elif any(sep in str(file_name) for sep in ("/", "\\")):
         error_msg = "File must be created in the current directory!"
     elif file_name == "abc.py":
         error_msg = '"abc.py" is a reserved Python module! Use another name!'
@@ -265,10 +266,11 @@ def main():
         "" + c1 + file_name + "" + cr + "\n"
     )
     print(success)
-    run_cmd = None
+
+    run_cmd = [sys_executable, "-m", "pytest", file_name, "--rec", "-q", "-s"]
     if (
-        not start_page
-        or (
+        start_page
+        and not (
             use_uc
             and (
                 start_page.startswith("http:")
@@ -278,70 +280,61 @@ def main():
             and not esc_end
         )
     ):
-        run_cmd = "%s -m pytest %s --rec -q -s" % (sys_executable, file_name)
-    else:
-        run_cmd = "%s -m pytest %s --rec -q -s --url=%s" % (
-            sys_executable, file_name, start_page
-        )
-        if '"' not in start_page:
-            run_cmd = '%s -m pytest %s --rec -q -s --url="%s"' % (
-                sys_executable, file_name, start_page
-            )
-        elif "'" not in start_page:
-            run_cmd = "%s -m pytest %s --rec -q -s --url='%s'" % (
-                sys_executable, file_name, start_page
-            )
+        run_cmd.append("--url=%s" % start_page)
+
     if use_edge:
-        run_cmd += " --edge"
+        run_cmd.append("--edge")
     elif use_opera:
-        run_cmd += " --opera"
+        run_cmd.append("--opera")
     elif use_brave:
-        run_cmd += " --brave"
+        run_cmd.append("--brave")
     elif use_comet:
-        run_cmd += " --comet"
+        run_cmd.append("--comet")
     elif use_chromium:
-        run_cmd += " --use-chromium"
+        run_cmd.append("--use-chromium")
     if force_gui:
-        run_cmd += " --gui"
+        run_cmd.append("--gui")
     if use_uc:
-        run_cmd += " --uc"
+        run_cmd.append("--uc")
     if rec_behave:
-        run_cmd += " --rec-behave"
+        run_cmd.append("--rec-behave")
     if rec_sb_mgr:
-        run_cmd += " --rec-sb-mgr"
+        run_cmd.append("--rec-sb-mgr")
     if rec_sb_cdp:
-        run_cmd += " --rec-sb-cdp"
-    print(run_cmd)
-    os.system(run_cmd)
+        run_cmd.append("--rec-sb-cdp")
+
+    print(" ".join(run_cmd))
+    subprocess.run(run_cmd)
+
     if os.path.exists(file_path):
         os.remove(file_path)
     recorded_filename = file_name[:-3] + "_rec.py"
     recordings_dir = os.path.join(dir_name, "recordings")
     recorded_file = os.path.join(recordings_dir, recorded_filename)
-    prefix = "%s -m " % sys_executable
-    if " " not in recorded_file:
-        os.system("%sseleniumbase print %s -n" % (prefix, recorded_file))
-    elif '"' not in recorded_file:
-        os.system('%sseleniumbase print "%s" -n' % (prefix, recorded_file))
-    else:
-        os.system("%sseleniumbase print '%s' -n" % (prefix, recorded_file))
+
+    print_cmd = [
+        sys_executable, "-m", "seleniumbase", "print", recorded_file, "-n"
+    ]
+    subprocess.run(print_cmd)
+
     shutil.copy(recorded_file, file_path)
     success = (
         "\n" + c2 + "***" + cr + " RECORDING COPIED to: "
         "" + c1 + file_name + cr + "\n"
     )
     print(success)
+
     if rec_behave:
         recorded_filename = file_name[:-3] + "_rec.feature"
         recordings_dir = os.path.join(dir_name, "recordings")
         features_dir = os.path.join(recordings_dir, "features")
         recorded_file = os.path.join(features_dir, recorded_filename)
-        if " " not in recorded_file:
-            os.system("%sseleniumbase print %s -n" % (prefix, recorded_file))
-        elif '"' not in recorded_file:
-            os.system('%sseleniumbase print "%s" -n' % (prefix, recorded_file))
-        else:
-            os.system("%sseleniumbase print '%s' -n" % (prefix, recorded_file))
+
+        print_behave_cmd = [
+            sys_executable, "-m", "seleniumbase", "print", recorded_file, "-n"
+        ]
+        subprocess.run(print_behave_cmd)
+
         success = (
             "\n" + c2 + "***" + cr + " BEHAVE RECORDING at: "
             "" + c1 + os.path.relpath(recorded_file) + cr + "\n"

@@ -54,16 +54,23 @@ class WordleTests(BaseCase):
             self.goto_if_not_url("about:blank")
             self.skip("Skip this test in headless mode!")
         self.goto("https://www.nytimes.com/games/wordle/index.html")
-        self.click_if_visible("button.purr-blocker-card__button", timeout=2)
+        self.sleep(0.5)
+        self.click_if_visible("button.purr-blocker-card__button", timeout=1)
+        self.sleep(0.2)
         self.click_if_visible('button:contains("Play")', timeout=2)
+        self.sleep(0.2)
         self.click_if_visible('button[class*="Skip-module"]', timeout=4)
+        self.sleep(0.2)
         self.click_if_visible('svg[data-testid="icon-close"]', timeout=2)
+        self.sleep(0.2)
         self.remove_elements('div[class*="Ad-module]')
         self.initialize_word_list()
         random.seed()
         word = random.choice(self.word_list)
         num_attempts = 0
         found_word = False
+        self.wait_for_element('button[data-key]')
+        self.sleep(0.7)
         for attempt in range(6):
             num_attempts += 1
             if len(self.word_list) == 0:
@@ -74,8 +81,10 @@ class WordleTests(BaseCase):
                 letters.append(letter)
                 button = 'button[data-key="%s"]' % letter
                 self.click(button)
+                self.sleep(0.2)
             button = 'button[class*="oneAndAHalf"]'
             self.click(button)
+            self.sleep(0.2)
             row = (
                 'div[class*="Board"] div[class*="Row-module"]:nth-of-type(%s) '
                 % num_attempts
@@ -92,6 +101,7 @@ class WordleTests(BaseCase):
                 break
             self.word_list.remove(word)
             self.modify_word_list(word, letter_status)
+            self.sleep(0.2)
 
         self.save_screenshot_to_logs()
         if found_word:
@@ -104,4 +114,4 @@ class WordleTests(BaseCase):
 
 if __name__ == "__main__":
     from pytest import main
-    main([__file__, "-s"])
+    main([__file__, "-s", "--ad-block"])

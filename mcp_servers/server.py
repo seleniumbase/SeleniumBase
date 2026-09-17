@@ -646,15 +646,15 @@ def get_attributes(
     attribute: str | None = None,
     timeout: float = 5,
 ) -> str | dict[str, Any] | None:
-    """Get a specific HTML attribute (or all attributes) from the
-    first-matching element. Examples of possible attributes include
-    href, src, value, class, id, name, type, aria-label, etc.
+    """Get a specific HTML attribute (or all attributes) from the selected
+    element. Examples of possible attributes include href, src, value, class,
+    id, name, type, aria-label, etc.
 
     Args:
         selector: CSS selector or SeleniumBase-supported XPath selector.
 
-        attribute: Specific HTML attribute to retrieve. When omitted, return
-            all HTML attributes of the first matching element as a dictionary.
+        attribute: Specific HTML attribute to retrieve. When omitted, returns
+            all HTML attributes of the matching element as a dictionary.
 
         timeout: Maximum seconds to wait for the target element. Default: 5.
 
@@ -1807,17 +1807,17 @@ def manage_tabs(
 )
 @handle_sb_errors
 def solve_captcha() -> str:
-    """Attempt a SeleniumBase CDP-based CAPTCHA interaction, such as clicking
+    """Perform a SeleniumBase CDP-based CAPTCHA interaction, such as clicking
     a CAPTCHA checkbox, or performing a drag/drop action on a slider CAPTCHA.
 
     Supported CAPTCHAs include: Cloudflare Turnstile, reCAPTCHA, hCaptcha,
     DataDome Slider, and FriendlyCaptcha.
 
-    This tool automatically detects the coordinates of CAPTCHA checkboxes
-    for determining the correct location to perform the click. If no CAPTCHA
-    is detected on the current page, then no click action is attempted.
+    This tool automatically detects the location of CAPTCHA checkboxes
+    for the click action. If none of the supported CAPTCHAs are detected
+    on the current page, then no click action is attempted.
 
-    The tool does not guarantee that the CAPTCHA was solved. Some CAPTCHA
+    The tool does not guarantee that the CAPTCHA gets solved. Some CAPTCHA
     controls are embedded inside shadow DOM or otherwise do not expose an
     easy success signal. A successful attempt may result in changes to page
     state or browser cookies.
@@ -1826,17 +1826,19 @@ def solve_captcha() -> str:
         1. Inspect the webpage with get_content when you need to
            determine whether CAPTCHA-related controls are present.
         2. Call 'solve_captcha' to attempt the CAPTCHA interaction.
-        3. Use 'get_page_info', 'get_content', 'check_if_condition',
-           or 'manage_cookies' to inspect resulting page/session state.
+        3. Use 'get_page_info', 'get_content', 'check_if_condition', or
+           'manage_cookies' to inspect the resulting page/session state
+           to determine whether the interaction appears to have succeeded.
 
     Returns:
-        A confirmation message of the CAPTCHA interaction.
-        The message is the same for both successful and failed attempts.
+        A message indicating that the CAPTCHA interaction was attempted.
 
-    Notes:
-        Clicking with the Chrome DevTools Protocol (CDP) is generally
-        stealthier than clicking with JavaScript because CDP actions
-        can avoid triggering `isTrusted: false`.
+    Tool selection:
+        - Need to interact with one of the supported CAPTCHAs ->
+          use solve_captcha.
+        - Need to hover an element in order to click another ->
+          use hover_action with action="hover_and_click".
+        - Need to click a specific visible element -> use click_element.
     """
     sb = _get_sb()
     sb.solve_captcha()

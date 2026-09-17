@@ -1205,7 +1205,7 @@ def main():
         show_behave_options()
     elif command == "proxy" or command == "--proxy":
         import fasteners
-        import os
+        import subprocess
         import warnings
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", category=UserWarning)
@@ -1219,7 +1219,7 @@ def main():
                     shared_utils.pip_install(
                         "proxy.py", version=constants.ProxyPy.VER
                     )
-            os.system("proxy %s" % " ".join(sys.argv[2:]))
+            subprocess.run(["proxy"] + sys.argv[2:])
     elif command == "help" or command == "--help" or command == "-h":
         if len(command_args) >= 1:
             if command_args[0] == "get":

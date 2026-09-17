@@ -937,7 +937,8 @@ class BaseCase(unittest.TestCase):
             if self.__needs_minimum_wait():
                 time.sleep(0.04)
         try:
-            element.clear()  # May need https://stackoverflow.com/a/50691625
+            with suppress(Exception):
+                element.clear()  # View https://stackoverflow.com/a/50691625
             backspaces = Keys.BACK_SPACE * 42  # Is the answer to everything
             element.send_keys(backspaces)  # In case autocomplete keeps text
         except (Stale_Exception, ENI_Exception):
@@ -6304,6 +6305,7 @@ class BaseCase(unittest.TestCase):
             self.__process_recorded_behave_actions(srt_actions, colorama)
 
     def __process_recorded_behave_actions(self, srt_actions, colorama):
+        import subprocess
         from seleniumbase.behave import behave_helper
 
         behave_actions = behave_helper.generate_gherkin(srt_actions)
@@ -6384,12 +6386,7 @@ class BaseCase(unittest.TestCase):
         if getattr(self, "rec_print", None):
             spc = ""
             print()
-            if " " not in file_path:
-                os.system("sbase print %s -n" % file_path)
-            elif '"' not in file_path:
-                os.system('sbase print "%s" -n' % file_path)
-            else:
-                os.system("sbase print '%s' -n" % file_path)
+            subprocess.run(["sbase", "print", file_path, "-n"])
         stars = "*" * star_len
         c1 = ""
         c2 = ""
