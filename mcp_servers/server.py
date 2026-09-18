@@ -65,8 +65,10 @@ those (title is still provided). See the per-tool comments below.
 """
 from __future__ import annotations
 import atexit
+import os
 import sys
 from functools import wraps
+from pathlib import Path
 from typing import Any, Literal
 from mcp.server import MCPServer
 from mcp.server.mcpserver.exceptions import ToolError
@@ -1016,6 +1018,15 @@ def type_text(
     Returns:
         A confirmation message after the operation succeeds;
         otherwise the error handler returns the resulting failure.
+
+    Notes:
+        Including "\\n" in your `text` (except in "set_value" mode) will
+        simulate pressing the "Enter" key, which is useful for submitting
+        forms or triggering search inputs without needing a separate click.
+
+    Tool selection:
+        - Need to update text that appears in a text field -> use this tool.
+        - Need to update the value of a <select> element -> use select_option.
     """
     sb = _get_sb()
 
@@ -1398,11 +1409,13 @@ def assert_condition(
 # Cookies & storage
 # ---------------------------------------------------------------------------
 
-@mcp.tool(title="Manage Cookies")
-# Annotations intentionally omitted: 'get_all' is a pure read, 'clear' is
-# destructive, and 'save'/'load' are file/session I/O -- no single
-# read_only_hint or destructive_hint value would be accurate for the whole
-# tool.
+@mcp.tool(
+    title="Manage Cookies",
+    annotations=ToolAnnotations(
+        idempotent_hint=True,
+        open_world_hint=True,
+    ),
+)
 @handle_sb_errors
 def manage_cookies(
     action: Literal["get_all", "clear", "save", "load"] = "get_all",
@@ -1417,16 +1430,16 @@ def manage_cookies(
 
     Args:
         action:
-            - "get_all": Return all cookies currently available to the browser,
-              including attributes such as name, value, domain, path, expiry,
-              and security flags.
+            - "get_all": Return all cookies currently available to the
+              browser, including attributes such as name, value, domain,
+              path, expiry, and security flags.
             - "clear": Delete all cookies from the current browser session.
-            - "save": Save current cookies to filename. The file may be
-              created or overwritten.
+            - "save": Save current cookies to filename.
             - "load": Load cookies from filename into the current browser
               session.
 
-        filename: Filesystem path used by save/load.
+        filename: The name of the file to save/load cookies from.
+            Will be sanitized and saved in a restricted directory.
             Ignored for get_all and clear.
 
     Returns:
@@ -1440,21 +1453,25 @@ def manage_cookies(
         identifiers, and other private information. Only inspect, save,
         load, or share cookies when explicitly authorized.
 
-        `filename` is passed to SeleniumBase's cookie persistence methods and
-        can access the filesystem available to the MCP server. Use only
-        trusted, authorized paths. The save action may overwrite an existing
-        file.
-
     Notes:
         Loading saved cookies does not guarantee restoration of a login.
         Cookies may be expired, invalidated, domain/path restricted, or
-        dependent on other browser state.
+        dependent on other browser state. Navigate to the relevant site when
+        necessary so the browser has the appropriate origin for the cookies.
 
-    When not to use:
-        - Do not use this tool to load cookies if the cookie origin does
-          not match the origin of the current page.
+    Tool selection:
+        - Need cookies or authentication cookies -> use this tool.
+        - Need localStorage/sessionStorage -> use manage_storage.
+        - Need arbitrary JavaScript or storage operations not covered here ->
+          use run_javascript.
+        - Need visible page content or HTML -> use get_content.
+        - Need an element's HTML attributes -> use get_attributes.
     """
     sb = _get_sb()
+
+    # Define a safe sandbox directory for cookies
+    cookie_dir = Path("./saved_cookies")
+    cookie_dir.mkdir(parents=True, exist_ok=True)
 
     if action == "get_all":
         return sb.get_all_cookies()
@@ -1463,13 +1480,27 @@ def manage_cookies(
         sb.clear_cookies()
         return "Cookies cleared."
 
+    # Security: Force isolation to prevent path traversal
+    # (e.g., "../../../etc/passwd")
+    safe_filename = os.path.basename(filename)
+    if not safe_filename.endswith(".txt"):
+        safe_filename += ".txt"
+
+    # Use pathlib's division operator to join paths
+    safe_path = cookie_dir / safe_filename
+
     if action == "save":
-        sb.save_cookies(name=filename)
-        return f"Cookies saved to {filename}"
+        sb.save_cookies(name=str(safe_path))
+        return f"Cookies saved safely to {safe_path.name}"
 
     if action == "load":
-        sb.load_cookies(name=filename)
-        return f"Cookies loaded from {filename}"
+        if not safe_path.exists():
+            return (
+                f"Error: Could not load. {safe_path.name} does not "
+                "exist in the cookie directory."
+            )
+        sb.load_cookies(name=str(safe_path))
+        return f"Cookies loaded from {safe_path.name}"
 
     return (
         f"Error: unknown action '{action}'. "
