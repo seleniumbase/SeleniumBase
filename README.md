@@ -8,13 +8,13 @@
 <meta property="og:image" content="https://seleniumbase.github.io/cdn/img/mac_sb_logo_5b.png" />
 <link rel="icon" href="https://seleniumbase.github.io/img/logo6.png" />
 
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/super_logo_sb3.png" alt="SeleniumBase" title="SeleniumBase" width="350" /></a></p>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/sb_banner_blue.jpg" alt="SeleniumBase" title="SeleniumBase" width="820" /></a></p>
 
 <p align="center" class="hero__title"><b>All-in-one Browser Automation Framework:<br />Web Crawling / Testing / Scraping / Stealth</b></p>
 
-<p align="center"><a href="https://trendshift.io/repositories/12493?utm_source=repository-badge&amp;utm_medium=badge&amp;utm_campaign=badge-repository-12493" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/repositories/12493" alt="seleniumbase%2FSeleniumBase | Trendshift" width="250" height="55"/></a></p>
+<p align="center"><a href="https://www.star-history.com/seleniumbase/SeleniumBase"><img src="https://api.star-history.com/badge?repo=seleniumbase/SeleniumBase&type=rank" alt="Star History Rank" /> <img src="https://api.star-history.com/badge?repo=seleniumbase/SeleniumBase&type=trending" alt="GitHub Trending Repository of the Day" /></a></p>
 
-<p align="center"><a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=3399EE" alt="PyPI version" /></a> <a href="https://pepy.tech/projects/seleniumbase?timeRange=threeMonths&category=version&includeCIDownloads=true&granularity=daily&viewType=line&versions=*" target="_blank"><img src="https://static.pepy.tech/badge/seleniumbase" alt="SeleniumBase PyPI downloads" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" title="SeleniumBase" /></a> <a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"><img src="https://github.com/seleniumbase/SeleniumBase/workflows/Tests/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://www.youtube.com/playlist?list=PLp9uKicxkBc5UIlGi2BuE3aWC7JyXpD3m"><img src="https://img.shields.io/badge/docs-📺-F12345.svg?style=flat&logo=YouTube&logoColor=white&label=YouTube" alt="YouTube Channel" /></a></p>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"><img src="https://github.com/seleniumbase/SeleniumBase/workflows/Tests/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://img.shields.io/pypi/v/seleniumbase?logo=python&logoColor=white&label=version&color=blue" alt="PyPI version" /></a> <a href="https://pepy.tech/projects/seleniumbase?timeRange=threeMonths&category=version&includeCIDownloads=true&granularity=daily&viewType=line&versions=*" target="_blank"><img src="https://img.shields.io/pypi/dm/seleniumbase?logo=pypi&logoColor=white&label=downloads&color=blue" alt="SeleniumBase PyPI downloads" /></a> <img src="https://views.whatilearened.today/views/github/seleniumbase/SeleniumBase.svg" width="98px" height="20px" alt="Views" /><br /> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" title="SeleniumBase" /></a> <a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a> <a href="https://www.youtube.com/playlist?list=PLp9uKicxkBc5UIlGi2BuE3aWC7JyXpD3m"><img src="https://img.shields.io/badge/docs-📺-F12345.svg?style=flat&logo=YouTube&logoColor=white&label=YouTube" alt="YouTube Channel" /></a> <a href="https://discord.gg/EdhQTn3EyE" target="_blank"><img src="https://img.shields.io/discord/727927627830001734?color=7289DA&label=Discord&logo=discord&logoColor=white" /></a></p>
 
 <p align="center">
 <a href="#python_installation">🚀 Start</a> |
@@ -59,12 +59,12 @@
 <li>🎭 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md"><b><span translate="no">Stealthy Playwright Mode</span></b></a> <b>extends CDP Mode's stealth to Playwright.</b></li>
 </ul>
 <ul>
-<li><code><b>pip install seleniumbase</b></code> for the main framework. (Or use <code>uv add</code>)</li>
-<li><code><b>pip install playwright</b></code> for the optional integration. (Or use <code>uv add</code>)</li>
+<li><code><b>pip install seleniumbase</b></code>  (for the framework). Or <code>uv add seleniumbase</code>.</li>
+<li><code><b>pip install playwright</b></code> (<a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md">optional pw integration</a>). Or <code>uv add playwright</code>.</li>
 </ul>
 
 <ul>
-<li><b>🤖 For the <code>seleniumbase-mcp</code> MCP server, <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/mcp_servers/">see the MCP ReadMe</a>.</b></li>
+<li><b>🤖 For the <code>SeleniumBase MCP</code> server, <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/mcp_servers/">see the MCP ReadMe</a>.</b></li>
 </ul>
 
 --------
@@ -203,8 +203,8 @@ sb = sb_cdp.Chrome(use_chromium=True)
 from seleniumbase import SB
 
 with SB(uc=True, test=True) as sb:
-    url = "https://google.com/ncr"
-    sb.activate_cdp_mode(url)
+    sb.activate_cdp_mode()
+    sb.goto("https://google.com/ncr")
     sb.click_if_visible('button:contains("Accept all")')
     sb.type('[name="q"]', "SeleniumBase GitHub page")
     sb.click('[value="Google Search"]')
@@ -538,10 +538,10 @@ pip install -e .
 <summary> ▶️ Here's sample output from a chromedriver download. (<b>click to expand</b>)</summary>
 
 ```zsh
-*** chromedriver to download = 149.0.7827.54 (Latest Stable)
+*** Getting chromedriver 154.0.8037.57 (Latest Stable)
 
 Downloading chromedriver-mac-arm64.zip from:
-https://storage.googleapis.com/chrome-for-testing-public/149.0.7827.54/mac-arm64/chromedriver-mac-arm64.zip ...
+https://storage.googleapis.com/chrome-for-testing-public/154.0.8037.57/mac-arm64/chromedriver-mac-arm64.zip ...
 Download Complete!
 
 Extracting ['chromedriver'] from chromedriver-mac-arm64.zip ...
@@ -551,8 +551,7 @@ The file [chromedriver] was saved to:
 ~/github/SeleniumBase/seleniumbase/drivers/
 chromedriver
 
-Making [chromedriver 149.0.7827.54] executable ...
-[chromedriver 149.0.7827.54] is now ready for use!
+[chromedriver 154.0.8037.57] is ready for use!
 ```
 
 </details>
