@@ -978,7 +978,7 @@ def main():
     button = 'button[data-automation*="experiences-search"]'
     sb.wait_for_text("Where to?")
     sb.click(where_to)
-    sb.press_keys(where_to, location)
+    sb.type(where_to, location)
     sb.sleep(1)
     sb.click(button)
     sb.sleep(2)
