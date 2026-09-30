@@ -4,11 +4,11 @@
 
 ### The [SeleniumBase](https://github.com/seleniumbase/SeleniumBase) MCP server provides stealthy browser automation over the [Model Context Protocol](https://modelcontextprotocol.io) for MCP clients.
 
-This server, (located in `server.py`), uses SeleniumBase's [Pure CDP Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/cdp_mode_methods.md) (`seleniumbase.sb_cdp.Chrome`), where the browser is driven entirely over the Chrome DevTools Protocol, and there is no WebDriver in the loop at all, which makes it SeleniumBase's stealthiest mode. CAPTCHA-solving is available through `solve_captcha()`.
+This server (located in `server.py`) uses SeleniumBase's [Pure CDP Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/cdp_mode_methods.md) (`seleniumbase.sb_cdp.Chrome`), where the browser is driven entirely over the Chrome DevTools Protocol, and there is no WebDriver in the loop at all, which makes it SeleniumBase's stealthiest mode. CAPTCHA-solving is available through `solve_captcha()`.
 
-Other SeleniumBase automation styles, (such as `Driver()` and `SB()`),  have their own MCP servers in [seleniumbase/seleniumbase-mcp](https://github.com/seleniumbase/seleniumbase-mcp).
+Other SeleniumBase automation styles (such as `Driver()` and `SB()`) have their own MCP servers in [seleniumbase/seleniumbase-mcp](https://github.com/seleniumbase/seleniumbase-mcp).
 
-`headless` defaults to `None` in `start_browser`, which resolves to headless on Linux (typical for server/container environments) and headed on Windows/macOS. Pass `headless=True` or `headless=False` explicitly to override this for any OS; headless mode may be less stealthy.
+`headless` defaults to `None` in `start_browser`, which resolves to headless mode on Linux (typical for server/container environments) and headed mode on Windows/macOS. Pass `headless=True` or `headless=False` explicitly to override this for any OS; headless mode may be less stealthy.
 
 ## 1. Install
 
@@ -20,7 +20,7 @@ There are two ways to get the `seleniumbase-mcp` command:
 pip install "seleniumbase[mcp]"
 ```
 
-This installs `seleniumbase` from PyPI along with the `mcp[cli]` extra, and registers a `seleniumbase-mcp` console-script command. Your MCP client config can be as simple as `{"command": "seleniumbase-mcp"}` (see step 3's Option A).
+This installs `seleniumbase` from PyPI along with the `mcp[cli]` extra, and registers a `seleniumbase-mcp` console-script command. Your MCP client config can be as simple as `{"command": "seleniumbase-mcp"}` (see Step 3's Option A).
 
 **If you're working from a `git clone` of this repo (instead of a PyPI install):**
 
@@ -37,7 +37,7 @@ uv sync
 
 Pure CDP Mode doesn't use WebDriver, so no `chromedriver` download is needed... just a working Chrome/Chromium install.
 
-(If you don't want to use `uv`, you can use a standard Python virtual environment instead: `python3 -m venv venv && pip install -r requirements.txt` works too. `requirements.txt` installs the local SeleniumBase checkout via `-e .` the same way. Substitute `python server.py` for `uv run seleniumbase-mcp` everywhere below, and use absolute `venv/bin/python` + script path in your MCP client config instead of the path-free options.)
+If you don't want to use `uv`, you can use a standard Python virtual environment instead: `python3 -m venv venv && pip install -r requirements.txt`, which installs the local SeleniumBase checkout via `-e .`. Then substitute `python server.py` for `uv run seleniumbase-mcp` everywhere below, and use absolute `venv/bin/python` + script path in your MCP client config instead of the path-free options.
 
 Without `uv`, you can directly run the `seleniumbase-mcp` command to start the server after `pip`-installing `seleniumbase`.
 
@@ -53,11 +53,11 @@ Or if using `uv`:
 uv run mcp dev server.py
 ```
 
-That opens the MCP Inspector, where you can test commands ("Tools"). Use Ctrl+C to exit from the terminal. Next step is wiring it into a client harness.
+That opens the MCP Inspector, where you can test commands ("Tools"). Use Ctrl+C to exit the MCP Inspector from the terminal. The next step is wiring it into a client harness.
 
 ## 3. Connect it to Claude Desktop
 
-Claude Desktop doesn't run from a "project" directory the way Claude Code does, so a bare `uv run seleniumbase-mcp` isn't guaranteed to find this folder. Two ways to get a stable config:
+Claude Desktop doesn't run from a "project" directory the way Claude Code does, so a bare `uv run seleniumbase-mcp` isn't guaranteed to find this folder. There are two ways to create a stable configuration:
 
 **Option A — global install (recommended, zero paths anywhere):**
 
@@ -75,7 +75,7 @@ This puts `seleniumbase-mcp` on your `PATH` permanently (run `uv tool ensurepath
 }
 ```
 
-Note this bakes in the location of the SeleniumBase checkout at install time (since `seleniumbase` resolves to `../` via the editable path source). If you move or delete this clone, re-run `uv tool install .` from its new location.
+Note that this bakes in the location of the SeleniumBase checkout at install time (since `seleniumbase` resolves to `../` via the editable path source). If you move or delete this clone, re-run `uv tool install .` from its new location.
 
 **Option B — point `uv` at this folder directly (one absolute path, but no venv/interpreter path to track down, and no separate install step):**
 
@@ -95,7 +95,7 @@ The location of `claude_desktop_config.json` depends on your system:
 - macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
 - Windows: `%APPDATA%\Claude\claude_desktop_config.json`
 
-Restart Claude Desktop. You should see a 🔨 tools icon indicating the server connected, with the following MCP tools available through the tools interface:
+Restart Claude Desktop. You should see a 🔨 tools icon indicating the server connected, with the following MCP tools available through the interface:
 
 * `start_browser`
 * `close_browser`
@@ -164,7 +164,7 @@ Most tools accept a `selector` argument. Behavior varies slightly by tool, so ch
 
 ## Tools exposed
 
-Tools here are grouped around a shared `selector` convention. Several near-identical one-off tools (e.g. separate click/hover/drag/wait/cookie/storage variants) have been consolidated into a single tool with a `mode`/`action`/`state`/`check` parameter, so there are fewer near-neighbor tools to disambiguate between while every underlying capability stays available. Tool names also follow a verb+object convention (`click_element`, `focus_element`, `scroll_page`, `save_page`, `open_url`) rather than bare verbs, so a tool's name signals what it acts on without needing to read its description.
+Tools here are grouped around a shared `selector` convention. Several near-identical one-off tools (e.g. separate click/hover/drag/wait/cookie/storage variants) have been consolidated into a single tool with a `mode`/`action`/`state`/`check` parameter, so there are fewer near-neighbor tools to disambiguate between while keeping every underlying capability available. Tool names also follow a verb+object convention (`click_element`, `focus_element`, `scroll_page`, `save_page`, `open_url`) rather than bare verbs, so a tool's name signals what it acts on without needing to read its description.
 
 | Group             | Tool(s)                                                                                                                                            |
 | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------  |
@@ -177,7 +177,7 @@ Tools here are grouped around a shared `selector` convention. Several near-ident
 | Cookies & storage | `manage_cookies(action: get_all/clear/save/load)`, `manage_storage(storage: local/session, action: get/set)`                                       |
 | Scrolling         | `scroll_page(direction: up/down/top/bottom, amount)`                                                                                                |
 | Windows & tabs    | `manage_window(action: get_rect/set_rect/maximize/minimize)`, `manage_tabs(action: list_tabs/open_new_tab/switch_to_tab/switch_to_newest_tab/close_active_tab)`                   |
-| Captcha           | `solve_captcha`                                                                                                                                    |
+| CAPTCHA           | `solve_captcha`                                                                                                                                    |
 | Output & misc     | `save_page(format: screenshot/html/pdf)`, `run_javascript`                                                                                          |
 
 ## Design notes / things to adapt for your use case
@@ -188,7 +188,7 @@ Tools here are grouped around a shared `selector` convention. Several near-ident
 
 - **`start_browser` retries once before failing.** If the first launch attempt raises, it's retried once automatically before returning an error. This was added after seeing occasional first-attempt failures when testing against Glama's MCP Inspector; it costs nothing on the common case where the first launch already succeeds.
 
-- **Two error-handling paths, by design.** Most failures (a selector isn't found, an assertion fails, an invalid `action`/`mode`/`check` value is passed) are caught by the `handle_sb_errors` decorator and returned as a descriptive string, e.g. `Error in click_element: NoSuchElementException - ...`, so the calling agent can read the failure and self-correct. There's one deliberate exception: calling any tool other than `start_browser`/`close_browser` when no browser session is running raises `ToolError` (via the shared `_get_sb()` helper) instead of returning a string. `handle_sb_errors` explicitly re-raises `ToolError` rather than catching it, so this surfaces to the MCP client as a real tool-call error (`is_error=True`), not as ordinary text the agent has to pattern-match on. `start_browser` and `close_browser` handle their own lifecycle errors directly (e.g. "already running", a failed `quit()`) and also return strings rather than raising.
+- **Two error-handling paths, by design.** Most failures (an element matching a selector isn't found, an assertion fails, an invalid `action`/`mode`/`check` value is passed) are caught by the `handle_sb_errors` decorator and returned as a descriptive string, e.g. `Error in click_element: NoSuchElementException - ...`, so the calling agent can read the failure and self-correct. There's one deliberate exception: calling any tool other than `start_browser`/`close_browser` when no browser session is running raises `ToolError` (via the shared `_get_sb()` helper) instead of returning a string. `handle_sb_errors` explicitly re-raises `ToolError` rather than catching it, so this surfaces to the MCP client as a real tool-call error (`is_error=True`), not as ordinary text the agent has to pattern-match on. `start_browser` and `close_browser` handle their own lifecycle errors directly (e.g. "already running", a failed `quit()`) and also return strings rather than raising.
 
 - **`find_elements` catches its own lookup failures.** Its default `timeout` is 0.5 seconds (not 5, unlike most other tools here). A failed or empty lookup never raises: no matches returns `{"count": 0, "matches": []}`, and an actual lookup error (e.g. an unsupported selector) returns `{"count": 0, "matches": [], "error": "<details>"}` — the error lives inside the returned dict rather than surfacing as a top-level string from `handle_sb_errors`. Pass a longer `timeout` explicitly if the elements you're looking for may still be loading.
 
@@ -204,4 +204,4 @@ Tools here are grouped around a shared `selector` convention. Several near-ident
 
 ## Extending
 
-Adding a tool is just adding a `@mcp.tool()`-decorated function (wrapped in `handle_sb_errors`) that calls the matching `sb_cdp.Chrome` method — SeleniumBase has methods for file uploads, network conditions, and more that aren't wrapped above yet.
+Adding a tool is just adding a `@mcp.tool()`-decorated function (wrapped in `handle_sb_errors`) that calls the matching `sb_cdp.Chrome` method. SeleniumBase has methods for file uploads, network conditions, and more that aren't wrapped above yet.
