@@ -10,7 +10,7 @@ with SB(uc=True, test=True, ad_block=True, pls="none") as sb:
         sb.sleep(0.5)
     channel_name = "michaelmintz"
     channel_title = "Michael Mintz"
-    sb.press_keys('input[placeholder*="Search"]', channel_name)
+    sb.type('input[placeholder*="Search"]', channel_name)
     sb.sleep(2)
     sb.click('a:contains("%s")' % channel_title)
     sb.sleep(2)

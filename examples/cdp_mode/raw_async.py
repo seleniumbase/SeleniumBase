@@ -27,13 +27,14 @@ if __name__ == "__main__":
     loop = asyncio.new_event_loop()
     loop.run_until_complete(main())
 
+    print("--------")
+
     # An example of wrapping all async calls with event loops
     driver = cdp_driver.start_sync()
     page = loop.run_until_complete(driver.get("about:blank"))
     loop.run_until_complete(page.set_locale("en"))
     loop.run_until_complete(page.get("https://www.pokemon.com/us"))
     time.sleep(3)
-    print(loop.run_until_complete(page.evaluate("document.title")))
     with suppress(Exception):
         selector = "button#onetrust-reject-all-handler"
         element = loop.run_until_complete(page.select(selector, timeout=1))
@@ -45,6 +46,8 @@ if __name__ == "__main__":
     print(loop.run_until_complete(page.evaluate("document.title")))
     time.sleep(1)
     driver.stop()
+
+    print("--------")
 
     # Call CDP methods via the simplified SB CDP API
     sb = sb_cdp.Chrome("https://www.priceline.com/")
@@ -59,7 +62,7 @@ if __name__ == "__main__":
     button = 'button[data-automation*="experiences-search"]'
     sb.wait_for_text("Where to?")
     sb.click(where_to)
-    sb.press_keys(where_to, location)
+    sb.type(where_to, location)
     sb.sleep(1)
     sb.click(button)
     sb.sleep(3)
