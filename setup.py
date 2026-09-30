@@ -173,7 +173,7 @@ setup(
         'exceptiongroup>=1.3.1',
         'websockets~=16.1.1;python_version=="3.10"',
         'websockets>=16.1.1;python_version>="3.11"',
-        'filelock>=4.0.3',
+        'filelock>=4.0.7',
         'fasteners>=0.20',
         'mycdp>=1.4.0',
         'pynose>=1.5.5',
@@ -239,7 +239,7 @@ setup(
         # pip install -e .[coverage]
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
-            'coverage>=7.16.1',
+            'coverage>=7.16.2',
             'pytest-cov>=7.1.0',
         ],
         # pip install -e .[flake8]
@@ -252,9 +252,10 @@ setup(
         ],
         # pip install -e .[mcp]
         # (Adds the "seleniumbase-mcp" console script: An MCP server that
-        #  exposes SeleniumBase's Pure CDP Mode as tools for MCP clients)
+        #  exposes SeleniumBase's Pure CDP Mode as tools for MCP clients.
+        #  Example usage: `mcp dev server.py`)
         "mcp": [
-            "mcp[cli]>=2.1.1,<3.0.0",
+            "mcp[cli]>=2.2.0,<3.0.0",
         ],
         # pip install -e .[mss]
         # (An optional library for tile_windows() in CDP Mode.)
@@ -299,10 +300,9 @@ setup(
             'PyAutoGUI>=0.9.54;platform_system!="Linux"',
         ],
         # pip install -e .[uv]
-        # Required for local MCP server debugging with:
-        #     mcp dev server.py
+        # (For the MCP integration and more.)
         "uv": [
-            "uv>=0.12.18"
+            "uv>=0.12.21"
         ],
     },
     packages=[
