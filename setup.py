@@ -173,7 +173,7 @@ setup(
         'exceptiongroup>=1.3.1',
         'websockets~=16.1.1;python_version=="3.10"',
         'websockets>=16.1.1;python_version>="3.11"',
-        'filelock>=4.0.7',
+        'filelock>=4.0.8',
         'fasteners>=0.20',
         'mycdp>=1.4.0',
         'pynose>=1.5.5',
@@ -192,7 +192,7 @@ setup(
         'tabcompleter>=1.4.1',
         'pdbp>=1.8.3',
         'idna>=3.20',
-        'charset-normalizer>=3.5.1,<4',
+        'charset-normalizer>=3.5.2,<4',
         'urllib3>=2.8.0,<3',
         'requests~=2.34.2',
         'sniffio==1.3.1',
@@ -202,7 +202,7 @@ setup(
         'trio-websocket~=0.12.2',
         'wsproto~=1.3.2',
         'websocket-client~=1.9.2',
-        'selenium==4.49.0',
+        'selenium==4.50.0',
         'cssselect>=1.5.0,<2',
         'sortedcontainers==2.4.0',
         'execnet==2.1.2',
@@ -247,7 +247,7 @@ setup(
         "flake8": [
             'flake8==7.4.1',
             'mccabe==0.7.0',
-            'pyflakes==4.0.0',
+            'pyflakes==4.0.1',
             'pycodestyle==2.15.0',
         ],
         # pip install -e .[mcp]
@@ -266,7 +266,7 @@ setup(
         # (An optional library for parsing PDF files.)
         "pdfminer": [
             'pdfminer.six==20260107',
-            'cryptography==50.0.1',
+            'cryptography==50.0.2',
             'cffi==2.1.1',
             'pycparser==3.0',
         ],
