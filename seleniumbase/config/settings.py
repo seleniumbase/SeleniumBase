@@ -1,5 +1,5 @@
 """
-You'll probably want to customize this to your own environment and needs.
+Customize these settings based on your own environment as needed.
 
 For changes to take effect immediately, use Python's Develop Mode.
 Develop Mode Install: "pip install -e ."  (from the top-level directory)
@@ -178,7 +178,7 @@ DB_SCHEMA = "test_db"
 # Amazon S3 Bucket Credentials
 # (For saving screenshots and other log files from tests)
 # (Bucket names are unique across all existing bucket names in Amazon S3)
-# Usage: "--with-s3_logging"
+# Usage: "--with-s3-logging"
 S3_LOG_BUCKET = "[S3 BUCKET NAME]"
 S3_BUCKET_URL = "https://s3.amazonaws.com/[S3 BUCKET NAME]/"
 S3_SELENIUM_ACCESS_KEY = "[S3 ACCESS KEY]"

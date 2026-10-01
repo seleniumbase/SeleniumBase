@@ -108,7 +108,7 @@ DB_SCHEMA = "test_db"
 # Amazon S3 Bucket Credentials
 # (For saving screenshots and other log files from tests)
 # (Bucket names are unique across all existing bucket names in Amazon S3)
-# Usage: "--with-s3_logging"
+# Usage: "--with-s3-logging"
 S3_LOG_BUCKET = "[S3 BUCKET NAME]"
 S3_BUCKET_URL = "https://s3.amazonaws.com/[S3 BUCKET NAME]/"
 S3_SELENIUM_ACCESS_KEY = "[S3 ACCESS KEY]"
