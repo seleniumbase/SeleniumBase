@@ -8,6 +8,5 @@ with sync_playwright() as p:
     browser = p.chromium.connect_over_cdp(endpoint_url)
     page = browser.contexts[0].pages[0]
     page.goto("https://www.bing.com/turing/captcha/challenge")
-    page.wait_for_timeout(2000)
     sb.solve_captcha()
     page.wait_for_timeout(2000)

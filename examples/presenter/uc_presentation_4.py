@@ -355,7 +355,7 @@ class UCPresentationClass(BaseCase):
         with SB(uc=True, test=True, guest=True) as sb:
             sb.activate_cdp_mode()
             sb.goto("www.planetminecraft.com/account/sign_in/")
-            sb.sleep(3)
+            sb.sleep(1)
             sb.solve_captcha()
             sb.wait_for_element_absent("input[disabled]")
             sb.sleep(2)

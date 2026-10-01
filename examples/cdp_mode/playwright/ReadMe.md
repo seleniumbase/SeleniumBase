@@ -191,15 +191,15 @@ with sync_playwright() as p:
     page.wait_for_selector(input_field)
     sb.sleep(1.5)
     sb.click_if_visible('button[id*="Agree"]')
-    sb.sleep(1.2)
+    sb.sleep(0.6)
     page.click(input_field)
-    sb.sleep(0.5)
+    sb.sleep(0.6)
     search = "Nike Shoes"
     page.type(input_field, search)
     sb.sleep(1.2)
     page.click('ul[id*="typeahead"] li div')
     sb.sleep(3.5)
-    elements = sb.select_all("a.ProductCard-link")
+    elements = sb.select_all("a[data-productcard]")
     if elements:
         print('**** Found results for "%s": ****' % search)
     for element in elements:
@@ -223,7 +223,6 @@ with sync_playwright() as p:
     browser = p.chromium.connect_over_cdp(endpoint_url)
     page = browser.contexts[0].pages[0]
     page.goto("https://www.bing.com/turing/captcha/challenge")
-    page.wait_for_timeout(2000)
     sb.solve_captcha()
     page.wait_for_timeout(2000)
 ```

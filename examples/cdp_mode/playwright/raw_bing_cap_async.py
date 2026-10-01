@@ -11,7 +11,6 @@ async def main():
         browser = await p.chromium.connect_over_cdp(endpoint_url)
         page = browser.contexts[0].pages[0]
         await page.goto("https://www.bing.com/turing/captcha/challenge")
-        await page.wait_for_timeout(2000)
         await driver.solve_captcha()
         await page.wait_for_timeout(2000)
 
