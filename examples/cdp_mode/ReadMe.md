@@ -2,7 +2,7 @@
 
 <h2><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32"></a> CDP Mode 🐙</h2>
 
-🐙 <b translate="no">SeleniumBase</b> <b translate="no">CDP Mode</b> is a stealth mode that uses the <a href="https://chromedevtools.github.io/devtools-protocol/" translate="no">Chrome Devtools Protocol</a> (via <a href="https://github.com/mdmintz/MyCDP" translate="no"><span translate="no">MyCDP</span></a>) to control the web browser. <b translate="no">CDP Mode</b> can be used as a subset of <b><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md" translate="no"><span translate="no">UC Mode</span></a></b>, or via <b><a href="#Pure_CDP_Mode" translate="no">Pure CDP Mode</a></b>, which has sync and async formats. From CDP Mode, you can make Playwright stealthy (<a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md">Stealthy Playwright Mode</a>).
+🐙 <b translate="no">SeleniumBase</b> <b translate="no">CDP Mode</b> is a stealth mode that uses the <a href="https://chromedevtools.github.io/devtools-protocol/" translate="no">Chrome Devtools Protocol</a> (via <a href="https://github.com/mdmintz/MyCDP" translate="no"><span translate="no">MyCDP</span></a>) to control the web browser. <b translate="no">CDP Mode</b> can be used as a subset of <b><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md" translate="no"><span translate="no">UC Mode</span></a></b>, or via <b><a href="#Pure_CDP_Mode" translate="no">Pure CDP Mode</a></b>, which has sync and async formats. From CDP Mode, you can make Playwright stealthy (via <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md">Stealthy Playwright Mode</a>).
 
 ----
 
@@ -22,20 +22,88 @@
 
 ℹ️ Note the differences between <b>UC Mode</b> and <b>CDP Mode</b>:
 
-👤 <b translate="no">UC Mode</b>'s stealth is based on a modified chromedriver  (<code>uc_driver</code>) that avoids bot-detection by disconnecting and reconnecting WebDriver from the browser at strategic times. Due to advancements in anti-bot technology, more stealth was needed to bypass advanced bot-detection. (That's where <b translate="no">CDP Mode</b> comes in.)
+👤 <b translate="no">UC Mode</b>'s stealth is based on a modified <code>chromedriver</code> (<code>uc_driver</code>) that avoids bot-detection by disconnecting and reconnecting WebDriver from the browser at strategic times.
 
-🐙 <b translate="no">CDP Mode</b> includes multiple updates to the above, such as:
-
-* Using CDP directly, which is stealthier than WebDriver.
-* Backwards compatibility for existing UC Mode scripts.
-* More configuration options when launching browsers.
-* The ability to use WebDriver and CDP calls together.
-* Full access to call any advanced CDP library method.
-* Can be used to make the Playwright library stealthy.
+🐙 <b translate="no">CDP Mode</b>'s stealth comes from using the Chrome DevTools Protocol directly, which is much better at avoiding bot-detection. CDP Mode can also be used to make Playwright stealthy.
 
 ----
 
-### 🐙 <b translate="no">CDP Mode</b> Usage (when used as a subset of UC Mode):
+<a id="Pure_CDP_Mode"></a>
+
+### 🐙 <b translate="no">Pure CDP Mode</b> (<code translate="no">sb_cdp</code>)
+
+In <b translate="no">Pure CDP Mode</b>, CDP is used to launch the browser and perform all actions.
+
+🐙 Here's how to initialize Pure CDP Mode and open a URL:
+
+```python
+from seleniumbase import sb_cdp
+
+sb = sb_cdp.Chrome(OPTIONS)
+sb.goto(URL)
+```
+
+ℹ️ The browser quits automatically when Python goes out-of-scope. You can also quit the browser before that by calling `sb.quit()`.
+
+Example from [SeleniumBase/examples/cdp_mode/raw_cdp_gitlab.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_gitlab.py):
+
+```python
+from seleniumbase import sb_cdp
+
+sb = sb_cdp.Chrome(incognito=True)
+sb.goto("https://gitlab.com/users/sign_in")
+sb.sleep(2)
+sb.solve_captcha()
+sb.highlight('h1:contains("GitLab")')
+sb.highlight('button:contains("Sign in")')
+sb.quit()
+```
+
+<img src="https://seleniumbase.github.io/other/cf_sec.jpg" title="SeleniumBase" width="332"> <img src="https://seleniumbase.github.io/other/gitlab_bypass.png" title="SeleniumBase" width="288">
+
+ℹ️  `sb.solve_captcha()` handles CAPTCHAs that aren't automatically bypassed.
+
+Example from [SeleniumBase/examples/cdp_mode/raw_cdp_turnstile.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_turnstile.py):
+
+```python
+from seleniumbase import sb_cdp
+
+sb = sb_cdp.Chrome()
+sb.goto("https://seleniumbase.io/apps/turnstile")
+sb.solve_captcha()
+sb.assert_element("img#captcha-success")
+sb.set_messenger_theme(location="top_left")
+sb.post_message("SeleniumBase wasn't detected", duration=3)
+sb.quit()
+```
+
+Another example: ([SeleniumBase/examples/cdp_mode/raw_cdp_methods.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_methods.py))
+
+```python
+from seleniumbase import sb_cdp
+
+sb = sb_cdp.Chrome()
+sb.goto("https://seleniumbase.io/demo_page")
+sb.press_keys("input", "Text")
+sb.highlight("button")
+sb.type("textarea", "Here are some words")
+sb.click("button")
+sb.set_value("input#mySlider", "100")
+sb.click_visible_elements("input.checkBoxClassB")
+sb.select_option_by_text("#mySelect", "Set to 75%")
+sb.gui_hover_and_click("#myDropdown", "#dropOption2")
+sb.gui_click_element("#checkBox1")
+sb.gui_drag_and_drop("img#logo", "div#drop2")
+sb.nested_click("iframe#myFrame3", ".fBox")
+sb.sleep(2)
+sb.quit()
+```
+
+----
+
+### 🐙 <b translate="no">CDP Mode</b> as a subset of UC Mode
+
+🐙 Here’s how to initialize CDP Mode from UC Mode:
 
 * **`sb.activate_cdp_mode()` or `sb.activate_cdp_mode(url)`**
 
@@ -43,27 +111,7 @@ That disconnects WebDriver from Chrome (which prevents detection), and gives you
 
 > (Calling **`sb.goto(url)`** from UC Mode also activates CDP Mode now.)
 
-Simple example from [SeleniumBase/examples/cdp_mode/raw_gitlab.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_gitlab.py):
-
-```python
-from seleniumbase import SB
-
-with SB(uc=True, test=True, locale="en") as sb:
-    sb.activate_cdp_mode()
-    sb.goto("https://gitlab.com/users/sign_in")
-    sb.sleep(2)
-    sb.solve_captcha()
-    sb.sleep(2)
-```
-
-<img src="https://seleniumbase.github.io/other/cf_sec.jpg" title="SeleniumBase" width="332"> <img src="https://seleniumbase.github.io/other/gitlab_bypass.png" title="SeleniumBase" width="288">
-
-(If the CAPTCHA wasn't bypassed automatically, then `sb.solve_captcha()` gets the job done.)
-
-----
-
-Here's another example that calls `sb.solve_captcha()`:
-([SeleniumBase/examples/cdp_mode/raw_planetmc.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_planetmc.py))
+Example from [SeleniumBase/examples/cdp_mode/raw_planetmc.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_planetmc.py):
 
 ```python
 from seleniumbase import SB
@@ -71,7 +119,6 @@ from seleniumbase import SB
 with SB(uc=True, test=True, guest=True) as sb:
     sb.activate_cdp_mode()
     sb.goto("www.planetminecraft.com/account/sign_in/")
-    sb.sleep(3)
     sb.solve_captcha()
     sb.wait_for_element_absent("input[disabled]")
     sb.sleep(2)
@@ -79,13 +126,23 @@ with SB(uc=True, test=True, guest=True) as sb:
 
 <img src="https://seleniumbase.github.io/other/planet_mc.png" title="SeleniumBase" width="480">
 
-In many cases, the CAPTCHA will be solved automatically without needing to call `solve_captcha()`.
+To use a WebDriver-only method from UC Mode when WebDriver is disconnected, call:
 
-----
+* **`sb.reconnect()`** or **`sb.connect()`**
 
-You can also use `PyAutoGUI` to click on elements with the mouse by calling `sb.gui_click_element(selector)`. (The `PyAutoGUI` methods start with `gui`.)
+ℹ️ Note that reconnecting allows anti-bot systems to detect you, so only reconnect if it is safe to do so.
 
-ℹ️ Note that `PyAutoGUI` is an optional dependency. If calling a method that needs it when not already installed, then `SeleniumBase` installs `PyAutoGUI` at runtime.
+To disconnect again, call:
+
+* **`sb.disconnect()`**
+
+ℹ️ While disconnected, if you call a WebDriver method, <b translate="no">SeleniumBase</b> will attempt to use the <b translate="no">CDP Mode</b> version of that method (if available). For example, calling `sb.click(selector)` instead of `sb.cdp.click(selector)` will automatically redirect to the <b translate="no">CDP Mode</b> version. Not all WebDriver methods have a matching <b translate="no">CDP Mode</b> method. In that scenario, calling a WebDriver method while disconnected could raise an error, or make WebDriver automatically reconnect first.
+
+To find out if WebDriver is connected or disconnected, call:
+
+* **`sb.is_connected()`**
+
+<b>Note:</b> When <b translate="no">CDP Mode</b> is initialized from <b translate="no">UC Mode</b>, WebDriver is disconnected from the browser. (The stealthy <b translate="no">CDP Mode</b> takes over.)
 
 ----
 
@@ -100,33 +157,66 @@ You can also use `PyAutoGUI` to click on elements with the mouse by calling `sb.
 * `select_all(selector)`  (Returns matching elements)
 * `get_text(selector)`  (Returns the element's text)
 
-To use WebDriver-only methods again, call:
-
-* **`sb.reconnect()`** or **`sb.connect()`**
-
-(Note that reconnecting allows anti-bots to detect you, so only reconnect if it is safe to do so.)
-
-To disconnect again, call:
-
-* **`sb.disconnect()`**
-
-While disconnected, if you call a WebDriver method, then <b translate="no">SeleniumBase</b> will attempt to use the <b translate="no">CDP Mode</b> version of that method (if available). For example, if you call `sb.click(selector)` instead of `sb.cdp.click(selector)`, then your WebDriver call will automatically redirect to the <b translate="no">CDP Mode</b> version. Not all WebDriver methods have a matching <b translate="no">CDP Mode</b> method. In that scenario, calling a WebDriver method while disconnected could raise an error, or make WebDriver automatically reconnect first.
-
-To find out if WebDriver is connected or disconnected, call:
-
-* **`sb.is_connected()`**
-
-<b>Note:</b> When <b translate="no">CDP Mode</b> is initialized from <b translate="no">UC Mode</b>, the WebDriver is disconnected from the browser. (The stealthy <b translate="no">CDP Mode</b> takes over.)
-
 ----
 
-### 🐙 <b translate="no">CDP Mode</b> examples ([SeleniumBase/examples/cdp_mode](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode))
+### 🐙 Longer <b translate="no">CDP Mode</b> examples ([SeleniumBase/examples/cdp_mode](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode))
 
 <p><div /></p>
 
 <div></div>
 <details>
-<summary> ▶️ 🔖 <b>Example 1: (Pokemon site using Incapsula/Imperva protection with invisible reCAPTCHA)</b></summary>
+<summary> ▶️ 🔖 <b>Walmart site using Akamai protection with PerimeterX (Pure CDP Mode)</b></summary>
+
+```python
+from seleniumbase import sb_cdp
+
+sb = sb_cdp.Chrome(locale="en", guest=True)
+sb.goto("https://www.walmart.com/")
+sb.sleep(3)
+continue_button = 'button:contains("Continue shopping")'
+if sb.is_element_visible(continue_button):
+    sb.gui_click_element(continue_button)
+    sb.sleep(0.6)
+sb.click('input[aria-label="Search"]')
+sb.sleep(1.4)
+search = "Settlers of Catan Board Game"
+required_text = "Catan"
+sb.press_keys('input[aria-label="Search"]', search + "\n")
+sb.sleep(3.8)
+sb.remove_elements('[data-testid="skyline-ad"]')
+sb.remove_elements('[data-testid="sba-container"]')
+print('*** Walmart Search for "%s":' % search)
+print('    (Results must contain "%s".)' % required_text)
+unique_item_text = []
+sb.click_if_visible('[data-automation-id="sb-btn-close-mark"]')
+items = sb.find_elements('[data-item-id]')
+for item in items:
+    if required_text.lower() in item.text.lower():
+        description = item.query_selector(
+            '[data-automation-id="product-title"]'
+        )
+        if description and description.text not in unique_item_text:
+            unique_item_text.append(description.text)
+            print("* " + description.text)
+            price = item.query_selector(
+                '[data-automation-id="product-price"]'
+            )
+            if price:
+                price_text = price.text.strip()
+                price_text = price_text.split("current price ")[-1]
+                print("  (" + price_text + ")")
+            item.scroll_into_view()
+sb.quit()
+```
+
+</details>
+
+> [SeleniumBase/examples/cdp_mode/raw_walmart.py](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode/raw_walmart.py)
+
+
+<div></div>
+<details>
+<summary> ▶️ 🔖 <b>Pokemon site using Incapsula/Imperva protection with invisible reCAPTCHA (UC + CDP Mode)</b></summary>
 
 ```python
 from seleniumbase import SB
@@ -177,45 +267,45 @@ with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
 
 <div></div>
 <details>
-<summary> ▶️ 🔖 <b>Example 2: (Hyatt site using Kasada protection)</b></summary>
+<summary> ▶️ 🔖 <b>Hyatt site using Kasada protection (Pure CDP Mode)</b></summary>
 
 ```python
-from seleniumbase import SB
+from seleniumbase import sb_cdp
 
-with SB(uc=True, test=True, locale="en", guest=True) as sb:
-    sb.activate_cdp_mode()
-    sb.goto("https://www.hyatt.com/")
-    sb.sleep(3.6)
-    sb.click_if_visible('button[aria-label="Close"]')
-    sb.sleep(0.1)
-    sb.click_if_visible("#onetrust-reject-all-handler")
-    sb.sleep(1.2)
-    location = "Anaheim, CA, USA"
-    sb.type('input[id="search-term"]', location)
-    sb.sleep(1.2)
-    sb.click('li[data-js="suggestion"]')
-    sb.sleep(0.6)
-    sb.click_if_visible('button[aria-label="Close"]')
-    sb.sleep(0.8)
-    sb.click("button.be-button-shop")
-    sb.sleep(1)
-    sb.click_if_visible('[label="Find Hotels"]')
-    sb.sleep(5.5)
-    card_info = 'div[data-booking-status="BOOKABLE"] [class*="HotelCard_info"]'
-    hotels = sb.select_all(card_info)
-    print("Hyatt Hotels in %s:" % location)
-    print("(" + sb.get_text('span[class*="summary_destination"]') + ")")
-    if len(hotels) == 0:
-        print("No availability over the selected dates!")
-    for hotel in hotels:
-        info = hotel.text.strip()
-        if "Avg/Night" in info and not info.startswith("Rates from"):
-            name = info.split("  (")[0].split(" + ")[0].split(" Award Cat")[0]
-            name = name.split(" Rates from :")[0]
-            price = "?"
-            if "Rates from : " in info:
-                price = info.split("Rates from : ")[1].split(" Avg/Night")[0]
-            print("* %s => %s" % (name, price))
+sb = sb_cdp.Chrome(locale="en", guest=True)
+sb.goto("https://www.hyatt.com/")
+sb.sleep(3.6)
+sb.click_if_visible('button[aria-label="Close"]')
+sb.sleep(0.1)
+sb.click_if_visible("#onetrust-reject-all-handler", timeout=2)
+sb.sleep(1.2)
+location = "Anaheim, CA, USA"
+sb.type('input[id="search-term"]', location)
+sb.sleep(1.2)
+sb.click('li[data-js="suggestion"]')
+sb.sleep(0.6)
+sb.click_if_visible('button[aria-label="Close"]')
+sb.sleep(0.8)
+sb.click("button.be-button-shop")
+sb.sleep(1)
+sb.click_if_visible('[label="Find Hotels"]')
+sb.sleep(6)
+card_info = 'div[data-booking-status="BOOKABLE"] [class*="HotelCard_info"]'
+hotels = sb.select_all(card_info)
+print("Hyatt Hotels in %s:" % location)
+print("(" + sb.get_text('span[class*="summary_destination"]') + ")")
+if len(hotels) == 0:
+    print("No availability over the selected dates!")
+for hotel in hotels:
+    info = hotel.text.strip()
+    if "Avg/Night" in info and not info.startswith("Rates from"):
+        name = info.split("  (")[0].split(" + ")[0].split(" Award Cat")[0]
+        name = name.split(" Rates from :")[0]
+        price = "?"
+        if "Rates from : " in info:
+            price = info.split("Rates from : ")[1].split(" Avg/Night")[0]
+        print("* %s => %s" % (name, price))
+sb.quit()
 ```
 
 </details>
@@ -225,7 +315,7 @@ with SB(uc=True, test=True, locale="en", guest=True) as sb:
 
 <div></div>
 <details>
-<summary> ▶️ 🔖 <b>Example 3: (BestWestern site using DataDome protection)</b></summary>
+<summary> ▶️ 🔖 <b>BestWestern site using DataDome protection (UC + CDP Mode)</b></summary>
 
 ```python
 from seleniumbase import SB
@@ -270,80 +360,26 @@ with SB(uc=True, test=True, locale="en", guest=True) as sb:
 
 <div></div>
 <details>
-<summary> ▶️ 🔖 <b>Example 4: (Walmart site using Akamai protection with PerimeterX)</b></summary>
+<summary> ▶️ 🔖 <b>Nike site using Shape Security  (Pure CDP Mode)</b></summary>
 
 ```python
-from seleniumbase import SB
+from seleniumbase import sb_cdp
 
-with SB(uc=True, test=True, ad_block=True) as sb:
-    sb.activate_cdp_mode()
-    sb.goto("https://www.walmart.com/")
-    sb.sleep(2.2)
-    continue_button = 'button:contains("Continue shopping")'
-    if sb.is_element_visible(continue_button):
-        sb.gui_click_element(continue_button)
-        sb.sleep(0.6)
-    sb.click('input[aria-label="Search"]')
-    sb.sleep(1.2)
-    search = "Settlers of Catan Board Game"
-    required_text = "Catan"
-    sb.press_keys('input[aria-label="Search"]', search + "\n")
-    sb.sleep(3.8)
-    sb.remove_elements('[data-testid="skyline-ad"]')
-    sb.remove_elements('[data-testid="sba-container"]')
-    print('*** Walmart Search for "%s":' % search)
-    print('    (Results must contain "%s".)' % required_text)
-    unique_item_text = []
-    sb.click_if_visible('[data-automation-id="sb-btn-close-mark"]')
-    items = sb.find_elements('[data-item-id]')
-    for item in items:
-        if required_text.lower() in item.text.lower():
-            description = item.query_selector(
-                '[data-automation-id="product-title"]'
-            )
-            if description and description.text not in unique_item_text:
-                unique_item_text.append(description.text)
-                print("* " + description.text)
-                price = item.query_selector(
-                    '[data-automation-id="product-price"]'
-                )
-                if price:
-                    price_text = price.text
-                    price_text = price_text.split("current price Now ")[-1]
-                    price_text = price_text.split("current price ")[-1]
-                    price_text = price_text.split(" ")[0]
-                    print("  (" + price_text + ")")
-                    item.scroll_into_view()
-```
-
-</details>
-
-> [SeleniumBase/examples/cdp_mode/raw_walmart.py](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode/raw_walmart.py)
-
-
-<div></div>
-<details>
-<summary> ▶️ 🔖 <b>Example 5: (Nike site using Shape Security)</b></summary>
-
-```python
-from seleniumbase import SB
-
-with SB(uc=True, test=True, locale="en", pls="none") as sb:
-    sb.activate_cdp_mode()
-    sb.goto("https://www.nike.com/")
-    sb.sleep(2.5)
-    sb.click('[data-testid="user-tools-container"] search')
-    sb.sleep(1.5)
-    search = "Nike Air Force 1"
-    sb.press_keys('input[type="search"]', search)
-    sb.sleep(4)
-    details = 'ul[data-testid*="products"] figure .details'
-    elements = sb.select_all(details)
-    if elements:
-        print('**** Found results for "%s": ****' % search)
+sb = sb_cdp.Chrome()
+sb.goto("https://www.nike.com/")
+sb.sleep(1.2)
+sb.click('[data-testid="user-tools-container"] search')
+sb.sleep(1)
+search = "Pegasus"
+sb.press_keys('input[type="search"]', search)
+sb.sleep(4)
+details = 'ul[data-testid*="products"] figure .details'
+elements = sb.select_all(details)
+if elements:
+    print('**** Found results for "%s": ****' % search)
     for element in elements:
         print("* " + element.text)
-    sb.sleep(2)
+sb.quit()
 ```
 
 </details>
@@ -581,71 +617,6 @@ sb.quit()  # (Pure CDP Mode only: `sb_cdp`)
 
 ----
 
-<a id="Pure_CDP_Mode"></a>
-
-### 🐙 <b translate="no">Pure CDP Mode</b> (<code translate="no">sb_cdp</code>)
-
-In <b translate="no">Pure CDP Mode</b>, the browser is launched using CDP, and all browser actions are performed using CDP. WebDriver isn't available at all, but SeleniumBase can still call <code>PyAutoGUI</code> methods when CDP isn't enough.
-
-🐙 Here's how to initialize Pure CDP Mode with a starting URL:
-
-```python
-from seleniumbase import sb_cdp
-
-sb = sb_cdp.Chrome(URL)
-```
-
-🐙 You can also initialize Pure CDP Mode and set the URL later:
-
-```python
-from seleniumbase import sb_cdp
-
-sb = sb_cdp.Chrome()
-sb.goto(URL)
-```
-
-<b translate="no">Pure CDP Mode</b> includes all methods from regular CDP Mode. To quit a Pure CDP Mode browser before Python goes out-of-scope, use `sb.quit()`.
-
-Basic example from [SeleniumBase/examples/cdp_mode/raw_cdp_turnstile.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_turnstile.py):
-
-```python
-from seleniumbase import sb_cdp
-
-sb = sb_cdp.Chrome()
-sb.goto("https://seleniumbase.io/apps/turnstile")
-sb.solve_captcha()
-sb.assert_element("img#captcha-success")
-sb.set_messenger_theme(location="top_left")
-sb.post_message("SeleniumBase wasn't detected", duration=3)
-sb.quit()
-```
-
-Another example: ([SeleniumBase/examples/cdp_mode/raw_cdp_methods.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_methods.py))
-
-```python
-from seleniumbase import sb_cdp
-
-sb = sb_cdp.Chrome()
-sb.goto("https://seleniumbase.io/demo_page")
-sb.press_keys("input", "Text")
-sb.highlight("button")
-sb.type("textarea", "Here are some words")
-sb.click("button")
-sb.set_value("input#mySlider", "100")
-sb.click_visible_elements("input.checkBoxClassB")
-sb.select_option_by_text("#mySelect", "Set to 75%")
-sb.gui_hover_and_click("#myDropdown", "#dropOption2")
-sb.gui_click_element("#checkBox1")
-sb.gui_drag_and_drop("img#logo", "div#drop2")
-sb.nested_click("iframe#myFrame3", ".fBox")
-sb.sleep(2)
-sb.quit()
-```
-
-ℹ️ Even if you don't call `sb.quit()`, the browser still quits after the script goes out-of-scope.
-
-----
-
 ### 🐙 <b translate="no">CDP Mode</b> Async API / Methods
 
 Initialization:
@@ -772,7 +743,7 @@ element.get_parent()
 
 ----
 
-### 🎞️ YouTube videos about <b translate="no">CDP Mode</b>:
+### 🎞️ More YouTube videos about <b translate="no">CDP Mode</b>:
 
 <!-- YouTube View --><a href="https://www.youtube.com/watch?v=Mr90iQmNsKM"><img src="https://github.com/user-attachments/assets/91e7ff7b-d155-4ba9-b17b-b097825fcf42" title="SeleniumBase on YouTube" width="320" /></a>
 <p>(<b><a href="https://www.youtube.com/watch?v=Mr90iQmNsKM">Watch "Undetectable Automation 4" on YouTube! ▶️</a></b>)</p>
