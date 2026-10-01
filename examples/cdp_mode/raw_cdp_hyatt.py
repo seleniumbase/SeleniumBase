@@ -5,7 +5,7 @@ sb.goto("https://www.hyatt.com/")
 sb.sleep(3.6)
 sb.click_if_visible('button[aria-label="Close"]')
 sb.sleep(0.1)
-sb.click_if_visible("#onetrust-reject-all-handler")
+sb.click_if_visible("#onetrust-reject-all-handler", timeout=2)
 sb.sleep(1.2)
 location = "Anaheim, CA, USA"
 sb.type('input[id="search-term"]', location)
