@@ -6,20 +6,17 @@ from seleniumbase import sb_cdp
 
 
 def main(url):
-    sb = sb_cdp.Chrome(lang="en", incognito=True)
+    sb = sb_cdp.Chrome()
     sb.goto(url)
     sb.set_window_rect(randint(4, 680), randint(8, 380), 840, 520)
-    sb.sleep(2.6)
-    sb.gui_click_captcha()
+    sb.sleep(1.2)
+    sb.solve_captcha()
     sb.sleep(2.2)
-    if not sb.is_element_visible("img#captcha-success"):
-        sb.solve_captcha()
-        sb.sleep(2.2)
     sb.quit()
 
 
 if __name__ == "__main__":
-    urls = ["https://seleniumbase.io/apps/turnstile" for i in range(5)]
+    urls = ["https://www.bing.com/turing/captcha/challenge" for i in range(4)]
     with decorators.print_runtime("raw_multi_captcha.py"):
         with ThreadPoolExecutor(max_workers=len(urls)) as executor:
             for url in urls:
