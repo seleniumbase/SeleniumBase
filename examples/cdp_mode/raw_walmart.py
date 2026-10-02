@@ -30,9 +30,9 @@ with SB(uc=True, test=True, ad_block=True) as sb:
                 unique_item_text.append(description.text)
                 print("* " + description.text)
                 price = item.query_selector(
-                    '[data-automation-id="product-price"]'
+                    '[data-testid="unified-global-product-price"]'
                 )
-                if price:
+                if price and price.text.strip():
                     price_text = price.text.strip()
                     price_text = price_text.split("current price ")[-1]
                     print("  (" + price_text + ")")
