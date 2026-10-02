@@ -3,16 +3,14 @@
 
 <meta property="og:site_name" content="SeleniumBase">
 <meta property="og:title" content="SeleniumBase: Stealthy Chromium Automation with Python; and E2E Testing." />
-<meta property="og:description" content="Stealthy Chromium Automation, including fast, easy, and reliable Web/UI testing with Python." />
+<meta property="og:description" content="Stealthy Chromium Automation, including fast, easy, and reliable E2E testing with Python." />
 <meta property="og:keywords" content="Python, pytest, selenium, webdriver, testing, automation, seleniumbase, framework, dashboard, recorder, reports, screenshots, playwright, stealth, CAPTCHA">
 <meta property="og:image" content="https://seleniumbase.github.io/cdn/img/mac_sb_logo_5b.png" />
 <link rel="icon" href="https://seleniumbase.github.io/img/logo6.png" />
 
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/sb_logo_gemini_6c.jpg" alt="SeleniumBase" title="SeleniumBase" width="634" /></a></p>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" title="SeleniumBase" width="480" /></a></p>
 
-<p align="center" class="hero__title"><b>All-in-one Browser Automation Framework:<br />Web Crawling / Testing / Scraping / Stealth</b></p>
-
-<p align="center"><a href="https://trendshift.io/repositories/12493?utm_source=repository-badge&amp;utm_medium=badge&amp;utm_campaign=badge-repository-12493" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/repositories/12493" alt="seleniumbase%2FSeleniumBase | Trendshift" width="250" height="55"/></a></p>
+<p align="center" class="hero__title"><b>Web Automation / E2E Testing / Scraping / Stealth</b></p>
 
 <p align="center"><a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=3399EE" alt="PyPI version" /></a> <a href="https://pepy.tech/projects/seleniumbase?timeRange=threeMonths&category=version&includeCIDownloads=true&granularity=daily&viewType=line&versions=*" target="_blank"><img src="https://static.pepy.tech/badge/seleniumbase" alt="SeleniumBase PyPI downloads" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" title="SeleniumBase" /></a> <a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"><img src="https://github.com/seleniumbase/SeleniumBase/workflows/Tests/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://www.youtube.com/playlist?list=PLp9uKicxkBc5UIlGi2BuE3aWC7JyXpD3m"><img src="https://img.shields.io/badge/docs-📺-F12345.svg?style=flat&logo=YouTube&logoColor=white&label=YouTube" alt="YouTube Channel" /></a></p>
 
@@ -59,12 +57,8 @@
 <li>🎭 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md"><b><span translate="no">Stealthy Playwright Mode</span></b></a> <b>extends CDP Mode's stealth to Playwright.</b></li>
 </ul>
 <ul>
-<li><code><b>pip install seleniumbase</b></code> for the main framework. (Or use <code>uv add</code>)</li>
-<li><code><b>pip install playwright</b></code> for the optional integration. (Or use <code>uv add</code>)</li>
-</ul>
-
-<ul>
-<li><b>🤖 For the <code>SeleniumBase MCP</code> server, <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/mcp_servers/">see the MCP ReadMe</a>.</b></li>
+<li><code><b>pip install seleniumbase</b></code> to get the main framework.</li>
+<li><code><b>pip install playwright</b></code> to get the optional integration.</li>
 </ul>
 
 --------
@@ -81,7 +75,7 @@ sb.quit()
 ```
 
 <p align="center">
-<img src="https://seleniumbase.github.io/cdn/img/results_normal.jpg" width="588" alt="BrowserScan Test Results: Normal" />
+<img src="https://seleniumbase.github.io/cdn/img/results_normal.jpg" width="540" alt="BrowserScan Test Results: Normal" />
 <br /><em>(All BrowserScan bot-detection tests passed successfully.)</em>
 </p>
 
@@ -102,7 +96,7 @@ with sync_playwright() as p:
 ```
 
 <p align="center">
-<img src="https://seleniumbase.github.io/other/sannysoft_success.jpg" width="470" alt="All Sannysoft tests passed successfully" />
+<img src="https://seleniumbase.github.io/other/sannysoft_success.jpg" width="428" alt="All Sannysoft tests passed successfully" />
 <br /><em>(All Sannysoft bot-detection tests passed successfully.)</em>
 </p>
 
@@ -126,22 +120,6 @@ sb.click("#checkBox1")
 sb.drag_and_drop("img#logo", "div#drop2")
 sb.nested_click("iframe#myFrame3", ".fBox")
 sb.highlight("#myButton")
-sb.quit()
-```
-
---------
-
-<p align="left"><b>📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_browserscan.py" target="_blank">This example</a> expands the Browserscan script into a test demo:</b><br />(Assertions added and elements highlighted with JavaScript.)</p>
-
-```python
-from seleniumbase import sb_cdp
-
-sb = sb_cdp.Chrome(locale="en", ad_block=True)
-sb.goto("https://browserscan.net/bot-detection")
-sb.flash("Test Results", duration=1.5, pause=0.5)
-sb.assert_element('strong:contains("Normal")')
-print("Bot Not Detected")
-sb.flash('strong:contains("Normal")', pause=1)
 sb.quit()
 ```
 
