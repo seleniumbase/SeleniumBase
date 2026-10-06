@@ -1,7 +1,6 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True, incognito=True, locale="en") as sb:
-    sb.activate_cdp_mode()
     sb.goto("https://ahrefs.com/website-authority-checker")
     search_term = "github.com/seleniumbase/SeleniumBase"
     sb.type('input[placeholder="Enter domain"]', search_term)

@@ -1,15 +1,8 @@
-"""SB Manager using UC Mode for evading bot-detection.
-Note that plain UC Mode was replaced by the newer CDP Mode:
-Instead of uc_open_with_reconnect, use activate_cdp_mode().
-Instead of uc_gui_click_captcha(), use solve_captcha()."""
+"""SB Manager using UC Mode for evading bot-detection."""
 from seleniumbase import SB
 
 with SB(uc=True, test=True) as sb:
-    url = "https://gitlab.com/users/sign_in"
-    sb.uc_open_with_reconnect(url, 4)
-    sb.uc_gui_click_captcha()
-    sb.assert_text("Username", '[for="user_login"]', timeout=3)
-    sb.assert_element('label[for="user_login"]')
-    sb.highlight('button:contains("Sign in")')
+    sb.goto("https://gitlab.com/users/sign_in")
+    sb.solve_captcha()
     sb.highlight('h1:contains("GitLab")')
-    sb.post_message("SeleniumBase wasn't detected", duration=4)
+    sb.highlight('button:contains("Sign in")')
