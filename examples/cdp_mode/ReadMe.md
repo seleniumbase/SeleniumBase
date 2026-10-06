@@ -59,7 +59,7 @@ sb.highlight('button:contains("Sign in")')
 sb.quit()
 ```
 
-<img src="https://seleniumbase.github.io/other/gitlab_bypass.png" title="SeleniumBase" width="400" style="max-width: 100% !important; height: auto !important;" />
+<img src="https://seleniumbase.github.io/other/gitlab_bypass_2.png" title="SeleniumBase" width="400" style="max-width: 100% !important; height: auto !important;" />
 
 ℹ️  `sb.solve_captcha()` handles CAPTCHAs that aren't automatically bypassed.
 
@@ -134,7 +134,7 @@ with SB(uc=True, test=True, guest=True) as sb:
     sb.sleep(2)
 ```
 
-<img src="https://seleniumbase.github.io/other/pmc_captcha.png" width="570" style="max-width: 100% !important; height: auto !important;" alt="Cloudflare Turnstile bypassed successfully" />
+<img src="https://seleniumbase.github.io/other/pmc_captcha_2.png" width="570" style="max-width: 100% !important; height: auto !important;" alt="Cloudflare Turnstile bypassed successfully" />
 
 To use a WebDriver-only method from UC Mode when WebDriver is disconnected, call:
 
