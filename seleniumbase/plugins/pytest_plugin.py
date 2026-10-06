@@ -82,6 +82,7 @@ def pytest_addoption(parser):
     --archive-logs  (Archive existing log files instead of deleting them.)
     --archive-downloads  (Archive old downloads instead of deleting them.)
     --time-limit=SECONDS  (Safely fail any test that exceeds the time limit.)
+    --fast  (Run the automation at full speed. May impact stealth.)
     --slow  (Slow down the automation. Faster than using Demo Mode.)
     --demo  (Slow down and visually see test actions as they occur.)
     --demo-sleep=SECONDS  (Set the wait time after Slow & Demo Mode actions.)
@@ -865,6 +866,15 @@ def pytest_addoption(parser):
         default=None,
         help="""Use this to set a time limit per test, in seconds.
                 If a test runs beyond the limit, it fails.""",
+    )
+    parser.addoption(
+        "--fast_mode",
+        "--fast-mode",
+        "--fast",
+        action="store_true",
+        dest="fast_mode",
+        default=False,
+        help="""Run automation at full speed. (May impact stealth)""",
     )
     parser.addoption(
         "--slow_mode",
@@ -1799,6 +1809,7 @@ def pytest_configure(config):
     sb_config.all_scripts = config.getoption("all_scripts")
     sb_config._time_limit = config.getoption("time_limit")
     sb_config.time_limit = config.getoption("time_limit")
+    sb_config.fast_mode = config.getoption("fast_mode")
     sb_config.slow_mode = config.getoption("slow_mode")
     sb_config.demo_mode = config.getoption("demo_mode")
     sb_config.demo_sleep = config.getoption("demo_sleep")

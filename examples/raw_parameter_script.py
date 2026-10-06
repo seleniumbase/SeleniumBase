@@ -108,6 +108,7 @@ if pure_python:
     sb.rec_print = False
     sb.report_on = False
     sb.is_pytest = False
+    sb.fast_mode = False
     sb.slow_mode = False
     sb.demo_mode = False
     sb.time_limit = None

@@ -1,7 +1,7 @@
 """Example of using various CDP Mode commands."""
 from seleniumbase import SB
 
-with SB(uc=True, test=True) as sb:
+with SB(uc=True, test=True, fast=True) as sb:
     sb.activate_cdp_mode()
     sb.goto("https://seleniumbase.io/demo_page")
 
@@ -66,7 +66,7 @@ with SB(uc=True, test=True) as sb:
 
     # Click inside an iframe and test highlighting
     sb.flash("iframe#myFrame3")
-    sb.sleep(1)
+    sb.sleep(0.5)
     sb.nested_click("iframe#myFrame3", ".fBox")
     sb.sleep(0.5)
     sb.highlight("iframe#myFrame3")

@@ -1,12 +1,12 @@
 [project]
 name = "seleniumbase-mcp"
-version = "1.4.0dev0"
+version = "1.4.1dev0"
 description = "MCP server exposing SeleniumBase CDP Mode as tools for MCP clients."
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
 dependencies = [
-    "mcp[cli]>=2.2.0,<3.0.0",
+    "mcp[cli]>=2.3.0,<3.0.0",
     "seleniumbase",
 ]
 keywords = [

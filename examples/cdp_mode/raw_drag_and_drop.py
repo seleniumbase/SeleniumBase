@@ -1,6 +1,6 @@
 from seleniumbase import SB
 
-with SB(uc=True, test=True, incognito=True) as sb:
+with SB(uc=True, test=True, incognito=True, fast=True) as sb:
     sb.activate_cdp_mode()
     sb.goto("https://seleniumbase.io/other/drag_and_drop")
     sb.assert_element_not_visible("#div1 img#drag1")
@@ -8,7 +8,7 @@ with SB(uc=True, test=True, incognito=True) as sb:
     sb.assert_element("#div1 img#drag1")
     sb.sleep(1)
 
-with SB(uc=True, test=True, incognito=True) as sb:
+with SB(uc=True, test=True, incognito=True, fast=True) as sb:
     sb.activate_cdp_mode()
     sb.goto("https://jqueryui.com/draggable/")
     sb.switch_to_frame("iframe")

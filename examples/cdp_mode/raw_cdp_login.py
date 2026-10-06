@@ -3,7 +3,7 @@ from seleniumbase import sb_cdp
 
 
 def main():
-    sb = sb_cdp.Chrome()
+    sb = sb_cdp.Chrome(fast=True)
     sb.goto("https://seleniumbase.io/simple/login")
     sb.type("#username", "demo_user")
     sb.type("#password", "secret_pass")

@@ -59,6 +59,7 @@ behave -D agent="User Agent String" -D demo
 -D archive-logs  (Archive existing log files instead of deleting them.)
 -D archive-downloads  (Archive old downloads instead of deleting them.)
 -D time-limit=SECONDS  (Safely fail any test that exceeds the time limit.)
+-D fast  (Run the automation at full speed. May impact stealth.)
 -D slow  (Slow down the automation. Faster than using Demo Mode.)
 -D demo  (Slow down and visually see test actions as they occur.)
 -D demo-sleep=SECONDS  (Set the wait time after Slow & Demo Mode actions.)
@@ -221,6 +222,7 @@ def get_configured_sb(context):
     sb.rec_print = False
     sb.report_on = False
     sb.is_pytest = False
+    sb.fast_mode = False
     sb.slow_mode = False
     sb.demo_mode = False
     sb.time_limit = None
@@ -717,6 +719,10 @@ def get_configured_sb(context):
             sb.rec_print = True
             sb.recorder_mode = True
             sb.recorder_ext = True
+            continue
+        # Handle: -D fast / fast-mode / fast_mode
+        if low_key in ["fast", "fast-mode", "fast_mode"]:
+            sb.fast_mode = True
             continue
         # Handle: -D slow / slowmo / slow-mode / slow_mode
         if low_key in ["slow", "slowmo", "slow-mode", "slow_mode"]:

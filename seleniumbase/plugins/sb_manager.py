@@ -130,6 +130,7 @@ def SB(
     page_load_strategy=None,  # Set Chrome PLS to "normal", "eager", or "none".
     timeout_multiplier=None,  # Multiplies the default timeout values.
     js_checking_on=None,  # Check for JavaScript errors after page loads.
+    fast=None,  # Run the automation at full speed. (May impact stealth)
     slow=None,  # Slow down the automation. Faster than using Demo Mode.
     demo=None,  # Slow down and visually see test actions as they occur.
     demo_sleep=None,  # SECONDS (Set wait time after Slow & Demo Mode actions.)
@@ -253,6 +254,7 @@ def SB(
     page_load_strategy (str):  Set Chrome PLS to "normal", "eager", or "none".
     timeout_multiplier (float):  Multiplies the default timeout values.
     js_checking_on (bool):  Check for JavaScript errors after page loads.
+    fast (bool):  Run the automation at full speed. (May impact stealth)
     slow (bool):  Slow down the automation. Faster than using Demo Mode.
     demo (bool):  Slow down and visually see test actions as they occur.
     demo_sleep (float):  SECONDS (Set wait time after Slow & Demo Mode actions)
@@ -1004,6 +1006,11 @@ def SB(
             js_checking_on = True
         else:
             js_checking_on = False
+    fast_mode = False
+    if fast:
+        fast_mode = True
+    elif "--fast" in sys_argv:
+        fast_mode = True
     slow_mode = False
     if slow:
         slow_mode = True
@@ -1203,6 +1210,7 @@ def SB(
     sb_config.rec_behave = rec_behave
     sb_config.rec_print = rec_print
     sb_config.report_on = False
+    sb_config.fast_mode = fast_mode
     sb_config.slow_mode = slow_mode
     sb_config.demo_mode = demo_mode
     sb_config._time_limit = time_limit
@@ -1315,6 +1323,7 @@ def SB(
     sb.rec_behave = sb_config.rec_behave
     sb.rec_print = sb_config.rec_print
     sb.report_on = sb_config.report_on
+    sb.fast_mode = sb_config.fast_mode
     sb.slow_mode = sb_config.slow_mode
     sb.demo_mode = sb_config.demo_mode
     sb.time_limit = sb_config._time_limit

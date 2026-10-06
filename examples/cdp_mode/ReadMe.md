@@ -8,7 +8,7 @@
 
 <h3 align="left">⚙️ Stealthy architecture flowchart:</h3>
 
-<img src="https://seleniumbase.github.io/other/sb_architecture.png" width="596" alt="Stealthy architecture flowchart" />
+<img src="https://seleniumbase.github.io/other/sb_architecture.png" width="596" style="max-width: 100% !important; height: auto !important;" alt="Stealthy architecture flowchart" />
 
 ----
 
@@ -22,7 +22,7 @@
 
 ℹ️ Note the differences between <b>UC Mode</b> and <b>CDP Mode</b>:
 
-👤 <b translate="no">UC Mode</b>'s stealth is based on a modified <code>chromedriver</code> (<code>uc_driver</code>) that avoids bot-detection by disconnecting and reconnecting WebDriver from the browser at strategic times.
+👤 <b translate="no">UC Mode</b>'s stealth is based on a modified <code>chromedriver</code> (renamed <code>uc_driver</code>) that avoids bot-detection by disconnecting and reconnecting WebDriver from the browser at strategic times.
 
 🐙 <b translate="no">CDP Mode</b>'s stealth comes from using the Chrome DevTools Protocol directly, which is much better at avoiding bot-detection. CDP Mode can also be used to make Playwright stealthy.
 
@@ -39,13 +39,13 @@ In <b translate="no">Pure CDP Mode</b>, CDP is used to launch the browser and pe
 ```python
 from seleniumbase import sb_cdp
 
-sb = sb_cdp.Chrome(OPTIONS)
-sb.goto(URL)
+sb = sb_cdp.Chrome()
+sb.goto("https://example.com")
 ```
 
 ℹ️ The browser quits automatically when Python goes out-of-scope. You can also quit the browser before that by calling `sb.quit()`.
 
-Example from [SeleniumBase/examples/cdp_mode/raw_cdp_gitlab.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_gitlab.py):
+📝 Here's [SeleniumBase/examples/cdp_mode/raw_cdp_gitlab.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_gitlab.py):
 
 ```python
 from seleniumbase import sb_cdp
@@ -59,11 +59,13 @@ sb.highlight('button:contains("Sign in")')
 sb.quit()
 ```
 
-<img src="https://seleniumbase.github.io/other/cf_sec.jpg" title="SeleniumBase" width="332"> <img src="https://seleniumbase.github.io/other/gitlab_bypass.png" title="SeleniumBase" width="288">
+<img src="https://seleniumbase.github.io/other/gitlab_bypass.png" title="SeleniumBase" width="400" style="max-width: 100% !important; height: auto !important;" />
 
 ℹ️  `sb.solve_captcha()` handles CAPTCHAs that aren't automatically bypassed.
 
-Example from [SeleniumBase/examples/cdp_mode/raw_cdp_turnstile.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_turnstile.py):
+----
+
+📝 Here's [SeleniumBase/examples/cdp_mode/raw_cdp_turnstile.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_turnstile.py):
 
 ```python
 from seleniumbase import sb_cdp
@@ -77,27 +79,34 @@ sb.post_message("SeleniumBase wasn't detected", duration=3)
 sb.quit()
 ```
 
-Another example: ([SeleniumBase/examples/cdp_mode/raw_cdp_methods.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_methods.py))
+<img src="https://seleniumbase.github.io/other/turnstile_click.jpg" title="SeleniumBase" width="440" style="max-width: 100% !important; height: auto !important;" />
+
+----
+
+📝 Here’s [SeleniumBase/examples/cdp_mode/raw_cdp_methods.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_methods.py):
 
 ```python
 from seleniumbase import sb_cdp
 
-sb = sb_cdp.Chrome()
+sb = sb_cdp.Chrome(fast=True)
 sb.goto("https://seleniumbase.io/demo_page")
-sb.press_keys("input", "Text")
-sb.highlight("button")
-sb.type("textarea", "Here are some words")
-sb.click("button")
+sb.type("input", "Quickly type text!")
+sb.press_keys("textarea", "Slowly type text!")
+sb.click("#myButton")
 sb.set_value("input#mySlider", "100")
 sb.click_visible_elements("input.checkBoxClassB")
 sb.select_option_by_text("#mySelect", "Set to 75%")
-sb.gui_hover_and_click("#myDropdown", "#dropOption2")
-sb.gui_click_element("#checkBox1")
-sb.gui_drag_and_drop("img#logo", "div#drop2")
+sb.hover_and_click("#myDropdown", "#dropOption2")
+sb.click("#checkBox1")
+sb.drag_and_drop("img#logo", "div#drop2")
 sb.nested_click("iframe#myFrame3", ".fBox")
-sb.sleep(2)
+sb.highlight("#myButton")
 sb.quit()
 ```
+
+<img src="https://seleniumbase.github.io/cdn/gif/demo_page_6.gif" width="500" style="max-width: 100% !important; height: auto !important;" alt="SeleniumBase Example" />
+
+ℹ️  Setting `fast=True` lets your automation go at full speed, which may be useful if maximum stealth isn't your goal.
 
 ----
 
@@ -111,20 +120,21 @@ That disconnects WebDriver from Chrome (which prevents detection), and gives you
 
 > (Calling **`sb.goto(url)`** from UC Mode also activates CDP Mode now.)
 
-Example from [SeleniumBase/examples/cdp_mode/raw_planetmc.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_planetmc.py):
+📝 Here's  [SeleniumBase/examples/cdp_mode/raw_planetmc.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_planetmc.py):
 
 ```python
 from seleniumbase import SB
 
 with SB(uc=True, test=True, guest=True) as sb:
     sb.activate_cdp_mode()
-    sb.goto("www.planetminecraft.com/account/sign_in/")
+    sb.goto("www.planetminecraft.com/account/sign_in")
     sb.solve_captcha()
+    # "LOG IN" is enabled when the CAPTCHA is bypassed
     sb.wait_for_element_absent("input[disabled]")
     sb.sleep(2)
 ```
 
-<img src="https://seleniumbase.github.io/other/planet_mc.png" title="SeleniumBase" width="480">
+<img src="https://seleniumbase.github.io/other/pmc_captcha.png" width="570" style="max-width: 100% !important; height: auto !important;" alt="Cloudflare Turnstile bypassed successfully" />
 
 To use a WebDriver-only method from UC Mode when WebDriver is disconnected, call:
 

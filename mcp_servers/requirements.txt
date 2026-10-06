@@ -1,4 +1,4 @@
-mcp[cli]>=2.2.0,<3.0.0
+mcp[cli]>=2.3.0,<3.0.0
 -e ..
 
 # `-e ..` installs SeleniumBase itself from the repo root (one directory

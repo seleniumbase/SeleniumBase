@@ -173,13 +173,13 @@ setup(
         'exceptiongroup>=1.3.1',
         'websockets~=16.1.1;python_version=="3.10"',
         'websockets>=16.1.1;python_version>="3.11"',
-        'filelock>=4.0.8',
+        'filelock>=4.0.12',
         'fasteners>=0.20',
         'mycdp>=1.4.0',
         'pynose>=1.5.5',
         'typing-extensions>=4.16.0',
         'sbvirtualdisplay>=1.4.0',
-        'MarkupSafe>=3.0.3',
+        'MarkupSafe>=3.0.4',
         'Jinja2>=3.1.6',
         'six>=1.17.0',
         'parse>=1.22.2',
@@ -247,7 +247,7 @@ setup(
         "flake8": [
             'flake8==7.4.1',
             'mccabe==0.7.0',
-            'pyflakes==4.0.1',
+            'pyflakes==4.0.2',
             'pycodestyle==2.15.0',
         ],
         # pip install -e .[mcp]
@@ -255,7 +255,7 @@ setup(
         #  exposes SeleniumBase's Pure CDP Mode as tools for MCP clients.
         #  Example usage: `mcp dev server.py`)
         "mcp": [
-            "mcp[cli]>=2.2.0,<3.0.0",
+            "mcp[cli]>=2.3.0,<3.0.0",
         ],
         # pip install -e .[mss]
         # (An optional library for tile_windows() in CDP Mode.)
@@ -302,7 +302,7 @@ setup(
         # pip install -e .[uv]
         # (For the MCP integration and more.)
         "uv": [
-            "uv>=0.12.21"
+            "uv>=0.12.23"
         ],
     },
     packages=[
