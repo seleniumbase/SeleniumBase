@@ -15762,6 +15762,7 @@ class BaseCase(unittest.TestCase):
                 variables = {}
             sb_config.variables = variables
             self.variables = sb_config.variables
+            self.fast_mode = sb_config.fast_mode
             self.slow_mode = sb_config.slow_mode
             self.demo_mode = sb_config.demo_mode
             self.demo_sleep = sb_config.demo_sleep

@@ -44,17 +44,25 @@ class CDPMethods():
         self.page = driver.cdp.page
         self.loop = driver.cdp.loop
 
+    def __is_using_fast_mode(self):
+        if (
+            (hasattr(sb_config, "fast_mode") and sb_config.fast_mode)
+            or "--fast" in sys.argv
+        ):
+            return True
+        return False
+
     def __slow_mode_pause_if_set(self):
         if (
             (hasattr(sb_config, "demo_mode") and sb_config.demo_mode)
             or "--demo" in sys.argv
         ):
-            time.sleep(0.48)
+            time.sleep(0.4)
         elif (
             (hasattr(sb_config, "slow_mode") and sb_config.slow_mode)
             or "--slow" in sys.argv
         ):
-            time.sleep(0.24)
+            time.sleep(0.2)
 
     def __add_light_pause(self):
         time.sleep(0.007)
@@ -157,7 +165,7 @@ class CDPMethods():
         safe_url = True
         if url_protocol not in ["about", "data", "chrome"]:
             safe_url = False
-        if not safe_url:
+        if not safe_url and not self.__is_using_fast_mode():
             time.sleep(constants.UC.CDP_MODE_OPEN_WAIT)
             if shared_utils.is_windows():
                 time.sleep(constants.UC.EXTRA_WINDOWS_WAIT)
@@ -554,7 +562,8 @@ class CDPMethods():
         result = (
             self.loop.run_until_complete(element.click_async())
         )
-        self.loop.run_until_complete(self.page.wait(0.2))
+        if not self.__is_using_fast_mode():
+            self.loop.run_until_complete(self.page.wait(0.2))
         return result
 
     def __flash(self, element, *args, **kwargs):
@@ -607,7 +616,9 @@ class CDPMethods():
         if timeframe > 3:
             timeframe = 3
         self.gui_click_x_y(x, y, timeframe=timeframe)
-        return self.loop.run_until_complete(self.page.wait(0.2))
+        if not self.__is_using_fast_mode():
+            self.loop.run_until_complete(self.page.wait(0.2))
+        return True
 
     def __highlight_overlay(self, element):
         return (
@@ -625,7 +636,8 @@ class CDPMethods():
                 element.mouse_click_async(timeframe=timeframe)
             )
         )
-        self.loop.run_until_complete(self.page.wait(0.2))
+        if not self.__is_using_fast_mode():
+            self.loop.run_until_complete(self.page.wait(0.2))
         return result
 
     def __mouse_click_and_hold(self, element, timeframe=2):
@@ -634,7 +646,8 @@ class CDPMethods():
                 element.mouse_click_async(timeframe=timeframe)
             )
         )
-        self.loop.run_until_complete(self.page.wait(0.2))
+        if not self.__is_using_fast_mode():
+            self.loop.run_until_complete(self.page.wait(0.2))
         return result
 
     def __mouse_click_with_offset_async(self, element, *args, **kwargs):
@@ -643,7 +656,8 @@ class CDPMethods():
                 element.mouse_click_with_offset_async(*args, **kwargs)
             )
         )
-        self.loop.run_until_complete(self.page.wait(0.2))
+        if not self.__is_using_fast_mode():
+            self.loop.run_until_complete(self.page.wait(0.2))
         return result
 
     def __mouse_drag(self, element, destination):
@@ -923,14 +937,16 @@ class CDPMethods():
         except Exception:
             element.click()  # Standard CDP click (Can be detected)
         self.__slow_mode_pause_if_set()
-        self.loop.run_until_complete(self.page.wait(0.2))
+        if not self.__is_using_fast_mode():
+            self.loop.run_until_complete(self.page.wait(0.2))
 
     def click_active_element(self):
         self.loop.run_until_complete(
             self.page.evaluate("document.activeElement.click()")
         )
         self.__slow_mode_pause_if_set()
-        self.loop.run_until_complete(self.page.wait(0.2))
+        if not self.__is_using_fast_mode():
+            self.loop.run_until_complete(self.page.wait(0.2))
 
     def click_if_visible(self, selector, timeout=0, scroll=True):
         if self.is_element_visible(selector):
@@ -974,9 +990,10 @@ class CDPMethods():
                     except Exception:
                         element.click()  # Standard CDP click (Can be detected)
                     click_count += 1
-                    time.sleep(0.044)
+                    time.sleep(0.022)
                     self.__slow_mode_pause_if_set()
-                    self.loop.run_until_complete(self.page.wait(0.2))
+                    if not self.__is_using_fast_mode():
+                        self.loop.run_until_complete(self.page.wait(0.2))
             except Exception:
                 break
 
@@ -990,7 +1007,8 @@ class CDPMethods():
             element.scroll_into_view()
         element.click_and_hold(timeframe)
         self.__slow_mode_pause_if_set()
-        self.loop.run_until_complete(self.page.wait(0.2))
+        if not self.__is_using_fast_mode():
+            self.loop.run_until_complete(self.page.wait(0.2))
 
     def drag_and_drop(
         self, drag_selector, drop_selector, timeout=None, scroll=True,
@@ -1116,7 +1134,8 @@ class CDPMethods():
         }})();"""
         self.evaluate(script)
         self.__slow_mode_pause_if_set()
-        self.loop.run_until_complete(self.page.wait(0.2))
+        if not self.__is_using_fast_mode():
+            self.loop.run_until_complete(self.page.wait(0.2))
 
     def mouse_click(self, selector, timeout=None, scroll=True):
         """(Simulate a mouse click)"""
@@ -1128,7 +1147,8 @@ class CDPMethods():
             element.scroll_into_view()
         element.mouse_click()
         self.__slow_mode_pause_if_set()
-        self.loop.run_until_complete(self.page.wait(0.2))
+        if not self.__is_using_fast_mode():
+            self.loop.run_until_complete(self.page.wait(0.2))
 
     def nested_click(self, parent_selector, selector):
         """
@@ -1138,7 +1158,8 @@ class CDPMethods():
         element = self.find_element(parent_selector)
         element.query_selector(selector).mouse_click()
         self.__slow_mode_pause_if_set()
-        self.loop.run_until_complete(self.page.wait(0.2))
+        if not self.__is_using_fast_mode():
+            self.loop.run_until_complete(self.page.wait(0.2))
 
     def get_nested_element(self, parent_selector, selector):
         """(Can be used to find an element inside an iframe)"""
@@ -1631,9 +1652,14 @@ class CDPMethods():
 
     def get_title(self):
         """Returns the title of the current web page."""
-        return self.loop.run_until_complete(
-            self.page.evaluate("document.title")
-        )
+        script = "document.title"
+        for i in range(6):
+            # If getting the title before the page has loaded enough,
+            # then the title may be empty. Delay a bit and try again.
+            title = self.loop.run_until_complete(self.page.evaluate(script))
+            if title.strip():
+                return title
+            time.sleep(0.25)
 
     def get_page_title(self):
         """Same as get_title(), which returns the current page title."""
@@ -2051,6 +2077,7 @@ class CDPMethods():
             )
             from seleniumbase.common.exceptions import NoSuchFileException
             raise NoSuchFileException(message)
+        return True
 
     def get_path_of_downloaded_file(self, file):
         """This assumes the default location of SeleniumBase downloads,
@@ -2344,7 +2371,8 @@ class CDPMethods():
         self.__add_light_pause()
         self.gui_click_x_y(x, y, timeframe=timeframe)
         self.__slow_mode_pause_if_set()
-        self.loop.run_until_complete(self.page.wait(0.2))
+        if not self.__is_using_fast_mode():
+            self.loop.run_until_complete(self.page.wait(0.2))
 
     def gui_click_with_offset(
         self, selector, x, y, timeframe=0.27, center=False
@@ -2378,7 +2406,8 @@ class CDPMethods():
             )
         element.click_with_offset(x=x, y=y, center=center)
         self.__slow_mode_pause_if_set()
-        self.loop.run_until_complete(self.page.wait(0.2))
+        if not self.__is_using_fast_mode():
+            self.loop.run_until_complete(self.page.wait(0.2))
 
     def stop(self):
         """Same as quit()"""
@@ -2916,7 +2945,8 @@ class CDPMethods():
                 x1, y1, x2, y2, timeframe=timeframe, uc_lock=False
             )
         self.__slow_mode_pause_if_set()
-        self.loop.run_until_complete(self.page.wait(0.2))
+        if not self.__is_using_fast_mode():
+            self.loop.run_until_complete(self.page.wait(0.2))
 
     def gui_drag_and_drop(self, drag_selector, drop_selector, timeframe=0.35):
         """Use PyAutoGUI to drag-and-drop from one selector to another.
@@ -3528,6 +3558,7 @@ class CDPMethods():
                 "(Actual value was {%s})"
                 % (value, attribute, selector, attributes[attribute])
             )
+        return True
 
     def assert_title(self, title):
         expected = title.strip()
@@ -3536,10 +3567,11 @@ class CDPMethods():
             "Expected page title [%s] does not match the actual title [%s]!"
         )
         if expected != actual:
-            time.sleep(2)
+            time.sleep(1.5)
             actual = self.get_title().strip()
             if expected != actual:
                 raise Exception(error % (expected, actual))
+        return True
 
     def assert_title_contains(self, substring):
         expected = substring.strip()
@@ -3549,23 +3581,22 @@ class CDPMethods():
             "in the actual page title [%s]!"
         )
         if expected not in actual:
-            time.sleep(2)
+            time.sleep(1.5)
             actual = self.get_title().strip()
             if expected not in actual:
                 raise Exception(error % (expected, actual))
+        return True
 
     def assert_url(self, url):
         expected = url.strip()
         actual = self.get_current_url().strip()
         error = "Expected URL [%s] does not match the actual URL [%s]!"
-        try:
-            if expected != actual:
-                raise Exception(error % (expected, actual))
-        except Exception:
-            time.sleep(2)
+        if expected != actual:
+            time.sleep(1.5)
             actual = self.get_current_url().strip()
             if expected != actual:
                 raise Exception(error % (expected, actual))
+        return True
 
     def assert_url_contains(self, substring):
         expected = substring.strip()
@@ -3575,10 +3606,11 @@ class CDPMethods():
             "in the full URL [%s]!"
         )
         if expected not in actual:
-            time.sleep(2)
+            time.sleep(1.5)
             actual = self.get_current_url().strip()
             if expected not in actual:
                 raise Exception(error % (expected, actual))
+        return True
 
     def assert_text(self, text, selector="body", timeout=None):
         """Same as wait_for_text()"""
@@ -3639,6 +3671,7 @@ class CDPMethods():
                 raise AssertionError(
                     "%s is not true. (%s)" % (expression, msg)
                 )
+        return True
 
     def assert_false(self, expression, msg=None):
         if expression:
@@ -3648,6 +3681,7 @@ class CDPMethods():
                 raise AssertionError(
                     "%s is not false. (%s)" % (expression, msg)
                 )
+        return True
 
     def assert_equal(self, first, second, msg=None):
         if first != second:
@@ -3658,6 +3692,7 @@ class CDPMethods():
             else:
                 raise AssertionError(
                     "%s is not equal to %s. (%s)" % (first, second, msg))
+        return True
 
     def assert_not_equal(self, first, second, msg=None):
         if first == second:
@@ -3667,6 +3702,7 @@ class CDPMethods():
                 raise AssertionError(
                     "%s is equal to %s. (%s)" % (first, second, msg)
                 )
+        return True
 
     def assert_in(self, first, second, msg=None):
         if first not in second:
@@ -3676,6 +3712,7 @@ class CDPMethods():
                 raise AssertionError(
                     "%s is not in %s. (%s)" % (first, second, msg)
                 )
+        return True
 
     def assert_not_in(self, first, second, msg=None):
         if first in second:
@@ -3685,6 +3722,7 @@ class CDPMethods():
                 raise AssertionError(
                     "%s is in %s. (%s)" % (first, second, msg)
                 )
+        return True
 
     def js_scroll_into_view(self, selector):
         css_selector = self.__convert_to_css_if_xpath(selector)
@@ -3701,33 +3739,38 @@ class CDPMethods():
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
         self.find_element(selector, timeout=timeout).scroll_into_view()
-        self.loop.run_until_complete(self.page.wait(0.05))
+        if not self.__is_using_fast_mode():
+            self.loop.run_until_complete(self.page.wait(0.05))
 
     def scroll_to_y(self, y):
         y = int(y)
         js_code = "window.scrollTo(0, %s);" % y
         with suppress(Exception):
             self.loop.run_until_complete(self.page.evaluate(js_code))
-            self.loop.run_until_complete(self.page.wait(0.05))
+            if not self.__is_using_fast_mode():
+                self.loop.run_until_complete(self.page.wait(0.05))
 
     def scroll_by_y(self, y):
         y = int(y)
         js_code = "window.scrollBy(0, %s);" % y
         with suppress(Exception):
             self.loop.run_until_complete(self.page.evaluate(js_code))
-            self.loop.run_until_complete(self.page.wait(0.05))
+            if not self.__is_using_fast_mode():
+                self.loop.run_until_complete(self.page.wait(0.05))
 
     def scroll_to_top(self):
         js_code = "window.scrollTo(0, 0);"
         with suppress(Exception):
             self.loop.run_until_complete(self.page.evaluate(js_code))
-            self.loop.run_until_complete(self.page.wait(0.05))
+            if not self.__is_using_fast_mode():
+                self.loop.run_until_complete(self.page.wait(0.05))
 
     def scroll_to_bottom(self):
         js_code = "window.scrollTo(0, 10000);"
         with suppress(Exception):
             self.loop.run_until_complete(self.page.evaluate(js_code))
-            self.loop.run_until_complete(self.page.wait(0.05))
+            if not self.__is_using_fast_mode():
+                self.loop.run_until_complete(self.page.wait(0.05))
 
     def scroll_up(self, amount=25):
         """Scrolls up as a percentage of the page."""
@@ -3736,7 +3779,8 @@ class CDPMethods():
         except Exception:
             amount = self.get_window_size()["height"] * amount / 100
             self.execute_script("window.scrollBy(0, -%s);" % amount)
-        self.loop.run_until_complete(self.page.wait(0.05))
+        if not self.__is_using_fast_mode():
+            self.loop.run_until_complete(self.page.wait(0.05))
 
     def scroll_down(self, amount=25):
         """Scrolls down as a percentage of the page."""
@@ -3745,7 +3789,8 @@ class CDPMethods():
         except Exception:
             amount = self.get_window_size()["height"] * amount / 100
             self.execute_script("window.scrollBy(0, %s);" % amount)
-        self.loop.run_until_complete(self.page.wait(0.05))
+        if not self.__is_using_fast_mode():
+            self.loop.run_until_complete(self.page.wait(0.05))
 
     def save_page_source(self, name, folder=None):
         from seleniumbase.core import log_helper

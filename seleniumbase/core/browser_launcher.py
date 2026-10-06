@@ -474,6 +474,15 @@ def __is_cdp_swap_needed(driver):
     return shared_utils.is_cdp_swap_needed(driver)
 
 
+def __is_using_fast_mode():
+    if (
+        (hasattr(sb_config, "fast_mode") and sb_config.fast_mode)
+        or "--fast" in sys.argv
+    ):
+        return True
+    return False
+
+
 def uc_execute_cdp_cmd(driver, *args, **kwargs):
     if not driver.is_connected():
         driver.connect()
@@ -670,7 +679,7 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
     ):
         # CDP Mode was already initialized
         driver.cdp.open(url, **kwargs)
-        if not safe_url:
+        if not safe_url and not __is_using_fast_mode():
             time.sleep(constants.UC.CDP_MODE_OPEN_WAIT)
             if IS_WINDOWS:
                 time.sleep(constants.UC.EXTRA_WINDOWS_WAIT)
@@ -755,7 +764,7 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
             shared_utils.make_writable(constants.MultiBrowser.PYAUTOGUILOCK)
         loop.run_until_complete(page.activate())
     loop.run_until_complete(page.wait())
-    if not safe_url:
+    if not safe_url and not __is_using_fast_mode():
         time.sleep(constants.UC.CDP_MODE_OPEN_WAIT)
         if IS_WINDOWS:
             time.sleep(constants.UC.EXTRA_WINDOWS_WAIT)

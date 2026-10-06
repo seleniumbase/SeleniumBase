@@ -817,6 +817,7 @@ pytest test_coffee_cart.py --trace
 --archive-logs  # (Archive existing log files instead of deleting them.)
 --archive-downloads  # (Archive old downloads instead of deleting them.)
 --time-limit=SECONDS  # (Safely fail any test that exceeds the time limit.)
+--fast  # (Run the automation at full speed. May impact stealth.)
 --slow  # (Slow down the automation. Faster than using Demo Mode.)
 --demo  # (Slow down and visually see test actions as they occur.)
 --demo-sleep=SECONDS  # (Set the wait time after Slow & Demo Mode actions.)

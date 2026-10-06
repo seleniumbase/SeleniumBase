@@ -61,7 +61,7 @@ class SeleniumBrowser(Plugin):
     --interval=SECONDS  (The autoplay interval for presentations & tour steps)
     --start-page=URL  (The starting URL for the web browser when tests begin.)
     --time-limit=SECONDS  (Safely fail any test that exceeds the time limit.)
-    --slow  (Slow down the automation. Faster than using Demo Mode.)
+    --fast  (Run the automation at full speed. May impact stealth.)
     --demo  (Slow down and visually see test actions as they occur.)
     --demo-sleep=SECONDS  (Set the wait time after Slow & Demo Mode actions.)
     --highlights=NUM  (Number of highlight animations for Demo Mode actions.)
@@ -587,6 +587,15 @@ class SeleniumBrowser(Plugin):
             default=None,
             help="""Use this to set a time limit per test, in seconds.
                     If a test runs beyond the limit, it fails.""",
+        )
+        parser.addoption(
+            "--fast_mode",
+            "--fast-mode",
+            "--fast",
+            action="store_true",
+            dest="fast_mode",
+            default=False,
+            help="""Run automation at full speed. (May impact stealth)""",
         )
         parser.addoption(
             "--slow_mode",
@@ -1367,6 +1376,7 @@ class SeleniumBrowser(Plugin):
         test.test.mobile_emulator = self.options.mobile_emulator
         test.test.device_metrics = self.options.device_metrics
         test.test.time_limit = self.options.time_limit
+        test.test.fast_mode = self.options.fast_mode
         test.test.slow_mode = self.options.slow_mode
         test.test.demo_mode = self.options.demo_mode
         test.test.demo_sleep = self.options.demo_sleep
