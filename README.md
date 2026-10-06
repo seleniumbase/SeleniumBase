@@ -97,13 +97,13 @@ with SB(uc=True, test=True, locale="en") as sb:
 ```
 
 <p align="center">
-<img src="https://seleniumbase.github.io/other/gitlab_bypass.png" alt="SeleniumBase" width="350" style="max-width: 100% !important; height: auto !important;"/>
-<br /><em>(Successfully bypassed bot-detection on a Cloudflare challenge page)</em>
+<img src="https://seleniumbase.github.io/other/gitlab_bypass.png" alt="SeleniumBase" width="410" style="max-width: 100% !important; height: auto !important;"/>
+<br /><em>(Cloudflare interstitial challenge bypassed successfully)</em>
 </p>
 
 --------
 
-<p align="left"><b>📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_cdp_google.py" target="_blank">This example</a> searches Google for the SeleniumBase GitHub page and outputs the result as a PDF:</b></p>
+<p align="left"><b>📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_cdp_google.py" target="_blank">This example</a> searches Google for the SeleniumBase GitHub page and outputs the result as a PDF:</b> <em>(The PDF will contain the search results page if SeleniumBase isn't in the list)</em></p>
 
 ```python
 from seleniumbase import sb_cdp
@@ -123,7 +123,7 @@ print("* PDF saved to ./downloaded_files/seleniumbase.pdf")
 sb.quit()
 ```
 
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_get_swag.py"><img src="https://seleniumbase.github.io/cdn/gif/google_search_2.gif" alt="SeleniumBase Test" width="500" style="max-width: 100% !important; height: auto !important;" /></a><br /><em>(The PDF will have all search results if SeleniumBase isn't in the list)</em></p>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_get_swag.py"><img src="https://seleniumbase.github.io/cdn/gif/google_search_2.gif" alt="SeleniumBase Test" width="510" style="max-width: 100% !important; height: auto !important;" /></a><br /><em>(Google Search followed by a visit to the SeleniumBase GitHub page)</em></p>
 
 --------
 
