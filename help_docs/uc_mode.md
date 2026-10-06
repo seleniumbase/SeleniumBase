@@ -2,7 +2,7 @@
 
 <h2><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32"></a> UC Mode 👤</h2>
 
-👤 <b translate="no">SeleniumBase</b> <b translate="no">UC Mode</b> (Undetected-Chromedriver Mode) allows bots to appear human, which lets them evade detection from anti-bot services that try to block them or trigger CAPTCHAs on various websites.
+👤 <b translate="no">SeleniumBase</b> <b translate="no">UC Mode</b> (Undetected-Chromedriver Mode) makes bots appear human, which lets them evade detection from anti-bot services that try to block them or trigger CAPTCHAs on various websites.
 
 > ### (For the successor to plain UC Mode, see **[CDP Mode 🐙](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md)**)
 
@@ -24,66 +24,73 @@
 ----
 
 <!-- YouTube View --><a href="https://www.youtube.com/watch?v=Mr90iQmNsKM"><img src="http://img.youtube.com/vi/Mr90iQmNsKM/0.jpg" title="SeleniumBase on YouTube" width="320" /></a>
-<p>(<b><a href="https://www.youtube.com/watch?v=Mr90iQmNsKM">Watch the 4th UC Mode tutorial on YouTube! ▶️</a></b>)</p>
+<p>(<b><a href="https://www.youtube.com/watch?v=Mr90iQmNsKM">Watch the 4th Edition on YouTube! ▶️</a></b>)</p>
 
 ----
 
-👤 <b translate="no">UC Mode</b> is based on [undetected-chromedriver](https://github.com/ultrafunkamsterdam/undetected-chromedriver). <span translate="no">UC Mode</span> includes multiple updates, fixes, and improvements, such as having special <code>uc_*()</code> methods for bypassing CAPTCHAs.
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=R9HNsnbYh8o"><img src="https://github.com/user-attachments/assets/9d04fa89-44b0-4077-96d1-5b84f5a2e5fe" title="SeleniumBase on YouTube" width="320" /></a>
+<p>(<b><a href="https://www.youtube.com/watch?v=R9HNsnbYh8o">Watch the 5th Edition on YouTube! ▶️</a></b>)</p>
 
-👤 Here's a simple example with the <b><code translate="no">Driver</code></b> manager:
+----
+
+👤 <b translate="no">UC Mode</b> is based on <a href="https://github.com/ultrafunkamsterdam/undetected-chromedriver">undetected-chromedriver</a>. <span translate="no">UC Mode</span> includes multiple updates, fixes, and improvements, such as having special methods for bypassing CAPTCHAs.
+
+👤 Here's a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_uc_driver.py">UC Mode example</a> with the <b><code translate="no">Driver</code></b> manager:<br  /><em>(Bypasses both BrowserScan AND Sannysoft Bot-Detection)</em>
 
 ```python
 from seleniumbase import Driver
 
 driver = Driver(uc=True)
-url = "https://gitlab.com/users/sign_in"
-driver.uc_open_with_reconnect(url, 4)
-driver.uc_gui_click_captcha()
+driver.get("https://browserscan.net/bot-detection")
+driver.assert_element('strong:contains("Normal")')
+driver.sleep(1)
+driver.get("https://bot.sannysoft.com/")
+driver.assert_element("#user-agent-result.passed")
+driver.assert_element("#webdriver-result.passed")
+driver.assert_element("#advanced-webdriver-result.passed")
+driver.assert_element("#permissions-result.passed")
+driver.assert_element("#plugins-length-result.passed")
+driver.assert_element("#plugins-type-result.passed")
+driver.sleep(1)
 driver.quit()
+```
+
+<p align="center">
+<img src="https://seleniumbase.github.io/cdn/img/results_normal.jpg" width="520" style="max-width: 100% !important; height: auto !important;" alt="BrowserScan Test Results: Normal" />
+<br /><em>(All BrowserScan bot-detection tests passed successfully)</em>
+</p>
+
+<p align="center">
+<img src="https://seleniumbase.github.io/other/sannysoft_success.jpg" width="428" style="max-width: 100% !important; height: auto !important;" alt="All Sannysoft tests passed successfully" />
+<br /><em>(All Sannysoft bot-detection tests passed successfully)</em>
+</p>
+
+👤 Here's a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_uc_mode.py">UC Mode example</a> with the <b><code translate="no">SB</code></b> manager:
+
+```python
+from seleniumbase import SB
+
+with SB(uc=True, test=True) as sb:
+    sb.goto("https://gitlab.com/users/sign_in")
+    sb.solve_captcha()
+    sb.highlight('h1:contains("GitLab")')
+    sb.highlight('button:contains("Sign in")')
 ```
 
 <img src="https://seleniumbase.github.io/other/gitlab_bypass.png" title="SeleniumBase" width="370">
 
-👤 Here's an example with the <b><code translate="no">SB</code></b> manager (which has more methods and functionality than the <b><code translate="no">Driver</code></b> format):
-
-```python
-from seleniumbase import SB
-
-with SB(uc=True) as sb:
-    url = "https://gitlab.com/users/sign_in"
-    sb.uc_open_with_reconnect(url, 4)
-    sb.uc_gui_click_captcha()
-```
-
 (Note: If running UC Mode scripts on headless Linux machines, then you'll need to use the <b><code translate="no">SB</code></b> manager instead of the <b><code translate="no">Driver</code></b> manager because the <b><code translate="no">SB</code></b> manager includes a special virtual display that allows for <b><code translate="no">PyAutoGUI</code></b> actions.)
 
-👤 Here's a longer example: (Note that <code translate="no">sb.uc_gui_click_captcha()</code> performs a special click using <b><code translate="no">PyAutoGUI</code></b> if a CAPTCHA is detected.)
+👤 Here's an example where clicking the checkbox is required:<br /><em>(Commonly seen on CAPTCHA-protected forms)</em>
+
+<img src="https://seleniumbase.github.io/other/cf_turnstile2.png" title="SeleniumBase" width="300">
 
 ```python
 from seleniumbase import SB
 
 with SB(uc=True, test=True) as sb:
-    url = "https://gitlab.com/users/sign_in"
-    sb.uc_open_with_reconnect(url, 4)
-    sb.uc_gui_click_captcha()
-    sb.assert_text("Username", '[for="user_login"]', timeout=3)
-    sb.assert_element('label[for="user_login"]')
-    sb.highlight('button:contains("Sign in")')
-    sb.highlight('h1:contains("GitLab")')
-    sb.post_message("SeleniumBase wasn't detected", duration=4)
-```
-
-👤 Here's an example <b>where clicking the checkbox is required</b>, even for humans:<br />(Commonly seen on forms that are CAPTCHA-protected.)
-
-<img src="https://seleniumbase.github.io/other/cf_turnstile.png" title="SeleniumBase" width="260">
-
-```python
-from seleniumbase import SB
-
-with SB(uc=True, test=True) as sb:
-    url = "https://seleniumbase.io/apps/turnstile"
-    sb.uc_open_with_reconnect(url, reconnect_time=2)
-    sb.uc_gui_handle_captcha()
+    sb.goto("https://seleniumbase.io/apps/turnstile")
+    sb.solve_captcha()
     sb.assert_element("img#captcha-success", timeout=3)
     sb.set_messenger_theme(location="top_left")
     sb.post_message("SeleniumBase wasn't detected", duration=3)
@@ -91,23 +98,22 @@ with SB(uc=True, test=True) as sb:
 
 <img src="https://seleniumbase.github.io/other/turnstile_click.jpg" title="SeleniumBase" width="440">
 
-If running on a Linux server, `uc_gui_handle_captcha()` might not be good enough. Switch to `uc_gui_click_captcha()` to be more stealthy. Note that these methods auto-detect between CF Turnstile and Google reCAPTCHA.
-
 Sometimes you need to add <code translate="no">incognito=True</code> with <code translate="no">uc=True</code> to maximize your anti-detection abilities. (Some websites can detect you if you don't do that.)
 
-👤 Here's an example <b>where the CAPTCHA appears after submitting a form</b>:
+👤 Here's a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_ahrefs.py">UC Mode example</a> where a CAPTCHA appears after submitting a form:
 
 ```python
 from seleniumbase import SB
 
 with SB(uc=True, test=True, incognito=True, locale="en") as sb:
-    url = "https://ahrefs.com/website-authority-checker"
-    input_field = 'input[placeholder="Enter domain"]'
-    submit_button = 'span:contains("Check Authority")'
-    sb.uc_open_with_reconnect(url)  # The bot-check is later
-    sb.type(input_field, "github.com/seleniumbase/SeleniumBase")
-    sb.uc_click(submit_button, reconnect_time=3.25)
-    sb.uc_gui_click_captcha()
+    sb.goto("https://ahrefs.com/website-authority-checker")
+    search_term = "github.com/seleniumbase/SeleniumBase"
+    sb.type('input[placeholder="Enter domain"]', search_term)
+    sb.scroll_down(36)
+    sb.click('span:contains("Check Authority")')
+    sb.sleep(2)
+    sb.solve_captcha()
+    sb.sleep(3)
     sb.wait_for_text_not_visible("Checking", timeout=15)
     sb.click_if_visible('button[data-cky-tag="close-button"]')
     sb.highlight('p:contains("github.com/seleniumbase/SeleniumBase")')
@@ -120,18 +126,18 @@ with SB(uc=True, test=True, incognito=True, locale="en") as sb:
 
 --------
 
-👤 <b>On Linux</b>, use `sb.uc_gui_click_captcha()` to handle CAPTCHAs (Cloudflare Turnstiles):
+👤 <b>On Linux</b>, use `sb.solve_captcha()` to handle CAPTCHAs:
 
 ```python
 from seleniumbase import SB
 
 with SB(uc=True, test=True) as sb:
     url = "https://www.virtualmanager.com/en/login"
-    sb.uc_open_with_reconnect(url, 4)
+    sb.goto(url)
     print(sb.get_page_title())
-    sb.uc_gui_click_captcha()  # Only used if needed
-    print(sb.get_page_title())
+    sb.solve_captcha()  # Only used if needed
     sb.assert_element('input[name*="email"]')
+    print(sb.get_page_title())
     sb.assert_element('input[name*="login"]')
     sb.set_messenger_theme(location="bottom_center")
     sb.post_message("SeleniumBase wasn't detected!")
@@ -141,35 +147,36 @@ with SB(uc=True, test=True) as sb:
 
 The 2nd <code translate="no">print()</code> should output <code translate="no">Virtual Manager</code>, which means that the automation successfully passed the Turnstile.
 
-(Note: <span translate="no">UC Mode</span> is detectable in Headless Mode, so don't combine those options. Instead, use <code translate="no">xvfb=True</code> / `--xvfb`on Linux for the special virtual display, which is enabled by default when not changing headed/headless settings.)
+(Note: <span translate="no">UC Mode</span> has a special virtual display on Linux: <code>Xvfb</code>, which is enabled by default when not changing headed/headless settings.)
 
 --------
 
-👤 In <b translate="no">UC Mode</b>, <code translate="no">driver.get(url)</code> has been modified from its original version: If anti-bot services are detected from a <code translate="no">requests.get(url)</code> call that's made before navigating to the website, then <code translate="no">driver.uc_open_with_reconnect(url)</code> will be used instead. To open a URL normally in <b translate="no">UC Mode</b>, use <code translate="no">driver.default_get(url)</code>.
-
---------
-
-### 👤 Here are some examples that use UC Mode:
-* [SeleniumBase/examples/verify_undetected.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/verify_undetected.py)
-* [SeleniumBase/examples/raw_turnstile.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_turnstile.py)
-* [SeleniumBase/examples/raw_form_turnstile.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_form_turnstile.py)
-* [SeleniumBase/examples/raw_uc_mode.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_uc_mode.py)
-
-<img src="https://seleniumbase.github.io/other/cf_bypass.png" title="SeleniumBase" width="260">
-
---------
-
-👤 Here's an example where <b><code translate="no">incognito=True</code> is needed for bypassing detection</b>:
+👤 Here's a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_pixelscan.py">UC Mode example</a> of bypassing bot-detection on Pixelscan:
 
 ```python
 from seleniumbase import SB
 
-with SB(uc=True, incognito=True, test=True) as sb:
-    sb.driver.uc_open_with_reconnect("https://pixelscan.net/", 10)
-    sb.sleep(2)
+with SB(uc=True, test=True, guest=True) as sb:
+    sb.activate_cdp_mode(ad_block=True)
+    sb.goto("https://pixelscan.net/fingerprint-check")
+    sb.remove_element("div.header-promo")
+    sb.remove_element("pxlscn-dynamic-ad")
+    sb.sleep(1.8)
+    sb.assert_text("No automated behavior", "pxlscn-bot-detection")
+    sb.assert_text("No masking detected", "pxlscn-fingerprint-masking")
+    sb.assert_text("consistent", "span.status-success")
+    sb.sleep(0.5)
+    sb.cdp.highlight("span.status-success")
+    sb.cdp.highlight("pxlscn-fingerprint-masking p")
+    sb.cdp.highlight("pxlscn-bot-detection p")
+    print("Bot Not Detected")
 ```
 
 <img src="https://seleniumbase.github.io/other/pixelscan.jpg" title="SeleniumBase" width="540">
+
+--------
+
+👤 In <b translate="no">UC Mode</b>, <code translate="no">driver.get(url)</code> has been modified from its original version: If anti-bot services are detected from a <code translate="no">requests.get(url)</code> call that's made before navigating to the website, then <code translate="no">driver.uc_open_with_reconnect(url)</code> will be used instead. To open a URL normally in <b translate="no">UC Mode</b>, use <code translate="no">driver.default_get(url)</code>, which does not have stealth.
 
 --------
 
@@ -245,28 +252,7 @@ driver.reconnect("breakpoint")
 
 --------
 
-👤 <b>On Linux</b>, use <code translate="no">xvfb=True</code> / `--xvfb` to activate a special virtual display. This allows you to run a regular browser in an environment that has no GUI. This is important for two reasons: One: <span translate="no">UC Mode</span> is detectable in headless mode. Two: <code translate="no">pyautogui</code> doesn't work in headless mode. (Note that some methods such as <code translate="no">uc_gui_click_captcha()</code> require <code translate="no">pyautogui</code> for performing special actions.)
-
---------
-
-👤 <code translate="no">uc_gui_click_captcha()</code> auto-detects the CAPTCHA type before trying to click it. This is a generic method for both CF Turnstile and Google reCAPTCHA. It will use the code from <code translate="no">uc_gui_click_cf()</code> and <code translate="no">uc_gui_click_rc()</code> as needed.
-
-👤 <code translate="no">uc_gui_click_cf(frame="iframe", retry=False, blind=False)</code> has three args. (All optional). The first one, <code translate="no">frame</code>, lets you specify the selector above the <code translate="no">iframe</code> in case the CAPTCHA is not located in the first <code translate="no">iframe</code> on the page. (In the case of Shadow-DOM, specify the selector of an element that's above the Shadow-DOM.) The second one, <code translate="no">retry</code>, lets you retry the click after reloading the page if the first one didn't work (and a CAPTCHA is still present after the page reload). The third arg, <code translate="no">blind</code>, (if <code translate="no">True</code>), will retry after a page reload (if the first click failed) by clicking at the last known coordinates of the CAPTCHA checkbox without confirming first with Selenium that a CAPTCHA is still on the page.
-
-👤 <code translate="no">uc_gui_click_rc(frame="iframe", retry=False, blind=False)</code> is for reCAPTCHA. This may only work a few times before not working anymore... not because Selenium was detected, but because reCAPTCHA uses advanced AI to detect unusual activity, unlike the CF Turnstile, which only uses basic detection.
-
---------
-
-👤 To find out if <b translate="no">UC Mode</b> will work at all on a specific site (before adjusting for timing), load your site with the following script:
-
-```python
-from seleniumbase import SB
-
-with SB(uc=True) as sb:
-    sb.uc_open_with_reconnect(URL, reconnect_time="breakpoint")
-```
-
-(If you remain undetected while loading the page and performing manual actions, then you know you can create a working script once you swap the breakpoint with a time and add special methods like <b><code translate="no">sb.uc_click</code></b> as needed.)
+👤 <b>On Linux</b>, use <code translate="no">xvfb=True</code> / `--xvfb` to activate a special virtual display. This allows you to run a regular browser in an environment that has no GUI. This is important for two reasons: One: <span translate="no">UC Mode</span> may be detectable in headless mode. Two: <code translate="no">pyautogui</code> doesn't work in headless mode. (Note that some methods such as <code translate="no">uc_gui_click_captcha()</code> require <code translate="no">pyautogui</code> for performing special actions.)
 
 --------
 
