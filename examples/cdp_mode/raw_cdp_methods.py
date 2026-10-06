@@ -1,6 +1,6 @@
 from seleniumbase import sb_cdp
 
-sb = sb_cdp.Chrome()
+sb = sb_cdp.Chrome(fast=True)
 sb.goto("https://seleniumbase.io/demo_page")
 sb.type("input", "Quickly type text!")
 sb.press_keys("textarea", "Slowly type text!")
