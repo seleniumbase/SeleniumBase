@@ -24,8 +24,8 @@ sb.assert_in(text, words_data)  # Verify file has expected data
 
 sb.goto("https://pypi.org/project/sbvirtualdisplay/#files")
 sb.assert_element("span#pip-command")
-sb.assert_text("Download files", "div#files h2.page-title")
-sb.assert_text("Download files", "a#files-tab")
+sb.assert_text("Release files", "div#files h2.page-title")
+sb.assert_text("Release files", "a#files-tab")
 pkg_header = sb.get_text('h1[class*="header__name"]').strip()
 pkg_name = pkg_header.replace(" ", "-")
 whl_file = pkg_name + "-py3-none-any.whl"
@@ -64,12 +64,12 @@ sb.assert_true(tar_gz_file_bytes > 5000)
 # Get file sizes in kB to compare actual values with displayed values
 whl_file_kb = whl_file_bytes / 1000.0
 whl_line_fi = sb.get_text('a[href$=".whl"]').strip()
-whl_line = sb.get_text('div.file:contains("%s")' % whl_line_fi)
-whl_display_kb = float(whl_line.split("(")[1].split(" ")[0])
+whl_line = sb.get_text('td:contains("%s")' % whl_line_fi)
+whl_display_kb = float(whl_line.split(" ")[1].split(" ")[0])
 tar_gz_file_kb = tar_gz_file_bytes / 1000.0
 tar_gz_line_fi = sb.get_text('a[href$=".tar.gz"]').strip()
-tar_gz_line = sb.get_text('div.file:contains("%s")' % tar_gz_line_fi)
-tar_gz_display_kb = float(tar_gz_line.split("(")[1].split(" ")[0])
+tar_gz_line = sb.get_text('tr:contains("%s")' % tar_gz_line_fi)
+tar_gz_display_kb = float(tar_gz_line.split(" ")[1].split(" ")[0])
 
 # Verify downloaded files are the correct size (account for rounding)
 sb.assert_true(

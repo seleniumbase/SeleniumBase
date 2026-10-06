@@ -5,4 +5,4 @@ with SB(uc=True) as sb:
     sb.goto("https://news.ycombinator.com/submitted?id=seleniumbase")
     elements = sb.find_elements("span.titleline > a")
     for element in elements:
-        print("* " + element.text)
+        print("* %s" % element.text)

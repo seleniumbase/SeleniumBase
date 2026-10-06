@@ -3,7 +3,6 @@ from seleniumbase import SB
 with SB(uc=True, test=True) as sb:
     sb.activate_cdp_mode()
     sb.goto("https://www.indeed.com/companies/search")
-    sb.sleep(0.8)
     sb.solve_captcha()
     sb.sleep(0.8)
     search_box = "input#company-search"

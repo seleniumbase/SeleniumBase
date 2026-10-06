@@ -3,11 +3,7 @@ from seleniumbase import SB
 with SB(uc=True, test=True, ad_block=True) as sb:
     sb.activate_cdp_mode()
     sb.goto("https://www.walmart.com/")
-    sb.sleep(2.2)
-    continue_button = 'button:contains("Continue shopping")'
-    if sb.is_element_visible(continue_button):
-        sb.gui_click_element(continue_button)
-        sb.sleep(0.6)
+    sb.sleep(1.2)
     sb.click('input[aria-label="Search"]')
     sb.sleep(1.2)
     search = "Settlers of Catan Board Game"
