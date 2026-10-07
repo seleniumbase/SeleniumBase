@@ -2,13 +2,17 @@
 <!-- mcp-name: io.github.seleniumbase/seleniumbase -->
 
 <meta property="og:site_name" content="SeleniumBase">
-<meta property="og:title" content="SeleniumBase: Stealthy Chromium Automation with Python; and E2E Testing." />
-<meta property="og:description" content="Stealthy Chromium Automation, including fast, easy, and reliable E2E testing with Python." />
-<meta property="og:keywords" content="Python, pytest, selenium, webdriver, testing, automation, seleniumbase, framework, dashboard, recorder, reports, screenshots, playwright, stealth, CAPTCHA">
+<meta property="og:title" content="SeleniumBase: Python Web Automation and E2E Testing. Includes stealth options!" />
+<meta property="og:description" content="Fast, easy, and reliable Web/UI testing with Python. Includes stealth options!" />
+<meta property="og:keywords" content="Python, pytest, selenium, webdriver, testing, automation, seleniumbase, framework, dashboard, recorder, reports, screenshots">
 <meta property="og:image" content="https://seleniumbase.github.io/cdn/img/mac_sb_logo_5b.png" />
-<link rel="icon" href="https://seleniumbase.github.io/img/logo6.png" />
+<link rel="icon" href="https://seleniumbase.github.io/img/logo7.png" />
 
-<h2 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/sbase_text_logo3t.png" alt="SeleniumBase" title="SeleniumBase" width="592" style="max-width: 100% !important; height: auto !important;" /></a><br /><small>End-to-End Testing and Stealthy Automation</small></h2>
+<h1>SeleniumBase</h1>
+
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/nice_logo_8t.png" alt="SeleniumBase" width="424" /></a></p>
+
+<p align="center" class="hero__title"><b>All-in-one Browser Automation Framework:<br />Web Crawling / Testing / Scraping / Stealth</b></p>
 
 <p align="center"><a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=3399EE" alt="PyPI version" height="20" /></a> <a href="https://pepy.tech/projects/seleniumbase?timeRange=threeMonths&category=version&includeCIDownloads=true&granularity=daily&viewType=line&versions=*" target="_blank"><img src="https://static.pepy.tech/badge/seleniumbase" alt="SeleniumBase PyPI downloads" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" title="SeleniumBase" height="20" /></a> <a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"><img src="https://github.com/seleniumbase/SeleniumBase/workflows/Tests/badge.svg" alt="SeleniumBase GitHub Actions" height="20" /></a> <a href="https://www.youtube.com/playlist?list=PLp9uKicxkBc5UIlGi2BuE3aWC7JyXpD3m"><img src="https://img.shields.io/badge/docs-📺-F12345.svg?style=flat&logo=YouTube&logoColor=white&label=YouTube" alt="YouTube Channel" height="20" /></a></p>
 
@@ -48,12 +52,21 @@
 <br />
 </p>
 
-<ul>
-<li><b>SeleniumBase bypasses bot-detection with</b> 👤 <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md"><b>UC Mode</b></a> / 🐙 <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md"><b>CDP Mode</b></a><b>.</b></li>
-<li>🎭 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md"><b><span translate="no">Stealthy Playwright Mode</span></b></a> <b>extends CDP Mode's stealth to Playwright.</b></li>
-</ul>
-<ul>
-</ul>
+📊 <a href="https://github.com/seleniumbase/SeleniumBase/"><b translate="no">SeleniumBase</b></a> is a complete framework for browser automation and testing with Python and <a href="https://docs.pytest.org/en/latest/how-to/usage.html">pytest</a>. Includes stealth options and other advanced features.
+
+🐙 Stealth modes: <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md">UC Mode</a> and <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md"><b>CDP Mode</b></a> can bypass bot-detection, handle CAPTCHAs, and call methods from the <a href="https://chromedevtools.github.io/devtools-protocol/" translate="no">Chrome Devtools Protocol</a>. CDP Mode includes <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md"><b><span translate="no">Stealthy Playwright Mode</span></b></a>, which makes Playwright stealthy.
+
+📚 The [SeleniumBase/examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder includes over 100 ready-to-run examples. Examples that start with `test_` or end with `_test.py`/`_tests.py` are specifically designed to run with `pytest`. Other examples run directly with raw `python` (those files generally start with `raw_` to avoid confusion).
+
+🥷 Stealthy examples are located in [SeleniumBase/examples/cdp_mode/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode).
+
+--------
+
+<h3 align="left">⚙️ Stealthy architecture flowchart:</h3>
+
+<img src="https://seleniumbase.github.io/other/sb_stealth.png" width="640" style="max-width: 100% !important; height: auto !important;" alt="Stealthy architecture flowchart" />
+
+(For maximum stealth, use <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md">CDP Mode</a>, which includes <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md">Stealthy Playwright Mode</a>)
 
 --------
 
@@ -71,14 +84,56 @@ sb.sleep(2)
 sb.quit()
 ```
 
-<p align="center">
+<p align="left">
 <img src="https://seleniumbase.github.io/other/pmc_captcha_2.png" width="570" style="max-width: 100% !important; height: auto !important;" alt="Cloudflare Turnstile bypassed successfully" />
-<br /><em>(Cloudflare Turnstile bypassed successfully)</em>
 </p>
 
 ✅ <b><code>sb.solve_captcha()</code></b> handles CAPTCHAs that aren't bypassed automatically.<br />(If called when there's no CAPTCHA on the page, then nothing happens / no-op.)
 
-ℹ️ `Pure CDP Mode` doesn't use `chromedriver` (*unlike `UC Mode` / `UC+CDP Mode`*).<br />(Other modes download `chromedriver` if not found.)
+--------
+
+<p align="left"><b>📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_yc_news.py" target="_blank">This example</a> scrapes Hacker News listings:</b></p>
+
+```python
+from seleniumbase import sb_cdp
+
+sb = sb_cdp.Chrome()
+sb.goto("https://news.ycombinator.com/submitted?id=seleniumbase")
+elements = sb.find_elements("span.titleline > a")
+for element in elements:
+    print("* %s" % element.text)
+```
+
+<p align="left">
+<img src="https://seleniumbase.github.io/other/yc_news_results.png" alt="SeleniumBase" width="524" style="max-width: 100% !important; height: auto !important;"/>
+</p>
+
+----
+
+<p align="left">📝 Here’s <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_methods.py" target="_blank">SeleniumBase/examples/cdp_mode/raw_cdp_methods.py</a>:<br />(It performs several different actions on the web page)</p>
+
+```python
+from seleniumbase import sb_cdp
+
+sb = sb_cdp.Chrome(fast=True)
+sb.goto("https://seleniumbase.io/demo_page")
+sb.type("input", "Quickly type text!")
+sb.press_keys("textarea", "Slowly type text!")
+sb.click("#myButton")
+sb.set_value("input#mySlider", "100")
+sb.click_visible_elements("input.checkBoxClassB")
+sb.select_option_by_text("#mySelect", "Set to 75%")
+sb.hover_and_click("#myDropdown", "#dropOption2")
+sb.click("#checkBox1")
+sb.drag_and_drop("img#logo", "div#drop2")
+sb.nested_click("iframe#myFrame3", ".fBox")
+sb.highlight("#myButton")
+sb.quit()
+```
+
+<img src="https://seleniumbase.github.io/cdn/gif/demo_page_6.gif" width="580" style="max-width: 100% !important; height: auto !important;" alt="SeleniumBase Example" />
+
+ℹ️  Setting `fast=True` lets your automation go at full speed, which may be useful if maximum stealth isn't your goal.
 
 ----
 
@@ -98,52 +153,6 @@ with SB(uc=True, test=True, locale="en") as sb:
 
 <p align="center">
 <img src="https://seleniumbase.github.io/other/gitlab_bypass_2.png" alt="SeleniumBase" width="400" style="max-width: 100% !important; height: auto !important;"/>
-<br /><em>(Cloudflare interstitial challenge bypassed successfully)</em>
-</p>
-
---------
-
-<p align="left"><b>📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_cdp_google.py" target="_blank">This example</a> searches Google and outputs the final page as a PDF:</b></p>
-
-```python
-from seleniumbase import sb_cdp
-
-sb = sb_cdp.Chrome()
-sb.goto("https://google.com/ncr")
-sb.click_if_visible('button:contains("Accept all")')
-sb.type('[name="q"]', "SeleniumBase site:github.com")
-sb.sleep(0.2)
-sb.click('[value="Google Search"]')
-sb.sleep(1)
-sb.click_if_visible('h3:contains("seleniumbase/SeleniumBase")')
-sb.sleep(1)
-print(sb.get_page_title())
-sb.save_as_pdf("seleniumbase.pdf", folder="./downloaded_files/")
-print("* PDF saved to ./downloaded_files/seleniumbase.pdf")
-sb.quit()
-```
-
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_get_swag.py"><img src="https://seleniumbase.github.io/cdn/gif/google_search_2.gif" alt="SeleniumBase Test" width="544" style="max-width: 100% !important; height: auto !important;" /></a><br /><em>(Google Search with the SeleniumBase GitHub page result)</em></p>
-
-ℹ️ `sb.click_if_visible(selector)` is useful when page behavior isn't consistent, such as when only some users receive a pop-up for accepting cookies.)
-
---------
-
-<p align="left"><b>📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_yc_news.py" target="_blank">This example</a> scrapes Hacker News listings:</b></p>
-
-```python
-from seleniumbase import sb_cdp
-
-sb = sb_cdp.Chrome()
-sb.goto("https://news.ycombinator.com/submitted?id=seleniumbase")
-elements = sb.find_elements("span.titleline > a")
-for element in elements:
-    print("* %s" % element.text)
-```
-
-<p align="center">
-<img src="https://seleniumbase.github.io/other/yc_news_results.png" alt="SeleniumBase" width="544" style="max-width: 100% !important; height: auto !important;"/>
-<br /><em>(Hacker News search results for "seleniumbase")</em>
 </p>
 
 --------
@@ -153,15 +162,6 @@ for element in elements:
 🐙 Stealthy CDP Mode examples are located in [./examples/cdp_mode/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode).
 
 🎭 Stealthy Playwright examples are located in [./examples/cdp_mode/playwright/](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/).
-
---------
-
-<h3 align="left">⚙️ Stealthy architecture flowchart:</h3>
-
-<p align="center">
-<img src="https://seleniumbase.github.io/other/sb_architecture.png" width="646" style="max-width: 100% !important; height: auto !important;" alt="Stealthy architecture flowchart" />
-<br /><em>(For maximum stealth, use <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md">CDP Mode</a>, which includes <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md">Stealthy Playwright Mode</a>)</em>
-</p>
 
 --------
 
