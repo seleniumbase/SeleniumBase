@@ -84,6 +84,8 @@ sb.sleep(2)
 sb.quit()
 ```
 
+> `python raw_cdp_planetmc.py`
+
 <p align="left">
 <img src="https://seleniumbase.github.io/other/pmc_captcha_2.png" width="570" style="max-width: 100% !important; height: auto !important;" alt="Cloudflare Turnstile bypassed successfully" />
 </p>
@@ -103,6 +105,8 @@ elements = sb.find_elements("span.titleline > a")
 for element in elements:
     print("* %s" % element.text)
 ```
+
+> `python raw_cdp_yc_news.py`
 
 <p align="left">
 <img src="https://seleniumbase.github.io/other/yc_news_results.png" alt="SeleniumBase" width="524" style="max-width: 100% !important; height: auto !important;"/>
@@ -131,6 +135,8 @@ sb.highlight("#myButton")
 sb.quit()
 ```
 
+> `python raw_cdp_methods.py`
+
 <img src="https://seleniumbase.github.io/cdn/gif/demo_page_6.gif" width="580" style="max-width: 100% !important; height: auto !important;" alt="SeleniumBase Example" />
 
 ℹ️  Setting `fast=True` lets your automation go at full speed, which may be useful if maximum stealth isn't your goal.
@@ -151,8 +157,10 @@ with SB(uc=True, test=True, locale="en") as sb:
     sb.highlight('button:contains("Sign in")')
 ```
 
-<p align="center">
-<img src="https://seleniumbase.github.io/other/gitlab_bypass_2.png" alt="SeleniumBase" width="400" style="max-width: 100% !important; height: auto !important;"/>
+> `python raw_gitlab.py`
+
+<p align="left">
+<img src="https://seleniumbase.github.io/other/gitlab_bypass_2.png" alt="SeleniumBase" width="430" style="max-width: 100% !important; height: auto !important;"/>
 </p>
 
 --------
