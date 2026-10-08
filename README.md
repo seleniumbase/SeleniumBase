@@ -8,7 +8,7 @@
 <meta property="og:image" content="https://seleniumbase.github.io/cdn/img/mac_sb_logo_5b.png" />
 <link rel="icon" href="https://seleniumbase.github.io/img/logo7.png" />
 
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/nice_logo_8t.png" alt="SeleniumBase" width="400" /></a></p>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/nice_logo_8t.png" alt="SeleniumBase" width="380" /></a></p>
 
 <p align="center" class="hero__title"><b>All-in-one Browser Automation Framework:<br />Web Crawling / Testing / Scraping / Stealth</b></p>
 
@@ -52,19 +52,13 @@
 
 --------
 
-🥷 Stealth modes: <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md"><b>UC Mode</b></a> / <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md"><b>CDP Mode</b></a> can bypass bot-detection, handle CAPTCHAs, and call methods from the <a href="https://chromedevtools.github.io/devtools-protocol/" translate="no">Chrome Devtools Protocol</a>. CDP Mode includes <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md"><b><span translate="no">Stealthy Playwright Mode</span></b></a>, which makes Playwright stealthy.
+🥷 Stealth modes: <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md">UC Mode</a> and <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md"><b>CDP Mode</b></a> can bypass bot-detection, handle CAPTCHAs, and call methods from the <a href="https://chromedevtools.github.io/devtools-protocol/" translate="no">Chrome Devtools Protocol</a>. CDP Mode includes <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md"><b><span translate="no">Stealthy Playwright Mode</span></b></a>.
 
-🧪 End-to-End Testing examples are located in [./examples/](https://github.com/seleniumbase/SeleniumBase/blob/master/examples).
-
-🐙 CDP Mode (stealth) examples are located in [./examples/cdp_mode/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode).
-
-🎭 Stealthy Playwright examples are located in [./examples/cdp_mode/playwright/](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/).
-
-📚 Examples that have `test_` or  `_test` in the filename are specifically designed to run with `pytest` / `pynose`. Other examples run directly with raw `python` (those files generally start with `raw_` to avoid confusion).
+📚 Examples that have `test_` or  `_test` in the filename are specifically designed to run with `pytest`. Other examples run directly with `python` (those files generally start with `raw_` to avoid confusion).
 
 --------
 
-<b>📝 Here's a Python <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_planetmc.py" target="_blank">example</a> that uses <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md#-pure-cdp-mode-sb_cdp">Pure CDP Mode</a> (<code>sb_cdp</code>):</b><br />(It navigates to Planet Minecraft where it bypasses the CAPTCHA)
+<b>📝 Here's a Python <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_planetmc.py" target="_blank">example</a> that uses <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md#-pure-cdp-mode-sb_cdp">Pure CDP Mode</a> (<code>sb_cdp</code>):</b><br />(It performs basic actions such as typing, clicking, and bypassing a CAPTCHA)
 
 ```python
 from seleniumbase import sb_cdp
@@ -89,6 +83,8 @@ sb.quit()
 </p>
 
 ✅ <b><code>sb.solve_captcha()</code></b> handles CAPTCHAs that aren't bypassed automatically.<br />(If called when there's no CAPTCHA on the page, then nothing happens / no-op.)
+
+ℹ️ <code>sb.assert_*</code> methods wait up to 7 seconds for the expected condition to occur.
 
 --------
 
@@ -134,6 +130,14 @@ with SB(uc=True, test=True, locale="en") as sb:
 
 --------
 
+🧪 End-to-End Testing examples are located in [./examples/](https://github.com/seleniumbase/SeleniumBase/blob/master/examples).
+
+🐙 Stealthy CDP Mode examples are located in [./examples/cdp_mode/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode).
+
+🎭 Stealthy Playwright examples are located in [./examples/cdp_mode/playwright/](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/).
+
+--------
+
 <h3 align="left">🌐 CLI Options for Supported Chromium Browsers</h3>
 
 <p>💡 You can set which Chromium browser to use via command-line parameters:</p>
@@ -157,7 +161,7 @@ sb = sb_cdp.Chrome(use_chromium=True)
 
 <h3 align="left">⚙️ Stealthy architecture flowchart:</h3>
 
-<img src="https://seleniumbase.github.io/other/sb_architecture.png" width="540" style="max-width: 100% !important; height: auto !important;" alt="Stealthy architecture flowchart" />
+<img src="https://seleniumbase.github.io/other/sb_architecture.png" width="530" style="max-width: 100% !important; height: auto !important;" alt="Stealthy architecture flowchart" />
 
 --------
 
