@@ -206,7 +206,7 @@ setup(
         'cssselect>=1.5.0,<2',
         'sortedcontainers==2.4.0',
         'execnet==2.1.2',
-        'iniconfig==2.3.0',
+        'iniconfig~=2.3.1',
         'pluggy==1.6.0',
         'pytest==8.4.2;python_version<"3.11"',
         'pytest==9.1.1;python_version>="3.11"',
@@ -247,7 +247,7 @@ setup(
         "flake8": [
             'flake8==7.4.1',
             'mccabe==0.7.0',
-            'pyflakes==4.0.2',
+            'pyflakes==4.0.3',
             'pycodestyle==2.15.0',
         ],
         # pip install -e .[mcp]

@@ -26,3 +26,7 @@ with sync_playwright() as p:
         score = sb.get_text("div.text-successText")
         print(f" ❌ Fingerprint tampering detected! Score: {score}")
     sb.sleep(1)
+    folder = "downloaded_files"
+    file_name = "c_audit_results_pw.pdf"
+    sb.save_as_pdf(file_name, folder)
+    print('"./%s/%s" was saved!' % (folder, file_name))
