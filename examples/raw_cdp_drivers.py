@@ -1,17 +1,16 @@
 from seleniumbase import SB
 
 with SB(uc=True, test=True) as sb:
-    url1 = "https://seleniumbase.io/demo_page"
-    sb.activate_cdp_mode(url1)
+    sb.goto("https://browserscan.net/bot-detection")
     driver1 = sb.driver
-    url2 = "https://seleniumbase.io/coffee/"
-    driver2 = sb.get_new_driver(undetectable=True)
-    sb.activate_cdp_mode(url2)
+    driver2 = sb.get_new_driver(uc=True)
+    sb.goto("https://bot.sannysoft.com/")
     print(driver1.get_current_url())
     print(driver2.get_current_url())
     sb.switch_to_default_driver()
-    sb.assert_url_contains("demo_page")
+    sb.assert_element('strong:contains("Normal")')
     print(sb.get_current_url())
     sb.switch_to_driver(driver2)
-    sb.assert_url_contains("coffee")
+    sb.assert_element(".passed")
+    sb.assert_element_not_visible(".failed")
     print(sb.get_current_url())
