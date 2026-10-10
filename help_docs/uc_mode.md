@@ -8,28 +8,10 @@
 
 ---
 
-<!-- YouTube View --><a href="https://www.youtube.com/watch?v=5dMFI3e85ig"><img src="http://img.youtube.com/vi/5dMFI3e85ig/0.jpg" title="SeleniumBase on YouTube" width="320" /></a>
-<p>(<b><a href="https://www.youtube.com/watch?v=5dMFI3e85ig">Watch the 1st UC Mode tutorial on YouTube! ▶️</a></b>)</p>
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=5dMFI3e85ig"><img src="http://img.youtube.com/vi/5dMFI3e85ig/0.jpg" title="SeleniumBase on YouTube" width="296" /></a>
+<p>(<b><a href="https://www.youtube.com/watch?v=5dMFI3e85ig">1st UC Mode tutorial on YouTube ▶️</a></b>)</p>
 
-----
-
-<!-- YouTube View --><a href="https://www.youtube.com/watch?v=2pTpBtaE7SQ"><img src="http://img.youtube.com/vi/2pTpBtaE7SQ/0.jpg" title="SeleniumBase on YouTube" width="320" /></a>
-<p>(<b><a href="https://www.youtube.com/watch?v=2pTpBtaE7SQ">Watch the 2nd UC Mode tutorial on YouTube! ▶️</a></b>)</p>
-
-----
-
-<!-- YouTube View --><a href="https://www.youtube.com/watch?v=-EpZlhGWo9k"><img src="http://img.youtube.com/vi/-EpZlhGWo9k/0.jpg" title="SeleniumBase on YouTube" width="320" /></a>
-<p>(<b><a href="https://www.youtube.com/watch?v=-EpZlhGWo9k">Watch the 3rd UC Mode tutorial on YouTube! ▶️</a></b>)</p>
-
-----
-
-<!-- YouTube View --><a href="https://www.youtube.com/watch?v=Mr90iQmNsKM"><img src="http://img.youtube.com/vi/Mr90iQmNsKM/0.jpg" title="SeleniumBase on YouTube" width="320" /></a>
-<p>(<b><a href="https://www.youtube.com/watch?v=Mr90iQmNsKM">Watch the 4th Edition on YouTube! ▶️</a></b>)</p>
-
-----
-
-<!-- YouTube View --><a href="https://www.youtube.com/watch?v=R9HNsnbYh8o"><img src="https://github.com/user-attachments/assets/9d04fa89-44b0-4077-96d1-5b84f5a2e5fe" title="SeleniumBase on YouTube" width="320" /></a>
-<p>(<b><a href="https://www.youtube.com/watch?v=R9HNsnbYh8o">Watch the 5th Edition on YouTube! ▶️</a></b>)</p>
+More "Undetectable Automation": <b><a href="https://www.youtube.com/watch?v=2pTpBtaE7SQ">2nd ▶️</a> - <a href="https://www.youtube.com/watch?v=-EpZlhGWo9k">3rd ▶️</a> - <a href="https://www.youtube.com/watch?v=Mr90iQmNsKM">4th ▶️</a> - <a href="https://www.youtube.com/watch?v=R9HNsnbYh8o">5th ▶️</a></b>
 
 ----
 
@@ -357,6 +339,35 @@ Based on the following article, https://nubela.co/blog/meta-lost-the-scraping-le
 If the above criteria are met, then scrape away! (According to the article)
 
 (Note: I'm not a lawyer, so I can't officially offer legal advice, but I can direct people to existing articles online where people can find their own answers.)
+
+--------
+
+### ▶️ "Undetectable Automation" YouTube tutorials:
+
+--------
+
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=5dMFI3e85ig"><img src="http://img.youtube.com/vi/5dMFI3e85ig/0.jpg" title="SeleniumBase on YouTube" width="320" /></a>
+<p>(<b><a href="https://www.youtube.com/watch?v=5dMFI3e85ig">Watch the 1st UC Mode tutorial on YouTube! ▶️</a></b>)</p>
+
+----
+
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=2pTpBtaE7SQ"><img src="http://img.youtube.com/vi/2pTpBtaE7SQ/0.jpg" title="SeleniumBase on YouTube" width="320" /></a>
+<p>(<b><a href="https://www.youtube.com/watch?v=2pTpBtaE7SQ">Watch the 2nd UC Mode tutorial on YouTube! ▶️</a></b>)</p>
+
+----
+
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=-EpZlhGWo9k"><img src="http://img.youtube.com/vi/-EpZlhGWo9k/0.jpg" title="SeleniumBase on YouTube" width="320" /></a>
+<p>(<b><a href="https://www.youtube.com/watch?v=-EpZlhGWo9k">Watch the 3rd UC Mode tutorial on YouTube! ▶️</a></b>)</p>
+
+----
+
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=Mr90iQmNsKM"><img src="http://img.youtube.com/vi/Mr90iQmNsKM/0.jpg" title="SeleniumBase on YouTube" width="320" /></a>
+<p>(<b><a href="https://www.youtube.com/watch?v=Mr90iQmNsKM">Watch the 4th Edition on YouTube! ▶️</a></b>)</p>
+
+----
+
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=R9HNsnbYh8o"><img src="https://github.com/user-attachments/assets/9d04fa89-44b0-4077-96d1-5b84f5a2e5fe" title="SeleniumBase on YouTube" width="320" /></a>
+<p>(<b><a href="https://www.youtube.com/watch?v=R9HNsnbYh8o">Watch the 5th Edition on YouTube! ▶️</a></b>)</p>
 
 --------
 
