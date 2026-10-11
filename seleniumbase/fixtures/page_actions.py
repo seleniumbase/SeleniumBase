@@ -1117,7 +1117,7 @@ def wait_for_element_absent(
         elif page_utils.is_valid_by(selector):
             original_selector = by
         selector, by = page_utils.recalculate_selector(original_selector, by)
-        driver.cdp.wait_for_element_absent(selector)
+        driver.cdp.wait_for_element_absent(selector, timeout=timeout)
         return True
     _reconnect_if_disconnected(driver)
     start_ms = time.time() * 1000.0
@@ -1173,7 +1173,7 @@ def wait_for_element_not_visible(
         elif page_utils.is_valid_by(selector):
             original_selector = by
         selector, by = page_utils.recalculate_selector(original_selector, by)
-        driver.cdp.wait_for_element_not_visible(selector)
+        driver.cdp.wait_for_element_not_visible(selector, timeout=timeout)
         return True
     _reconnect_if_disconnected(driver)
     start_ms = time.time() * 1000.0
@@ -1777,7 +1777,7 @@ def open_url(driver, url):
 def click(driver, selector, by="css selector", timeout=settings.SMALL_TIMEOUT):
     selector, by = page_utils.recalculate_selector(selector, by)
     if __is_cdp_swap_needed(driver):
-        driver.cdp.click(selector)
+        driver.cdp.click(selector, timeout=timeout)
         return
     element = wait_for_element_clickable(
         driver, selector, by=by, timeout=timeout
@@ -1800,7 +1800,7 @@ def click_if_visible(
 ):
     selector, by = page_utils.recalculate_selector(selector, by)
     if __is_cdp_swap_needed(driver):
-        driver.cdp.click_if_visible(selector)
+        driver.cdp.click_if_visible(selector, timeout=timeout)
         return
     if is_element_visible(driver, selector, by=by):
         click(driver, selector, by=by, timeout=1)
@@ -1825,7 +1825,7 @@ def js_click(
 ):
     selector, by = page_utils.recalculate_selector(selector, by)
     if __is_cdp_swap_needed(driver):
-        driver.cdp.click(selector)
+        driver.cdp.click(selector, timeout=timeout)
         return
     element = wait_for_element_present(
         driver, selector, by=by, timeout=timeout
@@ -1853,7 +1853,7 @@ def send_keys(
 ):
     selector, by = page_utils.recalculate_selector(selector, by)
     if __is_cdp_swap_needed(driver):
-        driver.cdp.send_keys(selector, text)
+        driver.cdp.send_keys(selector, text, timeout=timeout)
         return
     element = wait_for_element_present(
         driver, selector, by=by, timeout=timeout
@@ -1870,7 +1870,7 @@ def press_keys(
 ):
     selector, by = page_utils.recalculate_selector(selector, by)
     if __is_cdp_swap_needed(driver):
-        driver.cdp.press_keys(selector, text)
+        driver.cdp.press_keys(selector, text, timeout=timeout)
         return
     element = wait_for_element_present(
         driver, selector, by=by, timeout=timeout
@@ -1889,7 +1889,7 @@ def update_text(
 ):
     selector, by = page_utils.recalculate_selector(selector, by)
     if __is_cdp_swap_needed(driver):
-        driver.cdp.type(selector, text)
+        driver.cdp.type(selector, text, timeout=timeout)
         return
     element = wait_for_element_clickable(
         driver, selector, by=by, timeout=timeout
@@ -1932,7 +1932,7 @@ def assert_element_visible(
         original_selector = by
     selector, by = page_utils.recalculate_selector(selector, by)
     if __is_cdp_swap_needed(driver):
-        driver.cdp.assert_element(selector)
+        driver.cdp.assert_element(selector, timeout=timeout)
         return True
     wait_for_element_visible(
         driver,
@@ -1953,9 +1953,27 @@ def assert_element_present(
         original_selector = by
     selector, by = page_utils.recalculate_selector(selector, by)
     if __is_cdp_swap_needed(driver):
-        driver.cdp.assert_element_present(selector)
+        driver.cdp.assert_element_present(selector, timeout=timeout)
         return True
     wait_for_element_present(
+        driver,
+        selector,
+        by=by,
+        timeout=timeout,
+        original_selector=original_selector,
+    )
+
+
+def assert_element_absent(
+    driver, selector, by="css selector", timeout=settings.SMALL_TIMEOUT
+):
+    original_selector = None
+    if page_utils.is_valid_by(by):
+        original_selector = selector
+    elif page_utils.is_valid_by(selector):
+        original_selector = by
+    selector, by = page_utils.recalculate_selector(selector, by)
+    wait_for_element_absent(
         driver,
         selector,
         by=by,
@@ -1991,7 +2009,7 @@ def assert_text(
 ):
     selector, by = page_utils.recalculate_selector(selector, by)
     if __is_cdp_swap_needed(driver):
-        driver.cdp.assert_text(text, selector)
+        driver.cdp.assert_text(text, selector, timeout=timeout)
         return True
     wait_for_text_visible(
         driver, text.strip(), selector, by=by, timeout=timeout
@@ -2007,7 +2025,7 @@ def assert_exact_text(
 ):
     selector, by = page_utils.recalculate_selector(selector, by)
     if __is_cdp_swap_needed(driver):
-        driver.cdp.assert_exact_text(text, selector)
+        driver.cdp.assert_exact_text(text, selector, timeout=timeout)
         return True
     wait_for_exact_text_visible(
         driver, text.strip(), selector, by=by, timeout=timeout
@@ -2052,7 +2070,7 @@ def wait_for_element(
         original_selector = by
     selector, by = page_utils.recalculate_selector(selector, by)
     if __is_cdp_swap_needed(driver):
-        return driver.cdp.select(selector)
+        return driver.cdp.select(selector, timeout=timeout)
     return wait_for_element_visible(
         driver=driver,
         selector=selector,
@@ -2075,7 +2093,7 @@ def wait_for_selector(
         original_selector = by
     selector, by = page_utils.recalculate_selector(selector, by)
     if __is_cdp_swap_needed(driver):
-        return driver.cdp.select(selector)
+        return driver.cdp.select(selector, timeout=timeout)
     return wait_for_element_present(
         driver=driver,
         selector=selector,
@@ -2094,7 +2112,7 @@ def wait_for_text(
 ):
     selector, by = page_utils.recalculate_selector(selector, by)
     if __is_cdp_swap_needed(driver):
-        return driver.cdp.find_element(selector)
+        return driver.cdp.find_element(selector, timeout=timeout)
     return wait_for_text_visible(
         driver=driver,
         text=text,
@@ -2143,7 +2161,7 @@ def get_text(
     timeout=settings.LARGE_TIMEOUT
 ):
     if __is_cdp_swap_needed(driver):
-        return driver.cdp.get_text(selector)
+        return driver.cdp.get_text(selector, timeout=timeout)
     element = wait_for_element(
         driver=driver,
         selector=selector,

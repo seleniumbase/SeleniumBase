@@ -188,7 +188,9 @@ def extend_driver(
     page.type = DM.update_text
     page.submit = DM.submit
     page.assert_element = DM.assert_element_visible
+    page.assert_element_visible = DM.assert_element_visible
     page.assert_element_present = DM.assert_element_present
+    page.assert_element_absent = DM.assert_element_absent
     page.assert_element_not_visible = DM.assert_element_not_visible
     page.assert_text = DM.assert_text
     page.assert_exact_text = DM.assert_exact_text
@@ -247,7 +249,9 @@ def extend_driver(
     driver.type = DM.update_text
     driver.submit = DM.submit
     driver.assert_element = DM.assert_element_visible
+    driver.assert_element_visible = DM.assert_element_visible
     driver.assert_element_present = DM.assert_element_present
+    driver.assert_element_absent = DM.assert_element_absent
     driver.assert_element_not_visible = DM.assert_element_not_visible
     driver.assert_text = DM.assert_text
     driver.assert_exact_text = DM.assert_exact_text
@@ -3259,7 +3263,7 @@ def get_driver(
                         # (Not multithreaded)
                         sys_args = sys.argv  # Save a copy of current sys args
                         log_d(
-                            "\nWarning: Chrome for Testing binary not found..."
+                            "\nINFO: Chrome for Testing binary not found..."
                         )
                         try:
                             sb_install.main(override="cft")
@@ -3278,7 +3282,7 @@ def get_driver(
                             if not os.path.exists(binary_location):
                                 sys_args = sys.argv  # Save a copy of sys args
                                 log_d(
-                                    "\nWarning: "
+                                    "\nINFO: "
                                     "Chrome for Testing binary not found..."
                                 )
                                 sb_install.main(override="cft")
@@ -3313,7 +3317,7 @@ def get_driver(
                         # (Not multithreaded)
                         sys_args = sys.argv  # Save a copy of current sys args
                         log_d(
-                            "\nWarning: "
+                            "\nINFO: "
                             "Chrome-Headless-Shell binary not found..."
                         )
                         try:
@@ -3336,7 +3340,7 @@ def get_driver(
                             if not os.path.exists(binary_location):
                                 sys_args = sys.argv  # Save a copy of sys args
                                 log_d(
-                                    "\nWarning: "
+                                    "\nINFO: "
                                     "Chrome-Headless-Shell binary not found..."
                                 )
                                 sb_install.main(override="chs")
@@ -4211,7 +4215,7 @@ def get_local_driver(
             if not ("-n" in sys.argv or " -n=" in args or args == "-c"):
                 # (Not multithreaded)
                 sys_args = sys.argv  # Save a copy of current sys args
-                log_d("\nWarning: geckodriver not found. Getting it now:")
+                log_d("\nINFO: geckodriver not found. Getting it now:")
                 try:
                     sb_install.main(override="geckodriver")
                 except Exception as e:
@@ -4229,7 +4233,7 @@ def get_local_driver(
                     if not geckodriver_on_path():
                         sys_args = sys.argv  # Save a copy of sys args
                         log_d(
-                            "\nWarning: geckodriver not found. "
+                            "\nINFO: geckodriver not found. "
                             "Getting it now:"
                         )
                         sb_install.main(override="geckodriver")
@@ -4518,9 +4522,9 @@ def get_local_driver(
             args = " ".join(sys.argv)
             if not ("-n" in sys.argv or " -n=" in args or args == "-c"):
                 # (Not multithreaded)
-                msg = "Microsoft Edge Driver not found."
+                msg = "INFO: Microsoft Edge Driver not found."
                 if edgedriver_upgrade_needed:
-                    msg = "Microsoft Edge Driver update needed."
+                    msg = "INFO: Microsoft Edge Driver update needed."
                 sys_args = sys.argv  # Save a copy of current sys args
                 log_d("\n%s Getting it now:" % msg)
                 sb_install.main(override="edgedriver %s" % use_version)
@@ -4534,9 +4538,9 @@ def get_local_driver(
                         shared_utils.make_writable(
                             constants.MultiBrowser.DRIVER_FIXING_LOCK
                         )
-                    msg = "Microsoft Edge Driver not found."
+                    msg = "INFO: Microsoft Edge Driver not found."
                     if edgedriver_upgrade_needed:
-                        msg = "Microsoft Edge Driver update needed."
+                        msg = "INFO: Microsoft Edge Driver update needed."
                     sys_args = sys.argv  # Save a copy of current sys args
                     log_d("\n%s Getting it now:" % msg)
                     sb_install.main(override="edgedriver %s" % use_version)
@@ -5329,13 +5333,13 @@ def get_local_driver(
                 if not ("-n" in sys.argv or " -n=" in args or args == "-c"):
                     # (Not multithreaded)
                     sys_args = sys.argv  # Save a copy of current sys args
-                    msg = "chromedriver update needed. Getting it now:"
+                    msg = "INFO: chromedriver update needed. Getting it now:"
                     if not path_chromedriver:
-                        msg = "chromedriver not found. Getting it now:"
+                        msg = "INFO: chromedriver not found. Getting it now:"
                     if use_uc and not os.path.exists(local_uc_driver):
-                        msg = "uc_driver not found. Getting it now:"
+                        msg = "INFO: uc_driver not found. Getting it now:"
                     if use_uc and os.path.exists(local_uc_driver):
-                        msg = "uc_driver update needed. Getting it now:"
+                        msg = "INFO: uc_driver update needed. Getting it now:"
                     log_d("\nWarning: %s" % msg)
                     force_uc = False
                     intel_for_uc = False
@@ -5380,13 +5384,22 @@ def get_local_driver(
                             shared_utils.make_writable(
                                 constants.MultiBrowser.DRIVER_FIXING_LOCK
                             )
-                        msg = "chromedriver update needed. Getting it now:"
+                        msg = (
+                            "INFO: chromedriver update needed. Getting it now:"
+                        )
                         if not path_chromedriver:
-                            msg = "chromedriver not found. Getting it now:"
+                            msg = (
+                                "INFO: chromedriver not found. Getting it now:"
+                            )
                         if use_uc and not os.path.exists(local_uc_driver):
-                            msg = "uc_driver not found. Getting it now:"
+                            msg = (
+                                "INFO: uc_driver not found. Getting it now:"
+                            )
                         if use_uc and os.path.exists(local_uc_driver):
-                            msg = "uc_driver update needed. Getting it now:"
+                            msg = (
+                                "INFO: uc_driver update needed. "
+                                "Getting it now:"
+                            )
                         force_uc = False
                         intel_for_uc = False
                         if use_uc:

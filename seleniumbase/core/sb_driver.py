@@ -244,6 +244,9 @@ class DriverMethods(WebDriver):
     def assert_element_present(self, *args, **kwargs):
         page_actions.assert_element_present(self.driver, *args, **kwargs)
 
+    def assert_element_absent(self, *args, **kwargs):
+        page_actions.assert_element_absent(self.driver, *args, **kwargs)
+
     def assert_element_not_visible(self, *args, **kwargs):
         page_actions.assert_element_not_visible(self.driver, *args, **kwargs)
 
