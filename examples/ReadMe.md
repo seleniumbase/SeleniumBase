@@ -2,16 +2,16 @@
 
 <h2><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32"></a> Example Tests:</h2>
 
+<h4>(For stealthy examples, see <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode">./cdp_mode/</a> and <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/">./cdp_mode/playwright/</a>)</h4>
+
 <p align="left"><a align="center" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py"><img align="center" src="https://seleniumbase.github.io/cdn/img/sb_demo_page.png" alt="SeleniumBase Demo Page" width="420" /></a></p>
 
-* Many <b>SeleniumBase</b> "tests" run with <b><code>pytest</code></b>.
+* <b><code>pytest</code></b> is the main runner for <b>SeleniumBase</b> "tests".
 * Chrome is the default browser if not specified.
 * Tests are structured using [25 unique design patterns](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md).
 * Logs from test failures are saved to `./latest_logs/`.
 * Tests can be run with [multiple command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md).
 * Examples can be found in [SeleniumBase/examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples).
-* Stealthy CDP Mode examples: [SeleniumBase/examples/cdp_mode/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode).
-* Stealthy Playwright examples: [./examples/cdp_mode/playwright/](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md).
 
 (NOTE: Some example tests fail on purpose to demonstrate [logging features](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).)
 
