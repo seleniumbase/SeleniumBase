@@ -8,11 +8,13 @@
 <meta property="og:image" content="https://seleniumbase.github.io/cdn/img/mac_sb_logo_5b.png" />
 <link rel="icon" href="https://seleniumbase.github.io/img/logo7.png" />
 
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/nice_logo_8t.png" alt="SeleniumBase" width="380" /></a></p>
+<h1 align="center">📊 SeleniumBase</h1>
 
-<p align="center" class="hero__title"><b>All-in-one Browser Automation Framework:<br />Web Crawling / Testing / Scraping / Stealth</b></p>
+<p><h3 align="center">One framework for browser automation, web scraping, and testing.<br /></h3></p>
 
-<p align="center"><a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?style=flat-square&color=3399EE" alt="PyPI version" height="20" /></a> <a href="https://pepy.tech/projects/seleniumbase?timeRange=threeMonths&category=version&includeCIDownloads=true&granularity=daily&viewType=line&versions=*" target="_blank"><img src="https://img.shields.io/pepy/dt/seleniumbase?style=flat-square" alt="SeleniumBase PyPI downloads" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-22BBCC.svg?style=flat-square" title="SeleniumBase" height="20" /></a> <a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg?style=flat-square" alt="SeleniumBase Docs" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"><img src="https://img.shields.io/github/actions/workflow/status/seleniumbase/SeleniumBase/python-package.yml?branch=master&style=flat-square&label=Tests" alt="SeleniumBase GitHub Actions" height="20" /></a><br /><a href="https://www.youtube.com/playlist?list=PLp9uKicxkBc5UIlGi2BuE3aWC7JyXpD3m"><img src="https://img.shields.io/badge/docs-📺-E124E8.svg?style=flat-square&logo=YouTube&logoColor=white&label=YouTube" alt="YouTube Channel" height="20" /></a> <a href="https://discord.gg/EdhQTn3EyE" target="_blank"><img src="https://img.shields.io/discord/727927627830001734?style=flat-square&color=7289DA&label=Discord&logo=discord&logoColor=white" height="20" /></a> <a href="https://www.facebook.com/SeleniumBase/" target="_blank"> <img src="https://img.shields.io/badge/Facebook-4K_followers-1877F2?style=flat-square&logo=facebook&logoColor=white" alt="SeleniumBase Facebook Followers" height="20" /></a></p>
+<p align="center"><a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?style=flat-square&color=3399EE" alt="PyPI version" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"><img src="https://img.shields.io/github/actions/workflow/status/seleniumbase/SeleniumBase/python-package.yml?branch=master&style=flat-square&label=CI" alt="SeleniumBase GitHub Actions" height="20" /></a> <a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg?style=flat-square" alt="SeleniumBase Docs" height="20" /></a> <a href="https://pepy.tech/projects/seleniumbase?timeRange=threeMonths&category=version&includeCIDownloads=true&granularity=daily&viewType=line&versions=*" target="_blank"><img src="https://img.shields.io/pepy/dt/seleniumbase?style=flat-square" alt="SeleniumBase PyPI downloads" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-f4c430.svg?style=flat-square" title="SeleniumBase" height="20" /></a><br /><a href="https://www.youtube.com/playlist?list=PLp9uKicxkBc5UIlGi2BuE3aWC7JyXpD3m"><img src="https://img.shields.io/badge/docs-📺-E124E8.svg?style=flat-square&logo=YouTube&logoColor=white&label=YouTube" alt="YouTube Channel" height="20" /></a> <a href="https://discord.gg/EdhQTn3EyE" target="_blank"><img src="https://img.shields.io/discord/727927627830001734?style=flat-square&color=7289DA&label=Discord&logo=discord&logoColor=white" height="20" /></a> <a href="https://www.facebook.com/SeleniumBase/" target="_blank"> <img src="https://img.shields.io/badge/Facebook-4K_followers-1877F2?style=flat-square&logo=facebook&logoColor=white" alt="SeleniumBase Facebook Followers" height="20" /></a></p>
+
+<p align="center"><b align="center">Stealth modes are available for bypassing anti-bot services.</b></p>
 
 <p align="center">
 <a href="#python_installation">🚀 Start</a> |
@@ -47,18 +49,17 @@
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/presenter/ReadMe.md">🎞️ Presenter</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md">🖼️ Visual</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/case_plans.md">🗂️ CPlans</a>
-<br />
 </p>
 
 --------
 
-🥷 Stealth modes: <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md"><b>UC Mode</b></a> and the newer <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md"><b>CDP Mode</b></a> can bypass bot-detection and handle CAPTCHAs. <b>CDP Mode</b> can <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md"><span translate="no">add <b>stealth</b> to stock Playwright</span></a>.
+🥷 <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md"><b>UC Mode</b></a> and the newer <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md"><b>CDP Mode</b></a> makes your automation undetectable to anti-bot services. <b>CDP Mode</b> also <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md"><span translate="no">adds <b>stealth</b> to stock Playwright</span></a>.
 
-📚 Examples that have <code>test\_</code> or  <code>\_test</code> in the filename are specifically designed to run with <code><b>pytest</b></code>. Other examples run directly with <code><b>python</b></code> (those files generally start with <code>raw\_</code> to avoid confusion).
+📚 Example scripts that start or end with "<code>test</code>" are specifically designed to be run with <code><b>pytest</b></code>. Other scripts run directly with raw <code><b>python</b></code>. (Those start with "<code>raw</code>" to avoid confusion.)
 
 --------
 
-<b>📝 Here's a Python <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_planetmc.py" target="_blank">example</a> that uses <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md#-pure-cdp-mode-sb_cdp">Pure CDP Mode</a> (<code>sb_cdp</code>):</b><br />(It performs actions such as typing, clicking, and CAPTCHA-bypass)
+<b>📝 Here's a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_planetmc.py" target="_blank">Python script</a> that uses <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md#-pure-cdp-mode-sb_cdp">Pure CDP Mode</a> (<code>sb_cdp</code>):</b><br />(It performs actions such as typing, clicking, and  bypassing a Cloudflare Turnstile)
 
 ```python
 from seleniumbase import sb_cdp
@@ -76,7 +77,9 @@ sb.sleep(1.5)
 sb.quit()
 ```
 
-> `python raw_cdp_planetmc.py`
+```
+python raw_cdp_planetmc.py
+```
 
 <p align="left">
 <img src="https://seleniumbase.github.io/other/pmc_captcha_2.png" width="530" style="max-width: 100% !important; height: auto !important;" alt="Cloudflare Turnstile bypassed successfully" />
@@ -88,7 +91,7 @@ sb.quit()
 
 --------
 
-<p align="left"><b>📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_yc_news.py" target="_blank">This example</a> scrapes Hacker News listings:</b></p>
+<p align="left"><b>📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_yc_news.py" target="_blank">This script</a> scrapes Hacker News listings:</b></p>
 
 ```python
 from seleniumbase import sb_cdp
@@ -100,7 +103,9 @@ for element in elements:
     print("* " + element.text)
 ```
 
-> `python raw_cdp_yc_news.py`
+```
+python raw_cdp_yc_news.py
+```
 
 <p align="left">
 <img src="https://seleniumbase.github.io/other/yc_news_results.png" alt="SeleniumBase" width="510" style="max-width: 100% !important; height: auto !important;"/>
@@ -108,7 +113,7 @@ for element in elements:
 
 --------
 
-<p align="left"><b>📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_gitlab.py" target="_blank">This example</a> bypasses Cloudflare's challenge page with UC + CDP Mode:</b></p>
+<p align="left"><b>📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_gitlab.py" target="_blank">This script</a> bypasses Cloudflare's challenge page with UC + CDP Mode:</b></p>
 
 ```python
 from seleniumbase import SB
@@ -122,7 +127,9 @@ with SB(uc=True, test=True, locale="en") as sb:
     sb.highlight('button:contains("Sign in")')
 ```
 
-> `python raw_gitlab.py`
+```
+python raw_gitlab.py
+```
 
 <p align="left">
 <img src="https://seleniumbase.github.io/other/gitlab_bypass_2.png" alt="SeleniumBase" width="420" style="max-width: 100% !important; height: auto !important;"/>
@@ -167,7 +174,7 @@ sb = sb_cdp.Chrome(use_chromium=True)
 
 <h3>🧪 Comprehensive E2E Testing with <code>pytest</code>:</h3>
 
-<p align="left"><b>📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_get_swag.py" target="_blank">This example</a> tests an e-commerce site with <code>pytest</code>:</b></p>
+<p align="left"><b>📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_get_swag.py" target="_blank">This script</a> tests an e-commerce site with <code>pytest</code>:</b></p>
 
 ```python
 from seleniumbase import BaseCase
@@ -191,7 +198,9 @@ class MyTestClass(BaseCase):
         self.assert_text("Thank you for your order!")
 ```
 
-> `pytest test_get_swag.py`
+```
+pytest test_get_swag.py
+```
 
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_get_swag.py"><img src="https://seleniumbase.github.io/cdn/gif/fast_swag_2.gif" alt="SeleniumBase Test" width="500" style="max-width: 100% !important; height: auto !important;" /></a>
 
@@ -199,7 +208,31 @@ class MyTestClass(BaseCase):
 
 --------
 
-<p align="left"><b>📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_coffee_cart.py" target="_blank">This example</a> tests another e-commerce site with <code>pytest</code>:</b></p>
+<p align="left"><b>📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_coffee_cart.py" target="_blank">This script</a> tests a different e-commerce site with <code>pytest</code>:</b></p>
+
+```python
+from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__)
+
+class CoffeeCartTest(BaseCase):
+    def test_coffee_cart(self):
+        self.goto("https://seleniumbase.io/coffee/")
+        self.assert_title("Coffee Cart")
+        self.assert_element('button:contains("Total: $0.00")')
+        self.click('div[data-sb="Cappuccino"]')
+        self.assert_exact_text("cart (1)", 'a[aria-label="Cart page"]')
+        self.click('div[data-sb="Flat-White"]')
+        self.assert_exact_text("cart (2)", 'a[aria-label="Cart page"]')
+        self.click('div[data-sb="Cafe-Latte"]')
+        self.assert_exact_text("cart (3)", 'a[aria-label="Cart page"]')
+        self.click('a[aria-label="Cart page"]')
+        self.assert_exact_text("Total: $53.00", "button.pay")
+        self.click("button.pay")
+        self.type("input#name", "Selenium Coffee")
+        self.type("input#email", "test@test.test")
+        self.click("button#submit-payment")
+        self.assert_text("Thanks for your purchase.", "#app .success")
+```
 
 ```zsh
 pytest test_coffee_cart.py --demo
@@ -213,7 +246,7 @@ pytest test_coffee_cart.py --demo
 
 <a id="multiple_examples"></a>
 
-<p align="left"><b>📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py" target="_blank">This example</a> covers multiple actions with <code>pytest</code>:</b></p>
+<p align="left"><b>📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py" target="_blank">This script</a> covers multiple actions with <code>pytest</code>:</b></p>
 
 ```zsh
 pytest test_demo_site.py
@@ -223,7 +256,7 @@ pytest test_demo_site.py
 
 > Easy to type, click, select, toggle, drag & drop, and more.
 
-📚 For more examples, see the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">SeleniumBase/examples/</a> folder.
+📚 For more scripts, see the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">SeleniumBase/examples/</a> folder.
 
 --------
 
