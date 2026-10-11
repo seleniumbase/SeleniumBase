@@ -10,6 +10,7 @@
 * There's [Recorder Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md) for instantly generating browser tests in Python.
 * Supports [pytest](https://docs.pytest.org/en/latest/), [unittest](https://docs.python.org/3/library/unittest.html), [nose](http://nose.readthedocs.io/en/latest/), and [behave](https://behave.readthedocs.io/en/stable/index.html) for finding & running tests.
 * Automatic smart-waiting improves reliability and prevents flaky tests.
+* There's an [MCP server](https://github.com/seleniumbase/SeleniumBase/tree/master/mcp_servers) for connecting SeleniumBase to AI harnesses.
 * All the code is open source. Look inside to learn about any feature.
 * Powerful logging tools for [dashboards, reports, and screenshots](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).
 * Can run tests in Headless Mode to hide the browser. (`--headless`)
