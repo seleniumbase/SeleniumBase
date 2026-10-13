@@ -1,7 +1,7 @@
 import json
 from seleniumbase import sb_cdp
 
-sb = sb_cdp.Chrome()
+sb = sb_cdp.Chrome(fast=True)
 sb.goto("https://quotes.toscrape.com/")
 all_quotes = []
 while True:
