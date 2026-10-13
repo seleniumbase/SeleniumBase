@@ -10,11 +10,15 @@
 
 <h1 align="center">📊 SeleniumBase</h1>
 
-<p><h3 align="center">One framework for browser automation, web scraping, and testing.<br /></h3></p>
+<h3 align="center">One framework for browser automation, web scraping, and testing.<br /></h3>
 
-<p align="center"><a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?style=flat-square&color=3399EE" alt="PyPI version" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"><img src="https://img.shields.io/github/actions/workflow/status/seleniumbase/SeleniumBase/python-package.yml?branch=master&style=flat-square&label=CI" alt="SeleniumBase GitHub Actions" height="20" /></a> <a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg?style=flat-square" alt="SeleniumBase Docs" height="20" /></a> <a href="https://pepy.tech/projects/seleniumbase?timeRange=threeMonths&category=version&includeCIDownloads=true&granularity=daily&viewType=line&versions=*" target="_blank">
+<p align="center"><b align="center">Includes stealth options for bypassing bot-detection and CAPTCHAs.<br /></b></p>
+
+<p align="center"><a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?style=flat-square&color=3399EE" alt="PyPI version" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"><img src="https://img.shields.io/github/actions/workflow/status/seleniumbase/SeleniumBase/python-package.yml?branch=master&style=flat-square&label=CI" alt="SeleniumBase GitHub Actions" height="20" /></a> <a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg?style=flat-square" alt="SeleniumBase Docs" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/mcp_servers"><img src="https://img.shields.io/badge/MCP-tool_catalog-5c4ee5?style=flat-square" height="20" /></a>  <a href="https://pepy.tech/projects/seleniumbase?timeRange=threeMonths&category=version&includeCIDownloads=true&granularity=daily&viewType=line&versions=*" target="_blank">
   <img src="https://static.pepy.tech/badge/seleniumbase" alt="SeleniumBase PyPI downloads" height="20" />
-</a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-F4C246.svg?style=flat-square" title="SeleniumBase" height="20" /></a><br /><a href="https://www.youtube.com/playlist?list=PLp9uKicxkBc5UIlGi2BuE3aWC7JyXpD3m"><img src="https://img.shields.io/badge/docs-📺-D124D8.svg?style=flat-square&logo=YouTube&logoColor=white&label=YouTube" alt="YouTube Channel" height="20" /></a> <a href="https://discord.gg/EdhQTn3EyE" target="_blank"><img src="https://img.shields.io/discord/727927627830001734?style=flat-square&color=7289DA&label=Discord&logo=discord&logoColor=white" height="20" /></a> <a href="https://www.facebook.com/SeleniumBase/" target="_blank"> <img src="https://img.shields.io/badge/Facebook-4K_followers-1877F2?style=flat-square&logo=facebook&logoColor=white" alt="SeleniumBase Facebook Followers" height="20" /></a> <a href="https://x.com/seleniumbase" target="_blank"><img src="https://img.shields.io/badge/-1K_followers-1DA1F2?style=flat-square&logo=x&logoColor=white&labelColor=555555" alt="SeleniumBase X Followers" height="20" /></a></p>
+</a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-F4C246.svg?style=flat-square" title="SeleniumBase" height="20" /></a><br /><a href="https://www.youtube.com/playlist?list=PLp9uKicxkBc5UIlGi2BuE3aWC7JyXpD3m"><img src="https://img.shields.io/badge/docs-📺-D124D8.svg?style=flat-square&logo=YouTube&logoColor=white&label=YouTube" alt="YouTube Channel" height="20" /></a> <a href="https://www.facebook.com/SeleniumBase/" target="_blank"> <img src="https://img.shields.io/badge/Facebook-4K_followers-1877F2?style=flat-square&logo=facebook&logoColor=white" alt="SeleniumBase Facebook Followers" height="20" /></a> <a href="https://x.com/seleniumbase" target="_blank"><img src="https://img.shields.io/badge/-1K_followers-1DA1F2?style=flat-square&logo=x&logoColor=white&labelColor=555555" alt="SeleniumBase X Followers" height="20" /></a> <a href="https://discord.gg/EdhQTn3EyE" target="_blank"><img src="https://img.shields.io/discord/727927627830001734?style=flat-square&color=7289DA&label=Discord&logo=discord&logoColor=white" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/stargazers"><img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=19A57B" title="Stargazers" height="20" /></a></p>
+
+<p align="center"><a href="https://trendshift.io/repositories/12493?utm_source=repository-badge&amp;utm_medium=badge&amp;utm_campaign=badge-repository-12493" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/repositories/12493" alt="seleniumbase%2SeleniumBase | Trendshift" width="250" height="55"/></a></p>
 
 <p align="center">
 <a href="#python_installation">🚀 Start</a> |
@@ -53,13 +57,41 @@
 
 --------
 
-🥷 <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md"><b>UC Mode</b></a> and the newer <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md"><b>CDP Mode</b></a> makes your automation undetectable to anti-bot services. <b>CDP Mode</b> also <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md"><span translate="no">adds <b>stealth</b> to stock Playwright</span></a>.
+🥷 <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md"><a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md"><b>CDP Mode</b></a> makes browser automation undetectable to anti-bot services and <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md">adds <b>stealth</b> to stock <span translate="no">Playwright</span></a>. Also includes code for bypassing CAPTCHAs.
 
 📚 Example scripts that start or end with "<code>test</code>" are specifically designed to be run with <code><b>pytest</b></code>. Other scripts run directly with raw <code><b>python</b></code>. (Those start with "<code>raw</code>" to avoid confusion.)
 
 --------
 
-<b>📝 Here's a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_planetmc.py" target="_blank">Python script</a> that uses <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md#-pure-cdp-mode-sb_cdp">Pure CDP Mode</a> (<code>sb_cdp</code>):</b><br />(It performs actions such as typing, clicking, and  bypassing a Cloudflare Turnstile)
+📝 Here's <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_cdp_mode.py">an example</a> with <b><code translate="no">seleniumbase</code></b> <b><code translate="no">sb_cdp</code></b> (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md#-pure-cdp-mode-sb_cdp"><i>Pure CDP Mode</i></a>):<br  /><em>(It bypasses both BrowserScan AND Sannysoft Bot-Detection)</em>
+
+```python
+from seleniumbase import sb_cdp
+
+sb = sb_cdp.Chrome()
+sb.goto("https://browserscan.net/bot-detection")
+sb.assert_element('strong:contains("Normal")')
+sb.sleep(1)
+sb.goto("https://bot.sannysoft.com/")
+sb.assert_element(".passed")
+sb.assert_element_not_visible(".failed")
+sb.sleep(1)
+sb.quit()
+```
+
+<p align="center">
+<img src="https://seleniumbase.github.io/cdn/img/results_normal.jpg" width="520" style="max-width: 100% !important; height: auto !important;" alt="BrowserScan Test Results: Normal" />
+<br /><em>(All BrowserScan bot-detection tests passed successfully)</em>
+</p>
+
+<p align="center">
+<img src="https://seleniumbase.github.io/other/sannysoft_success.jpg" width="428" style="max-width: 100% !important; height: auto !important;" alt="All Sannysoft tests passed successfully" />
+<br /><em>(All Sannysoft bot-detection tests passed successfully)</em>
+</p>
+
+--------
+
+📝 Here's <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_planetmc.py">another example</a> with <b><code translate="no">seleniumbase</code></b> <b><code translate="no">sb_cdp</code></b> (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md#-pure-cdp-mode-sb_cdp"><i>Pure CDP Mode</i></a>):<br />(It performs various browser actions and bypasses a Cloudflare Turnstile)
 
 ```python
 from seleniumbase import sb_cdp
@@ -91,7 +123,7 @@ python raw_cdp_planetmc.py
 
 --------
 
-<p align="left"><b>📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_yc_news.py" target="_blank">This script</a> scrapes Hacker News listings:</b></p>
+<p align="left">📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_yc_news.py" target="_blank">This script</a> scrapes Hacker News listings:</p>
 
 ```python
 from seleniumbase import sb_cdp
@@ -113,7 +145,7 @@ python raw_cdp_yc_news.py
 
 --------
 
-<p align="left"><b>📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_gitlab.py" target="_blank">This script</a> bypasses Cloudflare's challenge page with UC + CDP Mode:</b></p>
+<p align="left">📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_gitlab.py" target="_blank">This script</a> bypasses Cloudflare's challenge page with UC + CDP Mode:</p>
 
 ```python
 from seleniumbase import SB
@@ -174,7 +206,7 @@ sb = sb_cdp.Chrome(use_chromium=True)
 
 <h3>🧪 Comprehensive E2E Testing with <code>pytest</code>:</h3>
 
-<p align="left"><b>📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_get_swag.py" target="_blank">This script</a> tests an e-commerce site with <code>pytest</code>:</b></p>
+<p align="left">📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_get_swag.py" target="_blank">This script</a> tests an e-commerce site: (Runs with <b><code>pytest</code></b>):</p>
 
 ```python
 from seleniumbase import BaseCase
@@ -208,7 +240,7 @@ pytest test_get_swag.py
 
 --------
 
-<p align="left"><b>📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_coffee_cart.py" target="_blank">This script</a> tests a different e-commerce site with <code>pytest</code>:</b></p>
+<p align="left">📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_coffee_cart.py" target="_blank">This script</a> tests a different e-commerce site with <code>pytest</code>:</p>
 
 ```python
 from seleniumbase import BaseCase
@@ -246,7 +278,7 @@ pytest test_coffee_cart.py --demo
 
 <a id="multiple_examples"></a>
 
-<p align="left"><b>📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py" target="_blank">This script</a> covers multiple actions with <code>pytest</code>:</b></p>
+<p align="left">📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py" target="_blank">This script</a> covers multiple actions with <code>pytest</code>:</p>
 
 ```zsh
 pytest test_demo_site.py
