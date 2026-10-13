@@ -8,7 +8,7 @@ backrefs>=8.1
 pymdown-extensions>=12.2
 python-dateutil>=2.8.2
 click>=8.5.0
-Markdown==3.11
+Markdown==3.11.1
 ghp-import==2.1.0
 watchdog==6.0.0
 cairocffi==1.7.1
