@@ -23,7 +23,7 @@ async def block_urls(tab):
         ]
     ))
 
-with decorators.print_runtime("raw_ad_blocking.py"):
+with decorators.print_runtime():
     sb = sb_cdp.Chrome()
     loop = sb.get_event_loop()
     loop.run_until_complete(block_urls(sb.get_active_tab()))

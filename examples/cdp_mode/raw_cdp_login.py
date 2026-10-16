@@ -21,5 +21,5 @@ def main():
 
 
 if __name__ == "__main__":
-    with decorators.print_runtime("raw_cdp_login.py"):
+    with decorators.print_runtime():
         main()

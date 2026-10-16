@@ -2,8 +2,7 @@ from seleniumbase import sb_cdp
 
 
 def get_cf_clearance_cookie(sb):
-    all_cookies = sb.get_all_cookies()
-    for cookie in all_cookies:
+    for cookie in sb.get_all_cookies():
         if cookie.name == "cf_clearance":
             return cookie
     return None

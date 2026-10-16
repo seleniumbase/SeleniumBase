@@ -1,6 +1,7 @@
 import colorama
 import logging
 import math
+import os
 import sys
 import time
 import warnings
@@ -34,7 +35,22 @@ def print_runtime(description=None, limit=None):
             # code ...
             # code ... """
     if not description:
-        description = "Code Block"
+        frame = sys._getframe()
+        current_file = "decorators.py"
+        if "__file__" in globals():
+            current_file = os.path.basename(__file__)
+        while frame:
+            filename = frame.f_code.co_filename
+            base_name = os.path.basename(filename)
+            if base_name not in ("contextlib.py", current_file):
+                break
+            frame = frame.f_back
+        if frame:
+            filename = os.path.basename(frame.f_code.co_filename)
+            lineno = frame.f_lineno
+            description = f"{filename}:{lineno}"
+        else:
+            description = "Code Block"
     description = str(description)
     if limit:
         limit = float("%.2f" % limit)

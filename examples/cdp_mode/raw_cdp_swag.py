@@ -1,18 +1,26 @@
+from seleniumbase import decorators
 from seleniumbase import sb_cdp
 
-sb = sb_cdp.Chrome()
-sb.goto("https://www.saucedemo.com")
-sb.type("#user-name", "standard_user")
-sb.type("#password", "secret_sauce\n")
-sb.assert_element("div.inventory_list")
-sb.click('button[name*="backpack"]')
-sb.click("#shopping_cart_container a")
-sb.assert_text("Backpack", "div.cart_item")
-sb.click("button#checkout")
-sb.type("input#first-name", "SeleniumBase")
-sb.type("input#last-name", "Automation")
-sb.type("input#postal-code", "77123")
-sb.click("input#continue")
-sb.click("button#finish")
-sb.assert_text("Thank you for your order!")
-sb.quit()
+
+def main():
+    sb = sb_cdp.Chrome(fast=True)
+    sb.goto("https://www.saucedemo.com")
+    sb.type("#user-name", "standard_user")
+    sb.type("#password", "secret_sauce\n")
+    sb.assert_element("div.inventory_list")
+    sb.click('button[name*="backpack"]')
+    sb.click("#shopping_cart_container a")
+    sb.assert_text("Backpack", "div.cart_item")
+    sb.click("button#checkout")
+    sb.type("input#first-name", "SeleniumBase")
+    sb.type("input#last-name", "Automation")
+    sb.type("input#postal-code", "77123")
+    sb.click("input#continue")
+    sb.click("button#finish")
+    sb.assert_text("Thank you for your order!")
+    sb.quit()
+
+
+if __name__ == "__main__":
+    with decorators.print_runtime():
+        main()

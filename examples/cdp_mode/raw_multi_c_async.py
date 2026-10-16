@@ -25,7 +25,7 @@ def run_main(url):
 
 if __name__ == "__main__":
     urls = ["https://seleniumbase.io/apps/turnstile" for i in range(4)]
-    with decorators.print_runtime("raw_multi_c_async.py"):
+    with decorators.print_runtime():
         with ThreadPoolExecutor(max_workers=len(urls)) as executor:
             for url in urls:
                 executor.submit(run_main, url)

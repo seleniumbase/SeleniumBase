@@ -8,7 +8,7 @@ exceptiongroup>=1.3.1
 websockets~=16.1.1;python_version=="3.10"
 websockets>=16.1.1;python_version>="3.11"
 filelock==4.1.0;python_version=="3.10"
-filelock>=4.1.1;python_version>="3.11"
+filelock>=4.2.0;python_version>="3.11"
 fasteners>=0.20
 mycdp>=1.4.0
 pynose>=1.5.5
@@ -43,7 +43,8 @@ cssselect>=1.6.0,<2;python_version>="3.11"
 sortedcontainers==2.4.0
 execnet==2.1.2
 iniconfig~=2.3.1
-pluggy==1.6.0
+pluggy==1.6.0;python_version<"3.11"
+pluggy>=1.6.0,<1.8;python_version>="3.11"
 pytest==8.4.2;python_version<"3.11"
 pytest==9.1.1;python_version>="3.11"
 pytest-html==4.0.2

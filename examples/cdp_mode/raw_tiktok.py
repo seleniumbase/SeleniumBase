@@ -9,7 +9,7 @@ with SB(uc=True, test=True, guest=True) as sb:
     print("*** " + sb.get_text('h2[data-e2e="user-bio"]'))
     sb.click_if_visible('button:contains("Refresh")')
     sb.sleep(0.3)
-    for i in range(33):
+    for i in range(30):
         sb.scroll_by_y(33)
         sb.sleep(0.03)
     items = sb.find_elements("picture img")
