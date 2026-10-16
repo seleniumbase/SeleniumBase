@@ -17,7 +17,7 @@ def main(url):
 
 if __name__ == "__main__":
     urls = ["https://www.bing.com/turing/captcha/challenge" for i in range(4)]
-    with decorators.print_runtime("raw_multi_captcha.py"):
+    with decorators.print_runtime():
         with ThreadPoolExecutor(max_workers=len(urls)) as executor:
             for url in urls:
                 executor.submit(main, url)
