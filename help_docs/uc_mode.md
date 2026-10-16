@@ -8,14 +8,14 @@
 
 ---
 
-<!-- YouTube View --><a href="https://www.youtube.com/watch?v=5dMFI3e85ig"><img src="http://img.youtube.com/vi/5dMFI3e85ig/0.jpg" title="SeleniumBase on YouTube" width="296" /></a>
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=5dMFI3e85ig" target="_blank" rel="noopener"><img src="http://img.youtube.com/vi/5dMFI3e85ig/0.jpg" title="SeleniumBase on YouTube" width="296" /></a>
 <p>(<b><a href="https://www.youtube.com/watch?v=5dMFI3e85ig">1st UC Mode tutorial on YouTube ▶️</a></b>)</p>
 
-More "Undetectable Automation": <b><a href="https://www.youtube.com/watch?v=2pTpBtaE7SQ">2nd ▶️</a> - <a href="https://www.youtube.com/watch?v=-EpZlhGWo9k">3rd ▶️</a> - <a href="https://www.youtube.com/watch?v=Mr90iQmNsKM">4th ▶️</a> - <a href="https://www.youtube.com/watch?v=R9HNsnbYh8o">5th ▶️</a></b>
+More "Undetectable Automation": <b><a href="https://www.youtube.com/watch?v=2pTpBtaE7SQ" target="_blank" rel="noopener">2nd ▶️</a> - <a href="https://www.youtube.com/watch?v=-EpZlhGWo9k" target="_blank" rel="noopener">3rd ▶️</a> - <a href="https://www.youtube.com/watch?v=Mr90iQmNsKM" target="_blank" rel="noopener">4th ▶️</a> - <a href="https://www.youtube.com/watch?v=R9HNsnbYh8o" target="_blank" rel="noopener">5th ▶️</a></b>
 
 ----
 
-👤 <b translate="no">UC Mode</b> is based on <a href="https://github.com/ultrafunkamsterdam/undetected-chromedriver">undetected-chromedriver</a>. <span translate="no">UC Mode</span> includes multiple updates, fixes, and improvements, such as having special methods for bypassing CAPTCHAs.
+👤 <b translate="no">UC Mode</b> was originally based on <a href="https://github.com/ultrafunkamsterdam/undetected-chromedriver" target="_blank" rel="noopener">undetected-chromedriver</a>, and includes multiple updates and fixes such as improved stealth, better reliability, automatic driver downloads, and special methods for bypassing CAPTCHAs.
 
 👤 Here's a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_uc_driver.py">UC Mode example</a> with the <b><code translate="no">Driver</code></b> manager:<br  /><em>(Bypasses both BrowserScan AND Sannysoft Bot-Detection)</em>
 
@@ -290,25 +290,25 @@ If you launch <b translate="no">Chrome</b> using <b><code translate="no">chromed
 
 While <b><code translate="no">chromedriver</code></b> is connected to <b translate="no">Chrome</b>, website services can detect it. Thankfully, raw <b><code translate="no">selenium</code></b> already includes <b><code translate="no">driver.service.stop()</code></b> for stopping the <b><code translate="no">chromedriver</code></b> service, <b><code translate="no">driver.service.start()</code></b> for starting the <b><code translate="no">chromedriver</code></b> service, and <b><code translate="no">driver.start_session(capabilities)</code></b> for reviving the active browser session with the given capabilities. (<b translate="no"><code>SeleniumBase</code> <span translate="no">UC Mode</span></b> methods automatically use those raw <b><code translate="no">selenium</code></b> methods as needed.)
 
-Links to those <a href="https://github.com/SeleniumHQ/selenium">raw <b>Selenium</b></a> method definitions have been provided for reference (but you don't need to call those methods directly):
+Links to those <a href="https://github.com/SeleniumHQ/selenium" target="_blank" rel="noopener">raw <b>Selenium</b></a> method definitions have been provided for reference (but you don't need to call those methods directly):
 
 <ul>
-<li><b><code translate="no"><a href="https://github.com/SeleniumHQ/selenium/blob/9c6ccdbf40356284fad342f70fbdc0afefd27bd3/py/selenium/webdriver/common/service.py#L135">driver.service.stop()</a></code></b></li>
-<li><b><code translate="no"><a href="https://github.com/SeleniumHQ/selenium/blob/9c6ccdbf40356284fad342f70fbdc0afefd27bd3/py/selenium/webdriver/common/service.py#L91">driver.service.start()</a></code></b></li>
-<li><b><code translate="no"><a href="https://github.com/SeleniumHQ/selenium/blob/9c6ccdbf40356284fad342f70fbdc0afefd27bd3/py/selenium/webdriver/remote/webdriver.py#L284">driver.start_session(capabilities)</a></code></b></li>
+<li><b><code translate="no"><a href="https://github.com/SeleniumHQ/selenium/blob/46cfab1f7db48e22d7e1a63c6ea43c7950485b02/py/selenium/webdriver/common/service.py#L155" target="_blank" rel="noopener">driver.service.stop()</a></code></b></li>
+<li><b><code translate="no"><a href="https://github.com/SeleniumHQ/selenium/blob/46cfab1f7db48e22d7e1a63c6ea43c7950485b02/py/selenium/webdriver/common/service.py#L98" target="_blank" rel="noopener">driver.service.start()</a></code></b></li>
+<li><b><code translate="no"><a href="https://github.com/SeleniumHQ/selenium/blob/46cfab1f7db48e22d7e1a63c6ea43c7950485b02/py/selenium/webdriver/remote/webdriver.py#L442" target="_blank" rel="noopener">driver.start_session(capabilities)</a></code></b></li>
 </ul>
 
 Also note that <b><code translate="no">chromedriver</code></b> isn't detectable in a browser tab if it never touches that tab. Here's a JS command that lets you open a URL in a new tab (from your current tab):
 
 <ul>
-<li><b><code translate="no">window.open("URL");</code></b> --> (Info: <a href="https://www.w3schools.com/jsref/met_win_open.asp" target="_blank">W3Schools</a>)</li>
+<li><b><code translate="no">window.open("URL");</code></b> --> (Info: <a href="https://www.w3schools.com/jsref/met_win_open.asp" target="_blank" rel="noopener">W3Schools</a>)</li>
 </ul>
 
 The above JS method is used within <b translate="no"><code>SeleniumBase</code></b> <b translate="no">UC Mode</b> methods for opening URLs in a stealthy way. Since some websites try to detect if your browser is a bot on the initial page load, this allows you to bypass detection in those situations. After a few seconds (customizable), <b translate="no">UC Mode</b> tells <b><code translate="no">chromedriver</code></b> to connect to that tab so that automated commands can now be issued. At that point, <b><code translate="no">chromedriver</code></b> could be detected if websites are looking for it (but generally websites only look for it during specific events, such as page loads, form submissions, and button clicks).
 
 Avoiding detection while clicking is easy if you schedule your clicks to happen at a future point when the <b><code translate="no">chromedriver</code></b> service has been stopped. Here's a JS command that lets you schedule events (such as clicks) to happen in the future:
 
-<li><b><code translate="no">window.setTimeout(function() { SCRIPT }, MS);</code></b> --> (Info: <a href="https://www.w3schools.com/jsref/met_win_settimeout.asp" target="_blank">W3Schools</a>)</li>
+<li><b><code translate="no">window.setTimeout(function() { SCRIPT }, MS);</code></b> --> (Info: <a href="https://www.w3schools.com/jsref/met_win_settimeout.asp" target="_blank" rel="noopener">W3Schools</a>)</li>
 
 The above JS method is used within the <b><code translate="no">SeleniumBase</code></b> <b translate="no">UC Mode</b> method: <b><code translate="no">sb.uc_click(selector)</code></b> so that clicking can be done in a stealthy way. <b translate="no">UC Mode</b> schedules your click, disconnects <b><code translate="no">chromedriver</code></b> from <b translate="no">Chrome</b>, waits a little (customizable), and reconnects.
 
@@ -328,7 +328,7 @@ Since Google makes Chrome, Google's own <b translate="no">reCAPTCHA</b> service 
 
 ⚖️ <b>Legal implications of web-scraping</b>:
 
-Based on the following article, https://nubela.co/blog/meta-lost-the-scraping-legal-battle-to-bright-data/, (which outlines a court case where social-networking company: Meta lost the legal battle to data-scraping company: Bright Data), it was determined that web scraping is 100% legal in the eyes of the courts as long as:
+Based on the following article, <a href="https://nubela.co/blog/meta-lost-the-scraping-legal-battle-to-bright-data/" target="_blank" rel="noopener">https://nubela.co/blog/meta-lost-the-scraping-legal-battle-to-bright-data/</a>, (which outlines a court case where social-networking company: Meta lost the legal battle to data-scraping company: Bright Data), it was determined that web scraping is 100% legal in the eyes of the courts as long as:
 1. The scraping is only done with <b>public data</b> and <b>not private data</b>.
 2. The scraping isn’t done while logged in on the site being scraped.
 
@@ -336,34 +336,36 @@ If the above criteria are met, then scrape away! (According to the article)
 
 (Note: I'm not a lawyer, so I can't officially offer legal advice, but I can direct people to existing articles online where people can find their own answers.)
 
+Also see <a href="https://brightdata.com/blog/web-data/court-rules-in-favor-of-bright-data-in-meta-v-bright-data-case" target="_blank" rel="noopener">Bright Data's own summary of that ruling</a>.
+
 --------
 
 ### ▶️ "Undetectable Automation" YouTube tutorials:
 
 --------
 
-<!-- YouTube View --><a href="https://www.youtube.com/watch?v=5dMFI3e85ig"><img src="http://img.youtube.com/vi/5dMFI3e85ig/0.jpg" title="SeleniumBase on YouTube" width="320" /></a>
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=5dMFI3e85ig" target="_blank" rel="noopener"><img src="http://img.youtube.com/vi/5dMFI3e85ig/0.jpg" title="SeleniumBase on YouTube" width="320" /></a>
 <p>(<b><a href="https://www.youtube.com/watch?v=5dMFI3e85ig">Watch the 1st UC Mode tutorial on YouTube! ▶️</a></b>)</p>
 
 ----
 
-<!-- YouTube View --><a href="https://www.youtube.com/watch?v=2pTpBtaE7SQ"><img src="http://img.youtube.com/vi/2pTpBtaE7SQ/0.jpg" title="SeleniumBase on YouTube" width="320" /></a>
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=2pTpBtaE7SQ" target="_blank" rel="noopener"><img src="http://img.youtube.com/vi/2pTpBtaE7SQ/0.jpg" title="SeleniumBase on YouTube" width="320" /></a>
 <p>(<b><a href="https://www.youtube.com/watch?v=2pTpBtaE7SQ">Watch the 2nd UC Mode tutorial on YouTube! ▶️</a></b>)</p>
 
 ----
 
-<!-- YouTube View --><a href="https://www.youtube.com/watch?v=-EpZlhGWo9k"><img src="http://img.youtube.com/vi/-EpZlhGWo9k/0.jpg" title="SeleniumBase on YouTube" width="320" /></a>
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=-EpZlhGWo9k" target="_blank" rel="noopener"><img src="http://img.youtube.com/vi/-EpZlhGWo9k/0.jpg" title="SeleniumBase on YouTube" width="320" /></a>
 <p>(<b><a href="https://www.youtube.com/watch?v=-EpZlhGWo9k">Watch the 3rd UC Mode tutorial on YouTube! ▶️</a></b>)</p>
 
 ----
 
-<!-- YouTube View --><a href="https://www.youtube.com/watch?v=Mr90iQmNsKM"><img src="http://img.youtube.com/vi/Mr90iQmNsKM/0.jpg" title="SeleniumBase on YouTube" width="320" /></a>
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=Mr90iQmNsKM" target="_blank" rel="noopener"><img src="http://img.youtube.com/vi/Mr90iQmNsKM/0.jpg" title="SeleniumBase on YouTube" width="320" /></a>
 <p>(<b><a href="https://www.youtube.com/watch?v=Mr90iQmNsKM">Watch the 4th Edition on YouTube! ▶️</a></b>)</p>
 
 ----
 
-<!-- YouTube View --><a href="https://www.youtube.com/watch?v=R9HNsnbYh8o"><img src="https://github.com/user-attachments/assets/9d04fa89-44b0-4077-96d1-5b84f5a2e5fe" title="SeleniumBase on YouTube" width="320" /></a>
-<p>(<b><a href="https://www.youtube.com/watch?v=R9HNsnbYh8o">Watch the 5th Edition on YouTube! ▶️</a></b>)</p>
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=R9HNsnbYh8o" target="_blank" rel="noopener"><img src="https://github.com/user-attachments/assets/9d04fa89-44b0-4077-96d1-5b84f5a2e5fe" title="SeleniumBase on YouTube" width="320" /></a>
+<p>(<b><a href="https://www.youtube.com/watch?v=R9HNsnbYh8o" target="_blank" rel="noopener">Watch the 5th Edition on YouTube! ▶️</a></b>)</p>
 
 --------
 

@@ -2,7 +2,7 @@
 
 <h2><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32"></a> CDP Mode 🐙</h2>
 
-🐙 <b translate="no">SeleniumBase</b> <b translate="no">CDP Mode</b> is a stealth mode that uses the <a href="https://chromedevtools.github.io/devtools-protocol/" translate="no">Chrome Devtools Protocol</a> (via <a href="https://github.com/mdmintz/MyCDP" translate="no"><span translate="no">MyCDP</span></a>) to control the web browser. <b translate="no">CDP Mode</b> can be used as a subset of <b><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md" translate="no"><span translate="no">UC Mode</span></a></b>, or via <b><a href="#Pure_CDP_Mode" translate="no">Pure CDP Mode</a></b>, which has sync and async formats. From CDP Mode, you can make Playwright stealthy (via <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md">Stealthy Playwright Mode</a>).
+🐙 <b translate="no">SeleniumBase</b> <b translate="no">CDP Mode</b> is a stealth mode that uses the <a href="https://chromedevtools.github.io/devtools-protocol/" translate="no" target="_blank" rel="noopener">Chrome Devtools Protocol</a> (via <a href="https://github.com/mdmintz/MyCDP" translate="no" target="_blank" rel="noopener"><span translate="no">MyCDP</span></a>) to control the web browser. <b translate="no">CDP Mode</b> can be used as a subset of <b><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md" translate="no"><span translate="no">UC Mode</span></a></b>, or via <b><a href="#Pure_CDP_Mode" translate="no">Pure CDP Mode</a></b>, which has sync and async formats. From CDP Mode, you can make Playwright stealthy (via <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md">Stealthy Playwright Mode</a>).
 
 ----
 
@@ -15,8 +15,8 @@
 ### 🎞️ <b translate="no">CDP Mode</b> on YouTube:
 
 
-<!-- YouTube View --><a href="https://www.youtube.com/watch?v=R9HNsnbYh8o"><img src="https://github.com/user-attachments/assets/9d04fa89-44b0-4077-96d1-5b84f5a2e5fe" title="SeleniumBase on YouTube" width="420" /></a>
-<p>(<b><a href="https://www.youtube.com/watch?v=R9HNsnbYh8o">Watch "Undetectable Automation: 5th Edition" on YouTube! ▶️</a></b>)</p>
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=R9HNsnbYh8o" target="_blank" rel="noopener"><img src="https://github.com/user-attachments/assets/9d04fa89-44b0-4077-96d1-5b84f5a2e5fe" title="SeleniumBase on YouTube" width="420" /></a>
+<p>(<b><a href="https://www.youtube.com/watch?v=R9HNsnbYh8o" target="_blank" rel="noopener">Watch "Undetectable Automation: 5th Edition" on YouTube! ▶️</a></b>)</p>
 
 ----
 
@@ -755,26 +755,26 @@ element.get_parent()
 
 ### 🎞️ More YouTube videos about <b translate="no">CDP Mode</b>:
 
-<!-- YouTube View --><a href="https://www.youtube.com/watch?v=Mr90iQmNsKM"><img src="https://github.com/user-attachments/assets/91e7ff7b-d155-4ba9-b17b-b097825fcf42" title="SeleniumBase on YouTube" width="320" /></a>
-<p>(<b><a href="https://www.youtube.com/watch?v=Mr90iQmNsKM">Watch "Undetectable Automation 4" on YouTube! ▶️</a></b>)</p>
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=Mr90iQmNsKM" target="_blank" rel="noopener"><img src="https://github.com/user-attachments/assets/91e7ff7b-d155-4ba9-b17b-b097825fcf42" title="SeleniumBase on YouTube" width="320" /></a>
+<p>(<b><a href="https://www.youtube.com/watch?v=Mr90iQmNsKM" target="_blank" rel="noopener">Watch "Undetectable Automation 4" on YouTube! ▶️</a></b>)</p>
 
 ----
 
-<!-- YouTube View --><a href="https://www.youtube.com/watch?v=R9HNsnbYh8o"><img src="https://github.com/user-attachments/assets/9d04fa89-44b0-4077-96d1-5b84f5a2e5fe" title="SeleniumBase on YouTube" width="320" /></a>
-<p>(<b><a href="https://www.youtube.com/watch?v=R9HNsnbYh8o">Watch "Undetectable Automation: 5th Edition" on YouTube! ▶️</a></b>)</p>
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=R9HNsnbYh8o" target="_blank" rel="noopener"><img src="https://github.com/user-attachments/assets/9d04fa89-44b0-4077-96d1-5b84f5a2e5fe" title="SeleniumBase on YouTube" width="320" /></a>
+<p>(<b><a href="https://www.youtube.com/watch?v=R9HNsnbYh8o" target="_blank" rel="noopener">Watch "Undetectable Automation: 5th Edition" on YouTube! ▶️</a></b>)</p>
 
 ----
 
-<!-- YouTube View --><a href="https://www.youtube.com/watch?v=vt2zsdiNh3U"><img src="https://github.com/user-attachments/assets/82ab2715-727e-4d09-9314-b8905795dc43" title="SeleniumBase on YouTube" width="320" /></a>
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=vt2zsdiNh3U" target="_blank" rel="noopener"><img src="https://github.com/user-attachments/assets/82ab2715-727e-4d09-9314-b8905795dc43" title="SeleniumBase on YouTube" width="320" /></a>
 <p>(<b><a href="https://www.youtube.com/watch?v=vt2zsdiNh3U">Watch "Hacking websites with CDP" on YouTube! ▶️</a></b>)</p>
 
 ----
 
-<!-- YouTube View --><a href="https://www.youtube.com/watch?v=gEZhTfaIxHQ"><img src="https://github.com/user-attachments/assets/656977e1-5d66-4d1c-9eec-0aaa41f6522f" title="SeleniumBase on YouTube" width="320" /></a>
-<p>(<b><a href="https://www.youtube.com/watch?v=gEZhTfaIxHQ">"Unlimited Free Web-Scraping with GitHub Actions" ▶️</a></b>)</p>
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=gEZhTfaIxHQ" target="_blank" rel="noopener"><img src="https://github.com/user-attachments/assets/656977e1-5d66-4d1c-9eec-0aaa41f6522f" title="SeleniumBase on YouTube" width="320" /></a>
+<p>(<b><a href="https://www.youtube.com/watch?v=gEZhTfaIxHQ" target="_blank" rel="noopener">"Unlimited Free Web-Scraping with GitHub Actions" ▶️</a></b>)</p>
 
 ----
 
 <img src="https://seleniumbase.github.io/cdn/img/sb_text_f.png" alt="SeleniumBase" title="SeleniumBase" align="center" width="335">
 
-<div><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.github.io/cdn/img/sb_logo_gs.png" alt="SeleniumBase" title="SeleniumBase" width="335" /></a></div>
+<div><a href="https://github.com/seleniumbase/SeleniumBase" target="_blank" rel="noopener"><img src="https://seleniumbase.github.io/cdn/img/sb_logo_gs.png" alt="SeleniumBase" title="SeleniumBase" width="335" /></a></div>

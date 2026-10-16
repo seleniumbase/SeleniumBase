@@ -14,11 +14,11 @@
 
 <p align="center"><b align="center">Includes stealth options for bypassing bot-detection and CAPTCHAs.<br /></b></p>
 
-<p align="center"><a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?style=flat-square&color=3399EE" alt="PyPI version" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"><img src="https://img.shields.io/github/actions/workflow/status/seleniumbase/SeleniumBase/python-package.yml?branch=master&style=flat-square&label=CI" alt="SeleniumBase GitHub Actions" height="20" /></a> <a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg?style=flat-square" alt="SeleniumBase Docs" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/mcp_servers"><img src="https://img.shields.io/badge/MCP-tool_catalog-5c4ee5?style=flat-square" height="20" /></a>  <a href="https://pepy.tech/projects/seleniumbase?timeRange=threeMonths&category=version&includeCIDownloads=true&granularity=daily&viewType=line&versions=*" target="_blank">
+<p align="center"><a href="https://pypi.python.org/pypi/seleniumbase" target="_blank" rel="noopener"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?style=flat-square&color=3399EE" alt="PyPI version" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank" rel="noopener"><img src="https://img.shields.io/github/actions/workflow/status/seleniumbase/SeleniumBase/python-package.yml?branch=master&style=flat-square&label=CI" alt="SeleniumBase GitHub Actions" height="20" /></a> <a href="https://seleniumbase.io" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg?style=flat-square" alt="SeleniumBase Docs" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/mcp_servers" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/MCP-tool_catalog-6C5EE5?style=flat-square" height="20" /></a>  <a href="https://pepy.tech/projects/seleniumbase?timeRange=threeMonths&category=version&includeCIDownloads=true&granularity=daily&viewType=line&versions=*" target="_blank" rel="noopener">
   <img src="https://static.pepy.tech/badge/seleniumbase" alt="SeleniumBase PyPI downloads" height="20" />
-</a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-F4C246.svg?style=flat-square" title="SeleniumBase" height="20" /></a><br /><a href="https://www.youtube.com/playlist?list=PLp9uKicxkBc5UIlGi2BuE3aWC7JyXpD3m"><img src="https://img.shields.io/badge/docs-📺-D124D8.svg?style=flat-square&logo=YouTube&logoColor=white&label=YouTube" alt="YouTube Channel" height="20" /></a> <a href="https://www.facebook.com/SeleniumBase/" target="_blank"> <img src="https://img.shields.io/badge/Facebook-4K_followers-1877F2?style=flat-square&logo=facebook&logoColor=white" alt="SeleniumBase Facebook Followers" height="20" /></a> <a href="https://x.com/seleniumbase" target="_blank"><img src="https://img.shields.io/badge/-1K_followers-1DA1F2?style=flat-square&logo=x&logoColor=white&labelColor=555555" alt="SeleniumBase X Followers" height="20" /></a> <a href="https://discord.gg/EdhQTn3EyE" target="_blank"><img src="https://img.shields.io/discord/727927627830001734?style=flat-square&color=7289DA&label=Discord&logo=discord&logoColor=white" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/stargazers"><img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=19A57B" title="Stargazers" height="20" /></a></p>
+</a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/license-MIT-33C6B6.svg?style=flat-square" title="SeleniumBase" height="20" /></a><br /><a href="https://www.youtube.com/playlist?list=PLp9uKicxkBc5UIlGi2BuE3aWC7JyXpD3m" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/docs-📺-E144E8.svg?style=flat-square&logo=YouTube&logoColor=white&label=YouTube" alt="YouTube Channel" height="20" /></a> <a href="https://www.facebook.com/SeleniumBase/" target="_blank" rel="noopener"> <img src="https://img.shields.io/badge/Facebook-4K_followers-1877F2?style=flat-square&logo=facebook&logoColor=white" alt="SeleniumBase Facebook Followers" height="20" /></a> <a href="https://x.com/seleniumbase" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/-1K_followers-1DA1F2?style=flat-square&logo=x&logoColor=white&labelColor=555555" alt="SeleniumBase X Followers" height="20" /></a> <a href="https://discord.gg/EdhQTn3EyE" target="_blank" rel="noopener"><img src="https://img.shields.io/discord/727927627830001734?style=flat-square&color=7289DA&label=Discord&logo=discord&logoColor=white" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase" target="_blank" rel="noopener"><img src="https://badgen.net/github/stars/seleniumbase/SeleniumBase" title="Stars" height="20" /></a></p>
 
-<p align="center"><a href="https://trendshift.io/repositories/12493?utm_source=repository-badge&amp;utm_medium=badge&amp;utm_campaign=badge-repository-12493" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/repositories/12493" alt="seleniumbase%2SeleniumBase | Trendshift" width="250" height="55"/></a></p>
+<p align="center"><a href="https://trendshift.io/repositories/12493?utm_source=repository-badge&amp;utm_medium=badge&amp;utm_campaign=badge-repository-12493" target="_blank" rel="noopener"><img src="https://trendshift.io/api/badge/repositories/12493" alt="seleniumbase%2SeleniumBase | Trendshift" width="250" height="55"/></a></p>
 
 <p align="center">
 <a href="#python_installation">🚀 Start</a> |
@@ -123,7 +123,7 @@ python raw_cdp_planetmc.py
 
 --------
 
-<p align="left">📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_yc_news.py" target="_blank">This script</a> scrapes Hacker News listings:</p>
+<p align="left">📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_yc_news.py" target="_blank" rel="noopener">This script</a> scrapes Hacker News listings:</p>
 
 ```python
 from seleniumbase import sb_cdp
@@ -145,7 +145,7 @@ python raw_cdp_yc_news.py
 
 --------
 
-<p align="left">📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_gitlab.py" target="_blank">This script</a> bypasses Cloudflare's challenge page with UC + CDP Mode:</p>
+<p align="left">📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_gitlab.py" target="_blank" rel="noopener">This script</a> bypasses Cloudflare's challenge page with UC + CDP Mode:</p>
 
 ```python
 from seleniumbase import SB
@@ -206,7 +206,7 @@ sb = sb_cdp.Chrome(use_chromium=True)
 
 <h3>🧪 Comprehensive E2E Testing with <code>pytest</code>:</h3>
 
-<p align="left">📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_get_swag.py" target="_blank">This script</a> tests an e-commerce site: (Runs with <b><code>pytest</code></b>):</p>
+<p align="left">📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_get_swag.py" target="_blank" rel="noopener">This script</a> tests an e-commerce site: (Runs with <b><code>pytest</code></b>):</p>
 
 ```python
 from seleniumbase import BaseCase
@@ -240,7 +240,7 @@ pytest test_get_swag.py
 
 --------
 
-<p align="left">📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_coffee_cart.py" target="_blank">This script</a> tests a different e-commerce site with <code>pytest</code>:</p>
+<p align="left">📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_coffee_cart.py" target="_blank" rel="noopener">This script</a> tests a different e-commerce site with <code>pytest</code>:</p>
 
 ```python
 from seleniumbase import BaseCase
@@ -270,7 +270,7 @@ class CoffeeCartTest(BaseCase):
 pytest test_coffee_cart.py --demo
 ```
 
-<p align="left"><a href="https://seleniumbase.io/coffee/" target="_blank"><img src="https://seleniumbase.github.io/cdn/gif/coffee_cart.gif" width="500" style="max-width: 100% !important; height: auto !important;" alt="SeleniumBase Coffee Cart Test" /></a></p>
+<p align="left"><a href="https://seleniumbase.io/coffee/" target="_blank" rel="noopener"><img src="https://seleniumbase.github.io/cdn/gif/coffee_cart.gif" width="500" style="max-width: 100% !important; height: auto !important;" alt="SeleniumBase Coffee Cart Test" /></a></p>
 
 > <p>(<code translate="no">--demo</code> mode slows down tests and highlights actions)</p>
 
@@ -278,13 +278,13 @@ pytest test_coffee_cart.py --demo
 
 <a id="multiple_examples"></a>
 
-<p align="left">📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py" target="_blank">This script</a> covers multiple actions with <code>pytest</code>:</p>
+<p align="left">📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py" target="_blank" rel="noopener">This script</a> covers multiple actions with <code>pytest</code>:</p>
 
 ```zsh
 pytest test_demo_site.py
 ```
 
-<p align="left"><a href="https://seleniumbase.io/demo_page" target="_blank"><img src="https://seleniumbase.github.io/cdn/gif/demo_page_5.gif" width="500" style="max-width: 100% !important; height: auto !important;" alt="SeleniumBase Example" /></a></p>
+<p align="left"><a href="https://seleniumbase.io/demo_page" target="_blank" rel="noopener"><img src="https://seleniumbase.github.io/cdn/gif/demo_page_5.gif" width="500" style="max-width: 100% !important; height: auto !important;" alt="SeleniumBase Example" /></a></p>
 
 > Easy to type, click, select, toggle, drag & drop, and more.
 
@@ -315,7 +315,7 @@ pytest test_demo_site.py
 <summary> ▶️ How is <b>SeleniumBase</b> different from raw Selenium? (<b>click to expand</b>)</summary>
 <div>
 
-<p>💡 SeleniumBase is a Python framework for browser automation and testing. SeleniumBase uses <a href="https://www.w3.org/TR/webdriver2/#endpoints" target="_blank">Selenium/WebDriver</a> APIs and incorporates test-runners such as <code translate="no">pytest</code>, <code translate="no">pynose</code>, and <code translate="no">behave</code> to provide organized structure, test discovery, test execution, test state (<i>eg. passed, failed, or skipped</i>), and command-line options for changing default settings (<i>eg. browser selection</i>). With raw Selenium, you would need to set up your own options-parser for configuring tests from the command-line.</p>
+<p>💡 SeleniumBase is a Python framework for browser automation and testing. SeleniumBase uses <a href="https://www.w3.org/TR/webdriver2/#endpoints" target="_blank" rel="noopener">Selenium/WebDriver</a> APIs and incorporates test-runners such as <code translate="no">pytest</code>, <code translate="no">pynose</code>, and <code translate="no">behave</code> to provide organized structure, test discovery, test execution, test state (<i>eg. passed, failed, or skipped</i>), and command-line options for changing default settings (<i>eg. browser selection</i>). With raw Selenium, you would need to set up your own options-parser for configuring tests from the command-line.</p>
 
 <p>💡 SeleniumBase's driver manager gives you more control over automatic driver downloads. (Use <code translate="no">--driver-version=VER</code> with your <code translate="no">pytest</code> run command to specify the version.) By default, SeleniumBase will download a driver version that matches your major browser version if not set.</p>
 
@@ -337,7 +337,7 @@ With raw Selenium, that requires more code:<br />
 
 <p>💡 SeleniumBase gives you clean error output when a test fails. With raw Selenium, error messages can get very messy.</p>
 
-<p>💡 SeleniumBase gives you the option to generate a dashboard and reports for tests. It also saves screenshots from failing tests to the <code translate="no">./latest_logs/</code> folder. Raw <a href="https://www.selenium.dev/documentation/webdriver/" translate="no" target="_blank">Selenium</a> does not have these options out-of-the-box.</p>
+<p>💡 SeleniumBase gives you the option to generate a dashboard and reports for tests. It also saves screenshots from failing tests to the <code translate="no">./latest_logs/</code> folder. Raw <a href="https://www.selenium.dev/documentation/webdriver/" translate="no" target="_blank" rel="noopener">Selenium</a> does not have these options out-of-the-box.</p>
 
 <p>💡 SeleniumBase includes desktop GUI apps for running tests, such as <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/commander.md" translate="no">SeleniumBase Commander</a> for <code translate="no">pytest</code> and <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md" translate="no">SeleniumBase Behave GUI</a> for <code translate="no">behave</code>.</p>
 
@@ -415,7 +415,7 @@ finally:
 <a id="python_installation"></a>
 <h2><img src="https://seleniumbase.github.io/cdn/img/python_logo.png" title="SeleniumBase" width="42" /> Set up Python & Git:</h2>
 
-<a href="https://pypi.org/project/seleniumbase/" target="_blank"><img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=22AAEE&logo=python&logoColor=FEDC54" title="Supported Python Versions" /></a>
+<a href="https://pypi.org/project/seleniumbase/" target="_blank" rel="noopener"><img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=22AAEE&logo=python&logoColor=FEDC54" title="Supported Python Versions" /></a>
 
 🔵 Add <b><a href="https://www.python.org/downloads/">Python</a></b> and <b><a href="https://git-scm.com/">Git</a></b> to your System PATH.
 
@@ -622,7 +622,7 @@ self.assert_no_js_errors()  # Verify there are no JS errors.
 <a id="fun_facts"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo7.png" title="SeleniumBase" width="32" height="32" /> Fun Facts / Learn More:</h2>
 
-<p>✅ SeleniumBase automatically handles common <a href="https://www.selenium.dev/documentation/webdriver/" target="_blank">WebDriver</a> actions such as launching web browsers before tests, saving screenshots during failures, and closing web browsers after tests.</p>
+<p>✅ SeleniumBase automatically handles common <a href="https://www.selenium.dev/documentation/webdriver/" target="_blank" rel="noopener">WebDriver</a> actions such as launching web browsers before tests, saving screenshots during failures, and closing web browsers after tests.</p>
 
 <p>✅ SeleniumBase lets you customize tests via <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md">command-line options</a>.</p>
 
@@ -632,7 +632,7 @@ self.assert_no_js_errors()  # Verify there are no JS errors.
 self.type("input", "dogs\n")  # (The "\n" presses ENTER)
 ```
 
-Most SeleniumBase scripts can be run with <code translate="no">pytest</code>, <code translate="no">pynose</code>, or pure <code translate="no">python</code>. Not all test runners can run all test formats. For example, tests that use the `sb` pytest fixture can only be run with `pytest`. (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md">Syntax Formats</a>) There's also a <a href="https://behave.readthedocs.io/en/stable/gherkin.html#features" target="_blank">Gherkin</a> test format that runs with <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md">behave</a>.
+Most SeleniumBase scripts can be run with <code translate="no">pytest</code>, <code translate="no">pynose</code>, or pure <code translate="no">python</code>. Not all test runners can run all test formats. For example, tests that use the `sb` pytest fixture can only be run with `pytest`. (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md">Syntax Formats</a>) There's also a <a href="https://behave.readthedocs.io/en/stable/gherkin.html#features" target="_blank" rel="noopener">Gherkin</a> test format that runs with <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md">behave</a>.
 
 ```zsh
 pytest coffee_cart_tests.py --rs
@@ -678,7 +678,7 @@ pynose [FILE_NAME.py]:[CLASS_NAME].[METHOD_NAME]
 <p><b>Systems:</b> Linux/Ubuntu, macOS, and Windows.</p>
 
 ✅ SeleniumBase works on all popular CI/CD platforms:
-<p><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/github/workflows/ReadMe.md"><img alt="GitHub Actions integration" src="https://img.shields.io/badge/GitHub_Actions-12B2C2.svg?logo=GitHubActions&logoColor=CFFFC2" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/jenkins/ReadMe.md"><img alt="Jenkins integration" src="https://img.shields.io/badge/Jenkins-32B242.svg?logo=jenkins&logoColor=white" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/azure_pipelines/ReadMe.md"><img alt="Azure integration" src="https://img.shields.io/badge/Azure-2288EE.svg?logo=AzurePipelines&logoColor=white" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/google_cloud/ReadMe.md"><img alt="Google Cloud integration" src="https://img.shields.io/badge/Google_Cloud-11CAE8.svg?logo=GoogleCloud&logoColor=EE0066" /></a> <a href="#utilizing_advanced_features"><img alt="AWS integration" src="https://img.shields.io/badge/AWS-4488DD.svg?logo=AmazonAWS&logoColor=FFFF44" /></a> <a href="https://en.wikipedia.org/wiki/Personal_computer" target="_blank"><img alt="Your Computer" src="https://img.shields.io/badge/💻_Your_Computer-44E6E6.svg" /></a></p>
+<p><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/github/workflows/ReadMe.md"><img alt="GitHub Actions integration" src="https://img.shields.io/badge/GitHub_Actions-12B2C2.svg?logo=GitHubActions&logoColor=CFFFC2" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/jenkins/ReadMe.md"><img alt="Jenkins integration" src="https://img.shields.io/badge/Jenkins-32B242.svg?logo=jenkins&logoColor=white" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/azure_pipelines/ReadMe.md"><img alt="Azure integration" src="https://img.shields.io/badge/Azure-2288EE.svg?logo=AzurePipelines&logoColor=white" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/google_cloud/ReadMe.md"><img alt="Google Cloud integration" src="https://img.shields.io/badge/Google_Cloud-11CAE8.svg?logo=GoogleCloud&logoColor=EE0066" /></a> <a href="#utilizing_advanced_features"><img alt="AWS integration" src="https://img.shields.io/badge/AWS-4488DD.svg?logo=AmazonAWS&logoColor=FFFF44" /></a> <a href="https://en.wikipedia.org/wiki/Personal_computer" target="_blank" rel="noopener"><img alt="Your Computer" src="https://img.shields.io/badge/💻_Your_Computer-44E6E6.svg" /></a></p>
 
 <p>✅ SeleniumBase includes an automated/manual hybrid solution called <b><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">MasterQA</a></b> to speed up manual testing with automation while manual testers handle validation.</p>
 
@@ -1139,13 +1139,13 @@ pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1
 <summary> ▶️ Here are some things you can do to set up a production environment for your testing. (<b>click to expand</b>)</summary>
 
 <ul>
-<li>You can set up a <a href="https://jenkins.io/" target="_blank">Jenkins</a> build server for running tests at regular intervals. For a real-world Jenkins example of headless browser automation in action, check out the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/jenkins/ReadMe.md">SeleniumBase Jenkins example on Azure</a> or the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/google_cloud/ReadMe.md">SeleniumBase Jenkins example on Google Cloud</a>.</li>
+<li>You can set up a <a href="https://jenkins.io/" target="_blank" rel="noopener">Jenkins</a> build server for running tests at regular intervals. For a real-world Jenkins example of headless browser automation in action, check out the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/jenkins/ReadMe.md">SeleniumBase Jenkins example on Azure</a> or the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/google_cloud/ReadMe.md">SeleniumBase Jenkins example on Google Cloud</a>.</li>
 
-<li>You can use <a href="https://selenium.dev/documentation/en/grid/" target="_blank">the Selenium Grid</a> to scale your testing by distributing tests on several machines with parallel execution. To do this, check out the <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/utilities/selenium_grid">SeleniumBase selenium_grid folder</a>, which should have everything you need, including the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md">Selenium Grid ReadMe</a> to help you get started.</li>
+<li>You can use <a href="https://selenium.dev/documentation/en/grid/" target="_blank" rel="noopener">the Selenium Grid</a> to scale your testing by distributing tests on several machines with parallel execution. To do this, check out the <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/utilities/selenium_grid">SeleniumBase selenium_grid folder</a>, which should have everything you need, including the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md">Selenium Grid ReadMe</a> to help you get started.</li>
 
 <li>If you're using the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mysql_installation.md">SeleniumBase MySQL feature</a> to save results from tests running on a server machine, you can install <a href="https://dev.mysql.com/downloads/tools/workbench/">MySQL Workbench</a> to help you read & write from your DB more easily.</li>
 
-<li>If you're using AWS, you can set up an <a href="https://aws.amazon.com/s3/" target="_blank">Amazon S3</a> account for saving log files and screenshots from your tests. To activate this feature, modify <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py">settings.py</a> with connection details in the S3 section, and add <code translate="no">--with-s3-logging</code> on the command-line when running your tests.</li>
+<li>If you're using AWS, you can set up an <a href="https://aws.amazon.com/s3/" target="_blank" rel="noopener">Amazon S3</a> account for saving log files and screenshots from your tests. To activate this feature, modify <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py">settings.py</a> with connection details in the S3 section, and add <code translate="no">--with-s3-logging</code> on the command-line when running your tests.</li>
 </ul>
 
 Here's an example of running tests with some additional features enabled:
@@ -1203,7 +1203,7 @@ self.click("div#my_id")
 self.type("input#id_value", "2012")
 ```
 
-You can also use <code translate="no">self.add_text()</code> or the <a href="https://www.selenium.dev/documentation/webdriver/" target="_blank">WebDriver</a> <code translate="no">.send_keys()</code> command, but those won't clear the text box first if there's already text inside.
+You can also use <code translate="no">self.add_text()</code> or the <a href="https://www.selenium.dev/documentation/webdriver/" target="_blank" rel="noopener">WebDriver</a> <code translate="no">.send_keys()</code> command, but those won't clear the text box first if there's already text inside.
 
 🔵 **Getting the text from an element on a page:**
 
@@ -1481,9 +1481,9 @@ class DeferredAssertTests(BaseCase):
 <code translate="no">deferred_assert_element()</code> and <code translate="no">deferred_assert_text()</code> will save any exceptions that would be raised.
 To flush out all the failed deferred asserts into a single exception, make sure to call <code translate="no">self.process_deferred_asserts()</code> at the end of your test method. If your test hits multiple pages, you can call <code translate="no">self.process_deferred_asserts()</code> before navigating to a new page so that the screenshot from your log files matches the URL where the deferred asserts were made.
 
-<h3>🔵 How to access raw <a href="https://www.selenium.dev/documentation/webdriver/" target="_blank">WebDriver</a>:</h3>
+<h3>🔵 How to access raw <a href="https://www.selenium.dev/documentation/webdriver/" target="_blank" rel="noopener">WebDriver</a>:</h3>
 
-<p>If you need access to any commands that come with standard <a href="https://www.selenium.dev/documentation/webdriver/" target="_blank">WebDriver</a>, you can call them directly like this:</p>
+<p>If you need access to any commands that come with standard <a href="https://www.selenium.dev/documentation/webdriver/" target="_blank" rel="noopener">WebDriver</a>, you can call them directly like this:</p>
 
 ```python
 self.driver.delete_all_cookies()
@@ -1507,7 +1507,7 @@ pytest --reruns=1 --reruns-delay=1
 
 > "Catch bugs in QA before deploying code to Production!"
 
-<p align="left"><a href="https://seleniumbase.io/error_page" target="_blank"><img src="https://seleniumbase.github.io/cdn/gif/error_page.gif" alt="Catch bugs in QA before deploying code to Production!" title="Catch bugs in QA before deploying code to Production!" /></a></p>
+<p align="left"><a href="https://seleniumbase.io/error_page" target="_blank" rel="noopener"><img src="https://seleniumbase.github.io/cdn/gif/error_page.gif" alt="Catch bugs in QA before deploying code to Production!" title="Catch bugs in QA before deploying code to Production!" /></a></p>
 
 --------
 
@@ -1520,20 +1520,20 @@ pytest --reruns=1 --reruns-delay=1
 
 <p align="left"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/sb_logo_10t.png" alt="SeleniumBase" title="SeleniumBase" width="274" style="max-width: 100% !important; height: auto !important;" /></a></p>
 
-<a href="https://pypi.org/project/seleniumbase/" target="_blank"><img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=22AAEE&logo=python&logoColor=FEDC54" title="Supported Python Versions" height="20" /></a>
+<a href="https://pypi.org/project/seleniumbase/" target="_blank" rel="noopener"><img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=22AAEE&logo=python&logoColor=FEDC54" title="Supported Python Versions" height="20" /></a>
 
 <p><div>
-<span><a href="https://www.youtube.com/playlist?list=PLp9uKicxkBc5UIlGi2BuE3aWC7JyXpD3m"><img src="https://seleniumbase.github.io/cdn/img/youtube.png" title="SeleniumBase Playlist on YouTube" alt="SeleniumBase Playlist on YouTube" width="70" /></a></span>
+<span><a href="https://www.youtube.com/playlist?list=PLp9uKicxkBc5UIlGi2BuE3aWC7JyXpD3m" target="_blank" rel="noopener"><img src="https://seleniumbase.github.io/cdn/img/youtube.png" title="SeleniumBase Playlist on YouTube" alt="SeleniumBase Playlist on YouTube" width="70" /></a></span>
 <span><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.github.io/img/social/share_github.svg" title="SeleniumBase on GitHub" alt="SeleniumBase on GitHub" width="64" /></a></span>
-<span><a href="https://discord.gg/EdhQTn3EyE"><img src="https://seleniumbase.github.io/other/discord_icon.png" title="SeleniumBase on Discord" alt="SeleniumBase on Discord" width="66" /></a></span>
-<span><a href="https://www.facebook.com/SeleniumBase"><img src="https://seleniumbase.io/img/social/share_facebook.svg" title="SeleniumBase on Facebook" alt="SeleniumBase on Facebook" width="62" /></a></span>
+<span><a href="https://discord.gg/EdhQTn3EyE" target="_blank" rel="noopener"><img src="https://seleniumbase.github.io/other/discord_icon.png" title="SeleniumBase on Discord" alt="SeleniumBase on Discord" width="66" /></a></span>
+<span><a href="https://www.facebook.com/SeleniumBase" target="_blank" rel="noopener"><img src="https://seleniumbase.io/img/social/share_facebook.svg" title="SeleniumBase on Facebook" alt="SeleniumBase on Facebook" width="62" /></a></span>
 </div></p>
 
-<p><div><b><a href="https://github.com/mdmintz">https://github.com/mdmintz</a></b></div></p>
+<p><div><b><a href="https://github.com/mdmintz" target="_blank" rel="noopener">https://github.com/mdmintz</a></b></div></p>
 
 <div><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/super_logo_sb3.png" title="SeleniumBase" width="310" style="max-width: 100% !important; height: auto !important;" /></a></div>
 <div><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://img.shields.io/badge/tested%20with-SeleniumBase-04C38E.svg" alt="Tested with SeleniumBase" /></a> <img src="https://views.whatilearened.today/views/github/seleniumbase/SeleniumBase.svg" width="98px" height="20px" alt="Views" /></div>
 <div><a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" title="SeleniumBase" height="20" /></a> </div>
 <div align="left"></div>
-<div><a href="https://pepy.tech/projects/seleniumbase?timeRange=threeMonths&category=version&includeCIDownloads=true&granularity=daily&viewType=line&versions=*" target="_blank"><img src="https://static.pepy.tech/badge/seleniumbase" alt="SeleniumBase PyPI downloads" height="20" /></a> <a href="https://discord.gg/EdhQTn3EyE" target="_blank"><img src="https://img.shields.io/discord/727927627830001734?color=7289DA&label=Discord&logo=discord&logoColor=white" height="20" /></a></div>
-<div><a href="https://www.youtube.com/@MichaelMintz"><img src="https://img.shields.io/badge/docs-MichaelMintz-D12345.svg?style=flat&logo=YouTube&logoColor=white&label=YouTube" alt="YouTube Channel" height="20" /></a></div>
+<div><a href="https://pepy.tech/projects/seleniumbase?timeRange=threeMonths&category=version&includeCIDownloads=true&granularity=daily&viewType=line&versions=*" target="_blank" rel="noopener"><img src="https://static.pepy.tech/badge/seleniumbase" alt="SeleniumBase PyPI downloads" height="20" /></a> <a href="https://discord.gg/EdhQTn3EyE" target="_blank" rel="noopener"><img src="https://img.shields.io/discord/727927627830001734?color=7289DA&label=Discord&logo=discord&logoColor=white" height="20" /></a></div>
+<div><a href="https://www.youtube.com/@MichaelMintz" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/docs-MichaelMintz-D12345.svg?style=flat&logo=YouTube&logoColor=white&label=YouTube" alt="YouTube Channel" height="20" /></a></div>
