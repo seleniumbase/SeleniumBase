@@ -1,11 +1,11 @@
 # mkdocs dependencies for generating the seleniumbase.io website
 
 regex>=2026.9.29
-pipdeptree>=4.2.7
-platformdirs>=4.13.0
-nab>=0.0.19
+pipdeptree>=4.2.8
+platformdirs>=4.13.3
+nab>=0.0.21
 backrefs>=8.1
-pymdown-extensions>=12.2
+pymdown-extensions>=12.3
 python-dateutil>=2.8.2
 click>=8.5.0
 Markdown==3.11.1

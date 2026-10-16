@@ -174,7 +174,7 @@ setup(
         'websockets~=16.1.1;python_version=="3.10"',
         'websockets>=16.1.1;python_version>="3.11"',
         'filelock==4.1.0;python_version=="3.10"',
-        'filelock>=4.1.1;python_version>="3.11"',
+        'filelock>=4.2.0;python_version>="3.11"',
         'fasteners>=0.20',
         'mycdp>=1.4.0',
         'pynose>=1.5.5',
@@ -209,7 +209,8 @@ setup(
         'sortedcontainers==2.4.0',
         'execnet==2.1.2',
         'iniconfig~=2.3.1',
-        'pluggy==1.6.0',
+        'pluggy==1.6.0;python_version<"3.11"',
+        'pluggy>=1.6.0,<1.8;python_version>="3.11"',
         'pytest==8.4.2;python_version<"3.11"',
         'pytest==9.1.1;python_version>="3.11"',
         'pytest-html==4.0.2',  # Newer ones had issues
@@ -293,9 +294,10 @@ setup(
         # pip install -e .[playwright]
         # (For the Playwright integration.)
         "playwright": [
-            'playwright>=1.63.0',
+            'playwright>=1.64.0',
             'greenlet>=3.5.6',
-            'pyee>=13.0.1',
+            'pyee>=13.0.1;python_version<"3.12"',
+            'pyee>=14.0.0;python_version>="3.12"',
         ],
         # pip install -e .[pyautogui]
         # (Already a required dependency on Linux now.)
@@ -305,7 +307,7 @@ setup(
         # pip install -e .[uv]
         # (For the MCP integration and more.)
         "uv": [
-            "uv>=0.13.0"
+            "uv>=0.13.1"
         ],
     },
     packages=[
