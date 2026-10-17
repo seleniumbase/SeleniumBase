@@ -146,14 +146,17 @@ def main(*args, **kwargs):
                     r"</a></div></p>"
                 )
             alt_link_badge = (
-                '<a href="https://seleniumbase.io">'
+                '<a href="https://seleniumbase.io" '
+                'target="_blank" rel="noopener">'
                 '<img src="https://img.shields.io/badge/docs-seleniumbase.io'
-                '-11BBAA.svg" alt="SeleniumBase Docs" /></a>'
+                '-11BBAA.svg?style=flat-square" alt="SeleniumBase Docs" '
+                'height="20" /></a>'
             )
             back_to_gh = (
-                r'<a href="https://github.com/seleniumbase/SeleniumBase">'
+                r'<a href="https://github.com/seleniumbase/SeleniumBase" '
+                r'target="_blank" rel="noopener">'
                 r'<img src="https://img.shields.io/badge/'
-                r"✅%20View%20Code-on%20GitHub%20🌎"
+                r"%20View%20Code-on%20GitHub%20"
                 r'-02A79E.svg" alt="SeleniumBase on GitHub" />'
                 r"</a>"
             )
