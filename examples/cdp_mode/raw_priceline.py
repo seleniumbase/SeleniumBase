@@ -45,6 +45,7 @@ with SB(uc=True, test=True, locale="en", guest=True, pls="none") as sb:
                 if price:
                     count += 1
                     price_text = price.text.replace(" ", "")
+                    price_text = price_text.replace("total", "")
                     print("* %s: %s => %s" % (count, title.text, price_text))
     if not count:
         print("No availability over the selected dates!")

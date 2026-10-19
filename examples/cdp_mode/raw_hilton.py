@@ -19,12 +19,13 @@ with SB(uc=True, test=True, locale="en", use_chromium=True) as sb:
     sb.click_if_visible('[role="dialog"] button.btn--solid')
     sb.sleep(1.4)
     sb.click('button[data-testid="search-submit-button"]')
-    sb.sleep(6.4)
+    sb.sleep(5.8)
     sb.reconnect()
     for window in sb.driver.window_handles:
         sb.switch_to_window(window)
         if "/search/" in sb.get_current_url():
             break
+    sb.sleep(0.8)
     hotel_card = 'li[data-testid*="hotel-card"]'
     hotel_cards = sb.select_all(hotel_card)
     print("Hilton Hotels in %s:" % location)

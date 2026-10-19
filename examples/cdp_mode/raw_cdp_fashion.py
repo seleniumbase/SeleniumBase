@@ -3,11 +3,19 @@ from seleniumbase import sb_cdp
 sb = sb_cdp.Chrome(use_chromium=True)
 sb.goto("https://www.net-a-porter.com/")
 sb.sleep(3)
+sb.click_if_visible('button[aria-label="Close"]')
 sb.click('icon[aria-label="Search"]')
 sb.sleep(1)
+sb.click_if_visible('button[aria-label="Close"]')
 search = "Leather gloves"
 sb.press_keys("form input", search)
-sb.sleep(3)
+if sb.is_element_visible('button[aria-label="Close"]'):
+    sb.click('button[aria-label="Close"]')
+    sb.sleep(0.5)
+    sb.type("form input", search)
+sb.sleep(2)
+sb.click_if_visible('button[aria-label="Close"]')
+sb.sleep(1)
 print('*** NET-A-PORTER Search for "%s":' % search)
 unique_item_text = []
 items = sb.find_elements("li.ProductSearchResults2__product")
