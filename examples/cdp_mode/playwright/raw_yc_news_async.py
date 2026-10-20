@@ -10,9 +10,9 @@ async def main():
     async with async_playwright() as p:
         browser = await p.chromium.connect_over_cdp(endpoint_url)
         page = browser.contexts[0].pages[0]
-        url = "https://news.ycombinator.com/submitted?id=seleniumbase"
+        url = "https://hn.algolia.com/?query=seleniumbase"
         await page.goto(url)
-        items = page.locator("span.titleline > a")
+        items = page.locator("div.Story_title > a")
         for i in range(await (items.count())):
             item_text = await (items.nth(i)).inner_text()
             print("* " + item_text)

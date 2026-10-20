@@ -104,8 +104,8 @@ Raw Selenium is available via `sb.driver` / `self.driver`. Run with plain `pytho
 from seleniumbase import sb_cdp
 
 sb = sb_cdp.Chrome()                 # options seen in docs: incognito=True, guest=True,
-sb.goto("https://news.ycombinator.com/submitted?id=seleniumbase")  # locale="en", ad_block=True,
-for el in sb.find_elements("span.titleline > a"):                   # use_chromium=True, cft=True
+sb.goto("https://hn.algolia.com/?query=seleniumbase")  # locale="en", ad_block=True,
+for el in sb.find_elements("div.Story_title > a"):                   # use_chromium=True, cft=True
     print("* " + el.text)
 sb.quit()
 ```
