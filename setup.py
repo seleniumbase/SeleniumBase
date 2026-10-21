@@ -164,17 +164,17 @@ setup(
     ],
     python_requires=">=3.10",
     install_requires=[
-        'pip>=26.2.1',
+        'pip>=26.2.2',
         'packaging>=26.3',
-        'setuptools>=84.0.0',
+        'setuptools>=84.2.1',
         'wheel>=0.48.0',
         'attrs>=26.1.0',
-        'certifi>=2026.7.22',
+        'certifi>=2026.10.19',
         'exceptiongroup>=1.3.1',
         'websockets~=16.1.1;python_version=="3.10"',
-        'websockets>=16.1.1;python_version>="3.11"',
+        'websockets>=17.3;python_version>="3.11"',
         'filelock==4.1.0;python_version=="3.10"',
-        'filelock>=4.2.0;python_version>="3.11"',
+        'filelock>=4.2.4;python_version>="3.11"',
         'fasteners>=0.20',
         'mycdp>=1.4.0',
         'pynose>=1.5.5',
@@ -183,7 +183,7 @@ setup(
         'MarkupSafe>=3.0.4',
         'Jinja2>=3.1.6',
         'six>=1.17.0',
-        'parse>=1.22.3',
+        'parse>=1.22.4',
         'parse-type>=0.6.6',
         'colorama>=0.4.6',
         'psutil>=7.2.2',
@@ -277,7 +277,8 @@ setup(
         # pip install -e .[pillow]
         # (An optional library for image-processing.)
         "pillow": [
-            'Pillow>=12.3.0',
+            'Pillow>=12.3.0;python_version=="3.10"',
+            'Pillow>=13.0.0;python_version>="3.11"',
         ],
         # pip install -e .[pip-system-certs]
         # (If you see [SSL: CERTIFICATE_VERIFY_FAILED], then get this.)
@@ -307,7 +308,7 @@ setup(
         # pip install -e .[uv]
         # (For the MCP integration and more.)
         "uv": [
-            "uv>=0.13.1"
+            "uv>=0.13.4"
         ],
     },
     packages=[
