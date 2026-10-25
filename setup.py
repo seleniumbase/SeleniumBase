@@ -169,7 +169,7 @@ setup(
         'setuptools>=84.2.1',
         'wheel>=0.48.0',
         'attrs>=26.1.0',
-        'certifi>=2026.10.19',
+        'certifi>=2026.10.23',
         'exceptiongroup>=1.3.1',
         'websockets~=16.1.1;python_version=="3.10"',
         'websockets>=17.3;python_version>="3.11"',
@@ -222,7 +222,7 @@ setup(
         'parameterized==0.9.0',
         'behave==1.2.6',  # Newer ones had issues
         'soupsieve~=2.10.0;python_version<"3.11.5"',
-        'soupsieve~=3.0.3;python_version>="3.11.5"',
+        'soupsieve~=3.0.4;python_version>="3.11.5"',
         'beautifulsoup4~=4.15.0',
         'pyotp~=2.10.0',
         'python-xlib==0.33;platform_system=="Linux"',
@@ -243,7 +243,8 @@ setup(
         # pip install -e .[coverage]
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
-            'coverage>=7.16.2',
+            'coverage>=7.16.2;python_version=="3.10"',
+            'coverage>=7.17.0;python_version>="3.11"',
             'pytest-cov>=7.1.0',
         ],
         # pip install -e .[flake8]
@@ -270,9 +271,10 @@ setup(
         # (An optional library for parsing PDF files.)
         "pdfminer": [
             'pdfminer.six==20260107',
-            'cryptography==50.0.2',
-            'cffi==2.1.1',
-            'pycparser==3.11',
+            'cryptography~=50.0.2',
+            'cffi~=2.1.1',
+            'pycparser==3.11;python_version=="3.10"',
+            'pycparser~=3.12;python_version>="3.11"',
         ],
         # pip install -e .[pillow]
         # (An optional library for image-processing.)
@@ -295,7 +297,7 @@ setup(
         # pip install -e .[playwright]
         # (For the Playwright integration.)
         "playwright": [
-            'playwright>=1.64.0',
+            'playwright>=1.64.1',
             'greenlet>=3.5.6',
             'pyee>=13.0.1;python_version<"3.12"',
             'pyee>=14.0.0;python_version>="3.12"',
@@ -308,7 +310,7 @@ setup(
         # pip install -e .[uv]
         # (For the MCP integration and more.)
         "uv": [
-            "uv>=0.13.4"
+            "uv>=0.13.5"
         ],
     },
     packages=[
