@@ -1600,7 +1600,7 @@ class CDPMethods():
             pre_tab_url = tab_url.split("/page/")[0] + "/page/"
             new_tab_url = pre_tab_url + target_id
             new_tab = cdp_tab.Tab(new_tab_url, found_target, driver)
-            driver.targets.append(new_tab)
+            # driver.targets.append(new_tab)  # (Caused Issue #4533)
             driver.tabs.append(new_tab)
         if switch_to:
             self.switch_to_newest_tab()
