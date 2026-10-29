@@ -15,7 +15,7 @@
 <p align="center"><b align="center">Includes stealth options for bypassing bot-detection and CAPTCHAs.<br /></b></p>
 
 <p align="center">
-<a href="https://pypi.python.org/pypi/seleniumbase" target="_blank" rel="noopener"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?style=flat-square&color=3399EE" alt="PyPI version" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank" rel="noopener"><img src="https://img.shields.io/github/actions/workflow/status/seleniumbase/SeleniumBase/python-package.yml?branch=master&style=flat-square&label=CI" alt="SeleniumBase GitHub Actions" height="20" /></a> <a href="https://seleniumbase.io" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg?style=flat-square" alt="SeleniumBase Docs" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/license-MIT-33A6C6.svg?style=flat-square" title="SeleniumBase" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/mcp_servers" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/MCP-tool_catalog-7C6EE5?style=flat-square" height="20" /></a> <a href="https://pepy.tech/projects/seleniumbase?timeRange=threeMonths&category=version&includeCIDownloads=true&granularity=daily&viewType=line&versions=*" target="_blank" rel="noopener"><img src="https://static.pepy.tech/badge/seleniumbase" alt="SeleniumBase PyPI downloads" height="20" /></a><br />
+<a href="https://pypi.python.org/pypi/seleniumbase" target="_blank" rel="noopener"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?style=flat-square&color=3399EE" alt="PyPI version" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank" rel="noopener"><img src="https://img.shields.io/github/actions/workflow/status/seleniumbase/SeleniumBase/python-package.yml?branch=master&style=flat-square&label=CI" alt="SeleniumBase GitHub Actions" height="20" /></a> <a href="https://seleniumbase.io" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg?style=flat-square" alt="SeleniumBase Docs" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/license-MIT-33A6C6.svg?style=flat-square" title="SeleniumBase" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/mcp_servers" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/MCP-tool_info-7C6EE5?style=flat-square" height="20" /></a> <a href="https://pepy.tech/projects/seleniumbase?timeRange=threeMonths&category=version&includeCIDownloads=true&granularity=daily&viewType=line&versions=*" target="_blank" rel="noopener"><img src="https://static.pepy.tech/badge/seleniumbase" alt="SeleniumBase PyPI downloads" height="20" /></a><br />
 <a href="https://www.youtube.com/playlist?list=PLp9uKicxkBc5UIlGi2BuE3aWC7JyXpD3m" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/docs-📺-D844E8.svg?style=flat-square&logo=YouTube&logoColor=white&label=YouTube" alt="YouTube Channel" height="20" /></a> <a href="https://www.facebook.com/SeleniumBase/" target="_blank" rel="noopener"> <img src="https://img.shields.io/badge/Facebook-4K_followers-1877F2?style=flat-square&logo=facebook&logoColor=white" alt="SeleniumBase Facebook Followers" height="20" /></a> <a href="https://x.com/seleniumbase" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/-1K_followers-1DA1F2?style=flat-square&logo=x&logoColor=white&labelColor=555555" alt="SeleniumBase X Followers" height="20" /></a> <a href="https://discord.gg/EdhQTn3EyE" target="_blank" rel="noopener"><img src="https://img.shields.io/discord/727927627830001734?style=flat-square&color=7289DA&label=Discord&logo=discord&logoColor=white" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase" target="_blank" rel="noopener"><img src="https://badgen.net/github/stars/seleniumbase/SeleniumBase" title="Stars" height="20" /></a>
 </p>
 
@@ -66,20 +66,30 @@
 
 --------
 
-📝 Here's <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_cdp_mode.py">an example</a> with <b><code translate="no">seleniumbase</code></b> <b><code translate="no">sb_cdp</code></b> (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md#-pure-cdp-mode-sb_cdp"><i>Pure CDP Mode</i></a>):<br  /><em>(It bypasses both BrowserScan AND Sannysoft Bot-Detection)</em>
+📝 [This example](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_cdp_mode.py) uses <b><code translate="no">seleniumbase</code></b> <b><code translate="no">sb_cdp</code></b> (*[Pure CDP Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md#Pure_CDP_Mode)*):<br  /><em>(It bypasses BrowserScan, Sannysoft, and Cloudflare bot-detection)</em>
 
 ```python
 from seleniumbase import sb_cdp
 
-sb = sb_cdp.Chrome()
+sb = sb_cdp.Chrome()  # Launch a stealth browser
 sb.goto("https://browserscan.net/bot-detection")
 sb.assert_element('strong:contains("Normal")')
 sb.sleep(1)
+
 sb.goto("https://bot.sannysoft.com/")
 sb.assert_element(".passed")
 sb.assert_element_not_visible(".failed")
 sb.sleep(1)
-sb.quit()
+
+sb.goto("https://www.planetminecraft.com/account")
+sb.type('[name="email"]', "Name123")
+sb.type('[name="password"]', "Pass")
+sb.click("input#autologin")
+sb.solve_captcha()  # Works on different CAPTCHAs
+sb.assert_element('input[name="login"]')
+sb.assert_element_not_visible("input[disabled]")
+sb.sleep(1)
+sb.quit()  # Quit browser before end-of-program
 ```
 
 <p align="center">
@@ -92,37 +102,16 @@ sb.quit()
 <br /><em>(All Sannysoft bot-detection tests passed successfully)</em>
 </p>
 
---------
-
-📝 Here's <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_planetmc.py">another example</a> with <b><code translate="no">seleniumbase</code></b> <b><code translate="no">sb_cdp</code></b> (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md#-pure-cdp-mode-sb_cdp"><i>Pure CDP Mode</i></a>):<br />(It performs various browser actions and bypasses a Cloudflare Turnstile)
-
-```python
-from seleniumbase import sb_cdp
-
-sb = sb_cdp.Chrome(incognito=True)
-sb.goto("https://www.planetminecraft.com/account")
-sb.assert_element('input[name="login"]')
-sb.type('input[name="email"]', "test@example.com")
-sb.type('input[name="password"]', "Fake_Password")
-sb.click("input#autologin")  # The checkbox
-if sb.is_element_visible("input[disabled]"):
-    sb.solve_captcha()  # Enables the input
-sb.assert_element_absent("input[disabled]")
-sb.sleep(1.5)
-sb.quit()
-```
-
-```
-python raw_cdp_planetmc.py
-```
-
-<p align="left">
+<p align="center">
 <img src="https://seleniumbase.github.io/other/pmc_captcha_2.png" width="530" style="max-width: 100% !important; height: auto !important;" alt="Cloudflare Turnstile bypassed successfully" />
+<br /><em>(Cloudflare Turnstile bypassed successfully on Planet Minecraft)</em>
 </p>
+
+--------
 
 ✅ <b><code>sb.solve_captcha()</code></b> handles CAPTCHAs that aren't bypassed automatically.<br />(If called when there's no CAPTCHA on the page, then nothing happens / no-op.)
 
-ℹ️ <code>sb.assert_*</code> methods wait up to 7 seconds for the expected condition to occur.
+ℹ️ <code>sb.assert_*</code> methods wait up to 7 seconds for the expected condition.<br />(Raises an exception if the condition isn't met in time.)
 
 --------
 
@@ -635,7 +624,7 @@ self.assert_no_js_errors()  # Verify there are no JS errors.
 self.type("input", "dogs\n")  # (The "\n" presses ENTER)
 ```
 
-Most SeleniumBase scripts can be run with <code translate="no">pytest</code>, <code translate="no">pynose</code>, or pure <code translate="no">python</code>. Not all test runners can run all test formats. For example, tests that use the `sb` pytest fixture can only be run with `pytest`. (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md">Syntax Formats</a>) There's also a <a href="https://behave.readthedocs.io/en/stable/gherkin.html#features" target="_blank" rel="noopener">Gherkin</a> test format that runs with <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md">behave</a>.
+Most SeleniumBase scripts can be run with <code translate="no">pytest</code>, <code translate="no">pynose</code>, or pure <code translate="no">python</code>. Not all test runners can run all test formats. For example, tests that use the `sb` pytest fixture can only be run with `pytest`. (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md">Syntax Formats</a>) There's also a <a href="https://behave.readthedocs.io/en/latest/gherkin/" target="_blank" rel="noopener">Gherkin</a> test format that runs with <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md">behave</a>.
 
 ```zsh
 pytest coffee_cart_tests.py --rs
@@ -1412,21 +1401,13 @@ self.activate_jquery()
 
 ```python
 self.execute_script("jQuery, window.scrollTo(0, 600)")  # Scrolling the page
-
 self.execute_script("jQuery('#annoying-widget').hide()")  # Hiding elements on a page
-
 self.execute_script("jQuery('#hidden-widget').show(0)")  # Showing hidden elements on a page
-
 self.execute_script("jQuery('#annoying-button a').remove()")  # Removing elements on a page
-
 self.execute_script("jQuery('%s').mouseover()" % (mouse_over_item))  # Mouse-over elements on a page
-
 self.execute_script("jQuery('input#the_id').val('my_text')")  # Fast text input on a page
-
 self.execute_script("jQuery('div#dropdown a.link').click()")  # Click elements on a page
-
 self.execute_script("return jQuery('div#amazing')[0].text")  # Returns the css "text" of the element given
-
 self.execute_script("return jQuery('textarea')[2].value")  # Returns the css "value" of the 3rd textarea element on the page
 ```
 

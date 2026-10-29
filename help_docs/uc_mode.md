@@ -107,13 +107,12 @@ with SB(uc=True, test=True, incognito=True, locale="en") as sb:
 👤 <b>On Linux</b>, use `sb.solve_captcha()` to handle CAPTCHAs:
 
 ```python
-from seleniumbase import SB
-
-with SB(uc=True, test=True) as sb:
-    url = "https://www.virtualmanager.com/en/login"
-    sb.goto(url)
+with SB(uc=True, test=True, incognito=True) as sb:
+    sb.goto("https://www.virtualmanager.com/en/login")
+    sb.sleep(1.5)
     print(sb.get_page_title())
     sb.solve_captcha()  # Only used if needed
+    sb.sleep(2)
     sb.assert_element('input[name*="email"]')
     print(sb.get_page_title())
     sb.assert_element('input[name*="login"]')
@@ -121,9 +120,9 @@ with SB(uc=True, test=True) as sb:
     sb.post_message("SeleniumBase wasn't detected!")
 ```
 
-<a href="https://github.com/mdmintz/undetected-testing/actions/runs/9637461606/job/26576722411"><img width="540" alt="uc_gui_click_captcha on Linux" src="https://github.com/seleniumbase/SeleniumBase/assets/6788579/6aceb2a3-2a32-4521-b30a-f79446d2ce28"></a>
+<a href="https://github.com/mdmintz/undetected-testing/actions/runs/40727279996/job/122953823886#step:11:16"><img width="540" alt="solve_captcha() on Linux" src="https://github.com/user-attachments/assets/e4075e34-cc0d-40f2-a923-a61275298607"></a>
 
-The 2nd <code translate="no">print()</code> should output <code translate="no">Virtual Manager</code>, which means that the automation successfully passed the Turnstile.
+The 2nd <code translate="no">print()</code> outputs the expected page title, which means that the automation successfully clicked & bypassed the Turnstile.
 
 (Note: <span translate="no">UC Mode</span> has a special virtual display on Linux: <code>Xvfb</code>, which is enabled by default when not changing headed/headless settings.)
 
