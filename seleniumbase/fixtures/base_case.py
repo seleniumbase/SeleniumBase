@@ -7632,7 +7632,7 @@ class BaseCase(unittest.TestCase):
         link,
         allow_redirects=False,
         timeout=5,
-        verify=False,
+        verify=True,
     ):
         """Get the status code of a link.
         If the timeout is set to less than 1, it becomes 1.

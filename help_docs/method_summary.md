@@ -215,8 +215,6 @@ self.get_new_driver(
     log_cdp_events=None,
     no_sandbox=None,
     disable_gpu=None,
-    headless1=None,
-    headless2=None,
     incognito=None,
     guest_mode=None,
     dark_mode=None,
@@ -327,7 +325,7 @@ self.get_domain_url(url)
 self.get_active_element_css()
 self.get_beautiful_soup(source=None)
 self.get_unique_links()
-self.get_link_status_code(link, allow_redirects=False, timeout=5, verify=False)
+self.get_link_status_code(link, allow_redirects=False, timeout=5, verify=True)
 self.assert_link_status_code_is_not_404(link)
 self.assert_no_404_errors(multithreaded=True, timeout=None)
 # Duplicates:

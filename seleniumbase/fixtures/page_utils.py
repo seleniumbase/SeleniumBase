@@ -260,7 +260,7 @@ def _get_link_status_code(
     link,
     allow_redirects=False,
     timeout=5,
-    verify=False,
+    verify=True,
 ):
     """Get the status code of a link.
     If the timeout is exceeded, will return a 404.

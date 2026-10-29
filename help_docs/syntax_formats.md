@@ -645,7 +645,7 @@ class MiClaseDePrueba(CasoDePrueba):
 <a id="sb_sf_20"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 20. Gherkin syntax with "behave" BDD runner</h2>
 
-With [Behave's BDD Gherkin format](https://behave.readthedocs.io/en/stable/gherkin.html), you can use natural language to write tests that work with SeleniumBase methods. Behave tests are run by calling `behave` on the command-line. This requires some special files in a specific directory structure. Here's an example of that structure:
+With [Behave's BDD Gherkin format](https://behave.readthedocs.io/en/latest/gherkin/), you can use natural language to write tests that work with SeleniumBase methods. Behave tests are run by calling `behave` on the command-line. This requires some special files in a specific directory structure. Here's an example of that structure:
 
 ```zsh
 features/
@@ -742,7 +742,7 @@ def login_to_swag_labs(context, user):
     sb.type("#password", "secret_sauce\n")
 ```
 
-(For more information, see the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md">SeleniumBase Behave BDD ReadMe</a>.)
+(For more information, see the [SeleniumBase Behave BDD ReadMe](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md).)
 
 <a id="sb_sf_21"></a>
 <h2><img src="https://seleniumbase.github.io/img/logo3b.png" title="SeleniumBase" width="32" /> 21. SeleniumBase SB (Python context manager)</h2>

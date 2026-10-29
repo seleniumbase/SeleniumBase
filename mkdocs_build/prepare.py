@@ -168,6 +168,9 @@ def main(*args, **kwargs):
                     "/help_docs/uc_mode/", "/../help_docs/uc_mode/"
                 )
                 changed = True
+            if ".md#-" in line:
+                line = line.replace(".md#-", ".md#")
+                changed = True
             if "<!-- GitHub Only -->" in line:
                 changed = True
                 continue

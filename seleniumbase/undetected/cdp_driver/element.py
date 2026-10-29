@@ -1268,7 +1268,8 @@ class Element:
             await self.tab.send(cdp.dom.disable())
             await self.tab.send(cdp.overlay.disable())
             return
-        await self.tab.send(cdp.dom.enable())
+        with suppress(Exception):
+            await self.tab.send(cdp.dom.enable())
         await self.tab.send(cdp.overlay.enable())
         conf = cdp.overlay.HighlightConfig(
             show_info=True, show_extension_lines=True, show_styles=True

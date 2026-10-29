@@ -42,8 +42,6 @@ class DownloadImages(BaseCase):
         count = 0
         for src in unique_src_values:
             self.goto(src)
-            if not self.headless and not self.headless2:
-                self.sleep(0.3)
             image = self.find_element("img")
             if src.startswith("data:") or ";base64" in src:
                 # Special Cases: SVGs, etc. Convert to PNG.
@@ -53,6 +51,11 @@ class DownloadImages(BaseCase):
                 filename = src.split("/")[-1]
             folder = "downloaded_files"
             file_path = os.path.join(folder, filename)
+            # Too much screen flicker if not slowed
+            if not self.headless:
+                self.sleep(0.15)
             image.screenshot(file_path)
+            if not self.headless:
+                self.sleep(0.15)
             self.assert_downloaded_file(filename)
             print(file_path)
