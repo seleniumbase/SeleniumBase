@@ -215,8 +215,6 @@ self.get_new_driver(
     log_cdp_events=None,
     no_sandbox=None,
     disable_gpu=None,
-    headless1=None,
-    headless2=None,
     incognito=None,
     guest_mode=None,
     dark_mode=None,

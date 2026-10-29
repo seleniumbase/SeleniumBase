@@ -192,7 +192,7 @@ pytest tests/ -n=4 --headless            # parallel across 4 workers
 pytest tests/ --xvfb                     # Linux virtual display when a headed browser is needed
 ```
 
-- Linux runs headless by default; use `--headed` to force a GUI. `--headless2` supports extensions.
+- Linux runs headless by default; use `--headed` to force a GUI.
 - `--rs` reuses one browser session for all tests (faster, but state leaks between tests; use `--crumbs` to clear cookies between them).
 - Set `--driver-version=VER` to pin the driver.
 - No `--pdb`, `--trace`, or `--show-report` in CI.

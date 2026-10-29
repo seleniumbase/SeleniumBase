@@ -171,10 +171,15 @@ pytest my_first_test.py --settings-file=custom_settings.py
 --sjw  # (Skip JS Waits for readyState to be "complete" or Angular to load.)
 --wfa  # (Wait for AngularJS to be done loading after specific web actions.)
 --pls=PLS  # (Set pageLoadStrategy on Chrome: "normal", "eager", or "none".)
---headless  # (The default headless mode. Linux uses this mode by default.)
---headless1  # (Use Chrome's old headless mode. Fast, but has limitations.)
---headless2  # (Use Chrome's new headless mode, which supports extensions.)
+--headless  # (Use headless mode. Linux uses this mode by default.)
+--chs  # (Use Chrome-Headless-Shell, a limited Chrome without stealth.)
 --headed  # (Run tests in headed/GUI mode on Linux OS, where not default.)
+--incognito  # (Enable Chrome's Incognito mode.)
+--guest  # (Enable Chrome's Guest mode.)
+--uc  # (Use undetected-chromedriver to evade bot-detection.)
+--uc-cdp-events  # (Capture CDP events in UC Mode. NOT related to CDP Mode.)
+--log-cdp  # ("goog:loggingPrefs", {"performance": "ALL", "browser": "ALL"})
+--remote-debug  # (Sync to Chrome Remote Debugger chrome://inspect/#devices)
 --xvfb  # (Run tests using the Xvfb virtual display server on Linux OS.)
 --xvfb-metrics=STRING  # (Set Xvfb display size on Linux: "Width,Height".)
 --locale=LOCALE_CODE  # (Set the Language Locale Code for the web browser.)
@@ -208,17 +213,11 @@ pytest my_first_test.py --settings-file=custom_settings.py
 --disable-ws  # (Disable Web Security on Chromium-based browsers.)
 --enable-ws  # (Enable Web Security on Chromium-based browsers.)
 --enable-sync  # (Enable "Chrome Sync" on websites.)
---uc | --undetected  # (Use undetected-chromedriver to evade bot-detection.)
---uc-cdp-events  # (Capture CDP events when running in "--undetected" mode.)
---log-cdp  # ("goog:loggingPrefs", {"performance": "ALL", "browser": "ALL"})
---remote-debug  # (Sync to Chrome Remote Debugger chrome://inspect/#devices)
 --ftrace | --final-trace  # (Debug Mode after each test. Don't use with CI!)
 --dashboard  # (Enable the SeleniumBase Dashboard. Saved at: dashboard.html)
 --dash-title=STRING  # (Set the title shown for the generated dashboard.)
 --enable-3d-apis  # (Enables WebGL and 3D APIs.)
 --swiftshader  # (Chrome "--use-gl=angle" / "--use-angle=swiftshader-webgl")
---incognito  # (Enable Chrome's Incognito mode.)
---guest  # (Enable Chrome's Guest mode.)
 --dark  # (Enable Chrome's Dark mode.)
 --devtools  # (Open Chrome's DevTools when the browser opens.)
 --rs | --reuse-session  # (Reuse browser session for all tests.)
@@ -461,7 +460,7 @@ You can specify a Language Locale Code to customize web pages on supported websi
 pytest --locale=CODE  # Example: --locale=ru
 ```
 
-Visit <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/locale_codes.md"><b>🗾 Locales</b></a> for a full list of codes.
+Visit **[🗾 Locales](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/locale_codes.md))** for a full list of codes.
 
 --------
 
@@ -650,9 +649,7 @@ test=None  # Test Mode: Output, Logging, Continue on failure unless "rtf".
 rtf=None  # Shortcut / Duplicate of "raise_test_failure".
 raise_test_failure=None  # If "test" mode, raise Exception on 1st failure.
 browser=None  # Choose from "chrome", "edge", "firefox", or "safari".
-headless=None  # Use the default headless mode for Chromium and Firefox.
-headless1=None  # Use Chromium's old headless mode. (Fast, but limited)
-headless2=None  # Use Chromium's new headless mode. (Has more features)
+headless=None  # Use headless mode for Chromium/Firefox. (headless=True)
 locale_code=None  # Set the Language Locale Code for the web browser.
 protocol=None  # The Selenium Grid protocol: "http" or "https".
 servername=None  # The Selenium Grid server/IP used for tests.
@@ -761,9 +758,7 @@ Example: [SeleniumBase/examples/raw_robot.py](https://github.com/seleniumbase/Se
 
 ```python
 browser=None  # Choose from "chrome", "edge", "firefox", or "safari".
-headless=None  # Use the default headless mode for Chromium and Firefox.
-headless1=None  # Use Chromium's old headless mode. (Fast, but limited)
-headless2=None  # Use Chromium's new headless mode. (Has more features)
+headless=None  # Use headless mode for Chromium/Firefox. (headless=True)
 headed=None  # Run tests in headed/GUI mode on Linux, where not default.
 locale_code=None  # Set the Language Locale Code for the web browser.
 protocol=None  # The Selenium Grid protocol: "http" or "https".
@@ -846,7 +841,7 @@ Example: [SeleniumBase/examples/raw_driver_manager.py](https://github.com/seleni
 ```python
 url: Optional[str] = None
 user_data_dir: Optional[PathLike] = None
-headless: Optional[bool] = False
+headless: Optional[bool] = False  # Set `headless=True` to activate
 incognito: Optional[bool] = False
 guest: Optional[bool] = False
 browser_executable_path: Optional[PathLike] = None
