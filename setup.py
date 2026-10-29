@@ -41,7 +41,7 @@ if sys.argv[-1] == "publish":
             print("You are currently using Python %s\n" % current_ver)
             sys.exit()
         print("\n*** Checking code health with flake8:\n")
-        os.system("python -m pip install 'flake8==7.4.1'")
+        os.system("python -m pip install 'flake8==7.5.0'")
         flake8_status = os.system(
             "flake8 --exclude=recordings,temp,venv,.venv"
         )
@@ -250,9 +250,11 @@ setup(
         # pip install -e .[flake8]
         # Usage: flake8
         "flake8": [
-            'flake8==7.4.1',
+            'flake8==7.4.1;python_version=="3.10"',
+            'flake8==7.5.0;python_version>="3.11"',
             'mccabe==0.7.0',
-            'pyflakes==4.0.3',
+            'pyflakes==4.0.3;python_version=="3.10"',
+            'pyflakes==4.1.0;python_version>="3.11"',
             'pycodestyle==2.15.0',
         ],
         # pip install -e .[mcp]
@@ -310,7 +312,7 @@ setup(
         # pip install -e .[uv]
         # (For the MCP integration and more.)
         "uv": [
-            "uv>=0.13.5"
+            "uv>=0.13.6"
         ],
     },
     packages=[

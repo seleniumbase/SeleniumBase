@@ -71,7 +71,9 @@ rich>=15.0.0,<16
 coverage>=7.16.2;python_version=="3.10"
 coverage>=7.17.0;python_version>="3.11"
 pytest-cov>=7.1.0
-flake8==7.4.1
+flake8==7.4.1;python_version=="3.10"
+flake8==7.5.0;python_version>="3.11"
 mccabe==0.7.0
-pyflakes==4.0.3
+pyflakes==4.0.3;python_version=="3.10"
+pyflakes==4.1.0;python_version>="3.11"
 pycodestyle==2.15.0
