@@ -15,8 +15,6 @@ class AppleTests(BaseCase):
                 self.goto_if_not_url("about:blank")
                 print("\n  Unsupported mode for this test.")
                 self.skip("Unsupported mode for this test.")
-            elif self.is_chromium():
-                self.get_new_driver(browser=self.browser, headless2=True)
         self.goto("https://developer.apple.com/search/")
         title = "Testing with WebDriver in Safari"
         self.type("input#searchField", title + "\n")

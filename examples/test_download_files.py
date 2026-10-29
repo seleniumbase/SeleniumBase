@@ -27,11 +27,11 @@ class DownloadTests(BaseCase):
     def test_download_files_from_pypi(self):
         if self._multithreaded or not self.undetectable:
             self.goto_if_not_url("about:blank")
-            self.skip("Skipping test in multi-threaded mode.")
+            self.skip("Skip: Requires stealth and not multi-threaded.")
         self.goto("https://pypi.org/project/sbvirtualdisplay/#files")
         self.assert_element("span#pip-command")
-        self.assert_text("Download files", "div#files h2.page-title")
-        self.assert_text("Download files", "a#files-tab")
+        self.assert_text("Release files", "div#files h2.page-title")
+        self.assert_text("Release files", "a#files-tab")
         pkg_header = self.get_text('h1[class*="header__name"]').strip()
         pkg_name = pkg_header.replace(" ", "-")
         whl_file = pkg_name + "-py3-none-any.whl"
@@ -48,7 +48,7 @@ class DownloadTests(BaseCase):
             or self.browser == "ie"
             or self.browser == "edge"
             or (self.is_chromium() and self.guest_mode)
-            or (self.is_chromium() and (self.headless or self.headless2))
+            or (self.is_chromium() and self.headless)
         ):
             whl_href = self.get_attribute(whl_selector, "href")
             tar_href = self.get_attribute(tar_selector, "href")
@@ -85,12 +85,12 @@ class DownloadTests(BaseCase):
         # Get file sizes in kB to compare actual values with displayed values
         whl_file_kb = whl_file_bytes / 1000.0
         whl_line_fi = self.get_text('a[href$=".whl"]').strip()
-        whl_line = self.get_text('div.file:contains("%s")' % whl_line_fi)
-        whl_display_kb = float(whl_line.split("(")[1].split(" ")[0])
+        whl_line = self.get_text('td:contains("%s")' % whl_line_fi)
+        whl_display_kb = float(whl_line.split(" ")[1].split(" ")[0])
         tar_gz_file_kb = tar_gz_file_bytes / 1000.0
         tar_gz_line_fi = self.get_text('a[href$=".tar.gz"]').strip()
-        tar_gz_line = self.get_text('div.file:contains("%s")' % tar_gz_line_fi)
-        tar_gz_display_kb = float(tar_gz_line.split("(")[1].split(" ")[0])
+        tar_gz_line = self.get_text('tr:contains("%s")' % tar_gz_line_fi)
+        tar_gz_display_kb = float(tar_gz_line.split(" ")[1].split(" ")[0])
 
         # Verify downloaded files are the correct size (account for rounding)
         self.assert_true(
