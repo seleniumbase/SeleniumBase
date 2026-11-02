@@ -1931,11 +1931,14 @@ class CDPMethods():
             raise KeyError(attribute)
         return value
 
-    def get_attribute(self, selector, attribute):
+    def get_attribute(self, selector, attribute, timeout=None):
         """Find an element and return the value of an attribute.
         If the element doesn't exist: Raises an exception.
         If the attribute doesn't exist: Returns None."""
-        return self.find_element(selector).get_attribute(attribute)
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        element = self.find_element(selector, timeout=timeout)
+        return element.get_attribute(attribute)
 
     def get_element_html(self, selector, timeout=None):
         """Find an element and return the outerHTML."""
