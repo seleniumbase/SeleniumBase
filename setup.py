@@ -164,7 +164,7 @@ setup(
     ],
     python_requires=">=3.10",
     install_requires=[
-        'pip>=26.2.2',
+        'pip>=26.3',
         'packaging>=26.3',
         'setuptools>=84.2.1',
         'wheel>=0.48.0',
@@ -172,9 +172,9 @@ setup(
         'certifi>=2026.10.23',
         'exceptiongroup>=1.3.1',
         'websockets~=16.1.1;python_version=="3.10"',
-        'websockets>=17.3;python_version>="3.11"',
+        'websockets>=17.4;python_version>="3.11"',
         'filelock==4.1.0;python_version=="3.10"',
-        'filelock>=4.2.4;python_version>="3.11"',
+        'filelock>=4.2.7;python_version>="3.11"',
         'fasteners>=0.20',
         'mycdp>=1.4.0',
         'pynose>=1.5.5',
@@ -199,11 +199,11 @@ setup(
         'sniffio==1.3.1',
         'h11==0.16.0',
         'outcome==1.3.0.post0',
-        'trio>=0.34.0,<1',
+        'trio>=0.35.0,<1',
         'trio-websocket~=0.12.2',
         'wsproto~=1.3.2',
         'websocket-client~=1.9.2',
-        'selenium==4.51.0',
+        'selenium==4.52.0',
         'cssselect~=1.5.0;python_version<"3.11"',
         'cssselect>=1.6.0,<2;python_version>="3.11"',
         'sortedcontainers==2.4.0',
@@ -312,7 +312,7 @@ setup(
         # pip install -e .[uv]
         # (For the MCP integration and more.)
         "uv": [
-            "uv>=0.13.6"
+            "uv>=0.13.7"
         ],
     },
     packages=[
