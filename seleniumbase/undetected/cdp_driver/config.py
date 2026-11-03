@@ -327,7 +327,7 @@ class Config:
             "ComponentUpdater,NetworkPrediction,"
             "DisableLoadExtensionCommandLineSwitch,WebAuthentication,"
             "OmniboxUIFeedback,OmniboxPopupShortcut,PasskeyAuth,"
-            "MediaRouter,DialMediaRouteProvider,WebRtcHideLocalIpsWithMdns"
+            "DialMediaRouteProvider,WebRtcHideLocalIpsWithMdns"
         ]
         if self.expert:
             args += [

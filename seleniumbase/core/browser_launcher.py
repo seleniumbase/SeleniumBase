@@ -2828,7 +2828,6 @@ def _set_chrome_options(
     included_disabled_features.append("NetworkPrediction")
     included_disabled_features.append("WebAuthentication")
     included_disabled_features.append("PasskeyAuth")
-    included_disabled_features.append("MediaRouter")
     included_disabled_features.append("DialMediaRouteProvider")
     included_disabled_features.append("WebRtcHideLocalIpsWithMdns")
     if is_using_uc(undetectable, browser_name):
