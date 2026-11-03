@@ -18,11 +18,11 @@
 
 --------
 
-<p><div>🗺️ Here's an example of loading a website-tour library into the browser for a Google Maps tour:</div></p>
+<p><div>🚎 Here's an example of loading a website-tour library into the browser for a Google Maps tour:</div></p>
 
 <img src="https://seleniumbase.github.io/cdn/gif/introjs_tour.gif" title="SeleniumBase Tour of Google" /><br />
 
-<p>🗺️ This example is from <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/maps_introjs_tour.py">maps_introjs_tour.py</a>. (The <code>--interval=1</code> makes the tour go automatically to the next step after 1 second.)</p>
+<p>🚎 This example is from <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/maps_introjs_tour.py">maps_introjs_tour.py</a>. (The <code>--interval=1</code> makes the tour go automatically to the next step after 1 second.)</p>
 
 ```zsh
 cd examples/tour_examples
@@ -31,7 +31,7 @@ pytest maps_introjs_tour.py --interval=1
 
 <p>🟨 SeleniumBase includes powerful JS code generators for converting Python into JavaScript for using the supported JS packages. A few lines of Python in your tests might generate hundreds of lines of JavaScript.</p>
 
-<p>🗺️ Here is some tour code in Python from <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/maps_introjs_tour.py">maps_introjs_tour.py</a> that expands into a lot of JavaScript.</p>
+<p>🚎 Here is some tour code in Python from <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/maps_introjs_tour.py">maps_introjs_tour.py</a> that expands into a lot of JavaScript.</p>
 
 ```python
 self.goto("https://www.google.com/maps/@42.3591234,-71.0915634,15z")
@@ -107,7 +107,7 @@ def add_css_link(driver, css_link):
     driver.execute_script(script_to_add_css % css_link)
 ```
 
-<div>🗺️ Website tours are just one of the many uses of the JS Package Manager.</div>
+<div>🚎 Website tours are just one of the many uses of the JS Package Manager.</div>
 <p><div>🛂 The following example shows the <a href="https://github.com/craftpip/jquery-confirm">JqueryConfirm</a> package loaded into a website for creating fancy dialog boxes:</div></p>
 
 <img src="https://seleniumbase.github.io/cdn/img/emoji_sports_dialog.png" alt="SeleniumBase" width="480" />

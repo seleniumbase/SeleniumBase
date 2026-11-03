@@ -10,7 +10,7 @@
 
 <h1 align="center">📊 SeleniumBase</h1>
 
-<h3 align="center">One framework for browser automation, web scraping, and testing.<br /></h3>
+<h3 align="center">APIs for Web Scraping, Browser Automation, and E2E Testing.<br /></h3>
 
 <p align="center"><b align="center">Includes stealth options for bypassing bot-detection and CAPTCHAs.<br /></b></p>
 
@@ -60,9 +60,9 @@
 
 --------
 
-🥷 <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md"><a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md"><b>CDP Mode</b></a> makes browser automation undetectable to anti-bot services and <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md">adds <b>stealth</b> to stock <span translate="no">Playwright</span></a>. Also includes code for bypassing CAPTCHAs.
+🐙 <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md"><a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md"><b>CDP Mode</b></a> bypasses bot-detection and <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md">makes <span translate="no">Playwright</span> stealthy</a>.
 
-📚 Example scripts that start or end with "<code>test</code>" are specifically designed to be run with <code><b>pytest</b></code>. Other scripts run directly with raw <code><b>python</b></code>. (Those start with "<code>raw</code>" to avoid confusion.)
+ℹ️ Example scripts that start or end with "<code>test</code>" run with <code><b>pytest</b></code>. Other scripts run directly with raw <code><b>python</b></code> (and start with "<code>raw</code>" to avoid confusion).
 
 --------
 
