@@ -9,10 +9,9 @@ with sync_playwright() as p:
     browser = p.chromium.connect_over_cdp(endpoint_url)
     page = browser.contexts[0].pages[0]
     input_field = 'input[name="search"]'
-    page.wait_for_selector(input_field)
     page.wait_for_timeout(1600)
     query = "Jerry Seinfeld"
-    search_box = page.locator(input_field)
+    search_box = page.locator(input_field).first
     search_box.press_sequentially(query, delay=80)
     page.wait_for_timeout(1600)
     page.click("li#active-result-item")

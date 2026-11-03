@@ -129,6 +129,22 @@ class Tab(Connection):
     """
     browser: cdp_browser.Browser
     _download_behavior: list[str] = None
+    _promise_prefixes = (
+        "new Promise(",
+        "Promise.resolve(",
+        "Promise.reject(",
+        "Promise.all(",
+        "Promise.race(",
+        "Promise.allSettled(",
+        "Promise.any(",
+        "Promise.withResolvers(",
+        "fetch(",
+        "async ",
+        "(async ",
+        "await ",
+        "(await ",
+        "import(",
+    )
 
     def __init__(
         self,
@@ -720,6 +736,13 @@ class Tab(Connection):
     async def evaluate(
         self, expression: str, await_promise=False, return_by_value=True
     ):
+        expression = expression.strip()
+        if (
+            expression
+            and not await_promise
+            and expression.startswith(self._promise_prefixes)
+        ):
+            await_promise = True
         remote_object, errors = await self.send(
             cdp.runtime.evaluate(
                 expression=expression,
