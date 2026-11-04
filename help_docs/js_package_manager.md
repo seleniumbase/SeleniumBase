@@ -85,7 +85,7 @@ self.add_css_link(css_link)
 <p>🟨 Here's code that loads the <a href="https://introjs.com/">IntroJS</a> CSS:</p>
 
 ```python
-self.add_css_link("https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/introjs.css")
+self.add_css_link("https://cdn.jsdelivr.net/npm/intro.js@5.1.0/minified/introjs.min.css")
 ```
 
 <p>🟨 And here's the Python WebDriver code that makes this possible:</p>
