@@ -171,6 +171,9 @@ def main(*args, **kwargs):
             if ".md#-" in line:
                 line = line.replace(".md#-", ".md#")
                 changed = True
+            if "> [!NOTE]" in line:
+                changed = True
+                continue
             if "<!-- GitHub Only -->" in line:
                 changed = True
                 continue
