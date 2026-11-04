@@ -61,50 +61,31 @@
 🎭 Stealthy Playwright examples are located in [./examples/cdp_mode/playwright/](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/).
 
 > [!NOTE]
-> Examples that start with "`test`" are designed to run with **`pytest`**.<br />
-> Other scripts run directly with raw **`python`** (and start with "`raw`").
+> Examples that start with `test` run with **`pytest`**.<br />
+> Other examples run directly with raw **`python`**.
 
 --------
 
-📝 [This example](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_cdp_mode.py) uses <b><code translate="no">seleniumbase</code></b> <b><code translate="no">sb_cdp</code></b> (*[Pure CDP Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md#Pure_CDP_Mode)*):<br  /><em>(It bypasses BrowserScan, Sannysoft, and Cloudflare bot-detection)</em>
+📝 [This example](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_mode.py) uses <b><code translate="no">seleniumbase</code></b> <b><code translate="no">sb_cdp</code></b> (*[Pure CDP Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md#Pure_CDP_Mode)*):<br  /><em>(It shows some basic methods and bypasses a Cloudflare Turnstile)</em>
 
 ```python
 from seleniumbase import sb_cdp
 
-sb = sb_cdp.Chrome()  # Launch a stealth browser
-sb.goto("https://browserscan.net/bot-detection")
-sb.assert_element('strong:contains("Normal")')
-sb.sleep(1)
-
-sb.goto("https://bot.sannysoft.com/")
-sb.assert_element(".passed")
-sb.assert_element_not_visible(".failed")
-sb.sleep(1)
-
+sb = sb_cdp.Chrome()  # Launches a stealth browser
 sb.goto("https://www.planetminecraft.com/account")
-sb.type('[name="email"]', "Name123")
+sb.type('[name="email"]', "Test123")
 sb.type('[name="password"]', "Pass")
-sb.click("input#autologin")
-sb.solve_captcha()  # Works on different CAPTCHAs
+sb.click("input#autologin")  # Unchecks a checkbox
+sb.solve_captcha()  # (as backup if not automatic)
 sb.assert_element('input[name="login"]')
 sb.assert_element_not_visible("input[disabled]")
-sb.sleep(1)
-sb.quit()  # Quit browser before end-of-program
+sb.sleep(1)  # (only to slow down the live demo)
+sb.quit()  # (otherwise quits automatically at end)
 ```
 
-<p align="center">
-<img src="https://seleniumbase.github.io/cdn/img/results_normal.jpg" width="520" style="max-width: 100% !important; height: auto !important;" alt="BrowserScan Test Results: Normal" />
-<br /><em>(BrowserScan bot-detection passed successfully)</em>
-</p>
-
-<p align="center">
-<img src="https://seleniumbase.github.io/other/sannysoft_success.jpg" width="428" style="max-width: 100% !important; height: auto !important;" alt="All Sannysoft tests passed successfully" />
-<br /><em>(Sannysoft bot-detection passed successfully)</em>
-</p>
-
-<p align="center">
-<img src="https://seleniumbase.github.io/other/pmc_captcha_2.png" width="530" style="max-width: 100% !important; height: auto !important;" alt="Cloudflare Turnstile bypassed successfully" />
-<br /><em>(Cloudflare Turnstile passed successfully on Planet Minecraft)</em>
+<p align="left">
+<img src="https://seleniumbase.github.io/other/pmc_captcha_3.png" width="542" style="max-width: 100% !important; height: auto !important;" alt="Cloudflare Turnstile bypassed successfully" />
+<br /><em>(Note that the click action only unchecked the "Stay signed in" checkbox.)</em>
 </p>
 
 --------
@@ -115,7 +96,7 @@ sb.quit()  # Quit browser before end-of-program
 
 --------
 
-<p align="left">📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_yc_news.py" target="_blank" rel="noopener">This script</a> scrapes Hacker News listings:</p>
+<p align="left">📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_yc_news.py" target="_blank" rel="noopener">This script</a> searches Hacker News via Algolia. Then prints items and saves to PDF:</p>
 
 ```python
 from seleniumbase import sb_cdp
@@ -124,7 +105,9 @@ sb = sb_cdp.Chrome(fast=True)
 sb.goto("https://hn.algolia.com/?query=seleniumbase")
 elements = sb.find_elements("div.Story_title > a")
 for element in elements:
-    print("* " + element.text)
+    print("--> " + element.text)
+sb.save_as_pdf("sb_news.pdf", folder="./downloaded_files/")
+print("*** PDF saved to: ./downloaded_files/sb_news.pdf")
 ```
 
 ```
@@ -132,7 +115,7 @@ python raw_cdp_yc_news.py
 ```
 
 <p align="left">
-<img src="https://seleniumbase.github.io/other/yc_news_results.png" alt="SeleniumBase" width="510" style="max-width: 100% !important; height: auto !important;"/>
+<img src="https://seleniumbase.github.io/other/yc_news_results_2.png" alt="SeleniumBase" width="510" style="max-width: 100% !important; height: auto !important;"/>
 </p>
 
 --------
