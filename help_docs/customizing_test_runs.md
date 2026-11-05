@@ -466,7 +466,7 @@ Visit **[🗾 Locales](https://github.com/seleniumbase/SeleniumBase/blob/master/
 
 <h3><img src="https://seleniumbase.github.io/img/green_logo.png" title="SeleniumBase" width="32" /> Changing the default driver version:</h3>
 
-🔵 By default, SeleniumBase will make sure that the major driver version matches the major browser version for Chromium tests. (Eg. If Chrome `149.X` is installed and you have chromedriver `149.X`, then nothing happens, but if you had chromedriver `148.X` instead, then SeleniumBase would download chromedriver `149.X` to match the browser version.)
+🔵 By default, SeleniumBase will make sure that the major driver version matches the major browser version for Chromium tests. (Eg. If Chrome `156.X` is installed and you have chromedriver `156.X`, then nothing happens, but if you had chromedriver `155.X` instead, then SeleniumBase would download chromedriver `156.X` to match the browser version.)
 
 🎛️ To change this default behavior, you can use:
 
@@ -475,8 +475,8 @@ pytest --driver-version=VER
 ```
 
 The `VER` in `--driver-version=VER` can be:
-* A major driver version. Eg. `149`. (milestone)
-* An exact driver version. Eg. `149.0.7827.155`.
+* A major driver version. Eg. `156`. (milestone)
+* An exact driver version. Eg. `156.0.8078.80`.
 * `"browser"` (exact match on browser version)
 * `"keep"` (keep using the driver you already have)
 * `"latest"` / `"stable"` (latest stable version)

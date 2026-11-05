@@ -79,13 +79,11 @@ def get_mfa_code(totp_key=None):
 
 def is_arm_linux():
     """Returns True if machine is ARM Linux.
-    This will be useful once Google adds
-    support for ARM Linux ChromeDriver.
     (Raspberry Pi uses ARM architecture.)"""
-    return (
-        platform.system() == "Linux"
-        and platform.machine() == "aarch64"
+    is_linux = (
+        platform.system() == "Linux" or "linux" in sys.platform
     )
+    return is_linux and (platform.machine().lower() in ("aarch64", "arm64"))
 
 
 def is_arm_mac():

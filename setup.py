@@ -174,7 +174,7 @@ setup(
         'websockets~=16.1.1;python_version=="3.10"',
         'websockets>=17.4;python_version>="3.11"',
         'filelock==4.1.0;python_version=="3.10"',
-        'filelock>=4.2.7;python_version>="3.11"',
+        'filelock>=4.2.9;python_version>="3.11"',
         'fasteners>=0.20',
         'mycdp>=1.4.0',
         'pynose>=1.5.5',
@@ -222,7 +222,7 @@ setup(
         'parameterized==0.9.0',
         'behave==1.2.6',  # Newer ones had issues
         'soupsieve~=2.10.0;python_version<"3.11.5"',
-        'soupsieve~=3.0.4;python_version>="3.11.5"',
+        'soupsieve~=4.0.1;python_version>="3.11.5"',
         'beautifulsoup4~=4.15.0',
         'pyotp~=2.10.0',
         'python-xlib==0.33;platform_system=="Linux"',
@@ -244,7 +244,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage>=7.16.2;python_version=="3.10"',
-            'coverage>=7.17.0;python_version>="3.11"',
+            'coverage>=7.17.2;python_version>="3.11"',
             'pytest-cov>=7.1.0',
         ],
         # pip install -e .[flake8]
