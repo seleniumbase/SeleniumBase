@@ -1,4 +1,7 @@
-# SeleniumBase Docker Image
+#=====================================
+# SeleniumBase Dockerfile boilerplate
+# (Use this as a template for others)
+#=====================================
 FROM ubuntu:24.04
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ENV PYTHONUNBUFFERED=1
