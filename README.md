@@ -8,7 +8,7 @@
 <meta property="og:image" content="https://seleniumbase.github.io/cdn/img/mac_sb_logo_5b.png" />
 <link rel="icon" href="https://seleniumbase.github.io/img/logo7.png" />
 
-<h1 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/super_logo_sb6.png" title="SeleniumBase" width="572" style="max-width: 100% !important; height: auto !important;" /></a>
+<h1 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/super_logo_sb6.png" title="SeleniumBase" width="600" style="max-width: 100% !important; height: auto !important;" /></a>
 <br><small>Web Automation, Scraping, and E2E Testing.</small></h1>
 
 <p align="center">
