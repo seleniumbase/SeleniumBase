@@ -2,15 +2,15 @@
 # For docs generation, you'll need Python 3.11 or newer
 
 regex>=2026.9.29
-platformdirs>=4.14.3
-nab>=0.0.23
-backrefs>=8.1
+platformdirs>=4.14.5
+nab>=0.0.25
+backrefs>=8.2
 pymdown-extensions>=12.3
 python-dateutil>=4.0.0
 click>=8.5.0
 tzdata>=2026.5
 Markdown>=3.11.2
-pipdeptree==4.2.13
+pipdeptree==4.2.14
 ghp-import==2.1.0
 watchdog==7.0.0
 cairocffi==1.7.1
