@@ -504,7 +504,10 @@ def main(override=None, intel_for_uc=None, force_uc=None):
             else:
                 file_name = "chromedriver_mac64.zip"
         elif IS_LINUX:
-            file_name = "chromedriver_linux64.zip"
+            if IS_ARM_LINUX:
+                file_name = "chromedriver-linux-arm64.zip"
+            else:
+                file_name = "chromedriver-linux64.zip"
         elif IS_WINDOWS:
             file_name = "chromedriver_win32.zip"  # Works for win32 / win_x64
             if not get_latest and not get_v_latest and num_args < 4:
@@ -596,8 +599,12 @@ def main(override=None, intel_for_uc=None, force_uc=None):
                     platform_code = "mac-x64"
                     file_name = "chromedriver-mac-x64.zip"
             elif IS_LINUX:
-                platform_code = "linux64"
-                file_name = "chromedriver-linux64.zip"
+                if IS_ARM_LINUX:
+                    platform_code = "linux-arm64"
+                    file_name = "chromedriver-linux-arm64.zip"
+                else:
+                    platform_code = "linux64"
+                    file_name = "chromedriver-linux64.zip"
             elif IS_WINDOWS:
                 if "64" in ARCH:
                     platform_code = "win64"
@@ -715,8 +722,12 @@ def main(override=None, intel_for_uc=None, force_uc=None):
                 platform_code = "mac-x64"
                 file_name = "chrome-mac-x64.zip"
         elif IS_LINUX:
-            platform_code = "linux64"
-            file_name = "chrome-linux64.zip"
+            if IS_ARM_LINUX:
+                platform_code = "linux-arm64"
+                file_name = "chrome-linux-arm64.zip"
+            else:
+                platform_code = "linux64"
+                file_name = "chrome-linux64.zip"
         elif IS_WINDOWS:
             if "64" in ARCH:
                 platform_code = "win64"
@@ -824,8 +835,12 @@ def main(override=None, intel_for_uc=None, force_uc=None):
                 platform_code = "mac-x64"
                 file_name = "chrome-headless-shell-mac-x64.zip"
         elif IS_LINUX:
-            platform_code = "linux64"
-            file_name = "chrome-headless-shell-linux64.zip"
+            if IS_ARM_LINUX:
+                platform_code = "linux-arm64"
+                file_name = "chrome-headless-shell-linux-arm64.zip"
+            else:
+                platform_code = "linux64"
+                file_name = "chrome-headless-shell-linux64.zip"
         elif IS_WINDOWS:
             if "64" in ARCH:
                 platform_code = "win64"
@@ -869,7 +884,7 @@ def main(override=None, intel_for_uc=None, force_uc=None):
                 file_name = "geckodriver-%s-macos.tar.gz" % use_version
         elif IS_LINUX:
             if "64" in ARCH:
-                if "aarch64" in platform.processor():
+                if IS_ARM_LINUX:
                     file_name = (
                         "geckodriver-%s-linux-aarch64.tar.gz" % use_version
                     )
