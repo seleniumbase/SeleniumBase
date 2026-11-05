@@ -19,14 +19,14 @@ Examples:
     sbase get chromedriver
     sbase get geckodriver
     sbase get edgedriver
-    sbase get chromedriver 149
-    sbase get chromedriver 149.0.7827.155
+    sbase get chromedriver 156
+    sbase get chromedriver 156.0.8078.80
     sbase get chromedriver stable
     sbase get chromedriver beta
     sbase get chromedriver -p
     sbase get chromium
     sbase get chromium --revision=1639046
-    sbase get cft 149
+    sbase get cft 156
     sbase get chs
 Output:
     Downloads driver/binary to seleniumbase/drivers/
@@ -96,14 +96,14 @@ def invalid_run_command():
     exp += "    sbase get chromedriver\n"
     exp += "    sbase get geckodriver\n"
     exp += "    sbase get edgedriver\n"
-    exp += "    sbase get chromedriver 149\n"
-    exp += "    sbase get chromedriver 149.0.7827.155\n"
+    exp += "    sbase get chromedriver 156\n"
+    exp += "    sbase get chromedriver 156.0.8078.80\n"
     exp += "    sbase get chromedriver stable\n"
     exp += "    sbase get chromedriver beta\n"
     exp += "    sbase get chromedriver -p\n"
     exp += "    sbase get chromium\n"
     exp += "    sbase get chromium --revision=1639046\n"
-    exp += "    sbase get cft 149\n"
+    exp += "    sbase get cft 156\n"
     exp += "    sbase get chs\n"
     exp += "Output:\n"
     exp += "    Downloads driver/binary to seleniumbase/drivers/\n"
