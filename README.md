@@ -8,7 +8,7 @@
 <meta property="og:image" content="https://seleniumbase.github.io/cdn/img/mac_sb_logo_5b.png" />
 <link rel="icon" href="https://seleniumbase.github.io/img/logo7.png" />
 
-<h1 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/super_logo_sb5.png" title="SeleniumBase" width="572" style="max-width: 100% !important; height: auto !important;" /></a></h1>
+<h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/super_logo_sb6.png" title="SeleniumBase" width="572" style="max-width: 100% !important; height: auto !important;" /></a></h3>
 
 <h3 align="center">Browser Automation, Web Scraping, and End-to-End Testing.<br /></h3>
 
@@ -51,6 +51,25 @@
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md">🖼️ Visual</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/case_plans.md">🗂️ CPlans</a>
 </p>
+
+--------
+
+<h3 align="left">⚙️ Choose from Regular Mode, UC Mode, or CDP Mode:</h3>
+
+<img src="https://seleniumbase.github.io/other/sb_architecture.png" width="550" style="max-width: 100% !important; height: auto !important;" alt="Stealthy architecture flowchart" />
+
+<ul>
+<li>🐙 <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md"><b>CDP Mode</b></a> <b>bypasses bot-detection with Chromium-based browsers.</b></li>
+<li>🎭 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md"><b><span translate="no">Stealthy Playwright Mode</span></b></a> <b>extends CDP Mode's stealth to Playwright.</b></li>
+</ul>
+<ul>
+<li><code><b>pip install seleniumbase</b></code> for the main framework.</li>
+<li><code><b>pip install playwright</b></code> for the optional integration.</li>
+</ul>
+
+<ul>
+<li>🤖 For the MCP server, <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/mcp_servers/">see the MCP ReadMe</a>.</li>
+</ul>
 
 --------
 
@@ -162,12 +181,6 @@ The Chromium browser can also be set via method args, eg: `cft=True`, `use_chrom
 ```python
 sb = sb_cdp.Chrome(use_chromium=True)
 ```
-
---------
-
-<h3 align="left">⚙️ Stealthy architecture flowchart:</h3>
-
-<img src="https://seleniumbase.github.io/other/sb_architecture.png" width="530" style="max-width: 100% !important; height: auto !important;" alt="Stealthy architecture flowchart" />
 
 --------
 
