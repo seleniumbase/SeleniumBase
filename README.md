@@ -8,8 +8,9 @@
 <meta property="og:image" content="https://seleniumbase.github.io/cdn/img/mac_sb_logo_5b.png" />
 <link rel="icon" href="https://seleniumbase.github.io/img/logo7.png" />
 
-<h1 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/super_logo_sb7.png" title="SeleniumBase" width="520" style="max-width: 100% !important; height: auto !important;" /></a>
-<br /><br /><small><b>Web Automation, E2E Testing, and Stealth</b></small></h1>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/super_logo_sb6.png" alt="SeleniumBase" title="SeleniumBase" width="420" /></a></p>
+
+<h3 align="center" class="hero__title"><b>All-in-one Browser Automation Framework:<br />Web Crawling / Testing / Scraping / Stealth</b></h3>
 
 <p align="center">
 <a href="https://pypi.python.org/pypi/seleniumbase" target="_blank" rel="noopener"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?style=flat-square&color=3399EE" alt="PyPI version" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank" rel="noopener"><img src="https://flat.badgen.net/github/checks/seleniumbase/SeleniumBase/master?label=CI&" alt="CI Status" height="20" /></a> <a href="https://seleniumbase.io" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg?style=flat-square" alt="SeleniumBase Docs" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/license-MIT-33A6C6.svg?style=flat-square" title="SeleniumBase" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/mcp_servers" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/MCP-tool_info-7C6EE5?style=flat-square" height="20" /></a> <a href="https://pepy.tech/projects/seleniumbase?timeRange=threeMonths&category=version&includeCIDownloads=true&granularity=daily&viewType=line&versions=*" target="_blank" rel="noopener"><img src="https://static.pepy.tech/badge/seleniumbase" alt="SeleniumBase PyPI downloads" height="20" /></a><br />
@@ -53,7 +54,7 @@
 
 --------
 
-<h3 align="left">⚙️ Choose from Regular Mode, UC Mode, or Pure CDP Mode:</h3>
+<h3 align="left">⚙️ High-level architecture and special modes:</h3>
 
 <img src="https://seleniumbase.github.io/other/sb_architecture.png" width="595" style="max-width: 100% !important; height: auto !important;" alt="Stealthy architecture flowchart" />
 
@@ -64,10 +65,6 @@
 <ul>
 <li><code><b>pip install seleniumbase</b></code> for the main framework.</li>
 <li><code><b>pip install playwright</b></code> for the optional integration.</li>
-</ul>
-
-<ul>
-<li>🤖 For the MCP server, <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/mcp_servers/">see the MCP ReadMe</a>.</li>
 </ul>
 
 --------
