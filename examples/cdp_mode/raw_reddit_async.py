@@ -3,11 +3,14 @@ from seleniumbase import cdp_driver
 
 
 async def main():
-    search = "reddit+scraper"
-    url = f"https://www.reddit.com/r/webscraping/search/?q={search}"
+    search = "Reddit Scraping"
     driver = await cdp_driver.start_async(use_chromium=True)
-    page = await driver.get(url)
+    page = await driver.get("https://www.reddit.com/r/webscraping/")
     await page.solve_captcha()  # Might not be needed
+    element = await page.find("faceplate-search-input")
+    await element.mouse_click_async()
+    await page.type("html", search + "\n")
+    await page.sleep(2.5)
     post_title = '[data-testid="post-title"]'
     await page.select(post_title)
     for i in range(8):
