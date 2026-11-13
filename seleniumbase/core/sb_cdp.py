@@ -2463,8 +2463,8 @@ class CDPMethods():
         self.loop.run_until_complete(self.page.wait(0.05))
         if (
             self.is_element_visible(
-                'body > iframe[src*="/geo.captcha-delivery.com/captcha/"], '
-                'body > iframe[src*="/geo.captcha-delivery.com/interstitial/"]'
+                'iframe[src*="/geo.captcha-delivery.com/captcha/"], '
+                'iframe[src*="/geo.captcha-delivery.com/interstitial/"]'
             )
         ):
             return True
@@ -2551,8 +2551,8 @@ class CDPMethods():
 
     def __gui_slide_datadome_captcha(self):
         iframe = (
-            'body > iframe[src*="/geo.captcha-delivery.com/captcha/"], '
-            'body > iframe[src*="/geo.captcha-delivery.com/interstitial/"]'
+            'iframe[src*="/geo.captcha-delivery.com/captcha/"], '
+            'iframe[src*="/geo.captcha-delivery.com/interstitial/"]'
         )
         if not self.is_element_visible(iframe):
             return False
