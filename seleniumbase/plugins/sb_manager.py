@@ -124,7 +124,7 @@ def SB(
     wfa=None,  # Shortcut / Duplicate of "wait_for_angularjs".
     cft=None,  # Use "Chrome for Testing"
     chs=None,  # Use "Chrome-Headless-Shell"
-    use_chromium=None,  # Use base "Chromium"
+    use_chromium=None,  # Use unbranded "Chromium"
     no_tt=None,  # No --test-type to hide infobars in Proxy Mode.
     save_screenshot=None,  # Save a screenshot at the end of each test.
     no_screenshot=None,  # No screenshots saved unless tests directly ask it.

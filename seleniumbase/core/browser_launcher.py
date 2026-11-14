@@ -2373,7 +2373,8 @@ def _set_chrome_options(
     device_pixel_ratio,
 ):
     chrome_options = webdriver.ChromeOptions()
-    if is_using_uc(undetectable, browser_name):
+    is_uc = is_using_uc(undetectable, browser_name)
+    if is_uc:
         from seleniumbase import undetected
         chrome_options = undetected.ChromeOptions()
     elif browser_name == constants.Browser.EDGE:
@@ -2457,7 +2458,7 @@ def _set_chrome_options(
         chrome_options.add_argument(
             "--host-resolver-rules=%s" % host_resolver_rules
         )
-    if mobile_emulator and not is_using_uc(undetectable, browser_name):
+    if mobile_emulator and not is_uc:
         emulator_settings = {}
         device_metrics = {}
         if (
@@ -2555,7 +2556,7 @@ def _set_chrome_options(
             pass
     if dark_mode:
         chrome_options.add_argument("--enable-features=WebContentsForceDark")
-    if user_data_dir and not is_using_uc(undetectable, browser_name):
+    if user_data_dir and not is_uc:
         abs_path = os.path.abspath(user_data_dir)
         chrome_options.add_argument("--user-data-dir=%s" % abs_path)
     if extension_zip:
@@ -2646,7 +2647,7 @@ def _set_chrome_options(
     if proxy_string:
         if proxy_auth:
             zip_it = True
-            if is_using_uc(undetectable, browser_name):
+            if is_uc:
                 zip_it = False  # undetected-chromedriver needs a folder ext
             chrome_options = _add_chrome_proxy_extension(
                 chrome_options,
@@ -2666,7 +2667,7 @@ def _set_chrome_options(
     elif proxy_pac_url:
         if proxy_auth:
             zip_it = True  # undetected-chromedriver needs a folder ext
-            if is_using_uc(undetectable, browser_name):
+            if is_uc:
                 zip_it = False
             chrome_options = _add_chrome_proxy_extension(
                 chrome_options,
@@ -2679,18 +2680,14 @@ def _set_chrome_options(
                 multi_proxy,
             )
         chrome_options.add_argument("--proxy-pac-url=%s" % proxy_pac_url)
-    if (
-        not is_using_uc(undetectable, browser_name)
-        or not enable_ws
-        or proxy_string
-    ):
+    if not is_uc or not enable_ws or proxy_string:
         chrome_options.add_argument("--ignore-certificate-errors")
         chrome_options.add_argument("--ignore-ssl-errors=yes")
     if not enable_ws:
         chrome_options.add_argument("--disable-web-security")
     if (
         IS_LINUX
-        or (IS_MAC and not is_using_uc(undetectable, browser_name))
+        or (IS_MAC and not is_uc)
     ):
         chrome_options.add_argument("--no-sandbox")
     if remote_debug:
@@ -2705,13 +2702,10 @@ def _set_chrome_options(
     if swiftshader:
         chrome_options.add_argument("--use-gl=angle")
         chrome_options.add_argument("--use-angle=swiftshader-webgl")
-    elif (
-        not is_using_uc(undetectable, browser_name)
-        and not enable_3d_apis
-    ):
+    elif not is_uc and not enable_3d_apis:
         chrome_options.add_argument("--disable-gpu")
     if (
-        (not IS_LINUX and is_using_uc(undetectable, browser_name))
+        (not IS_LINUX and is_uc)
         or (
             IS_MAC
             and binary_location
@@ -2722,7 +2716,7 @@ def _set_chrome_options(
         chrome_options.add_argument("--disable-application-cache")
     if IS_LINUX:
         chrome_options.add_argument("--disable-dev-shm-usage")
-        if is_using_uc(undetectable, browser_name):
+        if is_uc:
             chrome_options.add_argument("--disable-application-cache")
             chrome_options.add_argument("--disable-setuid-sandbox")
         if not binary_location:
@@ -2762,9 +2756,7 @@ def _set_chrome_options(
                     )
             if "set-binary" in chromium_arg_item and not binary_location:
                 br_app = "google-chrome"
-                binary_loc = detect_b_ver.get_binary_location(
-                    br_app, is_using_uc(undetectable, browser_name)
-                )
+                binary_loc = detect_b_ver.get_binary_location(br_app, is_uc)
                 if os.path.exists(binary_loc):
                     binary_location = binary_loc
             elif "disable-features=" in chromium_arg_item:
@@ -2789,9 +2781,9 @@ def _set_chrome_options(
     chrome_options.add_argument("--disable-translate")
     if binary_location:
         chrome_options.binary_location = binary_location
-    if not enable_3d_apis and not is_using_uc(undetectable, browser_name):
+    if not enable_3d_apis and not is_uc:
         chrome_options.add_argument("--disable-3d-apis")
-    if headless or headless2 or is_using_uc(undetectable, browser_name):
+    if headless or headless2 or is_uc:
         chrome_options.add_argument("--disable-renderer-backgrounding")
     chrome_options.add_argument("--disable-background-networking")
     chrome_options.add_argument("--disable-backgrounding-occluded-windows")
@@ -2833,7 +2825,7 @@ def _set_chrome_options(
     included_disabled_features.append("PasskeyAuth")
     included_disabled_features.append("DialMediaRouteProvider")
     included_disabled_features.append("WebRtcHideLocalIpsWithMdns")
-    if is_using_uc(undetectable, browser_name):
+    if is_uc:
         included_disabled_features.append("IsolateOrigins")
         included_disabled_features.append("site-per-process")
     for item in extra_disabled_features:
@@ -2860,12 +2852,12 @@ def _set_chrome_options(
             # when using a proxy. Not used anymore if no proxy otherwise.
             chrome_options.add_argument("--test-type")
     if proxy_auth or sb_config._ext_dirs:
-        if not is_using_uc(undetectable, browser_name):
+        if not is_uc:
             chrome_options.add_argument("--remote-debugging-pipe")
             chrome_options.enable_webextensions = True
             chrome_options.enable_bidi = True
     if (
-        is_using_uc(undetectable, browser_name)
+        is_uc
         and (
             not headless
             or IS_LINUX  # switches to Xvfb (non-headless)

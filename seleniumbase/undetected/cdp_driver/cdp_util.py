@@ -308,10 +308,10 @@ async def start(
     tzone: str | None = None,  # Eg "America/New_York", "Asia/Kolkata"
     geoloc: list | tuple | None = None,  # Eg [48.87645, 2.26340]
     mobile: bool | None = None,  # Use Mobile Mode with default args
-    disable_csp: str | None = None,  # Disable content security policy
+    disable_csp: bool | None = None,  # Disable content security policy
     extension_dir: str | None = None,  # Chrome extension directory
-    use_chromium: str | None = None,  # Use the base Chromium browser
-    cft: str | None = None,  # Use the Chrome-for-Testing browser
+    use_chromium: bool | None = None,  # Use unbranded Chromium browser
+    cft: bool | None = None,  # Use the Chrome-for-Testing browser
     no_tt: bool | None = None,  # No --test-type with proxy to hide infobars.
     **kwargs: dict | None,
 ) -> Browser:
