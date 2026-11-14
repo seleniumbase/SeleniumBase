@@ -2879,7 +2879,8 @@ def _set_chrome_options(
         chrome_options.add_argument("--disable-auto-reload")
         chrome_options.add_argument("--disable-background-timer-throttling")
         # Prevent new tabs opened by Selenium from being blocked:
-        chrome_options.add_argument("--disable-popup-blocking")
+        # (Option might not be needed anymore. Removing for now.)
+        # chrome_options.add_argument("--disable-popup-blocking")
         # Skip remaining options that trigger anti-bot services
         return chrome_options
     chrome_options.add_argument("--log-level=3")
