@@ -2805,7 +2805,10 @@ def _set_chrome_options(
     chrome_options.add_argument(
         '--simulate-outdated-no-au="Tue, 31 Dec 2099 23:59:59 GMT"'
     )
-    chrome_options.add_argument("--disable-ipc-flooding-protection")
+    if not is_uc or __is_using_fast_mode():
+        # Since disabling IPC FP is detectable by sites that look for it,
+        # we'll now keep it enabled in UC Mode / CDP Mode, unless "fast".
+        chrome_options.add_argument("--disable-ipc-flooding-protection")
     chrome_options.add_argument("--disable-password-generation")
     chrome_options.add_argument("--disable-domain-reliability")
     chrome_options.add_argument("--disable-breakpad")

@@ -248,7 +248,6 @@ class Config:
             "--disable-password-generation",
             "--disable-save-password-bubble",
             "--disable-single-click-autofill",
-            "--disable-ipc-flooding-protection",
             "--disable-background-timer-throttling",
             "--disable-search-engine-choice-screen",
             "--disable-background-networking",
@@ -280,6 +279,10 @@ class Config:
             self._default_browser_args.append("--disable-setuid-sandbox")
         if mock_keychain:
             self._default_browser_args.append("--use-mock-keychain")
+        if hasattr(sb_config, "fast_mode") and sb_config.fast_mode:
+            self._default_browser_args.append(
+                "--disable-ipc-flooding-protection"
+            )
 
     @property
     def browser_args(self):
