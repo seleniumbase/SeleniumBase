@@ -125,6 +125,7 @@ def SB(
     cft=None,  # Use "Chrome for Testing"
     chs=None,  # Use "Chrome-Headless-Shell"
     use_chromium=None,  # Use base "Chromium"
+    no_tt=None,  # No --test-type to hide infobars in Proxy Mode.
     save_screenshot=None,  # Save a screenshot at the end of each test.
     no_screenshot=None,  # No screenshots saved unless tests directly ask it.
     page_load_strategy=None,  # Set Chrome PLS to "normal", "eager", or "none".
@@ -563,6 +564,13 @@ def SB(
             is_mobile = False
     if is_mobile:
         sb_config.mobile_emulator = True
+    if (
+        (no_tt is None and "--no-tt" in sys_argv)
+        or no_tt
+    ):
+        sb_config._no_tt = True
+    else:
+        sb_config._no_tt = False
     proxy_string = proxy
     if proxy_string is None and "--proxy" in arg_join:
         if "--proxy=" in arg_join:

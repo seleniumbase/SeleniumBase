@@ -274,7 +274,10 @@ class Config:
         ):
             pass  # Looks like "--test-type" breaks Brave now
         else:
-            self._default_browser_args.append("--test-type")
+            if proxy and not (
+                hasattr(sb_config, "_no_tt") and sb_config._no_tt
+            ):
+                self._default_browser_args.append("--test-type")
         if IS_LINUX:
             self._default_browser_args.append("--disable-setuid-sandbox")
         if mock_keychain:

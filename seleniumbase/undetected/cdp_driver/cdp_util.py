@@ -312,6 +312,7 @@ async def start(
     extension_dir: str | None = None,  # Chrome extension directory
     use_chromium: str | None = None,  # Use the base Chromium browser
     cft: str | None = None,  # Use the Chrome-for-Testing browser
+    no_tt: bool | None = None,  # No --test-type with proxy to hide infobars.
     **kwargs: dict | None,
 ) -> Browser:
     """
@@ -391,6 +392,13 @@ async def start(
         sb_config._cdp_mobile_mode = True
     else:
         sb_config._cdp_mobile_mode = False
+    if (
+        (no_tt is None and "--no-tt" in sys_argv)
+        or no_tt
+    ):
+        sb_config._no_tt = True
+    else:
+        sb_config._no_tt = False
     if ad_block is None:
         if "--ad-block" in sys_argv or "--ad_block" in sys_argv:
             ad_block = True

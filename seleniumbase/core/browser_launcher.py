@@ -2850,7 +2850,15 @@ def _set_chrome_options(
     ):
         pass  # Looks like "--test-type" breaks Brave now
     else:
-        chrome_options.add_argument("--test-type")
+        if not is_uc or (
+            proxy_string and not (
+                hasattr(sb_config, "_no_tt") and sb_config._no_tt
+            )
+        ):
+            # Since --test-type is detectable by sites that look for it,
+            # there's a new no_tt option to skip it in UC Mode / CDP Mode
+            # when using a proxy. Not used anymore if no proxy otherwise.
+            chrome_options.add_argument("--test-type")
     if proxy_auth or sb_config._ext_dirs:
         if not is_using_uc(undetectable, browser_name):
             chrome_options.add_argument("--remote-debugging-pipe")

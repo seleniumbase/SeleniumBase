@@ -4172,6 +4172,7 @@ class BaseCase(unittest.TestCase):
         d_width=None,
         d_height=None,
         d_p_r=None,
+        no_tt=None,
         **kwargs,
     ):
         """This method spins up an extra browser for tests that require
@@ -4233,6 +4234,7 @@ class BaseCase(unittest.TestCase):
         d_width - the device width of the mobile emulator (Chrome-only)
         d_height - the device height of the mobile emulator (Chrome-only)
         d_p_r - the device pixel ratio of the mobile emulator (Chrome-only)
+        no_tt - the option to NOT use "--test-type" (Chromium-only stealth)
         """
         self.__check_scope()
         if self.browser == "remote" and self.servername == "localhost":
@@ -4379,6 +4381,11 @@ class BaseCase(unittest.TestCase):
         if external_pdf is None:
             external_pdf = self.external_pdf
         test_id = self.__get_test_id()
+        _existing_no_tt = None
+        if hasattr(sb_config, "_no_tt"):
+            _existing_no_tt = sb_config._no_tt
+        if no_tt is not None:
+            sb_config._no_tt = no_tt
         if cap_file is None:
             cap_file = self.cap_file
         if cap_string is None:
@@ -4522,6 +4529,7 @@ class BaseCase(unittest.TestCase):
                         self.__dont_record_open = True
                         self.open(new_start_page)
                         self.__dont_record_open = False
+        sb_config._no_tt = _existing_no_tt
         if undetectable:
             if hasattr(new_driver, "cdp"):
                 self.cdp = new_driver.cdp

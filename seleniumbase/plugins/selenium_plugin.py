@@ -95,6 +95,7 @@ class SeleniumBrowser(Plugin):
     --guest  (Enable Chrome's Guest mode.)
     --dark  (Enable Chrome's Dark mode.)
     --devtools  (Open Chrome's DevTools when the browser opens.)
+    --no-tt  (No --test-type to hide infobars in Proxy Mode. Stealthier.)
     --disable-beforeunload  (Disable the "beforeunload" event on Chrome.)
     --window-position=X,Y  (Set the browser's starting window position.)
     --window-size=WIDTH,HEIGHT  (Set the browser's starting window size.)
@@ -992,6 +993,20 @@ class SeleniumBrowser(Plugin):
             help="""Using this opens Chrome's DevTools.""",
         )
         parser.addoption(
+            "--no-tt",
+            "--no_tt",
+            action="store_true",
+            dest="_no_tt",
+            default=False,
+            help="""The option to not use the "--test-type" option
+                    on Chromium-based browsers, which is generally
+                    used to suppress startup infobars. This option
+                    only takes effect when using proxy in UC Mode.
+                    Setting "--no-tt" improves stealth because
+                    "--test-type" is detectable, however very few
+                    sites are currenly trying to detect it.""",
+        )
+        parser.addoption(
             "--disable-beforeunload",
             "--disable_beforeunload",
             action="store_true",
@@ -1446,6 +1461,7 @@ class SeleniumBrowser(Plugin):
         test.test.dashboard = False
         test.test._multithreaded = False
         test.test._reuse_session = False
+        sb_config._no_tt = self.options._no_tt
         sb_config.recorder_mode = test.test.recorder_mode
         sb_config.no_screenshot = test.test.no_screenshot_after_test
         if test.test.servername != "localhost":

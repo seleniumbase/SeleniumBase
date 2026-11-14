@@ -139,6 +139,7 @@ def Driver(
     cft=None,  # Use "Chrome for Testing"
     chs=None,  # Use "Chrome-Headless-Shell"
     use_chromium=None,  # Use base "Chromium"
+    no_tt=None,  # No --test-type to hide infobars in Proxy Mode.
 ) -> sb_driver.DriverMethods:
     """
     * SeleniumBase Driver as a Python Context Manager or a returnable object. *
@@ -490,6 +491,13 @@ def Driver(
             is_mobile = True
         else:
             is_mobile = False
+    if (
+        (no_tt is None and "--no-tt" in sys_argv)
+        or no_tt
+    ):
+        sb_config._no_tt = True
+    else:
+        sb_config._no_tt = False
     test_id = "direct_driver"
     proxy_string = proxy
     if proxy_string is None and "--proxy" in arg_join:

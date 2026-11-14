@@ -123,6 +123,7 @@ def pytest_addoption(parser):
     --rs | --reuse-session  (Reuse browser session for all tests.)
     --rcs | --reuse-class-session  (Reuse session for tests in class.)
     --crumbs  (Delete all cookies between tests reusing a session.)
+    --no-tt  (No --test-type to hide infobars in Proxy Mode. Stealthier.)
     --disable-beforeunload  (Disable the "beforeunload" event on Chrome.)
     --window-position=X,Y  (Set the browser's starting window position.)
     --window-size=WIDTH,HEIGHT  (Set the browser's starting window size.)
@@ -1332,6 +1333,20 @@ def pytest_addoption(parser):
                 use a new clean browser if not reusing sessions.""",
     )
     parser.addoption(
+        "--no-tt",
+        "--no_tt",
+        action="store_true",
+        dest="_no_tt",
+        default=False,
+        help="""The option to not use the "--test-type" option
+                on Chromium-based browsers, which is generally
+                used to suppress startup infobars. This option
+                only takes effect when using proxy in UC Mode.
+                Setting "--no-tt" improves stealth because
+                "--test-type" is detectable, however very few
+                sites are currenly trying to detect it.""",
+    )
+    parser.addoption(
         "--disable-beforeunload",
         "--disable_beforeunload",
         action="store_true",
@@ -1874,6 +1889,7 @@ def pytest_configure(config):
         sb_config.reuse_session = True
     sb_config.shared_driver = None  # The default driver for session reuse
     sb_config.crumbs = config.getoption("crumbs")
+    sb_config._no_tt = config.getoption("_no_tt")
     sb_config._disable_beforeunload = config.getoption("_disable_beforeunload")
     sb_config.window_position = config.getoption("window_position")
     sb_config.window_size = config.getoption("window_size")
