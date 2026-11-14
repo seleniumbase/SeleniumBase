@@ -2839,6 +2839,8 @@ def _set_chrome_options(
     d_f_string = ",".join(included_disabled_features)
     chrome_options.add_argument("--disable-features=%s" % d_f_string)
     chrome_options.add_argument("--enable-unsafe-extension-debugging")
+    if is_uc and binary_location and "cft_drivers" in binary_location:
+        chrome_options.add_argument("--disable-infobars")
     if (
         hasattr(sb_config, "_cdp_browser")
         and sb_config._cdp_browser == "brave"

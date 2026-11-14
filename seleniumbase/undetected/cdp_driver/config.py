@@ -262,6 +262,14 @@ class Config:
             "--disable-dev-shm-usage",
         ]
         if (
+            self.browser_executable_path
+            and (
+                "cft_drivers" in self.browser_executable_path
+                or self.browser_executable_path == "cft"
+            )
+        ):
+            self._default_browser_args.append("--disable-infobars")
+        if (
             hasattr(sb_config, "_cdp_browser")
             and sb_config._cdp_browser == "brave"
         ):
