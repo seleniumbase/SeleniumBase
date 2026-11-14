@@ -298,10 +298,13 @@ class Browser:
     def get_rd_url(self):
         """Returns the remote-debugging URL, which is used for
         allowing the Playwright integration to launch stealthy.
+        Also fixes a NodeJS compatibility issue on old versions
+        of macOS when using Playwright versions 1.65.0 or newer.
         Also sets an environment variable to hide this warning:
         Deprecation: "url.parse() behavior is not standardized".
         (github.com/microsoft/playwright-python/issues/3016)"""
         os.environ["NODE_NO_WARNINGS"] = "1"
+        shared_utils.fix_playwright_node_compatibility()
         host = self.config.host
         port = self.config.port
         return f"http://{host}:{port}"

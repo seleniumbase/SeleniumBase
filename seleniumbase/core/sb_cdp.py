@@ -257,12 +257,15 @@ class CDPMethods():
         that SeleniumBase methods can be called from Playwright
         without encountering event loop error messages such as:
         Cannot run the event loop while another loop is running.
+        Also fixes a NodeJS compatibility issue on old versions
+        of macOS when using Playwright versions 1.65.0 or newer.
         Also sets an environment variable to hide this warning:
         Deprecation: "url.parse() behavior is not standardized".
         (github.com/microsoft/playwright-python/issues/3016)"""
         from seleniumbase.core import nest_asyncio
         nest_asyncio.apply()
         os.environ["NODE_NO_WARNINGS"] = "1"
+        shared_utils.fix_playwright_node_compatibility()
         driver = self.driver
         if hasattr(driver, "cdp_base"):
             driver = driver.cdp_base
