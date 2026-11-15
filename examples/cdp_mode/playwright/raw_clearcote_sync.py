@@ -9,9 +9,7 @@ with sync_playwright() as p:
     page = browser.contexts[0].pages[0]
     page.goto("https://www.clearcotelabs.com/audit")
     sb.click('button[aria-label="Marker 1"]')
-    sb.click('button[aria-label="Marker 2"]')
-    sb.click('button[aria-label="Marker 3"]')
-    sb.press_keys("input", "audit")
+    sb.press_keys("input", "Audit")
     sb.set_value('input[type="range"]', "100")
     sb.click_and_hold("button[data-interaction-hold]")
     sb.select_option_by_text("select", "Mouse")

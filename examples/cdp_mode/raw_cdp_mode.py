@@ -1,15 +1,13 @@
-"""Bypass bot-detection with SeleniumBase CDP Mode.
-Assert statements that aren't met raise exceptions.
-"""
+"""Bypass bot-detection with SeleniumBase CDP Mode."""
 from seleniumbase import sb_cdp
 
-sb = sb_cdp.Chrome()  # Launches a stealth browser
+sb = sb_cdp.Chrome()  # Launch a stealth browser
 sb.goto("https://www.planetminecraft.com/account")
 sb.type('[name="email"]', "Test123")
 sb.type('[name="password"]', "Pass")
-sb.click("input#autologin")  # Unchecks a checkbox
-sb.solve_captcha()  # (as backup if not automatic)
+sb.click("input#autologin")  # Uncheck a checkbox
+sb.solve_captcha()  # (fallback if not automatic)
 sb.assert_element('input[name="login"]')
 sb.assert_element_not_visible("input[disabled]")
-sb.sleep(1)  # (only to slow down the live demo)
-sb.quit()  # (otherwise quits automatically at end)
+sb.sleep(1)  # (see the live demo more easily)
+sb.quit()

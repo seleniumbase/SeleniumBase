@@ -2,7 +2,7 @@
 
 <h2><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/img/logo6.png" title="SeleniumBase" width="32"></a> Example Tests:</h2>
 
-<h4>(For stealthy examples, see <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode">./cdp_mode/</a> and <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/">./cdp_mode/playwright/</a>)</h4>
+<h3>(For stealthy examples, see <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode">./cdp_mode/</a> and <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/">./cdp_mode/playwright/</a>)</h3>
 
 <p align="left"><a align="center" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py"><img align="center" src="https://seleniumbase.github.io/cdn/img/sb_demo_page.png" alt="SeleniumBase Demo Page" width="420" /></a></p>
 

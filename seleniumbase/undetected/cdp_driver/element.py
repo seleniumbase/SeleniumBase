@@ -871,85 +871,115 @@ class Element:
         self, text: str, add_delay: bool = False, fast: bool = False
     ):
         """A helper method for send_keys_async()"""
-        # Map non-alphanumeric symbols to the correct CDP virtual key code.
-        # Prevents collisions with control keys. Eg. ord('.') = 46 = VK_DELETE.
+        # Map non-alphanumeric symbols to the correct
+        # CDP virtual key code and unshifted key.
+        # Format: char: (key, code, vk, unshifted_char)
         SYMBOL_MAP = {
-            ".": ("Period", 190),
-            ",": ("Comma", 188),
-            "-": ("Minus", 189),
-            "=": ("Equal", 187),
-            "/": ("Slash", 191),
-            "\\": ("Backslash", 220),
-            ";": ("Semicolon", 186),
-            "'": ("Quote", 222),
-            "`": ("Backquote", 192),
-            "[": ("BracketLeft", 219),
-            "]": ("BracketRight", 221),
-            "!": ("Digit1", 49),
-            "@": ("Digit2", 50),
-            "#": ("Digit3", 51),
-            "$": ("Digit4", 52),
-            "%": ("Digit5", 53),
-            "^": ("Digit6", 54),
-            "&": ("Digit7", 55),
-            "*": ("Digit8", 56),
-            "(": ("Digit9", 57),
-            ")": ("Digit0", 48),
-            "_": ("Minus", 189),
-            "+": ("Equal", 187),
-            "{": ("BracketLeft", 219),
-            "}": ("BracketRight", 221),
-            "|": ("Backslash", 220),
-            ":": ("Semicolon", 186),
-            '"': ("Quote", 222),
-            "<": ("Comma", 188),
-            ">": ("Period", 190),
-            "?": ("Slash", 191),
-            "~": ("Backquote", 192),
+            "!": ("!", "Digit1", 49, "1"),
+            "@": ("@", "Digit2", 50, "2"),
+            "#": ("#", "Digit3", 51, "3"),
+            "$": ("$", "Digit4", 52, "4"),
+            "%": ("%", "Digit5", 53, "5"),
+            "^": ("^", "Digit6", 54, "6"),
+            "&": ("&", "Digit7", 55, "7"),
+            "*": ("*", "Digit8", 56, "8"),
+            "(": ("(", "Digit9", 57, "9"),
+            ")": (")", "Digit0", 48, "0"),
+            "_": ("_", "Minus", 189, "-"),
+            "+": ("+", "Equal", 187, "="),
+            "{": ("{", "BracketLeft", 219, "["),
+            "}": ("}", "BracketRight", 221, "]"),
+            "|": ("|", "Backslash", 220, "\\"),
+            ":": (":", "Semicolon", 186, ";"),
+            '"': ('"', "Quote", 222, "'"),
+            "<": ("<", "Comma", 188, ","),
+            ">": (">", "Period", 190, "."),
+            "?": ("?", "Slash", 191, "/"),
+            "~": ("~", "Backquote", 192, "`"),
+            ".": (".", "Period", 190, "."),
+            ",": (",", "Comma", 188, ","),
+            "-": ("-", "Minus", 189, "-"),
+            "=": ("=", "Equal", 187, "="),
+            "/": ("/", "Slash", 191, "/"),
+            "\\": ("\\", "Backslash", 220, "\\"),
+            ";": (";", "Semicolon", 186, ";"),
+            "'": ("'", "Quote", 222, "'"),
+            "`": ("`", "Backquote", 192, "`"),
+            "[": ("[", "BracketLeft", 219, "["),
+            "]": ("]", "BracketRight", 221, "]"),
         }
+
         for char in text:
-            # 1. Map character to its DOM key attributes
+            # Determine if Shift is required
+            needs_shift = (
+                char.isupper()
+                or char in SYMBOL_MAP and char not in ".,-=/\\;`'[]"
+            )
+            modifiers = 8 if needs_shift else 0
             if char in ("\r", "\n"):
                 key = "Enter"
                 code = "Enter"
                 vk = 13
                 text_val = "\r"
+                unmodified_text = "\r"
             elif char == "\t":
                 key = "Tab"
                 code = "Tab"
                 vk = 9
                 text_val = ""
+                unmodified_text = ""
             elif char == " ":
                 key = " "
                 code = "Space"
                 vk = 32
                 text_val = " "
+                unmodified_text = " "
+            elif char.isalpha():
+                key = char  # Uppercase or lowercase letter
+                code = f"Key{char.upper()}"
+                vk = ord(char.upper())
+                text_val = char
+                unmodified_text = char.lower() if needs_shift else char
+            elif char.isdigit():
+                key = char
+                code = f"Digit{char}"
+                vk = ord(char)
+                text_val = char
+                unmodified_text = char
+            elif char in SYMBOL_MAP:
+                key, code, vk, unshifted_char = SYMBOL_MAP[char]
+                text_val = char
+                unmodified_text = unshifted_char if needs_shift else char
             else:
                 key = char
+                code = ""
+                vk = 0
                 text_val = char
-                if char.isalpha():
-                    code = f"Key{char.upper()}"
-                    vk = ord(char.upper())
-                elif char.isdigit():
-                    code = f"Digit{char}"
-                    vk = ord(char)
-                elif char in SYMBOL_MAP:
-                    code, vk = SYMBOL_MAP[char]
-                else:
-                    code = ""
-                    vk = 0
-            # 2. Trigger keydown DOM event WITHOUT inserting text
+                unmodified_text = char
+            # Dispatch Shift keydown if needed (to ensure trusted event chain)
+            if needs_shift:
+                await self._tab.send(
+                    cdp.input_.dispatch_key_event(
+                        type_="rawKeyDown",
+                        key="Shift",
+                        code="ShiftLeft",
+                        windows_virtual_key_code=16,
+                        modifiers=8,
+                    )
+                )
+            # Trigger rawKeyDown event
             await self._tab.send(
                 cdp.input_.dispatch_key_event(
                     type_="rawKeyDown",
                     key=key,
                     code=code,
                     windows_virtual_key_code=vk,
+                    modifiers=modifiers,
                 )
             )
             if not fast:
                 await asyncio.sleep(random.uniform(0.002, 0.003))
-            # 3. Trigger keypress DOM event AND insert text
+            # Trigger char event with proper text and unmodified_text
             if text_val:
                 await self._tab.send(
                     cdp.input_.dispatch_key_event(
@@ -957,11 +987,12 @@ class Element:
                         key=key,
                         code=code,
                         text=text_val,
-                        unmodified_text=text_val,
+                        unmodified_text=unmodified_text,
                         windows_virtual_key_code=vk,
+                        modifiers=modifiers,
                     )
                 )
-            # 4. Trigger keyup DOM event
+            # Trigger keyUp event
             if not fast:
                 await asyncio.sleep(random.uniform(0.011, 0.014))
             await self._tab.send(
@@ -970,8 +1001,20 @@ class Element:
                     key=key,
                     code=code,
                     windows_virtual_key_code=vk,
+                    modifiers=modifiers,
                 )
             )
+            # Release Shift if it was pressed
+            if needs_shift:
+                await self._tab.send(
+                    cdp.input_.dispatch_key_event(
+                        type_="keyUp",
+                        key="Shift",
+                        code="ShiftLeft",
+                        windows_virtual_key_code=16,
+                        modifiers=0,
+                    )
+                )
             if add_delay and not fast:
                 await asyncio.sleep(float(0.04 + (random.random() / 110.0)))
 

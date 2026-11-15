@@ -174,7 +174,7 @@ setup(
         'websockets~=16.1.1;python_version=="3.10"',
         'websockets>=17.4;python_version>="3.11"',
         'filelock==4.1.0;python_version=="3.10"',
-        'filelock>=4.2.9;python_version>="3.11"',
+        'filelock>=4.2.10;python_version>="3.11"',
         'fasteners>=0.20',
         'mycdp>=1.4.0',
         'pynose>=1.5.5',
@@ -191,7 +191,7 @@ setup(
         'pygments>=2.20.1',
         'pyreadline3>=3.5.4;platform_system=="Windows"',
         'tabcompleter>=1.4.1',
-        'pdbp>=1.8.3',
+        'pdbp>=1.9.0',
         'idna>=3.20',
         'charset-normalizer>=3.5.2,<4',
         'urllib3>=2.8.0,<3',
@@ -222,12 +222,12 @@ setup(
         'parameterized==0.9.0',
         'behave==1.2.6',  # Newer ones had issues
         'soupsieve~=2.10.0;python_version<"3.11.5"',
-        'soupsieve~=4.0.1;python_version>="3.11.5"',
+        'soupsieve~=4.1.1;python_version>="3.11.5"',
         'beautifulsoup4~=4.15.0',
-        'pyotp~=2.10.0',
+        'pyotp~=2.11.2',
         'python-xlib==0.33;platform_system=="Linux"',
         'PyAutoGUI>=0.9.54;platform_system=="Linux"',
-        'markdown-it-py==4.2.0',
+        'markdown-it-py==4.3.0',
         'mdurl==0.1.2',
         'rich>=15.0.0,<16',
     ],
@@ -244,7 +244,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage>=7.16.2;python_version=="3.10"',
-            'coverage>=7.17.2;python_version>="3.11"',
+            'coverage>=7.17.3;python_version>="3.11"',
             'pytest-cov>=7.1.0',
         ],
         # pip install -e .[flake8]
@@ -299,10 +299,8 @@ setup(
         # pip install -e .[playwright]
         # (For the Playwright integration.)
         "playwright": [
-            'playwright>=1.64.1',
+            'playwright>=1.65.2',
             'greenlet>=3.5.6',
-            'pyee>=13.0.1;python_version<"3.12"',
-            'pyee>=14.0.0;python_version>="3.12"',
         ],
         # pip install -e .[pyautogui]
         # (Already a required dependency on Linux now.)
@@ -312,7 +310,7 @@ setup(
         # pip install -e .[uv]
         # (For the MCP integration and more.)
         "uv": [
-            "uv>=0.13.7"
+            "uv>=0.13.8"
         ],
     },
     packages=[

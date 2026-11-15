@@ -3,6 +3,7 @@ import colorama
 import os
 import pathlib
 import platform
+import subprocess
 import sys
 import time
 from contextlib import suppress
@@ -13,7 +14,6 @@ from seleniumbase.fixtures import constants
 
 def pip_install(package, version=None):
     import fasteners
-    import subprocess
 
     pip_install_lock = fasteners.InterProcessLock(
         constants.PipInstall.LOCKFILE
@@ -167,6 +167,25 @@ def is_cdp_swap_needed(driver):
         and hasattr(driver, "is_connected")
         and not driver.is_connected()
     )
+
+
+def fix_playwright_node_compatibility():
+    """Use system Node.js on macOS versions below 13.5"""
+    if platform.system() != "Darwin":
+        return
+    mac_version = platform.mac_ver()[0]
+    if not mac_version:
+        return
+    version = tuple(int(x) for x in mac_version.split(".")[:2])
+    if version < (13, 5):
+        with suppress(Exception):
+            node_path = subprocess.run(
+                ["which", "node"],
+                capture_output=True,
+                text=True,
+            ).stdout.strip()
+            if node_path:
+                os.environ["PLAYWRIGHT_NODEJS_PATH"] = node_path
 
 
 def is_chrome_130_or_newer(self, binary_location=None):

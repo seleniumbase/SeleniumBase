@@ -248,7 +248,6 @@ class Config:
             "--disable-password-generation",
             "--disable-save-password-bubble",
             "--disable-single-click-autofill",
-            "--disable-ipc-flooding-protection",
             "--disable-background-timer-throttling",
             "--disable-search-engine-choice-screen",
             "--disable-background-networking",
@@ -262,16 +261,31 @@ class Config:
             "--disable-dev-shm-usage",
         ]
         if (
+            self.browser_executable_path
+            and (
+                "cft_drivers" in self.browser_executable_path
+                or self.browser_executable_path == "cft"
+            )
+        ):
+            self._default_browser_args.append("--disable-infobars")
+        if (
             hasattr(sb_config, "_cdp_browser")
             and sb_config._cdp_browser == "brave"
         ):
             pass  # Looks like "--test-type" breaks Brave now
         else:
-            self._default_browser_args.append("--test-type")
+            if proxy and not (
+                hasattr(sb_config, "_no_tt") and sb_config._no_tt
+            ):
+                self._default_browser_args.append("--test-type")
         if IS_LINUX:
             self._default_browser_args.append("--disable-setuid-sandbox")
         if mock_keychain:
             self._default_browser_args.append("--use-mock-keychain")
+        if hasattr(sb_config, "fast_mode") and sb_config.fast_mode:
+            self._default_browser_args.append(
+                "--disable-ipc-flooding-protection"
+            )
 
     @property
     def browser_args(self):

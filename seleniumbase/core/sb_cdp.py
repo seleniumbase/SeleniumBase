@@ -257,12 +257,15 @@ class CDPMethods():
         that SeleniumBase methods can be called from Playwright
         without encountering event loop error messages such as:
         Cannot run the event loop while another loop is running.
+        Also fixes a NodeJS compatibility issue on old versions
+        of macOS when using Playwright versions 1.65.0 or newer.
         Also sets an environment variable to hide this warning:
         Deprecation: "url.parse() behavior is not standardized".
         (github.com/microsoft/playwright-python/issues/3016)"""
         from seleniumbase.core import nest_asyncio
         nest_asyncio.apply()
         os.environ["NODE_NO_WARNINGS"] = "1"
+        shared_utils.fix_playwright_node_compatibility()
         driver = self.driver
         if hasattr(driver, "cdp_base"):
             driver = driver.cdp_base
@@ -1248,6 +1251,19 @@ class CDPMethods():
         time.sleep(0.15)
         element.flash(0.30, "44CC88", x_offset, y_offset)
         time.sleep(0.30)
+
+    def highlight_if_visible(self, selector, scroll=True, timeout=0):
+        if self.is_element_visible(selector):
+            with suppress(Exception):
+                self.highlight(selector, scroll=scroll, timeout=1)
+        elif timeout == 0:
+            return
+        else:
+            with suppress(Exception):
+                self.find_element(selector, timeout=timeout)
+                self.sleep(0.1)
+                if self.is_element_visible(selector):
+                    self.highlight(selector, scroll=scroll, timeout=1)
 
     def focus(self, selector, timeout=None):
         if not timeout:
@@ -2463,8 +2479,8 @@ class CDPMethods():
         self.loop.run_until_complete(self.page.wait(0.05))
         if (
             self.is_element_visible(
-                'body > iframe[src*="/geo.captcha-delivery.com/captcha/"], '
-                'body > iframe[src*="/geo.captcha-delivery.com/interstitial/"]'
+                'iframe[src*="/geo.captcha-delivery.com/captcha/"], '
+                'iframe[src*="/geo.captcha-delivery.com/interstitial/"]'
             )
         ):
             return True
@@ -2551,8 +2567,8 @@ class CDPMethods():
 
     def __gui_slide_datadome_captcha(self):
         iframe = (
-            'body > iframe[src*="/geo.captcha-delivery.com/captcha/"], '
-            'body > iframe[src*="/geo.captcha-delivery.com/interstitial/"]'
+            'iframe[src*="/geo.captcha-delivery.com/captcha/"], '
+            'iframe[src*="/geo.captcha-delivery.com/interstitial/"]'
         )
         if not self.is_element_visible(iframe):
             return False

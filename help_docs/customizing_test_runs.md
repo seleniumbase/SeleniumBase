@@ -223,6 +223,7 @@ pytest my_first_test.py --settings-file=custom_settings.py
 --rs | --reuse-session  # (Reuse browser session for all tests.)
 --rcs | --reuse-class-session  # (Reuse session for tests in class.)
 --crumbs  # (Delete all cookies between tests reusing a session.)
+--no-tt  # (Skips "--test-type" when using Proxy Mode. Adds stealth.)
 --disable-beforeunload  # (Disable the "beforeunload" event on Chrome.)
 --window-position=X,Y  # (Set the browser's starting window position.)
 --window-size=WIDTH,HEIGHT  # (Set the browser's starting window size.)
