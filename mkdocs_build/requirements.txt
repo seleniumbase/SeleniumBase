@@ -1,15 +1,15 @@
 # mkdocs dependencies for generating the seleniumbase.io website
 # For docs generation, you'll need Python 3.11 or newer
 
-regex>=2026.9.29
+regex>=2026.11.9
 platformdirs>=4.14.5
-nab>=0.0.26
-backrefs>=8.2
-pymdown-extensions>=12.3
+nab>=0.0.29
+backrefs>=8.3
+pymdown-extensions>=13.1
 python-dateutil>=4.0.0
-click>=8.5.0
+click>=8.5.1
 tzdata>=2026.5
-Markdown>=3.11.2
+Markdown>=3.11.3
 pipdeptree==4.2.14
 ghp-import==2.1.0
 watchdog==7.1.0
@@ -18,7 +18,7 @@ pathspec==1.1.1
 Babel==2.18.0
 paginate==0.5.7
 mkdocs==1.6.1
-mkdocs-material==9.8.0
+mkdocs-material==9.8.1
 mkdocs-exclude-search==0.6.7
 mkdocs-simple-hooks==0.1.5
 mkdocs-get-deps==0.2.2
