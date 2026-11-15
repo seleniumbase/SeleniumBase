@@ -6657,12 +6657,25 @@ class BaseCase(unittest.TestCase):
         self.update_text(selector, text, by=by)
 
     def highlight_if_visible(
-        self, selector, by="css selector", loops=4, scroll=True,
+        self, selector, by="css selector", loops=4, scroll=True, timeout=0,
     ):
         """Highlights the element if the element is visible."""
         self.__check_scope()
+        if self.__is_cdp_swap_needed():
+            self.cdp.highlight_if_visible(
+                selector, scroll=scroll, timeout=timeout
+            )
+            return
         if self.is_element_visible(selector, by=by):
             self.__highlight(selector, by=by, loops=loops, scroll=scroll)
+        elif timeout > 0:
+            with suppress(Exception):
+                self.wait_for_element_visible(
+                    selector, by=by, timeout=timeout
+                )
+                self.sleep(0.1)
+            if self.is_element_visible(selector, by=by):
+                self.__highlight(selector, by=by, loops=loops, scroll=scroll)
 
     def __highlight_element(self, element, loops=None, scroll=True):
         self.__check_scope()

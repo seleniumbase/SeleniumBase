@@ -929,6 +929,7 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
     cdp.enter_mfa_code = CDPM.enter_mfa_code
     cdp.flash = CDPM.flash
     cdp.highlight = CDPM.highlight
+    cdp.highlight_if_visible = CDPM.highlight_if_visible
     cdp.focus = CDPM.focus
     cdp.highlight_overlay = CDPM.highlight_overlay
     cdp.get_window_position = CDPM.get_window_position

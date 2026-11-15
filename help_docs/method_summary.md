@@ -284,7 +284,7 @@ self.highlight_type(selector, text, by="css selector", loops=3, scroll=True, tim
 # Duplicates:
 # self.highlight_update_text(
 #     selector, text, by="css selector", loops=3, scroll=True, timeout=None)
-self.highlight_if_visible(selector, by="css selector", loops=4, scroll=True)
+self.highlight_if_visible(selector, by="css selector", loops=4, scroll=True, timeout=0)
 self.highlight(selector, by="css selector", loops=4, scroll=True, timeout=None)
 self.highlight_elements(selector, by="css selector", loops=4, scroll=True, limit=0)
 self.press_up_arrow(selector="html", times=1, by="css selector")

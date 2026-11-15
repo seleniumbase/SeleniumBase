@@ -1252,6 +1252,19 @@ class CDPMethods():
         element.flash(0.30, "44CC88", x_offset, y_offset)
         time.sleep(0.30)
 
+    def highlight_if_visible(self, selector, scroll=True, timeout=0):
+        if self.is_element_visible(selector):
+            with suppress(Exception):
+                self.highlight(selector, scroll=scroll, timeout=1)
+        elif timeout == 0:
+            return
+        else:
+            with suppress(Exception):
+                self.find_element(selector, timeout=timeout)
+                self.sleep(0.1)
+                if self.is_element_visible(selector):
+                    self.highlight(selector, scroll=scroll, timeout=1)
+
     def focus(self, selector, timeout=None):
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
