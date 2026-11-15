@@ -775,7 +775,10 @@ with SB(uc=True, test=True) as sb:
     sb.goto("https://google.com/ncr")
     sb.type('[name="q"]', "SeleniumBase on GitHub\n")
     sb.highlight('a[href*="github.com/seleniumbase"]')
-    sb.sleep(0.5)
+    sb.sleep(1)
+    sb.highlight_if_visible(
+        'a[href*="github.com/seleniumbase"]', timeout=3
+    )
 
 with SB(test=True, rtf=True, demo=True) as sb:
     sb.goto("seleniumbase.github.io/demo_page")
@@ -961,14 +964,16 @@ sb.quit()
 Here's a Pure CDP Mode example that bypasses bot-detection to scrape data from a website:
 
 ```python
+from seleniumbase import decorators
 from seleniumbase import sb_cdp
 
+@decorators.print_runtime("CDP Priceline Example")
 def main():
-    url = "https://www.priceline.com/"
-    sb = sb_cdp.Chrome(url, lang="en")
+    sb = sb_cdp.Chrome(lang="en")
+    sb.goto("https://www.priceline.com/")
     sb.sleep(2)
     sb.internalize_links()  # Don't open links in a new tab
-    sb.click("#link_header_nav_experiences")
+    sb.click('a[href*="experiences.priceline"]')
     sb.sleep(3)
     sb.remove_elements("msm-cookie-banner")
     sb.sleep(1)
@@ -990,7 +995,9 @@ def main():
         sb.sleep(0.2)
     cards = sb.select_all('span[data-automation*="product-list-card"]')
     for card in cards:
-        print("* %s" % card.text)
+        card_text = card.text.strip()
+        if len(card_text) >= 20:
+            print("* %s" % card_text)
     sb.quit()
 
 if __name__ == "__main__":

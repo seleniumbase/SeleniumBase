@@ -8,11 +8,10 @@
 <meta property="og:image" content="https://seleniumbase.github.io/cdn/img/mac_sb_logo_5b.png" />
 <link rel="icon" href="https://seleniumbase.github.io/img/logo7.png" />
 
-<h3 align="center" class="hero__title"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/nice_logo_8t.png" alt="SeleniumBase" title="SeleniumBase" width="420" /></a><br /><b>All-in-one Browser Automation Framework:<br />Web Crawling / Testing / Scraping / Stealth</b></h3>
+<h3 align="center" class="hero__title"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/nice_logo_8t.png" alt="SeleniumBase" title="SeleniumBase" width="450" /></a><br /><b>A Complete Browser Automation Experience:<br />Web Crawling / Testing / Scraping / Stealth</b></h3>
 
 <p align="center">
-<a href="https://pypi.python.org/pypi/seleniumbase" target="_blank" rel="noopener"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?style=flat-square&color=3399EE" alt="PyPI version" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank" rel="noopener"><img src="https://flat.badgen.net/github/checks/seleniumbase/SeleniumBase/master?label=CI&" alt="CI Status" height="20" /></a> <a href="https://seleniumbase.io" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg?style=flat-square" alt="SeleniumBase Docs" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/license-MIT-33A6C6.svg?style=flat-square" title="SeleniumBase" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/mcp_servers" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/MCP-tool_info-7C6EE5?style=flat-square" height="20" /></a> <a href="https://pepy.tech/projects/seleniumbase?timeRange=threeMonths&category=version&includeCIDownloads=true&granularity=daily&viewType=line&versions=*" target="_blank" rel="noopener"><img src="https://static.pepy.tech/badge/seleniumbase" alt="SeleniumBase PyPI downloads" height="20" /></a><br />
-<a href="https://www.youtube.com/playlist?list=PLp9uKicxkBc5UIlGi2BuE3aWC7JyXpD3m" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/docs-📺-D844E8.svg?style=flat-square&logo=YouTube&logoColor=white&label=YouTube" alt="YouTube Channel" height="20" /></a> <a href="https://www.facebook.com/SeleniumBase/" target="_blank" rel="noopener"> <img src="https://img.shields.io/badge/Facebook-4K_followers-1877F2?style=flat-square&logo=facebook&logoColor=white" alt="SeleniumBase Facebook Followers" height="20" /></a> <a href="https://x.com/seleniumbase" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/-1K_followers-1DA1F2?style=flat-square&logo=x&logoColor=white&labelColor=555555" alt="SeleniumBase X Followers" height="20" /></a> <a href="https://discord.gg/EdhQTn3EyE" target="_blank" rel="noopener"><img src="https://flat.badgen.net/discord/online-members/EdhQTn3EyE?color=7289DA&icon=discord&label=Discord" height="20" alt="Discord Status" /></a> <a href="https://github.com/seleniumbase/SeleniumBase" target="_blank" rel="noopener"><img src="https://badgen.net/github/stars/seleniumbase/SeleniumBase" title="Stars" height="20" /></a>
+<a href="https://pypi.python.org/pypi/seleniumbase" target="_blank" rel="noopener"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?style=flat-square&color=3399EE" alt="PyPI version" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank" rel="noopener"><img src="https://flat.badgen.net/github/checks/seleniumbase/SeleniumBase/master?label=CI&" alt="CI Status" height="20" /></a> <a href="https://seleniumbase.io" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg?style=flat-square" alt="SeleniumBase Docs" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/license-MIT-33A6C6.svg?style=flat-square" title="SeleniumBase" height="20" /></a><br /><a href="https://github.com/seleniumbase/SeleniumBase/tree/master/mcp_servers" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/MCP-tool_info-7C6EE5?style=flat-square" height="20" /></a> <a href="https://pepy.tech/projects/seleniumbase?timeRange=threeMonths&category=version&includeCIDownloads=true&granularity=daily&viewType=line&versions=*" target="_blank" rel="noopener"><img src="https://static.pepy.tech/badge/seleniumbase" alt="SeleniumBase PyPI downloads" height="20" /></a> <a href="https://www.youtube.com/playlist?list=PLp9uKicxkBc5UIlGi2BuE3aWC7JyXpD3m" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/docs-📺-D844E8.svg?style=flat-square&logo=YouTube&logoColor=white&label=YouTube" alt="YouTube Channel" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase" target="_blank" rel="noopener"><img src="https://badgen.net/github/stars/seleniumbase/SeleniumBase" title="Stars" height="20" /></a>
 </p>
 
 <p align="center">
@@ -50,19 +49,25 @@
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/case_plans.md">🗂️ CPlans</a>
 </p>
 
+<h4>SeleniumBase is the professional toolkit for web automation activities. Built for testing websites, bypassing CAPTCHAs, enhancing productivity, completing tasks, and scaling your business.</h4>
+
 --------
 
-<h3 align="left">⚙️ High-level architecture and special modes:</h3>
+📚 Learn from [**over 200 examples** in **SeleniumBase/examples/**](https://github.com/seleniumbase/SeleniumBase/tree/master/examples).
 
-<img src="https://seleniumbase.github.io/other/sb_architecture.png" width="595" style="max-width: 100% !important; height: auto !important;" alt="Stealthy architecture flowchart" />
+<p align="left"><a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples" target="_blank" rel="noopener"><img src="https://seleniumbase.github.io/cdn/gif/google_search.gif" alt="SeleniumBase Google Search" title="SeleniumBase Google Search" width="480" /></a></p>
+
+--------
+
+<h3 align="left"><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> SeleniumBase Chromium architecture and modes:</h3>
+
+<img src="https://seleniumbase.github.io/other/sb_architecture.png" width="600" style="max-width: 100% !important; height: auto !important;" alt="Stealthy architecture flowchart" />
+
+> (*Note that "Regular Mode" also supports Safari/WebKit and Firefox/Gecko.*)
 
 <ul>
 <li>🐙 <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md"><b>CDP Mode</b></a> <b>bypasses bot-detection with Chromium-based browsers.</b></li>
 <li>🎭 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md"><b><span translate="no">Stealthy Playwright Mode</span></b></a> <b>extends CDP Mode's stealth to Playwright.</b></li>
-</ul>
-<ul>
-<li><code><b>pip install seleniumbase</b></code> for the main framework.</li>
-<li><code><b>pip install playwright</b></code> for the optional integration.</li>
 </ul>
 
 --------
@@ -84,21 +89,21 @@
 ```python
 from seleniumbase import sb_cdp
 
-sb = sb_cdp.Chrome()  # Launches a stealth browser
+sb = sb_cdp.Chrome()  # Launch a stealth browser
 sb.goto("https://www.planetminecraft.com/account")
 sb.type('[name="email"]', "Test123")
 sb.type('[name="password"]', "Pass")
-sb.click("input#autologin")  # Unchecks a checkbox
-sb.solve_captcha()  # (as backup if not automatic)
+sb.click("input#autologin")  # Uncheck a checkbox
+sb.solve_captcha()  # (fallback if not automatic)
 sb.assert_element('input[name="login"]')
 sb.assert_element_not_visible("input[disabled]")
-sb.sleep(1)  # (only to slow down the live demo)
-sb.quit()  # (otherwise quits automatically at end)
+sb.sleep(1)  # (see the live demo more easily)
+sb.quit()
 ```
 
 <p align="left">
-<img src="https://seleniumbase.github.io/other/pmc_captcha_3.png" width="542" style="max-width: 100% !important; height: auto !important;" alt="Cloudflare Turnstile bypassed successfully" />
-<br /><em>(Note that the click action only unchecked the "Stay signed in" checkbox.)</em>
+<img src="https://seleniumbase.github.io/other/pmc_captcha_3.png" width="572" style="max-width: 100% !important; height: auto !important;" alt="Cloudflare Turnstile bypassed successfully" />
+<br /><em>(Note: In this example, the click only unchecks the "Stay signed in" checkbox.)</em>
 </p>
 
 --------
