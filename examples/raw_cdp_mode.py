@@ -1,7 +1,7 @@
 """Bypass bot-detection with SeleniumBase CDP Mode."""
 from seleniumbase import sb_cdp
 
-sb = sb_cdp.Chrome()  # Launches a stealth browser
+sb = sb_cdp.Chrome()  # Launch a stealth browser
 sb.goto("https://browserscan.net/bot-detection")
 sb.assert_element('strong:contains("Normal")')
 sb.sleep(1)

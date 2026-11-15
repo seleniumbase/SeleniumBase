@@ -1,21 +1,31 @@
 from seleniumbase import SB
 
-with SB(uc=True, ad_block=True, test=True) as sb:
+with SB(uc=True, guest=True, test=True) as sb:
     sb.activate_cdp_mode()
     sb.goto("https://www.alltrails.com/")
-    sb.sleep(3.5)
+    sb.sleep(4.5)
+    sb.hover_element("body")
+    sb.sleep(0.5)
     sb.click_if_visible("button.osano-cm-close")
     sb.sleep(0.5)
     search_box = 'input[aria-describedby="search-instructions"]'
     search_term = "Thundering Brook Falls"
+    try:
+        sb.click('button[class*="ImmersiveSearch"]', timeout=3)
+    except Exception:
+        sb.hover_element("body")
+        sb.sleep(0.5)
+        sb.click('button[class*="ImmersiveSearch"]')
+    sb.sleep(0.5)
+    sb.sleep(0.5)
     sb.wait_for_element(search_box)
     sb.sleep(1.5)
     sb.type(search_box, search_term + " Trail")
-    sb.sleep(1.5)
+    sb.sleep(2.5)
     sb.click('a span:contains("%s")' % search_term)
     sb.sleep(3.5)
     sb.click('button:contains("more")')
-    sb.sleep(0.7)
+    sb.sleep(0.8)
     print("Description: (%s)\n" % sb.get_text("h1"))
     print(sb.get_text('div[class*="Description_description"]'))
     sb.scroll_to_bottom()
@@ -31,8 +41,10 @@ with SB(uc=True, ad_block=True, test=True) as sb:
     folder = "images_exported"
     file_name = "thundering_brook_falls.png"
     sb.scroll_to_top()
+    sb.sleep(0.6)
+    sb.click_visible_elements('button[title="Close"]')
     sb.sleep(0.3)
-    sb.click_if_visible('[aria-label="Close"]')
+    sb.scroll_to_top()
     sb.sleep(1.2)
     sb.save_screenshot(file_name, folder, selector="body")
     print('\n"./%s/%s" was saved!' % (folder, file_name))

@@ -9,7 +9,7 @@ with SB(uc=True, test=True, locale="en") as sb:
     sb.internalize_links()  # Don't open links in a new tab
     sb.click_if_visible('[aria-label="Close Modal"]')
     sb.sleep(0.2)
-    sb.click("#link_header_nav_experiences")
+    sb.click('a[href*="experiences.priceline"]')
     sb.sleep(3.5)
     sb.remove_elements("msm-cookie-banner")
     sb.sleep(1.5)
@@ -29,4 +29,6 @@ with SB(uc=True, test=True, locale="en") as sb:
         sb.sleep(0.2)
     cards = sb.select_all('span[data-automation*="product-list-card"]')
     for card in cards:
-        print("* %s" % card.text)
+        card_text = card.text.strip()
+        if len(card_text) >= 20:
+            print("* %s" % card_text)

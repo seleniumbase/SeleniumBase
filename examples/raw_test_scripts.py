@@ -6,8 +6,10 @@ with SB(uc=True, test=True) as sb:
     sb.click_if_visible('button:contains("Accept all")')
     sb.type('[name="q"]', "SeleniumBase on GitHub")
     sb.click('[value="Google Search"]')
-    sb.highlight('a[href*="github.com/seleniumbase"]')
-    sb.sleep(0.5)
+    sb.sleep(1)
+    sb.highlight_if_visible(
+        'a[href*="github.com/seleniumbase"]', timeout=3
+    )
 
 with SB(test=True, rtf=True, demo=True) as sb:
     sb.goto("seleniumbase.github.io/demo_page")

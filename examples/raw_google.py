@@ -1,11 +1,14 @@
 from seleniumbase import SB
 
-with SB(uc=True, test=True) as sb:
+with SB(uc=True, test=True, use_chromium=True) as sb:
     sb.goto("https://google.com/ncr")
     sb.click_if_visible('button:contains("Accept all")')
-    sb.type('[name="q"]', "SeleniumBase site:github.com")
-    sb.sleep(0.2)
-    sb.click('[value="Google Search"]')
+    sb.press_keys('[name="q"]', "SeleniumBase GitHub Page")
+    sb.sleep(0.5)
+    if sb.is_element_visible('[value="Google Search"]'):
+        sb.click('[value="Google Search"]')
+    else:
+        sb.press_keys('[name="q"]', "\n")
     sb.sleep(1)
     sb.click_if_visible('h3:contains("seleniumbase/SeleniumBase")')
     sb.sleep(1)

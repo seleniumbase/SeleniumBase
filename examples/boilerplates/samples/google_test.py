@@ -4,7 +4,7 @@ try:
     from .google_objects import HomePage, ResultsPage
 except Exception:
     from google_objects import HomePage, ResultsPage
-    BaseCase.main(__name__, __file__, "--uc")
+BaseCase.main(__name__, __file__, "--uc", "--chromium")
 
 
 class GoogleTests(BaseCase):
@@ -14,7 +14,7 @@ class GoogleTests(BaseCase):
             print("\n  Skipping test in headless mode.")
             self.skip("Skipping test in headless mode.")
         if not self.undetectable:
-            self.get_new_driver(undetectable=True)
+            self.get_new_driver(undetectable=True, use_chromium=True)
         self.goto("https://google.com/ncr")
         self.click_if_visible('button:contains("Accept all")')
         self.assert_title_contains("Google")
