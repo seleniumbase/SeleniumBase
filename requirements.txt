@@ -58,7 +58,6 @@ behave==1.2.6
 soupsieve~=2.10.0;python_version<"3.11.5"
 soupsieve~=4.1.1;python_version>="3.11.5"
 beautifulsoup4~=4.15.0
-pyotp~=2.11.2
 python-xlib==0.33;platform_system=="Linux"
 PyAutoGUI>=0.9.54;platform_system=="Linux"
 markdown-it-py==4.3.0
