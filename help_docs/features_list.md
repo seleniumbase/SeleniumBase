@@ -34,7 +34,7 @@
 * Includes a [website tour builder](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md) for creating interactive walkthroughs.
 * Includes a GUI for running pytest scripts: [SeleniumBase Commander](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/commander.md).
 * Includes integrations for [GitHub Actions](https://seleniumbase.io/integrations/github/workflows/ReadMe/), [Google Cloud](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/google_cloud/ReadMe.md), [Azure](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/jenkins/ReadMe.md), [S3](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/s3_logging_plugin.py), and [Docker](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md).
-* Can handle Google Authenticator logins with [Python's one-time password library](https://pyotp.readthedocs.io/en/latest/).
+* Can handle Google Authenticator logins that require 2FA via time-based tokens.
 * Can load and make assertions on PDF files from websites or the local file system.
 * Can inspect HTML to find issues and points of interest with the [HTML Inspector](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/html_inspector.md).
 * Is backwards-compatible with Python [WebDriver](https://www.selenium.dev/projects/) methods. (Use: `self.driver`)
