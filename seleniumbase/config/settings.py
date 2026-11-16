@@ -158,7 +158,6 @@ MASTERQA_MAX_IDLE_TIME_BEFORE_QUIT = 600
 
 # Google Authenticator
 # (For 2-factor authentication using a time-based one-time password algorithm)
-# (See https://github.com/pyotp/pyotp and https://pypi.org/project/pyotp/ )
 # (Also works with Authy and other compatible apps.)
 # Usage: "self.get_google_auth_password()"  (output based on timestamp)
 # Usage with override: "self.get_google_auth_password(totp_key=TOTP_KEY)"
