@@ -1186,7 +1186,11 @@ class CookieJar:
                     value=c.value,
                     domain=c.domain,
                     path=c.path,
-                    expires=c.expires,
+                    expires=(
+                        None
+                        if (c.session or c.expires is None or c.expires <= 0)
+                        else int(c.expires)
+                    ),
                     secure=c.secure,
                 )
                 for c in cookies

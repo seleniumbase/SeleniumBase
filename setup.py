@@ -174,7 +174,7 @@ setup(
         'websockets~=16.1.1;python_version=="3.10"',
         'websockets>=17.4;python_version>="3.11"',
         'filelock==4.1.0;python_version=="3.10"',
-        'filelock>=4.2.10;python_version>="3.11"',
+        'filelock>=4.2.12;python_version>="3.11"',
         'fasteners>=0.20',
         'mycdp>=1.4.0',
         'pynose>=1.5.5',
@@ -203,7 +203,7 @@ setup(
         'trio-websocket~=0.12.2',
         'wsproto~=1.3.2',
         'websocket-client~=1.9.2',
-        'selenium==4.52.0',
+        'selenium==4.53.0',
         'cssselect~=1.5.0;python_version<"3.11"',
         'cssselect>=1.6.0,<2;python_version>="3.11"',
         'sortedcontainers==2.4.0',
@@ -222,7 +222,7 @@ setup(
         'parameterized==0.9.0',
         'behave==1.2.6',  # Newer ones had issues
         'soupsieve~=2.10.0;python_version<"3.11.5"',
-        'soupsieve~=4.1.1;python_version>="3.11.5"',
+        'soupsieve~=4.1.2;python_version>="3.11.5"',
         'beautifulsoup4~=4.15.0',
         'python-xlib==0.33;platform_system=="Linux"',
         'PyAutoGUI>=0.9.54;platform_system=="Linux"',
@@ -309,7 +309,7 @@ setup(
         # pip install -e .[uv]
         # (For the MCP integration and more.)
         "uv": [
-            "uv>=0.13.8"
+            "uv>=0.13.9"
         ],
     },
     packages=[

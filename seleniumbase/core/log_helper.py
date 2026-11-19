@@ -488,7 +488,9 @@ def get_html_source_with_base_href(driver, page_source):
     This is needed for the page html to render correctly."""
     last_page = get_last_page(driver)
     meta_charset = '<meta charset="utf-8">'
-    if "://" in last_page:
+    if last_page.startswith("data:"):
+        return page_source
+    elif "://" in last_page:
         base_href_html = get_base_href_html(last_page)
         if ' charset="' not in page_source:
             return "%s\n%s\n%s" % (base_href_html, meta_charset, page_source)
