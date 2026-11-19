@@ -2,10 +2,10 @@
 from playwright.sync_api import sync_playwright
 from seleniumbase import SB
 
-with SB(uc=True, locale="es") as sb:
+with SB(uc=True, locale="fr") as sb:
     url = "https://www.idealista.com/venta-viviendas/barcelona-provincia/"
     sb.activate_cdp_mode(url)
-    sb.sleep(1)
+    sb.sleep(1.25)
     sb.solve_captcha()
     sb.sleep(2)
     endpoint_url = sb.get_endpoint_url()
