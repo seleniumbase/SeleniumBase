@@ -57,9 +57,9 @@ self.is_element_present(selector, by="css selector")
 self.is_element_visible(selector, by="css selector")
 self.is_element_clickable(selector, by="css selector")
 self.is_element_enabled(selector, by="css selector")
-self.is_text_visible(text, selector="html", by="css selector")
-self.is_exact_text_visible(text, selector="html", by="css selector")
-self.is_non_empty_text_visible(selector="html", by="css selector")
+self.is_text_visible(text, selector="body", by="css selector")
+self.is_exact_text_visible(text, selector="body", by="css selector")
+self.is_non_empty_text_visible(selector="body", by="css selector")
 self.is_attribute_present(selector, attribute, value=None, by="css selector")
 self.is_link_text_visible(link_text)
 self.is_partial_link_text_visible(partial_link_text)
@@ -86,7 +86,7 @@ self.remove_attributes(selector, attribute, by="css selector")
 self.internalize_links()
 self.get_parent(element, by="css selector", timeout=None)
 self.get_property(selector, property, by="css selector", timeout=None)
-self.get_text_content(selector="html", by="css selector", timeout=None)
+self.get_text_content(selector="body", by="css selector", timeout=None)
 self.get_property_value(selector, property, by="css selector", timeout=None)
 self.get_image_url(selector, by="css selector", timeout=None)
 self.find_elements(selector, by="css selector", limit=0)
@@ -287,10 +287,10 @@ self.highlight_type(selector, text, by="css selector", loops=3, scroll=True, tim
 self.highlight_if_visible(selector, by="css selector", loops=4, scroll=True, timeout=0)
 self.highlight(selector, by="css selector", loops=4, scroll=True, timeout=None)
 self.highlight_elements(selector, by="css selector", loops=4, scroll=True, limit=0)
-self.press_up_arrow(selector="html", times=1, by="css selector")
-self.press_down_arrow(selector="html", times=1, by="css selector")
-self.press_left_arrow(selector="html", times=1, by="css selector")
-self.press_right_arrow(selector="html", times=1, by="css selector")
+self.press_up_arrow(selector="body", times=1, by="css selector")
+self.press_down_arrow(selector="body", times=1, by="css selector")
+self.press_left_arrow(selector="body", times=1, by="css selector")
+self.press_right_arrow(selector="body", times=1, by="css selector")
 self.scroll_to(selector, by="css selector", timeout=None)
 # Duplicates:
 # self.scroll_to_element(selector, by="css selector")
@@ -551,22 +551,22 @@ self.assert_any_of_elements_present(*args, **kwargs)
 
 ############
 
-self.find_text(text, selector="html", by="css selector", timeout=None)
+self.find_text(text, selector="body", by="css selector", timeout=None)
 # Duplicates:
-# self.wait_for_text(text, selector="html", by="css selector", timeout=None)
-# self.wait_for_text_visible(text, selector="html", by="css selector", timeout=None)
-self.find_exact_text(text, selector="html", by="css selector", timeout=None)
+# self.wait_for_text(text, selector="body", by="css selector", timeout=None)
+# self.wait_for_text_visible(text, selector="body", by="css selector", timeout=None)
+self.find_exact_text(text, selector="body", by="css selector", timeout=None)
 # Duplicates:
-# self.wait_for_exact_text(text, selector="html", by="css selector", timeout=None)
-# self.wait_for_exact_text_visible(text, selector="html", by="css selector", timeout=None)
-self.find_non_empty_text(selector="html", by="css selector", timeout=None)
+# self.wait_for_exact_text(text, selector="body", by="css selector", timeout=None)
+# self.wait_for_exact_text_visible(text, selector="body", by="css selector", timeout=None)
+self.find_non_empty_text(selector="body", by="css selector", timeout=None)
 # Duplicates:
-# self.wait_for_non_empty_text(selector="html", by="css selector", timeout=None)
-# self.wait_for_non_empty_text_visible(selector="html", by="css selector", timeout=None)
-self.assert_text(text, selector="html", by="css selector", timeout=None)
+# self.wait_for_non_empty_text(selector="body", by="css selector", timeout=None)
+# self.wait_for_non_empty_text_visible(selector="body", by="css selector", timeout=None)
+self.assert_text(text, selector="body", by="css selector", timeout=None)
 # Duplicates:
-# self.assert_text_visible(text, selector="html", by="css selector", timeout=None)
-self.assert_exact_text(text, selector="html", by="css selector", timeout=None)
+# self.assert_text_visible(text, selector="body", by="css selector", timeout=None)
+self.assert_exact_text(text, selector="body", by="css selector", timeout=None)
 
 ############
 
@@ -606,11 +606,11 @@ self.assert_element_not_visible(selector, by="css selector", timeout=None)
 
 ############
 
-self.wait_for_text_not_visible(text, selector="html", by="css selector", timeout=None)
-self.wait_for_exact_text_not_visible(text, selector="html", by="css selector", timeout=None)
-self.assert_text_not_visible(text, selector="html", by="css selector", timeout=None)
-self.assert_exact_text_not_visible(text, selector="html", by="css selector", timeout=None)
-self.assert_non_empty_text(selector="html", by="css selector", timeout=None)
+self.wait_for_text_not_visible(text, selector="body", by="css selector", timeout=None)
+self.wait_for_exact_text_not_visible(text, selector="body", by="css selector", timeout=None)
+self.assert_text_not_visible(text, selector="body", by="css selector", timeout=None)
+self.assert_exact_text_not_visible(text, selector="body", by="css selector", timeout=None)
+self.assert_non_empty_text(selector="body", by="css selector", timeout=None)
 
 ############
 
@@ -646,20 +646,20 @@ self.deferred_assert_element_present(selector, by="css selector", timeout=None, 
 # Duplicates:
 # self.delayed_assert_element_present(
 #     selector, by="css selector", timeout=None, fs=False)
-self.deferred_assert_text(text, selector="html", by="css selector", timeout=None, fs=False)
+self.deferred_assert_text(text, selector="body", by="css selector", timeout=None, fs=False)
 # Duplicates:
 # self.delayed_assert_text(
-#     text, selector="html", by="css selector", timeout=None, fs=False)
+#     text, selector="body", by="css selector", timeout=None, fs=False)
 self.deferred_assert_exact_text(
-    text, selector="html", by="css selector", timeout=None, fs=False)
+    text, selector="body", by="css selector", timeout=None, fs=False)
 # Duplicates:
 # self.delayed_assert_exact_text(
-#     text, selector="html", by="css selector", timeout=None, fs=False)
+#     text, selector="body", by="css selector", timeout=None, fs=False)
 self.deferred_assert_non_empty_text(
-    selector="html", by="css selector", timeout=None, fs=False)
+    selector="body", by="css selector", timeout=None, fs=False)
 # Duplicates:
 # self.delayed_assert_non_empty_text(
-#     selector="html", by="css selector", timeout=None, fs=False)
+#     selector="body", by="css selector", timeout=None, fs=False)
 self.deferred_check_window(
     name="default", level=0, baseline=False, check_domain=True, full_diff=False, fs=False)
 # Duplicates:
