@@ -1368,11 +1368,8 @@ def main(override=None, intel_for_uc=None, force_uc=None):
                     ["unzip", zip_file_path, "-d", downloads_folder]
                 )
             elif IS_WINDOWS:
-                cmd = (
-                    f'Expand-Archive -Path "{zip_file_path}" '
-                    f'-DestinationPath "{downloads_folder}" -Force'
-                )
-                subprocess.run(["powershell", "-Command", cmd])
+                with zipfile.ZipFile(zip_file_path, "r") as zip_ref:
+                    zip_ref.extractall(downloads_folder)
             else:
                 zip_ref.extractall(downloads_folder)
                 zip_ref.close()
@@ -1404,11 +1401,8 @@ def main(override=None, intel_for_uc=None, force_uc=None):
                     ["unzip", zip_file_path, "-d", downloads_folder]
                 )
             elif IS_WINDOWS:
-                cmd = (
-                    f'Expand-Archive -Path "{zip_file_path}" '
-                    f'-DestinationPath "{downloads_folder}" -Force'
-                )
-                subprocess.run(["powershell", "-Command", cmd])
+                with zipfile.ZipFile(zip_file_path, "r") as zip_ref:
+                    zip_ref.extractall(downloads_folder)
             else:
                 zip_ref.extractall(downloads_folder)
                 zip_ref.close()
@@ -1440,11 +1434,8 @@ def main(override=None, intel_for_uc=None, force_uc=None):
                     ["unzip", zip_file_path, "-d", downloads_folder]
                 )
             elif IS_WINDOWS:
-                cmd = (
-                    f'Expand-Archive -Path "{zip_file_path}" '
-                    f'-DestinationPath "{downloads_folder}" -Force'
-                )
-                subprocess.run(["powershell", "-Command", cmd])
+                with zipfile.ZipFile(zip_file_path, "r") as zip_ref:
+                    zip_ref.extractall(downloads_folder)
             else:
                 zip_ref.extractall(downloads_folder)
                 zip_ref.close()
