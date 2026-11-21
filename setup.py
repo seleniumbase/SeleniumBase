@@ -169,8 +169,8 @@ setup(
         'setuptools>=84.2.1',
         'wheel>=0.48.0',
         'attrs>=26.1.0',
-        'certifi>=2026.10.23',
-        'exceptiongroup>=1.3.1',
+        'certifi>=2026.11.20',
+        'exceptiongroup>=1.3.2',
         'websockets~=16.1.1;python_version=="3.10"',
         'websockets>=17.4;python_version>="3.11"',
         'filelock==4.1.0;python_version=="3.10"',
@@ -187,7 +187,7 @@ setup(
         'parse-type>=0.6.6',
         'colorama>=0.4.6',
         'psutil>=7.2.2',
-        'pyyaml>=6.0.3',
+        'pyyaml>=6.0.4',
         'pygments>=2.20.1',
         'pyreadline3>=3.5.4;platform_system=="Windows"',
         'tabcompleter>=1.4.1',
@@ -222,7 +222,7 @@ setup(
         'parameterized==0.9.0',
         'behave==1.2.6',  # Newer ones had issues
         'soupsieve~=2.10.0;python_version<"3.11.5"',
-        'soupsieve~=4.1.2;python_version>="3.11.5"',
+        'soupsieve~=4.1.3;python_version>="3.11.5"',
         'beautifulsoup4~=4.15.0',
         'python-xlib==0.33;platform_system=="Linux"',
         'PyAutoGUI>=0.9.54;platform_system=="Linux"',
@@ -243,7 +243,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage>=7.16.2;python_version=="3.10"',
-            'coverage>=7.17.3;python_version>="3.11"',
+            'coverage>=7.17.4;python_version>="3.11"',
             'pytest-cov>=7.1.0',
         ],
         # pip install -e .[flake8]
