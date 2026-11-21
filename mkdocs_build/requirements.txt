@@ -2,10 +2,10 @@
 # For docs generation, you'll need Python 3.11 or newer
 
 regex>=2026.11.19
-platformdirs>=4.14.7
+platformdirs>=4.14.8
 nab>=0.0.30
-backrefs>=8.3
-pymdown-extensions>=13.1
+backrefs>=8.3.1
+pymdown-extensions>=13.1.2
 python-dateutil>=4.0.0
 click>=8.5.1
 tzdata>=2026.5
@@ -18,7 +18,7 @@ pathspec==1.1.1
 Babel==2.18.0
 paginate==0.5.7
 mkdocs==1.6.1
-mkdocs-material==9.8.1
+mkdocs-material==9.8.2
 mkdocs-exclude-search==0.6.7
 mkdocs-simple-hooks==0.1.5
 mkdocs-get-deps==0.2.2
