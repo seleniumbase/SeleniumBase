@@ -8,7 +8,7 @@
 
 <h3 align="left">⚙️ Stealthy architecture flowchart:</h3>
 
-<img src="https://seleniumbase.github.io/other/sb_architecture.png" width="596" style="max-width: 100% !important; height: auto !important;" alt="Stealthy architecture flowchart" />
+<img src="https://seleniumbase.github.io/other/sb_stealth.png" width="596" style="max-width: 100% !important; height: auto !important;" alt="Stealthy architecture flowchart" />
 
 ----
 
