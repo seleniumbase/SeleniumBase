@@ -11,7 +11,7 @@ jobs:
 
     env:
       PY_COLORS: "1"
-    runs-on: windows-2022
+    runs-on: windows-latest
     strategy:
       fail-fast: false
       max-parallel: 6
