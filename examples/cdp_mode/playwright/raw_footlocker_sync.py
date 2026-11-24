@@ -1,7 +1,7 @@
 from playwright.sync_api import sync_playwright
 from seleniumbase import sb_cdp
 
-sb = sb_cdp.Chrome(locale="en", ad_block=True)
+sb = sb_cdp.Chrome(locale="en-US,en", ad_block=True)
 sb.goto("https://www.footlocker.com/")
 sb.click_if_visible('button[id*="Agree"]', timeout=3)
 sb.click('input[name="query"]')
