@@ -1,6 +1,6 @@
 from seleniumbase import sb_cdp
 
-sb = sb_cdp.Chrome(locale="en", guest=True)
+sb = sb_cdp.Chrome(locale="en-US,en", guest=True)
 sb.goto("https://www.walmart.com/")
 sb.sleep(1.2)
 sb.click('input[aria-label="Search"]')

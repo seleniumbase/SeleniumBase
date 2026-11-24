@@ -165,7 +165,7 @@ setup(
     python_requires=">=3.10",
     install_requires=[
         'pip>=26.3',
-        'packaging>=26.3',
+        'packaging>=26.4',
         'setuptools>=84.2.1',
         'wheel>=0.48.0',
         'attrs>=26.1.0',
@@ -174,7 +174,7 @@ setup(
         'websockets~=16.1.1;python_version=="3.10"',
         'websockets>=17.4;python_version>="3.11"',
         'filelock==4.1.0;python_version=="3.10"',
-        'filelock>=4.2.12;python_version>="3.11"',
+        'filelock>=4.3.1;python_version>="3.11"',
         'fasteners>=0.20',
         'mycdp>=1.4.0',
         'pynose>=1.5.5',
@@ -193,7 +193,7 @@ setup(
         'tabcompleter>=1.4.1',
         'pdbp>=1.9.0',
         'idna>=3.20',
-        'charset-normalizer>=3.5.2,<4',
+        'charset-normalizer>=3.5.3,<4',
         'urllib3>=2.8.0,<3',
         'requests~=2.34.2',
         'sniffio==1.3.1',
@@ -203,7 +203,7 @@ setup(
         'trio-websocket~=0.12.2',
         'wsproto~=1.3.2',
         'websocket-client~=1.9.2',
-        'selenium==4.53.0',
+        'selenium==4.54.0',
         'cssselect~=1.5.0;python_version<"3.11"',
         'cssselect>=1.6.0,<2;python_version>="3.11"',
         'sortedcontainers==2.4.0',
@@ -243,7 +243,7 @@ setup(
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage>=7.16.2;python_version=="3.10"',
-            'coverage>=7.17.4;python_version>="3.11"',
+            'coverage>=7.17.5;python_version>="3.11"',
             'pytest-cov>=7.1.0',
         ],
         # pip install -e .[flake8]

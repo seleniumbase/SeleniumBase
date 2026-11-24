@@ -158,6 +158,33 @@ def fix_url_as_needed(url):
     return url
 
 
+def normalize_locale(locale: str) -> tuple[str, str]:
+    """Return (accept_language_str, primary_locale_tag) in BCP 47 form."""
+    parts = [
+        p.strip().replace("_", "-")
+        for p in locale.split(",")
+        if p.strip()
+    ]
+    formatted = []
+    for part in parts:
+        subtags = part.split("-")
+        if len(subtags) == 1:
+            formatted.append(subtags[0].lower())
+        elif len(subtags) == 2:
+            lang, region = subtags[0].lower(), subtags[1]
+            if len(region) == 2:
+                formatted.append(f"{lang}-{region.upper()}")
+            elif len(region) == 3 and region.isdigit():
+                formatted.append(f"{lang}-{region}")
+            else:
+                formatted.append(f"{lang}-{region.capitalize()}")
+        else:
+            formatted.append(part)
+    accept_lang = ",".join(formatted)
+    primary = formatted[0] if formatted else ""
+    return accept_lang, primary
+
+
 def reconnect_if_disconnected(driver):
     if (
         getattr(driver, "_is_using_uc", None)

@@ -1,7 +1,7 @@
 from playwright.sync_api import sync_playwright
 from seleniumbase import sb_cdp
 
-sb = sb_cdp.Chrome(locale="en", ad_block=True)
+sb = sb_cdp.Chrome(locale="en-US,en", ad_block=True)
 sb.goto("https://seatgeek.com/")
 endpoint_url = sb.get_endpoint_url()
 

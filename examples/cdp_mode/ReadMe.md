@@ -180,7 +180,7 @@ To find out if WebDriver is connected or disconnected, call:
 ```python
 from seleniumbase import sb_cdp
 
-sb = sb_cdp.Chrome(locale="en", guest=True)
+sb = sb_cdp.Chrome(locale="en-US,en", guest=True)
 sb.goto("https://www.walmart.com/")
 sb.sleep(3)
 continue_button = 'button:contains("Continue shopping")'
@@ -282,7 +282,7 @@ with SB(uc=True, test=True, locale="en", ad_block=True) as sb:
 ```python
 from seleniumbase import sb_cdp
 
-sb = sb_cdp.Chrome(locale="en", guest=True)
+sb = sb_cdp.Chrome(locale="en-US,en", guest=True)
 sb.goto("https://www.hyatt.com/")
 sb.sleep(3.6)
 sb.click_if_visible('button[aria-label="Close"]')

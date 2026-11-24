@@ -12,6 +12,7 @@ import warnings
 import websockets
 from websockets.protocol import State
 from seleniumbase.fixtures import constants
+from seleniumbase.fixtures import shared_utils
 from . import cdp_util as util
 from collections.abc import Awaitable, Callable, Generator
 from typing import Any, TypeVar
@@ -342,9 +343,15 @@ class Connection(metaclass=CantTouchThis):
         )
 
     async def set_locale(self, locale: str | None = None):
-        """Sets the Language Locale code via set_user_agent_override."""
-        await self.set_user_agent(user_agent="", accept_language=locale)
-        await self.send(cdp.emulation.set_locale_override(locale))
+        """Sets the Language Locale code via emulation and user agent."""
+        if not locale:
+            return
+        accept_lang, primary_locale = shared_utils.normalize_locale(locale)
+        await self.set_user_agent(user_agent="", accept_language=accept_lang)
+        if primary_locale:
+            await self.send(
+                cdp.emulation.set_locale_override(primary_locale)
+            )
 
     async def set_timezone(self, timezone: str | None = None):
         """Sets the Timezone via set_timezone_override."""
@@ -359,6 +366,8 @@ class Connection(metaclass=CantTouchThis):
         """Sets the User Agent via set_user_agent_override."""
         if not user_agent:
             user_agent = ""
+        if accept_language:
+            accept_language, _ = shared_utils.normalize_locale(accept_language)
         await self.send(cdp.network.set_user_agent_override(
             user_agent=user_agent,
             accept_language=accept_language,

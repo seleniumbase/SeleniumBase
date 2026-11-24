@@ -14,7 +14,7 @@ async def main(url):
     await page.type("input", "Text")
     await page.click("button")
     await page.sleep(2)
-    driver.stop()
+    driver.quit()
 
 
 def run_main(url):

@@ -1,7 +1,7 @@
 from playwright.sync_api import sync_playwright
 from seleniumbase import SB
 
-with SB(uc=True, locale="en") as sb:
+with SB(uc=True) as sb:
     sb.activate_cdp_mode()
     endpoint_url = sb.get_endpoint_url()
 

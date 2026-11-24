@@ -243,7 +243,7 @@ For more advanced **run commands**, such as using a proxy server, see [../help_d
 
 If you just need to perform some quick website verification on various devices, you can use the <a href="https://seleniumbase.io/devices/" target="_blank" rel="noopener">SeleniumBase Device Farm</a>. Just plug in a website URL, and it will display how the website looks on four different devices:
 
-<a href="https://seleniumbase.io/devices/?url=github.com" target="_blank" rel="noopener"><img src="https://seleniumbase.github.io/cdn/img/github_demo2.png" width="540" title="SeleniumBase Mobile Mode" /></a><br />
+<a href="https://seleniumbase.io/devices/?url=seleniumbase.io" target="_blank" rel="noopener"><img src="https://seleniumbase.github.io/cdn/img/multi_device_logo_2.png" width="540" title="SeleniumBase Mobile Mode" /></a><br />
 
 --------
 

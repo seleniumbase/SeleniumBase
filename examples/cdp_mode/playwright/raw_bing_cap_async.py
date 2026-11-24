@@ -4,7 +4,7 @@ from seleniumbase import cdp_driver
 
 
 async def main():
-    driver = await cdp_driver.start_async(locale="en")
+    driver = await cdp_driver.start_async()
     endpoint_url = driver.get_endpoint_url()
 
     async with async_playwright() as p:

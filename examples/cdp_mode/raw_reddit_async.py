@@ -20,7 +20,7 @@ async def main():
     print('*** Reddit Posts for "%s":' % search)
     for post in posts:
         print("* " + post.text)
-    driver.stop()
+    driver.quit()
 
 if __name__ == "__main__":
     asyncio.run(main())

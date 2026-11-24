@@ -1,6 +1,6 @@
 from seleniumbase import sb_cdp
 
-sb = sb_cdp.Chrome(locale="en", guest=True)
+sb = sb_cdp.Chrome(locale="en-US,en", guest=True)
 sb.goto("https://www.nordstrom.com/")
 sb.sleep(2.2)
 sb.click("input#keyword-search-input")
