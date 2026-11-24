@@ -22,7 +22,7 @@ async def main():
     element = await page.select('[data-testid="sign-in-button"]')
     await element.flash_async(duration=2, color="44EE44")
     time.sleep(2)
-    driver.stop()
+    driver.quit()
 
 if __name__ == "__main__":
     with decorators.print_runtime():

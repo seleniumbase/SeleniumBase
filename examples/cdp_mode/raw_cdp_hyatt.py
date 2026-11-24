@@ -1,6 +1,6 @@
 from seleniumbase import sb_cdp
 
-sb = sb_cdp.Chrome(locale="en", guest=True)
+sb = sb_cdp.Chrome(locale="en-US,en", guest=True)
 sb.goto("https://www.hyatt.com/")
 sb.sleep(3.6)
 sb.click_if_visible('button[aria-label="Close"]')

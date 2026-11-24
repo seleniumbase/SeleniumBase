@@ -45,7 +45,7 @@ if __name__ == "__main__":
     time.sleep(2)
     print(loop.run_until_complete(page.evaluate("document.title")))
     time.sleep(1)
-    driver.stop()
+    driver.quit()
 
     print("--------")
 

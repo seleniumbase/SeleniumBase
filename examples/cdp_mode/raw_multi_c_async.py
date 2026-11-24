@@ -16,7 +16,7 @@ async def main(url):
     if not await page.is_element_visible("img#captcha-success"):
         await page.solve_captcha()
         await page.sleep(2.2)
-    driver.stop()
+    driver.quit()
 
 
 def run_main(url):
