@@ -494,11 +494,15 @@ async def start(
                         lang = None
                     break
                 count += 1
-        if lang:
-            if lang.startswith('"') and lang.endswith('"'):
-                lang = lang[1:-1]
-            elif lang.startswith("'") and lang.endswith("'"):
-                lang = lang[1:-1]
+    elif "locale" in kwargs:
+        lang = kwargs["locale"]
+    elif "locale_code" in kwargs:
+        lang = kwargs["locale_code"]
+    if lang:
+        if lang.startswith('"') and lang.endswith('"'):
+            lang = lang[1:-1]
+        elif lang.startswith("'") and lang.endswith("'"):
+            lang = lang[1:-1]
     if not browser_executable_path and "binary_location" not in kwargs:
         bin_loc = None
         if "--binary-location" in arg_join or "--binary_location" in arg_join:

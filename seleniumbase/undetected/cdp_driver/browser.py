@@ -457,9 +457,11 @@ class Browser:
         await connection.set_downloads_folder(_cdp_downloads_path)
         if _cdp_timezone:
             await connection.set_timezone(_cdp_timezone)
+        _accept_language = None
         if _cdp_locale:
+            _accept_language, _ = shared_utils.normalize_locale(_cdp_locale)
             await connection.set_locale(_cdp_locale)
-        if _cdp_user_agent or _cdp_locale or _cdp_platform or headless:
+        if _cdp_user_agent or _accept_language or _cdp_platform or headless:
             if (
                 (headless and not _cdp_user_agent)
                 or (_cdp_user_agent and "Headless" in _cdp_user_agent)
@@ -469,7 +471,7 @@ class Browser:
                     _cdp_user_agent = agent.replace("Headless", "")
             await connection.set_user_agent(
                 user_agent=_cdp_user_agent,
-                accept_language=_cdp_locale,
+                accept_language=_accept_language,
                 platform=_cdp_platform,
             )
         if _cdp_ad_block:

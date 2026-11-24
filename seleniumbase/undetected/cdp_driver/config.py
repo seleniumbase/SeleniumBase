@@ -49,7 +49,7 @@ class Config:
         browser_executable_path: PathLike | None = AUTO,
         browser_args: list[str] | None = AUTO,
         sandbox: bool | None = True,
-        lang: str | None = "en-US",
+        lang: str | None = None,
         host: str = AUTO,
         port: int = AUTO,
         expert: bool = AUTO,
@@ -91,14 +91,14 @@ class Config:
         if not browser_args:
             browser_args = []
         if not user_data_dir:
-            self.user_data_dir = temp_profile_dir(proxy=proxy)
+            self.user_data_dir = temp_profile_dir(lang=lang, proxy=proxy)
             self._user_data_dir = self.user_data_dir
             self._custom_data_dir = False
         else:
             self.user_data_dir = user_data_dir
             profile = os.path.join(self.user_data_dir, "Default")
             preferences_file = os.path.join(profile, "Preferences")
-            preferences = get_default_preferences(proxy=proxy)
+            preferences = get_default_preferences(lang=lang, proxy=proxy)
             if not os.path.exists(profile):
                 with suppress(Exception):
                     os.makedirs(profile)
@@ -418,7 +418,7 @@ def is_root():
         return ctypes.windll.shell32.IsUserAnAdmin() != 0
 
 
-def get_default_preferences(proxy=None):
+def get_default_preferences(lang=None, proxy=None):
     prefs = {
         "profile": {
             "password_manager_leak_detection": False,
@@ -438,6 +438,10 @@ def get_default_preferences(proxy=None):
             "credit_card_enabled": False
         }
     }
+    if lang:
+        prefs["intl"] = {
+            "accept_languages": lang
+        }
     prefs["webrtc"] = {
         "ip_handling_policy": "disable_non_proxied_udp",
         "multiple_routes_enabled": False,
@@ -446,12 +450,12 @@ def get_default_preferences(proxy=None):
     return prefs
 
 
-def temp_profile_dir(proxy=None):
+def temp_profile_dir(lang=None, proxy=None):
     """Generate a temp dir (path)"""
     path = os.path.normpath(tempfile.mkdtemp(prefix="uc_"))
     profile = os.path.join(path, "Default")
     preferences_file = os.path.join(profile, "Preferences")
-    preferences = get_default_preferences(proxy=proxy)
+    preferences = get_default_preferences(lang=lang, proxy=proxy)
     if not os.path.exists(profile):
         with suppress(Exception):
             os.makedirs(profile)
