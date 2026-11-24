@@ -8,10 +8,10 @@
 <meta property="og:image" content="https://seleniumbase.github.io/cdn/img/mac_sb_logo_5b.png" />
 <link rel="icon" href="https://seleniumbase.github.io/img/logo7.png" />
 
-<h3 align="center" class="hero__title"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/nice_logo_8t.png" alt="SeleniumBase" title="SeleniumBase" width="440" /></a><br /><b>The Complete Browser Automation Toolkit:<br />Web Crawling / Testing / Scraping / Stealth</b></h3>
+<h3 align="center" class="hero__title"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/sb_on_blue_2.png" alt="SeleniumBase" title="SeleniumBase" width="400" /></a><br /><b>The full browser automation toolkit:<br />E2E Testing / Web Scraping / Stealth</b></h3>
 
 <p align="center">
-<a href="https://pypi.python.org/pypi/seleniumbase" target="_blank" rel="noopener"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?style=flat-square&color=3399EE" alt="PyPI version" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank" rel="noopener"><img src="https://img.shields.io/github/actions/workflow/status/seleniumbase/SeleniumBase/python-package.yml?branch=master&style=flat-square&label=CI" alt="SeleniumBase GitHub Actions" height="20" /></a> <a href="https://seleniumbase.io" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg?style=flat-square" alt="SeleniumBase Docs" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/license-MIT-33A6C6.svg?style=flat-square" title="SeleniumBase" height="20" /></a><br /><a href="https://pepy.tech/projects/seleniumbase?timeRange=threeMonths&category=version&includeCIDownloads=true&granularity=daily&viewType=line&versions=*" target="_blank" rel="noopener"><img src="https://static.pepy.tech/badge/seleniumbase" alt="SeleniumBase PyPI downloads" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/mcp_servers" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/MCP-info-7C6EE5?style=flat-square" height="20" /></a> <a href="https://www.youtube.com/playlist?list=PLp9uKicxkBc5UIlGi2BuE3aWC7JyXpD3m" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/docs-playlist-AA3377.svg?style=flat-square&logo=YouTube&logoColor=red&label=YouTube" alt="YouTube Channel" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase" target="_blank" rel="noopener"><img src="https://badgen.net/github/stars/seleniumbase/SeleniumBase" title="Stars" height="20" /></a>
+<a href="https://pypi.python.org/pypi/seleniumbase" target="_blank" rel="noopener"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?style=flat-square&color=3399EE" alt="PyPI version" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank" rel="noopener"><img src="https://img.shields.io/github/actions/workflow/status/seleniumbase/SeleniumBase/python-package.yml?branch=master&style=flat-square&label=CI" alt="CI_status" height="20" /></a> <a href="https://seleniumbase.io" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg?style=flat-square" alt="SeleniumBase Docs" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/license-MIT-33A6C6.svg?style=flat-square" title="SeleniumBase" height="20" /></a> <a href="https://pepy.tech/projects/seleniumbase?timeRange=threeMonths&category=version&includeCIDownloads=true&granularity=daily&viewType=line&versions=*" target="_blank" rel="noopener"><img src="https://static.pepy.tech/badge/seleniumbase" alt="SeleniumBase PyPI downloads" height="20" /></a> <a href="https://www.youtube.com/playlist?list=PLp9uKicxkBc5UIlGi2BuE3aWC7JyXpD3m" target="_blank" rel="noopener"><img src="https://badgen.net/badge/YouTube/playlist/AA55BB?icon=youtube" alt="YouTube" height="20" /></a>
 </p>
 
 <p align="center">
@@ -49,11 +49,11 @@
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/case_plans.md">🗂️ CPlans</a>
 </p>
 
-<h4 align="left"><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="22" /> SeleniumBase handles all kinds of browser automation activities, such as E2E testing, CAPTCHA-bypass, web-scraping, and task-completion.</h4>
-
 --------
 
-📚 Learn from [**over 200 end-to-end tests** in **SeleniumBase/examples/**](https://github.com/seleniumbase/SeleniumBase/tree/master/examples).
+📚 Learn from [**over 200 end-to-end testing examples**](https://github.com/seleniumbase/SeleniumBase/tree/master/examples).
+
+🥷 In addition to Regular Mode, <b>SeleniumBase <i>includes various stealth modes</i></b>:
 
 <ul>
 <li>🐙 <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md"><b>CDP Mode</b></a> <b>bypasses bot-detection with Chromium-based browsers.</b><ul><li>(See <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode">./examples/cdp_mode/</a> for CDP Mode examples.)</li></ul></li>
@@ -61,12 +61,12 @@
 </ul>
 
 > [!NOTE]
-> Examples that start/end with `test` run with **`pytest`**.<br />
+> Scripts that start or end with "`test`" run with **`pytest`**.<br />
 > Other examples run directly with raw **`python`**.
 
 --------
 
-📝 [This example](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_mode.py) uses <b><code translate="no">seleniumbase</code></b> <b><code translate="no">sb_cdp</code></b> (*[Pure CDP Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md#Pure_CDP_Mode)*):<br  /><em>(It shows some basic methods and bypasses a Cloudflare Turnstile)</em>
+📝 [This example](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_mode.py) uses <b><code translate="no">seleniumbase</code></b> <b><code translate="no">sb_cdp</code></b> (*[Pure CDP Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md#Pure_CDP_Mode)*):<br  /><em>(It calls a few basic methods and bypasses a Cloudflare Turnstile)</em>
 
 ```python
 from seleniumbase import sb_cdp
@@ -96,7 +96,7 @@ sb.quit()
 
 --------
 
-<p align="left">📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_yc_news.py" target="_blank" rel="noopener">This script</a> searches Hacker News via Algolia. Then prints items and saves to PDF:</p>
+<p align="left">📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_cdp_yc_news.py" target="_blank" rel="noopener">This script</a> searches Hacker News via Algolia, prints items, and saves to PDF:</p>
 
 ```python
 from seleniumbase import sb_cdp
@@ -120,7 +120,7 @@ python raw_cdp_yc_news.py
 
 --------
 
-<p align="left">📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_gitlab.py" target="_blank" rel="noopener">This script</a> bypasses Cloudflare's challenge page with UC + CDP Mode:</p>
+<p align="left">📝 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/raw_gitlab.py" target="_blank" rel="noopener">This script</a> bypasses Cloudflare's challenge page with <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/uc_mode.md" target="_blank" rel="noopener">UC</a> + <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md" target="_blank" rel="noopener">CDP</a> Mode:</p>
 
 ```python
 from seleniumbase import SB
@@ -146,7 +146,7 @@ python raw_gitlab.py
 
 <h3 align="left">🌐 CLI Options for Supported Chromium Browsers</h3>
 
-<p>💡 You can set which Chromium browser to use via command-line parameters:</p>
+<p>💡 You can set which Chromium browser to use via command-line parameters. E.g:</p>
 
 ```zsh
 python SCRIPT.py --chromium  # Use the unbranded Chromium browser
@@ -157,7 +157,7 @@ python SCRIPT.py --brave  # Use Brave browser
 
 Google Chrome is the default browser. Only unbranded Chromium and Chrome-for-Testing get downloaded automatically if not already present on the system.
 
-The Chromium browser can also be set via method args, eg: `cft=True`, `use_chromium=True`, `browser="edge"`, `browser="brave"`, etc. Eg:
+The Chromium browser can also be set via method args, eg: `cft=True`, `use_chromium=True`, `browser="edge"`, `browser="brave"`, etc. E.g:
 
 ```python
 sb = sb_cdp.Chrome(use_chromium=True)
@@ -290,27 +290,19 @@ pytest test_demo_site.py
 
 <p>💡 SeleniumBase is a Python framework for browser automation and testing. SeleniumBase uses WebDriver APIs and incorporates test-runners such as <code translate="no">pytest</code>, <code translate="no">pynose</code>, and <code translate="no">behave</code> to provide organized structure, test discovery, test execution, test state (<i>eg. passed, failed, or skipped</i>), and command-line options for changing default settings (<i>eg. browser selection</i>).</p>
 
-<p>💡 SeleniumBase automatically detects between CSS Selectors and XPath, which means you don't need to specify the type of selector in your commands (<i>but optionally you could</i>).</p>
+<p>💡 SeleniumBase automatically detects between CSS Selectors and XPath.</p>
 
-<p>💡 SeleniumBase methods often perform multiple actions in a single method call. For example, <code translate="no">self.type(selector, text)</code> does the following:<br />1. Waits for the element to be visible.<br />2. Waits for the element to be interactive.<br />3. Clears the text field.<br />4. Types in the new text.<br />5. Presses Enter/Submit if the text ends in <code translate="no">"\n"</code>.<br />With regular Selenium, those actions require multiple method calls.</p>
+<p>💡 SeleniumBase methods may perform multiple actions in a single call.<br />For example, <code translate="no">self.type(selector, text)</code> does the following:<br />1. Waits for the element to be visible and interactive.<br />2. Clears the text field.<br />3. Types in the new text.<br />4. Presses Enter/Submit if the text ends in <code translate="no">"\n"</code>.<br />(With regular Selenium, those actions require multiple method calls.)</p>
 
-<p>💡 SeleniumBase uses default timeout values when not set:<br />
-✅ <code translate="no">self.click("button")</code><br />
-With regular Selenium, methods would fail instantly (<i>by default</i>) if an element needed more time to load:<br />
-❌ <code translate="no">self.driver.find_element(by="css selector", value="button").click()</code><br />
-(Reliable code is better than unreliable code.)</p>
+<p>💡 SeleniumBase uses default timeout values when not set. E.g:<br />
+✅ <code translate="no">self.click("button")</code></p>
 
-<p>💡 SeleniumBase lets you change the explicit timeout values of methods:<br />
-✅ <code translate="no">self.click("button", timeout=10)</code><br />
-With regular Selenium, that requires more code:<br />
-❌ <code translate="no">WebDriverWait(driver, 10).until(EC.element_to_be_clickable("css selector", "button")).click()</code><br />
-(Simple code is better than complex code.)</p>
+<p>💡 You can also change timeout values. E.g:<br />
+✅ <code translate="no">self.click("button", timeout=5)</code><br /></p>
 
 <p>💡 SeleniumBase displays clean error output when a test fails. With regular Selenium, error messages can get messy.</p>
 
 <p>💡 SeleniumBase gives you the option to generate a dashboard and reports for tests. It also saves screenshots from failing tests to the <code translate="no">./latest_logs/</code> folder. Regular <a href="https://www.selenium.dev/documentation/webdriver/" translate="no" target="_blank" rel="noopener">Selenium</a> does not have these options out-of-the-box.</p>
-
-<p>💡 SeleniumBase includes desktop GUI apps for running tests, such as <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/commander.md" translate="no">SeleniumBase Commander</a> for <code translate="no">pytest</code>.</p>
 
 <p>💡 SeleniumBase has its own <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md">Recorder / Test Generator</a> for creating tests from manual browser actions.</p>
 
@@ -537,7 +529,7 @@ class MyTestClass(BaseCase):
         self.assert_element("div#login_button_container")
 ```
 
-* By default, **[CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp)** are used for finding page elements.
+* By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for finding page elements.
 * If you're new to CSS Selectors, games like [CSS Diner](http://flukeout.github.io/) can help you learn.
 * For more reading, [here's an advanced guide on CSS attribute selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors).
 
