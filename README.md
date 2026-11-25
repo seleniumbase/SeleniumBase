@@ -55,9 +55,8 @@
 🎭 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md"><b><span translate="no">Stealthy Playwright Mode</span></b></a> <b>extends CDP Mode's stealth to Playwright.</b><ul><li>(Examples: <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode/playwright">./examples/cdp_mode/playwright</a>)</li></ul>
 </ul>
 
-📚 In addition to the stealth modes, SeleniumBase has regular modes for website testing:
-* 🧪 [**Over 200 end-to-end testing examples included**](https://github.com/seleniumbase/SeleniumBase/tree/master/examples).
-** (Many of those run with **`pytest`** instead of **`python`**)
+📚 In addition to stealth modes, SeleniumBase has regular modes for E2E testing.
+* 🧪 [**Over 200 end-to-end testing examples included**](https://github.com/seleniumbase/SeleniumBase/tree/master/examples).<br />(Many of those run with **`pytest`** instead of **`python`**)
 
 --------
 

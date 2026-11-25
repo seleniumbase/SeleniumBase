@@ -1,6 +1,7 @@
 from seleniumbase import SB
 
 with SB(uc=True) as sb:
+    sb.activate_cdp_mode()
     sb.goto("https://www.apivoid.com/tools/bot-detection-test/")
     risk_score = sb.get_numeric_text("#scoreNum")
     print(f"Risk Score (lower is better): {risk_score}")
