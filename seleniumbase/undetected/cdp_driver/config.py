@@ -55,6 +55,7 @@ class Config:
         expert: bool = AUTO,
         proxy: str | None = None,
         extension_dir: str | None = None,
+        user_agent: str | None = None,
         **kwargs: dict,
     ):
         """
@@ -209,6 +210,7 @@ class Config:
         self.expert = expert
         self.proxy = proxy
         self.extension_dir = extension_dir
+        self.user_agent = user_agent
         self._extensions = []
         # When using posix-ish operating system and running as root,
         # you must use no_sandbox=True
@@ -220,8 +222,12 @@ class Config:
         # Other keyword args will be accessible by attribute
         self.__dict__.update(kwargs)
         super().__init__()
-        start_width = settings.CHROME_START_WIDTH
-        start_height = settings.CHROME_START_HEIGHT
+        if self.headless:
+            start_width = settings.HEADLESS_START_WIDTH
+            start_height = settings.HEADLESS_START_HEIGHT
+        else:
+            start_width = settings.CHROME_START_WIDTH
+            start_height = settings.CHROME_START_HEIGHT
         start_x = settings.WINDOW_START_X
         start_y = settings.WINDOW_START_Y
         self._default_browser_args = [
@@ -368,6 +374,8 @@ class Config:
             args.append("--remote-debugging-host=%s" % self.host)
         if self.port:
             args.append("--remote-debugging-port=%s" % self.port)
+        if self.user_agent:
+            args.append("--user-agent=%s" % self.user_agent)
         return args
 
     def add_argument(self, arg: str):

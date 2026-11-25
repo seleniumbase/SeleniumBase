@@ -1661,6 +1661,43 @@ class CDPMethods():
     def get_window(self):
         return self.loop.run_until_complete(self.page.get_window())
 
+    def get_numeric_text(self, selector="body", timeout=None):
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        start_ms = time.time() * 1000.0
+        stop_ms = start_ms + (timeout * 1000.0)
+        element = None
+        failure = False
+        message = ""
+        all_text = None
+        try:
+            element = self.find_element(selector, timeout=timeout)
+        except Exception:
+            failure = True
+            plural = "s"
+            if timeout == 1:
+                plural = ""
+            msg = "\n Element {%s} was not found after %s second%s!"
+            message = msg % (selector, timeout, plural)
+        if failure:
+            raise Exception(message)
+        for i in range(int(timeout * 10)):
+            with suppress(Exception):
+                element = self.find_element(selector, timeout=0.1)
+            all_text = element.text_all.strip()
+            if len(all_text) > 0 and shared_utils.is_numeric(all_text):
+                return all_text
+            now_ms = time.time() * 1000.0
+            if now_ms >= stop_ms:
+                break
+            time.sleep(0.1)
+        message = (
+            "Element text for {%s} was not numeric after %s second%s!"
+            " (Actual text was {%s})"
+            % (selector, timeout, plural, all_text)
+        )
+        raise Exception(message)
+
     def get_text(self, selector="body", timeout=None):
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -2228,8 +2265,8 @@ class CDPMethods():
                         )
                     ):
                         from sbvirtualdisplay import Display
-                        xvfb_width = 1366
-                        xvfb_height = 768
+                        xvfb_width = 1920  # Previously 1366
+                        xvfb_height = 1080  # Previously 768
                         if (
                             hasattr(sb_config, "_xvfb_width")
                             and sb_config._xvfb_width
@@ -4016,6 +4053,8 @@ class Chrome(CDPMethods):
         kwargs["loop"] = loop
         driver = cdp_util.start_sync(**kwargs)
         page = loop.run_until_complete(driver.get(url))
+        self.headless = driver.config.headless
+        self.headed = not self.headless
         wait_timeout = 30.0
         if hasattr(sb_config, "_cdp_proxy") and sb_config._cdp_proxy:
             wait_timeout = 45.0

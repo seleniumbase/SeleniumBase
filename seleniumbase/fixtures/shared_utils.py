@@ -1,5 +1,6 @@
 """Shared utility methods"""
 import colorama
+import math
 import os
 import pathlib
 import platform
@@ -127,6 +128,18 @@ def is_windows():
 
 def is_safari(driver):
     return driver.capabilities["browserName"].lower() == "safari"
+
+
+def is_numeric(s):
+    """Returns True if `s` represents a finite number. False otherwise."""
+    if not isinstance(s, str):
+        return False
+    s = s.strip()
+    try:
+        val = float(s)
+    except ValueError:
+        return False
+    return math.isfinite(val)
 
 
 def get_terminal_width():

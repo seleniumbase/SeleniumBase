@@ -802,7 +802,7 @@ def pytest_addoption(parser):
         help="""Customize the Xvfb metrics (Width,Height) on Linux.
                 Format: A comma-separated string with the 2 values.
                 Examples: "1920,1080" or "1366,768" or "1024,768".
-                Default: None. (None: "1366,768". Min: "1024,768".)""",
+                Default: None. (None: "1920,1080". Min: "1024,768".)""",
     )
     parser.addoption(
         "--locale_code",

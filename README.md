@@ -2,13 +2,12 @@
 <!-- mcp-name: io.github.seleniumbase/seleniumbase -->
 
 <meta property="og:site_name" content="SeleniumBase">
-<meta property="og:title" content="SeleniumBase: Python Web Automation and E2E Testing. Includes stealth options!" />
-<meta property="og:description" content="Fast, easy, and reliable Web/UI testing with Python. Includes stealth options!" />
+<meta property="og:title" content="SeleniumBase: Python Web Automation and E2E Testing. Includes stealth options." />
+<meta property="og:description" content="Fast, easy, and reliable Web/UI testing with Python. Includes stealth options." />
 <meta property="og:keywords" content="Python, pytest, selenium, webdriver, testing, automation, seleniumbase, framework, dashboard, recorder, reports, screenshots">
-<meta property="og:image" content="https://seleniumbase.github.io/cdn/img/mac_sb_logo_5b.png" />
-<link rel="icon" href="https://seleniumbase.github.io/img/logo7.png" />
+<meta property="og:image" content="https://seleniumbase.github.io/cdn/img/nice_logo_8t.png" />
 
-<h3 align="center" class="hero__title"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/sb_on_blue_2.png" alt="SeleniumBase" title="SeleniumBase" width="400" /></a><br /><b>The full browser automation toolkit:<br />E2E Testing / Web Scraping / Stealth</b></h3>
+<h3 align="center" class="hero__title"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/nice_logo_8t.png" alt="SeleniumBase" title="SeleniumBase" width="400" /></a><br />Reliable browser automation for testing, scraping, and stealth.</h3>
 
 <p align="center">
 <a href="https://pypi.python.org/pypi/seleniumbase" target="_blank" rel="noopener"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?style=flat-square&color=3399EE" alt="PyPI version" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank" rel="noopener"><img src="https://img.shields.io/github/actions/workflow/status/seleniumbase/SeleniumBase/python-package.yml?branch=master&style=flat-square&label=CI" alt="CI_status" height="20" /></a> <a href="https://seleniumbase.io" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg?style=flat-square" alt="SeleniumBase Docs" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/license-MIT-33A6C6.svg?style=flat-square" title="SeleniumBase" height="20" /></a> <a href="https://pepy.tech/projects/seleniumbase?timeRange=threeMonths&category=version&includeCIDownloads=true&granularity=daily&viewType=line&versions=*" target="_blank" rel="noopener"><img src="https://static.pepy.tech/badge/seleniumbase" alt="SeleniumBase PyPI downloads" height="20" /></a> <a href="https://www.youtube.com/playlist?list=PLp9uKicxkBc5UIlGi2BuE3aWC7JyXpD3m" target="_blank" rel="noopener"><img src="https://badgen.net/badge/YouTube/playlist/AA55BB?icon=youtube" alt="YouTube" height="20" /></a>
@@ -51,18 +50,14 @@
 
 --------
 
-📚 Learn from [**over 200 end-to-end testing examples**](https://github.com/seleniumbase/SeleniumBase/tree/master/examples).
-
-🥷 In addition to Regular Mode, <b>SeleniumBase <i>includes various stealth modes</i></b>:
-
 <ul>
-<li>🐙 <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md"><b>CDP Mode</b></a> <b>bypasses bot-detection with Chromium-based browsers.</b><ul><li>(See <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode">./examples/cdp_mode/</a> for CDP Mode examples.)</li></ul></li>
-<li>🎭 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md"><b><span translate="no">Stealthy Playwright Mode</span></b></a> <b>extends CDP Mode's stealth to Playwright.</b><ul><li>(See <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode/playwright">./examples/cdp_mode/playwright</a> for Stealthy Playwright examples.)</li></ul></li>
+🐙 <a translate="no" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/ReadMe.md"><b>CDP Mode</b></a> <b>bypasses bot-detection with Chromium-based browsers.</b><ul><li>(Examples: <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode">./examples/cdp_mode/</a>)</li></ul><br />
+🎭 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md"><b><span translate="no">Stealthy Playwright Mode</span></b></a> <b>extends CDP Mode's stealth to Playwright.</b><ul><li>(Examples: <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/cdp_mode/playwright">./examples/cdp_mode/playwright</a>)</li></ul>
 </ul>
 
-> [!NOTE]
-> Scripts that start or end with "`test`" run with **`pytest`**.<br />
-> Other examples run directly with raw **`python`**.
+📚 In addition to the stealth modes, SeleniumBase has regular modes for website testing:
+* 🧪 [**Over 200 end-to-end testing examples included**](https://github.com/seleniumbase/SeleniumBase/tree/master/examples).
+** (Many of those run with **`pytest`** instead of **`python`**)
 
 --------
 
@@ -1482,7 +1477,7 @@ pytest --reruns=1 --reruns-delay=1
 
 <p><div><b><a href="https://github.com/mdmintz" target="_blank" rel="noopener">https://github.com/mdmintz</a></b></div></p>
 
-<div><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/super_logo_sb6.png" title="SeleniumBase" width="310" style="max-width: 100% !important; height: auto !important;" /></a></div>
+<div><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.github.io/cdn/img/super_logo_sb3.png" title="SeleniumBase" width="310" style="max-width: 100% !important; height: auto !important;" /></a></div>
 <div><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://img.shields.io/badge/tested%20with-SeleniumBase-04C38E.svg" alt="Tested with SeleniumBase" /></a> <img src="https://views.whatilearened.today/views/github/seleniumbase/SeleniumBase.svg" width="98px" height="20px" alt="Views" /></div>
 <div><a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" height="20" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" title="SeleniumBase" height="20" /></a> </div>
 <div align="left"></div>

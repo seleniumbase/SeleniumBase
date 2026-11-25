@@ -71,10 +71,10 @@ WINDOW_START_Y = 54
 # Default browser resolutions when opening new windows for tests.
 # (Headless resolutions take priority, and include all browsers.)
 # (Firefox starts maximized by default when running in GUI Mode.)
-CHROME_START_WIDTH = 1250
+CHROME_START_WIDTH = 1280
 CHROME_START_HEIGHT = 840
 HEADLESS_START_WIDTH = 1440
-HEADLESS_START_HEIGHT = 1880
+HEADLESS_START_HEIGHT = 1056
 
 # If True, hides messages related to downloading drivers.
 # If False, you'll see details about downloading drivers.

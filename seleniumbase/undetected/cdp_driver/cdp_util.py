@@ -101,9 +101,9 @@ def __activate_virtual_display_as_needed(
                             sb_config._xvfb_height = _xvfb_height
                             xvfb = True
                     if not _xvfb_width:
-                        _xvfb_width = 1366
+                        _xvfb_width = 1920  # Previously 1366
                     if not _xvfb_height:
-                        _xvfb_height = 768
+                        _xvfb_height = 1080  # Previously 768
                     _xvfb_display = Display(
                         visible=True,
                         size=(_xvfb_width, _xvfb_height),
@@ -702,6 +702,12 @@ async def start(
             )
     sb_config.incognito = incognito
     sb_config.guest_mode = guest
+    if agent:
+        sb_config._cdp_user_agent = agent
+    elif "user_agent" in kwargs:
+        sb_config._cdp_user_agent = kwargs["user_agent"]
+    else:
+        sb_config._cdp_user_agent = None
     if not config:
         config = Config(
             user_data_dir,
@@ -717,6 +723,7 @@ async def start(
             expert=expert,
             proxy=proxy,
             extension_dir=extension_dir,
+            user_agent=agent,
             **kwargs,
         )
     driver = None
@@ -730,6 +737,41 @@ async def start(
             )
             time.sleep(0.05)
         driver = await Browser.create(config)
+    if (
+        headless
+        and "User-Agent" in driver.info
+        and "Headless" in driver.info["User-Agent"]
+    ):
+        agent = driver.info["User-Agent"].replace("Headless", "")
+        driver.quit()
+        config = Config(
+            user_data_dir,
+            headless,
+            incognito,
+            guest,
+            browser_executable_path,
+            browser_args,
+            sandbox,
+            lang,
+            host=host,
+            port=port,
+            expert=expert,
+            proxy=proxy,
+            extension_dir=extension_dir,
+            user_agent=agent,
+            **kwargs,
+        )
+        driver = None
+        try:
+            driver = await Browser.create(config)
+        except Exception:
+            time.sleep(0.12)
+            if not host or not port:
+                __activate_virtual_display_as_needed(
+                    headless, headed, xvfb, xvfb_metrics, override_display=True
+                )
+                time.sleep(0.05)
+            driver = await Browser.create(config)
     if proxy:
         sb_config._cdp_proxy = proxy
         if "@" in str(proxy):
@@ -752,12 +794,6 @@ async def start(
         sb_config._cdp_geolocation = kwargs["geolocation"]
     else:
         sb_config._cdp_geolocation = None
-    if agent:
-        sb_config._cdp_user_agent = agent
-    elif "user_agent" in kwargs:
-        sb_config._cdp_user_agent = kwargs["user_agent"]
-    else:
-        sb_config._cdp_user_agent = None
     if "downloads_path" in kwargs:
         sb_config._cdp_downloads_path = kwargs["downloads_path"]
     if "platform" in kwargs:

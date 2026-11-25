@@ -20,6 +20,7 @@ import warnings
 from collections import defaultdict
 from contextlib import suppress
 from seleniumbase import config as sb_config
+from seleniumbase.config import settings
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import shared_utils
 import mycdp as cdp
@@ -526,6 +527,17 @@ class Browser:
             await connection.send(
                 cdp.emulation.set_device_metrics_override(
                     width=412, height=732, device_scale_factor=3, mobile=True
+                )
+            )
+        elif headless:
+            await connection.send(
+                cdp.emulation.set_device_metrics_override(
+                    width=settings.HEADLESS_START_WIDTH,
+                    height=settings.HEADLESS_START_HEIGHT,
+                    device_scale_factor=1,
+                    mobile=False,
+                    screen_width=1920,
+                    screen_height=1080,
                 )
             )
         # (The code below is for the Chrome 142 extension fix)

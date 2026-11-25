@@ -209,6 +209,7 @@ def extend_driver(
     page.is_exact_text_visible = DM.is_exact_text_visible
     page.is_attribute_present = DM.is_attribute_present
     page.is_non_empty_text_visible = DM.is_non_empty_text_visible
+    page.get_numeric_text = DM.get_numeric_text
     page.get_text = DM.get_text
     page.find_element = DM.find_element
     page.find_elements = DM.find_elements
@@ -282,6 +283,7 @@ def extend_driver(
     driver.is_uc_mode_active = DM.is_uc_mode_active
     driver.is_cdp_mode_active = DM.is_cdp_mode_active
     driver.js_click = DM.js_click
+    driver.get_numeric_text = DM.get_numeric_text
     driver.get_text = DM.get_text
     driver.get_active_element_css = DM.get_active_element_css
     driver.get_locale_code = DM.get_locale_code
@@ -910,6 +912,7 @@ def uc_open_with_cdp_mode(driver, url=None, **kwargs):
     cdp.get_locale_code = CDPM.get_locale_code
     cdp.get_local_storage_item = CDPM.get_local_storage_item
     cdp.get_session_storage_item = CDPM.get_session_storage_item
+    cdp.get_numeric_text = CDPM.get_numeric_text
     cdp.get_text = CDPM.get_text
     cdp.get_title = CDPM.get_title
     cdp.get_page_title = CDPM.get_title
@@ -1128,8 +1131,8 @@ def __install_pyautogui_if_missing():
                 and not (sb_config.headless or sb_config.headless2)
             ):
                 from sbvirtualdisplay import Display
-                xvfb_width = 1366
-                xvfb_height = 768
+                xvfb_width = 1920  # Previously 1366
+                xvfb_height = 1080  # Previously 768
                 if (
                     getattr(sb_config, "_xvfb_width", None)
                     and isinstance(sb_config._xvfb_width, int)

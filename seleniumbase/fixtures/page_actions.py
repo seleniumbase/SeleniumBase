@@ -32,6 +32,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 from seleniumbase.common.exceptions import LinkTextNotFoundException
 from seleniumbase.common.exceptions import TextNotVisibleException
+from seleniumbase.common.exceptions import NumericTextNotVisibleException
 from seleniumbase.config import settings
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import page_utils
@@ -1308,7 +1309,6 @@ def wait_for_non_empty_text_visible(
     Whitespace-only text is considered empty text.
     @Params
     driver - the webdriver object (required)
-    text - the text that is being searched for in the element (required)
     selector - the locator for identifying the page element (required)
     by - the type of selector being used (Default: "css selector")
     timeout - the time to wait for elements in seconds
@@ -1371,6 +1371,86 @@ def wait_for_non_empty_text_visible(
             "" % (selector, timeout, plural)
         )
         timeout_exception(TextNotVisibleException, message)
+
+
+def wait_for_numeric_text_visible(
+    driver, selector, by="css selector", timeout=settings.LARGE_TIMEOUT,
+):
+    """
+    Searches for numeric text in the element of the given selector.
+    Returns the element if it has numeric text within the timeout.
+    Raises an exception if the element has no numeric text in time.
+    The entire text of the element must be a numeric string.
+    @Params
+    driver - the webdriver object (required)
+    selector - the locator for identifying the page element (required)
+    by - the type of selector being used (Default: "css selector")
+    timeout - the time to wait for elements in seconds
+    @Returns
+    The web element object that has the numeric text
+    """
+    _reconnect_if_disconnected(driver)
+    start_ms = time.time() * 1000.0
+    stop_ms = start_ms + (timeout * 1000.0)
+    element = None
+    visible = None
+    element_text = ""
+    for x in range(int(timeout * 10)):
+        shared_utils.check_if_time_limit_exceeded()
+        try:
+            element = None
+            visible = False
+            element = driver.find_element(by=by, value=selector)
+            if element.is_displayed():
+                visible = True
+            element_text = element.text
+            if shared_utils.is_safari(driver):
+                if element.tag_name.lower() in ["input", "textarea"]:
+                    element_text = element.get_attribute("value")
+                else:
+                    element_text = element.get_attribute("innerText")
+            elif element.tag_name.lower() in ["input", "textarea"]:
+                element_text = element.get_property("value")
+            element_text = element_text.strip()
+            if (
+                element.is_displayed()
+                and len(element_text) > 0
+                and shared_utils.is_numeric(element_text)
+            ):
+                return element
+        except Exception:
+            element = None
+        now_ms = time.time() * 1000.0
+        if now_ms >= stop_ms:
+            break
+        time.sleep(0.1)
+    plural = "s"
+    if timeout == 1:
+        plural = ""
+    if not element:
+        # The element does not exist in the HTML
+        message = "Element {%s} was not present after %s second%s!" % (
+            selector,
+            timeout,
+            plural,
+        )
+        timeout_exception(NoSuchElementException, message)
+    elif not visible:
+        # The element exists in the HTML, but is not visible
+        message = "Element {%s} was not visible after %s second%s!" % (
+            selector,
+            timeout,
+            plural,
+        )
+        timeout_exception(ElementNotVisibleException, message)
+    else:
+        # The element exists in the HTML, but has no numeric text
+        message = (
+            "Element text for {%s} was not numeric after %s second%s!"
+            " (Actual text was {%s})"
+            % (selector, timeout, plural, element_text)
+        )
+        timeout_exception(NumericTextNotVisibleException, message)
 
 
 def wait_for_attribute_not_present(
@@ -2152,6 +2232,39 @@ def wait_for_non_empty_text(
         by=by,
         timeout=timeout,
     )
+
+
+def wait_for_numeric_text(
+    driver,
+    selector,
+    by="css selector",
+    timeout=settings.LARGE_TIMEOUT,
+):
+    selector, by = page_utils.recalculate_selector(selector, by)
+    return wait_for_numeric_text_visible(
+        driver=driver,
+        selector=selector,
+        by=by,
+        timeout=timeout,
+    )
+
+
+def get_numeric_text(
+    driver,
+    selector,
+    by="css selector",
+    timeout=settings.LARGE_TIMEOUT,
+):
+    selector, by = page_utils.recalculate_selector(selector, by)
+    if __is_cdp_swap_needed(driver):
+        return driver.cdp.get_numeric_text(selector, timeout=timeout)
+    element = wait_for_numeric_text_visible(
+        driver=driver,
+        selector=selector,
+        by=by,
+        timeout=timeout,
+    )
+    return element.text
 
 
 def get_text(
