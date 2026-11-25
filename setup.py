@@ -309,7 +309,7 @@ setup(
         # pip install -e .[uv]
         # (For the MCP integration and more.)
         "uv": [
-            "uv>=0.13.9"
+            "uv>=0.13.10"
         ],
     },
     packages=[
