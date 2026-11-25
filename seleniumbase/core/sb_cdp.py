@@ -4016,6 +4016,8 @@ class Chrome(CDPMethods):
         kwargs["loop"] = loop
         driver = cdp_util.start_sync(**kwargs)
         page = loop.run_until_complete(driver.get(url))
+        self.headless = driver.config.headless
+        self.headed = not self.headless
         wait_timeout = 30.0
         if hasattr(sb_config, "_cdp_proxy") and sb_config._cdp_proxy:
             wait_timeout = 45.0
