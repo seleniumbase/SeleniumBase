@@ -222,8 +222,12 @@ class Config:
         # Other keyword args will be accessible by attribute
         self.__dict__.update(kwargs)
         super().__init__()
-        start_width = settings.CHROME_START_WIDTH
-        start_height = settings.CHROME_START_HEIGHT
+        if self.headless:
+            start_width = settings.HEADLESS_START_WIDTH
+            start_height = settings.HEADLESS_START_HEIGHT
+        else:
+            start_width = settings.CHROME_START_WIDTH
+            start_height = settings.CHROME_START_HEIGHT
         start_x = settings.WINDOW_START_X
         start_y = settings.WINDOW_START_Y
         self._default_browser_args = [
