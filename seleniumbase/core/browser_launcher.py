@@ -1128,8 +1128,8 @@ def __install_pyautogui_if_missing():
                 and not (sb_config.headless or sb_config.headless2)
             ):
                 from sbvirtualdisplay import Display
-                xvfb_width = 1366
-                xvfb_height = 768
+                xvfb_width = 1920  # Previously 1366
+                xvfb_height = 1080  # Previously 768
                 if (
                     getattr(sb_config, "_xvfb_width", None)
                     and isinstance(sb_config._xvfb_width, int)

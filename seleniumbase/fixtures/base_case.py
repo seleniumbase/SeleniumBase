@@ -15068,9 +15068,9 @@ class BaseCase(unittest.TestCase):
             import Xlib.display
             try:
                 if not self._xvfb_width:
-                    self._xvfb_width = 1366
+                    self._xvfb_width = 1920  # Previously 1366
                 if not self._xvfb_height:
-                    self._xvfb_height = 768
+                    self._xvfb_height = 1080  # Previously 768
                 self._xvfb_display = Display(
                     visible=True,
                     size=(self._xvfb_width, self._xvfb_height),
@@ -16120,7 +16120,7 @@ class BaseCase(unittest.TestCase):
                 "Expecting a comma-separated string\n"
                 "with integer values for Width/Height.\n"
                 'Eg. --xvfb-metrics="1920,1080".\n'
-                "(Minimum: 1024,768) (Default: 1366,768)"
+                "(Minimum: 1024,768) (Default: 1920,1080)"
             )
             if len(metrics_list) != 2:
                 raise Exception(exception_string)

@@ -2228,8 +2228,8 @@ class CDPMethods():
                         )
                     ):
                         from sbvirtualdisplay import Display
-                        xvfb_width = 1366
-                        xvfb_height = 768
+                        xvfb_width = 1920  # Previously 1366
+                        xvfb_height = 1080  # Previously 768
                         if (
                             hasattr(sb_config, "_xvfb_width")
                             and sb_config._xvfb_width

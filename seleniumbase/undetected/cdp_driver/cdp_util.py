@@ -101,9 +101,9 @@ def __activate_virtual_display_as_needed(
                             sb_config._xvfb_height = _xvfb_height
                             xvfb = True
                     if not _xvfb_width:
-                        _xvfb_width = 1366
+                        _xvfb_width = 1920  # Previously 1366
                     if not _xvfb_height:
-                        _xvfb_height = 768
+                        _xvfb_height = 1080  # Previously 768
                     _xvfb_display = Display(
                         visible=True,
                         size=(_xvfb_width, _xvfb_height),
