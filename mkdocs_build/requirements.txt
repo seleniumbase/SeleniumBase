@@ -9,7 +9,7 @@ pymdown-extensions>=13.1.2
 python-dateutil>=4.0.0
 click>=8.5.1
 tzdata>=2026.5
-Markdown>=3.11.3
+Markdown>=3.11.4
 pipdeptree==4.2.16
 ghp-import==2.1.0
 watchdog==7.1.1
