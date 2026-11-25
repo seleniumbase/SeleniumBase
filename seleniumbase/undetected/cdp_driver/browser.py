@@ -530,16 +530,48 @@ class Browser:
                 )
             )
         elif headless:
-            await connection.send(
-                cdp.emulation.set_device_metrics_override(
-                    width=settings.HEADLESS_START_WIDTH,
-                    height=settings.HEADLESS_START_HEIGHT,
-                    device_scale_factor=1,
-                    mobile=False,
-                    screen_width=1920,
-                    screen_height=1080,
+            try:
+                # Configure the virtual screen.
+                # cdp.emulation.get_screen_infos() and update_screen()
+                # are supported on Chrome 142 and newer.
+                # If run on older Chrome versions, the try/except handles it.
+                screen_infos = await connection.send(
+                    cdp.emulation.get_screen_infos()
                 )
-            )
+                if not screen_infos:
+                    raise Exception("No virtual screens available!")
+                screen = screen_infos[0]
+                await connection.send(
+                    cdp.emulation.update_screen(
+                        screen_id=screen.id_,
+                        width=1920,
+                        height=1080,
+                        work_area_insets=cdp.emulation.WorkAreaInsets(
+                            bottom=16,
+                        ),
+                    )
+                )
+            except Exception:
+                # Fallback for older Chrome versions. (Less than 142)
+                # Configure the browser viewport.
+                with suppress(Exception):
+                    await connection.send(
+                        cdp.emulation.set_device_metrics_override(
+                            width=settings.HEADLESS_START_WIDTH,
+                            height=settings.HEADLESS_START_HEIGHT,
+                            device_scale_factor=1,
+                            mobile=False,
+                        )
+                    )
+            with suppress(Exception):
+                # Update headless notification permissions for stealth
+                perm = cdp.browser.PermissionDescriptor(name="notifications")
+                await connection.send(
+                    cdp.browser.set_permission(
+                        permission=perm,
+                        setting=cdp.browser.PermissionSetting.PROMPT,
+                    )
+                )
         # (The code below is for the Chrome 142 extension fix)
         if (
             getattr(sb_config, "_cdp_proxy", None)
