@@ -8,6 +8,7 @@
     OutOfScopeException => Used by BaseCase methods when setUp() is skipped.
     ProxyConnectionException => Called when the proxy connection failed.
     TextNotVisibleException => Called when the expected text is not visible.
+    NumericTextNotVisibleException => Called when visible text is not numeric.
     TimeLimitExceededException => Called when exceeding "--time-limit=SECONDS".
     TimeoutException => Called when some timeout limit has been exceeded.
     VisualException => Called when there's a Visual Diff Assertion Failure.
@@ -35,6 +36,10 @@ class NotUsingChromeException(Exception):
 
 
 class NotUsingChromiumException(Exception):
+    pass
+
+
+class NumericTextNotVisibleException(Exception):
     pass
 
 

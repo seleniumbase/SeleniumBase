@@ -10804,6 +10804,28 @@ class BaseCase(unittest.TestCase):
             self.driver, selector, by=by, timeout=timeout
         )
 
+    def get_numeric_text(
+        self, selector="body", by="css selector", timeout=None
+    ):
+        """Searches for numeric text in the element of the given selector.
+        Returns the numeric text if visible within the timeout.
+        Raises an exception if no numeric text appears within the timeout.
+        The entire text of the element must be a numeric string.
+        Use case example: Waiting for a dashboard value to populate,
+        where the initial text is something else first, e.g. "-"."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_cdp_swap_needed():
+            return self.cdp.get_numeric_text(selector, timeout=timeout)
+        element = page_actions.wait_for_numeric_text_visible(
+            self.driver, selector, by=by, timeout=timeout
+        )
+        return element.text
+
     def wait_for_text(
         self, text, selector="body", by="css selector", timeout=None
     ):

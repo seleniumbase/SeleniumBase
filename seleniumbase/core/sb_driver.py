@@ -386,6 +386,9 @@ class DriverMethods(WebDriver):
     def js_click(self, *args, **kwargs):
         return page_actions.js_click(self.driver, *args, **kwargs)
 
+    def get_numeric_text(self, *args, **kwargs):
+        return page_actions.get_numeric_text(self.driver, *args, **kwargs)
+
     def get_text(self, *args, **kwargs):
         return page_actions.get_text(self.driver, *args, **kwargs)
 
